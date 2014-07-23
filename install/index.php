@@ -64,7 +64,7 @@ global $MYSQL_HANDLER;
 if ( !isset($MYSQL_HANDLER) )
 {
 	$MYSQL_HANDLER = array('mysql', '');
-	
+
 	// check if mysql support is installed; this check may not make sense, as is, in a version past 3.5x
 	if ( !function_exists('mysql_query') && !function_exists('mysqli_query') )
 	{
@@ -245,7 +245,7 @@ function show_header()
 		echo constant($label);
 	}
 	echo "</li>\n";
-	
+
 	if ( in_array($param->state, array('mysql', 'weblog', 'install')) )
 	{
 		echo '<li>&nbsp; &gt; &nbsp;' . _STEP1, '</li><li';
@@ -301,7 +301,7 @@ function show_footer()
 function show_select_locale_form()
 {
 	global $param;
-	
+
 ?>
 		<div id="container">
 			<p style="font-size:152%;font-weight:bold;">
@@ -323,7 +323,7 @@ function show_select_locale_form()
 		{
 			echo "<option value=\"{$locale}\" selected=\"selected\">";
 		}
-		
+
 		$checkfile = "./locales/{$locale}." . i18n::get_current_charset() . '.php';
 		if ( !file_exists($checkfile) )
 		{
@@ -1032,7 +1032,7 @@ function do_install()
 		}
 
 		include_once($DIR_LIBS . 'skinie.php');
-		
+
 		$aSkinErrors = installCustomSkins();
 		if ( count($aSkinErrors) > 0 )
 		{
@@ -1043,12 +1043,12 @@ function do_install()
 		$query	= sprintf($query, tableName('nucleus_skin_desc'));
 		$res	= intval(DB::getValue($query));
 		array_merge($errors, updateConfig('AdminSkin', $res));
-		
+
 		$query	= "SELECT sdnumber FROM %s WHERE sdname='admin/bookmarklet'";
 		$query	= sprintf($query, tableName('nucleus_skin_desc'));
 		$res	= intval(DB::getValue($query));
 		array_merge($errors, updateConfig('BookmarkletSkin', $res));
-		
+
 		$query		= "SELECT sdnumber FROM %s WHERE sdname='default'";
 		$query		= sprintf($query, tableName('nucleus_skin_desc'));
 		$defSkinID	= intval(DB::getValue($query));
@@ -1528,28 +1528,28 @@ class ParamManager
 		{
 			/**
 			 * default locale select simple implementation
-			 * 
+			 *
 			 * NOTE:
 			 * RFC2616: Hypertext Transfer Protocol -- HTTP/1.1
 			 * http://www.ietf.org/rfc/rfc2616.txt
-			 * 
+			 *
 			 * 14.4 Accept-Language
-			 * 
+			 *
 			 *    The Accept-Language request-header field is similar to Accept, but
 			 *    restricts the set of natural languages that are preferred as a
 			 *    response to the request. Language tags are defined in section 3.10.
-			 * 
+			 *
 			 *        Accept-Language = "Accept-Language" ":"
 			 *                          1#( language-range [ ";" "q" "=" qvalue ] )
 			 *        language-range  = ( ( 1*8ALPHA *( "-" 1*8ALPHA ) ) | "*" )
-			 *        
+			 *
 			 *    Each language-range MAY be given an associated quality value which
 			 *    represents an estimate of the user's preference for the languages
 			 *    specified by that range. The quality value defaults to "q=1". For
 			 *    example,
-			 * 
+			 *
 			 *        Accept-Language: da, en-gb;q=0.8, en;q=0.7
-			 * 
+			 *
 			 *    would mean: "I prefer Danish, but will accept British English and
 			 *    other types of English." A language-range matches a language-tag if
 			 *    it exactly equals the tag, or if it exactly equals a prefix of the
@@ -1557,18 +1557,18 @@ class ParamManager
 			 *    The special range "*", if present in the Accept-Language field,
 			 *    matches every tag not matched by any other range present in the
 			 *    Accept-Language field.
-			 * 
+			 *
 			 * TODO: this is appropriate implement or not
 			 */
 			$languages = explode(',', $_SERVER['HTTP_ACCEPT_LANGUAGE']);
-			
+
 			/* retrieve language token of language tag from first token */
 			$language = '';
 			if ( is_array($languages) && count($languages) > 0 )
 			{
 				$language = preg_replace('#^([\w]+).*$#', '$1', $languages[0]);
 			}
-			
+
 			$locales = i18n::get_available_locale_list();
 			foreach ( $locales as $locale )
 			{
@@ -1579,7 +1579,7 @@ class ParamManager
 				}
 			}
 		}
-		
+
 		/* include installer translation messages */
 		$translation_file = "./locales/{$this->locale}." . i18n::get_current_charset() . '.php';
 		if ( !file_exists($translation_file) )
@@ -1587,7 +1587,7 @@ class ParamManager
 			$translation_file = './locales/en_Latn_US.UTF-8.php';
 		}
 		include($translation_file);
-		
+
 		/* include global translation messages */
 		$translation_file = "../nucleus/locales/{$this->locale}." . i18n::get_current_charset() . '.php';
 		if ( !file_exists($translation_file) )
@@ -1595,16 +1595,16 @@ class ParamManager
 			$translation_file = './locales/en_Latn_US.UTF-8.php';
 		}
 		include($translation_file);
-		
+
 		i18n::set_current_locale($this->locale);
-		
+
 		return;
 	}
 
 	public function check_mysql_parameters()
 	{
 		global $MYSQL_HANDLER;
-		
+
 		$parameters = array('mysql_host', 'mysql_user', 'mysql_password', 'mysql_database', 'mysql_tablePrefix');
 		$this->read_parameter($parameters);
 
@@ -1618,13 +1618,13 @@ class ParamManager
 		{
 			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD2);
 		}
-		
+
 		if ( $this->mysql_user != ''
 			&& !preg_match('/^[a-z0-9_\-]+$/i', $this->mysql_user) )
 		{
 			$errors[] = sprintf(_VALID_ERROR2, _DB_FIELD2);
 		}
-		
+
 		if ( $this->mysql_database == '' )
 		{
 			$errors[] = sprintf(_VALID_ERROR1, _DB_FIELD4);
@@ -1641,7 +1641,7 @@ class ParamManager
 		{
 			$errors[] = sprintf(_VALID_ERROR3, _DB_FIELD5);
 		}
-		
+
 		if ( count($errors) == 0 )
 		{
 			$mysql_conn = @DB::setConnectionInfo($MYSQL_HANDLER[1], $this->mysql_host, $this->mysql_user, $this->mysql_password);

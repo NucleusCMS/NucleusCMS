@@ -1255,13 +1255,13 @@ Very basic buildup for an imagepopup page:
 <div class="page"><a name="skinpartspecial"></a>
 <h1>Skins: Main Index</h1>
 <p>
-This skinpart is used to show special, non-blog, content on your site. It can be used to show static content, or to wrap other 
-dynamic applications, like forms, inside the skin of your blog. It is accessed by the name of the special skin part, in this way 
+This skinpart is used to show special, non-blog, content on your site. It can be used to show static content, or to wrap other
+dynamic applications, like forms, inside the skin of your blog. It is accessed by the name of the special skin part, in this way
 (assuming the special skin part is named <code>fred</code>):
 </p>
 <code>http://www.yoursite.tld/index.php?special=fred</code>
 
-<p>Further discussion of the use of this feature can be found on the support forum: 
+<p>Further discussion of the use of this feature can be found on the support forum:
 <a href="http://forum.nucleuscms.org/viewtopic.php?t=16501" title="Special Skin Parts">Nucleus 3.31 and Static Pages</a>
 </p>
 
@@ -1277,9 +1277,9 @@ Very basic buildup for a special skin part:
   &lt;body&gt;
 
     &lt;h1&gt;About My Site&lt;/h1&gt;
-    &lt;p&gt;This page was published in order 
-	to provide a platform to publicize the plight 
-	of the peeping-polly parrot whose present 
+    &lt;p&gt;This page was published in order
+	to provide a platform to publicize the plight
+	of the peeping-polly parrot whose present
 	prognosis is perturbingly pessimistic.&lt;/p&gt;
 
   &lt;/body&gt;
@@ -1287,7 +1287,7 @@ Very basic buildup for a special skin part:
 </pre>
 
 <p>
-	This will show the text of the body as indicated above. Also, many SkinVars work on special pages, so you can make 
+	This will show the text of the body as indicated above. Also, many SkinVars work on special pages, so you can make
 	the page look just like the other pages and use SkinVars to show an index of the whole site, or a list of members, etc...
 </p>
 </div>
@@ -1635,9 +1635,9 @@ all
 
 <pre>
 &lt;%bloglist(default/index)%&gt;
-&lt;%bloglist(default/index,name)%&gt; 
+&lt;%bloglist(default/index,name)%&gt;
 &lt;%bloglist(default/index,shortname)%&gt;
-&lt;%bloglist(default/index,name,name,asc)%&gt; 
+&lt;%bloglist(default/index,name,name,asc)%&gt;
 </pre>
 
 </div>
@@ -2625,8 +2625,8 @@ Inserts a link to the next item (on item pages) or to the next archive (on archi
 	<ul>
 		<li><strong><em>linktext</em></strong>: when present, a full <code>&lt;a href...</code> tag will be outputted, rather than a raw link</li>
 		<li><strong><em>amount</em></strong>: for search and index skins: the amount of items to go forward/backward</li>
-		<li><strong><em>recount</em></strong>: for search and index skins: set to yes to force extra query to recount items on page. 
-		This is useful for more complex pages where the blog skinvar may be called multiple times because of the use of the offset. 
+		<li><strong><em>recount</em></strong>: for search and index skins: set to yes to force extra query to recount items on page.
+		This is useful for more complex pages where the blog skinvar may be called multiple times because of the use of the offset.
 		Try setting this if nextlink seems to be not advancing the expected number of items.</li>
 	</ul>
 </p>
@@ -3464,7 +3464,7 @@ all
 			<li><strong>author,isonteam</strong>: checks if the comment author is a member of blog team of current item. (comment template fields only)</li>
 		</ul>
 	</li>
-	
+
 </ul>
 
 <h2>Skintypes</h2>
@@ -4533,12 +4533,12 @@ There are two main repositories where you can find plugins for Nucleus CMS:
 	<li><a href="http://japan.nucleuscms.org/wiki/plugins" title="Japanese Plugin Wiki">Japanese</a></li>
 </ul>
 <p>
-Neither or these repositories is entirely complete. You will find some plugins in one, but not in the other, and vice versa. 
-Do not be scared off of one or the other on account of locale, as there are a few free translation services on the Internet that 
+Neither or these repositories is entirely complete. You will find some plugins in one, but not in the other, and vice versa.
+Do not be scared off of one or the other on account of locale, as there are a few free translation services on the Internet that
 will help you get by.
 </p>
-Another resource that will help you while working with plugins is the search function at the 
-<a href="http://forum.nucleuscms.org/" title="Support Forum">support forum</a>. You will even find some 
+Another resource that will help you while working with plugins is the search function at the
+<a href="http://forum.nucleuscms.org/" title="Support Forum">support forum</a>. You will even find some
 smaller plugins on the forum that never made it to the wiki.
 <p>
 </p>
@@ -6788,12 +6788,12 @@ Very basic buildup for a [Action Log]page page.
 <pre>
 
 	&lt;%pagehead%&gt;
-	
+
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_ACTIONLOG_CLEAR_TITLE)%&gt;&lt;/h2&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;&lt;%addtickettourl(index.php?action=clearactionlog)%&gt;&quot;&gt;&lt;%text(_ACTIONLOG_CLEAR_TEXT)%&gt;&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_ACTIONLOG_TITLE)%&gt;&lt;/h2&gt;
 	&lt;%actionloglist(admin/default)%&gt;
 	&lt;%pagefoot%&gt;
@@ -6879,14 +6879,14 @@ Very basic buildup for a [New weblog created]page page.
 	&lt;h3&gt;&lt;a id=&quot;index_php&quot;&gt;&lt;%sprinttext(_BLOGCREATED_SIMPLEDESC1,&lt;|%getblogsetting(short)%|&gt;)%&gt;&lt;/a&gt;&lt;/h3&gt;
 	&lt;p&gt;&lt;%sprinttext(_BLOGCREATED_SIMPLEDESC2,&lt;|%getblogsetting(short)%|&gt;)%&gt;&lt;/p&gt;
 	&lt;pre&gt;&lt;code&gt;&amp;lt;?php
-	
+
 	$CONF['Self'] = '&lt;b&gt;&lt;%blogsetting(short)%&gt;.php&lt;/b&gt;';
-	
+
 	include('&lt;i&gt;./config.php&lt;/i&gt;');
-	
+
 	selectBlog('&lt;b&gt;&lt;%blogsetting(short)%&gt;&lt;/b&gt;');
 	selector();
-	
+
 	?&amp;gt;&lt;/code&gt;&lt;/pre&gt;
 	&lt;p&gt;&lt;%text(_BLOGCREATED_SIMPLEDESC3)%&gt;&lt;/p&gt;
 	&lt;p&gt;&lt;%text(_BLOGCREATED_SIMPLEDESC4)%&gt;&lt;/p&gt;
@@ -6907,10 +6907,10 @@ Very basic buildup for a [New weblog created]page page.
 	&lt;/tr&gt;
 	&lt;/table&gt;
 	&lt;/form&gt;
-	
+
 	&lt;h3&gt;&lt;a id=&quot;skins&quot;&gt;&lt;%text(_BLOGCREATED_ADVANCEDWAY2)%&gt;&lt;/a&gt;&lt;/h3&gt;
 	&lt;p&gt;&lt;%text(_BLOGCREATED_ADVANCEDWAY3)%&gt;&lt;/p&gt;
-	
+
 	&lt;form action=&quot;&lt;%adminurl%&gt;index.php&quot; method=&quot;post&quot;&gt;
 	&lt;p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;addnewlog2&quot; /&gt;
@@ -6962,7 +6962,7 @@ Very basic buildup for a Admin layout:[You're about to delete the skin named ]pa
 
 	&lt;%pagehead%&gt;
 	&lt;h2&gt;&lt;%text(_DELETE_CONFIRM)%&gt;&lt;/h2&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;&lt;%text(_CONFIRMTXT_SKIN)%&gt;&lt;b&gt;&lt;%editskintype(name)%&gt;&lt;/b&gt; (&lt;%editskintype(desc)%&gt;)&lt;/p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;adminskindeleteconfirm&quot; /&gt;
@@ -6987,13 +6987,13 @@ Very basic buildup for a Admin layout:[Edit skin]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=adminskinoverview&quot;&gt;(&lt;%text(_SKIN_BACK)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKIN_EDITONE_TITLE)%&gt; '&lt;%editskin(name)%&gt;'&lt;/h2&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_PARTS_TITLE)%&gt;&lt;/h3&gt;
 	&lt;%text(_SKIN_PARTS_MSG)%&gt;
 	&lt;%normalskinlist(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_PARTS_SPECIAL)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;get&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
@@ -7004,7 +7004,7 @@ Very basic buildup for a Admin layout:[Edit skin]page page.
 	&lt;/p&gt;
 	&lt;/form&gt;
 	&lt;%specialskinlist(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_GENSETTINGS_TITLE)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
@@ -7055,10 +7055,10 @@ Very basic buildup for a Admin layout:[Edit Skin]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;(&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=adminskinoverview&quot;&gt;&lt;%text(_SKIN_GOBACK)%&gt;&lt;/a&gt;)&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKIN_EDITPART_TITLE)%&gt; '&lt;%editskintype(name)%&gt;': &lt;%editskintype(skintype)%&gt;&lt;/h2&gt;
 	&lt;%headmessage%&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;adminskinupdate&quot; /&gt;
@@ -7096,9 +7096,9 @@ Very basic buildup for a Admin layout:[Done Importing]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKINIE_DONE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;ul&gt;
 	&lt;li&gt;&lt;p&gt;&lt;strong&gt;&lt;%text(_SKINIE_INFO_GENERAL)%&gt;&lt;/strong&gt; &lt;%importskininfo(info)%&gt;&lt;/p&gt;&lt;/li&gt;
 	&lt;li&gt;&lt;p&gt;&lt;strong&gt;&lt;%text(_SKINIE_INFO_IMPORTEDSKINS)%&gt;&lt;/strong&gt; &lt;%importskininfo(snames)%&gt;&lt;/p&gt;&lt;/li&gt;
@@ -7121,7 +7121,7 @@ Very basic buildup for a Admin layout:[About to import skins and templates]page 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=adminskinieoverview&quot;&gt;(&lt;%text(_BACK)%&gt;)&lt;/a&gt;&lt;/p&gt;
 	&lt;h2&gt;&lt;%text(_SKINIE_CONFIRM_TITLE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;ul&gt;
 	&lt;li&gt;&lt;strong&gt;&lt;%text(_SKINIE_INFO_GENERAL)%&gt;&lt;/strong&gt; &lt;%importskininfo(info)%&gt;&lt;/li&gt;
 	&lt;li&gt;&lt;strong&gt;&lt;%text(_SKINIE_INFO_SKINS)%&gt;&lt;/strong&gt; &lt;%importskininfo(snames)%&gt;&lt;/li&gt;
@@ -7131,7 +7131,7 @@ Very basic buildup for a Admin layout:[About to import skins and templates]page 
 		&lt;li&gt;&lt;strong style=&quot;color: red;&quot;&gt;&lt;%text(_SKINIE_INFO_TEMPLCLASH)%&gt;&lt;/strong&gt; &lt;%importskininfo(tclashes)%&gt;&lt;/li&gt;
 	&lt;%endif%&gt;
 	&lt;/ul&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;adminskiniedoimport&quot; /&gt;
@@ -7162,13 +7162,13 @@ Very basic buildup for a Admin layout:[Import/Export]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKINIE_TITLE_IMPORT)%&gt;&lt;/h2&gt;
-	
+
 	&lt;p&gt;
 	&lt;label for=&quot;skinie_import_local&quot;&gt;&lt;%text(_SKINIE_LOCAL)%&gt;&lt;/label&gt;
 	&lt;/p&gt;
-	
+
 	&lt;%if(superadmin)%&gt;
 		&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 		&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;adminskinieimport&quot; /&gt;
@@ -7183,7 +7183,7 @@ Very basic buildup for a Admin layout:[Import/Export]page page.
 		&lt;%text(_SKINIE_NOCANDIDATES)%&gt;
 	&lt;%endif%&gt;
 	&lt;/p&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
 	&lt;em&gt;&lt;%text(_OR)%&gt;&lt;/em&gt;
@@ -7195,7 +7195,7 @@ Very basic buildup for a Admin layout:[Import/Export]page page.
 	&lt;input type=&quot;submit&quot; value=&quot;&lt;%text(_SKINIE_BTN_IMPORT)%&gt;&quot; /&gt;
 	&lt;/p&gt;
 	&lt;/form&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKINIE_TITLE_EXPORT)%&gt;&lt;/h2&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
@@ -7203,7 +7203,7 @@ Very basic buildup for a Admin layout:[Import/Export]page page.
 	&lt;%ticket%&gt;
 	&lt;%text(_SKINIE_EXPORT_INTRO)%&gt;
 	&lt;/p&gt;
-	
+
 	&lt;table frame=&quot;box&quot; rules=&quot;all&quot; summary=&quot;&lt;%text(_SKINIE_TITLE_EXPORT)%&gt;&quot;&gt;
 	&lt;tr&gt;
 	&lt;th colspan=&quot;2&quot;&gt;&lt;%text(_SKINIE_EXPORT_SKINS)%&gt;&lt;/th&gt;
@@ -7244,10 +7244,10 @@ Very basic buildup for a Admin layout:[Skins]page page.
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
 	&lt;h2&gt;&lt;%text(_SKIN_EDIT_TITLE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_AVAILABLE_TITLE)%&gt;&lt;/h3&gt;
 	&lt;%skinoverview(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_NEW_TITLE)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;&quot;&gt;
 	&lt;p&gt;
@@ -7337,12 +7337,12 @@ Very basic buildup for a Admin layout:[Edit Template]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=admintemplateoverview&quot;&gt;(&lt;%text(_TEMPLATE_BACK)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_TEMPLATE_EDIT_TITLE)%&gt; '&lt;%edittemplateinfo(name)%&gt;'&lt;/h2&gt;
 	&lt;%headmessage%&gt;
-	
+
 	&lt;p&gt;&lt;%text(_TEMPLATE_EDIT_MSG)%&gt;&lt;/p&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;admintemplateupdate&quot; /&gt;
@@ -7539,10 +7539,10 @@ Very basic buildup for a Admin layout:[Template overview]page page.
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
 	&lt;h2&gt;&lt;%text(_TEMPLATE_TITLE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_TEMPLATE_AVAILABLE_TITLE)%&gt;&lt;/h3&gt;
 	&lt;%templateoverview(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_TEMPLATE_NEW_TITLE)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;div&gt;
@@ -7658,18 +7658,18 @@ Very basic buildup for a [Remove Ban]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;h2&gt;&lt;%text(_BAN_REMOVE_TITLE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_BAN_IPRANGE)%&gt;&lt;/h3&gt;
-	
+
 	&lt;p&gt;
 	&lt;%text(_CONFIRMTXT_BAN)%&gt; &lt;%requestiprange%&gt;
 	&lt;input name=&quot;iprange&quot; type=&quot;hidden&quot; value=&quot;&lt;%requestiprange%&gt;&quot; /&gt;
 	&lt;/p&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_BAN_BLOGS)%&gt;&lt;/h3&gt;
-	
+
 	&lt;div&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;blogid&quot; value=&quot;&lt;%requestblogid%&gt;&quot; /&gt;
 	&lt;input name=&quot;allblogs&quot; type=&quot;radio&quot; value=&quot;0&quot; id=&quot;allblogs_one&quot; /&gt;
@@ -7677,15 +7677,15 @@ Very basic buildup for a [Remove Ban]page page.
 	&lt;br /&gt;
 	&lt;input name=&quot;allblogs&quot; type=&quot;radio&quot; value=&quot;1&quot; checked=&quot;checked&quot; id=&quot;allblogs_all&quot; /&gt;&lt;label for=&quot;allblogs_all&quot;&gt;&lt;%text(_BAN_ALLBLOGS)%&gt;&lt;/label&gt;
 	&lt;/div&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_BAN_DELETE_TITLE)%&gt;&lt;/h3&gt;
-	
+
 	&lt;div&gt;
 	&lt;%ticket%&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;banlistdeleteconfirm&quot; /&gt;
 	&lt;input type=&quot;submit&quot; value=&quot;&lt;%text(_DELETE_CONFIRM_BTN)%&gt;&quot; /&gt;
 	&lt;/div&gt;
-	
+
 	&lt;/form&gt;
 	&lt;%pagefoot%&gt;
 
@@ -8413,20 +8413,20 @@ Very basic buildup for a [Add new item to]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;h2&gt;&lt;%text(_ADD_ADDTO)%&gt; '&lt;%adminbloglink(admin/default)%&gt;'&lt;/h2&gt;
-	
+
 	&lt;%init%&gt;
 	&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;%skinfile(/javascripts/numbercheck.js)%&gt;&quot;&gt;&lt;/script&gt;
 	&lt;%if(autosave)%&gt;&lt;script type=&quot;text/javascript&quot; src=&quot;&lt;%skinfile(/javascripts/xmlhttprequest.js)%&gt;&quot;&gt;&lt;/script&gt;&lt;%endif%&gt;
-	
+
 	&lt;form id=&quot;addform&quot; method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot; &gt;
-	
+
 	&lt;div&gt;
-	
+
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;additem&quot; /&gt;
 	&lt;input name=&quot;blogid&quot; value=&quot;&lt;%blogid%&gt;&quot; type=&quot;hidden&quot; /&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;draftid&quot; value=&quot;0&quot; /&gt;
 	&lt;%ticket%&gt;
-	
+
 	&lt;table&gt;
 		&lt;tr&gt;
 			&lt;th colspan=&quot;2&quot;&gt;&lt;%text(_ADD_CREATENEW)%&gt;&lt;/th&gt;
@@ -8440,8 +8440,8 @@ Very basic buildup for a [Add new item to]page page.
 			&lt;td&gt;&lt;input id=&quot;inputtitle&quot; onkeyup=&quot;storeCaret(this); updPreview(title); doMonitor();&quot; onclick=&quot;storeCaret(this);&quot; onselect=&quot;storeCaret(this);&quot;
 				name=&quot;title&quot;
 				tabindex=&quot;10&quot;
-				size=&quot;60&quot; 
-				maxlength=&quot;160&quot; 
+				size=&quot;60&quot;
+				maxlength=&quot;160&quot;
 				value=&quot;&lt;%contents(title)%&gt;&quot;
 				/&gt;&lt;/td&gt;
 		&lt;/tr&gt;
@@ -8525,7 +8525,7 @@ Very basic buildup for a [Add new item to]page page.
 			&lt;/td&gt;
 		&lt;/tr&gt;
 	&lt;tr&gt;
-		
+
 	&lt;%if(blogsetting, bcomments)%&gt;
 			&lt;td&gt;&lt;%text(_ADD_DISABLE_COMMENTS)%&gt;&lt;/td&gt;
 			&lt;td&gt;
@@ -8535,19 +8535,19 @@ Very basic buildup for a [Add new item to]page page.
 		&lt;/tr&gt;
 	&lt;tr&gt;
 	&lt;%endif%&gt;
-	
-	
+
+
 			&lt;td&gt;&lt;%text(_ADD_CATEGORY)%&gt;&lt;/td&gt;
 			&lt;td&gt;&lt;%categories(40)%&gt;&lt;/td&gt;
 		&lt;/tr&gt;
 	&lt;tr&gt;
 			&lt;td&gt;&lt;%text(_SUBMIT)%&gt;&lt;/td&gt;
 			&lt;td&gt;
-				&lt;input tabindex=&quot;60&quot; type=&quot;submit&quot; value=&quot;&lt;%text(_ADD_ADDITEM)%&gt;&quot; 
+				&lt;input tabindex=&quot;60&quot; type=&quot;submit&quot; value=&quot;&lt;%text(_ADD_ADDITEM)%&gt;&quot;
 					onclick=&quot;return checkSubmit();&quot; /&gt;
-	
+
 				&lt;br /&gt;&lt;br /&gt;
-	
+
 				&lt;input name=&quot;actiontype&quot; value=&quot;addnow&quot; type=&quot;radio&quot; checked='checked' id=&quot;act_now&quot; tabindex=&quot;61&quot; /&gt;&lt;label for=&quot;act_now&quot;&gt;&lt;%text(_ADD_ADDNOW)%&gt;&lt;/label&gt;
 				&lt;br /&gt;
 				&lt;input name=&quot;actiontype&quot; value=&quot;addfuture&quot; type=&quot;radio&quot; id=&quot;act_future&quot; tabindex=&quot;61&quot; /&gt;&lt;label for=&quot;act_future&quot; &gt;&lt;%text(_ADD_ADDLATER)%&gt;&lt;/label&gt; &lt;%helplink(future)%&gt;
@@ -8556,11 +8556,11 @@ Very basic buildup for a [Add new item to]page page.
 					&lt;input id=&quot;inputyear&quot; name=&quot;year&quot; tabindex=&quot;63&quot; size=&quot;4&quot; value=&quot;&lt;%currenttime(year)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_YEAR)%&gt;
 					&lt;input id=&quot;inputmonth&quot; name=&quot;month&quot; tabindex=&quot;64&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(mon)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_MONTH)%&gt;
 					&lt;input id=&quot;inputday&quot; name=&quot;day&quot; tabindex=&quot;65&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(mday)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_DAY)%&gt;
-					 
+
 					&lt;input id=&quot;inputhour&quot; name=&quot;hour&quot; tabindex=&quot;66&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(hours)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_HOUR)%&gt;
 					&lt;input id=&quot;inputminutes&quot; name=&quot;minutes&quot; tabindex=&quot;67&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(minutes)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%&gt;
 					&lt;br /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%&gt;(yyyy)&lt;%text(_ITEM_ADDEDITTEMPLATE_YEAR)%&gt;(mm)&lt;%text(_ITEM_ADDEDITTEMPLATE_MONTH)%&gt;(dd)&lt;%text(_ITEM_ADDEDITTEMPLATE_DAY)%&gt; (hh)&lt;%text(_ITEM_ADDEDITTEMPLATE_HOUR)%&gt;(mm)&lt;%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%&gt;
-					
+
 					&lt;%if(blogsetting, ballowpast,0)%&gt;
 						&lt;br /&gt;
 						&lt;%text(_ADD_NOPASTDATES)%&gt;
@@ -8575,7 +8575,7 @@ Very basic buildup for a [Add new item to]page page.
 				&lt;%pluginextras%&gt;
 			&lt;/td&gt;
 		&lt;/tr&gt;
-				&lt;%pluginoptions(item)%&gt;	
+				&lt;%pluginoptions(item)%&gt;
 	&lt;tr&gt;
 		&lt;th colspan=&quot;2&quot;&gt;&lt;%text(_ADD_MORE)%&gt;&lt;/th&gt;
 		&lt;/tr&gt;
@@ -8655,7 +8655,7 @@ Very basic buildup for a [Add new item to]page page.
 	&lt;tr&gt;
 			&lt;td&gt;&lt;%text(_SUBMIT)%&gt;&lt;/td&gt;
 			&lt;td&gt;
-				&lt;input tabindex=&quot;60&quot; type=&quot;submit&quot; value=&quot;&lt;%text(_ADD_ADDITEM)%&gt;&quot; 
+				&lt;input tabindex=&quot;60&quot; type=&quot;submit&quot; value=&quot;&lt;%text(_ADD_ADDITEM)%&gt;&quot;
 					onclick=&quot;return checkSubmit();&quot; /&gt;
 				&lt;%if(autosave)%&gt;
 				&lt;input tabindex=&quot;80&quot; type=&quot;button&quot; name=&quot;autosavenow&quot; value=&quot;&lt;%text(_AUTOSAVEDRAFT_NOW)%&gt;&quot;
@@ -8664,7 +8664,7 @@ Very basic buildup for a [Add new item to]page page.
 			&lt;/td&gt;
 		&lt;/tr&gt;
 	&lt;/table&gt;
-	
+
 	&lt;/div&gt;
 	&lt;/form&gt;
 	&lt;%if(autosave)%&gt;
@@ -8679,7 +8679,7 @@ Very basic buildup for a [Add new item to]page page.
 			var goalurl = '../action.php'; // The PHP file where the content must be posted to
 			var lastsavedtext = '&lt;%text(_AUTOSAVEDRAFT_LASTSAVED)%&gt;'; // The language variable for 'Last saved'
 			var formtype = 'add'; // Add or edit form
-		&lt;/script&gt;	
+		&lt;/script&gt;
 	&lt;%endif%&gt;
 	&lt;%pagefoot%&gt;
 
@@ -8997,8 +8997,8 @@ Very basic buildup for a [Edit Item]page page.
 	&lt;td&gt;&lt;input id=&quot;inputtitle&quot; onkeyup=&quot;storeCaret(this); updPreview(title); doMonitor();&quot; onclick=&quot;storeCaret(this);&quot; onselect=&quot;storeCaret(this);&quot;
 			name=&quot;title&quot;
 			tabindex=&quot;10&quot;
-			size=&quot;60&quot; 
-			maxlength=&quot;160&quot; 
+			size=&quot;60&quot;
+			maxlength=&quot;160&quot;
 			value=&quot;&lt;%contents(title)%&gt;&quot; /&gt;
 	&lt;/td&gt;
 &lt;/tr&gt;
@@ -9086,14 +9086,14 @@ Very basic buildup for a [Edit Item]page page.
 		&lt;td&gt;
 			&lt;%text(_ADD_DISABLE_COMMENTS)%&gt;
 		&lt;/td&gt;
-		&lt;td&gt; 
+		&lt;td&gt;
 			&lt;input type=&quot;radio&quot; name=&quot;closed&quot; value=&quot;1&quot; &lt;%checkedonval(1,closed)%&gt; tabindex=&quot;30&quot; id=&quot;closed_yes&quot; /&gt;&lt;label for=&quot;closed_yes&quot;&gt;&lt;%text(_YES)%&gt;&lt;/label&gt;
 			&lt;input type=&quot;radio&quot; name=&quot;closed&quot; value=&quot;0&quot; &lt;%checkedonval(0,closed)%&gt; tabindex=&quot;30&quot; id=&quot;closed_no&quot; /&gt;&lt;label for=&quot;closed_no&quot;&gt;&lt;%text(_NO)%&gt;&lt;/label&gt;
 			&lt;br /&gt;
-			&lt;small&gt;&lt;%text(_EDIT_COMMENTSNOTE)%&gt;&lt;/small&gt;	
+			&lt;small&gt;&lt;%text(_EDIT_COMMENTSNOTE)%&gt;&lt;/small&gt;
 		&lt;/td&gt;
 	&lt;/tr&gt;
-&lt;tr&gt;				
+&lt;tr&gt;
 &lt;%endif%&gt;
 
 	&lt;td&gt;&lt;%text(_ADD_CATEGORY)%&gt;&lt;/td&gt;
@@ -9115,7 +9115,7 @@ Very basic buildup for a [Edit Item]page page.
 			&lt;input id=&quot;inputyear&quot; name=&quot;year&quot; tabindex=&quot;71&quot; size=&quot;4&quot; value=&quot;&lt;%currenttime(year)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_YEAR)%&gt;
 			&lt;input id=&quot;inputmonth&quot; name=&quot;month&quot; tabindex=&quot;72&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(mon)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_MONTH)%&gt;
 			&lt;input id=&quot;inputday&quot; name=&quot;day&quot; tabindex=&quot;73&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(mday)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_DAY)%&gt;
-			
+
 			&lt;input id=&quot;inputhour&quot; name=&quot;hour&quot; tabindex=&quot;74&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(hours)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_HOUR)%&gt;
 			&lt;input id=&quot;inputminutes&quot; name=&quot;minutes&quot; tabindex=&quot;75&quot; size=&quot;2&quot; value=&quot;&lt;%currenttime(minutes)%&gt;&quot; onchange=&quot;document.forms[0].act_future.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%&gt;
 				&lt;br /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%&gt;(yyyy)&lt;%text(_ITEM_ADDEDITTEMPLATE_YEAR)%&gt;(mm)&lt;%text(_ITEM_ADDEDITTEMPLATE_MONTH)%&gt;(dd)&lt;%text(_ITEM_ADDEDITTEMPLATE_DAY)%&gt; (hh)&lt;%text(_ITEM_ADDEDITTEMPLATE_HOUR)%&gt;(mm)&lt;%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%&gt;
@@ -9139,12 +9139,12 @@ Very basic buildup for a [Edit Item]page page.
 				&lt;input id=&quot;inputyear&quot; name=&quot;year&quot; tabindex=&quot;71&quot; size=&quot;4&quot; value=&quot;&lt;%itemtime(year)%&gt;&quot; onchange=&quot;document.forms[0].act_changedate.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_YEAR)%&gt;
 				&lt;input id=&quot;inputmonth&quot; name=&quot;month&quot; tabindex=&quot;72&quot; size=&quot;2&quot; value=&quot;&lt;%itemtime(mon)%&gt;&quot; onchange=&quot;document.forms[0].act_changedate.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_MONTH)%&gt;
 				&lt;input id=&quot;inputday&quot; name=&quot;day&quot; tabindex=&quot;73&quot; size=&quot;2&quot; value=&quot;&lt;%itemtime(mday)%&gt;&quot; onchange=&quot;document.forms[0].act_changedate.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_DAY)%&gt;
-				 
+
 				&lt;input id=&quot;inputhour&quot; name=&quot;hour&quot; tabindex=&quot;74&quot; size=&quot;2&quot; value=&quot;&lt;%itemtime(hours)%&gt;&quot; onchange=&quot;document.forms[0].act_changedate.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_HOUR)%&gt;
 				&lt;input id=&quot;inputminutes&quot; name=&quot;minutes&quot; tabindex=&quot;75&quot; size=&quot;2&quot; value=&quot;&lt;%itemtime(minutes)%&gt;&quot; onchange=&quot;document.forms[0].act_changedate.checked=true;&quot; /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%&gt;
 				&lt;br /&gt;&lt;%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%&gt;(yyyy)&lt;%text(_ITEM_ADDEDITTEMPLATE_YEAR)%&gt;(mm)&lt;%text(_ITEM_ADDEDITTEMPLATE_MONTH)%&gt;(dd)&lt;%text(_ITEM_ADDEDITTEMPLATE_DAY)%&gt; (hh)&lt;%text(_ITEM_ADDEDITTEMPLATE_HOUR)%&gt;(mm)&lt;%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%&gt;
 			&lt;/div&gt;
-	&lt;%endif%&gt;	
+	&lt;%endif%&gt;
 	&lt;input name=&quot;actiontype&quot; value=&quot;backtodrafts&quot; type=&quot;radio&quot; id=&quot;act_backtodrafts&quot; tabindex=&quot;71&quot; /&gt;&lt;label for=&quot;act_backtodrafts&quot;&gt;&lt;%text(_BMLET_BACKTODRAFTS)%&gt;&lt;/label&gt; &lt;%helplink(draft)%&gt;
 	&lt;br /&gt;
 	&lt;input name=&quot;actiontype&quot; value=&quot;delete&quot; type=&quot;radio&quot; id=&quot;act_delete&quot; tabindex=&quot;61&quot; /&gt;&lt;label for=&quot;act_delete&quot;&gt;&lt;%text(_BMLET_DELETE)%&gt;&lt;/label&gt;
@@ -9156,9 +9156,9 @@ Very basic buildup for a [Edit Item]page page.
 	&lt;td&gt;&lt;%text(_ADD_PLUGIN_EXTRAS)%&gt;&lt;/td&gt;
 	&lt;td&gt;
 		&lt;%pluginextras%&gt;
-	&lt;/td&gt;	
+	&lt;/td&gt;
 &lt;/tr&gt;
-			&lt;%pluginoptions(item)%&gt;	
+			&lt;%pluginoptions(item)%&gt;
 &lt;tr&gt;
   	&lt;th colspan=&quot;2&quot;&gt;&lt;%text(_ADD_MORE)%&gt;&lt;/th&gt;
 &lt;/tr&gt;
@@ -9230,19 +9230,19 @@ Very basic buildup for a [Edit Item]page page.
 		&lt;textarea id=&quot;inputmore&quot; onkeyup=&quot;storeCaret(this); updPreview(more); doMonitor();&quot; onclick=&quot;storeCaret(this);&quot; onselect=&quot;storeCaret(this);&quot;
 			name=&quot;more&quot;
 			tabindex=&quot;90&quot;
-			cols=&quot;60&quot; 
+			cols=&quot;60&quot;
 			rows=&quot;20&quot;&gt;&lt;%contents(more)%&gt;&lt;/textarea&gt;
 	&lt;/td&gt;
 &lt;/tr&gt;
 &lt;tr&gt;
 		&lt;td&gt;&lt;%text(_SUBMIT)%&gt;&lt;/td&gt;
 		&lt;td&gt;
-			&lt;input tabindex=&quot;60&quot; type=&quot;submit&quot; value=&quot;&lt;%text(_EDIT_SUBMIT)%&gt;&quot; 
+			&lt;input tabindex=&quot;60&quot; type=&quot;submit&quot; value=&quot;&lt;%text(_EDIT_SUBMIT)%&gt;&quot;
 				onclick=&quot;return checkSubmit();&quot; /&gt;
 			&lt;%if(autosave)%&gt;&lt;input tabindex=&quot;80&quot; type=&quot;button&quot; name=&quot;autosavenow&quot; value=&quot;&lt;%text(_AUTOSAVEDRAFT_NOW)%&gt;&quot;
 				onclick=&quot;autoSaveDraft();&quot; /&gt;&lt;%endif%&gt;
 		&lt;/td&gt;
-	
+
 &lt;/tr&gt;&lt;/table&gt;
 
 &lt;/div&gt;
@@ -9453,22 +9453,22 @@ Very basic buildup for a [Admin page foot] page.
 			&lt;/ul&gt;
 		&lt;%endif%&gt;
 	&lt;%endif%&gt;
-	
+
 	&lt;div class=&quot;foot&quot;&gt;
 	&lt;a href=&quot;&lt;%text(_ADMINPAGEFOOT_OFFICIALURL)%&gt;&quot;&gt;Nucleus CMS&lt;/a&gt; &amp;copy; 2002- &lt;%date(%Y)%&gt; &lt;%text(_ADMINPAGEFOOT_COPYRIGHT)%&gt;
 	 - &lt;a href=&quot;&lt;%text(_ADMINPAGEFOOT_DONATEURL)%&gt;&quot;&gt;&lt;%text(_ADMINPAGEFOOT_DONATE)%&gt;&lt;/a&gt;
 	&lt;/div&gt;
 	&lt;/div&gt;
-	
+
 	&lt;!-- content --&gt;
 	&lt;div id=&quot;quickmenu&quot;&gt;
-	
+
 	&lt;%if(loggedin)%&gt;
 		&lt;%ifnot(adminaction,showlogin)%&gt;
 			&lt;ul&gt;
 			&lt;li&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=overview&quot;&gt;&lt;%text(_QMENU_HOME)%&gt;&lt;/a&gt;&lt;/li&gt;
 			&lt;/ul&gt;
-			
+
 			&lt;h2&gt;&lt;%text(_QMENU_ADD)%&gt;&lt;/h2&gt;
 			&lt;form method=&quot;get&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 			&lt;div&gt;
@@ -9476,14 +9476,14 @@ Very basic buildup for a [Admin page foot] page.
 			&lt;%qmenuaddselect(admin/default)%&gt;
 			&lt;/div&gt;
 			&lt;/form&gt;
-			
+
 			&lt;h2&gt;&lt;%member(yourrealname)%&gt;&lt;/h2&gt;
 			&lt;ul&gt;
 			&lt;li&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=editmembersettings&quot;&gt;&lt;%text(_QMENU_USER_SETTINGS)%&gt;&lt;/a&gt;&lt;/li&gt;
 			&lt;li&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=browseownitems&quot;&gt;&lt;%text(_QMENU_USER_ITEMS)%&gt;&lt;/a&gt;&lt;/li&gt;
 			&lt;li&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=browseowncomments&quot;&gt;&lt;%text(_QMENU_USER_COMMENTS)%&gt;&lt;/a&gt;&lt;/li&gt;
 			&lt;/ul&gt;
-			
+
 			&lt;%if(superadmin)%&gt;
 				&lt;h2&gt;&lt;%text(_QMENU_MANAGE)%&gt;&lt;/h2&gt;
 				&lt;ul&gt;
@@ -9508,22 +9508,22 @@ Very basic buildup for a [Admin page foot] page.
 				&lt;li&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=adminskinieoverview&quot;&gt;&lt;%text(_QMENU_LAYOUT_IEXPORT)%&gt;&lt;/a&gt;&lt;/li&gt;
 				&lt;/ul&gt;
 			&lt;%endif%&gt;
-			
+
 			&lt;%quickmenu(admin/default)%&gt;
 		&lt;%endif%&gt;
-		
+
 	&lt;%elseif(adminaction,activate)%&gt;
 		&lt;h2&gt;&lt;%text(_QMENU_ACTIVATE)%&gt;&lt;/h2&gt;
 		&lt;%text(_QMENU_ACTIVATE_TEXT)%&gt;
-	
+
 	&lt;%elseif(adminaction,activatesetpwd)%&gt;
 		&lt;h2&gt;&lt;%text(_QMENU_ACTIVATE)%&gt;&lt;/h2&gt;&lt;%text(_QMENU_ACTIVATE_TEXT)%&gt;
-	
+
 	&lt;%else%&gt;
 		&lt;h2&gt;&lt;%text(_QMENU_INTRO)%&gt;&lt;/h2&gt;&lt;%text(_QMENU_INTRO_TEXT)%&gt;
-	
+
 	&lt;%endif%&gt;
-	
+
 	&lt;/div&gt;
 	&lt;!-- content / quickmenu container --&gt;
 	&lt;div class=&quot;clear&quot;&gt;&lt;/div&gt;
@@ -9953,13 +9953,13 @@ Very basic buildup for a [Edit skin]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=skinoverview&quot;&gt;(&lt;%text(_SKIN_BACK)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKIN_EDITONE_TITLE)%&gt; '&lt;%editskin(name)%&gt;'&lt;/h2&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_PARTS_TITLE)%&gt;&lt;/h3&gt;
 	&lt;%text(_SKIN_PARTS_MSG)%&gt;
 	&lt;%normalskinlist(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_PARTS_SPECIAL)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;get&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
@@ -9970,7 +9970,7 @@ Very basic buildup for a [Edit skin]page page.
 	&lt;/p&gt;
 	&lt;/form&gt;
 	&lt;%specialskinlist(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_GENSETTINGS_TITLE)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
@@ -10021,10 +10021,10 @@ Very basic buildup for a [Edit Skin]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;(&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=skinoverview&quot;&gt;&lt;%text(_SKIN_GOBACK)%&gt;&lt;/a&gt;)&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKIN_EDITPART_TITLE)%&gt; '&lt;%editskintype(name)%&gt;': &lt;%editskintype(skintype)%&gt;&lt;/h2&gt;
 	&lt;%headmessage%&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;skinupdate&quot; /&gt;
@@ -10041,7 +10041,7 @@ Very basic buildup for a [Edit Skin]page page.
 	(skin type: &lt;%editskintype(skintype)%&gt;)
 	&lt;br /&gt;
 	&lt;br /&gt;
-	
+
 	&lt;%text(_SKIN_ALLOWEDVARS)%&gt;
 	&lt;%allowedskinactions%&gt;&lt;br /&gt;&lt;br /&gt;
 	&lt;%text(_SKINEDIT_ALLOWEDBLOGS)%&gt;
@@ -10192,12 +10192,12 @@ Very basic buildup for a [Edit Skins]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_SKIN_EDIT_TITLE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_AVAILABLE_TITLE)%&gt;&lt;/h3&gt;
 	&lt;%skinoverview(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_SKIN_NEW_TITLE)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;
@@ -10423,20 +10423,20 @@ Very basic buildup for a [Edit Template]page page.
 
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=templateoverview&quot;&gt;(&lt;%text(_TEMPLATE_BACK)%&gt;)&lt;/a&gt;&lt;/p&gt;
-	
+
 	&lt;h2&gt;&lt;%text(_TEMPLATE_EDIT_TITLE)%&gt; '&lt;%edittemplateinfo(name)%&gt;'&lt;/h2&gt;
 	&lt;%headmessage%&gt;
-	
+
 	&lt;p&gt;&lt;%text(_TEMPLATE_EDIT_MSG)%&gt;&lt;/p&gt;
-	
+
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
-	
+
 	&lt;p&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;action&quot; value=&quot;templateupdate&quot; /&gt;
 	&lt;%ticket%&gt;
 	&lt;input type=&quot;hidden&quot; name=&quot;templateid&quot; value=&quot;&lt;%edittemplateinfo(id)%&gt;&quot; /&gt;
 	&lt;/p&gt;
-	
+
 	&lt;table frame=&quot;box&quot; rules=&quot;all&quot; summary=&quot;&lt;%text(_TEMPLATE_EDIT_TITLE)%&gt;&quot;&gt;
 	&lt;tr&gt;
 	&lt;th colspan=&quot;2&quot;&gt;&lt;%text(_TEMPLATE_SETTINGS)%&gt;&lt;/th&gt;
@@ -10568,10 +10568,10 @@ Very basic buildup for a [Template overview]page page.
 	&lt;%pagehead%&gt;
 	&lt;p&gt;&lt;a href=&quot;&lt;%adminurl%&gt;index.php?action=manage&quot;&gt;(&lt;%text(_BACKTOMANAGE)%&gt;)&lt;/a&gt;&lt;/p&gt;
 	&lt;h2&gt;&lt;%text(_TEMPLATE_TITLE)%&gt;&lt;/h2&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_TEMPLATE_AVAILABLE_TITLE)%&gt;&lt;/h3&gt;
 	&lt;%templateoverview(admin/default)%&gt;
-	
+
 	&lt;h3&gt;&lt;%text(_TEMPLATE_NEW_TITLE)%&gt;&lt;/h3&gt;
 	&lt;form method=&quot;post&quot; action=&quot;&lt;%adminurl%&gt;index.php&quot;&gt;
 	&lt;p&gt;

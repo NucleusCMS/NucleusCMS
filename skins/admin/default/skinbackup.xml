@@ -12,12 +12,12 @@
 
 <part name="actionlog"><![CDATA[
 	<%pagehead%>
-	
+
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
-	
+
 	<h2><%text(_ACTIONLOG_CLEAR_TITLE)%></h2>
 	<p><a href="<%adminurl%><%addtickettourl(index.php?action=clearactionlog)%>"><%text(_ACTIONLOG_CLEAR_TEXT)%></a></p>
-	
+
 	<h2><%text(_ACTIONLOG_TITLE)%></h2>
 	<%actionloglist(admin/default)%>
 	<%pagefoot%>
@@ -70,14 +70,14 @@
 	<h3><a id="index_php"><%sprinttext(_BLOGCREATED_SIMPLEDESC1,<|%getblogsetting(short)%|>)%></a></h3>
 	<p><%sprinttext(_BLOGCREATED_SIMPLEDESC2,<|%getblogsetting(short)%|>)%></p>
 	<pre><code>&lt;?php
-	
+
 	$CONF['Self'] = '<b><%blogsetting(short)%>.php</b>';
-	
+
 	include('<i>./config.php</i>');
-	
+
 	selectBlog('<b><%blogsetting(short)%></b>');
 	selector();
-	
+
 	?&gt;</code></pre>
 	<p><%text(_BLOGCREATED_SIMPLEDESC3)%></p>
 	<p><%text(_BLOGCREATED_SIMPLEDESC4)%></p>
@@ -87,7 +87,7 @@
 	<%ticket%>
 	<input type="hidden" name="blogid" value="<%requestblogid%>" />
 	</p>
-	
+
 	<table frame="box" rules="all" summary="<%text(_BLOGCREATED_TITLE)%>">
 	<tr>
 	<td><%text(_EBLOG_URL)%></td>
@@ -99,10 +99,10 @@
 	</tr>
 	</table>
 	</form>
-	
+
 	<h3><a id="skins"><%text(_BLOGCREATED_ADVANCEDWAY2)%></a></h3>
 	<p><%text(_BLOGCREATED_ADVANCEDWAY3)%></p>
-	
+
 	<form action="<%adminurl%>index.php" method="post">
 	<p>
 	<input type="hidden" name="action" value="addnewlog2" />
@@ -132,7 +132,7 @@
 <part name="adminskindelete"><![CDATA[
 	<%pagehead%>
 	<h2><%text(_DELETE_CONFIRM)%></h2>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
 	<p><%text(_CONFIRMTXT_SKIN)%><b><%editskintype(name)%></b> (<%editskintype(desc)%>)</p>
 	<input type="hidden" name="action" value="adminskindeleteconfirm" />
@@ -146,13 +146,13 @@
 <part name="adminskinedit"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=adminskinoverview">(<%text(_SKIN_BACK)%>)</a></p>
-	
+
 	<h2><%text(_SKIN_EDITONE_TITLE)%> '<%editskin(name)%>'</h2>
-	
+
 	<h3><%text(_SKIN_PARTS_TITLE)%></h3>
 	<%text(_SKIN_PARTS_MSG)%>
 	<%normalskinlist(admin/default)%>
-	
+
 	<h3><%text(_SKIN_PARTS_SPECIAL)%></h3>
 	<form method="get" action="<%adminurl%>index.php">
 	<p>
@@ -163,7 +163,7 @@
 	</p>
 	</form>
 	<%specialskinlist(admin/default)%>
-	
+
 	<h3><%text(_SKIN_GENSETTINGS_TITLE)%></h3>
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
@@ -203,10 +203,10 @@
 <part name="adminskinedittype"><![CDATA[
 	<%pagehead%>
 	<p>(<a href="<%adminurl%>index.php?action=adminskinoverview"><%text(_SKIN_GOBACK)%></a>)</p>
-	
+
 	<h2><%text(_SKIN_EDITPART_TITLE)%> '<%editskintype(name)%>': <%editskintype(skintype)%></h2>
 	<%headmessage%>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
 	<input type="hidden" name="action" value="adminskinupdate" />
@@ -233,9 +233,9 @@
 <part name="adminskiniedoimport"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
-	
+
 	<h2><%text(_SKINIE_DONE)%></h2>
-	
+
 	<ul>
 	<li><strong><%text(_SKINIE_INFO_GENERAL)%></strong> <%importskininfo(info)%></li>
 	<li><strong><%text(_SKINIE_INFO_IMPORTEDSKINS)%></strong> <%importskininfo(snames)%></li>
@@ -247,7 +247,7 @@
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=adminskinieoverview">(<%text(_BACK)%>)</a></p>
 	<h2><%text(_SKINIE_CONFIRM_TITLE)%></h2>
-	
+
 	<ul>
 	<li><strong><%text(_SKINIE_INFO_GENERAL)%></strong> <%importskininfo(info)%></li>
 	<li><strong><%text(_SKINIE_INFO_SKINS)%></strong> <%importskininfo(snames)%></li>
@@ -257,7 +257,7 @@
 		<li><strong style="color: red;"><%text(_SKINIE_INFO_TEMPLCLASH)%></strong> <%importskininfo(tclashes)%></li>
 	<%endif%>
 	</ul>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
 	<input type="hidden" name="action" value="adminskiniedoimport" />
@@ -277,13 +277,13 @@
 <part name="adminskinieoverview"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
-	
+
 	<h2><%text(_SKINIE_TITLE_IMPORT)%></h2>
-	
+
 	<p>
 	<label for="skinie_import_local"><%text(_SKINIE_LOCAL)%></label>
 	</p>
-	
+
 	<%if(superadmin)%>
 		<form method="post" action="<%adminurl%>index.php">
 		<p>
@@ -299,7 +299,7 @@
 	<%else%>
 		<p><%text(_SKINIE_NOCANDIDATES)%></p>
 	<%endif%>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
 	<em><%text(_OR)%></em>
@@ -311,13 +311,13 @@
 	<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
 	</p>
 	</form>
-	
+
 	<h2><%text(_SKINIE_TITLE_EXPORT)%></h2>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
-	
+
 	<p><%text(_SKINIE_EXPORT_INTRO)%></p>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_SKINS)%>">
 	<thead>
 	<tr>
@@ -328,7 +328,7 @@
 	<%skinielist(skin,admin/default)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_TEMPLATES)%>">
 	<thead>
 	<th colspan="2"><%text(_SKINIE_EXPORT_TEMPLATES)%></th>
@@ -337,7 +337,7 @@
 	<%skinielist(template,admin/default)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_EXTRA)%>">
 	<thead>
 	<th colspan="2"><%text(_SKINIE_EXPORT_EXTRA)%></th>
@@ -349,14 +349,14 @@
 	</tr>
 	</tbody>
 	</table>
-	
+
 	<p>
 	<input type="hidden" name="action" value="adminskinieexport" />
 	<%ticket%>
 	<input type="submit" value="<%text(_SKINIE_BTN_EXPORT)%>" />
 	</p>
-	
-	
+
+
 	</form>
 	<%pagefoot%>
 ]]></part>
@@ -364,10 +364,10 @@
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
 	<h2><%text(_SKIN_EDIT_TITLE)%></h2>
-	
+
 	<h3><%text(_SKIN_AVAILABLE_TITLE)%></h3>
 	<%skinoverview(admin/default)%>
-	
+
 	<h3><%text(_SKIN_NEW_TITLE)%></h3>
 	<form method="post" action="<%adminurl%>">
 	<p>
@@ -424,19 +424,19 @@
 <part name="admintemplateedit"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=admintemplateoverview">(<%text(_TEMPLATE_BACK)%>)</a></p>
-	
+
 	<h2><%text(_TEMPLATE_EDIT_TITLE)%> '<%edittemplateinfo(name)%>'</h2>
 	<%headmessage%>
-	
+
 	<p><%text(_TEMPLATE_EDIT_MSG)%></p>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
 	<input type="hidden" name="action" value="admintemplateupdate" />
 	<%ticket%>
 	<input type="hidden" name="templateid" value="<%edittemplateinfo(id)%>" />
 	</p>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_EDIT_TITLE)%>">
 	<thead>
 	<tr>
@@ -461,7 +461,7 @@
 	</tr>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_QMENU_LAYOUT_SKINS)%>">
 	<thead>
 	<tr>
@@ -478,7 +478,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_SKINIE_EXPORT_LIST, SKINIE_EXPORT_LIST, , 17)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_QMENU_LAYOUT_TEMPL)%>">
 	<thead>
 	<tr>
@@ -491,7 +491,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_TEMPLATE_EDIT_ROW_TAIL, TEMPLATE_EDIT_ROW_TAIL, , 20)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_ADMINAREAHEADLINK)%>">
 	<thead>
 	<tr>
@@ -502,7 +502,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_BLOGLINK, ADMIN_BLOGLINK, , 21)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_BATCH)%>">
 	<thead>
 	<tr>
@@ -513,7 +513,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_BATCHLIST, ADMIN_BATCHLIST, , 22)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_QMENU_ACTIVATE)%>">
 	<thead>
 	<tr>
@@ -529,7 +529,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_ACTIVATE_CHANGE_TEXT, ACTIVATE_CHANGE_TEXT, , 28)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_QMENU_MANAGE_SYSTEM)%>">
 	<thead>
 	<tr>
@@ -540,7 +540,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_SYSTEMINFO_GDSETTINGS, SYSTEMINFO_GDSETTINGS, , 29)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_BLOGLIST_BANS)%>">
 	<thead>
 	<tr>
@@ -551,7 +551,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_BANLIST_DELETED_LIST, BANLIST_DELETED_LIST, , 30)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_TPLSETTING_INGENERAL)%>">
 	<thead>
 	<tr>
@@ -567,7 +567,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_ADMIN_CUSTOMHELPLINK_ANCHOR, ADMIN_CUSTOMHELPLINK_ANCHOR, , 36)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_SHOWLIST_LISTPLUG_SELECT)%>">
 	<thead>
 	<tr>
@@ -580,7 +580,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_SELECT_FOOT, SHOWLIST_LISTPLUG_SELECT_FOOT, , 39)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_SHOWLIST_LISTPLUG_TABLE)%>">
 	<thead>
 	<tr>
@@ -660,7 +660,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_SHOWLIST_LISTPLUG_TABLE_NAVILIST, SHOWLIST_LISTPLUG_TABLE_NAVILIST, , 109)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINABLEADMIN_PLUGIN_QUICKMENU)%>">
 	<thead>
 	<tr>
@@ -674,7 +674,7 @@
 	<%edittemplateinfo(row, _ADM_TPLPT_PLUGIN_QUICKMENU_FOOT, PLUGIN_QUICKMENU_FOOT, , 112)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_PLUGIN_FIELDS)%>">
 	<thead>
 	<tr>
@@ -685,7 +685,7 @@
 	<%edittemplateinfo(extratemplate,admin/default)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_UPDATE)%>">
 	<thead>
 	<tr>
@@ -702,7 +702,7 @@
 	</tr>
 	</tbody>
 	</table>
-	
+
 	</form>
 	<%pagefoot%>
 ]]></part>
@@ -710,10 +710,10 @@
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
 	<h2><%text(_TEMPLATE_TITLE)%></h2>
-	
+
 	<h3><%text(_TEMPLATE_AVAILABLE_TITLE)%></h3>
 	<%templateoverview(admin/default)%>
-	
+
 	<h3><%text(_TEMPLATE_NEW_TITLE)%></h3>
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
@@ -785,18 +785,18 @@
 <part name="banlistdelete"><![CDATA[
 	<%pagehead%>
 	<h2><%text(_BAN_REMOVE_TITLE)%></h2>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
-	
+
 	<h3><%text(_BAN_IPRANGE)%></h3>
-	
+
 	<p>
 	<%text(_CONFIRMTXT_BAN)%> <%requestiprange%>
 	<input name="iprange" type="hidden" value="<%requestiprange%>" />
 	</p>
-	
+
 	<h3><%text(_BAN_BLOGS)%></h3>
-	
+
 	<p>
 	<input type="hidden" name="blogid" value="<%requestblogid%>" />
 	<input name="allblogs" type="radio" value="0" id="allblogs_one" />
@@ -804,15 +804,15 @@
 	<br />
 	<input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><%text(_BAN_ALLBLOGS)%></label>
 	</p>
-	
+
 	<h3><%text(_BAN_DELETE_TITLE)%></h3>
-	
+
 	<p>
 	<%ticket%>
 	<input type="hidden" name="action" value="banlistdeleteconfirm" />
 	<input type="submit" value="<%text(_DELETE_CONFIRM_BTN)%>" />
 	</p>
-	
+
 	</form>
 	<%pagefoot%>
 ]]></part>
@@ -1402,9 +1402,9 @@
 	<%text(_LABEL_HOUR_UNIT)%>
 	<input type="text" id="inputminutes" name="minutes" value="<%currenttime(minutes)%>" tabindex="67" size="2" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_MINUTE_UNIT)%><br />
-	
+
 	<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
-	
+
 	<%if(blogsetting, ballowpast,0)%>
 	<br />
 	<%text(_ADD_NOPASTDATES)%>
@@ -1500,7 +1500,7 @@
 	</td>
 	</tr>
 	</table>
-	
+
 	</form>
 	<%if(autosave)%>
 	<script type="text/javascript">
@@ -1753,22 +1753,22 @@
 <part name="itemedit"><![CDATA[
 	<%pagehead%>
 	<h2><%text(_EDIT_ITEM)%></h2>
-	
+
 	<%init%>
 	<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>
 	<%if(autosave)%>
 	<script type="text/javascript" src="<%skinfile(/javascripts/xmlhttprequest.js)%>"></script>
 	<%endif%>
-	
+
 	<form id="editform" method="post" action="<%adminurl%>index.php">
-	
+
 	<p>
 	<input type="hidden" name="action" value="itemupdate" />
 	<input name="itemid" value="<%contents(itemid)%>" type="hidden" />
 	<input type="hidden" name="draftid" value="0" />
 	<%ticket%>
 	</p>
-	
+
 	<table frame="box" rules="all" summary="<%text(_EDIT_ITEM)%>">
 	<tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
@@ -1860,18 +1860,18 @@
 	<span id="prevmore">&#160;</span><br />
 	</td>
 	</tr>
-	
+
 	<%if(blogsetting, bcomments)%>
 	<tr>
 	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-	<td> 
+	<td>
 	<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
 	<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label><br />
 	<small><%text(_EDIT_COMMENTSNOTE)%></small>
 	</td>
 	</tr>
 	<%endif%>
-	
+
 	<tr>
 	<td><%text(_ADD_CATEGORY)%></td>
 	<td><%categories(40)%></td>
@@ -1894,25 +1894,25 @@
 	<%text(_LABEL_MONTH_UNIT)%>
 	<input type="text" id="inputday" name="day" tabindex="73" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_DAY_UNIT)%>
-	
+
 	<input type="text" id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_HOUR_UNIT)%>
 	<input type="text" id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_MINUTE_UNIT)%><br />
 	<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
-	
+
 	<%if(blogsetting, ballowpast,0)%>
 	<br />
 	<%text(_ADD_NOPASTDATES)%>
 	<%endif%>
-	
+
 	</div>
 	<input type="radio" id="act_draft" name="actiontype" value="adddraft" checked='checked' tabindex="61" />
 	<label for="act_draft"><%text(_EDIT_BACKTODRAFTS)%></label> <%helplink(draft)%><br />
 	<input type="radio" id="act_delete" name="actiontype" value="delete" tabindex="61" />
 	<label for="act_delete"><%text(_BMLET_DELETE)%></label>
 	<%endif%>
-	
+
 	<%if(itemproperty, draft,0)%>
 	<br />
 	<br />
@@ -1941,7 +1941,7 @@
 	<input type="radio" id="act_delete" name="actiontype" value="delete" tabindex="61" />
 	<label for="act_delete"><%text(_BMLET_DELETE)%></label>
 	<%endif%>
-	
+
 	</td>
 	</tr>
 	<tr>
@@ -2174,22 +2174,22 @@
 			</ul>
 		<%endif%>
 	<%endif%>
-	
+
 	<p class="foot">
 	<a href="<%text(_ADMINPAGEFOOT_OFFICIALURL)%>">Nucleus CMS</a> &copy; 2002- <%date(%Y)%> <%text(_ADMINPAGEFOOT_COPYRIGHT)%>
 	 - <a href="<%text(_ADMINPAGEFOOT_DONATEURL)%>"><%text(_ADMINPAGEFOOT_DONATE)%></a>
 	</p>
 	</div>
-	
+
 	<!-- content -->
 	<div id="quickmenu">
-	
+
 	<%if(loggedin)%>
 		<%ifnot(adminaction,showlogin)%>
 			<ul>
 			<li><a href="<%adminurl%>index.php?action=overview"><%text(_QMENU_HOME)%></a></li>
 			</ul>
-			
+
 			<h2><%text(_QMENU_ADD)%></h2>
 			<form method="get" action="<%adminurl%>index.php">
 			<div>
@@ -2197,14 +2197,14 @@
 			<%qmenuaddselect(admin/default)%>
 			</div>
 			</form>
-			
+
 			<h2><%member(yourrealname)%></h2>
 			<ul>
 			<li><a href="<%adminurl%>index.php?action=editmembersettings"><%text(_QMENU_USER_SETTINGS)%></a></li>
 			<li><a href="<%adminurl%>index.php?action=browseownitems"><%text(_QMENU_USER_ITEMS)%></a></li>
 			<li><a href="<%adminurl%>index.php?action=browseowncomments"><%text(_QMENU_USER_COMMENTS)%></a></li>
 			</ul>
-			
+
 			<%if(superadmin)%>
 				<h2><%text(_QMENU_MANAGE)%></h2>
 				<ul>
@@ -2229,22 +2229,22 @@
 				<li><a href="<%adminurl%>index.php?action=adminskinieoverview"><%text(_QMENU_LAYOUT_IEXPORT)%></a></li>
 				</ul>
 			<%endif%>
-			
+
 			<%quickmenu(admin/default)%>
 		<%endif%>
-		
+
 	<%elseif(adminaction,activate)%>
 		<h2><%text(_QMENU_ACTIVATE)%></h2>
 		<%text(_QMENU_ACTIVATE_TEXT)%>
-	
+
 	<%elseif(adminaction,activatesetpwd)%>
 		<h2><%text(_QMENU_ACTIVATE)%></h2><%text(_QMENU_ACTIVATE_TEXT)%>
-	
+
 	<%else%>
 		<h2><%text(_QMENU_INTRO)%></h2><%text(_QMENU_INTRO_TEXT)%>
-	
+
 	<%endif%>
-	
+
 	</div>
 	<!-- content / quickmenu container -->
 	<div class="clear"></div>
@@ -2285,7 +2285,7 @@
 <div id="content">
 <div class="loginname">
 <%if(loggedin)%>
-<%text(_LOGGEDINAS)%> <%member(yourrealname)%> - <a href="<%adminurl%>index.php?action=logout"><%text(_LOGOUT)%></a><br /><a href="<%adminurl%>index.php?action=overview"><%text(_ADMINHOME)%></a> - 
+<%text(_LOGGEDINAS)%> <%member(yourrealname)%> - <a href="<%adminurl%>index.php?action=logout"><%text(_LOGOUT)%></a><br /><a href="<%adminurl%>index.php?action=overview"><%text(_ADMINHOME)%></a> -
 <%else%>
 <a href="<%adminurl%>index.php?action=showlogin" title="Log in"><%text(_NOTLOGGEDIN)%></a><br />
 <%endif%>
@@ -2641,13 +2641,13 @@
 <part name="skinedit"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=skinoverview">(<%text(_SKIN_BACK)%>)</a></p>
-	
+
 	<h2><%text(_SKIN_EDITONE_TITLE)%> '<%editskin(name)%>'</h2>
-	
+
 	<h3><%text(_SKIN_PARTS_TITLE)%></h3>
 	<%text(_SKIN_PARTS_MSG)%>
 	<%normalskinlist(admin/default)%>
-	
+
 	<h3><%text(_SKIN_PARTS_SPECIAL)%></h3>
 	<form method="get" action="<%adminurl%>index.php">
 	<p>
@@ -2658,7 +2658,7 @@
 	</p>
 	</form>
 	<%specialskinlist(admin/default)%>
-	
+
 	<h3><%text(_SKIN_GENSETTINGS_TITLE)%></h3>
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
@@ -2698,10 +2698,10 @@
 <part name="skinedittype"><![CDATA[
 	<%pagehead%>
 	<p>(<a href="<%adminurl%>index.php?action=skinoverview"><%text(_SKIN_GOBACK)%></a>)</p>
-	
+
 	<h2><%text(_SKIN_EDITPART_TITLE)%> '<%editskintype(name)%>': <%editskintype(skintype)%></h2>
 	<%headmessage%>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
 	<input type="hidden" name="action" value="skinupdate" />
@@ -2718,7 +2718,7 @@
 	(skin type: <%editskintype(skintype)%>)
 	<br />
 	<br />
-	
+
 	<%text(_SKIN_ALLOWEDVARS)%>
 	<%allowedskinactions%><br /><br />
 	<%text(_SKINEDIT_ALLOWEDBLOGS)%>
@@ -2805,12 +2805,12 @@
 	<input type="submit" value="<%text(_SKINIE_BTN_IMPORT)%>" />
 	</p>
 	</form>
-	
+
 	<h2><%text(_SKINIE_TITLE_EXPORT)%></h2>
 	<form method="post" action="<%adminurl%>index.php">
-	
+
 	<p><%text(_SKINIE_EXPORT_INTRO)%></p>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_SKINS)%>">
 	<thead>
 	<tr>
@@ -2821,7 +2821,7 @@
 	<%skinielist(skin,admin/default)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_TEMPLATES)%>">
 	<thead>
 	<th colspan="2"><%text(_SKINIE_EXPORT_TEMPLATES)%></th>
@@ -2831,7 +2831,7 @@
 	<%skinielist(template,admin/default)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_SKINIE_EXPORT_SKINS)%>">
 	<thead>
 	<th colspan="2"><%text(_SKINIE_EXPORT_EXTRA)%></th>
@@ -2843,33 +2843,33 @@
 	</tr>
 	</tbody>
 	</table>
-	
+
 	<p>
 	<input type="hidden" name="action" value="skinieexport" />
 	<%ticket%>
 	<input type="submit" value="<%text(_SKINIE_BTN_EXPORT)%>" />
 	</p>
-	
+
 	</form>
-	
+
 	<%pagefoot%>
 ]]></part>
 <part name="skinoverview"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
-	
+
 	<h2><%text(_SKIN_EDIT_TITLE)%></h2>
-	
+
 	<h3><%text(_SKIN_AVAILABLE_TITLE)%></h3>
 	<%skinoverview(admin/default)%>
-	
+
 	<h3><%text(_SKIN_NEW_TITLE)%></h3>
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
 	<input name="action" value="skinnew" type="hidden" />
 	<%ticket%>
 	</p>
-	
+
 	<table frame="box" rules="all" sumamry="<%text(_SKIN_NEW_TITLE)%>">
 	<tr>
 	<td><%text(_SKIN_NAME)%> <%helplink(shortnames)%></td>
@@ -3072,20 +3072,20 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 <part name="templateedit"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=templateoverview">(<%text(_TEMPLATE_BACK)%>)</a></p>
-	
+
 	<h2><%text(_TEMPLATE_EDIT_TITLE)%> '<%edittemplateinfo(name)%>'</h2>
 	<%headmessage%>
-	
+
 	<p><%text(_TEMPLATE_EDIT_MSG)%></p>
-	
+
 	<form method="post" action="<%adminurl%>index.php">
-	
+
 	<p>
 	<input type="hidden" name="action" value="templateupdate" />
 	<%ticket%>
 	<input type="hidden" name="templateid" value="<%edittemplateinfo(id)%>" />
 	</p>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_SETTINGS)%>">
 	<thead>
 	<tr>
@@ -3110,7 +3110,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	</tr>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_ITEMS)%>">
 	<thead>
 	<tr>
@@ -3126,7 +3126,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_NEW, NEW, new, 30)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_COMMENTS_ANY)%>">
 	<thead>
 	<tr>
@@ -3143,7 +3143,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_CMEXTRA, COMMENTS_AUTH, memberextra, 100)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_COMMENTS_NONE)%>">
 	<thead>
 	<tr>
@@ -3154,7 +3154,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_CNONE, COMMENTS_NONE, , 110)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_COMMENTS_TOOMUCH)%>">
 	<thead>
 	<tr>
@@ -3165,7 +3165,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_CTOOMUCH, COMMENTS_TOOMUCH, , 120)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_ARCHIVELIST)%>">
 	<thead>
 	<tr>
@@ -3178,7 +3178,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_AFOOTER, ARCHIVELIST_FOOTER, , 150)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_BLOGLIST)%>">
 	<thead>
 	<tr>
@@ -3191,7 +3191,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_BLOGFOOTER, BLOGLIST_FOOTER, , 180)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_CATEGORYLIST)%>">
 	<thead>
 	<tr>
@@ -3204,7 +3204,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_CATFOOTER, CATLIST_FOOTER, , 210)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_DATETIME)%>">
 	<thead>
 	<tr>
@@ -3218,7 +3218,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_TFORMAT, FORMAT_TIME, datetime, 250)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_IMAGE)%>">
 	<thead>
 	<tr>
@@ -3231,7 +3231,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_MCODE, MEDIA_CODE, , 290)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_SEARCH)%>">
 	<thead>
 	<tr>
@@ -3243,7 +3243,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(row,_TEMPLATE_SNOTFOUND, SEARCH_NOTHINGFOUND, nothingfound,310)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_PLUGIN_FIELDS)%>">
 	<thead>
 	<tr>
@@ -3254,7 +3254,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%edittemplateinfo(extratemplate,admin/default)%>
 	</tbody>
 	</table>
-	
+
 	<table frame="box" rules="all" summary="<%text(_TEMPLATE_UPDATE)%>">
 	<thead>
 	<tr>
@@ -3271,7 +3271,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	</tr>
 	</tbody>
 	</table>
-	
+
 	</form>
 	<%pagefoot%>
 ]]></part>
@@ -3279,10 +3279,10 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
 	<h2><%text(_TEMPLATE_TITLE)%></h2>
-	
+
 	<h3><%text(_TEMPLATE_AVAILABLE_TITLE)%></h3>
 	<%templateoverview(admin/default)%>
-	
+
 	<h3><%text(_TEMPLATE_NEW_TITLE)%></h3>
 	<form method="post" action="<%adminurl%>index.php">
 	<p>
