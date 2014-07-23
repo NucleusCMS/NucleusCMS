@@ -706,7 +706,7 @@
 	</form>
 	<%pagefoot%>
 ]]></part>
-<part name="admntemplateoverview"><![CDATA[
+<part name="admintemplateoverview"><![CDATA[
 	<%pagehead%>
 	<p><a href="<%adminurl%>index.php?action=manage">(<%text(_BACKTOMANAGE)%>)</a></p>
 	<h2><%text(_TEMPLATE_TITLE)%></h2>

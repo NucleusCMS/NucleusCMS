@@ -205,7 +205,7 @@ CREATE TABLE nucleus_plugin_option_desc (
 
 CREATE TABLE nucleus_skin (
   sdesc int(11) NOT NULL default '0',
-  stype varchar(20) NOT NULL default '',
+  stype varchar(40) NOT NULL default '',
   scontent text NOT NULL,
   PRIMARY KEY  (sdesc,stype)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
