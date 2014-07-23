@@ -1522,6 +1522,10 @@ class ParamManager
 
 	public function set_locale()
 	{
+				if (defined('_DEFINED'))
+				{
+					return;
+				}
 		$this->read_parameter(array('locale'));
 
 		if ( !$this->locale )

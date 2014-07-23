@@ -28,6 +28,7 @@ define('_MODE1',				'Step by Step');
 define('_MODE2',				'Detailed setting');
 define('_NEXT',					'NEXT');
 define('_INSTALL',				'INSTALL');
+define('_DEFINED',				'flag');
 
 // locale setting
 define('_LOCALE_HEADER',		'Select Your Locale');

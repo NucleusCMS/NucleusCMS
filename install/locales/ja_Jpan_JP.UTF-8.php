@@ -40,6 +40,7 @@ define('_MODE1',				'簡易設定');
 define('_MODE2',				'詳細設定');
 define('_NEXT',					'次へ');
 define('_INSTALL',				'インストール');
+define('_DEFINED',				'flag');
 
 // locale setting
 define('_LOCALE_HEADER',		'あなたのロケールを選択して下さい');
