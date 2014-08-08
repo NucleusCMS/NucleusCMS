@@ -31,7 +31,7 @@ if ($CONF['debug']) {
     error_reporting(E_ALL); // report all errors!
 } else {
     ini_set('display_errors','0');
-    error_reporting(E_ERROR | E_WARNING | E_PARSE | E_COMPILE_ERROR | E_COMPILE_WARNING); 
+    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 }
 
 /*
@@ -337,6 +337,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
         $member->setCookies();
     }
 }
+
+if($member->isLoggedIn()) ini_set('display_errors','1');
 
 // login completed
 $data = array('loggedIn' => $member->isLoggedIn());
