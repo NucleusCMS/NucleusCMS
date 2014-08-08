@@ -350,6 +350,10 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 	}
 }
 
+if($member->isLoggedIn()) {
+	ini_set('display_errors','1');
+}
+
 // login completed
 $param = array('loggedIn' => $member->isLoggedIn());
 $manager->notify('PostAuthentication', $param);
