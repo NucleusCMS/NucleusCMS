@@ -13,7 +13,7 @@ body {
 	margin:0;/* add 090313 */
 	padding:5px;/* add 090313 */
 }
-
+input,textarea,select {font:inherit;}
 /*textarea {
 	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;
 }*/
@@ -60,9 +60,6 @@ h1 {
 
 .contentblock {
 	/*background: #ddd;*/
-/*	height: 500px;*/
-/*	height: 370px;*/
-	height: 410px;/*mod 090309*/
 	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
 	padding: 1px !important;
 	margin: 0px;
@@ -115,8 +112,6 @@ label		{ cursor: pointer; }
 
 table {
 	border: none;
-/*	width: 95%;*/
-	width: 98%;
 	border-collapse: collapse;
 /*	margin: 10px auto; */
 	margin: auto;/* mod 090313 */
@@ -218,8 +213,8 @@ form {/* add 090313 */
 .submitbuttons input {
 	float: left;
 	width: 9em;
-	height: 2em;
 	margin: 0 3px;
+	cursor:pointer;cursor:hand;
 }
 
 .submitbuttons span.autosavestatus {
