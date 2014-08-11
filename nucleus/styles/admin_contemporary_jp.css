@@ -147,7 +147,6 @@ h1 {
 	border-style: solid;
 /*	border-color: black; modify */
 	border-color: #bbb;
-	border-bottom:none;
 
 	background: #ffffff url(contemporary_jp/quickb.jpg) top left fixed repeat-y; 
 }
