@@ -1804,10 +1804,10 @@ class ADMIN {
 		</tr><tr>
 		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
 			<td><?php echo _MEMBERS_PWD?></td>
-			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
 		</tr><tr>
 			<td><?php echo _MEMBERS_REPPWD?></td>
-			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
+			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
 		<?php } ?>
 		</tr><tr>
 			<td><?php echo _MEMBERS_EMAIL?>
@@ -2137,10 +2137,10 @@ class ADMIN {
 
 						<table><tr>
 							<td><?php echo _MEMBERS_PWD?></td>
-							<td><input type="password" maxlength="40" size="16" name="password" /></td>
+							<td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
 						</tr><tr>
 							<td><?php echo _MEMBERS_REPPWD?></td>
-							<td><input type="password" maxlength="40" size="16" name="repeatpassword" /></td>
+							<td><input type="password" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
 						<?php
 
 							global $manager;
