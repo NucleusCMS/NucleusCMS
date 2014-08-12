@@ -61,7 +61,7 @@ upgrade_head();
 <?php		
 		}
 ?>
-<p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.62 用にアップグレードします</a></p>
+<p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.66 用にアップグレードします</a></p>
 <?php
 	 }
 ?>
@@ -180,15 +180,10 @@ function upgrade_manual_340() {
 <?php }
 
 function upgrade_manual_350() {
-	global $DIR_NUCLEUS;
-
-?>
-	<h2>Nucleus 3.51に関する重要なお知らせ</h2>
-	
-<?php	// Give user warning if they are running old version of PHP
-				if (phpversion() < '5') {
-								echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
-				}
+	if (phpversion() < '5') {
+		echo '<h2>Nucleus 3.51に関する重要なお知らせ</h2>';
+		echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
+	}
 }
 
 function upgrade_manual_atom1_0() {
