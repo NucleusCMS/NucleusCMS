@@ -305,6 +305,7 @@ function showInstallForm() {
 	*/
 
 	$basePath = str_replace('install', '', dirname(__FILE__));
+	$basePath = replaceDoubleBackslash($basePath);
 ?>
 
 		<fieldset>
