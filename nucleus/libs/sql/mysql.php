@@ -65,23 +65,18 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
 		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
-// <add for garble measure>
 		if (defined('_CHARSET')){
 			$charset  = _CHARSET;
 		}else{
-			$tbl_item = sql_table('item');
-			$rs = sql_query("show table status from `{$MYSQL_DATABASE}` like '{$tbl_item}'");
-			$row=sql_fetch_object($rs);
-			$pos = strpos($row->Collation,'_');
-			if($pos!==false) $charset = substr($row->Collation,0,$pos);
-			else             $charset = 'utf8';
-			// in trouble of encoding,uncomment the following line.
-			// $charset = "ujis";
-			// $charset = "utf8";
+			$query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+			$res = sql_query($query);
+			if(!$res) exit('Language name fetch error');
+			$obj = sql_fetch_object($res);
+			$CONF['Language'] = $obj->value;
+			$charset = get_charset_name($CONF['Language']);
 		}
 		sql_set_charset($charset);
-// </add for garble measure>*/
-
+		
 		return $MYSQL_CONN;
 	}
 
@@ -384,5 +379,64 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			$res = sql_query("SET CHARACTER SET " . $charset);
 		}
 		return $res;
+	}
+	
+	function get_charset_name($language_name='english-utf8')
+	{
+		$language_name = strtolower($language_name);
+		
+		if(strpos($language_name,'utf8')!==false)
+			return 'utf8';
+		
+		switch($language_name)
+		{
+			case 'english':
+			case 'catalan':
+			case 'finnish':
+			case 'french':
+			case 'galego':
+			case 'german':
+			case 'italiano':
+			case 'portuguese_brazil':
+			case 'spanish':
+				$charset_name = 'latin1';
+				break;
+			case 'hungarian': // iso-8859-2
+			case 'slovak': // iso-8859-2
+				$charset_name = 'latin2';
+				break;
+			case 'bulgarian': // iso-8859-5
+				$charset_name = 'koi8r';
+				break;
+			case 'chinese': // gb2312
+			case 'simchinese': // gb2312
+				$charset_name = 'gb2312';
+				break;
+			case 'chineseb5': // big5
+			case 'traditional_chinese': // big5
+				$charset_name = 'big5';
+				break;
+			case 'czech': // windows-1250
+				$charset_name = 'cp1250';
+				break;
+			case 'russian': // windows-1251
+				$charset_name = 'cp1251';
+				break;
+			case 'latvian': // windows-1257
+				$charset_name = 'cp1257'; 
+				break;
+			case 'nederlands': // iso-8859-15
+				$charset_name = 'latin9';
+				break;
+			case 'japanese-euc':
+				$charset_name = 'ujis';
+				break;
+			case 'korean-euc-kr':
+			case 'korean-utf':
+			case 'persian':
+			default:
+				$charset_name = 'utf8';
+		}
+		return $charset_name;
 	}
 }
