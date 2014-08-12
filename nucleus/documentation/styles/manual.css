@@ -6,9 +6,11 @@ body {
 	color: #555;
 	/*font-family: verdana, arial;*/
 /*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
-	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-family: Meiryo, "Hiragino Kaku Gothic Pro", "Osaka", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 	font-size: small;
 }
+
+input,text,select {font:inherit;}
 
 @media screen {
 	body {
@@ -64,7 +66,7 @@ h1 {
 	border-bottom: 1px dotted gray;
 	font-size: 145%;
 	color: #596d9d;
-	font-weight:normal;
+	font-weight:bold;
 	letter-spacing:2px;
 }
 
@@ -163,7 +165,7 @@ acronym, abbr {
 }
 
 label {
-	cursor: hand;
+	cursor:pointer;cursor: hand;
 }
 
 ul {
