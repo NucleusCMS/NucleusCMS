@@ -400,7 +400,7 @@ if (!encoding_check(false, false, _CHARSET)) {
 	}
 }
 
-sql_set_charset_jp(_CHARSET);
+sql_set_charset(_CHARSET);
 
 /*
 	Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details

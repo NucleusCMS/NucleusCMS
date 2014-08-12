@@ -196,7 +196,7 @@ if (!function_exists('sql_fetch_assoc'))
 					// $charset = "ujis";
 					// $charset = "utf8";
 				}
-				sql_set_charset_jp($charset);
+				sql_set_charset($charset);
 			}
 // </add for garble measure>*/
 		} catch (PDOException $e) {
@@ -599,7 +599,7 @@ if (!function_exists('sql_fetch_assoc'))
 	 * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
-	function sql_set_charset_jp($charset) {
+	function sql_set_charset($charset) {
 		global $MYSQL_HANDLER,$SQL_DBH;
 		if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
 			switch(strtolower($charset)){

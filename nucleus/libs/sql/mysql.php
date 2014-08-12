@@ -79,7 +79,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			// $charset = "ujis";
 			// $charset = "utf8";
 		}
-		sql_set_charset_jp($charset);
+		sql_set_charset($charset);
 // </add for garble measure>*/
 
 		return $MYSQL_CONN;
@@ -352,7 +352,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	 * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
-	function sql_set_charset_jp($charset) {
+	function sql_set_charset($charset) {
 		switch(strtolower($charset)){
 			case 'utf-8':
 			case 'utf8':
