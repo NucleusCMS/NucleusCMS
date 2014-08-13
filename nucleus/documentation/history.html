@@ -50,6 +50,29 @@
 
 <ul>
 	<li>
+		<strong>Nucleus v3.66 日本語版 (2014年8月14日)</strong> tagged as 'v3.66-ja' in <a href="https://github.com/NucleusCMS/NucleusCMS-ja/tree/v3.66-ja/">nucleus-jp-ancient</a> hosted in GitHub.
+		<ul>
+		<li>PHP5.4対応 - htmlspecialchars関数の処理エンコードを明示 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/b24e04a9a160bc350537bf7ad391ec51d26876dc">@b24e04a</a></li>
+		<li>htmlspecialchars関数の二重変換を防ぐ処理を調整 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/ffc92e6cfb3a36ea50d6091ff461732bc7b0e434">@ffc92e6</a></li>
+		<li>管理画面内で発生するPHPエラーを表示するようにした(プラグインのインストールに失敗した時に情報が全く表示されないと対処できないため) <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/5c718b230047b401fe9527df2cdfbc36538f308a">@5c718b2</a></li>
+		<li>EUC-JP言語ファイル 文字化け修正 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/f120b381a54134ec9bec9e29c49ae2d897c14b06">@f120b38</a></li>
+		<li>データベース名をバッククォートで囲む(データベース作成権限があればインストーラでデータベースを作成できる) <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/504e7dcc66aba464106ced0aee1039e724a7ea92">@504e7dc</a></li>
+		<li>EUC-JP言語ファイル - UTF8版言語ファイルを本体とする(動的変換) <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/6261d5986a7507cb0ea8200dbf85dc358a370a20">@6261d59</a></li>
+		<li>iso8859-1言語ファイル - UTF8版言語ファイルを本体とする(動的変換) <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/564f96aed5f674d81dff9ef7b4dd37ef72edca24">@564f96a</a></li>
+		<li><a href="https://www.google.co.jp/search?q=XAMPP+localhost+mysql+%E9%81%85%E3%81%84">XAMPP環境でMySQL接続レスポンスが落ちる</a>ことがあるため調整 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/bcb7655c543f8f6a8bbd9c6116e9c6a6eddc4ebd">@bcb7655</a></li>
+		<li>投稿画面のフィールド構成を整理</li>
+		<li>管理画面・ブックマークレット・ドキュメントのスタイルシートを調整</li>
+		<li>不要なjquery-uiファイルを削除 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/3c8629137c6cdfc531036b443fc58bcb8b9c0473">@3c86291</a></li>
+		<li>パスワード設定欄のオートコンプリートを無効にする  <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/8d2cb32899b6dfe4d64757077e79d1cafcf53dba">@8d2cb32</a></li>
+		<li>インストーラ - 設定値に含まれるバックスラッシュをスラッシュに変換 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/97343bf6d100e09e415856c96534355a98f4bec0">@97343bf</a></li>
+		<li>新規インストール時のデフォルト値・$CONF['MaxUploadSize']の値を3MBに上げる <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/6115af7d716d1349e8e2bd7db128773e682c05c1">@6115af7</a></li>
+		<li>関数名変更 - sql_set_charset_jp()→sql_set_charset() <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/f13f0cf58d5045610a59331f8008eb7e04886edf">@f13f0cf</a></li>
+		<li>PHP4.1以前向けの古い処理を整理 <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/979cc721286dbc0ca6673481b5a3ab12530ef537">@979cc72</a></li>
+		<li>PHP4.3以前向けの古い処理を整理<a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/84821ba116718fcad747a29c8f63394324dfb826">@84821ba</a></li>
+		<li>既存の非utf8テーブルをutf8に変換するスクリプト(試作／アクセスすると即実行されるため注意・要バックアップ) <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/a55b3f3a0bf90a5c96aef1c33a77f93081890ea0">@a55b3f3</a></li>
+		</ul>
+	</li>
+	<li>
 		<strong>Nucleus v3.65 Japanese Package service pack 1 (Sep 1, 2013)</strong> tagged as 'release-3-65-sp1' in <a href="http://git.sourceforge.jp/view?p=nucleus-jp/nucleus-jp-ancient.git">nucleus-jp-ancient</a>, hosted in sourceforge.jp.
 		<ul>
 		<li>/nucleus/libs/globalfunctions.phpの修正: コミット<a href="http://sourceforge.jp/projects/nucleus-jp/scm/git/nucleus-jp-ancient/commits/3bdf207ee5bf3199219f0f12beed8a3c1b4548f8">3bdf207ee5bf3199219f0f12beed8a3c1b4548f8</a>でエンバグしたcreateLink()に対する修正</li>
