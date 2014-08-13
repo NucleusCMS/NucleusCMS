@@ -650,10 +650,7 @@ function doInstall() {
 	
 
 	// 5. execute queries
-	$filename = 'install.sql';
-	$fd = fopen($filename, 'r');
-	$queries = fread($fd, filesize($filename) );
-	fclose($fd);
+	$queries = file_get_contents('install.sql');
 
 	$queries = split("(;\n|;\r)", $queries);
 
