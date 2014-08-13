@@ -36,7 +36,7 @@
 				<%jsinput(body)%>
 				tabindex="20"
 				cols="60"
-				rows="20"><%contents(body)%></textarea>
+				rows="15"><%contents(body)%></textarea>
 		</td>
 	</tr><tr id="edit" style="display:none;">
 		<td><%text(_ADD_PREVIEW)%></td>
@@ -112,7 +112,7 @@
 				<%jsinput(more)%>			
 				tabindex="70"
 				cols="60"
-				rows="20"
+				rows="15"
 				><%contents(more)%></textarea>
 		</td>
 	</tr><tr>
