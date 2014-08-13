@@ -74,7 +74,7 @@ switch(postVar('charset'))
 		break;
 	case 'utf8':
 	default:
-		$charset = 'EUC-JP';
+		$charset = 'UTF-8';
 }
 define('_CHARSET', $charset);
 
