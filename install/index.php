@@ -895,6 +895,7 @@ function doInstall() {
 		fclose($fp);
 
 		if ($result) {
+			if(is_file('../config.php')) @chmod('../config.php',0444);
 			$bConfigWritten = 1;
 		}
 	}
