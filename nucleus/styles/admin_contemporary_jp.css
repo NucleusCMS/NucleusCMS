@@ -14,11 +14,17 @@ body {
 */
 }
 
-td, textarea, input, select {
+td, textarea, input, select, option {
 	font:inherit;
 }
 input[type=submit], input[type=button], input[type=file], select {
 	cursor:pointer;cursor:hand;
+}
+
+input#inputtitle {
+	font-size:1.1em;
+	padding:4px;
+	line-height:1.6;
 }
 
 /* basic link appearance */

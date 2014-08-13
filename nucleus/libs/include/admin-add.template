@@ -22,7 +22,7 @@
 		<td><input 
 			<%jsinput(title)%>
 			tabindex="10"
-			size="60" 
+			size="50" 
 			maxlength="160" 
 			value="<%contents(title)%>"
 			/></td>
