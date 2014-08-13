@@ -51,18 +51,6 @@
 	<td><%text(_ADD_CATEGORY)%></td>
 	<td><%categories(40)%></td>
 </tr>
-<%ifblogsetting(bcomments)%>
-<tr>
-		<td>
-			<%text(_ADD_DISABLE_COMMENTS)%>
-		</td>
-		<td> 
-			<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-			<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label> <small><%text(_EDIT_COMMENTSNOTE)%></small>
-		</td>
-	</tr>
-<%endif%>
-
 <tr>
 	<td><%text(_EDIT_SUBMIT)%></td>
 	<td>
@@ -120,6 +108,17 @@
 	<td><%text(_AUTOSAVEDRAFT)%></td>
 	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 </tr><%endif%>
+<%ifblogsetting(bcomments)%>
+<tr>
+		<td>
+			<%text(_ADD_DISABLE_COMMENTS)%>
+		</td>
+		<td> 
+			<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+			<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label> <small><%text(_EDIT_COMMENTSNOTE)%></small>
+		</td>
+	</tr>
+<%endif%>
 <tr>
 	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 	<td>

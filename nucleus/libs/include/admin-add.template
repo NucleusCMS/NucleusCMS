@@ -50,16 +50,6 @@
 		<td><%text(_ADD_CATEGORY)%></td>
 		<td><%categories(40)%></td>
 </tr>
-<%ifblogsetting(bcomments)%>
-<tr>
-		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-		<td>
-			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
-		</td>
-</tr>
-<%endif%>
-
 <tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
@@ -93,6 +83,15 @@
 		<td><%text(_AUTOSAVEDRAFT)%></td>
 		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 	</tr><%endif%>
+<%ifblogsetting(bcomments)%>
+<tr>
+		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+		<td>
+			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+		</td>
+</tr>
+<%endif%>
 <tr>
 		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 		<td>
