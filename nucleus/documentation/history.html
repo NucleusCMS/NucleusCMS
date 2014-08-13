@@ -28,23 +28,38 @@
 
 <ul>
 	<li>
-		<strong>Nucleus v3.66 (January 22,2014)</strong>
+		<strong>Nucleus v3.66 (August 14,2014)</strong>
 		<ul>
-			<li>FIX: Plugin doTemplateVar function was not called in PHP 5.4. (from LMNucleus by leo).</li>
-			<li>FIX: Plugin doTemplateCommentsVar function was not called in PHP 5.4. (from LMNucleus by leo).</li>
-			<li>FIX: Plugin doItemVar function was not called in PHP 5.4. (from LMNucleus by leo).</li>
-			<li>FIX: Error in "Plugin API" documentation for doItemVar. (from LMNucleus by leo).</li>
-			<li>FIX: PHP warnings on date function call when listing items in admin area. (from LMNucleus by leo).</li>
-			<li>FIX: Certain fatal PHP errors not shown in error log. (from LMNucleus by leo).</li>
-			<li>FIX: An IP Ban on a A class could ban any IP that included the A class number in 2nd, 3rd or 4th octets. (from LMNucleus by leo).</li>
-			<li>FIX: DatabaseVersion was set to 350 by the install script, should be 360. (from LMNucleus by leo)</li>
+			<li>CHANGE: Display php errors in admin area - <a href="https://github.com/NucleusCMS/NucleusCMS/commit/05b1356983599fada87dd48058575970e016bd66">@05b1356</a></li>
+			<li>FIX: Fix for PHP 5.3 - <a href="https://www.google.co.jp/search?q=php+5.3+split+deprecated">The function split() is deprecated</a> <a href="https://github.com/NucleusCMS/NucleusCMS/commit/c2337ecf883e71f8ad57e3b0609d47434fe1acd8">@c2337ec</a></li>
+			<li>FIX: <a href="https://www.google.co.jp/search?q=mysql+%22table+name%22+%22back+ticks%22">Table name require back-ticks</a> when create table (Fix install error) <a href="https://github.com/NucleusCMS/NucleusCMS/commit/e8cb3e6b14d2937fb0608124342b2aec662d3553">@e8cb3e6</a></li>
+			<li>ADD: Put anchors into devdocs/plugins.html <a href="https://github.com/NucleusCMS/NucleusCMS/commit/fc522c464719da92049c83c70fafb311aee9d1c8">@fc522c4</a></li>
+			<li>FIX: Added missing global variable <a href="https://github.com/slightlysome/lmnucleuscms/commit/8a8db7c62744f91b89bb4ab3221c9c8c0d70f873">LMNucleus@8a8db7c</a> (thanks <a href="https://github.com/gRegorLove">@gRegorLove</a>)</li>
+			<li>FIX: Remove <a href="https://www.google.co.jp/search?q=whitespace+DOCTYPE+declaration">whitespace before DOCTYPE declaration</a> <a href="https://github.com/NucleusCMS/NucleusCMS/commit/77917d49554ed170433e656b7fbba6b89a67a8e8">@77917d4</a></li>
+			<li>FIX: <a href="https://www.google.co.jp/search?q=php5.3+ereg">Fix for PHP 5.3</a> - ereg -&gt; preg <a href="https://github.com/NucleusCMS/NucleusCMS/commit/5bcdeea8c1afe77014b88eb70a418bbf92950bac">@5bcdeea</a></li>
+			<li>ADD: Do chmod('config.php',0444) after install. <a href="https://github.com/NucleusCMS/NucleusCMS/commit/2b370494b64be605e48c536befb7d0bf27f5c6c4">@2b37049</a></li>
+			<li>ADD & FIX: <a href="https://github.com/NucleusCMS/NucleusCMS/blob/f7c074b3b57bbc4cbdadcdbd2e7cdab3b46297bf/nucleus/libs/globalfunctions.php#L2334-L2351">hsc()</a> - New global function, wrapper of htmlspecialchars. (Simulated The <a href="https://www.google.co.jp/search?q=php+5.2.3+htmlspecialchars+double_encode">double_encode option</a> of higher than PHP 5.2.3) <a href="https://github.com/NucleusCMS/NucleusCMS/commit/f7c074b3b57bbc4cbdadcdbd2e7cdab3b46297bf">@f7c074b</a></li>
+			<li>FIX: <a href="https://www.google.co.jp/search?q=Deprecated+reference+new+php5.3">Fix for PHP 5.3</a> - Deprecated reference call. <a href="https://github.com/NucleusCMS/NucleusCMS/commit/f0f4383b92c162d99f09155ee33f23fd92277f44">@f0f4383</a></li>
+			<li>FIX: Remove unnecessary back slash in installer. <a href="https://github.com/NucleusCMS/NucleusCMS/commit/84965091198352003e70e974e06f5b33b9f2a353">@8496509</a></li>
+			<li>CHANGE: Replace back slash to slash in config path values.("\" -&gt; "/") <a href="https://github.com/NucleusCMS/NucleusCMS/commit/924cd02538f3921278bbac0f1a64a7450eefa1c5">@924cd02</a></li>
+			<li>CHANGE: Linked text of installer url. <a href="https://github.com/NucleusCMS/NucleusCMS/commit/f11af4b84b3776f9e831e593990340c5fd6e7f13">@f11af4b</a></li>
+			<li>FIX: Scroll bar issue in bookmarklet. <a href="https://github.com/NucleusCMS/NucleusCMS/commit/94dbe41d109f37c0cd8d90c0691f66b5ffa7a206">@94dbe41</a></li>
+			<li>CHANGE: Fixed and improved admin css. <a href="https://github.com/NucleusCMS/NucleusCMS/commit/274e4f32c7382c0ba12d5ce1685d23be829e9e0b">@274e4f3</a> <a href="https://github.com/NucleusCMS/NucleusCMS/commit/08d90738265ec89b5ea96bc75c30fa44096c341e#diff-e16802517329e6b43ddcbf558b4e8360">@08d9073</a></li>
+			<li>FIX: Plugin doTemplateVar function was not called in PHP 5.4. <a href="https://github.com/slightlysome/lmnucleuscms/issues/2">LMNucleus#2</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: Plugin doTemplateCommentsVar function was not called in PHP 5.4. <a href="https://github.com/slightlysome/lmnucleuscms/issues/3">LMNucleus#3</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: Plugin doItemVar function was not called in PHP 5.4. <a href="https://github.com/slightlysome/lmnucleuscms/issues/4">LMNucleus#4</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: Error in "Plugin API" documentation for <a href="devdocs/plugins.html#doItemVar">doItemVar</a>. <a href="https://github.com/slightlysome/lmnucleuscms/issues/5">LMNucleus#5</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: PHP warnings on date function call when listing items in admin area. <a href="https://github.com/slightlysome/lmnucleuscms/issues/6">LMNucleus#6</a> (enbug in v3.65.01 thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: Certain fatal PHP errors not shown in error log. <a href="https://github.com/slightlysome/lmnucleuscms/issues/7">LMNucleus#7</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: An IP Ban on a A class could ban any IP that included the A class number in 2nd, 3rd or 4th octets. <a href="https://github.com/slightlysome/lmnucleuscms/issues/8">LMNucleus#8</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
+			<li>FIX: DatabaseVersion was set to 350 by the install script, should be 360. <a href="https://github.com/slightlysome/lmnucleuscms/issues/10">LMNucleus#10</a> (thanks Leo(<a href="https://github.com/slightlysome">@slightlysome</a>))</li>
 		</ul>
 	</li>
 
 	<li>
 		<strong>Nucleus v3.65.01 (April 10,2013)</strong>
 		<ul>
-			<li>FIX: Make sure we set the character encoding parameter in calls to htmlspecialchars and htmlentities. (ftruscot).</li>
+			<li>FIX: <a href="https://www.google.co.jp/search?q=htmlspecialchars+php5.4+ISO-8859-1">Fix for PHP 5.4</a> - Make sure we set the character encoding parameter in calls to htmlspecialchars and htmlentities. (thanks ftruscot <a href="http://forum.nucleuscms.org/viewtopic.php?p=100719#100719">p100719@nucleuscmsorg</a>) <a href="https://github.com/NucleusCMS/NucleusCMS/commit/3b394d4f34e48cae16056baef72f79ecff129f9a">@3b394d4</a>, <a href="https://github.com/NucleusCMS/NucleusCMS/commit/813afdfb7ef3f896212fcac4a5661b468f6b1a45">@813afdf</a>, <a href="https://github.com/NucleusCMS/NucleusCMS/commit/dd45c1ed0acaf5345f1adaa75170a840b96da81f">@dd45c1e</a>, <a href="https://github.com/NucleusCMS/NucleusCMS/commit/a0f3027418da8a4d1b6cf0558579e3307ac6f342">@a0f3027</a></li>
 		</ul>
 	</li>
 	<li>
