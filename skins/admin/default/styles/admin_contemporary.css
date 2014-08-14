@@ -13,8 +13,12 @@ body {
 body, td, th, a, li, ul, textarea {
 	color: #333;
 	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	font-family: Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro","MS PGothic",sans-serif;
 }
 
+td,th,select,option,textarea,input {
+	font:inherit;
+}
 /* basic link appearance */
 a:link, a:visited {
 	color: #1D3565;
@@ -34,7 +38,7 @@ textarea {
 
 /* textareas for skin/template editing have monospace fonts */
 textarea.skinedit, textarea.templateedit {
-	font-family: monospace;
+	font-family: 'Courier New','Courier',monospace;
 	font-size: medium;
 }
 
@@ -131,7 +135,6 @@ h1 {
 	padding: 0;
 	margin: 0;
 	text-align: center;
-	border-bottom: 1px solid #ccc;
 }
 
 #quickmenu p {
@@ -159,7 +162,6 @@ h1 {
 	text-align: center;
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
-	border-bottom: 1px solid #bbb; 	
 	background-color: #ddd;
 	color: #333;
 }
