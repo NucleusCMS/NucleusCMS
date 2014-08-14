@@ -543,12 +543,12 @@ function doInstall() {
 	}
 	
 	if ($charset == 'ujis') {
-		define('_CHARSET', 'EUC-JP');
+		if(!defined('_CHARSET')) define('_CHARSET', 'EUC-JP');
 		$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
 		$user_realname  = mb_convert_encoding($user_realname, _CHARSET, 'UTF-8');
 		$blog_name	  = mb_convert_encoding($blog_name, _CHARSET, 'UTF-8');
 	} else {
-		define('_CHARSET', 'UTF-8');
+		if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
 	}
 	
 	
