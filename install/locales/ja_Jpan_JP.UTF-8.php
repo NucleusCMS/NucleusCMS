@@ -42,15 +42,15 @@ define('_INSTALL',				'インストール');
 define('_DEFINED',				'flag');
 
 // locale setting
-define('_LOCALE_HEADER',		'あなたのロケールを選択して下さい');
-define('_LOCALE_DESC1',			'Nucleus CMSはさまざまなロケールで使うことができるよう作られています。');
+define('_LOCALE_HEADER',		'ロケールを選択して下さい');
+define('_LOCALE_DESC1',			'Nucleus CMSはさまざまなロケールで使うことができます。');
 define('_LOCALE_DESC2',			'上のセレクトボックスに表示される名前のうち、アスタリスクで始まるものは翻訳が十分ではありません。');
 define('_LOCALE_NEED_HELP',		'もし余裕がありましたら、ぜひ翻訳したファイルを送って下さい!');
 
 // database settings
 define('_SIMPLE_NAVI1',			'まずデータベースの接続を確認します。MySQLの設定を入力して「次へ」をクリックしてください。<br />詳細な情報を入力して設定する場合は「詳細情報」をクリックしてください。');
 define('_DB_HEADER',			'データベース接続');
-define('_DB_TEXT1',				'Nucleusになれているなら、詳細設定がおすすめです。');
+define('_DB_TEXT1',				'Nucleusに慣れているなら、詳細設定がおすすめです。');
 define('_DB_FIELD1',			'ホスト名');
 define('_DB_FIELD1_DESC',		'（通常は localhost）');
 define('_DB_FIELD2',			'ユーザー名');
