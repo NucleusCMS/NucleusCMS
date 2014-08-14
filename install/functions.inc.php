@@ -740,7 +740,7 @@ function do_install()
 	/*
 	 * 3. try to create database if needed
 	 */
-	if ( DB::execute("CREATE DATABASE IF NOT EXISTS {$MYSQL_DATABASE}") === FALSE )
+	if ( DB::execute("CREATE DATABASE IF NOT EXISTS `{$MYSQL_DATABASE}`") === FALSE )
 	{
 		$errinfo = DB::getError();
 		$errors[] = _INST_ERROR1 . ': ' . $errinfo[2];
