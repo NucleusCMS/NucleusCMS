@@ -9,14 +9,31 @@
 
 /* Layout */
 body{
+	font-family:Arial,"Helvetica Neue",Helvetica,sans-serif;
 	margin:0;
 	padding:0;
 	text-align:center;
-	color:#666;
+	color:#333;
 }
+select, option, input, button, td {
+	font:inherit;
+}
+select, option, button {
+	cursor:pointer;cursor:hand;
+}
+input[type=text],input[type=password] {
+	font-size:1.3em;
+	padding:5px;
+	letter-spacing:1px;
+	width:350px;
+	box-shadow: 0px 1px 3px #E8E8E8 inset;
+	background-color:#fff;
+	border:1px  solid #abadb3;
+}
+
 #header{
 	width: 100%;
-	height:40px;
+	height:50px;
 	background:#000;
 	position: fixed;  
 	top:0;  
@@ -29,10 +46,10 @@ body{
 }
 #navigation{
 	width:800px;
-	height:40px;
+	overflow:hidden;
 }
 #container,#container_detailed{
-	width:550px;
+	width:600px;
 	padding:40px 20px 0 30px;
 }
 #footer{
@@ -41,7 +58,7 @@ body{
 
 /* Common Settings */
 p{
-	margin:20px 0;
+	margin:1em 0;
 }
 img{
 	border:none;
@@ -50,7 +67,6 @@ a{
 	text-decoration:none;
 }
 pre{
-	font-size: small;
 	line-height: 1em;
 	background-color:#eee;
 	border:1px solid gray;
@@ -65,20 +81,17 @@ pre{
 #navigation h1{
 	width:120px;
 	height:35px;
-	margin:0 30px 0 0;
+	margin:2px 30px 0 0;
 	padding:4px 0 1px 0;
 	float:left;
 }
 #navigation ul{
-	margin:0 100px 0 0; 
-	padding:18px 0 2px 0;
-	height:20px;
+	margin:16px 0 0 0; 
+	padding:0;
 	list-style-type:none;
 }
 #navigation li{
 	float:left;
-	font-size:93%;
-	height:20px;
 }
 #navigation li.rightbox{
 	float:right;
@@ -95,13 +108,8 @@ pre{
 
 /* Content */
 #container h2,#container_detailed h2{
-	line-height:20px;
-	height:20px;
 	margin:0 -20px 0 -30px;
 	padding:6px 0 4px 35px;
-	background:url("nuc_h2_bk.png") 4px 4px no-repeat #d0d0d0;
-	font-size:136%;
-	color:#454545;
 }
 
 /* Form table */
@@ -110,35 +118,23 @@ pre{
 	margin-bottom:20px;
 }
 .prt table th{
-	font-size:99%;
 	text-align:right;
-	width:135px;
-	height:40px;
 }
 .prt table th .nam{
 	margin:5px 0 0 0;
 	padding:5px 0 0 0;
-	height:15px;
-	line-height:15px;
-	font-weight:bold;
 	color:#454545;
 }
 .prt table th .sub{
 	display:block;
 	margin:0;
 	padding:0 0 5px 0;
-	height:10px;
-	line-height:10px;
-	font-size:65%;
 	font-weight:normal;
 	color:#666;
 }
 .prt table td input{
 	width:390px;
-	height:35px;
 	margin:0 0 0 5px;
-	font-size:182%;
-	font-weight:bold;
 	color:#333;
 	background:url("nuc_input_bk.png") no-repeat;
 	border:1px solid #999;
@@ -149,20 +145,12 @@ pre{
 #container_detailed .prt table td input{
 	height:25px;
 	margin:0 0 0 5px;
-	font-size:122%;
-	font-weight:normal;
-	color:#000;
 }
 
 /* Select */
 .prt select{
 	width:510px;
-	height:35px;
-	line-height:35px;
 	margin:0 20px 10px 0;
-	font-size:152%;
-	font-weight:bold;
-	color:#333;
 	border:1px solid #999;
 	border-left-color:#ccc;
 	border-top-color:#ccc;
@@ -173,22 +161,17 @@ pre{
 	height:25px;
 	line-height:25px;
 	margin:0 20px 10px 0;
-	font-size:122%;
 }
 
 /* Button */
 .prt .sbt{
 	height:40px;
-	margin:10px 0;
-	text-align:center;
 }
 .prt .sbt .sbt_sqr,.prt .sbt .sbt_arw{
 	height:35px;
 	border:none;
 	background:#000;
 	color:#dedede;
-	font-size:136%;
-	font-weight:bold;
 }
 .prt .sbt .sbt_sqr{
 	padding:0 20px;
@@ -219,10 +202,9 @@ pre{
 /* Footer */
 #footer{
 	border-top:1px solid #999;
-	text-align:right;
+	text-align:center;
 	height:25px;
 	margin-top:10px;
 	padding:5px 10px 0 0;
-	font-size:77%;
 }
 

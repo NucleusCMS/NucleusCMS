@@ -19,9 +19,8 @@
 // header
 define('_TITLE',				'Nucleusのインストール');
 define('_BODYFONTSTYLE',		'body {
-	font:14px/20px "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic",sans-serif;
-	*font-size:small; /* for IE */
-	*font:x-small; /* for IE in quirks mode */
+	font-family:Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro","MS PGothic",sans-serif;
+	font-size:100%;
 }
 
 #container h2{

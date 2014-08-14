@@ -304,7 +304,7 @@ function show_select_locale_form()
 
 ?>
 		<div id="container">
-			<p style="font-size:152%;font-weight:bold;">
+			<p style="font-weight:bold;margin-top:2em;">
 				<?php echo _LOCALE_HEADER; ?>
 			</p>
 			<form method="post" action="./index.php">
@@ -402,24 +402,14 @@ function show_database_setting_form($isPostback)
 	}
 ?>
 					</p>
-					<table>
-						<tr>
-							<th><span class="nam"><?php echo _DB_FIELD1; ?></span><span class="sub"><?php echo _DB_FIELD1_DESC; ?></span></th>
-								<td><input type="text" name="mysql_host" value="<?php echo $param->mysql_host; ?>" /></td>
-						</tr>
-						<tr>
-							<th><span class="nam"><?php echo _DB_FIELD2; ?></span><span class="sub"><?php echo _DB_FIELD2_DESC; ?></span></th>
-								<td><input type="text" name="mysql_user" value="<?php echo $param->mysql_user; ?>" /></td>
-						</tr>
-						<tr>
-							<th><span class="nam"><?php echo _DB_FIELD3; ?></span></th>
-								<td><input type="text" name="mysql_password" value="<?php echo $param->mysql_password; ?>" /></td>
-						</tr>
-						<tr>
-							<th><span class="nam"><?php echo _DB_FIELD4; ?></span><span class="sub"><?php echo _DB_FIELD4_DESC; ?></span></th>
-								<td><input type="text" name="mysql_database" value="<?php echo $param->mysql_database; ?>" /></td>
-						</tr>
-					</table>
+						<div><?php echo _DB_FIELD1; echo _DB_FIELD1_DESC; ?></div>
+						<div><input type="text" name="mysql_host" value="<?php echo $param->mysql_host; ?>" /></div>
+						<div><?php echo _DB_FIELD2; echo _DB_FIELD2_DESC; ?></div>
+						<div><input type="text" name="mysql_user" value="<?php echo $param->mysql_user; ?>" /></div>
+						<div><?php echo _DB_FIELD3; ?></div>
+						<div><input type="text" name="mysql_password" value="<?php echo $param->mysql_password; ?>" /></div>
+						<div><?php echo _DB_FIELD4; echo _DB_FIELD4_DESC; ?></div>
+						<div><input type="text" name="mysql_database" value="<?php echo $param->mysql_database; ?>" /></div>
 					<p class="sbt">
 						<button type="submit" name="mode" value="detail" class="sbt_sqr"><?php echo _MODE2; ?></button>
 						<button type="submit" name="action" value="mysql" class="sbt_arw"><?php echo _NEXT; ?></button>
