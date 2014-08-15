@@ -4,7 +4,7 @@
 // Author: Wouter Demuynck
 //
 // Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.6
+// Nucleus version: v1.0-v3.7
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
