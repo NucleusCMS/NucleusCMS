@@ -121,8 +121,8 @@ INSERT INTO nucleus_config VALUES ('BookmarkletSkin', '0');
 CREATE TABLE nucleus_item (
   inumber int(11) NOT NULL auto_increment,
   ititle varchar(160) default NULL,
-  ibody text NOT NULL,
-  imore text,
+  ibody mediumtext NOT NULL,
+  imore mediumtext,
   iblog int(11) NOT NULL default '0',
   iauthor int(11) NOT NULL default '0',
   itime datetime NOT NULL default '0000-00-00 00:00:00',
