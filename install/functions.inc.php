@@ -953,60 +953,29 @@ function do_install()
 	/*
 	 * 8. Write config file ourselves (if possible)
 	 */
-	$config_data = '<' . '?php' . "\n";
-	$config_data .= "// mySQL connection information\n";
-	$config_data .= "\$MYSQL_HOST = '" . $MYSQL_HOST . "';\n";
-	$config_data .= "\$MYSQL_USER = '" . $MYSQL_USER . "';\n";
-	$config_data .= "\$MYSQL_PASSWORD = '" . $MYSQL_PASSWORD . "';\n";
-	$config_data .= "\$MYSQL_DATABASE = '" . $MYSQL_DATABASE . "';\n";
-	$config_data .= "\$MYSQL_PREFIX = '" . $MYSQL_PREFIX . "';\n";
-	$config_data .= "// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
-	$config_data .= "// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
-	$config_data .= "//\$MYSQL_HANDLER = array('mysql','mysql');\n";
-	$config_data .= "//\$MYSQL_HANDLER = array('pdo','mysql');\n";
-	$config_data .= "\$MYSQL_HANDLER = array('" . $MYSQL_HANDLER[0] . "','" . $MYSQL_HANDLER[1] . "');\n";
-	$config_data .= "\n";
-	$config_data .= "// main nucleus directory\n";
-	$config_data .= "\$DIR_NUCLEUS = '" . $DIR_NUCLEUS . "';\n";
-	$config_data .= "\n";
-	$config_data .= "// path to media dir\n";
-	$config_data .= "\$DIR_MEDIA = '" . $DIR_MEDIA . "';\n";
-	$config_data .= "\n";
-	$config_data .= "// extra skin files for imported skins\n";
-	$config_data .= "\$DIR_SKINS = '" . $DIR_SKINS . "';\n";
-	$config_data .= "\n";
-	$config_data .= "// these dirs are normally sub dirs of the nucleus dir, but \n";
-	$config_data .= "// you can redefine them if you wish\n";
-	$config_data .= "\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
-	$config_data .= "\$DIR_LOCALES = \$DIR_NUCLEUS . 'locales/';\n";
-	$config_data .= "\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
-	$config_data .= "\n";
-	$config_data .= "// include libs\n";
-	$config_data .= "include(\$DIR_LIBS.'globalfunctions.php');\n";
-	$config_data .= "?" . ">";
-
+	
+	$tpl = file_get_contents('config.php.tpl');
+	
+	$ph = array();
+	$ph['MYSQL_HANDLER[0]'] = $MYSQL_HANDLER[0];
+	$ph['MYSQL_HANDLER[1]'] = $MYSQL_HANDLER[1];
+	$ph['MYSQL_HOST']       = $MYSQL_HOST;
+	$ph['MYSQL_USER']       = $MYSQL_USER;
+	$ph['MYSQL_PASSWORD']   = $MYSQL_PASSWORD;
+	$ph['MYSQL_DATABASE']   = $MYSQL_DATABASE;
+	$ph['MYSQL_PREFIX']     = $MYSQL_PREFIX;
+	$ph['DIR_NUCLEUS']      = $DIR_NUCLEUS;
+	$ph['DIR_MEDIA']        = $DIR_MEDIA;
+	$ph['DIR_SKINS']        = $DIR_SKINS;
+	
+	$config_data = parseTags($tpl, $ph);
+	
 	$result = false;
-	if ( @!file_exists('../config.php') || is_writable('../config.php') )
-	{
-		if ( $fp = @fopen('../config.php', 'w') )
-		{
-			$result = @fwrite($fp, $config_data, i18n::strlen($config_data));
-			fclose($fp);
-		}
-	}
-
-	if ( $result )
-	{
-		// try to change the read-only permission.
-		if ( strtoupper(substr(PHP_OS, 0, 3)) !== 'WIN' )
-		{
-			@chmod('../config.php', 0444);
-		}
-	}
-	else
-	{
-		$_SESSION['config_data'] = $config_data;
-	}
+	if ( @!is_file('../config.php') || is_writable('../config.php') )
+		$result = @file_put_contents('../config.php', $config_data);
+	
+	if($result) @chmod('../config.php', 0444);
+	else        $_SESSION['config_data'] = $config_data;
 
 	return $errors;
 }
