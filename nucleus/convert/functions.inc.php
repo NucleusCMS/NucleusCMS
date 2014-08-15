@@ -880,7 +880,7 @@ if ($ver > 250)
 
 	// make sure the request variables get reqistered in the global scope
 	// Doing this should be avoided on code rewrite (this is a potential security risk)
-	if ((phpversion() >= "4.1.0") && (ini_get("register_globals") == 0)) {
+	if (ini_get("register_globals") == 0) {
 		@import_request_variables("gp",'');
 	}
 
