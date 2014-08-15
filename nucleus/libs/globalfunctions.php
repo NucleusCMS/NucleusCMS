@@ -2374,3 +2374,17 @@ function ticketForPlugin()
 	$ticketforplugin['ticket'] = preg_split($ticket, i18n::strpos($ticket, 'ticket=') + 7);
 	return;
 }
+
+
+function parseTags($tpl, $ph)
+{
+	if(empty($tpl)||empty($ph)) return $tpl;
+	
+	foreach($ph as $k=>$v)
+	{
+		$k = "<%{$k}%>";
+		if(strpos($tpl,$k)!==false)
+			$tpl = str_replace($k,$v,$tpl);
+	}
+	return $tpl;
+}
