@@ -145,7 +145,7 @@ include($DIR_LIBS . 'ENTITY.php');
 if ( $CONF['installscript'] != 1 )
 {
 	/* vars were already included in install.php */
-	include_once($DIR_LIBS . 'vars4.1.0.php');
+	include_once($DIR_LIBS . 'vars.php');
 	
 	/* added for 4.0 DB::* wrapper and compatibility sql_* */
 	include_once($DIR_LIBS . 'sql/sql.php');

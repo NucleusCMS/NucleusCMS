@@ -1222,7 +1222,7 @@ function do_check_files()
 		'../nucleus/libs/showlist.php',
 		'../nucleus/libs/SKIN.php',
 		'../nucleus/libs/TEMPLATE.php',
-		'../nucleus/libs/vars4.1.0.php',
+		'../nucleus/libs/vars.php',
 		'../nucleus/libs/xmlrpc.inc.php',
 		'../nucleus/libs/xmlrpcs.inc.php',
 		'../nucleus/libs/sql/DB.php',
