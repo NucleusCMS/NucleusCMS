@@ -103,7 +103,7 @@ INSERT INTO `nucleus_config` VALUES ('CookieDomain', '');
 INSERT INTO `nucleus_config` VALUES ('CookieSecure', '');
 INSERT INTO `nucleus_config` VALUES ('CookiePrefix', '');
 INSERT INTO `nucleus_config` VALUES ('MediaPrefix', '1');
-INSERT INTO `nucleus_config` VALUES ('MaxUploadSize', '1048576');
+INSERT INTO `nucleus_config` VALUES ('MaxUploadSize', '3145728');
 INSERT INTO `nucleus_config` VALUES ('NonmemberMail', '');
 INSERT INTO `nucleus_config` VALUES ('PluginURL', 'http://localhost:8080/nucleus/nucleus/plugins/');
 INSERT INTO `nucleus_config` VALUES ('ProtectMemNames', '1');
