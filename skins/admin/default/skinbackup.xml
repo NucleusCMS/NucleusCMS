@@ -1279,9 +1279,11 @@
 	<%ticket%>
 	</p>
 	<table frame="box" rules="all" summary="<%text(_ADD_ADDTO)%>">
+	<thead>
 	<tr>
 	<th colspan="2"><%text(_ADD_CREATENEW)%></th>
 	</tr>
+	</thead>
 	<%if(autosave)%>
 	<tr>
 	<td><%text(_AUTOSAVEDRAFT)%></td>
@@ -1419,9 +1421,11 @@
 	<td><%pluginextras%></td>
 	</tr>
 	<%pluginoptions(item)%>
+	<thead>
 	<tr>
 	<th colspan="2"><%text(_ADD_MORE)%></th>
 	</tr>
+	</thead>
 	<tr>
 	<td><%text(_ADD_MORE)%><br />
 	<%helplink(extended)%>
@@ -1770,9 +1774,11 @@
 	</p>
 
 	<table frame="box" rules="all" summary="<%text(_EDIT_ITEM)%>">
+	<thead>
 	<tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
 	</tr>
+	</thead>
 	<%if(autosave)%><tr>
 	<td><%text(_AUTOSAVEDRAFT)%></td>
 	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
@@ -1949,9 +1955,11 @@
 	<td><%pluginextras%></td>
 	</tr>
 	<%pluginoptions(item)%>
+	<thead>
 	<tr>
 	<th colspan="2"><%text(_ADD_MORE)%></th>
 	</tr>
+	</thead>
 	<tr>
 	<td>
 	<%text(_ADD_MORE)%><br />
