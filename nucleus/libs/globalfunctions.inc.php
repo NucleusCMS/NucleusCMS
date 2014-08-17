@@ -12,30 +12,14 @@ function include_libs($file, $once = TRUE, $require = TRUE)
 {
 	global $DIR_LIBS;
 	
-	// $DIR_LIBS isn't a directory
-	if ( !is_dir($DIR_LIBS) )
-	{
-		exit;
-	}
-	
 	$lib_path = $DIR_LIBS . $file;
+	if ( !is_file($lib_path) ) exit;
 	
-	if ( $once && $require )
-	{
-		require_once($lib_path);
-	}
-	else if ( $once && !$require )
-	{
-		include_once($lib_path);
-	}
-	else if ( $require )
-	{
-		require($lib_path);
-	}
-	else
-	{
-		include($lib_path);
-	}
+	if ( $once && $require )      require_once($lib_path);
+	elseif ( $once && !$require ) include_once($lib_path);
+	elseif ( $require )           require($lib_path);
+	else                          include($lib_path);
+	
 	return;
 }
 
@@ -52,31 +36,15 @@ function include_plugins($file, $once = TRUE, $require = TRUE)
 {
 	global $DIR_PLUGINS;
 	
-	// begin if: $DIR_LIBS isn't a directory
-	if ( !is_dir($DIR_PLUGINS) )
-	{
-		exit;
-	}
-	
 	$plugin_path = $DIR_PLUGINS . $file;
+	if(!is_file($plugin_path)) exit;
 	
 	// begin if: 
-	if ( $once && $require )
-	{
-		require_once($plugin_path);
-	}
-	else if ( $once && !$require )
-	{
-		include_once($plugin_path);
-	}
-	elseif ( $require )
-	{
-		require($plugin_path);
-	}
-	else
-	{
-		include($plugin_path);
-	}
+	if ( $once && $require )      require_once($plugin_path);
+	elseif ( $once && !$require ) include_once($plugin_path);
+	elseif ( $require )           require($plugin_path);
+	else                          include($plugin_path);
+	
 	return;
 }
 
@@ -91,11 +59,12 @@ function include_translation(&$locale)
 {
 	global $DIR_LOCALES;
 	
-	$translation_file = $DIR_LOCALES . $locale . '.' . i18n::get_current_charset() . '.php';
-	if ( !file_exists($translation_file) )
+	$current_charset = i18n::get_current_charset();
+	$translation_file = "{$DIR_LOCALES}{$locale}.{$current_charset}.php";
+	if ( !is_file($translation_file) )
 	{
 		$locale = 'en_Latn_US';
-		$translation_file = $DIR_LOCALES . 'en_Latn_US.ISO-8859-1.php';
+		$translation_file = "{$DIR_LOCALES}en_Latn_US.ISO-8859-1.php";
 	}
 	include($translation_file);
 	
@@ -249,21 +218,13 @@ function getLatestVersion()
  * @param string $name
  * @return string
  */
-function sql_table($name)
+function sql_table($name='')
 {
 	global $MYSQL_PREFIX;
 	
-	// begin if: no MySQL prefix
-	if ( empty($MYSQL_PREFIX) )
-	{
-		return 'nucleus_' . $name;
-	}
-	// else: use MySQL prefix
-	else
-	{
-		return $MYSQL_PREFIX . 'nucleus_' . $name;
-	}
-	return;
+	if ( empty($MYSQL_PREFIX) ) $MYSQL_PREFIX = '';
+	
+	return "{$MYSQL_PREFIX}nucleus_{$name}";
 }
 
 /**
@@ -344,16 +305,15 @@ function parseHighlight($query)
 	// TODO: add more intelligent splitting logic
 	
 	// get rid of quotes
-	$query = preg_replace('/\'|"/', '', $query);
+	if(strpos($query, "'")) $query = str_replace("'", '', $query);
+	if(strpos($query, '"')) $query = str_replace('"', '', $query);
 	
-	if ( !$query )
-	{
-		return array();
-	}
+	if ( !$query ) return array();
 	
-	$aHighlight = preg_split('# #', $query);
+	$aHighlight = explode(' ', $query);
+	$total = count($aHighlight);
 	
-	for ( $i = 0; $i < count($aHighlight); $i++ )
+	for ( $i = 0; $i < $total; $i++ )
 	{
 		$aHighlight[$i] = trim($aHighlight[$i]);
 		
@@ -363,15 +323,8 @@ function parseHighlight($query)
 		}
 	}
 	
-	if ( count($aHighlight) == 1 )
-	{
-		return $aHighlight[0];
-	}
-	else
-	{
-		return $aHighlight;
-	}
-	return;
+	if ( count($aHighlight) == 1 ) return $aHighlight[0];
+	else                           return $aHighlight;
 }
 
 /**
@@ -523,7 +476,7 @@ function selector()
 	
 	if ( in_array($action, $actionNames) )
 	{
-		include_once($DIR_LIBS . 'ACTION.php');
+		include_once("{$DIR_LIBS}ACTION.php");
 		$a = new Action();
 		$errorInfo = $a->doAction($action);
 		
@@ -540,7 +493,7 @@ function selector()
 		if ( function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') )
 		{
 			headers_sent($hsFile, $hsLine);
-			$extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
+			$extraInfo = " in <code>{$hsFile}</code> line <code>{$hsLine}</code>";
 		}
 		else
 		{
@@ -561,7 +514,7 @@ function selector()
 	
 	// make is so ?archivelist without blogname or blogid shows the archivelist
 	// for the default weblog
-	if ( serverVar('QUERY_STRING') == 'archivelist' )
+	if ( serverVar('QUERY_STRING') === 'archivelist' )
 	{
 		$archivelist = $CONF['DefaultBlog'];
 	}
@@ -579,8 +532,7 @@ function selector()
 		}
 		
 		// 1. get timestamp, blogid and catid for item
-		$query = 'SELECT itime, iblog, icat FROM %s WHERE inumber=%d';
-		$query = sprintf($query, sql_table('item'), intval($itemid));
+		$query = sprintf('SELECT itime, iblog, icat FROM %s WHERE inumber=%d', sql_table('item'), intval($itemid));
 		$row = DB::getRow($query);
 		
 		// if a different blog id has been set through the request or selectBlog(),
@@ -1044,8 +996,7 @@ function includephp($filename)
 	global $REQUEST_URI;
 	
 	// php (taken from PHP doc)
-	global $argv, $argc, $PHP_SELF, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
-	global $HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
+	global $argv, $argc, $PHP_SELF;
 	
 	// other
 	global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
@@ -1065,7 +1016,7 @@ function includephp($filename)
 function checkPlugin($name)
 {
 	global $DIR_PLUGINS;
-	return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $name) . '.php');
+	return is_file($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $name) . '.php');
 }
 
 /**
@@ -1083,7 +1034,7 @@ function alterQueryStr($querystr, $param, $value)
 	
 	for ( $i = 0; $i < count($vars); $i++ )
 	{
-		$v = preg_split('#=#', $vars[$i]);
+		$v = explode('=', $vars[$i]);
 		
 		if ( $v[0] == $param )
 		{
@@ -1116,13 +1067,13 @@ function passVar($key, $value)
 	{
 		for ( $i = 0; $i < sizeof($value); $i++ )
 		{
-			passVar($key . '[' . $i . ']', $value[$i]);
+			passVar("{$key}[{$i}]", $value[$i]);
 		}
 		return;
 	}
 	
 	// other values: do stripslashes if needed
-	echo '<input type="hidden" name="' . Entity::hsc($key) . '" value="' . Entity::hsc(undoMagic($value)) . '" />' . "\n";
+	echo sprintf('<input type="hidden" name="%s" value="%s" />', Entity::hsc($key), Entity::hsc(undoMagic($value))) . "\n";
 	return;
 }
 
@@ -1192,23 +1143,15 @@ function _addInputTags(&$keys,$prefix='')
 {
 	foreach ( $keys as $key=>$value )
 	{
-		if ( $prefix )
-		{
-			$key=$prefix.'['.$key.']';
-		}
-		if ( is_array($value) )
-		{
-			_addInputTags($value,$key);
-		}
+		if ( $prefix ) $key=$prefix.'['.$key.']';
+		
+		if ( is_array($value) ) _addInputTags($value,$key);
 		else
 		{
-			if ( get_magic_quotes_gpc() )
-				{$value=stripslashes($value);
-			}
-			if ( $key == 'ticket' )
-			{
-				continue;
-			}
+			if ( get_magic_quotes_gpc() ) $value=stripslashes($value);
+			
+			if ( $key === 'ticket' )       continue;
+			
 			echo '<input type="hidden" name="'.Entity::hsc($key).
 			     '" value="'.Entity::hsc($value).'" />'."\n";
 		}

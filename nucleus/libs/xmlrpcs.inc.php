@@ -754,11 +754,6 @@
 		function parseRequestHeaders(&$data, &$req_encoding, &$resp_encoding, &$resp_compression)
 		{
 			// Play nice to PHP 4.0.x: superglobals were not yet invented...
-			if(!isset($_SERVER))
-			{
-				$_SERVER = $GLOBALS['HTTP_SERVER_VARS'];
-			}
-
 			if($this->debug > 1)
 			{
 				if(function_exists('getallheaders'))
