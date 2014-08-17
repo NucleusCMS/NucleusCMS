@@ -36,13 +36,22 @@ class Entity
 	 * @return	string	escaped string
 	 * 
 	 */
-	static public function hsc($string, $quotation=ENT_QUOTES)
+	static public function hsc($string, $quotation=ENT_QUOTES, $encoding='')
 	{
-		/*
-		 * we can use 'double_encode' flag instead of this when dropping supports for PHP 5.2.2 or lower
-		 */
-		$string = htmlspecialchars_decode($string, $quotation);
-		return (string) htmlspecialchars($string, $quotation, i18n::get_current_charset());
+		if($encoding==='')
+			$encoding = i18n::get_current_charset();
+		
+		if(version_compare(PHP_VERSION, '5.2.3', '>='))
+			return htmlspecialchars($string, $flags, $encoding, false);
+		else
+		{
+			if(function_exists('htmlspecialchars_decode'))
+				$string = htmlspecialchars_decode($string, $flags);
+			else
+				$string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+			
+			return (string) htmlspecialchars($string, $flags, $encoding);
+		}
 	}
 	
 	/**
