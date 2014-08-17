@@ -37,7 +37,7 @@
 		<table frame="box" rules="all" summary="<%text(_MEMBERS_SETPWD_BTN)%>">
 		<tr>
 		<td><%text(_MEMBERS_PWD)%></td>
-		<td><input type="password" maxlength="40" size="16" name="password" /></td>
+		<td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
 		</tr>
 		<tr>
 		<td><%text(_MEMBERS_REPPWD)%></td>
@@ -1654,7 +1654,7 @@
 </tr>
 <tr><%if(allowloginedit)%>
 <td><%text(_MEMBERS_PWD)%></td>
-<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
 </tr>
 <tr>
 <td><%text(_MEMBERS_REPPWD)%></td>
@@ -3349,7 +3349,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 </tr>
 <tr>
 <td><%text(_MEMBERS_PWD)%></td>
-<td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
+<td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" autocomplete="off" /></td>
 </tr>
 <tr>
 <td><%text(_MEMBERS_REPPWD)%></td>
