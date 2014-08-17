@@ -100,3 +100,7 @@ td {
 label {
 	cursor: pointer;
 }
+
+input,textarea,select {
+	font:inherit;
+}

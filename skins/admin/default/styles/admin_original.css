@@ -54,6 +54,10 @@ label {
 	cursor: pointer;
 }
 
+input,textarea,select {
+	font:inherit;
+}
+
 input.transparent {
 	background-color: transparent;
 }
@@ -192,10 +196,7 @@ h1 {
 	border-style: solid;
 	border-color: black;
 
-	/* rounded borders */
-	-webkit-border-radius: 10px;
-	-moz-border-radius: 10px;
-	border-radius: 10px;
+	-moz-border-radius: 10px;	
 
 	padding: 10px 10px 0 10px;
 

@@ -278,7 +278,7 @@ div#content table tbody tr:hover {
 
 div#content table thead tr th {
 	border: none;
-	background-color: #BBBBCC;
+	background-color: #ddd;
 	color: #000000;
 	font-size: small;
 }
@@ -375,7 +375,7 @@ div#content table tbody tr td ul li {
 }
 
 .batchoperations {
-	background-color: #EEEEFF;
+	background-color: #ebebf2;
 	width: auto;
 	padding: 5px;
 	text-align: right;
