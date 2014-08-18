@@ -30,8 +30,5 @@ function upgrade_do360() {
 	// update database version
 	update_version('360');
 	
-	// Remind user to re-install NP_Ping 
-	// Remind user to re-install NP_Ping 
-	echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
 }
-?>
+
