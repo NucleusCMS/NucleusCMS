@@ -439,17 +439,6 @@ function showInstallForm() {
 				</tr>
 			</table>
 		</fieldset>
-
-		<h1><?php echo _HEADER8; ?></h1>
-
-		<fieldset>
-			<legend><?php echo _TEXT8_TAB_HEADER; ?></legend>
-			<table>
-				<tr>
-					<td><input name="Weblog_ping" value="1" type="checkbox" id="Weblog_ping" tabindex="10240" /><label for="Weblog_ping"><?php echo _TEXT8_TAB_FIELD1; ?></label></td>
-				</tr>
-			</table>
-		</fieldset>
 		
 		<h1><?php echo _HEADER9; ?></h1>
 		
@@ -486,7 +475,7 @@ function tableName($unPrefixed) {
  * The installation process itself
  */
 function doInstall() {
-	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
+	global $mysql_usePrefix, $mysql_prefix;
 
 	// 0. put all POST-vars into vars
 	$mysql_host		= postVar('mySQL_host');
@@ -515,7 +504,6 @@ function doInstall() {
 	$charset		   = postVar('charset');
 	$config_adminemail = $user_email;
 	$config_sitename   = $blog_name;
-	$weblog_ping	   = postVar('Weblog_ping');
 	
 	$_POST = array();
 	
@@ -840,12 +828,6 @@ function doInstall() {
 		sql_query($updateQuery);
 		$updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . intval($defSkinID). ' WHERE `name` = "BaseSkin"';
 		sql_query($updateQuery);
-
-		// 12. install NP_Ping, if decided
-		if ($weblog_ping == 1) {
-			global $aConfPlugsToInstall;
-			array_push($aConfPlugsToInstall, "NP_Ping");
-		}
 
 		// 13. install custom plugins
 		$aPlugErrors = installCustomPlugs($manager);

@@ -118,13 +118,10 @@ define('_TEXT7_TAB_FIELD1',		'ブログの名前');
 define('_TEXT7_TAB_FIELD2',		'ブログの短縮名(略称)');
 define('_TEXT7_TAB_FIELD2_2',	'使用できる文字：a-z と 0-9、空白は不可');
 
-define('_HEADER8',				'更新Ping');
 //define('_HEADER8',				'インストールするプラグインとテーマの選択');
-define('_TEXT8_TAB_HEADER',		'更新Ping');
 define('_TEXT8_TAB_PLUGINDEP', '以下のプラグインに依存します。%s'); //<addsatona date="2008-09-03" />
 //define('_TEXT8_TAB_HEADER',		'プラグインの選択');
 define('_TEXT8_TAB_HEADER2',	'テーマの選択');
-define('_TEXT8_TAB_FIELD1',		'更新Ping送信プラグイン <a href="http://www.google.com/search?hl=ja&q=NP_Ping&lr=lang_ja" target="_blank">NP_Ping</a> をインストールする (更新Pingを送信するプラグインは他にもあります。)');
 
 define('_HEADER9',				'データの送信');
 define('_TEXT9',				'<p>上に書いてきたデータが正しいか確かめてください。よければデータベース・テーブルと最初のデータを設定するために下のボタンを押してください。少し時間がかかるかもしれませんがご辛抱を。<strong>ボタンをクリックするのは一回だけにしてください。</strong></p>');
