@@ -620,19 +620,6 @@ function getLatestVersion() {
 }
 
 /**
-  * Connects to mysql server
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_connect() {
-	global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
-
-	$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
-	mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
-
-	return $MYSQL_CONN;
-}*/
-
-/**
  * returns a prefixed nucleus table name
  */
 function sql_table($name) {
@@ -703,44 +690,6 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 		}
 	}
 }
-
-/**
- * Errors before the database connection has been made - moved to
- */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function startUpError($msg, $title) {
-	if (!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1');
-	header('Content-Type: text/html; charset=' . _CHARSET);
-	?>
-	<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-		<head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
-		<title><?php echo hsc($title)?></title></head>
-		<body>
-			<h1><?php echo hsc($title)?></h1>
-			<?php echo $msg?>
-		</body>
-	</html>
-	<?php   exit;
-}*/
-
-/**
-  * disconnects from SQL server
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_disconnect() {
-	@mysql_close();
-}*/
-
-/**
-  * executes an SQL query
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_query($query) {
-	global $SQLCount;
-	$SQLCount++;
-	$res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
-	return $res;
-}*/
 
 /**
  * Highlights a specific query in a given HTML text (not within HTML tags) and returns it
@@ -2412,4 +2361,3 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='')
 		return htmlspecialchars($string, $flags, $encoding);
 	}
 }
-?>
