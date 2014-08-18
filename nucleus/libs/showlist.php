@@ -337,15 +337,15 @@ function listplug_table_itemlist($template, $type) {
 			
 			echo '<td ' . $cssclass . ' style="white-space:nowrap;">';
 			if ($action !== 'itemlist')
-			echo _LIST_ITEM_BLOG . ' ', hsc($current->bshortname) . '    <br />';
-			echo _LIST_ITEM_CAT,' ', hsc($current->cname) . '    <br />';
+				echo _LIST_ITEM_BLOG . ' '. hsc($current->bshortname) . '<br />';
+			echo _LIST_ITEM_CAT . ' ' . hsc($current->cname) . '<br />';
 			if ($action !== 'browseownitems')
-			echo _LIST_ITEM_AUTHOR, ' ', hsc($current->mname) . '    <br />';
+				echo _LIST_ITEM_AUTHOR . ' ' . hsc($current->mname) . '<br />';
 			if($current->itime)
 				echo date('Y-m-d',$current->itime) . ' ' . date('H:i',$current->itime);
 			else echo '0000-00-00 00:00';
-			echo "</td>";
-			echo "<td $cssclass>";
+			echo '</td>';
+			echo "<td {$cssclass}>";
 
 			$id = listplug_nextBatchId();
 
