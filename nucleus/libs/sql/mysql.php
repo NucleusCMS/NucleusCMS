@@ -73,7 +73,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			if(!$res) exit('Language name fetch error');
 			$obj = sql_fetch_object($res);
 			$CONF['Language'] = $obj->value;
-			$charset = get_charset_name($CONF['Language']);
+			$charset = get_charname_from_langname($CONF['Language']);
 		}
 		sql_set_charset($charset);
 		
@@ -348,27 +348,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
 	function sql_set_charset($charset) {
-		switch(strtolower($charset)){
-			case 'utf-8':
-			case 'utf8':
-				$charset = 'utf8';
-				break;
-			case 'euc-jp':
-			case 'ujis':
-				$charset = 'ujis';
-				break;
-			case 'gb2312':
-				$charset = 'gb2312';
-				break;
-			/*
-			case 'shift_jis':
-			case 'sjis':
-				$charset = 'sjis';
-				break;
-			*/
-			default:
-				$charset = 'utf8';
-				break;
+		switch(strtolower($charset))
+		{
+			case 'utf-8' : $charset='utf8'; break;
+			case 'euc-jp': $charset='ujis'; break;
 		}
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
 		if (version_compare($mySqlVer, '4.1.0', '>=')) {
@@ -388,7 +371,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		return $res;
 	}
 	
-	function get_charset_name($language_name='english-utf8')
+	function get_charname_from_langname($language_name='english-utf8')
 	{
 		$language_name = strtolower($language_name);
 		
