@@ -71,6 +71,7 @@ switch($from) {
 		upgrade_do350();
 	case 350:
 		upgrade_do360();
+		break;
 	default:
 		echo "<li>エラー! 実行すべきアップデートはありません</li>";
 		break;
