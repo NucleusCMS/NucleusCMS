@@ -61,22 +61,16 @@ switch($from) {
 		upgrade_do310();
 	case 310:
 		upgrade_do320();
-//		break;
 	case 320:
 		upgrade_do330();
-//		break;
 	case 330:
 		upgrade_do331();
-//		break;
 	case 331:
 		upgrade_do340();
-		break;
 	case 340:
 		upgrade_do350();
-		break;
 	case 350:
 		upgrade_do360();
-		break;
 	default:
 		echo "<li>エラー! 実行すべきアップデートはありません</li>";
 		break;
