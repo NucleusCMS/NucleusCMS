@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@ $MYSQL_CONN = 0;
 if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 {
 	/**
-	 *Errors before the database connection has been made
+	 * Errors before the database connection has been made
 	 */
 	function startUpError($msg, $title) {
 		if (!defined('_CHARSET')) {
@@ -98,7 +98,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	/**
 	  * executes an SQL query
 	  */
-	function sql_query($query, $conn = false) {
+	function sql_query($query,$conn = false) {
 		global $SQLCount,$MYSQL_CONN;
 		if (!$conn) $conn = $MYSQL_CONN;
 		$SQLCount++;
