@@ -434,7 +434,7 @@ function listplug_table_commentlist($template, $type) {
 function listplug_table_bloglist($template, $type) {
 	switch($type) {
 		case 'HEAD':
-			echo "<th>" . _NAME . "</th><th colspan='7'>" ._LISTS_ACTIONS. "</th>";
+			echo "<th>" . _NAME . '</th><th colspan="6">' ._LISTS_ACTIONS. "</th>";
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -443,7 +443,6 @@ function listplug_table_bloglist($template, $type) {
 			echo "<td><a href='index.php?action=createitem&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_ADD ."'>" . _BLOGLIST_ADD . "</a></td>";
 			echo "<td><a href='index.php?action=itemlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_EDIT."'>". _BLOGLIST_EDIT."</a></td>";
 			echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_COMMENTS."'>". _BLOGLIST_COMMENTS."</a></td>";
-			echo "<td><a href='index.php?action=bookmarklet&amp;blogid=$current->bnumber' title='". _BLOGLIST_TT_BMLET."'>". _BLOGLIST_BMLET . "</a></td>";
 
 			if ($current->tadmin == 1) {
 				echo "<td><a href='index.php?action=blogsettings&amp;blogid=$current->bnumber' title='" . _BLOGLIST_TT_SETTINGS . "'>" ._BLOGLIST_SETTINGS. "</a></td>";
