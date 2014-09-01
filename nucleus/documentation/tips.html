@@ -77,14 +77,7 @@
 <h1><a id="toc" name="toc">目次</a></h1>
 
 <ul>
-	<li>
-		<a href="#searchengines">検索エンジンにひっかかりやすくする方法</a>
-		<ul>
-			<li><a href="#searchengines-fancyurls">Fancy URL モード</a></li>
-			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
-			<li><a href="#searchengines-fancyurls2">Fancy URL2 モード</a></li>
-		</ul>
-	</li>
+	<li><a href="#searchengines">URLをカスタマイズする方法</a></li>
 	<li><a href="#filepermissions">ファイルとディレクトリのパーミッション変更ガイド</a></li>
 	<li><a href="#backups">バックアップをリストア(復元)する方法</a></li>
 	<li><a href="#newblog">新しくweblogを作成する方法</a></li>
@@ -106,84 +99,23 @@
 
 
 
-<h1>Googleなどのサーチエンジンに引っかかりやすくする方法 <a id="searchengines" name="searchengines" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<h1>URLをカスタマイズする方法 <a id="searchengines" name="searchengines" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <div class="note">
 <strong>留意点:</strong> これらの方法は、サーバの環境によっては動作しないことがあります。
 </div>
 
 <p>
-Nucleus はアクセスごとにページを生成しています。アクセスするURLは「<code>index.php?archive=2001-09&amp;blogid=1</code>のようになっています。残念ながらURLに「?」やそのほかの余分な文字列がたくさんあるとgoogleなどの検索エンジンに登録されにくくなってしまいます。無駄なロボット巡回を省くための措置だそうです。
+Nucleus はアクセスのたびにページを生成します。アクセスするURLはデフォルトでは「<code>http://example.org/index.php?itemid=1234</code>」のようになっていますが、設定を行なうことで、「<code>http://example.org/item/1234</code>」のようなスマートなURLで動作させることができます(※動作するかどうかはサーバ側の設定によります)。
 </p>
-
-<p>この対策を2つ紹介しておきます。しかしながら必ず動作するとは限りませんのでご注意下さい(動作するかどうかはサーバ側の設定によります)。</p>
-
-<ol>
-	<li><a href="#searchengines-fancyurls">Fancy URLモード</a></li>
-	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
-	<li><a href="#searchengines-fancyurls2">Fancy URL2 モード</a></li>
-</ol>
-
 
 <h2><a id="searchengines-fancyurls" name="searchengines-fancyurls">Fancy URLモード</a></h2>
 
-<p>Nucleusではバージョン2.0からグローバル設定において「URLモード」というオプションを設けています。ここを「FancyURLモード」に設定して以下の作業を行うと、URLが「<code>http://example.org/index.php?itemid=1234</code>」から「<code>http://example.org/item/1234</code>」に変わります。このURL形式の方が検索エンジンに登録されやすくなります。 </p>
+<p>グローバル設定に「URLモード」というオプションを設けています。ここを「FancyURLモード」に設定し、以下の作業を行ないます</p>
 
 <p>手順:</p>
 
-<ol>
-	<li>Copy all files from the <code>/extra/fancyurls</code> ディレクトリにある<code>index.html</code>以外の全部のファイルをルートディレクトリ(<code>index.php</code> と <code>action.php</code>があるディレクトリ)にコピーします。</li>
-	<li>すでにルートディレクトリに<code>.htaccess</code>ファイルを設置している方はまず現在の<code>.htaccess</code>ファイルをダウンロード後に今回の <code>/extra/fancyurls</code> ディレクトリにある<code>.htaccess</code>ファイルの中身を追加してください。(FTPソフトでは標準設定では<code>.htaccess</code>ファイルは見えないことが多いので、確認方法を調べた上で存在を確認してください。)<br /><code>.htaccess</code>ファイルを設置していなかった方は<code>/extra/fancyurls</code> ディレクトリにある<code>.htaccess</code>ファイルをそのまま使用してください。</li>
-	<li>「<code>fancyurls.config.php</code>」という名前のファイルの中の<code>$CONF['Self']</code>の値を自分のメインディレクトリのURLとします。 <br /><strong>重要: URLの末尾にスラッシュは<em>絶対に</em>入れないでください。</strong></li>
-	<li>同様に<code>index.php</code>ファイルの<code>$CONF['Self']</code>の値を編集<!--(引用符の中を削除)-->します。これをやらないと、URLが<code>index.php/item/1234</code>などとおかしくなります。</li>
-	<li>これらの新しくルートディレクトリに追加したファイルをサーバにアップロードします。</li>
-	<li>最後に、管理エリアのグローバル設定においてURLモードを「FancyURLモード」に変更します。</li>
-	<li>これで完了です。</li>
-</ol>
-
-<p>もしページが正常に表示されない場合(Internal Server Errorなどと表示される場合)は、残念ですがこの対策は使えません。上の作業で追加したファイルを速やかに削除し(<code>.htaccess</code>ファイルの削除も忘れずに)、管理エリアのグローバル設定においてURLモードを元に戻してください。</p>
-
-
-
-<h2><a id="searchengines-rewrite" name="searchengines-rewrite">mod_rewrite</a></h2>
-
-<p>
-次に紹介する対策はApacheサーバを使用していて、かつ、「mod_rewrite」の使用が許可されている環境でのみ有効な方法です。アクセスするページがhtmlファイルであるかのようにみせかける方法です。
-</p>
-
-<p>
-ルートディレクトリに「<code>.htaccess</code>」という名前のファイル(ファイル名の先頭はピリオドです)を作成し、以下の内容を書き込みます:
-</p>
-
-<pre>
-RewriteEngine On
-RewriteRule ^archive-([0-9]+)-([0-9]+)-([0-9]+).html+ index.php?archive=$2-$3&amp;blogid=$1
-RewriteRule ^item-([0-9]+).html+ index.php?itemid=$1
-RewriteRule ^archivelist-([a-z]+).html+ index.php?archivelist=$1
-</pre>
-
-<p>
-このファイルを <em>index.php</em> や <em>config.php</em> があるディレクトリにアップロードします。ブラウザで「<code>archive-1-2004-06.html</code>」にアクセスしてみましょう。きちんとページが表示されればこの方法が使える環境です。(このURL例は2004年6月の記事を表示させるURLですから該当月のログがない場合は「記事がありません」となりますが、これは成功していることを意味します。)<br />もし、アクセスした際に  500 error (internal server error) が表示されていたらそのサーバ環境ではこの方法は使えません。.htaccess ファイルを削除してください。
-</p>
-
-<p>
-成功していたら、次にこのURLにジャンプするようにテンプレートを書き換えます。上のURL例をリンク先とする場合は、アーカイブリスト(アーカイブ一覧ページ)で指定しているテンプレートの「アーカイブ一覧の本体」の部分を以下のように変更します:
-</p>
-
-<pre>
-&lt;a href="archive-&lt;%blogid%&gt;-&lt;%year%&gt;-&lt;%month%&gt;.html"&gt;...&lt;/a&gt;
-</pre>
-
-<p>
-これで検索エンジン対策の説明はおしまいです。あとは検索ロボットが到来するのを待ってみましょう。
-</p>
-
-
-<h2><a id="searchengines-fancyurls2" name="searchengines-fancyurls2">Fancy URL2モード</a></h2>
-
-<p>Nucleus CMS version バージョン3.3からは、FancyURLモードを有効にするもう一つの方法が用意されました。たった3行程で完了するやり方です。</p>
-
-<ol><li><code>extra/fancyurl-2</code>の中の｢<code>.htaccess</code>｣ファイルを、Nucleus CMSをインストールしたディレクトリにコピーします。</li>
+<ol><li><code>extra/fancyurl</code>の中の｢<code>.htaccess</code>｣ファイルを、Nucleus CMSをインストールしたディレクトリにコピーします。</li>
 <li><code>index.php</code>を編集します。<code>CONF['Self']</code>(デフォルトは<code>'index.php'</code>となっています)を、Nucleus CMSをインストールしたURLに書き換えます<br />
 例：<pre>CONF['Self'] = 'http://yourdomain.com/yourNucleusDirectory';</pre>
 最後にスラッシュをつけないように気をつけてください<br /></li>
