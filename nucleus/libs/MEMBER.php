@@ -74,44 +74,47 @@ class MEMBER {
 	  * Returns true when succeeded, returns false when failed
 	  * 3.40 adds CustomLogin event
 	  */
-	function login($login, $password) {
+	function login($username, $password) {
 		global $manager;
+		
 		$this->loggedin = 0;
 		$success = 0;
 		$allowlocal = 1;
+		
 		$param = array(
-			'login'			=> &$login,
-			'password'		=>&$password,
-			'success'		=>&$success,
-			'allowlocal'	=>&$allowlocal
+			'login'      => &$username,
+			'password'   => &$password,
+			'success'    => &$success,
+			'allowlocal' => &$allowlocal
 		);
 		$manager->notify('CustomLogin', $param);
-		if ($success && $this->readFromName($login)) {
+		
+		if ($success && $this->readFromName($username))
 			$this->loggedin = 1;
-			return $this->isLoggedIn();
-		} elseif (!$success && $allowlocal) {
-			if (!$this->readFromName($login))
-				return 0;
-			if (!$this->checkPassword($password))
-				return 0;
-			$this->loggedin = 1;
-			return $this->isLoggedIn();
-		} else {
-			return 0;
+		elseif (!$success && $allowlocal)
+		{
+			if (!$this->readFromName($username)
+				||
+			    !$this->checkPassword($password))
+				$this->loggedin = 0;
+			else $this->loggedin = 1;
 		}
+		else $this->loggedin = 0;
+		
+		return $this->loggedin;
 	}
 
 	/**
 	 * Login using cookie key
 	 */
-	function cookielogin($login, $cookiekey) {
+	function cookielogin($username, $cookiekey) {
 		$this->loggedin = 0;
-		if (!$this->readFromName($login))
-			return 0;
-		if (!$this->checkCookieKey($cookiekey))
-			return 0;
+		
+		if (!$this->readFromName($username))       return 0;
+		if (!$this->checkCookieKey($cookiekey)) return 0;
+		
 		$this->loggedin = 1;
-		return $this->isLoggedIn();
+		return 1;
 	}
 
 	function logout() {
