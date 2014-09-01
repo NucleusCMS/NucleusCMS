@@ -324,7 +324,13 @@ class ADMIN {
 			$start = 0;
 
 		if ($start == 0)
-			echo '<p><a href="index.php?action=createitem&amp;blogid='.$blogid.'">',_ITEMLIST_ADDNEW,'</a></p>';
+		{
+			echo '<form action="index.php" method="GET">';
+			echo '<input type="hidden" name="action" value="createitem" />';
+			echo sprintf('<input type="hidden" name="blogid" value="%s" />', $blogid);
+			echo sprintf('<input type="submit" value="%s" />', _ITEMLIST_ADDNEW);
+			echo '</form>';
+		}
 
 		// amount of items to show
 		if (postVar('amount'))
