@@ -2499,7 +2499,11 @@ class ADMIN {
 
 
 		<p>
-		<a href="index.php?action=manageteam&amp;blogid=<?php echo $blogid?>"><?php echo _EBLOG_TEAM_TEXT?></a>
+		<form action="index.php" method="GET">
+			<input type="hidden" name="action" value="manageteam" />
+			<input type="hidden" name="blogid" value="<?php echo $blogid; ?>" />
+			<input type="submit" value="<?php echo _EBLOG_TEAM_TEXT; ?>" />
+		</form>
 		</p>
 
 		<h3><?php echo _EBLOG_SETTINGS_TITLE?></h3>
