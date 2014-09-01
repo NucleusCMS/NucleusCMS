@@ -62,11 +62,11 @@ class MEMBER {
 	}
 
 	function readFromName($displayname) {
-		return $this->read("mname='".sql_real_escape_string($displayname)."'");
+		return $this->read(sprintf("mname='%s'", sql_real_escape_string($displayname)));
 	}
 
 	function readFromID($id) {
-		return $this->read("mnumber=" . intval($id));
+		return $this->read('mnumber=' . intval($id));
 	}
 
 	/**
@@ -130,7 +130,7 @@ class MEMBER {
 	 */
 	function read($where) {
 		// read info
-		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
+		$query =  sprintf('SELECT * FROM %s WHERE %s', sql_table('member'), $where);
 
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
@@ -157,14 +157,13 @@ class MEMBER {
 	  * (returns false if not a team member)
 	  */
 	function isBlogAdmin($blogid) {
-		$query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
-			   . ' tblog=' . intval($blogid)
-			   . ' and tmember='. $this->getID();
+		$prefix = sql_table('');
+		$query = sprintf("SELECT tadmin FROM {$prefix}team WHERE tblog='%s' AND tmember='%s'", intval($blogid), $this->getID());
 		$res = sql_query($query);
-		if (sql_num_rows($res) == 0)
-			return 0;
-		else
-			return (sql_result($res,0,0) == 1) ;
+		
+		if (sql_num_rows($res) == 0) return 0;
+		else                         return (sql_result($res,0,0) == 1) ;
+			
 	}
 
 	function blogAdminRights($blogid) {
