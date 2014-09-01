@@ -102,9 +102,14 @@ class NAVLIST extends ENCAPSULATE {
 
 	?>
 	<table class="navigation">
-	<tr><td>
+	<tr>
+<?php
+	if($start==0) $disabled ='disabled style="cursor:default;"';
+	else          $disabled = '';
+?>
+		<td>
 		<form method="post" action="index.php"><div>
-		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV?>" />
+		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV; ?>" <?php echo $disabled; ?>/>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
@@ -112,7 +117,8 @@ class NAVLIST extends ENCAPSULATE {
 		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
 		<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
 		</div></form>
-	</td><td>
+	</td>
+		<td>
 		<form method="post" action="index.php"><div>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
