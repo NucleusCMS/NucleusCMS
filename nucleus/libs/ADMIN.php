@@ -1869,12 +1869,8 @@ class ADMIN {
 			// plugin options
 			$this->_insertPluginOptions('member',$memberid);
 		?>
-		<tr>
-			<th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
-		</tr><tr>
-			<td><?php echo _MEMBERS_EDIT?></td>
-			<td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
-		</tr></table>
+		</table>
+			<div><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></div>
 
 		</div></form>
 
@@ -5000,12 +4996,9 @@ selector();
 
 
 
-		</tr><tr>
-			<th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
-		</tr><tr>
-			<td><?php echo _SETTINGS_UPDATE?></td>
-			<td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
-		</tr></table>
+		</tr>
+		</table>
+			<div><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></div>
 
 		</div>
 		</form>
