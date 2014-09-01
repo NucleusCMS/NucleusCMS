@@ -640,7 +640,9 @@ function doInstall() {
 	// 5. execute queries
 	$queries = file_get_contents('install.sql');
 
-	$queries = split("(;\n|;\r)", $queries);
+	if(strpos($queries, ";\r")!==false)
+		$queries = str_replace(";\r", ";\n", $queries);
+	$queries = explode(";\n", $queries);
 
 	$aTableNames = array(
 		'nucleus_actionlog',
