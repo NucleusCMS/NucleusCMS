@@ -1793,7 +1793,7 @@ class ADMIN {
 		<table><tr>
 			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
 		</tr><tr>
-			<td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
+			<td style="width:300px;"><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
 				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 			</td>
 			<td>
@@ -4739,7 +4739,7 @@ selector();
 		<table><tr>
 			<th colspan="2"><?php echo _SETTINGS_SUB_GENERAL?></th>
 		</tr><tr>
-			<td><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
+			<td style="width:250px;"><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
 			<td>
 				<?php
 					$query =  'SELECT bname as text, bnumber as value'
