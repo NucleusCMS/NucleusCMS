@@ -19,7 +19,7 @@ function upgrade_do350() {
 		if (phpversion() < '5') {
 				echo '警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！';
 		}
-	
+	$prefix = sql_table('');
 	// changing the member table to lengthen display name (mname)
 	$query = "	ALTER TABLE `" . sql_table('member') . "`
 					MODIFY `mname` varchar(32) NOT NULL default '' ;";
@@ -39,6 +39,11 @@ function upgrade_do350() {
 	update_version('350');
 
 	// Remind user to re-install NP_Ping 
-	echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
+	
+	$query = "SELECT COUNT(*) as count FROM `{$prefix}plugin` WHERE pfile='NP_Ping'";
+	$rs = sql_query($query);
+	$row = sql_fetch_assoc($rs);
+	if($row['count']==1)
+		echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
 
 }
