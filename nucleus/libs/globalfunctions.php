@@ -202,6 +202,9 @@ getConfig();
 if (!isset($CONF['Self']))
 	$CONF['Self'] = rtrim($CONF['IndexURL'], '/'); // strip trailing
 
+if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
+	$CONF['Self'] = rtrim($CONF['IndexURL'], '/');
+
 $CONF['ItemURL'] = $CONF['Self'];
 $CONF['ArchiveURL'] = $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
