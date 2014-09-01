@@ -49,7 +49,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
 		
 		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
-		if ($mysql_database) mysql_select_db($mysql_database,$CONN);
+		if ($mysql_database) sql_select_db($mysql_database,$CONN);
 
 		return $CONN;
 	}
@@ -63,7 +63,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if(substr(PHP_OS,0,3)==='WIN' && $MYSQL_HOST==='localhost')
 			$MYSQL_HOST = '127.0.0.1';
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
-		mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+		sql_select_db($MYSQL_DATABASE,$MYSQL_CONN) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
 
 		if (defined('_CHARSET')){
 			$charset  = _CHARSET;
