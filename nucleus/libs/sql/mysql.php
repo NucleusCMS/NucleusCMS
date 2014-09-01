@@ -33,10 +33,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		?>
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 	<head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
-	<title><?php echo hsc($title,ENT_QUOTES)?></title></head>
+	<title><?php echo hsc($title)?></title></head>
 	<body>
-		<h1><?php echo hsc($title,ENT_QUOTES)?></h1>
-		<?php echo $msg?> 
+		<h1><?php echo hsc($title)?></h1>
+		<?php echo $msg?>
 	</body>
 </html>
 <?php
