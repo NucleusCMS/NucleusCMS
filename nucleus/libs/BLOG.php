@@ -1217,8 +1217,8 @@ class BLOG {
 
 		if ($this->settings['bfuturepost'] == 1) {
 			$blogid = $this->getID();
-			$result = sql_query("SELECT * FROM " . sql_table('item')
-					  . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
+			$query = sprintf("SELECT * FROM %s WHERE iposted=0 AND iblog='%s' AND itime<NOW()", sql_table('item'), $blogid);
+			$result = sql_query($query);
 			if (sql_num_rows($result) > 0) {
 				// This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
 				// Note that the plugins's calling order is subject to thri order in the plugin list
