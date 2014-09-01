@@ -102,7 +102,7 @@
 </div>
 </div>
 
-<!-- benchimark -->
+<!-- benchmark -->
 <div class="sidebar">
 <dl class="sidebardl">
 <dt>ページ生成時間</dt>
