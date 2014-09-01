@@ -184,9 +184,11 @@ table#files_index {
 
 table#files_index th {
 	width: 20%;
-	padding : 0;
+	padding : 4px;
 	text-align: left;
 	background-color: #eee;
+	white-space:nowrap;
+	font-weight:normal;
 }
 
 
