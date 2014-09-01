@@ -199,21 +199,8 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
-if (!isset($CONF['Self'])) {
-	$CONF['Self'] = $CONF['IndexURL'];
-	// strip trailing /
-	if ($CONF['Self'][strlen($CONF['Self']) -1] == "/") {
-		$CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
-	}
-
-/*	$CONF['ItemURL']		= $CONF['Self'];
-	$CONF['ArchiveURL']	 = $CONF['Self'];
-	$CONF['ArchiveListURL'] = $CONF['Self'];
-	$CONF['MemberURL']	  = $CONF['Self'];
-	$CONF['SearchURL']	  = $CONF['Self'];
-	$CONF['BlogURL']		= $CONF['Self'];
-	$CONF['CategoryURL']	= $CONF['Self'];*/
-}
+if (!isset($CONF['Self']))
+	$CONF['Self'] = rtrim($CONF['IndexURL'], '/'); // strip trailing
 
 $CONF['ItemURL'] = $CONF['Self'];
 $CONF['ArchiveURL'] = $CONF['Self'];
