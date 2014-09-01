@@ -2009,7 +2009,7 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 <p>v3.5でNucleusはPDO等MySQL以外のデータベースハンドラのサポートをするようになりました。この機能はベータ実装ではありますが、プラグイン開発者はデータベースの呼び出しに使用する関数の「sql_*」への書き換えを始めてください。
 基本的に、使用している全ての「mysql_*」関数を「sql_*」に置き換える必要があります。たとえば<code>mysql_fetch_assoc($result)</code>は<code>sql_fetch_assoc($result)</code> に置き換えになります。
 全ての関数を書き換えたら、Sql APIが無い古いバージョンのNucleusインストールできないように、次に示すコードをプラグイン内に記述して、インストールに必要な最低バージョンを350に指定する必要があります。<br />
-<code>function getMinNucleusVersion( return '350';)</code></p>
+<pre class="example"><code>function getMinNucleusVersion() { return '350'; }</code></pre></p>
 
 <ol>
     <li><code>nucleus_item</code> などの固定されたテーブル名の代わりに、テーブル名のプレフィックスを生成するために <code>sql_table('item') </code>というグローバルファンクションを利用します。</li>
