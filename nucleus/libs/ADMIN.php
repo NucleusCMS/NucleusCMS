@@ -2640,7 +2640,7 @@ class ADMIN {
 		<form action="index.php" method="post"><div>
 		<input name="action" value="categorynew" type="hidden" />
 		<?php $manager->addTicketHidden() ?>
-		<input name="blogid" value="<?php echo $blog->getID()?>" type="hidden" />
+		<input name="blogid" value="<?php echo $blog->getID(); ?>" type="hidden" />
 
 		<table><tr>
 			<th colspan="2"><?php echo _EBLOG_CAT_CREATE?></th>
