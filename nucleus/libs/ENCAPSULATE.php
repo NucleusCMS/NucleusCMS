@@ -120,7 +120,7 @@ class NAVLIST extends ENCAPSULATE {
 		<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE?>
 		<input type="hidden" name="start" value="<?php echo  $start; ?>" />
 		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="submit" value="&gt; <?php echo _LISTS_CHANGE?>" />
+		<input type="submit" value="<?php echo _LISTS_CHANGE?>" />
 		</div></form>
 	</td><td>
 		<form method="post" action="index.php"><div>
@@ -130,7 +130,7 @@ class NAVLIST extends ENCAPSULATE {
 		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
 		<input type="hidden" name="start" value="0" />
 		<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
-		<input type="submit" value="&gt; <?php echo  _LISTS_SEARCH?>" />
+		<input type="submit" value="<?php echo  _LISTS_SEARCH?>" />
 		</div></form>
 	</td><td>
 		<form method="post" action="index.php"><div>
