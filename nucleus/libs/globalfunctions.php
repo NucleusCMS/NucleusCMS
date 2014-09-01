@@ -2329,10 +2329,12 @@ function cleanFileName($str) {
  * @return	String	Formatted timestamp
  */
 function strftimejp($format,$timestamp = ''){
-	return (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')
-		? iconv('CP932', _CHARSET, strftime(iconv(_CHARSET, 'CP932', $format),$timestamp))
-		: strftime($format,$timestamp)
-	;
+	if(setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')
+		$rs = iconv('CP932', _CHARSET, strftime(iconv(_CHARSET, 'CP932', $format),$timestamp));
+	else
+		$rs = strftime($format,$timestamp);
+	
+	return $rs;
 }
 
 function hsc($string, $flags=ENT_QUOTES, $encoding='')
