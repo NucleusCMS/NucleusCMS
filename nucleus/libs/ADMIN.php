@@ -1834,10 +1834,12 @@ class ADMIN {
 				<td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
 				<td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
 		<?php } ?>
-		</tr><tr>
+		</tr>
+		<tr>
 			<td><?php echo _MEMBERS_NOTES?></td>
-			<td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  hsc($mem->getNotes()); ?>" /></td>
-		</tr><tr>
+			<td><textarea name="notes" tabindex="80" cols="30" rows="4" style="width:80%"><?php echo  hsc($mem->getNotes()); ?></textarea></td>
+		</tr>
+		<tr>
 			<td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
 			</td>
 			<td>
