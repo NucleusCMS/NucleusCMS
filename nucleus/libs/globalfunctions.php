@@ -581,7 +581,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-	return 366;
+	return 370;
 }
 
 /**
