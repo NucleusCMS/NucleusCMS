@@ -11,7 +11,7 @@ body
 {
 	background: #505050 url(images/bg.gif);
 	color: #494949;
-	font-family: "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Trebuchet, Arial, sans-serif;
+	font-family: "Bitstream Vera Sans",lucida,Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro","MS PGothic",sans-serif;
 	font-size: 12px;
 	padding: 15px 0;
 	margin: 0;
