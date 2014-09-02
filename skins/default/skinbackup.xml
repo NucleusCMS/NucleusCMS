@@ -175,8 +175,6 @@
 
 <!-- site stylesheet (site colors and layout definitions：サイドバー左用) -->
 <link rel="stylesheet" type="text/css" href="<%skinfile(default_left.css)%>" title="left bar" />
-<!-- site stylesheet (site colors and layout definitions：サイドバー右用) -->
-<link rel="alternate stylesheet" type="text/css" href="<%skinfile(default_right.css)%>" title="right bar" />
 
 <!-- site stylesheet ADDED (some adjustment) -->
 
