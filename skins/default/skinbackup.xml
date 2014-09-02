@@ -173,11 +173,6 @@
 <meta name="name" content="<%blogsetting(name)%>" />
 <meta name="description" content="<%blogsetting(desc)%>" />
 
-<!-- prevent caching (削除してもかまいません) -->
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-<meta http-equiv="Expires" content="-1" />
-
 <!-- site stylesheet (site colors and layout definitions：サイドバー左用) -->
 <link rel="stylesheet" type="text/css" href="<%skinfile(default_left.css)%>" title="left bar" />
 <!-- site stylesheet (site colors and layout definitions：サイドバー右用) -->
