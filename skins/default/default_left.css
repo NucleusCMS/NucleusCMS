@@ -497,3 +497,21 @@ textarea#nucleus_cf_body
 	float: right;
 	border-left: 2px solid #ccc;
 }
+
+/*-------------------------------------------------
+  the CSS piece for Nucleus Jp-local by Buzzlyhan and yamamoto
+-------------------------------------------------*/
+
+.contentbody{
+
+	line-height:1.6;
+}
+
+#nucleus_cf_body,
+#nucleus_cf_name,
+#nucleus_cf_mail,
+#nucleus_cf_email,
+.formfield,
+.formbutton{
+	display:block;
+}

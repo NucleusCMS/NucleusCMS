@@ -179,7 +179,6 @@
 <link rel="alternate stylesheet" type="text/css" href="<%skinfile(default_right.css)%>" title="right bar" />
 
 <!-- site stylesheet ADDED (some adjustment) -->
-<link rel="stylesheet" type="text/css" href="<%skinfile(jlocal.css)%>" />
 
 <!-- ATOM support --> 
 <link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.php" /> 
