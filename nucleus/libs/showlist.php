@@ -331,6 +331,7 @@ function listplug_table_itemlist($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 			$current->itime = strtotime($current->itime);	// string -> unix timestamp
+			if($current->itime < 0) $current->itime = 0;
 
 			if ($current->idraft == 1)
 				$cssclass = "class='draft'";
@@ -339,12 +340,17 @@ function listplug_table_itemlist($template, $type) {
 			if ($current->itime > $template['now'])
 				$cssclass = "class='future'";
 
-			$style = ($_GET['action']!=='pluginlist') ? 'style="white-space:nowrap"' : '' ;
-			echo "<td {$cssclass} {$style}>",_LIST_ITEM_BLOG,' ', hsc($current->bshortname);
-			echo "    <br />",_LIST_ITEM_CAT,' ', hsc($current->cname);
-			echo "    <br />",_LIST_ITEM_AUTHOR, ' ', hsc($current->mname);
-			echo "    <br />",_LIST_ITEM_DATE," " . date("Y-m-d",$current->itime);
-			echo "<br />",_LIST_ITEM_TIME," " . date("H:i",$current->itime);
+			$action = requestVar('action');
+			$style = ($action!=='pluginlist') ? 'style="white-space:nowrap"' : '' ;
+			echo "<td {$cssclass} {$style}>";
+			if ($action !== 'itemlist')
+				echo _LIST_ITEM_BLOG . ' ' . hsc($current->bshortname) . '<br />';
+			echo _LIST_ITEM_CAT . ' ' . hsc($current->cname) . '<br />';
+			if ($action !== 'browseownitems')
+				echo _LIST_ITEM_AUTHOR . ' ' . hsc($current->mname) . '<br />';
+			if($current->itime)
+				echo date('Y-m-d',$current->itime) . ' ' . date('H:i',$current->itime);
+			else echo '0000-00-00 00:00';
 			echo "</td>";
 			echo "<td $cssclass>";
 
