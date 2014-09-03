@@ -356,19 +356,19 @@ $param = array();
 $manager->notify('PreLoadMainLibs', $param);
 
 // load other classes
-include($DIR_LIBS . 'PARSER.php');
-include($DIR_LIBS . 'SKIN.php');
-include($DIR_LIBS . 'TEMPLATE.php');
-include($DIR_LIBS . 'BLOG.php');
-include($DIR_LIBS . 'BODYACTIONS.php');
-include($DIR_LIBS . 'COMMENTS.php');
-include($DIR_LIBS . 'COMMENT.php');
-//include($DIR_LIBS . 'ITEM.php');
-include($DIR_LIBS . 'NOTIFICATION.php');
-include($DIR_LIBS . 'BAN.php');
-include($DIR_LIBS . 'PAGEFACTORY.php');
-include($DIR_LIBS . 'SEARCH.php');
-include($DIR_LIBS . 'entity.php');
+include_once("{$DIR_LIBS}PARSER.php");
+include_once("{$DIR_LIBS}SKIN.php");
+include_once("{$DIR_LIBS}TEMPLATE.php");
+include_once("{$DIR_LIBS}BLOG.php");
+include_once("{$DIR_LIBS}BODYACTIONS.php");
+include_once("{$DIR_LIBS}COMMENTS.php");
+include_once("{$DIR_LIBS}COMMENT.php");
+//include_once("{$DIR_LIBS}ITEM.php");
+include_once("{$DIR_LIBS}NOTIFICATION.php");
+include_once("{$DIR_LIBS}BAN.php");
+include_once("{$DIR_LIBS}PAGEFACTORY.php");
+include_once("{$DIR_LIBS}SEARCH.php");
+include_once("{$DIR_LIBS}entity.php");
 
 
 // set lastVisit cookie (if allowed)

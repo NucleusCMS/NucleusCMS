@@ -19,7 +19,7 @@ function showlist($query, $type, $template) {
 		if (sizeof($query) == 0)
 			return 0;
 
-		call_user_func('listplug_' . $type, $template, 'HEAD');
+		call_user_func("listplug_{$type}", $template, 'HEAD');
 
 		foreach ($query as $currentObj) {
 			$template['current'] = $currentObj;
@@ -38,7 +38,7 @@ function showlist($query, $type, $template) {
 		if ($numrows == 0)
 			return 0;
 
-		call_user_func('listplug_' . $type, $template, 'HEAD');
+		call_user_func("listplug_{$type}", $template, 'HEAD');
 
 		while($template['current'] = sql_fetch_object($res))
 			call_user_func('listplug_' . $type, $template, 'BODY');

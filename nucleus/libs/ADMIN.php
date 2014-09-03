@@ -146,7 +146,7 @@ class ADMIN {
 
 		$this->pagehead();
 
-		echo '<h2>', _LOGIN ,'</h2>';
+		echo '<h2>'. _LOGIN .'</h2>';
 		if ($msg) echo _MESSAGE , ': ', hsc($msg);
 		?>
 
@@ -157,7 +157,7 @@ class ADMIN {
 		<br />
 		<input name="action" value="login" type="hidden" />
 		<br />
-		<input type="submit" value="<?php echo _LOGIN?>" tabindex="30" />
+		<input type="submit" value="<?php echo _LOGIN;?>" tabindex="30" />
 		<br />
 		<small>
 			<input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED?></label>
@@ -5319,7 +5319,7 @@ selector();
 					." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
 					. "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
 			else
-				echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
+				echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
 
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
 

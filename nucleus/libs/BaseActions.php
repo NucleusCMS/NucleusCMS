@@ -83,7 +83,7 @@ class BaseActions {
 		$contents = $skin->getContent($filename);
 		if (!$contents)
 		{
-			if (!file_exists($file))
+			if (!is_file($file))
 			{
 				return;
 			}
