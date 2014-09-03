@@ -11,16 +11,5 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-if (!function_exists('getmtime'))
-{
-    function getmtime()
-    {
-        $a = explode (' ',microtime());
-        return(double) $a[0] + $a[1];
-    }
-}
-
-// For benchmarking
-global $StartTime;
-$StartTime = getmtime();
-?>
+if(!isset($_SERVER['REQUEST_TIME_FLOAT']))
+	$_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
