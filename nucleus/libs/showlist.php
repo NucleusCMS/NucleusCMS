@@ -325,6 +325,7 @@ function listplug_table_itemlist($template, $type) {
 		case 'BODY':
 			$current = $template['current'];
 			$current->itime = strtotime($current->itime);	// string -> unix timestamp
+			if($current->itime < 0) $current->itime = 0;
 
 			if ($current->idraft == 1)
 				$cssclass = "class='draft'";
