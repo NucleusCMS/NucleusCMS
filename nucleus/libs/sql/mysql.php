@@ -47,7 +47,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	  */
 	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
 		
-		$CONN = mysql_connect($mysql_host, $mysql_user, $mysql_password); 
+		$CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
 		if ($mysql_database) sql_select_db($mysql_database,$CONN);
 
 		return $CONN;
@@ -73,13 +73,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	function sql_disconnect($conn = false) {
 		global $MYSQL_CONN;
 		if (!$conn) $conn = $MYSQL_CONN;
-		mysql_close($conn);
+		@mysql_close($conn);
 	}
 	
 	function sql_close($conn = false) {
 		global $MYSQL_CONN;
 		if (!$conn) $conn = $MYSQL_CONN;
-		mysql_close($conn);
+		@mysql_close($conn);
 	}
 	
 	/**
