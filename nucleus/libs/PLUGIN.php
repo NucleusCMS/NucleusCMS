@@ -157,19 +157,15 @@
 			if ($this->plugin_options == 0)
 			{
 				$this->plugin_options = array();
-				$query = sql_query(
-					 'SELECT d.oname as name, o.ovalue as value '.
-					 'FROM '.
-					 sql_table('plugin_option').' o, '.
-					 sql_table('plugin_option_desc').' d '.
-					 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
-				);
-				while ($row = sql_fetch_object($query))
+				$query = "SELECT d.oname as name, o.ovalue as value FROM %s o, %s d WHERE d.opid='%s' AND d.oid=o.oid";
+				$query =sprintf($query, sql_table('plugin_option'), sql_table('plugin_option_desc'), intval($this->getID()));
+				$rs = sql_query($query);
+				while ($row = sql_fetch_object($rs))
 					$this->plugin_options[strtolower($row->name)] = $row->value;
-		  }
-		  if (isset($this->plugin_options[strtolower($name)]))
+			}
+			if (isset($this->plugin_options[strtolower($name)]))
 				return $this->plugin_options[strtolower($name)];
-		  else
+			else
 				return $this->_getOption('global', 0, $name);
 		}
 
