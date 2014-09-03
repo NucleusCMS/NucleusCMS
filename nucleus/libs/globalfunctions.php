@@ -26,6 +26,7 @@ if ($CONF['debug']) {
 } else {
 	if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
 		ini_set('display_errors','0');
+	if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
 	error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 }
 
