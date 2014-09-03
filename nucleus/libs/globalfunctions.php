@@ -940,9 +940,10 @@ function selector() {
 		global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 
 		// sql queries for the timestamp of the first and the last published item
-		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 AND iblog=".(int)($blogid ? $blogid : $CONF['DefaultBlog'])." ORDER BY itime ASC";
+		$blogid_tmp = (int)($blogid ? $blogid : $CONF['DefaultBlog']);
+		$query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime %s LIMIT 1", sql_table('item'), $blogid_tmp, 'ASC');
 		$first_timestamp=quickQuery ($query);
-		$query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 AND iblog=".(int)($blogid ? $blogid : $CONF['DefaultBlog'])." ORDER BY itime DESC";
+		$query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime %s LIMIT 1", sql_table('item'), $blogid_tmp, 'DESC');
 		$last_timestamp=quickQuery ($query);
 
 		sscanf($archive, '%d-%d-%d', $y, $m, $d);
