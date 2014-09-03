@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,8 +12,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @copyright Copyright (C) The Nucleus Group
  */
  
 /*
@@ -42,7 +41,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 <?php
 		exit;
 	}
-	
+
 	/**
 	  * Connects to mysql server with arguments
 	  */
@@ -158,16 +157,16 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	}
 	
 	/**
-	  * returns number of rows in SQL result
-	  */
+	 * returns number of rows in SQL result
+	 */
 	function sql_num_rows($res)
 	{
 		return mysql_num_rows($res);
 	}
 	
 	/**
-	  * returns number of rows affected by SQL query
-	  */
+	 * returns number of rows affected by SQL query
+	 */
 	function sql_affected_rows($conn = false)
 	{
 		global $MYSQL_CONN;
