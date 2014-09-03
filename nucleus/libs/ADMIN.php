@@ -2292,9 +2292,10 @@ class ADMIN {
 			<table><tr>
 				<td><?php echo _TEAM_CHOOSEMEMBER?></td>
 				<td><?php				   // TODO: try to make it so only non-team-members are listed
-					$query =  'SELECT mname as text, mnumber as value'
-						   . ' FROM '.sql_table('member');
-
+					// From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
+					$query = "SELECT mname as text, mnumber as value FROM %s WHERE mnumber NOT IN (SELECT tmember FROM %s WHERE tblog='%s')";
+					$query = sprintf($query, sql_table('member'),sql_table('team'),$blogid);
+					
 					$template['name'] = 'memberid';
 					$template['tabindex'] = 10000;
 					showlist($query,'select',$template);
