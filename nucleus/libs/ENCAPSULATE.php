@@ -28,8 +28,7 @@ class ENCAPSULATE {
 		$nbOfRows = call_user_func_array($call, $params);
 
 		// get list contents and stop buffering
-		$list = ob_get_contents();
-		ob_end_clean();
+		$list = ob_get_clean();
 
 		if ($nbOfRows > 0) {
 			$this->showHead();
