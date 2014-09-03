@@ -82,7 +82,7 @@ define('_MANAGER_PLUGINFILE_NOTFOUND',				"プラグイン「%s」を読み込�
 /* changed */
 // plugin dependency
 define('_ERROR_INSREQPLUGIN',				'プラグイン %s がインストールされていないためにインストールすることができませんでした。');
-define('_ERROR_DELREQPLUGIN',				'プラグイン %s がこのプラグインに依存している為に削除できません。');
+define('_ERROR_DELREQPLUGIN',				'プラグイン %s がこのプラグインに依存しているために削除できません。');
 
 //define('_ADD_ADDLATER',						'後で追加');
 define('_ADD_ADDLATER',						'日時を指定して追加');	// <mod by shizuki />
@@ -136,7 +136,7 @@ define('_EBLOGDEFAULTCATEGORY_DESC',				'投稿した記事に合うカテゴリ
 
 // First ITEM
 define('_EBLOG_FIRSTITEM_TITLE',					'最初の記事(自動投稿)');
-define('_EBLOG_FIRSTITEM_BODY',						'これはあなたのblogにおける最初のアイテムです。自由に削除していただいてかまいません。');
+define('_EBLOG_FIRSTITEM_BODY',						'これはこのblogにおける最初のアイテムです。自由に削除していただいてかまいません。');
 
 // New weblog was created
 define('_BLOGCREATED_TITLE',						'新しいblogが作成されました');
@@ -165,10 +165,10 @@ define('_WINREGFILE_TEXT',							'「%s」に記事を投稿');
 // Bookmarklet
 define('_BOOKMARKLET_TITLE',						'ブックマークレット<!-- と 右クリックメニュー -->');
 define('_BOOKMARKLET_DESC1',						'ブックマークレット（Bookmarklet）とは、Webブラウザのブックマークに登録して使うJavaScriptプログラムです。<br />');
-define('_BOOKMARKLET_DESC2',						'Nucleusには『お気に入り』または『ブックマークツールバー』に登録でき、クリックひとつで blog への投稿画面を開く機能をブラウザに追加することが出来ます。<br />');
+define('_BOOKMARKLET_DESC2',						'Nucleusには『お気に入り』または『ブックマークツールバー』に登録でき、クリックひとつで blog への投稿画面を開く機能をブラウザに追加することができます。<br />');
 define('_BOOKMARKLET_DESC3',						'Webサイトを見ていてそのページにリンクを張った投稿をしたいと思った時にブックマークレットを使用すれば、そのサイト(ページ)へのリンクが書き込まれた状態で、');
 define('_BOOKMARKLET_DESC4',						'さらに、そのページ内で文章を選択した状態で使用した場合、選択されている文章が自動的に引用された状態で、Nucleusの新規アイテムの追加ウィンドウがポップアップします。<br />');
-define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することも出来ます。');
+define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することもできます。');
 define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
 define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
 define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
@@ -176,7 +176,7 @@ define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下の�
 define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
 define('_BOOKMARKLET_RIGHTLABEL',					'右クリックメニュー');
 define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsでインターネットエクスプローラーを使用している場合は、');
-define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることも出来ます<br />(「開く」を選択すれば直接レジストリに登録します)');
+define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることもできます<br />(「開く」を選択すれば直接レジストリに登録します)');
 define('_BOOKMARKLET_RIGHTTEXT3',					'このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。');
 define('_BOOKMARKLET_UNINSTALLTT',					'アンインストール');
 define('_BOOKMARKLET_DELETEBAR',					'「お気に入り」もしくはツールバーから消すには、単に削除するだけです。');
@@ -185,10 +185,10 @@ define('_BOOKMARKLET_DELETERIGHT1',					'スタートメニューから「ファ
 define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" と入力');
 define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ボタンを押す');
 define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索');
-define('_BOOKMARKLET_DELETERIGHT5',					'"「(あなたのblogの名前)」に記事を投稿" エントリを削除');
+define('_BOOKMARKLET_DELETERIGHT5',					'"「(blogの名前)」に記事を投稿" エントリを削除');
 
 define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'何かが間違っています');
-define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることが出来ませんでした');
+define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることができませんでした');
 
 // BAN
 define('_BAN_EXAMPLE_TITLE',						'例');
@@ -229,7 +229,7 @@ define('_SETTINGS_DISABLESITEURL',					'転送先のURL:');
 
 // Skin import/export
 define('_SKINIE_SEELEMENT_UNEXPECTEDTAG',			'予期しないタグ');
-define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'ファイル、またはURLを開く事が出来ません');
+define('_SKINIE_ERROR_FAILEDOPEN_FILEURL',			'ファイル、またはURLを開くことができません');
 define('_SKINIE_NAME_CLASHES_DETECTED',				'スキン/テンプレートに名前の同じものがあります。allowOverwriteを1に設定して、上書きモードで再度実行してください。');
 
 // ACTIONS.php parse_commentform
@@ -381,7 +381,7 @@ define('_ERROR_EMAIL_REQUIRED',				'メールアドレスが必要です');
 define('_COMMENTFORM_MAIL',					'あなたのサイトのURL:');
 define('_COMMENTFORM_EMAIL',				'メールアドレス:');
 define('_EBLOG_REQUIREDEMAIL',				'コメント時にメールアドレスを要求する');
-define('_ERROR_COMMENTS_SPAM',              'あなたのコメントは、スパムテストの結果拒否されました');
+define('_ERROR_COMMENTS_SPAM',              '投稿されたコメントは、スパムテストの結果拒否されました');
 // END changed/added after 3.22 END
 
 // START changed/added after 3.15 START
@@ -396,7 +396,7 @@ define('_LIST_PLUGS_DEP',					'依存するプラグイン:');
 // comments list per weblog
 define('_COMMENTS_BLOG',					'コメントのリスト:');
 define('_NOCOMMENTS_BLOG',					'このblogにはまだコメントがつけられていません');
-define('_BLOGLIST_COMMENTS',				'コメント');
+define('_BLOGLIST_COMMENTS',				'コメント一覧');
 define('_BLOGLIST_TT_COMMENTS',				'このblogにつけられたコメントのリスト');
 
 
@@ -411,7 +411,7 @@ define('_ERROR_BADTICKET',					'チケットが不正、もしくは期限切れ
 define('_SETTINGS_COOKIEPREFIX',			'Cookie プレフィックス');
 
 // account activation
-define('_ERROR_NOLOGON_NOACTIVATE',			'認証用リンクを送信できません。あなたのログインは許可されていません。');
+define('_ERROR_NOLOGON_NOACTIVATE',			'認証用リンクを送信できません。ログインが許可されていません。');
 define('_ERROR_ACTIVATE',					'認証キーは存在しないか、無効か、あるいは期限切れです。');
 define('_ACTIONLOG_ACTIVATIONLINK',			'認証用リンクが送信されました。');
 define('_MSG_ACTIVATION_SENT',				'認証用リンクをメールで送信しました。');
@@ -745,10 +745,10 @@ define('_OVERVIEW_PLUGINS',					'プラグイン管理');
 define('_ACTIONLOG_NEWMEMBER',				'新しいメンバーの登録:');
 
 // membermail (when not logged in)
-define('_MEMBERMAIL_MAIL',					'あなたのメールアドレス:');
+define('_MEMBERMAIL_MAIL',					'メールアドレス:');
 
 // file upload
-define('_ERROR_DISALLOWEDUPLOAD2',			'チームに参加しているどのブログも管理権限を持っていない為、ファイルのアップロードが出来ません。');
+define('_ERROR_DISALLOWEDUPLOAD2',			'チームに参加しているどのブログも管理権限を持っていないため、ファイルのアップロードができません。');
 
 /* plugin list
 define('_LISTS_INFO',						'情報');
@@ -810,14 +810,14 @@ define('_ERROR',							'エラー');
 define('_ERRORMSG',							'エラーが発生しました！');
 define('_BACK',								'戻る');
 define('_NOTLOGGEDIN',						'ログインしていません');
-define('_LOGGEDINAS',						'ログイン:');
+define('_LOGGEDINAS',						'ログイン名 : ');
 define('_ADMINHOME',						'管理ホーム');
 define('_NAME',								'名前');
 define('_BACKHOME',							'管理ホームに戻る');
 define('_BADACTION',						'存在しないアクションが要求されました');
 define('_MESSAGE',							'メッセージ');
-define('_HELP_TT',							'ヘルプ！');
-define('_YOURSITE',							'サイトの確認');
+define('_HELP_TT',							'ヘルプ');
+define('_YOURSITE',							'サイトを表示');
 
 
 define('_POPUP_CLOSE',						'ウィンドウを閉じる');
@@ -909,8 +909,8 @@ define('_ERROR_COMMENT_NOUSERNAME',			'使用できない名前です。');
 define('_ERROR_COMMENT_TOOLONG',			'コメントが長すぎます。(半角で5000文字まで)');
 define('_ERROR_COMMENTS_DISABLED',			'現在このBlogではコメントを受け付けていません。');
 define('_ERROR_COMMENTS_NONPUBLIC',			'このBlogへコメントを追加するにはメンバーとしてログインしなければいけません。');
-define('_ERROR_COMMENTS_MEMBERNICK',		'あなたが使おうとした名前は既に使われています。他の名前を入力してください。');
-define('_ERROR_SKIN',						'スキン　エラー');
+define('_ERROR_COMMENTS_MEMBERNICK',		'使おうとした名前は既に使われています。他の名前を入力してください。');
+define('_ERROR_SKIN',						'スキンエラー');
 define('_ERROR_ITEMCLOSED',					'このアイテムは閲覧専用です。コメントの投稿、投票はできません。');
 define('_ERROR_NOSUCHITEM',					'そのようなアイテムは存在しません。');
 define('_ERROR_NOSUCHBLOG',					'そのようなBlogは存在しません。');
@@ -929,7 +929,7 @@ define('_ERROR_PASSWORDTOOSHORT',			'パスワードは6文字以上でなけれ
 define('_ERROR_PASSWORDMISSING',			'パスワードが空です。');
 define('_ERROR_REALNAMEMISSING',			'ハンドルを入力してください。');
 define('_ERROR_ATLEASTONEADMIN',			'管理領域にログインできるsuper-adminが少なくとも1人はいなくてはいけません。');
-define('_ERROR_ATLEASTONEBLOGADMIN',		'このアクションを実行するとあなたのBlogはメンテナンス不能になります。少なくとも1人の管理者がいるようにしてください。');
+define('_ERROR_ATLEASTONEBLOGADMIN',		'このアクションを実行するとサイトのメンテナンスができなくなります。少なくとも1人の管理者がいるようにしてください。');
 define('_ERROR_ALREADYONTEAM',				'既にチームに入っています。');
 define('_ERROR_BADSHORTBLOGNAME',			'Blogの短縮名(略称)には a-z 、0-9、の英数字のみ使用できます。スペースは使用できません。');
 define('_ERROR_DUPSHORTBLOGNAME',			'他のBlogで同じ短縮名(略称)が使われています。別の短縮名(略称)を入力してください。');
@@ -958,12 +958,12 @@ define('_ERROR_CONNECT',					'接続エラー');
 define('_ERROR_FILE_TOO_BIG',				'ファイルが大きすぎます！');
 define('_ERROR_BADFILETYPE',				'アップロードが認められていないファイルタイプです。');
 define('_ERROR_BADREQUEST',					'不正なアップロード要求です');
-define('_ERROR_DISALLOWEDUPLOAD',			'あなたはどのBlogチームにも入っていないのでファイルをアップロードできません。');
+define('_ERROR_DISALLOWEDUPLOAD',			'どのBlogチームにも入っていないためファイルをアップロードできません。');
 define('_ERROR_BADPERMISSIONS',				'ファイル/ディレクトリのパーミッションが正しくセットされていません。');
 define('_ERROR_UPLOADMOVEP',				'アップロードファイルの移動中にエラーが発生しました。');
 define('_ERROR_UPLOADCOPY',					'ファイルのコピー中にエラーが発生しました。');
 define('_ERROR_UPLOADDUPLICATE',			'同じ名前のファイルが既に存在します。アップロードする前に名前を変更してしてください。');
-define('_ERROR_LOGINDISALLOWED',			'管理領域へのログインが認められていません。もしあなたが管理ユーザーのアカウントを持っているのなら、管理ユーザーとしてログインしなおしてください。');
+define('_ERROR_LOGINDISALLOWED',			'管理領域へのログインが認められていません。もし管理ユーザーのアカウントを持っているのなら、管理ユーザーとしてログインしなおしてください。');
 define('_ERROR_DBCONNECT',					'MySQLサーバに接続できません');
 define('_ERROR_DBSELECT',					'Nucleusが使用するデータベースを選択できません。');
 define('_ERROR_NOSUCHLANGUAGE',				'指定された言語ファイルは存在しません。');
@@ -992,7 +992,7 @@ define('_UPLOAD_BUTTON',					'アップロード');
 // some status messages
 //define('_MSG_ACCOUNTCREATED',				'アカウントが作成されました。パスワードがメールで送信されます');
 //define('_MSG_PASSWORDSENT',				'パスワードがメールで送信されました。');
-define('_MSG_LOGINAGAIN',					'アカウント情報が変更された為、ログインしなおす必要があります');
+define('_MSG_LOGINAGAIN',					'アカウント情報が変更されたため、ログインしなおす必要があります');
 define('_MSG_SETTINGSCHANGED',				'設定が変更されました');
 define('_MSG_ADMINCHANGED',					'管理者権限が変更されました');
 define('_MSG_NEWBLOG',						'新しいBlogが作成されました');
@@ -1045,7 +1045,7 @@ define('_EBLOG_CHANGE_BTN',					'設定の変更');
 define('_EBLOG_ADMIN',						'Blog管理者権限');
 define('_EBLOG_ADMIN_MSG',					'あなたには管理者権限が割り当てられます');
 define('_EBLOG_CREATE_TITLE',				'新しいBlogの作成');
-define('_EBLOG_CREATE_TEXT',				'新しいBlogを作成する為に以下のフォームを埋めてください。<br /><br /> <b>注意:</b> 必要なオプションのみが表示されています。追加のオプションを設定したい場合はBlogを作成した後、Blog設定ページで設定してください。');
+define('_EBLOG_CREATE_TEXT',				'新しいBlogを作成するために以下のフォームを埋めてください。<br /><br /> <b>注意:</b> 必要なオプションのみが表示されています。追加のオプションを設定したい場合はBlogを作成した後、Blog設定ページで設定してください。');
 define('_EBLOG_CREATE',						'作成！');
 define('_EBLOG_CREATE_BTN',					'Blogを作成');
 define('_EBLOG_CAT_TITLE',					'カテゴリー');
@@ -1178,23 +1178,23 @@ define('_SETTINGS_MEDIAPREFIX',				'アップロードするファイル名の�
 define('_SETTINGS_MEMBERS',					'メンバー設定');
 
 // bans
-define('_BAN_TITLE',						'アク禁リスト:');
-define('_BAN_NONE',							'このBlogはアクセス規制されていません');
-define('_BAN_NEW_TITLE',					'規制するIPアドレスの追加');
-define('_BAN_NEW_TEXT',						'今すぐ規制アドレスを追加する');
-define('_BAN_REMOVE_TITLE',					'アクセス規制の解除');
-define('_BAN_IPRANGE',						'アクセス規制するIPアドレスの範囲');
-define('_BAN_BLOGS',						'アクセス規制するBlog: ');
-define('_BAN_DELETE_TITLE',					'アクセス規制の解除');
+define('_BAN_TITLE',						'制限IPアドレスのリスト:');
+define('_BAN_NONE',							'このBlogはアクセス制限されていません');
+define('_BAN_NEW_TITLE',					'制限するIPアドレスの追加');
+define('_BAN_NEW_TEXT',						'今すぐ制限アドレスを追加する');
+define('_BAN_REMOVE_TITLE',					'アクセス制限の解除');
+define('_BAN_IPRANGE',						'アクセス制限するIPアドレスの範囲');
+define('_BAN_BLOGS',						'アクセス制限するBlog: ');
+define('_BAN_DELETE_TITLE',					'アクセス制限の解除');
 define('_BAN_ALLBLOGS',						'あなたが管理者権限を持つ全てのBlog');
-define('_BAN_REMOVED_TITLE',				'アクセス規制を解除しました');
-define('_BAN_REMOVED_TEXT',					'以下のBlogのアクセス規制を解除しました:');
-define('_BAN_ADD_TITLE',					'規制するIPアドレスの追加');
+define('_BAN_REMOVED_TITLE',				'アクセス制限を解除しました');
+define('_BAN_REMOVED_TEXT',					'以下のBlogのアクセス制限を解除しました:');
+define('_BAN_ADD_TITLE',					'制限するIPアドレスの追加');
 define('_BAN_IPRANGE_TEXT',					'以下にブロックしたいIPアドレスを入力してください。');
-define('_BAN_BLOGS_TEXT',					'1つのBlogのみで規制するか、あなたが管理者権限を持つ全てのBlogで規制するかを選択することが出来ます。以下から選んでください。');
+define('_BAN_BLOGS_TEXT',					'1つのBlogのみで制限するか、あなたが管理者権限を持つ全てのBlogで制限するかを選択することができます。以下から選んでください。');
 define('_BAN_REASON_TITLE',					'理由');
-define('_BAN_REASON_TEXT',					'規制中のIPアドレスの範囲内のHOSTからコメントを投稿したりカルマ投票をしようとしたときに表示される規制理由を書いておくことができます (上限256文字)。');
-define('_BAN_ADD_BTN',						'規制するIPアドレスの追加');
+define('_BAN_REASON_TEXT',					'制限中のIPアドレスの範囲内のHOSTからコメントを投稿したりカルマ投票をしようとしたときに表示される制限理由を書いておくことができます (上限256文字)。');
+define('_BAN_ADD_BTN',						'制限するIPアドレスの追加');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',					'メッセージ');
@@ -1233,8 +1233,8 @@ define('_BLOGLIST_BMLET',					'ブックマークレット');
 define('_BLOGLIST_TT_BMLET',				'ブックマークレットのインストール');
 define('_BLOGLIST_SETTINGS',				'ブログ設定');
 define('_BLOGLIST_TT_SETTINGS',				'ブログの設定とブログチームの管理');
-define('_BLOGLIST_BANS',					'アクセス規制');
-define('_BLOGLIST_TT_BANS',					'アクセス規制の確認/追加/削除');
+define('_BLOGLIST_BANS',					'アクセス制限');
+define('_BLOGLIST_TT_BANS',					'アクセス制限の確認/追加/削除');
 define('_BLOGLIST_DELETE',					'全て削除');
 define('_BLOGLIST_TT_DELETE',				'このBlogを削除');
 
@@ -1295,14 +1295,14 @@ define('_LIST_MEMBER_LOGIN',						'ログイン可能');
 define('_LIST_MEMBER_URL',							'ウェブサイト');
 
 // banlist
-define('_LIST_BAN_IPRANGE',							'規制中のIPアドレスの範囲');
-define('_LIST_BAN_REASON',							'規制の理由');
+define('_LIST_BAN_IPRANGE',							'制限中のIPアドレスの範囲');
+define('_LIST_BAN_REASON',							'制限の理由');
 
 // actionlist
 define('_LIST_ACTION_MSG',							'メッセージ');
 
 // commentlist
-define('_LIST_COMMENT_BANIP',						'IPアドレスを規制');
+define('_LIST_COMMENT_BANIP',						'IPアドレスを制限');
 define('_LIST_COMMENT_WHO',							'作者');
 define('_LIST_COMMENT',								'コメント');
 define('_LIST_COMMENT_HOST',						'ホスト');
