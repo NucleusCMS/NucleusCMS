@@ -1138,7 +1138,8 @@ function selector() {
 	$skinpart = $type;
 	
 	// parse the skin
-	$skin->parse($type);
+	$output = $skin->parse($type);
+	echo $output;
 
 	// check to see we should throw JustPosted event
 	$blog->checkJustPosted();
@@ -1169,7 +1170,8 @@ function doError($msg, $skin = '') {
 
 	$skinid = $skin->id;
 	$errormessage = $msg;
-	$skin->parse('error');
+	$output = $skin->parse('error');
+	echo $output;
 	exit;
 }
 

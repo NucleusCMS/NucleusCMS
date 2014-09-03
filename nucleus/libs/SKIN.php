@@ -188,16 +188,20 @@ class SKIN {
 		$parser = new PARSER($actions, $handler);
 		$handler->setParser($parser);
 		$handler->setSkin($this);
-		$parser->parse($contents);
 		
+		ob_start();
+		$parser->parse($contents);
+		$output = ob_get_contents();
 		$param = array(
-			'skin' => &$this,
-			'type' =>  $type
+			'skin'   => &$this,
+			'type'   =>  $type,
+			'output' => &$output
 		);
 		$manager->notify('PostSkinParse', $param);
+		ob_end_clean();
+		
 		$skinid = $this->id;
-
-
+		return $output;
 	}
 
 	function getContent($type) {
