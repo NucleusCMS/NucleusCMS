@@ -157,8 +157,9 @@
 			if ($this->plugin_options == 0)
 			{
 				$this->plugin_options = array();
-				$query = "SELECT d.oname as name, o.ovalue as value FROM %s o, %s d WHERE d.opid='%s' AND d.oid=o.oid";
-				$query =sprintf($query, sql_table('plugin_option'), sql_table('plugin_option_desc'), intval($this->getID()));
+				// http://japan.nucleuscms.org/forum/viewtopic.php?id=6203
+				$query = "SELECT d.oname as name, o.ovalue as value FROM %s d, %s o WHERE d.opid='%s' AND d.ocontext='global' AND d.oid=o.oid AND o.ocontextid=0";
+				$query =sprintf($query, sql_table('plugin_option_desc'), sql_table('plugin_option'), intval($this->getID()));
 				$rs = sql_query($query);
 				while ($row = sql_fetch_object($rs))
 					$this->plugin_options[strtolower($row->name)] = $row->value;
