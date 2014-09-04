@@ -470,26 +470,50 @@
 			$aOptions = array();
 			switch ($context) {
 				case 'blog':
-					$r = sql_query('SELECT bnumber as contextid FROM ' . sql_table('blog'));
+					$query = 'SELECT bnumber as contextid FROM ' . sql_table('blog');
 					break;
 				case 'category':
-					$r = sql_query('SELECT catid as contextid FROM ' . sql_table('category'));
+					$query = 'SELECT catid as contextid FROM ' . sql_table('category');
 					break;
 				case 'member':
-					$r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+					$query = 'SELECT mnumber as contextid FROM ' . sql_table('member');
 					break;
 				case 'item':
-					$r = sql_query('SELECT inumber as contextid FROM ' . sql_table('item'));
+					$query = 'SELECT inumber as contextid FROM ' . sql_table('item');
 					break;
 			}
-			if ($r) {
-				while ($o = sql_fetch_object($r))
-					$aOptions[$o->contextid] = $defVal;
+			
+			global $resultCache;
+			if(isset($resultCache["aOptions{$query}"]))
+				$aOptions = $resultCache["aOptions{$query}"];
+			else
+			{
+				if($query)
+				{
+					$r = sql_query($query);
+					if ($r)
+					{
+						while ($o = sql_fetch_object($r))
+						{
+							$aOptions[$o->contextid] = $defVal;
+						}
+					}
+				}
+				$resultCache["aOptions{$query}"] = $aOptions;
 			}
-
-			$res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
-			while ($o = sql_fetch_object($res))
-				$aOptions[$o->ocontextid] = $o->ovalue;
+			
+			$query = 'SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid;
+			if(isset($resultCache["aOptions{$query}"]))
+				$aOptions = $resultCache["aOptions{$query}"];
+			else
+			{
+				$res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
+				while ($o = sql_fetch_object($res))
+				{
+					$aOptions[$o->ocontextid] = $o->ovalue;
+				}
+				$resultCache["aOptions{$query}"] = $aOptions;
+			}
 
 			return $aOptions;
 		}
