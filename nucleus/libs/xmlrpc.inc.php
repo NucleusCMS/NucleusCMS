@@ -2248,7 +2248,6 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
                     }
                 }
                 // be tolerant to line endings, and extra empty lines
-                //$ar = split("\r?\n", trim(substr($data, 0, $pos))); //split() is deprecated
                 $ar = preg_split("/\r?\n/", trim(substr($data, 0, $pos)));
                 while(list(,$line) = @each($ar))
                 {
