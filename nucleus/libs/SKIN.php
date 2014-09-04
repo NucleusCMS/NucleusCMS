@@ -205,6 +205,7 @@ class SKIN {
 	}
 
 	function getContent($type) {
+		if(strpos($type, '/')!==false) return '';
 		$query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
 		$res = sql_query($query);
 

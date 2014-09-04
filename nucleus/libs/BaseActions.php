@@ -80,7 +80,7 @@ class BaseActions {
 		{
 			return;
 		}
-		$contents = $skin->getContent($filename);
+		$contents = strpos($filename,'/')===false ? $skin->getContent($filename) : false;
 		if (!$contents)
 		{
 			if (!is_file($file))
