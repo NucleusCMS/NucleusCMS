@@ -927,9 +927,19 @@ class BLOG {
 	}
 
 	function isValidCategory($catid) {
+		global $resultCache;
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		$res = sql_query($query);
-		return (sql_num_rows($res) != 0);
+		if(isset($resultCache["count{$query}"]))
+		{
+			$count = $resultCache["count{$query}"];
+		}
+		else
+		{
+			$res = sql_query($query);
+			$count = sql_num_rows($res);
+			$resultCache["count{$query}"] = $count;
+		}
+		return ($count != 0);
 	}
 
 	function getCategoryName($catid) {
