@@ -99,10 +99,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	  * executes an SQL query
 	  */
 	function sql_query($query,$conn = false) {
-		global $SQLCount,$MYSQL_CONN;
+		global $SQLCount,$MYSQL_CONN,$SQLStack;
 		if (!$conn) $conn = $MYSQL_CONN;
-		$SQLCount++;
+		$bt = microtime(true);
 		$res = mysql_query($query,$conn) or print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
+		$SQLCount++;
+		$et = microtime(true) - $bt;
+		$SQLStack[$SQLCount] = "[$SQLCount] {$et}s - {$query}";
 		return $res;
 	}
 	

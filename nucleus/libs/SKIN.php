@@ -204,6 +204,11 @@ class SKIN {
 			$rs = coreSkinVar('<%BenchMark%>');
 			$output = str_replace('<%BenchMark%>', $rs, $output);
 		}
+		if(strpos($output,'<%DebugInfo%>')!==false)
+		{
+			$rs = coreSkinVar('<%DebugInfo%>');
+			$output = str_replace('<%DebugInfo%>', $rs, $output);
+		}
 		ob_end_clean();
 		
 		$skinid = $this->id;

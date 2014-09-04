@@ -62,6 +62,12 @@ class PARSER {
 			if(!$manager->pluginInstalled('NP_BenchMark'))
 				$contents = str_replace('<%BenchMark%>', $hashedTagBM, $contents);
 		}
+		$hashedTagDI = md5('<%DebugInfo%>');
+		if(strpos($contents,'<%DebugInfo%>')!==false)
+		{
+			if(!$manager->pluginInstalled('NP_DebugInfo'))
+				$contents = str_replace('<%DebugInfo%>', $hashedTagDI, $contents);
+		}
 		
 		$pieces = preg_split('/'.$this->delim.'/',$contents);
 
@@ -78,6 +84,8 @@ class PARSER {
 		
 		if(strpos($contents,$hashedTagBM)!==false)
 			$contents = str_replace($hashedTagBM, '<%BenchMark%>', $contents);
+		if(strpos($contents,$hashedTagDI)!==false)
+			$contents = str_replace($hashedTagDI, '<%DebugInfo%>', $contents);
 		
 		echo $contents;
 	}

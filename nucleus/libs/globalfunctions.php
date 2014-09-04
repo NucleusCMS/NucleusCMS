@@ -2375,6 +2375,11 @@ function coreSkinVar($key='')
 		$loadtime = $EndTime - $StartTime;
 		$rs = sprintf("%.3f sec / %d queries", $loadtime, $SQLCount);
 	}
+	elseif($key==='<%DebugInfo%>')
+	{
+		global $SQLStack;
+		$rs = sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$SQLStack));
+	}
 	else $rs = '';
 	
 	return $rs;
