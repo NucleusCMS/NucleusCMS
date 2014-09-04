@@ -814,9 +814,18 @@ function getCatIDFromName($name) {
 }
 
 function quickQuery($q) {
-	$res = sql_query($q);
-	$obj = sql_fetch_object($res);
-	return is_object($obj) ? $obj->result : NULL;
+	global $resultCache;
+	
+	if(isset($resultCache[$q]))
+		$result = $resultCache[$q];
+	else
+	{
+		$res = sql_query($q);
+		$obj = sql_fetch_object($res);
+		$result = is_object($obj) ? $obj->result : NULL;
+		$resultCache[$q] = $obj->result;
+	}
+	return $result;
 }
 
 function getPluginNameFromPid($pid) {
