@@ -41,10 +41,15 @@ if ($action == '') {
 	$action = 'add';
 }
 
+$actiontype = postVar('actiontype');
+if($actiontype==='delete'||$actiontype==='itemdeleteconfirm')
+	$action = $actiontype;
+
 sendContentType('text/html', 'bookmarklet-' . $action);
 
 // check ticket
 $action = strtolower($action);
+
 $aActionsNotToCheck = array('login', 'add', 'edit');
 
 if (!in_array($action, $aActionsNotToCheck) ) {
@@ -72,6 +77,14 @@ switch ($action) {
 		bm_doEditItem();
 		break;
 
+	case 'delete':
+		bm_doDeleteItem();
+		break;
+		
+	case 'itemdeleteconfirm':
+		bm_doDeleteItemComplete();
+		break;
+		
 		// on login, 'action' gets changed to 'nextaction'
 	case 'login':
 		bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
@@ -112,6 +125,37 @@ function bm_doAddItem() {
 	bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
 }
 
+function bm_doDeleteItem()
+{
+	global $manager;
+		$msg = <<< EOT
+<p><%_CONFIRMTXT_ITEM%></p>
+<p><%itemtitle%></p>
+<form method="post" action="bookmarklet.php"><div>
+<input type="hidden" name="action" value="itemdeleteconfirm" />
+<input type="hidden" name="ticket" value="<%ticket%>" />
+<input type="hidden" name="itemid" value="<%itemid%>" />
+<input type="submit" value="<%_DELETE_CONFIRM_BTN%>"  tabindex="10" />
+</div></form>
+EOT;
+		$ticket = $manager->getNewTicket();
+		$itemid = intRequestVar('itemid');
+		$title = postVar('title');
+		$msg = str_replace(array('<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>','<%ticket%>','<%itemid%>','<%itemtitle%>'), array(_CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,$ticket,$itemid,$title), $msg);
+		bm_message(_DELETE_CONFIRM_BTN, _DELETE_CONFIRM, $msg, '', 0);
+		exit;
+}
+
+function bm_doDeleteItemComplete()
+{
+	global $manager;
+	$manager->loadClass('ITEM');
+	$itemid = intRequestVar('itemid');
+	ITEM::delete($itemid);
+	bm_message(_DELETED_ITEM, _DELETED_ITEM, _DELETED_ITEM);
+	exit;
+}
+
 function bm_doEditItem() {
 	global $member, $manager, $CONF;
 
@@ -129,12 +173,6 @@ function bm_doEditItem() {
 	$closed = intPostVar('closed');
 	$actiontype = postVar('actiontype');
 	$draftid = intPostVar('draftid');
-
-	// redirect to admin area on delete (has delete confirmation)
-	if ($actiontype == 'delete') {
-		redirect('index.php?action=itemdelete&itemid=' . $itemid);
-		exit;
-	}
 
 	// create new category if needed (only on edit/changedate)
 	if (strstr($catid,'newcat') ) {
@@ -304,7 +342,7 @@ function bm_doError($msg) {
 	die;
 }
 
-function bm_message($title, $head, $msg, $extrahead = '') {
+function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
 	?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
@@ -317,7 +355,9 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 <body>
 <h1><?php echo $head; ?></h1>
 <p><?php echo $msg; ?></p>
+<?php if($showClose):?>
 <p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
+<?php endif; ?>
 </body>
 </html>
 
