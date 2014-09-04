@@ -29,12 +29,26 @@ class SKIN {
 	var $name;
 
 	function SKIN($id) {
+		global $resultCache;
+		
 		$this->id = intval($id);
 
 		// read skin name/description/content type
-		$res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
-		$obj = sql_fetch_object($res);
-		$this->isValid = (sql_num_rows($res) > 0);
+		$query = 'SELECT * FROM '.sql_table('skin_desc')." WHERE sdnumber='{$this->id}'";
+		if(isset($resultCache[$query]))
+		{
+			$obj   = $resultCache[$query];
+			$count = $resultCache["count{$query}"];
+		}
+		else
+		{
+			$res   = sql_query($query);
+			$obj   = sql_fetch_object($res);
+			$count = sql_num_rows($res);
+			$resultCache[$query]          = $obj;
+			$resultCache["count{$query}"] = $count;
+		}
+		$this->isValid = ($count > 0);
 		if (!$this->isValid)
 			return;
 
