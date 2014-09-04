@@ -2619,13 +2619,8 @@ class ADMIN {
 			// plugin options
 			$this->_insertPluginOptions('blog',$blogid);
 		?>
-		<tr>
-			<th colspan="2"><?php echo _EBLOG_CHANGE?></th>
-		</tr><tr>
-			<td><?php echo _EBLOG_CHANGE?></td>
-			<td><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
-		</tr></table>
-
+		</table>
+			<div><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></div>
 		</div></form>
 
 		<h3><?php echo _EBLOG_CAT_TITLE?></h3>
