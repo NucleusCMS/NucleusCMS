@@ -166,7 +166,6 @@
 </div>]]></part>
 
 		<part name="head"><![CDATA[<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
-<%phpinclude(inc/benchmark.inc)%>
 
 <!-- meta information for search engines -->
 <meta name="generator" content="<%version%>" />
@@ -578,7 +577,7 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 <div class="sidebar">
 <dl class="sidebardl">
 <dt>ページ生成時間</dt>
-<dd><%phpinclude(inc/show_benchmark.inc)%></dd>
+<dd><%BenchMark%></dd>
 </dl>
 </div>]]></part>
 

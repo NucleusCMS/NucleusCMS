@@ -3429,7 +3429,6 @@ class ADMIN {
 
 		<p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, hsc($bshortname)) ?></p>
 <pre><code>&lt;?php
-include('./benchmark.inc');
 $CONF = array();
 $CONF['Self'] = '<b><?php echo hsc($bshortname)?>.php</b>';
 

@@ -55,10 +55,18 @@ class PARSER {
 	 * Parses the given contents and outputs it
 	 */
 	function parse(&$contents) {
-
+		global $manager;
+		$hashedTagBM = md5('<%BenchMark%>');
+		if(strpos($contents,'<%BenchMark%>')!==false)
+		{
+			if(!$manager->pluginInstalled('NP_BenchMark'))
+				$contents = str_replace('<%BenchMark%>', $hashedTagBM, $contents);
+		}
+		
 		$pieces = preg_split('/'.$this->delim.'/',$contents);
 
 		$maxidx = sizeof($pieces);
+		ob_start();
 		for ($idx = 0; $idx < $maxidx; $idx++) {
 			echo $pieces[$idx];
 			$idx++;
@@ -66,6 +74,12 @@ class PARSER {
 				$this->doAction($pieces[$idx]);
 			}
 		}
+		$contents = ob_get_clean();
+		
+		if(strpos($contents,$hashedTagBM)!==false)
+			$contents = str_replace($hashedTagBM, '<%BenchMark%>', $contents);
+		
+		echo $contents;
 	}
 
 

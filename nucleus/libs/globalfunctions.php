@@ -2364,3 +2364,18 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='')
 		return htmlspecialchars($string, $flags, $encoding);
 	}
 }
+
+function coreSkinVar($key='')
+{
+	if($key==='<%BenchMark%>')
+	{
+		global $StartTime, $SQLCount;
+		$a = explode (' ', microtime());
+		$EndTime = (double) $a[0] + $a[1];
+		$loadtime = $EndTime - $StartTime;
+		$rs = sprintf("%.3f sec / %d queries", $loadtime, $SQLCount);
+	}
+	else $rs = '';
+	
+	return $rs;
+}

@@ -198,6 +198,12 @@ class SKIN {
 			'output' => &$output
 		);
 		$manager->notify('PostSkinParse', $param);
+		
+		if(strpos($output,'<%BenchMark%>')!==false)
+		{
+			$rs = coreSkinVar('<%BenchMark%>');
+			$output = str_replace('<%BenchMark%>', $rs, $output);
+		}
 		ob_end_clean();
 		
 		$skinid = $this->id;
