@@ -5162,8 +5162,7 @@ selector();
 			// Check if special modules are loaded
 			ob_start();
 			phpinfo(INFO_MODULES);
-			$im = ob_get_contents();
-			ob_clean();
+			$im = ob_get_clean();
 			echo "<table>\n";
 			echo "\t<tr>";
 			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
