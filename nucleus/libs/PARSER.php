@@ -72,7 +72,6 @@ class PARSER {
 		$pieces = preg_split('/'.$this->delim.'/',$contents);
 
 		$maxidx = sizeof($pieces);
-		ob_start();
 		for ($idx = 0; $idx < $maxidx; $idx++) {
 			echo $pieces[$idx];
 			$idx++;
@@ -80,14 +79,6 @@ class PARSER {
 				$this->doAction($pieces[$idx]);
 			}
 		}
-		$contents = ob_get_clean();
-		
-		if(strpos($contents,$hashedTagBM)!==false)
-			$contents = str_replace($hashedTagBM, '<%BenchMark%>', $contents);
-		if(strpos($contents,$hashedTagDI)!==false)
-			$contents = str_replace($hashedTagDI, '<%DebugInfo%>', $contents);
-		
-		echo $contents;
 	}
 
 

@@ -213,15 +213,15 @@ class SKIN {
 		);
 		$manager->notify('PostSkinParse', $param);
 		
-		if(strpos($output,'<%BenchMark%>')!==false)
+		if(strpos($output,md5('<%BenchMark%>'))!==false)
 		{
 			$rs = coreSkinVar('<%BenchMark%>');
-			$output = str_replace('<%BenchMark%>', $rs, $output);
+			$output = str_replace(md5('<%BenchMark%>'), $rs, $output);
 		}
-		if(strpos($output,'<%DebugInfo%>')!==false)
+		if(strpos($output,md5('<%DebugInfo%>'))!==false)
 		{
 			$rs = coreSkinVar('<%DebugInfo%>');
-			$output = str_replace('<%DebugInfo%>', $rs, $output);
+			$output = str_replace(md5('<%DebugInfo%>'), $rs, $output);
 		}
 		ob_end_clean();
 		
