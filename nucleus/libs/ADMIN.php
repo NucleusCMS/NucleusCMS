@@ -5322,10 +5322,11 @@ selector();
 		<?php		   if ($member->isLoggedIn())
 				echo _LOGGEDINAS . ' ' . $member->getDisplayName()
 					." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
-					. "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
+					. "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> | ";
 			else
 				echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
 
+			echo '<a href="documentation/">'._HELP_TT.'</a> | ';
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
 
 			echo '<br />(';
