@@ -1678,7 +1678,7 @@ class ADMIN {
 	/**
 	 * Usermanagement main
 	 */
-	function action_usermanagement() {
+	function action_usermanagement($msg='') {
 		global $member, $manager;
 
 		// check if allowed
@@ -1686,6 +1686,9 @@ class ADMIN {
 
 		$this->pagehead();
 
+		if ($msg)
+			echo _MESSAGE , ': ', $msg;
+		
 		echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
 		echo '<h2>' . _MEMBERS_TITLE .'</h2>';
@@ -1761,7 +1764,7 @@ class ADMIN {
 	/**
 	 * @todo document this
 	 */
-	function action_editmembersettings($memberid = '') {
+	function action_editmembersettings($memberid = '', $msg='') {
 		global $member, $manager, $CONF;
 
 		if ($memberid == '')
@@ -1772,6 +1775,8 @@ class ADMIN {
 
 		$extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
 		$this->pagehead($extrahead);
+		if ($msg)
+			echo _MESSAGE , ': ', $msg;
 
 		// show message to go back to member overview (only for admins)
 		if ($member->isAdmin())
@@ -2029,7 +2034,7 @@ class ADMIN {
 			$member->logout();
 			$this->action_login(_MSG_LOGINAGAIN, 0);
 		} else {
-			$this->action_overview(_MSG_SETTINGSCHANGED);
+			$this->action_editmembersettings($memberid,_MSG_SETTINGSCHANGED);
 		}
 	}
 
