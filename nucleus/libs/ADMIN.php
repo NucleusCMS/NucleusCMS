@@ -6087,9 +6087,17 @@ selector();
 		echo '<h2>',_PLUGS_HELP_TITLE,': ',hsc($plugName),'</h2>';
 
 		$plug =& $manager->getPlugin($plugName);
-		$helpFile = $DIR_PLUGINS.$plug->getShortName().'/help.html';
-
-		if (($plug->supportsFeature('HelpPage') > 0) && (@file_exists($helpFile))) {
+		$cplugindir = $DIR_PLUGINS.$plug->getShortName() . '/';
+		if(is_file("{$cplugindir}help.php"))
+			$helpFile = "{$cplugindir}help.php";
+		elseif(is_file("{$cplugindir}help.html"))
+			$helpFile = "{$cplugindir}help.html";
+		elseif(is_file("{$cplugindir}help/index.php"))
+			$helpFile = "{$cplugindir}help/index.php";
+		elseif(is_file("{$cplugindir}help/index.html"))
+			$helpFile = "{$cplugindir}help/index.html";
+		
+		if (($plug->supportsFeature('HelpPage') > 0) && (isset($helpFile))) {
 			@readfile($helpFile);
 		} else {
 			echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
