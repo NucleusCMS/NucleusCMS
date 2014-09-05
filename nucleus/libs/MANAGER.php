@@ -332,17 +332,17 @@ class MANAGER {
       * checks if the given plugin IS installed or not
       */
     function pluginInstalled($name) {
-        $this->_initCacheInfo();
+        $this->_initPluginCacheInfo();
         return ($this->getPidFromName($name) != -1);
     }
 
     function pidInstalled($pid) {
-        $this->_initCacheInfo();
+        $this->_initPluginCacheInfo();
         return ($this->cachedInfo['installedPlugins'][$pid] != '');
     }
 
     function getPidFromName($name) {
-        $this->_initCacheInfo();
+        $this->_initPluginCacheInfo();
         foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
         {
             if (strtolower($pfile) == strtolower($name))
@@ -355,7 +355,7 @@ class MANAGER {
       * Retrieve the name of a plugin in the right capitalisation
       */
     function getUpperCaseName ($name) {
-        $this->_initCacheInfo();
+        $this->_initPluginCacheInfo();
         foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
         {
             if (strtolower($pfile) == strtolower($name))
@@ -371,7 +371,7 @@ class MANAGER {
     /**
      * Loads some info on the first call only
      */
-    function _initCacheInfo()
+    function _initPluginCacheInfo()
     {
         if (isset($this->cachedInfo['installedPlugins'])) return;
         
