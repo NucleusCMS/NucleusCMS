@@ -332,17 +332,17 @@ class MANAGER {
       * checks if the given plugin IS installed or not
       */
     function pluginInstalled($name) {
-        $this->_initCacheInfo('installedPlugins');
+        $this->_initCacheInfo();
         return ($this->getPidFromName($name) != -1);
     }
 
     function pidInstalled($pid) {
-        $this->_initCacheInfo('installedPlugins');
+        $this->_initCacheInfo();
         return ($this->cachedInfo['installedPlugins'][$pid] != '');
     }
 
     function getPidFromName($name) {
-        $this->_initCacheInfo('installedPlugins');
+        $this->_initCacheInfo();
         foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
         {
             if (strtolower($pfile) == strtolower($name))
@@ -355,7 +355,7 @@ class MANAGER {
       * Retrieve the name of a plugin in the right capitalisation
       */
     function getUpperCaseName ($name) {
-        $this->_initCacheInfo('installedPlugins');
+        $this->_initCacheInfo();
         foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
         {
             if (strtolower($pfile) == strtolower($name))
@@ -371,21 +371,16 @@ class MANAGER {
     /**
      * Loads some info on the first call only
      */
-    function _initCacheInfo($what)
+    function _initCacheInfo()
     {
-        if (isset($this->cachedInfo[$what]) && is_array($this->cachedInfo[$what]))
-            return;
-        switch ($what)
+        if (isset($this->cachedInfo['installedPlugins'])) return;
+        
+        $this->cachedInfo['installedPlugins'] = array();
+        $res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin'));
+        $this->cachedInfo['installedPlugins'] = array();
+        while ($o = sql_fetch_object($res))
         {
-            // 'installedPlugins' = array ($pid => $name)
-            case 'installedPlugins':
-                $this->cachedInfo['installedPlugins'] = array();
-                $res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin'));
-                while ($o = sql_fetch_object($res))
-                {
-                    $this->cachedInfo['installedPlugins'][$o->pid] = $o->pfile;
-                }
-                break;
+            $this->cachedInfo['installedPlugins'][$o->pid] = $o->pfile;
         }
     }
 
