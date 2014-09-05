@@ -463,58 +463,48 @@
 		 * private		 		 
 		 */
 		function _getAllOptions($context, $name) {
-			$oid = $this->_getOID($context, $name);
-			if (!$oid) return array();
-			$defVal = $this->_getDefVal($context, $name);
-
 			$aOptions = array();
-			switch ($context) {
-				case 'blog':
-					$query = 'SELECT bnumber as contextid FROM ' . sql_table('blog');
-					break;
-				case 'category':
-					$query = 'SELECT catid as contextid FROM ' . sql_table('category');
-					break;
-				case 'member':
-					$query = 'SELECT mnumber as contextid FROM ' . sql_table('member');
-					break;
-				case 'item':
-					$query = 'SELECT inumber as contextid FROM ' . sql_table('item');
-					break;
-			}
 			
 			global $resultCache;
-			if(isset($resultCache["aOptions{$query}"]))
-				$aOptions = $resultCache["aOptions{$query}"];
+			if(isset($resultCache["aOptions{$context}"]))
+				$aOptions = $resultCache["aOptions{$context}"];
 			else
 			{
-				if($query)
+				if($context==='blog')
+					$query = 'SELECT bnumber as contextid FROM ' . sql_table('blog');
+				elseif($context==='category')
+					$query = 'SELECT catid as contextid FROM ' . sql_table('category');
+				elseif($context==='member')
+					$query = 'SELECT mnumber as contextid FROM ' . sql_table('member');
+				elseif($context==='item')
+					$query = 'SELECT inumber as contextid FROM ' . sql_table('item');
+				else $query = '';
+				
+				if($query==='') return false;
+				
+				$oid = $this->_getOID($context, $name);
+				if (!$oid) return array();
+				$defVal = $this->_getDefVal($context, $name);
+				
+				$r = sql_query($query);
+				if ($r)
 				{
-					$r = sql_query($query);
-					if ($r)
+					while ($o = sql_fetch_object($r))
 					{
-						while ($o = sql_fetch_object($r))
-						{
-							$aOptions[$o->contextid] = $defVal;
-						}
+						$aOptions[$o->contextid] = $defVal;
 					}
 				}
-				$resultCache["aOptions{$query}"] = $aOptions;
-			}
-			
-			$query = 'SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid;
-			if(isset($resultCache["aOptions{$query}"]))
-				$aOptions = $resultCache["aOptions{$query}"];
-			else
-			{
+				
+				$resultCache["aOptions{$context}"] = $aOptions;
+				$query = 'SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid;
 				$res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
 				while ($o = sql_fetch_object($res))
 				{
 					$aOptions[$o->ocontextid] = $o->ovalue;
 				}
-				$resultCache["aOptions{$query}"] = $aOptions;
+				$resultCache["aOptions{$context}"] = $aOptions;
 			}
-
+			
 			return $aOptions;
 		}
 
