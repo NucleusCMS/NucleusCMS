@@ -267,7 +267,7 @@ class ACTION
 
 			// even though the member can not log in, set some random initial password. One never knows.
 			srand( (double) microtime() * 1000000);
-			$initialPwd = md5(uniqid(rand(), TRUE) );
+			$initialPwd = md5(uniqid(mt_rand(), TRUE) );
 
 			// create member (non admin/can not login/no notes/random string as password)
 			$name = shorten(postVar('name'), 32, '');

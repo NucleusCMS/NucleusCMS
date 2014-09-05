@@ -718,7 +718,7 @@ class MEMBER {
 		{
 			// generate a random key
 			srand((double)microtime()*1000000);
-			$key = md5(uniqid(rand(), true));
+			$key = md5(uniqid(mt_rand(), true));
 
 			// attempt to add entry in database
 			// add in database as non-active
