@@ -206,22 +206,31 @@ class SKIN {
 		ob_start();
 		$parser->parse($contents);
 		$output = ob_get_contents();
+		
+		$md5['<%BenchMark%>'] = md5('<%BenchMark%>');
+		if(strpos($output,$md5['<%BenchMark%>'])!==false)
+			$output = str_replace($md5['<%BenchMark%>'], '<%BenchMark%>', $output);
+		
+		$md5['<%DebugInfo%>'] = md5('<%DebugInfo%>');
+		if(strpos($output,$md5['<%DebugInfo%>'])!==false)
+			$output = str_replace($md5['<%DebugInfo%>'], '<%DebugInfo%>', $output);
+		
 		$param = array(
 			'skin'   => &$this,
 			'type'   =>  $type,
 			'output' => &$output
 		);
 		$manager->notify('PostSkinParse', $param);
-		
-		if(strpos($output,md5('<%BenchMark%>'))!==false)
+
+		if(strpos($output,'<%BenchMark%>')!==false)
 		{
 			$rs = coreSkinVar('<%BenchMark%>');
-			$output = str_replace(md5('<%BenchMark%>'), $rs, $output);
+			$output = str_replace('<%BenchMark%>', $rs, $output);
 		}
-		if(strpos($output,md5('<%DebugInfo%>'))!==false)
+		if(strpos($output,'<%DebugInfo%>')!==false)
 		{
 			$rs = coreSkinVar('<%DebugInfo%>');
-			$output = str_replace(md5('<%DebugInfo%>'), $rs, $output);
+			$output = str_replace('<%DebugInfo%>', $rs, $output);
 		}
 		ob_end_clean();
 		
