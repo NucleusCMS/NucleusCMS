@@ -378,6 +378,11 @@ class MANAGER {
                 $rs = sql_query($query);
                 $this->cachedInfo['sql_num_rows'][$query] = sql_num_rows($rs);
                 break;
+            case 'sql_fetch_object':
+                $rs  = sql_query($query);
+                $obj = sql_fetch_object($rs);
+                $this->cachedInfo['sql_fetch_object'][$query] = is_object($obj) ? $obj->result : '';
+                break;
         }
     }
 
