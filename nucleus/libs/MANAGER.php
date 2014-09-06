@@ -468,10 +468,11 @@ class MANAGER {
     function addTicketToUrl($url)
     {
         $ticketCode = 'ticket=' . $this->_generateTicket();
-        if (strstr($url, '?'))
-            return $url . '&' . $ticketCode;
-        else
-            return $url . '?' . $ticketCode;
+        
+        if (strstr($url, '?')) $_ = '&';
+        else                   $_ = '?';
+        
+        return "{$url}{$_}{$ticketCode}";
     }
 
     /**
@@ -481,7 +482,7 @@ class MANAGER {
     {
         $ticket = $this->_generateTicket();
 
-        echo '<input type="hidden" name="ticket" value="', hsc($ticket), '" />';
+        echo sprintf('<input type="hidden" name="ticket" value="%s" />', hsc($ticket));
     }
 
     /**
@@ -518,7 +519,8 @@ class MANAGER {
             $memberId = $member->getID();
 
         // check if ticket is a valid one
-        $query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'';
+        $params = array(sql_table('tickets'), intval($memberId), sql_real_escape_string($ticket));
+        $query = vsprintf("SELECT COUNT(*) as result FROM %s WHERE member=%s and ticket='%s'", $params);
         if (quickQuery($query) == 1)
         {
             // [in the original implementation, the checked ticket was deleted. This would lead to invalid
@@ -542,7 +544,7 @@ class MANAGER {
     {
         // remove tickets older than 1 hour
         $oldTime = time() - 60 * 60;
-        $query = 'DELETE FROM ' . sql_table('tickets'). ' WHERE ctime < \'' . date('Y-m-d H:i:s',$oldTime) .'\'';
+        $query = sprintf("DELETE FROM %s WHERE ctime < '%s'", sql_table('tickets'),date('Y-m-d H:i:s',$oldTime));
         sql_query($query);
     }
 
@@ -570,8 +572,9 @@ class MANAGER {
                 $ticket = md5(uniqid(mt_rand(), true));
 
                 // add in database as non-active
-                $query = 'INSERT INTO ' . sql_table('tickets') . ' (ticket, member, ctime) ';
-                $query .= 'VALUES (\'' . sql_real_escape_string($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
+                $params = array(sql_table('tickets'), sql_real_escape_string($ticket), intval($memberId), date('Y-m-d H:i:s',time()));
+                $query = vsprintf("INSERT INTO %s (ticket, member, ctime) VALUES ('%s', '%s', '%s')", $params);
+                
                 if (sql_query($query))
                     $ok = true;
             }
@@ -582,5 +585,3 @@ class MANAGER {
     }
 
 }
-
-?>
