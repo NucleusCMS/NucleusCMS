@@ -2378,8 +2378,10 @@ function coreSkinVar($key='')
 	}
 	elseif($key==='<%DebugInfo%>')
 	{
-		global $SQLStack;
-		$rs = sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$SQLStack));
+		global $SQLStack, $doActionStack;
+		$rs  = sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$SQLStack));
+		$rs .= sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$doActionStack));
+		
 	}
 	else $rs = '';
 	

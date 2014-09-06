@@ -86,10 +86,10 @@ class PARSER {
 	  * handle an action
 	  */
 	function doAction($action) {
-		global $manager, $CONF;
+		global $manager, $CONF, $doActionStack, $doActionCount;
 
 		if (!$action) return;
-
+		$raw_action = $action;
 		// split into action name + arguments
 		if (strstr($action,'(')) {
 			$paramStartPos = strpos($action, '(');
@@ -118,7 +118,13 @@ class PARSER {
 			// when using PHP versions lower than 4.0.5, uncomment the line before
 			// and comment the call_user_func_array call
 			//$this->call_using_array($action, $this->handler, $params);
+			$bt = microtime(true);
 			call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
+			$doActionCount++;
+			$et = microtime(true);
+			$diff = number_format($et - $bt, 20);
+			$hscAction = hsc("<%{$raw_action}%>");
+			$doActionStack[$doActionCount] = "[$doActionCount] {$diff}s - {$hscAction}";
 		} else {
 			// redirect to plugin action if possible
 			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_' . $action)) {
