@@ -13,7 +13,6 @@
 
 <!-- alternative versions (rss/atom feeds) -->
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<%blogurl%>xml-rss2.php" />
-<link rel="alternate" type="application/atom+xml" title="Atom" href="<%blogurl%>atom.php" />
 <link rel="EditURI" type="application/rsd+xml" title="RSD" href="<%blogurl%>rsd.php" />
 
 <!-- prevent caching (can be removed) -->
