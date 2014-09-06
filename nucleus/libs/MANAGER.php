@@ -368,6 +368,19 @@ class MANAGER {
         unset($this->cachedInfo[$what]);
     }
 
+    function initSqlCacheInfo($what, $query='')
+    {
+        if (isset($this->cachedInfo[$what][$query])) return;
+        
+        switch ($what)
+        {
+            case 'sql_num_rows':
+                $rs = sql_query($query);
+                $this->cachedInfo['sql_num_rows'][$query] = sql_num_rows($rs);
+                break;
+        }
+    }
+
     /**
      * Loads some info on the first call only
      */

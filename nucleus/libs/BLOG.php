@@ -927,18 +927,11 @@ class BLOG {
 	}
 
 	function isValidCategory($catid) {
-		global $resultCache;
+		global $manager;
 		$query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-		if(isset($resultCache["count{$query}"]))
-		{
-			$count = $resultCache["count{$query}"];
-		}
-		else
-		{
-			$res = sql_query($query);
-			$count = sql_num_rows($res);
-			$resultCache["count{$query}"] = $count;
-		}
+		$manager->initSqlCacheInfo('sql_num_rows',$query);
+		$count = $manager->cachedInfo['sql_num_rows'][$query];
+		
 		return ($count != 0);
 	}
 
