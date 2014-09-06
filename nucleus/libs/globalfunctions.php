@@ -813,19 +813,12 @@ function getCatIDFromName($name) {
 	return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
 }
 
-function quickQuery($q) {
-	global $resultCache;
+function quickQuery($query) {
+	global $manager;
 	
-	if(isset($resultCache[$q]))
-		$result = $resultCache[$q];
-	else
-	{
-		$res = sql_query($q);
-		$obj = sql_fetch_object($res);
-		$result = is_object($obj) ? $obj->result : NULL;
-		$resultCache[$q] = $obj->result;
-	}
-	return $result;
+	$manager->initSqlCacheInfo('sql_fetch_object',$query);
+	
+	return $manager->cachedInfo['sql_fetch_object'][$query];
 }
 
 function getPluginNameFromPid($pid) {
