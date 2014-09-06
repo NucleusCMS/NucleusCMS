@@ -14,11 +14,6 @@
 <!-- alternative versions (rss/atom feeds) -->
 <link rel="alternate" type="application/rss+xml" title="RSS" href="<%blogurl%>xml-rss2.php" />
 
-<!-- prevent caching (can be removed) -->
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-<meta http-equiv="Expires" content="-1" />
-
 <!-- extra navigational links -->
 <link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
 <link rel="archives" title="Archives" href="<%archivelink%>" />
