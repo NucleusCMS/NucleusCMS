@@ -2371,10 +2371,9 @@ function coreSkinVar($key='')
 {
 	if($key==='<%BenchMark%>')
 	{
-		global $StartTime, $SQLCount;
-		$a = explode (' ', microtime());
-		$EndTime = (double) $a[0] + $a[1];
-		$loadtime = $EndTime - $StartTime;
+		global $SQLCount;
+		$EndTime = microtime(true);
+		$loadtime = $EndTime - $_SERVER['REQUEST_TIME_FLOAT'];
 		$rs = sprintf("%.3f sec / %d queries", $loadtime, $SQLCount);
 	}
 	elseif($key==='<%DebugInfo%>')
