@@ -111,7 +111,13 @@ class PARSER {
 		$actionlc = strtolower($action);
 
 		// skip execution of skinvars while inside an if condition which hides this part of the page
-		if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'elseif') && ($actionlc != 'endif') && ($actionlc != 'ifnot') && ($actionlc != 'elseifnot') && (substr($actionlc,0,2) != 'if'))
+		if (!$this->handler->if_currentlevel
+			&& ($actionlc !== 'else')
+			&& ($actionlc !== 'elseif')
+			&& ($actionlc !== 'endif')
+			&& ($actionlc !== 'ifnot')
+			&& ($actionlc !== 'elseifnot')
+			&& (substr($actionlc,0,2) !== 'if'))
 			return;
 
 		if (in_array($actionlc, $this->actions) || $this->norestrictions ) {
@@ -127,7 +133,7 @@ class PARSER {
 			$doActionStack[$doActionCount] = "[$doActionCount] {$diff}s - {$hscAction}";
 		} else {
 			// redirect to plugin action if possible
-			if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_' . $action)) {
+			if (in_array('plugin', $this->actions) && $manager->pluginInstalled("NP_{$action}")) {
 				$this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
 			} else {
 				if ($CONF['DebugVars']==true) {
@@ -136,7 +142,6 @@ class PARSER {
 			}
 
 		}
-
 	}
 
 	/**
@@ -170,5 +175,3 @@ class PARSER {
 
 
 }
-
-?>
