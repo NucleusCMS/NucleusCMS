@@ -20,7 +20,7 @@ function upgrade_do370() {
 					MODIFY COLUMN `ibody` mediumtext default NULL,
 					MODIFY COLUMN `imore` mediumtext default NULL;", sql_table('item'));
 	
-	upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+	upgrade_query('Altering ' . sql_table('item') . ' table', $query);
 	
 	// 3.6 -> 3.7
 	// update database version
