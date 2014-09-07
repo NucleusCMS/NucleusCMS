@@ -910,11 +910,8 @@ function selector() {
 
 		$b =& $manager->getBlog($blogid);
 
-		if ($b->isValidCategory($catid) ) {
-			$catextra = ' and icat=' . $catid;
-		} else {
-			$catextra = '';
-		}
+		if ($b->isValidCategory($catid) ) $catextra = " AND icat={$catid}";
+		else                              $catextra = '';
 
 		// get previous itemid and title
 		$param = array(sql_table('item'), mysqldate($timestamp), "{$blogid}{$catextra}");
@@ -949,9 +946,9 @@ function selector() {
 
 		// sql queries for the timestamp of the first and the last published item
 		$blogid_tmp = (int)($blogid ? $blogid : $CONF['DefaultBlog']);
-		$query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime %s LIMIT 1", sql_table('item'), $blogid_tmp, 'ASC');
+		$query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime ASC LIMIT 1", sql_table('item'), $blogid_tmp);
 		$first_timestamp=quickQuery ($query);
-		$query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime %s LIMIT 1", sql_table('item'), $blogid_tmp, 'DESC');
+		$query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime DESC LIMIT 1", sql_table('item'), $blogid_tmp);
 		$last_timestamp=quickQuery ($query);
 
 		sscanf($archive, '%d-%d-%d', $y, $m, $d);
