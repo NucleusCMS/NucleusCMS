@@ -22,6 +22,10 @@ function upgrade_do370() {
 	
 	upgrade_query('Altering ' . sql_table('item') . ' table', $query);
 	
+	$query = sprintf("ALTER TABLE `%s` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''", sql_table('member'));
+	
+	upgrade_query('Altering ' . sql_table('member') . ' table', $query);
+	
 	// 3.6 -> 3.7
 	// update database version
 	update_version('370');
