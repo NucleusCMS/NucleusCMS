@@ -36,7 +36,9 @@ class MEMBER {
 	 * Constructor for a member object
 	 */
 	function MEMBER() {
-		// do nothing
+		global $DIR_LIBS;
+		include_once("{$DIR_LIBS}phpass.class.inc.php");
+		$this->hasher = new PasswordHash();
 	}
 
 	/**
@@ -95,6 +97,7 @@ class MEMBER {
 		{
 			$userInfo = $this->readFromName($formv_username);
 			$dbv_password = $this->getPassword();
+			
 			if (!$userInfo)
 				$this->loggedin = 0;
 			elseif(!$this->password_verify($formv_password,$dbv_password))
@@ -475,19 +478,22 @@ class MEMBER {
 	function password_verify($formv_password, $hash)
 	{
 		global $CONF;
-		$nucleusVersion = $CONF['DatabaseVersion'];
 		
-		if(strpos($hash, '>')===false)
+		if(strpos($hash, '$')!==false)
+			$rs = $this->hasher->CheckPassword($formv_password, $hash);
+		else
 		{
-			
 			$rs = (md5($formv_password) === $hash);
-			if($nucleusVersion < 370) return $rs;
-			elseif($rs)
+			if($CONF['DatabaseVersion'] < 370) return $rs;
+			
+			if($rs)
 			{
 				$mnumber = $this->getID();
 				if(!$mnumber) return false;
+				
 				$this->setPassword($formv_password);
 				$password_hash = $this->getPassword();
+				
 				$param[] = sql_table('member');
 				$param[] = sql_real_escape_string($password_hash);
 				$param[] = intval($mnumber);
@@ -496,31 +502,7 @@ class MEMBER {
 			}
 			else $rs = false;
 		}
-		else
-		{
-			$param = explode('>', $hash);
-			$salt = $param[1];
-			$formv_password_hash = $this->stretching("{$formv_password}{$salt}");
-			$dbv_password_hash   = $param[2];
-			$rs = ($formv_password_hash === $dbv_password_hash);
-		}
 		return $rs;
-	}
-	
-	function password_hash($password='', $algo='UNCRYPT', $options=array() )
-	{
-		$salt = sha1(mt_rand());
-		$hash = $this->stretching("{$password}{$salt}");
-		return "sha1>{$salt}>{$hash}";
-	}
-	
-	function stretching($str, $cost=5000)
-	{
-		for($i=0;$i<$cost;$i++)
-		{
-			$str = sha1($str);
-		}
-		return $str;
 	}
 	
 	function checkPassword($pw) {
@@ -548,7 +530,7 @@ class MEMBER {
 	}
 
 	function setPassword($pwd) {
-		$this->password = $this->password_hash($pwd);
+		$this->password = $this->hasher->HashPassword($pwd);
 	}
 
 	function getCookieKey() {
