@@ -572,19 +572,19 @@ class ACTIONS extends BaseActions {
 		global $blog;
 		switch($which) {
 			case 'id':
-				echo hsc($blog->getID(),ENT_QUOTES);
+				echo hsc($blog->getID());
 				break;
 			case 'url':
-				echo hsc($blog->getURL(),ENT_QUOTES);
+				echo hsc($blog->getURL());
 				break;
 			case 'name':
-				echo hsc($blog->getName(),ENT_QUOTES);
+				echo hsc($blog->getName());
 				break;
 			case 'desc':
-				echo hsc($blog->getDescription(),ENT_QUOTES);
+				echo hsc($blog->getDescription());
 				break;
 			case 'short':
-				echo hsc($blog->getShortName(),ENT_QUOTES);
+				echo hsc($blog->getShortName());
 				break;
 		}
 	}
@@ -1305,7 +1305,7 @@ class ACTIONS extends BaseActions {
 
 	/**
 	 * Parse skinvar sitevar
-	 * (include a sitevar)	 
+	 * (include a sitevar)
 	 */
 	function parse_sitevar($which) {
 		global $CONF;
