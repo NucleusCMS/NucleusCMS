@@ -40,15 +40,13 @@ class PasswordHash {
 
 		$this->portable_hashes = $portable_hashes;
 
-		$this->random_state = microtime();
-		if (function_exists('getmypid'))
-			$this->random_state .= getmypid();
+		$this->random_state = microtime() . uniqid(rand(), TRUE);
 	}
 
 	function get_random_bytes($count)
 	{
 		$output = '';
-		if (is_readable('/dev/urandom') &&
+		if (@is_readable('/dev/urandom') &&
 		    ($fh = @fopen('/dev/urandom', 'rb'))) {
 			$output = fread($fh, $count);
 			fclose($fh);
