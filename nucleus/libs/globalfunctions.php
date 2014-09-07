@@ -157,10 +157,10 @@ if ($MYSQL_HANDLER[0] == '')
 	$MYSQL_HANDLER[0] = 'mysql';
 include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
-include($DIR_LIBS . 'MEMBER.php');
-include($DIR_LIBS . 'ACTIONLOG.php');
-include($DIR_LIBS . 'MANAGER.php');
-include($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'MEMBER.php');
+include_once($DIR_LIBS . 'ACTIONLOG.php');
+include_once($DIR_LIBS . 'MANAGER.php');
+include_once($DIR_LIBS . 'PLUGIN.php');
 
 $manager =& MANAGER::instance();
 
@@ -177,7 +177,7 @@ if (!isset($CONF['UsingAdminArea'])) {
 
 // only needed when updating logs
 if ($CONF['UsingAdminArea']) {
-	include($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
+	include_once($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
 	include_once($DIR_LIBS . 'ADMIN.php');
 }
 
@@ -389,7 +389,7 @@ if (!headers_sent() ) {
 $language = getLanguageName();
 
 # important note that '\' must be matched with '\\\\' in preg* expressions
-include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 // check if valid charset
 if (!encoding_check(false, false, _CHARSET)) {
@@ -1299,7 +1299,7 @@ function selectLanguage($language) {
 
 	# important note that '\' must be matched with '\\\\' in preg* expressions
 
-	include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+	include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
 
 }
 
@@ -1415,7 +1415,7 @@ function includephp($filename) {
 	global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
 	if (@file_exists($filename) ) {
-		include($filename);
+		include_once($filename);
 	}
 }
 
@@ -1955,8 +1955,8 @@ function ticketForPlugin(){
 			$language = getLanguageName();
 			
 			# important note that '\' must be matched with '\\\\' in preg* expressions
-			include($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-			include($DIR_LIBS . 'PLUGINADMIN.php');
+			include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+			include_once($DIR_LIBS . 'PLUGINADMIN.php');
 		}
 		
 		$oPluginAdmin = new PluginAdmin($plugin_name);
