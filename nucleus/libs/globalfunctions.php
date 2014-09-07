@@ -298,32 +298,6 @@ if ($action == 'login') {
 		$manager->notify('LoginFailed', $param);
 		ACTIONLOG::add(INFO, $errormessage);
 	}
-/*
-
-Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-
-} elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
-	// HTTP Authentication
-	$login  = serverVar('PHP_AUTH_USER');
-	$pw	 = serverVar('PHP_AUTH_PW');
-
-	if ($member->login($login, $pw) ) {
-		$param = array('member' => &$member);
-		$manager->notify('LoginSuccess', $param);
-		ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
-	} else {
-		$param = array('username' => $login);
-		$manager->notify('LoginFailed', $param);
-		ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
-
-		//Since bad credentials, generate an apropriate error page
-		header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
-		header('HTTP/1.0 401 Unauthorized');
-		echo 'Invalid username or password';
-		exit;
-	}
-*/
-
 } elseif (($action == 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
 	// remove cookies on logout
 	setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
