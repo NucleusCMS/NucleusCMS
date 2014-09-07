@@ -141,22 +141,12 @@ class PAGEFACTORY extends BaseActions {
 	function getTemplateFor($type) {
 		global $DIR_LIBS;
 
-		$filename = $DIR_LIBS . 'include/' . $this->type . '-' . $this->method . '.template';
+		$filename = "{$DIR_LIBS}include/{$this->type}-{$this->method}.template";
 
-		if (!file_exists($filename))
+		if (!is_file($filename))
 			return '';
-
-		$fsize = filesize($filename);
-		if ($fsize <= 0)
-			return '';
-
-		// read file and return it
-		$fd = fopen ($filename, 'r');
-		$contents = fread ($fd, $fsize);
-		fclose ($fd);
-
-		return $contents;
-
+		else
+			return file_get_contents($filename);
 	}
 
 	// create category dropdown box
