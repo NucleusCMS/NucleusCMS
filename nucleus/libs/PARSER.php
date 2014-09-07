@@ -56,6 +56,11 @@ class PARSER {
 	 */
 	function parse(&$contents) {
 		global $manager;
+		if(strpos($contents,'<%')===false)
+		{
+			echo $contents;
+			return;
+		}
 		$hashedTagBM = md5('<%BenchMark%>');
 		if(strpos($contents,'<%BenchMark%>')!==false)
 		{
