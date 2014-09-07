@@ -50,7 +50,7 @@ upgrade_head();
 	elseif (!upgrade_checkinstall(360)) $current = 350;
 	else                                $current = 360;
 	
-	if ($current == 360) {
+	if ($current == 370) {
 ?>
 <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
 <?php
