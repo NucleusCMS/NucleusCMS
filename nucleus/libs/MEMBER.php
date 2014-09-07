@@ -74,7 +74,7 @@ class MEMBER {
 	  * Returns true when succeeded, returns false when failed
 	  * 3.40 adds CustomLogin event
 	  */
-	function login($username, $password) {
+	function login($formv_username, $formv_password) {
 		global $manager;
 		
 		$this->loggedin = 0;
@@ -82,22 +82,23 @@ class MEMBER {
 		$allowlocal = 1;
 		
 		$param = array(
-			'login'      => &$username,
-			'password'   => &$password,
+			'login'      => &$formv_username,
+			'password'   => &$formv_password,
 			'success'    => &$success,
 			'allowlocal' => &$allowlocal
 		);
 		$manager->notify('CustomLogin', $param);
 		
-		if ($success && $this->readFromName($username))
+		if ($success && $this->readFromName($formv_username))
 			$this->loggedin = 1;
 		elseif (!$success && $allowlocal)
 		{
-			if (!$this->readFromName($username)
-				||
-			    !$this->checkPassword($password))
+			if (!$this->readFromName($formv_username))
 				$this->loggedin = 0;
-			else $this->loggedin = 1;
+			elseif(!$this->checkPassword($formv_password))
+				$this->loggedin = 0;
+			else
+				$this->loggedin = 1;
 		}
 		else $this->loggedin = 0;
 		
