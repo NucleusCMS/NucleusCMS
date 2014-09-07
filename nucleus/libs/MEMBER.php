@@ -93,9 +93,11 @@ class MEMBER {
 			$this->loggedin = 1;
 		elseif (!$success && $allowlocal)
 		{
-			if (!$this->readFromName($formv_username))
+			$userInfo = $this->readFromName($formv_username);
+			$dbv_password = $this->getPassword();
+			if (!$userInfo)
 				$this->loggedin = 0;
-			elseif(!$this->checkPassword($formv_password))
+			elseif(!$this->password_verify($formv_password,$dbv_password))
 				$this->loggedin = 0;
 			else
 				$this->loggedin = 1;
@@ -470,6 +472,57 @@ class MEMBER {
 		return (($key != '') && ($key == $this->getCookieKey()));
 	}
 
+	function password_verify($formv_password, $hash)
+	{
+		global $CONF;
+		$nucleusVersion = $CONF['DatabaseVersion'];
+		
+		if(strpos($hash, '>')===false)
+		{
+			
+			$rs = (md5($formv_password) === $hash);
+			if($nucleusVersion < 370) return $rs;
+			elseif($rs)
+			{
+				$mnumber = $this->getID();
+				if(!$mnumber) return false;
+				$this->setPassword($formv_password);
+				$password_hash = $this->getPassword();
+				$param[] = sql_table('member');
+				$param[] = sql_real_escape_string($password_hash);
+				$param[] = intval($mnumber);
+				$query = vsprintf("UPDATE %s SET mpassword='%s' WHERE mnumber=%s", $param);
+				$rs = sql_query($query);
+			}
+			else $rs = false;
+		}
+		else
+		{
+			$param = explode('>', $hash);
+			$salt = $param[1];
+			$formv_password_hash = $this->stretching("{$formv_password}{$salt}");
+			$dbv_password_hash   = $param[2];
+			$rs = ($formv_password_hash === $dbv_password_hash);
+		}
+		return $rs;
+	}
+	
+	function password_hash($password='', $algo='UNCRYPT', $options=array() )
+	{
+		$salt = sha1(mt_rand());
+		$hash = $this->stretching("{$password}{$salt}");
+		return "sha1>{$salt}>{$hash}";
+	}
+	
+	function stretching($str, $cost=5000)
+	{
+		for($i=0;$i<$cost;$i++)
+		{
+			$str = sha1($str);
+		}
+		return $str;
+	}
+	
 	function checkPassword($pw) {
 		return (md5($pw) == $this->getPassword());
 	}
@@ -495,7 +548,7 @@ class MEMBER {
 	}
 
 	function setPassword($pwd) {
-		$this->password = md5($pwd);
+		$this->password = $this->password_hash($pwd);
 	}
 
 	function getCookieKey() {
@@ -635,6 +688,7 @@ class MEMBER {
 		{
 			return _ERROR_PASSWORDMISSING;
 		}
+		else $this->setPassword($password);
 		
 		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
 		if (!preg_match('#^https?://#', $url) )
@@ -644,7 +698,7 @@ class MEMBER {
 		
 		$name = sql_real_escape_string($name);
 		$realname = sql_real_escape_string($realname);
-		$password = sql_real_escape_string(md5($password));
+		$password = sql_real_escape_string($this->getPassword());
 		$email = sql_real_escape_string($email);
 		$url = sql_real_escape_string($url);
 		$admin = intval($admin);
