@@ -878,7 +878,7 @@ function selector() {
 		global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
 		// 1. get timestamp, blogid and catid for item
-		$query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
+		$query = sprintf("SELECT itime, iblog, icat FROM %s WHERE inumber='%s'" , sql_table('item'),intval($itemid));
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);
 
@@ -917,7 +917,8 @@ function selector() {
 		}
 
 		// get previous itemid and title
-		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
+		$param = array(sql_table('item'), mysqldate($timestamp), "{$blogid}{$catextra}");
+		$query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog='%s' ORDER BY itime DESC LIMIT 1", $param);
 		$res = sql_query($query);
 
 		$obj = sql_fetch_object($res);
@@ -928,7 +929,8 @@ function selector() {
 		}
 
 		// get next itemid and title
-		$query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+		$param = array(sql_table('item'),mysqldate($timestamp),mysqldate($b->getCorrectTime()),"{$blogid}{$catextra}");
+		$query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime>%s AND itime <= %s AND idraft=0 AND iblog='%s' ORDER BY itime ASC LIMIT 1", $param);
 		$res = sql_query($query);
 
 		$obj = sql_fetch_object($res);
