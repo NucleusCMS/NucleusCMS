@@ -102,12 +102,7 @@ class PARSER {
 			$action = substr($action, 0, $paramStartPos);
 			$params = explode ($this->pdelim, $params);
 
-			// trim parameters
-			// for PHP versions lower than 4.0.6:
-			//   - add // before '$params = ...'
-			//   - remove // before 'foreach'
-			$params = array_map('trim',$params);
-			// foreach ($params as $key => $value) { $params[$key] = trim($value); }
+			 foreach ($params as $key => $value) { $params[$key] = trim($value); }
 		} else {
 			// no parameters
 			$params = array();
