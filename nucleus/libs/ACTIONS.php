@@ -1321,6 +1321,10 @@ class ACTIONS extends BaseActions {
 				break;
 			case 'adminurl':
 				echo $CONF['AdminURL'];
+				break;
+			default:
+				if(isset($CONF[$which]))
+					echo $CONF[$which];
 		}
 	}
 
