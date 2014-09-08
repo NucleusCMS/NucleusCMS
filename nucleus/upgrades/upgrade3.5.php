@@ -44,6 +44,11 @@ function upgrade_do350() {
 	update_version('350');
 
 	// Remind user to re-install NP_Ping 
-	echo '<p>Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin</p>';
 	
+	$query = "SELECT COUNT(*) as count FROM `{$prefix}plugin` WHERE pfile='NP_Ping'";
+	$rs = sql_query($query);
+	$row = sql_fetch_assoc($rs);
+	if($row['count']==1)
+		echo '<p>Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin</p>';
+
 }
