@@ -77,6 +77,8 @@ switch($from) {
 		//break;
 	case 350:
 		upgrade_do360();
+	case 360:
+		upgrade_do370();
 		break;
 	default:
 		echo "<li>Error! No updates to execute</li>";
