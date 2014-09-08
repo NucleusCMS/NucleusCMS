@@ -351,6 +351,9 @@ if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
     exit;
 }
 
+$param = array();
+$manager->notify('PreLoadMainLibs', $param);
+
 // load other classes
 include($DIR_LIBS . 'PARSER.php');
 include($DIR_LIBS . 'SKIN.php');
