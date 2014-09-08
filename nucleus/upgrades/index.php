@@ -64,7 +64,7 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
 	<?php
   } else {
 	?>
-	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.6</a></p>
+	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.7</a></p>
 	<?php
   }
 ?>

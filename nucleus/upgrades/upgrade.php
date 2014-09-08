@@ -40,6 +40,7 @@ include('upgrade3.3.php');
 include('upgrade3.4.php');
 include('upgrade3.5.php');
 include('upgrade3.6.php');
+include('upgrade3.7.php');
 
 $from = intGetVar('from');
 
