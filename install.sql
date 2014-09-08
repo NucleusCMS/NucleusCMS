@@ -148,7 +148,7 @@ CREATE TABLE `nucleus_member` (
   `mnumber` int(11) NOT NULL auto_increment,
   `mname` varchar(32) NOT NULL default '',
   `mrealname` varchar(60) default NULL,
-  `mpassword` varchar(40) NOT NULL default '',
+  `mpassword` varchar(255) NOT NULL default '',
   `memail` varchar(60) default NULL,
   `murl` varchar(100) default NULL,
   `mnotes` varchar(100) default NULL,
