@@ -41,7 +41,9 @@ class MEMBER {
 	 * Constructor for a member object
 	 */	 	
 	function MEMBER() {
-		// do nothing
+		global $DIR_LIBS;
+		include_once("{$DIR_LIBS}phpass.class.inc.php");
+		$this->hasher = new PasswordHash();
 	}
 
 	/**
@@ -79,33 +81,38 @@ class MEMBER {
 	  * Returns true when succeeded, returns false when failed
 	  * 3.40 adds CustomLogin event
 	  */
-	function login($login, $password) {
+	function login($formv_username, $formv_password) {
 		global $manager;
+		
 		$this->loggedin = 0;
 		$success = 0;
 		$allowlocal = 1;
 		
-		$data = array(
-			'login'			=>  &$login,
-			'password'		=> &$password,
-			'success'		=> &$success,
-			'allowlocal'	=> &$allowlocal
+		$param = array(
+			'login'      => &$formv_username,
+			'password'   => &$formv_password,
+			'success'    => &$success,
+			'allowlocal' => &$allowlocal
 		);
-		$manager->notify('CustomLogin', $data);
+		$manager->notify('CustomLogin', $param);
 		
-		if ($success && $this->readFromName($login)) {
+		if ($success && $this->readFromName($formv_username))
 			$this->loggedin = 1;
-			return $this->isLoggedIn();
-		} elseif (!$success && $allowlocal) {
-			if (!$this->readFromName($login))
-				return 0;
-			if (!$this->checkPassword($password))
-				return 0;
-			$this->loggedin = 1;
-			return $this->isLoggedIn();
-		} else {
-			return 0;
+		elseif (!$success && $allowlocal)
+		{
+			$userInfo = $this->readFromName($formv_username);
+			$dbv_password = $this->getPassword();
+			
+			if (!$userInfo)
+				$this->loggedin = 0;
+			elseif(!$this->password_verify($formv_password,$dbv_password))
+				$this->loggedin = 0;
+			else
+				$this->loggedin = 1;
 		}
+		else $this->loggedin = 0;
+		
+		return $this->loggedin;
 	}
 
 	/**
@@ -472,6 +479,36 @@ class MEMBER {
 		return (($key != '') && ($key == $this->getCookieKey()));
 	}
 
+	function password_verify($formv_password, $hash)
+	{
+		global $CONF;
+		
+		if(strpos($hash, '$')!==false)
+			$rs = $this->hasher->CheckPassword($formv_password, $hash);
+		else
+		{
+			$rs = (md5($formv_password) === $hash);
+			if($CONF['DatabaseVersion'] < 370) return $rs;
+			
+			if($rs)
+			{
+				$mnumber = $this->getID();
+				if(!$mnumber) return false;
+				
+				$this->setPassword($formv_password);
+				$password_hash = $this->getPassword();
+				
+				$param[] = sql_table('member');
+				$param[] = sql_real_escape_string($password_hash);
+				$param[] = intval($mnumber);
+				$query = vsprintf("UPDATE %s SET mpassword='%s' WHERE mnumber=%s", $param);
+				$rs = sql_query($query);
+			}
+			else $rs = false;
+		}
+		return $rs;
+	}
+	
 	function checkPassword($pw) {
 		return (md5($pw) == $this->getPassword());
 	}
@@ -497,7 +534,7 @@ class MEMBER {
 	}
 
 	function setPassword($pwd) {
-		$this->password = md5($pwd);
+		$this->password = $this->hasher->HashPassword($pwd);
 	}
 
 	function getCookieKey() {
@@ -642,10 +679,8 @@ class MEMBER {
 		{
 			return _ERROR_PASSWORDMISSING;
 		}
-
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi: !eregi("^https?://", $url)
-
+		else $this->setPassword($password);
+		
 		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
 		if (!preg_match('#^https?://#', $url) )
 		{
@@ -654,7 +689,7 @@ class MEMBER {
 
 		$name = sql_real_escape_string($name);
 		$realname = sql_real_escape_string($realname);
-		$password = sql_real_escape_string(md5($password));
+		$password = sql_real_escape_string($this->getPassword());
 		$email = sql_real_escape_string($email);
 		$url = sql_real_escape_string($url);
 		$admin = intval($admin);
@@ -725,7 +760,7 @@ class MEMBER {
 		{
 			// generate a random key
 			srand((double)microtime()*1000000);
-			$key = md5(uniqid(rand(), true));
+			$key = md5(uniqid(mt_rand(), true));
 
 			// attempt to add entry in database
 			// add in database as non-active
@@ -831,5 +866,3 @@ class MEMBER {
 	}
 
 }
-
-?>
