@@ -31,7 +31,7 @@ function upgrade_do360() {
 
 	upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
 
-	// 3.4 -> 3.5
+	// 3.5 -> 3.6
 	// update database version
 	update_version('360');
 
@@ -39,4 +39,3 @@ function upgrade_do360() {
 	echo '<p></p>';
 	
 }
-?>

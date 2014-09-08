@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @copyright Copyright (C) The Nucleus Group
  * @version $Id$
  *
  */
@@ -41,21 +41,21 @@ upgrade_head();
 When upgrading from an older Nucleus version, upgrades to the database tables are required. This upgrade script allows you to automate these changes.
 </p>
 
-<?php  // calculate current version
-	  if (!upgrade_checkinstall(96)) $current = 95;
-  else  if (!upgrade_checkinstall(100)) $current = 96;
-  else  if (!upgrade_checkinstall(110)) $current = 100;
-  else  if (!upgrade_checkinstall(150)) $current = 110;
-  else  if (!upgrade_checkinstall(200)) $current = 150;
-  else  if (!upgrade_checkinstall(250)) $current = 200;
-  else  if (!upgrade_checkinstall(300)) $current = 250;
-  else  if (!upgrade_checkinstall(310)) $current = 300;
-  else  if (!upgrade_checkinstall(320)) $current = 310;
-  else  if (!upgrade_checkinstall(330)) $current = 320;
-  else  if (!upgrade_checkinstall(340)) $current = 330;
-  else  if (!upgrade_checkinstall(350)) $current = 340;
-  else  if (!upgrade_checkinstall(360)) $current = 350;
-  else  $current = 360;
+<?php	// calculate current version
+    if (!upgrade_checkinstall(96))      $current = 95;
+    elseif (!upgrade_checkinstall(100)) $current = 96;
+    elseif (!upgrade_checkinstall(110)) $current = 100;
+    elseif (!upgrade_checkinstall(150)) $current = 110;
+    elseif (!upgrade_checkinstall(200)) $current = 150;
+    elseif (!upgrade_checkinstall(250)) $current = 200;
+    elseif (!upgrade_checkinstall(300)) $current = 250;
+    elseif (!upgrade_checkinstall(310)) $current = 300;
+    elseif (!upgrade_checkinstall(320)) $current = 310;
+    elseif (!upgrade_checkinstall(330)) $current = 320;
+    elseif (!upgrade_checkinstall(340)) $current = 330;
+    elseif (!upgrade_checkinstall(350)) $current = 340;
+    elseif (!upgrade_checkinstall(360)) $current = 350;
+    else  $current = 360;
 
   if ($current == 360) {
 	?>
