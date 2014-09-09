@@ -107,7 +107,9 @@ if (!isset($CONF['installscript'])) {
  */
 if (!function_exists('mb_convert_encoding')){
 	global $mbemu_internals;
-	include_libs('mb_emulator/mb-emulator.php',true,false);
+	if(is_file("{$DIR_LIBS}mb_emulator/mb-emulator.php"))
+		include_libs('mb_emulator/mb-emulator.php',true,false);
+	else exit('Need mb-emulator.php');
 }
 
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET

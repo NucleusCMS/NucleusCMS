@@ -524,7 +524,9 @@ function doInstall() {
  */ 
 	if (!function_exists('mb_convert_encoding')){
 		global $mbemu_internals;
-		include_once($config_adminpath.'libs/mb_emulator/mb-emulator.php');
+		if(is_file("{$config_adminpath}libs/mb_emulator/mb-emulator.php"))
+			include_once("{$config_adminpath}libs/mb_emulator/mb-emulator.php");
+		else exit('Need mb-emulator.php');
 	}
 	if (function_exists('date_default_timezone_set')){
 		 @date_default_timezone_set((function_exists('date_default_timezone_get')) ? @date_default_timezone_get() : 'UTC');
