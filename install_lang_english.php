@@ -61,6 +61,11 @@ define('_TITLE5',	'Fight against Spam');
 define('_HEADER1', 	'Install Nucleus');
 define('_TEXT1',	'<p>This script will help you to install Nucleus. It will set up your MySQL database tables and provide you with the information you need to enter in <i>config.php</i>. In order to do all this, you need to enter some information.</p><p>All fields are mandatory. Optional information can be set from the Nucleus admin-area when installation is completed.</p>');
 
+define('_HEADER1_2',			'Character Set');
+define('_TEXT1_2',				'Choose a character set to use. Recommend UTF-8.');
+define('_TEXT1_2_TAB_HEAD',		'Choose character set');
+define('_TEXT1_2_TAB_FIELD1',	'Character Set');
+
 define('_HEADER2',	'PHP &amp; MySQL Versions');
 define('_TEXT2',	'<p>Below are the version numbers of the PHP interpreter and the MySQL server on your webhost. When reporting problems on the Nucleus Support Forum, please include this information.</p>');
 define('_TEXT2_WARN',	'WARNING: Nucleus requires at least PHP ');

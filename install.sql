@@ -83,7 +83,7 @@ CREATE TABLE `nucleus_config` (
 INSERT INTO `nucleus_config` VALUES ('DefaultBlog', '1');
 INSERT INTO `nucleus_config` VALUES ('AdminEmail', 'example@example.org');
 INSERT INTO `nucleus_config` VALUES ('IndexURL', 'http://localhost:8080/nucleus/');
-INSERT INTO `nucleus_config` VALUES ('Language', 'english');
+INSERT INTO `nucleus_config` VALUES ('Language', 'english-utf8');
 INSERT INTO `nucleus_config` VALUES ('SessionCookie', '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberCreate', '');
 INSERT INTO `nucleus_config` VALUES ('AllowMemberMail', '1');

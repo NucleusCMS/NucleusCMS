@@ -262,6 +262,25 @@ function showInstallForm() {
 
 		</fieldset>
 
+		<h1><?php echo _HEADER1_2 ?></h1>
+		
+		<?php echo _TEXT1_2; ?>
+		
+		<fieldset>
+			<legend><?php echo _TEXT1_2_TAB_HEAD; ?></legend>
+			<table>
+				<tr>
+					<td><?php echo _TEXT1_2_TAB_FIELD1; ?></td>
+					<td>
+						<select name="charset" tabindex="10000">
+							<option value="utf8" selected="selected">UTF-8</option>
+							<option value="latin1" >iso-8859-1</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		
 		<h1><?php echo _HEADER5; ?></h1>
 
 		<?php echo _TEXT5; ?>
@@ -491,6 +510,7 @@ function doInstall() {
 	$user_email = postVar('User_email');
 	$blog_name = postVar('Blog_name');
 	$blog_shortname = postVar('Blog_shortname');
+	$charset = postVar('charset');
 	$config_adminemail = $user_email;
 	$config_sitename = $blog_name;
 	$weblog_ping = postVar('Weblog_ping');
@@ -517,6 +537,14 @@ function doInstall() {
 
 	if (($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/', $mysql_prefix) ) ) {
 		array_push($errors, _ERROR4);
+	}
+	if ($charset == 'latin1')
+	{
+		if(!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1');
+	}
+	else
+	{
+		if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
 	}
 
 	// TODO: add action.php check
@@ -667,6 +695,9 @@ function doInstall() {
 	updateConfig('ActionURL', $config_actionurl);
 	updateConfig('AdminEmail', $config_adminemail);
 	updateConfig('SiteName', $config_sitename);
+	
+	if ($charset === 'utf8')       updateConfig('Language', 'english-utf8');
+	elseif ($charset === 'latin1') updateConfig('Language', 'english');
 
 	// 7. update GOD member
 	$query = 'UPDATE ' . tableName('nucleus_member')
