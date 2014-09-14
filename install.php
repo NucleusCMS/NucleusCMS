@@ -603,8 +603,15 @@ function doInstall() {
 	}
 
 	// 3. try to create database (if needed)
+	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+	$collation = ($charset === 'utf8') ? 'utf8_general_ci' : 'latin1_general_ci';
 	if ($mysql_create == 1) {
-		sql_query('CREATE DATABASE ' . "`{$mysql_database}`", $MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN) );
+		$sql = "CREATE DATABASE `{$mysql_database}`";
+		
+	if (version_compare($mySqlVer, '4.1.0', '>='))
+		$sql .= " DEFAULT CHARACTER SET {$charset} COLLATE {$collation}";
+	
+		sql_query($sql,$MYSQL_CONN) or _doError(_ERROR16 . ': ' . sql_error($MYSQL_CONN));
 	}
 
 	// 4. try to select database
@@ -675,16 +682,20 @@ function doInstall() {
 		if ($query) {
 
 			if ($mysql_usePrefix == 1) {
-					$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
+				$query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
 			}
-
-			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query) . '</small>): ' . sql_error($MYSQL_CONN) );
+			
+			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && version_compare($mySqlVer, '4.1.0', '>=')) {
+				$query .= " DEFAULT CHARACTER SET {$charset} COLLATE {$collation}";
+			}
+			
+			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query,ENT_QUOTES,_CHARSET) . '</small>): ' . sql_error($MYSQL_CONN) );
 		}
 	}
 
 	// 5a make first post
 	$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost) . '</small>): ' . sql_error($MYSQL_CONN) );
+	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '</small>): ' . sql_error($MYSQL_CONN) );
 
 	// 6. update global settings
 	updateConfig('IndexURL', $config_indexurl);
