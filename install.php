@@ -618,9 +618,7 @@ function doInstall() {
 	sql_select_db($mysql_database,$MYSQL_CONN) or _doError(_ERROR17);
 
 	// 5. execute queries
-	$filename = 'install.sql';
-	$fd = fopen($filename, 'r');
-	$queries = fread($fd, filesize($filename) );
+	$queries = file_get_contents('install.sql');
 	fclose($fd);
 
 	$queries = preg_split("/;\n|;\r/", $queries);
