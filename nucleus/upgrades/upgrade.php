@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,7 +11,7 @@
  */
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @copyright Copyright (C) The Nucleus Group
  * @version $Id$
  */
 
@@ -66,16 +66,12 @@ switch($from) {
 		upgrade_do310();
 	case 310:
 		upgrade_do320();
-		//break;
 	case 320:
 		upgrade_do330();
-		//break;
 	case 330:
 		upgrade_do340();
-		//break;
 	case 340:
 		upgrade_do350();
-		//break;
 	case 350:
 		upgrade_do360();
 	case 360:

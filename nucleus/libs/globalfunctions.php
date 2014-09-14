@@ -754,7 +754,6 @@ function highlight($text, $expression, $highlight) {
 
 				if ($regex)
 				{
-					//$matches[2][$i] = eregi_replace($regex, $highlight, $matches[2][$i]);
 					$matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
 				}
 
@@ -765,7 +764,6 @@ function highlight($text, $expression, $highlight) {
 		}
 		else
 		{
-			//$result .= eregi_replace($expression, $highlight, $matches[2][$i]);
 			$result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
 		}
 
