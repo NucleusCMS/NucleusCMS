@@ -619,7 +619,6 @@ function doInstall() {
 
 	// 5. execute queries
 	$queries = file_get_contents('install.sql');
-	fclose($fd);
 
 	$queries = preg_split("/;\n|;\r/", $queries);
 
