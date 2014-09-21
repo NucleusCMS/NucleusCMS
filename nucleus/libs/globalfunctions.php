@@ -2273,7 +2273,7 @@ function ifset(&$var) {
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-	$query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
+	$query = sprintf("SELECT COUNT(*) as count FROM %s WHERE event='%s'", sql_table('plugin_event'), $event);
 	$res = sql_query($query);
 	$obj = sql_fetch_object($res);
 	return $obj->count;
