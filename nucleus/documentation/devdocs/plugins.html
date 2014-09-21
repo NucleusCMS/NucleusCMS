@@ -156,64 +156,25 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 </p>
 
 <pre class="example"><code>&lt;?php
-
 class NP_HelloWorld extends NucleusPlugin
 {
-    // プラグインの名前
-    function getName()
-    {
-        return 'Hello World';
-    }
-
-    // プラグインの作者
-    function getAuthor()
-    {
-        return 'Wouter Demuynck';
-    }
-
-    // プラグインのサイトURL
-    // mailto:foo@bar.com の形式も可
-    function getURL()
-    {
-        return 'http://nucleuscms.org/';
-    }
-
-    // プラグインのバージョン
-    function getVersion()
-    {
-        return '1.0';
-    }
-
-    // インストール済みのプラグインリストに表示される説明文
-    function getDescription()
-    {
-        return 'Just a sample plugin.';
-    }
-
+    function getName()    {return 'Hello World';} // プラグインの名前
+    function getVersion() {return '1.0';}         // プラグインのバージョン
+    function getAuthor()  {return 'My name';}     // プラグインの作者
+    function getURL()     {return 'http://example.com/';}
+                                                  // プラグインのサイトURL mailto:foo@example.com の形式も可
+    function getDescription() {return 'これはテストプラグインです。';}
+                                                  // インストール済みのプラグインリストに表示される説明文
     function doSkinVar($skinType)
     {
         echo 'Hello World!';
     }
-
-    function supportsFeature ($what)
-    {
-        switch ($what)
-        {
-            case 'SqlTablePrefix':
-                return 1;
-            case 'SqlApi':
-                return 1;
-            default:
-                return 0;
-        }
-    }
-
 }
-?&gt;</code></pre>
+</code></pre>
 
 <ol>
     <li>
-        このコードをコピーし、 <code>NP_HelloWorld.php</code> と名づけて保存し、プラグインディレクトリに置きます。<em>最後の <code>?&gt;</code> の後や、最初の <code>&lt;?php</code> の前にスペースがないことを確認しましょう</em>。ところでNP は &quot;Nucleus Plugin&quot; って意味ですよ :-) 念のため。
+        このコードをコピーし、 <code>NP_HelloWorld.php</code> と名づけて保存し、プラグインディレクトリに置きます。<em>最初の <code>&lt;?php</code> の前にスペースがないことを確認しましょう</em>。ところでNP は &quot;Nucleus Plugin&quot; って意味ですよ :-) 念のため。
     </li>
     <li>Nucleusの管理画面を開き、<em>Nucleusの管理＞プラグインの管理</em>にいきます。</li>
     <li><em>HelloWorld</em> プラグインがインストール可能な状態になっているはずですので、インストールします。すべてがうまくいけば、インストール済みプラグインリストに追加されます。</li>
@@ -296,7 +257,7 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>doIf($key, $value)</code></td>
-        <td>(v3.30) スキン変数 <code>if/ifnot/elseif/elseifnot</code> に対して、プラグイン独自の判断をする事が出来るメソッドです。通常は、<code>$key</code> 変数が <code>$value</code> の値を持っているかを調べて、 <code>true</code> か <code>false</code> を返すことになります。このメソッドをプラグインに実装する場合は、作者は使用方法のドキュメントを書くようにしてください。</td>
+        <td>(v3.30) スキン変数 <code>if/ifnot/elseif/elseifnot</code> に対して、プラグイン独自の判断をすることができるメソッドです。通常は、<code>$key</code> 変数が <code>$value</code> の値を持っているかを調べて、 <code>true</code> か <code>false</code> を返すことになります。このメソッドをプラグインに実装する場合は、作者は使用方法のドキュメントを書くようにしてください。</td>
     </tr>
     <tr>
         <td><code>doAction($type)</code></td>
@@ -430,7 +391,7 @@ class NP_HelloWorld extends NucleusPlugin
 <h2>解説</h2>
 
 <p>
-独自のスキン変数を生成し、<code>&lt;%plugin(<em>PlugName,parameters</em>)%&gt;</code> または <code>&lt;%PlugName(parameters)%&gt;</code>で呼び出すことが出来ます（すでに存在するスキン変数とかぶらない場合）。パラメータはカンマ区切りです。
+独自のスキン変数を生成し、プラグイン名がNP_PlugNameである場合、<code>&lt;%PlugName(parameters)%&gt;</code>として呼び出すことができます（すでに存在するスキン変数とかぶらない場合）。パラメータはカンマ区切りです。
 </p>
 
 <p>
@@ -774,7 +735,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         <td>アイテムがデータベースに追加された後</td>
         <td><dl>
             <dt class="ro">itemid</dt>
-            <dd>データベースに出来た新しい itemid</dd>
+            <dd>データベースにできた新しい itemid</dd>
         </dl></td>
     </tr>
     <tr>
@@ -1531,7 +1492,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
     </tr>
     <tr>
         <td>GenerateURL</td>
-        <td>(v3.22)URLが自動生成される前。このイベントを使って独自のURLを生成する事が出来ます。</td>
+        <td>(v3.22)URLが自動生成される前。このイベントを使って独自のURLを生成することができます。</td>
         <td><dl>
             <dt class="ro">type</dt>
             <dd>生成するURLのタイプ(item, blog, ...)</dd>
@@ -1540,7 +1501,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
             <dt class="ref">completed</dt>
             <dd>プラグインはURLを生成し終わるとこれを<strong>true</strong>にセットしてURLを返します。<strong>false</strong>の場合はプラグインはURLを生成していません。</dd>
             <dt class="ref">url</dt>
-            <dd>プラグインが生成したURLを格納する為の空の変数</dd>
+            <dd>プラグインが生成したURLを格納するための空の変数</dd>
         </dl></td>
     </tr>
     <tr>
@@ -1593,7 +1554,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
     </tr>
 	<tr>
 		<td>RegistrationFormExtraFields</td>
-		<td>(v3.40) createaccount.php からビジターに表示されるアカウント作成フォームが表示され、FormExtra イベントが起きる前。プラグインはこのイベントによって、アカウント作成フォームに独自のフィールドを付け加える事が出来ます。PostRegister イベントに同時に登録すると、付け加えたフィールドの値を評価する事が出来る様になります。渡されるパラメータは、付け加えられたフィールドを、元々のフィールドと違和感無く表示させる為に使用されます。このイベントの使用例はNP_Profileプラグインを参照してください。</td>
+		<td>(v3.40) createaccount.php からビジターに表示されるアカウント作成フォームが表示され、FormExtra イベントが起きる前。プラグインはこのイベントによって、アカウント作成フォームに独自のフィールドを付け加えることができます。PostRegister イベントに同時に登録すると、付け加えたフィールドの値を評価することができる様になります。渡されるパラメータは、付け加えられたフィールドを、元々のフィールドと違和感無く表示させるために使用されます。このイベントの使用例はNP_Profileプラグインを参照してください。</td>
 		<td><dl>
 			<dt class="ro">type</dt>
 			<dd>アカウント作成フォームのタイプ。通常は <code>createaccount.php</code>。</dd>
@@ -1609,10 +1570,10 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 	</tr>
 	<tr>
 		<td>TemplateExtraFields</td>
-		<td>(v3.40) テンプレートが編集・更新される時。プラグイン製作者がコアのテンプレートシステムをより使いやすくするために、テンプレートにフィールドを追加する事が出来ます。プラグイン作者は追加するテンプレートフィールドの初期状態をプラグインオプションに保存し、そこで使用するテンプレート変数についてのドキュメントを書くことが要求されます。また、このイベントに関するサンプルプラグインが、フォーラムの<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24401#24401" title="Sample">新API「TemplateExtraFields」を使ったプラグインの見本</a>(本家フォーラムのスレッドは <a href="http://forum.nucleuscms.org/viewtopic.php?p=87672#87672" title="Sample">Skin specific values for Plugins</a>)にあります。</td>
+		<td>(v3.40) テンプレートが編集・更新される時。プラグイン製作者がコアのテンプレートシステムをより使いやすくするために、テンプレートにフィールドを追加することができます。プラグイン作者は追加するテンプレートフィールドの初期状態をプラグインオプションに保存し、そこで使用するテンプレート変数についてのドキュメントを書くことが要求されます。また、このイベントに関するサンプルプラグインが、フォーラムの<a href="http://japan.nucleuscms.org/bb/viewtopic.php?p=24401#24401" title="Sample">新API「TemplateExtraFields」を使ったプラグインの見本</a>(本家フォーラムのスレッドは <a href="http://forum.nucleuscms.org/viewtopic.php?p=87672#87672" title="Sample">Skin specific values for Plugins</a>)にあります。</td>
 		<td><dl>
 			<dt class="ref">fields</dt>
-			<dd>プラグイン名をキーにした連想配列。配列の内容は、テンプレートのフィールド名をキーにした連想配列で、その値はフォームのフィールドに表示されるラベル。フィールド名は全て英数小文字で、フィールド名の重複を避けるためにプラグイン名を含んでいる事が好ましい。</dd>
+			<dd>プラグイン名をキーにした連想配列。配列の内容は、テンプレートのフィールド名をキーにした連想配列で、その値はフォームのフィールドに表示されるラベル。フィールド名は全て英数小文字で、フィールド名の重複を避けるためにプラグイン名を含んでいることが好ましい。</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -1620,7 +1581,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 		<td>(v3.40) アーカイブリストが表示される前。アーカイブリストを表示するために使われたテンプレートのアーカイブリスト本体フィールドのテンプレート変数を追加／修正することを可能にします。追加のテンプレート変数についてのドキュメントも整備すべきです。</td>
 		<td><dl>
 			<dt class="ref">listitem</dt>
-			<dd>テンプレート変数をキーにした連想配列。値はテンプレート変数に置き換えられる内容。この配列にキーと値のペアを追加する事で、新しい変数が追加できます。</dd>
+			<dd>テンプレート変数をキーにした連想配列。値はテンプレート変数に置き換えられる内容。この配列にキーと値のペアを追加することで、新しい変数が追加できます。</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -1628,7 +1589,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 		<td>(v3.40) カテゴリーリストが表示される前。カテゴリーリストを表示するために使われたテンプレートのカテゴリーリスト本体フィールドのテンプレート変数を追加／修正することを可能にします。追加のテンプレート変数についてのドキュメントも整備すべきです。</td>
 		<td><dl>
 			<dt class="ref">listitem</dt>
-			<dd>テンプレート変数をキーにした連想配列。値はテンプレート変数に置き換えられる内容。この配列にキーと値のペアを追加する事で、新しい変数が追加できます。</dd>
+			<dd>テンプレート変数をキーにした連想配列。値はテンプレート変数に置き換えられる内容。この配列にキーと値のペアを追加することで、新しい変数が追加できます。</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -1636,12 +1597,12 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 		<td>(v3.40) ブログリストが表示される前。ブログリストを表示するために使われたテンプレートのブログリスト本体フィールドのテンプレート変数を追加／修正することを可能にします。追加のテンプレート変数についてのドキュメントも整備すべきです。</td>
 		<td><dl>
 			<dt class="ref">listitem</dt>
-			<dd>テンプレート変数をキーにした連想配列。値はテンプレート変数に置き換えられる内容。この配列にキーと値のペアを追加する事で、新しい変数が追加できます。</dd>
+			<dd>テンプレート変数をキーにした連想配列。値はテンプレート変数に置き換えられる内容。この配列にキーと値のペアを追加することで、新しい変数が追加できます。</dd>
 		</dl></td>
 	</tr>
 	<tr>
 		<td>PreTemplateRead</td>
-		<td>(v3.40) テンプレートが読み込まれる直前。読み込むテンプレートを変更する事が出来ます。NP_MultiLanguage はこのイベントを使用しています。</td>
+		<td>(v3.40) テンプレートが読み込まれる直前。読み込むテンプレートを変更することができます。NP_MultiLanguage はこのイベントを使用しています。</td>
 		<td><dl>
 			<dt class="ref">name</dt>
 			<dd>呼び出されるテンプレートの名前</dd>
@@ -1649,7 +1610,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 	</tr>
 	<tr>
 		<td>CustomLogin</td>
-		<td>(v3.40) Nucleus にログインする直前。ログインの手順をカスタマイズできます。外部認証を簡素化し、ログイン ID にメールアドレス等を使用出来る様になります。</td>
+		<td>(v3.40) Nucleus にログインする直前。ログインの手順をカスタマイズできます。外部認証を簡素化し、ログイン ID にメールアドレス等を使用できる様になります。</td>
 		<td><dl>
 			<dt class="ref">login</dt>
 			<dd>ユーザーが｢ログインID｣フィールドに入力した文字列。Nucleus のメンバーとして登録されているなら、プラグイン側で外部認証された｢ログインID｣と Nucleus のそれを紐つけるべきです。そうでないとクッキーがセットされず、ページを移動するごとにログアウトしてしまいます。</dd>
@@ -1663,7 +1624,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 	</tr>
 	<tr>
 		<td>PrePasswordSet</td>
-		<td>(v3.50)パスワードを設定する時に呼び出されます。パスワードの強度をプラグインで設定することが出来ます。</td>
+		<td>(v3.50)パスワードを設定する時に呼び出されます。パスワードの強度をプラグインで設定することができます。</td>
 		<td><dl>
 			<dt class="ro">password</dt>
 			<dd>ユーザーが入力したパスワード文字列</dd>
@@ -2047,7 +2008,7 @@ class NP_HelloWorld extends NucleusPlugin {
     <li>自分自身でデータベース接続をする必要はありません。PHPコマンド <code>mysql_query()</code> のラッパーであるNucleus関数 <code>sql_query()</code> を使ってSQL命令を実行できます。</li>
     <li>自分でデータベース接続をする場合、後でNucleusデータベースへの接続を復元するようにしてください。自前処理の後で <code>sql_connect()</code>  を呼ぶことで可能です。頻繁な再接続を避けるために、コンストラクタでそれを行うのも良いです。<code>$this- &gt;db</code>のリンクIDを保持でき、各クエリにそれを渡すことができます。</li>
     <li>バックアップ機能を使う時は、独自テーブルもバックアップに含めるよう、<code>getTableList()</code> を再定義してください。</li>
-	<li>ユーザーがプラグインをアップデートする時や、何らかの理由で一時的にプラグインをアンインストールしなければならない時、やプラグイン独自のテーブルの内容が失われる事があります。そうならないように、テーブルを削除するか否かをプラグインオプションで設定できるようにしておくといいでしょう。テーブルの削除をオプションでコントロールするには、install()メソッドで次のようなオプションを作成します。
+	<li>ユーザーがプラグインをアップデートする時や、何らかの理由で一時的にプラグインをアンインストールしなければならない時、やプラグイン独自のテーブルの内容が失われることがあります。そうならないように、テーブルを削除するか否かをプラグインオプションで設定できるようにしておくといいでしょう。テーブルの削除をオプションでコントロールするには、install()メソッドで次のようなオプションを作成します。
 	<pre class="example"><code>$this-&gt;createOption('del_uninstall', 'Delete NP_MyPlugin data tables on uninstall?', 'yesno','no');</code></pre>
 	そしてuninstall()メソッドで、次のようにします。
 	<pre class="example"><code>if ($this-&gt;getOption('del_uninstall') == 'yes')	{
@@ -2159,7 +2120,7 @@ class NP_HelloWorld extends NucleusPlugin {
 
 &lt;h3&gt;インストール&lt;/h3&gt;
 
-&lt;p&gt;これを読めてるならインストールは正しく出来てます :-)&lt;/p&gt;
+&lt;p&gt;これを読めてるならインストールは正しくできてます :-)&lt;/p&gt;
 
 &lt;h3&gt;スキン変数&lt;/h3&gt;
 
@@ -2271,15 +2232,15 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 <h1>スキン変数の出力の書式 <a name="skinvar-formatting" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 <p>偉大なプラグインのいくつかは、様々なスキンや URL の生成において、必ずしもそのまま使用できるとはいえません。なぜなら、doSkinVar() メソッドによって出力されるものが、
-ユーザーのニーズに十二分に合致するものであるとは言いがたいからです。Nucleus では、出力をここのユーザーによっておのおののニーズに沿ったものにする為に、いくつかのツールを用意しています。</p>
+ユーザーのニーズに十二分に合致するものであるとは言いがたいからです。Nucleus では、出力をここのユーザーによっておのおののニーズに沿ったものにするために、いくつかのツールを用意しています。</p>
 
 <!--<h2>URLの出力</h2>-->
 
-<p>各ブログ・カテゴリー・アイテム・メンバー、それから action.php や管理エリア、または各プラグインの管理エリアなどの URL を出力する為に、Nucleus はコアの機能として
+<p>各ブログ・カテゴリー・アイテム・メンバー、それから action.php や管理エリア、または各プラグインの管理エリアなどの URL を出力するために、Nucleus はコアの機能として
 いくつかのファンクションとグローバル変数を用意しています。：</p>
 
-<table summary="Nucleus の各ページへのリンクを生成する為に便利な変数とファンクション">
-	<caption>Nucleus の各ページへのリンクを生成する為に便利な変数とファンクション</caption>
+<table summary="Nucleus の各ページへのリンクを生成するために便利な変数とファンクション">
+	<caption>Nucleus の各ページへのリンクを生成するために便利な変数とファンクション</caption>
 	<tr>
 		<th>名前</th><th>種類</th><th>引数</th><th>説明</th>
 	</tr>
@@ -2420,16 +2381,16 @@ define('_ABCDEF_MESSAGENAME',                  '実際のメッセージ');
 
 <!--<h2>スキンへの出力にテンプレートを使う</h2>-->
 
-<p>出力する文字列をテンプレートを使って整形出来るようにしましょう。あなたが順不同のリストで出力したいと考えていたとしても、別のユーザーは同じデータを
+<p>出力する文字列をテンプレートを使って整形できるようにしましょう。あなたが順不同のリストで出力したいと考えていたとしても、別のユーザーは同じデータを
 記号で区切ったり、特別な形で出力したいと考えるかもしれません。Nucleus にはテンプレートデータを作ったり定義したりする2種類の方法があります。
 次に上げるれいの両方において、<code>&lt;%foo%&gt;</code> と <code>&lt;%bar%&gt;</code> のふたつのテンプレート変数を使用します。</p>
 
 <ol>
 	<li><strong>プラグインのオプションを使う方法。</strong>この方法は v3.2 以降で使用でき、次のように <code>install()</code> メソッド
-	に記述する事によって簡単に作成する事が出来ますが、アップグレードのためにプラグインを削除した時に、ユーザーは同時にカスタマイズした
+	に記述することによって簡単に作成できますが、アップグレードのためにプラグインを削除した時に、ユーザーは同時にカスタマイズした
 	テンプレートを失ってしまうという大きなデメリットがあります。
 	<pre class="example"><code>$this-&gt;createOption('my_template',
-		'プラグインの出力の為のテンプレート',
+		'プラグインの出力のためのテンプレート',
 		'textarea',
 		'&lt;li&gt;&lt;%foo%&gt; loves &lt;%bar%&gt;&lt;/li&gt;');</code></pre>
 	<code>doSkinVar()</code> メソッドで、<code>foo</code> と <code>bar</code> を次のように定義して、テンプレートを埋めます。
@@ -2512,7 +2473,7 @@ foreach ($couples as $values) {
 	<li><strong>通常のテンプレートを使って書式化。</strong>この方法は v3.4 以降で、アイテムを出力するプラグインで使用できます。
 	この方法にはコアのテンプレートシステムの既存の｢アイテム｣フィールドを使うというアドバンテージがあり、スキン変数の <code>&lt;%blog%&gt;</code>
 	の様に使用します。スキン変数の引数として、一つ以上のアイテムの ID と使用するテンプレート名を、また、BLOG クラスの <code>readLogFromList()</code>
-	メソッドを呼び出せることが条件です。テンプレート変数として使用したい場合は、<code>doTemplateVar()</code> メソッドで使用することも出来ます。
+	メソッドを呼び出せることが条件です。テンプレート変数として使用したい場合は、<code>doTemplateVar()</code> メソッドで使用することもできます。
 	例として <code>doSkinVar()</code> メソッドでこのテクニックを使う方法を示しておきます。
 	4つのアイテムの ID を引数として受け取り、「default/index」テンプレートを使って出力します。
 	<pre class="example"><code>function doSkinVar($skinType,$item1 = 0,$item2 = 0,$item3 = 0,$item4 = 0) {
