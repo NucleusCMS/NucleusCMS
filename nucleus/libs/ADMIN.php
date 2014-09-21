@@ -5327,9 +5327,9 @@ selector();
             <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
             <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
 
-      <meta http-equiv='Pragma' content='no-cache' />
-      <meta http-equiv='Cache-Control' content='no-cache, must-revalidate' />
-      <meta http-equiv='Expires' content='-1' />
+      <meta http-equiv="Pragma" content="no-cache" />
+      <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+      <meta http-equiv="Expires" content="-1" />
 
             <?php echo $extrahead?>
         </head>
