@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -34,23 +34,23 @@ upgrade_head();
 <p>Nucleus CMSはバージョンアップ毎に、データベースのテーブル構造を少しずつ変えています。このスクリプト集は、古いバージョンの Nucleus からアップグレードする際に必要な、データベーステーブルのアップグレードを行います。</p>
 
 <?php	// calculate current version
-	if (!upgrade_checkinstall(96))      $current = 95;
-	elseif (!upgrade_checkinstall(100)) $current = 96;
-	elseif (!upgrade_checkinstall(110)) $current = 100;
-	elseif (!upgrade_checkinstall(150)) $current = 110;
-	elseif (!upgrade_checkinstall(200)) $current = 150;
-	elseif (!upgrade_checkinstall(250)) $current = 200;
-	elseif (!upgrade_checkinstall(300)) $current = 250;
-	elseif (!upgrade_checkinstall(310)) $current = 300;
-	elseif (!upgrade_checkinstall(320)) $current = 310;
-	elseif (!upgrade_checkinstall(330)) $current = 320;
-	elseif (!upgrade_checkinstall(331)) $current = 330;
-	elseif (!upgrade_checkinstall(340)) $current = 331;
-	elseif (!upgrade_checkinstall(350)) $current = 340;
-	elseif (!upgrade_checkinstall(360)) $current = 350;
-	elseif (!upgrade_checkinstall(370)) $current = 360;
-	else                                $current = 370;
-	if ($current == 370) {
+    if (!upgrade_checkinstall(96))      $current = 95;
+    elseif (!upgrade_checkinstall(100)) $current = 96;
+    elseif (!upgrade_checkinstall(110)) $current = 100;
+    elseif (!upgrade_checkinstall(150)) $current = 110;
+    elseif (!upgrade_checkinstall(200)) $current = 150;
+    elseif (!upgrade_checkinstall(250)) $current = 200;
+    elseif (!upgrade_checkinstall(300)) $current = 250;
+    elseif (!upgrade_checkinstall(310)) $current = 300;
+    elseif (!upgrade_checkinstall(320)) $current = 310;
+    elseif (!upgrade_checkinstall(330)) $current = 320;
+    elseif (!upgrade_checkinstall(331)) $current = 330;
+    elseif (!upgrade_checkinstall(340)) $current = 331;
+    elseif (!upgrade_checkinstall(350)) $current = 340;
+    elseif (!upgrade_checkinstall(360)) $current = 350;
+    elseif (!upgrade_checkinstall(370)) $current = 360;
+    else                                $current = 370;
+    if ($current == 370) {
 ?>
 <p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
 <?php

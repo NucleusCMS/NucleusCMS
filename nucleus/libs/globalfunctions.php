@@ -2,7 +2,7 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -575,7 +575,7 @@ function getNucleusPatchLevel() {
 }
 
 /**
- * returns the latest version available for download from nucleuscms.org 
+ * returns the latest version available for download from nucleuscms.org
  * or false if unable to attain data
  * format will be major.minor/patachlevel
  * e.g. 3.41 or 3.41/02
