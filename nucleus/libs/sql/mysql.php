@@ -353,8 +353,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	function sql_set_charset($charset) {
 		switch(strtolower($charset))
 		{
-			case 'utf-8' : $charset='utf8'; break;
-			case 'euc-jp': $charset='ujis'; break;
+			case 'utf-8'     : $charset='utf8'; break;
+			case 'euc-jp'    : $charset='ujis'; break;
+			case 'iso-8859-1': $charset='latin1'; break;
 		}
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
 		if (version_compare($mySqlVer, '4.1.0', '>=')) {
