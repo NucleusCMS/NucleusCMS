@@ -6093,9 +6093,10 @@ selector();
 		elseif(is_file("{$cplugindir}help/index.html"))
 			$helpFile = "{$cplugindir}help/index.html";
 		
-		if (($plug->supportsFeature('HelpPage') > 0) && (isset($helpFile))) {
-			@readfile($helpFile);
-		} else {
+        if ($plug->supportsFeature('HelpPage') > 0 && isset($helpFile)) {
+            if(substr($helpFile,-4)==='.php') include_once($helpFile);
+            else                              @readfile($helpFile);
+        } else {
 			echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
 			echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
 		}
