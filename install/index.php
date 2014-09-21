@@ -614,7 +614,7 @@ function doInstall() {
 
 	// 3. try to create database (if needed)
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	$collation = ($charset == 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
+	$collation = ($charset === 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
 	if ($mysql_create == 1) {
 		$sql = 'CREATE DATABASE '
 			 .	 "`{$mysql_database}`";

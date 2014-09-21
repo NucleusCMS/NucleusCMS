@@ -17,5 +17,3 @@ $CONF['Self'] = 'index.php';
 include('./config.php');
 
 selector();
-
-?>
