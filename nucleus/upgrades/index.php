@@ -43,66 +43,21 @@
 
 <?php
 	// calculate current version
-	if ( !upgrade_checkinstall(96) )
-	{
-		$current = 95;
-	}
-	else if ( !upgrade_checkinstall(100) )
-	{
-		$current = 96;
-	}
-	else if ( !upgrade_checkinstall(110) )
-	{
-		$current = 100;
-	}
-	else if ( !upgrade_checkinstall(150) )
-	{
-		$current = 110;
-	}
-	else if ( !upgrade_checkinstall(200) )
-	{
-		$current = 150;
-	}
-	else if ( !upgrade_checkinstall(250) )
-	{
-		$current = 200;
-	}
-	else if ( !upgrade_checkinstall(300) )
-	{
-		$current = 250;
-	}
-	else if ( !upgrade_checkinstall(310) )
-	{
-		$current = 300;
-	}
-	else if ( !upgrade_checkinstall(320) )
-	{
-		$current = 310;
-	}
-	else if ( !upgrade_checkinstall(330) )
-	{
-		$current = 320;
-	}
-	else if ( !upgrade_checkinstall(340) )
-	{
-		$current = 330;
-	}
-	else if ( !upgrade_checkinstall(350) )
-	{
-		$current = 340;
-	}
-	else if ( !upgrade_checkinstall(360) )
-	{
-		$current = 350;
-	}
-	else if ( !upgrade_checkinstall(400)  )
-	{
-		$current = 360;
-	}
-	else
-	{
-		$current = 400;
-	}
+	if ( !upgrade_checkinstall(96) )       $current = 95;
+	elseif ( !upgrade_checkinstall(100) )  $current = 96;
+	elseif ( !upgrade_checkinstall(110) )  $current = 100;
+	elseif ( !upgrade_checkinstall(150) )  $current = 110;
+	elseif ( !upgrade_checkinstall(200) )  $current = 150;
+	elseif ( !upgrade_checkinstall(250) )  $current = 200;
+	elseif ( !upgrade_checkinstall(300) )  $current = 250;
+	elseif ( !upgrade_checkinstall(310) )  $current = 300;
+	elseif ( !upgrade_checkinstall(320) )  $current = 310;
+	elseif ( !upgrade_checkinstall(330) )  $current = 320;
+	elseif ( !upgrade_checkinstall(340) )  $current = 330;
+	elseif ( !upgrade_checkinstall(350) )  $current = 340;
+	elseif ( !upgrade_checkinstall(360) )  $current = 350;
+	elseif ( !upgrade_checkinstall(400) )  $current = 360;
+	else                                   $current = 400;
 	
 	if ( $current == 400 )
 	{
