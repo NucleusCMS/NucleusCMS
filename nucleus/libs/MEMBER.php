@@ -393,10 +393,8 @@ class Member
 	{
 		$query = sprintf("SELECT tadmin FROM %s WHERE tblog='%s' AND tmember='%s'", sql_table('team'), intval($blogid), $this->getID());
 		$res = DB::getValue($query);
-		if ( $res )
-			return ($res == 1);
-		else
-			return 0;
+		if ( $res && $res == 1) return 1;
+		else                    return 0;
 	}
 	
 	/**
@@ -552,71 +550,45 @@ class Member
 		global $manager;
 		
 		// item does not exists -> NOK
-		if ( !$manager->existsItem($itemid,1,1) )
-		{
-			return 0;
-		}
+		if ( !$manager->existsItem($itemid,1,1) )          return 0;
 		
 		// cannot alter item -> NOK
-		if (!$this->canAlterItem($itemid))
-		{
-			return 0;
-		}
+		if (!$this->canAlterItem($itemid))                 return 0;
 		
 		// if this is a 'newcat' style newcat
 		// no blog admin of destination blog -> NOK
 		// blog admin of destination blog -> OK
 		if ( i18n::strpos($newcat, 'newcat') === 0 )
 		{
-			// get blogid
-			list($blogid) = sscanf($newcat, 'newcat-%d');
-			return $this->blogAdminRights($blogid);
+			list($blogid) = sscanf($newcat, 'newcat-%d'); // get blogid
+			                                               return $this->blogAdminRights($blogid);
 		}
 		
 		// category does not exist -> NOK
-		if (!$manager->existsCategory($newcat))
-		{
-			return 0;
-		}
+		if (!$manager->existsCategory($newcat))            return 0;
 		
-		// get item
-		$item =& $manager->getItem($itemid,1,1);
-		
+		$item =& $manager->getItem($itemid, 1, 1); // get item
 		// old catid = new catid -> OK
-		if ($item['catid'] == $newcat)
-		{
-			return 1;
-		}
+		if ($item['catid'] == $newcat)                     return 1;
 		
 		// not a valid category -> NOK
 		$validCat = DB::getValue(sprintf("SELECT COUNT(*) AS result FROM %s WHERE catid='%s'", sql_table('category'), intval($newcat)));
 		if ( !$validCat )                                  return 0;
 		
 		// get destination blog
-		$item =& $manager->getItem($itemid, 1, 1);
-		$source_blogid = $item['blogid'];
 		$dest_blogid = getBlogIDFromCatID($newcat);
 		
 		// not a team member of destination blog -> NOK
-		if ( !$this->teamRights($dest_blogid) )
-		{
-			return 0;
-		}
+		if ( !$this->teamRights($dest_blogid) )            return 0;
 		
 		// if member is author of item -> OK
-		if ( $item['authorid'] == $this->getID() )
-		{
-			return 1;
-		}
+		if ( $item['authorid'] == $this->getID() )         return 1;
 		
 		// if member has admin rights on both blogs: OK
-		if ( ($this->blogAdminRights($dest_blogid)) && ($this->blogAdminRights($source_blogid)) )
-		{
-			return 1;
-		}
+		if ( ($this->blogAdminRights($dest_blogid)) && ($this->blogAdminRights($item['blogid'])) )
+			                                               return 1;
 		
-		// all other cases: NOK
-		return 0;
+		                                                   return 0; // all other cases: NOK
 	}
 	
 	/**
@@ -671,7 +643,7 @@ class Member
 		
 		// generate key and URL
 		$key = $this->generateActivationEntry($type, $extra);
-		$url = $CONF['AdminURL'] . 'index.php?action=activate&key=' . $key;
+		$url = $CONF['AdminURL'] . "index.php?action=activate&key={$key}";
 		
 		// choose text to use in mail
 		switch ( $type )
@@ -732,6 +704,7 @@ class Member
 		}
 		
 		$res = DB::getResult($query);
+		
 		if ( $res->rowCount() > 0 )
 		{
 			foreach ( $res as $row )

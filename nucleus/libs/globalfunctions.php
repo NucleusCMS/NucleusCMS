@@ -163,16 +163,10 @@ if ( $CONF['UsingAdminArea'] )
 	include_once("{$DIR_LIBS}ADMIN.php");
 }
 
-
 /* connect to database */
-if ( !isset($MYSQL_HANDLER) )
-{
-	$MYSQL_HANDLER = array('mysql','');
-}
-if ( $MYSQL_HANDLER[0] == '' )
-{
-	$MYSQL_HANDLER[0] = 'mysql';
-}
+if ( !isset($MYSQL_HANDLER) )  $MYSQL_HANDLER = array('mysql', '');
+if ( $MYSQL_HANDLER[0] == '' ) $MYSQL_HANDLER[0] = 'mysql';
+
 DB::setConnectionInfo($MYSQL_HANDLER[1], $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE);
 
 
@@ -186,14 +180,9 @@ $data = array(
 );
 $manager->notify('ForceLocale', $data);
 
-if ( $data['locale'] !== '' )
-{
-	i18n::set_forced_locale($data['locale']);
-}
-if ( $data['charset'] !== '' )
-{
-	i18n::set_forced_charset($data['charset']);
-}
+if ( $data['locale'] !== '' )  i18n::set_forced_locale($data['locale']);
+if ( $data['charset'] !== '' ) i18n::set_forced_charset($data['charset']);
+
 unset($locale);
 unset($charset);
 
@@ -201,23 +190,21 @@ unset($charset);
 /* convert forced charset to current charset */
 if ( i18n::get_forced_charset() != i18n::get_current_charset() )
 {
-	$_POST		= i18n::convert_array($_POST, i18n::get_forced_charset());
-	$_GET		= i18n::convert_array($_GET, i18n::get_forced_charset());
-	$_REQUEST	= i18n::convert_array($_REQUEST, i18n::get_forced_charset());
-	$_COOKIE	= i18n::convert_array($_COOKIE, i18n::get_forced_charset());
-	$_FILES		= i18n::convert_array($_FILES, i18n::get_forced_charset());
+	$_POST    = i18n::convert_array($_POST,    i18n::get_forced_charset());
+	$_GET     = i18n::convert_array($_GET,     i18n::get_forced_charset());
+	$_REQUEST = i18n::convert_array($_REQUEST, i18n::get_forced_charset());
+	$_COOKIE  = i18n::convert_array($_COOKIE,  i18n::get_forced_charset());
+	$_FILES   = i18n::convert_array($_FILES,   i18n::get_forced_charset());
 	
 	if ( session_id() !== '' )
-	{
 		$_SESSION = i18n::convert_array($_SESSION, i18n::get_forced_charset());
-	}
 }
 
 
 /* sanitize option */
 $bLoggingSanitizedResult = 0;
-$bSanitizeAndContinue = 0;
-$orgRequestURI = serverVar('REQUEST_URI');
+$bSanitizeAndContinue    = 0;
+$orgRequestURI           = serverVar('REQUEST_URI');
 sanitizeParams();
 
 /* logs sanitized result if need */
@@ -236,24 +223,24 @@ if ( $orgRequestURI !== serverVar('REQUEST_URI') )
 }
 
 /* get all variables that can come from the request and put them in the global scope */
-$blogid		= requestVar('blogid');
-$itemid		= intRequestVar('itemid');
-$catid		= intRequestVar('catid');
-$skinid		= requestVar('skinid');
-$memberid	= requestVar('memberid');
-$archivelist = requestVar('archivelist');
-$imagepopup	= requestVar('imagepopup');
-$archive	= requestVar('archive');
-$query		= requestVar('query');
-$highlight	= requestVar('highlight');
-$amount		= requestVar('amount');
-$action		= requestVar('action');
-$nextaction	= requestVar('nextaction');
-$maxresults	= requestVar('maxresults');
-$startpos	= intRequestVar('startpos');
+$blogid		  = requestVar('blogid');
+$itemid		  = intRequestVar('itemid');
+$catid		  = intRequestVar('catid');
+$skinid		  = requestVar('skinid');
+$memberid	  = requestVar('memberid');
+$archivelist  = requestVar('archivelist');
+$imagepopup	  = requestVar('imagepopup');
+$archive	  = requestVar('archive');
+$query		  = requestVar('query');
+$highlight	  = requestVar('highlight');
+$amount		  = requestVar('amount');
+$action		  = requestVar('action');
+$nextaction	  = requestVar('nextaction');
+$maxresults	  = requestVar('maxresults');
+$startpos	  = intRequestVar('startpos');
 $errormessage = '';
-$error		= '';
-$special	= requestVar('special');
+$error		  = '';
+$special	  = requestVar('special');
 
 
 /* read config */
@@ -384,10 +371,8 @@ if ( !headers_sent() )
 
 /* for path resolving */
 $virtualpath = getVar('virtualpath');
-if ( getVar('virtualpath') == '' )
-{
+if ( $virtualpath === '' )
 	$virtualpath = serverVar('PATH_INFO');
-}
 
 /*
  * switch URLMode back to normal when $CONF['Self'] ends in .php
@@ -418,7 +403,4 @@ $data = array(
 );
 $manager->notify('PostParseURL', $data);
 
-/*
- * NOTE: Here is the end of initialization
- */
-
+// NOTE: Here is the end of initialization

@@ -3193,7 +3193,7 @@ class Admin
 		$desc = Template::getDesc($templateid);
 		
 		// 2. create desc thing
-		$name = "cloned" . $name;
+		$name = "cloned_{$name}";
 		
 		// if a template with that name already exists:
 		if ( Template::exists($name) )
@@ -4286,10 +4286,10 @@ class Admin
 		// save settings
 		self::updateConfig('DefaultBlog',		postVar('DefaultBlog'));
 		self::updateConfig('BaseSkin',			postVar('BaseSkin'));
-		self::updateConfig('IndexURL',			postVar('IndexURL'));
-		self::updateConfig('AdminURL',			postVar('AdminURL'));
-		self::updateConfig('PluginURL',			postVar('PluginURL'));
-		self::updateConfig('SkinsURL',			postVar('SkinsURL'));
+		self::updateConfig('IndexURL',			rtrim(postVar('IndexURL'),'/') .'/');
+		self::updateConfig('AdminURL',			rtrim(postVar('AdminURL'),'/') .'/');
+		self::updateConfig('PluginURL',			rtrim(postVar('PluginURL'),'/').'/');
+		self::updateConfig('SkinsURL',			rtrim(postVar('SkinsURL'),'/') .'/');
 		self::updateConfig('ActionURL',			postVar('ActionURL'));
 		self::updateConfig('Locale',			postVar('Locale'));
 		self::updateConfig('AdminEmail',		postVar('AdminEmail'));

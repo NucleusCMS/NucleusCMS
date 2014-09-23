@@ -1108,8 +1108,8 @@ function checkVars()
  */
 function sanitizeParams()
 {
-	$array = array();
-	$str = '';
+	$array      = array();
+	$str        = '';
 	$frontParam = '';
 	
 	// REQUEST_URI of $_SERVER
@@ -1141,7 +1141,7 @@ function _addInputTags(&$keys,$prefix='')
 {
 	foreach ( $keys as $key=>$value )
 	{
-		if ( $prefix ) $key=$prefix.'['.$key.']';
+		if ( $prefix ) $key = "{$prefix}[{$key}]";
 		
 		if ( is_array($value) ) _addInputTags($value,$key);
 		else
@@ -1184,7 +1184,7 @@ function serverStringToArray($uri, &$query_elements, &$hier_part)
 	$hier_part = "";
 	
 	// split hierarchical part, e.g. /index.php, query and fragment, e.g. blogid=1&page=2#section1
-	if ( i18n::strpos($uri, "?") > 0 )
+	if ( i18n::strpos($uri, '?') > 0 )
 	{
 		list($hier_part, $query_and_fragment) = preg_split("#\?#", $uri, 2);
 	}
