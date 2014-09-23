@@ -693,10 +693,11 @@ class Member
 	public function getAdminBlogs()
 	{
 		$blogs = array();
+		$prefix = sql_table('');
 		
 		if ($this->isAdmin())
 		{
-			$query = 'SELECT bnumber as blogid from '.sql_table('blog');
+			$query = "SELECT bnumber AS blogid FROM {$prefix}blog";
 		}
 		else
 		{
@@ -727,11 +728,10 @@ class Member
 	{
 		$incAdmin = intval($incAdmin);
 		$blogs = array();
+		$prefix = sql_table('');
 		
 		if ( $this->isAdmin() && $incAdmin )
-		{
-			$query = 'SELECT bnumber as blogid from '.sql_table('blog');
-		}
+			$query = "SELECT bnumber AS blogid FROM {$prefix}blog";
 		else
 			$query = sprintf("SELECT tblog AS blogid FROM {$prefix}team WHERE tmember='%s'", $this->getID());
 		
