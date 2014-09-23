@@ -3731,7 +3731,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 <part name="SHOWLIST_LISTPLUG_TABLE_PLUGLIST_HEAD"><![CDATA[
 	<th><%colinfo%></th>
 	<th><%coldesc%></th>
-	<th style=\"white-space:nowrap\"><%colactions%></th>
+	<th style="white-space:nowrap"><%colactions%></th>
 ]]></part>
 <part name="SHOWLIST_LISTPLUG_TABLE_PLUGEVENTLIST"><![CDATA[
 	<br /><br /><%evntlstlbl%><br /><%eventlist%>
