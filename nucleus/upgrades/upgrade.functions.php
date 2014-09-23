@@ -231,7 +231,7 @@
 		<h1> Error </h1>
 
 		<p> The following message was returned: </p>
-		<p> <?php echo $message?> </p>
+		<p> <?php echo $message; ?> </p>
 		<p> <a href="index.php" onclick="history.back(); return false;">Go Back</a> </p>
 
 <?php
