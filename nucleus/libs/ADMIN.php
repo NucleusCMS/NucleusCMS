@@ -1423,7 +1423,7 @@ class Admin
 		// check if allowed
 		($member->getID() == $memberid) or $member->isAdmin() or self::disallow();
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/numbercheck.js)%>\"></script>\n";
+		self::$extrahead .= '<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>'."\n";
 		
 		self::$skin->parse('editmembersettings');
 		return;
@@ -2042,7 +2042,7 @@ class Admin
 		
 		$blog =& $manager->getBlog($blogid);
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/numbercheck.js)%>\"></script>\n";
+		self::$extrahead .= '<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>'."\n";
 		
 		self::$skin->parse('blogsettings');
 		return;
@@ -2120,7 +2120,7 @@ class Admin
 		$_REQUEST['desturl']	= $desturl;
 		$member->blogAdminRights($blogid) or self::disallow();
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/numbercheck.js)%>\"></script>\n";
+		self::$extrahead .= '<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>'."\n";
 		
 		self::$skin->parse('categoryedit');
 		return;
@@ -2968,8 +2968,8 @@ class Admin
 		
 		$member->isAdmin() or self::disallow();
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/templateEdit.js)%>\"></script>\n";
-		self::$extrahead .= "<script type=\"text/javascript\">setTemplateEditText('" . Entity::hsc(_EDITTEMPLATE_EMPTY) . "');</script>\n";
+		self::$extrahead .= '<script type="text/javascript" src="<%skinfile(/javascripts/templateEdit.js)%>"></script>'."\n";
+		self::$extrahead .= sprintf('<script type="text/javascript">setTemplateEditText("%s");</script>', Entity::hsc(_EDITTEMPLATE_EMPTY))."\n";
 		
 		self::$skin->parse('templateedit');
 		return;
@@ -3252,8 +3252,8 @@ class Admin
 		}
 		$member->isAdmin() or self::disallow();
 		
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/templateEdit.js)%>\"></script>\n";
-		self::$extrahead .= '<script type="text/javascript">setTemplateEditText("' . Entity::hsc(_EDITTEMPLATE_EMPTY) . '");</script>' . "\n";
+		self::$extrahead .= '<script type="text/javascript" src="<%skinfile(/javascripts/templateEdit.js)%>"></script>'."\n";
+		self::$extrahead .= sprintf('<script type="text/javascript">setTemplateEditText("%s");</script>', Entity::hsc(_EDITTEMPLATE_EMPTY)) . "\n";
 		
 		self::$skin->parse('admintemplateedit');
 		return;
@@ -5148,7 +5148,7 @@ class Admin
 		}
 		$plugname	= $manager->getPluginNameFromPid($pid);
 		$plugin		= $manager->getPlugin($plugname);
-		self::$extrahead .= "<script type=\"text/javascript\" src=\"<%skinfile(/javascripts/numbercheck.js)%>\"></script>\n";
+		self::$extrahead .= '<script type="text/javascript" src="<%skinfile(/javascripts/numbercheck.js)%>"></script>'."\n";
 		
 		self::$skin->parse('pluginoptions');
 		return;

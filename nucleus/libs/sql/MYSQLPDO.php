@@ -342,7 +342,7 @@ class MysqlPDO
 				}
 				else
 				{
-					return '\'' . call_user_func(MysqlPDO::$handler . 'real_escape_string', $string) . '\'';
+					return "'" . call_user_func(MysqlPDO::$handler . 'real_escape_string', $string) . "'";
 				}
 		}
 	}

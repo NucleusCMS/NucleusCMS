@@ -70,7 +70,7 @@ function listplug_select($vars, $type, $template_name = '')
 		case 'HEAD':
 			if ( !array_key_exists('SHOWLIST_LISTPLUG_SELECT_HEAD', $templates) || empty($templates['SHOWLIST_LISTPLUG_SELECT_HEAD']) )
 			{
-				$template = "<select name=\"<%name%>\" tabindex=\"<%tabindex%>\" <%javascript%>>\n"
+				$template = '<select name="<%name%>" tabindex="<%tabindex%>" <%javascript%>>'."\n"
 				          . "<%extraoption%>\n";
 			}
 			else
@@ -88,7 +88,7 @@ function listplug_select($vars, $type, $template_name = '')
 			$current = $vars['current'];
 			if ( !array_key_exists('SHOWLIST_LISTPLUG_SELECT_BODY', $templates) || empty($templates['SHOWLIST_LISTPLUG_SELECT_BODY']) )
 			{
-				$template = "<option value=\"<%value%>\" <%selected%> title=\"<%title%>\"><%option%></option>\n";
+				$template = '<option value="<%value%>" <%selected%> title="<%title%>"><%option%></option>'."\n";
 			}
 			else
 			{
@@ -160,7 +160,7 @@ function listplug_table($vars, $type, $template_name = '')
 		case 'BODY':
 			if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_BODY', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_BODY']) )
 			{
-				$template = "<tr onmouseover=\"focusRow(this);\" onmouseout=\"blurRow(this);\">\n"
+				$template = '<tr onmouseover="focusRow(this);" onmouseout="blurRow(this);">'."\n"
 				          . "<%typebody%>\n"
 				          . "</tr>\n";
 			}
@@ -214,7 +214,7 @@ function listplug_table_memberlist($vars, $type, $template_name = '')
 				          . "<th><%colmemberurl%></th>\n"
 				          . "<th><%colmemberadmin%><%helplink(superadmin)%></th>\n"
 				          . "<th><%colmemberlogin%><%helplink(canlogin)%></th>\n"
-				          . "<th colspan=\"2\"><%colactions%></th>\n";
+				          . '<th colspan="2"><%colactions%></th>'."\n";
 			}
 			else
 			{
@@ -234,16 +234,16 @@ function listplug_table_memberlist($vars, $type, $template_name = '')
 			if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_MEMBLIST_BODY', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_MEMBLIST_BODY']) )
 			{
 				$template = "<td>\n"
-				          . "<input type=\"checkbox\" id=\"batch<%id%>\" name=\"batch[<%id%>]\" value=\"<%memberid%>\" />\n"
-				          . "<label for=\"batch<%id%>\">\n"
-				          . "<a href=\"mailto:<%mailaddress%>\" tabindex=\"<%tabindex%>\"><%name%></a>\n"
+				          . '<input type="checkbox" id="batch<%id%>" name="batch[<%id%>]" value="<%memberid%>" />'."\n"
+				          . '<label for="batch<%id%>">'."\n"
+				          . '<a href="mailto:<%mailaddress%>" tabindex="<%tabindex%>"><%name%></a>'."\n"
 				          . "</label>\n</td>\n"
 				          . "<td><%realname%></td>\n"
-				          . "<td><a href=\"<%url%>\" tabindex=\"<%tabindex%>\"><%url%></a></td>\n"
+				          . '<td><a href="<%url%>" tabindex="<%tabindex%>"><%url%></a></td>'."\n"
 				          . "<td><%admin%></td>\n"
 				          . "<td><%login%></td>\n"
-				          . "<td><a href=\"index.php?action=memberedit&amp;memberid=<%memberid%>\" tabindex=\"<%tabindex%>\"><%editbtn%></a></td>\n"
-				          . "<td><a href=\"index.php?action=memberdelete&amp;memberid=<%memberid%>\" tabindex=\"<%tabindex%>\"><%deletebtn%></a></td>\n";
+				          . '<td><a href="index.php?action=memberedit&amp;memberid=<%memberid%>" tabindex="<%tabindex%>"><%editbtn%></a></td>'."\n"
+				          . '<td><a href="index.php?action=memberdelete&amp;memberid=<%memberid%>" tabindex="<%tabindex%>"><%deletebtn%></a></td>'."\n";
 			}
 			else
 			{
@@ -296,7 +296,7 @@ function listplug_table_teamlist($vars, $type, $template_name = '')
 				$template = "<th><%colmembername%></th>\n"
 				          . "<th><%colmemberrname%></th>\n"
 				          . "<th><%colteamadmin%><%helplink(teamadmin)%></th>\n"
-				          . "<th colspan=\"2\"><%colactions%></th>\n";
+				          . '<th colspan="2"><%colactions%></th>'."\n";
 			}
 			else
 			{
@@ -773,7 +773,7 @@ function listplug_plugOptionRow($current, $template_name = '')
 			case 'password':
 				if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_PLGOPT_OPWORD', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_PLGOPT_OPWORD']) )
 				{
-					$template .= "<input type=\"password\" size=\"40\" maxlength=\"128\" name=\"<%varname%>\" value=\"<%value%>\" />\n";
+					$template .= '<input type="password" size="40" maxlength="128" name="<%varname%>" value="<%value%>" />' . "\n";
 				}
 				else
 				{
@@ -787,7 +787,7 @@ function listplug_plugOptionRow($current, $template_name = '')
 			case 'select':
 				if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEP', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEP']) )
 				{
-					$template .= "<select name=\"<%varname%>\">\n";
+					$template .= '<select name="<%varname%>">' . "\n";
 				}
 				else
 				{
@@ -795,7 +795,7 @@ function listplug_plugOptionRow($current, $template_name = '')
 				}
 				if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEO', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_PLGOPT_OSELEO']) )
 				{
-					$subTpl = "<option value=\"<%value%>\"<%selected%>><%optname%></option>\n";
+					$subTpl = '<option value="<%value%>"<%selected%>><%optname%></option>' . "\n";
 				}
 				else
 				{
@@ -840,7 +840,7 @@ function listplug_plugOptionRow($current, $template_name = '')
 			case 'textarea':
 				if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_PLGOPT_OTAREA', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_PLGOPT_OTAREA']) )
 				{
-					$template .= "<textarea class=\"pluginoption\" cols=\"30\" rows=\"5\" name=\"<%varname%>\"<%readonly%>><%value%></textarea>\n";
+					$template .= '<textarea class="pluginoption" cols="30" rows="5" name="<%varname%>"<%readonly%>><%value%></textarea>' . "\n";
 				}
 				else
 				{
@@ -863,7 +863,7 @@ function listplug_plugOptionRow($current, $template_name = '')
 			default:
 				if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_PLGOPT_OITEXT', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_PLGOPT_OITEXT']) )
 				{
-					$template .= "<input type=\"text\" size=\"40\" maxlength=\"128\" name=\"<%varname%>\" value=\"<%value%>\"<%datatype%><%readonly%> />\n";
+					$template .= '<input type="text" size="40" maxlength="128" name="<%varname%>" value="<%value%>"<%datatype%><%readonly%> />'."\n";
 				}
 				else
 				{
@@ -968,8 +968,8 @@ function listplug_templateEditRow($content, $desc, $name, $help = '', $tabindex 
 	{
 		$template = "<tr>\n"
 		          . "<td><%description%><%help%></td>\n"
-		          . "<td id=\"td<%count%>\">\n"
-		          . "<textarea class=\"templateedit\" name=\"<%name%>\" tabindex=\"<%tabindex%>\" cols=\"50\" rows=\"<%rows%>\" id=\"textarea<%count%>\">";
+		          . '<td id="td<%count%>">'."\n"
+		          . '<textarea class="templateedit" name="<%name%>" tabindex="<%tabindex%>" cols="50" rows="<%rows%>" id="textarea<%count%>">';
 	}
 	else
 	{
@@ -1015,7 +1015,7 @@ function listplug_table_itemlist($vars, $type, $template_name = '')
 			{
 				$template = "<th><%colinfo%></th>\n"
 				          . "<th><%colcontent%></th>\n"
-				          . "<th style=\"white-space:nowrap\"><%colaction%></th>\n";
+				          . '<th style="white-space:nowrap"><%colaction%></th>'."\n";
 			}
 			else
 			{
