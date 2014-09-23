@@ -40,15 +40,7 @@
 	{
 		function intGetVar($name)
 		{
-			if ( defined($_GET) )
-			{
-				return intval($_GET[$name]);
-			}
-			else
-			{
-				global $HTTP_GET_VARS;
-				return intval($HTTP_GET_VARS[$name]);
-			}
+			return intval($_GET[$name]);
 		}
 	}
 
