@@ -136,7 +136,7 @@ define('_CHARSET', i18n::get_current_charset());
  * NOTE: Since 4.0 release, Entity class becomes to be important class
  *  with some wrapper functions for htmlspechalchars/htmlentity PHP's built-in function
  */
-include($DIR_LIBS . 'ENTITY.php');
+include_once("{$DIR_LIBS}ENTITY.php");
 
 /* we will use postVar, getVar, ... methods instead of $_GET, $_POST ... */
 if ( $CONF['installscript'] != 1 )
@@ -149,19 +149,18 @@ if ( $CONF['installscript'] != 1 )
 }
 
 /* include core classes that are needed for login & plugin handling */
-include($DIR_LIBS . 'MEMBER.php');
-include($DIR_LIBS . 'ACTIONLOG.php');
-include($DIR_LIBS . 'MANAGER.php');
-include($DIR_LIBS . 'PLUGIN.php');
+include_once("{$DIR_LIBS}MEMBER.php");
+include_once("{$DIR_LIBS}ACTIONLOG.php");
+include_once("{$DIR_LIBS}MANAGER.php");
+include_once("{$DIR_LIBS}PLUGIN.php");
 
 $manager =& MANAGER::instance();
 
 /* only needed when updating logs */
 if ( $CONF['UsingAdminArea'] )
 {
-	/* XML-RPC client classes */
-	include($DIR_LIBS . 'xmlrpc.inc.php');
-	include($DIR_LIBS . 'ADMIN.php');
+	include_once("{$DIR_LIBS}xmlrpc.inc.php"); // XML-RPC client classes
+	include_once("{$DIR_LIBS}ADMIN.php");
 }
 
 
@@ -358,17 +357,17 @@ if ( $CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea'] )
 }
 
 /* load other classes */
-include($DIR_LIBS . 'PARSER.php');
-include($DIR_LIBS . 'SKIN.php');
-include($DIR_LIBS . 'TEMPLATE.php');
-include($DIR_LIBS . 'BLOG.php');
-include($DIR_LIBS . 'BODYACTIONS.php');
-include($DIR_LIBS . 'COMMENTS.php');
-include($DIR_LIBS . 'COMMENT.php');
-include($DIR_LIBS . 'NOTIFICATION.php');
-include($DIR_LIBS . 'BAN.php');
-include($DIR_LIBS . 'SEARCH.php');
-include($DIR_LIBS . 'LINK.php');
+include_once("{$DIR_LIBS}PARSER.php");
+include_once("{$DIR_LIBS}SKIN.php");
+include_once("{$DIR_LIBS}TEMPLATE.php");
+include_once("{$DIR_LIBS}BLOG.php");
+include_once("{$DIR_LIBS}BODYACTIONS.php");
+include_once("{$DIR_LIBS}COMMENTS.php");
+include_once("{$DIR_LIBS}COMMENT.php");
+include_once("{$DIR_LIBS}NOTIFICATION.php");
+include_once("{$DIR_LIBS}BAN.php");
+include_once("{$DIR_LIBS}SEARCH.php");
+include_once("{$DIR_LIBS}LINK.php");
 
 /* set lastVisit cookie (if allowed) */
 if ( !headers_sent() )
