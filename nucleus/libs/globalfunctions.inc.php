@@ -1058,7 +1058,8 @@ function passVar($key, $value)
 	// array ?
 	if ( is_array($value) )
 	{
-		for ( $i = 0; $i < sizeof($value); $i++ )
+		$total = count($value);
+		for ( $i = 0; $i < $total; $i++ )
 		{
 			passVar("{$key}[{$i}]", $value[$i]);
 		}

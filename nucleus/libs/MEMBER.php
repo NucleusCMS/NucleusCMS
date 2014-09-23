@@ -635,10 +635,7 @@ class Member
 	{
 		global $CONF;
 		
-		if ( !isset($CONF['ActivationDays']) )
-		{
-			$CONF['ActivationDays'] = 2;
-		}
+		if ( !isset($CONF['ActivationDays']) ) $CONF['ActivationDays'] = 2;
 		
 		// generate key and URL
 		$key = $this->generateActivationEntry($type, $extra);
