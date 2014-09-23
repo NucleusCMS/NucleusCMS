@@ -1022,7 +1022,7 @@ function checkPlugin($name)
  */
 function alterQueryStr($querystr, $param, $value)
 {
-	$vars = preg_split('#&#', $querystr);
+	$vars = explode('&', $querystr);
 	$set = FALSE;
 	
 	for ( $i = 0; $i < count($vars); $i++ )
@@ -1186,7 +1186,7 @@ function serverStringToArray($uri, &$query_elements, &$hier_part)
 	// split hierarchical part, e.g. /index.php, query and fragment, e.g. blogid=1&page=2#section1
 	if ( i18n::strpos($uri, '?') > 0 )
 	{
-		list($hier_part, $query_and_fragment) = preg_split("#\?#", $uri, 2);
+		list($hier_part, $query_and_fragment) = explode('?', $uri, 2);
 	}
 	else
 	{
@@ -1201,7 +1201,7 @@ function serverStringToArray($uri, &$query_elements, &$hier_part)
 		return;
 	}
 	
-	$query_elements = preg_split("#&#", $query_and_fragment);
+	$query_elements = explode('&', $query_and_fragment);
 	return;
 }
 
@@ -1261,7 +1261,7 @@ function sanitizeArray(&$array)
 	foreach ( $array as $k => $v )
 	{
 		// split to key and value
-		list($key, $val) = preg_split("#=#", $v, 2);
+		list($key, $val) = explode('=', $v, 2);
 		if ( !isset($val) )
 		{
 			continue;
@@ -1284,7 +1284,7 @@ function sanitizeArray(&$array)
 			// check value
 			if ( i18n::strpos($val, '\\') > 0 )
 			{
-				list($val, $tmp) = preg_split('#\\\\#', $val);
+				list($val, $tmp) = explode('\\', $val);
 			}
 			
 			// remove control code etc.
@@ -1339,7 +1339,7 @@ function revertArrayForSanitizing($array, &$dst)
 {
 	foreach ( $array as $v )
 	{
-		list($key, $val) = preg_split("#=#", $v, 2);
+		list($key, $val) = explode('=', $v, 2);
 		$dst[$key] = $val;
 		continue;
 	}
@@ -1406,7 +1406,7 @@ function decodePathInfo($virtualpath)
 		return;
 	}
 	/* default implementation */
-	$data = preg_split("#/#", $virtualpath);
+	$data = explode('/', $virtualpath);
 	for ( $i = 0; $i < sizeof($data); $i++ )
 	{
 		switch ( $data[$i] )
@@ -1840,7 +1840,7 @@ function ticketForPlugin()
 		// Resolve URI and QUERY_STRING
 		if ($uri = serverVar('REQUEST_URI') )
 		{
-			list($uri, $qstring) = preg_split('#\?#', $uri);
+			list($uri, $qstring) = explode('?', $uri);
 		}
 		else
 		{
