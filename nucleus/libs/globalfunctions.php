@@ -90,16 +90,8 @@ define('_CHARSET', i18n::get_current_charset());
  *  with some wrapper functions for htmlspechalchars/htmlentity PHP's built-in function
  */
 include_once("{$DIR_LIBS}ENTITY.php");
-
-/* we will use postVar, getVar, ... methods instead of $_GET, $_POST ... */
-if ( $CONF['installscript'] != 1 )
-{
-	/* vars were already included in install.php */
-	include_once($DIR_LIBS . 'vars.php');
-	
-	/* added for 4.0 DB::* wrapper and compatibility sql_* */
-	include_once($DIR_LIBS . 'sql/sql.php');
-}
+include_once("{$DIR_LIBS}vars.php");
+include_once("{$DIR_LIBS}sql/sql.php"); // added for 4.0 DB::* wrapper and compatibility sql_*
 
 /* include core classes that are needed for login & plugin handling */
 include_once("{$DIR_LIBS}MEMBER.php");
