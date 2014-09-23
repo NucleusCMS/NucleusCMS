@@ -301,6 +301,10 @@ div#content table tbody tr td {
 	text-align: left;
 }
 
+div#content input.datetime {
+	text-align:right;
+}
+
 div#content table tbody tr td a:link,
 div#content table tbody tr td a:visited {
 	text-decoration: underline;
