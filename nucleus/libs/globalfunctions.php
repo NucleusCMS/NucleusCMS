@@ -27,20 +27,20 @@ $nucleus['codename'] = '';
 
 include_once('globalfunctions.inc.php');
 
+if ( !headers_sent() ) header('Generator: Nucleus CMS ' . $nucleus['version']);
+
 if ( version_compare(PHP_VERSION, '5.3.0', '<') ) ini_set('magic_quotes_runtime', '0');
 
 checkVars();
 
-if ( !isset($CONF) )
-{
-	$CONF = array();
-}
 
 if ( isset($CONF['debug']) && $CONF['debug'] ) error_reporting(E_ALL | E_STRICT);
 else                                           error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 
 if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
 	ini_set('display_errors','0');
+
+if(!isset($CONF)) $CONF = array();
 
 /*
  * alertOnHeadersSent
@@ -76,12 +76,6 @@ if ( getNucleusPatchLevel() > 0 )
 /* Avoid notices */
 $CONF['installscript']       = ( !isset($CONF['installscript']) || empty($CONF['installscript']) ) ? 0 : $CONF['installscript'];
 $CONF['UsingAdminArea']      = ( !isset($CONF['UsingAdminArea']) ) ? 0 : $CONF['UsingAdminArea'];
-
-if ( !headers_sent() )
-{
-	header('Generator: Nucleus CMS ' . $nucleus['version']);
-}
-
 
 /* TODO: This is for compatibility since 4.0, should be obsoleted at future release. */
 global $DIR_LOCALES,$DIR_LANG;
