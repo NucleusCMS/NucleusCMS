@@ -1150,8 +1150,7 @@ function _addInputTags(&$keys,$prefix='')
 			
 			if ( $key === 'ticket' )       continue;
 			
-			echo '<input type="hidden" name="'.Entity::hsc($key).
-			     '" value="'.Entity::hsc($value).'" />'."\n";
+			echo sprintf('<input type="hidden" name="%s" value="%s" />', Entity::hsc($key), Entity::hsc($value))."\n";
 		}
 	}
 	return;

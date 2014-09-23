@@ -5100,17 +5100,17 @@ class Admin
 		}
 		
 		// 1. get old order number
-		$oldOrder = DB::getValue('SELECT porder FROM ' . sql_table('plugin') . ' WHERE pid=' . $plugid);
+		$oldOrder = DB::getValue(sprintf("SELECT porder FROM %s WHERE pid='%s'",sql_table('plugin'),$plugid));
 		
-		$res = DB::getResult('SELECT * FROM ' . sql_table('plugin'));
+		$res = DB::getResult(sprintf('SELECT * FROM %s', sql_table('plugin')));
 		$maxOrder = $res->rowCount();
 		
 		// 2. calculate new order number
 		$newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
 		
 		// 3. update plug numbers
-		DB::execute('UPDATE ' . sql_table('plugin') . ' SET porder=' . $oldOrder . ' WHERE porder=' . $newOrder);
-		DB::execute('UPDATE ' . sql_table('plugin') . ' SET porder=' . $newOrder . ' WHERE pid=' . $plugid);
+		DB::execute(sprintf("UPDATE %s SET porder='%s' WHERE porder='%s'", sql_table('plugin'), $oldOrder, $newOrder));
+		DB::execute(sprintf("UPDATE %s SET porder='%s' WHERE pid='%s'", sql_table('plugin'), $newOrder, $plugid));
 		
 		//self::action_pluginlist();
 		// To avoid showing ticket in the URL, redirect to pluginlist, instead.

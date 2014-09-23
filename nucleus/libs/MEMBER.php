@@ -358,7 +358,7 @@ class Member
 	public function read($where)
 	{
 		// read info
-		$query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
+		$query = sprintf('SELECT * FROM %s WHERE %s', sql_table('member'), $where);
 		
 		$row = DB::getRow($query);
 		
@@ -391,9 +391,7 @@ class Member
 	 */
 	public function isBlogAdmin($blogid)
 	{
-		$query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
-		. ' tblog=' . intval($blogid)
-		. ' and tmember='. $this->getID();
+		$query = sprintf("SELECT tadmin FROM %s WHERE tblog='%s' AND tmember='%s'", sql_table('team'), intval($blogid), $this->getID());
 		$res = DB::getValue($query);
 		if ( $res )
 			return ($res == 1);
@@ -435,9 +433,7 @@ class Member
 	 */
 	public function isTeamMember($blogid)
 	{
-		$query = 'SELECT * FROM '.sql_table('team').' WHERE'
-			   . ' tblog=' . intval($blogid)
-			   . ' and tmember='. $this->getID();
+		$query = sprintf("SELECT * FROM %s WHERE tblog='%s' AND tmember='%s'", sql_table('team'), intval($blogid), $this->getID());
 		$res = DB::getResult($query);
 		return ($res->rowCount() != 0);
 	}
@@ -501,9 +497,7 @@ class Member
 			return 1;
 		}
 		
-		$query =  'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
-			   . ' FROM '.sql_table('comment') .', '.sql_table('item').', '.sql_table('blog')
-			   . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
+		$query =  sprintf("SELECT citem AS itemid, iblog AS blogid, cmember AS cauthor, iauthor FROM %s, %s, %s WHERE citem=inumber AND iblog=bnumber AND cnumber=%s", sql_table('comment'), sql_table('item'), sql_table('blog'), intval($commentid));
 		$res = DB::getRow($query);
 		
 		return ($res['cauthor'] == $this->getID()) or $this->isBlogAdmin($res['blogid']) or ($res['iauthor'] == $this->getID());
@@ -524,7 +518,7 @@ class Member
 	{
 		if ($this->isAdmin()) return 1;
 		
-		$query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
+		$query =  sprintf("SELECT iblog, iauthor FROM %s WHERE inumber='%s'", sql_table('item'), intval($itemid));
 		$res = DB::getRow($query);
 		return ($res['iauthor'] == $this->getID()) or $this->isBlogAdmin($res['iblog']);
 	}
@@ -539,7 +533,7 @@ class Member
 	 */
 	public function canBeDeleted()
 	{
-		$res = DB::getResult('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		$res = DB::getResult(sprintf("SELECT * FROM %s WHERE iauthor='%s'", sql_table('item'), $this->getID()));
 		return ( $res->rowCount() == 0 );
 	}
 	
@@ -595,11 +589,8 @@ class Member
 		}
 		
 		// not a valid category -> NOK
-		$validCat = DB::getValue('SELECT COUNT(*) AS result FROM '.sql_table('category').' WHERE catid='.intval($newcat));
-		if ( !$validCat )
-		{
-			return 0;
-		}
+		$validCat = DB::getValue(sprintf("SELECT COUNT(*) AS result FROM %s WHERE catid='%s'", sql_table('category'), intval($newcat)));
+		if ( !$validCat )                                  return 0;
 		
 		// get destination blog
 		$item =& $manager->getItem($itemid, 1, 1);
@@ -737,7 +728,7 @@ class Member
 		}
 		else
 		{
-			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tadmin=1 and tmember=' . $this->getID();
+			$query = sprintf("SELECT tblog AS blogid FROM %s WHERE tadmin=1 AND tmember='%s'", sql_table('team'), $this->getID());
 		}
 		
 		$res = DB::getResult($query);
@@ -769,9 +760,7 @@ class Member
 			$query = 'SELECT bnumber as blogid from '.sql_table('blog');
 		}
 		else
-		{
-			$query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
-		}
+			$query = sprintf("SELECT tblog AS blogid FROM {$prefix}team WHERE tmember='%s'", $this->getID());
 		
 		$res = DB::getResult($query);
 		if ( $res->rowCount() > 0 )
@@ -797,14 +786,11 @@ class Member
 	{
 		global $CONF;
 		if ( $this->isLoggedIn() )
-		{
-			return $this->getDisplayName() . " <" . $this->getEmail() . ">";
-		}
-		else if ( NOTIFICATION::address_validation($suggest) )
-		{
+			return sprintf('%s <%s>', $this->getDisplayName(), $this->getEmail());
+		elseif ( NOTIFICATION::address_validation($suggest) )
 			return $suggest;
-		}
-		return $CONF['AdminEmail'];
+		else
+			return $CONF['AdminEmail'];
 	}
 	
 	/**
