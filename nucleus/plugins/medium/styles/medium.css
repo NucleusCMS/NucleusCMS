@@ -1,9 +1,12 @@
 body {
-	font-family: verdana, arial;
+	font-family: "Bitstream Vera Sans", lucida, Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro","MS PGothic",sans-serif;
 	font-size: small;
 	background-color: #FFFFFF;
-	color: #000000;
+	color: #333;
 }
+
+input,select,button {font:inherit;}
+button {cursor:pointer;cursor:hand;}
 
 a:link, a:visited {
 	color: #1D3565; 
@@ -16,7 +19,7 @@ a:hover {
 
 h1 {
 	border-bottom: 1px dotted gray;
-	font-size: x-large;
+	font-size: 1.2em;
 	color: #596d9d;
 }
 
@@ -35,7 +38,6 @@ table {
 
 table th {
 	background-color: linen;
-	font-size: medium;
 }
 
 table th,
