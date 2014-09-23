@@ -1312,35 +1312,35 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
 	</span>
 	<![endif]-->
 	<!--[if ! IE]>-->
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
 	</span>
 	<!--<![endif]-->
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
-	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignleft.png)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
-	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignright.png)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
-	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-aligncenter.png)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
@@ -1351,7 +1351,7 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
-	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-media.png)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
 	</span>
 	<!--[if IE]>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
@@ -1444,35 +1444,35 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
 	</span>
 	<![endif]-->
 	<!--[if ! IE]>-->
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
 	</span>
 	<!--<![endif]-->
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
-	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignleft.png)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
-	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignright.png)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
-	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-aligncenter.png)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
@@ -1483,7 +1483,7 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
-	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-media.png)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
 	</span>
 	<!--[if IE]>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
@@ -1809,35 +1809,35 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
 	</span>
 	<![endif]-->
 	<!--[if ! IE]>-->
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
 	</span>
 	<!--<![endif]-->
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
-	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignleft.png)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
-	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignright.png)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
-	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-aligncenter.png)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
@@ -1848,7 +1848,7 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
-	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-media.png)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
 	</span>
 	<!--[if IE]>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
@@ -1979,35 +1979,35 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" alt="<%text(_ADD_BOLD_TT)%>(Ctrl + Shift + B)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" alt="<%text(_ADD_ITALIC_TT)%>(Ctrl + Shift + I)" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" alt="<%text(_ADD_HREF_TT)%>(Ctrl + Shift + A)" width="16" height="16" />
 	</span>
 	<![endif]-->
 	<!--[if ! IE]>-->
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="boldThis()">
-	<img src="<%skinfile(/images/button-bold.gif)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-bold.png)%>" title="<%text(_ADD_BOLD_TT)%>" alt="<%text(_ADD_BOLD_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="italicThis()">
-	<img src="<%skinfile(/images/button-italic.gif)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-italic.png)%>" title="<%text(_ADD_ITALIC_TT)%>" alt="<%text(_ADD_ITALIC_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="ahrefThis()">
-	<img src="<%skinfile(/images/button-link.gif)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-link.png)%>" title="<%text(_ADD_HREF_TT)%>" alt="<%text(_ADD_HREF_TT)%>" width="16" height="16" />
 	</span>
 	<!--<![endif]-->
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignleftThis()">
-	<img src="<%skinfile(/images/button-alignleft.gif)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignleft.png)%>" title="<%text(_ADD_ALIGNLEFT_TT)%>" alt="<%text(_ADD_ALIGNLEFT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="alignrightThis()">
-	<img src="<%skinfile(/images/button-alignright.gif)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-alignright.png)%>" title="<%text(_ADD_ALIGNRIGHT_TT)%>" alt="<%text(_ADD_ALIGNRIGHT_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="aligncenterThis()">
-	<img src="<%skinfile(/images/button-aligncenter.gif)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-aligncenter.png)%>" title="<%text(_ADD_ALIGNCENTER_TT)%>" alt="<%text(_ADD_ALIGNCENTER_TT)%>" width="16" height="16" />
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="leftThis()">
@@ -2018,7 +2018,7 @@
 	</span>
 	<span class="jsbuttonspacer">&nbsp;</span>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="addMedia()">
-	<img src="<%skinfile(/images/button-media.gif)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
+	<img src="<%skinfile(/images/button-media.png)%>" title="<%text(_ADD_MEDIA_TT)%>" alt="<%text(_ADD_MEDIA_TT)%>" width="16" height="16" />
 	</span>
 	<!--[if IE]>
 	<span class="jsbutton" onmouseover="BtnHighlight(this);" onmouseout="BtnNormal(this);" onclick="showedit()">
