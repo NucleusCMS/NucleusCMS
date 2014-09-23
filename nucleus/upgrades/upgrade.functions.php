@@ -94,47 +94,47 @@
 			break;
 
 			case '250':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 250 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 250 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '300':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 300 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 300 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '310':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 310 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 310 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '320':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 320 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 320 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '330':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 330 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 330 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '340':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 340 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 340 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '350':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 350 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 350 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '360':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 360 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 360 LIMIT 1";
 				$minrows = 1;
 			break;
 
 			case '400':
-				$query = 'SELECT * FROM ' . sql_table('config') . ' WHERE name=\'DatabaseVersion\' and value >= 400 LIMIT 1';
+				$query = 'SELECT * FROM ' . sql_table('config') . " WHERE name='DatabaseVersion' and value >= 400 LIMIT 1";
 				$minrows = 1;
 			break;
 		}
@@ -173,11 +173,11 @@
 	
 		echo "<form method=\"POST\" action=\"{$action}\">\n";
 		echo "<ul>\n";
-		echo "<li><label for=\"i_login\">Name:</label> <input type=\"text\" name=\"login\" id=\"i_login\" size=\"20\" /></li>\n";
-		echo "<li><label for=\"i_password\">Password:</label> <input type=\"password\" name=\"password\" id=\"i_password\" size=\"20\" /></li>\n";
+		echo '<li><label for="i_login">Name:</label> <input type="text" name="login" id="i_login" size="20" /></li>' . "\n";
+		echo '<li><label for="i_password">Password:</label> <input type="password" name="password" id="i_password" size="20" /></li>' . "\n";
 		echo "</ul>\n";
-		echo "<p><input type=\"submit\" value=\"Log In\" /></p>\n";
-		echo "<input name=\"action\" value=\"login\" type=\"hidden\" />\n";
+		echo '<p><input type="submit" value="Log In" /></p>' . "\n";
+		echo '<input name="action" value="login" type="hidden" />' . "\n";
 		echo "</form>\n";
 		
 		upgrade_foot();
@@ -189,8 +189,8 @@
 	 */
 	function upgrade_head()
 	{
-		echo "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\" \"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\">\n";
-		echo "<html xmlns=\"http://www.w3.org/1999/xhtml\">\n";
+		echo '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">' . "\n";
+		echo '<html xmlns="http://www.w3.org/1999/xhtml">' . "\n";
 		echo "<head>\n";
 		echo "<title> Nucleus Upgrade </title>\n";
 		
@@ -200,7 +200,7 @@
 		}
 		else
 		{
-			echo "<style type=\"text/css\">\n";
+			echo '<style type="text/css">' . "\n";
 			echo ".warning { color: red; }\n";
 			echo ".ok { color: green; }\n";
 			echo "</style>\n";
