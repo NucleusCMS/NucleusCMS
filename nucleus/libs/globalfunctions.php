@@ -298,16 +298,13 @@ include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}LINK.php");
 
 /* set lastVisit cookie (if allowed) */
+$now = time();
 if ( !headers_sent() )
 {
 	if ( $CONF['LastVisit'] )
-	{
-		setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-	}
+		setcookie($CONF['CookiePrefix'] . 'lastVisit', $now, $now + 2592000, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 	else
-	{
-		setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-	}
+		setcookie($CONF['CookiePrefix'] . 'lastVisit', '', $now - 2592000,   $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
 }
 
 /* for path resolving */
