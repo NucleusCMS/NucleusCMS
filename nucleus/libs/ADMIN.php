@@ -4325,7 +4325,7 @@ class Admin
 		// note that when changing cookie settings, this redirect might cause the user
 		// to have to log in again.
 		getConfig();
-		redirect($CONF['AdminURL'] . '?action=manage');
+		redirect($CONF['AdminURL'] . '?action=settingsedit');
 		return;
 	}
 	
