@@ -43,18 +43,11 @@ if ( !isset($CONF) )
 	$CONF = array();
 }
 
-/* debug mode */
-if ( array_key_exists('debug', $CONF) && $CONF['debug'] )
-{
-	/* report all errors! */
-	error_reporting(E_ALL | E_STRICT);
-}
-else
-{
-	if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
-		ini_set('display_errors','0');
-	error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
-}
+if ( isset($CONF['debug']) && $CONF['debug'] ) error_reporting(E_ALL | E_STRICT);
+else                                           error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+
+if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
+	ini_set('display_errors','0');
 
 /*
  * alertOnHeadersSent
@@ -63,28 +56,24 @@ else
  *  configuration file or a translation file, and could cause Nucleus to
  *  malfunction
  */
-if ( !array_key_exists('alertOnHeadersSent', $CONF) )
-{
-	$CONF['alertOnHeadersSent'] = 1;
-}
+$CONF['alertOnHeadersSent']  = !isset($CONF['alertOnHeadersSent'])  ? 1 : $CONF['alertOnHeadersSent'];
+
 /*
  * alertOnSecurityRisk
  * Displays an error only when visiting the admin area, and when one or
  *  more of the installation files (install.php, install.sql, upgrades/
  *  directory) are still on the server.
  */
-if ( !array_key_exists('alertOnSecurityRisk', $CONF) )
-{
-	$CONF['alertOnSecurityRisk'] = 1;
-}
+$CONF['alertOnSecurityRisk'] = !isset($CONF['alertOnSecurityRisk']) ? 1 : $CONF['alertOnSecurityRisk'];
+
 /*
  * Set these to 1 to allow viewing of future items or draft items
  * Should really never do this, but can be useful for some plugins that might need to
  * Could cause some other issues if you use future posts otr drafts
  * So use with care
  */
-$CONF['allowDrafts'] = 0;
-$CONF['allowFuture'] = 0;
+$CONF['allowDrafts']         = 0;
+$CONF['allowFuture']         = 0;
 
 if ( getNucleusPatchLevel() > 0 )
 {
@@ -92,14 +81,8 @@ if ( getNucleusPatchLevel() > 0 )
 }
 
 /* Avoid notices */
-if ( !array_key_exists('installscript', $CONF) || empty($CONF['installscript']) )
-{
-	$CONF['installscript'] = 0;
-}
-if ( !array_key_exists('UsingAdminArea', $CONF) )
-{
-	$CONF['UsingAdminArea'] = 0;
-}
+$CONF['installscript']       = ( !isset($CONF['installscript']) || empty($CONF['installscript']) ) ? 0 : $CONF['installscript'];
+$CONF['UsingAdminArea']      = ( !isset($CONF['UsingAdminArea']) ) ? 0 : $CONF['UsingAdminArea'];
 
 if ( !headers_sent() )
 {
@@ -108,25 +91,13 @@ if ( !headers_sent() )
 
 
 /* TODO: This is for compatibility since 4.0, should be obsoleted at future release. */
-if ( !isset($DIR_LOCALES) )
-{
-	$DIR_LOCALES = $DIR_NUCLEUS . 'locales/';
-}
-global $DIR_LANG;
-if ( !isset($DIR_LANG) )
-{
-	$DIR_LANG = $DIR_LOCALES;
-}
+global $DIR_LOCALES,$DIR_LANG;
+if ( !isset($DIR_LOCALES) ) $DIR_LOCALES = "{$DIR_NUCLEUS}locales/";
+if ( !isset($DIR_LANG) )    $DIR_LANG    = $DIR_LOCALES;
 
 /* load and initialize i18n class */
-if (!class_exists('i18n', FALSE))
-{
-	include($DIR_LIBS . 'i18n.php');
-}
-if ( !i18n::init('UTF-8', $DIR_LOCALES) )
-{
-	exit('Fail to initialize i18n class.');
-}
+if (!class_exists('i18n', FALSE)) include("{$DIR_LIBS}i18n.php");
+if ( !i18n::init('UTF-8', $DIR_LOCALES) ) exit('Fail to initialize i18n class.');
 
 /* TODO: This is just for compatibility since 4.0, should be obsoleted at future release. */
 define('_CHARSET', i18n::get_current_charset());
@@ -208,18 +179,13 @@ $orgRequestURI           = serverVar('REQUEST_URI');
 sanitizeParams();
 
 /* logs sanitized result if need */
-if ( $orgRequestURI !== serverVar('REQUEST_URI') )
+$requestURI = serverVar('REQUEST_URI');
+$remoteADDR = serverVar('REMOTE_ADDR');
+if ( $orgRequestURI !== $requestURI )
 {
-	$msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
-	$msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
-	if ( $bLoggingSanitizedResult )
-	{
-		addToLog(WARNING, $msg);
-	}
-	if ( !$bSanitizeAndContinue )
-	{
-		die("");
-	}
+	$msg = "Sanitized [{$remoteADDR}] {$orgRequestURI} -> {$requestURI}";
+	if ( $bLoggingSanitizedResult ) addToLog(WARNING, $msg);
+	if ( !$bSanitizeAndContinue )   exit;
 }
 
 /* get all variables that can come from the request and put them in the global scope */
@@ -250,14 +216,10 @@ getConfig();
 /* Properly set $CONF['Self'] and others if it's not set...
  * usually when we are access from admin menu
  */
-if ( !array_key_exists('Self', $CONF) )
+if ( !isset($CONF['Self']))
 {
 	$CONF['Self'] = $CONF['IndexURL'];
-	/* strip trailing */
-	if ( $CONF['Self'][i18n::strlen($CONF['Self']) -1] == "/" )
-	{
-		$CONF['Self'] = i18n::substr($CONF['Self'], 0, i18n::strlen($CONF['Self']) -1);
-	}
+	$CONF['Self'] = rtrim($CONF['Self'], '/');
 }
 
 $CONF['ItemURL']		= $CONF['Self'];
@@ -300,28 +262,22 @@ if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
 {
 	$CONF['Locale'] = 'en_Latn_US';
 }
-if ( !array_key_exists('Language', $CONF) )
+
+if ( !isset($CONF['Language']) )
 {
 	$CONF['Language'] = i18n::convert_locale_to_old_language_file_name($CONF['Locale']);
 }
-$locale = $CONF['Locale'];
 
+$locale = $CONF['Locale'];
 
 /* NOTE: include translation file and set locale */
 if ( $member->isLoggedIn() )
 {
-	if ( $member->getLocale() )
-	{
-		$locale = $member->getLocale();
-	}
+	if ( $member->getLocale() ) $locale = $member->getLocale();
 }
-else
-{
-	if ( i18n::get_forced_locale() !== '' )
-	{
-		$locale = i18n::get_forced_locale();
-	}
-}
+elseif ( i18n::get_forced_locale() !== '' )
+	$locale = i18n::get_forced_locale();
+
 include_translation($locale);
 i18n::set_current_locale($locale);
 
@@ -332,9 +288,7 @@ $manager->notify('PostAuthentication', $data);
 
 /* next action */
 if ( $member->isLoggedIn() && $nextaction )
-{
 	$action = $nextaction;
-}
 
 /* first, let's see if the site is disabled or not. always allow admin area access. */
 if ( $CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea'] )
@@ -378,17 +332,10 @@ if ( $virtualpath === '' )
  * switch URLMode back to normal when $CONF['Self'] ends in .php
  * this avoids urls like index.php/item/13/index.php/item/15
  */
-if ( !array_key_exists('URLMode', $CONF) || ($CONF['URLMode'] != 'pathinfo') )
-{
+if ( !isset($CONF['URLMode']) || ($CONF['URLMode'] !== 'pathinfo') )
 	$CONF['URLMode'] = 'normal';
-}
-else
-{
-	if ( i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) != '.php' )
-	{
-		decodePathInfo($virtualpath);
-	}
-}
+elseif ( i18n::substr($CONF['Self'], i18n::strlen($CONF['Self']) - 4) != '.php' )
+	decodePathInfo($virtualpath);
 
 /*
  * PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
