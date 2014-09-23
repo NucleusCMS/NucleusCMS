@@ -36,11 +36,7 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') )
 	ini_set('magic_quotes_runtime', '0');
 }
 
-/* check and die if someone is trying to override internal globals (when register_globals turn on) */
-checkVars(array('nucleus', 'CONF', 'DIR_LIBS',
-'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE',
-'DIR_LOCALES', 'DIR_PLUGINS',
-'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
+checkVars();
 
 if ( !isset($CONF) )
 {
