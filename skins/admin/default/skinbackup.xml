@@ -1284,12 +1284,6 @@
 	<th colspan="2"><%text(_ADD_CREATENEW)%></th>
 	</tr>
 	</thead>
-	<%if(autosave)%>
-	<tr>
-	<td><%text(_AUTOSAVEDRAFT)%></td>
-	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-	</tr>
-	<%endif%>
 	<tr>
 	<td><%text(_ADD_TITLE)%></td>
 	<td><input id="inputtitle" name="title" value="<%contents(title)%>" onkeyup="storeCaret(this); updPreview(title); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="10" size="60" maxlength="160" /></td>
@@ -1370,15 +1364,6 @@
 	<span id="prevmore">&#160;</span><br />
 	</td>
 	</tr>
-	<%if(blogsetting, bcomments)%>
-	<tr>
-	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-	<td>
-	<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-	<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
-	</td>
-	</tr>
-	<%endif%>
 	<tr>
 	<td><%text(_ADD_CATEGORY)%></td>
 	<td><%categories(40)%></td>
@@ -1416,6 +1401,21 @@
 	<label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 	</td>
 	</tr>
+	<%if(blogsetting, bcomments)%>
+	<tr>
+	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+	<td>
+	<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+	<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+	</td>
+	</tr>
+	<%endif%>
+	<%if(autosave)%>
+	<tr>
+	<td><%text(_AUTOSAVEDRAFT)%></td>
+	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	</tr>
+	<%endif%>
 	<tr>
 	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 	<td><%pluginextras%></td>
@@ -1779,11 +1779,6 @@
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
 	</tr>
 	</thead>
-	<%if(autosave)%><tr>
-	<td><%text(_AUTOSAVEDRAFT)%></td>
-	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-	</tr>
-	<%endif%>
 	<tr>
 	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
 	<td><%contents(author)%></td>
@@ -1867,17 +1862,6 @@
 	</td>
 	</tr>
 
-	<%if(blogsetting, bcomments)%>
-	<tr>
-	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-	<td>
-	<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-	<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label><br />
-	<small><%text(_EDIT_COMMENTSNOTE)%></small>
-	</td>
-	</tr>
-	<%endif%>
-
 	<tr>
 	<td><%text(_ADD_CATEGORY)%></td>
 	<td><%categories(40)%></td>
@@ -1950,6 +1934,21 @@
 
 	</td>
 	</tr>
+	<%if(blogsetting, bcomments)%>
+	<tr>
+	<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+	<td>
+	<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+	<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label><br />
+	<small><%text(_EDIT_COMMENTSNOTE)%></small>
+	</td>
+	</tr>
+	<%endif%>
+	<%if(autosave)%><tr>
+	<td><%text(_AUTOSAVEDRAFT)%></td>
+	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	</tr>
+	<%endif%>
 	<tr>
 	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 	<td><%pluginextras%></td>
