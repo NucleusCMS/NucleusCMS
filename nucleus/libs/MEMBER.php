@@ -776,21 +776,26 @@ class Member
 	 */
 	public function write()
 	{
-		$query =  'UPDATE '.sql_table('member')
-		        . ' SET mname=' . DB::quoteValue($this->displayname) . ', '
-		           . 'mrealname='. DB::quoteValue($this->realname) . ', '
-		           . 'mpassword='. DB::quoteValue($this->password) . ', '
-		           . 'mcookiekey='. DB::quoteValue($this->cookiekey) . ', '
-		           . 'murl=' . DB::quoteValue($this->url) . ', '
-		           . 'memail=' . DB::quoteValue($this->email) . ', '
-		           . 'madmin=' . intval($this->admin) . ', '
-		           . 'mnotes=' . DB::quoteValue($this->notes) . ', '
-		           . 'mcanlogin=' . intval($this->canlogin) . ', '
-		           . 'mlocale=' . DB::quoteValue($this->locale) . ', '
-		           . 'madminskin=' . DB::quoteValue($this->adminskin) . ', '
-		           . 'mbkmklt=' . DB::quoteValue($this->bookmarklet) . ', '
-		           . 'mautosave=' . intval($this->autosave) . ' '
-		        . 'WHERE mnumber=' . intval($this->id);
+		$v = array();
+		$v['mname']      = DB::quoteValue($this->displayname);
+		$v['mrealname']  = DB::quoteValue($this->realname);
+		$v['mpassword']  = DB::quoteValue($this->password);
+		$v['mcookiekey'] = DB::quoteValue($this->cookiekey);
+		$v['murl']       = DB::quoteValue($this->url);
+		$v['memail']     = DB::quoteValue($this->email);
+		$v['madmin']     = intval($this->admin);
+		$v['mnotes']     = DB::quoteValue($this->notes);
+		$v['mcanlogin']  = intval($this->canlogin);
+		$v['mlocale']    = DB::quoteValue($this->locale);
+		$v['madminskin'] = DB::quoteValue($this->adminskin);
+		$v['mbkmklt']    = DB::quoteValue($this->bookmarklet);
+		$v['mautosave']  = intval($this->autosave);
+		foreach($v as $k=>$v)
+		{
+			$values[] = "{$k}={$v}";
+		}
+		
+		$query = sprintf("UPDATE %s SET %s WHERE mnumber='%s'", sql_table('member'), join(',',$values), intval($this->id));
 		DB::execute($query);
 		return;
 	}
