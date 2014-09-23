@@ -1354,7 +1354,7 @@
 	<![endif]-->
 	<div class="jsbuttonend"></div>
 	</div>
-	<textarea id="inputbody" name="body" tabindex="20" cols="60" rows="20" onkeyup="storeCaret(this); updPreview(body); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(body)%></textarea>
+	<textarea id="inputbody" name="body" tabindex="20" cols="60" rows="15" onkeyup="storeCaret(this); updPreview(body); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(body)%></textarea>
 	</td>
 	</tr>
 	<tr id="edit" style="display:none;">
@@ -1491,7 +1491,7 @@
 	</span>
 	<![endif]-->
 	</div>
-	<textarea id="inputmore" name="more" onkeyup="storeCaret(this); updPreview(more); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="70" cols="60" rows="20"><%contents(more)%></textarea>
+	<textarea id="inputmore" name="more" onkeyup="storeCaret(this); updPreview(more); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);" tabindex="70" cols="60" rows="15"><%contents(more)%></textarea>
 	</td>
 	</tr>
 	<tr>
@@ -1851,7 +1851,7 @@
 	</span>
 	<![endif]-->
 	</div>
-	<textarea id="inputbody" name="body" tabindex="20" cols="60" rows="20" onkeyup="storeCaret(this); updPreview(body); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(body)%></textarea>
+	<textarea id="inputbody" name="body" tabindex="20" cols="60" rows="15" onkeyup="storeCaret(this); updPreview(body); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(body)%></textarea>
 	</td>
 	</tr>
 	<tr id="edit" style="display:none;">
@@ -2025,7 +2025,7 @@
 	</span>
 	<![endif]-->
 	</div>
-	<textarea id="inputmore" name="more" cols="60" rows="20" tabindex="90" onkeyup="storeCaret(this); updPreview(more); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(more)%></textarea>
+	<textarea id="inputmore" name="more" cols="60" rows="15" tabindex="90" onkeyup="storeCaret(this); updPreview(more); doMonitor();" onclick="storeCaret(this);" onselect="storeCaret(this);"><%contents(more)%></textarea>
 	</td>
 	</tr>
 	<tr>
