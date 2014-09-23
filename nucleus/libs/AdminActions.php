@@ -156,7 +156,7 @@ class AdminActions extends BaseActions
 		parent::__construct();
 		
 		/* alias */
-		if ( $type == 'admntemplateoverview' )
+		if ( $type == 'admintemplateoverview' )
 		{
 			$this->skintype = 'admintemplateoverview';
 		}

@@ -3233,7 +3233,7 @@ class Admin
 	{
 		global $member;
 		$member->isAdmin() or self::disallow();
-		self::$skin->parse('admntemplateoverview');
+		self::$skin->parse('admintemplateoverview');
 		return;
 	}
 	
