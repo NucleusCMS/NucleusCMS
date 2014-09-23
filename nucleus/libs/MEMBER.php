@@ -612,15 +612,14 @@ class Member
 		{
 			$lifetime = time()+2592000;
 		}
-		
-		setcookie($CONF['CookiePrefix'] . 'user', $this->getDisplayName(), $lifetime, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-		setcookie($CONF['CookiePrefix'] . 'loginkey', $this->getCookieKey(), $lifetime, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+		extract($CONF, EXTR_PREFIX_ALL, 'C');
+		setcookie("{$C_CookiePrefix}user",   $this->getDisplayName(), $lifetime, $C_CookiePath, $C_CookieDomain, $C_CookieSecure);
+		setcookie("{$C_CookiePrefix}loginkey", $this->getCookieKey(), $lifetime, $C_CookiePath, $C_CookieDomain, $C_CookieSecure);
 		
 		// make sure cookies on shared pcs don't get renewed
 		if ( $shared )
-		{
-			setcookie($CONF['CookiePrefix'] .'sharedpc', '1',$lifetime,$CONF['CookiePath'],$CONF['CookieDomain'],$CONF['CookieSecure']);
-		}
+			setcookie("{$C_CookiePrefix}sharedpc", '1', $lifetime, $C_CookiePath, $C_CookieDomain, $C_CookieSecure);
+		
 		return;
 	}
 	
