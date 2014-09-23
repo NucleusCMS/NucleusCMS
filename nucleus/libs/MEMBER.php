@@ -168,17 +168,17 @@ class Member
 	 * Returns true when succeeded, returns false when failed
 	 * 3.40 adds CustomLogin event
 	 * 
-	 * @param	String	$login	login name for member
+	 * @param	String	$username	login name for member
 	 * @param	String	$password	password for member
 	 * @param	Integer	$shared	whether the user agent is shared or not
 	 * 
 	 */
-	public function login($login, $password, $shared=1)
+	public function login($username, $password, $shared=1)
 	{
 		global $CONF, $errormessage, $manager;
 		
-		/* TODO: validation for $login, $password, $shared */
-		if ( $login == '' || $password == '' )
+		/* TODO: validation for $username, $password, $shared */
+		if ( $username == '' || $password == '' )
 		{
 			return 0;
 		}
@@ -201,32 +201,32 @@ class Member
 		
 		$success = 0;
 		$allowlocal = 1;
-		$data = array('login' => &$login, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal);
+		$data = array('login' => &$username, 'password'=>&$password, 'success'=>&$success, 'allowlocal'=>&$allowlocal);
 		$manager->notify('CustomLogin', $data);
 		
 		$this->loggedin = 0;
 		if ( $success )
 		{
-			$this->loggedin = ( $this->readFromName($login) );
+			$this->loggedin = ( $this->readFromName($username) );
 		}
 		elseif ( $allowlocal )
 		{
-			$this->loggedin = ( $this->readFromName($login) && $this->checkPassword($password) );
+			$this->loggedin = ( $this->readFromName($username) && $this->checkPassword($password) );
 		}
 		
 		/* login failed */
 		if ( !$this->loggedin )
 		{
-			$trimlogin = trim($login);
+			$trimlogin = trim($username);
 			if ( empty($trimlogin) )
 			{
 				$errormessage = "Please enter a username.";
 			}
 			else
 			{
-				$errormessage = 'Login failed for ' . $login;
+				$errormessage = 'Login failed for ' . $username;
 			}
-			$data = array('username' => $login);
+			$data = array('username' => $username);
 			$manager->notify('LoginFailed', $data);
 			ActionLog::add(INFO, $errormessage);
 		}
@@ -250,9 +250,9 @@ class Member
 			}
 			
 			$errormessage = '';
-			$data = array('member' => &$this, 'username' => $login);
+			$data = array('member' => &$this, 'username' => $username);
 			$manager->notify('LoginSuccess', $data);
-			ActionLog::add(INFO, "Login successful for $login (sharedpc=$shared)");
+			ActionLog::add(INFO, "Login successful for {$username} (sharedpc={$shared})");
 		}
 		
 		return $this->loggedin;
