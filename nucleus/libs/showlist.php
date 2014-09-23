@@ -1031,26 +1031,28 @@ function listplug_table_itemlist($vars, $type, $template_name = '')
 			$current = $vars['current'];
 			// string -> unix timestamp
 			$current['itime'] = strtotime($current['itime']);
+			$action = requestVar('action');
 			if ( !array_key_exists('SHOWLIST_LISTPLUG_TABLE_ITEMLIST_BODY', $templates) || empty($templates['SHOWLIST_LISTPLUG_TABLE_ITEMLIST_BODY']) )
 			{
-				$template = "<td<%cssclass%>>\n"
-				          . "<%bshortlabel%> <%bshortnameval%><br />\n"
-				          . "<%categorylabel%> <%categorynameval%><br />\n"
-				          . "<%authorlabel%> <%authornameval%><br />\n"
-				          . "<%itemdatelabel%> <%itemdateval%><br />\n"
-				          . "<%itemtimelabel%> <%itemtimeval%>\n"
-				          . "</td>\n"
-				          . "<td<%cssclass%>>\n"
-				          . "<input type=\"checkbox\" id=\"batch<%batchid%>\" name=\"batch[<%batchid%>]\" value=\"<%itemid%>\" />\n"
-				          . "<label for=\"batch<%batchid%>\"><b><%itemtitle%></b></label><br />\n"
-				          . "<%itembody%>\n"
-				          . "</td>\n"
-				          . "<td<%cssclass%>>\n"
-				          . "<a href=\"index.php?action=itemedit&amp;itemid=<%itemid%>\"><%editbtn%></a><br />\n"
-				          . "<a href=\"index.php?action=itemmove&amp;itemid=<%itemid%>\"><%movebtn%></a><br />\n"
-				          . "<a href=\"index.php?action=itemdelete&amp;itemid=<%itemid%>\"><%delbtn%></a><br />\n"
-				          . "<%camount%>\n"
-				          . "</td>\n";
+				$template = "<td<%cssclass%>>\n";
+				if ($action !== 'itemlist')
+					$template .= "<%bshortlabel%> <%bshortnameval%><br />\n";
+				$template .= "<%categorylabel%> <%categorynameval%><br />\n";
+				if ($action !== 'browseownitems')
+					$template .= "<%authorlabel%> <%authornameval%><br />\n";
+				$template .= "<%itemdateval%> <%itemtimeval%>\n"
+				. "</td>\n"
+				. "<td<%cssclass%>>\n"
+				. "<input type=\"checkbox\" id=\"batch<%batchid%>\" name=\"batch[<%batchid%>]\" value=\"<%itemid%>\" />\n"
+				. "<label for=\"batch<%batchid%>\"><b><%itemtitle%></b></label><br />\n"
+				. "<%itembody%>\n"
+				. "</td>\n"
+				. "<td<%cssclass%>>\n"
+				. "<a href=\"index.php?action=itemedit&amp;itemid=<%itemid%>\"><%editbtn%></a><br />\n"
+				. "<a href=\"index.php?action=itemmove&amp;itemid=<%itemid%>\"><%movebtn%></a><br />\n"
+				. "<a href=\"index.php?action=itemdelete&amp;itemid=<%itemid%>\"><%delbtn%></a><br />\n"
+				. "<%camount%>\n"
+				. "</td>\n";
 			}
 			else
 			{
