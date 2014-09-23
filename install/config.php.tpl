@@ -15,4 +15,4 @@ $DIR_PLUGINS    = '<%DIR_NUCLEUS%>plugins/';
 $DIR_LOCALES    = '<%DIR_NUCLEUS%>locales/';
 
 $DIR_LIBS       = '<%DIR_NUCLEUS%>libs/';
-include("{$DIR_LIBS}globalfunctions.php");
+include_once("{$DIR_LIBS}globalfunctions.php");
