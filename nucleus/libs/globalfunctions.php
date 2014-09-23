@@ -33,6 +33,7 @@ if ( version_compare(PHP_VERSION, '5.3.0', '<') ) ini_set('magic_quotes_runtime'
 
 checkVars();
 
+if ( getNucleusPatchLevel() > 0 ) $nucleus['version'] .= '/' . getNucleusPatchLevel();
 
 if ( isset($CONF['debug']) && $CONF['debug'] ) error_reporting(E_ALL | E_STRICT);
 else                                           error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
@@ -68,12 +69,6 @@ $CONF['alertOnSecurityRisk'] = !isset($CONF['alertOnSecurityRisk']) ? 1 : $CONF[
 $CONF['allowDrafts']         = 0;
 $CONF['allowFuture']         = 0;
 
-if ( getNucleusPatchLevel() > 0 )
-{
-	$nucleus['version'] .= '/' . getNucleusPatchLevel();
-}
-
-/* Avoid notices */
 $CONF['installscript']       = ( !isset($CONF['installscript']) || empty($CONF['installscript']) ) ? 0 : $CONF['installscript'];
 $CONF['UsingAdminArea']      = ( !isset($CONF['UsingAdminArea']) ) ? 0 : $CONF['UsingAdminArea'];
 
@@ -243,6 +238,13 @@ else
 	$member->cookielogin();
 }
 
+/* first, let's see if the site is disabled or not. always allow admin area access. */
+if ( $CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea'] )
+{
+	redirect($CONF['DisableSiteURL']);
+	exit;
+}
+
 /* TODO: This is for backward compatibility, should be obsoleted near future. */
 if ( !preg_match('#^(.+)_(.+)_(.+)$#', $CONF['Locale'])
   && ($CONF['Locale'] = i18n::convert_old_language_file_name_to_locale($CONF['Locale'])) === FALSE )
@@ -276,13 +278,6 @@ $manager->notify('PostAuthentication', $data);
 /* next action */
 if ( $member->isLoggedIn() && $nextaction )
 	$action = $nextaction;
-
-/* first, let's see if the site is disabled or not. always allow admin area access. */
-if ( $CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea'] )
-{
-	redirect($CONF['DisableSiteURL']);
-	exit;
-}
 
 /* load other classes */
 include_once("{$DIR_LIBS}PARSER.php");
