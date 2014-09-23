@@ -222,20 +222,19 @@ if ( ($CONF['DisableJsTools'] == 0)
 
 /* login processing */
 $member = new Member();
-if ( $action == 'login' )
+switch($action)
 {
-	$login = postVar('login');
-	$password = postVar('password');
-	$shared = intPostVar('shared');
-	$member->login($login, $password, $shared);
-}
-elseif ( ($action == 'logout') )
-{
-	$member->logout();
-}
-else
-{
-	$member->cookielogin();
+	case 'login':
+		$login    = postVar('login');
+		$password = postVar('password');
+		$shared   = intPostVar('shared');
+		$member->login($login, $password, $shared);
+		break;
+	case 'logout':
+		$member->logout();
+		break;
+	default:
+		$member->cookielogin();
 }
 
 /* first, let's see if the site is disabled or not. always allow admin area access. */
