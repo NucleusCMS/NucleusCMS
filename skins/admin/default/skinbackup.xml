@@ -3665,11 +3665,10 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 ]]></part>
 <part name="SHOWLIST_LISTPLUG_TABLE_ITEMLIST_BODY"><![CDATA[
 	<td<%cssclass%>>
-	<%bshortlabel%> <%bshortnameval%><br />
+	<%ifnot(adminaction,itemlist)%><%bshortlabel%> <%bshortnameval%><br /><%endif%>
 	<%categorylabel%> <%categorynameval%><br />
-	<%authorlabel%> <%authornameval%><br />
-	<%itemdatelabel%> <%itemdateval%><br />
-	<%itemtimelabel%> <%itemtimeval%>
+	<%ifnot(adminaction,browseownitems)%><%authorlabel%> <%authornameval%><br /><%endif%>
+	<%itemdateval%> <%itemtimeval%>
 	</td>
 	<td<%cssclass%>>
 	<input type="checkbox" id="batch<%batchid%>" name="batch[<%batchid%>]" value="<%itemid%>" />
