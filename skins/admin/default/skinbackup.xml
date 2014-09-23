@@ -1394,15 +1394,15 @@
 	<label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 	<div class="indent">
 	<%text(_ADD_PLACE_ON)%>
-	<input type="text" id="inputyear" name="year" value="<%currenttime(year)%>" tabindex="63" size="4" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputyear" name="year" value="<%currenttime(year)%>" tabindex="63" size="4" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_YEAR_UNIT)%>
-	<input type="text" id="inputmonth" name="month" value="<%currenttime(mon)%>" tabindex="64" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputmonth" name="month" value="<%currenttime(mon)%>" tabindex="64" size="2" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_MONTH_UNIT)%>
-	<input type="text" id="inputday" name="day" value="<%currenttime(mday)%>" tabindex="65" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputday" name="day" value="<%currenttime(mday)%>" tabindex="65" size="2" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_DAY_UNIT)%>
-	<input id="inputhour" name="hour" value="<%currenttime(hours)%>" tabindex="66" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<input id="inputhour" class="datetime" name="hour" value="<%currenttime(hours)%>" tabindex="66" size="2" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_HOUR_UNIT)%>
-	<input type="text" id="inputminutes" name="minutes" value="<%currenttime(minutes)%>" tabindex="67" size="2" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputminutes" name="minutes" value="<%currenttime(minutes)%>" tabindex="67" size="2" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_MINUTE_UNIT)%><br />
 
 	<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
@@ -1894,16 +1894,16 @@
 	<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 	<div class="indent">
 	<%text(_ADD_PLACE_ON)%>
-	<input type="text" id="inputyear" name="year" tabindex="71" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputyear" name="year" tabindex="71" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_YEAR_UNIT)%>
-	<input type="text" id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputmonth" name="month" tabindex="72" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_MONTH_UNIT)%>
-	<input type="text" id="inputday" name="day" tabindex="73" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputday" name="day" tabindex="73" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_DAY_UNIT)%>
 
-	<input type="text" id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputhour" name="hour" tabindex="74" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_HOUR_UNIT)%>
-	<input type="text" id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
+	<input type="text" class="datetime" id="inputminutes" name="minutes" tabindex="75" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
 	<%text(_LABEL_MINUTE_UNIT)%><br />
 	<%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
 
@@ -1929,15 +1929,15 @@
 	<input type="radio" id="act_changedate" name="actiontype" value="changedate" tabindex="70" />
 	<label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
 	<div class="indent">
-	<input type="text" id="inputyear" name="year" value="<%itemtime(year)%>" size="4" tabindex="71" onchange="document.forms[0].act_changedate.checked=true;" />
+	<input type="text" class="datetime" id="inputyear" name="year" value="<%itemtime(year)%>" size="4" tabindex="71" onchange="document.forms[0].act_changedate.checked=true;" />
 	<%text(_LABEL_YEAR_UNIT)%>
-	<input type="text" id="inputmonth" name="month" value="<%itemtime(mon)%>" size="2" tabindex="72" onchange="document.forms[0].act_changedate.checked=true;" />
+	<input type="text" class="datetime" id="inputmonth" name="month" value="<%itemtime(mon)%>" size="2" tabindex="72" onchange="document.forms[0].act_changedate.checked=true;" />
 	<%text(_LABEL_MONTH_UNIT)%>
-	<input type="text" id="inputday" name="day" value="<%itemtime(mday)%>" size="2" tabindex="73" onchange="document.forms[0].act_changedate.checked=true;" />
+	<input type="text" class="datetime" id="inputday" name="day" value="<%itemtime(mday)%>" size="2" tabindex="73" onchange="document.forms[0].act_changedate.checked=true;" />
 	<%text(_LABEL_DAY_UNIT)%>
-	<input type="text" id="inputhour" name="hour" value="<%itemtime(hours)%>" size="2" tabindex="74" onchange="document.forms[0].act_changedate.checked=true;" />
+	<input type="text" class="datetime" id="inputhour" name="hour" value="<%itemtime(hours)%>" size="2" tabindex="74" onchange="document.forms[0].act_changedate.checked=true;" />
 	<%text(_LABEL_HOUR_UNIT)%>
-	<input type="text" id="inputminutes" name="minutes" value="<%itemtime(minutes)%>" size="2" tabindex="75" onchange="document.forms[0].act_changedate.checked=true;" />
+	<input type="text" class="datetime" id="inputminutes" name="minutes" value="<%itemtime(minutes)%>" size="2" tabindex="75" onchange="document.forms[0].act_changedate.checked=true;" />
 	<%text(_LABEL_MINUTE_UNIT)%>
 	<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_LABEL_YEAR_UNIT)%>(mm)<%text(_LABEL_MONTH_UNIT)%>(dd)<%text(_LABEL_DAY_UNIT)%> (hh)<%text(_LABEL_HOUR_UNIT)%>(mm)<%text(_LABEL_MINUTE_UNIT)%>
 	</div>
