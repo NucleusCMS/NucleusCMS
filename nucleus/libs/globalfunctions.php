@@ -1223,7 +1223,7 @@ function removeBreaks($var) {
 function shorten($text, $maxlength, $toadd) {
 	// 1. remove entities...
 //	$trans = get_html_translation_table(HTML_ENTITIES);
-	$trans = get_html_translation_table(HTML_SPECIALCHARS); // for Japanese
+	$trans = get_html_translation_table(HTML_SPECIALCHARS,ENT_QUOTES); // for Japanese
 	$trans = array_flip($trans);
 	$text  = strtr($text, $trans);
 
@@ -2232,7 +2232,7 @@ function _links_list() {
 function encode_desc(&$data)
 {
 //	_$to_entities = get_html_translation_table(HTML_ENTITIES);
-	$to_entities = get_html_translation_table(HTML_SPECIALCHARS); // for Japanese
+	$to_entities = get_html_translation_table(HTML_SPECIALCHARS,ENT_QUOTES); // for Japanese
 	$from_entities = array_flip($to_entities);
 	$data = str_replace('<br />', '\n', $data); //hack
 	$data = strtr($data,$from_entities);
@@ -2343,7 +2343,7 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='')
 		if(function_exists('htmlspecialchars_decode'))
 			$string = htmlspecialchars_decode($string, $flags);
 		else
-			$string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+			$string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS,ENT_QUOTES)));
 		
 		return htmlspecialchars($string, $flags, $encoding);
 	}
