@@ -3451,7 +3451,7 @@ Nucleus CMS <%systemsettings(nucleusversion)%> <%systemsettings(nucleuscodename)
 </skin>
 <template name="admin/default">
 <description><![CDATA[
-	ADMIN Area Default template
+ADMIN Area Default template
 ]]></description>
 
 <part name="PLUGIN_QUICKMENU_HEAD"><![CDATA[
