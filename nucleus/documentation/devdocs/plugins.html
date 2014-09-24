@@ -1968,35 +1968,17 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <h2>Nucleusテーブルへのアクセス</h2>
 
-<p>v2.0まで、Nucleusテーブルへのアクセスは単に<code>nucleus_</code>と名づけられたテーブルに対してSQL命令を実行するだけのものでした。Nucleusのバージョン2.2以降はカスタム・テーブル名を利用できるようになったため、プラグイン開発に若干注意する必要があります。</p>
 <p>v3.5でNucleusはPDO等MySQL以外のデータベースハンドラのサポートをするようになりました。この機能はベータ実装ではありますが、プラグイン開発者はデータベースの呼び出しに使用する関数の「sql_*」への書き換えを始めてください。
 基本的に、使用している全ての「mysql_*」関数を「sql_*」に置き換える必要があります。たとえば<code>mysql_fetch_assoc($result)</code>は<code>sql_fetch_assoc($result)</code> に置き換えになります。
 全ての関数を書き換えたら、Sql APIが無い古いバージョンのNucleusインストールできないように、次に示すコードをプラグイン内に記述して、インストールに必要な最低バージョンを350に指定する必要があります。<br />
 <pre class="example"><code>function getMinNucleusVersion() { return '350'; }</code></pre></p>
 
 <ol>
-    <li><code>nucleus_item</code> などの固定されたテーブル名の代わりに、テーブル名のプレフィックスを生成するために <code>sql_table('item') </code>というグローバルファンクションを利用します。</li>
+    <li>カスタム・テーブル名を利用できるため、注意が必要です。<code>nucleus_item</code> などの固定されたテーブル名の代わりに、テーブル名のプレフィックスを生成するために <code>sql_table('item') </code>というグローバルファンクションを利用します。</li>
     <li><code>supportsFeature('SqlTablePrefix')</code> が呼ばれたときにプラグインが1（真）を返すようにします。これがないと、カスタムプレフィックスがセットされている場合でバージョンが2.0より大きいNucleusではプラグインをロードできません（用心のため）。</li>
-    <li>3.5以降:<code>supportsFeature('SqlApi')</code> が呼ばれたときにプラグインが1（真）を返すようにします。3.5以降のバージョンでは、データベースのバックエンドにmysqlでないものを使用している場合にプラグインをロードできなくなります（用心のため）。</li>
+    <li>v3.5以降:<code>supportsFeature('SqlApi')</code> が呼ばれたときにプラグインが1（真）を返すようにします。3.5以降のバージョンでは、データベースのバックエンドにmysqlでないものを使用している場合にプラグインをロードできなくなります（用心のため）。</li>
+    <li>v4.0以降:「mysql_*」関数は使えません。「sql_*」関数を使用してください。</li>
 </ol>
-
-<p class="note">v2.0までのNucleusではグローバルファンクション <code>sql_table</code> は利用できないことに注意してください。もしこのメソッドを用いつつ、プラグインをv2.0以下のNucleusで動作させたい場合は、以下のコードをプラグインクラスの前に追加してください。</p>
-
-<pre class="example"><code>&lt;?
-
-// プラグインがNucleusバージョン2.0以下と互換性を持つために必要
-if (!function_exists('sql_table'))
-{
-    function sql_table($name) {
-        return 'nucleus_' . $name;
-    }
-}
-
-class NP_HelloWorld extends NucleusPlugin {
-...
-}
-
-?&gt;</code></pre>
 
 <h2>独自テーブル</h2>
 
@@ -2022,7 +2004,7 @@ class NP_HelloWorld extends NucleusPlugin {
 
 <h1>プラグイン管理エリア<a id="admin" name="admin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
-<p>Ver2.5から、Nucleusの管理エリアに統合されたプラグイン管理エリアを作成できます。これらのページは従来のプラグイン管理ページや左側のクイックメニューからアクセスできます。</p>
+<p>管理エリアに統合されたプラグイン管理エリアを作成できます。これらのページは従来のプラグイン管理ページや左側のクイックメニューからアクセスできます。</p>
 
 <h2>基本</h2>
 
