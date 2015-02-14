@@ -2052,7 +2052,7 @@ class ADMIN {
 		if (strlen(postVar('password')) < 6)
 			$this->error(_ERROR_PASSWORDTOOSHORT);
 
-		$res = MEMBER::create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
+		$res = $member->create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
 		if ($res != 1)
 			$this->error($res);
 
