@@ -81,6 +81,12 @@ if (!$from)
 	$from = $current;
 
 $sth = 0;
+
+if (in_array($from,array(95,96)) || $from < 366) {
+	echo $from;
+	$sth = upgrade_manual_366();
+}
+
 if (!$DIR_MEDIA) {
 	upgrade_manual_96();
 	$sth = 1;
@@ -183,6 +189,16 @@ function upgrade_manual_350() {
 	if (phpversion() < '5') {
 		echo '<h2>Nucleus 3.51に関する重要なお知らせ</h2>';
 		echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
+		return 1;
+	}
+}
+
+function upgrade_manual_366() {
+	$content = @file_get_contents('../../action.php');
+	if(strpos($content,'=&')!==false) {
+		echo '<h2>最新のPHP環境に必要な変更</h2>';
+		echo '<p>action.phpを更新してください。</p>';
+		return 1;
 	}
 }
 
