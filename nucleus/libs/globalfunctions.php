@@ -21,8 +21,7 @@ if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = micr
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
-// check and die if someone is trying to override internal globals (when register_globals turn on)
-checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
+if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
 $CONF['debug'] = 0;
 if ($CONF['debug']) {
@@ -1753,23 +1752,6 @@ function encoding_check($val, $key, $encoding=false, $exclude=false) {
 	}
 	return true;
 }
-
-function checkVars($aVars) {
-
-	foreach ($aVars as $varName) {
-		if (   isset($_GET[$varName])
-			|| isset($_POST[$varName])
-			|| isset($_COOKIE[$varName])
-			|| isset($_ENV[$varName])
-			|| isset($_SESSION[$varName])
-			|| isset($_FILES[$varName])
-		)
-		{
-			die('Sorry. An error occurred.');
-		}
-	}
-}
-
 
 /**
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
