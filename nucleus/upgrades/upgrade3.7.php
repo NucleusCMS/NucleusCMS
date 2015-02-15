@@ -10,6 +10,16 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+function upgrade_do371() {
+
+	if (upgrade_checkinstall(371))
+		return 'インストール済みです';
+	
+	// 3.70 -> 3.71
+	// update database version
+	update_version('371');
+}
+
 function upgrade_do370() {
 
 	if (upgrade_checkinstall(370))
@@ -30,4 +40,3 @@ function upgrade_do370() {
 	// update database version
 	update_version('370');
 }
-

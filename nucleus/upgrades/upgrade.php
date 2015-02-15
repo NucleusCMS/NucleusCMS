@@ -73,6 +73,9 @@ switch($from) {
 	case 360:
 		include('upgrade3.7.php');
 		upgrade_do370();
+	case 370:
+		include('upgrade3.7.php');
+		upgrade_do371();
 		break;
 	default:
 		echo "<li>エラー! 実行すべきアップデートはありません</li>";
