@@ -17,6 +17,9 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+define('_ADD_DATEINPUTNOW',       '現在時刻');
+define('_ADD_DATEINPUTRESET',     'リセット');
+
 /********************************************
  *        Start New for 3.64                *
  ********************************************/

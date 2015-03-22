@@ -20,6 +20,7 @@
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
+		<script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
@@ -126,6 +127,8 @@
 											<input class="chgDate" id="inputhour" name="hour" size="2" value="<%itemtime(hours)%>" tabindex="100" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
 											<input class="chgDate" id="inputminutes" name="minutes" size="2" value="<%itemtime(minutes)%>" tabindex="110" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
 											<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
+											<input tabindex="120" type="button" value="<%text(_ADD_DATEINPUTNOW)%>" onclick = 'document.forms[0].act_changedate.checked=true; return edit_form_change_date_now();' />
+											<input tabindex="121" type="button" value="<%text(_ADD_DATEINPUTRESET)%>" onclick = 'return date_itemtime_reset();' />
 										</div>
 									</li><%endif%>
 									<li>
@@ -170,5 +173,15 @@
 			var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 			var formtype = 'edit'; // Add or edit form
 		</script><%endif%>
+
+		<script type="text/javascript">
+		// datetime reset functions
+		function date_itemtime_reset( )
+		{
+			edit_form_change_date_ByValue( new Array(
+				 "<%itemtime(year)%>", "<%itemtime(mon)%>", "<%itemtime(mday)%>",
+				 "<%itemtime(hours)%>", "<%itemtime(minutes)%>" ) );
+		}
+		</script>
 	</body>
 </html>
