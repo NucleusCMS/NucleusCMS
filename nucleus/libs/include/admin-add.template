@@ -2,6 +2,7 @@
 
 <%init%>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
+<script type="text/javascript" src="javascript/edit_date.js"></script>
 <%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 
 <form id="addform" method="post" action="index.php" >
@@ -71,6 +72,9 @@
 				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
 				<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
 				
+				<input tabindex="68" type="button" value="<%text(_ADD_DATEINPUTNOW)%>" onclick = 'document.forms[0].act_future.checked=true; return edit_form_change_date_now();' />
+				<input tabindex="69" type="button" value="<%text(_ADD_DATEINPUTRESET)%>" onclick = 'return date_currenttime_reset();' />
+
 				<%ifblogsetting(ballowpast,0)%>
 					<br />
 					<%text(_ADD_NOPASTDATES)%>
@@ -143,3 +147,13 @@
 	var formtype = 'add'; // Add or edit form
 </script>	
 <%endif%>
+
+<script type="text/javascript">
+// datetime reset functions
+function date_currenttime_reset( )
+{
+    edit_form_change_date_ByValue( new Array(
+		 "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
+         "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
+}
+</script>
