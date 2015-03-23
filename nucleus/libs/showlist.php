@@ -494,7 +494,10 @@ function listplug_table_shortnames($template, $type) {
 function listplug_table_categorylist($template, $type) {
 	switch($type) {
 		case 'HEAD':
-			echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
+			echo "<th>"._LISTS_NAME."</th>"
+				."<th>"._LISTS_ORDER."</th>"
+				."<th>"._LISTS_ITEM_COUNT."</th>"
+				."<th>"._LISTS_DESC."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -507,6 +510,8 @@ function listplug_table_categorylist($template, $type) {
 			echo '</label>';
 			echo '</td>';
 
+			echo '<td>', hsc($current->corder), '</td>';
+			echo '<td>', hsc($current->icount), '</td>';
 			echo '<td>', hsc($current->cdesc), '</td>';
 			echo "<td><a href='index.php?action=categorydelete&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
 			echo "<td><a href='index.php?action=categoryedit&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";

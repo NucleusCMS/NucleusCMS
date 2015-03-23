@@ -115,7 +115,8 @@
 				$minrows = 1;
 				break;
 			case '370':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 370  LIMIT 1";
+			case '371':
+				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= ". intval($version) ."  LIMIT 1";
 				$minrows = 1;
 				break;
 		}

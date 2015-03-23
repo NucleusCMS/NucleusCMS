@@ -17,6 +17,19 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+define('_LISTS_ITEM_COUNT',	'アイテム数');
+define('_LISTS_ORDER',	'並び順');
+
+define('_EBLOG_CAT_ORDER',					"カテゴリーの並び順です。<br />\n入力値は、数字(標準 100)で小さいほど上になります");
+define('_EBLOG_CAT_ORDER_DESC2',			"入力値は、数字(標準 100)で小さいほど上になります");
+
+// category order changes (batch)
+define('_BATCH_CAT_CAHANGE_ORDER',	'並び順を変更する');
+define('_ERROR_CAHANGE_CATEGORY_ORDER',		  '並びを変更できません');
+define('_CAHANGE_CATEGORY_ORDER_TITLE',		  'カテゴリーの並び順を指定してください');
+define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',	'以下のカテゴリーの並び順が一括で変更されます。よろしければ、ボタンを押してください。');
+define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',	  '並び順を変更する');
+
 define('_ADD_DATEINPUTNOW',       '現在時刻');
 define('_ADD_DATEINPUTRESET',     'リセット');
 
