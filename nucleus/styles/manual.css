@@ -10,8 +10,11 @@ body {
 /*	font-family: verdana, arial;
 	font-size: small;*/
 	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
-	font-size: small;
 }
+td,th,textarea,input,select {
+    font:inherit;
+}
+th {font-weigt:bold;}
 
 @media screen {
 	body {
@@ -50,7 +53,6 @@ a: hover {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	font-size: small;
 	font-style: normal;
 	font-weight: normal;
 }
@@ -76,7 +78,6 @@ h2 {
 pre, .note, .faq .answer {
 	background-color: #ddd;
 	padding: 10px;
-	font-size: small;
 }
 
 .screenshot {
@@ -113,7 +114,6 @@ th, td {
 
 td {
 	background-color: #dddddd;
-	font-size: small;
 	vertical-align: top;
 	text-align: left;
 }
@@ -129,7 +129,6 @@ input, select, option, textarea {
 }
 
 tt, code, samp {
-	font-size: small;
 }
 
 .warning {
