@@ -15,6 +15,13 @@ function upgrade_do371() {
 	if (upgrade_checkinstall(371))
 		return 'インストール済みです';
 	
+	$query = sprintf("ALTER TABLE `%s`
+					ADD `corder` int(11)     NOT NULL default '100',
+					ADD INDEX `cblog` (`cblog`),
+					ADD INDEX `corder` (`corder`);", sql_table('category'));
+
+	upgrade_query('Altering ' . sql_table('category') . ' table', $query);
+
 	// 3.70 -> 3.71
 	// update database version
 	update_version('371');
