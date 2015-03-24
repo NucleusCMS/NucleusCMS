@@ -828,7 +828,7 @@ class ADMIN {
 					{
 						$s .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>'
 									, hsc($o->corder), hsc($o->cname), hsc($o->cdesc)
-						);  			  
+						);
 						continue;
 					}
 			  }
@@ -1058,9 +1058,27 @@ class ADMIN {
 				$amount = 10;
 		}
 
+		printf('<p>(<a href="index.php?action=itemlist&amp;blogid=%s">%s</a> | '.
+               '<a href="index.php?action=blogcommentlist&amp;blogid=%s">%s</a>)</p>',
+                $blogid , hsc(_BACKTOOVERVIEW) ,
+                $blogid , hsc(sprintf(_LIST_BACK_TO , _LIST_COMMENT_LIST_FOR_BLOG))
+                );
+
+        echo '<h2>',_LIST_COMMENT_LIST_FOR_ITEM,'</h2>';
+
+		$item =& $manager->getItem($itemid, true, true);
+        echo "<div>";
+        echo _LIST_ITEM_CONTENT . ' : ';
+        printf("<a href='%s#c' title='%s'><img src='images/globe.gif' width='13' height='13' style='vertical-align:middle;' /></a> %s</div>",
+                    createItemLink($itemid) ,
+                    htmlentities(_LIST_COMMENT_VIEW_ITEM, ENT_COMPAT, _CHARSET) ,
+                    hsc(shorten($item["title"], 100, '...'))
+                );
+		printf("<div style=' margin-left: 20px; padding: 5px'>%s</div>",
+                  hsc(shorten(strip_tags($item["body"]), 100, '...')) . '<br />');
+
 		$search = postVar('search');
 
-		echo '<p>(<a href="index.php?action=itemlist&amp;blogid=',$blogid,'">',_BACKTOOVERVIEW,'</a>)</p>';
 		echo '<h2>',_COMMENTS,'</h2>';
 
 		$query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
