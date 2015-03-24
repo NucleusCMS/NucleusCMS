@@ -17,6 +17,8 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+define('_LISTS_FORM_SELECT_ALL_CATEGORY',	'すべてのカテゴリ');
+
 define('_LIST_BACK_TO',				'%sに戻る');
 define('_LIST_COMMENT_LIST_FOR_BLOG',		'ブログのコメント一覧');
 define('_LIST_COMMENT_LIST_FOR_ITEM',		'アイテムのコメント一覧');

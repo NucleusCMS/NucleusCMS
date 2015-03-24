@@ -103,6 +103,10 @@ class NAVLIST extends ENCAPSULATE {
 	<table class="navigation">
 	<tr>
 <?php
+    $enable_cat_select = (((string) requestVar('action')) == 'itemlist');
+    if ($enable_cat_select)
+       $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+
 	if($start==0) $disabled ='disabled style="cursor:default;"';
 	else          $disabled = '';
 ?>
@@ -111,6 +115,7 @@ class NAVLIST extends ENCAPSULATE {
 		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV; ?>" <?php echo $disabled; ?>/>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+        <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
 		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
 		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
 		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
@@ -121,6 +126,7 @@ class NAVLIST extends ENCAPSULATE {
 		<form method="post" action="index.php"><div>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+        <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
 		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
 		<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE?>
 		<input type="hidden" name="start" value="<?php echo  $start; ?>" />
@@ -129,6 +135,7 @@ class NAVLIST extends ENCAPSULATE {
 		</div></form>
 	</td><td>
 		<form method="post" action="index.php"><div>
+        <?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($blogid , $catid) . '<br />'; ?>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
@@ -143,6 +150,7 @@ class NAVLIST extends ENCAPSULATE {
 		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+        <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
 		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
 		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
 		<input type="hidden" name="start" value="<?php echo  $next; ?>" />
@@ -151,7 +159,47 @@ class NAVLIST extends ENCAPSULATE {
 	</table>
 	<?php	}
 
+	protected function getFormSelectCategoryBlog($blogid, $selected_catid = 0 , $input_name = 'catid')
+	{
+		global $member;
+		if ( !$blogid )
+		  return '';
+		if ( !$member->teamRights($blogid) && !$member->isAdmin() )
+		  return '';
 
+		$lists = array();
+		$selected = false;
+        $selected_catid = intval($selected_catid);
+		// @todo NP_MultipleCategories
+		$sql = 'SELECT catid , cname , count(inumber) as count FROM ' . sql_table('category')
+			  . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
+			  . ' WHERE cblog=' . intval($blogid)
+			  . ' group BY catid '
+			  . ' ORDER BY corder ASC , cname ASC';
+		$total = 0;
+		$res = sql_query($sql);
+		if ($res)
+		  while( $row = sql_fetch_assoc( $res ) )
+		  {
+			  $lists[] = sprintf('<option value="%d" %s>' , intval($row['catid'])
+					   , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
+					   . hsc( $row['cname'])
+					   . sprintf('(%d)' , $row['count']) . '</option>';
+			  $total += $row['count'];
+			  if ( !$selected && intval($row['catid']) == $selected_catid)
+				$selected = true;
+		  }
+
+		$s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
+		$s .= "\n\t\t".'<option value="0"'
+			  . ( $selected ? '' : 'selected' )
+			  .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
+			  . sprintf('(%d)' , $total) . "</option>\n";
+		$s .= "\t\t".implode( "\n\t\t" , $lists )."\n";
+		$s .= "\t\t</select>\n";
+
+		return $s;
+	}
 }
 
 
