@@ -394,7 +394,7 @@ function listplug_table_commentlist($template, $type) {
 
 	switch($type) {
 		case 'HEAD':
-			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='${colspan}'>"._LISTS_ACTIONS."</th>";
+			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='{$colspan}'>"._LISTS_ACTIONS."</th>";
 			break;
 		case 'BODY':
 			$current = $template['current'];
