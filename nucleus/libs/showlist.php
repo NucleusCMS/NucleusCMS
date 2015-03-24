@@ -387,9 +387,14 @@ function listplug_nextBatchId() {
 }
 
 function listplug_table_commentlist($template, $type) {
+    static $amountComments = array();
+	$colspan = 3;
+	if ( isset($_GET['action']) && ($_GET['action'] == 'blogcommentlist') )
+	   $colspan++;
+
 	switch($type) {
 		case 'HEAD':
-			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
+			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='${colspan}'>"._LISTS_ACTIONS."</th>";
 			break;
 		case 'BODY':
 			$current = $template['current'];
@@ -427,7 +432,26 @@ function listplug_table_commentlist($template, $type) {
 			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
 			if ($template['canAddBan'])
 				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
-			break;
+
+			$action = isset($_GET['action']) ? strval( $_GET['action'] ) : '';
+			// add link
+			if ($action == 'blogcommentlist')
+			 {
+                if (!isset($amountComments[$current->citem]))
+                {
+                    $COMMENTS = new COMMENTS($current->citem);
+                    $amountComments[$current->citem] = $COMMENTS->amountComments();
+                }
+				echo '<td style=" word-break: break-all">';
+				$s = sprintf('(%d) %s' , $amountComments[$current->citem], _LIST_COMMENT_LIST_FOR_ITEM);
+				$s = sprintf(_LIST_BACK_TO, $s);
+				printf('<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>'
+					   , $current->citem , $s );
+				echo '</td>';
+			 }
+			// end link
+
+            break;
 	}
 }
 
