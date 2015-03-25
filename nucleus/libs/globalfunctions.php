@@ -269,7 +269,7 @@ if ($action == 'login') {
 		if ($CONF['secureCookieKey']!=='none') {
 			// secure cookie key
 			$member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
-			$member->write();
+			$member->writeCookieKey();
 		}
 
 		// allows direct access to parts of the admin area after logging in
