@@ -103,7 +103,7 @@ class NAVLIST extends ENCAPSULATE {
 	<table class="navigation">
 	<tr>
 <?php
-    $enable_cat_select = (((string) requestVar('action')) == 'itemlist');
+    $enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
     if ($enable_cat_select)
        $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
 
@@ -135,7 +135,7 @@ class NAVLIST extends ENCAPSULATE {
 		</div></form>
 	</td><td>
 		<form method="post" action="index.php"><div>
-        <?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($blogid , $catid) . '<br />'; ?>
+		<?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($action, $blogid , $catid) . '<br />'; ?>
 		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
 		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
@@ -159,13 +159,22 @@ class NAVLIST extends ENCAPSULATE {
 	</table>
 	<?php	}
 
-	protected function getFormSelectCategoryBlog($blogid, $selected_catid = 0 , $input_name = 'catid')
+	protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid')
 	{
 		global $member;
+
+		if ($action == 'browseownitems')
+			return $this->getFormSelectCategoryOwn($blogid, $selected_catid, $input_name);
+
 		if ( !$blogid )
 		  return '';
 		if ( !$member->teamRights($blogid) && !$member->isAdmin() )
 		  return '';
+
+		static $r = array();
+		$saved_key = sprintf("%s_%d_%d_%s", $action, $blogid, $selected_catid, $input_name);
+		if (isset($r[$saved_key]))
+		  return $r[$saved_key];
 
 		$lists = array();
 		$selected = false;
@@ -198,6 +207,70 @@ class NAVLIST extends ENCAPSULATE {
 		$s .= "\t\t".implode( "\n\t\t" , $lists )."\n";
 		$s .= "\t\t</select>\n";
 
+		$r[$saved_key] = $s;
+		return $s;
+	}
+
+	protected function getFormSelectCategoryOwn($blogid, $selected_catid = 0 , $input_name = 'catid')
+	{
+		global $member;
+		static $r = array();
+
+		$saved_key = sprintf("%d_%d_%d_%s", $member->id, $blogid, $selected_catid, $input_name);
+		if (isset($r[$saved_key]))
+		  return $r[$saved_key];
+
+		$lists = array();
+		$selected = false;
+		$selected_catid = intval($selected_catid);
+
+		// blog(bnumber, bname or bshortname) , category(catid,cblog,cname,corder)
+		$sql = 'SELECT bname, cblog, catid , cname , count(inumber) as count FROM ' . sql_table('category')
+			  . ' LEFT JOIN ' . sql_table('item') . ' ON catid=icat '
+			  . ' LEFT JOIN ' . sql_table('blog') . ' ON cblog=bnumber '
+			  . ' WHERE iauthor=' . intval($member->id)
+//              . (($blogid>0) ? sprintf(' cblog=%d', $blogid) : '')
+			  . ' group BY catid '
+			  . ' ORDER BY corder ASC , cname ASC';
+
+		$total = 0;
+		$blog_titles = array();
+		$res = sql_query($sql);
+		if ($res)
+		  while( $row = sql_fetch_assoc( $res ) )
+		  {
+			  $b_id = $row['cblog'];
+			  if (!isset($blog_titles[$b_id]))
+				$blog_titles[$b_id] = $row['bname'];
+			  if (!isset($lists[$b_id]))
+				$lists[$b_id] = array();
+
+			  $lists[$b_id][] = sprintf('<option value="%d" %s>' , intval($row['catid'])
+					   , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
+					   . hsc( $row['cname'])
+					   . sprintf('(%d)' , $row['count']) . '</option>';
+			  $total += $row['count'];
+			  if ( !$selected && intval($row['catid']) == $selected_catid)
+				$selected = true;
+		  }
+
+	    asort($blog_titles);
+
+		$s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
+		$s .= "\n\t\t".'<option value="0"'
+			  . ( $selected ? '' : 'selected' )
+			  .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
+			  . sprintf('(%d)' , $total) . "</option>\n";
+
+		// group
+		foreach($blog_titles as $b_id => $title)
+		  $s .= sprintf("\t<optgroup label='%s'>%s\n\t</optgroup>\n",
+						htmlentities($title , ENT_COMPAT , _CHARSET),
+				  	    "\n\t\t".implode( "\n\t\t" , $lists[$b_id] )
+				  );
+		$s .= "\t\t</select>\n";
+
+		$r[$saved_key] = $s;
 		return $s;
 	}
 }
