@@ -1192,7 +1192,20 @@ class ADMIN {
 		$search = postVar('search');		// search through comments
 
 
-		$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+		if ($member->isAdmin() || $member->isBlogAdmin($blogid))
+		{
+			$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+		}
+		else
+		{
+			$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem, cmember, iauthor, 0 as is_badmin' .
+					' FROM '.sql_table('comment').
+					' LEFT OUTER JOIN '.sql_table('member').
+					'  ON mnumber=cmember'.
+					' LEFT OUTER JOIN '.sql_table('item').
+					'  ON citem=inumber '.
+					' WHERE cblog=' . intval($blogid);
+		}
 
 		if ($search != '')
 			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';

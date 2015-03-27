@@ -389,7 +389,8 @@ function listplug_nextBatchId() {
 function listplug_table_commentlist($template, $type) {
     static $amountComments = array();
 	$colspan = 3;
-	if ( isset($_GET['action']) && ($_GET['action'] == 'blogcommentlist') )
+	$action = isset($_GET['action']) ? strval( $_GET['action'] ) : '';
+	if ( $action == 'blogcommentlist')
 	   $colspan++;
 
 	switch($type) {
@@ -397,8 +398,23 @@ function listplug_table_commentlist($template, $type) {
 			echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='{$colspan}'>"._LISTS_ACTIONS."</th>";
 			break;
 		case 'BODY':
+			global $member;
 			$current = $template['current'];
 			$current->ctime = strtotime($current->ctime);	// string -> unix timestamp
+			if (!isset($current->is_badmin) || $current->is_badmin)
+			{
+				$show_action_link = 1;
+				$show_action_link_itemcommentlist = ($action == 'blogcommentlist');
+			}
+			else
+			{
+				$current->iauthor = intval($current->iauthor);
+				$current->cmember = intval($current->cmember);
+				$show_action_link = ($current->cmember == $member->id) || ($current->iauthor == $member->id);
+				$show_action_link_itemcommentlist = ($action == 'blogcommentlist') && ($current->iauthor == $member->id);
+			}
+
+			// todo: blog item link  $current->cblog
 
 			echo '<td>';
 			echo date("Y-m-d@H:i",$current->ctime);
@@ -422,14 +438,23 @@ function listplug_table_commentlist($template, $type) {
 
 			echo '<td>';
 			$id = listplug_nextBatchId();
-			echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->cnumber,'" />';
+			if ($show_action_link)
+				echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->cnumber,'" />';
 			echo '<label for="batch',$id,'">';
 			echo $current->cbody;
 			echo '</label>';
 			echo '</td>';
 
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
-			echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
+			if ($show_action_link)
+			{
+				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
+				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
+			}
+			else
+			{
+				echo "<td style=\"white-space:nowrap\">&nbsp;</td>";
+				echo "<td style=\"white-space:nowrap\">&nbsp;</td>";
+			}
 			if ($template['canAddBan'])
 				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
 
@@ -437,17 +462,22 @@ function listplug_table_commentlist($template, $type) {
 			// add link
 			if ($action == 'blogcommentlist')
 			 {
-                if (!isset($amountComments[$current->citem]))
-                {
-                    $COMMENTS = new COMMENTS($current->citem);
-                    $amountComments[$current->citem] = $COMMENTS->amountComments();
-                }
-				echo '<td style=" word-break: break-all">';
-				$s = sprintf('(%d) %s' , $amountComments[$current->citem], _LIST_COMMENT_LIST_FOR_ITEM);
-				$s = sprintf(_LIST_BACK_TO, $s);
-				printf('<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>'
-					   , $current->citem , $s );
-				echo '</td>';
+				if ($show_action_link_itemcommentlist)
+				{
+					if (!isset($amountComments[$current->citem]))
+					{
+						$COMMENTS = new COMMENTS($current->citem);
+						$amountComments[$current->citem] = $COMMENTS->amountComments();
+					}
+					echo '<td style=" word-break: break-all">';
+					$s = sprintf('(%d) %s' , $amountComments[$current->citem], _LIST_COMMENT_LIST_FOR_ITEM);
+					$s = sprintf(_LIST_BACK_TO, $s);
+					printf('<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>'
+						   , $current->citem , $s );
+					echo '</td>';
+				}
+				else
+				echo '<td>&nbsp;</td>';
 			 }
 			// end link
 
