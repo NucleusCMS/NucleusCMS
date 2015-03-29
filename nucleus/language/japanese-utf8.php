@@ -17,6 +17,8 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+define('_TEAM_NO_SELECTABLE_MEMBERS',			'選択可能なメンバーはいません');
+
 define('_LISTS_FORM_SELECT_ALL_CATEGORY',	'すべてのカテゴリ');
 
 define('_LIST_BACK_TO',				'%sに戻る');
