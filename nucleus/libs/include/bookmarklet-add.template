@@ -23,21 +23,20 @@
         <script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
-		<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
 		//<![CDATA[
-			google.load("jquery", "1");
-			google.load("jqueryui", "1");
-			google.setOnLoadCallback(function() {
+			$(document).ready(function() {
 				$(function(){
 //					var IE = '\v'=='v';
 					updAllPreviews();
 //					$("table tr td:first-child").css("width", "14%");
 //					if (!IE)
 //						$("#body textarea, #more textarea").resizable({ containment: 'parent' });
-					$("#tabs").tabs();
+					$("#tabs").tabs(); /* jquery-ui */
 					$(".addFuture").change(function() {
 						$("#act_future").attr('checked', 'checked');
 					});
