@@ -24,6 +24,7 @@
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="javascript/jquery/jquery-migrate.min.js"></script>
 		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
 		<%init%>
 		<%extrahead%>
