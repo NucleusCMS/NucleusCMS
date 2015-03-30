@@ -5531,6 +5531,7 @@ selector();
 	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
 	href="<?php echo $baseUrl?>styles/addedit.css" />
 
+	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
