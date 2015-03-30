@@ -47,6 +47,8 @@ class ENCAPSULATE {
   */
 class NAVLIST extends ENCAPSULATE {
 
+	public $total = null;
+
 	function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
 		$this->action = $action;
 		$this->start = $start;
@@ -99,64 +101,150 @@ class NAVLIST extends ENCAPSULATE {
 	//	else
 	//		$next = $start;
 
-	?>
-	<table class="navigation">
-	<tr>
-<?php
-    $enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
-    if ($enable_cat_select)
-       $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+		$enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
+		if ($enable_cat_select)
+		   $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
 
-	if($start==0) $disabled ='disabled style="cursor:default;"';
-	else          $disabled = '';
+		$minamount = $this->minamount;
+		$maxamount = $this->maxamount;
+		$page_navigation = "";
+		// calc page
+		if ($amount <= 0)
+			{
+				$total_pages = 1;
+				$current_page = 1;
+				$amount = 1;
+			}
+		  else
+			{
+				// page = (page-1)/$amount + 1 , page item start 1..
+				$current_page = (int) (floor(max(0, $start) / $amount) + 1); // start 0..
+				if ( is_null( $this->total ) )
+					$total_pages = 1;
+				  else
+					{
+						$total_pages = (int) floor(max(0, $this->total-1) / $amount) + 1;
+						$current_page = min($current_page , $total_pages);
+					}
+			}
+		  $current_page = max(1 , $current_page); // page 1..
+		  $maxamount = min($maxamount , $total_pages * $amount-1);
+		  if (!is_null( $this->total ))
+			$maxamount = max(0 , $this->total - 1);
+
+		  $prev = max(0 , ($current_page-2)) * $amount; // 0..
+		  if ($prev < $minamount) $prev=$minamount;
+
+		  $next	= max(0 , min( $current_page , $total_pages ) * $amount);
+		  if ( !is_null( $this->total ) && (intval($next)+1 > intval($this->total)) )
+			{
+			  $next = floor(max(0,intval($this->total-1)) / $amount) * $amount ; // 9/10=0,10/10=1
+			}
+
+		$page_last_start = min(max(0,($total_pages-1)*$amount),$maxamount);
+
+		$page_navigation = sprintf('page %d / %d (%d - %d / %d)'
+							, $current_page,$total_pages
+							, $start + 1
+							, (is_null($this->total) ? $start + $amount : min($start + $amount , $this->total))
+							, $this->total);
+
+		$input_catid = ($enable_cat_select ? "\n\t\t".sprintf('<input type="hidden" name="catid" value="%d" />', $catid) : '');
+
+		$btn_title_change = _LISTS_CHANGE;
+		$page_navigation .=<<<EOD
+	<div>
+	<form method="post" action="index.php">
+		<input type="number" id="page_select" value="{$current_page}" style="width:50px;" min=1 max={$total_pages} onchange="var e = document.getElementById('page_select_start'); e.value=Math.min(Math.max(0, (this.value-1) * {$amount}),{$page_last_start});" />
+		<input type="hidden" name="search" value="{$search}" />
+		<input type="hidden" name="blogid" value="{$blogid}" />{$input_catid}
+		<input type="hidden" name="itemid" value="{$itemid}" />
+		<input type="hidden" name="action" value="{$action}" />
+		<input type="hidden" name="amount" value="{$amount}" />
+		<input type="hidden" id="page_select_start" name="start" value="{$start}" />
+		<input type="submit" value="{$btn_title_change}" />
+	</form></div>
+EOD;
+
+	if ( is_null( $this->total ) )
+	{
+		global $CONF;
+		if ($CONF['debug'])
+		  $page_navigation .= 'page navigation is disabled: set total before call ';
+		else
+		{
+			$page_navigation = '';
+		}
+		$next = $start + $amount;
+	    $disabled_next = '';
+	}
+	else
+	{
+		$disabled_next = ($current_page<$total_pages) ? '' : 'disabled style="cursor:default;" ';
+	}
+
+	if($start==0)
+		$disabled ='disabled style="cursor:default;" ';
+	else
+		$disabled = '';
+
 ?>
-		<td>
-		<form method="post" action="index.php"><div>
-		<input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV; ?>" <?php echo $disabled; ?>/>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-        <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
-		</div></form>
-	</td>
-		<td>
-		<form method="post" action="index.php"><div>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-        <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE?>
-		<input type="hidden" name="start" value="<?php echo  $start; ?>" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="submit" value="<?php echo _LISTS_CHANGE?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($action, $blogid , $catid) . '<br />'; ?>
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="start" value="0" />
-		<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
-		<input type="submit" value="<?php echo  _LISTS_SEARCH?>" />
-		</div></form>
-	</td><td>
-		<form method="post" action="index.php"><div>
-		<input type="submit" value="<?php echo _LISTS_NEXT?> &gt; &gt;" />
-		<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-		<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-		<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-        <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-		<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-		<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-		<input type="hidden" name="start" value="<?php echo  $next; ?>" />
-		</div></form>
-	</td></tr>
-	</table>
+<table class="navigation">
+	<tr>
+		<td style="vertical-align: top; text-align: left;"><?php echo $page_navigation; ?>
+		  <table border="0" style="width: 250px">
+			<tr>
+				<td><form method="post" action="index.php"><div>
+					<input type="submit" value="&lt;&lt; <?php echo _LISTS_PREV; ?>" <?php echo $disabled; ?>/>
+					<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+					<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+					<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+					<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+					<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+					<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+					<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
+					</div></form>
+				</td>
+				<td><form method="post" action="index.php"><div>
+					<input type="submit" value="<?php echo _LISTS_NEXT; ?> &gt; &gt;" <?php echo $disabled_next; ?>/>
+					<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+					<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+					<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+					<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+					<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+					<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+					<input type="hidden" name="start" value="<?php echo  $next; ?>" />
+					</div></form>
+				</td>
+			</tr>
+		  </table>
+		</td>
+		<td style="white-space: nowrap;">
+			<form method="post" action="index.php"><div>
+			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+			<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+			<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+			<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+			<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE; ?>
+			<input type="hidden" name="start" value="<?php echo  $start; ?>" />
+			<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+			<input type="submit" value="<?php echo _LISTS_CHANGE; ?>" />
+			</div></form>
+		</td>
+		<td style="white-space: nowrap;">
+			<form method="post" action="index.php"><div>
+			<?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($action, $blogid , $catid) . '<br />'; ?>
+			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+			<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+			<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+			<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+			<input type="hidden" name="start" value="0" />
+			<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
+			<input type="submit" value="<?php echo  _LISTS_SEARCH; ?>" />
+			</div></form>
+		</td>
+	</tr>
+</table>
 	<?php	}
 
 	protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid')

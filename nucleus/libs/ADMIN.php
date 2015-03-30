@@ -343,8 +343,8 @@ class ADMIN {
 
 		$search = postVar('search');	// search through items
 
-		$query =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime, bnumber, catid'
-			   . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
+		$query_view =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime, bnumber, catid';
+		$query = ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
 			   . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 
 		$request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
@@ -361,17 +361,20 @@ class ADMIN {
 		if (!$member->blogAdminRights($blogid))
 			$query .= ' and iauthor=' . $member->getID();
 
+		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
 		$query .= ' ORDER BY itime DESC'
 				. " LIMIT $start,$amount";
+
+		$query_view .= $query;
 
 		$template['content'] = 'itemlist';
 		$template['now'] = $blog->getCorrectTime(time());
 
 		$manager->loadClass("ENCAPSULATE");
 		$navList = new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-		$navList->showBatchList('item',$query,'table',$template);
-
+		$navList->total = $total;
+		$navList->showBatchList('item',$query_view,'table',$template);
 
 		$this->pagefoot();
 	}
@@ -1012,8 +1015,8 @@ class ADMIN {
 
 		$search = postVar('search');	// search through items
 
-		$query =  'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime'
-			   . ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
+		$query_view = 'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime';
+		$query = ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
 			   . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
 
 		$request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
@@ -1025,15 +1028,20 @@ class ADMIN {
 		if ($search)
 			$query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
+		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+
 		$query .= ' ORDER BY itime DESC'
 				. " LIMIT $start,$amount";
+
+		$query_view .= $query;
 
 		$template['content'] = 'itemlist';
 		$template['now'] = time();
 
 		$manager->loadClass("ENCAPSULATE");
 		$navList = new NAVLIST('browseownitems', $start, $amount, 0, 1000, /*$blogid*/ 0, $search, 0);
-		$navList->showBatchList('item',$query,'table',$template);
+		$navList->total = $total;
+		$navList->showBatchList('item',$query_view,'table',$template);
 
 		$this->pagefoot();
 
@@ -1094,20 +1102,26 @@ class ADMIN {
 
 		echo '<h2>',_COMMENTS,'</h2>';
 
-		$query = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
+		$query_view = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem';
+		$query = ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
 		if ($search)
 			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
+		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+
 		$query .= ' ORDER BY ctime ASC'
 				. " LIMIT $start,$amount";
+
+		$query_view .= $query;
 
 		$template['content'] = 'commentlist';
 		$template['canAddBan'] = $member->blogAdminRights(getBlogIDFromItemID($itemid));
 
 		$manager->loadClass("ENCAPSULATE");
 		$navList = new NAVLIST('itemcommentlist', $start, $amount, 0, 1000, 0, $search, $itemid);
-		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS);
+		$navList->total = $total;
+		$navList->showBatchList('comment',$query_view,'table',$template,_NOCOMMENTS);
 
 		$this->pagefoot();
 	}
@@ -1136,13 +1150,18 @@ class ADMIN {
 		$search = postVar('search');
 
 
-		$query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
+		$query_view = 'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem';
+		$query = ' FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
 
 		if ($search)
 			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
+		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+
 		$query .= ' ORDER BY ctime DESC'
 				. " LIMIT $start,$amount";
+
+		$query_view .= $query;
 
 		$this->pagehead();
 
@@ -1154,7 +1173,8 @@ class ADMIN {
 
 		$manager->loadClass("ENCAPSULATE");
 		$navList = new NAVLIST('browseowncomments', $start, $amount, 0, 1000, 0, $search, 0);
-		$navList->showBatchList('comment',$query,'table',$template,_NOCOMMENTS_YOUR);
+		$navList->total = $total;
+		$navList->showBatchList('comment',$query_view,'table',$template,_NOCOMMENTS_YOUR);
 
 		$this->pagefoot();
 	}
@@ -1194,12 +1214,13 @@ class ADMIN {
 
 		if ($member->isAdmin() || $member->isBlogAdmin($blogid))
 		{
-			$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+			$query_view =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem';
+			$query =  ' FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
 		}
 		else
 		{
-			$query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem, cmember, iauthor, 0 as is_badmin' .
-					' FROM '.sql_table('comment').
+			$query_view =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem, cmember, iauthor, 0 as is_badmin';
+			$query =  ' FROM '.sql_table('comment').
 					' LEFT OUTER JOIN '.sql_table('member').
 					'  ON mnumber=cmember'.
 					' LEFT OUTER JOIN '.sql_table('item').
@@ -1210,10 +1231,12 @@ class ADMIN {
 		if ($search != '')
 			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
 
+		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
 		$query .= ' ORDER BY ctime DESC'
 				. " LIMIT $start,$amount";
 
+		$query_view .= $query;
 
 		$blog =& $manager->getBlog($blogid);
 
@@ -1227,7 +1250,8 @@ class ADMIN {
 
 		$manager->loadClass("ENCAPSULATE");
 		$navList = new NAVLIST('blogcommentlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-		$navList->showBatchList('comment',$query,'table',$template, _NOCOMMENTS_BLOG);
+		$navList->total = $total;
+		$navList->showBatchList('comment',$query_view,'table',$template, _NOCOMMENTS_BLOG);
 
 		$this->pagefoot();
 	}
