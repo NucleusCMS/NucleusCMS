@@ -389,8 +389,9 @@ function listplug_nextBatchId() {
 
 function listplug_table_commentlist($template, $type) {
     static $amountComments = array();
+	global $action;
+
 	$colspan = 3;
-	$action = isset($_GET['action']) ? strval( $_GET['action'] ) : '';
 	if ( $action == 'blogcommentlist')
 	   $colspan++;
 
@@ -459,7 +460,6 @@ function listplug_table_commentlist($template, $type) {
 			if ($template['canAddBan'])
 				echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
 
-			$action = isset($_GET['action']) ? strval( $_GET['action'] ) : '';
 			// add link
 			if ($action == 'blogcommentlist')
 			 {
