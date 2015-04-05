@@ -60,6 +60,8 @@ upgrade_head();
 <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.71 用にアップグレードします</a></p>
 <?php
 	 }
+
+	 ob_start();
 ?>
 
 <div class="note">
@@ -78,31 +80,33 @@ if (!$from) $from = $current;
 $sth = 0;
 
 if (in_array($from,array(95,96)) || $from < 366)
-	$sth = upgrade_manual_366();
+	$sth += upgrade_manual_366();
 
 if (!$DIR_MEDIA)
-	$sth = upgrade_manual_96();
+	$sth += upgrade_manual_96();
 
 if (!$DIR_SKINS)
-	$sth = upgrade_manual_20();
+	$sth += upgrade_manual_20();
 
 // from v3.3, atom feed supports 1.0 and blogsetting is added
 if($from<330)
-	$sth = upgrade_manual_atom1_0();
+	$sth += upgrade_manual_atom1_0();
 
 // upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
 // these .htaccess files are included in new installs of 340 or higher
 if (in_array($from,array(95,96)) || $from < 340)
-	$sth = upgrade_manual_340();
+	$sth += upgrade_manual_340();
 
 // upgrades from pre-350 version need to be told of deprecation of PHP4 support and two new plugins 
 // included with 3.51 and higher
 if (in_array($from,array(95,96)) || $from < 350)
-	$sth = upgrade_manual_350();
+	$sth += upgrade_manual_350();
 
-if ($sth == 0)
-	echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";
+//	echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";
 
+$content = ob_get_clean();
+
+if (0<$sth) echo $content;
 
 
 upgrade_foot();
@@ -197,7 +201,7 @@ function upgrade_manual_366() {
 
 function upgrade_manual_atom1_0() {
 
-	$sth = 0;
+	$sth += 0;
 
 	// atom 1.0
 	$query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
@@ -205,7 +209,7 @@ function upgrade_manual_atom1_0() {
 	while ($o = sql_fetch_object($res)) {
 		if ($o->sddesc=='Atom 0.3 weblog syndication')
 		{
-			$sth = 1;
+			$sth += 1;
 ?>
 <h2>Atom 1.0</h2>
 <p>Nucleus 3.3 から atom feed が 1.0 対応になりましたので、次の手順でスキン・テンプレートのアップグレードをして下さい。</p>
@@ -229,7 +233,7 @@ function upgrade_manual_atom1_0() {
 		$query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
 		$res = sql_query($query);
 		if (!sql_fetch_object($res)) {
-			$sth = 1;
+			$sth += 1;
 ?>
 <h2>Default スキン</h2>
 <p>Nucleus 3.3(2007年5月1日リリース) からいくつかのフォームの CSS が変更になっています。たとえば最初のページのログインフォームや、コメント投稿のためのフォームなど。このためフォームの表示が崩れるので、次の手順でDefault スキンのアップグレードをして下さい。</p>
