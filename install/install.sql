@@ -177,7 +177,7 @@ CREATE TABLE `nucleus_member` (
   `mcanlogin`  tinyint(2)   NOT NULL default '1',
   `mcookiekey` varchar(40)           default NULL,
   `deflang`    varchar(20)  NOT NULL default '',
-  `mautosave`  tinyint(2)   NOT NULL default '1',
+  `mautosave`  tinyint(2)   NOT NULL default '0',
   PRIMARY KEY         (`mnumber`),
   UNIQUE  KEY `mname` (`mname`)
 ) ENGINE=MyISAM;
