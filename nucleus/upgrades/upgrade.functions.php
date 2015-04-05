@@ -58,45 +58,8 @@
 				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
 				$minrows = -1;
 				break;
-			case '250':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 250 LIMIT 1";
-				$minrows = 1;
-				break;
-			case '300':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 300  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '310':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 310  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '320':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 320  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '330':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 330  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '331':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 331  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '340':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 340  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '350':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 350  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '360':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= 360  LIMIT 1";
-				$minrows = 1;
-				break;
-			case '370':
-			case '371':
-				$query = "SELECT * FROM {$tbl_config} WHERE name='DatabaseVersion' and value >= ". intval($version) ."  LIMIT 1";
+			default:
+				$query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%s LIMIT 1", $tbl_config, intval($version));
 				$minrows = 1;
 				break;
 		}
