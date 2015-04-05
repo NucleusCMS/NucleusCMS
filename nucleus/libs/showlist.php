@@ -175,17 +175,19 @@ function listplug_table_pluginlist($template, $type) {
 			if ($plug) {
 				echo '<td>';
 					echo '<strong>' , hsc($plug->getName()) , '</strong><br />';
-					echo _LIST_PLUGS_AUTHOR, ' ' , hsc($plug->getAuthor()) , '<br />';
+					if($plug->getAuthor()!=='Undefined')
+						echo _LIST_PLUGS_AUTHOR, ' ' , hsc($plug->getAuthor()) , '<br />';
 					echo _LIST_PLUGS_VER, ' ' , hsc($plug->getVersion()) , '<br />';
-					if ($plug->getURL()&&strtolower($plug->getURL())!=='undefined')
+					if ($plug->getURL()&&$plug->getURL()!=='Undefined')
 					echo '<a href="',hsc($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
     				if ($plug->supportsFeature('HelpPage') > 0)
     					echo "<a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
 				echo '</td>';
 				echo '<td>';
-					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
+				if($plug->getDescription()!=='Undefined')
+					echo encode_desc($plug->getDescription()).'<br /><br />';
 					if (sizeof($plug->getEventList()) > 0) {
-						echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',hsc(implode($plug->getEventList(),', '));
+						echo _LIST_PLUGS_SUBS,'<br />',hsc(implode($plug->getEventList(),', '));
 						// check the database to see if it is up-to-date and notice the user if not
 					}
 					if (!$plug->subscribtionListIsUptodate()) {
