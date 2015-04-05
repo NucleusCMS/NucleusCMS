@@ -177,8 +177,10 @@ function listplug_table_pluginlist($template, $type) {
 					echo '<strong>' , hsc($plug->getName()) , '</strong><br />';
 					echo _LIST_PLUGS_AUTHOR, ' ' , hsc($plug->getAuthor()) , '<br />';
 					echo _LIST_PLUGS_VER, ' ' , hsc($plug->getVersion()) , '<br />';
-					if ($plug->getURL())
+					if ($plug->getURL()&&strtolower($plug->getURL())!=='undefined')
 					echo '<a href="',hsc($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
+    				if ($plug->supportsFeature('HelpPage') > 0)
+    					echo "<a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
 				echo '</td>';
 				echo '<td>';
 					echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
@@ -222,14 +224,13 @@ function listplug_table_pluginlist($template, $type) {
 
 				$baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
 				$url = $manager->addTicketToUrl($baseUrl . 'pluginup');
-				echo "<a href='",hsc($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";
+				$up = sprintf('<a href="%s" tabindex="%s">%s</a>', hsc($url),$template['tabindex'],_LIST_PLUGS_UP);
 				$url = $manager->addTicketToUrl($baseUrl . 'plugindown');
-				echo "<br /><a href='",hsc($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
+				$down = sprintf('<a href="%s" tabindex="%s">%s</a>', hsc($url),$template['tabindex'],_LIST_PLUGS_DOWN);
+				echo "{$up} | {$down}";
 				echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
 				if ($plug && ($plug->hasAdminArea() > 0))
 					echo "<br /><a href='".hsc($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
-				if ($plug && ($plug->supportsFeature('HelpPage') > 0))
-					echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
 				if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
 					echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
 			echo '</td>';
