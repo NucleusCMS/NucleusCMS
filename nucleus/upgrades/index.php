@@ -87,7 +87,8 @@ if (!$DIR_SKINS)
 	$sth = upgrade_manual_20();
 
 // from v3.3, atom feed supports 1.0 and blogsetting is added
-$sth = upgrade_manual_atom1_0();
+if($from<330)
+	$sth = upgrade_manual_atom1_0();
 
 // upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
 // these .htaccess files are included in new installs of 340 or higher
