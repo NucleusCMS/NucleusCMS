@@ -1901,7 +1901,10 @@ function ticketForPlugin(){
 	/* Exit if not logged in. */
 	if ( !$member->isLoggedIn() )
 	{
-		exit(_GFUNCTIONS_YOU_AERNT_LOGGEDIN);
+		global $DIR_LANG;
+		$language = getLanguageName();
+		include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+		exit(sprintf('<a href="%s">%s</a>',$CONF['AdminURL'],_GFUNCTIONS_YOU_AERNT_LOGGEDIN));
 	}
 
 	global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
