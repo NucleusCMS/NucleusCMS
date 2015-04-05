@@ -34,12 +34,7 @@ upgrade_head();
 <p>Nucleus CMSはバージョンアップごとに、データベースのテーブル構造を少しずつ変えています。このスクリプト集は、古いバージョンの Nucleus からアップグレードする際に必要な、データベーステーブルのアップグレードを行います。</p>
 
 <?php	// calculate current version
-    if (!upgrade_checkinstall(96))      $current = 95;
-    elseif (!upgrade_checkinstall(100)) $current = 96;
-    elseif (!upgrade_checkinstall(110)) $current = 100;
-    elseif (!upgrade_checkinstall(150)) $current = 110;
-    elseif (!upgrade_checkinstall(200)) $current = 150;
-    elseif (!upgrade_checkinstall(250)) $current = 200;
+    if     (!upgrade_checkinstall(250)) $current = 200;
     elseif (!upgrade_checkinstall(300)) $current = 250;
     elseif (!upgrade_checkinstall(310)) $current = 300;
     elseif (!upgrade_checkinstall(320)) $current = 310;

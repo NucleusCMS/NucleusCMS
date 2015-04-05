@@ -44,26 +44,6 @@
 		$tbl_config = sql_table('config');
 
 		switch($version) {
-			case '95':
-				$query = 'SELECT bconvertbreaks FROM '.sql_table('blog').' LIMIT 1';
-				$minrows = -1;
-				break;
-			case '96':
-				$query = 'SELECT cip FROM '.sql_table('comment').' LIMIT 1';
-				$minrows = -1;
-				break;
-			case '100':
-				$query = 'SELECT mcookiekey FROM '.sql_table('member').' LIMIT 1';
-				$minrows = -1;
-				break;
-			case '110':
-				$query = 'SELECT bnotifytype FROM '.sql_table('blog').' LIMIT 1';
-				$minrows = -1;
-				break;
-			case '150':
-				$query = 'SELECT * FROM '.sql_table('plugin_option').' LIMIT 1';
-				$minrows = -1;
-				break;
 			case '200':
 				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
 				$minrows = -1;

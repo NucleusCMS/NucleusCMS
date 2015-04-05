@@ -26,23 +26,6 @@ $from = intGetVar('from');
 upgrade_start();
 
 switch($from) {
-	case 95:
-		include('upgrade0.95.php');
-		include('upgrade0.96.php');
-		upgrade_do95();
-		upgrade_do96();
-	case 96:
-		include('upgrade1.0.php');
-		upgrade_do100();
-	case 100:
-		include('upgrade1.1.php');
-		upgrade_do110();
-	case 110:
-		include('upgrade1.5.php');
-		upgrade_do150();
-	case 150:
-		include('upgrade2.0.php');
-		upgrade_do200();
 	case 200:
 		include('upgrade2.5.php');
 		upgrade_do250();
