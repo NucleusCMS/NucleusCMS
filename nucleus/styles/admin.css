@@ -35,12 +35,7 @@ textarea {
   
 	line-height:145%;/* add */
 	padding:5px;/* add */
-	
-/*  font-family: "Hiragino Kaku Gothic Pro W3", "MS PGothic", "Osaka", sans-serif;
-}
-
-*>textarea {*/
-  width: 95%;
+	width: 95%;
 }
 
 /* textareas for skin/template editing have monospace fonts */
