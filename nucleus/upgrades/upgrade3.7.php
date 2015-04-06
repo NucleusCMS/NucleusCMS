@@ -10,6 +10,16 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+function upgrade_do371() {
+
+	if (upgrade_checkinstall(371))
+		return 'already installed';
+	
+	// 3.70 -> 3.71
+	// update database version
+	update_version('371');
+}
+
 function upgrade_do370() {
 
 	if (upgrade_checkinstall(370))
