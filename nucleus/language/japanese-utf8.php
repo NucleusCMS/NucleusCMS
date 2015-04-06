@@ -295,7 +295,6 @@ define('_ADMIN_SYSTEMOVERVIEW_DISABLE',				'無効');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM',		'Nucleus のシステムについて');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus のバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus のパッチレベル');
-define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'重要な設定');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'バージョンチェック');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'より新しいバージョンのリリースが無いか、公式サイトでチェックできます: ');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');

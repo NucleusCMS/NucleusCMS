@@ -5449,20 +5449,15 @@ selector();
 			// Important settings of the installation
 			echo "<table>\n";
 			echo "\t<tr>";
-			echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
-			echo "\t</tr><tr>\n";
-			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
-			echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
-			echo "\t</tr><tr>\n";
-			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'ItemURL']</td>\n";
-			echo "\t\t" . '<td>' . $CONF['ItemURL'] . "</td>\n";
-			echo "\t</tr><tr>\n";
-			echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
-			$ohs = $CONF['alertOnHeadersSent'] ?
-						_ADMIN_SYSTEMOVERVIEW_ENABLE :
-						_ADMIN_SYSTEMOVERVIEW_DISABLE;
-			echo "\t\t" . '<td>' . $ohs . "</td>\n";
+			echo "\t\t" . '<th colspan="2">$CONF</th>'."\n";
 			echo "\t</tr>\n";
+			$tpl = '<tr><td width="50%"><%name%></td><td><%value%></td></tr>';
+			$s = array('<%name%>','<%value%>');
+			foreach($CONF as $k=>$v)
+			{
+				$k = '$' . "CONF[{$k}]";
+				echo str_replace($s,array($k,$v),$tpl);
+			}
 			echo "</table>\n";
 
 			// Link to the online version test at the Nucleus CMS website
