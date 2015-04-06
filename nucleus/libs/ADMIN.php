@@ -5641,9 +5641,10 @@ selector();
 			<div id="quickmenu">
 
 				<?php			   // ---- user settings ----
+				$tpl = '<li class="%s"><a href="index.php?action=%s">%s</a></li>';
 				if (($action != 'showlogin') && ($member->isLoggedIn())) {
 					echo '<ul>';
-					echo '<li><a href="index.php?action=overview">',_QMENU_HOME,'</a></li>';
+					echo sprintf($tpl, 'overview', 'overview', _QMENU_HOME);
 					echo '</ul>';
 
 					echo '<h2>',_QMENU_ADD,'</h2>';
@@ -5675,9 +5676,9 @@ selector();
 
 					echo '<h2>' . $member->getDisplayName(). '</h2>';
 					echo '<ul>';
-					echo '<li><a href="index.php?action=editmembersettings">' . _QMENU_USER_SETTINGS . '</a></li>';
-					echo '<li><a href="index.php?action=browseownitems">' . _QMENU_USER_ITEMS . '</a></li>';
-					echo '<li><a href="index.php?action=browseowncomments">' . _QMENU_USER_COMMENTS . '</a></li>';
+					echo sprintf($tpl, 'editmembersettings', 'editmembersettings', _QMENU_USER_SETTINGS);
+					echo sprintf($tpl, 'browseownitems', 'browseownitems', _QMENU_USER_ITEMS);
+					echo sprintf($tpl, 'browseowncomments', 'browseowncomments', _QMENU_USER_COMMENTS);
 					echo '</ul>';
 
 
@@ -5689,20 +5690,20 @@ selector();
 						echo '<h2>',_QMENU_MANAGE,'</h2>';
 
 						echo '<ul>';
-						echo '<li><a href="index.php?action=actionlog">' . _QMENU_MANAGE_LOG . '</a></li>';
-						echo '<li><a href="index.php?action=settingsedit">' . _QMENU_MANAGE_SETTINGS . '</a></li>';
-						echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . '</a></li>';
-						echo '<li><a href="index.php?action=usermanagement">' . _QMENU_MANAGE_MEMBERS . '</a></li>';
-						echo '<li><a href="index.php?action=createnewlog">' . _QMENU_MANAGE_NEWBLOG . '</a></li>';
-						echo '<li><a href="index.php?action=backupoverview">' . _QMENU_MANAGE_BACKUPS . '</a></li>';
-						echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . '</a></li>';
+						echo sprintf($tpl, 'actionlog', 'actionlog', _QMENU_MANAGE_LOG);
+						echo sprintf($tpl, 'settingsedit', 'settingsedit', _QMENU_MANAGE_SETTINGS);
+						echo sprintf($tpl, 'systemoverview', 'systemoverview', _QMENU_MANAGE_SYSTEM);
+						echo sprintf($tpl, 'usermanagement', 'usermanagement', _QMENU_MANAGE_MEMBERS);
+						echo sprintf($tpl, 'createnewlog', 'createnewlog', _QMENU_MANAGE_NEWBLOG);
+						echo sprintf($tpl, 'backupoverview', 'backupoverview', _QMENU_MANAGE_BACKUPS);
+						echo sprintf($tpl, 'pluginlist', 'pluginlist', _QMENU_MANAGE_PLUGINS);
 						echo '</ul>';
 
 						echo '<h2>',_QMENU_LAYOUT,'</h2>';
 						echo '<ul>';
-						echo '<li><a href="index.php?action=skinoverview">' . _QMENU_LAYOUT_SKINS . '</a></li>';
-						echo '<li><a href="index.php?action=templateoverview">' . _QMENU_LAYOUT_TEMPL . '</a></li>';
-						echo '<li><a href="index.php?action=skinieoverview">' . _QMENU_LAYOUT_IEXPORT . '</a></li>';
+						echo sprintf($tpl, 'skinoverview', 'skinoverview', _QMENU_LAYOUT_SKINS);
+						echo sprintf($tpl, 'templateoverview', 'templateoverview', _QMENU_LAYOUT_TEMPL);
+						echo sprintf($tpl, 'skinieoverview', 'skinieoverview', _QMENU_LAYOUT_IEXPORT);
 						echo '</ul>';
 
 					}
