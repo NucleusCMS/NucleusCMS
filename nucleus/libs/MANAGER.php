@@ -393,6 +393,7 @@ class MANAGER {
     {
         if (isset($this->cachedInfo['installedPlugins'])) return;
         
+        $this->cachedInfo['installedPlugins'] = array();
         $res = sql_query('SELECT pid, pfile FROM ' . sql_table('plugin'));
         $this->cachedInfo['installedPlugins'] = array();
         while ($o = sql_fetch_object($res))
