@@ -5529,7 +5529,7 @@ selector();
 	 * @todo document this
 	 */
 	function pagehead($extrahead = '') {
-		global $member, $nucleus, $CONF, $manager;
+		global $member, $nucleus, $CONF, $manager, $action;
 
 		$param = array(
 			'extrahead'	=> &$extrahead,
@@ -5566,9 +5566,9 @@ selector();
 	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
 	<meta http-equiv="Expires" content="-1" />
 
-<?php echo $extrahead?>
+<?php echo $extrahead;?>
 </head>
-<body>
+<body class="<?php echo $action;?>">
 <div id="adminwrapper">
 <div class="header">
 <h1><?php echo hsc($CONF['SiteName'])?></h1>
