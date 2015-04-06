@@ -109,6 +109,17 @@ div.indent {
 	font-size: 14pt; /*add yotaka 090323*/
 }
 
+.ok {
+	border-radius : 3px;
+	background-color:#e7ffe7;
+	border:1px solid #bfd7bf;
+	color: #488d48;
+	padding:8px;
+	font-weight:bold;
+}
+.ng {
+}
+
 /* header */
 h1 {
 	text-align: right;

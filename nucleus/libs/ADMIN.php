@@ -6700,7 +6700,7 @@ selector();
 
 			<h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
 
-			<?php if  ($message) echo $message?>
+			<?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
 
 			<form action="index.php" method="post">
 			<div>
