@@ -1215,7 +1215,8 @@ function addBreaks($text) {
 }
 
 function removeBreaks($var) {
-	return preg_replace("/<br \/>([\r\n])/", "$1", $var);
+    if(strpos($var,"\r")!==false) $var = str_replace("\r",'',$var);
+    return preg_replace("@<br[ /]*>\n@i", "\n", $var);
 }
 
 // shortens a text string to maxlength ($toadd) is what needs to be added
