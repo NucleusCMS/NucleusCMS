@@ -192,6 +192,24 @@ h1 {
 	white-space: nowrap; /* add */
 }
 
+.settingsedit .settingsedit a,
+.overview .overview a,
+.editmembersettings .editmembersettings a,
+.browseownitems .browseownitems a,
+.browseowncomments .browseowncomments a,
+.actionlog .actionlog a,
+.settingsedit .settingsedit a,
+.systemoverview .systemoverview a,
+.usermanagement .usermanagement a,
+.createnewlog .createnewlog a,
+.backupoverview .backupoverview a,
+.pluginlist .pluginlist a,
+.skinoverview .skinoverview a,
+.templateoverview .templateoverview a,
+.skinieoverview .skinieoverview a {
+	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
+}
+
 #quickmenu h2 {
 	/*font-size: small;*//*mod yotaka 090323*/
 	font-size: 9pt;/*add yotaka 090323*/
