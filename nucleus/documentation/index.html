@@ -35,7 +35,7 @@
 
 		<div class="heading">
 			Nucleus CMS マニュアル
-			<i>(v3.70)</i>
+			<i>(v3.71)</i>
 		</div>
 
 		<div class="note">
@@ -55,12 +55,10 @@
 			<li><a href="skins.html">スキンとテンプレートの編集(ページデザイン)</a> (別ファイル)</li>
 			<li><a href="#security">セキュリティについて</a></li>
 			<li><a href="#performance">パフォーマンスについて</a></li>
-		<!-- <li><a href="#import">Importing from other tools</a></li> -->
 			<li><a href="#comments">コメント受付時のルール</a></li>
 			<li><a href="#xmlrpc">XML-RPC インターフェイスについて</a></li>
 			<li><a href="#trouble">困った時は (FAQ)</a></li>
 			<li><a href="tips.html">便利な使い方のヒント</a> (別ファイル)</li>
-			<li><a href="#known">現在指摘されている問題点</a></li>
 			<li><a href="history.html">履歴</a> (別ファイル)</li>
 			<li><a href="#credits">謝辞</a></li>
 		</ul>
@@ -292,20 +290,6 @@
 
 
 
-
-<!--
-<h1>Importing From Other Tools <a name="import" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-
-<p>
-Nucleus contains some conversion scripts that allow you to import the data from your 'old' weblog tool into your Nucleus weblog. No data is destroyed during this process.
-</p>
-
-<p>
-More information is available on the <a href="http://www.nucleuscms.org/convert.php">Nucleus website</a>. At the time of release, the only available conversion tools are those for Blogger and GreyMatter blogs.
-</p>
--->
-
-
 		<h1>コメント受付時のルール  <a name="comments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 		<p>
@@ -396,23 +380,6 @@ More information is available on the <a href="http://www.nucleuscms.org/convert.
 			<div class="question">RSSの吐出しをしたくないのですが。</div>
 			<div class="answer">xml-rss.php ( xml-rss2.php , rsd.php ) を削除して、念のために「xmlrss」(「feeds/rss20」)という名前のスキン／テンプレートを削除してください。</div>
 		</div>
-
-
-		<h1>現在指摘されている問題点 <a name="known" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-
-		<p>制限事項は以下の通りです:
-		</p>
-
-		<ul>
-			<li>このリリース時点においては、Nucleus 3.xへの公式なログ移行ツールがあります。ログ移行ツールのプログラムと、他のログ移行ツールの情報は<a href="http://nucleuscms.org/convert.php">ログ移行ツール情報(英語:最新情報)</a> (<a href="http://japan.nucleuscms.org/wiki/convert">ログ移行ツール情報(日本語)</a>)に掲載しています。ログ移行のポイントはNucleus Forum の <a href="http://forum.nucleuscms.org/viewforum.php?f=17">Import Questions (英語)</a> セクションを参照してください。すべてのブログシステムは異なる構造を持っているため、情報が欠落する可能性なしに別のシステムへ変換することはできません。スクリプト作者は、トラブルや情報の欠落を最小限にするよう努力しています。</li>
-			<li>Ctrl + Shift + A ショートカットキーは ICQ/Trillian と衝突します。</li>
-			<li>サーバのPHPの設定がセーフモードonの場合、添付ファイルの使用時に問題が生じます。(画像ファイルのサイズが自動判定できない、アップロードがうまくいかない、など) <br />*あらかじめmediaディレクトリに「1」、「2」など記事投稿者の数だけ数字のディレクトリを作成しておいて書き込み可能にしておくことで回避できます。</li>
-			<li>RSSの表示が乱れることがあります。(特殊文字変換が原因。&amp;amp; が &amp;amp;amp; となるなど)</li>
-			<li>blog設定で入力するメールアドレス欄の登録の上限は255バイトです。ですから、たくさんのメールアドレスを登録することはできません(件数ではなく合計文字数です)。</li>
-			<li>Mozilla系のブラウザではプレビュー機能がうまく動作しません。</li>
-			<li>Internet Explorer 6 で記事の投稿直後にたまにブラウザが落ちることがあります。ブラウザが落ちても記事の投稿は反映されています。(このトラブル報告から時間が経っているので解決していればよいのですが...)</li>
-		</ul>
-
 
 
 		<h1>謝辞 <a name="credits" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
