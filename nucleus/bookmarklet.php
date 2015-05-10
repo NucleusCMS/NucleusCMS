@@ -62,39 +62,14 @@ if (!in_array($action, $aActionsNotToCheck) ) {
 
 // find out what to do
 switch ($action) {
-	// adds the item for real
-	case 'additem':
-		bm_doAddItem();
-		break;
-
-		// shows the edit item form
-	case 'edit':
-		bm_doEditForm();
-		break;
-
-		// edits the item for real
-	case 'edititem':
-		bm_doEditItem();
-		break;
-
-	case 'delete':
-		bm_doDeleteItem();
-		break;
-		
-	case 'itemdeleteconfirm':
-		bm_doDeleteItemComplete();
-		break;
-		
-		// on login, 'action' gets changed to 'nextaction'
-	case 'login':
-		bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
-		break;
-
+	case 'additem'           : bm_doAddItem();    break; // adds the item for real
+	case 'edit'              : bm_doEditForm();   break; // shows the edit item form
+	case 'edititem'          : bm_doEditItem();   break; // edits the item for real
+	case 'delete'            : bm_doDeleteItem(); break;
+	case 'itemdeleteconfirm' : bm_doDeleteItemComplete(); break;
+	case 'login'             : bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG); break; // on login, 'action' gets changed to 'nextaction'
 		// shows the fill in form
-	case 'add':
-	default:
-		bm_doShowForm();
-		break;
+	case 'add': default      : bm_doShowForm();   break;
 }
 
 function bm_doAddItem() {
