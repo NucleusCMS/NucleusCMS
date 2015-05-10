@@ -434,7 +434,7 @@ class ACTIONS extends BaseActions {
 	 * Code that opens a bookmarklet in an popup window
 	 */
 	function parse_addpopupcode() {
-		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=no,width=710,height=550,left=10,top=10,status=no,resizable=yes');winbm.focus();return false;";
+		echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=710,height=550,left=10,top=10,status=no,resizable=yes');winbm.focus();return false;";
 	}
 	
 	/**
