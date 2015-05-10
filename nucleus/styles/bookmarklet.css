@@ -1,67 +1,36 @@
 @charset 'UTF-8';
-/* 
+/*
 	style definitions for the bookmarklet 
 */
 
 body {
-/*  font-size: small;*//*mod yotaka 090323*/
-	font-size: 9pt;/*add yotaka 090323*/
+	font-size: 92.5%;
 	background: #fff;
 	color: #000;
-/*	font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*/
-	font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif !important;
-	margin:0;/* add 090313 */
-	padding:5px;/* add 090313 */
+	font-family: Meiryo, "Hiragino Kaku Gothic Pro", Osaka, "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+	margin:0;
+	padding:5px;
+	overflow: auto;
 }
-input,textarea,select {font:inherit;}
-/*textarea {
-	font-family: "Hiragino Kaku Gothic Pro W3", "MS P Gothic", "Osaka", sans-serif;
-}*/
+input,textarea,select,td,th {font:inherit;}
 
 h1 {
-	border-bottom: 1px dotted gray;
-/*  	font-size: medium;*//*mod yotaka 090323*/
-	font-size: 10pt;/*add yotaka 090323*/
+	border-bottom: 1px dotted #aaa;
+	font-size: 1.2em;
 	color: #596d9d;
-	margin:0;/* add 090313 */
-	padding:5px;/* add 090313 */
+	margin:0;
+	padding:5px;
+	letter-spacing:1px;
 }
 
-/* 
-	Hide switch buttons initially, we'll enable them again if we are sure
-	the browser supports DOM
-*
-#switchbuttons {
-	display: none;
+#tabs {
+    padding-bottom:50px;
 }
-/*
-	Hide preview also when no DOM is supported
-*
-#preview {
-	display: none;
-}
-
-.buttonbar {
-   margin-bottom: 5px;
-   background: rgb(187, 187, 204);
-   padding: 3px;
-}
-
-.buttonbar input {
-   background: #C5C5D3;
-    border: 1px solid #CACAD7;
-    border-right: 2px solid #8E8EAB;
-    border-bottom: 2px solid #8E8EAB;
-    color: #000000;
-/*    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;*
-    font-weight: bold;   
-}
-*/
 
 .contentblock {
-	/*background: #ddd;*/
-	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
-	padding: 1px !important;
+	border:1px solid #ccc;
+	overflow: auto;
+	padding: 1em;
 	margin: 0px;
 	vertical-align: top;
 }
@@ -69,20 +38,15 @@ h1 {
 .shortcuts {
 	float: right; 
 	text-align: right;
-/*	font-size: x-small;*//*mod yotaka 090323*/
-	font-size: 8pt;/*add yotaka 090323*/
+	font-size: 1.1em;
 }
-/*
-#options {
-   margin-top:-15px;
-   }*/
+
 #options h2 {
    margin:15px 0 0 0;
 }
 
 h2 {
-/*	font-size: 1.5em;*//*mod yotaka 090323*/
-	font-size: 10pt;/*add yotaka 090323*/
+	font-size: 1.2em;
 	color: gray;
 	margin-top: 0px;
 	padding-top: 0px;
@@ -92,7 +56,6 @@ h2 {
 
 a:link, a:visited {
 	color: #1D3565; 
-	font-weight: bold;
 	text-decoration: none;
 }
 
@@ -113,39 +76,16 @@ label		{ cursor: pointer; }
 table {
 	border: none;
 	border-collapse: collapse;
-/*	margin: 10px auto; */
-	margin: auto;/* mod 090313 */
-/*	margin-bottom: 10px;
-	margin-top: 10px;*/
-	height: 95%;	/* add 090309*/
-/*	table-layout:fixed;*//* mod 090528 */
-}
-
-th {
-/*	background: #bbc;
-	color: #000;
-	font-size: small;*//* mod 090313 */
-/*	width:130px;*//* mod 090606 */
-/*	font-weight:normal;*//* mod 090606 */
+	margin: auto;
 }
 
 th, td {
 	padding: 4px;
 	empty-cells: show;
-/*}
-
-td {*//* mod 090313 */
 	background: #fff;
-	border: 1px solid #ddd;
-/*	font-size: small;*//*mod yotaka 090323*/
-	font-size: 9pt;/*add yotaka 090323*/
+	border: none;
 	vertical-align: top;
 	text-align: left;
-/*}
-
-#body td,
-#more td {*//* mod 090313 */
-/*	white-space: nowrap;*//*mod 090606*/
 }
 
 td a:link, td a:visited { 
@@ -172,42 +112,41 @@ ul.nobullets {
 	margin: 0;
 }
 
-form {/* add 090313 */
+form {
 		margin:0;
 		padding:0;
 }
 
 .jsbuttonbar,
-/*#body input[type=text],*//* mod 090313 */
-#inputtitle,/* add 090313 */
+#inputtitle,
 #body textarea,
 #body select,
-/*#more input[type=text],*//* mod 090313 */
 #more textarea,
 #more select {
 	margin: auto;
-	padding:0;/* add 090313 */
+	padding:0;
 	display: block;
-/*	width: 90%;*/
-	width: 98%	/*mod 090309*/
+	width: 98%;
+    padding:3px;
 }
 
-#body textarea {/* add 090313 */
-	height: 270px;/*add 090316*/
+#body textarea {
+	height: 250px;
 	margin-top: 4px;
 }
-#more textarea {/* add 090313 */
+#more textarea {
 	height: 300px;
 	margin-top: 4px;
 }
 
-/*textarea {/*mod 090313 /
-	margin-top: 1px;
-}*/
-
 .submitbuttons {
 	line-height: 2em;
 	margin: 8px;
+	position: fixed;
+	bottom: 0px;
+	background: #fff;
+	width:100%;
+	border-top: 1px dotted gray;
 }
 
 .submitbuttons input {
@@ -222,4 +161,33 @@ form {/* add 090313 */
 	clear: both;
 	height: 2em;
 	margin: 0 3px;
+}
+
+div#preview {
+    overflow: auto;
+    height:330px;
+}
+
+#submitbuttons {
+    position:fixed;
+    top:10px;
+    right:10px;
+    background: rgba(20, 20, 20, 0.3);
+    padding:10px 15px;
+    border-radius:8px;
+    z-index:999;
+}
+
+#submitbuttons input {
+    background-color:#eee;
+    border:none;
+    padding:3px 15px;
+    cursor:pointer;cursor:hand;
+    border-radius:3px;
+}
+
+#submitbuttons #goSubmit {
+    background-color:#596D9D;
+    border:none;
+    color:#fff;
 }

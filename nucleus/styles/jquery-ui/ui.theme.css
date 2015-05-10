@@ -10,9 +10,8 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget { font-family: "メイリオ", "Meiryo", "ヒラギノ角ゴ Pro W3", "Hiragino Kaku Gothic Pro", "Osaka", "ＭＳ Ｐゴシック", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; font-size: 1.1em; }
 .ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-size: 1em; }
-.ui-widget-header { border: 1px solid #ccc; background-color: #ddd; color: #494949; font-weight: bold; }
+.ui-widget-header { color: #494949; }
 .ui-widget-header a { color: #494949; }
 .ui-widget-content a { color: #494949; }
 
@@ -20,6 +19,6 @@
 ----------------------------------*/
 .ui-state-default a { color: #919191; text-decoration: none; outline: none; }
 .ui-state-hover a { color: #c77405; text-decoration: none; outline: none; }
-.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #ddd; background-color: #ffffff; font-weight: bold; color: #494949; outline: none; }
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #ddd; border-top:1px solid #FFCC72; background-color: #ffffff; color: #494949; outline: none; }
 .ui-state-active a { color: #494949; outline: none; text-decoration: none; }
 

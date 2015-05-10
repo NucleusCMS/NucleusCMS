@@ -42,7 +42,7 @@
 						$("#act_changedate").attr('checked', 'checked');
 					});
 					$("#showPreview").click(function() {updAllPreviews();});
-					$("#goSubmit").click(function() {checkSubmit();});
+					$("#goSubmit").click(function() {checkSubmit();document.editform.submit();});
 					$("#canselButton").click(function() {window.close();});
 					$("#saveDraft").click(function() {
 						$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
@@ -60,13 +60,18 @@
 	</head>
 	<body>
 		<h1><%text(_EDIT_ITEM)%> (<%contents(itemid)%>)</h1>
-		<form id="editform" method="post" action="bookmarklet.php" >
+		<div id="submitbuttons">
+			<input id="goSubmit" type="button" value="<%text(_BMLET_EDIT)%>" tabindex="200" />
+			<%ifautosave()%><input id="saveDraft" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="400" /><%endif%>
+			<input id="canselButton" type="button" value="<%text(_BMLET_CANCEL)%>" tabindex="410" />
+		</div>
+		<form id="editform" name="editform" method="post" action="bookmarklet.php" >
 			<div id="tabs">
 				<ul>
-					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%> &gt;&gt;</a></li>
-					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%> &gt;&gt;</a></li>
-					<li><a href="#options" tabindex="320"><%text(_BMLET_OPTIONS)%> &gt;&gt;</a></li>
-					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%> &gt;&gt;</a></li>
+					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%></a></li>
+					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%></a></li>
+					<li><a href="#options" tabindex="320"><%text(_BMLET_OPTIONS)%></a></li>
+					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%></a></li>
 				</ul>
 				<input name="action" type="hidden" value="edititem" />
 				<input name="itemid" type="hidden" value="<%contents(itemid)%>" />
@@ -155,9 +160,6 @@
 				</div>
 			</div>
 			<div class="submitbuttons">
-				<input id="goSubmit" type="submit" value="<%text(_BMLET_EDIT)%>" tabindex="200" />
-				<%ifautosave()%><input id="saveDraft" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="400" /><%endif%>
-				<input id="canselButton" type="button" value="<%text(_BMLET_CANCEL)%>" tabindex="410" />
 				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
 			</div>
 		</form>
