@@ -54,10 +54,10 @@ switch($from) {
 		include('upgrade3.6.php');
 		upgrade_do360();
 	case 360:
-		include('upgrade3.7.php');
+		include_once('upgrade3.7.php');
 		upgrade_do370();
 	case 370:
-		include('upgrade3.7.php');
+		include_once('upgrade3.7.php');
 		upgrade_do371();
 		break;
 	default:
