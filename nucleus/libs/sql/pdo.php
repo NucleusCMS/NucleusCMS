@@ -238,7 +238,9 @@ if (!function_exists('sql_fetch_assoc'))
 //echo $query.'<hr />';
 		if (is_null($dbh)) $res = $SQL_DBH->query($query);
 		else $res = $dbh->query($query);
-		if ($res->errorCode() != '00000') {
+		if ($res === false) {
+			print("SQL error with query $query: " . '<p />');
+		} else if ($res->errorCode() != '00000') {
 			$errors = $res->errorInfo();
 			print("SQL error with query $query: " . $errors[0].'-'.$errors[1].' '.$errors[2] . '<p />');
 		}

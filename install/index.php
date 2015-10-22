@@ -56,7 +56,9 @@ $aConfSkinsToImport = array(
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // make sure there's no unnecessary escaping:
-set_magic_quotes_runtime(0);
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+    set_magic_quotes_runtime(0);
+}
 
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
@@ -85,7 +87,11 @@ global $MYSQL_HANDLER;
 //set the handler if different from mysql (or mysqli)
 //$MYSQL_HANDLER = array('pdo','mysql');
 if (!isset($MYSQL_HANDLER)) {
-	$MYSQL_HANDLER = array('mysql','');
+	if ( extension_loaded('mysql') ) {
+		$MYSQL_HANDLER = array('mysql','');
+	} else {
+		$MYSQL_HANDLER = array('pdo','mysql');
+	}
 }
 include_once('../nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
@@ -611,6 +617,10 @@ function doInstall() {
 	if ($MYSQL_CONN == false) {
 		_doError(_ERROR15 . ': ' . sql_error() );
 	}
+	
+	global $MYSQL_HANDLER , $SQL_DBH;
+	if ($MYSQL_HANDLER[0] == 'pdo')
+		$SQL_DBH = $MYSQL_CONN;
 
 	// 3. try to create database (if needed)
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));

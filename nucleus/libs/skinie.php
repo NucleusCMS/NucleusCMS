@@ -49,7 +49,9 @@ class SKINIMPORT {
 	 */
 	function SKINIMPORT() {
 		// disable magic_quotes_runtime if it's turned on
-		set_magic_quotes_runtime(0);
+		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+			set_magic_quotes_runtime(0);
+		}
 
 		// debugging mode?
 		$this->debug = 0;
