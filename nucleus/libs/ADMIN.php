@@ -904,7 +904,7 @@ class ADMIN {
 	 * member has access
 	 * @see function selectBlog
 	 */
-	function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
+	public static function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		ADMIN::selectBlog($name, 'category', $selected, $tabindex, $showNewCat, $iForcedBlogInclude);
 	}
 
@@ -918,7 +918,7 @@ class ADMIN {
 	 *	  member is on the blog team (-1 = none)
 	 * @todo document parameters
 	 */
-	function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
+	public static function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
 		global $member, $CONF;
 
 		// 0. get IDs of blogs to which member can post items (+ forced blog)
@@ -3471,7 +3471,7 @@ class ADMIN {
 	 * @static
 	 * @todo document this
 	 */
-	function deleteOneMember($memberid) {
+	public static function deleteOneMember($memberid) {
 		global $manager;
 
 		$memberid = intval($memberid);
@@ -6781,7 +6781,7 @@ selector();
 	 * @static
 	 * @todo document this
 	 */
-	function _insertPluginOptions($context, $contextid = 0) {
+	public static function _insertPluginOptions($context, $contextid = 0) {
 		// get all current values for this contextid
 		// (note: this might contain doubles for overlapping contextids)
 		$aIdToValue = array();
@@ -6849,7 +6849,7 @@ selector();
 	 * Helper functions to create option forms etc.
 	 * @todo document parameters
 	 */
-	function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
+	public static function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {
 		$id = hsc($name);
 		$id = str_replace('[','-',$id);
 		$id = str_replace(']','-',$id);

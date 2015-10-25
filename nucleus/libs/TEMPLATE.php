@@ -25,12 +25,12 @@ class TEMPLATE {
 	}
 
 	// (static)
-	function createFromName($name) {
+	public static function createFromName($name) {
 		return new TEMPLATE(TEMPLATE::getIdFromName($name));
 	}
 
 	// (static)
-	function getIdFromName($name) {
+	public static function getIdFromName($name) {
 		$query =  'SELECT tdnumber'
 			   . ' FROM '.sql_table('template_desc')
 			   . ' WHERE tdname="'.sql_real_escape_string($name).'"';
@@ -78,7 +78,7 @@ class TEMPLATE {
 	 *
 	 * (static)
 	 */
-	function createNew($name, $desc) {
+	public static function createNew($name, $desc) {
 		global $manager;
 
 		$param = array(
@@ -108,7 +108,7 @@ class TEMPLATE {
 	 *
 	 * @param $name name of the template file
 	 */
-	function read($name) {
+	public static function read($name) {
 		global $manager;
 		
 		$param = array(
@@ -141,7 +141,7 @@ class TEMPLATE {
 	  * @param $values
 	  *		Array of all the values
 	  */
-	function fill($template, $values) {
+	public static function fill($template, $values) {
 
 		if (sizeof($values) != 0) {
 			// go through all the values
@@ -156,25 +156,25 @@ class TEMPLATE {
 
 	// returns true if there is a template with the given shortname
 	// (static)
-	function exists($name) {
+	public static function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a template with the given ID
 	// (static)
-	function existsID($id) {
+	public static function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
 		return (sql_num_rows($r) != 0);
 	}
 
 	// (static)
-	function getNameFromId($id) {
+	public static function getNameFromId($id) {
 		return quickQuery('SELECT tdname as result FROM '.sql_table('template_desc').' WHERE tdnumber=' . intval($id));
 	}
 
 	// (static)
-	function getDesc($id) {
+	public static function getDesc($id) {
 		$query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
 		$res = sql_query($query);
 		$obj = sql_fetch_object($res);

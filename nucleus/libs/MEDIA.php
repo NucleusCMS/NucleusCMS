@@ -26,7 +26,7 @@ class MEDIA {
 	  *
 	  * @returns array of dirname => display name
 	  */
-	function getCollectionList($exceptReadOnly = false) {
+	public static function getCollectionList($exceptReadOnly = false) {
 		global $member, $DIR_MEDIA;
 
 		$collections = array();
@@ -65,7 +65,7 @@ class MEDIA {
 	  * @param $filter
 	  *		filter on filename (defaults to none)
 	  */
-	function getMediaListByCollection($collection, $filter = '') {
+	public static function getMediaListByCollection($collection, $filter = '') {
 		global $DIR_MEDIA;
 
 		$filelist = array();
@@ -91,7 +91,7 @@ class MEDIA {
 		return $filelist;
 	}
 
-	function checkFilter($strText, $strFilter) {
+	public static function checkFilter($strText, $strFilter) {
 		if ($strFilter == '')
 			return 1;
 		else
@@ -102,7 +102,7 @@ class MEDIA {
 	  * checks if a collection exists with the given name, and if it's
 	  * allowed for the currently logged in member to upload files to it
 	  */
-	function isValidCollection($collectionName, $exceptReadOnly = false) {
+	public static function isValidCollection($collectionName, $exceptReadOnly = false) {
 		global $member, $DIR_MEDIA;
 
 		// allow creating new private directory
@@ -134,7 +134,7 @@ class MEDIA {
 	  *		the filename that should be used to save the file as
 	  *		(date prefix should be already added here)
 	  */
-	function addMediaObject($collection, $uploadfile, $filename) {
+	public static function addMediaObject($collection, $uploadfile, $filename) {
 		global $DIR_MEDIA, $manager;
 		
 		// clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
@@ -217,7 +217,7 @@ class MEDIA {
 	 *
 	 * NOTE: does not check if $collection is valid.
 	 */
-	function addMediaObjectRaw($collection, $filename, &$data) {
+	public static function addMediaObjectRaw($collection, $filename, &$data) {
 		global $DIR_MEDIA;
 
 		// check dir permissions (try to create dir if it does not exist)

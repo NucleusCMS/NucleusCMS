@@ -2,12 +2,12 @@
 
 class entity {
 
-	function named_to_numeric ($string) {
+	public static function named_to_numeric ($string) {
 		$string = preg_replace('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/e', "entity::_named('\\1', '\\2') . '\\3'", $string);
 		return $string;	
 	}
 	
-	function normalize_numeric ($string) {
+	public static function normalize_numeric ($string) {
 		global $_entities;
 		$string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
 		$string = preg_replace('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/e', "'&#x' . strtoupper('\\2') . ';\\4'", $string);
@@ -15,21 +15,21 @@ class entity {
 		return $string;
 	}
  
-	function numeric_to_utf8 ($string) {
+	public static function numeric_to_utf8 ($string) {
 		$string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
 		$string = preg_replace('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/e', "'&#x' . strtoupper('\\2') . ';\\4'", $string);
 		$string = preg_replace('/&#x([0-9A-Fa-f]+);/e', "entity::_hex_to_utf8('\\1')", $string);		
 		return $string; 	
 	}
 
-	function numeric_to_named ($string) {
+	public static function numeric_to_named ($string) {
 		global $_entities;
 		$string = preg_replace('/&#[Xx]([0-9A-Fa-f]+)/e', "'&#'.hexdec('\\1')", $string);
 		$string = strtr($string, array_flip($_entities['named']));
 		return $string;	
 	}
 	
-	function specialchars ($string, $type = 'xml') {
+	public static function specialchars ($string, $type = 'xml') {
 		$apos = $type == 'xml' ? '&apos;' : '&#39;';
 		$specialchars = array (
 			'&quot;'	=> '&quot;',		'&amp;'   	=> '&amp;',	  	
@@ -46,7 +46,7 @@ class entity {
 	}
 	
 
-	function _hex_to_utf8($s)
+	public static function _hex_to_utf8($s)
 	{
 		$c = hexdec($s);
 	
@@ -66,7 +66,7 @@ class entity {
 		return $str;
 	} 		
 
-	function _named($entity, $extra) {
+	public static function _named($entity, $extra) {
 		global $_entities;
 		
 		if ($extra == '=') return $entity . '=';

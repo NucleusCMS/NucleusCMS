@@ -163,12 +163,12 @@ class PARSER {
 		eval($command);	// execute the correct method
 	}
 
-	function setProperty($property, $value) {
+	public static function setProperty($property, $value) {
 		global $manager;
 		$manager->setParserProperty($property, $value);
 	}
 
-	function getProperty($name) {
+	public static function getProperty($name) {
 		global $manager;
 		return $manager->getParserProperty($name);
 	}
