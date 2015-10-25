@@ -94,7 +94,7 @@ class COMMENTACTIONS extends BaseActions {
 		// begin if: member comment
 		if ($comment['memberid'] != 0)
 		{
-			$comment['authtext'] = $this->template['COMMENTS_AUTH'];
+			$comment['authtext'] = (isset($this->template['COMMENTS_AUTH'])? $this->template['COMMENTS_AUTH'] : '');
 
 			$mem =& $manager->getMember($comment['memberid']);
 			$comment['user'] = $mem->getDisplayName();
@@ -417,7 +417,8 @@ class COMMENTACTIONS extends BaseActions {
 	 * Parse templatevar userlinkraw
 	 */
 	function parse_userlinkraw() {
-		echo $this->currentComment['userlinkraw'];
+		if (isset($this->currentComment['userlinkraw']))
+		  echo $this->currentComment['userlinkraw'];
 	}
 
 	/**

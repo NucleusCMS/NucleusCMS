@@ -203,8 +203,9 @@ if (!function_exists('sql_fetch_assoc'))
 			$SQL_DBH = NULL;
 			startUpError('<p>a2 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
 		}
-//		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';		
-		$MYSQL_CONN &= $SQL_DBH;
+//		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
+		unset($MYSQL_CONN);
+		$MYSQL_CONN =& $SQL_DBH;
 		return $SQL_DBH;
 
 	}

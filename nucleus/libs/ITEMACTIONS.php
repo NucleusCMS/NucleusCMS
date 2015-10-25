@@ -527,7 +527,8 @@ class ITEMACTIONS extends BaseActions {
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);
 		//$actions->setParser($parser);
-		$parser->parse($actions->highlight($data));
+		$p_data = $actions->highlight($data);
+		$parser->parse($p_data);
 	}
 
 	/*

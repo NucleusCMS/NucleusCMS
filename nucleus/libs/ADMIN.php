@@ -549,7 +549,10 @@ class ADMIN {
 					if (sql_num_rows($r) < 2)
 						$error = _ERROR_ATLEASTONEADMIN;
 					else
+					{
 						sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
+						$error = '';
+					}
 					break;
 				default:
 					$error = _BATCH_UNKNOWN . hsc($action);
