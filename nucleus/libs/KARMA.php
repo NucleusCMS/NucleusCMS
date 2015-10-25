@@ -23,7 +23,7 @@ class KARMA {
 	var $karmapos;
 	var $karmaneg;
 
-	function KARMA($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
+	function __construct($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
 		// itemid
 		$this->itemid = intval($itemid);
 

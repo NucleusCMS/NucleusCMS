@@ -24,9 +24,9 @@ class COMMENTACTIONS extends BaseActions {
 	// comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
 	var $currentComment;
 
-	function COMMENTACTIONS(&$comments) {
+	function __construct(&$comments) {
 		// call constructor of superclass first
-		$this->BaseActions();
+		parent::__construct();
 
 		// reference to the comments object
 		$this->setCommentsObj($comments);

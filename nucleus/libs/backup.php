@@ -20,7 +20,7 @@ class Backup
 	/**
 	 * Constructor
 	 */
-	function Backup()
+	function __construct()
 	{
 		// do nothing
 	}

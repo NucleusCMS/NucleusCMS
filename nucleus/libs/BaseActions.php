@@ -42,7 +42,7 @@ class BaseActions {
 	// reference to the parser object that is using this object as actions-handler
 	var $parser;
 
-	function BaseActions() {
+	function __construct() {
 		$this->level = 0;
 
 		// if nesting level

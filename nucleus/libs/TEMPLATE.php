@@ -16,7 +16,7 @@ class TEMPLATE {
 
 	var $id;
 
-	function TEMPLATE($templateid) {
+	function __construct($templateid) {
 		$this->id = intval($templateid);
 	}
 

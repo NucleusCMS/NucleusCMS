@@ -28,7 +28,7 @@ class SKIN {
 	var $includePrefix;
 	var $name;
 
-	function SKIN($id) {
+	function __construct($id) {
 		global $resultCache;
 		
 		$this->id = intval($id);

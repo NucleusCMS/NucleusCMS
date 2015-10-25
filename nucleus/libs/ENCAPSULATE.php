@@ -49,7 +49,7 @@ class NAVLIST extends ENCAPSULATE {
 
 	public $total = null;
 
-	function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
+	function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
 		$this->action = $action;
 		$this->start = $start;
 		$this->amount = $amount;
@@ -368,7 +368,7 @@ EOD;
  * A class used to encapsulate a list of some sort in a batch selection
  */
 class BATCH extends ENCAPSULATE {
-	function BATCH($type) {
+	function __construct($type) {
 		$this->type = $type;
 	}
 

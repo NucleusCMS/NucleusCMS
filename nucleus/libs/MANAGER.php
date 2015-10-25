@@ -68,7 +68,7 @@ class MANAGER {
     /**
       * The constructor of this class initializes the object caches
       */
-    function MANAGER() {
+    function __construct() {
         $this->items = array();
         $this->blogs = array();
         $this->plugins = array();

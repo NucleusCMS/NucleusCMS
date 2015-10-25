@@ -280,7 +280,7 @@ class MEDIAOBJECT {
 	var $filename;
 	var $timestamp;
 
-	function MEDIAOBJECT($collection, $filename, $timestamp) {
+	function __construct($collection, $filename, $timestamp) {
 		$this->private = is_numeric($collection);
 		$this->collection = $collection;
 		$this->filename = $filename;

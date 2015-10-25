@@ -21,7 +21,7 @@ class ITEM {
 	  * 
 	  * @param integer $itemid id of the item
 	  */
-	function ITEM($itemid) {
+	function __construct($itemid) {
 		$this->itemid = $itemid;
 	}
 

@@ -35,9 +35,9 @@ class ITEMACTIONS extends BaseActions {
 	// true when comments need to be displayed
 	var $showComments;
 
-	function ITEMACTIONS(&$blog) {
+	function __construct(&$blog) {
 		// call constructor of superclass first
-		$this->BaseActions();
+		parent::__construct();
 
 		// extra parameters for created links
 		global $catid;

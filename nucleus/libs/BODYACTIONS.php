@@ -19,8 +19,8 @@ class BODYACTIONS extends BaseActions {
 
 	var $template;
 
-	function BODYACTIONS () {
-		$this->BaseActions();	
+	function __construct() {
+		parent::__construct();
 	}
 	
 	function setCurrentItem(&$item) {

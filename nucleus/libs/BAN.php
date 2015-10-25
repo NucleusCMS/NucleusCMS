@@ -95,7 +95,7 @@ class BANINFO {
 	var $iprange;
 	var $message;
 
-	function BANINFO($iprange, $message) {
+	function __construct($iprange, $message) {
 		$this->iprange = $iprange;
 		$this->message = $message;
 	}
