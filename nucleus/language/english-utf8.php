@@ -22,6 +22,40 @@
  */
 
 /********************************************
+ *        Start New for 3.71                *
+ ********************************************/
+define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
+define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'Database Driver');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
+
+define('_TEAM_NO_SELECTABLE_MEMBERS',			'team does not have selectable members');
+
+define('_LISTS_FORM_SELECT_ALL_CATEGORY',	'All categories');
+
+define('_LIST_BACK_TO',				'Back to %s');
+define('_LIST_COMMENT_LIST_FOR_BLOG',		'Blog comments list');
+define('_LIST_COMMENT_LIST_FOR_ITEM',		'Comments list of items');
+define('_LIST_COMMENT_VIEW_ITEM',			'Show item');
+define('_LISTS_VIEW',						'Show');
+
+define('_LISTS_ITEM_COUNT',	'Item count');
+define('_LISTS_ORDER',	'order');
+
+define('_EBLOG_CAT_ORDER',					"This is the order of the category.<br />\nInput value will be on the smaller in number (standard 100)");
+define('_EBLOG_CAT_ORDER_DESC2',			"Input value will be on the smaller in number (standard 100)");
+
+// category order changes (batch)
+define('_BATCH_CAT_CAHANGE_ORDER',	'change the order');
+define('_ERROR_CAHANGE_CATEGORY_ORDER',		  'You can not change the sort');
+define('_CAHANGE_CATEGORY_ORDER_TITLE',		  'Please specify the order of the category');
+define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',	'The order of the following categories will be changed at once.If it is good, please press the button.');
+define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',	  'Change the order');
+
+define('_ADD_DATEINPUTNOW',       'now');
+define('_ADD_DATEINPUTRESET',     'reset');
+
+
+/********************************************
  *        Start New for 3.6x                *
  ********************************************/
 define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
@@ -261,7 +295,6 @@ define('_TEAM_ADD_NEWTEAMMEMBER',					'Added %s (ID=%d) to the team of blog "%s"
 
 // ADMIN.php systemoverview()
 define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'System Overview');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP and MySQL');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'Versions');
 define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP version');
 define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL version');
