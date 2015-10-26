@@ -262,6 +262,10 @@ class SKIN {
 		if ($content) {
 			sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
 		}
+
+		global $resultCache, $manager;
+		$resultCache = array();
+		$manager->clearCachedInfo('sql_fetch_object');
 	}
 
 	/**
@@ -283,6 +287,10 @@ class SKIN {
 			   . " sdincpref='" . sql_real_escape_string($includePrefix) . "'"
 			   . " WHERE sdnumber=" . $this->getID();
 		sql_query($query);
+
+		global $resultCache, $manager;
+		$resultCache = array();
+		$manager->clearCachedInfo('sql_fetch_object');
 	}
 
 	/**

@@ -116,6 +116,7 @@ class TEMPLATE {
 		);
 		$manager->notify('PreTemplateRead', $param);
 
+		$template = array();
 		$query = 'SELECT tpartname, tcontent'
 			   . ' FROM '.sql_table('template_desc').', '.sql_table('template')
 			   . ' WHERE tdesc=tdnumber and tdname="' . sql_real_escape_string($name) . '"';

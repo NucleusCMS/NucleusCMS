@@ -4264,6 +4264,9 @@ selector();
 		$name = sql_real_escape_string($name);
 		$desc = sql_real_escape_string($desc);
 
+		// 0. clear SqlCache
+		$manager->clearCachedInfo('sql_fetch_object');
+
 		// 1. Remove all template parts
 		$query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
 		sql_query($query);
