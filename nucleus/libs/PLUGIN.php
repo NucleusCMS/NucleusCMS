@@ -282,7 +282,7 @@ class NucleusPlugin {
 	/**
 	 * Class constructor: Initializes some internal data
 	 */
-	function NucleusPlugin() {
+	function __construct() {
 		$this->_aOptionValues = array();	// oid_contextid => value
 		$this->_aOptionToInfo = array();	// context_name => array('oid' => ..., 'default' => ...)
 		$this->plugin_options = 0;
@@ -550,7 +550,7 @@ class NucleusPlugin {
 	 *
 	 * (static method)
 	 */
-	function _deleteOptionValues($context, $contextid) {
+	public static function _deleteOptionValues($context, $contextid) {
 		// delete all associated plugin options
 		$aOIDs = array();
 			// find ids
@@ -573,7 +573,7 @@ class NucleusPlugin {
 	 * @author TeRanEX
 	 * @static
 	 */
-	function getOptionMeta($typeExtra) {
+	public static function getOptionMeta($typeExtra) {
 		$tmpMeta = explode(';', $typeExtra);
 		$meta = array();
 		for ($i = 0; $i < count($tmpMeta); $i++) {
@@ -594,7 +594,7 @@ class NucleusPlugin {
 	 * @return string the selectlist
 	 * @author TeRanEX
 	 */
-	function getOptionSelectValues($typeExtra) {
+	public static function getOptionSelectValues($typeExtra) {
 		$meta = NucleusPlugin::getOptionMeta($typeExtra);
 		//the select list must always be the first part
 		return $meta['select'];
@@ -630,7 +630,7 @@ class NucleusPlugin {
 	 *        formcontrols into the page (by ex: itemOptions for new item)
 	 * @static
 	 */
-	function _applyPluginOptions(&$aOptions, $newContextid = 0) {
+	public static function _applyPluginOptions(&$aOptions, $newContextid = 0) {
 		global $manager;
 		if (!is_array($aOptions)) return;
 

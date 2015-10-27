@@ -22,7 +22,7 @@ class NOTIFICATION {
 	  * separated by semicolons
 	  * eg: site@demuynck.org;nucleus@demuynck.org;foo@bar.com
 	  */
-	function NOTIFICATION($addresses) {
+	function __construct($addresses) {
 		$this->addresses = explode(';' , $addresses);
 	}
 

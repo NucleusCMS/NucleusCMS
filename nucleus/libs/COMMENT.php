@@ -19,7 +19,7 @@ class COMMENT {
 	  *
 	  * @static
 	  */
-	function getComment($commentid) {
+	public static function getComment($commentid) {
 		$query = 'SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid'
 					. ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
 					. ' WHERE `cnumber` = ' . intval($commentid);
@@ -39,7 +39,7 @@ class COMMENT {
 	  *
 	  * @static
 	  */
-	function prepare($comment)
+	public static function prepare($comment)
 	{
 		$comment['user'] = strip_tags($comment['user']);
 		$comment['userid'] = strip_tags($comment['userid']);
@@ -66,7 +66,7 @@ class COMMENT {
 	 *
 	 * @ static
 	 */
-	function prepareBody($body) {
+	public static function prepareBody($body) {
 
 		// convert Windows and Mac style 'returns' to *nix newlines
 		$body = preg_replace("/\r\n/", "\n", $body);
@@ -106,7 +106,7 @@ class COMMENT {
 	 *
 	 * @ static
 	 */
-	function createLinkCode($pre, $url, $protocol = 'http') {
+	public static function createLinkCode($pre, $url, $protocol = 'http') {
 		$post = '';
 
 		// it's possible that $url ends contains entities we don't want,
@@ -160,7 +160,7 @@ class COMMENT {
 	 * @param array $match
 	 * @return string
 	 */
-	function prepareBody_cb($match)
+	public static function prepareBody_cb($match)
 	{
 		if ( !preg_match('/^[a-z]+/i', $match[2], $protocol) )
 		{

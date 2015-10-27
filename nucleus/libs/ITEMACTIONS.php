@@ -35,9 +35,9 @@ class ITEMACTIONS extends BaseActions {
 	// true when comments need to be displayed
 	var $showComments;
 
-	function ITEMACTIONS(&$blog) {
+	function __construct(&$blog) {
 		// call constructor of superclass first
-		$this->BaseActions();
+		parent::__construct();
 
 		// extra parameters for created links
 		global $catid;
@@ -527,7 +527,8 @@ class ITEMACTIONS extends BaseActions {
 		$actions->setHighlight($this->strHighlight);
 		$actions->setCurrentItem($this->currentItem);
 		//$actions->setParser($parser);
-		$parser->parse($actions->highlight($data));
+		$p_data = $actions->highlight($data);
+		$parser->parse($p_data);
 	}
 
 	/*

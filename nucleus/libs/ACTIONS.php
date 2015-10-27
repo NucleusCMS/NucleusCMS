@@ -37,9 +37,9 @@ class ACTIONS extends BaseActions {
 	/**
 	 * Constructor for a new ACTIONS object
 	 */
-	function ACTIONS($type) {
+	function __construct($type) {
 		// call constructor of superclass first
-		$this->BaseActions();
+		parent::__construct();
 
 		$this->skintype = $type;
 

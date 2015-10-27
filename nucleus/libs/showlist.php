@@ -185,7 +185,10 @@ function listplug_table_pluginlist($template, $type) {
 				echo '</td>';
 				echo '<td>';
 				if($plug->getDescription()!=='Undefined')
-					echo encode_desc($plug->getDescription()).'<br /><br />';
+				{
+					$raw_desc = $plug->getDescription();
+					echo encode_desc($raw_desc).'<br /><br />';
+				}
 					if (sizeof($plug->getEventList()) > 0) {
 						echo _LIST_PLUGS_SUBS,'<br />',hsc(implode($plug->getEventList(),', '));
 						// check the database to see if it is up-to-date and notice the user if not
@@ -432,7 +435,7 @@ function listplug_table_commentlist($template, $type) {
                                 echo '<br />';
                                 echo hsc($current->cmail);
                         }
-			if ($current->cemail != '') {
+			if (isset($current->cemail) && ($current->cemail != '')) {
                                 echo '<br />';
                                 echo hsc($current->cemail);
                         }

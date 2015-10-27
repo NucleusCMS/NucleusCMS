@@ -37,7 +37,7 @@ class BLOG {
 	 *
 	 * @param $id blogid
 	 */
-	function BLOG($id) {
+	function __construct($id) {
 		$this->blogid = intval($id);
 		$this->readSettings();
 
@@ -794,7 +794,7 @@ class BLOG {
 	  * ordered by  number, name, shortname or description
 	  * in ascending or descending order
 	  */
-	function showBlogList($template, $bnametype, $orderby, $direction) {
+	public static function showBlogList($template, $bnametype, $orderby, $direction) {
 		global $CONF, $manager;
 
 		switch ($orderby) {
@@ -1204,13 +1204,13 @@ class BLOG {
 	}
 
 	// returns true if there is a blog with the given shortname (static)
-	function exists($name) {
+	public static function exists($name) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
 		return (sql_num_rows($r) != 0);
 	}
 
 	// returns true if there is a blog with the given ID (static)
-	function existsID($id) {
+	public static function existsID($id) {
 		$r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
 		return (sql_num_rows($r) != 0);
 	}

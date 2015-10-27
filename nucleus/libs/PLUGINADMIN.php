@@ -20,7 +20,7 @@ class PluginAdmin {
 	var $bValid;			// evaluates to true when object is considered valid
 	var $admin;				// ref to an admin object
 
-	function PluginAdmin($pluginName)
+	function __construct($pluginName)
 	{
 		global $manager, $DIR_LIBS;
 		include_once($DIR_LIBS . 'ADMIN.php');

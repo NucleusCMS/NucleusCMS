@@ -25,7 +25,7 @@ class SEARCH {
 	var $inclusive;
 	var $blogs;
 
-	function SEARCH($text) {
+	function __construct($text) {
 		global $blogid;
 //		$text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
 		/* * * for jp * * * * * * * * * * */

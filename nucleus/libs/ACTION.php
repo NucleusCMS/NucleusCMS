@@ -19,7 +19,7 @@ class ACTION
 	/**
 	 *  Constructor for an new ACTION object
 	 */
-	function ACTION()
+	function __construct()
 	{
 		// do nothing
 	}

@@ -20,7 +20,7 @@ class BAN {
 	  * Returns 0 when not banned, or a BANINFO object containing the
 	  * message and other information of the ban
 	  */
-	function isBanned($blogid, $ip) {
+	public static function isBanned($blogid, $ip) {
 		$blogid = intval($blogid);
 		$query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
 		$res = sql_query($query);
@@ -36,7 +36,7 @@ class BAN {
 	/**
 	  * Adds a new ban to the banlist. Returns 1 on success, 0 on error
 	  */
-	function addBan($blogid, $iprange, $reason) {
+	public static function addBan($blogid, $iprange, $reason) {
 		global $manager;
 
 		$blogid = intval($blogid);
@@ -66,7 +66,7 @@ class BAN {
 	  * Removes a ban from the banlist (correct iprange is needed as argument)
 	  * Returns 1 on success, 0 on error
 	  */
-	function removeBan($blogid, $iprange) {
+	public static function removeBan($blogid, $iprange) {
 		global $manager;
 		$blogid = intval($blogid);
 
@@ -95,7 +95,7 @@ class BANINFO {
 	var $iprange;
 	var $message;
 
-	function BANINFO($iprange, $message) {
+	function __construct($iprange, $message) {
 		$this->iprange = $iprange;
 		$this->message = $message;
 	}
