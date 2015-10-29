@@ -17,6 +17,14 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+
+/********************************************
+ *        Start New for 3.71                *
+ ********************************************/
+define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'データベース と バージョン');
+define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'データベースのドライバ');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP と データベース');
+
 define('_TEAM_NO_SELECTABLE_MEMBERS',			'選択可能なメンバーはいません');
 
 define('_LISTS_FORM_SELECT_ALL_CATEGORY',	'すべてのカテゴリ');
@@ -283,7 +291,6 @@ define('_TEAM_ADD_NEWTEAMMEMBER',					'%s(ID=%d) を、ブログ "%s" のチー�
 
 // ADMIN.php systemoverview()
 define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'システム環境一覧');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP と MySQL');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'バージョン');
 define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP のバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL のバージョン');
