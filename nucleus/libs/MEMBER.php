@@ -831,6 +831,8 @@ class MEMBER {
 	 */
 	public static function cleanupActivationTable()
 	{
+		global $CONF, $DIR_LIBS;
+
 		$actdays = 2;
 		if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
 		    $actdays = intval($CONF['ActivationDays']);

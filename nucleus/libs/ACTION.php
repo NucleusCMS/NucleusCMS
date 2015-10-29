@@ -339,6 +339,7 @@ class ACTION
 		}
 		else
 		{
+			global $CONF;
 //			header ("Content-Type: text/html; charset="._CHARSET);
 			sendContentType('text/html', '', _CHARSET);
 			echo _MSG_ACTIVATION_SENT;

@@ -201,8 +201,7 @@ class ITEM {
 		$old_blogid = getBlogIDFromItemID($itemid);
 
 		// move will be done on end of method
-		if ($new_blogid != $old_blogid)
-			$moveNeeded = 1;
+		$moveNeeded = (($new_blogid != $old_blogid) ? 1 : 0);
 
 		// add <br /> before newlines
 		$blog =& $manager->getBlog($new_blogid);

@@ -608,7 +608,7 @@ $cp1252_to_xmlent =
                         else
                         {
                             // log if receiveing something strange, even though we set the value to false anyway
-                            if ($GLOBALS['_xh']['ac']!='0' && strcasecmp($_xh[$parser]['ac'], 'false') != 0)
+                            if ($GLOBALS['_xh']['ac']!='0' && strcasecmp($GLOBALS['_xh']['ac'], 'false') != 0)
                                 error_log('XML-RPC: invalid value received in BOOLEAN: '.$GLOBALS['_xh']['ac']);
                             $GLOBALS['_xh']['value']=false;
                         }
@@ -840,7 +840,7 @@ $cp1252_to_xmlent =
             {
                 $parts = parse_url($path);
                 $server = $parts['host'];
-                $path = $parts['path'];
+                $path = (isset($parts['path']) ? $parts['path'] : '');
                 if(isset($parts['query']))
                 {
                     $path .= '?'.$parts['query'];
@@ -951,11 +951,11 @@ $cp1252_to_xmlent =
         {
             if ($is_dir)
             {
-                $this->cacert = $cacert;
+                $this->cacertdir = $cacert;
             }
             else
             {
-                $this->cacertdir = $cacert;
+                $this->cacert = $cacert;
             }
         }
 
@@ -1325,6 +1325,8 @@ $cp1252_to_xmlent =
 
             if(!fputs($fp, $op, strlen($op)))
             {
+                if($fp)
+                  fclose($fp);
                 $this->errstr='Write error';
                 $r= new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['http_error'], $this->errstr);
                 return $r;
@@ -3338,7 +3340,7 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
                 {
                     $xmlrpc_val = new xmlrpcval('', $GLOBALS['xmlrpcString']);
                 }
-                if (in_array('null_extension', $options))
+                else if (in_array('null_extension', $options))
                 {
                     $xmlrpc_val = new xmlrpcval('', $GLOBALS['xmlrpcNull']);
                 }
