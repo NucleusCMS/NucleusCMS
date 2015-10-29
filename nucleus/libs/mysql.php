@@ -21,6 +21,8 @@ if (!function_exists('mysql_query'))
 	{
 		startUpError(_NO_SUITABLE_MYSQL_LIBRARY);
 	}
+
+	define('_EXT_MYSQL_EMULATE' , 1);
 	
 	function mysql_query($query) 
 	{
@@ -113,5 +115,52 @@ if (!function_exists('mysql_query'))
 		global $MYSQL_CONN;
 		return mysqli_real_escape_string($MYSQL_CONN,$val);
 	}
+
+	function mysql_get_client_info() {
+		return mysqli_get_client_info();
+	};
+
+	function mysql_get_server_info($res = NULL) {
+		global $MYSQL_CONN;
+		return mysqli_get_server_info( $res ?  $res : $MYSQL_CONN );
+	};
+
+	function mysql_errno($res = NULL) {
+		global $MYSQL_CONN;
+		return mysqli_errno( $res ?  $res : $MYSQL_CONN );
+	};
+
+	function mysql_set_charset($charset , $res = NULL ) {
+		global $MYSQL_CONN;
+		return mysqli_set_charset( $res ?  $res : $MYSQL_CONN , $charset);
+	};
+
+	function mysql_fetch_field($res , $offset  = 0 )
+	{
+		global $MYSQL_CONN;
+		if ($res || $MYSQL_CONN)
+		{
+			$finfo = mysqli_fetch_fields( $res ?  $res : $MYSQL_CONN);
+			if ($finfo)
+				return $finfo;
+		}
+		return false;
+	}
+
+	function mysql_field_name($res, $offset = 0)
+	{
+		global $MYSQL_CONN;
+		if ($res || $MYSQL_CONN)
+		{
+			$finfo = mysqli_fetch_fields( $res ?  $res : $MYSQL_CONN);
+			if ($finfo && isset($finfo[$offset]))
+				return $finfo[$offset]->name;
+		}
+		return false;
+	}
+}
+else
+{
+	define('_EXT_MYSQL_EMULATE' , 0);
 }
 ?>

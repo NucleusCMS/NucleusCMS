@@ -5388,7 +5388,11 @@ selector();
 			// Databese Driver
 			echo "\t<tr>\n";
 			echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
-			echo "\t\t" . '<td>' . (($MYSQL_HANDLER[0] == 'pdo') ? 'pdo' : hsc($MYSQL_HANDLER[0])) . "</td>\n";
+			echo "\t\t" . '<td>';
+					if ($MYSQL_HANDLER[0] == 'pdo')
+						echo 'pdo';
+					else
+						echo hsc($MYSQL_HANDLER[0]).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
 			echo "</td>\n";
 			echo "\t</tr>";
 			echo "</table>\n";
@@ -5478,6 +5482,9 @@ selector();
 			}
 			echo "</table>\n";
 
+			// Mysql Emulate Functions
+			echo $this->getMysqlEmulateInfo();
+
 			// Link to the online version test at the Nucleus CMS website
 			echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
 			if ($nucleus['codename'] != '') {
@@ -5497,6 +5504,46 @@ selector();
 		}
 
 		$this->pagefoot();
+	}
+
+	private function getMysqlEmulateInfo() {
+		if (!defined('_EXT_MYSQL_EMULATE') || (!_EXT_MYSQL_EMULATE))
+			return '';
+
+		$r = array('','','');
+		$lists = array(
+			'connect', 'pconnect', 'close', 'select_db', 'query',
+			'unbuffered_query', 'db_query', 'list_dbs', 'list_tables', 'list_fields',
+			'list_processes', 'error', 'errno', 'affected_rows', 'insert_id',
+			'result', 'num_rows', 'num_fields', 'fetch_row', 'fetch_array',
+			'fetch_assoc', 'fetch_object', 'data_seek', 'fetch_lengths', 'fetch_field',
+			'field_seek', 'free_result', 'field_name', 'field_table', 'field_len',
+			'field_type', 'field_flags', 'escape_string', 'real_escape_string', 'stat',
+			'thread_id', 'client_encoding', 'ping', 'get_client_info', 'get_host_info',
+			'get_proto_info', 'get_server_info', 'info', 'set_charset', 'fieldname',
+			'fieldtable', 'fieldlen', 'fieldtype', 'fieldflags', 'selectdb',
+			'freeresult', 'numfields', 'numrows', 'listdbs', 'listtables',
+			'listfields', 'db_name', 'dbname', 'tablename', 'table_name'
+			);
+
+		foreach ($lists as $i) {
+			$m = 'mysql_' . $i;
+			$s = 'sql_'   . $i;
+			if (function_exists($m))
+				$r[0] .= $m ." , ";
+			else
+			{
+				if (!function_exists($s))
+					$r[1] .= $m ." , ";
+				else
+					$r[1] .= "<b>$m</b> , ";
+			}
+		}
+
+		$tpl = "<table><tr><td>defined</td><td>%s</td></tr>" .
+			   "<tr><td>undefined</td><td>%s</td></tr></table>";
+		return
+		 "<h3>Emulated Mysql Functions (wrapper functions)</h3>\n" .sprintf($tpl, $r[0], $r[1]);
 	}
 
 	/**
