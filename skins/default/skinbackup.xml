@@ -159,7 +159,7 @@
 </html>]]></part>
 
 		<part name="footer"><![CDATA[<div id="copyrights">
-	<small>Copyright | <a href="http://nucleuscms.org"><%version%></a> | 
+	<small>Copyright | <a href="http://japan.nucleuscms.org/"><%version%></a> | 
 	<a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0 Strict</a> | 
 	<a href="http://jigsaw.w3.org/css-validator/">Valid CSS</a> | 
 	<a href="#top">ページの先頭に戻る</a></small>
@@ -301,14 +301,14 @@ body { margin: 0px; }
 </body>
 </html>]]></part>
 
-		<part name="linklist"><![CDATA[<dd><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org(本家サイト)</a></dd>
-<dd><a href="http://japan.nucleuscms.org/" title="Nucleus CMS Japan Home">nucleuscms 日本公式</a></dd>
+		<part name="linklist"><![CDATA[<dd><a href="http://japan.nucleuscms.org/" title="Nucleus CMS Japan Home">nucleuscms 日本公式</a></dd>
 <dd><a href="http://japan.nucleuscms.org/documentation/" title="Nucleus CMS Documentation">Nucleus管理マニュアル</a></dd>
 <dd><a href="http://japan.nucleuscms.org/bb/" title="Nucleus CMS Support Forum">Nucleus日本公式フォーラム</a></dd>
 <dd><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki">Nucleus日本公式wiki</a></dd>
 <dd><a href="http://skins.nucleuscms.org/" title="Nucleus CMS Skins">skins.nucleuscms.org</a></dd>
 <dd><a href="http://japan.nucleuscms.org/wiki/plugins" title="Nucleus CMS Plugins">Nucleusプラグイン紹介</a></dd>
 <dd><a href="http://japan.nucleuscms.org/documentation/devdocs/plugins.html" title="Nucleus CMS Plugins">プラグインを自作</a></dd>
+<dd><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org(本家サイト)</a></dd>
 <dd><a href="http://dev.nucleuscms.org/" title="Nucleus Developer Network">dev.nucleuscms.org</a></dd>]]></part>
 
 		<part name="member"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -365,7 +365,7 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 <%if(skintype,index)%>
 <!-- index: page title and extra navigational links -->
 <title><%blogsetting(name)%></title>
-<link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
+<link rel="bookmark" title="Nucleus" href="http://japan.nucleuscms.org/" />
 <link rel="archives" title="Archives" href="<%archivelink%>" />
 <link rel="top" title="Today" href="<%todaylink%>" />
 

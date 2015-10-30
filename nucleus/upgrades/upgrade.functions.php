@@ -64,8 +64,9 @@
 				break;
 		}
 		
-		$res = mysql_query($query);
-		$installed = ($res != 0) && (mysql_num_rows($res) >= $minrows);
+		$res = sql_query($query);
+		if (($res) && (sql_num_rows($res) >= $minrows))
+			$installed = true;
 		
 		return $installed;
 	}
@@ -109,6 +110,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title>Nucleus アップグレード</title>
 <?php if (file_exists("../styles/manual.css")) { ?>
 				<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
@@ -190,10 +192,10 @@
 		global $upgrade_failures;
 
 		echo "<li>$friendly ... ";
-		$res = mysql_query($query);
+		$res = sql_query($query);
 		if (!$res) {
 			echo "<span style='color:red'>失敗</span>\n";
-			echo "<blockquote>失敗の理由: " . mysql_error() . " </blockquote>";
+			echo "<blockquote>失敗の理由: " . sql_error() . " </blockquote>";
 			$upgrade_failures++;
 		} else {
 			echo "<span style='color:green'>成功!</span><br />\n";
@@ -229,8 +231,8 @@
 
 		$aIndices = array();
 		$query = 'show index from ' . sql_table($table);
-		$res = mysql_query($query);
-		while ($o = mysql_fetch_object($res)) {
+		$res = sql_query($query);
+		while ($o = sql_fetch_object($res)) {
 			if (!$aIndices[$o->Key_name]) {
 				$aIndices[$o->Key_name] = array();
 			}
@@ -257,8 +259,8 @@
 	  */
 	function upgrade_checkIfTableExists($table){
 		$query = 'SHOW TABLES LIKE \''.sql_table($table).'\'';
-		$res = mysql_query($query);
-		return ($res != 0) && (mysql_num_rows($res) == 1);
+		$res = sql_query($query);
+		return ($res != 0) && (sql_num_rows($res) == 1);
 	}
 
 	/**
@@ -271,8 +273,8 @@
 	  */
 	function upgrade_checkIfCVExists($value){
 		$query = 'SELECT name from '.sql_table('config').' WHERE name = \''.$value.'\'';
-		$res = mysql_query($query);
-		return ($res != 0) && (mysql_num_rows($res) == 1);
+		$res = sql_query($query);
+		return ($res != 0) && (sql_num_rows($res) == 1);
 	}
 
 	/**
@@ -287,7 +289,7 @@
 	  */
 	function upgrade_checkIfColumnExists($table, $col){
 		$query = 'DESC `'.sql_table($table).'` `'.$col.'`';
-		$res = mysql_query($query);
-		return ($res != 0) && (mysql_num_rows($res) == 1);
+		$res = sql_query($query);
+		return ($res != 0) && (sql_num_rows($res) == 1);
 	}
 ?>

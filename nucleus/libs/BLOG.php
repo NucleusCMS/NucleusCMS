@@ -723,7 +723,11 @@ class BLOG {
 								'currentcat' => $nocatselected 
 							));
 
-		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' ORDER BY corder ASC,cname ASC';
+		$query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID();
+		if (intval($CONF['DatabaseVersion']) >= 371)
+			$query .=  ' ORDER BY corder ASC,cname ASC';
+		else
+			$query .=  ' ORDER BY cname ASC';
 		$res = sql_query($query);
 
 

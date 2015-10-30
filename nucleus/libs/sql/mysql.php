@@ -63,7 +63,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		if(substr(PHP_OS,0,3)==='WIN' && $MYSQL_HOST==='localhost')
 			$MYSQL_HOST = '127.0.0.1';
 		$MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
-		sql_select_db($MYSQL_DATABASE,$MYSQL_CONN) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+		if (!sql_select_db($MYSQL_DATABASE,$MYSQL_CONN)) {
+			@mysql_close($MYSQL_CONN);
+			$MYSQL_CONN = NULL;
+			startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+		}
 
 		if (defined('_CHARSET')){
 			$charset  = _CHARSET;
@@ -85,16 +89,29 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	  */
 	function sql_disconnect($conn = false) {
 		global $MYSQL_CONN;
-		if (!$conn) $conn = $MYSQL_CONN;
-		@mysql_close($conn);
+		if ($conn) {
+			@mysql_close($conn);
+		} else if ($MYSQL_CONN) {
+			@mysql_close($MYSQL_CONN);
+			$MYSQL_CONN = NULL;
+		}
 	}
 	
 	function sql_close($conn = false) {
 		global $MYSQL_CONN;
-		if (!$conn) $conn = $MYSQL_CONN;
-		@mysql_close($conn);
+		if ($conn) {
+			@mysql_close($conn);
+		} else if ($MYSQL_CONN) {
+			@mysql_close($MYSQL_CONN);
+			$MYSQL_CONN = NULL;
+		}
 	}
-	
+
+	function sql_connected() {
+		global $MYSQL_CONN;
+		return $MYSQL_CONN ? true : false;
+	}
+
 	/**
 	  * executes an SQL query
 	  */

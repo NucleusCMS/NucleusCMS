@@ -87,7 +87,7 @@ global $MYSQL_HANDLER;
 //set the handler if different from mysql (or mysqli)
 //$MYSQL_HANDLER = array('pdo','mysql');
 if (!isset($MYSQL_HANDLER)) {
-	if ( extension_loaded('mysql') ) {
+	if (extension_loaded('mysql') || extension_loaded('mysqli')) {
 		$MYSQL_HANDLER = array('mysql','');
 	} else {
 		$MYSQL_HANDLER = array('pdo','mysql');
