@@ -372,7 +372,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			elseif($charset==='ujis' && $_CHARSET==='euc-jp')
 				$res = sql_query("SET NAMES 'ujis'");
 		}
-		return $res;
+		return isset($res) ? $res : false;
 	}
 	
 	function get_charname_from_langname($language_name='english-utf8')
