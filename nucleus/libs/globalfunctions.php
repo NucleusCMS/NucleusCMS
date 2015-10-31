@@ -643,7 +643,9 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
 			'charset'		=> &$charset,
 			'pageType'		=>  $pagetype
 		);
-		$manager->notify('PreSendContentType', $param);
+
+		if (!function_exists('sql_connected') || sql_connected())
+			$manager->notify('PreSendContentType', $param);
 
 		// strip strange characters
 		$contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);

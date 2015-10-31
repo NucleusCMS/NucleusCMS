@@ -49,7 +49,7 @@ if (!function_exists('sql_fetch_assoc'))
  * Connects to mysql server
  */
 	function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
-		global $MYSQL_HANDLER;
+		global $CONF, $MYSQL_HANDLER;
 		
 		try {
 			if (strpos($mysql_host,':') === false) {
@@ -113,7 +113,17 @@ if (!function_exists('sql_fetch_assoc'))
 						
 		} catch (PDOException $e) {
 			$DBH =NULL;
-			startUpError('<p>a1 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+			if ($CONF['debug'])
+				$msg =  '<p>a1 Error!: ' . $e->getMessage() . '</p>';
+			else
+				{
+					$msg =  '<p>a1 Error!: ';
+					$pattern = '/(Access denied for user|Unknown database)/i';
+					if (preg_match($pattern, $e->getMessage(), $m))
+						$msg .=  $m[1];
+					$msg .=  '</p>';
+				}
+			startUpError($msg , 'Connect Error');
 		}
 //echo '<hr />DBH: '.print_r($DBH,true).'<hr />';		
 		return $DBH;
@@ -124,6 +134,7 @@ if (!function_exists('sql_fetch_assoc'))
  */
 	function sql_connect() {
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
+		global $CONF;
 		$SQL_DBH = NULL;
 		try {
 			if (strpos($MYSQL_HOST,':') === false) {
@@ -201,7 +212,17 @@ if (!function_exists('sql_fetch_assoc'))
 // </add for garble measure>*/
 		} catch (PDOException $e) {
 			$SQL_DBH = NULL;
-			startUpError('<p>a2 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+			if ($CONF['debug'])
+				$msg =  '<p>a2 Error!: ' . $e->getMessage() . '</p>';
+			else
+				{
+					$msg =  '<p>a2 Error!: ';
+					$pattern = '/(Access denied for user|Unknown database)/i';
+					if (preg_match($pattern, $e->getMessage(), $m))
+						$msg .=  $m[1];
+					$msg .=  '</p>';
+				}
+			startUpError($msg , 'Connect Error');
 		}
 //		echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
 		unset($MYSQL_CONN);
@@ -224,12 +245,17 @@ if (!function_exists('sql_fetch_assoc'))
 		if (is_null($dbh)) $SQL_DBH = NULL;
 		else $dbh = NULL;
 	}
-	
+
+	function sql_connected() {
+		global $SQL_DBH;
+		return is_object($SQL_DBH) ? true : false;
+	}
+
 /**
  * executes an SQL query
  */
 	function sql_query($query,$dbh=NULL) {
-		global $SQLCount,$SQL_DBH;
+		global $CONF, $SQLCount,$SQL_DBH;
 		$SQLCount++;
 //echo '<hr />SQL_DBH: ';
 //print_r($SQL_DBH);
@@ -239,6 +265,9 @@ if (!function_exists('sql_fetch_assoc'))
 //echo $query.'<hr />';
 		if (is_null($dbh)) $res = $SQL_DBH->query($query);
 		else $res = $dbh->query($query);
+		if (!$CONF['debug'])
+			return $res;
+
 		if ($res === false) {
 			print("SQL error with query $query: " . '<p />');
 		} else if ($res->errorCode() != '00000') {
@@ -269,6 +298,7 @@ if (!function_exists('sql_fetch_assoc'))
 	function sql_select_db($db,&$dbh=NULL)
 	{
 		global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
+		global $CONF;
 //echo '<hr />'.print_r($dbh,true).'<hr />';
 //exit;
 		if (is_null($dbh)) { 
@@ -326,7 +356,17 @@ if (!function_exists('sql_fetch_assoc'))
 				}
 				return 1;
 			} catch (PDOException $e) {
-				startUpError('<p>a3 Error!: ' . $e->getMessage() . '</p>', 'Connect Error');
+				if ($CONF['debug'])
+					$msg =  '<p>a3 Error!: ' . $e->getMessage() . '</p>';
+				else
+				{
+					$msg =  '<p>a3 Error!: ';
+					$pattern = '/(Access denied for user|Unknown database)/i';
+					if (preg_match($pattern, $e->getMessage(), $m))
+						$msg .=  $m[1];
+					$msg .=  '</p>';
+				}
+				startUpError($msg, 'Connect Error');
 				return 0;
 			}
 		}
@@ -335,7 +375,7 @@ if (!function_exists('sql_fetch_assoc'))
 			else return 0;
 		}
 	}
-	
+
 /**
  * executes an SQL real escape 
  */
