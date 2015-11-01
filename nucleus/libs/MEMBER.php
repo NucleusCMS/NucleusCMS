@@ -679,8 +679,10 @@ class MEMBER {
 		{
 			return _ERROR_PASSWORDMISSING;
 		}
-		else $this->setPassword($password);
-		
+
+		$obj = new MEMBER();
+		$obj->setPassword($password);
+
 		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
 		if (!preg_match('#^https?://#', $url) )
 		{
@@ -689,7 +691,7 @@ class MEMBER {
 		
 		$name = sql_real_escape_string($name);
 		$realname = sql_real_escape_string($realname);
-		$password = sql_real_escape_string($this->getPassword());
+		$password = sql_real_escape_string($obj->getPassword());
 		$email = sql_real_escape_string($email);
 		$url = sql_real_escape_string($url);
 		$admin = intval($admin);
