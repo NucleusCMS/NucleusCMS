@@ -189,10 +189,10 @@ define('_BLOGCREATED_ADVANCEDWAY2',					"Method 2: Call the weblog from existing
 define('_BLOGCREATED_ADVANCEDWAY3',					"To finish the weblog creation process, simply please fill out the final URL for your weblog: (might be the same as another already existing weblog)");
 
 // Donate!
-define('_ADMINPAGEFOOT_OFFICIALURL',				'http://nucleuscms.org/');
-define('_ADMINPAGEFOOT_DONATEURL',					'http://nucleuscms.org/donate.php');
+define('_ADMINPAGEFOOT_OFFICIALURL',				'http://japan.nucleuscms.org/');
+define('_ADMINPAGEFOOT_DONATEURL',					'http://japan.nucleuscms.org/donate.php');
 define('_ADMINPAGEFOOT_DONATE',						'Donate!');
-define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
+define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group Japan');
 
 // Quick menu
 define('_QMENU_MANAGE_SYSTEM',						'System info');
@@ -308,7 +308,8 @@ define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION',		'Nucleus CMS version');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus CMS patch level');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'Check for a new version');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'Check on nucleuscms.org if a new version is available: ');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');
+//define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'Check for upgrade');
 define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"You haven't enough rights to see the system informations.");
 

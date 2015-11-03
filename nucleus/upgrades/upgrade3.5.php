@@ -13,11 +13,11 @@
 function upgrade_do350() {
 
 	if (upgrade_checkinstall(350))
-		return 'インストール済みです';
+		return _UPG_TEXT_ALREADY_INSTALLED;
 	
 	// Give user warning if they are running old version of PHP
 		if (phpversion() < '5') {
-				echo '警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！';
+			echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
 		}
 	$prefix = sql_table('');
 	// changing the member table to lengthen display name (mname)
@@ -44,6 +44,6 @@ function upgrade_do350() {
 	$rs = sql_query($query);
 	$row = sql_fetch_assoc($rs);
 	if($row['count']==1)
-		echo '<p>注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。</p>';
+		echo '<p>' . _UPG_TEXT_V035_WARN_PING . '</p>';
 
 }

@@ -13,7 +13,7 @@
 function upgrade_do330() {
 
     if (upgrade_checkinstall(330))
-        return 'インストール済みです';
+        return _UPG_TEXT_ALREADY_INSTALLED;
 
     if (!upgrade_checkIfColumnExists('comment','cemail')) {
         $query = "  ALTER TABLE `" . sql_table('comment') . "`

@@ -12,13 +12,15 @@
 
 include('upgrade.functions.php');
 
+load_upgrade_lang();
+
 // check if logged in etc
 if (!$member->isLoggedIn()) {
 	upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
 }
 
 if (!$member->isAdmin()) {
-	upgrade_error('Super-admin（最高管理者）のみがアップグレードを実行できます。');
+	upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
 $from = intGetVar('from');
@@ -61,10 +63,10 @@ switch($from) {
 		upgrade_do371();
 		break;
 	default:
-		echo "<li>エラー! 実行すべきアップデートはありません</li>";
+		echo "<li>" . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . "</li>";
 		break;
 }
 
 
 
-upgrade_end('アップグレード成功');
+upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );

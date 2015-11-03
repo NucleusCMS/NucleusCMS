@@ -368,12 +368,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 	 * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
 	 */
 	function sql_set_charset($charset) {
-		switch(strtolower($charset))
-		{
-			case 'utf-8'     : $charset='utf8'; break;
-			case 'euc-jp'    : $charset='ujis'; break;
-			case 'iso-8859-1': $charset='latin1'; break;
-		}
+		$charset = get_mysql_charset_from_php_charset($charset);
 		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
 		if (version_compare($mySqlVer, '4.1.0', '>=')) {
 			if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
@@ -390,6 +385,18 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 				$res = sql_query("SET NAMES 'ujis'");
 		}
 		return isset($res) ? $res : false;
+	}
+
+	function get_mysql_charset_from_php_charset($charset = 'utf-8')
+	{
+		switch(strtolower($charset))
+		{
+			case 'utf-8'        : $charset='utf8'; break;
+			case 'euc-jp'       : $charset='ujis'; break;
+			case 'iso-8859-1'   : $charset='latin1'; break;
+			case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
+		}
+		return $charset;
 	}
 	
 	function get_charname_from_langname($language_name='english-utf8')

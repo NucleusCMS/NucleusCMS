@@ -366,6 +366,23 @@ $language = getLanguageName();
 # important note that '\' must be matched with '\\\\' in preg* expressions
 include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
+	if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+		 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+	{
+		// load undefined constant
+		if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+		{
+			if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+			{
+				// load default lang
+				ob_start();
+				@include_once($DIR_LANG . 'english-utf8' . '.php');
+				ob_end_clean();
+			}
+		}
+	}
+
+
 // check if valid charset
 if (!encoding_check(false, false, _CHARSET)) {
 	foreach(array($_GET, $_POST) as $input) {
@@ -1354,7 +1371,26 @@ function helpHtml($id) {
 
 function helplink($id) {
 	global $CONF;
-	return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+
+	$doc_root = get_help_root_url();
+
+	return '<a href="' . $doc_root . 'help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+}
+
+function get_help_root_url() {
+	global $CONF, $DIR_NUCLEUS;
+
+	static $doc_root = null;
+	if ($doc_root === null)
+	{
+		$doc_root = $CONF['AdminURL'] . 'documentation/';
+		$lang = getLanguageName();
+		if (@stripos($lang , 'japan') === false)
+			if (is_dir($DIR_NUCLEUS . 'documentation/en'))
+				$doc_root .= 'en/';
+
+	}
+	return $doc_root;
 }
 
 function getMailFooter() {
@@ -1941,6 +1977,23 @@ function ticketForPlugin(){
 			
 			# important note that '\' must be matched with '\\\\' in preg* expressions
 			include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+
+			if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+				 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+			{
+				// load undefined constant
+				if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+				{
+					if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+					{
+						// load default lang
+						ob_start();
+						@include_once($DIR_LANG . 'english-utf8' . '.php');
+						ob_end_clean();
+					}
+				}
+			}
+
 			include_once($DIR_LIBS . 'PLUGINADMIN.php');
 		}
 		
@@ -2334,6 +2387,11 @@ function strftimejp($format,$timestamp = ''){
 
 function hsc($string, $flags=ENT_QUOTES, $encoding='')
 {
+// *
+// if error occured , this function returns empty string.
+// wrong  encode  makes allow xss
+// do not use ENT_IGNORE:ENT_IGNORE flag makes allow xss 
+// *
 	if($encoding==='')
 	{
 		if(defined('_CHARSET')) $encoding = _CHARSET;

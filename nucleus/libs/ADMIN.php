@@ -5643,7 +5643,7 @@ selector();
 			else
 				echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
 
-			echo '<a href="documentation/">'._HELP_TT.'</a> | ';
+			echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url() , _HELP_TT);
 			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
 
 			echo '<br />(';
@@ -5692,8 +5692,6 @@ selector();
 		?>
 			<div class="foot">
 				<a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
-				-
-				<a href="<?php echo _ADMINPAGEFOOT_DONATEURL ?>"><?php echo _ADMINPAGEFOOT_DONATE ?></a>
 			</div>
 
 			</div><!-- content -->
