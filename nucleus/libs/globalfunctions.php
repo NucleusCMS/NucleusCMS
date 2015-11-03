@@ -891,8 +891,8 @@ function selector() {
 		else                              $catextra = '';
 
 		// get previous itemid and title
-		$param = array(sql_table('item'), mysqldate($timestamp), "{$blogid}{$catextra}");
-		$query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog='%s' ORDER BY itime DESC LIMIT 1", $param);
+		$param = array(sql_table('item'), mysqldate($timestamp), $blogid, $catextra);
+		$query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog='%s' %s ORDER BY itime DESC LIMIT 1", $param);
 		$res = sql_query($query);
 
 		$obj = sql_fetch_object($res);
@@ -903,8 +903,8 @@ function selector() {
 		}
 
 		// get next itemid and title
-		$param = array(sql_table('item'),mysqldate($timestamp),mysqldate($b->getCorrectTime()),"{$blogid}{$catextra}");
-		$query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime>%s AND itime <= %s AND idraft=0 AND iblog='%s' ORDER BY itime ASC LIMIT 1", $param);
+		$param = array(sql_table('item'),mysqldate($timestamp),mysqldate($b->getCorrectTime()),$blogid,$catextra);
+		$query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime>%s AND itime <= %s AND idraft=0 AND iblog='%s' %s ORDER BY itime ASC LIMIT 1", $param);
 		$res = sql_query($query);
 
 		$obj = sql_fetch_object($res);
