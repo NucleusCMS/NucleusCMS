@@ -10,6 +10,14 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+/*  New for 3.71 */
+define('_HEADER_LANG_SELECT',			 '表示言語');
+define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 '表示言語の選択');
+define('_TEXT_LANG_SELECT1_1_TAB_FIELD1',	'言語');
+define('_TEXT_LANG_SELECT1_1',	'表示する言語を選択します。');
+
+/*   */
+
 define('_HEADER1_2',			'キャラクタセット');
 define('_TEXT1_2',				'使用するキャラクタセットを選択します。UTF-8を推奨します。');
 define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');
@@ -139,6 +147,7 @@ define('_TEXT15_L1',			'<b>install/install.sql</b>：テーブルの構造を内
 define('_TEXT15_L2',			'<b>install/index.php</b>：このファイル');
 //define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの言語ファイル');
 define('_TEXT15_L3',			'<b>install/install_lang_japanese.php</b>：インストーラの言語ファイル');
+define('_TEXT15_L4',			'<b>install/*</b>：インストーラの入っているフォルダ');
 define('_TEXT16',			'<p>もしこのディレクトリを削除していなければ、管理領域を開くことができません。</p>');
 
 define('_HEADER11',				'ウェブサイトの確認');

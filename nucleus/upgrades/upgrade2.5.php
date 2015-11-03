@@ -15,7 +15,7 @@ function upgrade_do250() {
 		//needed as some queries depend on the success of others
 
 	if (upgrade_checkinstall(250))
-        return 'インストール済みです';
+        return _UPG_TEXT_ALREADY_INSTALLED;
 
 	// -------------------- 2.0 -> 2.2 (dev only) --------------------
 	// (avoid doing this twice :))

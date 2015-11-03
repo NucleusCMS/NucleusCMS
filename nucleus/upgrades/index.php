@@ -1,7 +1,8 @@
 <?php
 /*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) The Nucleus Group
+ * Nucleus: PHP/MySQL Weblog CMS
+ * Copyright (C) 2003-2015 The Nucleus Group　Japan (http://japan.nucleuscms.org/)
+ * Copyright (C) 2002-2013 The Nucleus Group  (http://nucleuscms.org/)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -12,26 +13,28 @@
 
 include('upgrade.functions.php');
 
+load_upgrade_lang();
+
 // check if logged in etc
 if (!$member->isLoggedIn()) {
 	upgrade_showLogin('index.php');
 }
 
 if (!$member->isAdmin()) {
-	upgrade_error('Super-admin（最高管理者）のみがアップグレードを実行できます。');
+	upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
 upgrade_head();
 
+echo "\n<h1>"  . _UPG_TEXT_UPGRADE_SCRIPTS . "</h1>\n";
+
 ?>
 
-<h1>アップグレードスクリプト集</h1>
-
 <div class="note">
-<b>Note:</b> 新規インストールの場合はこれらのスクリプト集は必要ありません。
+<b>Note:</b> <?php echo _UPG_TEXT_NOTE01NEW; ?>
 </div>
 
-<p>Nucleus CMSはバージョンアップごとに、データベースのテーブル構造を少しずつ変えています。このスクリプト集は、古いバージョンの Nucleus からアップグレードする際に必要な、データベーステーブルのアップグレードを行います。</p>
+<p><?php echo _UPG_TEXT_NOTE02; ?></p>
 
 <?php	// calculate current version
     if     (!upgrade_checkinstall(250)) $current = 200;
@@ -47,33 +50,24 @@ upgrade_head();
     elseif (!upgrade_checkinstall(371)) $current = 370;
     else                                $current = 371;
     if ($current == 371) {
-?>
-<p class="ok">自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。</p> 	 
-<?php
+		echo '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . "</p> \n";
 	} else {
 		if (phpversion() < '5.0.0') {
-?>		
-<p class="deprecated">NucleusはPHP4では動作しません。アップグレード作業を中止して、PHP5以上が使えるかどうか、サーバ管理者に確認して下さい。</p>
-<?php		
+			echo '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP ."</p>\n";
 		}
-?>
-<p class="warning"><a href="upgrade.php?from=<?php echo $current?>">ここをクリックしてデータベースを Nucleus v3.71 用にアップグレードします</a></p>
-<?php
+		echo sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>' ,  $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
 	 }
 
 	 ob_start();
-?>
 
-<div class="note">
-<b>注意:</b> 作業中、各ステップごとにデータベースのバックアップを忘れないようにして下さい。
+	 echo "<div class=\"note\">\n";
+	 echo sprintf("<b>%s:</b> %s\n" , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+	 echo "</div>\n";
 
-</div>
+	echo "<h1>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES ."</h1>\n";
+	echo "<p>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 ."</p>\n";
 
-<h1>手動変更</h1>
-
-<p>いくつかの変更は手動で行う必要があります。下記にその手順を示します。</p>
-
-<?php
+	
 $from = intGetVar('from');
 if (!$from) $from = $current;
 
@@ -102,7 +96,7 @@ if (in_array($from,array(95,96)) || $from < 340)
 if (in_array($from,array(95,96)) || $from < 350)
 	$sth += upgrade_manual_350();
 
-//	echo "<p class='ok'>手動変更は必要ありません。今日はラッキーな日ですね!</p>";
+//	echo "<p class='ok'>". _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY ."</p>";
 
 $content = ob_get_clean();
 
@@ -112,7 +106,7 @@ if (0<$sth) echo $content;
 upgrade_foot();
 
 function upgrade_todo($ver) {
-	return upgrade_checkinstall($ver) ? "(<span class='ok'>インストール済み</span>)" : "(<span class='warning'>インストールが必要</span>)";
+	return upgrade_checkinstall($ver) ? "(<span class='ok'>". _UPG_TEXT_60_INSTALLED ."</span>)" : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
 }
 
 function upgrade_manual_96() {
@@ -120,18 +114,14 @@ function upgrade_manual_96() {
 
 	$guess = str_replace("/nucleus/","/media/",$DIR_NUCLEUS);
 ?>
-	<h2>Nucleus 0.96 用に必要な変更</h2>
-	<p>
-		メディア機能を使用するために<i>config.php</i>を手動で変更する必要があります。下記の通り追加します:
-	</p>
+	<h2><?php echo sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '0.96'); ?></h2>
+	<p><?php echo _UPG_TEXT_V096MEDIA; ?>:</p>
 	<pre>
 	// path to media dir
 	$DIR_MEDIA = '<b><?php echo hsc($guess)?></b>';
 	</pre>
 
-	<p>
-	また、ディレクトリもあなた自身の手で作る必要があります。もしファイルのアップロードを可能にしたいのであれば、media/ ディレクトリのパーミッションを777にします。（Nucleus 0.96+ のためのパーミッションの設定に関するクイックガイドが documentation/tips.html にあります）
-	</p>
+	<p><?php echo _UPG_TEXT_V096MEDIA02; ?></p>
 
 <?php
 	return 1;
@@ -142,36 +132,32 @@ function upgrade_manual_200() {
 
 	$guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
 ?>
-	<h2>Nucleus 2.0 用に必要な変更</h2>
-	<p>
-		スキンの取り込み機能を使用するために<i>config.php</i>を手動で変更する必要があります。下記の通り追加します:
-	</p>
+	<h2><?php echo sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '2.0'); ?></h2>
+	<p><?php echo _UPG_TEXT_V200_01; ?>:</p>
 	<pre>
 	// extra skin files for imported skins
 	$DIR_SKINS = '<b><?php echo hsc($guess)?></b>';
 	</pre>
-
-	<p>また、ディレクトリもあなた自身の手で作る必要があります。これでダウンロードしたスキンを上記ディレクトリに展開したり、Nucleus 管理画面から取り込んだりできるようになります。</p>
-
-	<h3>RSS 2.0 と RSD スキン</h3>
-
-	<p>Nucleus 2.0 を新規にインストールしたとき、RSD(Really Simple Discovery) 用のスキンの他に、RSS 2.0(Really Simple Syndication)用のスキンもまたインストールされます。<code>xml-rss2.php</code> と <code>rsd.php</code> の両ファイルはアップグレードされますが、スキンに関しては手動でインストールする必要があります。<code>upgrade-files</code>の中身をアップロードしたあと、管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから両スキンをインストールすることができます（もしインストールするつもりがなければ、しなくても結構です）。</p>
-
 <?php
+	echo "<p>". _UPG_TEXT_V200_02 . "</p>\n";
+
+	echo "<h3>". _UPG_TEXT_V200_RSS_RSD . "</h3>\n";
+
+	echo "<p>". _UPG_TEXT_V200_04 . "</p>\n";
+
 	return 1;
 }
 
 function upgrade_manual_340() {
 	global $DIR_NUCLEUS;
 
-?>
-	<h2>Nucleus 3.4 用に必要な変更</h2>
+	echo "<h2>" . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . "</h2>\n";
+
+	echo "<p>" . _UPG_TEXT_V340_01 . "</p>\n";
+
+?>	
 	<p>
-		<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.haccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。
-	</p>
-	
-	<p>
-		手順は以下の2つのファイルに書いてありますので参考にしてください：
+		<?php echo _UPG_TEXT_V340_02; ?>：
 		<ul>
 			 <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>
 			 <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>
@@ -184,8 +170,8 @@ function upgrade_manual_340() {
 
 function upgrade_manual_350() {
 	if (phpversion() < '5') {
-		echo '<h2>Nucleus 3.51に関する重要なお知らせ</h2>';
-		echo '<p>警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！</p>';
+		echo '<h2>'. _UPG_TEXT_V350_01_IMPORTANT .'</h2>';
+		echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
 		return 1;
 	}
 }
@@ -193,8 +179,8 @@ function upgrade_manual_350() {
 function upgrade_manual_366() {
 	$content = @file_get_contents('../../action.php');
 	if(strpos($content,'=&')!==false) {
-		echo '<h2>最新のPHP環境に必要な変更</h2>';
-		echo '<p>action.phpを更新してください。</p>';
+		echo '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+		echo '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
 		return 1;
 	}
 }
@@ -212,11 +198,11 @@ function upgrade_manual_atom1_0() {
 			$sth += 1;
 ?>
 <h2>Atom 1.0</h2>
-<p>Nucleus 3.3 から atom feed が 1.0 対応になりましたので、次の手順でスキン・テンプレートのアップグレードをして下さい。</p>
+<p><?php echo _UPG_TEXT_ATOM1_01; ?></p>
 
-<p>管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから atom を選択し、読み込みボタンを押して上書きインストールしてください。</p>
+<p><?php echo _UPG_TEXT_ATOM1_02; ?></p>
 
-<p>もし atom のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/atom/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。</p>
+<p><?php echo _UPG_TEXT_ATOM1_03; ?></p>
 
 <?php
 			}
@@ -235,12 +221,12 @@ function upgrade_manual_atom1_0() {
 		if (!sql_fetch_object($res)) {
 			$sth += 1;
 ?>
-<h2>Default スキン</h2>
-<p>Nucleus 3.3(2007年5月1日リリース) からいくつかのフォームの CSS が変更になっています。たとえば最初のページのログインフォームや、コメント投稿のためのフォームなど。このためフォームの表示が崩れるので、次の手順でDefault スキンのアップグレードをして下さい。</p>
+<h2><?php echo _UPG_TEXT_ATOM1_04; ?></h2>
+<p><?php echo _UPG_TEXT_ATOM1_05; ?></p>
 
-<p>管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから default を選択し、読み込みボタンを押して上書きインストールしてください。</p>
+<p><?php echo _UPG_TEXT_ATOM1_06; ?></p>
 
-<p>もし default のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/default/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。</p>
+<p><?php echo _UPG_TEXT_ATOM1_07; ?></p>
 <?php
 		}
 	}

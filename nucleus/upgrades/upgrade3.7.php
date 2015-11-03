@@ -13,7 +13,7 @@
 function upgrade_do371() {
 
 	if (upgrade_checkinstall(371))
-		return 'インストール済みです';
+		return _UPG_TEXT_ALREADY_INSTALLED;
 	
 	$query = sprintf("ALTER TABLE `%s`
 					ADD `corder` int(11)     NOT NULL default '100',
@@ -30,7 +30,7 @@ function upgrade_do371() {
 function upgrade_do370() {
 
 	if (upgrade_checkinstall(370))
-		return 'インストール済みです';
+		return _UPG_TEXT_ALREADY_INSTALLED;
 	
 	// changing the blog table to lengthen bnotify field 
 	$query = sprintf("ALTER TABLE `%s`

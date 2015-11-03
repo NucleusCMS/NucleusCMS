@@ -24,7 +24,31 @@
 	-- Start Of Configurable Part --
 */
 
-include('./install_lang_japanese.php');
+global $lang;
+if (isset($_POST['lang']))
+	$lang = strtolower( $_POST['lang'] );
+else if (isset($_GET['lang']))
+	$lang = strtolower( $_GET['lang'] );
+if ($lang != 'ja')
+{
+	if (($lang == '') && in_array('ja',explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']))))
+		 $lang = 'ja';
+		else
+		 $lang = 'en';
+}
+
+if (file_exists('install_lang_english.php') &&
+	( ($lang == '') || ($lang != 'ja') )
+   )
+{
+	define('INSTALL_LANG' , 'en');
+	include('./install_lang_english.php');
+}
+else
+{
+	define('INSTALL_LANG' , 'ja');
+	include('./install_lang_japanese.php');
+}
 
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
@@ -74,6 +98,9 @@ switch(postVar('charset'))
 	case 'ujis':
 		$charset = 'EUC-JP';
 		break;
+	case 'latin1':
+		$charset = 'ISO-8859-1';
+		break;
 	case 'utf8':
 	default:
 		$charset = 'UTF-8';
@@ -114,6 +141,9 @@ exit;
  * Show the form for the installation settings
  */
 function showInstallForm() {
+	global $lang;
+
+
 	// 0. pre check if all necessary files exist
 	doCheckFiles();
 
@@ -142,12 +172,45 @@ function showInstallForm() {
 	</head>
 	<body>
 		<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
-		<form method="post" action="index.php">
+		<form method="post" action="index.php<?php echo "?lang=$lang";?>">
 		
 		<h1><?php echo _HEADER1; ?></h1>
 		
 		<?php echo _TEXT1; ?>
-		
+
+		<!-- select lang -->
+		<h1><?php echo _HEADER_LANG_SELECT ?></h1>
+
+		<?php echo _TEXT_LANG_SELECT1_1; ?>
+
+		<?php
+
+			$s = '';
+			$input_lang = strtolower((isset($_GET['lang']) ? strval($_GET['lang']) : $lang));
+			$items = array('ja'=>'Japanease : 日本語', 'en'=>'English : 英語');
+			foreach($items as $k=>$v)
+			{
+				$s2 = (($input_lang == $k) ? ' selected="selected"' : '');
+				$s .= sprintf("\t<option value=\"%s\"%s>%s</option>\n",
+					  $k , $s2  , htmlspecialchars($v));
+			}
+
+		?>
+		<fieldset>
+			<legend><?php echo _TEXT_LANG_SELECT1_1_TAB_HEAD; ?></legend>
+			<table>
+				<tr>
+					<td><?php echo _TEXT_LANG_SELECT1_1_TAB_FIELD1; ?></td>
+					<td>
+						<select name="lang" tabindex="10000" onChange="location.href='index.php?lang='+this.value;">
+						<?php echo $s; ?>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+
+		<!-- select charset  -->
 		<h1><?php echo _HEADER1_2 ?></h1>
 		
 		<?php echo _TEXT1_2; ?>
@@ -158,9 +221,14 @@ function showInstallForm() {
 				<tr>
 					<td><?php echo _TEXT1_2_TAB_FIELD1; ?></td>
 					<td>
-						<select name="charset" tabindex="10000">
+						<select name="charset" tabindex="10001">
 							<option value="utf8" selected="selected">UTF-8</option>
-							<option value="ujis" >EUC-JP</option>
+						  <?php
+						  if ($input_lang == 'ja')
+							  echo "\r<option value=\"ujis\" >EUC-JP</option>\n";
+						  else
+							  echo "\t<option value=\"latin1\" >ISO-8859-1</option>\n";
+						  ?>
 						</select>
 					</td>
 				</tr>
@@ -482,6 +550,7 @@ function tableName($unPrefixed) {
  */
 function doInstall() {
 	global $mysql_usePrefix, $mysql_prefix;
+	global $lang;
 
 	// 0. put all POST-vars into vars
 	$mysql_host		= postVar('mySQL_host');
@@ -537,17 +606,26 @@ function doInstall() {
 	if (function_exists('date_default_timezone_set')){
 		 @date_default_timezone_set((function_exists('date_default_timezone_get')) ? @date_default_timezone_get() : 'UTC');
 	}
-	
-	if ($charset == 'ujis') {
-		if(!defined('_CHARSET')) define('_CHARSET', 'EUC-JP');
-		$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
-		$user_realname  = mb_convert_encoding($user_realname, _CHARSET, 'UTF-8');
-		$blog_name	  = mb_convert_encoding($blog_name, _CHARSET, 'UTF-8');
-	} else {
-		if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
+
+	switch (strtolower($charset)) {
+		case 'latin1':
+			if(!defined('_CHARSET'))
+				define('_CHARSET', 'ISO-8859-1');
+			break;
+		case 'ujis':
+			if(!defined('_CHARSET'))
+				define('_CHARSET', 'EUC-JP');
+			$config_sitename = mb_convert_encoding($config_sitename, _CHARSET, 'UTF-8');
+			$user_realname  = mb_convert_encoding($user_realname, _CHARSET, 'UTF-8');
+			$blog_name	  = mb_convert_encoding($blog_name, _CHARSET, 'UTF-8');
+			break;
+		case 'utf8':
+		default:
+			if(!defined('_CHARSET'))
+				define('_CHARSET', 'UTF-8');
+			break;
 	}
-	
-	
+
 	// 1. check all the data
 	$errors = array();
 
@@ -624,7 +702,20 @@ function doInstall() {
 
 	// 3. try to create database (if needed)
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	$collation = ($charset === 'utf8') ? 'utf8_general_ci' : 'ujis_japanese_ci';
+	switch(strtolower($charset))
+	{
+		case 'ujis':
+			$collation = 'ujis_japanese_ci';
+			break;
+		case 'latin1':
+			$collation = 'latin1_swedish_ci';
+			break;
+		case 'utf8':
+		default:
+			$collation = 'utf8_general_ci';
+	}
+
+
 	if ($mysql_create == 1) {
 		$sql = 'CREATE DATABASE '
 			 .	 "`{$mysql_database}`";
@@ -756,6 +847,8 @@ function doInstall() {
 	updateConfig('SiteName',   $config_sitename);
 	if ($charset == 'ujis') {
 		updateConfig('Language',   'japanese-euc');
+	} else if ($charset == 'latin1' || (INSTALL_LANG == 'en')) {
+		updateConfig('Language',   'english');
 	}
 
 	// 7. update GOD member
@@ -979,6 +1072,7 @@ function doInstall() {
 		<li><?php echo _TEXT15_L1; ?></li>
 		<li><?php echo _TEXT15_L2; ?></li>
 		<li><?php echo _TEXT15_L3; ?></li>
+		<li><?php echo _TEXT15_L4; ?></li>
 		</ul>
 
 	<?php echo _TEXT16; ?>
@@ -1080,6 +1174,9 @@ function installCustomSkins(&$manager) {
 	foreach ($aConfSkinsToImport as $skinName) {
 		$importer->reset();
 		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
+		$skinFile_en = $DIR_SKINS . $skinName . '/skinbackup-en.xml';
+		if ((INSTALL_LANG == 'en') && is_file($skinFile_en))
+			$skinFile = $skinFile_en;
 
 		if (!@file_exists($skinFile) ) {
 			array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);

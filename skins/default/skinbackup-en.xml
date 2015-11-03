@@ -1,0 +1,801 @@
+<nucleusskin>
+	<meta>
+		<skin name="default" />
+		<template name="default/index" />
+		<template name="default/item" />
+		<template name="default/categorylist" />
+		<template name="default/archivelist" />
+		<template name="default/commentlist" />
+		<template name="default/searchlist" />
+		<template name="default/bloglist" />
+		<info><![CDATA[Nucleus CMS Default Skin]]></info>
+	</meta>
+
+
+	<skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
+		<description>Nucleus CMS default skin</description>
+		<part name="additemform"><![CDATA[<%if(loggedin)%>
+<div id="edit" style="display:none;">
+<div class="contenttitle">
+<h2>New item</h2></div>
+<div class="contentbody">
+<%additemform%></div>
+</div>
+<%endif%>]]></part>
+
+		<part name="archive"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+<body>
+<!-- page header -->
+<%parsedinclude(header)%>
+<!-- begin wrapper divs -->
+<div id="mainwrapper"><div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Archives</h2>
+</div>
+You are currently viewing archive for <%archivedate%>
+</div>
+<div class="content">
+<%archive(default/index)%>
+</div>
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div></div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="archivelist"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+<body>
+<!-- page header -->
+<%parsedinclude(header)%>
+<!-- begin wrapper divs -->
+<div id="mainwrapper">
+<div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Archives</h2>
+</div>
+<dl>
+<dt>Monthly Archives</dt>
+<%archivelist(default/archivelist)%>
+</dl>
+</div>
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div>
+</div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="error"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+<body>
+<!-- page header -->
+<%parsedinclude(header)%>
+
+<!-- begin wrapper divs -->
+<div id="mainwrapper">
+<div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Error!</h2>
+</div>
+<%errormessage%><br /><br />
+<a href="<%referer%>">Go back</a>
+</div>
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div>
+</div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="footer"><![CDATA[<div id="copyrights">
+	<small>Copyright | <a href="http://japan.nucleuscms.org/"><%version%></a> | 
+	<a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0 Strict</a> | 
+	<a href="http://jigsaw.w3.org/css-validator/">Valid CSS</a> | 
+	<a href="#top">Back to top</a></small>
+</div>]]></part>
+
+		<part name="head"><![CDATA[<meta http-equiv="Content-Type" content="text/html; charset=<%charset%>" />
+
+<!-- meta information for search engines -->
+<meta name="generator" content="<%version%>" />
+<meta name="name" content="<%blogsetting(name)%>" />
+<meta name="description" content="<%blogsetting(desc)%>" />
+
+<!-- site stylesheet (site colors and layout definitions：Left sidebar) -->
+<link rel="stylesheet" type="text/css" href="<%skinfile(default_left.css)%>" title="left bar" />
+
+<!-- site stylesheet ADDED (some adjustment) -->
+
+<!-- RSS 2.0 feed -->
+<link rel="alternate" type="application/rss+xml" title="RSS" href="<%sitevar(url)%>xml-rss2.php" />
+
+<!-- favorite icon -->
+<link rel="shortcut icon" href="<%skinfile(favicon.ico)%>" />
+<link rel="icon" href="<%skinfile(favicon.ico)%>" />]]></part>
+
+		<part name="header"><![CDATA[<!-- page header -->
+<div id="header"><a name="top"></a>
+<h1>
+	<%if(skintype,error)%>
+		<a href="<%sitevar(url)%>"><%sitevar(name)%></a>
+	<%elseif(skintype,member)%>
+		<a href="<%sitevar(url)%>"><%sitevar(name)%></a>
+	<%else%>
+		<a href="<%blogsetting(url)%>"><%blogsetting(name)%></a>
+	<%endif%>
+</h1>
+</div>]]></part>
+
+		<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title><%imagetext%></title>
+<style type="text/css">
+img { border: none; }
+body { margin: 0px; }
+</style>
+</head>
+
+<!-- image content -->
+<body onblur="window.close()">
+<a href="javascript:window.close();"><%image%></a>
+</body>
+
+</html>]]></part>
+
+		<part name="index"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+<body>
+<!-- page header -->
+<%parsedinclude(header)%>
+
+<!-- begin wrapper divs -->
+<div id="mainwrapper"><div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<%parsedinclude(additemform)%>
+<%blog(default/index,10)%>
+</div>
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div></div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="item"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+<body>
+<!-- page header -->
+<%parsedinclude(header)%>
+
+<!-- begin wrapper divs -->
+<div id="mainwrapper"><div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<%item(default/item)%>
+</div>
+
+<%comments(default/commentlist)%>
+
+<div class="content">
+<div class="contenttitle">
+<h2>Comments</h2>
+</div>
+<%commentform%>
+</div>
+
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div></div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="linklist"><![CDATA[<dd><a href="http://japan.nucleuscms.org/" title="Nucleus CMS Japan Home">nucleuscms Japan</a></dd>]]></part>
+
+		<part name="member"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+
+<!-- page header -->
+<%parsedinclude(header)%>
+<!-- begin wrapper divs -->
+<div id="mainwrapper">
+<div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Info about <%member(name)%></h2>
+</div>
+Real name: <%member(realname)%>
+<br /><br />
+Website: <a href="<%member(url)%>"><%member(url)%></a>
+</div>
+<div class="content">
+<div class="contenttitle">
+<h2>Send message</h2>
+</div>
+<%membermailform%>
+</div>
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div>
+</div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="navigation"><![CDATA[<!-- navigation & page titles -->
+<%if(skintype,index)%>
+<!-- index: page title and extra navigational links -->
+<title><%blogsetting(name)%></title>
+<link rel="bookmark" title="Nucleus" href="http://japan.nucleuscms.org/" />
+<link rel="archives" title="Archives" href="<%archivelink%>" />
+<link rel="top" title="Today" href="<%todaylink%>" />
+
+<%elseif(skintype,item)%>
+<!-- item: page title and extra navigational links -->
+<title><%itemtitle(attribute)%> &raquo; <%blogsetting(name)%></title>
+<link rel="archives" title="Archives" href="<%archivelink%>" />
+<link rel="top" title="Today's entry" href="<%sitevar(url)%>" />
+<link rel="next" href="<%nextlink%>" title="Next item" />
+<link rel="prev" href="<%prevlink%>" title="Previous item" />
+<link rel="up" href="<%todaylink%>" title="Today" />
+<meta name="robots" content="all,noodp,noydir" />
+
+<%elseif(skintype,archive)%>
+<!-- archive: page title and extra navigational links -->
+<title><%blogsetting(name)%> &raquo; Archives</title>
+<link rel="archives" title="Archives" href="<%archivelink%>" />
+<link rel="top" title="Today" href="<%sitevar(url)%>" />
+<link rel="up" href="<%todaylink%>" title="Today" />
+<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
+
+<%elseif(skintype,archivelist)%>
+<!-- archivelist: page title and extra navigational links -->
+<title><%blogsetting(name)%> &raquo; Archives link</title>
+<link rel="archives" title="Archives" href="<%archivelink%>" />
+<link rel="top" title="Today" href="<%sitevar(url)%>" />
+<link rel="up" href="<%todaylink%>" title="Today" />
+<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
+
+<%elseif(skintype,error)%>
+<!-- error: page title and extra navigational links -->
+<title><%sitevar(name)%> &raquo; Error!</title>
+<link rel="top" title="Today" href="<%todaylink%>" />
+<link rel="up" href="<%todaylink%>" title="Today" />
+<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
+
+<%elseif(skintype,member)%>
+<!-- member: page title and extra navigational links -->
+<title><%blogsetting(name)%> &raquo; member info</title>
+<link rel="top" title="Today" href="<%todaylink%>" />
+<link rel="up" href="<%todaylink%>" title="Today" />
+<meta name="robots" content="all,noodp,noydir,NOINDEX,NOFOLLOW" />
+
+<%elseif(skintype,search)%>
+<!-- search: page title and extra navigational links -->
+<title><%blogsetting(name)%> &raquo; search</title>
+<link rel="archives" title="Archives" href="<%archivelink%>" />
+<link rel="top" title="Today" href="<%sitevar(url)%>" />
+<link rel="up" href="<%todaylink%>" title="Today" />
+<%endif%>
+
+<%if(loggedin)%>
+<script type="text/javascript" src="<%adminurl%>javascript/edit.js"></script>
+<%endif%>]]></part>
+
+		<part name="search"><![CDATA[<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<%parsedinclude(head)%>
+<%parsedinclude(navigation)%>
+</head>
+<body>
+<!-- page header -->
+<%parsedinclude(header)%>
+<!-- begin wrapper divs -->
+<div id="mainwrapper">
+<div id="wrapper">
+
+<!-- page content -->
+<div id="container">
+<div class="content">
+<div class="contenttitle">
+<h2>Search Results</h2>
+</div>
+<%searchform%>
+</div>
+<div class="content">
+<%searchresults(default/searchlist)%>
+</div>
+</div>
+
+<!-- page menu -->
+<h2 class="hidden">Sidebar</h2>
+<div id="sidebarcontainer">
+<%parsedinclude(sidebar)%>
+</div>
+
+<div class="clearing">&nbsp;</div>
+</div>
+</div>
+<!-- end wrapper divs -->
+
+<!-- page footer, copyrights, etc. -->
+<div id="footer">
+<%parsedinclude(footer)%>
+</div>
+
+</body>
+</html>]]></part>
+
+		<part name="sidebar"><![CDATA[<!-- page menu -->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>Navigation</dt>
+
+<%if(skintype,archive)%>
+<!-- archive: navigation -->
+<dd><a href="<%prevlink%>" title="Previous month">Previous <%archivetype%></a></dd>
+<dd><a href="<%nextlink%>" title="Next month">Next <%archivetype%></a></dd>
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+
+<%elseif(skintype,archivelist)%>
+<!-- archivelist: navigation -->
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+
+<%elseif(skintype,error)%>
+<!-- error: navigation -->
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+
+<%elseif(skintype,index)%>
+<!-- index: navigation -->
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+
+<!-- item: navigation -->
+<%elseif(skintype,item)%>
+<%if(previtem)%><dd><a href="<%prevlink%>" title="Previous Item">Previous Item</a></dd><%endif%>
+<%if(nextitem)%><dd><a href="<%nextlink%>" title="Next Item">Next Item</a></dd><%endif%>
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+
+<!-- member: navigation -->
+<%elseif(skintype,member)%>
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+
+<!-- search: navigation -->
+<%elseif(skintype,search)%>
+<dd><a href="<%todaylink%>" title="Today">Today</a></dd>
+<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+<%endif%>
+
+<%if(loggedin)%>
+<!-- admin link, only visible if logged in -->
+<%if(skintype,index)%>
+<dd><a href="javascript:showedit();">Add item quickly</a></dd>
+<%endif%>
+<dd><a href="<%addlink%>" onclick="<%addpopupcode%>" title=Add an item in popup">Add an item(popup)</a></dd>
+<dd><a href="<%adminurl%>" title="Admin">Admin</a></dd>
+<%endif%>
+</dl>
+</div>
+
+<%if(skintype,error)%>
+<%elseifnot(skintype,member)%>
+<!-- category list, not on error or member page -->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>Category</dt>
+<%categorylist(default/categorylist)%>
+</dl>
+</div>
+<%endif%>
+
+<!-- bloglist-->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>Blogs</dt>
+<%bloglist(default/bloglist)%>
+</dl>
+</div>
+
+<!-- search form -->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>Search</dt>
+<dd><%searchform%></dd>
+</dl>
+</div>
+
+<!-- login form -->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>login</dt>
+<dd><%loginform%></dd>
+</dl>
+</div>
+
+<!-- links -->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>Links</dt>
+<%parsedinclude(linklist)%>
+</dl>
+</div>
+
+<!-- Powered by -->
+<div class="sidebar">
+<div class="sidebardl centerize">
+<%nucleusbutton(images/nucleus.gif,85,31)%>
+</div>
+</div>
+
+<!-- benchimark -->
+<div class="sidebar">
+<dl class="sidebardl">
+<dt>rendering times</dt>
+<dd><%BenchMark%></dd>
+</dl>
+</div>]]></part>
+
+	</skin>
+
+
+	<template name="default/index">
+		<description>Nucleus CMS default index template</description>
+		<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
+<small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;">Add comment</a>
+</small>
+</div>]]></part>
+
+		<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
+<small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;">Comments <%commentcount%></a>
+</small>
+</div>]]></part>
+
+		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
+<small class="contentitemedit">
+<a href="<%editlink%>" title="Edit" onclick="<%editpopupcode%>" >Edit item</a>
+</small>
+</div>]]></part>
+
+		<part name="FORMAT_DATE"><![CDATA[%d/%m/%Y]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+		<part name="ITEM"><![CDATA[<div class="contenttitle">
+<h2><a href="<%itemlink%>" title="Read entry: <%title(attribute)%>"><%title%> (<%date%>)</a></h2>
+</div>
+<div class="contentitem">
+<div class="contentitem1">
+<small class="contentitemcategory">
+Category: <a href="<%categorylink%>" title="Category: <%Category%>"><%Category%></a>
+</small>
+</div>
+<div class="contentitem2">
+<small class="contentitempostedby">
+Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
+</small>
+</div>
+<%comments%>
+<%edit%>
+</div>
+<div class="contentbody">
+<%body%>
+<%morelink%>
+</div>]]></part>
+
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
+		<part name="MORELINK"><![CDATA[<p>&raquo;
+<a href="<%itemlink%>#more" title="Read more on &#39;<%title%>&#39;">Read More</a>
+</p>]]></part>
+
+		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+
+	</template>
+
+
+	<template name="default/item">
+		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
+<small class="contentitemedit">
+<a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
+</small>
+</div>]]></part>
+
+		<part name="FORMAT_DATE"><![CDATA[%d%/m/%Y]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+		<part name="ITEM"><![CDATA[<div class="contenttitle">
+<h2><%title%> (<%date%>)</h2>
+</div>
+<div class="contentitem">
+<div class="contentitem1">
+<small class="contentitemcategory">
+Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
+</small>
+</div>
+<div class="contentitem2">
+<small class="contentitempostedby">
+Author: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
+</small>
+</div>
+<%edit%>
+</div>
+<div class="contentbody">
+<%body%><br /><br />
+<a name="more"></a><%more%>
+</div>]]></part>
+
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
+		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+
+	</template>
+
+
+	<template name="default/categorylist">
+		<description>default categorylist for sidebar</description>
+		<part name="CATLIST_HEADER"><![CDATA[<dd>
+<a href="<%blogurl%>" title="All categories">All</a>
+</dd>]]></part>
+
+		<part name="CATLIST_LISTITEM"><![CDATA[<dd>
+<a href="<%catlink%>" title="Category: <%catname%>"><%catname%></a>
+</dd>]]></part>
+
+	</template>
+
+
+	<template name="default/archivelist">
+		<part name="ARCHIVELIST_LISTITEM"><![CDATA[<dd>
+<a href="<%archivelink%>" title="Archive for %B, %Y">%B, %Y</a>
+</dd>]]></part>
+
+	</template>
+
+
+	<template name="default/commentlist">
+		<part name="COMMENTS_BODY"><![CDATA[<div class="itemcomment id<%memberid%>">
+<h3><a href="<%userlinkraw%>"
+title="<%user%>">
+<%user%></a></h3>
+<div class="commentbody">
+<%body%>
+</div>
+<div class="commentinfo">
+<%date%> <%time%>
+</div>
+</div>
+]]></part>
+
+		<part name="COMMENTS_FOOTER"><![CDATA[</div>
+
+]]></part>
+
+		<part name="COMMENTS_HEADER"><![CDATA[<a name="c"></a>
+<div class="content">
+<div class="contenttitle">
+<h2>Comments list</h2>
+</div>
+
+]]></part>
+
+		<part name="COMMENTS_NONE"><![CDATA[<a name="c"></a>
+
+]]></part>
+
+		<part name="FORMAT_DATE"><![CDATA[%d/%m/%Y]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+
+	</template>
+
+
+	<template name="default/searchlist">
+		<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
+<small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;">Add comment</a>
+</small>
+</div>]]></part>
+
+		<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
+<small class="contentitemcomments">
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on &#39;<%itemtitle(attribute)%>&#39;">Comments <%commentcount%></a>
+</small>
+</div>]]></part>
+
+		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
+<small class="contentitemedit">
+<a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
+</small>
+</div>]]></part>
+
+		<part name="FORMAT_DATE"><![CDATA[%d/%m/%Y]]></part>
+
+		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
+
+		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
+
+		<part name="ITEM"><![CDATA[<div class="contenttitle">
+<h2><a href="<%itemlink%>" title="<%title(attribute)%>"><%title%> (<%date%>)</a></h2>
+</div>
+<div class="contentitem">
+<div class="contentitem1">
+<small class="contentitemcategory">
+Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
+</small>
+</div>
+<div class="contentitem2">
+<small class="contentitempostedby">
+Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
+</small>
+</div>
+<%comments%>
+<%edit%>
+</div>
+<div class="contentbody">
+<%body%>
+<%morelink%>
+</div>]]></part>
+
+		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
+
+		<part name="MORELINK"><![CDATA[<p>&raquo;
+<a href="<%itemlink%>#more" title="Read more on &#39;<%title%>&#39;">Read More</a>
+</p>]]></part>
+
+		<part name="POPUP_CODE"><![CDATA[<%popuplink%>]]></part>
+
+		<part name="SEARCH_HIGHLIGHT"><![CDATA[<span class='highlight'>\0</span>]]></part>
+
+		<part name="SEARCH_NOTHINGFOUND"><![CDATA[No search results found for <b><%query%></b>]]></part>
+
+	</template>
+
+
+	<template name="default/bloglist">
+		<part name="BLOGLIST_LISTITEM"><![CDATA[<dd>
+<a href="<%bloglink%>" title="Blogs: <%blogname%>"><%blogname%></a>
+</dd>]]></part>
+
+	</template>
+
+
+</nucleusskin>

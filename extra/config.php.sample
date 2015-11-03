@@ -1,8 +1,9 @@
 <?php
 
 /*
- * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group
+ * Nucleus: PHP/MySQL Weblog CMS
+ * Copyright (C) 2003-2015 The Nucleus Group Japan (http://japan.nucleuscms.org/)
+ * Copyright (C) 2002-2013 The Nucleus Group       (http://nucleuscms.org/)
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,14 +30,19 @@ $MYSQL_PREFIX   = '';
 //$MYSQL_HANDLER = array('pdo','mysql');
 $MYSQL_HANDLER = array('mysql','');
 
+$DIR_BASE = dirname(__FILE__) . '/';
+
 // サーバコンピュータ内でのコアへのフルパス
+$DIR_NUCLEUS = $DIR_BASE . 'nucleus/';
 $DIR_NUCLEUS = '/your/path/to/nucleus/';
 
 // サーバコンピュータ内でのメディア用ディレクトリへのフルパス
-$DIR_MEDIA   = '/your/path/to/media/';
+$DIR_MEDIA = $DIR_BASE . 'media/';
+//$DIR_MEDIA = '/your/path/to/media/';
 
 // サーバコンピュータ内でのスキン用ディレクトリへのフルパス
-$DIR_SKINS   = '/your/path/to/skins/';
+$DIR_SKINS = $DIR_BASE . 'skins/';
+//$DIR_SKINS = '/your/path/to/skins/';
 
 // プラグイン用ディレクトリ、言語ファイル用ディレクトリ、コアライブラリへのフルパス
 // 通常はコアの子ディレクトリとなりますが、任意に設定する事もできます
@@ -46,7 +52,10 @@ $DIR_LIBS    = $DIR_NUCLEUS . 'libs/';
 
 if (!@file_exists($DIR_LIBS . 'globalfunctions.php')) {
 	header('Content-type: text/html; charset=utf-8');
-	echo '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。';
+	if (in_array('ja',explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']))))
+		echo '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。';
+	else
+		echo '<h1>Configuration error</h1> <p>please run the <a href="./install/index.php">install script</a> or modify config.php</p>';
 	exit;
 }
 

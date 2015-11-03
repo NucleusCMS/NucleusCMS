@@ -13,11 +13,11 @@
 function upgrade_do340() {
 
 	if (upgrade_checkinstall(340))
-		return 'インストール済みです';
+		return _UPG_TEXT_ALREADY_INSTALLED;
 	
 	// Give user warning if they are running old version of PHP
 		if (phpversion() < '5') {
-				echo '警告： Nucleusを古いバージョンのPHPで運用しようとしています。次のリリースバージョンからはPHP4のサポートはしないので、はやくPHP5に切り替えましょう！';
+				echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
 		}
 
 	// lengthen tpartname column of nucleus_template
