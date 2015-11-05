@@ -15,6 +15,10 @@
  * Wouter Demuynck 2003-08-31
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
+
 	// mt.supportedMethods
 	$f_mt_supportedMethods_sig = array(array(
 			// return type

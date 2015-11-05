@@ -12,6 +12,9 @@
  * This file contains definitions for the methods in the Blogger API
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
 
 	// blogger.newPost
 	$f_blogger_newPost_sig = array(array(

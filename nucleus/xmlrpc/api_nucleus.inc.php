@@ -14,6 +14,10 @@
  * NOTE: These functions are deprecated and will most likely be removed!
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
+
 	// nucleus.addItem
 	$f_nucleus_addItem_sig = array(array(
 			// return type
@@ -290,7 +294,8 @@
 
 	}
 
-
+	if (!isset($functionDefs))
+	  $functionDefs = array();
 	$functionDefs = array_merge($functionDefs,
 		array(
 			"nucleus.addItem" =>
