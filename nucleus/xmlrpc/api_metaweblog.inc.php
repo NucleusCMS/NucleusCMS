@@ -13,6 +13,9 @@
  *	This file contains definitions for the methods of the metaWeblog API
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
 
 	// metaWeblog.newPost
 	$f_metaWeblog_newPost_sig = array(array(
