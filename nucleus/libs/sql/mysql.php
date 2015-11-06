@@ -76,8 +76,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			$res = sql_query($query);
 			if(!$res) exit('Language name fetch error');
 			$obj = sql_fetch_object($res);
-			$CONF['Language'] = $obj->value;
-			$charset = get_charname_from_langname($CONF['Language']);
+			$Language = $obj->value;
+			$charset = get_charname_from_langname($Language);
 		}
 		sql_set_charset($charset);
 		
