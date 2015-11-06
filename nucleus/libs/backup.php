@@ -154,7 +154,11 @@ class Backup
 		echo "DROP TABLE IF EXISTS $tablename;\n";
 		$result = sql_query("SHOW CREATE TABLE $tablename");
 		$create = sql_fetch_assoc($result);
-		echo $create['Create Table'];
+		$CreateTable = $create['Create Table'];
+		$CreateTable = preg_replace('@\s+COLLATE\s+([0-9a-zA-Z_]+)@',' COLLATE utf8_general_ci', $CreateTable);
+		$CreateTable = preg_replace('@CHARSET=([0-9a-zA-Z_]+)@','CHARSET=utf8', $CreateTable);
+		$CreateTable = preg_replace('@COLLATE=([0-9a-zA-Z_]+)@','COLLATE=utf8_general_ci', $CreateTable);
+		echo $CreateTable;
 		echo ";\n\n";
 	}
 
