@@ -67,19 +67,6 @@ if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
 	$CONF['alertOnHeadersSent']  = 1;
 }
 if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
-/*$CONF['ItemURL']		   = $CONF['Self'];
-$CONF['ArchiveURL']		  = $CONF['Self'];
-$CONF['ArchiveListURL']	  = $CONF['Self'];
-$CONF['MemberURL']		   = $CONF['Self'];
-$CONF['SearchURL']		   = $CONF['Self'];
-$CONF['BlogURL']			 = $CONF['Self'];
-$CONF['CategoryURL']		 = $CONF['Self'];
-
-// switch URLMode back to normal when $CONF['Self'] ends in .php
-// this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
-	$CONF['URLMode'] = 'normal';
-}*/
 
 /*
 	Set these to 1 to allow viewing of future items or draft items
