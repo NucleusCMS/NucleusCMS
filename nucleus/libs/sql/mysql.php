@@ -70,7 +70,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		}
 
 		if (defined('_CHARSET')){
-			$charset  = _CHARSET;
+			$charset  = get_mysql_charset_from_php_charset(_CHARSET);
 		}else{
 			$query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
 			$res = sql_query($query);
