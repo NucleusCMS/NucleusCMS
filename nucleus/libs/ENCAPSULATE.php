@@ -95,7 +95,7 @@ class NAVLIST extends ENCAPSULATE {
 		$prev = $start - $amount;
 		if ($prev < $minamount) $prev=$minamount;
 
-			$next = $start + $amount;
+		$next = $start + $amount;
 
 		$enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
 		if ($enable_cat_select)
@@ -109,31 +109,31 @@ class NAVLIST extends ENCAPSULATE {
 				$total_pages = 1;
 				$current_page = 1;
 				$amount = 1;
-			}
-		  else
-			{
-				// page = (page-1)/$amount + 1 , page item start 1..
-				$current_page = (int) (floor(max(0, $start) / $amount) + 1); // start 0..
-				if ( is_null( $this->total ) )
-					$total_pages = 1;
-				  else
-					{
-						$total_pages = (int) floor(max(0, $this->total-1) / $amount) + 1;
-						$current_page = min($current_page , $total_pages);
-					}
-			}
-		  $current_page = max(1 , $current_page); // page 1..
-		  $maxamount = min($maxamount , $total_pages * $amount-1);
-		  if (!is_null( $this->total ))
+		}
+	  else
+		{
+			// page = (page-1)/$amount + 1 , page item start 1..
+			$current_page = (int) (floor(max(0, $start) / $amount) + 1); // start 0..
+			if ( is_null( $this->total ) )
+				$total_pages = 1;
+			  else
+				{
+					$total_pages = (int) floor(max(0, $this->total-1) / $amount) + 1;
+					$current_page = min($current_page , $total_pages);
+				}
+		}
+		$current_page = max(1 , $current_page); // page 1..
+		$maxamount = min($maxamount , $total_pages * $amount-1);
+		if (!is_null( $this->total ))
 			$maxamount = max(0 , $this->total - 1);
 
-		  $prev = max(0 , ($current_page-2)) * $amount; // 0..
-		  if ($prev < $minamount) $prev=$minamount;
+		$prev = max(0 , ($current_page-2)) * $amount; // 0..
+		if ($prev < $minamount) $prev=$minamount;
 
 		  $next	= max(0 , min( $current_page , $total_pages ) * $amount);
 		if ( !is_null( $this->total ) && (intval($next)+1 > intval($this->total)) ) {
 			  $next = floor(max(0,intval($this->total-1)) / $amount) * $amount ; // 9/10=0,10/10=1
-			}
+		}
 
 		$page_last_start = min(max(0,($total_pages-1)*$amount),$maxamount);
 
@@ -145,7 +145,7 @@ class NAVLIST extends ENCAPSULATE {
 							, $this->total);
 
 		$btn_title_change = _LISTS_CHANGE;
-		$input_catid = ($enable_cat_select ? "\n\t\t".sprintf('<input type="hidden" name="catid" value="%d" />', $catid) : '');
+				$input_catid = ($enable_cat_select ? "\n\t\t".sprintf('<input type="hidden" name="catid" value="%d" />', $catid) : '');
 		$page_navigation .=<<<EOD
 	<form method="post" action="index.php">
 		<input type="number" id="page_select" value="{$current_page}" style="width:50px;" min=1 max={$total_pages} onchange="jQuery('#page_select_start').val(Math.min(Math.max(0, (this.value-1) * {$amount}),{$page_last_start}));" />
@@ -160,13 +160,13 @@ class NAVLIST extends ENCAPSULATE {
 EOD;
 		}
     	if ( is_null( $this->total ) ) {
-		global $CONF;
-		if ($CONF['debug'])
-		  $page_navigation .= 'page navigation is disabled: set total before call ';
-		else
-			$page_navigation = '';
-		$next = $start + $amount;
-	}
+    		global $CONF;
+    		if ($CONF['debug'])
+    			$page_navigation .= 'page navigation is disabled: set total before call ';
+    		else
+    			$page_navigation = '';
+    		$next = $start + $amount;
+    	}
 ?>
 <table class="navigation">
 	<tr>
@@ -174,13 +174,13 @@ EOD;
 <?php if($start!=0): ?>
 			<form id="prev" method="post" action="index.php">
 				<a href="#" onclick="jQuery('#prev').submit();return false;">&lt;&lt; <?php echo _LISTS_PREV; ?></a>
-					<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-					<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-					<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-					<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-					<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-					<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-					<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
+				<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+				<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+				<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+				<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+				<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+				<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
 			</form>
 <?php else:?>
 				&lt;&lt; <?php echo _LISTS_PREV; ?>
@@ -189,19 +189,19 @@ EOD;
 <?php if($current_page<$total_pages): ?>
 			<form id="next" method="post" action="index.php">
 				<a href="#" onclick="jQuery('#next').submit();return false;"><?php echo _LISTS_NEXT; ?> &gt; &gt;</a>
-					<input type="hidden" name="search" value="<?php echo  $search; ?>" />
-					<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-					<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-					<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-					<input type="hidden" name="action" value="<?php echo  $action; ?>" />
-					<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-					<input type="hidden" name="start" value="<?php echo  $next; ?>" />
+				<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+				<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+				<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+				<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+				<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+				<input type="hidden" name="start" value="<?php echo  $next; ?>" />
 			</form>
 <?php else:?>
 				<?php echo _LISTS_NEXT; ?> &gt; &gt;
 <?php endif;?>
 		<?php echo $page_navigation; ?>
-				</td>
+		</td>
 		<td style="white-space: nowrap;">
 			<form method="post" action="index.php">
 			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
