@@ -5627,9 +5627,15 @@ selector();
 	<meta http-equiv="Expires" content="-1" />
 
 <?php echo $extrahead;?>
+<?php
+	$adminAlert = isset($CONF['adminAlert'])&&!empty($CONF['adminAlert']) ? $CONF['adminAlert'] : '';
+    if(defined($adminAlert)) $adminAlert = constant($adminAlert);
+    if($adminAlert) $adminAlert = sprintf('<script>alert("%s");</script>',$adminAlert);
+?>
 </head>
 <body class="<?php echo $action;?>">
 <div id="adminwrapper">
+<?php echo $adminAlert;?>
 <div class="header">
 <h1><?php echo hsc($CONF['SiteName'])?></h1>
 </div>

@@ -78,6 +78,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 			$obj = sql_fetch_object($res);
 			$Language = $obj->value;
 			$charset = get_charname_from_langname($Language);
+			$charsetOfDB = getCharSetFromDB(sql_table('config'),'name');
+			if($charset !== $charsetOfDB) {
+				global $CONF;
+				$CONF['adminAlert'] = '_MISSING_DB_ENCODING';
+				$charset = $charsetOfDB;
+			}
 		}
 		sql_set_charset($charset);
 		

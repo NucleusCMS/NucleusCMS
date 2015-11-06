@@ -1362,4 +1362,4 @@ define('_EDITC_NONMEMBER',							'非メンバー');
 define('_MOVE_TITLE',								'どのBlogに移動しますか？');
 define('_MOVE_BTN',									'アイテムを移動する');
 
-?>
+define('_MISSING_DB_ENCODING',						'データベースのエンコード設定が不正です。');

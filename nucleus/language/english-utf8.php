@@ -1353,4 +1353,4 @@ define('_EDITC_NONMEMBER',							'non member');
 define('_MOVE_TITLE',								'Move to which blog?');
 define('_MOVE_BTN',									'Move Item');
 
-?>
+define('_MISSING_DB_ENCODING',						'Missing database encoding.');
