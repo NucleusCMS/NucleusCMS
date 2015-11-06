@@ -387,6 +387,23 @@ tr.highlighted td {
 	background-color: green;
 }
 
+table.navigation {
+    margin-bottom:0;
+}
+
+table.navigation table {
+	border: none;
+	width: auto;
+	margin0;
+    display:inline;
+}
+table.navigation form,
+table.navigation input
+{
+	margin0;
+    display:inline;
+}
+
 table.navigation td, table.navigation th {
 	border: none;
 }
