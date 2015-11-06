@@ -23,11 +23,10 @@ $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
-$CONF['debug'] = 0;
-if ($CONF['debug']) {
+if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
 	error_reporting(E_ALL); // report all errors!
 } else {
-	if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
+	if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
 		ini_set('display_errors','0');
 	if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
 	error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
@@ -63,7 +62,7 @@ if (function_exists('date_default_timezone_set')) {
 		directory) are still on the server.
 */
 
-if (!isset($CONF['alertOnHeadersSent']) || (isset($CONF['alertOnHeadersSent'])&& $CONF['alertOnHeadersSent'] !== 0))
+if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
 {
 	$CONF['alertOnHeadersSent']  = 1;
 }
