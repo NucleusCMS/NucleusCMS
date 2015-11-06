@@ -458,6 +458,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		return $charset_name;
 	}
 	
+    function getCharSetFromDB($tableName,$columnName) {
+    	$collation = getCollationFromDB($tableName,$columnName);
+    	if(strpos($collation,'_')===false) $charset = $collation;
+    	else list($charset,$dummy) = explode('_', $collation, 2);
+    	return $charset;
+    }
+	
     function getCollationFromDB($tableName,$columnName) {
         $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'");
         $column = sql_fetch_object($columns);
