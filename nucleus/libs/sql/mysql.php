@@ -457,4 +457,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 		}
 		return $charset_name;
 	}
+	
+    function getCollationFromDB($tableName,$columnName) {
+        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'");
+        $column = sql_fetch_object($columns);
+        return isset($column->Collation) ? $column->Collation : false;
+    }
 }
