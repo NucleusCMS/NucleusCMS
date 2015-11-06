@@ -66,7 +66,7 @@ if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
 {
 	$CONF['alertOnHeadersSent']  = 1;
 }
-$CONF['alertOnSecurityRisk'] = 1;
+if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
 /*$CONF['ItemURL']		   = $CONF['Self'];
 $CONF['ArchiveURL']		  = $CONF['Self'];
 $CONF['ArchiveListURL']	  = $CONF['Self'];
@@ -1179,7 +1179,8 @@ function getConfig() {
 	$res = sql_query($query);
 
 	while ($obj = sql_fetch_object($res) ) {
-		$CONF[$obj->name] = $obj->value;
+		if(!isset($CONF[$obj->name]))
+			$CONF[$obj->name] = $obj->value;
 	}
 }
 
