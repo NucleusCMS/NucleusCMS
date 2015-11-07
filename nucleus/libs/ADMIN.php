@@ -3745,10 +3745,11 @@ selector();
 	function action_addnewlog2() {
 		global $member, $manager;
 
+		$blogid = intRequestVar('blogid');
+
 		$member->blogAdminRights($blogid) or $this->disallow();
 
 		$burl   = requestVar('url');
-		$blogid = intRequestVar('blogid');
 
 		$blog =& $manager->getBlog($blogid);
 		$blog->setURL(trim($burl));
