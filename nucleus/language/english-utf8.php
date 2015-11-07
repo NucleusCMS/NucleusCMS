@@ -1253,7 +1253,7 @@ define('_BLOGLIST_TT_ADD',							'Add a new item to this weblog');
 define('_BLOGLIST_EDIT',							'Edit/Delete Items');
 define('_BLOGLIST_TT_EDIT',							'');
 define('_BLOGLIST_BMLET',							'Bookmarklet');
-define('_BLOGLIST_TT_BMLET',						'');
+define('_BLOGLIST_TT_BMLET',						'Set bookmarklet');
 define('_BLOGLIST_SETTINGS',						'Settings');
 define('_BLOGLIST_TT_SETTINGS',						'Edit settings or manage team');
 define('_BLOGLIST_BANS',							'Bans');
