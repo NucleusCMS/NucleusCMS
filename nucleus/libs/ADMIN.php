@@ -2355,7 +2355,7 @@ class ADMIN {
 		// get activation info
 		$info = MEMBER::getActivationInfo($key);
 
-		if (!$info || ($info->type == 'addresschange'))
+		if (!$info || ($info->vtype == 'addresschange'))
 			return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 
 		$mem = MEMBER::createFromId($info->vmember);
