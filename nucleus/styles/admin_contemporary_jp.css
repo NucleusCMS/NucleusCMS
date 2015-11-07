@@ -41,8 +41,8 @@ a:hover {
 /* textareas */
 textarea {
   
-	line-height:1.5;/* add */
-	padding:5px;/* add */
+	line-height:1.5;
+	padding:5px;
   width: 95%;
 }
 
@@ -52,7 +52,6 @@ textarea.skinedit, textarea.templateedit {
 	font-family: 'Courier New','Courier', monospace;
 }
 
-/* add start */
 textarea#inputbody,textarea#inputmore {
 	width:93%;
 	margin:5px 3px;
@@ -61,7 +60,6 @@ textarea#inputbody,textarea#inputmore {
 textarea.pluginoption {
 	width:420px;
 }
-/* add end */
 
 /* images */
 img {
@@ -101,8 +99,7 @@ div.indent {
 
 .error {
 	color: red;
-	/*font-size: 1.2em;*//*mod yotaka 090323*/
-	font-size: 14pt; /*add yotaka 090323*/
+	font-size: 14pt;
 }
 
 .ok {
@@ -119,7 +116,7 @@ div.indent {
 /* header */
 h1 {
 	text-align: right;
-	font-size:20pt;/*add yotaka 090323*/
+	font-size:20pt;
 	letter-spacing: 0.1em;
 	color: #596d9d;
 	margin: 0 0 5px 135px;
@@ -145,12 +142,11 @@ h1 {
 	margin: 0px;
 	padding: 0px;
 	
-	font-size:9pt;/*add yotaka 090323*/
-	color:#333;/* add */
+	font-size:9pt;
+	color:#333;
 	
 	border-width: 1px;
 	border-style: solid;
-/*	border-color: black; modify */
 	border-color: #bbb;
 
 	background: #ffffff url(contemporary_jp/quickb.jpg) top left fixed repeat-y; 
@@ -178,18 +174,16 @@ h1 {
 #quickmenu a {
 	display: block;
 	padding: 5px;
-	/*font-size: 1em;*//*mod yotaka 090323*/
-	font-size: 9pt;/*add yotaka 090323*/
+	font-size: 9pt;
 	line-height: 1.5em;
 	text-decoration: none;
 }
 
 #quickmenu a:hover {
 	background: #ffffff url(contemporary_jp/quickb-hover.jpg) top left fixed repeat-y; 
-/*	color: #000; modify */
 	color: #333;
 	letter-spacing: 1px;
-	white-space: nowrap; /* add */
+	white-space: nowrap; 
 }
 
 .settingsedit .settingsedit a,
@@ -211,14 +205,12 @@ h1 {
 }
 
 #quickmenu h2 {
-	/*font-size: small;*//*mod yotaka 090323*/
-	font-size: 9pt;/*add yotaka 090323*/
+	font-size: 9pt;
 	text-align: center;
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
 	border-bottom: 1px solid #bbb; 	
 	background-color: #ddd;
-/*	color: #000; modify */
 	color: #333;
 }
 
@@ -229,14 +221,12 @@ h1 {
 }
 
 #quickmenu option {
-/*	font-size: 0.9em;*//*mod yotaka 090323*/
-	font-size: 8pt;/*add yotaka 090323*/
+	font-size: 8pt;
 }
 
 .loginname {
 	float: right;
-/*	font-size: small;*//*mod yotaka 090323*/
-	font-size: 9pt;/*add yotaka 090323*/
+	font-size: 9pt;
 	text-align: right;
 	line-height: normal;
 	padding: 5px;
@@ -249,7 +239,7 @@ h1 {
 
 /* page content */
 #content {
-   margin-left:163px;
+    margin-left:163px;
 	font-style: normal;
 	text-decoration: none;
 	color: #333;
@@ -270,12 +260,12 @@ h1 {
 	border-style: dashed;
 	border-width: 0px 0px 1px 0px;
 
-	font-size: 1.1em;/*add yotaka 090323*/
-	line-height: 1.6;/*add yotaka 090323*/
+	font-size: 1.1em;
+	line-height: 1.6;
 
 	text-decoration: none;
 	font-weight: bold; 
-	letter-spacing: 2px;/* add */
+	letter-spacing: 2px;
 }
 
 #content h3 {
@@ -283,22 +273,16 @@ h1 {
 	border-style: solid;
 	border-width: 0px 0px 0px 5px;
 
-/*	font-size: medium;*/
 	font-size: 1.1em;
 	font-weight: normal;
 	line-height: 1.2;
 
-/*	color: gray;
-	padding-left: 20px;
-	letter-spacing: 2; modify */
-
 	color: #596d9d;
 	padding-left: 8px;
 	letter-spacing: 2px;
-	margin-left:5px;/* add */
+	margin-left:5px;
 }
 
-/* add start */
 #content ul {
 	line-height:1.5em;
 /*	list-style-type:square;*/
@@ -306,7 +290,6 @@ h1 {
 	padding:0;
 	list-style-image:url(contemporary_jp/bullet.gif);
 }
-/* add end */
 
 #content .note, pre {
 	background-color: #ddd;
@@ -316,22 +299,9 @@ h1 {
 #content li a{
 }
 
-/* 
-	font size tricks, to make it work in all browsers
-
-	See:
-	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
-
-	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
-	#content should be 'small' (in standard-compliant browsers)
-
-*/
-
 #content {
-/*	font-size: small;*//*mod yotaka 090323*/
 	voice-family: "\"}\"";
 	voice-family: inherit;
-	/*font-size: small;*//*mod yotaka 090323*/
 }
 html>body #content {
 }
@@ -342,22 +312,19 @@ table {
 	width: 100%;
 	border-collapse: collapse;
 	margin-bottom: 10px;
-	margin-top: 10px;
+	margin-top: 10px;	
 }
 
 th {
-/*	background-color: #bbc; modify */
 	background-color: #ddd;
-/*	color: #000; modify */
 	color: #333;
-	/*font-size: small;*//*mod yotaka 090323*/
-	letter-spacing:1px;/* add */
+	letter-spacing:1px;
 }
 
 th, td {
 	padding: 4px;
 	empty-cells: show;	
-	border: 1px solid #ddd; /* add */
+	border: 1px solid #ddd; 
 }
 
 td {
@@ -368,7 +335,6 @@ td {
 
 td a:link, td a:visited { 
 	text-decoration: underline;
-/*	color: black; modify */
 	color: #333;
 	font-weight: normal;
 }
@@ -441,8 +407,7 @@ table.navigation td, table.navigation th {
 
 /* item list */
 #content table label.list_item_title {
-/*	font-size: 1.1em;*//*mod yotaka 090323*/
-	font-size: 10pt;/*mod yotaka 090323*/
+	font-size: 10pt;
 	font-weight: bold;
 }
 
