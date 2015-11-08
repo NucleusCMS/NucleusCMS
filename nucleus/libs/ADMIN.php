@@ -2355,7 +2355,7 @@ class ADMIN {
 		// get activation info
 		$info = MEMBER::getActivationInfo($key);
 
-		if (!$info || ($info->type == 'addresschange'))
+		if (!$info || ($info->vtype == 'addresschange'))
 			return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 
 		$mem = MEMBER::createFromId($info->vmember);
@@ -3745,10 +3745,11 @@ selector();
 	function action_addnewlog2() {
 		global $member, $manager;
 
+		$blogid = intRequestVar('blogid');
+
 		$member->blogAdminRights($blogid) or $this->disallow();
 
 		$burl   = requestVar('url');
-		$blogid = intRequestVar('blogid');
 
 		$blog =& $manager->getBlog($blogid);
 		$blog->setURL(trim($burl));
