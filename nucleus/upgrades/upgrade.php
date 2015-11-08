@@ -28,12 +28,6 @@ $from = intGetVar('from');
 upgrade_start();
 
 switch($from) {
-	case 200:
-		include('upgrade2.5.php');
-		upgrade_do250();
-	case 250:
-		include('upgrade3.0.php');
-		upgrade_do300();
 	case 300:
 		include('upgrade3.1.php');
 		upgrade_do310();
