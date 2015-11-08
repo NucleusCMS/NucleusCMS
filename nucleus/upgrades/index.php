@@ -36,35 +36,36 @@ $echo[] = "\n<h1>"  . _UPG_TEXT_UPGRADE_SCRIPTS . "</h1>\n";
 <p><?php $echo[] = _UPG_TEXT_NOTE02; ?></p>
 
 <?php	// calculate current version
-    if     (!upgrade_checkinstall(250)) $current = 200;
-    elseif (!upgrade_checkinstall(300)) $current = 250;
-    elseif (!upgrade_checkinstall(310)) $current = 300;
-    elseif (!upgrade_checkinstall(320)) $current = 310;
-    elseif (!upgrade_checkinstall(330)) $current = 320;
-    elseif (!upgrade_checkinstall(331)) $current = 330;
-    elseif (!upgrade_checkinstall(340)) $current = 331;
-    elseif (!upgrade_checkinstall(350)) $current = 340;
-    elseif (!upgrade_checkinstall(360)) $current = 350;
-    elseif (!upgrade_checkinstall(370)) $current = 360;
-    elseif (!upgrade_checkinstall(371)) $current = 370;
-    else                                $current = 371;
-    if ($current == 371) {
-		$echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . "</p> \n";
-	} else {
-		if (phpversion() < '5.0.0') {
-			$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP ."</p>\n";
-		}
-		$echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
-	 }
+if     (!upgrade_checkinstall(250)) $current = 200;
+elseif (!upgrade_checkinstall(300)) $current = 250;
+elseif (!upgrade_checkinstall(310)) $current = 300;
+elseif (!upgrade_checkinstall(320)) $current = 310;
+elseif (!upgrade_checkinstall(330)) $current = 320;
+elseif (!upgrade_checkinstall(331)) $current = 330;
+elseif (!upgrade_checkinstall(340)) $current = 331;
+elseif (!upgrade_checkinstall(350)) $current = 340;
+elseif (!upgrade_checkinstall(360)) $current = 350;
+elseif (!upgrade_checkinstall(370)) $current = 360;
+elseif (!upgrade_checkinstall(371)) $current = 370;
+else                                $current = 371;
 
-	ob_start();
+if ($current == 371)
+	$echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . "</p> \n";
+else {
+	if (phpversion() < '5.0.0') {
+		$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP ."</p>\n";
+	}
+	$echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
+}
 
-	$echo[] = "<div class=\"note\">\n";
-	$echo[] = sprintf("<b>%s:</b> %s\n" , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
-	$echo[] = "</div>\n";
+ob_start();
 
-	$echo[] = "<h1>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES ."</h1>\n";
-	$echo[] = "<p>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 ."</p>\n";
+$echo[] = "<div class=\"note\">\n";
+$echo[] = sprintf("<b>%s:</b> %s\n" , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+$echo[] = "</div>\n";
+
+$echo[] = "<h1>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES ."</h1>\n";
+$echo[] = "<p>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 ."</p>\n";
 
 	
 $from = intGetVar('from');
