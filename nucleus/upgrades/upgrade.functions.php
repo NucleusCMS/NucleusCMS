@@ -19,19 +19,16 @@
 
 	include('../../config.php');
 
-	function load_upgrade_lang()
-	{
-		$lang = getLanguageName();
-		if (stripos($lang, 'japan') !== false)
-			$name = 'japanese';
-		else
-			$name = 'english';
-		$filename = array();
-		$filename[0] = dirname(__FILE__) . '/upgrade_lang_japanese.php';
-		$filename[1] = dirname(__FILE__) . '/upgrade_lang_' . $name . '.php';
-		if (file_exists($filename[1]))
-			$filename[0] = $filename[1];
-		include_once($filename[0]);
+	function load_upgrade_lang() {
+		$_ = getLanguageName();
+		$langNames[] = stripos($_,'japan')!==false ? 'japanese' : $_;
+		$langNames[] = 'english';
+		foreach($langNames as $langName) {
+			$lang_path = dirname(__FILE__) . "/upgrade_lang_{$langName}.php";
+			if(is_file($lang_path)) break;
+			else $lang_path = false;
+		}
+		if($lang_path) include_once($lang_path);
 	}
 
 	function upgrade_checkinstall($version) {
