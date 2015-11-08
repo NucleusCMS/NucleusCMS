@@ -51,7 +51,7 @@ define('_UPG_TEXT_WARN_DEPRECATED_PHP4_STOP',	'NucleusはPHP4では動作しま�
 define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',		'ここをクリックしてデータベースを Nucleus v3.71 用にアップグレードします');
 
 define('_UPG_TEXT_NOTE50_WARNING',        '注意');
-define('_UPG_TEXT_NOTE50_MAKE_BACKUP',    '作業中、各ステップごとにデータベースのバックアップを忘れないようにして下さい。');
+define('_UPG_TEXT_NOTE50_MAKE_BACKUP',    'アップデート前にデータベースのバックアップを行なって下さい。');
 define('_UPG_TEXT_NOTE50_MANUAL_CHANGES', '手動変更');
 define('_UPG_TEXT_NOTE50_MANUAL_CHANGES_01',  'いくつかの変更は手動で行う必要があります。下記にその手順を示します。');
 define('_UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY',			 '手動変更は必要ありません。今日はラッキーな日ですね!');
