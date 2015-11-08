@@ -54,20 +54,21 @@ else {
     $echo[] = '</div>';
 }
 
-
 $from = intGetVar('from');
 if (!$from) $from = $current;
 
-$sth = array();
-if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
-if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
-if($from < 366) $sth[] = upgrade_manual_366();
-
-$sth = trim(join('',$sth));
-if (!empty($sth)) {
-    $echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
-    $echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
-    $echo[] = $sth;
+if (version_compare('5.0.0',phpversion(),'<=') && $from < 371) {
+    $sth = array();
+    if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
+    if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
+    if($from < 366) $sth[] = upgrade_manual_366();
+    
+    $sth = trim(join('',$sth));
+    if (!empty($sth)) {
+        $echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
+        $echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
+        $echo[] = $sth;
+    }
 }
 
 upgrade_head();
