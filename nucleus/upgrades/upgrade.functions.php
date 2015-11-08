@@ -19,26 +19,6 @@
 
 	include('../../config.php');
 
-	// sql_table function did not exists in nucleus <= 2.0
-	if (!function_exists('sql_table'))
-	{
-		function sql_table($name) {
-			return 'nucleus_' . $name;
-		}
-	}
-
-	//intGetVar did not exist in very early versions
-	if (!function_exists('intGetVar')) {
-		function intGetVar($name) {
-			if (defined($_GET)) {
-				return intval($_GET[$name]);
-			} else {
-				global $HTTP_GET_VARS;
-				return intval($HTTP_GET_VARS[$name]);
-			}
-		}
-	}
-
 	function load_upgrade_lang()
 	{
 		$lang = getLanguageName();
