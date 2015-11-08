@@ -26,16 +26,10 @@ if (!$member->isAdmin()) {
 
 $echo = array();
 $echo[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
+$echo[] = _UPG_TEXT_NOTE01NEW;
+$echo[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
 
-?>
-
-<div class="note">
-<b>Note:</b> <?php $echo[] = _UPG_TEXT_NOTE01NEW; ?>
-</div>
-
-<p><?php $echo[] = _UPG_TEXT_NOTE02; ?></p>
-
-<?php	// calculate current version
+// calculate current version
 if     (!upgrade_checkinstall(250)) $current = 200;
 elseif (!upgrade_checkinstall(300)) $current = 250;
 elseif (!upgrade_checkinstall(310)) $current = 300;
@@ -56,19 +50,12 @@ else {
 		$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
 	}
 	$echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
+    $echo[] = '<div class="note">';
+    $echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+    $echo[] = '</div>';
 }
-echo join("\n",$echo);
 
-ob_start();
-$echo =array();
-$echo[] = '<div class="note">';
-$echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
-$echo[] = '</div>';
 
-$echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
-$echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
-
-	
 $from = intGetVar('from');
 if (!$from) $from = $current;
 
@@ -78,9 +65,12 @@ if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recomme
 if($from < 350) $sth[] = upgrade_manual_350();     // Need to be told of deprecation of PHP4 support and two new plugins
 if($from < 366) $sth[] = upgrade_manual_366();
 
-$echo[] = ob_get_clean();
 $sth = trim(join('',$sth));
-if (!empty($sth)) $echo[] = $sth;
+if (!empty($sth)) {
+    $echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
+    $echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
+    $echo[] = $sth;
+}
 
 upgrade_head();
 echo join("\n",$echo);

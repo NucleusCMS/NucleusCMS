@@ -42,7 +42,7 @@ define('_UPG_TEXT_SUCCESS',		        '成功!');
 
 
 define('_UPG_TEXT_UPGRADE_SCRIPTS',	 'アップグレードスクリプト集');
-define('_UPG_TEXT_NOTE01NEW',		 '新規インストールの場合はこれらのスクリプト集は必要ありません。');
+define('_UPG_TEXT_NOTE01NEW',		 '※新規インストールの場合はこれらのスクリプト集は必要ありません。');
 define('_UPG_TEXT_NOTE02',			 'Nucleus CMSはバージョンアップごとに、データベースのテーブル構造を少しずつ変えています。このスクリプト集は、古いバージョンの Nucleus からアップグレードする際に必要な、データベーステーブルのアップグレードを行います。');
 
 

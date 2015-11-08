@@ -112,8 +112,8 @@
 
 	function upgrade_foot() {
 	?>
-			</body>
-			</html>
+	</body>
+</html>
 	<?php
 	}
 
