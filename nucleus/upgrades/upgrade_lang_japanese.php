@@ -59,7 +59,7 @@ define('_UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY',			 '手動変更は必要あり�
 define('_UPG_TEXT_60_INSTALLED',			'インストール済み');
 define('_UPG_TEXT_60_NOT_INSTALLED',		'インストールが必要');
 
-define('_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS',	 'Nucleus %s 用に必要な変更');
+define('_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS',	 'Nucleus %s 以降で必要な変更');
 
 /*******************/
 
