@@ -73,14 +73,8 @@ if (!$from) $from = $current;
 
 $sth = 0;
 
-if (in_array($from,array(95,96)) || $from < 366)
+if ($from < 366)
 	$sth += upgrade_manual_366();
-
-if (!$DIR_MEDIA)
-	$sth += upgrade_manual_96();
-
-if (!$DIR_SKINS)
-	$sth += upgrade_manual_20();
 
 // from v3.3, atom feed supports 1.0 and blogsetting is added
 if($from<330)
@@ -88,12 +82,12 @@ if($from<330)
 
 // upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
 // these .htaccess files are included in new installs of 340 or higher
-if (in_array($from,array(95,96)) || $from < 340)
+if ($from < 340)
 	$sth += upgrade_manual_340();
 
 // upgrades from pre-350 version need to be told of deprecation of PHP4 support and two new plugins 
 // included with 3.51 and higher
-if (in_array($from,array(95,96)) || $from < 350)
+if ($from < 350)
 	$sth += upgrade_manual_350();
 
 $content = ob_get_clean();
@@ -106,45 +100,6 @@ upgrade_foot();
 
 function upgrade_todo($ver) {
 	return upgrade_checkinstall($ver) ? "(<span class='ok'>". _UPG_TEXT_60_INSTALLED ."</span>)" : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
-}
-
-function upgrade_manual_96() {
-	global $DIR_NUCLEUS;
-
-	$guess = str_replace("/nucleus/","/media/",$DIR_NUCLEUS);
-?>
-	<h2><?php echo sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '0.96'); ?></h2>
-	<p><?php echo _UPG_TEXT_V096MEDIA; ?>:</p>
-	<pre>
-	// path to media dir
-	$DIR_MEDIA = '<b><?php echo hsc($guess)?></b>';
-	</pre>
-
-	<p><?php echo _UPG_TEXT_V096MEDIA02; ?></p>
-
-<?php
-	return 1;
-}
-
-function upgrade_manual_200() {
-	global $DIR_NUCLEUS;
-
-	$guess = str_replace("/nucleus/","/skins/",$DIR_NUCLEUS);
-?>
-	<h2><?php echo sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '2.0'); ?></h2>
-	<p><?php echo _UPG_TEXT_V200_01; ?>:</p>
-	<pre>
-	// extra skin files for imported skins
-	$DIR_SKINS = '<b><?php echo hsc($guess)?></b>';
-	</pre>
-<?php
-	echo "<p>". _UPG_TEXT_V200_02 . "</p>\n";
-
-	echo "<h3>". _UPG_TEXT_V200_RSS_RSD . "</h3>\n";
-
-	echo "<p>". _UPG_TEXT_V200_04 . "</p>\n";
-
-	return 1;
 }
 
 function upgrade_manual_340() {
