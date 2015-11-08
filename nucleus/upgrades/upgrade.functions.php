@@ -104,27 +104,18 @@
 	<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _UPG_TEXT_NUCLEUS_UPGRADE; ?></title>
-<?php if (file_exists("../styles/manual.css")) { ?>
-				<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
-<?php }else{ ?>
-				<style type="text/css"><!--
-					.warning {
-						color: red;
-					}
-					.ok {
-						color: green;
-					}
-				--></style>
-<?php } ?>
-			</head>
-			<body>
-	<?php   }
+	<link rel="stylesheet" href="../styles/manual.css" type="text/css" />
+</head>
+<body>
+	<?php
+	}
 
 	function upgrade_foot() {
 	?>
 			</body>
 			</html>
-	<?php   }
+	<?php
+	}
 
 	function upgrade_error($msg) {
 		upgrade_head();
