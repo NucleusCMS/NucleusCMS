@@ -24,17 +24,16 @@ if (!$member->isAdmin()) {
 	upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
-upgrade_head();
-
-echo "\n<h1>"  . _UPG_TEXT_UPGRADE_SCRIPTS . "</h1>\n";
+$echo = array();
+$echo[] = "\n<h1>"  . _UPG_TEXT_UPGRADE_SCRIPTS . "</h1>\n";
 
 ?>
 
 <div class="note">
-<b>Note:</b> <?php echo _UPG_TEXT_NOTE01NEW; ?>
+<b>Note:</b> <?php $echo[] = _UPG_TEXT_NOTE01NEW; ?>
 </div>
 
-<p><?php echo _UPG_TEXT_NOTE02; ?></p>
+<p><?php $echo[] = _UPG_TEXT_NOTE02; ?></p>
 
 <?php	// calculate current version
     if     (!upgrade_checkinstall(250)) $current = 200;
@@ -50,22 +49,22 @@ echo "\n<h1>"  . _UPG_TEXT_UPGRADE_SCRIPTS . "</h1>\n";
     elseif (!upgrade_checkinstall(371)) $current = 370;
     else                                $current = 371;
     if ($current == 371) {
-		echo '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . "</p> \n";
+		$echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . "</p> \n";
 	} else {
 		if (phpversion() < '5.0.0') {
-			echo '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP ."</p>\n";
+			$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP ."</p>\n";
 		}
-		echo sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>' ,  $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
+		$echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
 	 }
 
-	 ob_start();
+	ob_start();
 
-	 echo "<div class=\"note\">\n";
-	 echo sprintf("<b>%s:</b> %s\n" , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
-	 echo "</div>\n";
+	$echo[] = "<div class=\"note\">\n";
+	$echo[] = sprintf("<b>%s:</b> %s\n" , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+	$echo[] = "</div>\n";
 
-	echo "<h1>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES ."</h1>\n";
-	echo "<p>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 ."</p>\n";
+	$echo[] = "<h1>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES ."</h1>\n";
+	$echo[] = "<p>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 ."</p>\n";
 
 	
 $from = intGetVar('from');
@@ -96,13 +95,12 @@ if (in_array($from,array(95,96)) || $from < 340)
 if (in_array($from,array(95,96)) || $from < 350)
 	$sth += upgrade_manual_350();
 
-//	echo "<p class='ok'>". _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY ."</p>";
-
 $content = ob_get_clean();
 
-if (0<$sth) echo $content;
+if (0<$sth) $echo[] = $content;
 
-
+upgrade_head();
+echo join('',$echo);
 upgrade_foot();
 
 function upgrade_todo($ver) {
