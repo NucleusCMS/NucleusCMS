@@ -275,7 +275,8 @@ class Backup
 	
 		if (!file_exists($backup_file_tmpname))
 			return _BACKUP_RESTOR_UPLOAD_ERROR;
-	
+		
+		if($backup_file_type==='application/download') $backup_file_type = 'application/octet-stream'; // For firefox
 		if (!preg_match("/^(text\/[a-zA-Z]+)|(application\/(x\-)?gzip(\-compressed)?)|(application\/octet-stream)$/is", $backup_file_type) )
 			return _BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE;
 	
