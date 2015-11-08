@@ -71,7 +71,7 @@ define('_UPG_TEXT_V200_02',			 'また、ディレクトリもあなた自身の
 define('_UPG_TEXT_V200_RSS_RSD',	 'RSS 2.0 と RSD スキン');
 define('_UPG_TEXT_V200_04',			 'Nucleus 2.0 を新規にインストールしたとき、RSD(Really Simple Discovery) 用のスキンの他に、RSS 2.0(Really Simple Syndication)用のスキンもまたインストールされます。<code>xml-rss2.php</code> と <code>rsd.php</code> の両ファイルはアップグレードされますが、スキンに関しては手動でインストールする必要があります。<code>upgrade-files</code>の中身をアップロードしたあと、管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから両スキンをインストールすることができます（もしインストールするつもりがなければ、しなくても結構です）。');
 
-define('_UPG_TEXT_V340_01',		'<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.haccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。');
+define('_UPG_TEXT_V340_01',		'<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.htaccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。');
 define('_UPG_TEXT_V340_02',		'手順は以下の2つのファイルに書いてありますので参考にしてください');
 
 define('_UPG_TEXT_V366_01',	                    '最新のPHP環境に必要な変更');
