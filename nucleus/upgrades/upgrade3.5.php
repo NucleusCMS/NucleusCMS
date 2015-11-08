@@ -15,10 +15,6 @@ function upgrade_do350() {
 	if (upgrade_checkinstall(350))
 		return _UPG_TEXT_ALREADY_INSTALLED;
 	
-	// Give user warning if they are running old version of PHP
-		if (phpversion() < '5') {
-			echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
-		}
 	$prefix = sql_table('');
 	// changing the member table to lengthen display name (mname)
 	$query = "	ALTER TABLE `" . sql_table('member') . "`

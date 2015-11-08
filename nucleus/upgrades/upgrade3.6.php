@@ -15,11 +15,6 @@ function upgrade_do360() {
 	if (upgrade_checkinstall(360))
 		return _UPG_TEXT_ALREADY_INSTALLED;
 	
-	// Give user warning if they are running old version of PHP
-	if (phpversion() < '5') {
-		echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
-	}
-	
 	// changing the blog table to lengthen bnotify field 
 	$query = "	ALTER TABLE `" . sql_table('blog') . "`
 					MODIFY `bnotify` varchar(128) default NULL ;";

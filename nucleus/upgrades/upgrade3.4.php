@@ -15,11 +15,6 @@ function upgrade_do340() {
 	if (upgrade_checkinstall(340))
 		return _UPG_TEXT_ALREADY_INSTALLED;
 	
-	// Give user warning if they are running old version of PHP
-		if (phpversion() < '5') {
-				echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
-		}
-
 	// lengthen tpartname column of nucleus_template
 	$query = "  ALTER TABLE `" . sql_table('template') . "`
 					MODIFY `tpartname` varchar(64) NOT NULL default '' ;";

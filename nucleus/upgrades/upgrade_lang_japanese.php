@@ -12,7 +12,6 @@
  */
 
 define('_UPG_TEXT_ALREADY_INSTALLED', 'インストール済みです');
-define('_UPG_TEXT_WARN_PHP_IS_OLD',	  '警告：サーバで稼動しているPHPのバージョンが、NucleusCMSの動作保障外の古いバージョンのようです。PHP5以上にアップグレードしてください！');
 define('_UPG_TEXT_V035_WARN_PING',	  '注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。');
 define('_UPG_TEXT_NOTE_PING01',	      'メモ: weblogs.com ping 機能が向上しプラグイン化されました。この機能を有効化するには、プラグインの管理メニューを開き、NP_Ping プラグインをインストールしてください。また NP_Ping は NP_PingPong を置き換えるものです。もしすでに NP_PingPong をインストール済みであれば削除してください。');
 
@@ -74,8 +73,6 @@ define('_UPG_TEXT_V200_04',			 'Nucleus 2.0 を新規にインストールした
 
 define('_UPG_TEXT_V340_01',		'<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.haccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。');
 define('_UPG_TEXT_V340_02',		'手順は以下の2つのファイルに書いてありますので参考にしてください');
-
-define('_UPG_TEXT_V350_01_IMPORTANT',	'Nucleus 3.51に関する重要なお知らせ');
 
 define('_UPG_TEXT_V366_01',	                    '最新のPHP環境に必要な変更');
 define('_UPG_TEXT_V366_02_UPDATE_ACTION_PHP',	'action.phpを更新してください。');

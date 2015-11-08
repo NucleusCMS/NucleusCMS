@@ -12,7 +12,6 @@
  */
 
 define('_UPG_TEXT_ALREADY_INSTALLED', 'already installed');
-define('_UPG_TEXT_WARN_PHP_IS_OLD',	  'WARNING: You are running NucleusCMS on a older version of PHP that is no longer supported by NucleusCMS. Please upgrade to PHP5!');
 define('_UPG_TEXT_V035_WARN_PING',	  'Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin');
 define('_UPG_TEXT_NOTE_PING01',	      'Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin. Also, NP_Ping is replacing NP_PingPong. If you have NP_PingPing installed, please also remove it.');
 
@@ -74,8 +73,6 @@ define('_UPG_TEXT_V200_04',			 "When a fresh version of Nucleus 2.0 is installed
 
 define('_UPG_TEXT_V340_01',		"It is recommended that you apply some restrictions to what you allow the web server to do with files in the <i>media</i> and <i>skins</i> folders. These restrictions are not necessary to the functioning of the software, nor to the security of the software. However, they can be an important help under the security principle of denying any access that is not required.");
 define('_UPG_TEXT_V340_02',		"Instructions for applying the restrictions are found in the following two files on your server");
-
-define('_UPG_TEXT_V350_01_IMPORTANT',	'Important Notices for Nucleus 3.5');
 
 define('_UPG_TEXT_V366_01',	                    'Necessary changes to the latest version of the PHP environment');
 define('_UPG_TEXT_V366_02_UPDATE_ACTION_PHP',	'Please update the action.php');

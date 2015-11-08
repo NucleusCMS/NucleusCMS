@@ -43,13 +43,12 @@ elseif (!upgrade_checkinstall(370)) $current = 360;
 elseif (!upgrade_checkinstall(371)) $current = 370;
 else                                $current = 371;
 
-if ($current == 371)
-	$echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
+if (phpversion() < '5.0.0')
+    $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
+elseif ($current == 371)
+    $echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
 else {
-	if (phpversion() < '5.0.0') {
-		$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
-	}
-	$echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
+    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
     $echo[] = '<div class="note">';
     $echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
     $echo[] = '</div>';
@@ -62,7 +61,6 @@ if (!$from) $from = $current;
 $sth = array();
 if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
 if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
-if($from < 350) $sth[] = upgrade_manual_350();     // Need to be told of deprecation of PHP4 support and two new plugins
 if($from < 366) $sth[] = upgrade_manual_366();
 
 $sth = trim(join('',$sth));
@@ -124,13 +122,6 @@ function upgrade_manual_340() {
 	$echo[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
 	$echo[] = '</ul>';
 	$echo[] = '</p>';
-	return join("\n",$echo);
-}
-
-function upgrade_manual_350() {
-	if (5<=phpversion()) return '';
-	$echo[] = '<h2>'. _UPG_TEXT_V350_01_IMPORTANT .'</h2>';
-	$echo[] = '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
 	return join("\n",$echo);
 }
 
