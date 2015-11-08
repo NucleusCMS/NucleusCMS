@@ -25,7 +25,7 @@ if (!$member->isAdmin()) {
 }
 
 $echo = array();
-$echo[] = "\n<h1>"  . _UPG_TEXT_UPGRADE_SCRIPTS . "</h1>\n";
+$echo[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
 
 ?>
 
@@ -50,56 +50,44 @@ elseif (!upgrade_checkinstall(371)) $current = 370;
 else                                $current = 371;
 
 if ($current == 371)
-	$echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . "</p> \n";
+	$echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
 else {
 	if (phpversion() < '5.0.0') {
-		$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP ."</p>\n";
+		$echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
 	}
 	$echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
 }
+echo join("\n",$echo);
 
 ob_start();
+$echo =array();
+$echo[] = '<div class="note">';
+$echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+$echo[] = '</div>';
 
-$echo[] = "<div class=\"note\">\n";
-$echo[] = sprintf("<b>%s:</b> %s\n" , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
-$echo[] = "</div>\n";
-
-$echo[] = "<h1>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES ."</h1>\n";
-$echo[] = "<p>" . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 ."</p>\n";
+$echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
+$echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
 
 	
 $from = intGetVar('from');
 if (!$from) $from = $current;
 
 $sth = 0;
-
-if ($from < 366)
-	$sth += upgrade_manual_366();
-
-// from v3.3, atom feed supports 1.0 and blogsetting is added
-if($from<330)
-	$sth += upgrade_manual_atom1_0();
-
-// upgrades from pre-340 version need to be told of recommended .htaccess files for the media and skins folders.
-// these .htaccess files are included in new installs of 340 or higher
-if ($from < 340)
-	$sth += upgrade_manual_340();
-
-// upgrades from pre-350 version need to be told of deprecation of PHP4 support and two new plugins 
-// included with 3.51 and higher
-if ($from < 350)
-	$sth += upgrade_manual_350();
+if($from < 366) $sth += upgrade_manual_366();
+if($from<330)   $sth += upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
+if($from < 340) $sth += upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
+if($from < 350) $sth += upgrade_manual_350();     // Need to be told of deprecation of PHP4 support and two new plugins
 
 $content = ob_get_clean();
 
 if (0<$sth) $echo[] = $content;
 
 upgrade_head();
-echo join('',$echo);
+echo join("\n",$echo);
 upgrade_foot();
 
 function upgrade_todo($ver) {
-	return upgrade_checkinstall($ver) ? "(<span class='ok'>". _UPG_TEXT_60_INSTALLED ."</span>)" : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
+	return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
 }
 
 function upgrade_manual_340() {
@@ -123,20 +111,18 @@ function upgrade_manual_340() {
 }
 
 function upgrade_manual_350() {
-	if (phpversion() < '5') {
-		echo '<h2>'. _UPG_TEXT_V350_01_IMPORTANT .'</h2>';
-		echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
-		return 1;
-	}
+	if (5<=phpversion()) return 0;
+	echo '<h2>'. _UPG_TEXT_V350_01_IMPORTANT .'</h2>';
+	echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
+	return 1;
 }
 
 function upgrade_manual_366() {
 	$content = @file_get_contents('../../action.php');
-	if(strpos($content,'=&')!==false) {
-		echo '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
-		echo '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
-		return 1;
-	}
+	if(strpos($content,'=&')===false) return 0;
+	echo '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+	echo '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+	return 1;
 }
 
 function upgrade_manual_atom1_0() {
