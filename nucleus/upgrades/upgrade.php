@@ -29,25 +29,25 @@ upgrade_start();
 
 switch($from) {
 	case 300:
-		include('upgrade3.1.php');
+		include_once('upgrade3.1.php');
 		upgrade_do310();
 	case 310:
-		include('upgrade3.2.php');
+		include_once('upgrade3.2.php');
 		upgrade_do320();
 	case 320:
-		include('upgrade3.3.php');
+		include_once('upgrade3.3.php');
 		upgrade_do330();
 	case 330:
-		include('upgrade3.31.php');
+		include_once('upgrade3.31.php');
 		upgrade_do331();
 	case 331:
-		include('upgrade3.4.php');
+		include_once('upgrade3.4.php');
 		upgrade_do340();
 	case 340:
-		include('upgrade3.5.php');
+		include_once('upgrade3.5.php');
 		upgrade_do350();
 	case 350:
-		include('upgrade3.6.php');
+		include_once('upgrade3.6.php');
 		upgrade_do360();
 	case 360:
 		include_once('upgrade3.7.php');
