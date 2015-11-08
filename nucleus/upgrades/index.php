@@ -72,15 +72,15 @@ $echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
 $from = intGetVar('from');
 if (!$from) $from = $current;
 
-$sth = 0;
-if($from < 366) $sth += upgrade_manual_366();
-if($from<330)   $sth += upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
-if($from < 340) $sth += upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
-if($from < 350) $sth += upgrade_manual_350();     // Need to be told of deprecation of PHP4 support and two new plugins
+$sth = array();
+if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
+if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
+if($from < 350) $sth[] = upgrade_manual_350();     // Need to be told of deprecation of PHP4 support and two new plugins
+if($from < 366) $sth[] = upgrade_manual_366();
 
-$content = ob_get_clean();
-
-if (0<$sth) $echo[] = $content;
+$echo[] = ob_get_clean();
+$sth = trim(join('',$sth));
+if (!empty($sth)) $echo[] = $sth;
 
 upgrade_head();
 echo join("\n",$echo);
@@ -90,62 +90,19 @@ function upgrade_todo($ver) {
 	return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
 }
 
-function upgrade_manual_340() {
-	global $DIR_NUCLEUS;
-
-	echo "<h2>" . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . "</h2>\n";
-
-	echo "<p>" . _UPG_TEXT_V340_01 . "</p>\n";
-
-?>	
-	<p>
-		<?php echo _UPG_TEXT_V340_02; ?>：
-		<ul>
-			 <li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>
-			 <li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>
-		</ul>
-	</p>
-	
-<?php
-	return 1;
-}
-
-function upgrade_manual_350() {
-	if (5<=phpversion()) return 0;
-	echo '<h2>'. _UPG_TEXT_V350_01_IMPORTANT .'</h2>';
-	echo '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
-	return 1;
-}
-
-function upgrade_manual_366() {
-	$content = @file_get_contents('../../action.php');
-	if(strpos($content,'=&')===false) return 0;
-	echo '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
-	echo '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
-	return 1;
-}
-
 function upgrade_manual_atom1_0() {
-
-	$sth += 0;
-
 	// atom 1.0
 	$query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
 	$res = sql_query($query);
+	
+	$echo = array();
 	while ($o = sql_fetch_object($res)) {
-		if ($o->sddesc=='Atom 0.3 weblog syndication')
-		{
-			$sth += 1;
-?>
-<h2>Atom 1.0</h2>
-<p><?php echo _UPG_TEXT_ATOM1_01; ?></p>
-
-<p><?php echo _UPG_TEXT_ATOM1_02; ?></p>
-
-<p><?php echo _UPG_TEXT_ATOM1_03; ?></p>
-
-<?php
-			}
+		if ($o->sddesc=='Atom 0.3 weblog syndication') {
+			$echo[] = '<h2>Atom 1.0</h2>';
+			$echo[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
+			$echo[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
+			$echo[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
+		}
 	}
 
 	// default skin
@@ -154,21 +111,43 @@ function upgrade_manual_atom1_0() {
 	$tdnumber = 0;
 	$o = sql_fetch_object($res);
 	$tdnumber = $o->tdnumber;
-	if (0<$tdnumber)
-	{
+	if (0<$tdnumber){
 		$query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
 		$res = sql_query($query);
 		if (!sql_fetch_object($res)) {
-			$sth += 1;
-?>
-<h2><?php echo _UPG_TEXT_ATOM1_04; ?></h2>
-<p><?php echo _UPG_TEXT_ATOM1_05; ?></p>
-
-<p><?php echo _UPG_TEXT_ATOM1_06; ?></p>
-
-<p><?php echo _UPG_TEXT_ATOM1_07; ?></p>
-<?php
+			$echo[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
+			$echo[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
+			$echo[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
+			$echo[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
 		}
 	}
-	return $sth;
+	return !empty($echo) ? join("\n",$echo) : '';
+}
+
+function upgrade_manual_340() {
+	$echo[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
+	$echo[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
+	$echo[] = '<p>';
+	$echo[] = _UPG_TEXT_V340_02 . '：';
+	$echo[] = '<ul>';
+	$echo[] = '<li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>';
+	$echo[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
+	$echo[] = '</ul>';
+	$echo[] = '</p>';
+	return join("\n",$echo);
+}
+
+function upgrade_manual_350() {
+	if (5<=phpversion()) return '';
+	$echo[] = '<h2>'. _UPG_TEXT_V350_01_IMPORTANT .'</h2>';
+	$echo[] = '<p>' . _UPG_TEXT_WARN_PHP_IS_OLD . '</p>';
+	return join("\n",$echo);
+}
+
+function upgrade_manual_366() {
+	$content = @file_get_contents('../../action.php');
+	if(strpos($content,'=&')===false) return '';
+	$echo[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+	$echo[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+	return join("\n",$echo);
 }
