@@ -43,7 +43,7 @@ elseif (!upgrade_checkinstall(370)) $current = 360;
 elseif (!upgrade_checkinstall(371)) $current = 370;
 else                                $current = 371;
 
-if (phpversion() < '5.0.0')
+if (version_compare(phpversion(),'5.0.0','<'))
     $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
 elseif ($current == 371)
     $echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
