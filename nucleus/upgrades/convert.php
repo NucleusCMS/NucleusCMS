@@ -11,7 +11,6 @@ $charset = getCharSetFromDB(sql_table('config'),'name');
 
 if($charset==='utf8') exit('utf8なので問題ありません。何もせずに終了します。');
 
-sql_query("SET NAMES {$charset}");
 $rs = sql_query("SHOW TABLES LIKE '{$srcPrefix}%'");
 if(!$rs) exit('Nucleusのtableがありません。何もせずに終了します。');
 
@@ -21,14 +20,14 @@ while($row=sql_fetch_array($rs)){
 }
 
 foreach($srcTableNames as $srcTableName) {
-    $newTableName = str_replace($srcPrefix,$newPrefix,$srcTableName);
+    $tmpTableName = str_replace($srcPrefix,$newPrefix,$srcTableName);
     
     sql_query("SET NAMES {$charset}");
-    sql_query("CREATE TABLE `{$newTableName}` LIKE `{$srcTableName}`");
-    sql_query("ALTER TABLE `{$newTableName}` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
+    sql_query("CREATE TABLE `{$tmpTableName}` LIKE `{$srcTableName}`");
+    sql_query("ALTER TABLE `{$tmpTableName}` CONVERT TO CHARACTER SET utf8 COLLATE utf8_general_ci");
     
     $rs = sql_query("SELECT * FROM `{$srcTableName}`");
-    if(sql_num_rows($rs)==0) {echo "{$newTableName} を作成しました。<br />"; continue;}
+    if(sql_num_rows($rs)==0) continue;
     
     sql_query('SET NAMES utf8');
     while($row = sql_fetch_object($rs)) {
@@ -41,8 +40,13 @@ foreach($srcTableNames as $srcTableName) {
         }
         $inputFields = join(',', $fields);
         $inputValues = join(',', $values);
-        sql_query("INSERT INTO {$newTableName} ({$inputFields}) VALUES ({$inputValues})");
+        sql_query("INSERT INTO {$tmpTableName} ({$inputFields}) VALUES ({$inputValues})");
     }
-    echo "{$newTableName} を作成しデータをコピーしました。<br />";
+}
+foreach($srcTableNames as $srcTableName) {
+    $tmpTableName = str_replace($srcPrefix,$newPrefix,$srcTableName);
+    sql_query(sprintf("ALTER TABLE `%s` RENAME TO `bak_%s`",$srcTableName,$srcTableName));
+    sql_query(sprintf("ALTER TABLE `%s` RENAME TO `%s`",$tmpTableName,$srcTableName));
+    echo "{$srcTableName} のデータをutf8に変換しました。<br />";
 }
 echo '完了しました。';
