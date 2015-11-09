@@ -240,6 +240,10 @@ default:
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
+    if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        header("HTTP/1.0 404 Not Found");
+        exit;
+    }
 	// Form Authentication
 	$login = postVar('login');
 	$pw = postVar('password');

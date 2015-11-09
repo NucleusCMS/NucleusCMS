@@ -138,6 +138,11 @@ class ADMIN {
 	function action_login($msg = '', $passvars = 1) {
 		global $member;
 
+        if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+            header("HTTP/1.0 404 Not Found");
+            exit;
+        }
+        
 		// skip to overview when allowed
 		if ($member->isLoggedIn() && $member->canLogin()) {
 			$this->action_overview();
