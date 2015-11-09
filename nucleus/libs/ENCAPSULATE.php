@@ -188,7 +188,7 @@ EOD;
 	|
 <?php if($current_page<$total_pages): ?>
 			<form id="next" method="post" action="index.php">
-				<a href="#" onclick="jQuery('#next').submit();return false;"><?php echo _LISTS_NEXT; ?> &gt; &gt;</a>
+				<a href="#" onclick="jQuery('#next').submit();return false;"><?php echo _LISTS_NEXT; ?> &gt;&gt;</a>
 				<input type="hidden" name="search" value="<?php echo  $search; ?>" />
 				<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
 				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
