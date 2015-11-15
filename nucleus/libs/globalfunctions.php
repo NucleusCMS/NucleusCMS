@@ -135,7 +135,11 @@ if (!headers_sent() ) {
 }
 
 // include core classes that are needed for login & plugin handling
-include_once($DIR_LIBS . 'mysql.php');
+if (!function_exists('mysql_query'))
+	include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+else
+	define('_EXT_MYSQL_EMULATE' , 0);
+
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 if (!isset($MYSQL_HANDLER))
