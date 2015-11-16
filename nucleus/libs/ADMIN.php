@@ -5633,9 +5633,9 @@ selector();
 
 <?php echo $extrahead;?>
 <?php
-	$adminAlert = isset($CONF['adminAlert'])&&!empty($CONF['adminAlert']) ? $CONF['adminAlert'] : '';
-    if(defined($adminAlert)) $adminAlert = constant($adminAlert);
-    if($adminAlert) $adminAlert = sprintf('<script>alert("%s");</script>',$adminAlert);
+    	$adminAlert = isset($CONF['adminAlert'])&&!empty($CONF['adminAlert']) ? $CONF['adminAlert'] : '';
+        if(defined($adminAlert)) $adminAlert = constant($adminAlert);
+        if($adminAlert) $adminAlert = sprintf('<script>alert("%s");</script>',$adminAlert);
 ?>
 </head>
 <body class="<?php echo $action;?>">
@@ -5647,37 +5647,38 @@ selector();
 <div id="container">
 <div id="content">
 <div class="loginname">
-		<?php		   if ($member->isLoggedIn())
-				echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-					." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
-					. "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> | ";
-			else
-				echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
-
-			echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url() , _HELP_TT);
-			echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-
-			echo '<br />(';
-
-			$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-
-			if ($member->isLoggedIn() && $member->isAdmin()) {
-				$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-				echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
-				$newestVersion = getLatestVersion();
-				$newestCompare = str_replace('/','.',$newestVersion);
-				$newestCompare = floatval($newestCompare);
-				$newestCompare = sprintf('%04.2f', $newestCompare);
-				$currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
-				$currentVersion = floatval($currentVersion);
-				$currentVersion = sprintf('%04.2f', $currentVersion);
-				if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
-					echo '<br /><a style="color:red" href="'._ADMINPAGEFOOT_OFFICIALURL.'upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
-				}
-			} else {
-				echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+<?php
+    	if ($member->isLoggedIn())
+    		echo _LOGGEDINAS . ' ' . $member->getDisplayName()
+    			." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
+    			. "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> | ";
+    	else
+    		echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
+    
+    	echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url() , _HELP_TT);
+    	echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
+    
+    	echo '<br />(';
+    
+    	$codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
+        
+		if ($member->isLoggedIn() && $member->isAdmin()) {
+			$checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+			echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+			$newestVersion = getLatestVersion();
+			$newestCompare = str_replace('/','.',$newestVersion);
+			$newestCompare = floatval($newestCompare);
+			$newestCompare = sprintf('%04.2f', $newestCompare);
+			$currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
+			$currentVersion = floatval($currentVersion);
+			$currentVersion = sprintf('%04.2f', $currentVersion);
+			if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
+				echo '<br /><a style="color:red" href="'._ADMINPAGEFOOT_OFFICIALURL.'upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
 			}
-			echo ')';
+		} else {
+			echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+		}
+		echo ')';
 		echo '</div>';
 	}
 
