@@ -22,6 +22,12 @@ function upgrade_do371() {
 
 	upgrade_query('Altering ' . sql_table('category') . ' table', $query);
 
+	// create AdminCSS setting
+	if (!upgrade_checkIfCVExists('AdminCSS')) {
+		$query = sprintf("INSERT INTO %s VALUES ('AdminCSS','contemporary_jp')", sql_table('config'));
+		upgrade_query('Creating AdminCSS config value',$query);  
+	}
+	
 	// 3.70 -> 3.71
 	// update database version
 	update_version('371');
