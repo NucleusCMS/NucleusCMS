@@ -5606,10 +5606,9 @@ selector();
 		$baseUrl = hsc($CONF['AdminURL']);
 		if (!array_key_exists('AdminCSS',$CONF)) 
 		{
-			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'contemporary_jp')");
 			$CONF['AdminCSS'] = 'contemporary_jp';
+			sql_query(sprintf("INSERT INTO %s VALUES ('AdminCSS', '%s')", sql_table('config'), $CONF['AdminCSS']));
 		}
-		
 		?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
