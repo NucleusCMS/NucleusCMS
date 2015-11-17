@@ -1725,6 +1725,34 @@ function passVar($key, $value) {
 	?><input type="hidden" name="<?php echo hsc($key)?>" value="<?php echo hsc(undoMagic($value) )?>" /><?php
 }
 
+/**
+ * checkVars()
+ * 
+ * @param	string	$variables
+ * @return	void
+ */
+function checkVars()
+{
+	$variables = array('nucleus', 'CONF', 'DIR_LIBS',
+		'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE',
+		'DIR_LOCALES', 'DIR_PLUGINS',
+		'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES');
+	
+	foreach ( $variables as $variable )
+	{
+		if ( array_key_exists($variable, $_GET)
+		  || array_key_exists($variable, $_POST)
+		  || array_key_exists($variable, $_COOKIE)
+		  || array_key_exists($variable, $_ENV)
+		  || (session_id() !== '' && array_key_exists($variable, $_SESSION))
+		  || array_key_exists($variable, $_FILES) )
+		{
+			die('Sorry. An error occurred.');
+		}
+	}
+	return;
+}
+
 /*
 	Date format functions (to be used from [%date(..)%] skinvars
 */
