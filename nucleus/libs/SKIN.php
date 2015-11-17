@@ -311,7 +311,7 @@ class SKIN {
 		$query = sprintf("SELECT stype FROM %s WHERE stype NOT IN ('index','item','error','search','archive','archivelist','imagepopup','member')",sql_table('skin'));
 		$res = sql_query($query);
 		while ($row = sql_fetch_array($res)) {
-			$skintypes[strtolower($row['stype'])] = ucfirst($row['stype']);
+			$skintypes[strtolower($row['stype'])] = $row['stype'];
 		}
 
 		return $skintypes;
