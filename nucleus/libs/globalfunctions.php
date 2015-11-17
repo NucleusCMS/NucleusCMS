@@ -615,7 +615,7 @@ function getLatestVersion() {
 
 	$crl = curl_init();
 	$timeout = 5;
-	curl_setopt ($crl, CURLOPT_URL,'http://nucleuscms.org/version_check.php');
+	curl_setopt ($crl, CURLOPT_URL,'http://japan.nucleuscms.org/version_check.php');
 	curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
 	curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
 	$ret = curl_exec($crl);
