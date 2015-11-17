@@ -16,15 +16,11 @@ function upgrade_do340() {
 		return _UPG_TEXT_ALREADY_INSTALLED;
 	
 	// lengthen tpartname column of nucleus_template
-	$query = "  ALTER TABLE `" . sql_table('template') . "`
-					MODIFY `tpartname` varchar(64) NOT NULL default '' ;";
-
+	$query = sprintf(" ALTER TABLE `%s` MODIFY `tpartname` varchar(64) NOT NULL default ''", sql_table('template'));
 	upgrade_query('Altering ' . sql_table('template') . ' table', $query);
 	
 	// lengthen tdname column of nucleus_template_desc
-	$query = "  ALTER TABLE `" . sql_table('template_desc') . "`
-					MODIFY `tdname` varchar(64) NOT NULL default '' ;";
-
+	$query = sprintf(" ALTER TABLE `%s` MODIFY `tdname` varchar(64) NOT NULL default ''", sql_table('template_desc'));
 	upgrade_query('Altering ' . sql_table('template_desc') . ' table', $query);
 	
 	// create DebugVars setting

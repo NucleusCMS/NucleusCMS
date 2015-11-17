@@ -33,25 +33,23 @@
 
 	function upgrade_checkinstall($version) {
 		$installed = 0;
-		$tbl_config = sql_table('config');
-
 		switch($version) {
 			case '200':
-				$query = 'SELECT sdincpref FROM '.sql_table('skin_desc').' LIMIT 1';
+				$query = sprintf('SELECT sdincpref FROM %s LIMIT 1', sql_table('skin_desc'));
 				$minrows = -1;
 				break;
 			// dev only (v2.2)
 			case '220':
-				$query = 'SELECT oid FROM '.sql_table('plugin_option_desc').' LIMIT 1';
+				$query = sprintf('SELECT oid FROM %s LIMIT 1', sql_table('plugin_option_desc'));
 				$minrows = -1;
 				break;
 			// v2.5 beta
 			case '240':
-				$query = 'SELECT bincludesearch FROM ' . sql_table('blog') . ' LIMIT 1';
+				$query = sprintf('SELECT bincludesearch FROM %s LIMIT 1', sql_table('blog'));
 				$minrows = -1;
 				break;
 			default:
-				$query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%s LIMIT 1", $tbl_config, intval($version));
+				$query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%s LIMIT 1", sql_table('config'), intval($version));
 				$minrows = 1;
 				break;
 		}
@@ -168,11 +166,11 @@
 		echo "<li>$friendly ... ";
 		$res = sql_query($query);
 		if (!$res) {
-			echo "<span style='color:red'>" . _UPG_TEXT_FAILURE . "</span>\n";
+			echo '<span style="color:red">' . _UPG_TEXT_FAILURE . "</span>\n";
 			echo "<blockquote>" . _UPG_TEXT_REASON_FOR_FAILURE . ": " . sql_error() . " </blockquote>";
 			$upgrade_failures++;
 		} else {
-			echo "<span style='color:green'>" . _UPG_TEXT_SUCCESS . "</span><br />\n";
+			echo '<span style="color:green">' . _UPG_TEXT_SUCCESS . "</span><br />\n";
 		}
 		echo "</li>";
 		return $res;
@@ -186,9 +184,9 @@
 	  */
 	function update_version($version) {
 		global $upgrade_failures;
-		$message='Updating DatabaseVersion in config table to '.$version;
+		$message = "Updating DatabaseVersion in config table to {$version}";
 		if(0==$upgrade_failures){
-			$query = 'UPDATE ' . sql_table('config') . ' set value=\''.$version.'\' where name=\'DatabaseVersion\'';
+			$query = sprintf("UPDATE %s set value='%s' where name='DatabaseVersion'", sql_table('config'), $version);
 			upgrade_query($message, $query);
 		}else
 			echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>';
@@ -204,8 +202,7 @@
 		// get info for indices from database
 
 		$aIndices = array();
-		$query = 'show index from ' . sql_table($table);
-		$res = sql_query($query);
+		$res = sql_query( sprintf('show index from %s', sql_table($table)) );
 		while ($o = sql_fetch_object($res)) {
 			if (!$aIndices[$o->Key_name]) {
 				$aIndices[$o->Key_name] = array();
@@ -232,22 +229,20 @@
 	  * @return true if table exists, false otherwise.
 	  */
 	function upgrade_checkIfTableExists($table){
-		$query = 'SHOW TABLES LIKE \''.sql_table($table).'\'';
-		$res = sql_query($query);
+		$res = sql_query( sprntf("SHOW TABLES LIKE '%s'", sql_table($table)) );
 		return ($res != 0) && (sql_num_rows($res) == 1);
 	}
 
 	/**
 	  * Checks to see if a given configuration value exists
 	  *
-	  * @param $value
+	  * @param $name
 	  *	 Config value to check for existance of.
 	  *	 Paramater must be MySQL escaped
 	  * @return true if configuration value exists, false otherwise.
 	  */
-	function upgrade_checkIfCVExists($value){
-		$query = 'SELECT name from '.sql_table('config').' WHERE name = \''.$value.'\'';
-		$res = sql_query($query);
+	function upgrade_checkIfCVExists($name){
+		$res = sql_query( sprintf("SELECT name from %s WHERE name='%s'", sql_table('config'), $name) );
 		return ($res != 0) && (sql_num_rows($res) == 1);
 	}
 
@@ -262,8 +257,6 @@
 	  * @return true if column exists, false otherwise.
 	  */
 	function upgrade_checkIfColumnExists($table, $col){
-		$query = 'DESC `'.sql_table($table).'` `'.$col.'`';
-		$res = sql_query($query);
+		$res = sql_query( sprintf('DESC `%s` `%s`', sql_table($table), $col) );
 		return ($res != 0) && (sql_num_rows($res) == 1);
 	}
-?>
