@@ -465,16 +465,35 @@ class ACTIONS extends BaseActions {
 	function parse_archivedate($locale = '-def-') {
 		global $archive;
 
+		// get format
+		$args = func_get_args();
+
+		// FIXME: check valid locale name
+		//       PHP7.0RC7 (win) hangup when invalid strings
+		$pattern = '@^[0-9a-z\._\-]{2,}$@i';
 		if ($locale == '-def-')
-			setlocale(LC_TIME,$template['LOCALE']);
+		{
+			// FIXME: can not determin default LOCALE
+			global $manager, $currentTemplateName;
+			if (isset($currentTemplateName) && TEMPLATE::exists($currentTemplateName))
+			{
+				$template =& $manager->getTemplate($currentTemplateName);
+				if (isset($template['LOCALE']) && preg_match($pattern, $template['LOCALE']))
+					setlocale(LC_TIME, $template['LOCALE']);
+			}
+		}
 		else
-			setlocale(LC_TIME,$locale);
+		{
+			$locale = @trim($locale);
+			if ($locale && preg_match($pattern, $locale))
+				setlocale(LC_TIME,$locale);
+			else if (func_num_args() == 1 && strlen($locale)>0)
+				array_unshift ($args, ''); // move to date format
+		}
 
 		// get archive date
 		sscanf($archive,'%d-%d-%d',$y,$m,$d);
 
-		// get format
-		$args = func_get_args();
 		// format can be spread over multiple parameters
 		if (sizeof($args) > 1) {
 			// take away locale
