@@ -2655,7 +2655,7 @@ class ADMIN {
 	/**
 	 * @todo document this
 	 */
-	function action_blogsettings() {
+	function action_blogsettings($message='') {
 		global $member, $manager;
 
 		$blogid = intRequestVar('blogid');
@@ -2671,6 +2671,7 @@ class ADMIN {
 		echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
 		?>
 		<h2><?php echo _EBLOG_TITLE?>: '<?php echo $this->bloglink($blog)?>'</h2>
+		<?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
 
 		<h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 
@@ -3336,7 +3337,7 @@ class ADMIN {
 		$manager->notify('PostPluginOptionsUpdate', $param);
 
 
-		$this->action_overview(_MSG_SETTINGSCHANGED);
+		$this->action_blogsettings(_MSG_SETTINGSCHANGED);
 	}
 
 	/**
