@@ -1405,7 +1405,7 @@ class ADMIN {
 			);
 		} else {
 			// TODO: set start item correctly for itemlist
-			$this->action_itemlist(getBlogIDFromItemID($itemid));
+			$this->action_itemedit();
 		}
 	}
 
