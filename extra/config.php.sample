@@ -34,7 +34,7 @@ $DIR_BASE = dirname(__FILE__) . '/';
 
 // サーバコンピュータ内でのコアへのフルパス
 $DIR_NUCLEUS = $DIR_BASE . 'nucleus/';
-$DIR_NUCLEUS = '/your/path/to/nucleus/';
+//$DIR_NUCLEUS = '/your/path/to/nucleus/';
 
 // サーバコンピュータ内でのメディア用ディレクトリへのフルパス
 $DIR_MEDIA = $DIR_BASE . 'media/';
@@ -61,4 +61,3 @@ if (!@file_exists($DIR_LIBS . 'globalfunctions.php')) {
 
 // コアライブラリのパースをします
 include($DIR_LIBS.'globalfunctions.php');
-?>
