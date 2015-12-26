@@ -1978,18 +1978,22 @@ class ADMIN {
 			   }
 			?>
 			</td>
-		</tr><tr>
+		</tr>
+		<tr>
 			<td><?php echo _MEMBERS_REALNAME?></td>
 			<td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" /></td>
-		</tr><tr>
+		</tr>
 		<?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
+		<tr>
 			<td><?php echo _MEMBERS_PWD?></td>
 			<td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
-		</tr><tr>
+		</tr>
+		<tr>
 			<td><?php echo _MEMBERS_REPPWD?></td>
 			<td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
+		</tr>
 		<?php } ?>
-		</tr><tr>
+		<tr>
 			<td><?php echo _MEMBERS_EMAIL?>
 				<br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
 			</td>
