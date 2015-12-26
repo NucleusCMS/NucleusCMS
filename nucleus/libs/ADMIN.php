@@ -5000,7 +5000,7 @@ selector();
 	/**
 	 * @todo document this
 	 */
-	function action_settingsedit() {
+	function action_settingsedit($message='') {
 		global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 
 		$member->isAdmin() or $this->disallow();
@@ -5011,6 +5011,7 @@ selector();
 		?>
 
 		<h2><?php echo _SETTINGS_TITLE?></h2>
+		<?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
 
 		<form action="index.php" method="post">
 		<div>
@@ -5359,9 +5360,8 @@ selector();
 		// note that when changing cookie settings, this redirect might cause the user
 		// to have to log in again.
 		getConfig();
-		redirect($CONF['AdminURL'] . '?action=manage');
-		exit;
-
+		//redirect($CONF['AdminURL'] . '?action=settingsedit');
+		$this->action_settingsedit(_MSG_SETTINGSCHANGED);
 	}
 
 	/**
