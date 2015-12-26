@@ -5580,7 +5580,7 @@ selector();
 		$this->pagehead();
 		?>
 		<h2>Error!</h2>
-		<?php	   echo $msg;
+		<?php	   echo '<div class="ng">'.$msg.'</div>';
 		echo "<br />";
 		echo "<a href='index.php' onclick='history.back(); return false;'>"._BACK."</a>";
 		$this->pagefoot();
