@@ -1740,12 +1740,12 @@ function checkVars()
 	
 	foreach ( $variables as $variable )
 	{
-		if ( array_key_exists($variable, $_GET)
-		  || array_key_exists($variable, $_POST)
-		  || array_key_exists($variable, $_COOKIE)
-		  || array_key_exists($variable, $_ENV)
-		  || (session_id() !== '' && array_key_exists($variable, $_SESSION))
-		  || array_key_exists($variable, $_FILES) )
+		if ( isset($_GET[$variable])
+		  || isset($_POST[$variable])
+		  || isset($_COOKIE[$variable])
+		  || isset($_ENV[$variable])
+		  || (isset($_SESSION[$variable]) && session_id()!=='')
+		  || isset($_FILES[$variable]) )
 		{
 			die('Sorry. An error occurred.');
 		}
