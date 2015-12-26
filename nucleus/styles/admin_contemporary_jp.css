@@ -111,6 +111,12 @@ div.indent {
 	font-weight:bold;
 }
 .ng {
+	border-radius : 3px;
+	background-color:#fffaea;
+	border:1px solid #d7bfbf;
+	color: #8d4848;
+	padding:8px;
+	font-weight:bold;
 }
 
 /* header */
