@@ -979,7 +979,6 @@ function doInstall() {
 		$config_data .= "\n";
 		$config_data .= "   // include libs\n";
 		$config_data .= "   include(\$DIR_LIBS . 'globalfunctions.php');\n";
-		$config_data .= "?" . ">";
 
 		$result = @fputs($fp, $config_data, strlen($config_data) );
 		fclose($fp);
