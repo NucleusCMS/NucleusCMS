@@ -306,7 +306,7 @@ function showInstallForm() {
 	}
 
 	// tell people how they can have their config file filled out automatically
-	if (@file_exists('../config.php') && @!is_writable('../config.php')) {
+	if (@is_file('../config.php') && @!is_writable('../config.php')) {
 ?>
 
 		<h1><?php echo _HEADER3; ?></h1>
@@ -947,7 +947,7 @@ function doInstall() {
 	// 14. Write config file ourselves (if possible)
 	$bConfigWritten = 0;
 
-	if (@file_exists('../config.php') && is_writable('../config.php') && $fp = @fopen('../config.php', 'w') ) {
+	if (@is_file('../config.php') && is_writable('../config.php') && $fp = @fopen('../config.php', 'w') ) {
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
 		$config_data .= "   // mySQL connection information\n";
