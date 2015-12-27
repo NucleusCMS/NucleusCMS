@@ -2445,7 +2445,7 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='')
 	if($encoding==='')
 	{
 		if(defined('_CHARSET')) $encoding = _CHARSET;
-		else                    $encoding = 'utf8';
+		else                    $encoding = 'utf-8';
 	}
 	if(version_compare(PHP_VERSION, '5.2.3', '>='))
 		return htmlspecialchars($string, $flags, $encoding, false);
