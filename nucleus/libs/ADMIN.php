@@ -5618,8 +5618,7 @@ selector();
 	<meta name="robots" content="noindex, nofollow" />
 	<title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
 	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
-	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
-	href="<?php echo $baseUrl?>styles/addedit.css" />
+	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/addedit.css" />
 
 	<style>
 	#quickmenu ul { display: none;}
