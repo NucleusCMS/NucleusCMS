@@ -206,10 +206,7 @@ Nucleusの<a href="http://japan.nucleuscms.org/faq.php">FAQ（よくある質問
 <a href="http://nucleuscms.org/sites.php">Nucleusで運用されているサイト</a>（<a href="http://japan.nucleuscms.org/sites.php">日本版</a>）。<br />
 <br />
 <br />
-Nucleusが気に入りましたか？　<a href="http://www.hotscripts.com/Detailed/13368.html?RID=nucleus@demuynck.org">HotScripts</a>や<a href="http://www.opensourcecms.com/index.php?option=content&task=view&id=145">opensourceCMS</a>での投票をお願いします。<br />
-<br />
 <b>ライセンス</b><br />
 <br />
-私たちがフリー・ソフトウェアについて口にする場合は自由のことに言及しているのであって、価格のことではありません。私たちの<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licenses(一般公有使用許諾書)</a>（<a href="http://www.gnu.org/licenses/gpl.ja.html">日本語訳(参考)</a>と<a href="http://www.atmarkit.co.jp/aig/03linux/gpl.html">概要</a>）は、フリー・ソフトウェアの複製物を自由に頒布できること(そして、望むならこのサービスに対して対価を請求できること)、ソース・コードを実際に受け取るか希望しさえすれば入手することが可能であること、入手したソフトウェアを変更したり新しいフリー・プログラムの一部として使用できること、以上の各内容を行なうことができるということをユーザ自身が知っていることを実現できるようにデザインされています。');
+私達が用いる「フリー・ソフトウェア」という言葉の「フリー」は価格ではなく<a href="https://www.google.co.jp/search?q=FSF+%E8%87%AA%E7%94%B1%E3%81%AA%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2">「自由」</a>を意味します。私たちの<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licenses(一般公有使用許諾書)</a>（<a href="http://www.gnu.org/licenses/gpl.ja.html">日本語訳(参考)</a>と<a href="http://www.atmarkit.co.jp/aig/03linux/gpl.html">概要</a>）は、フリー・ソフトウェアの複製物を自由に頒布できること(そして、望むならこのサービスに対して対価を請求できること)、ソース・コードを実際に受け取るか希望しさえすれば入手することが可能であること、入手したソフトウェアを変更したり新しいフリー・プログラムの一部として使用できること、以上の各内容を行なうことができるということをユーザ自身が知っていることを実現できるようにデザインされています。');
 
-?>
