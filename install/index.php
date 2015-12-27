@@ -108,7 +108,7 @@ switch(postVar('charset'))
 define('_CHARSET', $charset);
 
 // include core classes that are needed for login & plugin handling
-include_once('../nucleus/libs/mysql.php');
+if (!function_exists('mysql_query')) include_once('../nucleus/libs/mysql.php'); // For PHP 7
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 //set the handler if different from mysql (or mysqli)
