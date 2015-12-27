@@ -109,6 +109,8 @@ define('_CHARSET', $charset);
 
 // include core classes that are needed for login & plugin handling
 if (!function_exists('mysql_query')) include_once('../nucleus/libs/mysql.php'); // For PHP 7
+else define('_EXT_MYSQL_EMULATE' , 0);
+
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 //set the handler if different from mysql (or mysqli)
