@@ -77,7 +77,7 @@ $aConfSkinsToImport = array(
 */
 
 // don't give warnings for uninitialized vars
-error_reporting(E_ERROR | E_WARNING | E_PARSE);
+error_reporting(E_ALL);
 
 // make sure there's no unnecessary escaping:
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
