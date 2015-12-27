@@ -317,7 +317,7 @@ body { margin: 0px; }
 <%parsedinclude(head)%>
 <%parsedinclude(navigation)%>
 </head>
-
+<body>
 <!-- page header -->
 <%parsedinclude(header)%>
 <!-- begin wrapper divs -->
