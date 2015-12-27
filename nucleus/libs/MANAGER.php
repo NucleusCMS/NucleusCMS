@@ -470,7 +470,7 @@ class MANAGER {
     {
         $ticketCode = 'ticket=' . $this->_generateTicket();
         
-        if (strstr($url, '?')) $_ = '&';
+        if (strstr($url, '?')) $_ = '&amp;';
         else                   $_ = '?';
         
         return "{$url}{$_}{$ticketCode}";
