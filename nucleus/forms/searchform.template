@@ -2,7 +2,7 @@
 	<div class="searchform">
 <input type="hidden" name="amount" value="0" />
 <input type="hidden" name="blogid" value="<%formdata(id)%>" />
-		<input name="query" alt="<%text(_SEARCHFORM_QUERY)%>" class="formfield" size="10" maxlength="60" accesskey="4" value="<%formdata(query)%>" />
-		<input type="submit" alt="<%text(_SEARCHFORM_SUBMIT)%>" value="<%text(_SEARCHFORM_SUBMIT)%>" class="formbutton" />
+		<input type="text" name="query" placeholder="<%text(_SEARCHFORM_QUERY)%>" class="formfield" size="10" maxlength="60" accesskey="4" value="<%formdata(query)%>" />
+		<input type="submit" value="<%text(_SEARCHFORM_SUBMIT)%>" class="formbutton" />
 	</div>
 </form>

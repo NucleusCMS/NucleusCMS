@@ -23,6 +23,6 @@
 		<input type="checkbox" value="1" name="remember" id="nucleus_cf_remember" <%formdata(rememberchecked)%> />
 		<label for="nucleus_cf_remember"><%text(_COMMENTFORM_REMEMBER)%></label>
 
-		<input type="submit" alt="<%text(_COMMENTFORM_SUBMIT)%>" value="<%text(_COMMENTFORM_SUBMIT)%>" class="formbutton" />
+		<input type="submit" value="<%text(_COMMENTFORM_SUBMIT)%>" class="formbutton" />
 	</div>
 </form>
