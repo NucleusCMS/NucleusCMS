@@ -12,35 +12,10 @@
 	// we are using admin stuff:
 	$CONF = array();
 	$CONF['UsingAdminArea'] = 1;
+	$CONF['alertOnSecurityRisk']=1;
 
 	// include the admin code
 	require_once('../config.php');
-
-	if ($CONF['alertOnSecurityRisk'] == 1)
-	{
-		// check if files exist and generate an error if so
-		$aFiles = array(
-		 '../install' => _ERRORS_INSTALLDIR,
-			'upgrades'       => _ERRORS_UPGRADESDIR,
-			'convert'        => _ERRORS_CONVERTDIR
-		);
-		$aFound = array();
-		foreach($aFiles as $fileName => $fileDesc)
-		{
-			if (@file_exists($fileName))
-				array_push($aFound, $fileDesc);
-		}
-		if (@is_writable('../config.php')) {
-			array_push($aFound, _ERRORS_CONFIGPHP);
-		}
-		if (sizeof($aFound) > 0)
-		{
-			startUpError(
-				_ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
-				_ERRORS_STARTUPERROR3
-			);
-		}
-	}
 
 	$bNeedsLogin   = false;
 	$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
@@ -67,4 +42,3 @@
 
 	$admin = new ADMIN();
 	$admin->action($action);
-?>
