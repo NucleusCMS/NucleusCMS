@@ -5621,11 +5621,35 @@ selector();
 	<link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
 	href="<?php echo $baseUrl?>styles/addedit.css" />
 
+	<style>
+	#quickmenu ul { display: none;}
+    #quickmenu  .accordion { cursor: pointer;}
+	</style>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
+	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
 	<script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
+	<script>
+        jQuery(function () {
+            var qmenu_manage  = jQuery.cookie('qmenu_manage');
+            var qmenu_own     = jQuery.cookie('qmenu_own');
+            var qmenu_layuot  = jQuery.cookie('qmenu_layuot');
+            var qmenu_plugins = jQuery.cookie('qmenu_plugins');
+            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show(); 
+            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show(); 
+            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show(); 
+            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show(); 
+          
+          jQuery('.accordion').click(function() {
+            var child = jQuery(this).next('ul');
+            jQuery(child).slideToggle('fast', function() {
+              jQuery.cookie(jQuery(child).attr('id'), jQuery(child).css('display'), { expires: 10 });
+            });
+          });
+        });
+	</script>
 
 	<meta http-equiv="Pragma" content="no-cache" />
 	<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
@@ -5744,8 +5768,8 @@ selector();
 
 					echo '</div></form>';
 
-					echo '<h2>' . $member->getDisplayName(). '</h2>';
-					echo '<ul>';
+					echo '<h2 class="accordion">' . $member->getDisplayName(). '</h2>';
+					echo '<ul id="qmenu_own">';
 					echo sprintf($tpl, 'editmembersettings', 'editmembersettings', _QMENU_USER_SETTINGS);
 					echo sprintf($tpl, 'browseownitems', 'browseownitems', _QMENU_USER_ITEMS);
 					echo sprintf($tpl, 'browseowncomments', 'browseowncomments', _QMENU_USER_COMMENTS);
@@ -5757,9 +5781,9 @@ selector();
 					// ---- general settings ----
 					if ($member->isAdmin()) {
 
-						echo '<h2>',_QMENU_MANAGE,'</h2>';
+						echo '<h2 class="accordion">',_QMENU_MANAGE,'</h2>';
 
-						echo '<ul>';
+						echo '<ul id="qmenu_manage">';
 						echo sprintf($tpl, 'actionlog', 'actionlog', _QMENU_MANAGE_LOG);
 						echo sprintf($tpl, 'settingsedit', 'settingsedit', _QMENU_MANAGE_SETTINGS);
 						echo sprintf($tpl, 'systemoverview', 'systemoverview', _QMENU_MANAGE_SYSTEM);
@@ -5769,8 +5793,8 @@ selector();
 						echo sprintf($tpl, 'pluginlist', 'pluginlist', _QMENU_MANAGE_PLUGINS);
 						echo '</ul>';
 
-						echo '<h2>',_QMENU_LAYOUT,'</h2>';
-						echo '<ul>';
+						echo '<h2 class="accordion">',_QMENU_LAYOUT,'</h2>';
+						echo '<ul id="qmenu_layuot">';
 						echo sprintf($tpl, 'skinoverview', 'skinoverview', _QMENU_LAYOUT_SKINS);
 						echo sprintf($tpl, 'templateoverview', 'templateoverview', _QMENU_LAYOUT_TEMPL);
 						echo sprintf($tpl, 'skinieoverview', 'skinieoverview', _QMENU_LAYOUT_IEXPORT);
@@ -5785,8 +5809,8 @@ selector();
 					$manager->notify('QuickMenu', $param);
 					if (count($aPluginExtras) > 0)
 					{
-						echo '<h2>', _QMENU_PLUGINS, '</h2>';
-						echo '<ul>';
+						echo '<h2 class="accordion">', _QMENU_PLUGINS, '</h2>';
+						echo '<ul id="qmenu_plugins">';
 						foreach ($aPluginExtras as $aInfo)
 						{
 							echo '<li><a href="'.hsc($aInfo['url']).'" title="'.hsc($aInfo['tooltip']).'">'.hsc($aInfo['title']).'</a></li>';
