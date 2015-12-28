@@ -371,6 +371,9 @@ function listplug_table_itemlist($template, $type) {
 			echo "<td  style=\"white-space:nowrap\" $cssclass>";
 			echo "<a href='index.php?action=itemedit&amp;itemid={$current->inumber}'>" . _LISTS_EDIT . "</a>";
 			echo " / <a href='index.php?action=itemmove&amp;itemid={$current->inumber}'>" . _LISTS_MOVE . "</a>";
+			global $manager;
+			$cloneUrl = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemclone&itemid='.$current->inumber);
+			echo " / <a href='{$cloneUrl}'>" . _LISTS_CLONE . "</a>";
 			echo " / <a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>" . _LISTS_DELETE . "</a><br />";
 			printf(" <a href='%s' target=\"_blank\">%s</a><br />", createItemLink($current->inumber), _LISTS_VIEW);
 			// evaluate amount of comments for the item
