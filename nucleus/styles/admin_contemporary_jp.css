@@ -138,7 +138,7 @@ h1 {
 	the top of the quickmenu and the contents will not line up
 */
 #quickmenu {
-	position: absolute;
+	position: fixed;
 	overflow: hidden;
 	
 	top: 10px;
