@@ -664,9 +664,11 @@ function listplug_table_skinlist($template, $type) {
 					array_push($types,$o->stype);
 				if (sizeof($types) > 0) {
 					$friendlyNames = SKIN::getFriendlyNames();
-					for ($i=0;$i<sizeof($types);$i++) {
+					$skinNames = array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup');
+					$total = sizeof($types);
+					for ($i=0;$i<$total;$i++) {
 						$type = $types[$i];
-						if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+						if (in_array($type, $skinNames)) {
 							$types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . hsc($friendlyNames[$type]) . "</a></li>";
 						} else {
 							$types[$i] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . hsc($friendlyNames[$type]) . "</a></li>";
