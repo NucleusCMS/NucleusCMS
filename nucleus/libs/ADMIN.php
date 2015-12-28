@@ -1158,8 +1158,7 @@ class ADMIN {
 		$search = postVar('search');
 
 
-		$query_view = 'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem';
-		$query = ' FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
+		$query = sprintf(' FROM %s LEFT OUTER JOIN %s ON mnumber=cmember WHERE cmember=%s', sql_table('comment'),sql_table('member'),$member->getID());
 
 		if ($search)
 			$query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
@@ -1169,6 +1168,7 @@ class ADMIN {
 		$query .= ' ORDER BY ctime DESC'
 				. " LIMIT $start,$amount";
 
+		$query_view = 'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem';
 		$query_view .= $query;
 
 		$this->pagehead();
