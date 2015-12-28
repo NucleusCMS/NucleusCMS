@@ -2059,9 +2059,12 @@ class ADMIN {
 		?>
 		</table>
 			<div><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></div>
-
-		</div></form>
-
+<div style="display:none;">
+<input type="password" name="dummy1" value="">
+<input type="password" name="dummy2" value="">
+</div>
+</div>
+			</form>
 		<?php
 			echo '<h3>',_PLUGINS_EXTRA,'</h3>';
 
