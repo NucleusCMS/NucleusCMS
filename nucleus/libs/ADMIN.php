@@ -1966,7 +1966,8 @@ class ADMIN {
 
 		<table><tr>
 			<th colspan="2"><?php echo _MEMBERS_EDIT?></th>
-		</tr><tr>
+		</tr>
+		<tr>
 			<td style="width:300px;"><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
 				<br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
 			</td>
@@ -1998,7 +1999,8 @@ class ADMIN {
 				<br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
 			</td>
 			<td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  hsc($mem->getEmail()); ?>" /></td>
-		</tr><tr>
+		</tr>
+		<tr>
 			<td><?php echo _MEMBERS_URL?></td>
 			<td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  hsc($mem->getURL()); ?>" /></td>
 		<?php // only allow to change this by super-admins
