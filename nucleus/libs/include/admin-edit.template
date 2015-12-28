@@ -183,7 +183,7 @@ function date_itemtime_reset( )
          "<%itemtime(hours)%>", "<%itemtime(minutes)%>" ) );
 }
 if(!jQuery('#inputmore').val()) {
-	jQuery('#inputmore').after('<a href="#" id="openmore" onclick="return false;"><%text(_ADD_MORE)%></a>');
+	jQuery('#inputmore').after('<a href="#" id="openmore" onclick="return false;"><%text(_EDITTEMPLATE_EMPTY)%></a>');
 	jQuery('#inputmore').hide();
 	jQuery('#inputmore').prev().hide();
 	jQuery('#openmore').click(function(){
