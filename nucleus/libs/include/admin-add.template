@@ -39,7 +39,21 @@
 				cols="60"
 				rows="15"><%contents(body)%></textarea>
 		</td>
-	</tr><tr id="edit" style="display:none;">
+	</tr>
+	<tr>
+		<td><%text(_ADD_MORE)%> <%helplink(extended)%>
+		</td>
+		<td>
+			<%jsbuttonbar(media+preview)%>
+			<textarea 
+				<%jsinput(more)%>
+				tabindex="70"
+				cols="60"
+				rows="15"
+				><%contents(more)%></textarea>
+		</td>
+	</tr>
+	<tr id="edit" style="display:none;">
 		<td><%text(_ADD_PREVIEW)%></td>
 		<td><b><span id="prevtitle">&#160;</span></b><br />
 			<span id="prevbody">&#160;</span><br />
@@ -54,11 +68,6 @@
 <tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
-			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
-				onclick="return checkSubmit();" />
-
-			<br /><br />
-
 			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="61" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
 			<br />
 			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
@@ -103,22 +112,7 @@
 		</td>
 	</tr>
 			<%itemoptions%>	
-    <tr>
-    	<th colspan="2"><%text(_ADD_MORE)%></th>
-	</tr><tr>
-		<td><%text(_ADD_MORE)%>
-			<br /><%helplink(extended)%>
-		</td>
-		<td>
-			<%jsbuttonbar(media+preview)%>		
-			<textarea 
-				<%jsinput(more)%>			
-				tabindex="70"
-				cols="60"
-				rows="15"
-				><%contents(more)%></textarea>
-		</td>
-	</tr><tr>
+	<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
@@ -156,4 +150,12 @@ function date_currenttime_reset( )
 		 "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
          "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
 }
+jQuery('#inputmore').after('<a href="#" id="openmore" onclick="return false;"><%text(_ADD_MORE)%></a>');
+jQuery('#inputmore').hide();
+jQuery('#inputmore').prev().hide();
+jQuery('#openmore').click(function(){
+	jQuery('#inputmore').show();
+	jQuery('#inputmore').prev().show();
+	jQuery('#openmore').hide();
+});
 </script>
