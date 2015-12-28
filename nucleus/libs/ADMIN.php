@@ -368,7 +368,7 @@ class ADMIN {
 
 		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
-		$query .= ' ORDER BY itime DESC'
+		$query .= ' ORDER BY idraft DESC, itime DESC, inumber DESC'
 				. " LIMIT $start,$amount";
 
 		$query_view .= $query;
@@ -1038,7 +1038,7 @@ class ADMIN {
 
 		$total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
-		$query .= ' ORDER BY itime DESC'
+		$query .= ' ORDER BY idraft DESC, itime DESC, inumber DESC'
 				. " LIMIT $start,$amount";
 
 		$query_view .= $query;
