@@ -803,8 +803,8 @@ define('_LIST_PLUGS_SUBS',					'登録済みイベント：');
 define('_LIST_PLUGS_UP',					'&uarr; 上へ');
 define('_LIST_PLUGS_DOWN',					'下へ &darr;');
 define('_LIST_PLUGS_UNINSTALL',				'アンインストール');
-define('_LIST_PLUGS_ADMIN',					'管理');
-define('_LIST_PLUGS_OPTIONS',				'オプション編集');
+define('_LIST_PLUGS_ADMIN',					'管理画面');
+define('_LIST_PLUGS_OPTIONS',				'オプション設定');
 
 // plugin option list
 define('_LISTS_VALUE',						'値(内容)');
@@ -1253,7 +1253,7 @@ define('_MEMBERS_EDIT',						'メンバーの編集');
 define('_MEMBERS_EDIT_BTN',					'設定の変更');
 define('_MEMBERS_BACKTOOVERVIEW',			'メンバーの一覧に戻る');
 define('_MEMBERS_DEFLANG',					'使用する言語');
-define('_MEMBERS_USESITELANG',				'- サイトの設定を使う -');
+define('_MEMBERS_USESITELANG',				'- グローバル設定を使う -');
 
 // List of blogs (TT = tooltip)
 define('_BLOGLIST_TT_VISIT',				'サイトを見る');
@@ -1295,8 +1295,8 @@ define('_ITEMLIST_YOUR',							'あなたのアイテム');
 // Comments
 define('_COMMENTS',									'コメント');
 define('_NOCOMMENTS',								'このアイテムへのコメントはありません');
-define('_COMMENTS_YOUR',							'あなたのコメント');
-define('_NOCOMMENTS_YOUR',							'あなたのコメントはありません');
+define('_COMMENTS_YOUR',							'コメント一覧');
+define('_NOCOMMENTS_YOUR',							'コメントはありません');
 
 // LISTS (general)
 define('_LISTS_NOMORE',								'何もありません');
