@@ -5771,9 +5771,9 @@ selector();
 
 					echo '<h2 class="accordion">' . $member->getDisplayName(). '</h2>';
 					echo '<ul id="qmenu_own">';
-					echo sprintf($tpl, 'editmembersettings', 'editmembersettings', _QMENU_USER_SETTINGS);
 					echo sprintf($tpl, 'browseownitems', 'browseownitems', _QMENU_USER_ITEMS);
 					echo sprintf($tpl, 'browseowncomments', 'browseowncomments', _QMENU_USER_COMMENTS);
+					echo sprintf($tpl, 'editmembersettings', 'editmembersettings', _QMENU_USER_SETTINGS);
 					echo '</ul>';
 
 
@@ -5781,18 +5781,6 @@ selector();
 
 					// ---- general settings ----
 					if ($member->isAdmin()) {
-
-						echo '<h2 class="accordion">',_QMENU_MANAGE,'</h2>';
-
-						echo '<ul id="qmenu_manage">';
-						echo sprintf($tpl, 'actionlog', 'actionlog', _QMENU_MANAGE_LOG);
-						echo sprintf($tpl, 'settingsedit', 'settingsedit', _QMENU_MANAGE_SETTINGS);
-						echo sprintf($tpl, 'systemoverview', 'systemoverview', _QMENU_MANAGE_SYSTEM);
-						echo sprintf($tpl, 'usermanagement', 'usermanagement', _QMENU_MANAGE_MEMBERS);
-						echo sprintf($tpl, 'createnewlog', 'createnewlog', _QMENU_MANAGE_NEWBLOG);
-						echo sprintf($tpl, 'backupoverview', 'backupoverview', _QMENU_MANAGE_BACKUPS);
-						echo sprintf($tpl, 'pluginlist', 'pluginlist', _QMENU_MANAGE_PLUGINS);
-						echo '</ul>';
 
 						echo '<h2 class="accordion">',_QMENU_LAYOUT,'</h2>';
 						echo '<ul id="qmenu_layuot">';
@@ -5817,6 +5805,22 @@ selector();
 							echo '<li><a href="'.hsc($aInfo['url']).'" title="'.hsc($aInfo['tooltip']).'">'.hsc($aInfo['title']).'</a></li>';
 						}
 						echo '</ul>';
+					}
+
+					if ($member->isAdmin()) {
+
+						echo '<h2 class="accordion">',_QMENU_MANAGE,'</h2>';
+
+						echo '<ul id="qmenu_manage">';
+						echo sprintf($tpl, 'pluginlist', 'pluginlist', _QMENU_MANAGE_PLUGINS);
+						echo sprintf($tpl, 'actionlog', 'actionlog', _QMENU_MANAGE_LOG);
+						echo sprintf($tpl, 'backupoverview', 'backupoverview', _QMENU_MANAGE_BACKUPS);
+						echo sprintf($tpl, 'settingsedit', 'settingsedit', _QMENU_MANAGE_SETTINGS);
+						echo sprintf($tpl, 'systemoverview', 'systemoverview', _QMENU_MANAGE_SYSTEM);
+						echo sprintf($tpl, 'usermanagement', 'usermanagement', _QMENU_MANAGE_MEMBERS);
+						echo sprintf($tpl, 'createnewlog', 'createnewlog', _QMENU_MANAGE_NEWBLOG);
+						echo '</ul>';
+
 					}
 
 				} else if (($action == 'activate') || ($action == 'activatesetpwd')) {
