@@ -50,6 +50,54 @@
 
 <ul>
 	<li>
+		<strong>Nucleus v3.71 日本語版 (2015年12月28日)</strong> tagged as <a href="https://github.com/NucleusCMS/NucleusCMS-ja/tree/v3.71-ja/">v3.71-ja</a> in <a href="https://github.com/NucleusCMS/NucleusCMS-ja">nucleus-jp</a> hosted in <a href="https://github.com/">GitHub</a>.
+		<ul>
+        <li>[重要] CVE-2011-3760 : Nucleusのシステム情報を取得される脆弱性を修正(重要度・低)</li>
+        <li>[重要] PHP7対応(インストーラ調整・mysql関数のラッパー組み込みなど)</li>
+        <li>[新機能] アイテム一覧画面にアイテム複製機能を追加</li>
+        <li>[新機能] カテゴリの並び替え機能(categoryテーブルにcorderを追加)</li>
+        <li>[新機能] 投稿画面に現在時刻を挿入するボタンの追加</li>
+        <li>イレギュラーなコレーション(エンコード)設定のテーブルを正規化するアップグレード支援プログラムを追加(nucleus/upgrades/convert.php)</li>
+        <li>アイテム一覧の並びを調整(ドラフト記事が先頭に並ぶようにする)</li>
+        <li>スキン編集画面のスキン並び順を調整</li>
+        <li>投稿画面のレイアウトを調整</li>
+        <li>管理画面クイックメニューのポジションを固定する</li>
+        <li>メンバー設定画面のオートコンプリートを防ぐ</li>
+        <li>管理画面クイックメニューの並び順を調整</li>
+        <li>管理画面クイックメニューをブロックごとに開閉できるようにする</li>
+        <li>投稿保存後の遷移を調整(同じ投稿画面を開く)</li>
+        <li>スペシャルスキンのスキン名の1文字目の大文字表示を廃止</li>
+        <li>最新バージョンのチェック用URLを変更</li>
+        <li>管理画面の表示が遅い問題への対応</li>
+        <li>ログインフォームのスパム対策</li>
+        <li>PHP4環境ではアップグレードできないようにする</li>
+        <li>最新のFirefoxでリストア操作ができくなったため修正</li>
+        <li>$CONFの値をindex.phpで上書きできるようにする</li>
+        <li>管理画面アイテム一覧のナビゲーションを調整</li>
+        <li>メンバー追加時のFatalエラーを修正</li>
+        <li>管理画面・システム環境一覧に表示する情報を追加</li>
+        <li>PHP5.6のDeprecatedエラーを修正</li>
+        <li>ブックマークレット調整</li>
+        <li>管理画面プラグイン一覧を調整</li>
+        <li>ドラフトオートセーブをデフォルトでオフにする</li>
+        <li>管理画面にbaseタグを追加(プラグイン管理ページでURLがずれることがあるため)</li>
+        <li>getMinNucleusVersionのデフォルト値を350に変更</li>
+        <li>v0.x-v1.x系からのアップグレードパスを整理</li>
+        <li>addBreaksの処理を改善(行末がブロックレベル要素の場合は改行を付加しない)</li>
+        <li>管理画面の操作性改善 - クラスNAVLISTにページ移動ボタンを追加</li>
+        <li>管理画面全域でjQueryをロード</li>
+        <li>ネット非接続環境でbookmarkletでの編集スタイルが壊れるため改善</li>
+        <li>管理 アイテム一覧 アイテム表示のリンクを追加</li>
+        <li>チームの管理 - 選択できるメンバーがいない場合は表示しない</li>
+        <li>action=blogcommentlist のリンク表示の修正(不要な場合はクリックするとエラーになるため表示しないようにする)</li>
+        <li>管理画面 action=browseownitems(あなたのアイテム)にカテゴリ絞り込み機能の追加</li>
+        <li>関数 MEMBER：：writeCookieKey()を追加</li>
+        <li>管理画面 action=itemlist にカテゴリ絞り込み機能の追加</li>
+        <li>管理画面のコメント操作の改善(リンクまわり)</li>
+        <li>古いaction.phpをアップグレード時にチェックする</li>
+		</ul>
+	</li>
+	<li>
 		<strong>Nucleus v3.70 日本語版 (2014年9月22日)</strong> tagged as <a href="https://github.com/NucleusCMS/NucleusCMS-ja/tree/v3.70-ja/">v3.70-ja</a> in <a href="https://github.com/NucleusCMS/NucleusCMS-ja">nucleus-jp</a> hosted in <a href="https://github.com/">GitHub</a>.
 		<ul>
 		<li>ログイン画面へのクローラーのアクセスをブロック <a href="https://github.com/NucleusCMS/NucleusCMS-ja/commit/62924f98a4e774ed246c868d99eeb79b7a27a426">@62924f9</a></li>
