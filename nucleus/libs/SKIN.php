@@ -28,6 +28,7 @@ class SKIN {
 	var $includePrefix;
 	var $name;
 
+	public function SKIN($id) { $this->__construct($id); }
 	function __construct($id) {
 		global $resultCache;
 		

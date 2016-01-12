@@ -35,6 +35,7 @@ class MEMBER {
 	/**
 	 * Constructor for a member object
 	 */
+	public function MEMBER() { $this->__construct(); }
 	function __construct() {
 		global $DIR_LIBS;
 		include_once("{$DIR_LIBS}phpass.class.inc.php");
