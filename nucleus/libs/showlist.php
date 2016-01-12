@@ -322,6 +322,7 @@ function listplug_plugOptionRow($current) {
 }
 
 function listplug_table_itemlist($template, $type) {
+	global  $CONF;
 	$cssclass = null;
 
 	switch($type) {
