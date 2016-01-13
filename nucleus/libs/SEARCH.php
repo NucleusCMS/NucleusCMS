@@ -25,6 +25,7 @@ class SEARCH {
 	var $inclusive;
 	var $blogs;
 
+	public function SEARCH($text) { $this->__construct($text); }
 	function __construct($text) {
 		global $blogid;
 //		$text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
