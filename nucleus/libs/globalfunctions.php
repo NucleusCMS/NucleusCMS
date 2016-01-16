@@ -590,7 +590,7 @@ function getNucleusPatchLevel() {
  * e.g. 3.41 or 3.41/02
  */
 function getLatestVersion() {
-	global $CONF , $admin;
+	global $CONF;
 
 	if (!function_exists('curl_init')) return false;
 
@@ -624,8 +624,8 @@ function getLatestVersion() {
 	if (empty($ret))
 		$ret = '';
 
-	$admin->updateConfig('LatestVerText', $ret);
-	$admin->updateConfig('LatestVerReqTime', strval(time()) );
+	ADMIN::updateConfig('LatestVerText', $ret);
+	ADMIN::updateConfig('LatestVerReqTime', strval(time()) );
 
 	return $ret;
 }
