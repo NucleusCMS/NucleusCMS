@@ -14,7 +14,7 @@
  * A class representing site members
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
+ * @copyright Copyright (C) The Nucleus Group
  * @version $Id$
  */
 class MEMBER {
