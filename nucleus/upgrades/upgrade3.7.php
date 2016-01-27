@@ -12,32 +12,32 @@
 
 function upgrade_do371() {
 
-	if (upgrade_checkinstall(371))
-		return 'already installed';
-	
-	// 3.70 -> 3.71
-	// update database version
-	update_version('371');
+    if (upgrade_checkinstall(371))
+        return 'already installed';
+    
+    // 3.70 -> 3.71
+    // update database version
+    update_version('371');
 }
 
 function upgrade_do370() {
 
-	if (upgrade_checkinstall(370))
-		return 'already installed';
-	
-	// changing the blog table to lengthen bnotify field 
-	$query = sprintf("ALTER TABLE `%s`
-					MODIFY COLUMN `ibody` mediumtext default NULL,
-					MODIFY COLUMN `imore` mediumtext default NULL;", sql_table('item'));
-	
-	upgrade_query('Altering ' . sql_table('item') . ' table', $query);
-	
-	$query = sprintf("ALTER TABLE `%s` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''", sql_table('member'));
-	
-	upgrade_query('Altering ' . sql_table('member') . ' table', $query);
-	
-	// 3.6 -> 3.7
-	// update database version
-	update_version('370');
+    if (upgrade_checkinstall(370))
+        return 'already installed';
+    
+    // changing the blog table to lengthen bnotify field 
+    $query = sprintf("ALTER TABLE `%s`
+                    MODIFY COLUMN `ibody` mediumtext default NULL,
+                    MODIFY COLUMN `imore` mediumtext default NULL;", sql_table('item'));
+    
+    upgrade_query('Altering ' . sql_table('item') . ' table', $query);
+    
+    $query = sprintf("ALTER TABLE `%s` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''", sql_table('member'));
+    
+    upgrade_query('Altering ' . sql_table('member') . ' table', $query);
+    
+    // 3.6 -> 3.7
+    // update database version
+    update_version('370');
 }
 

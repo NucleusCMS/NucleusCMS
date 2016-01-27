@@ -19,11 +19,11 @@ include('upgrade.functions.php');
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
-	upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
+    upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
 }
 
 if (!$member->isAdmin()) {
-	upgrade_error('Only Super-Admins are allowed to perform upgrades');
+    upgrade_error('Only Super-Admins are allowed to perform upgrades');
 }
 
 include('upgrade0.95.php');
@@ -47,39 +47,39 @@ $from = intGetVar('from');
 upgrade_start();
 
 switch($from) {
-	case 95:
-		upgrade_do95();
-		upgrade_do96();
-	case 96:
-		upgrade_do100();
-	case 100:
-		upgrade_do110();
-	case 110:
-		upgrade_do150();
-	case 150:
-		upgrade_do200();
-	case 200:
-		upgrade_do250();
-	case 250:
-		upgrade_do300();
-	case 300:
-		upgrade_do310();
-	case 310:
-		upgrade_do320();
-	case 320:
-		upgrade_do330();
-	case 330:
-		upgrade_do340();
-	case 340:
-		upgrade_do350();
-	case 350:
-		upgrade_do360();
-	case 360:
-		upgrade_do370();
-		break;
-	default:
-		echo "<li>Error! No updates to execute</li>";
-		break;
+    case 95:
+        upgrade_do95();
+        upgrade_do96();
+    case 96:
+        upgrade_do100();
+    case 100:
+        upgrade_do110();
+    case 110:
+        upgrade_do150();
+    case 150:
+        upgrade_do200();
+    case 200:
+        upgrade_do250();
+    case 250:
+        upgrade_do300();
+    case 300:
+        upgrade_do310();
+    case 310:
+        upgrade_do320();
+    case 320:
+        upgrade_do330();
+    case 330:
+        upgrade_do340();
+    case 340:
+        upgrade_do350();
+    case 350:
+        upgrade_do360();
+    case 360:
+        upgrade_do370();
+        break;
+    default:
+        echo "<li>Error! No updates to execute</li>";
+        break;
 }
 
 

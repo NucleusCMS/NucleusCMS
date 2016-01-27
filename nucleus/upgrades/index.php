@@ -41,7 +41,7 @@ upgrade_head();
 When upgrading from an older Nucleus version, upgrades to the database tables are required. This upgrade script allows you to automate these changes.
 </p>
 
-<?php	// calculate current version
+<?php    // calculate current version
     if (!upgrade_checkinstall(96))      $current = 95;
     elseif (!upgrade_checkinstall(100)) $current = 96;
     elseif (!upgrade_checkinstall(110)) $current = 100;
@@ -60,13 +60,13 @@ When upgrading from an older Nucleus version, upgrades to the database tables ar
     else                                $current = 371;
 
   if ($current == 371) {
-	?>
-	  <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
-	<?php
+    ?>
+      <p class="ok">No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.</p>
+    <?php
   } else {
-	?>
-	  <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.7</a></p>
-	<?php
+    ?>
+      <p class="warning"><a href="upgrade.php?from=<?php echo $current?>">Click here to upgrade the database to Nucleus v3.7</a></p>
+    <?php
   }
 ?>
 
@@ -82,7 +82,7 @@ It is suggested that you do so before upgrading the database in case things go w
 <?php
 $from = intGetVar('from');
 if (!$from) 
-	$from = $current;
+    $from = $current;
 
 $sth = 0;
 if (!$DIR_MEDIA) {
@@ -133,7 +133,7 @@ function upgrade_manual_96() {
 ?>
   <h2>Changes needed for Nucleus 0.96</h2>
   <p>
-	A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
+    A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
   </p>
   <pre>
   // path to media dir
@@ -153,7 +153,7 @@ function upgrade_manual_200() {
 ?>
   <h2>Changes needed for Nucleus 2.0</h2>
   <p>
-	A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
+    A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
   </p>
   <pre>
   // extra skin files for imported skins
@@ -174,15 +174,15 @@ function upgrade_manual_340() {
 ?>
   <h2>Changes needed for Nucleus 3.4</h2>
   <p>
-	It is recommended that you apply some restrictions to what you allow the web server to do with files in the <i>media</i> and <i>skins</i> folders. These restrictions are not necessary to the functioning of the software, nor to the security of the software. However, they can be an important help under the security principle of denying any access that is not required.
+    It is recommended that you apply some restrictions to what you allow the web server to do with files in the <i>media</i> and <i>skins</i> folders. These restrictions are not necessary to the functioning of the software, nor to the security of the software. However, they can be an important help under the security principle of denying any access that is not required.
   </p>
   
   <p>
     Instructions for applying the restrictions are found in the following two files on your server:
-	<ul>
-	   <li><a href="../../extra/media/readme.txt">extra/media/readme.txt</a></li>
-	   <li><a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a></li>
-	</ul>
+    <ul>
+       <li><a href="../../extra/media/readme.txt">extra/media/readme.txt</a></li>
+       <li><a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a></li>
+    </ul>
   </p>
   
 <?php }
@@ -193,7 +193,7 @@ function upgrade_manual_350() {
 ?>
   <h2>Important Notices for Nucleus 3.5</h2>
   
-<?php	// Give user warning if they are running old version of PHP
+<?php    // Give user warning if they are running old version of PHP
         if (phpversion() < '5') {
                 echo '<p>WARNING: You are running NucleusCMS on a older version of PHP that is no longer supported by NucleusCMS. Please upgrade to PHP5!</p>';
         }
@@ -201,10 +201,10 @@ function upgrade_manual_350() {
   
   <p>
     Two new plugins have been included with version 3.5. You may want to consider installing them from the Plugins page of the admin area.
-	<ul>
-	   <li><strong>NP_Text</strong>: Allows you to use internationalized skins to simplify translation.</li>
-	   <li><strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation.</li>
-	</ul>
+    <ul>
+       <li><strong>NP_Text</strong>: Allows you to use internationalized skins to simplify translation.</li>
+       <li><strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation.</li>
+    </ul>
   </p>
 
 <?php }
@@ -217,30 +217,30 @@ function upgrade_manual_php405() {
 </p>
 <ul>
   <li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 84):
-	<pre>
+    <pre>
 
   if (in_array($actionlc, $this-&gt;actions) || $this-&gt;norestrictions ) {
-	<strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
+    <strong>$this-&gt;call_using_array($action, $this-&gt;handler, $params);</strong>
   } else {
-	// redirect to plugin action if possible
-	if (in_array('plugin', $this-&gt;actions)
-	  && $manager-&gt;pluginInstalled('NP_'.$action))
-	  $this-&gt;doAction('plugin('.$action.
-		$this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
-	else
-	  echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
+    // redirect to plugin action if possible
+    if (in_array('plugin', $this-&gt;actions)
+      && $manager-&gt;pluginInstalled('NP_'.$action))
+      $this-&gt;doAction('plugin('.$action.
+        $this-&gt;pdelim.implode($this-&gt;pdelim,$params).')');
+    else
+      echo '&lt;b&gt;DISALLOWED (' , $action , ')&lt;/b&gt;';
   }
 
 
 }
-	 </pre>
-	</li>
-	<li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 75):
-	<pre>
+     </pre>
+    </li>
+    <li>Make sure the code in nucleus/libs/PARSER.php is as follows (starting from line 75):
+    <pre>
 // $params = array_map('trim',$params);
 foreach ($params as $key =&gt; $value) { $params[$key] = trim($value); }
-	</pre>
-	</li>
+    </pre>
+    </li>
   </ul>
 
 <?php }
