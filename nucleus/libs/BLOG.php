@@ -9,14 +9,12 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * A class representing a blog and containing functions to get that blog shown
  * on the screen
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
- * @version $Id$
  */
 
 if ( !function_exists('requestVar') ) exit;

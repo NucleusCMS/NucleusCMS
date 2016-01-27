@@ -1,24 +1,22 @@
 <?php
-    /*
-     * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-     * Copyright (C) The Nucleus Group
-     *
-     * This program is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU General Public License
-     * as published by the Free Software Foundation; either version 2
-     * of the License, or (at your option) any later version.
-     * (see nucleus/documentation/index.html#license for more info)
-     */
-    /**
-     * This is an (abstract) class of which all Nucleus Plugins must inherit
-     *
-     * for more information on plugins and how to write your own, see the
-     * plugins.html file that is included with the Nucleus documenation
-     *
-     * @license http://nucleuscms.org/license.txt GNU General Public License
-     * @copyright Copyright (C) The Nucleus Group
-     * @version $Id$
-     */
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ *
+ * This is an (abstract) class of which all Nucleus Plugins must inherit
+ *
+ * for more information on plugins and how to write your own, see the
+ * plugins.html file that is included with the Nucleus documenation
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) The Nucleus Group
+ */
     class NucleusPlugin {
 
         // these functions _have_ to be redefined in your plugin

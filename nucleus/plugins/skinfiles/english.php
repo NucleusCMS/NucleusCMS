@@ -1,7 +1,6 @@
 <?php
 
    /*
-	* @version $Id$
 	*/
 
 define('_SKINFILES_TITLE',				'Skin Files');

@@ -1,7 +1,6 @@
 <?php
 
    /*
-	* @version $Id$
 	* @version $NucleusJP: japanese-utf8.php,v 1.2 2007/01/29 22:07:42 kimitake Exp $
 	*/
 

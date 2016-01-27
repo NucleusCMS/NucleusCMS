@@ -20,7 +20,6 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2006 The Nucleus Group
- * @version $Id$
  */
 
 include("../../config.php");

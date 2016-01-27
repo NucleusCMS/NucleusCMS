@@ -8,8 +8,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * This class makes sure each item/weblog/comment object gets requested from
  * the database only once, by keeping them in a cache. The class also acts as
  * a dynamic classloader, loading classes _only_ when they are first needed,
@@ -20,7 +19,6 @@
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
- * @version $Id$
  */
 class MANAGER {
 

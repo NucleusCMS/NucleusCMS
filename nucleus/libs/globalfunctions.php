@@ -13,7 +13,6 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
- * @version $Id$
 
  */
 

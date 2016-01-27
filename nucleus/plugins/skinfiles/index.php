@@ -5,7 +5,6 @@
 	*
 	* Copyright 2005-2007 by Jeff MacMichael and Niels Leenheer
 	*
-	* @version $Id$
 	* @version $NucleusJP: index.php,v 1.5.2.1 2005/08/25 07:04:13 kimitake Exp $
 	*
 	* ==========================================================================================
