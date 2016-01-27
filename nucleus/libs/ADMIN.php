@@ -234,30 +234,30 @@ class ADMIN {
             if ($amountdrafts == 0)
                 echo _OVERVIEW_NODRAFTS;
         }
-				
-		if ($amount != 0) {
-			$yrBlogs = $member->getAdminBlogs();
-			if ($showAll != 'yes') {
-				$admBlogs = array();
-				foreach ($yrBlogs as $value) {
-					if ($member->isBlogAdmin(intval($value))) {
-						$admBlogs[] = intval($value);
-					}
-				}
-				$yrBlogs = $admBlogs;
-			}
-			
-			if (count($yrBlogs) > 0) {
-				echo '<h2>' . _OVERVIEW_OTHER_DRAFTS . '</h2>';
-				$query =  'SELECT ititle, inumber, bshortname, mname'
-					   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog'). ', ' . sql_table('member')
-					   . ' WHERE iauthor<>'.$member->getID().' and iblog IN ('.implode(",",$yrBlogs).') and iblog=bnumber and iauthor=mnumber and idraft=1'
-					   . ' ORDER BY iblog ASC';
-				$template['content'] = 'otherdraftlist';
-				$amountdrafts = showlist($query, 'table', $template);
-				if ($amountdrafts == 0)
-					echo _OVERVIEW_NODRAFTS;
-			}
+                
+        if ($amount != 0) {
+            $yrBlogs = $member->getAdminBlogs();
+            if ($showAll != 'yes') {
+                $admBlogs = array();
+                foreach ($yrBlogs as $value) {
+                    if ($member->isBlogAdmin(intval($value))) {
+                        $admBlogs[] = intval($value);
+                    }
+                }
+                $yrBlogs = $admBlogs;
+            }
+            
+            if (count($yrBlogs) > 0) {
+                echo '<h2>' . _OVERVIEW_OTHER_DRAFTS . '</h2>';
+                $query =  'SELECT ititle, inumber, bshortname, mname'
+                       . ' FROM ' . sql_table('item'). ', ' . sql_table('blog'). ', ' . sql_table('member')
+                       . ' WHERE iauthor<>'.$member->getID().' and iblog IN ('.implode(",",$yrBlogs).') and iblog=bnumber and iauthor=mnumber and idraft=1'
+                       . ' ORDER BY iblog ASC';
+                $template['content'] = 'otherdraftlist';
+                $amountdrafts = showlist($query, 'table', $template);
+                if ($amountdrafts == 0)
+                    echo _OVERVIEW_NODRAFTS;
+            }
         }
 
         /* ---- user settings ---- */
@@ -1481,27 +1481,27 @@ class ADMIN {
         }
     }
 
-	/**
-	 * Allows to edit previously made comments
-	 **/
-	function action_commentedit() {
+    /**
+     * Allows to edit previously made comments
+     **/
+    function action_commentedit() {
 
-		global $member, $manager;
+        global $member, $manager;
 
-		$commentid = intRequestVar('commentid');
+        $commentid = intRequestVar('commentid');
 
-		$member->canAlterComment($commentid) or $this->disallow();
+        $member->canAlterComment($commentid) or $this->disallow();
 
-		$comment = COMMENT::getComment($commentid);
+        $comment = COMMENT::getComment($commentid);
 
-		$data = array('comment' => &$comment);
-		$manager->notify('PrepareCommentForEdit', $data);
+        $data = array('comment' => &$comment);
+        $manager->notify('PrepareCommentForEdit', $data);
 
-		// change <br /> to \n
-		$comment['body'] = str_replace('<br />', '', $comment['body']);
+        // change <br /> to \n
+        $comment['body'] = str_replace('<br />', '', $comment['body']);
 
-		// replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-		/* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
+        // replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+        /* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
 
         $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
 
@@ -1572,26 +1572,26 @@ class ADMIN {
         $email = postVar('email');
         $body = postVar('body');
 
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
-		# important note that '\' must be matched with '\\\\' in preg* expressions
+        # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+        # original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
+        # important note that '\' must be matched with '\\\\' in preg* expressions
 
-		// intercept words that are too long
-		if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
-		{
-			$this->error(_ERROR_COMMENT_LONGWORD);
-		}
+        // intercept words that are too long
+        if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
+        {
+            $this->error(_ERROR_COMMENT_LONGWORD);
+        }
 
-		// check length
-		if (strlen($body) < 3)
-		{
-			$this->error(_ERROR_COMMENT_NOCOMMENT);
-		}
+        // check length
+        if (strlen($body) < 3)
+        {
+            $this->error(_ERROR_COMMENT_NOCOMMENT);
+        }
 
-		if (strlen($body) > 5000)
-		{
-			$this->error(_ERROR_COMMENT_TOOLONG);
-		}
+        if (strlen($body) > 5000)
+        {
+            $this->error(_ERROR_COMMENT_TOOLONG);
+        }
 
         // prepare body
         $body = COMMENT::prepareBody($body);
@@ -1880,33 +1880,33 @@ class ADMIN {
                 global $DIR_LANG;
                 $dirhandle = opendir($DIR_LANG);
 
-				while ($filename = readdir($dirhandle))
-				{
+                while ($filename = readdir($dirhandle))
+                {
 
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$", $filename, $matches)
+                    # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+                    # original ereg: ereg("^(.*)\.php$", $filename, $matches)
 
-					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
-					{
+                    if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+                    {
 
-						$name = $matches[1];
-						echo "<option value=\"$name\"";
+                        $name = $matches[1];
+                        echo "<option value=\"$name\"";
 
-						if ($name == $mem->getLanguage() )
-						{
-							echo " selected=\"selected\"";
-						}
+                        if ($name == $mem->getLanguage() )
+                        {
+                            echo " selected=\"selected\"";
+                        }
 
-						echo ">$name</option>";
+                        echo ">$name</option>";
 
-					}
+                    }
 
-				}
+                }
 
-				closedir($dirhandle);
+                closedir($dirhandle);
 
-				?>
-				</select>
+                ?>
+                </select>
 
             </td>
         </tr>
@@ -1954,14 +1954,14 @@ class ADMIN {
         $email          = strip_tags(postVar('email'));
         $url            = strip_tags(postVar('url'));
 
-		# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-		# original eregi: !eregi("^https?://", $url)
+        # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+        # original eregi: !eregi("^https?://", $url)
 
-		// begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
-		if (!preg_match('#^https?://#', $url) )
-		{
-			$url = 'http://' . $url;
-		}
+        // begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
+        if (!preg_match('#^https?://#', $url) )
+        {
+            $url = 'http://' . $url;
+        }
 
         $admin          = postVar('admin');
         $canlogin       = postVar('canlogin');
@@ -1985,14 +1985,14 @@ class ADMIN {
                 $this->error(_ERROR_PASSWORDTOOSHORT);
                 
             if ($password) {
-				$pwdvalid = true;
-				$pwderror = '';
-				$data = array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid);
-				$manager->notify('PrePasswordSet', $data);
-				if (!$pwdvalid) {
-					$this->error($pwderror);
-				}
-			}
+                $pwdvalid = true;
+                $pwderror = '';
+                $data = array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid);
+                $manager->notify('PrePasswordSet', $data);
+                if (!$pwdvalid) {
+                    $this->error($pwderror);
+                }
+            }
         }
 
         if (!isValidMailAddress($email))
@@ -2242,15 +2242,15 @@ class ADMIN {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
             
         if ($password) {
-			$pwdvalid = true;
-			$pwderror = '';
-			global $manager;
-			$data = array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid);
-			$manager->notify('PrePasswordSet', $data);
-			if (!$pwdvalid) {
-				return $this->_showActivationPage($key,$pwderror);
-			}
-		}
+            $pwdvalid = true;
+            $pwderror = '';
+            global $manager;
+            $data = array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid);
+            $manager->notify('PrePasswordSet', $data);
+            if (!$pwdvalid) {
+                return $this->_showActivationPage($key,$pwderror);
+            }
+        }
 
         $error = '';
         $data = array('type' => 'activation', 'member' => $mem, 'error' => &$error);
@@ -3355,14 +3355,14 @@ class ADMIN {
         if ($manager->existsBlog($bshortname))
             $this->error(_ERROR_DUPSHORTBLOGNAME);
 
-		$data = array(
-			'name'			=> &$bname,
-			'shortname'		=> &$bshortname,
-			'timeoffset'	=> &$btimeoffset,
-			'description'	=> &$bdesc,
-			'defaultskin'	=> &$bdefskin
-		);
-		$manager->notify('PreAddBlog', $data);
+        $data = array(
+            'name'            => &$bname,
+            'shortname'        => &$bshortname,
+            'timeoffset'    => &$btimeoffset,
+            'description'    => &$bdesc,
+            'defaultskin'    => &$bdefskin
+        );
+        $manager->notify('PreAddBlog', $data);
 
 
         // add slashes for sql queries
@@ -3383,8 +3383,8 @@ class ADMIN {
         $catdefdesc = (defined('_EBLOGDEFAULTCATEGORY_DESC') ? _EBLOGDEFAULTCATEGORY_DESC : 'Items that do not fit in other categories');
         $sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
         sql_query(sprintf($sql, sql_table('category'), $blogid, $catdefname, $catdefdesc));
-//		sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
-//		sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
+//        sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
+//        sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
         $catid = sql_insert_id();
 
         // set as default category
@@ -3402,18 +3402,18 @@ class ADMIN {
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
 
-		$data = array(
-			'blog' => &$blog
-		);
-		$manager->notify('PostAddBlog', $data);
-		
-		$data = array(
-			'blog'			=> &$blog,
-			'name'			=> _EBLOGDEFAULTCATEGORY_NAME,
-			'description'	=> _EBLOGDEFAULTCATEGORY_DESC,
-			'catid'			=> $catid
-		);
-		$manager->notify('PostAddCategory', $data);
+        $data = array(
+            'blog' => &$blog
+        );
+        $manager->notify('PostAddBlog', $data);
+        
+        $data = array(
+            'blog'            => &$blog,
+            'name'            => _EBLOGDEFAULTCATEGORY_NAME,
+            'description'    => _EBLOGDEFAULTCATEGORY_DESC,
+            'catid'            => $catid
+        );
+        $manager->notify('PostAddCategory', $data);
 
         $this->pagehead();
         ?>
@@ -3872,7 +3872,7 @@ selector();
             </td>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_ITEMS?> <?php help('templateitems'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);
+<?php    $this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);
     $this->_templateEditRow($template, _TEMPLATE_ITEMBODY, 'ITEM', '', 9, 1);
     $this->_templateEditRow($template, _TEMPLATE_ITEMFOOTER, 'ITEM_FOOTER', '', 10);
     $this->_templateEditRow($template, _TEMPLATE_MORELINK, 'MORELINK', 'morelink', 20);
@@ -3881,7 +3881,7 @@ selector();
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_COMMENTS_ANY?> <?php help('templatecomments'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);
+<?php    $this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);
     $this->_templateEditRow($template, _TEMPLATE_CBODY, 'COMMENTS_BODY', 'commentbody', 50, 1);
     $this->_templateEditRow($template, _TEMPLATE_CFOOTER, 'COMMENTS_FOOTER', 'commentheaders', 60);
     $this->_templateEditRow($template, _TEMPLATE_CONE, 'COMMENTS_ONE', 'commentwords', 70);
@@ -3896,29 +3896,29 @@ selector();
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_COMMENTS_TOOMUCH?> <?php help('templatecomments'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);
+<?php    $this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_ARCHIVELIST?> <?php help('templatearchivelists'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);
+<?php    $this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);
     $this->_templateEditRow($template, _TEMPLATE_AITEM, 'ARCHIVELIST_LISTITEM', '', 140);
     $this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_BLOGLIST?> <?php help('templatebloglists'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
+<?php    $this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
     $this->_templateEditRow($template, _TEMPLATE_BLOGITEM, 'BLOGLIST_LISTITEM', '', 170);
     $this->_templateEditRow($template, _TEMPLATE_BLOGFOOTER, 'BLOGLIST_FOOTER', '', 180);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
+<?php    $this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
     $this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 200);
     $this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 210);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_DATETIME?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
+<?php    $this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
     $this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 230);
     $this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 240);
     $this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 250);
@@ -3926,13 +3926,13 @@ selector();
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_IMAGE?> <?php help('templatepopups'); ?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
+<?php    $this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
     $this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 280);
     $this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 290);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_SEARCH?></th>
-<?php	$this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
+<?php    $this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
     $this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',310);
 ?>
         </tr><tr>
@@ -3940,9 +3940,9 @@ selector();
 <?php
         $tab = 600;
         $pluginfields = array();
-		
-		$data = array('fields'=>&$pluginfields);
-		$manager->notify('TemplateExtraFields', $data);
+        
+        $data = array('fields'=>&$pluginfields);
+        $manager->notify('TemplateExtraFields', $data);
 
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             echo "</tr><tr>\n";
@@ -4052,9 +4052,9 @@ selector();
         $this->addToTemplate($templateid, 'IMAGE_CODE', postVar('IMAGE_CODE'));
 
         $pluginfields = array();
-		
-		$data = array('fields'=>&$pluginfields);
-		$manager->notify('TemplateExtraFields', $data);
+        
+        $data = array('fields'=>&$pluginfields);
+        $manager->notify('TemplateExtraFields', $data);
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             foreach ($pfvalue as $pffield=>$pfdesc) {
                 $this->addToTemplate($templateid, $pffield, postVar($pffield));
@@ -4127,8 +4127,8 @@ selector();
 
         $member->isAdmin() or $this->disallow();
 
-		$data = array('templateid' => $templateid);
-		$manager->notify('PreDeleteTemplate', $data);
+        $data = array('templateid' => $templateid);
+        $manager->notify('PreDeleteTemplate', $data);
 
         // 1. delete description
         sql_query('DELETE FROM '.sql_table('template_desc').' WHERE tdnumber=' . $templateid);
@@ -4136,8 +4136,8 @@ selector();
         // 2. delete parts
         sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
 
-		$data = array('templateid' => $templateid);
-		$manager->notify('PostDeleteTemplate', $data);
+        $data = array('templateid' => $templateid);
+        $manager->notify('PostDeleteTemplate', $data);
 
         $this->action_templateoverview();
     }
@@ -4560,8 +4560,8 @@ selector();
         if ($o = sql_fetch_object($r))
             $this->error(_ERROR_SKINDEFDELETE .$o->bname);
 
-		$data = array('skinid' => $skinid);
-		$manager->notify('PreDeleteSkin', $data);
+        $data = array('skinid' => $skinid);
+        $manager->notify('PreDeleteSkin', $data);
 
         // 1. delete description
         sql_query('DELETE FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $skinid);
@@ -4569,8 +4569,8 @@ selector();
         // 2. delete parts
         sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid);
 
-		$data = array('skinid' => $skinid);
-		$manager->notify('PostDeleteSkin', $data);
+        $data = array('skinid' => $skinid);
+        $manager->notify('PostDeleteSkin', $data);
 
         $this->action_skinoverview();
     }
@@ -4639,14 +4639,14 @@ selector();
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
-		$data = array('skinid' => $skinid, 'skintype' => $skintype);
-		$manager->notify('PreDeleteSkinPart', $data);
+        $data = array('skinid' => $skinid, 'skintype' => $skintype);
+        $manager->notify('PreDeleteSkinPart', $data);
 
         // delete part
         sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
 
-		$data = array('skinid' => $skinid, 'skintype' => $skintype);
-		$manager->notify('PostDeleteSkinPart', $data);
+        $data = array('skinid' => $skinid, 'skintype' => $skintype);
+        $manager->notify('PostDeleteSkinPart', $data);
 
         $this->action_skinedit();
     }
@@ -4796,33 +4796,33 @@ selector();
                 global $DIR_LANG;
                 $dirhandle = opendir($DIR_LANG);
 
-				while ($filename = readdir($dirhandle) )
-				{
+                while ($filename = readdir($dirhandle) )
+                {
 
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
+                    # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+                    # original ereg: ereg("^(.*)\.php$",$filename,$matches)
 
-					if (preg_match('#^(.*)\.php$#', $filename, $matches) )
-					{
+                    if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+                    {
 
-						$name = $matches[1];
-						echo "<option value=\"$name\"";
+                        $name = $matches[1];
+                        echo "<option value=\"$name\"";
 
-						if ($name == $CONF['Language'])
-						{
-							echo " selected=\"selected\"";
-						}
+                        if ($name == $CONF['Language'])
+                        {
+                            echo " selected=\"selected\"";
+                        }
 
-						echo ">$name</option>";
+                        echo ">$name</option>";
 
-					}
+                    }
 
-				}
+                }
 
-				closedir($dirhandle);
+                closedir($dirhandle);
 
-				?>
-				</select>
+                ?>
+                </select>
 
             </td>
         </tr><tr>
@@ -4906,36 +4906,36 @@ selector();
                 <select name="AdminCSS" tabindex="10080">
                 <?php               // show a dropdown list of all available admin css files
                 global $DIR_NUCLEUS;
-				
+                
                 $dirhandle = opendir($DIR_NUCLEUS."styles/");
 
-				while ($filename = readdir($dirhandle) )
-				{
+                while ($filename = readdir($dirhandle) )
+                {
 
-					# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-					# original ereg: ereg("^(.*)\.php$",$filename,$matches)
+                    # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+                    # original ereg: ereg("^(.*)\.php$",$filename,$matches)
 
-					if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
-					{
+                    if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
+                    {
 
-						$name = $matches[1];
-						echo "<option value=\"$name\"";
+                        $name = $matches[1];
+                        echo "<option value=\"$name\"";
 
-						if ($name == $CONF['AdminCSS'])
-						{
-							echo " selected=\"selected\"";
-						}
+                        if ($name == $CONF['AdminCSS'])
+                        {
+                            echo " selected=\"selected\"";
+                        }
 
-						echo ">$name</option>";
+                        echo ">$name</option>";
 
-					}
+                    }
 
-				}
+                }
 
-				closedir($dirhandle);
+                closedir($dirhandle);
 
-				?>
-				</select>
+                ?>
+                </select>
 
             </td>
         </tr><tr>
@@ -5050,8 +5050,8 @@ selector();
         <?php
             echo '<h2>',_PLUGINS_EXTRA,'</h2>';
 
-		$data = array();
-		$manager->notify('GeneralSettingsFormExtras', $data);
+        $data = array();
+        $manager->notify('GeneralSettingsFormExtras', $data);
 
         $this->pagefoot();
     }
@@ -5103,7 +5103,7 @@ selector();
         $this->updateConfig('CookiePrefix',     postVar('CookiePrefix'));
         $this->updateConfig('DebugVars',            postVar('DebugVars'));
         $this->updateConfig('DefaultListSize',          postVar('DefaultListSize'));
-		$this->updateConfig('AdminCSS',          postVar('AdminCSS'));
+        $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
@@ -5299,18 +5299,18 @@ selector();
     function pagehead($extrahead = '') {
         global $member, $nucleus, $CONF, $manager;
 
-		$data = array(
-			'extrahead'	=> &$extrahead,
-			'action'	=> $this->action
-		);
-		$manager->notify('AdminPrePageHead', $data);
+        $data = array(
+            'extrahead'    => &$extrahead,
+            'action'    => $this->action
+        );
+        $manager->notify('AdminPrePageHead', $data);
 
         $baseUrl = hsc($CONF['AdminURL']);
-		if (!array_key_exists('AdminCSS',$CONF)) 
-		{
-			sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
-			$CONF['AdminCSS'] = 'original';
-		}
+        if (!array_key_exists('AdminCSS',$CONF)) 
+        {
+            sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
+            $CONF['AdminCSS'] = 'original';
+        }
 
         ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
@@ -5379,10 +5379,10 @@ selector();
     function pagefoot() {
         global $action, $member, $manager;
 
-		$data = array(
-			'action' => $this->action
-		);
-		$manager->notify('AdminPrePageFoot', $data);
+        $data = array(
+            'action' => $this->action
+        );
+        $manager->notify('AdminPrePageFoot', $data);
 
         if ($member->isLoggedIn() && ($action != 'showlogin')) {
             ?>
@@ -5471,10 +5471,10 @@ selector();
                     }
 
                     $aPluginExtras = array();
-					$data = array(
-						'options' => &$aPluginExtras
-					);
-					$manager->notify('QuickMenu', $data);
+                    $data = array(
+                        'options' => &$aPluginExtras
+                    );
+                    $manager->notify('QuickMenu', $data);
                     if (count($aPluginExtras) > 0)
                     {
                         echo '<h2>', _QMENU_PLUGINS, '</h2>';
@@ -6022,79 +6022,79 @@ selector();
         showlist($query, 'table', $template);
 
 ?>
-			<h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
+            <h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
 
-			<p><?php echo _PLUGS_TEXT_UPDATE?></p>
+            <p><?php echo _PLUGS_TEXT_UPDATE?></p>
 
-			<form method="post" action="index.php"><div>
-				<input type="hidden" name="action" value="pluginupdate" />
-				<?php $manager->addTicketHidden() ?>
-				<input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
-			</div></form>
+            <form method="post" action="index.php"><div>
+                <input type="hidden" name="action" value="pluginupdate" />
+                <?php $manager->addTicketHidden() ?>
+                <input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
+            </div></form>
 
-			<h3><?php echo _PLUGS_TITLE_NEW?></h3>
+            <h3><?php echo _PLUGS_TITLE_NEW?></h3>
 
 <?php
-		// find a list of possibly non-installed plugins
-		$candidates = array();
+        // find a list of possibly non-installed plugins
+        $candidates = array();
 
-		global $DIR_PLUGINS;
+        global $DIR_PLUGINS;
 
-		$dirhandle = opendir($DIR_PLUGINS);
+        $dirhandle = opendir($DIR_PLUGINS);
 
-		while ($filename = readdir($dirhandle) )
-		{
+        while ($filename = readdir($dirhandle) )
+        {
 
-			# replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-			# original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
+            # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+            # original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
 
-			if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
-			{
+            if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
+            {
 
-				$name = $matches[1];
-				// only show in list when not yet installed
-				$res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
+                $name = $matches[1];
+                // only show in list when not yet installed
+                $res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
 
-				if (sql_num_rows($res) == 0)
-				{
-					array_push($candidates, $name);
-				}
+                if (sql_num_rows($res) == 0)
+                {
+                    array_push($candidates, $name);
+                }
 
-			}
+            }
 
-		}
+        }
 
-		closedir($dirhandle);
+        closedir($dirhandle);
 
-		if (sizeof($candidates) > 0)
-		{
+        if (sizeof($candidates) > 0)
+        {
 ?>
-			<p><?php echo _PLUGS_ADD_TEXT?></p>
+            <p><?php echo _PLUGS_ADD_TEXT?></p>
 
-			<form method='post' action='index.php'><div>
-				<input type='hidden' name='action' value='pluginadd' />
-				<?php $manager->addTicketHidden() ?>
-				<select name="filename" tabindex="30">
+            <form method='post' action='index.php'><div>
+                <input type='hidden' name='action' value='pluginadd' />
+                <?php $manager->addTicketHidden() ?>
+                <select name="filename" tabindex="30">
 <?php
-			foreach($candidates as $name)
-			{
-				echo '<option value="NP_',$name,'">',hsc($name),'</option>';
-			}
+            foreach($candidates as $name)
+            {
+                echo '<option value="NP_',$name,'">',hsc($name),'</option>';
+            }
 ?>
-				</select>
-				<input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
-			</div></form>
+                </select>
+                <input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
+            </div></form>
 
 <?php
-		}
-		else
-		{
-			echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
-		}
+        }
+        else
+        {
+            echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
+        }
 
-		$this->pagefoot();
+        $this->pagefoot();
 
-	}
+    }
 
     /**
      * @todo document this
@@ -6164,10 +6164,10 @@ selector();
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
 
-		$data = array(
-			'file' => &$name
-		);
-		$manager->notify('PreAddPlugin', $data);
+        $data = array(
+            'file' => &$name
+        );
+        $manager->notify('PreAddPlugin', $data);
 
         // do this before calling getPlugin (in case the plugin id is used there)
         $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
@@ -6224,10 +6224,10 @@ selector();
         // call the install method of the plugin
         $plugin->install();
 
-		$data = array(
-			'plugin' => &$plugin
-		);
-		$manager->notify('PostAddPlugin', $data);
+        $data = array(
+            'plugin' => &$plugin
+        );
+        $manager->notify('PostAddPlugin', $data);
 
         // update all events
         $this->action_pluginupdate();
@@ -6259,7 +6259,7 @@ selector();
         }
 
         redirect($CONF['AdminURL'] . '?action=pluginlist');
-//		$this->action_pluginlist();
+//        $this->action_pluginlist();
     }
 
     /**
@@ -6309,7 +6309,7 @@ selector();
         }
 
         redirect($CONF['AdminURL'] . '?action=pluginlist');
-//		$this->action_pluginlist();
+//        $this->action_pluginlist();
     }
 
     /**
@@ -6325,7 +6325,7 @@ selector();
 
         $name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
-/*		// call the unInstall method of the plugin
+/*        // call the unInstall method of the plugin
         if ($callUninstall) {
             $plugin =& $manager->getPlugin($name);
             if ($plugin) $plugin->unInstall();
@@ -6348,8 +6348,8 @@ selector();
             }
         }
 
-		$data = array('plugid' => $pid);
-		$manager->notify('PreDeletePlugin', $data);
+        $data = array('plugid' => $pid);
+        $manager->notify('PreDeletePlugin', $data);
 
         // call the unInstall method of the plugin
         if ($callUninstall) {
@@ -6382,8 +6382,8 @@ selector();
         sql_query('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
         $manager->clearCachedInfo('installedPlugins');
-		$data = array('plugid' => $pid);
-		$manager->notify('PostDeletePlugin', $data);
+        $data = array('plugid' => $pid);
+        $manager->notify('PostDeletePlugin', $data);
 
         return '';
     }
@@ -6508,13 +6508,13 @@ selector();
                 $aOptions[$o->oid]['value'] = $o->ovalue;
         }
 
-		// call plugins
-		$data = array(
-			'context'	=>  'global',
-			'plugid'	=>  $pid,
-			'options'	=> &$aOptions
-		);
-		$manager->notify('PrePluginOptionsEdit', $data);
+        // call plugins
+        $data = array(
+            'context'    =>  'global',
+            'plugid'    =>  $pid,
+            'options'    => &$aOptions
+        );
+        $manager->notify('PrePluginOptionsEdit', $data);
 
         $template['content'] = 'plugoptionlist';
         $amount = showlist($aOptions,'table',$template);
@@ -6546,11 +6546,11 @@ selector();
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
 
-		$data = array(
-			'context'	=> 'global',
-			'plugid'	=> $pid
-		);
-		$manager->notify('PostPluginOptionsUpdate', $data);
+        $data = array(
+            'context'    => 'global',
+            'plugid'    => $pid
+        );
+        $manager->notify('PostPluginOptionsUpdate', $data);
 
         $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
     }
@@ -6593,13 +6593,13 @@ selector();
             ));
         }
 
-		global $manager;
-		$data = array(
-			'context'	=>  $context,
-			'contextid'	=>  $contextid,
-			'options'	=> &$aOptions
-		);
-		$manager->notify('PrePluginOptionsEdit', $data);
+        global $manager;
+        $data = array(
+            'context'    =>  $context,
+            'contextid'    =>  $contextid,
+            'options'    => &$aOptions
+        );
+        $manager->notify('PrePluginOptionsEdit', $data);
 
 
         $iPrevPid = -1;

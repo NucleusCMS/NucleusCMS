@@ -55,7 +55,7 @@ if ($CONF['debug']) {
 
 if (!isset($CONF['alertOnHeadersSent']) || (isset($CONF['alertOnHeadersSent'])&& $CONF['alertOnHeadersSent'] !== 0))
 {
-	$CONF['alertOnHeadersSent']  = 1;
+    $CONF['alertOnHeadersSent']  = 1;
 }
 $CONF['alertOnSecurityRisk'] = 1;
 /*$CONF['ItemURL']           = $CONF['Self'];
@@ -73,10 +73,10 @@ if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CO
 }*/
 
 /*
-	Set these to 1 to allow viewing of future items or draft items
-	Should really never do this, but can be useful for some plugins that might need to
-	Could cause some other issues if you use future posts otr drafts
-	So use with care
+    Set these to 1 to allow viewing of future items or draft items
+    Should really never do this, but can be useful for some plugins that might need to
+    Could cause some other issues if you use future posts otr drafts
+    So use with care
 */
 $CONF['allowDrafts'] = 0;
 $CONF['allowFuture'] = 0;
@@ -195,7 +195,7 @@ if (!isset($CONF['Self'])) {
         $CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
     }
 
-/*	$CONF['ItemURL']        = $CONF['Self'];
+/*    $CONF['ItemURL']        = $CONF['Self'];
     $CONF['ArchiveURL']     = $CONF['Self'];
     $CONF['ArchiveListURL'] = $CONF['Self'];
     $CONF['MemberURL']      = $CONF['Self'];
@@ -269,29 +269,29 @@ if ($action == 'login') {
         if ($nextaction) {
             $action = $nextaction;
         }
-		
-		$data = array(
-			'member'	=> &$member,
-			'username'	=> $login
-		);
-		$manager->notify('LoginSuccess', $data);
-		
+        
+        $data = array(
+            'member'    => &$member,
+            'username'    => $login
+        );
+        $manager->notify('LoginSuccess', $data);
+        
         $errormessage = '';
         ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
     } else {
-		// errormessage for [%errordiv%]
-		$trimlogin = trim($login);
-		if (empty($trimlogin))
-		{
-			$errormessage = "Please enter a username.";
-		}
-		else 
-		{
-			$errormessage = 'Login failed for ' . $login;
-		} 
-		
-		$data = array('username' => $login);
-		$manager->notify('LoginFailed', $data);
+        // errormessage for [%errordiv%]
+        $trimlogin = trim($login);
+        if (empty($trimlogin))
+        {
+            $errormessage = "Please enter a username.";
+        }
+        else 
+        {
+            $errormessage = 'Login failed for ' . $login;
+        } 
+        
+        $data = array('username' => $login);
+        $manager->notify('LoginFailed', $data);
         ACTIONLOG::add(INFO, $errormessage);
     }
 /*
@@ -304,12 +304,12 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
     $pw     = serverVar('PHP_AUTH_PW');
 
     if ($member->login($login, $pw) ) {
-		$data = array('username' => $login);
-		$manager->notify('LoginSuccess', $data);
+        $data = array('username' => $login);
+        $manager->notify('LoginSuccess', $data);
         ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
     } else {
-		$data = array('username' => $login);
-		$manager->notify('LoginFailed', $data);
+        $data = array('username' => $login);
+        $manager->notify('LoginFailed', $data);
         ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
         //Since bad credentials, generate an apropriate error page
@@ -324,8 +324,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
     // remove cookies on logout
     setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
     setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-	$data = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
-	$manager->notify('Logout', $data);
+    $data = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
+    $manager->notify('Logout', $data);
 } elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
     // Cookie Authentication
     $ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
@@ -408,9 +408,9 @@ if (!defined('_MEMBERS_BYPASS'))
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
 if (!defined('_ARCHIVETYPE_MONTH') )
 {
-	define('_ARCHIVETYPE_DAY', 'day');
-	define('_ARCHIVETYPE_MONTH', 'month');
-	define('_ARCHIVETYPE_YEAR', 'year');
+    define('_ARCHIVETYPE_DAY', 'day');
+    define('_ARCHIVETYPE_MONTH', 'month');
+    define('_ARCHIVETYPE_YEAR', 'year');
 }
 
 // decode path_info
@@ -444,13 +444,13 @@ if ($CONF['URLMode'] == 'pathinfo') {
         $CONF['SpecialskinKey'] = 'special';
     }
 
-	$parsed = false;
-	$data = array(
-		'type'		=> basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-		'info'		=> $virtualpath,
-		'complete'	=> &$parsed
-	);
-	$manager->notify('ParseURL', $data);
+    $parsed = false;
+    $data = array(
+        'type'        => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+        'info'        => $virtualpath,
+        'complete'    => &$parsed
+    );
+    $manager->notify('ParseURL', $data);
 
     if (!$parsed) {
         // default implementation
@@ -516,7 +516,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 
                     if ($i < sizeof($data) ) {
                         $special = $data[$i];
-						$_REQUEST['special'] = $special;	
+                        $_REQUEST['special'] = $special;    
                     }
                     break;
 
@@ -526,15 +526,15 @@ if ($CONF['URLMode'] == 'pathinfo') {
         }
     }
 }
-/* 	PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
-	It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking
-	global variables to clean up (scrub out catid or add catid) or to set someother global variable based on
-	the values of something like catid or itemid
-	New in 3.60
+/*     PostParseURL is a place to cleanup any of the path-related global variables before the selector function is run.
+    It has 2 values in the data in case the original virtualpath is needed, but most the use will be in tweaking
+    global variables to clean up (scrub out catid or add catid) or to set someother global variable based on
+    the values of something like catid or itemid
+    New in 3.60
 */
 $data = array(
-	'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-	'info' => $virtualpath
+    'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+    'info' => $virtualpath
 );
 $manager->notify('PostParseURL', $data);
 
@@ -651,12 +651,12 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
             ) {
             $contenttype = 'text/html';
         }
-		$data = array(
-			'contentType'	=> &$contenttype,
-			'charset'		=> &$charset,
-			'pageType'		=> $pagetype
-		);
-		$manager->notify('PreSendContentType', $data);
+        $data = array(
+            'contentType'    => &$contenttype,
+            'charset'        => &$charset,
+            'pageType'        => $pagetype
+        );
+        $manager->notify('PreSendContentType', $data);
         // strip strange characters
         $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
         $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
@@ -717,61 +717,61 @@ function sql_query($query) {
  **/
 function highlight($text, $expression, $highlight) {
 
-	if (!$highlight || !$expression)
-	{
-		return $text;
-	}
+    if (!$highlight || !$expression)
+    {
+        return $text;
+    }
 
-	if (is_array($expression) && (count($expression) == 0) )
-	{
-		return $text;
-	}
+    if (is_array($expression) && (count($expression) == 0) )
+    {
+        return $text;
+    }
 
-	// add a tag in front (is needed for preg_match_all to work correct)
-	$text = '<!--h-->' . $text;
+    // add a tag in front (is needed for preg_match_all to work correct)
+    $text = '<!--h-->' . $text;
 
-	// split the HTML up so we have HTML tags
-	// $matches[0][i] = HTML + text
-	// $matches[1][i] = HTML
-	// $matches[2][i] = text
-	preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
+    // split the HTML up so we have HTML tags
+    // $matches[0][i] = HTML + text
+    // $matches[1][i] = HTML
+    // $matches[2][i] = text
+    preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
 
-	// throw it all together again while applying the highlight to the text pieces
-	$result = '';
+    // throw it all together again while applying the highlight to the text pieces
+    $result = '';
 
-	$count_matches = count($matches[2]);
+    $count_matches = count($matches[2]);
 
-	for ($i = 0; $i < $count_matches; $i++) {
+    for ($i = 0; $i < $count_matches; $i++) {
 
-		if ($i != 0)
-		{
-			$result .= $matches[1][$i];
-		}
+        if ($i != 0)
+        {
+            $result .= $matches[1][$i];
+        }
 
-		if (is_array($expression) )
-		{
+        if (is_array($expression) )
+        {
 
-			foreach ($expression as $regex)
-			{
+            foreach ($expression as $regex)
+            {
 
-				if ($regex)
-				{
-					$matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
-				}
+                if ($regex)
+                {
+                    $matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
+                }
 
-			}
+            }
 
-			$result .= $matches[2][$i];
+            $result .= $matches[2][$i];
 
-		}
-		else
-		{
-			$result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
-		}
+        }
+        else
+        {
+            $result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
+        }
 
-	}
+    }
 
-	return $result;
+    return $result;
 
 }
 
@@ -809,8 +809,8 @@ function parseHighlight($query) {
   * Checks if email address is valid
   */
 function isValidMailAddress($address) {
-	// enhancement made in 3.6x based on code by Quandary.
-	if (preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address)) {
+    // enhancement made in 3.6x based on code by Quandary.
+    if (preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address)) {
         return 1;
     } else {
         return 0;
@@ -846,7 +846,7 @@ function getCatIDFromName($name) {
 function quickQuery($q) {
     $res = sql_query($q);
     $obj = sql_fetch_object($res);
-	return $obj->result;
+    return $obj->result;
 }
 
 function getPluginNameFromPid($pid) {
@@ -1142,9 +1142,9 @@ function selector() {
         doError(_ERROR_NOSUCHSKIN);
     }
 
-	// set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
-	global $skinpart;
-	$skinpart = $type;
+    // set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
+    global $skinpart;
+    $skinpart = $type;
 
     // parse the skin
     $skin->parse($type);
@@ -1196,19 +1196,19 @@ function getConfig() {
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {
 
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9]+$', $name)
+    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+    # original eregi: eregi('^[a-z0-9]+$', $name)
 
-	return preg_match('#^[a-z0-9]+$#i', $name);
+    return preg_match('#^[a-z0-9]+$#i', $name);
 
 }
 
 function isValidDisplayName($name) {
 
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
+    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+    # original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
 
-	return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
+    return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
 
 }
 
@@ -1218,19 +1218,19 @@ function isValidCategoryName($name) {
 
 function isValidTemplateName($name) {
 
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9/]+$', $name)
+    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+    # original eregi: eregi('^[a-z0-9/]+$', $name)
 
-	return preg_match('#^[a-z0-9/]+$#i', $name);
+    return preg_match('#^[a-z0-9/]+$#i', $name);
 
 }
 
 function isValidSkinName($name) {
 
-	# replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-	# original eregi: eregi('^[a-z0-9/]+$', $name);
+    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
+    # original eregi: eregi('^[a-z0-9/]+$', $name);
 
-	return preg_match('#^[a-z0-9/]+$#i', $name);
+    return preg_match('#^[a-z0-9/]+$#i', $name);
 
 }
 
@@ -1308,13 +1308,13 @@ function selectItem($id) {
 // force the use of a language file (warning: can cause warnings)
 function selectLanguage($language) {
 
-	global $DIR_LANG;
+    global $DIR_LANG;
 
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
-	# important note that '\' must be matched with '\\\\' in preg* expressions
+    # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+    # original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
+    # important note that '\' must be matched with '\\\\' in preg* expressions
 
-	include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+    include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 }
 
@@ -1441,13 +1441,13 @@ function includephp($filename) {
  **/
 function checkLanguage($lang) {
 
-	global $DIR_LANG;
+    global $DIR_LANG;
 
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
-	# important note that '\' must be matched with '\\\\' in preg* expressions
+    # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+    # original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
+    # important note that '\' must be matched with '\\\\' in preg* expressions
 
-	return file_exists($DIR_LANG . str_replace(array('\\','/'), '', $lang) . '.php');
+    return file_exists($DIR_LANG . str_replace(array('\\','/'), '', $lang) . '.php');
 
 }
 
@@ -1458,13 +1458,13 @@ function checkLanguage($lang) {
  **/
 function checkPlugin($plug) {
 
-	global $DIR_PLUGINS;
+    global $DIR_PLUGINS;
 
-	# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-	# original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
-	# important note that '\' must be matched with '\\\\' in preg* expressions
+    # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+    # original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
+    # important note that '\' must be matched with '\\\\' in preg* expressions
 
-	return file_exists($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
+    return file_exists($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
 
 }
 
@@ -1504,16 +1504,16 @@ function createLink($type, $params) {
     // ask plugins first
     $created = false;
 
-	if ( $usePathInfo )
-	{
-		$data = array(
-			'type'		=>  $type,
-			'params'	=>  $params,
-			'completed'	=> &$created,
-			'url'		=> &$url
-		);
-		$manager->notify('GenerateURL', $data);
-	}
+    if ( $usePathInfo )
+    {
+        $data = array(
+            'type'        =>  $type,
+            'params'    =>  $params,
+            'completed'    => &$created,
+            'url'        => &$url
+        );
+        $manager->notify('GenerateURL', $data);
+    }
 
     // if a plugin created the URL, return it
     if ($created) {
@@ -1602,36 +1602,36 @@ function addLinkParams($link, $params) {
 
             foreach ($params as $param => $value) {
                 // change in 3.63 to fix problem where URL generated with extra params mike look like category/4/blogid/1
-				// but they should use the URL keys like this: category/4/blog/1
-				// if user wants old urls back, set $CONF['NoURLKeysInExtraParams'] = 1; in config.php
+                // but they should use the URL keys like this: category/4/blog/1
+                // if user wants old urls back, set $CONF['NoURLKeysInExtraParams'] = 1; in config.php
                 if (isset($CONF['NoURLKeysInExtraParams']) && $CONF['NoURLKeysInExtraParams'] == 1) 
-				{
-					$link .= '/' . $param . '/' . urlencode($value);
-				} else {
-					switch ($param) {
-						case 'itemid':
-							$link .= '/' . $CONF['ItemKey'] . '/' . urlencode($value);
-						break;
-						case 'memberid':
-							$link .= '/' . $CONF['MemberKey'] . '/' . urlencode($value);
-						break;
-						case 'catid':
-							$link .= '/' . $CONF['CategoryKey'] . '/' . urlencode($value);
-						break;
-						case 'archivelist':
-							$link .= '/' . $CONF['ArchivesKey'] . '/' . urlencode($value);
-						break;
-						case 'archive':
-							$link .= '/' . $CONF['ArchiveKey'] . '/' . urlencode($value);
-						break;
-						case 'blogid':
-							$link .= '/' . $CONF['BlogKey'] . '/' . urlencode($value);
-						break;
-						default:
-							$link .= '/' . $param . '/' . urlencode($value);
-						break;
-					}
-				}
+                {
+                    $link .= '/' . $param . '/' . urlencode($value);
+                } else {
+                    switch ($param) {
+                        case 'itemid':
+                            $link .= '/' . $CONF['ItemKey'] . '/' . urlencode($value);
+                        break;
+                        case 'memberid':
+                            $link .= '/' . $CONF['MemberKey'] . '/' . urlencode($value);
+                        break;
+                        case 'catid':
+                            $link .= '/' . $CONF['CategoryKey'] . '/' . urlencode($value);
+                        break;
+                        case 'archivelist':
+                            $link .= '/' . $CONF['ArchivesKey'] . '/' . urlencode($value);
+                        break;
+                        case 'archive':
+                            $link .= '/' . $CONF['ArchiveKey'] . '/' . urlencode($value);
+                        break;
+                        case 'blogid':
+                            $link .= '/' . $CONF['BlogKey'] . '/' . urlencode($value);
+                        break;
+                        default:
+                            $link .= '/' . $param . '/' . urlencode($value);
+                        break;
+                    }
+                }
             }
 
         } else {
@@ -1648,13 +1648,13 @@ function addLinkParams($link, $params) {
 
 /**
  * @param $querystr
- *		querystring to alter (e.g. foo=1&bar=2&x=y)
+ *        querystring to alter (e.g. foo=1&bar=2&x=y)
  * @param $param
- *		name of parameter to change (e.g. 'foo')
+ *        name of parameter to change (e.g. 'foo')
  * @param $value
- *		New value for that parameter (e.g. 3)
+ *        New value for that parameter (e.g. 3)
  * @result
- *		altered query string (for the examples above: foo=3&bar=2&x=y)
+ *        altered query string (for the examples above: foo=3&bar=2&x=y)
  */
 function alterQueryStr($querystr, $param, $value) {
     $vars = explode('&', $querystr);
@@ -1827,190 +1827,190 @@ function sanitizeParams()
  */
 function ticketForPlugin() {
 
-	global $CONF, $DIR_PLUGINS, $member, $ticketforplugin;
+    global $CONF, $DIR_PLUGINS, $member, $ticketforplugin;
 
-	/* initialize */
-	$ticketforplugin = array();
-	$ticketforplugin['ticket'] = FALSE;
+    /* initialize */
+    $ticketforplugin = array();
+    $ticketforplugin['ticket'] = FALSE;
 
-	/* Check if using plugin's php file. */
-	if ($p_translated = serverVar('PATH_TRANSLATED') )
-	{
+    /* Check if using plugin's php file. */
+    if ($p_translated = serverVar('PATH_TRANSLATED') )
+    {
 
-		if (!file_exists($p_translated) )
-		{
-			$p_translated = '';
-		}
+        if (!file_exists($p_translated) )
+        {
+            $p_translated = '';
+        }
 
     }
 
-	if (!$p_translated)
-	{
-		$p_translated = serverVar('SCRIPT_FILENAME');
+    if (!$p_translated)
+    {
+        $p_translated = serverVar('SCRIPT_FILENAME');
 
-		if (!file_exists($p_translated) )
-		{
-			header("HTTP/1.0 404 Not Found");
-			exit('');
-		}
+        if (!file_exists($p_translated) )
+        {
+            header("HTTP/1.0 404 Not Found");
+            exit('');
+        }
 
-	}
+    }
 
-	$p_translated = str_replace('\\', '/', $p_translated);
-	$d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
+    $p_translated = str_replace('\\', '/', $p_translated);
+    $d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
 
     if (strpos($p_translated, $d_plugins) !== 0)
-	{
-		return;// This isn't plugin php file.
-	}
-
-	/* Solve the plugin php file or admin directory */
-	$phppath = substr($p_translated, strlen($d_plugins) );
-	$phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
-	$path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath); // Remove the first "NP_" and the last ".php" if exists.
-	$path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path); // Remove the "/" and beyond.
-
-	/* Solve the plugin name. */
-	$plugins = array();
-	$query = 'SELECT `pfile` FROM '.sql_table('plugin');
-	$res = sql_query($query);
-
-	while($row = sql_fetch_row($res) )
-	{
-		$name = substr($row[0], 3);
-		$plugins[strtolower($name)] = $name;
+    {
+        return;// This isn't plugin php file.
     }
 
-	sql_free_result($res);
+    /* Solve the plugin php file or admin directory */
+    $phppath = substr($p_translated, strlen($d_plugins) );
+    $phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
+    $path = preg_replace('#^NP_(.*)\.php$#', '$1', $phppath); // Remove the first "NP_" and the last ".php" if exists.
+    $path = preg_replace('#^([^/]*)/(.*)$#', '$1', $path); // Remove the "/" and beyond.
 
-	if ($plugins[$path])
-	{
-		$plugin_name = $plugins[$path];
-	}
-	else if (in_array($path, $plugins))
-	{
-		$plugin_name = $path;
-	}
-	else
-	{
-		header("HTTP/1.0 404 Not Found");
-		exit('');
-	}
+    /* Solve the plugin name. */
+    $plugins = array();
+    $query = 'SELECT `pfile` FROM '.sql_table('plugin');
+    $res = sql_query($query);
 
-	/* Return if not index.php */
-	if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
-	{
-		return;
-	}
+    while($row = sql_fetch_row($res) )
+    {
+        $name = substr($row[0], 3);
+        $plugins[strtolower($name)] = $name;
+    }
+
+    sql_free_result($res);
+
+    if ($plugins[$path])
+    {
+        $plugin_name = $plugins[$path];
+    }
+    else if (in_array($path, $plugins))
+    {
+        $plugin_name = $path;
+    }
+    else
+    {
+        header("HTTP/1.0 404 Not Found");
+        exit('');
+    }
+
+    /* Return if not index.php */
+    if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
+    {
+        return;
+    }
 
     /* Exit if not logged in. */
-	if ( !$member->isLoggedIn() )
-	{
-		exit('You aren\'t logged in.');
-	}
+    if ( !$member->isLoggedIn() )
+    {
+        exit('You aren\'t logged in.');
+    }
 
-	global $manager, $DIR_LIBS, $DIR_LANG, $HTTP_GET_VARS, $HTTP_POST_VARS;
+    global $manager, $DIR_LIBS, $DIR_LANG, $HTTP_GET_VARS, $HTTP_POST_VARS;
 
-	/* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
-	if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
-	{
-		$p_translated = serverVar('SCRIPT_FILENAME');
-	}
+    /* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
+    if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
+    {
+        $p_translated = serverVar('SCRIPT_FILENAME');
+    }
 
-	if ($file = file($p_translated) )
-	{
-		$prevline = '';
+    if ($file = file($p_translated) )
+    {
+        $prevline = '';
 
-		foreach($file as $line)
-		{
+        foreach($file as $line)
+        {
 
-			if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i', $prevline . $line) )
-			{
-				return;
-			}
+            if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i', $prevline . $line) )
+            {
+                return;
+            }
 
-			$prevline = $line;
+            $prevline = $line;
 
-		}
+        }
 
-	}
+    }
 
     /* Show a form if not valid ticket */
     if ( ( strstr(serverVar('REQUEST_URI'), '?') || serverVar('QUERY_STRING')
-			|| strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
-				&& (!$manager->checkTicket() ) )
-	{
+            || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
+                && (!$manager->checkTicket() ) )
+    {
 
-		if (!class_exists('PluginAdmin') )
-		{
-			$language = getLanguageName();
+        if (!class_exists('PluginAdmin') )
+        {
+            $language = getLanguageName();
 
-			# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-			# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
-			# important note that '\' must be matched with '\\\\' in preg* expressions
+            # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+            # original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
+            # important note that '\' must be matched with '\\\\' in preg* expressions
 
-			include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
-			include($DIR_LIBS . 'PLUGINADMIN.php');
-		}
+            include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+            include($DIR_LIBS . 'PLUGINADMIN.php');
+        }
 
-		$oPluginAdmin = new PluginAdmin($plugin_name);
-		$oPluginAdmin->start();
-		echo '<p>' . _ERROR_BADTICKET . "</p>\n";
+        $oPluginAdmin = new PluginAdmin($plugin_name);
+        $oPluginAdmin->start();
+        echo '<p>' . _ERROR_BADTICKET . "</p>\n";
 
-		/* Show the form to confirm action */
-		// PHP 4.0.x support
-		$get = (isset($_GET) ) ? $_GET : $HTTP_GET_VARS;
-		$post = (isset($_POST) ) ? $_POST : $HTTP_POST_VARS;
+        /* Show the form to confirm action */
+        // PHP 4.0.x support
+        $get = (isset($_GET) ) ? $_GET : $HTTP_GET_VARS;
+        $post = (isset($_POST) ) ? $_POST : $HTTP_POST_VARS;
 
-		// Resolve URI and QUERY_STRING
-		if ($uri = serverVar('REQUEST_URI') )
-		{
-			list($uri, $qstring) = explode('?', $uri);
-		}
-		else
-		{
+        // Resolve URI and QUERY_STRING
+        if ($uri = serverVar('REQUEST_URI') )
+        {
+            list($uri, $qstring) = explode('?', $uri);
+        }
+        else
+        {
 
-			if ( !($uri = serverVar('PHP_SELF') ) )
-			{
-				$uri = serverVar('SCRIPT_NAME');
-			}
+            if ( !($uri = serverVar('PHP_SELF') ) )
+            {
+                $uri = serverVar('SCRIPT_NAME');
+            }
 
             $qstring = serverVar('QUERY_STRING');
 
         }
 
         if ($qstring)
-		{
-			$qstring = '?' . $qstring;
-		}
+        {
+            $qstring = '?' . $qstring;
+        }
 
         echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . hsc($plugin_name) . "</span> ?</p>\n";
 
-		switch(strtoupper(serverVar('REQUEST_METHOD') ) )
-		{
-			case 'POST':
-				echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
-				$manager->addTicketHidden();
-				_addInputTags($post);
-				break;
+        switch(strtoupper(serverVar('REQUEST_METHOD') ) )
+        {
+            case 'POST':
+                echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
+                $manager->addTicketHidden();
+                _addInputTags($post);
+                break;
 
-			case 'GET':
-				echo '<form method="GET" action="'.hsc($uri).'">';
-				$manager->addTicketHidden();
-				_addInputTags($get);
+            case 'GET':
+                echo '<form method="GET" action="'.hsc($uri).'">';
+                $manager->addTicketHidden();
+                _addInputTags($get);
 
-			default:
-				break;
-		}
+            default:
+                break;
+        }
 
-		echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
-		echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
-		echo "</form>\n";
+        echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
+        echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
+        echo "</form>\n";
 
-		$oPluginAdmin->end();
-		exit;
+        $oPluginAdmin->end();
+        exit;
 
-	}
+    }
 
     /* Create new ticket */
     $ticket=$manager->addTicketToUrl('');
@@ -2082,7 +2082,7 @@ function arrayToServerString($array, $frontParam, &$str)
 function sanitizeArray(&$array)
 {
     $excludeListForSanitization = array('query');
-//	$excludeListForSanitization = array();
+//    $excludeListForSanitization = array();
 
     foreach ($array as $k => $v) {
 
@@ -2097,8 +2097,8 @@ function sanitizeArray(&$array)
         if (get_magic_quotes_gpc()) {
             $val = stripslashes($val);
         }
-		// note that we must use addslashes here because this function is called before the db connection is made
-		// and sql_real_escape_string needs a db connection
+        // note that we must use addslashes here because this function is called before the db connection is made
+        // and sql_real_escape_string needs a db connection
         $val = addslashes($val);
 
         // if $key is included in exclude list, skip this param
@@ -2327,30 +2327,30 @@ function selectSpecialSkinType($id) {
  * @return String cleaned filename ready for use
  */
 function cleanFileName($str) {
-	$str = strtolower($str);
-	$ext_point = strrpos($str,".");
-	if ($ext_point===false) return false;
-	$ext = substr($str,$ext_point,strlen($str));
-	$str = substr($str,0,$ext_point);
+    $str = strtolower($str);
+    $ext_point = strrpos($str,".");
+    if ($ext_point===false) return false;
+    $ext = substr($str,$ext_point,strlen($str));
+    $str = substr($str,0,$ext_point);
 
-	return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
+    return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
 }
 
 function hsc($string, $flags=ENT_QUOTES, $encoding='') {
-	if($encoding==='')
-	{
-		if(defined('_CHARSET')) $encoding = _CHARSET;
-		else                    $encoding = 'utf8';
-	}
-	if(version_compare(PHP_VERSION, '5.2.3', '>='))
-		return htmlspecialchars($string, $flags, $encoding, false);
-	else
-	{
-		if(function_exists('htmlspecialchars_decode'))
-			$string = htmlspecialchars_decode($string, $flags);
-		else
-			$string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
-		
-		return htmlspecialchars($string, $flags, $encoding);
-	}
+    if($encoding==='')
+    {
+        if(defined('_CHARSET')) $encoding = _CHARSET;
+        else                    $encoding = 'utf8';
+    }
+    if(version_compare(PHP_VERSION, '5.2.3', '>='))
+        return htmlspecialchars($string, $flags, $encoding, false);
+    else
+    {
+        if(function_exists('htmlspecialchars_decode'))
+            $string = htmlspecialchars_decode($string, $flags);
+        else
+            $string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS)));
+        
+        return htmlspecialchars($string, $flags, $encoding);
+    }
 }

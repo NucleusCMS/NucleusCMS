@@ -20,58 +20,58 @@
 
 class PluginAdmin {
 
-	var $strFullName;		// NP_SomeThing
-	var $plugin;			// ref. to plugin object
-	var $bValid;			// evaluates to true when object is considered valid
-	var $admin;				// ref to an admin object
+    var $strFullName;        // NP_SomeThing
+    var $plugin;            // ref. to plugin object
+    var $bValid;            // evaluates to true when object is considered valid
+    var $admin;                // ref to an admin object
 
-	function PluginAdmin($pluginName)
-	{
-		global $manager, $DIR_LIBS;
+    function PluginAdmin($pluginName)
+    {
+        global $manager, $DIR_LIBS;
                 include_once($DIR_LIBS . 'ADMIN.php');
 
-		$this->strFullName = 'NP_' . $pluginName;
+        $this->strFullName = 'NP_' . $pluginName;
 
-		// check if plugin exists and is installed
-		if (!$manager->pluginInstalled($this->strFullName))
-			doError(_ERROR_INVALID_PLUGIN);
+        // check if plugin exists and is installed
+        if (!$manager->pluginInstalled($this->strFullName))
+            doError(_ERROR_INVALID_PLUGIN);
 
-		$this->plugin =& $manager->getPlugin($this->strFullName);
-		$this->bValid = $this->plugin;
+        $this->plugin =& $manager->getPlugin($this->strFullName);
+        $this->bValid = $this->plugin;
 
-		if (!$this->bValid)
-			doError(_ERROR_INVALID_PLUGIN);
+        if (!$this->bValid)
+            doError(_ERROR_INVALID_PLUGIN);
 
-		$this->admin = new ADMIN();
-		$this->admin->action = 'plugin_' . $pluginName;
-	}
+        $this->admin = new ADMIN();
+        $this->admin->action = 'plugin_' . $pluginName;
+    }
 
-	function start($extraHead = '')
-	{
-		global $CONF;
-		$strBaseHref  = '<base href="' . hsc($CONF['AdminURL']) . '" />';
-		$extraHead .= $strBaseHref;
+    function start($extraHead = '')
+    {
+        global $CONF;
+        $strBaseHref  = '<base href="' . hsc($CONF['AdminURL']) . '" />';
+        $extraHead .= $strBaseHref;
 
-		$this->admin->pagehead($extraHead);
-	}
+        $this->admin->pagehead($extraHead);
+    }
 
-	function end()
-	{
-		$this->_AddTicketByJS();
-		$this->admin->pagefoot();
-	}
+    function end()
+    {
+        $this->_AddTicketByJS();
+        $this->admin->pagefoot();
+    }
 
 /** 
  * Add ticket when not used in plugin's admin page
  * to avoid CSRF.
  */
-	function _AddTicketByJS(){
-		global $CONF,$ticketforplugin;
-		if (!($ticket=$ticketforplugin['ticket'])) {
-			//echo "\n<!--TicketForPlugin skipped-->\n";
-			return;
-		}
-		$ticket=hsc($ticket);
+    function _AddTicketByJS(){
+        global $CONF,$ticketforplugin;
+        if (!($ticket=$ticketforplugin['ticket'])) {
+            //echo "\n<!--TicketForPlugin skipped-->\n";
+            return;
+        }
+        $ticket=hsc($ticket);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/
@@ -127,7 +127,7 @@ for (i=0;document.forms[i];i++){
 /*]]>*/
 </script><?php
  
-	}
+    }
 }
 
 
