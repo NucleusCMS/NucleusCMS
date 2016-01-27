@@ -8,8 +8,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * This script allows adding items to Nucleus through bookmarklets. The member must be logged in
  * in order to use this.
  *

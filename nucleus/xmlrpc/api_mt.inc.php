@@ -9,8 +9,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * This file contains definitions for the methods in the Movable Type API
  *
  * Wouter Demuynck 2003-08-31

@@ -8,9 +8,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-
-/**
+ *
  * This file contains definitions for the functions in the Nucleus API
  *
  * NOTE: These functions are deprecated and will most likely be removed!

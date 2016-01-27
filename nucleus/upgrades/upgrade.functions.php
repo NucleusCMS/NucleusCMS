@@ -1,22 +1,21 @@
 <?php
 
-    /*
-     * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-     * Copyright (C) The Nucleus Group
-     *
-     * This program is free software; you can redistribute it and/or
-     * modify it under the terms of the GNU General Public License
-     * as published by the Free Software Foundation; either version 2
-     * of the License, or (at your option) any later version.
-     * (see nucleus/documentation/index.html#license for more info)
-     */
-    /**
-     * Some functions common to all upgrade scripts
-     *
-     * @license http://nucleuscms.org/license.txt GNU General Public License
-     * @copyright Copyright (C) The Nucleus Group
-     */
-     
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ *
+ * Some functions common to all upgrade scripts
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) The Nucleus Group
+ */
+
 /*************************************************************
  *     NOTE: With upgrade to 3.6, need to set this to use sql_* API           *
  **************************************************************/
