@@ -2080,17 +2080,17 @@ function ticketForPlugin(){
         echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.hsc($plugin_name)."</span> ?</p>\n";
         switch(strtoupper(serverVar('REQUEST_METHOD')))
         {
-        case 'POST':
-            echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
-            $manager->addTicketHidden();
-            _addInputTags($post);
-            break;
-        case 'GET':
-            echo '<form method="GET" action="'.hsc($uri).'">';
-            $manager->addTicketHidden();
-            _addInputTags($get);
-        default:
-            break;
+            case 'POST':
+                echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
+                $manager->addTicketHidden();
+                _addInputTags($post);
+                break;
+            case 'GET':
+                echo '<form method="GET" action="'.hsc($uri).'">';
+                $manager->addTicketHidden();
+                _addInputTags($get);
+            default:
+                break;
         }
         echo '<input type="submit" value="'._YES.'" />&nbsp;&nbsp;&nbsp;&nbsp;';
         echo '<input type="button" value="'._NO.'" onclick="history.back(); return false;" />';

@@ -45,6 +45,9 @@ class BaseActions {
     // reference to the parser object that is using this object as actions-handler
     var $parser;
 
+    /**
+     *  Constructor for a new BaseAction object
+     */
     function __construct() {
         $this->level = 0;
 
@@ -59,17 +62,33 @@ class BaseActions {
 
     }
 
-    // include file (no parsing of php)
+    /**
+     * include file (no parsing of php)
+     * 
+     * ToDo: function returns nothing and refering to the cross reference it
+     *       isn't called from anywhere   
+     * 
+     * @param $filename
+     */
     function parse_include($filename) {
         @readfile($this->getIncludeFileName($filename));
     }
 
-    // php-include file
+    /**
+     * php-include file
+     * 
+     * @param $filename
+     */
     function parse_phpinclude($filename) {
         includephp($this->getIncludeFileName($filename));
     }
 
-    // parsed include
+    
+    /**
+     * parsed include
+     * 
+     * @param $filename
+     */
     function parse_parsedinclude($filename) {
         // check current level
         if ($this->level > 3)
@@ -111,6 +130,8 @@ class BaseActions {
      * parser properties
      *
      * IF IncludeMode = 'skindir' => use skindir
+     * 
+     * @param $filename
      */
     function getIncludeFileName($filename) {
         // leave absolute filenames and http urls as they are
@@ -160,6 +181,9 @@ class BaseActions {
         ob_start();
     }
 
+    /**
+     * Helper function: update the Top of the If Conditions Array
+     */
     function _updateTopIfCondition() {
         if (sizeof($this->if_conditions) == 0)
             $this->if_currentlevel = 1;
@@ -224,7 +248,7 @@ class BaseActions {
         $this->_addIfExecute();
 
         $args = func_get_args();
-        $condition = call_user_func_array(array($this,'checkCondition'), $args);
+        $condition = call_user_func_array(array($this, 'checkCondition'), $args);
         $this->_addIfCondition($condition);
     }
 
@@ -263,7 +287,7 @@ class BaseActions {
         } else {
             ob_end_clean();
             $args = func_get_args();
-            $condition = call_user_func_array(array($this,'checkCondition'), $args);
+            $condition = call_user_func_array(array($this, 'checkCondition'), $args);
             $this->_addIfCondition($condition);
         }
     }
@@ -275,7 +299,7 @@ class BaseActions {
         $this->_addIfExecute();
 
         $args = func_get_args();
-        $condition = call_user_func_array(array($this,'checkCondition'), $args);
+        $condition = call_user_func_array(array($this, 'checkCondition'), $args);
         $this->_addIfCondition(!$condition);
     }
 
@@ -295,7 +319,7 @@ class BaseActions {
         } else {
             ob_end_clean();
             $args = func_get_args();
-            $condition = call_user_func_array(array($this,'checkCondition'), $args);
+            $condition = call_user_func_array(array($this, 'checkCondition'), $args);
             $this->_addIfCondition(!$condition);
         }
     }

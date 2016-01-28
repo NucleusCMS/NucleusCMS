@@ -31,6 +31,12 @@ class SKIN {
     var $includePrefix;
     var $name;
 
+    /**
+     * Constructor for a new SKIN object
+     * 
+     * @param $id 
+     *             id of the skin
+     */
     public function SKIN($id) { $this->__construct($id); }
     function __construct($id) {
         global $resultCache;
@@ -159,6 +165,11 @@ class SKIN {
         return $newid;
     }
 
+    /**
+     * Parse a SKIN
+     * 
+     * @param string $type
+     */
     function parse($type) {
         global $manager, $CONF, $skinid;
         
@@ -254,7 +265,10 @@ class SKIN {
     }
 
     /**
-     * Updates the contents of one part of the skin
+     * Updates the contents for one part of the skin in the database
+     * 
+     * @param $type type of the skin part (e.g. index, item, search ...) 
+     * @param $content new content for this skin part
      */
     function update($type, $content) {
         $skinid = $this->id;
@@ -298,6 +312,9 @@ class SKIN {
     }
 
     /**
+     * Get an array with the names of possible skin parts
+     * Used to show all possible parts of a skin in the administration backend
+     * 
      * static: returns an array of friendly names
      */
     public static function getFriendlyNames() {
@@ -321,6 +338,12 @@ class SKIN {
         return $skintypes;
     }
 
+    /**
+     * Get the allowed actions for a skin type
+     * returns an array with the allowed actions
+     * 
+     * @param $type type of the skin (e.g. index, item, search ...)
+     */
     public static function getAllowedActionsForType($type) {
         global $blogid;
 

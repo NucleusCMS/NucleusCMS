@@ -6171,9 +6171,9 @@ selector();
             <input name='customiprange' value='<?php echo $iprangeVal ?>' maxlength='15' size='15' />
         <?php
         } else {
-                echo "<input name='iprange' value='custom' type='hidden' />";
-                echo "<input name='customiprange' value='' maxlength='15' size='15' />";
-            }
+            echo "<input name='iprange' value='custom' type='hidden' />";
+            echo "<input name='customiprange' value='' maxlength='15' size='15' />";
+        }
         ?>
         </div>
 
@@ -6383,7 +6383,7 @@ selector();
         $template['tabindex'] = 10;
         showlist($query, 'table', $template);
 
-        ?>
+?>
             <h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
 
             <p><?php echo _PLUGS_TEXT_UPDATE?></p>
@@ -6396,53 +6396,56 @@ selector();
 
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
             
-            <?php
-            // find a list of possibly non-installed plugins
-                $candidates = array();
-                global $DIR_PLUGINS;
-                $dirhandle = opendir($DIR_PLUGINS);
-                while ($filename = readdir($dirhandle) )
+<?php
+        // find a list of possibly non-installed plugins
+        $candidates = array();
+
+        global $DIR_PLUGINS;
+
+        $dirhandle = opendir($DIR_PLUGINS);
+
+        while ($filename = readdir($dirhandle) )
+        {
+            if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
+            {
+                $name = $matches[1];
+                // only show in list when not yet installed
+                $res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
+
+                if (sql_num_rows($res) == 0)
                 {
-                    if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
-                    {
-                        $name = $matches[1];
-                        // only show in list when not yet installed
-                        $res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
-                        if (sql_num_rows($res) == 0)
-                        {
-                            array_push($candidates, $name);
-                        }
-                    }
+                    array_push($candidates, $name);
                 }
-                closedir($dirhandle);
-                
-                if (sizeof($candidates) > 0)
-                {
-            ?>
+            }
+        }
+        closedir($dirhandle);
+        
+        if (sizeof($candidates) > 0)
+        {
+?>
 
             <p><?php echo _PLUGS_ADD_TEXT?></p>
-
 
             <form method='post' action='index.php'><div>
                 <input type='hidden' name='action' value='pluginadd' />
                 <?php $manager->addTicketHidden() ?>
                 <select name="filename" tabindex="30">
-                <?php    
-                foreach($candidates as $name)
-                {
-                    echo '<option value="NP_',$name,'">',hsc($name),'</option>';
-                }
-                ?>
+<?php
+            foreach($candidates as $name)
+            {
+                echo '<option value="NP_',$name,'">',hsc($name),'</option>';
+            }
+?>
                 </select>
                 <input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
             </div></form>
 
-        <?php
-                }
-                else
-                {
-                echo '<p>',_PLUGS_NOCANDIDATES,'</p>';
-            }
+<?php
+        }
+        else
+        {
+            echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
+        }
 
         $this->pagefoot();
     }

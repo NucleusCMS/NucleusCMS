@@ -448,6 +448,5 @@ class BATCH extends ENCAPSULATE {
                                     $errorMessage
                                 );
     }
-
 }
 ?>

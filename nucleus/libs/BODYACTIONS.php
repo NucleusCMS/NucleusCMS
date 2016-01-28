@@ -25,21 +25,42 @@ class BODYACTIONS extends BaseActions {
     function __construct() {
         parent::__construct();
     }
-    
+
+    /**
+     * Set the current item
+     * 
+     * @param &$item
+     *             reference to the current item
+     */
     function setCurrentItem(&$item) {
         $this->currentItem =& $item;
         global $currentitemid;
         $currentitemid = $this->currentItem->itemid;
     }
-    
+
+    /**
+     * Set the current template
+     * 
+     * @param $template
+     *             Template to be used
+     */
     function setTemplate($template) {
         $this->template =& $template;
     }
 
+    /**
+     * Get the defined actions in an item
+     */
     function getDefinedActions() {
         return array('image', 'media', 'popup', 'plugin', 'if', 'else', 'endif', 'elseif', 'ifnot', 'elseifnot');
     }
 
+    /**
+     * Parse a plugin var
+     * Called if <%plugin(...)%> in an item appears
+     * 
+     * Calls the doItemVar function in the plugin
+     */
     function parse_plugin($pluginName) {
         global $manager;
 
@@ -63,7 +84,11 @@ class BODYACTIONS extends BaseActions {
 
         call_user_func_array(array($plugin,'doItemVar'), $params);
     }
-    
+
+    /**
+     * Parse image
+     * Called if <%image(...)%> in an item appears
+     */
     function parse_image() {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
@@ -71,6 +96,9 @@ class BODYACTIONS extends BaseActions {
         call_user_func_array(array($this,'createImageCode'), $args);
     }
     
+    /**
+     * Creates the code for an image
+     */
     function createImageCode($filename, $width, $height, $text = '') {
         global $CONF;
 
@@ -93,7 +121,11 @@ class BODYACTIONS extends BaseActions {
         echo TEMPLATE::fill($this->template['IMAGE_CODE'],$vars);;
 
     }
-    
+
+    /**
+     * Parse media
+     * Called if <%media(...)%> in an item appears
+     */
     function parse_media() {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
@@ -101,6 +133,9 @@ class BODYACTIONS extends BaseActions {
         call_user_func_array(array($this,'createMediaCode'), $args);
     }
 
+    /**
+     * Creates the code for a media
+     */
     function createMediaCode($filename, $text = '') {
         global $CONF;
 
@@ -116,7 +151,10 @@ class BODYACTIONS extends BaseActions {
         echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
     }
 
-
+    /**
+     * Parse popup
+     * Called if <%popup(...)%> in an item appears
+     */
     function parse_popup() {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
@@ -124,6 +162,9 @@ class BODYACTIONS extends BaseActions {
         call_user_func_array(array($this,'createPopupCode'), $args);
     }
 
+    /**
+     * Creates the code for a popup
+     */
     function createPopupCode($filename, $width, $height, $text = '') {
         global $CONF;
 

@@ -77,7 +77,7 @@ class BLOG {
      * @param $template
      *      String representing the template name to be used
      */
-    function showArchive($templatename, $year, $month = 0, $day = 0) {
+    function showArchive($templatename, $year, $month=0, $day=0) {
 
         // create extra where clause for select query
         if ($day == 0 && $month != 0) {
@@ -98,17 +98,24 @@ class BLOG {
 
     }
 
-
-    // sets/gets current category (only when category exists)
+    /**
+     * Sets the selected category by id (only when category exists)
+     */
     function setSelectedCategory($catid) {
         if ($this->isValidCategory($catid) || (intval($catid) == 0))
             $this->selectedcatid = intval($catid);
     }
 
+    /**
+     * Sets the selected category by name
+     */
     function setSelectedCategoryByName($catname) {
         $this->setSelectedCategory($this->getCategoryIdFromName($catname));
     }
 
+    /**
+     * Returns the selected category
+     */
     function getSelectedCategory() {
         return $this->selectedcatid;
     }
@@ -145,6 +152,9 @@ class BLOG {
         return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
     }
 
+    /**
+     * Do the job for readLogAmmount
+     */    
     function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1) {
         global $CONF, $manager;
 
@@ -238,7 +248,8 @@ class BLOG {
         $numrows = sql_num_rows($items);
 
         // add another date footer if there was at least one item
-        if (($numrows > 0) && $dateheads) {
+        if ( ($numrows > 0) && $dateheads )
+        {
             $param = array(
                 'blog'        => &$this,
                 'timestamp'    =>  strtotime($old_date)
@@ -258,6 +269,9 @@ class BLOG {
 
     }
 
+    /**
+     * Simplified function for showing only one item
+     */
     function showOneitem($itemid, $template, $highlight) {
         $extraQuery = ' and inumber=' . intval($itemid);
 
@@ -328,9 +342,19 @@ class BLOG {
         if (!$draft && !$isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem())
             $this->sendNewItemNotification($itemid, $title, $body);
 
-            return $itemid;
+        return $itemid;
     }
 
+    /**
+     * Send a new item notification to the notification list
+     * 
+     * @param $itemid
+     *        ID of the item
+     * @param $title
+     *        title of the item
+     * @param $body
+     *        body of the item
+     */
     function sendNewItemNotification($itemid, $title, $body) {
         global $CONF, $member;
 
@@ -360,9 +384,6 @@ class BLOG {
 
         $notify = new NOTIFICATION($this->getNotifyAddress());
         $notify->notify($mailto_title, $mailto_msg , $frommail);
-
-
-
     }
 
 
@@ -370,14 +391,14 @@ class BLOG {
       * Creates a new category for this blog
       *
       * @param $catName
-      *     name of the new category. When empty, a name is generated automatically
-      *     (starting with newcat)
+      *        name of the new category. When empty, a name is generated automatically
+      *        (starting with newcat)
       * @param $catDescription
-      *     description of the new category. Defaults to 'New Category'
+      *        description of the new category. Defaults to 'New Category'
       *
       * @returns
-      *     the new category-id in case of success.
-      *     0 on failure
+      *        the new category-id in case of success.
+      *        0 on failure
       */
     function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC, $corder = null) {
         global $member, $manager;
@@ -799,7 +820,7 @@ class BLOG {
 
     /**
       * Shows a list of all blogs in the system using a given template
-      * ordered by  number, name, shortname or description
+      * ordered by number, name, shortname or description
       * in ascending or descending order
       */
     public static function showBlogList($template, $bnametype, $orderby, $direction) {
@@ -883,9 +904,8 @@ class BLOG {
     }
 
     /**
-      * Blogsettings functions
+      * Read the blog settings
       */
-
     function readSettings() {
         $query =  'SELECT *'
                . ' FROM '.sql_table('blog')
@@ -899,6 +919,9 @@ class BLOG {
         $this->settings = sql_fetch_assoc($res);
     }
 
+    /**
+      * Write the blog settings
+      */
     function writeSettings() {
 
         // (can't use floatval since not available prior to PHP 4.2)
@@ -929,9 +952,9 @@ class BLOG {
 
     }
 
-
-
-    // update update file if requested
+    /**
+      * Update the update file if requested
+      */    
     function updateUpdatefile() {
          if ($this->getUpdateFile()) {
             $f_update = fopen($this->getUpdateFile(),'w');
@@ -941,6 +964,12 @@ class BLOG {
 
     }
 
+    /**
+      * Check if a category with a given catid is valid
+      * 
+      * @param $catid
+      *     category id
+      */
     function isValidCategory($catid) {
         global $manager;
         $query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
@@ -950,12 +979,24 @@ class BLOG {
         return ($count != 0);
     }
 
+    /**
+      * Get the category name for a given catid
+      * 
+      * @param $catid
+      *     category id
+      */
     function getCategoryName($catid) {
         $res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
         return $o->cname;
     }
 
+    /**
+      * Get the category description for a given catid
+      * 
+      * @param $catid
+      *     category id
+      */
     function getCategoryDesc($catid) {
         $res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
@@ -995,7 +1036,9 @@ class BLOG {
             setConvertBreaks(<?php echo  $this->convertBreaks() ? 'true' : 'false' ?>);
             setMediaUrl("<?php echo $CONF['MediaURL']?>");
             setAuthorId(<?php echo $authorid?>);
-        </script><?php  }
+        </script>
+<?php
+    }
 
     function setConvertBreaks($val) {
         $this->setSetting('bconvertbreaks',$val);
@@ -1166,9 +1209,10 @@ class BLOG {
         $this->settings[$key] = $value;
     }
 
-
-    // tries to add a member to the team. Returns false if the member was already on
-    // the team
+    /**
+      * Tries to add a member to the team. 
+      * Returns false if the member was already on the team
+      */
     function addTeamMember($memberid, $admin) {
         global $manager;
 
@@ -1211,33 +1255,51 @@ class BLOG {
         return intVal($this->blogid);
     }
 
-    // returns true if there is a blog with the given shortname (static)
+    /**
+      * Checks if a blog with a given shortname exists 
+      * Returns true if there is a blog with the given shortname (static)
+      * 
+      * @param $name
+      *     blog shortname
+      */
     public static function exists($name) {
         $r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
         return (sql_num_rows($r) != 0);
     }
 
-    // returns true if there is a blog with the given ID (static)
+    /**
+      * Checks if a blog with a given id exists 
+      * Returns true if there is a blog with the given ID (static)
+      * 
+      * @param $id
+      *     blog id
+      */
     public static function existsID($id) {
         $r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
         return (sql_num_rows($r) != 0);
     }
 
-        // flag there is a future post pending
-        function setFuturePost() {
+    /**
+      * flag there is a future post pending 
+      */
+    function setFuturePost() {
         $query =  'UPDATE '.sql_table('blog')
-               . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
+                . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
         sql_query($query);
-        }
+    }
 
-    // clear there is a future post pending
+    /**
+      * clear there is a future post pending 
+      */
     function clearFuturePost() {
         $query =  'UPDATE '.sql_table('blog')
                . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
         sql_query($query);
     }
 
-    // check if we should throw justPosted event
+    /**
+      * check if we should throw justPosted event 
+      */
     function checkJustPosted() {
         global $manager;
 
@@ -1289,9 +1351,9 @@ class BLOG {
      *      amount of items shown
      */
     function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1,$showDrafts = 0, $showFuture = 0) {
-        
+
         $query = $this->getSqlItemList($itemarray,$showDrafts,$showFuture);
-        
+
         return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
     }
 
@@ -1344,15 +1406,15 @@ class BLOG {
                     . sql_table('member') . ' as m, '
                     . sql_table('category').' as c'
                     . ' WHERE'
-                    .     ' i.iblog   = ' . $this->blogid
-                    . ' and i.iauthor = m.mnumber'
-                    . ' and i.icat    = c.catid';
+                    .    ' i.iblog='.$this->blogid
+                   . ' and i.iauthor=m.mnumber'
+                   . ' and i.icat=c.catid';
             
             if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts
             if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
 
             //$query .= ' and i.inumber IN ('.$itemlist.')';
-            $query .= ' and i.inumber = '.intval($value);
+            $query .= ' and i.inumber='.intval($value);
             $query .= ')';
             $i--;
             if ($i) $query .= ' UNION ';
