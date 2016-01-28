@@ -13,33 +13,33 @@
  */
 
 class ENCAPSULATE {
-    /**
-      * Uses $call to call a function using parameters $params
-      * This function should return the amount of entries shown.
-      * When entries are show, batch operation handlers are shown too.
-      * When no entries were shown, $errormsg is used to display an error
-      *
-      * Passes on the amount of results found (for further encapsulation)
-      */
-    function doEncapsulate($call, $params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
-        // start output buffering
-        ob_start();
+	/**
+	  * Uses $call to call a function using parameters $params
+	  * This function should return the amount of entries shown.
+	  * When entries are show, batch operation handlers are shown too.
+	  * When no entries were shown, $errormsg is used to display an error
+	  *
+	  * Passes on the amount of results found (for further encapsulation)
+	  */
+	function doEncapsulate($call, $params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
+		// start output buffering
+		ob_start();
 
-        $nbOfRows = call_user_func_array($call, $params);
+		$nbOfRows = call_user_func_array($call, $params);
 
-        // get list contents and stop buffering
-        $list = ob_get_clean();
+		// get list contents and stop buffering
+		$list = ob_get_clean();
 
-        if ($nbOfRows > 0) {
-            $this->showHead();
-            echo $list;
-            $this->showFoot();
-        } else {
-            echo $errorMessage;
-        }
+		if ($nbOfRows > 0) {
+			$this->showHead();
+			echo $list;
+			$this->showFoot();
+		} else {
+			echo $errorMessage;
+		}
 
-        return $nbOfRows;
-    }
+		return $nbOfRows;
+	}
 }
 
 /**
@@ -47,303 +47,303 @@ class ENCAPSULATE {
   */
 class NAVLIST extends ENCAPSULATE {
 
-    public $total = null;
+	public $total = null;
 
-    function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
-        $this->action = $action;
-        $this->start = $start;
-        $this->amount = $amount;
-        $this->minamount = $minamount;
-        $this->maxamount = $maxamount;
-        $this->blogid = $blogid;
-        $this->search = $search;
-        $this->itemid = $itemid;
-    }
+	function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
+		$this->action = $action;
+		$this->start = $start;
+		$this->amount = $amount;
+		$this->minamount = $minamount;
+		$this->maxamount = $maxamount;
+		$this->blogid = $blogid;
+		$this->search = $search;
+		$this->itemid = $itemid;
+	}
 
-    function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-        $batch = new BATCH($batchtype);
+	function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
+		$batch = new BATCH($batchtype);
 
-        $this->doEncapsulate(
-                array(&$batch, 'showlist'),
-                array(&$query, $type, $template),
-                $errorMessage
-        );
+		$this->doEncapsulate(
+				array(&$batch, 'showlist'),
+				array(&$query, $type, $template),
+				$errorMessage
+		);
 
-    }
+	}
 
 
-    function showHead() {
-        $this->showNavigation();
-    }
-    function showFoot() {
-        $this->showNavigation();
-    }
+	function showHead() {
+		$this->showNavigation();
+	}
+	function showFoot() {
+		$this->showNavigation();
+	}
 
-    /**
-      * Displays a next/prev bar for long tables
-      */
-    function showNavigation() {
-        $action = $this->action;
-        $start = $this->start;
-        $amount = $this->amount;
-        $minamount = $this->minamount;
-        $maxamount = $this->maxamount;
-        $blogid = $this->blogid;
-        $search = hsc($this->search);
-        $itemid = $this->itemid;
+	/**
+	  * Displays a next/prev bar for long tables
+	  */
+	function showNavigation() {
+		$action = $this->action;
+		$start = $this->start;
+		$amount = $this->amount;
+		$minamount = $this->minamount;
+		$maxamount = $this->maxamount;
+		$blogid = $this->blogid;
+		$search = hsc($this->search);
+		$itemid = $this->itemid;
 
-        $prev = $start - $amount;
-        if ($prev < $minamount) $prev=$minamount;
+		$prev = $start - $amount;
+		if ($prev < $minamount) $prev=$minamount;
 
-        $next = $start + $amount;
+		$next = $start + $amount;
 
-        $enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
-        if ($enable_cat_select)
-           $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+		$enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
+		if ($enable_cat_select)
+		   $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
 
-        $minamount = $this->minamount;
-        $maxamount = $this->maxamount;
-        $page_navigation = "";
-        // calc page
-        if ($amount <= 0) {
-                $total_pages = 1;
-                $current_page = 1;
-                $amount = 1;
-        }
-      else
-        {
-            // page = (page-1)/$amount + 1 , page item start 1..
-            $current_page = (int) (floor(max(0, $start) / $amount) + 1); // start 0..
-            if ( is_null( $this->total ) )
-                $total_pages = 1;
-              else
-                {
-                    $total_pages = (int) floor(max(0, $this->total-1) / $amount) + 1;
-                    $current_page = min($current_page , $total_pages);
-                }
-        }
-        $current_page = max(1 , $current_page); // page 1..
-        $maxamount = min($maxamount , $total_pages * $amount-1);
-        if (!is_null( $this->total ))
-            $maxamount = max(0 , $this->total - 1);
+		$minamount = $this->minamount;
+		$maxamount = $this->maxamount;
+		$page_navigation = "";
+		// calc page
+		if ($amount <= 0) {
+				$total_pages = 1;
+				$current_page = 1;
+				$amount = 1;
+		}
+	  else
+		{
+			// page = (page-1)/$amount + 1 , page item start 1..
+			$current_page = (int) (floor(max(0, $start) / $amount) + 1); // start 0..
+			if ( is_null( $this->total ) )
+				$total_pages = 1;
+			  else
+				{
+					$total_pages = (int) floor(max(0, $this->total-1) / $amount) + 1;
+					$current_page = min($current_page , $total_pages);
+				}
+		}
+		$current_page = max(1 , $current_page); // page 1..
+		$maxamount = min($maxamount , $total_pages * $amount-1);
+		if (!is_null( $this->total ))
+			$maxamount = max(0 , $this->total - 1);
 
-        $prev = max(0 , ($current_page-2)) * $amount; // 0..
-        if ($prev < $minamount) $prev=$minamount;
+		$prev = max(0 , ($current_page-2)) * $amount; // 0..
+		if ($prev < $minamount) $prev=$minamount;
 
-          $next    = max(0 , min( $current_page , $total_pages ) * $amount);
-        if ( !is_null( $this->total ) && (intval($next)+1 > intval($this->total)) ) {
-              $next = floor(max(0,intval($this->total-1)) / $amount) * $amount ; // 9/10=0,10/10=1
-        }
+		  $next	= max(0 , min( $current_page , $total_pages ) * $amount);
+		if ( !is_null( $this->total ) && (intval($next)+1 > intval($this->total)) ) {
+			  $next = floor(max(0,intval($this->total-1)) / $amount) * $amount ; // 9/10=0,10/10=1
+		}
 
-        $page_last_start = min(max(0,($total_pages-1)*$amount),$maxamount);
+		$page_last_start = min(max(0,($total_pages-1)*$amount),$maxamount);
 
-        if($amount < $this->total) {
-        $page_navigation = sprintf('<span style="margin-left:1em;">page %d / %d (%d - %d / %d)</span>'
-                            , $current_page,$total_pages
-                            , $start + 1
-                            , (is_null($this->total) ? $start + $amount : min($start + $amount , $this->total))
-                            , $this->total);
+		if($amount < $this->total) {
+		$page_navigation = sprintf('<span style="margin-left:1em;">page %d / %d (%d - %d / %d)</span>'
+							, $current_page,$total_pages
+							, $start + 1
+							, (is_null($this->total) ? $start + $amount : min($start + $amount , $this->total))
+							, $this->total);
 
-        $btn_title_change = _LISTS_CHANGE;
-                $input_catid = ($enable_cat_select ? "\n\t\t".sprintf('<input type="hidden" name="catid" value="%d" />', $catid) : '');
-        $page_navigation .=<<<EOD
-    <form method="post" action="index.php">
-        <input type="number" id="page_select" value="{$current_page}" style="width:50px;" min=1 max={$total_pages} onchange="jQuery('#page_select_start').val(Math.min(Math.max(0, (this.value-1) * {$amount}),{$page_last_start}));" />
-        <input type="hidden" name="search" value="{$search}" />
-        <input type="hidden" name="blogid" value="{$blogid}" />{$input_catid}
-        <input type="hidden" name="itemid" value="{$itemid}" />
-        <input type="hidden" name="action" value="{$action}" />
-        <input type="hidden" name="amount" value="{$amount}" />
-        <input type="hidden" id="page_select_start" name="start" value="{$start}" />
-        <input type="submit" value="{$btn_title_change}" />
-    </form>
+		$btn_title_change = _LISTS_CHANGE;
+				$input_catid = ($enable_cat_select ? "\n\t\t".sprintf('<input type="hidden" name="catid" value="%d" />', $catid) : '');
+		$page_navigation .=<<<EOD
+	<form method="post" action="index.php">
+		<input type="number" id="page_select" value="{$current_page}" style="width:50px;" min=1 max={$total_pages} onchange="jQuery('#page_select_start').val(Math.min(Math.max(0, (this.value-1) * {$amount}),{$page_last_start}));" />
+		<input type="hidden" name="search" value="{$search}" />
+		<input type="hidden" name="blogid" value="{$blogid}" />{$input_catid}
+		<input type="hidden" name="itemid" value="{$itemid}" />
+		<input type="hidden" name="action" value="{$action}" />
+		<input type="hidden" name="amount" value="{$amount}" />
+		<input type="hidden" id="page_select_start" name="start" value="{$start}" />
+		<input type="submit" value="{$btn_title_change}" />
+	</form>
 EOD;
-        }
-        if ( is_null( $this->total ) ) {
-            global $CONF;
-            if ($CONF['debug'])
-                $page_navigation .= 'page navigation is disabled: set total before call ';
-            else
-                $page_navigation = '';
-            $next = $start + $amount;
-        }
+		}
+    	if ( is_null( $this->total ) ) {
+    		global $CONF;
+    		if ($CONF['debug'])
+    			$page_navigation .= 'page navigation is disabled: set total before call ';
+    		else
+    			$page_navigation = '';
+    		$next = $start + $amount;
+    	}
 ?>
 <table class="navigation">
-    <tr>
-        <td style="text-align: left;">
+	<tr>
+		<td style="text-align: left;">
 <?php if($start!=0): ?>
-            <form id="prev" method="post" action="index.php">
-                <a href="#" onclick="jQuery('#prev').submit();return false;">&lt;&lt; <?php echo _LISTS_PREV; ?></a>
-                <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-                <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-                <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-                <input type="hidden" name="action" value="<?php echo  $action; ?>" />
-                <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-                <input type="hidden" name="search" value="<?php echo  $search; ?>" />
-                <input type="hidden" name="start" value="<?php echo  $prev; ?>" />
-            </form>
+			<form id="prev" method="post" action="index.php">
+				<a href="#" onclick="jQuery('#prev').submit();return false;">&lt;&lt; <?php echo _LISTS_PREV; ?></a>
+				<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+				<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+				<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+				<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+				<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+				<input type="hidden" name="start" value="<?php echo  $prev; ?>" />
+			</form>
 <?php else:?>
-                &lt;&lt; <?php echo _LISTS_PREV; ?>
+				&lt;&lt; <?php echo _LISTS_PREV; ?>
 <?php endif;?>
-    |
+	|
 <?php if($current_page<$total_pages): ?>
-            <form id="next" method="post" action="index.php">
-                <a href="#" onclick="jQuery('#next').submit();return false;"><?php echo _LISTS_NEXT; ?> &gt;&gt;</a>
-                <input type="hidden" name="search" value="<?php echo  $search; ?>" />
-                <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-                <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-                <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-                <input type="hidden" name="action" value="<?php echo  $action; ?>" />
-                <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-                <input type="hidden" name="start" value="<?php echo  $next; ?>" />
-            </form>
+			<form id="next" method="post" action="index.php">
+				<a href="#" onclick="jQuery('#next').submit();return false;"><?php echo _LISTS_NEXT; ?> &gt;&gt;</a>
+				<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+				<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+				<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+				<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+				<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+				<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+				<input type="hidden" name="start" value="<?php echo  $next; ?>" />
+			</form>
 <?php else:?>
-                <?php echo _LISTS_NEXT; ?> &gt; &gt;
+				<?php echo _LISTS_NEXT; ?> &gt; &gt;
 <?php endif;?>
-        <?php echo $page_navigation; ?>
-        </td>
-        <td style="white-space: nowrap;">
-            <form method="post" action="index.php">
-            <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-            <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-            <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
-            <input type="hidden" name="action" value="<?php echo  $action; ?>" />
-            <input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE; ?>
-            <input type="hidden" name="start" value="<?php echo  $start; ?>" />
-            <input type="hidden" name="search" value="<?php echo  $search; ?>" />
-            <input type="submit" value="<?php echo _LISTS_CHANGE; ?>" />
-            </form>
-        </td>
-        <td style="white-space: nowrap;">
-            <form method="post" action="index.php">
-            <?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($action, $blogid , $catid); ?>
-            <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-            <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-            <input type="hidden" name="action" value="<?php echo  $action; ?>" />
-            <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
-            <input type="hidden" name="start" value="0" />
-            <input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
-            <input type="submit" value="<?php echo  _LISTS_SEARCH; ?>" />
-            </form>
-        </td>
-    </tr>
+		<?php echo $page_navigation; ?>
+		</td>
+		<td style="white-space: nowrap;">
+			<form method="post" action="index.php">
+			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+			<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+			<?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+			<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+			<input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE; ?>
+			<input type="hidden" name="start" value="<?php echo  $start; ?>" />
+			<input type="hidden" name="search" value="<?php echo  $search; ?>" />
+			<input type="submit" value="<?php echo _LISTS_CHANGE; ?>" />
+			</form>
+		</td>
+		<td style="white-space: nowrap;">
+			<form method="post" action="index.php">
+			<?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($action, $blogid , $catid); ?>
+			<input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+			<input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+			<input type="hidden" name="action" value="<?php echo  $action; ?>" />
+			<input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+			<input type="hidden" name="start" value="0" />
+			<input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
+			<input type="submit" value="<?php echo  _LISTS_SEARCH; ?>" />
+			</form>
+		</td>
+	</tr>
 </table>
-    <?php    }
+	<?php	}
 
-    protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid')
-    {
-        global $member;
+	protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid')
+	{
+		global $member;
 
-        if ($action == 'browseownitems')
-            return $this->getFormSelectCategoryOwn($blogid, $selected_catid, $input_name);
+		if ($action == 'browseownitems')
+			return $this->getFormSelectCategoryOwn($blogid, $selected_catid, $input_name);
 
-        if ( !$blogid )
-          return '';
-        if ( !$member->teamRights($blogid) && !$member->isAdmin() )
-          return '';
+		if ( !$blogid )
+		  return '';
+		if ( !$member->teamRights($blogid) && !$member->isAdmin() )
+		  return '';
 
-        static $r = array();
-        $saved_key = sprintf("%s_%d_%d_%s", $action, $blogid, $selected_catid, $input_name);
-        if (isset($r[$saved_key]))
-          return $r[$saved_key];
+		static $r = array();
+		$saved_key = sprintf("%s_%d_%d_%s", $action, $blogid, $selected_catid, $input_name);
+		if (isset($r[$saved_key]))
+		  return $r[$saved_key];
 
-        $lists = array();
-        $selected = false;
+		$lists = array();
+		$selected = false;
         $selected_catid = intval($selected_catid);
-        // @todo NP_MultipleCategories
-        $sql = 'SELECT catid , cname , count(inumber) as count FROM ' . sql_table('category')
-              . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
-              . ' WHERE cblog=' . intval($blogid)
-              . ' group BY catid '
-              . ' ORDER BY corder ASC , cname ASC';
-        $total = 0;
-        $res = sql_query($sql);
-        if ($res)
-          while( $row = sql_fetch_assoc( $res ) )
-          {
-              $lists[] = sprintf('<option value="%d" %s>' , intval($row['catid'])
-                       , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
-                       . hsc( $row['cname'])
-                       . sprintf('(%d)' , $row['count']) . '</option>';
-              $total += $row['count'];
-              if ( !$selected && intval($row['catid']) == $selected_catid)
-                $selected = true;
-          }
+		// @todo NP_MultipleCategories
+		$sql = 'SELECT catid , cname , count(inumber) as count FROM ' . sql_table('category')
+			  . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
+			  . ' WHERE cblog=' . intval($blogid)
+			  . ' group BY catid '
+			  . ' ORDER BY corder ASC , cname ASC';
+		$total = 0;
+		$res = sql_query($sql);
+		if ($res)
+		  while( $row = sql_fetch_assoc( $res ) )
+		  {
+			  $lists[] = sprintf('<option value="%d" %s>' , intval($row['catid'])
+					   , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
+					   . hsc( $row['cname'])
+					   . sprintf('(%d)' , $row['count']) . '</option>';
+			  $total += $row['count'];
+			  if ( !$selected && intval($row['catid']) == $selected_catid)
+				$selected = true;
+		  }
 
-        $s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
-        $s .= "\n\t\t".'<option value="0"'
-              . ( $selected ? '' : 'selected' )
-              .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
-              . sprintf('(%d)' , $total) . "</option>\n";
-        $s .= "\t\t".implode( "\n\t\t" , $lists )."\n";
-        $s .= "\t\t</select>\n";
+		$s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
+		$s .= "\n\t\t".'<option value="0"'
+			  . ( $selected ? '' : 'selected' )
+			  .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
+			  . sprintf('(%d)' , $total) . "</option>\n";
+		$s .= "\t\t".implode( "\n\t\t" , $lists )."\n";
+		$s .= "\t\t</select>\n";
 
-        $r[$saved_key] = $s;
-        return $s;
-    }
+		$r[$saved_key] = $s;
+		return $s;
+	}
 
-    protected function getFormSelectCategoryOwn($blogid, $selected_catid = 0 , $input_name = 'catid')
-    {
-        global $member;
-        static $r = array();
+	protected function getFormSelectCategoryOwn($blogid, $selected_catid = 0 , $input_name = 'catid')
+	{
+		global $member;
+		static $r = array();
 
-        $saved_key = sprintf("%d_%d_%d_%s", $member->id, $blogid, $selected_catid, $input_name);
-        if (isset($r[$saved_key]))
-          return $r[$saved_key];
+		$saved_key = sprintf("%d_%d_%d_%s", $member->id, $blogid, $selected_catid, $input_name);
+		if (isset($r[$saved_key]))
+		  return $r[$saved_key];
 
-        $lists = array();
-        $selected = false;
-        $selected_catid = intval($selected_catid);
+		$lists = array();
+		$selected = false;
+		$selected_catid = intval($selected_catid);
 
-        // blog(bnumber, bname or bshortname) , category(catid,cblog,cname,corder)
-        $sql = 'SELECT bname, cblog, catid , cname , count(inumber) as count FROM ' . sql_table('category')
-              . ' LEFT JOIN ' . sql_table('item') . ' ON catid=icat '
-              . ' LEFT JOIN ' . sql_table('blog') . ' ON cblog=bnumber '
-              . ' WHERE iauthor=' . intval($member->id)
+		// blog(bnumber, bname or bshortname) , category(catid,cblog,cname,corder)
+		$sql = 'SELECT bname, cblog, catid , cname , count(inumber) as count FROM ' . sql_table('category')
+			  . ' LEFT JOIN ' . sql_table('item') . ' ON catid=icat '
+			  . ' LEFT JOIN ' . sql_table('blog') . ' ON cblog=bnumber '
+			  . ' WHERE iauthor=' . intval($member->id)
 //              . (($blogid>0) ? sprintf(' cblog=%d', $blogid) : '')
-              . ' group BY catid '
-              . ' ORDER BY corder ASC , cname ASC';
+			  . ' group BY catid '
+			  . ' ORDER BY corder ASC , cname ASC';
 
-        $total = 0;
-        $blog_titles = array();
-        $res = sql_query($sql);
-        if ($res)
-          while( $row = sql_fetch_assoc( $res ) )
-          {
-              $b_id = $row['cblog'];
-              if (!isset($blog_titles[$b_id]))
-                $blog_titles[$b_id] = $row['bname'];
-              if (!isset($lists[$b_id]))
-                $lists[$b_id] = array();
+		$total = 0;
+		$blog_titles = array();
+		$res = sql_query($sql);
+		if ($res)
+		  while( $row = sql_fetch_assoc( $res ) )
+		  {
+			  $b_id = $row['cblog'];
+			  if (!isset($blog_titles[$b_id]))
+				$blog_titles[$b_id] = $row['bname'];
+			  if (!isset($lists[$b_id]))
+				$lists[$b_id] = array();
 
-              $lists[$b_id][] = sprintf('<option value="%d" %s>' , intval($row['catid'])
-                       , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
-                       . hsc( $row['cname'])
-                       . sprintf('(%d)' , $row['count']) . '</option>';
-              $total += $row['count'];
-              if ( !$selected && intval($row['catid']) == $selected_catid)
-                $selected = true;
-          }
+			  $lists[$b_id][] = sprintf('<option value="%d" %s>' , intval($row['catid'])
+					   , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
+					   . hsc( $row['cname'])
+					   . sprintf('(%d)' , $row['count']) . '</option>';
+			  $total += $row['count'];
+			  if ( !$selected && intval($row['catid']) == $selected_catid)
+				$selected = true;
+		  }
 
-        asort($blog_titles);
+	    asort($blog_titles);
 
-        $s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
-        $s .= "\n\t\t".'<option value="0"'
-              . ( $selected ? '' : 'selected' )
-              .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
-              . sprintf('(%d)' , $total) . "</option>\n";
+		$s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
+		$s .= "\n\t\t".'<option value="0"'
+			  . ( $selected ? '' : 'selected' )
+			  .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
+			  . sprintf('(%d)' , $total) . "</option>\n";
 
-        // group
-        foreach($blog_titles as $b_id => $title)
-          $s .= sprintf("\t<optgroup label='%s'>%s\n\t</optgroup>\n",
-                        htmlentities($title , ENT_COMPAT , _CHARSET),
-                          "\n\t\t".implode( "\n\t\t" , $lists[$b_id] )
-                  );
-        $s .= "\t\t</select>\n";
+		// group
+		foreach($blog_titles as $b_id => $title)
+		  $s .= sprintf("\t<optgroup label='%s'>%s\n\t</optgroup>\n",
+						htmlentities($title , ENT_COMPAT , _CHARSET),
+				  	    "\n\t\t".implode( "\n\t\t" , $lists[$b_id] )
+				  );
+		$s .= "\t\t</select>\n";
 
-        $r[$saved_key] = $s;
-        return $s;
-    }
+		$r[$saved_key] = $s;
+		return $s;
+	}
 }
 
 
@@ -351,100 +351,100 @@ EOD;
  * A class used to encapsulate a list of some sort in a batch selection
  */
 class BATCH extends ENCAPSULATE {
-    function __construct($type) {
-        $this->type = $type;
-    }
+	function __construct($type) {
+		$this->type = $type;
+	}
 
-    function showHead() {
-        ?>
-            <form method="post" action="index.php">
-        <?php
+	function showHead() {
+		?>
+			<form method="post" action="index.php">
+		<?php
 // TODO: get a list op operations above the list too
 // (be careful not to use the same names for the select...)
-//        $this->showOperationList();
-    }
+//		$this->showOperationList();
+	}
 
-    function showFoot() {
-        $this->showOperationList();
-        ?>
-            </form>
-        <?php    }
+	function showFoot() {
+		$this->showOperationList();
+		?>
+			</form>
+		<?php	}
 
-    function showOperationList() {
-        global $manager;
-        ?>
-        <div class="batchoperations">
-            <?php echo _BATCH_WITH_SEL ?>
-            <select name="batchaction">
-            <?php                $options = array();
-                switch($this->type) {
-                    case 'item':
-                        $options = array(
-                            'delete'    => _BATCH_ITEM_DELETE,
-                            'move'        => _BATCH_ITEM_MOVE
-                        );
-                        break;
-                    case 'member':
-                        $options = array(
-                            'delete'    => _BATCH_MEMBER_DELETE,
-                            'setadmin'    => _BATCH_MEMBER_SET_ADM,
-                            'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
-                        );
-                        break;
-                    case 'team':
-                        $options = array(
-                            'delete'     => _BATCH_TEAM_DELETE,
-                            'setadmin'    => _BATCH_TEAM_SET_ADM,
-                            'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
-                        );
-                        break;
-                    case 'category':
-                        $options = array(
-                            'change_corder' => _BATCH_CAT_CAHANGE_ORDER ,
-                            'delete'    => _BATCH_CAT_DELETE,
-                            'move'        => _BATCH_CAT_MOVE,
-                        );
-                        break;
-                    case 'comment':
-                        $options = array(
-                            'delete'    => _BATCH_COMMENT_DELETE,
-                        );
-                    break;
-                }
-                foreach ($options as $option => $label) {
-                    echo '<option value="',$option,'">',$label,'</option>';
-                }
-            ?>
-            </select>
-            <input type="hidden" name="action" value="batch<?php echo $this->type?>" />
-            <?php
-                $manager->addTicketHidden();
+	function showOperationList() {
+		global $manager;
+		?>
+		<div class="batchoperations">
+			<?php echo _BATCH_WITH_SEL ?>
+			<select name="batchaction">
+			<?php				$options = array();
+				switch($this->type) {
+					case 'item':
+						$options = array(
+							'delete'	=> _BATCH_ITEM_DELETE,
+							'move'		=> _BATCH_ITEM_MOVE
+						);
+						break;
+					case 'member':
+						$options = array(
+							'delete'	=> _BATCH_MEMBER_DELETE,
+							'setadmin'	=> _BATCH_MEMBER_SET_ADM,
+							'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
+						);
+						break;
+					case 'team':
+						$options = array(
+							'delete' 	=> _BATCH_TEAM_DELETE,
+							'setadmin'	=> _BATCH_TEAM_SET_ADM,
+							'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
+						);
+						break;
+					case 'category':
+						$options = array(
+							'change_corder' => _BATCH_CAT_CAHANGE_ORDER ,
+							'delete'	=> _BATCH_CAT_DELETE,
+							'move'		=> _BATCH_CAT_MOVE,
+						);
+						break;
+					case 'comment':
+						$options = array(
+							'delete'	=> _BATCH_COMMENT_DELETE,
+						);
+					break;
+				}
+				foreach ($options as $option => $label) {
+					echo '<option value="',$option,'">',$label,'</option>';
+				}
+			?>
+			</select>
+			<input type="hidden" name="action" value="batch<?php echo $this->type?>" />
+			<?php
+				$manager->addTicketHidden();
 
-                // add hidden fields for 'team' and 'comment' batchlists
-                if ($this->type == 'team')
-                {
-                    echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
-                }
-                if ($this->type == 'comment')
-                {
-                    echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
-                }
+				// add hidden fields for 'team' and 'comment' batchlists
+				if ($this->type == 'team')
+				{
+					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
+				}
+				if ($this->type == 'comment')
+				{
+					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
+				}
 
-                echo '<input type="submit" value="',_BATCH_EXEC,'" />';
-            ?>(
-             <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
-             <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
-            )
-        </div>
-        <?php    }
+				echo '<input type="submit" value="',_BATCH_EXEC,'" />';
+			?>(
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
+			 <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
+			)
+		</div>
+		<?php	}
 
-    // shortcut :)
-    function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-        return $this->doEncapsulate(    'showlist',
-                                    array($query, $type, $template),
-                                    $errorMessage
-                                );
-    }
+	// shortcut :)
+	function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
+		return $this->doEncapsulate(	'showlist',
+									array($query, $type, $template),
+									$errorMessage
+								);
+	}
 
 }
 ?>

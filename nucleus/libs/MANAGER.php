@@ -447,7 +447,7 @@ class MANAGER {
         $this->subscriptions = array();
 
         $res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
-        if ($res)
+		if ($res)
         while ($o = sql_fetch_object($res)) {
             $pluginName = $o->pfile;
             $eventName = $o->event;
