@@ -1154,8 +1154,8 @@ class ADMIN {
         $item =& $manager->getItem($itemid,1,1);
         $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
-        $data = array('item' => &$item);
-        $manager->notify('PrepareItemForEdit', $data);
+        $param = array('item' => &$item);
+        $manager->notify('PrepareItemForEdit', $param);
 
         if ($blog->convertBreaks()) {
             $item['body'] = removeBreaks($item['body']);
@@ -1492,8 +1492,8 @@ class ADMIN {
 
         $comment = COMMENT::getComment($commentid);
 
-        $data = array('comment' => &$comment);
-        $manager->notify('PrepareCommentForEdit', $data);
+        $param = array('comment' => &$comment);
+        $manager->notify('PrepareCommentForEdit', $param);
 
         // change <br /> to \n
         $comment['body'] = str_replace('<br />', '', $comment['body']);
@@ -1595,8 +1595,8 @@ class ADMIN {
         $body = COMMENT::prepareBody($body);
 
         // call plugins
-        $data = array('body' => &$body);
-        $manager->notify('PreUpdateComment', $data);
+        $param = array('body' => &$body);
+        $manager->notify('PreUpdateComment', $param);
 
         $query = 'UPDATE ' . sql_table('comment')
                . " SET cmail = '" . sql_real_escape_string($url) . "', cemail = '" . sql_real_escape_string($email) . "', cbody = '" . sql_real_escape_string($body) . "'"
@@ -1692,15 +1692,15 @@ class ADMIN {
         if (!$member->canAlterComment($commentid))
             return _ERROR_DISALLOWED;
 
-        $data = array('commentid' => $commentid);
-        $manager->notify('PreDeleteComment', $data);
+        $param =array('commentid' => $commentid);
+        $manager->notify('PreDeleteComment', $param);
 
         // delete the comments associated with the item
         $query = 'DELETE FROM '.sql_table('comment').' WHERE cnumber=' . $commentid;
         sql_query($query);
 
-        $data = array('commentid' => $commentid);
-        $manager->notify('PostDeleteComment', $data);
+        $param = array('commentid' => $commentid);
+        $manager->notify('PostDeleteComment', $param);
 
         return '';
     }
@@ -1928,8 +1928,8 @@ class ADMIN {
         <?php
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
 
-            $data = array('member' => &$mem);
-            $manager->notify('MemberSettingsFormExtras', $data);
+            $param = array('member' => &$mem);
+            $manager->notify('MemberSettingsFormExtras', $param);
 
         $this->pagefoot();
     }
@@ -1985,8 +1985,12 @@ class ADMIN {
             if ($password) {
                 $pwdvalid = true;
                 $pwderror = '';
-                $data = array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid);
-                $manager->notify('PrePasswordSet', $data);
+                $param = array(
+                    'password'        =>  $password,
+                    'errormessage'    => &$pwderror,
+                    'valid'            => &$pwdvalid
+                );
+                $manager->notify('PrePasswordSet', $param);
                 if (!$pwdvalid) {
                     $this->error($pwderror);
                 }
@@ -2043,8 +2047,12 @@ class ADMIN {
         // store plugin options
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $data = array('context' => 'member', 'memberid' => $memberid, 'member' => &$mem);
-        $manager->notify('PostPluginOptionsUpdate', $data);
+        $param = array(
+            'context'    =>  'member',
+            'memberid'    =>  $memberid,
+            'member'    => &$mem
+        );
+        $manager->notify('PostPluginOptionsUpdate', $param);
 
         // if email changed, generate new password
         if ($oldEmail != $mem->getEmail())
@@ -2093,8 +2101,8 @@ class ADMIN {
         // fire PostRegister event
         $newmem = new MEMBER();
         $newmem->readFromName(postVar('name'));
-        $data = array('member' => &$newmem);
-        $manager->notify('PostRegister', $data);
+        $param = array('member' => &$newmem);
+        $manager->notify('PostRegister', $param);
 
         $this->action_usermanagement();
     }
@@ -2187,8 +2195,11 @@ class ADMIN {
                         <?php
 
                             global $manager;
-                            $data = array('type' => 'activation', 'member' => $mem);
-                            $manager->notify('FormExtra', $data);
+                            $param = array(
+                                'type'        => 'activation',
+                                'member'    => $mem
+                            );
+                            $manager->notify('FormExtra', $param);
 
                         ?>
                         </tr><tr>
@@ -2251,8 +2262,12 @@ class ADMIN {
         }
 
         $error = '';
-        $data = array('type' => 'activation', 'member' => $mem, 'error' => &$error);
-        $manager->notify('ValidateForm', $data);
+        $param = array(
+            'type'        =>  'activation',
+            'member'    =>  $mem,
+            'error'        => &$error
+        );
+        $manager->notify('ValidateForm', $param);
         if ($error != '')
             return $this->_showActivationPage($key, $error);
 
@@ -2424,8 +2439,11 @@ class ADMIN {
         //           - (there remains at least one team member)
         $tmem = MEMBER::createFromID($memberid);
 
-        $data = array('member' => &$tmem, 'blogid' => $blogid);
-        $manager->notify('PreDeleteTeamMember', $data);
+        $param = array(
+            'member' => &$tmem,
+            'blogid' =>  $blogid
+        );
+        $manager->notify('PreDeleteTeamMember', $param);
 
         if ($tmem->isBlogAdmin($blogid)) {
             // check if there are more blog members left and at least one admin
@@ -2439,8 +2457,11 @@ class ADMIN {
         $query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
         sql_query($query);
 
-        $data = array('member' => &$tmem, 'blogid' => $blogid);
-        $manager->notify('PostDeleteTeamMember', $data);
+        $param = array(
+            'member' => &$tmem,
+            'blogid' =>  $blogid
+        );
+        $manager->notify('PostDeleteTeamMember', $param);
 
         return '';
     }
@@ -2674,8 +2695,8 @@ class ADMIN {
 
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
 
-            $data = array('blog' => &$blog);
-            $manager->notify('BlogSettingsFormExtras', $data);
+            $param = array('blog' => &$blog);
+            $manager->notify('BlogSettingsFormExtras', $param);
 
         $this->pagefoot();
     }
@@ -2801,8 +2822,11 @@ class ADMIN {
         // store plugin options
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $data = array('context' => 'category', 'catid' => $catid);
-        $manager->notify('PostPluginOptionsUpdate', $data);
+        $param = array(
+            'context'    => 'category',
+            'catid'        => $catid
+        );
+        $manager->notify('PostPluginOptionsUpdate', $param);
 
 
         if ($desturl) {
@@ -2910,8 +2934,8 @@ class ADMIN {
         if (sql_num_rows($res) == 1)
             return _ERROR_DELETELASTCATEGORY;
 
-        $data = array('catid' => $catid);
-        $manager->notify('PreDeleteCategory', $data);
+        $param = array('catid' => $catid);
+        $manager->notify('PreDeleteCategory', $param);
 
         // change category for all items to the default category
         $query = 'UPDATE '.sql_table('item')." SET icat=$destcatid WHERE icat=$catid";
@@ -2924,8 +2948,8 @@ class ADMIN {
         $query = 'DELETE FROM '.sql_table('category').' WHERE catid=' .$catid;
         sql_query($query);
 
-        $data = array('catid' => $catid);
-        $manager->notify('PostDeleteCategory', $data);
+        $param = array('catid' => $catid);
+        $manager->notify('PostDeleteCategory', $param);
 
     }
 
@@ -2962,12 +2986,12 @@ class ADMIN {
         if ($blog->getDefaultCategory() == $catid)
             return _ERROR_MOVEDEFCATEGORY;
 
-        $data = array(
-            'catid' => &$catid,
-            'sourceblog' => &$blog,
-            'destblog' => &$destblog
+        $param = array(
+            'catid'            => &$catid,
+            'sourceblog'    => &$blog,
+            'destblog'        => &$destblog
         );
-        $manager->notify('PreMoveCategory', $data);
+        $manager->notify('PreMoveCategory', $param);
 
         // update comments table (cblog)
         $query = 'SELECT inumber FROM '.sql_table('item').' WHERE icat='.$catid;
@@ -2984,12 +3008,12 @@ class ADMIN {
         $query = 'UPDATE '.sql_table('category').' SET cblog='.$destblogid.' WHERE catid='.$catid;
         sql_query($query);
 
-        $data = array(
-            'catid' => &$catid,
-            'sourceblog' => &$blog,
-            'destblog' => $destblog
+        $param = array(
+            'catid'            => &$catid,
+            'sourceblog'    => &$blog,
+            'destblog'        =>  $destblog
         );
-        $manager->notify('PostMoveCategory', $data);
+        $manager->notify('PostMoveCategory', $param);
 
     }
 
@@ -3060,8 +3084,12 @@ class ADMIN {
         // store plugin options
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $data = array('context' => 'blog', 'blogid' => $blogid, 'blog' => &$blog);
-        $manager->notify('PostPluginOptionsUpdate', $data);
+        $param = array(
+            'context'    =>  'blog',
+            'blogid'    =>  $blogid,
+            'blog'        => &$blog
+        );
+        $manager->notify('PostPluginOptionsUpdate', $param);
 
 
         $this->action_overview(_MSG_SETTINGSCHANGED);
@@ -3112,8 +3140,8 @@ class ADMIN {
 
         $blogid = intRequestVar('blogid');
 
-        $data = array('blogid' => $blogid);
-        $manager->notify('PreDeleteBlog', $data);
+        $param = array('blogid' => $blogid);
+        $manager->notify('PreDeleteBlog', $param);
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
@@ -3148,8 +3176,8 @@ class ADMIN {
         $query = 'DELETE FROM '.sql_table('blog').' WHERE bnumber='.$blogid;
         sql_query($query);
 
-        $data = array('blogid' => $blogid);
-        $manager->notify('PostDeleteBlog', $data);
+        $param = array('blogid' => $blogid);
+        $manager->notify('PostDeleteBlog', $param);
 
         $this->action_overview(_DELETED_BLOG);
     }
@@ -3220,8 +3248,8 @@ class ADMIN {
         if (!$mem->canBeDeleted())
             return _ERROR_DELETEMEMBER;
 
-        $data = array('member' => &$mem);
-        $manager->notify('PreDeleteMember', $data);
+        $param = array('member' => &$mem);
+        $manager->notify('PreDeleteMember', $param);
 
         /* unlink comments from memberid */
         if ($memberid) {
@@ -3242,8 +3270,8 @@ class ADMIN {
         // delete all associated plugin options
         NucleusPlugin::_deleteOptionValues('member', $memberid);
 
-        $data = array('member' => &$mem);
-        $manager->notify('PostDeleteMember', $data);
+        $param = array('member' => &$mem);
+        $manager->notify('PostDeleteMember', $param);
 
         return '';
     }
@@ -3353,14 +3381,14 @@ class ADMIN {
         if ($manager->existsBlog($bshortname))
             $this->error(_ERROR_DUPSHORTBLOGNAME);
 
-        $data = array(
+        $param = array(
             'name'            => &$bname,
             'shortname'        => &$bshortname,
             'timeoffset'    => &$btimeoffset,
             'description'    => &$bdesc,
             'defaultskin'    => &$bdefskin
         );
-        $manager->notify('PreAddBlog', $data);
+        $manager->notify('PreAddBlog', $param);
 
 
         // add slashes for sql queries
@@ -3399,19 +3427,20 @@ class ADMIN {
 
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
-
-        $data = array(
+        
+        
+        $param = array(
             'blog' => &$blog
         );
-        $manager->notify('PostAddBlog', $data);
+        $manager->notify('PostAddBlog', $param);
         
-        $data = array(
+        $param = array(
             'blog'            => &$blog,
-            'name'            => _EBLOGDEFAULTCATEGORY_NAME,
-            'description'    => _EBLOGDEFAULTCATEGORY_DESC,
-            'catid'            => $catid
+            'name'            =>  _EBLOGDEFAULTCATEGORY_NAME,
+            'description'    =>  _EBLOGDEFAULTCATEGORY_DESC,
+            'catid'            =>  $catid
         );
-        $manager->notify('PostAddCategory', $data);
+        $manager->notify('PostAddCategory', $param);
 
         $this->pagehead();
         ?>
@@ -3938,9 +3967,8 @@ selector();
 <?php
         $tab = 600;
         $pluginfields = array();
-        
-        $data = array('fields'=>&$pluginfields);
-        $manager->notify('TemplateExtraFields', $data);
+        $param = array('fields'=>&$pluginfields);
+        $manager->notify('TemplateExtraFields', $param);
 
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             echo "</tr><tr>\n";
@@ -4050,9 +4078,8 @@ selector();
         $this->addToTemplate($templateid, 'IMAGE_CODE', postVar('IMAGE_CODE'));
 
         $pluginfields = array();
-        
-        $data = array('fields'=>&$pluginfields);
-        $manager->notify('TemplateExtraFields', $data);
+        $param = array('fields'=>&$pluginfields);
+        $manager->notify('TemplateExtraFields', $param);
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             foreach ($pfvalue as $pffield=>$pfdesc) {
                 $this->addToTemplate($templateid, $pffield, postVar($pffield));
@@ -4125,8 +4152,8 @@ selector();
 
         $member->isAdmin() or $this->disallow();
 
-        $data = array('templateid' => $templateid);
-        $manager->notify('PreDeleteTemplate', $data);
+        $param = array('templateid' => $templateid);
+        $manager->notify('PreDeleteTemplate', $param);
 
         // 1. delete description
         sql_query('DELETE FROM '.sql_table('template_desc').' WHERE tdnumber=' . $templateid);
@@ -4134,8 +4161,8 @@ selector();
         // 2. delete parts
         sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
 
-        $data = array('templateid' => $templateid);
-        $manager->notify('PostDeleteTemplate', $data);
+        $param = array('templateid' => $templateid);
+        $manager->notify('PostDeleteTemplate', $param);
 
         $this->action_templateoverview();
     }
@@ -4558,8 +4585,8 @@ selector();
         if ($o = sql_fetch_object($r))
             $this->error(_ERROR_SKINDEFDELETE .$o->bname);
 
-        $data = array('skinid' => $skinid);
-        $manager->notify('PreDeleteSkin', $data);
+        $param = array('skinid' => $skinid);
+        $manager->notify('PreDeleteSkin', $param);
 
         // 1. delete description
         sql_query('DELETE FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $skinid);
@@ -4567,8 +4594,8 @@ selector();
         // 2. delete parts
         sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid);
 
-        $data = array('skinid' => $skinid);
-        $manager->notify('PostDeleteSkin', $data);
+        $param = array('skinid' => $skinid);
+        $manager->notify('PostDeleteSkin', $param);
 
         $this->action_skinoverview();
     }
@@ -4637,14 +4664,20 @@ selector();
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
-        $data = array('skinid' => $skinid, 'skintype' => $skintype);
-        $manager->notify('PreDeleteSkinPart', $data);
+        $param = array(
+            'skinid'    => $skinid,
+            'skintype'    => $skintype
+        );
+        $manager->notify('PreDeleteSkinPart', $param);
 
         // delete part
         sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
 
-        $data = array('skinid' => $skinid, 'skintype' => $skintype);
-        $manager->notify('PostDeleteSkinPart', $data);
+        $param = array(
+            'skinid'    => $skinid,
+            'skintype'    => $skintype
+        );
+        $manager->notify('PostDeleteSkinPart', $param);
 
         $this->action_skinedit();
     }
@@ -5047,9 +5080,9 @@ selector();
 
         <?php
             echo '<h2>',_PLUGINS_EXTRA,'</h2>';
-
-        $data = array();
-        $manager->notify('GeneralSettingsFormExtras', $data);
+            
+            $param = array();
+            $manager->notify('GeneralSettingsFormExtras', $param);
 
         $this->pagefoot();
     }
@@ -5297,11 +5330,11 @@ selector();
     function pagehead($extrahead = '') {
         global $member, $nucleus, $CONF, $manager;
 
-        $data = array(
+        $param = array(
             'extrahead'    => &$extrahead,
-            'action'    => $this->action
+            'action'    =>  $this->action
         );
-        $manager->notify('AdminPrePageHead', $data);
+        $manager->notify('AdminPrePageHead', $param);
 
         $baseUrl = hsc($CONF['AdminURL']);
         if (!array_key_exists('AdminCSS',$CONF)) 
@@ -5377,10 +5410,10 @@ selector();
     function pagefoot() {
         global $action, $member, $manager;
 
-        $data = array(
+        $param = array(
             'action' => $this->action
         );
-        $manager->notify('AdminPrePageFoot', $data);
+        $manager->notify('AdminPrePageFoot', $param);
 
         if ($member->isLoggedIn() && ($action != 'showlogin')) {
             ?>
@@ -5469,10 +5502,10 @@ selector();
                     }
 
                     $aPluginExtras = array();
-                    $data = array(
+                    $param = array(
                         'options' => &$aPluginExtras
                     );
-                    $manager->notify('QuickMenu', $data);
+                    $manager->notify('QuickMenu', $param);
                     if (count($aPluginExtras) > 0)
                     {
                         echo '<h2>', _QMENU_PLUGINS, '</h2>';
@@ -6162,10 +6195,10 @@ selector();
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
 
-        $data = array(
+        $param = array(
             'file' => &$name
         );
-        $manager->notify('PreAddPlugin', $data);
+        $manager->notify('PreAddPlugin', $param);
 
         // do this before calling getPlugin (in case the plugin id is used there)
         $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
@@ -6222,10 +6255,10 @@ selector();
         // call the install method of the plugin
         $plugin->install();
 
-        $data = array(
+        $param = array(
             'plugin' => &$plugin
         );
-        $manager->notify('PostAddPlugin', $data);
+        $manager->notify('PostAddPlugin', $param);
 
         // update all events
         $this->action_pluginupdate();
@@ -6346,8 +6379,8 @@ selector();
             }
         }
 
-        $data = array('plugid' => $pid);
-        $manager->notify('PreDeletePlugin', $data);
+        $param = array('plugid' => $pid);
+        $manager->notify('PreDeletePlugin', $param);
 
         // call the unInstall method of the plugin
         if ($callUninstall) {
@@ -6380,8 +6413,8 @@ selector();
         sql_query('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
         $manager->clearCachedInfo('installedPlugins');
-        $data = array('plugid' => $pid);
-        $manager->notify('PostDeletePlugin', $data);
+        $param = array('plugid' => $pid);
+        $manager->notify('PostDeletePlugin', $param);
 
         return '';
     }
@@ -6507,12 +6540,12 @@ selector();
         }
 
         // call plugins
-        $data = array(
+        $param = array(
             'context'    =>  'global',
             'plugid'    =>  $pid,
             'options'    => &$aOptions
         );
-        $manager->notify('PrePluginOptionsEdit', $data);
+        $manager->notify('PrePluginOptionsEdit', $param);
 
         $template['content'] = 'plugoptionlist';
         $amount = showlist($aOptions,'table',$template);
@@ -6544,11 +6577,11 @@ selector();
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
 
-        $data = array(
+        $param = array(
             'context'    => 'global',
             'plugid'    => $pid
         );
-        $manager->notify('PostPluginOptionsUpdate', $data);
+        $manager->notify('PostPluginOptionsUpdate', $param);
 
         $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
     }
@@ -6592,12 +6625,12 @@ selector();
         }
 
         global $manager;
-        $data = array(
+        $param = array(
             'context'    =>  $context,
             'contextid'    =>  $contextid,
             'options'    => &$aOptions
         );
-        $manager->notify('PrePluginOptionsEdit', $data);
+        $manager->notify('PrePluginOptionsEdit', $param);
 
 
         $iPrevPid = -1;

@@ -269,12 +269,11 @@ if ($action == 'login') {
             $action = $nextaction;
         }
         
-        $data = array(
+        $param = array(
             'member'    => &$member,
-            'username'    => $login
+            'username'    =>  $login
         );
-        $manager->notify('LoginSuccess', $data);
-        
+        $manager->notify('LoginSuccess', $param);
         $errormessage = '';
         ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
     } else {
@@ -289,8 +288,8 @@ if ($action == 'login') {
             $errormessage = 'Login failed for ' . $login;
         } 
         
-        $data = array('username' => $login);
-        $manager->notify('LoginFailed', $data);
+        $param = array('username' => $login);
+        $manager->notify('LoginFailed', $param);
         ACTIONLOG::add(INFO, $errormessage);
     }
 /*
@@ -303,12 +302,12 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
     $pw     = serverVar('PHP_AUTH_PW');
 
     if ($member->login($login, $pw) ) {
-        $data = array('username' => $login);
-        $manager->notify('LoginSuccess', $data);
+        $param = array('username' => $login);
+        $manager->notify('LoginSuccess', $param);
         ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
     } else {
-        $data = array('username' => $login);
-        $manager->notify('LoginFailed', $data);
+        $param = array('username' => $login);
+        $manager->notify('LoginFailed', $param);
         ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
 
         //Since bad credentials, generate an apropriate error page
@@ -323,8 +322,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
     // remove cookies on logout
     setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
     setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    $data = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
-    $manager->notify('Logout', $data);
+    $param = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
+    $manager->notify('Logout', $param);
 } elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
     // Cookie Authentication
     $ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
@@ -342,8 +341,8 @@ Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for det
 }
 
 // login completed
-$data = array('loggedIn' => $member->isLoggedIn());
-$manager->notify('PostAuthentication', $data);
+$param = array('loggedIn' => $member->isLoggedIn());
+$manager->notify('PostAuthentication', $param);
 ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
@@ -444,12 +443,12 @@ if ($CONF['URLMode'] == 'pathinfo') {
     }
 
     $parsed = false;
-    $data = array(
-        'type'        => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-        'info'        => $virtualpath,
+    $param = array(
+        'type'        =>  basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+        'info'        =>  $virtualpath,
         'complete'    => &$parsed
     );
-    $manager->notify('ParseURL', $data);
+    $manager->notify('ParseURL', $param);
 
     if (!$parsed) {
         // default implementation
@@ -531,11 +530,11 @@ if ($CONF['URLMode'] == 'pathinfo') {
     the values of something like catid or itemid
     New in 3.60
 */
-$data = array(
+$param = array(
     'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
     'info' => $virtualpath
 );
-$manager->notify('PostParseURL', $data);
+$manager->notify('PostParseURL', $param);
 
 function include_libs($file,$once=true,$require=true){
        global $DIR_LIBS;
@@ -650,12 +649,12 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
             ) {
             $contenttype = 'text/html';
         }
-        $data = array(
+        $param = array(
             'contentType'    => &$contenttype,
             'charset'        => &$charset,
-            'pageType'        => $pagetype
+            'pageType'        =>  $pagetype
         );
-        $manager->notify('PreSendContentType', $data);
+        $manager->notify('PreSendContentType', $param);
         // strip strange characters
         $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
         $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
@@ -1505,13 +1504,13 @@ function createLink($type, $params) {
 
     if ( $usePathInfo )
     {
-        $data = array(
+        $param = array(
             'type'        =>  $type,
             'params'    =>  $params,
             'completed'    => &$created,
             'url'        => &$url
         );
-        $manager->notify('GenerateURL', $data);
+        $manager->notify('GenerateURL', $param);
     }
 
     // if a plugin created the URL, return it

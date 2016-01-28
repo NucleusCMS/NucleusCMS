@@ -394,8 +394,11 @@ class ACTIONS extends BaseActions {
      */
     function _preBlogContent($type, &$blog) {
         global $manager;
-        $data = array('blog' => &$blog, 'type' => $type);
-        $manager->notify('PreBlogContent', $data);
+        $param = array(
+            'blog' => &$blog,
+            'type' =>  $type
+        );
+        $manager->notify('PreBlogContent', $param);
     }
 
     /**
@@ -403,8 +406,11 @@ class ACTIONS extends BaseActions {
      */
     function _postBlogContent($type, &$blog) {
         global $manager;
-        $data = array('blog' => &$blog, 'type' => $type);
-        $manager->notify('PostBlogContent', $data);
+        $param = array(
+            'blog' => &$blog,
+            'type' =>  $type
+        );
+        $manager->notify('PostBlogContent', $param);
     }
     
     /**
@@ -597,8 +603,8 @@ class ACTIONS extends BaseActions {
     function parse_callback($eventName, $type)
     {
         global $manager;
-        $data = array('type' => $type);
-        $manager->notify($eventName, $data);
+        $param = array('type' => $type);
+        $manager->notify($eventName, $param);
     }
     
     /**

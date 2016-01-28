@@ -104,11 +104,11 @@ class COMMENTS {
             $comment['timestamp'] = strtotime($comment['ctime']);
             $actions->setCurrentComment($comment);
             $actions->setHighlight($highlight);
-            $data = array('comment' => &$comment);
-            $manager->notify('PreComment', $data);
+            $param = array('comment' => &$comment);
+            $manager->notify('PreComment', $param);
             $parser->parse($template['COMMENTS_BODY']);
-            $data = array('comment' => &$comment);
-            $manager->notify('PostComment', $data);
+            $param = array('comment' => &$comment);
+            $manager->notify('PostComment', $param);
         }
 
         $parser->parse($template['COMMENTS_FOOTER']);
@@ -254,8 +254,8 @@ class COMMENTS {
             $spamcheck['url'] = $comment['userid'];
         } // end if
 
-        $data = array('spamcheck' => &$spamcheck);
-        $manager->notify('SpamCheck', $data);
+        $param = array('spamcheck' => &$spamcheck);
+        $manager->notify('SpamCheck', $param);
 
         if ( !$continue && isset($spamcheck['result']) && $spamcheck['result'] == TRUE )
         {
@@ -321,11 +321,11 @@ class COMMENTS {
 
         $comment = COMMENT::prepare($comment);
 
-        $data = array(
+        $param = array(
             'comment'    => &$comment,
             'spamcheck'    => &$spamcheck
         );
-        $manager->notify('PreAddComment', $data);
+        $manager->notify('PreAddComment', $param);
 
         $name        = sql_real_escape_string($comment['user']);
         $url        = sql_real_escape_string($comment['userid']);
@@ -359,12 +359,12 @@ class COMMENTS {
 
         // post add comment
         $commentid = sql_insert_id();
-        $data = array(
+        $param = array(
             'comment'    => &$comment,
             'commentid'    => &$commentid,
             'spamcheck'    => &$spamcheck
         );
-        $manager->notify('PostAddComment', $data);
+        $manager->notify('PostAddComment', $param);
 
         // succeeded !
         return TRUE;
@@ -431,13 +431,13 @@ class COMMENTS {
         // let plugins do verification (any plugin which thinks the comment is invalid
         // can change 'error' to something other than '1')
         $result = 1;
-        $data = array(
-            'type'        =>  'comment',
+        $param = array(
+            'type'        => 'comment',
             'comment'    => &$comment,
             'error'        => &$result,
             'spamcheck'    => &$spamcheck
         );
-        $manager->notify('ValidateForm', $data);
+        $manager->notify('ValidateForm', $param);
 
         return $result;
     }
