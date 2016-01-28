@@ -4244,7 +4244,7 @@ selector();
 
         foreach ($pluginfields as $pfkey=>$pfvalue) {
             echo "</tr><tr>\n";
-            echo '<th colspan="2">'.htmlentities($pfkey)."</th>\n";
+            echo '<th colspan="2">'.htmlentities($pfkey,ENT_QUOTES,_CHARSET)."</th>\n";
             foreach ($pfvalue as $pffield=>$pfdesc) {
                 $this->_templateEditRow($template, $pfdesc, $pffield, '',++$tab,0);
             }
@@ -5464,7 +5464,7 @@ selector();
                 if (is_bool($value)) {
                     $value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
                 } else {
-                    $value = hsc($value, ENT_QUOTES);
+                    $value = hsc($value);
                 }
                 echo "\t<tr>";
                 echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
@@ -5587,7 +5587,7 @@ selector();
     /**
      * @todo document this
      */
-    static function updateConfig($name, $val) {
+    function updateConfig($name, $val) {
         $name = sql_real_escape_string($name);
         $val = trim(sql_real_escape_string($val));
 
@@ -5925,7 +5925,7 @@ selector();
             <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
             <br />
             <br />
-            <?php echo '<a href="' . hsc($bm, ENT_QUOTES) . '">' . sprintf(_BOOKMARKLET_ANCHOR, hsc($blog->getName(), ENT_QUOTES)) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
+            <?php echo '<a href="' . hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
         </p>
 
         <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
@@ -6036,7 +6036,7 @@ selector();
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $blog =& $manager->getBlog($blogid);
-        $banBlogName =  hsc($blog->getName(), ENT_QUOTES);
+        $banBlogName =  hsc($blog->getName());
 
         $this->pagehead();
         ?>
@@ -6161,7 +6161,7 @@ selector();
         <div>
         <?php
         if ($ip) {
-            $iprangeVal = hsc($ip, ENT_QUOTES);
+            $iprangeVal = hsc($ip);
         ?>
             <input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
             <label for="ip_fixed"><?php echo $iprangeVal ?></label>
@@ -6962,7 +6962,7 @@ selector();
                 if (!defined('_PLUGIN_OPTIONS_TITLE')) {
                     define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
                 }
-                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'], ENT_QUOTES)).'</th></tr>';
+                echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])).'</th></tr>';
             }
             
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);

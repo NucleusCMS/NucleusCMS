@@ -256,7 +256,7 @@ class PAGEFACTORY extends BaseActions {
 
     function parse_contents($which) {
         if (!isset($this->variables[$which])) $this->variables[$which] = '';
-        echo hsc($this->variables[$which],ENT_QUOTES);
+        echo hsc($this->variables[$which]);
     }
 
     function parse_checkedonval($value, $name) {

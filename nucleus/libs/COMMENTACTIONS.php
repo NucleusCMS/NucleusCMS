@@ -370,7 +370,7 @@ class COMMENTACTIONS extends BaseActions {
         }
         else
         {
-            echo hsc($this->currentComment['user'], ENT_QUOTES);
+            echo hsc($this->currentComment['user']);
         }
     }
 

@@ -69,7 +69,7 @@ class PluginAdmin {
             //echo "\n<!--TicketForPlugin skipped-->\n";
             return;
         }
-        $ticket=hsc($ticket,ENT_QUOTES);
+        $ticket=hsc($ticket);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/

@@ -416,7 +416,7 @@ class ACTIONS extends BaseActions {
     function parse_additemform() {
         global $blog, $CONF;
         $this->formdata = array(
-            'adminurl' => hsc($CONF['AdminURL'],ENT_QUOTES),
+            'adminurl' => hsc($CONF['AdminURL']),
             'catid' => $blog->getDefaultCategory()
         );
         $blog->InsertJavaScriptInfo();
@@ -713,7 +713,7 @@ class ACTIONS extends BaseActions {
             // note: createLink returns an HTML encoded URL
         } else {
             // HTML encode URL
-            $destinationurl = hsc($destinationurl,ENT_QUOTES);
+            $destinationurl = hsc($destinationurl);
         }
 
         // values to prefill
@@ -729,12 +729,12 @@ class ACTIONS extends BaseActions {
 
         $this->formdata = array(
             'destinationurl' => $destinationurl,    // url is already HTML encoded
-            'actionurl' => hsc($actionurl,ENT_QUOTES),
+            'actionurl' => hsc($actionurl),
             'itemid' => $itemid,
-            'user' => hsc($user,ENT_QUOTES),
-            'userid' => hsc($userid,ENT_QUOTES),
-            'email' => hsc($email,ENT_QUOTES),
-            'body' => hsc($body,ENT_QUOTES),
+            'user' => hsc($user),
+            'userid' => hsc($userid),
+            'email' => hsc($email),
+            'body' => hsc($body),
             'membername' => $member->getDisplayName(),
             'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
         );
@@ -844,7 +844,7 @@ class ACTIONS extends BaseActions {
      * Parse skinvar imagetext
      */
     function parse_imagetext() {
-        echo hsc(requestVar('imagetext'),ENT_QUOTES);
+        echo hsc(requestVar('imagetext'));
     }
 
     /**
@@ -895,7 +895,7 @@ class ACTIONS extends BaseActions {
                 echo $item['title'];
                 break;
             default:
-                echo hsc(strip_tags($item['title']),ENT_QUOTES);
+                echo hsc(strip_tags($item['title']));
                 break;
         }
     }
@@ -929,22 +929,22 @@ class ACTIONS extends BaseActions {
 
             switch($what) {
                 case 'name':
-                    echo hsc($memberinfo->getDisplayName(),ENT_QUOTES);
+                    echo hsc($memberinfo->getDisplayName());
                     break;
                 case 'realname':
-                    echo hsc($memberinfo->getRealName(),ENT_QUOTES);
+                    echo hsc($memberinfo->getRealName());
                     break;
                 case 'notes':
-                    echo hsc($memberinfo->getNotes(),ENT_QUOTES);
+                    echo hsc($memberinfo->getNotes());
                     break;
                 case 'url':
-                    echo hsc($memberinfo->getURL(),ENT_QUOTES);
+                    echo hsc($memberinfo->getURL());
                     break;
                 case 'email':
-                    echo hsc($memberinfo->getEmail(),ENT_QUOTES);
+                    echo hsc($memberinfo->getEmail());
                     break;
                 case 'id':
-                    echo hsc($memberinfo->getID(),ENT_QUOTES);
+                    echo hsc($memberinfo->getID());
                     break;
             }
         }
@@ -999,12 +999,12 @@ class ACTIONS extends BaseActions {
 
         $this->formdata = array(
             'url' => hsc($desturl),
-            'actionurl' => hsc($CONF['ActionURL'],ENT_QUOTES),
+            'actionurl' => hsc($CONF['ActionURL']),
             'memberid' => $memberid,
             'rows' => $rows,
             'cols' => $cols,
-            'message' => hsc($message,ENT_QUOTES),
-            'frommail' => hsc($frommail,ENT_QUOTES)
+            'message' => hsc($message),
+            'frommail' => hsc($frommail)
         );
         if ($member->isLoggedIn()) {
             $this->doForm('membermailform-loggedin');
@@ -1051,7 +1051,7 @@ class ACTIONS extends BaseActions {
                 echo $itemtitlenext;
                 break;
             default:
-                echo hsc($itemtitlenext,ENT_QUOTES);
+                echo hsc($itemtitlenext);
                 break;
         }
     }
@@ -1252,7 +1252,7 @@ class ACTIONS extends BaseActions {
                 echo $itemtitleprev;
                 break;
             default:
-                echo hsc($itemtitleprev,ENT_QUOTES);
+                echo hsc($itemtitleprev);
                 break;
         }
     }
@@ -1277,14 +1277,14 @@ class ACTIONS extends BaseActions {
      */
     function parse_query() {
         global $query;
-        echo hsc($query,ENT_QUOTES);
+        echo hsc($query);
     }
     
     /**
      * Parse skinvar referer
      */
     function parse_referer() {
-        echo hsc(serverVar('HTTP_REFERER'),ENT_QUOTES);
+        echo hsc(serverVar('HTTP_REFERER'));
     }
 
     /**
@@ -1300,7 +1300,7 @@ class ACTIONS extends BaseActions {
         // use default blog when no blog is selected
         $this->formdata = array(
             'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
-            'query' => hsc(getVar('query'),ENT_QUOTES),
+            'query' => hsc(getVar('query')),
         );
         $this->doForm('searchform');
     }
