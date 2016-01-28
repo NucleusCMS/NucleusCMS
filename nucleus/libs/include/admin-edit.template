@@ -43,13 +43,16 @@
 			cols="60"
 			rows="20"><%contents(body)%></textarea>
 	</td>
-</tr><tr id="edit" style="display:none;">
+</tr>
+<tr id="edit" style="display:none;">
 	<td><%text(_ADD_PREVIEW)%></td>
 	<td><b><span id="prevtitle">&#160;</span></b><br />
 		<span id="prevbody">&#160;</span><br />
 		<span id="prevmore">&#160;</span><br />
 	</td>
-</tr><tr>
+</tr>
+
+<tr>
 
 <%ifblogsetting(bcomments)%>
 		<td>
@@ -66,7 +69,8 @@
 
 	<td><%text(_ADD_CATEGORY)%></td>
 	<td><%categories(40)%></td>
-</tr><tr>
+</tr>
+<tr>
 	<td><%text(_EDIT_SUBMIT)%></td>
 	<td>
 
@@ -116,8 +120,10 @@
 	<br />
 	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="72" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
 <%endif%>
+
 	</td>
-</tr><tr>
+</tr>
+<tr>
 	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 	<td>
 		<%pluginextras%>
@@ -139,7 +145,8 @@
 			cols="60" 
 			rows="20"><%contents(more)%></textarea>
 	</td>
-</tr><tr>
+</tr>
+<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 

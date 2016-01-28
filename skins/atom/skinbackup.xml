@@ -3,14 +3,14 @@
 		<skin name="feeds/atom" />
 		<template name="feeds/atom/modified" />
 		<template name="feeds/atom/entries" />
-		<info><![CDATA[Atom 1.0 weblog syndication]]></info>
+		<info>
+			<![CDATA[Atom 1.0 weblog syndication]]>
+		</info>
 	</meta>
-
 
 	<skin name="feeds/atom" type="application/atom+xml" includeMode="normal" includePrefix="">
 		<description>Atom 1.0 weblog syndication</description>
 		<part name="index"><![CDATA[<?xml version="1.0" encoding="<%charset%>"?>
-
 <feed xml:lang="en-us" xmlns="http://www.w3.org/2005/Atom">
     <title><%blogsetting(name)%></title>
     <id><%blogsetting(url)%>:<%blogsetting(id)%></id>
@@ -20,16 +20,14 @@
     <generator uri="http://nucleuscms.org/"><%version%></generator>
     <updated><%blog(feeds/atom/modified,1)%></updated>
 
-    <%blog(feeds/atom/entries,10)%>
+	<%blog(feeds/atom/entries,10)%>
 </feed>]]></part>
-
 	</skin>
 
 
 	<template name="feeds/atom/modified">
 		<description>Atom feeds: Inserts last modification date</description>
 		<part name="ITEM"><![CDATA[<%date(utc)%>]]></part>
-
 	</template>
 
 
@@ -46,14 +44,9 @@
     <content type="html"><![CDATA[<%body%><%more%>]]]]><![CDATA[></content>
     <id><%blogurl%>:<%blogid%>:<%itemid%></id>
 </entry>]]></part>
-
 		<part name="POPUP_CODE"><![CDATA[<%media%>]]></part>
-
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
-
 		<part name="MEDIA_CODE"><![CDATA[<%media%>]]></part>
-
 	</template>
-
 
 </nucleusskin>

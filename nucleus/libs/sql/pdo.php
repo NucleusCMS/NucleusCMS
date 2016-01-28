@@ -31,14 +31,16 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function startUpError($msg, $title) {
         ?>
-        <html xmlns="http://www.w3.org/1999/xhtml">
-            <head><title><?php echo hsc($title)?></title></head>
-            <body>
-                <h1><?php echo hsc($title)?></h1>
-                <?php echo $msg?>
-            </body>
-        </html>
-        <?php    exit;
+<html xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+    <title><?php echo hsc($title)?></title></head>
+    <body>
+        <h1><?php echo hsc($title)?></h1>
+        <?php echo $msg?>
+    </body>
+</html>
+<?php
+    exit;
     }
     
 /**

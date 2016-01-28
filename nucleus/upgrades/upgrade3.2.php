@@ -35,7 +35,7 @@ function upgrade_do320() {
     // create CookiePrefix setting
     if (!upgrade_checkIfCVExists('CookiePrefix')) {
         $query = 'INSERT INTO '.sql_table('config')." VALUES ('CookiePrefix','')";
-        upgrade_query('Creating CookiePrefix config value',$query);    
+        upgrade_query('Creating CookiePrefix config value',$query); 
     }
 
     // create nucleus_tickets table

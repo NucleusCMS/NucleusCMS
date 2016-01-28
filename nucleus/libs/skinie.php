@@ -100,21 +100,20 @@ class SKINIMPORT {
 
     }
 
-    /**
-     * Reads an XML file into memory
-     *
-     * @param $filename
-     *        Which file to read
-     * @param $metaOnly
-     *        Set to 1 when only the metadata needs to be read (optional, default 0)
-     */
+/**
+ * Reads an XML file into memory
+ * 
+ * @param $filename
+ *     Which file to read
+ * @param $metaOnly
+ *     Set to 1 when only the metadata needs to be read (optional, default 0)
+ */
     function readFile($filename, $metaOnly = 0) {
         // open file
         $this->fp = @fopen($filename, 'r');
         if (!$this->fp) {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
-
         // here we go!
         $this->inXml = 1;
 

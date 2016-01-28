@@ -161,7 +161,7 @@ function media_select() {
         </tr>
 
     <?php
-
+    
     $idxStart = 0;
     $idxEnd = 0;
     
@@ -286,8 +286,8 @@ function media_choose() {
     $data = array();
     $manager->notify('MediaUploadFormExtras', $data);
     ?>
-      <br /><br />
-      <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
+    <br /><br />
+    <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
     </div>
     </form>
 
@@ -301,9 +301,9 @@ function media_choose() {
   */
 function media_upload() {
     global $DIR_MEDIA, $member, $CONF;
-
+    
     $uploadInfo = postFileInfo('uploadfile');
-
+    
     $filename = $uploadInfo['name'];
     $filetype = $uploadInfo['type'];
     $filesize = $uploadInfo['size'];
@@ -331,10 +331,10 @@ function media_upload() {
             // (see http://www.php.net/manual/en/features.file-upload.errors.php)
             media_doError(_ERROR_BADREQUEST . ' (' . $fileerror . ')');
     }
-
+    
     if ($filesize > $CONF['MaxUploadSize'])
         media_doError(_ERROR_FILE_TOO_BIG);
-
+    
     // check file type against allowed types
     $ok = 0;
     $allowedtypes = explode (',', $CONF['AllowedTypes']);
@@ -344,10 +344,10 @@ function media_upload() {
         if (preg_match("#\." .$type. "$#i",$filename)) $ok = 1;
     }
     if (!$ok) media_doError(_ERROR_BADFILETYPE);
-
+    
     if (!is_uploaded_file($filetempname))
         media_doError(_ERROR_BADREQUEST);
-
+    
     // prefix filename with current date (YYYY-MM-DD-)
     // this to avoid nameclashes
     if ($CONF['MediaPrefix'])

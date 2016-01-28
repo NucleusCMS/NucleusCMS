@@ -123,7 +123,7 @@ class PARSER {
         }
 
     }
-    
+
     /**
      * Set a property of the parser in the manager
      * 

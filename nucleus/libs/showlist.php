@@ -336,7 +336,7 @@ function listplug_table_itemlist($template, $type) {
             // (can't use offset time since offsets might vary between blogs)
             if ($current->itime > $template['now'])
                 $cssclass = "class='future'";
-
+            
             $action = requestVar('action');
             $style = ($action!=='pluginlist') ? 'style="white-space:nowrap"' : '' ;
             echo "<td {$cssclass} {$style}>";

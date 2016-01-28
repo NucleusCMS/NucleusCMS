@@ -165,6 +165,7 @@ class SKIN {
         );
         $manager->notify('InitSkinParse', $param);
 
+        
         // set output type
         sendContentType($this->getContentType(), 'skin', _CHARSET);
         

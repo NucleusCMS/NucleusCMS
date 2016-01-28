@@ -40,4 +40,3 @@ function upgrade_do370() {
     // update database version
     update_version('370');
 }
-

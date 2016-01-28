@@ -84,5 +84,3 @@ switch($from) {
 
 
 upgrade_end("Upgrade Completed");
-
-?>

@@ -18,7 +18,7 @@ include('upgrade.functions.php');
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
-  upgrade_showLogin('index.php');
+    upgrade_showLogin('index.php');
 }
 
 if (!$member->isAdmin()) {

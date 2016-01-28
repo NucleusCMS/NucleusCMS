@@ -58,7 +58,7 @@
 
 	// show error if member cannot login to admin
 	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
-		$error = _ERROR_LOGINDISALLOWED;
+		$error       = _ERROR_LOGINDISALLOWED;
 		$bNeedsLogin = true;
 	}
 
@@ -72,4 +72,3 @@
 
 	$admin = new ADMIN();
 	$admin->action($action);
-?>

@@ -153,15 +153,15 @@
             </p>
 
         </form>
-    <?php        upgrade_foot();
+    <?php       upgrade_foot();
         exit;
     }
 
     function upgrade_head() {
     ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-            <html xmlns="http://www.w3.org/1999/xhtml">
-            <head>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
                 <title>Nucleus Upgrade</title>
 <?php if (file_exists("../styles/manual.css")) { ?>
                 <link rel="stylesheet" href="../styles/manual.css" type="text/css" />
@@ -181,9 +181,10 @@
 
     function upgrade_foot() {
     ?>
-            </body>
-            </html>
-    <?php    }
+    </body>
+</html>
+    <?php
+    }
 
     function upgrade_error($msg) {
         upgrade_head();
@@ -343,4 +344,3 @@
         $res = mysql_query($query);
         return ($res != 0) && (mysql_num_rows($res) == 1);
     }
-?>

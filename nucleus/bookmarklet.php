@@ -48,6 +48,7 @@ sendContentType('text/html', 'bookmarklet-' . $action);
 
 // check ticket
 $action = strtolower($action);
+
 $aActionsNotToCheck = array('login', 'add', 'edit');
 
 if (!in_array($action, $aActionsNotToCheck) ) {
@@ -195,15 +196,15 @@ function bm_loginAndPassThrough() {
 
     ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title>Nucleus</title>
-        <?php bm_style(); ?>
-    </head>
-    <body>
-    <h1><?php echo _LOGIN_PLEASE ?></h1>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Nucleus</title>
+    <?php bm_style(); ?>
+</head>
+<body>
+<h1><?php echo _LOGIN_PLEASE ?></h1>
 
-    <form method="post" action="bookmarklet.php">
+<form method="post" action="bookmarklet.php">
     <p>
         <input name="action" value="login" type="hidden" />
         <input name="blogid" value="<?php echo hsc($blogid); ?>" type="hidden" />
@@ -217,10 +218,10 @@ function bm_loginAndPassThrough() {
         <br /><br />
         <br /><input type="submit" value="<?php echo _LOGIN ?>" />
     </p>
-    </form>
-    <p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
-    </body>
-    </html>
+</form>
+<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
+</body>
+</html>
     <?php
 }
 
@@ -297,18 +298,18 @@ function bm_doError($msg) {
 function bm_message($title, $head, $msg, $extrahead = '') {
     ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-        <title><?php echo $title ?></title>
-        <?php bm_style(); ?>
-        <?php echo $extrahead; ?>
-    </head>
-    <body>
-    <h1><?php echo $head; ?></h1>
-    <p><?php echo $msg; ?></p>
-    <p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
-    </body>
-    </html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title><?php echo $title ?></title>
+    <?php bm_style(); ?>
+    <?php echo $extrahead; ?>
+</head>
+<body>
+<h1><?php echo $head; ?></h1>
+<p><?php echo $msg; ?></p>
+<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
+</body>
+</html>
 
     <?php
 }

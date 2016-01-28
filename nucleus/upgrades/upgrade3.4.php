@@ -33,7 +33,6 @@ function upgrade_do340() {
     // lengthen tdname column of nucleus_template_desc
     $query = "    ALTER TABLE `" . sql_table('template_desc') . "`
                     MODIFY `tdname` varchar(64) NOT NULL default '' ;";
-
     upgrade_query('Altering ' . sql_table('template_desc') . ' table', $query);
     
     // create DebugVars setting
@@ -45,7 +44,7 @@ function upgrade_do340() {
     // create DefaultListSize setting
     if (!upgrade_checkIfCVExists('DefaultListSize')) {
         $query = 'INSERT INTO '.sql_table('config')." VALUES ('DefaultListSize',10)";
-        upgrade_query('Creating DefaultListSize config value',$query);    
+        upgrade_query('Creating DefaultListSize config value',$query);  
     }
     
     // changing the member table

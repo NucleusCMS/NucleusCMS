@@ -60,35 +60,37 @@ class SEARCH {
                 $stringsum_a[] = " match ($match) against ('$stringsum_long') ";
            }
 
-           $stringsum .= implode("+",$stringsum_a);
+           $stringsum .= implode("+", $stringsum_a);
+
            return $stringsum;
         }
     }
 
-    function boolean_inclusive_atoms($string){
+    
+
+    function boolean_inclusive_atoms($string) {
         $result = trim($string);
         $result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
-
         # replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
         # just added delimiters to regex and the 'i' for case-insensitive matching
-
+        
         /* convert normal boolean operators to shortened syntax */
         $result = preg_replace('# not #i', ' -', $result);
         $result = preg_replace('# and #i', ' ', $result);
         $result = preg_replace('# or #i', ',', $result);
-
+        
         /* drop unnecessary spaces */
         $result = str_replace(' ,', ',', $result);
         $result = str_replace(', ', ',', $result);
         $result = str_replace('- ', '-', $result);
         $result = str_replace('+', '', $result);
-
+        
         /* strip exlusive atoms */
         $result = preg_replace(
-            "#\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\)#",
+"#\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\)#",
             '',
             $result);
-
+        
         $result = str_replace('(', ' ', $result);
         $result = str_replace(')', ' ', $result);
         $result = str_replace(',', ' ', $result);
@@ -96,7 +98,7 @@ class SEARCH {
         return $result;
     }
 
-    function boolean_sql_where($match){
+    function boolean_sql_where($match) {
 
         $result = $this->marked;
 
@@ -121,7 +123,6 @@ class SEARCH {
             $result);
 
         return $result;
-
     }
 
     function boolean_sql_where_cb1($matches){
