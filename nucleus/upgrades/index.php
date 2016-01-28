@@ -17,11 +17,11 @@ load_upgrade_lang();
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
-	upgrade_showLogin('index.php');
+    upgrade_showLogin('index.php');
 }
 
 if (!$member->isAdmin()) {
-	upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
+    upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
 $echo = array();
@@ -76,60 +76,60 @@ echo join("\n",$echo);
 upgrade_foot();
 
 function upgrade_todo($ver) {
-	return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
+    return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
 }
 
 function upgrade_manual_atom1_0() {
-	// atom 1.0
-	$query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
-	$res = sql_query($query);
-	
-	$echo = array();
-	while ($o = sql_fetch_object($res)) {
-		if ($o->sddesc=='Atom 0.3 weblog syndication') {
-			$echo[] = '<h2>Atom 1.0</h2>';
-			$echo[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
-			$echo[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
-			$echo[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
-		}
-	}
+    // atom 1.0
+    $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
+    $res = sql_query($query);
+    
+    $echo = array();
+    while ($o = sql_fetch_object($res)) {
+        if ($o->sddesc=='Atom 0.3 weblog syndication') {
+            $echo[] = '<h2>Atom 1.0</h2>';
+            $echo[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
+            $echo[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
+            $echo[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
+        }
+    }
 
-	// default skin
-	$query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"',sql_table('template_desc'));
-	$res = sql_query($query);
-	$tdnumber = 0;
-	$o = sql_fetch_object($res);
-	$tdnumber = $o->tdnumber;
-	if (0<$tdnumber){
-		$query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
-		$res = sql_query($query);
-		if (!sql_fetch_object($res)) {
-			$echo[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
-			$echo[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
-			$echo[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
-			$echo[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
-		}
-	}
-	return !empty($echo) ? join("\n",$echo) : '';
+    // default skin
+    $query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"',sql_table('template_desc'));
+    $res = sql_query($query);
+    $tdnumber = 0;
+    $o = sql_fetch_object($res);
+    $tdnumber = $o->tdnumber;
+    if (0<$tdnumber){
+        $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
+        $res = sql_query($query);
+        if (!sql_fetch_object($res)) {
+            $echo[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
+            $echo[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
+            $echo[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
+            $echo[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
+        }
+    }
+    return !empty($echo) ? join("\n",$echo) : '';
 }
 
 function upgrade_manual_340() {
-	$echo[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
-	$echo[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
-	$echo[] = '<p>';
-	$echo[] = _UPG_TEXT_V340_02 . '：';
-	$echo[] = '<ul>';
-	$echo[] = '<li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>';
-	$echo[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
-	$echo[] = '</ul>';
-	$echo[] = '</p>';
-	return join("\n",$echo);
+    $echo[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
+    $echo[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
+    $echo[] = '<p>';
+    $echo[] = _UPG_TEXT_V340_02 . '：';
+    $echo[] = '<ul>';
+    $echo[] = '<li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>';
+    $echo[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
+    $echo[] = '</ul>';
+    $echo[] = '</p>';
+    return join("\n",$echo);
 }
 
 function upgrade_manual_366() {
-	$content = @file_get_contents('../../action.php');
-	if(strpos($content,'=&')===false) return '';
-	$echo[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
-	$echo[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
-	return join("\n",$echo);
+    $content = @file_get_contents('../../action.php');
+    if(strpos($content,'=&')===false) return '';
+    $echo[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+    $echo[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+    return join("\n",$echo);
 }

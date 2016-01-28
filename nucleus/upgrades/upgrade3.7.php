@@ -12,44 +12,44 @@
 
 function upgrade_do371() {
 
-	if (upgrade_checkinstall(371))
-		return _UPG_TEXT_ALREADY_INSTALLED;
-	
-	$query = sprintf("ALTER TABLE `%s`
-					ADD `corder` int(11)     NOT NULL default '100',
-					ADD INDEX `cblog` (`cblog`),
-					ADD INDEX `corder` (`corder`);", sql_table('category'));
+    if (upgrade_checkinstall(371))
+        return _UPG_TEXT_ALREADY_INSTALLED;
+    
+    $query = sprintf("ALTER TABLE `%s`
+                    ADD `corder` int(11)     NOT NULL default '100',
+                    ADD INDEX `cblog` (`cblog`),
+                    ADD INDEX `corder` (`corder`);", sql_table('category'));
 
-	upgrade_query('Altering ' . sql_table('category') . ' table', $query);
+    upgrade_query('Altering ' . sql_table('category') . ' table', $query);
 
-	// create AdminCSS setting
-	if (!upgrade_checkIfCVExists('AdminCSS')) {
-		$query = sprintf("INSERT INTO %s VALUES ('AdminCSS','contemporary_jp')", sql_table('config'));
-		upgrade_query('Creating AdminCSS config value',$query);  
-	}
-	
-	// 3.70 -> 3.71
-	// update database version
-	update_version('371');
+    // create AdminCSS setting
+    if (!upgrade_checkIfCVExists('AdminCSS')) {
+        $query = sprintf("INSERT INTO %s VALUES ('AdminCSS','contemporary_jp')", sql_table('config'));
+        upgrade_query('Creating AdminCSS config value',$query);  
+    }
+    
+    // 3.70 -> 3.71
+    // update database version
+    update_version('371');
 }
 
 function upgrade_do370() {
 
-	if (upgrade_checkinstall(370))
-		return _UPG_TEXT_ALREADY_INSTALLED;
-	
-	// changing the blog table to lengthen bnotify field 
-	$query = sprintf("ALTER TABLE `%s`
-					MODIFY COLUMN `ibody` mediumtext default NULL,
-					MODIFY COLUMN `imore` mediumtext default NULL;", sql_table('item'));
-	
-	upgrade_query('Altering ' . sql_table('item') . ' table', $query);
-	
-	$query = sprintf("ALTER TABLE `%s` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''", sql_table('member'));
-	
-	upgrade_query('Altering ' . sql_table('member') . ' table', $query);
-	
-	// 3.6 -> 3.7
-	// update database version
-	update_version('370');
+    if (upgrade_checkinstall(370))
+        return _UPG_TEXT_ALREADY_INSTALLED;
+    
+    // changing the blog table to lengthen bnotify field 
+    $query = sprintf("ALTER TABLE `%s`
+                    MODIFY COLUMN `ibody` mediumtext default NULL,
+                    MODIFY COLUMN `imore` mediumtext default NULL;", sql_table('item'));
+    
+    upgrade_query('Altering ' . sql_table('item') . ' table', $query);
+    
+    $query = sprintf("ALTER TABLE `%s` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''", sql_table('member'));
+    
+    upgrade_query('Altering ' . sql_table('member') . ' table', $query);
+    
+    // 3.6 -> 3.7
+    // update database version
+    update_version('370');
 }

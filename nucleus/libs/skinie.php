@@ -9,455 +9,455 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  *
- *	This class contains two classes that can be used for importing and
- *	exporting Nucleus skins: SKINIMPORT and SKINEXPORT
+ *    This class contains two classes that can be used for importing and
+ *    exporting Nucleus skins: SKINIMPORT and SKINEXPORT
  */
 
 class SKINIMPORT {
 
-	// hardcoded value (see constructor). When 1, interesting info about the
-	// parsing process is sent to the output
-	var $debug;
+    // hardcoded value (see constructor). When 1, interesting info about the
+    // parsing process is sent to the output
+    var $debug;
 
-	// parser/file pointer
-	var $parser;
-	var $fp;
+    // parser/file pointer
+    var $parser;
+    var $fp;
 
-	// which data has been read?
-	var $metaDataRead;
-	var $allRead;
+    // which data has been read?
+    var $metaDataRead;
+    var $allRead;
 
-	// extracted data
-	var $skins;
-	var $templates;
-	var $info;
+    // extracted data
+    var $skins;
+    var $templates;
+    var $info;
 
-	// to maintain track of where we are inside the XML file
-	var $inXml;
-	var $inData;
-	var $inMeta;
-	var $inSkin;
-	var $inTemplate;
-	var $currentName;
-	var $currentPartName;
-	var $cdata;
+    // to maintain track of where we are inside the XML file
+    var $inXml;
+    var $inData;
+    var $inMeta;
+    var $inSkin;
+    var $inTemplate;
+    var $currentName;
+    var $currentPartName;
+    var $cdata;
 
 
 
-	/**
-	 * constructor initializes data structures
-	 */
-	function __construct() {
-		// disable magic_quotes_runtime if it's turned on
-		if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-			set_magic_quotes_runtime(0);
-		}
+    /**
+     * constructor initializes data structures
+     */
+    function __construct() {
+        // disable magic_quotes_runtime if it's turned on
+        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+            set_magic_quotes_runtime(0);
+        }
 
-		// debugging mode?
-		$this->debug = 0;
+        // debugging mode?
+        $this->debug = 0;
 
-		$this->reset();
+        $this->reset();
 
-	}
+    }
 
-	function reset() {
-		if ($this->parser)
-			xml_parser_free($this->parser);
+    function reset() {
+        if ($this->parser)
+            xml_parser_free($this->parser);
 
-		// XML file pointer
-		$this->fp = 0;
+        // XML file pointer
+        $this->fp = 0;
 
-		// which data has been read?
-		$this->metaDataRead = 0;
-		$this->allRead = 0;
+        // which data has been read?
+        $this->metaDataRead = 0;
+        $this->allRead = 0;
 
-		// to maintain track of where we are inside the XML file
-		$this->inXml = 0;
-		$this->inData = 0;
-		$this->inMeta = 0;
-		$this->inSkin = 0;
-		$this->inTemplate = 0;
-		$this->currentName = '';
-		$this->currentPartName = '';
+        // to maintain track of where we are inside the XML file
+        $this->inXml = 0;
+        $this->inData = 0;
+        $this->inMeta = 0;
+        $this->inSkin = 0;
+        $this->inTemplate = 0;
+        $this->currentName = '';
+        $this->currentPartName = '';
 
-		// character data pile
-		$this->cdata = '';
+        // character data pile
+        $this->cdata = '';
 
-		// list of skinnames and templatenames (will be array of array)
-		$this->skins = array();
-		$this->templates = array();
+        // list of skinnames and templatenames (will be array of array)
+        $this->skins = array();
+        $this->templates = array();
 
-		// extra info included in the XML files (e.g. installation notes)
-		$this->info = '';
+        // extra info included in the XML files (e.g. installation notes)
+        $this->info = '';
 
-		// init XML parser
-		$this->parser = xml_parser_create();
-		xml_set_object($this->parser, $this);
-		xml_set_element_handler($this->parser, 'startElement', 'endElement');
-		xml_set_character_data_handler($this->parser, 'characterData');
-		xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
+        // init XML parser
+        $this->parser = xml_parser_create();
+        xml_set_object($this->parser, $this);
+        xml_set_element_handler($this->parser, 'startElement', 'endElement');
+        xml_set_character_data_handler($this->parser, 'characterData');
+        xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
 
-	}
+    }
 
 /**
  * Reads an XML file into memory
  * 
  * @param $filename
- * 	Which file to read
+ *     Which file to read
  * @param $metaOnly
- * 	Set to 1 when only the metadata needs to be read (optional, default 0)
+ *     Set to 1 when only the metadata needs to be read (optional, default 0)
  * 
- * [2004/08/04]	Modified by Japanese Package Release Team according to the URL below,
- * 					http://japan.nucleuscms.org/bb/viewtopic.php?t=4416
- * [2004/08/04]	Modified by dakarma
- * 					Took this out since it messes up good XML if it has skins/templates
- * 					with CDATA sections. need to investigate consequences.
- * 					see bug [ 999914 ] Import fails (multiple skins in XML/one of them with CDATA)
+ * [2004/08/04]    Modified by Japanese Package Release Team according to the URL below,
+ *                     http://japan.nucleuscms.org/bb/viewtopic.php?t=4416
+ * [2004/08/04]    Modified by dakarma
+ *                     Took this out since it messes up good XML if it has skins/templates
+ *                     with CDATA sections. need to investigate consequences.
+ *                     see bug [ 999914 ] Import fails (multiple skins in XML/one of them with CDATA)
  */
-	function readFile($filename, $metaOnly = 0) {
-		// open file
-		$this->fp = @fopen($filename, 'r');
-		if (!$this->fp) {
-			return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
-		}
-		
-		$this->inXml = 1;
-		$tempbuffer = fread($this->fp,filesize($filename));
+    function readFile($filename, $metaOnly = 0) {
+        // open file
+        $this->fp = @fopen($filename, 'r');
+        if (!$this->fp) {
+            return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
+        }
+        
+        $this->inXml = 1;
+        $tempbuffer = fread($this->fp,filesize($filename));
 /*
-		dakarma wrote
-		// backwards compatibility with the non-wellformed skinbackup.xml files
-		// generated by v2/v3 (when CDATA sections were present in skins)
-		// split up those CDATA sections into multiple ones
-		$tempbuffer = preg_replace_callback(
-			"/(<!\[CDATA\[[^]]*?<!\[CDATA\[[^]]*)((?:\]\].*?<!\[CDATA.*?)*)(\]\])(.*\]\])/ms",
-			create_function(
-				'$matches',
-				'return $matches[1] . preg_replace("/(\]\])(.*?<!\[CDATA)/ms","]]]]><![CDATA[$2",$matches[2])."]]]]><![CDATA[".$matches[4];'
-			),
-			$tempbuffer
-		);
+        dakarma wrote
+        // backwards compatibility with the non-wellformed skinbackup.xml files
+        // generated by v2/v3 (when CDATA sections were present in skins)
+        // split up those CDATA sections into multiple ones
+        $tempbuffer = preg_replace_callback(
+            "/(<!\[CDATA\[[^]]*?<!\[CDATA\[[^]]*)((?:\]\].*?<!\[CDATA.*?)*)(\]\])(.*\]\])/ms",
+            create_function(
+                '$matches',
+                'return $matches[1] . preg_replace("/(\]\])(.*?<!\[CDATA)/ms","]]]]><![CDATA[$2",$matches[2])."]]]]><![CDATA[".$matches[4];'
+            ),
+            $tempbuffer
+        );
 */
-		// JP Team wrote
-		if (function_exists('mb_convert_encoding') && (strtoupper(_CHARSET) != 'ISO-8859-1')) {
-			mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
-			$temp_encode = mb_detect_encoding($tempbuffer);
-		} else {
-			$temp_encode = null;
-		}
-		rewind($this->fp);
-		
-		while ( ($buffer = fgets($this->fp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
-			if ($temp_encode) {
-				$buffer = mb_convert_encoding($buffer, 'UTF-8', $temp_encode);
-			}
-			$err = xml_parse( $this->parser, $buffer, feof($this->fp) );
-			if (!$err && $this->debug) {
-				echo _ERROR . ': ' . xml_error_string(xml_get_error_code($this->parser)) . '<br />';
-			}
-		}
-		
-		$this->inXml = 0;
-		fclose($this->fp);
-	}
+        // JP Team wrote
+        if (function_exists('mb_convert_encoding') && (strtoupper(_CHARSET) != 'ISO-8859-1')) {
+            mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
+            $temp_encode = mb_detect_encoding($tempbuffer);
+        } else {
+            $temp_encode = null;
+        }
+        rewind($this->fp);
+        
+        while ( ($buffer = fgets($this->fp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
+            if ($temp_encode) {
+                $buffer = mb_convert_encoding($buffer, 'UTF-8', $temp_encode);
+            }
+            $err = xml_parse( $this->parser, $buffer, feof($this->fp) );
+            if (!$err && $this->debug) {
+                echo _ERROR . ': ' . xml_error_string(xml_get_error_code($this->parser)) . '<br />';
+            }
+        }
+        
+        $this->inXml = 0;
+        fclose($this->fp);
+    }
 
-	/**
-	 * Returns the list of skin names
-	 */
-	function getSkinNames() {
-		return array_keys($this->skins);
-	}
+    /**
+     * Returns the list of skin names
+     */
+    function getSkinNames() {
+        return array_keys($this->skins);
+    }
 
-	/**
-	 * Returns the list of template names
-	 */
-	function getTemplateNames() {
-		return array_keys($this->templates);
-	}
+    /**
+     * Returns the list of template names
+     */
+    function getTemplateNames() {
+        return array_keys($this->templates);
+    }
 
-	/**
-	 * Returns the extra information included in the XML file
-	 */
-	function getInfo() {
-		return $this->info;
-	}
+    /**
+     * Returns the extra information included in the XML file
+     */
+    function getInfo() {
+        return $this->info;
+    }
 
-	/**
-	 * Writes the skins and templates to the database
-	 *
-	 * @param $allowOverwrite
-	 *		set to 1 when allowed to overwrite existing skins with the same name
-	 *		(default = 0)
-	 */
-	function writeToDatabase($allowOverwrite = 0) {
-		$existingSkins = $this->checkSkinNameClashes();
-		$existingTemplates = $this->checkTemplateNameClashes();
+    /**
+     * Writes the skins and templates to the database
+     *
+     * @param $allowOverwrite
+     *        set to 1 when allowed to overwrite existing skins with the same name
+     *        (default = 0)
+     */
+    function writeToDatabase($allowOverwrite = 0) {
+        $existingSkins = $this->checkSkinNameClashes();
+        $existingTemplates = $this->checkTemplateNameClashes();
 
-		// if not allowed to overwrite, check if any nameclashes exists
-		if (!$allowOverwrite) {
-			if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0)) {
-				return _SKINIE_NAME_CLASHES_DETECTED;
-			}
-		}
+        // if not allowed to overwrite, check if any nameclashes exists
+        if (!$allowOverwrite) {
+            if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0)) {
+                return _SKINIE_NAME_CLASHES_DETECTED;
+            }
+        }
 
-		foreach ($this->skins as $skinName => $data) {
-			// 1. if exists: delete all part data, update desc data
-			//    if not exists: create desc
-			if (in_array($skinName, $existingSkins)) {
-				$skinObj = SKIN::createFromName($skinName);
+        foreach ($this->skins as $skinName => $data) {
+            // 1. if exists: delete all part data, update desc data
+            //    if not exists: create desc
+            if (in_array($skinName, $existingSkins)) {
+                $skinObj = SKIN::createFromName($skinName);
 
-				// delete all parts of the skin
-				$skinObj->deleteAllParts();
+                // delete all parts of the skin
+                $skinObj->deleteAllParts();
 
-				// update general info
-				$skinObj->updateGeneralInfo(
-					$skinName,
-					$data['description'],
-					$data['type'],
-					$data['includeMode'],
-					$data['includePrefix']
-				);
-			} else {
-				$skinid = SKIN::createNew(
-					$skinName,
-					$data['description'],
-					$data['type'],
-					$data['includeMode'],
-					$data['includePrefix']
-				);
-				$skinObj = new SKIN($skinid);
-			}
+                // update general info
+                $skinObj->updateGeneralInfo(
+                    $skinName,
+                    $data['description'],
+                    $data['type'],
+                    $data['includeMode'],
+                    $data['includePrefix']
+                );
+            } else {
+                $skinid = SKIN::createNew(
+                    $skinName,
+                    $data['description'],
+                    $data['type'],
+                    $data['includeMode'],
+                    $data['includePrefix']
+                );
+                $skinObj = new SKIN($skinid);
+            }
 
-			// 2. add parts
-			foreach ($data['parts'] as $partName => $partContent) {
-				$skinObj->update($partName, $partContent);
-			}
-		}
+            // 2. add parts
+            foreach ($data['parts'] as $partName => $partContent) {
+                $skinObj->update($partName, $partContent);
+            }
+        }
 
-		foreach ($this->templates as $templateName => $data) {
-			// 1. if exists: delete all part data, update desc data
-			//    if not exists: create desc
-			if (in_array($templateName, $existingTemplates)) {
-				$templateObj = TEMPLATE::createFromName($templateName);
+        foreach ($this->templates as $templateName => $data) {
+            // 1. if exists: delete all part data, update desc data
+            //    if not exists: create desc
+            if (in_array($templateName, $existingTemplates)) {
+                $templateObj = TEMPLATE::createFromName($templateName);
 
-				// delete all parts of the template
-				$templateObj->deleteAllParts();
+                // delete all parts of the template
+                $templateObj->deleteAllParts();
 
-				// update general info
-				$templateObj->updateGeneralInfo($templateName, $data['description']);
-			} else {
-				$templateid = TEMPLATE::createNew($templateName, $data['description']);
-				$templateObj = new TEMPLATE($templateid);
-			}
+                // update general info
+                $templateObj->updateGeneralInfo($templateName, $data['description']);
+            } else {
+                $templateid = TEMPLATE::createNew($templateName, $data['description']);
+                $templateObj = new TEMPLATE($templateid);
+            }
 
-			// 2. add parts
-			foreach ($data['parts'] as $partName => $partContent) {
-				$templateObj->update($partName, $partContent);
-			}
-		}
+            // 2. add parts
+            foreach ($data['parts'] as $partName => $partContent) {
+                $templateObj->update($partName, $partContent);
+            }
+        }
 
 
-	}
+    }
 
-	/**
-	  * returns an array of all the skin nameclashes (empty array when no name clashes)
-	  */
-	function checkSkinNameClashes() {
-		$clashes = array();
+    /**
+      * returns an array of all the skin nameclashes (empty array when no name clashes)
+      */
+    function checkSkinNameClashes() {
+        $clashes = array();
 
-		foreach ($this->skins as $skinName => $data) {
-			if (SKIN::exists($skinName)) {
-				array_push($clashes, $skinName);
-			}
-		}
+        foreach ($this->skins as $skinName => $data) {
+            if (SKIN::exists($skinName)) {
+                array_push($clashes, $skinName);
+            }
+        }
 
-		return $clashes;
-	}
+        return $clashes;
+    }
 
-	/**
-	  * returns an array of all the template nameclashes
-	  * (empty array when no name clashes)
-	  */
-	function checkTemplateNameClashes() {
-		$clashes = array();
+    /**
+      * returns an array of all the template nameclashes
+      * (empty array when no name clashes)
+      */
+    function checkTemplateNameClashes() {
+        $clashes = array();
 
-		foreach ($this->templates as $templateName => $data) {
-			if (TEMPLATE::exists($templateName)) {
-				array_push($clashes, $templateName);
-			}
-		}
+        foreach ($this->templates as $templateName => $data) {
+            if (TEMPLATE::exists($templateName)) {
+                array_push($clashes, $templateName);
+            }
+        }
 
-		return $clashes;
-	}
+        return $clashes;
+    }
 
-	/**
-	 * Called by XML parser for each new start element encountered
-	 */
-	function startElement($parser, $name, $attrs) {
-		foreach($attrs as $key=>$value) {
-			$attrs[$key] = hsc($value, ENT_QUOTES);
-		}
+    /**
+     * Called by XML parser for each new start element encountered
+     */
+    function startElement($parser, $name, $attrs) {
+        foreach($attrs as $key=>$value) {
+            $attrs[$key] = hsc($value, ENT_QUOTES);
+        }
 
-		if ($this->debug) {
-			echo 'START: ' . hsc($name, ENT_QUOTES) . '<br />';
-		}
+        if ($this->debug) {
+            echo 'START: ' . hsc($name, ENT_QUOTES) . '<br />';
+        }
 
-		switch ($name) {
-			case 'nucleusskin':
-				$this->inData = 1;
-				break;
-			case 'meta':
-				$this->inMeta = 1;
-				break;
-			case 'info':
-				// no action needed
-				break;
-			case 'skin':
-				if (!$this->inMeta) {
-					$this->inSkin = 1;
-					$this->currentName = $attrs['name'];
-					$this->skins[$this->currentName]['type'] = $attrs['type'];
-					$this->skins[$this->currentName]['includeMode'] = $attrs['includeMode'];
-					$this->skins[$this->currentName]['includePrefix'] = $attrs['includePrefix'];
-					$this->skins[$this->currentName]['parts'] = array();
-				} else {
-					$this->skins[$attrs['name']] = array();
-					$this->skins[$attrs['name']]['parts'] = array();
-				}
-				break;
-			case 'template':
-				if (!$this->inMeta) {
-					$this->inTemplate = 1;
-					$this->currentName = $attrs['name'];
-					$this->templates[$this->currentName]['parts'] = array();
-				} else {
-					$this->templates[$attrs['name']] = array();
-					$this->templates[$attrs['name']]['parts'] = array();
-				}
-				break;
-			case 'description':
-				// no action needed
-				break;
-			case 'part':
-				$this->currentPartName = $attrs['name'];
-				break;
-			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . hsc($name, ENT_QUOTES) . '<br />';
-				break;
-		}
+        switch ($name) {
+            case 'nucleusskin':
+                $this->inData = 1;
+                break;
+            case 'meta':
+                $this->inMeta = 1;
+                break;
+            case 'info':
+                // no action needed
+                break;
+            case 'skin':
+                if (!$this->inMeta) {
+                    $this->inSkin = 1;
+                    $this->currentName = $attrs['name'];
+                    $this->skins[$this->currentName]['type'] = $attrs['type'];
+                    $this->skins[$this->currentName]['includeMode'] = $attrs['includeMode'];
+                    $this->skins[$this->currentName]['includePrefix'] = $attrs['includePrefix'];
+                    $this->skins[$this->currentName]['parts'] = array();
+                } else {
+                    $this->skins[$attrs['name']] = array();
+                    $this->skins[$attrs['name']]['parts'] = array();
+                }
+                break;
+            case 'template':
+                if (!$this->inMeta) {
+                    $this->inTemplate = 1;
+                    $this->currentName = $attrs['name'];
+                    $this->templates[$this->currentName]['parts'] = array();
+                } else {
+                    $this->templates[$attrs['name']] = array();
+                    $this->templates[$attrs['name']]['parts'] = array();
+                }
+                break;
+            case 'description':
+                // no action needed
+                break;
+            case 'part':
+                $this->currentPartName = $attrs['name'];
+                break;
+            default:
+                echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . hsc($name, ENT_QUOTES) . '<br />';
+                break;
+        }
 
-		// character data never contains other tags
-		$this->clearCharacterData();
+        // character data never contains other tags
+        $this->clearCharacterData();
 
-	}
+    }
 
-	/**
-	  * Called by the XML parser for each closing tag encountered
-	  */
-	function endElement($parser, $name) {
-		if ($this->debug) {
-			echo 'END: ' . hsc($name, ENT_QUOTES) . '<br />';
-		}
+    /**
+      * Called by the XML parser for each closing tag encountered
+      */
+    function endElement($parser, $name) {
+        if ($this->debug) {
+            echo 'END: ' . hsc($name, ENT_QUOTES) . '<br />';
+        }
 
-		switch ($name) {
-			case 'nucleusskin':
-				$this->inData = 0;
-				$this->allRead = 1;
-				break;
-			case 'meta':
-				$this->inMeta = 0;
-				$this->metaDataRead = 1;
-				break;
-			case 'info':
-				$this->info = $this->getCharacterData();
-			case 'skin':
-				if (!$this->inMeta) {
-					$this->inSkin = 0;
-				}
-				break;
-			case 'template':
-				if (!$this->inMeta) {
-					$this->inTemplate = 0;
-				}
-				break;
-			case 'description':
-				if ($this->inSkin) {
-					$this->skins[$this->currentName]['description'] = $this->getCharacterData();
-				} else {
-					$this->templates[$this->currentName]['description'] = $this->getCharacterData();
-				}
-				break;
-			case 'part':
-				if ($this->inSkin) {
-					$this->skins[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
-				} else {
-					$this->templates[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
-				}
-				break;
-			default:
-				echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . hsc($name, ENT_QUOTES) . '<br />';
-				break;
-		}
-		$this->clearCharacterData();
+        switch ($name) {
+            case 'nucleusskin':
+                $this->inData = 0;
+                $this->allRead = 1;
+                break;
+            case 'meta':
+                $this->inMeta = 0;
+                $this->metaDataRead = 1;
+                break;
+            case 'info':
+                $this->info = $this->getCharacterData();
+            case 'skin':
+                if (!$this->inMeta) {
+                    $this->inSkin = 0;
+                }
+                break;
+            case 'template':
+                if (!$this->inMeta) {
+                    $this->inTemplate = 0;
+                }
+                break;
+            case 'description':
+                if ($this->inSkin) {
+                    $this->skins[$this->currentName]['description'] = $this->getCharacterData();
+                } else {
+                    $this->templates[$this->currentName]['description'] = $this->getCharacterData();
+                }
+                break;
+            case 'part':
+                if ($this->inSkin) {
+                    $this->skins[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
+                } else {
+                    $this->templates[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
+                }
+                break;
+            default:
+                echo _SKINIE_SEELEMENT_UNEXPECTEDTAG . hsc($name, ENT_QUOTES) . '<br />';
+                break;
+        }
+        $this->clearCharacterData();
 
-	}
+    }
 
-	/**
-	 * Called by XML parser for data inside elements
-	 */
-	function characterData ($parser, $data) {
-		if ($this->debug) {
-			echo 'NEW DATA: ' . hsc($data, ENT_QUOTES) . '<br />';
-		}
-		$this->cdata .= $data;
-	}
+    /**
+     * Called by XML parser for data inside elements
+     */
+    function characterData ($parser, $data) {
+        if ($this->debug) {
+            echo 'NEW DATA: ' . hsc($data, ENT_QUOTES) . '<br />';
+        }
+        $this->cdata .= $data;
+    }
 
-	/**
-	 * Returns the data collected so far
-	 */
-	function getCharacterData() {
-//		echo $this->cdata;
-		if ( (strtoupper(_CHARSET) == 'UTF-8')
-			or (strtoupper(_CHARSET) == 'ISO-8859-1')
-			or (!function_exists('mb_convert_encoding')) ) {
-			return $this->cdata;
-		} else {
-			return mb_convert_encoding($this->cdata, _CHARSET ,'UTF-8');
-		}
-	}
+    /**
+     * Returns the data collected so far
+     */
+    function getCharacterData() {
+//        echo $this->cdata;
+        if ( (strtoupper(_CHARSET) == 'UTF-8')
+            or (strtoupper(_CHARSET) == 'ISO-8859-1')
+            or (!function_exists('mb_convert_encoding')) ) {
+            return $this->cdata;
+        } else {
+            return mb_convert_encoding($this->cdata, _CHARSET ,'UTF-8');
+        }
+    }
 
-	/**
-	 * Clears the data buffer
-	 */
-	function clearCharacterData() {
-		$this->cdata = '';
-	}
+    /**
+     * Clears the data buffer
+     */
+    function clearCharacterData() {
+        $this->cdata = '';
+    }
 
-	/**
-	 * Static method that looks for importable XML files in subdirs of the given dir
-	 */
-	public static function searchForCandidates($dir) {
-		$candidates = array();
+    /**
+     * Static method that looks for importable XML files in subdirs of the given dir
+     */
+    public static function searchForCandidates($dir) {
+        $candidates = array();
 
-		$dirhandle = opendir($dir);
-		while ($filename = readdir($dirhandle)) {
-			if (@is_dir($dir . $filename) && ($filename != '.') && ($filename != '..')) {
-				$xml_file = $dir . $filename . '/skinbackup.xml';
-				if (file_exists($xml_file) && is_readable($xml_file)) {
-					$candidates[$filename] = $filename; //$xml_file;
-				}
+        $dirhandle = opendir($dir);
+        while ($filename = readdir($dirhandle)) {
+            if (@is_dir($dir . $filename) && ($filename != '.') && ($filename != '..')) {
+                $xml_file = $dir . $filename . '/skinbackup.xml';
+                if (file_exists($xml_file) && is_readable($xml_file)) {
+                    $candidates[$filename] = $filename; //$xml_file;
+                }
 
-				// backwards compatibility
-				$xml_file = $dir . $filename . '/skindata.xml';
-				if (file_exists($xml_file) && is_readable($xml_file)) {
-					$candidates[$filename] = $filename; //$xml_file;
-				}
-			}
-		}
-		closedir($dirhandle);
+                // backwards compatibility
+                $xml_file = $dir . $filename . '/skindata.xml';
+                if (file_exists($xml_file) && is_readable($xml_file)) {
+                    $candidates[$filename] = $filename; //$xml_file;
+                }
+            }
+        }
+        closedir($dirhandle);
 
-		return $candidates;
+        return $candidates;
 
-	}
+    }
 
 
 }
@@ -465,207 +465,207 @@ class SKINIMPORT {
 
 class SKINEXPORT {
 
-	var $templates;
-	var $skins;
-	var $info;
+    var $templates;
+    var $skins;
+    var $info;
 
-	/**
-	 * Constructor initializes data structures
-	 */
-	function __construct() {
-		// list of templateIDs to export
-		$this->templates = array();
+    /**
+     * Constructor initializes data structures
+     */
+    function __construct() {
+        // list of templateIDs to export
+        $this->templates = array();
 
-		// list of skinIDs to export
-		$this->skins = array();
+        // list of skinIDs to export
+        $this->skins = array();
 
-		// extra info to be in XML file
-		$this->info = '';
-	}
+        // extra info to be in XML file
+        $this->info = '';
+    }
 
-	/**
-	 * Adds a template to be exported
-	 *
-	 * @param id
-	 *		template ID
-	 * @result false when no such ID exists
-	 */
-	function addTemplate($id) {
-		if (!TEMPLATE::existsID($id)) {
-			return 0;
-		}
-
-
-		$this->templates[$id] = TEMPLATE::getNameFromId($id);
-
-		return 1;
-	}
-
-	/**
-	 * Adds a skin to be exported
-	 *
-	 * @param id
-	 *		skin ID
-	 * @result false when no such ID exists
-	 */
-	function addSkin($id) {
-		if (!SKIN::existsID($id)) {
-			return 0;
-		}
-
-		$this->skins[$id] = SKIN::getNameFromId($id);
-
-		return 1;
-	}
-
-	/**
-	 * Sets the extra info to be included in the exported file
-	 */
-	function setInfo($info) {
-		$this->info = $info;
-	}
+    /**
+     * Adds a template to be exported
+     *
+     * @param id
+     *        template ID
+     * @result false when no such ID exists
+     */
+    function addTemplate($id) {
+        if (!TEMPLATE::existsID($id)) {
+            return 0;
+        }
 
 
-	/**
-	 * Outputs the XML contents of the export file
-	 *
-	 * @param $setHeaders
-	 *		set to 0 if you don't want to send out headers
-	 *		(optional, default 1)
-	 */
-	function export($setHeaders = 1) {
-		if ($setHeaders) {
-			// make sure the mimetype is correct, and that the data does not show up
-			// in the browser, but gets saved into and XML file (popup download window)
-			header('Content-Type: text/xml');
-			header('Content-Disposition: attachment; filename="skinbackup.xml"');
-			header('Expires: 0');
-			header('Pragma: no-cache');
-		}
+        $this->templates[$id] = TEMPLATE::getNameFromId($id);
 
-		echo "<nucleusskin>\n";
+        return 1;
+    }
 
-		// meta
-		echo "\t<meta>\n";
-			// skins
-			foreach ($this->skins as $skinId => $skinName) {
-				$skinName = hsc($skinName, ENT_QUOTES);
-				if (strtoupper(_CHARSET) != 'UTF-8') {
-					$skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
-				}
-				echo "\t\t" . '<skin name="' . hsc($skinName, ENT_QUOTES) . '" />' . "\n";
-			}
-			// templates
-			foreach ($this->templates as $templateId => $templateName) {
-				$templateName = hsc($templateName, ENT_QUOTES);
-				if (strtoupper(_CHARSET) != 'UTF-8') {
-					$templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
-				}
-				echo "\t\t" . '<template name="' . hsc($templateName, ENT_QUOTES) . '" />' . "\n";
-			}
-			// extra info
-			if ($this->info) {
-				if (strtoupper(_CHARSET) != 'UTF-8') {
-					$skin_info = mb_convert_encoding($this->info, 'UTF-8', _CHARSET);
-				} else {
-					$skin_info = $this->info;
-				}
-				echo "\t\t<info><![CDATA[" . $skin_info . "]]></info>\n";
-			}
-		echo "\t</meta>\n\n\n";
+    /**
+     * Adds a skin to be exported
+     *
+     * @param id
+     *        skin ID
+     * @result false when no such ID exists
+     */
+    function addSkin($id) {
+        if (!SKIN::existsID($id)) {
+            return 0;
+        }
 
-		// contents skins
-		foreach ($this->skins as $skinId => $skinName) {
-			$skinId   = intval($skinId);
-			$skinObj  = new SKIN($skinId);
-			$skinName = hsc($skinName, ENT_QUOTES);
-			$contentT = hsc($skinObj->getContentType(), ENT_QUOTES);
-			$incMode  = hsc($skinObj->getIncludeMode(), ENT_QUOTES);
-			$incPrefx = hsc($skinObj->getIncludePrefix(), ENT_QUOTES);
-			$skinDesc = hsc($skinObj->getDescription(), ENT_QUOTES);
-			if (strtoupper(_CHARSET) != 'UTF-8') {
-				$skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
-				$contentT = mb_convert_encoding($contentT, 'UTF-8', _CHARSET);
-				$incMode  = mb_convert_encoding($incMode,  'UTF-8', _CHARSET);
-				$incPrefx = mb_convert_encoding($incPrefx, 'UTF-8', _CHARSET);
-				$skinDesc = mb_convert_encoding($skinDesc, 'UTF-8', _CHARSET);
-			}
+        $this->skins[$id] = SKIN::getNameFromId($id);
 
-			echo "\t" . '<skin name="' . $skinName . '" type="' . $contentT . '" includeMode="' . $incMode . '" includePrefix="' . $incPrefx . '">' . "\n";
+        return 1;
+    }
 
-			echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
+    /**
+     * Sets the extra info to be included in the exported file
+     */
+    function setInfo($info) {
+        $this->info = $info;
+    }
 
-			$que = 'SELECT'
-				 . '    stype,'
-				 . '    scontent '
-				 . 'FROM '
-				 .      sql_table('skin')
-				 . ' WHERE'
-				 . '    sdesc = ' . $skinId;
-			$res = sql_query($que);
-			while ($partObj = sql_fetch_object($res)) {
-				$type  = hsc($partObj->stype, ENT_QUOTES);
-				$cdata = $this->escapeCDATA($partObj->scontent);
-				if (strtoupper(_CHARSET) != 'UTF-8') {
-					$type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
-					$cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
-				}
-				echo "\t\t" . '<part name="' . $type . '">';
-				echo '<![CDATA[' . $cdata . ']]>';
-				echo "</part>\n\n";
-			}
 
-			echo "\t</skin>\n\n\n";
-		}
+    /**
+     * Outputs the XML contents of the export file
+     *
+     * @param $setHeaders
+     *        set to 0 if you don't want to send out headers
+     *        (optional, default 1)
+     */
+    function export($setHeaders = 1) {
+        if ($setHeaders) {
+            // make sure the mimetype is correct, and that the data does not show up
+            // in the browser, but gets saved into and XML file (popup download window)
+            header('Content-Type: text/xml');
+            header('Content-Disposition: attachment; filename="skinbackup.xml"');
+            header('Expires: 0');
+            header('Pragma: no-cache');
+        }
 
-		// contents templates
-		foreach ($this->templates as $templateId => $templateName) {
-			$templateId   = intval($templateId);
-			$templateName = hsc($templateName, ENT_QUOTES);
-			$templateDesc = hsc(TEMPLATE::getDesc($templateId), ENT_QUOTES);
-			if (strtoupper(_CHARSET) != 'UTF-8') {
-				$templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
-				$templateDesc = mb_convert_encoding($templateDesc, 'UTF-8', _CHARSET);
-			}
+        echo "<nucleusskin>\n";
 
-			echo "\t" . '<template name="' . $templateName . '">' . "\n";
+        // meta
+        echo "\t<meta>\n";
+            // skins
+            foreach ($this->skins as $skinId => $skinName) {
+                $skinName = hsc($skinName, ENT_QUOTES);
+                if (strtoupper(_CHARSET) != 'UTF-8') {
+                    $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<skin name="' . hsc($skinName, ENT_QUOTES) . '" />' . "\n";
+            }
+            // templates
+            foreach ($this->templates as $templateId => $templateName) {
+                $templateName = hsc($templateName, ENT_QUOTES);
+                if (strtoupper(_CHARSET) != 'UTF-8') {
+                    $templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<template name="' . hsc($templateName, ENT_QUOTES) . '" />' . "\n";
+            }
+            // extra info
+            if ($this->info) {
+                if (strtoupper(_CHARSET) != 'UTF-8') {
+                    $skin_info = mb_convert_encoding($this->info, 'UTF-8', _CHARSET);
+                } else {
+                    $skin_info = $this->info;
+                }
+                echo "\t\t<info><![CDATA[" . $skin_info . "]]></info>\n";
+            }
+        echo "\t</meta>\n\n\n";
 
-			echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
+        // contents skins
+        foreach ($this->skins as $skinId => $skinName) {
+            $skinId   = intval($skinId);
+            $skinObj  = new SKIN($skinId);
+            $skinName = hsc($skinName, ENT_QUOTES);
+            $contentT = hsc($skinObj->getContentType(), ENT_QUOTES);
+            $incMode  = hsc($skinObj->getIncludeMode(), ENT_QUOTES);
+            $incPrefx = hsc($skinObj->getIncludePrefix(), ENT_QUOTES);
+            $skinDesc = hsc($skinObj->getDescription(), ENT_QUOTES);
+            if (strtoupper(_CHARSET) != 'UTF-8') {
+                $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
+                $contentT = mb_convert_encoding($contentT, 'UTF-8', _CHARSET);
+                $incMode  = mb_convert_encoding($incMode,  'UTF-8', _CHARSET);
+                $incPrefx = mb_convert_encoding($incPrefx, 'UTF-8', _CHARSET);
+                $skinDesc = mb_convert_encoding($skinDesc, 'UTF-8', _CHARSET);
+            }
 
-			$que =  'SELECT'
-				 .     ' tpartname,'
-				 .     ' tcontent'
-				 . ' FROM '
-				 .     sql_table('template')
-				 . ' WHERE'
-				 .     ' tdesc = ' . $templateId;
-			$res = sql_query($que);
-			while ($partObj = sql_fetch_object($res)) {
-				$type  = hsc($partObj->tpartname, ENT_QUOTES);
-				$cdata = $this->escapeCDATA($partObj->tcontent);
-				if (strtoupper(_CHARSET) != 'UTF-8') {
-					$type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
-					$cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
-				}
-				echo "\t\t" . '<part name="' . $type . '">';
-				echo '<![CDATA[' .  $cdata . ']]>';
-				echo '</part>' . "\n\n";
-			}
+            echo "\t" . '<skin name="' . $skinName . '" type="' . $contentT . '" includeMode="' . $incMode . '" includePrefix="' . $incPrefx . '">' . "\n";
 
-			echo "\t</template>\n\n\n";
-		}
+            echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
 
-		echo '</nucleusskin>';
-	}
+            $que = 'SELECT'
+                 . '    stype,'
+                 . '    scontent '
+                 . 'FROM '
+                 .      sql_table('skin')
+                 . ' WHERE'
+                 . '    sdesc = ' . $skinId;
+            $res = sql_query($que);
+            while ($partObj = sql_fetch_object($res)) {
+                $type  = hsc($partObj->stype, ENT_QUOTES);
+                $cdata = $this->escapeCDATA($partObj->scontent);
+                if (strtoupper(_CHARSET) != 'UTF-8') {
+                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+                    $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<part name="' . $type . '">';
+                echo '<![CDATA[' . $cdata . ']]>';
+                echo "</part>\n\n";
+            }
 
-	/**
-	 * Escapes CDATA content so it can be included in another CDATA section
-	 */
-	function escapeCDATA($cdata)
-	{
-		return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
+            echo "\t</skin>\n\n\n";
+        }
 
-	}
+        // contents templates
+        foreach ($this->templates as $templateId => $templateName) {
+            $templateId   = intval($templateId);
+            $templateName = hsc($templateName, ENT_QUOTES);
+            $templateDesc = hsc(TEMPLATE::getDesc($templateId), ENT_QUOTES);
+            if (strtoupper(_CHARSET) != 'UTF-8') {
+                $templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
+                $templateDesc = mb_convert_encoding($templateDesc, 'UTF-8', _CHARSET);
+            }
+
+            echo "\t" . '<template name="' . $templateName . '">' . "\n";
+
+            echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
+
+            $que =  'SELECT'
+                 .     ' tpartname,'
+                 .     ' tcontent'
+                 . ' FROM '
+                 .     sql_table('template')
+                 . ' WHERE'
+                 .     ' tdesc = ' . $templateId;
+            $res = sql_query($que);
+            while ($partObj = sql_fetch_object($res)) {
+                $type  = hsc($partObj->tpartname, ENT_QUOTES);
+                $cdata = $this->escapeCDATA($partObj->tcontent);
+                if (strtoupper(_CHARSET) != 'UTF-8') {
+                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+                    $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<part name="' . $type . '">';
+                echo '<![CDATA[' .  $cdata . ']]>';
+                echo '</part>' . "\n\n";
+            }
+
+            echo "\t</template>\n\n\n";
+        }
+
+        echo '</nucleusskin>';
+    }
+
+    /**
+     * Escapes CDATA content so it can be included in another CDATA section
+     */
+    function escapeCDATA($cdata)
+    {
+        return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
+
+    }
 }
 
 ?>
