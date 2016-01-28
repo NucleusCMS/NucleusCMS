@@ -26,8 +26,8 @@ class PluginAdmin {
     function PluginAdmin($pluginName)
     {
         global $manager, $DIR_LIBS;
-                include_once($DIR_LIBS . 'ADMIN.php');
-
+        include_once($DIR_LIBS . 'ADMIN.php');
+        
         $this->strFullName = 'NP_' . $pluginName;
 
         // check if plugin exists and is installed

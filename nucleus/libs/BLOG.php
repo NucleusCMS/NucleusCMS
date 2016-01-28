@@ -54,13 +54,13 @@ class BLOG {
      * Shows the given amount of items for this blog
      *
      * @param $template
-     *        String representing the template _NAME_ (!)
+     *      String representing the template _NAME_ (!)
      * @param $amountEntries
-     *        amount of entries to show
+     *      amount of entries to show
      * @param $startpos
-     *        offset from where items should be shown (e.g. 5 = start at fifth item)
+     *      offset from where items should be shown (e.g. 5 = start at fifth item)
      * @returns int
-     *        amount of items shown
+     *      amount of items shown
      */
     function readLog($template, $amountEntries, $offset = 0, $startpos = 0) {
         return $this->readLogAmount($template,$amountEntries,'','',1,1,$offset, $startpos);
@@ -70,11 +70,11 @@ class BLOG {
      * Shows an archive for a given month
      *
      * @param $year
-     *        year
+     *      year
      * @param $month
-     *        month
+     *      month
      * @param $template
-     *        String representing the template name to be used
+     *      String representing the template name to be used
      */
     function showArchive($templatename, $year, $month=0, $day=0) {
 
@@ -123,21 +123,21 @@ class BLOG {
      * Shows the given amount of items for this blog
      *
      * @param $template
-     *        String representing the template _NAME_ (!)
+     *      String representing the template _NAME_ (!)
      * @param $amountEntries
-     *        amount of entries to show (0 = no limit)
+     *      amount of entries to show (0 = no limit)
      * @param $extraQuery
-     *        extra conditions to be added to the query
+     *      extra conditions to be added to the query
      * @param $highlight
-     *        contains a query that should be highlighted
+     *      contains a query that should be highlighted
      * @param $comments
-     *        1=show comments 0=don't show comments
+     *      1=show comments 0=don't show comments
      * @param $dateheads
-     *        1=show dateheads 0=don't show dateheads
+     *      1=show dateheads 0=don't show dateheads
      * @param $offset
-     *        offset
+     *      offset
      * @returns int
-     *        amount of items shown
+     *      amount of items shown
      */
     function readLogAmount($template, $amountEntries, $extraQuery, $highlight, $comments, $dateheads, $offset = 0, $startpos = 0) {
 
@@ -183,7 +183,7 @@ class BLOG {
         $old_date = 0;
         while ($item = sql_fetch_object($items)) {
 
-            $item->timestamp = strtotime($item->itime);    // string timestamp -> unix timestamp
+            $item->timestamp = strtotime($item->itime); // string timestamp -> unix timestamp
 
             // action handler needs to know the item we're handling
             $actions->setCurrentItem($item);
@@ -285,12 +285,12 @@ class BLOG {
         global $manager;
 
         $blogid     = intval($blogid);
-        $authorid    = intval($authorid);
-        $title        = $title;
-        $body        = $body;
-        $more        = $more;
-        $catid        = intval($catid);
-        $isFuture    = 0;
+        $authorid   = intval($authorid);
+        $title      = $title;
+        $body       = $body;
+        $more       = $more;
+        $catid      = intval($catid);
+        $isFuture = 0;
 
         // convert newlines to <br />
         if ($this->convertBreaks()) {
@@ -450,23 +450,23 @@ class BLOG {
      * Searches all months of this blog for the given query
      *
      * @param $query
-     *        search query
+     *      search query
      * @param $template
-     *        template to be used (__NAME__ of the template)
+     *      template to be used (__NAME__ of the template)
      * @param $amountMonths
-     *        max amount of months to be search (0 = all)
+     *      max amount of months to be search (0 = all)
      * @param $maxresults
-     *        max number of results to show
+     *      max number of results to show
      * @param $startpos
-     *        offset
+     *      offset
      * @returns
-     *        amount of hits found
+     *      amount of hits found
      */
     function search($query, $template, $amountMonths, $maxresults, $startpos) {
         global $CONF, $manager;
 
-        $highlight     = '';
-        $sqlquery    = $this->getSqlSearch($query, $amountMonths, $highlight);
+        $highlight  = '';
+        $sqlquery   = $this->getSqlSearch($query, $amountMonths, $highlight);
 
         if ($sqlquery == '')
         {
@@ -487,7 +487,7 @@ class BLOG {
             {
                 $template =& $manager->getTemplate($template);
                 $vars = array(
-                    'query'        => hsc($query),
+                    'query'     => hsc($query),
                     'blogid'    => $this->getID()
                 );
                 echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
@@ -501,23 +501,23 @@ class BLOG {
      * Returns an SQL query to use for a search query
      *
      * @param $query
-     *        search query
+     *      search query
      * @param $amountMonths
-     *        amount of months to search back. Default = 0 = unlimited
+     *      amount of months to search back. Default = 0 = unlimited
      * @param $mode
-     *        either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+     *      either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
      * @returns $highlight
-     *        words to highlight (out parameter)
+     *      words to highlight (out parameter)
      * @returns
-     *        either a full SQL query, or an empty string (if querystring empty)
+     *      either a full SQL query, or an empty string (if querystring empty)
      * @note
-     *        No LIMIT clause is added. (caller should add this if multiple pages are requested)
+     *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
     function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
     {
         $searchclass = new SEARCH($query);
 
-        $highlight      = $searchclass->inclusive;
+        $highlight    = $searchclass->inclusive;
 
         // if querystring is empty, return empty string
         if ($searchclass->inclusive == '')
@@ -528,9 +528,9 @@ class BLOG {
         $select = $searchclass->boolean_sql_select('ititle,ibody,imore');
 
         // get list of blogs to search
-        $blogs         = $searchclass->blogs;         // array containing blogs that always need to be included
-        $blogs[]    = $this->getID();            // also search current blog (duh)
-        $blogs         = array_unique($blogs);        // remove duplicates
+        $blogs      = $searchclass->blogs;      // array containing blogs that always need to be included
+        $blogs[]    = $this->getID();           // also search current blog (duh)
+        $blogs      = array_unique($blogs);     // remove duplicates
         $selectblogs = '';
         if (count($blogs) > 0)
             $selectblogs = ' and i.iblog in (' . implode(',', $blogs) . ')';
@@ -547,7 +547,7 @@ class BLOG {
         $query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
                . ' WHERE i.iauthor=m.mnumber'
                . ' and i.icat=c.catid'
-               . ' and i.idraft=0'    // exclude drafts
+               . ' and i.idraft=0'  // exclude drafts
                . $selectblogs
                     // don't show future items
                . ' and i.itime<=' . mysqldate($this->getCorrectTime())
@@ -576,11 +576,11 @@ class BLOG {
      * Returns the SQL query that's normally used to display the blog items on the index type skins
      *
      * @param $mode
-     *        either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
+     *      either empty, or 'count'. In this case, the query will be a SELECT COUNT(*) query
      * @returns
-     *        either a full SQL query, or an empty string
+     *      either a full SQL query, or an empty string
      * @note
-     *        No LIMIT clause is added. (caller should add this if multiple pages are requested)
+     *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
     function getSqlBlog($extraQuery, $mode = '')
     {
@@ -593,7 +593,7 @@ class BLOG {
                . ' WHERE i.iblog='.$this->blogid
                . ' and i.iauthor=m.mnumber'
                . ' and i.icat=c.catid'
-               . ' and i.idraft=0'    // exclude drafts
+               . ' and i.idraft=0'  // exclude drafts
                     // don't show future items
                . ' and i.itime<=' . mysqldate($this->getCorrectTime());
 
@@ -616,9 +616,9 @@ class BLOG {
         global $CONF, $catid, $manager;
 
         if (!isset ($linkparams)) {
-            $linkparams = array();
+        $linkparams = array();
         }
-        
+
         if ($catid) {
             $linkparams = array('catid' => $catid);
         }
@@ -721,7 +721,7 @@ class BLOG {
         //$blogurl = createBlogLink($this->getURL(), $linkparams);
 
         $template =& $manager->getTemplate($template);
-        
+
         //: Change: Set nocatselected variable
         if ($this->getSelectedCategory()) {
             $nocatselected = 'no';
@@ -754,7 +754,7 @@ class BLOG {
                                     'name' => $catdata['catname'],
                                     'extra' => $linkparams
                                 )
-                               );
+                            );
             $catdata['self'] = $CONF['Self'];
             
             //catiscurrent
@@ -1043,7 +1043,8 @@ class BLOG {
             setConvertBreaks(<?php echo  $this->convertBreaks() ? 'true' : 'false' ?>);
             setMediaUrl("<?php echo $CONF['MediaURL']?>");
             setAuthorId(<?php echo $authorid?>);
-        </script><?php    
+        </script>
+<?php
     }
 
     /**
@@ -1348,21 +1349,21 @@ class BLOG {
      * Shows the given list of items for this blog
      *
      * @param $itemarray
-     *        array of item numbers to be displayed
+     *      array of item numbers to be displayed
      * @param $template
-     *        String representing the template _NAME_ (!)
+     *      String representing the template _NAME_ (!)
      * @param $highlight
-     *        contains a query that should be highlighted
+     *      contains a query that should be highlighted
      * @param $comments
-     *        1=show comments 0=don't show comments
+     *      1=show comments 0=don't show comments
      * @param $dateheads
-     *        1=show dateheads 0=don't show dateheads
+     *      1=show dateheads 0=don't show dateheads
      * @param $showDrafts
      *        0=do not show drafts 1=show drafts
      * @param $showFuture
      *        0=do not show future posts 1=show future posts
      * @returns int
-     *        amount of items shown
+     *      amount of items shown
      */
     function readLogFromList($itemarray, $template, $highlight = '', $comments = 1, $dateheads = 1,$showDrafts = 0, $showFuture = 0) {
 
@@ -1375,15 +1376,15 @@ class BLOG {
      * Returns the SQL query used to fill out templates for a list of items
      *
      * @param $itemarray
-     *        an array holding the item numbers of the items to be displayed
+     *      an array holding the item numbers of the items to be displayed
      * @param $showDrafts
      *        0=do not show drafts 1=show drafts
      * @param $showFuture
      *        0=do not show future posts 1=show future posts
      * @returns
-     *        either a full SQL query, or an empty string
+     *      either a full SQL query, or an empty string
      * @note
-     *        No LIMIT clause is added. (caller should add this if multiple pages are requested)
+     *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
     function getSqlItemList($itemarray,$showDrafts = 0,$showFuture = 0)
     {
@@ -1400,30 +1401,31 @@ class BLOG {
         $query = '';
         foreach ($items as $value) {
             $query .= '('
-                    .    'SELECT'
-                    .    ' i.inumber as itemid,'
-                    .    ' i.ititle as title,'
-                    .    ' i.ibody as body,'
-                    .    ' m.mname as author,'
-                    .    ' m.mrealname as authorname,'
-                    .    ' i.itime,'
-                    .    ' i.imore as more,'
-                    .    ' m.mnumber as authorid,'
-                    .    ' m.memail as authormail,'
-                    .    ' m.murl as authorurl,'
-                    .    ' c.cname as category,'
-                    .    ' i.icat as catid,'
-                    .    ' i.iclosed as closed';
+                    .   'SELECT'
+                    .   ' i.inumber as itemid,'
+                    .   ' i.ititle as title,'
+                    .   ' i.ibody as body,'
+                    .   ' m.mname as author,'
+                    .   ' m.mrealname as authorname,'
+                    .   ' i.itime,'
+                    .   ' i.imore as more,'
+                    .   ' m.mnumber as authorid,'
+                    .   ' m.memail as authormail,'
+                    .   ' m.murl as authorurl,'
+                    .   ' c.cname as category,'
+                    .   ' i.icat as catid,'
+                    .   ' i.iclosed as closed';
 
             $query .= ' FROM '
                     . sql_table('item') . ' as i, '
                     . sql_table('member') . ' as m, '
-                    . sql_table('category') . ' as c'
+                    . sql_table('category').' as c'
                     . ' WHERE'
                     .    ' i.iblog='.$this->blogid
                    . ' and i.iauthor=m.mnumber'
                    . ' and i.icat=c.catid';
-            if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts                        
+            
+            if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts
             if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
 
             //$query .= ' and i.inumber IN ('.$itemlist.')';

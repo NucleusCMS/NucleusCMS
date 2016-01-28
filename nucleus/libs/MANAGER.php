@@ -49,8 +49,8 @@ class MANAGER {
       * The plugin subscriptionlist
       *
       * The subcription array has the following structure
-      *        $subscriptions[$EventName] = array containing names of plugin classes to be
-      *                                     notified when that event happens
+      *     $subscriptions[$EventName] = array containing names of plugin classes to be
+      *                                  notified when that event happens
       */
     var $subscriptions;
 
@@ -212,7 +212,7 @@ class MANAGER {
     function setParserProperty($name, $value) {
         $this->parserPrefs[$name] = $value;
     }
-    
+
     /**
      * Get the global parser preferences
      */
@@ -223,7 +223,7 @@ class MANAGER {
     /**
       * A helper function to load a class
       * 
-      *    private
+      * private
       */
     function _loadClass($name, $filename) {
         if (!class_exists($name)) {
@@ -235,7 +235,7 @@ class MANAGER {
     /**
       * A helper function to load a plugin
       * 
-      *    private
+      * private
       */
     function _loadPlugin($name) {
         if (!class_exists($name)) {
@@ -248,7 +248,7 @@ class MANAGER {
                     if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
                         define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
                     }
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name)); 
+                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
                     return 0;
                 }
 
@@ -276,7 +276,7 @@ class MANAGER {
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
                     return 0;
                 }
-                
+
                 // unload plugin if using non-mysql handler and plugin does not support it 
                 global $MYSQL_HANDLER;
                 if ((!in_array('mysql',$MYSQL_HANDLER)) && !$this->plugins[$name]->supportsFeature('SqlApi'))
@@ -298,8 +298,8 @@ class MANAGER {
     function &getPlugin($name) {
         // retrieve the name of the plugin in the right capitalisation
         $name = $this->getUpperCaseName ($name);
-        // get the plugin    
-        $plugin =& $this->plugins[$name]; 
+        // get the plugin   
+        $plugin =& $this->plugins[$name];
 
         if (!$plugin) {
             // load class if needed
@@ -316,7 +316,7 @@ class MANAGER {
         $plugin =& $this->plugins[$name];
         return $plugin;
     }
-        
+
     function &pidLoaded($pid) {
         $plugin=false;
         reset($this->plugins);
@@ -363,7 +363,7 @@ class MANAGER {
         }
         return -1;
     }
-    
+
     function clearCachedInfo($what) {
         unset($this->cachedInfo[$what]);
     }
@@ -396,10 +396,10 @@ class MANAGER {
       * database. The plugins itsself will only get loaded when they are first needed
       *
       * @param $eventName
-      *        Name of the event (method to be called on plugins)
+      *     Name of the event (method to be called on plugins)
       * @param $data
-      *        Can contain any type of data, depending on the event type. Usually this is
-      *        an itemid, blogid, ... but it can also be an array containing multiple values
+      *     Can contain any type of data, depending on the event type. Usually this is
+      *     an itemid, blogid, ... but it can also be an array containing multiple values
       */
     function notify($eventName, &$data) {
         // load subscription list if needed
@@ -569,5 +569,3 @@ class MANAGER {
     }
 
 }
-
-?>

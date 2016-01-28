@@ -34,10 +34,10 @@ class MEMBER {
     var $canlogin = 0;        // (either 0 or 1)
     var $notes;
     var $autosave = 1;        // if the member use the autosave draft function
-    
+
     /**
      * Constructor for a member object
-     */         
+     */
     function MEMBER() {
         global $DIR_LIBS;
         include_once("{$DIR_LIBS}phpass.class.inc.php");
@@ -47,8 +47,8 @@ class MEMBER {
     /**
      * Create a member object for a given displayname
      *
-     * @static          
-     */         
+     * @static
+     */
     public static function &createFromName($displayname) {
         $mem = new MEMBER();
         $mem->readFromName($displayname);
@@ -58,8 +58,8 @@ class MEMBER {
     /**
      * Create a member object for a given ID
      *
-     * @static          
-     */    
+     * @static
+     */
     public static function &createFromID($id) {
         $mem = new MEMBER();
         $mem->readFromID($id);
@@ -71,7 +71,7 @@ class MEMBER {
     }
 
     function readFromID($id) {
-        return $this->read("mnumber=" . intval($id));
+        return $this->read('mnumber=' . intval($id));
     }
 
     /**
@@ -115,7 +115,7 @@ class MEMBER {
 
     /**
      * Login using cookie key
-     */         
+     */
     function cookielogin($login, $cookiekey) {
         $this->loggedin = 0;
         if (!$this->readFromName($login))
@@ -135,8 +135,8 @@ class MEMBER {
     }
 
     /**
-     * Read member information from the database 
-     */         
+     * Read member information from the database
+     */
     function read($where) {
         // read info
         $query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
@@ -349,7 +349,7 @@ class MEMBER {
         global $CONF;
         
         if (!isset($CONF['ActivationDays'])) $CONF['ActivationDays'] = 2;
-
+        
         // generate key and URL
         $key = $this->generateActivationEntry($type, $extra);
         $url = $CONF['AdminURL'] . 'index.php?action=activate&key=' . $key;
@@ -414,7 +414,7 @@ class MEMBER {
 
         return $blogs;
     }
-    
+
     /**
       * Returns an array of all blogids for which member has team rights
       */
@@ -600,7 +600,7 @@ class MEMBER {
     function setNotes($val) {
         $this->notes = $val;
     }
-    
+
     function getAutosave() {
         return $this->autosave;
     }
@@ -615,9 +615,9 @@ class MEMBER {
 
     /**
      * Returns true if there is a member with the given login name
-     * 
+     *
      * @static
-     */         
+     */
     public static function exists($name) {
         $r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".sql_real_escape_string($name)."'");
         return (sql_num_rows($r) != 0);
@@ -627,16 +627,16 @@ class MEMBER {
      * Returns true if there is a member with the given ID
      *
      * @static
-     */              
+     */
     public static function existsID($id) {
         $r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
         return (sql_num_rows($r) != 0);
     }
 
     /**
-     *  Checks if a username is protected. 
+     *  Checks if a username is protected.
      *  If so, it can not be used on anonymous comments
-     */              
+     */
     function isNameProtected($name) {
 
         // extract name
@@ -648,31 +648,26 @@ class MEMBER {
 
     /**
      * Adds a new member
-     * 
+     *
      * @static
      */
     public static function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes) {
-
-        if (!isValidMailAddress($email) )
+        if (!isValidMailAddress($email))
         {
             return _ERROR_BADMAILADDRESS;
         }
-
-        if (!isValidDisplayName($name) )
+        if (!isValidDisplayName($name))
         {
             return _ERROR_BADNAME;
         }
-
-        if (MEMBER::exists($name) )
+        if (MEMBER::exists($name))
         {
             return _ERROR_NICKNAMEINUSE;
         }
-
         if (!$realname)
         {
             return _ERROR_REALNAMEMISSING;
         }
-
         if (!$password)
         {
             return _ERROR_PASSWORDMISSING;
@@ -684,7 +679,7 @@ class MEMBER {
         {
             $url = 'http://' . $url;
         } // end if
-
+        
         $name = sql_real_escape_string($name);
         $realname = sql_real_escape_string($realname);
         $password = sql_real_escape_string($this->getPassword());
@@ -693,7 +688,7 @@ class MEMBER {
         $admin = intval($admin);
         $canlogin = intval($canlogin);
         $notes = sql_real_escape_string($notes);
-
+        
         $query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
                . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
         sql_query($query);

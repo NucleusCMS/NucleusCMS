@@ -164,12 +164,10 @@ class BaseActions {
      * Helper function: update the Top of the If Conditions Array
      */
     function _updateTopIfCondition() {
-        if (sizeof($this->if_conditions) == 0) {
+        if (sizeof($this->if_conditions) == 0)
             $this->if_currentlevel = 1;
-        }
-        else {
+        else
             $this->if_currentlevel = $this->if_conditions[sizeof($this->if_conditions) - 1];
-        }
     }
 
     /**

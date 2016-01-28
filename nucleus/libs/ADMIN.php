@@ -866,7 +866,7 @@ class ADMIN {
             if (sql_num_rows($blogs) > 1)
                 $multipleBlogs = 1;
             else
-              $multipleBlogs = 0;
+                $multipleBlogs = 0;
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)
@@ -1481,9 +1481,8 @@ class ADMIN {
 
     /**
      * Allows to edit previously made comments
-     **/
+     */
     function action_commentedit() {
-
         global $member, $manager;
 
         $commentid = intRequestVar('commentid');
@@ -1497,12 +1496,11 @@ class ADMIN {
 
         // change <br /> to \n
         $comment['body'] = str_replace('<br />', '', $comment['body']);
-
         // replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
         /* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
 
         $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
-
+        
         $this->pagehead();
 
         ?>
@@ -1569,7 +1567,6 @@ class ADMIN {
         $url = postVar('url');
         $email = postVar('email');
         $body = postVar('body');
-
         # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
         # original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
         # important note that '\' must be matched with '\\\\' in preg* expressions
@@ -1579,18 +1576,17 @@ class ADMIN {
         {
             $this->error(_ERROR_COMMENT_LONGWORD);
         }
-
+        
         // check length
         if (strlen($body) < 3)
         {
             $this->error(_ERROR_COMMENT_NOCOMMENT);
         }
-
-        if (strlen($body) > 5000)
+        if (strlen($body)>5000)
         {
             $this->error(_ERROR_COMMENT_TOOLONG);
         }
-
+        
         // prepare body
         $body = COMMENT::prepareBody($body);
 
@@ -1598,9 +1594,9 @@ class ADMIN {
         $param = array('body' => &$body);
         $manager->notify('PreUpdateComment', $param);
 
-        $query = 'UPDATE ' . sql_table('comment')
+        $query =  'UPDATE '.sql_table('comment')
                . " SET cmail = '" . sql_real_escape_string($url) . "', cemail = '" . sql_real_escape_string($email) . "', cbody = '" . sql_real_escape_string($body) . "'"
-               . " WHERE cnumber = " . $commentid;
+               . " WHERE cnumber=" . $commentid;
         sql_query($query);
 
         // get itemid
@@ -1822,7 +1818,8 @@ class ADMIN {
 
         <table><tr>
             <th colspan="2"><?php echo _MEMBERS_EDIT?></th>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_DISPLAY?> <?php help('shortnames');?>
                 <br /><small><?php echo _MEMBERS_DISPLAY_INFO?></small>
             </td>
@@ -1834,23 +1831,28 @@ class ADMIN {
                }
             ?>
             </td>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_REALNAME?></td>
             <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" /></td>
-        </tr><tr>
+        </tr>
+        <tr>
         <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
             <td><?php echo _MEMBERS_PWD?></td>
             <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_REPPWD?></td>
             <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
         <?php } ?>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_EMAIL?>
                 <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
             </td>
             <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  hsc($mem->getEmail()); ?>" /></td>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_URL?></td>
             <td><input name="url" tabindex="50" size="40" maxlength="100" value="<?php echo  hsc($mem->getURL()); ?>" /></td>
         <?php // only allow to change this by super-admins
@@ -1864,10 +1866,12 @@ class ADMIN {
                 <td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
                 <td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
         <?php } ?>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_NOTES?></td>
             <td><input name="notes" tabindex="80" size="40" maxlength="100" value="<?php echo  hsc($mem->getNotes()); ?>" /></td>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_DEFLANG?> <?php help('language'); ?>
             </td>
             <td>
@@ -1877,7 +1881,6 @@ class ADMIN {
                 <?php               // show a dropdown list of all available languages
                 global $DIR_LANG;
                 $dirhandle = opendir($DIR_LANG);
-
                 while ($filename = readdir($dirhandle))
                 {
 
@@ -1886,23 +1889,17 @@ class ADMIN {
 
                     if (preg_match('#^(.*)\.php$#', $filename, $matches) )
                     {
-
                         $name = $matches[1];
                         echo "<option value=\"$name\"";
-
                         if ($name == $mem->getLanguage() )
                         {
                             echo " selected=\"selected\"";
                         }
-
                         echo ">$name</option>";
-
                     }
-
                 }
-
                 closedir($dirhandle);
-
+                
                 ?>
                 </select>
 
@@ -1918,7 +1915,8 @@ class ADMIN {
         ?>
         <tr>
             <th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _MEMBERS_EDIT?></td>
             <td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
         </tr></table>
@@ -1960,7 +1958,6 @@ class ADMIN {
         {
             $url = 'http://' . $url;
         }
-
         $admin          = postVar('admin');
         $canlogin       = postVar('canlogin');
         $notes          = strip_tags(postVar('notes'));
@@ -1981,7 +1978,7 @@ class ADMIN {
 
             if ($password && (strlen($password) < 6))
                 $this->error(_ERROR_PASSWORDTOOSHORT);
-                
+
             if ($password) {
                 $pwdvalid = true;
                 $pwderror = '';
@@ -2224,7 +2221,7 @@ class ADMIN {
      * @author dekarma
      */
     function action_activatesetpwd() {
-
+        
         $key = postVar('key');
 
         // clean up old activation keys
@@ -2649,7 +2646,8 @@ class ADMIN {
         ?>
         <tr>
             <th colspan="2"><?php echo _EBLOG_CHANGE?></th>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _EBLOG_CHANGE?></td>
             <td><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
         </tr></table>
@@ -2694,7 +2692,7 @@ class ADMIN {
         <?php
 
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-
+            
             $param = array('blog' => &$blog);
             $manager->notify('BlogSettingsFormExtras', $param);
 
@@ -3254,7 +3252,7 @@ class ADMIN {
         /* unlink comments from memberid */
         if ($memberid) {
             $query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. sql_real_escape_string($mem->getDisplayName())
-                        .'" WHERE cmember='.$memberid;
+                   .'" WHERE cmember='.$memberid;
             sql_query($query);
         }
 
@@ -3392,11 +3390,11 @@ class ADMIN {
 
 
         // add slashes for sql queries
-        $bname =        sql_real_escape_string($bname);
-        $bshortname =   sql_real_escape_string($bshortname);
-        $btimeoffset =  sql_real_escape_string($btimeoffset);
-        $bdesc =        sql_real_escape_string($bdesc);
-        $bdefskin =     sql_real_escape_string($bdefskin);
+        $bname       = sql_real_escape_string($bname);
+        $bshortname  = sql_real_escape_string($bshortname);
+        $btimeoffset = sql_real_escape_string($btimeoffset);
+        $bdesc       = sql_real_escape_string($bdesc);
+        $bdefskin    = sql_real_escape_string($bdefskin);
 
         // create blog
         $query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
@@ -3421,10 +3419,10 @@ class ADMIN {
         $memberid = $member->getID();
         $query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
         sql_query($query);
-
+        
         $itemdeftitle = (defined('_EBLOG_FIRSTITEM_TITLE') ? _EBLOG_FIRSTITEM_TITLE : 'First Item');
         $itemdefbody = (defined('_EBLOG_FIRSTITEM_BODY') ? _EBLOG_FIRSTITEM_BODY : 'This is the first item in your weblog. Feel free to delete it.');
-
+        
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         
@@ -4011,7 +4009,7 @@ selector();
      * @todo document this
      */
     function action_templateupdate() {
-        global $member,$manager;
+        global $member, $manager;
 
         $templateid = intRequestVar('templateid');
 
@@ -4496,10 +4494,10 @@ selector();
             }
         echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
         $query = 'SELECT bshortname, bname FROM '.sql_table('blog');
-        showlist($query,'table',array('content'=>'shortblognames'));
+            showlist($query,'table',array('content'=>'shortblognames'));
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
-        showlist($query,'table',array('content'=>'shortnames'));
+            showlist($query,'table',array('content'=>'shortnames'));
         echo '</div></form>';
         $this->pagefoot();
     }
@@ -4826,7 +4824,6 @@ selector();
                 <?php               // show a dropdown list of all available languages
                 global $DIR_LANG;
                 $dirhandle = opendir($DIR_LANG);
-
                 while ($filename = readdir($dirhandle) )
                 {
 
@@ -4835,21 +4832,15 @@ selector();
 
                     if (preg_match('#^(.*)\.php$#', $filename, $matches) )
                     {
-
                         $name = $matches[1];
                         echo "<option value=\"$name\"";
-
                         if ($name == $CONF['Language'])
                         {
                             echo " selected=\"selected\"";
                         }
-
                         echo ">$name</option>";
-
                     }
-
                 }
-
                 closedir($dirhandle);
 
                 ?>
@@ -4933,13 +4924,10 @@ selector();
             <td><?php echo _SETTINGS_ADMINCSS?> 
             </td>
             <td>
-
                 <select name="AdminCSS" tabindex="10080">
-                <?php               // show a dropdown list of all available admin css files
-                global $DIR_NUCLEUS;
-                
-                $dirhandle = opendir($DIR_NUCLEUS."styles/");
-
+                <?php        // show a dropdown list of all available admin css files
+                    global $DIR_NUCLEUS;
+                    $dirhandle = opendir($DIR_NUCLEUS."styles/");
                 while ($filename = readdir($dirhandle) )
                 {
 
@@ -4948,26 +4936,18 @@ selector();
 
                     if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
                     {
-
                         $name = $matches[1];
                         echo "<option value=\"$name\"";
-
                         if ($name == $CONF['AdminCSS'])
                         {
                             echo " selected=\"selected\"";
                         }
-
                         echo ">$name</option>";
-
                     }
-
                 }
-
                 closedir($dirhandle);
-
                 ?>
                 </select>
-
             </td>
         </tr><tr>
             <th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
@@ -5068,9 +5048,11 @@ selector();
 
 
 
-        </tr><tr>
+        </tr>
+        <tr>
             <th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
-        </tr><tr>
+        </tr>
+        <tr>
             <td><?php echo _SETTINGS_UPDATE?></td>
             <td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
         </tr></table>
@@ -5132,8 +5114,8 @@ selector();
         $this->updateConfig('CookieSecure',     postVar('CookieSecure'));
         $this->updateConfig('URLMode',          postVar('URLMode'));
         $this->updateConfig('CookiePrefix',     postVar('CookiePrefix'));
-        $this->updateConfig('DebugVars',            postVar('DebugVars'));
-        $this->updateConfig('DefaultListSize',          postVar('DefaultListSize'));
+        $this->updateConfig('DebugVars',        postVar('DebugVars'));
+        $this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
         $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
 
         // load new config and redirect (this way, the new language will be used is necessary)
@@ -5345,62 +5327,63 @@ selector();
 
         ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-        <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-        <head>
-            <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
-            <meta name="robots" content="noindex, nofollow" />
-            <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
-            <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
-            <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
+<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
+    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
+    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
             href="<?php echo $baseUrl?>styles/addedit.css" />
 
-            <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
-            <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
-            <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
 
-      <meta http-equiv="Pragma" content="no-cache" />
-      <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-      <meta http-equiv="Expires" content="-1" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
+    <meta http-equiv="Expires" content="-1" />
 
-            <?php echo $extrahead?>
-        </head>
-        <body>
-        <div id="adminwrapper">
-        <div class="header">
-        <h1><?php echo hsc($CONF['SiteName'])?></h1>
-        </div>
-        <div id="container">
-        <div id="content">
-        <div class="loginname">
-        <?php           if ($member->isLoggedIn())
-                echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-                    ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
-                    . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
-            else
-                echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
+<?php echo $extrahead?>
+</head>
+<body>
+<div id="adminwrapper">
+<div class="header">
+<h1><?php echo hsc($CONF['SiteName'])?></h1>
+</div>
+<div id="container">
+<div id="content">
+<div class="loginname">
+<?php
+        if ($member->isLoggedIn())
+            echo _LOGGEDINAS . ' ' . $member->getDisplayName()
+                ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
+                . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
+        else
+            echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
 
-            echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-
-            echo '<br />(';
-
-            $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-
-            if ($member->isLoggedIn() && $member->isAdmin()) {
-                $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-                echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
-                $newestVersion = getLatestVersion();
-                $newestCompare = str_replace('/','.',$newestVersion);
-                $newestCompare = floatval($newestCompare);
-                $newestCompare = sprintf('%04.2f', $newestCompare);
-                $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
-                $currentVersion = sprintf('%04.2f', $currentVersion);
-                if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
-                    echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
-                }
-            } else {
-                echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+        echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
+    
+        echo '<br />(';
+    
+        $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
+        
+        if ($member->isLoggedIn() && $member->isAdmin()) {
+            $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+            $newestVersion = getLatestVersion();
+            $newestCompare = str_replace('/','.',$newestVersion);
+            $newestCompare = floatval($newestCompare);
+            $newestCompare = sprintf('%04.2f', $newestCompare);
+            $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
+            $currentVersion = sprintf('%04.2f', $currentVersion);
+            if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
+                echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
-            echo ')';
+        } else {
+            echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+        }
+        echo ')';
         echo '</div>';
     }
 
@@ -5533,7 +5516,7 @@ selector();
 
             <!-- adminwrapper -->    <!-- new -->
             </div>     <!-- new -->
-            </body> 
+            </body>
             </html>
         <?php   }
 
@@ -6028,9 +6011,9 @@ selector();
 
     }
 
-    /**
-     * @todo document this
-     */
+/*
+ * @todo document this
+ */
     function action_pluginlist() {
         global $member, $manager;
 
@@ -6064,7 +6047,7 @@ selector();
             </div></form>
 
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
-
+            
 <?php
         // find a list of possibly non-installed plugins
         $candidates = array();
@@ -6081,7 +6064,6 @@ selector();
 
             if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
             {
-
                 $name = $matches[1];
                 // only show in list when not yet installed
                 $res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
@@ -6090,16 +6072,14 @@ selector();
                 {
                     array_push($candidates, $name);
                 }
-
             }
-
         }
-
         closedir($dirhandle);
-
+        
         if (sizeof($candidates) > 0)
         {
 ?>
+
             <p><?php echo _PLUGS_ADD_TEXT?></p>
 
             <form method='post' action='index.php'><div>
@@ -6124,7 +6104,6 @@ selector();
         }
 
         $this->pagefoot();
-
     }
 
     /**
@@ -6159,7 +6138,7 @@ selector();
             $helpFile = "{$cplugindir}help/index.php";
         elseif(is_file("{$cplugindir}help/index.html"))
             $helpFile = "{$cplugindir}help/index.html";
-
+        
         if ($plug->supportsFeature('HelpPage') > 0 && isset($helpFile)) {
             if(substr($helpFile,-4)==='.php') include_once($helpFile);
             else                              @readfile($helpFile);
@@ -6644,17 +6623,14 @@ selector();
                 }
                 echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])).'</th></tr>';
             }
-
+            
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
             if (@$meta['access'] != 'hidden') {
                 echo '<tr>';
                 listplug_plugOptionRow($aOption);
                 echo '</tr>';
             }
-
         }
-
-
     }
 
     /**

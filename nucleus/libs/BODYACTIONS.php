@@ -85,7 +85,7 @@ class BODYACTIONS extends BaseActions {
         // add item reference (array_unshift didn't work)
         $params = array_merge(array(&$this->currentItem), $params);
 
-        call_user_func_array(array($plugin, 'doItemVar'), $params);
+        call_user_func_array(array($plugin,'doItemVar'), $params);
     }
 
     /**
@@ -96,7 +96,7 @@ class BODYACTIONS extends BaseActions {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
         $args = explode('|',implode($args,', '));
-        call_user_func_array(array($this, 'createImageCode'), $args);
+        call_user_func_array(array($this,'createImageCode'), $args);
     }
     
     /**
@@ -133,7 +133,7 @@ class BODYACTIONS extends BaseActions {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
         $args = explode('|',implode($args,', '));
-        call_user_func_array(array($this, 'createMediaCode'), $args);
+        call_user_func_array(array($this,'createMediaCode'), $args);
     }
 
     /**
@@ -162,7 +162,7 @@ class BODYACTIONS extends BaseActions {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
         $args = explode('|',implode($args,', '));
-        call_user_func_array(array($this, 'createPopupCode'), $args);
+        call_user_func_array(array($this,'createPopupCode'), $args);
     }
 
     /**
@@ -191,6 +191,7 @@ class BODYACTIONS extends BaseActions {
 
         echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
     }
+    
     
     // function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields
     
@@ -379,11 +380,11 @@ class BODYACTIONS extends BaseActions {
         // explicit blog selection
         if ($blogName != '')
             $blogid = getBlogIDFromName($blogName);
-
+            
         if (($blogName == '') || !$manager->existsBlogID($blogid))
             // use current blog
             $blogid = $blog->getID();
-
+        
         return $member->isBlogAdmin($blogid);
     }
 
@@ -417,21 +418,20 @@ class BODYACTIONS extends BaseActions {
         }
         return $condition;
     }
-
+    
     /**
      * Checks if a plugin exists and call its doIf function
      */
     function _ifPlugin($name, $key = '', $value = '') {
         global $manager;
-
+        
         $plugin =& $manager->getPlugin('NP_' . $name);
         if (!$plugin) return;
-
+        
         $params = func_get_args();
         array_shift($params);
-
+        
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
-
 }
 ?>

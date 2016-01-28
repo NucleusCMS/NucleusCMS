@@ -69,7 +69,7 @@ class COMMENTS {
 
         // create parser object & action handler
         $actions = new COMMENTACTIONS($this);
-        $parser = new PARSER($actions->getDefinedActions(),$actions);
+        $parser = new PARSER($actions->getDefinedActions(), $actions);
         $actions->setTemplate($template);
         $actions->setParser($parser);
 

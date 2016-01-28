@@ -33,7 +33,7 @@ class ITEM {
       * 
       * @param integer $itemid id of the item
       * @param boolean $allowdraft
-      * @param boolean $allowfuture                        
+      * @param boolean $allowfuture
       * @static
       */
     public static function getitem($itemid, $allowdraft, $allowfuture) {
@@ -188,7 +188,7 @@ class ITEM {
 
     /**
       * Updates an item
-      * 
+      *
       * @static
       */
     public static function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
@@ -262,7 +262,7 @@ class ITEM {
             if (!$isFuture && $blog->getNotifyAddress() && $blog->notifyOnNewItem())
                 $blog->sendNewItemNotification($itemid, $title, $body);
         }
-        
+
         // save back to drafts        
         if (!$wasdraft && !$publish) {
             $query .= ', idraft=1';
@@ -309,7 +309,7 @@ class ITEM {
      * Move an item to another blog (no checks)
      *
      * @static
-     */                   
+     */
     public static function move($itemid, $new_catid) {
         global $manager;
 
@@ -380,7 +380,7 @@ class ITEM {
      * Returns true if there is an item with the given ID
      *
      * @static
-     */              
+     */
     public static function exists($id,$future,$draft) {
         global $manager;
 

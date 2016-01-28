@@ -426,11 +426,11 @@ class PAGEFACTORY extends BaseActions {
                 <img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" title="<?php echo $tooltip?>" width="16" height="16"/>
             </span>
     <?php    }
-
+    
     function _jsbuttonspacer() {
         echo '<span class="jsbuttonspacer"></span>';
     }
 
 }
 
- ?>
+?>

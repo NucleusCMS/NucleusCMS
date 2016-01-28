@@ -36,7 +36,7 @@ class MEDIA {
 
         // add private directory for member
         $collections[$member->getID()] = PRIVATE_COLLECTION;
-
+        
         // add global collections
         if (!is_dir($DIR_MEDIA)) return $collections;
 
@@ -124,7 +124,7 @@ class MEDIA {
 
         // other collections should exist
         return @is_dir($collectionDir);
-       }
+    }
 
     /**
       * Adds an uploaded file to the media archive
@@ -139,7 +139,7 @@ class MEDIA {
       */
     public static function addMediaObject($collection, $uploadfile, $filename) {
         global $DIR_MEDIA, $manager;
-
+        
         // clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
         $filename = cleanFileName($filename);
         // should already have tested for allowable types before calling this method. This will only catch files with no extension at all

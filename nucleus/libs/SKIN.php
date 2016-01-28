@@ -55,56 +55,12 @@ class SKIN {
 
     }
 
-    /**
-     * Get SKIN id
-     */
-    function getID() {
-        return $this->id;
-    }
-
-    /**
-     * Get SKIN name
-     */
-    function getName() {
-        return $this->name;
-    }
-    
-    /**
-     * Get SKIN description
-     */
-    function getDescription() {
-        return $this->description;
-    }
-    
-    /**
-     * Get SKIN content type
-     * 
-     * e.g. text/xml, text/html, application/atom+xml
-     */
-    function getContentType() {
-        return $this->contentType;
-    }
-    
-    /**
-     * Get include mode of the SKIN
-     * 
-     * Returns either 'normal' or 'skindir':
-     * 'normal': if a all data of the skin can be found in the databse
-     * 'skindir': if the skin has data in the it's skin driectory
-     */
-    function getIncludeMode() {
-        return $this->includeMode;
-    }
-    
-    /**
-     * Get include prefix of the SKIN
-     * 
-     * Get name of the subdirectory (with trailing slash) where
-     * the files of the current skin can be found (e.g. 'default/')
-     */
-    function getIncludePrefix() {
-        return $this->includePrefix;
-    }
+    function getID() {                return $this->id; }
+    function getName() {             return $this->name; }
+    function getDescription() {     return $this->description; }
+    function getContentType() {     return $this->contentType; }
+    function getIncludeMode() {     return $this->includeMode; }
+    function getIncludePrefix() {     return $this->includePrefix; }
 
     /**
      * Checks if a skin with a given shortname exists
@@ -210,13 +166,13 @@ class SKIN {
 
         // set output type
         sendContentType($this->getContentType(), 'skin', _CHARSET);
-
+        
         // set skin name as global var (so plugins can access it)
         global $currentSkinName;
         $currentSkinName = $this->getName();
-
+        
         $contents = $this->getContent($type);
-
+        
         if (!$contents) {
             // use base skin if this skin does not have contents
             $defskin = new SKIN($CONF['BaseSkin']);
@@ -226,7 +182,7 @@ class SKIN {
                 return;
             }
         }
-
+        
         $actions = $this->getAllowedActionsForType($type);
         
         $param = array(
@@ -236,10 +192,11 @@ class SKIN {
         );
         $manager->notify('PreSkinParse', $param);
 
+        
         // set IncludeMode properties of parser
         PARSER::setProperty('IncludeMode',$this->getIncludeMode());
         PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
-
+        
         $handler = new ACTIONS($type, $this);
         $parser = new PARSER($actions, $handler);
         $handler->setParser($parser);

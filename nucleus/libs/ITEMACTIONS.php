@@ -116,7 +116,7 @@ class ITEMACTIONS extends BaseActions {
     function setParser(&$parser) {
         $this->parser =& $parser;
     }
-
+    
     function setCurrentItem(&$item) {
         $this->currentItem =& $item;
         global $currentitemid;
@@ -126,7 +126,7 @@ class ITEMACTIONS extends BaseActions {
             $currentitemid = $this->currentItem->itemid;
         }
     }
-
+    
     function setBlog(&$blog) {
         $this->blog =& $blog;
     }
@@ -488,7 +488,7 @@ class ITEMACTIONS extends BaseActions {
         // add item reference (array_unshift didn't work)
         $params = array_merge(array(&$this->currentItem),$params);
 
-        call_user_func_array(array($plugin, 'doTemplateVar'), $params);
+        call_user_func_array(array($plugin,'doTemplateVar'), $params);
     }
 
     /**
@@ -784,7 +784,5 @@ class ITEMACTIONS extends BaseActions {
 
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
-
 }
-
 ?>

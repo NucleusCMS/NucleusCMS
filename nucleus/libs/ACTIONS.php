@@ -257,7 +257,7 @@ class ACTIONS extends BaseActions {
     {
         $u = hsc($url);
         $u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
-        if ($linktext != '') 
+        if ($linktext != '')
             $l = '<a href="' . $u .'">'.hsc($linktext).'</a>';
         else
             $l = $u;
@@ -284,8 +284,8 @@ class ACTIONS extends BaseActions {
         $parsed        = parse_url(serverVar('REQUEST_URI'));
         $path        = $parsed['path'];
         $parsed        = $parsed['query'];
-        $url        = '';
-        
+        $url            = '';
+
         switch ($direction) {
             case 'prev':
                 if ( intval($startpos) - intval($maxresults) >= 0) {
@@ -302,7 +302,6 @@ class ACTIONS extends BaseActions {
                     }
                     $url .= '?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
-                
                 break;
             case 'next':
                 global $navigationItems;
@@ -335,13 +334,12 @@ class ACTIONS extends BaseActions {
                     if ($sqlquery)
                         $iAmountOnPage = intval(quickQuery($sqlquery)) - intval($startpos);
                 }
-                
                 if (intval($iAmountOnPage) >= intval($maxresults)) {
                     $startpos     = intval($startpos) + intval($maxresults);
                     //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                     $url        .= '?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
-                else $url = '';
+                else $url    = '';
                 break;
             default:
                 break;
@@ -492,7 +490,7 @@ class ACTIONS extends BaseActions {
         } elseif ($d == 0 && $m !=0) {
             $format = '%B %Y';
         } elseif ($m == 0) {
-            $format = '%Y';            
+            $format = '%Y';
         } else {
             $format = '%d %B %Y';
         }
@@ -531,7 +529,7 @@ class ACTIONS extends BaseActions {
         $blog->showArchiveList($template, 'month', $limit);
         $this->_postBlogContent('archivelist',$blog);
     }
-        
+
     function parse_archiveyearlist($template, $category = 'all', $limit = 0) {
         global $blog;
         if ($category == 'all') $category = '';
@@ -540,7 +538,7 @@ class ACTIONS extends BaseActions {
         $blog->showArchiveList($template, 'year', $limit);
         $this->_postBlogContent('archivelist',$blog);
     }
-    
+
     /**
      * Parse skinvar archivetype
      */
@@ -633,7 +631,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_categorylist($template, $blogname = '') {
         global $blog, $manager;
-
+        
         // when no blog found
         if (($blogname == '') && (!is_object($blog)))
             return 0;
@@ -683,7 +681,7 @@ class ACTIONS extends BaseActions {
             $this->doForm('commentform-closedtopublic');
             return;
         }
-
+        
         if (!$destinationurl)
         {
             $destinationurl = createLink(
@@ -965,9 +963,8 @@ class ACTIONS extends BaseActions {
                     break;
             }
         }
-
     }
-
+    
     /**
      * Parse skinvar membermailform
      */
@@ -1116,7 +1113,7 @@ class ACTIONS extends BaseActions {
         $b->showArchiveList($template, 'month', $limit);
         $this->_postBlogContent('otherarchivelist',$b);
     }
-        
+
     /**
      * Parse skinvar otherarchiveyearlist
      */
@@ -1128,8 +1125,8 @@ class ACTIONS extends BaseActions {
         $this->_preBlogContent('otherarchivelist',$b);
         $b->showArchiveList($template, 'year', $limit);
         $this->_postBlogContent('otherarchivelist',$b);
-    }    
-    
+    }
+
     /**
      * Parse skinvar otherblog
      */
@@ -1184,7 +1181,7 @@ class ACTIONS extends BaseActions {
         // add skin type on front
         array_unshift($params, $this->skintype);
 
-        call_user_func_array(array($plugin, 'doSkinVar'), $params);
+        call_user_func_array(array($plugin,'doSkinVar'), $params);
     }
     
     /**
@@ -1314,7 +1311,7 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse skinvar sitevar
-     * (include a sitevar)     
+     * (include a sitevar)
      */
     function parse_sitevar($which) {
         global $CONF;
@@ -1394,7 +1391,7 @@ class ACTIONS extends BaseActions {
         global $nucleus;
         echo 'Nucleus CMS ' . $nucleus['version'];
     }
-    
+
     /**
      * Parse skinvar sticky
      */

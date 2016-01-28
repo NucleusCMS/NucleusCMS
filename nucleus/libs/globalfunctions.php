@@ -268,7 +268,7 @@ if ($action == 'login') {
         if ($nextaction) {
             $action = $nextaction;
         }
-        
+
         $param = array(
             'member'    => &$member,
             'username'    =>  $login
@@ -286,8 +286,7 @@ if ($action == 'login') {
         else 
         {
             $errormessage = 'Login failed for ' . $login;
-        } 
-        
+        }
         $param = array('username' => $login);
         $manager->notify('LoginFailed', $param);
         ACTIONLOG::add(INFO, $errormessage);
@@ -514,7 +513,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
 
                     if ($i < sizeof($data) ) {
                         $special = $data[$i];
-                        $_REQUEST['special'] = $special;    
+                        $_REQUEST['special'] = $special;
                     }
                     break;
 
@@ -537,21 +536,21 @@ $param = array(
 $manager->notify('PostParseURL', $param);
 
 function include_libs($file,$once=true,$require=true){
-       global $DIR_LIBS;
-       if (!is_dir($DIR_LIBS)) exit;
-       if ($once && $require) require_once($DIR_LIBS.$file);
-       elseif ($once && !$require) include_once($DIR_LIBS.$file);
-       elseif ($require) require($DIR_LIBS.$file);
-       else include($DIR_LIBS.$file);
+    global $DIR_LIBS;
+    if (!is_dir($DIR_LIBS)) exit;
+    if ($once && $require) require_once($DIR_LIBS.$file);
+    elseif ($once && !$require) include_once($DIR_LIBS.$file);
+    elseif ($require) require($DIR_LIBS.$file);
+    else include($DIR_LIBS.$file);
 }
 
 function include_plugins($file,$once=true,$require=true){
-       global $DIR_PLUGINS;
-       if (!is_dir($DIR_PLUGINS)) exit;
-       if ($once && $require) require_once($DIR_PLUGINS.$file);
-       elseif ($once && !$require) include_once($DIR_PLUGINS.$file);
-       elseif ($require) require($DIR_PLUGINS.$file);
-       else include($DIR_PLUGINS.$file);
+    global $DIR_PLUGINS;
+    if (!is_dir($DIR_PLUGINS)) exit;
+    if ($once && $require) require_once($DIR_PLUGINS.$file);
+    elseif ($once && !$require) include_once($DIR_PLUGINS.$file);
+    elseif ($require) require($DIR_PLUGINS.$file);
+    else include($DIR_PLUGINS.$file);
 }
 
 function intPostVar($name) {
@@ -714,63 +713,53 @@ function sql_query($query) {
  * @return string
  **/
 function highlight($text, $expression, $highlight) {
-
     if (!$highlight || !$expression)
     {
         return $text;
     }
-
+    
     if (is_array($expression) && (count($expression) == 0) )
     {
         return $text;
     }
-
+    
     // add a tag in front (is needed for preg_match_all to work correct)
     $text = '<!--h-->' . $text;
-
+    
     // split the HTML up so we have HTML tags
     // $matches[0][i] = HTML + text
     // $matches[1][i] = HTML
     // $matches[2][i] = text
     preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
-
+    
     // throw it all together again while applying the highlight to the text pieces
     $result = '';
-
     $count_matches = count($matches[2]);
-
     for ($i = 0; $i < $count_matches; $i++) {
-
         if ($i != 0)
         {
             $result .= $matches[1][$i];
         }
-
+        
         if (is_array($expression) )
         {
-
             foreach ($expression as $regex)
             {
-
                 if ($regex)
                 {
                     $matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
                 }
-
             }
-
+            
             $result .= $matches[2][$i];
-
         }
         else
         {
             $result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
         }
-
     }
-
+    
     return $result;
-
 }
 
 /**
@@ -814,7 +803,6 @@ function isValidMailAddress($address) {
         return 0;
     }
 }
-
 
 // some helper functions
 function getBlogIDFromName($name) {
@@ -916,9 +904,7 @@ function selector() {
 
         // if a different blog id has been set through the request or selectBlog(),
         // deny access
-
-
-
+        
         if ($blogid && (intval($blogid) != $obj->iblog) ) {
             doError(_ERROR_NOSUCHITEM);
         }
@@ -1139,11 +1125,11 @@ function selector() {
     if (!$skin->isValid) {
         doError(_ERROR_NOSUCHSKIN);
     }
-
+    
     // set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
     global $skinpart;
     $skinpart = $type;
-
+    
     // parse the skin
     $skin->parse($type);
 
@@ -1198,7 +1184,6 @@ function isValidShortName($name) {
     # original eregi: eregi('^[a-z0-9]+$', $name)
 
     return preg_match('#^[a-z0-9]+$#i', $name);
-
 }
 
 function isValidDisplayName($name) {
@@ -1207,7 +1192,6 @@ function isValidDisplayName($name) {
     # original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
 
     return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
-
 }
 
 function isValidCategoryName($name) {
@@ -1220,7 +1204,6 @@ function isValidTemplateName($name) {
     # original eregi: eregi('^[a-z0-9/]+$', $name)
 
     return preg_match('#^[a-z0-9/]+$#i', $name);
-
 }
 
 function isValidSkinName($name) {
@@ -1229,7 +1212,6 @@ function isValidSkinName($name) {
     # original eregi: eregi('^[a-z0-9/]+$', $name);
 
     return preg_match('#^[a-z0-9/]+$#i', $name);
-
 }
 
 // add and remove linebreaks
@@ -1438,7 +1420,6 @@ function includephp($filename) {
  * @return bool
  **/
 function checkLanguage($lang) {
-
     global $DIR_LANG;
 
     # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
@@ -1502,8 +1483,7 @@ function createLink($type, $params) {
     // ask plugins first
     $created = false;
 
-    if ( $usePathInfo )
-    {
+    if ($usePathInfo) {
         $param = array(
             'type'        =>  $type,
             'params'    =>  $params,
@@ -1597,7 +1577,6 @@ function addLinkParams($link, $params) {
     if (is_array($params) ) {
 
         if ($CONF['URLMode'] == 'pathinfo') {
-
             foreach ($params as $param => $value) {
                 // change in 3.63 to fix problem where URL generated with extra params mike look like category/4/blogid/1
                 // but they should use the URL keys like this: category/4/blog/1
@@ -1631,7 +1610,6 @@ function addLinkParams($link, $params) {
                     }
                 }
             }
-
         } else {
 
             foreach ($params as $param => $value) {
@@ -1727,6 +1705,7 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
                 $tz = '-';
                 $offset = -$offset;
             }
+
             $tz .= sprintf("%02d:%02d", floor($offset / 3600), round(($offset % 3600) / 60) );
             return date('Y-m-d\TH:i:s', $timestamp) . $tz;
 
@@ -1767,7 +1746,6 @@ function checkVars($aVars) {
         }
     }
 }
-
 
 /**
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
@@ -1824,44 +1802,39 @@ function sanitizeParams()
  * Also avoid the access to plugin/index.php by guest user.
  */
 function ticketForPlugin() {
-
     global $CONF, $DIR_PLUGINS, $member, $ticketforplugin;
 
     /* initialize */
     $ticketforplugin = array();
     $ticketforplugin['ticket'] = FALSE;
-
+    
     /* Check if using plugin's php file. */
     if ($p_translated = serverVar('PATH_TRANSLATED') )
     {
-
         if (!file_exists($p_translated) )
         {
             $p_translated = '';
         }
-
     }
-
+    
     if (!$p_translated)
     {
         $p_translated = serverVar('SCRIPT_FILENAME');
-
         if (!file_exists($p_translated) )
         {
             header("HTTP/1.0 404 Not Found");
             exit('');
         }
-
     }
-
+    
     $p_translated = str_replace('\\', '/', $p_translated);
     $d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
-
+    
     if (strpos($p_translated, $d_plugins) !== 0)
     {
         return;// This isn't plugin php file.
     }
-
+    
     /* Solve the plugin php file or admin directory */
     $phppath = substr($p_translated, strlen($d_plugins) );
     $phppath = preg_replace('#^/#', '', $phppath); // Remove the first "/" if exists.
@@ -1878,9 +1851,8 @@ function ticketForPlugin() {
         $name = substr($row[0], 3);
         $plugins[strtolower($name)] = $name;
     }
-
     sql_free_result($res);
-
+    
     if ($plugins[$path])
     {
         $plugin_name = $plugins[$path];
@@ -1894,7 +1866,7 @@ function ticketForPlugin() {
         header("HTTP/1.0 404 Not Found");
         exit('');
     }
-
+    
     /* Return if not index.php */
     if ( ($phppath != strtolower($plugin_name) . '/') && ($phppath != strtolower($plugin_name) . '/index.php') )
     {
@@ -1907,39 +1879,32 @@ function ticketForPlugin() {
         exit('You aren\'t logged in.');
     }
 
-    global $manager, $DIR_LIBS, $DIR_LANG, $HTTP_GET_VARS, $HTTP_POST_VARS;
+    global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
 
     /* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
-    if (!($p_translated = serverVar('PATH_TRANSLATED') ) )
+    if (!($p_translated=serverVar('PATH_TRANSLATED')))
     {
-        $p_translated = serverVar('SCRIPT_FILENAME');
+        $p_translated=serverVar('SCRIPT_FILENAME');
     }
-
     if ($file = file($p_translated) )
     {
-        $prevline = '';
-
+        $prevline='';
         foreach($file as $line)
         {
-
-            if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i', $prevline . $line) )
+            if (preg_match('/[\$]manager([\s]*)[\-]>([\s]*)checkTicket([\s]*)[\(]/i',$prevline.$line))
             {
                 return;
             }
-
-            $prevline = $line;
-
+            $prevline=$line;
         }
-
     }
-
+    
     /* Show a form if not valid ticket */
-    if ( ( strstr(serverVar('REQUEST_URI'), '?') || serverVar('QUERY_STRING')
-            || strtoupper(serverVar('REQUEST_METHOD') ) == 'POST')
-                && (!$manager->checkTicket() ) )
+    if ( ( strstr(serverVar('REQUEST_URI'),'?') || serverVar('QUERY_STRING')
+            || strtoupper(serverVar('REQUEST_METHOD'))=='POST' )
+                && (!$manager->checkTicket()) )
     {
-
-        if (!class_exists('PluginAdmin') )
+        if (!class_exists('PluginAdmin'))
         {
             $language = getLanguageName();
 
@@ -1950,64 +1915,53 @@ function ticketForPlugin() {
             include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
             include($DIR_LIBS . 'PLUGINADMIN.php');
         }
-
+        
         $oPluginAdmin = new PluginAdmin($plugin_name);
         $oPluginAdmin->start();
         echo '<p>' . _ERROR_BADTICKET . "</p>\n";
 
         /* Show the form to confirm action */
         // PHP 4.0.x support
-        $get = (isset($_GET) ) ? $_GET : $HTTP_GET_VARS;
-        $post = (isset($_POST) ) ? $_POST : $HTTP_POST_VARS;
-
+        $get=  (isset($_GET))  ? $_GET  : $HTTP_GET_VARS;
+        $post= (isset($_POST)) ? $_POST : $HTTP_POST_VARS;
         // Resolve URI and QUERY_STRING
-        if ($uri = serverVar('REQUEST_URI') )
+        if ($uri=serverVar('REQUEST_URI'))
         {
-            list($uri, $qstring) = explode('?', $uri);
+            list($uri,$qstring)=explode('?',$uri);
         }
         else
         {
-
-            if ( !($uri = serverVar('PHP_SELF') ) )
+            if ( !($uri=serverVar('PHP_SELF')) )
             {
-                $uri = serverVar('SCRIPT_NAME');
+                $uri=serverVar('SCRIPT_NAME');
             }
-
-            $qstring = serverVar('QUERY_STRING');
-
+            $qstring=serverVar('QUERY_STRING');
         }
-
         if ($qstring)
         {
-            $qstring = '?' . $qstring;
+            $qstring='?'.$qstring;
         }
-
-        echo '<p>' . _SETTINGS_UPDATE . ' : ' . _QMENU_PLUGINS . ' <span style="color:red;">' . hsc($plugin_name) . "</span> ?</p>\n";
-
-        switch(strtoupper(serverVar('REQUEST_METHOD') ) )
+        echo '<p>'._SETTINGS_UPDATE.' : '._QMENU_PLUGINS.' <span style="color:red;">'.hsc($plugin_name)."</span> ?</p>\n";
+        switch(strtoupper(serverVar('REQUEST_METHOD')))
         {
             case 'POST':
                 echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
                 $manager->addTicketHidden();
                 _addInputTags($post);
                 break;
-
             case 'GET':
                 echo '<form method="GET" action="'.hsc($uri).'">';
                 $manager->addTicketHidden();
                 _addInputTags($get);
-
             default:
                 break;
         }
-
-        echo '<input type="submit" value="' . _YES . '" />&nbsp;&nbsp;&nbsp;&nbsp;';
-        echo '<input type="button" value="' . _NO . '" onclick="history.back(); return false;" />';
+        echo '<input type="submit" value="'._YES.'" />&nbsp;&nbsp;&nbsp;&nbsp;';
+        echo '<input type="button" value="'._NO.'" onclick="history.back(); return false;" />';
         echo "</form>\n";
 
         $oPluginAdmin->end();
         exit;
-
     }
 
     /* Create new ticket */

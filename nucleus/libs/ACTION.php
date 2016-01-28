@@ -317,7 +317,7 @@ class ACTION
         }
 
         $mem = MEMBER::createFromName($membername);
-        
+
         /* below keeps regular users from resetting passwords using forgot password feature
              Removing for now until clear why it is required.*/
         /*if (!$mem->canLogin())

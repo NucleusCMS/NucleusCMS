@@ -116,7 +116,7 @@ class PARSER {
                 $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
             } else {
                 if ($CONF['DebugVars']==true) {
-                echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+                    echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
         }
             }
             
@@ -147,5 +147,3 @@ class PARSER {
 
 
 }
-
-?>
