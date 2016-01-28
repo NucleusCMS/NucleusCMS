@@ -32,8 +32,8 @@ class ADMIN {
     /**
      * Class constructor
      */
-    function ADMIN() {
-
+    function __construct() {
+        $this->checkSecurityRisk();
     }
 
     /**

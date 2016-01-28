@@ -37,7 +37,8 @@ class SKIN {
      * @param $id 
      *             id of the skin
      */
-    function SKIN($id) {
+    public function SKIN($id) { $this->__construct($id); }
+    function __construct($id) {
         $this->id = intval($id);
 
         // read skin name/description/content type

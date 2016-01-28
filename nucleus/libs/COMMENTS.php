@@ -36,7 +36,7 @@ class COMMENTS {
      * @param $itemid
      *        id of the item
      */
-    function COMMENTS($itemid) {
+    function __construct($itemid) {
         $this->itemid = intval($itemid);
     }
     

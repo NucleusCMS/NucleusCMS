@@ -48,7 +48,7 @@ class BaseActions {
     /**
      *  Constructor for a new BaseAction object
      */
-    function BaseActions() {
+    function __construct() {
         $this->level = 0;
 
         // if nesting level

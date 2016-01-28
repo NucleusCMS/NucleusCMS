@@ -40,7 +40,8 @@ class BLOG {
      *
      * @param $id blogid
      */
-    function BLOG($id) {
+    public function BLOG($id) { $this->__construct($id); }
+    function __construct($id) {
         $this->blogid = intval($id);
         $this->readSettings();
 

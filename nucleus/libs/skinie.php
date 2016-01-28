@@ -50,7 +50,7 @@ class SKINIMPORT {
     /**
      * constructor initializes data structures
      */
-    function SKINIMPORT() {
+    function __construct() {
         // disable magic_quotes_runtime if it's turned on
         set_magic_quotes_runtime(0);
 

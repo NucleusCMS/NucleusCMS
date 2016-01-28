@@ -22,11 +22,8 @@ class BODYACTIONS extends BaseActions {
 
     var $template;
 
-    /**
-     * Constructor of the BODYACTIONS
-     */
-    function BODYACTIONS () {
-        $this->BaseActions();    
+    function __construct() {
+        parent::__construct();
     }
 
     /**

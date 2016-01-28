@@ -28,8 +28,8 @@ class SEARCH {
     var $inclusive;
     var $blogs;
 
-
-    function SEARCH($text) {
+    public function SEARCH($text) { $this->__construct($text); }
+    function __construct($text) {
         global $blogid;
         $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
         $this->querystring    = $text;

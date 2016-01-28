@@ -38,7 +38,8 @@ class MEMBER {
     /**
      * Constructor for a member object
      */
-    function MEMBER() {
+    public function MEMBER() { $this->__construct(); }
+    function __construct() {
         global $DIR_LIBS;
         include_once("{$DIR_LIBS}phpass.class.inc.php");
         $this->hasher = new PasswordHash();

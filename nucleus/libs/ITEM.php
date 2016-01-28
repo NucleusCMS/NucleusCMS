@@ -24,7 +24,8 @@ class ITEM {
       * 
       * @param integer $itemid id of the item
       */
-    function ITEM($itemid) {
+    public function ITEM($itemid) { $this->__construct($itemid); }
+    function __construct($itemid) {
         $this->itemid = $itemid;
     }
 
