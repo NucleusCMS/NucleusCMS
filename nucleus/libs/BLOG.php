@@ -814,7 +814,7 @@ class BLOG {
       * ordered by number, name, shortname or description
       * in ascending or descending order
       */
-    function showBlogList($template, $bnametype, $orderby, $direction) {
+    public static function showBlogList($template, $bnametype, $orderby, $direction) {
         global $CONF, $manager;
 
         switch ($orderby) {
@@ -1276,7 +1276,7 @@ class BLOG {
       * @param $name
       *     blog shortname
       */
-    function exists($name) {
+    public static function exists($name) {
         $r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
         return (sql_num_rows($r) != 0);
     }
@@ -1288,7 +1288,7 @@ class BLOG {
       * @param $id
       *     blog id
       */
-    function existsID($id) {
+    public static function existsID($id) {
         $r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
         return (sql_num_rows($r) != 0);
     }

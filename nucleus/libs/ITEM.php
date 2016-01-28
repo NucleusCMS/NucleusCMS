@@ -36,7 +36,7 @@ class ITEM {
       * @param boolean $allowfuture                        
       * @static
       */
-    function getitem($itemid, $allowdraft, $allowfuture) {
+    public static function getitem($itemid, $allowdraft, $allowfuture) {
         global $manager;
 
         $itemid = intval($itemid);
@@ -82,7 +82,7 @@ class ITEM {
      *
      * @static
      */
-    function createFromRequest() {
+    public static function createFromRequest() {
          global $member, $manager;
 
          $i_author =         $member->getID();
@@ -191,7 +191,7 @@ class ITEM {
       * 
       * @static
       */
-    function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
+    public static function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
         global $manager;
 
         $itemid = intval($itemid);
@@ -310,7 +310,7 @@ class ITEM {
      *
      * @static
      */                   
-    function move($itemid, $new_catid) {
+    public static function move($itemid, $new_catid) {
         global $manager;
 
         $itemid = intval($itemid);
@@ -345,7 +345,7 @@ class ITEM {
     /**
       * Deletes an item
       */
-    function delete($itemid) {
+    public static function delete($itemid) {
         global $manager, $member;
 
         $itemid = intval($itemid);
@@ -381,7 +381,7 @@ class ITEM {
      *
      * @static
      */              
-    function exists($id,$future,$draft) {
+    public static function exists($id,$future,$draft) {
         global $manager;
 
         $id = intval($id);
@@ -412,7 +412,7 @@ class ITEM {
      *
      * Used by xmlHTTPRequest AutoDraft
      */
-    function createDraftFromRequest() {
+    public static function createDraftFromRequest() {
         global $member, $manager;
 
         $i_author = $member->getID();
