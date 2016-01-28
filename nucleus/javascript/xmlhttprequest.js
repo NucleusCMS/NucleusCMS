@@ -37,9 +37,6 @@
   *     <input type="hidden" name="draftid" value="0" />
   * - Optionally a autosave now button can be add:
   *     <input type="button" name="autosavenow" value="AutoSave now" onclick="autoSaveDraft();" />
-  *
-  *
-  * $Id$
   */
 
 /**

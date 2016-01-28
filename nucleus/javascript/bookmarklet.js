@@ -10,7 +10,6 @@
   *  
   * Some JavaScript code for the bookmarklets
   *
-  * $Id$
   */
 
 /**

@@ -9,8 +9,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
@@ -20,7 +19,6 @@
  *
  * functions moved from globalfunctions.php: sql_connect, sql_disconnect, sql_query
  */
- 
 
 $MYSQL_CONN = 0;
 global $SQL_DBH;
@@ -28,9 +26,9 @@ $SQL_DBH = NULL;
 
 if (!function_exists('sql_fetch_assoc'))
 {
-    /**
-     * Errors before the database connection has been made
-     */
+/**
+ * Errors before the database connection has been made
+ */
     function startUpError($msg, $title) {
         ?>
         <html xmlns="http://www.w3.org/1999/xhtml">
@@ -43,9 +41,9 @@ if (!function_exists('sql_fetch_assoc'))
         <?php    exit;
     }
     
-    /**
-      * Connects to mysql server
-      */
+/**
+ * Connects to mysql server
+ */
     function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
         global $MYSQL_HANDLER;
         
@@ -117,9 +115,9 @@ if (!function_exists('sql_fetch_assoc'))
         return $DBH;
     }
     
-    /**
-      * Connects to mysql server
-      */
+/**
+ * Connects to mysql server
+ */
     function sql_connect() {
         global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
         $SQL_DBH = NULL;
@@ -192,9 +190,9 @@ if (!function_exists('sql_fetch_assoc'))
 
     }
 
-    /**
-      * disconnects from SQL server
-      */
+/**
+ * disconnects from SQL server
+ */
     function sql_disconnect(&$dbh=NULL) {
         global $SQL_DBH;
         if (is_null($dbh)) $SQL_DBH = NULL;
@@ -206,10 +204,9 @@ if (!function_exists('sql_fetch_assoc'))
         if (is_null($dbh)) $SQL_DBH = NULL;
         else $dbh = NULL;
     }
-    
-    /**
-      * executes an SQL query
-      */
+/**
+ * executes an SQL query
+ */
     function sql_query($query,$dbh=NULL) {
         global $SQLCount,$SQL_DBH;
         $SQLCount++;
@@ -229,9 +226,9 @@ if (!function_exists('sql_fetch_assoc'))
         return $res;
     }
     
-    /**
-      * executes an SQL error
-      */
+/**
+ * executes an SQL error
+ */
     function sql_error($dbh=NULL)
     {
         global $SQL_DBH;
@@ -243,9 +240,9 @@ if (!function_exists('sql_fetch_assoc'))
         else return '';
     }
     
-    /**
-      * executes an SQL db select
-      */
+/**
+ * executes an SQL db select
+ */
     function sql_select_db($db,&$dbh=NULL)
     {
         global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
@@ -315,18 +312,18 @@ if (!function_exists('sql_fetch_assoc'))
             else return 0;
         }
     }
-    
-    /**
-      * executes an SQL real escape 
-      */
+
+/**
+ * executes an SQL real escape 
+ */
     function sql_real_escape_string($val,$dbh=NULL)
     {
         return addslashes($val);
     }
     
-    /**
-      * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
-      */
+/**
+ * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
+ */
     function sql_quote_string($val,$dbh=NULL) {
         global $SQL_DBH;
         if (is_null($dbh))
@@ -335,11 +332,11 @@ if (!function_exists('sql_fetch_assoc'))
             return $dbh->quote($val);
     }
     
-    /**
-      * executes an SQL insert id
-      */
+/**
+ * executes an SQL insert id
+ */
     function sql_insert_id($dbh=NULL)
-    {    
+    {   
         global $SQL_DBH;
         if (is_null($dbh))
             return $SQL_DBH->lastInsertId();
@@ -347,9 +344,9 @@ if (!function_exists('sql_fetch_assoc'))
             return $dbh->lastInsertId();
     }
     
-    /**
-      * executes an SQL result request
-      */
+/**
+ * executes an SQL result request
+ */
     function sql_result($res, $row = 0, $col = 0)
     {
         $results = array();
@@ -366,52 +363,52 @@ if (!function_exists('sql_fetch_assoc'))
         }
     }
     
-    /**
-      * frees sql result resources
-      */
+/**
+ * frees sql result resources
+ */
     function sql_free_result($res)
     {
         $res = NULL;
         return true;
     }
     
-    /**
-      * returns number of rows in SQL result
-      */
+/**
+ * returns number of rows in SQL result
+ */
     function sql_num_rows($res)
     {
         return $res->rowCount();
     }
     
-    /**
-      * returns number of rows affected by SQL query
-      */
+/**
+ * returns number of rows affected by SQL query
+ */
     function sql_affected_rows($res)
     {
         return $res->rowCount();
     }
     
-    /**
-      * Get number of fields in result
-      */
+/**
+ * Get number of fields in result
+ */
     function sql_num_fields($res)
     {
         return $res->columnCount();
     }
     
-    /**
-      * fetches next row of SQL result as an associative array
-      */
+/**
+ * fetches next row of SQL result as an associative array
+ */
     function sql_fetch_assoc($res)
     {
         $results = array();
-        $results = $res->fetch(PDO::FETCH_ASSOC);    
+        $results = $res->fetch(PDO::FETCH_ASSOC);   
         return $results;
     }
     
-    /**
-      * Fetch a result row as an associative array, a numeric array, or both
-      */
+/**
+ * Fetch a result row as an associative array, a numeric array, or both
+ */
     function sql_fetch_array($res)
     {
         $results = array();
@@ -419,29 +416,29 @@ if (!function_exists('sql_fetch_assoc'))
         return $results;
     }
     
-    /**
-      * fetches next row of SQL result as an object
-      */
+/**
+ * fetches next row of SQL result as an object
+ */
     function sql_fetch_object($res)
     {
         $results = NULL;
-        $results = $res->fetchObject();    
+        $results = $res->fetchObject(); 
         return $results;
     }
     
-    /**
-      * Get a result row as an enumerated array
-      */
+/**
+ * Get a result row as an enumerated array
+ */
     function sql_fetch_row($res)
     {
         $results = array();
-        $results = $res->fetch(PDO::FETCH_NUM);    
+        $results = $res->fetch(PDO::FETCH_NUM); 
         return $results;
     }
     
-    /**
-      * Get column information from a result and return as an object
-      */
+/**
+ * Get column information from a result and return as an object
+ */
     function sql_fetch_field($res,$offset = 0)
     {
         $results = array();
@@ -453,9 +450,9 @@ if (!function_exists('sql_fetch_assoc'))
         return $obj;
     }
     
-    /**
-      * Get current system status (returns string)
-      */
+/**
+ * Get current system status (returns string)
+ */
     function sql_stat($dbh=NULL)
     {
         //not implemented
@@ -466,9 +463,9 @@ if (!function_exists('sql_fetch_assoc'))
             return '';
     }
     
-    /**
-      * Returns the name of the character set
-      */
+/**
+ * Returns the name of the character set
+ */
     function sql_client_encoding($dbh=NULL)
     {
         //not implemented
@@ -479,18 +476,18 @@ if (!function_exists('sql_fetch_assoc'))
             return '';
     }
     
-    /**
-      * Get SQL client version
-      */
+/**
+ * Get SQL client version
+ */
     function sql_get_client_info()
     {
         global $SQL_DBH;
         return $SQL_DBH->getAttribute(constant("PDO::ATTR_CLIENT_VERSION"));
     }
     
-    /**
-      * Get SQL server version
-      */
+/**
+ * Get SQL server version
+ */
     function sql_get_server_info($dbh=NULL)
     {
         global $SQL_DBH;
@@ -500,9 +497,9 @@ if (!function_exists('sql_fetch_assoc'))
             return $dbh->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
     }
     
-    /**
-      * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
-      */
+/**
+ * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
+ */
     function sql_get_host_info($dbh=NULL)
     {
         global $SQL_DBH;
@@ -512,9 +509,9 @@ if (!function_exists('sql_fetch_assoc'))
             return $dbh->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
     }
     
-    /**
-      * Returns the SQL protocol on success, or FALSE on failure. 
-      */
+/**
+ * Returns the SQL protocol on success, or FALSE on failure. 
+ */
     function sql_get_proto_info($dbh=NULL)
     {
         //not implemented
@@ -525,9 +522,9 @@ if (!function_exists('sql_fetch_assoc'))
             return false;
     }
 
-    /**
-     * Get the name of the specified field in a result
-     */
+/**
+ * Get the name of the specified field in a result
+ */
     function sql_field_name($res, $offset = 0)
     {
         $column = $res->getColumnMeta($offset);
@@ -538,8 +535,8 @@ if (!function_exists('sql_fetch_assoc'))
     }
 
 /**************************************************************************
-Unimplemented mysql_* functions
-
+    Unimplemented mysql_* functions
+    
 # mysql_ data_ seek (maybe useful)
 # mysql_ errno (maybe useful)
 # mysql_ fetch_ lengths (maybe useful)
@@ -572,5 +569,4 @@ Unimplemented mysql_* functions
 *******************************************************************/
 
 }
-
 ?>

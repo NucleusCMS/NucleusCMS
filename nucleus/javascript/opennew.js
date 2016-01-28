@@ -8,8 +8,6 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  *
- * $Id$
- *
  * JavaScript to open non-local links in a new window.
  *
  * How to use:

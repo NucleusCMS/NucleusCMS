@@ -10,8 +10,6 @@
   *
   * script the check (on the clientside) if a entered value
   * is a valid number and remove the invalid chars
-  *
-  * $Id$
   */
 
 function checkNumeric(f)

@@ -9,8 +9,7 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
@@ -20,7 +19,6 @@
  *
  * functions moved from globalfunctions.php: sql_connect, sql_disconnect, sql_query
  */
-
 
 $MYSQL_CONN = 0;
 
@@ -289,10 +287,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     {
         return mysql_field_name($res, $offset);
     }
-    
-/**************************************************************************
-Unimplemented mysql_* functions
 
+/**************************************************************************
+    Unimplemented mysql_* functions
+    
 # mysql_ data_ seek (maybe useful)
 # mysql_ errno (maybe useful)
 # mysql_ fetch_ lengths (maybe useful)

@@ -9,8 +9,6 @@
   * (see nucleus/documentation/index.html#license for more info)
   *  
   * Some JavaScript code for the admin area
-  *
-  * $Id$
   */
 
 function help(url) {
