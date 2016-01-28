@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -11,6 +11,9 @@
  *
  * The allowed tags for a type of skinpart are defined by the
  * SKIN::getAllowedActionsForType($type) method
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) The Nucleus Group
  */
 
 class ACTIONS extends BaseActions {

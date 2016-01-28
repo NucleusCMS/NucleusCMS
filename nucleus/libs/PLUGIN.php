@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -13,6 +13,9 @@
  *
  * for more information on plugins and how to write your own, see the
  * plugins.html file that is included with the Nucleus documenation
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) The Nucleus Group
  */
 class NucleusPlugin {
 

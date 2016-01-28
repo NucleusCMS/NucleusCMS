@@ -11,6 +11,9 @@
  * (see nucleus/documentation/index.html#license for more info)
  *
  * A class representing site members
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) The Nucleus Group
  */
 class MEMBER {
 
