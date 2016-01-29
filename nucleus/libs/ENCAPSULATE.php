@@ -63,7 +63,8 @@ class NAVLIST extends ENCAPSULATE {
         $this->itemid = $itemid;
     }
 
-    function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE) {
+    function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE)
+    {
         $batch = new BATCH($batchtype);
 
         $this->doEncapsulate(
@@ -442,11 +443,11 @@ class BATCH extends ENCAPSULATE {
         <?php    }
 
     // shortcut :)
-    function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-        return $this->doEncapsulate(    'showlist',
-                                    array($query, $type, $template),
-                                    $errorMessage
-                                );
+    function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
+    {
+        $call = 'showlist';
+        $params = array($query, $type, $template);
+        return $this->doEncapsulate($call, $params, $errorMessage);
     }
 }
 ?>

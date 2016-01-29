@@ -394,8 +394,8 @@ function media_doError($msg) {
 
 function media_head() {
 ?>
-    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-    <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
         <title>Nucleus Media</title>

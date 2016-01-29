@@ -39,15 +39,16 @@ if (!function_exists('sql_fetch_assoc'))
         sendContentType('text/html','',_CHARSET);
         ?>
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-    <head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
+    <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
     <title><?php echo hsc($title,ENT_QUOTES)?></title></head>
     <body>
         <h1><?php echo hsc($title,ENT_QUOTES)?></h1>
-        <?php echo $msg?> 
+        <?php echo $msg?>
     </body>
 </html>
 <?php
-        exit;
+    exit;
     }
     
 /**

@@ -92,7 +92,8 @@
 			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
 	</tr>
-	<%ifautosave()%><tr>
+	<%ifautosave()%>
+	<tr>
 		<td><%text(_AUTOSAVEDRAFT)%></td>
 		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
 	</tr><%endif%>
@@ -112,7 +113,7 @@
 		</td>
 	</tr>
 			<%itemoptions%>	
-	<tr>
+    <tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 

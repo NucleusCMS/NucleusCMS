@@ -123,7 +123,7 @@ class SKINIMPORT {
         if (!$this->fp) {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
-        
+        // here we go!
         $this->inXml = 1;
         $tempbuffer = fread($this->fp,filesize($filename));
 /*
@@ -158,7 +158,7 @@ class SKINIMPORT {
                 echo _ERROR . ': ' . xml_error_string(xml_get_error_code($this->parser)) . '<br />';
             }
         }
-        
+        // all done
         $this->inXml = 0;
         fclose($this->fp);
     }

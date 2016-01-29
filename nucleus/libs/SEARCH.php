@@ -80,11 +80,11 @@ class SEARCH {
             if (strlen($stringsum_long) > 0) {
                 $stringsum_long = sql_real_escape_string($stringsum_long);
                 $stringsum_a[]  = " match ($match) against ('$stringsum_long') ";
-            }
+           }
 
-            $stringsum .= implode("+", $stringsum_a);
+           $stringsum .= implode("+", $stringsum_a);
 
-            return $stringsum;
+           return $stringsum;
         }
     }
 
@@ -109,7 +109,7 @@ class SEARCH {
         
         /* strip exlusive atoms */
         $result = preg_replace(
-            "#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
+"#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
             '',
             $result);
         
@@ -149,8 +149,8 @@ class SEARCH {
     }
 /*
     function boolean_mark_atoms($string){
-        $result=trim($string);
-        $result=preg_replace("/([[:space:]]{2,})/",' ',$result);
+        $result = trim($string);
+        $result = preg_replace("/([[:space:]]{2,})/",' ',$result);
 
         # just added delimiters to regex and the 'i' for case-insensitive matching
 
@@ -158,35 +158,36 @@ class SEARCH {
         $result = preg_replace('# and #i', ' ', $result);
         $result = preg_replace('# or #i', ',', $result);
 
-        // strip excessive whitespace
-        $result=str_replace('( ','(',$result);
-        $result=str_replace(' )',')',$result);
-        $result=str_replace(', ',',',$result);
-        $result=str_replace(' ,',',',$result);
-        $result=str_replace('- ','-',$result);
-        $result=str_replace('+','',$result);
+        /* strip excessive whitespace */
+        $result = str_replace('( ', '(', $result);
+        $result = str_replace(' )', ')', $result);
+        $result = str_replace(', ', ',', $result);
+        $result = str_replace(' ,', ',', $result);
+        $result = str_replace('- ', '-', $result);
+        $result = str_replace('+', '', $result);
 
         // remove double spaces (we might have introduced some new ones above)
-        $result=trim($result);
-        $result=preg_replace("#([[:space:]]{2,})#",' ',$result);
+        $result = trim($result);
+        $result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
 
-        // apply arbitrary function to all 'word' atoms
+        /* apply arbitrary function to all 'word' atoms */
 
-        $result_a = explode(' ',$result);
-        for($word=0;$word<count($result_a);$word++)
+        $result_a = explode(' ', $result);
+
+        for($word = 0;$word<count($result_a);$word++)
         {
             $result_a[$word] = "foo[('".$result_a[$word]."')]bar";
         }
         $result = implode(" ",$result_a);
 
         // dispatch ' ' to ' AND '
-        $result=str_replace(' ',' AND ',$result);
+        $result = str_replace(' ', ' AND ', $result);
 
         // dispatch ',' to ' OR '
-        $result=str_replace(',',' OR ',$result);
+        $result = str_replace(',', ' OR ', $result);
 
         // dispatch '-' to ' NOT '
-        $result=str_replace(' -',' NOT ',$result);
+        $result = str_replace(' -', ' NOT ', $result);
         return $result;
     }
 
@@ -206,12 +207,12 @@ class SEARCH {
         $score_unit_weight = .2;
         for ($ith = 0; $ith< count($match_a); $ith++){
             $score_a[$ith] =
-                            " $score_unit_weight*(
-                            LENGTH(" . sql_real_escape_string($match_a[$ith]) . ") -
-                            LENGTH(REPLACE(LOWER(" . sql_real_escape_string($match_a[$ith]) . "),LOWER('" . sql_real_escape_string($string) . "'),'')))
-                            /LENGTH('" . sql_real_escape_string($string) . "') ";
+                           " $score_unit_weight*(
+                           LENGTH(" . sql_real_escape_string($match_a[$ith]) . ") -
+                           LENGTH(REPLACE(LOWER(" . sql_real_escape_string($match_a[$ith]) . "),LOWER('" . sql_real_escape_string($string) . "'),'')))
+                           /LENGTH('" . sql_real_escape_string($string) . "') ";
         }
-        $score = implode(" + ", $score_a);
+        $score = implode(" + ",$score_a);
 
         return $score;
     }

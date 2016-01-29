@@ -34,12 +34,12 @@
 		<part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part>
 		<part name="FORMAT_TIME"><![CDATA[%H:%M:%S]]></part>
 		<part name="ITEM"><![CDATA[<item>
-<title><![CDATA[<%title(xml)%>]]]]><![CDATA[></title>
-<link><%itemlink%></link>
-<description><![CDATA[<%body%><%more%>]]]]><![CDATA[></description>
-<category><%category%></category>
-<comments><%itemlink%></comments>
-<pubDate><%date(rfc822)%></pubDate>
+    <title><![CDATA[<%title(xml)%>]]]]><![CDATA[></title>
+    <link><%itemlink%></link>
+    <description><![CDATA[<%body%><%more%>]]]]><![CDATA[></description>
+    <category><%category%></category>
+    <comments><%itemlink%></comments>
+    <pubDate><%date(rfc822)%></pubDate>
 </item>]]></part>
 
 		<part name="IMAGE_CODE"><![CDATA[<%image%>]]></part>
