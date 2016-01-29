@@ -1,21 +1,6 @@
-<FilesMatch "^item$">
-    ForceType application/x-httpd-php
-</FilesMatch>
-<FilesMatch "^archive$">
-    ForceType application/x-httpd-php
-</FilesMatch>
-<FilesMatch "^member$">
-    ForceType application/x-httpd-php
-</FilesMatch>
-<FilesMatch "^archives$">
-    ForceType application/x-httpd-php
-</FilesMatch>
-<FilesMatch "^category$">
-    ForceType application/x-httpd-php
-</FilesMatch>
-<FilesMatch "^blog$">
-    ForceType application/x-httpd-php
-</FilesMatch>
-<FilesMatch "^special$">
-    ForceType application/x-httpd-php
-</FilesMatch>
+<IfModule mod_rewrite.c>
+	RewriteEngine on
+	RewriteCond %{REQUEST_FILENAME} !-f
+	RewriteCond %{REQUEST_FILENAME} !-d
+	RewriteRule ^(.*)$ index.php?virtualpath=$1 [L,QSA]
+</IfModule>
