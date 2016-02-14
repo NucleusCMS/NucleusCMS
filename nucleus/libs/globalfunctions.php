@@ -23,8 +23,6 @@ $nucleus['version'] = 'v3.71';
 $nucleus['codename'] = '';
 
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
-global $StartTime;
-$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
