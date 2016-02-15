@@ -1,5 +1,4 @@
-<a id="nucleus_lf"></a>
-<form method="post" action="#nucleus_lf">
+<form id="nucleus_lf" method="post" action="#nucleus_lf">
 	<div class="loginform">
 <input type="hidden" name="action" value="login" />
 		<%errordiv%>

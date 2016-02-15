@@ -1,5 +1,4 @@
-<a id="nucleus_mf"></a>
-<form method="post" action="#nucleus_mf">
+<form id="nucleus_mf" method="post" action="#nucleus_mf">
 	<div class="mailform">
 <input type="hidden" name="memberid" value="<%formdata(memberid)%>" />
 <input type="hidden" name="action" value="sendmessage" />
