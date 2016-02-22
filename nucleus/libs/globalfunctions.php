@@ -25,7 +25,7 @@ $nucleus['codename'] = '';
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 
 // check and die if someone is trying to override internal globals (when register_globals turn on)
-checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'HTTP_GET_VARS', 'HTTP_POST_VARS', 'HTTP_COOKIE_VARS', 'HTTP_ENV_VARS', 'HTTP_SESSION_VARS', 'HTTP_POST_FILES', 'HTTP_SERVER_VARS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
+checkVars(array('nucleus', 'CONF', 'DIR_LIBS', 'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE', 'DIR_LANG', 'DIR_PLUGINS', 'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES'));
 
 $CONF['debug'] = 0;
 if ($CONF['debug']) {
@@ -89,7 +89,7 @@ if (!isset($CONF['installscript'])) {
     $CONF['installscript'] = 0;
 }
 
-// we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
+// we will use postVar, getVar, ... methods instead of _GET
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
     if (phpversion() >= '4.1.0') {
         include_once($DIR_LIBS . 'vars4.1.0.php');
@@ -1403,8 +1403,7 @@ function includephp($filename) {
     global $REQUEST_URI;
 
     // php (taken from PHP doc)
-    global $argv, $argc, $PHP_SELF, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
-    global $HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
+    global $argv, $argc, $PHP_SELF;
 
     // other
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
@@ -1715,7 +1714,6 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
 }
 
 function checkVars($aVars) {
-    global $HTTP_GET_VARS, $HTTP_POST_VARS, $HTTP_COOKIE_VARS, $HTTP_ENV_VARS, $HTTP_POST_FILES, $HTTP_SESSION_VARS;
 
     foreach ($aVars as $varName) {
 
@@ -1731,18 +1729,6 @@ function checkVars($aVars) {
                 die('Sorry. An error occurred.');
             }
 
-        } else {
-
-            if (   isset($HTTP_GET_VARS[$varName])
-                || isset($HTTP_POST_VARS[$varName])
-                || isset($HTTP_COOKIE_VARS[$varName])
-                || isset($HTTP_ENV_VARS[$varName])
-                || isset($HTTP_SESSION_VARS[$varName])
-                || isset($HTTP_POST_FILES[$varName])
-            ) {
-                die('Sorry. An error occurred.');
-            }
-
         }
     }
 }
@@ -1753,23 +1739,10 @@ function checkVars($aVars) {
  */
 function sanitizeParams()
 {
-    global $HTTP_SERVER_VARS;
 
     $array = array();
     $str = '';
     $frontParam = '';
-
-    // REQUEST_URI of $HTTP_SERVER_VARS
-    $str =& $HTTP_SERVER_VARS["REQUEST_URI"];
-    serverStringToArray($str, $array, $frontParam);
-    sanitizeArray($array);
-    arrayToServerString($array, $frontParam, $str);
-
-    // QUERY_STRING of $HTTP_SERVER_VARS
-    $str =& $HTTP_SERVER_VARS["QUERY_STRING"];
-    serverStringToArray($str, $array, $frontParam);
-    sanitizeArray($array);
-    arrayToServerString($array, $frontParam, $str);
 
     if (phpversion() >= '4.1.0') {
         // REQUEST_URI of $_SERVER
@@ -1879,7 +1852,7 @@ function ticketForPlugin() {
         exit('You aren\'t logged in.');
     }
 
-    global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
+    global $manager,$DIR_LIBS,$DIR_LANG;
 
     /* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
     if (!($p_translated=serverVar('PATH_TRANSLATED')))
@@ -1921,9 +1894,7 @@ function ticketForPlugin() {
         echo '<p>' . _ERROR_BADTICKET . "</p>\n";
 
         /* Show the form to confirm action */
-        // PHP 4.0.x support
-        $get=  (isset($_GET))  ? $_GET  : $HTTP_GET_VARS;
-        $post= (isset($_POST)) ? $_POST : $HTTP_POST_VARS;
+        
         // Resolve URI and QUERY_STRING
         if ($uri=serverVar('REQUEST_URI'))
         {
@@ -1947,11 +1918,13 @@ function ticketForPlugin() {
             case 'POST':
                 echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
                 $manager->addTicketHidden();
+                $post= $_POST;
                 _addInputTags($post);
                 break;
             case 'GET':
                 echo '<form method="GET" action="'.hsc($uri).'">';
                 $manager->addTicketHidden();
+                $get=  $_GET;
                 _addInputTags($get);
             default:
                 break;
