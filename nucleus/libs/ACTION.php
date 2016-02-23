@@ -338,6 +338,7 @@ class ACTION
         }
         else
         {
+            global $CONF;
             echo _MSG_ACTIVATION_SENT;
             echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
         }
