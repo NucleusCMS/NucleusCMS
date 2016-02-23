@@ -220,13 +220,13 @@ function listplug_table_pluginlist($template, $type) {
                 if (count($req) > 0) {
                     echo '<h4 class="plugin_dependreq_title">' . _LIST_PLUGS_DEPREQ . "</h4>\n";
                     echo '<p class="plugin_dependreq_text">';
-                    echo hsc(implode(', ', $req), ENT_QUOTES);
+                    echo hsc(implode(', ', $req));
                     echo "</p>\n";
                 }
 // </add by shizuki>
                 echo '</td>';
             } else {
-                echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, hsc($current->pfile, ENT_QUOTES)) . '</td>';
+                echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, hsc($current->pfile)) . '</td>';
             }
             echo '<td style="white-space:nowrap">';
 

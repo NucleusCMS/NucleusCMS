@@ -6571,7 +6571,7 @@ selector();
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
 
-                $this->error(sprintf(_ERROR_INSREQPLUGIN, hsc($pluginName, ENT_QUOTES)));
+                $this->error(sprintf(_ERROR_INSREQPLUGIN, hsc($pluginName)));
             }
         }
 
@@ -6820,7 +6820,7 @@ selector();
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $pluginName = hsc(getPluginNameFromPid($pid), ENT_QUOTES);
+        $pluginName = hsc(getPluginNameFromPid($pid));
         $this->pagehead($extrahead);
 
         ?>

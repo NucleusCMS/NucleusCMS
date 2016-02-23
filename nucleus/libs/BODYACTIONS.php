@@ -80,7 +80,7 @@ class BODYACTIONS extends BaseActions {
         array_shift($params);
 
         // add item reference (array_unshift didn't work)
-        $params = array_merge(array(&$this->currentItem),$params);
+        $params = array_merge(array(&$this->currentItem), $params);
 
         call_user_func_array(array($plugin,'doItemVar'), $params);
     }
@@ -144,8 +144,8 @@ class BODYACTIONS extends BaseActions {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
-        $vars['link']            = hsc($CONF['MediaURL'] . $filename ,ENT_QUOTES);
-        $vars['text']            = hsc($text ,ENT_QUOTES);
+        $vars['link']            = hsc($CONF['MediaURL'] . $filename );
+        $vars['text']            = hsc($text );
         $vars['media']             = '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
         echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
