@@ -18,48 +18,6 @@
  * problems with Opera (which does not seem to be sending form data for input
  * fields which are in a hidden block)
  *
-function initStyles() {
-	hideBlock('more');
-	hideBlock('options');
-	hideBlock('preview');
-	
-	// in browsers that do not support DOM (like opera), the buttons used
-	// to switch tabs are useless and can be hidden
-	document.getElementById('switchbuttons').style.display = 'inline';
-}
-
-/**
- * To be called with id='body','more','options' or 'preview'
- * Hides all other tabs and makes the chosen one visible
- *
-function flipBlock(id) {
-
-	showBlock(id);
-	
-	if (id != 'body')
-		hideBlock('body');
-	if (id != 'more')
-		hideBlock('more');
-	if (id != 'options')
-		hideBlock('options');
-	if (id != 'preview')
-		hideBlock('preview');		
-	
-}
-
-/**
- * Hides one element (tab)
- *
-function hideBlock(id) {
-	document.getElementById(id).style.display = "none";
-}
-
-/**
- * Makes an element (tab) visible
- *
-function showBlock(id) {
-	document.getElementById(id).style.display = "block";
-}
 */
 function help(url) {
 	popup = window.open(url,'helpwindow','status=no,toolbar=yes,scrollbars=yes,resizable=yes,width=500,height=500,top=0,left=0');
