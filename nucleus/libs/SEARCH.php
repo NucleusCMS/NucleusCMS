@@ -71,7 +71,7 @@ class SEARCH {
     function boolean_inclusive_atoms($string) {
         $result = trim($string);
         $result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
-        # replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
+        
         # just added delimiters to regex and the 'i' for case-insensitive matching
         
         /* convert normal boolean operators to shortened syntax */
@@ -149,10 +149,8 @@ class SEARCH {
         $result = trim($string);
         $result = preg_replace("/([[:space:]]{2,})/",' ',$result);
 
-        # replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
         # just added delimiters to regex and the 'i' for case-insensitive matching
 
-        /* convert normal boolean operators to shortened syntax */
         $result = preg_replace('# not #i', ' -', $result);
         $result = preg_replace('# and #i', ' ', $result);
         $result = preg_replace('# or #i', ',', $result);

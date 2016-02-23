@@ -398,12 +398,6 @@ class ACTION
         {
 
             $mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-//            if ($CONF['URLMode'] == 'pathinfo') {
-//                $itemLink = createItemLink(intval($itemid));
-//            } else {
-//                $itemLink = $CONF['IndexURL'] . createItemLink(intval($itemid));
-//            }
-//            $mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
             $itemLink = createItemLink(intval($itemid) );
             $temp = parse_url($itemLink);
 

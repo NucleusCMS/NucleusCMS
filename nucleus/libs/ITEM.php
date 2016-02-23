@@ -468,23 +468,6 @@ class ITEM {
             $itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed, $i_draft);
         }
 
-        // No plugin support in AutoSaveDraft yet
-        //Setting the itemOptions
-        //$aOptions = requestArray('plugoption');
-        //NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
-        $param = array(
-            'context'    => 'item',
-            'itemid'    => $itemid,
-            'item'        => array(
-                'title'        => $i_title,
-                'body'        => $i_body,
-                'more'        => $i_more,
-                'closed'    => $i_closed,
-                'catid'        => $i_catid
-            )
-        );
-        //$manager->notify('PostPluginOptionsUpdate', $param);
-
         // success
         return array('status' => 'added', 'draftid' => $itemid);
     }

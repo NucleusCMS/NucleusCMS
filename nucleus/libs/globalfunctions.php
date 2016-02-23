@@ -290,32 +290,6 @@ if ($action == 'login') {
         $manager->notify('LoginFailed', $param);
         ACTIONLOG::add(INFO, $errormessage);
     }
-/*
-
-Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-
-} elseif (serverVar('PHP_AUTH_USER') && serverVar('PHP_AUTH_PW')) {
-    // HTTP Authentication
-    $login  = serverVar('PHP_AUTH_USER');
-    $pw     = serverVar('PHP_AUTH_PW');
-
-    if ($member->login($login, $pw) ) {
-        $param = array('username' => $login);
-        $manager->notify('LoginSuccess', $param);
-        ACTIONLOG::add(INFO, "HTTP authentication successful for $login");
-    } else {
-        $param = array('username' => $login);
-        $manager->notify('LoginFailed', $param);
-        ACTIONLOG::add(INFO, 'HTTP authentication failed for ' . $login);
-
-        //Since bad credentials, generate an apropriate error page
-        header("WWW-Authenticate: Basic realm=\"Nucleus CMS {$nucleus['version']}\"");
-        header('HTTP/1.0 401 Unauthorized');
-        echo 'Invalid username or password';
-        exit;
-    }
-*/
-
 } elseif (($action == 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
     // remove cookies on logout
     setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
@@ -380,8 +354,6 @@ if (!headers_sent() ) {
 // read language file, only after user has been initialized
 $language = getLanguageName();
 
-# replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-# original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
 # important note that '\' must be matched with '\\\\' in preg* expressions
 
 include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
@@ -600,21 +572,7 @@ function getLatestVersion() {
     $ret = curl_exec($crl);
     curl_close($crl);
     return $ret;
-
 }
-
-/**
-  * Connects to mysql server
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_connect() {
-    global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
-
-    $MYSQL_CONN = mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
-    mysql_select_db($MYSQL_DATABASE) or startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
-
-    return $MYSQL_CONN;
-}*/
 
 /**
  * returns a prefixed nucleus table name
@@ -664,45 +622,6 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
         }
     }
 }
-
-/**
- * Errors before the database connection has been made - moved to
- */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function startUpError($msg, $title) {
-
-
-    ?>
-    <html xmlns="http://www.w3.org/1999/xhtml">
-        <head><title><?php echo hsc($title)?></title></head>
-
-        <body>
-            <h1><?php echo hsc($title)?></h1>
-            <?php echo $msg?>
-        </body>
-    </html>
-    <?php   exit;
-}*/
-
-/**
-  * disconnects from SQL server
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_disconnect() {
-    mysql_close();
-}*/
-
-/**
-  * executes an SQL query
-  */
-/* moved to $DIR_LIBS/sql/*.php handler files
-function sql_query($query) {
-    global $SQLCount;
-    $SQLCount++;
-    $res = mysql_query($query) or print("mySQL error with query $query: " . mysql_error() . '<p />');
-    return $res;
-}*/
-
 
 /**
  * Highlights a specific query in a given HTML text (not within HTML tags) and returns it
@@ -838,7 +757,6 @@ function getPluginNameFromPid($pid) {
     $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
     $obj = sql_fetch_object($res);
     return $obj->pfile;
-//    return isset($obj->pfile) ? $obj->pfile : false;
 }
 
 function selector() {
@@ -1178,18 +1096,10 @@ function getConfig() {
 
 // some checks for names of blogs, categories, templates, members, ...
 function isValidShortName($name) {
-
-    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-    # original eregi: eregi('^[a-z0-9]+$', $name)
-
     return preg_match('#^[a-z0-9]+$#i', $name);
 }
 
 function isValidDisplayName($name) {
-
-    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-    # original eregi: eregi('^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$', $name)
-
     return preg_match('#^[a-z0-9]+[a-z0-9 ]*[a-z0-9]+$#i', $name);
 }
 
@@ -1198,18 +1108,10 @@ function isValidCategoryName($name) {
 }
 
 function isValidTemplateName($name) {
-
-    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-    # original eregi: eregi('^[a-z0-9/]+$', $name)
-
     return preg_match('#^[a-z0-9/]+$#i', $name);
 }
 
 function isValidSkinName($name) {
-
-    # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-    # original eregi: eregi('^[a-z0-9/]+$', $name);
-
     return preg_match('#^[a-z0-9/]+$#i', $name);
 }
 
@@ -1289,8 +1191,6 @@ function selectLanguage($language) {
 
     global $DIR_LANG;
 
-    # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-    # original ereg_replace: preg_replace( '@\\|/@', '', $language) . '.php')
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
@@ -1419,9 +1319,6 @@ function includephp($filename) {
  **/
 function checkLanguage($lang) {
     global $DIR_LANG;
-
-    # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-    # original ereg_replace: ereg_replace( '[\\|/]', '', $lang) . '.php')
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     return file_exists($DIR_LANG . str_replace(array('\\','/'), '', $lang) . '.php');
@@ -1437,8 +1334,6 @@ function checkPlugin($plug) {
 
     global $DIR_PLUGINS;
 
-    # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-    # original ereg_replace: ereg_replace( '[\\|/]', '', $plug) . '.php')
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     return file_exists($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');

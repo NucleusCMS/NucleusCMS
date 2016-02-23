@@ -392,9 +392,6 @@ class COMMENTS {
             return _ERROR_ITEMCLOSED;
         }
 
-        # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-        # original eregi comparison: eregi('[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}', $comment['body']) != FALSE
-
         // don't allow words that are too long
         if (preg_match('/[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}/', $comment['body']) != 0)
         {

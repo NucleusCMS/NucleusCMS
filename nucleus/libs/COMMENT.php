@@ -71,9 +71,6 @@ class COMMENT {
      */
     public static function prepareBody($body) {
 
-        # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-        # original ereg_replace: ereg_replace("\n.\n.\n", "\n", $body);
-
         // convert Windows and Mac style 'returns' to *nix newlines
         $body = preg_replace("/\r\n/", "\n", $body);
         $body = preg_replace("/\r/", "\n", $body);
@@ -141,9 +138,6 @@ class COMMENT {
             $url = substr($url, 0, strlen($url) - 1);
             $post = ',' . $post;
         }
-
-        # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-        # original ereg: ereg('^' . $protocol . '://', $url)
 
         if (!preg_match('#^' . $protocol . '://#', $url) )
         {
