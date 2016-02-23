@@ -150,7 +150,7 @@ class ADMIN {
 
         $this->pagehead();
 
-        echo '<h2>', _LOGIN ,'</h2>';
+        echo '<h2>'. _LOGIN .'</h2>';
         if ($msg) echo _MESSAGE , ': ', hsc($msg);
         ?>
 
@@ -161,7 +161,7 @@ class ADMIN {
         <br />
         <input name="action" value="login" type="hidden" />
         <br />
-        <input type="submit" value="<?php echo _LOGIN?>" tabindex="30" />
+        <input type="submit" value="<?php echo _LOGIN;?>" tabindex="30" />
         <br />
         <small>
             <input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED?></label>
@@ -1883,10 +1883,6 @@ class ADMIN {
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle))
                 {
-
-                    # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-                    # original ereg: ereg("^(.*)\.php$", $filename, $matches)
-
                     if (preg_match('#^(.*)\.php$#', $filename, $matches) )
                     {
                         $name = $matches[1];
@@ -1949,9 +1945,6 @@ class ADMIN {
         $repeatpassword = postVar('repeatpassword');
         $email          = strip_tags(postVar('email'));
         $url            = strip_tags(postVar('url'));
-
-        # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-        # original eregi: !eregi("^https?://", $url)
 
         // begin if: sometimes user didn't prefix the URL with http:// or https://, this cause a malformed URL. Let's fix it.
         if (!preg_match('#^https?://#', $url) )
@@ -2672,7 +2665,7 @@ class ADMIN {
         <form action="index.php" method="post"><div>
         <input name="action" value="categorynew" type="hidden" />
         <?php $manager->addTicketHidden() ?>
-        <input name="blogid" value="<?php echo $blog->getID()?>" type="hidden" />
+        <input name="blogid" value="<?php echo $blog->getID(); ?>" type="hidden" />
 
         <table><tr>
             <th colspan="2"><?php echo _EBLOG_CAT_CREATE?></th>
@@ -4826,10 +4819,6 @@ selector();
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle) )
                 {
-
-                    # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-                    # original ereg: ereg("^(.*)\.php$",$filename,$matches)
-
                     if (preg_match('#^(.*)\.php$#', $filename, $matches) )
                     {
                         $name = $matches[1];
@@ -4930,10 +4919,6 @@ selector();
                     $dirhandle = opendir($DIR_NUCLEUS."styles/");
                 while ($filename = readdir($dirhandle) )
                 {
-
-                    # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-                    # original ereg: ereg("^(.*)\.php$",$filename,$matches)
-
                     if (preg_match('#^admin_(.*)\.css$#', $filename, $matches) )
                     {
                         $name = $matches[1];
@@ -5196,8 +5181,7 @@ selector();
             // Check if special modules are loaded
             ob_start();
             phpinfo(INFO_MODULES);
-            $im = ob_get_contents();
-            ob_clean();
+            $im = ob_get_clean();
             echo "<table>\n";
             echo "\t<tr>";
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
@@ -5360,7 +5344,7 @@ selector();
                 ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
                 . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
         else
-            echo '<a href="index.php?action=showlogin" title="Log in">' , _NOTLOGGEDIN , '</a> <br />';
+            echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
 
         echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
     
@@ -6058,10 +6042,6 @@ selector();
 
         while ($filename = readdir($dirhandle) )
         {
-
-            # replaced ereg() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-            # original ereg: ereg('^NP_(.*)\.php$',$filename,$matches)
-
             if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
             {
                 $name = $matches[1];
@@ -6667,5 +6647,3 @@ selector();
     }
 
 } // class ADMIN
-
-?>
