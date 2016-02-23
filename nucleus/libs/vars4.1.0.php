@@ -14,15 +14,6 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-// Remove $_COOKIE keys in $_REQUEST
-// This is for maintaining the compatibility with PHP 4.0.6
-// and also for avoiding bugs of plugins due to cookie keys
-if (isset($_REQUEST) and isset($_COOKIE)) {
-    foreach($_COOKIE as $key=>$value) {
-        if (isset($_REQUEST[$key])) unset($_REQUEST[$key]);
-    }
-}
-
 function getVar($name) {
     if (!isset($_GET[$name])) {
         return;

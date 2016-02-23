@@ -253,6 +253,11 @@ class SKIN {
         return $output;
     }
 
+    /**
+     * Get content of the skin part from the database
+     * 
+     * @param $type type of the skin (e.g. index, item, search ...)
+     */
     function getContent($type) {
         if(strpos($type, '/')!==false) return '';
         $query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";

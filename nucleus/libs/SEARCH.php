@@ -53,33 +53,33 @@ class SEARCH {
         $this->blogs       = array();
 
         // get all public searchable blogs, no matter what, include the current blog allways.
-        $res = sql_query('SELECT bnumber FROM ' . sql_table('blog') . ' WHERE bincludesearch=1 ');
+        $res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch=1 ');
         while ($obj = sql_fetch_object($res)) {
             $this->blogs[] = intval($obj->bnumber);
         }
     }
 
-    function  boolean_sql_select($match) {
+    function  boolean_sql_select($match){
         if (!isset($stringsum)) {
             $stringsum = '';
         }
         if (strlen($this->inclusive) > 0) {
-            /* build sql for determining score for each record */
-            $result=explode(" ",$this->inclusive);
-            if (!isset($stringsum_long)) {
-                $stringsum_long = '';
-            }
-            for ($cth = 0; $cth < count($result); $cth++) {
-                if (strlen($result[$cth])>=4) {
-                    $stringsum_long .=  " $result[$cth] ";
-                } else {
-                    $stringsum_a[] = ' ' . $this->boolean_sql_select_short($result[$cth], $match) . ' ';
-                }
-            }
+           /* build sql for determining score for each record */
+           $result=explode(" ",$this->inclusive);
+           if (!isset($stringsum_long)) {
+               $stringsum_long = '';
+           }
+           for($cth=0;$cth<count($result);$cth++){
+               if(strlen($result[$cth])>=4){
+                   $stringsum_long .=  " $result[$cth] ";
+               }else{
+                   $stringsum_a[] = ' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
+               }
+           }
 
-            if (strlen($stringsum_long) > 0) {
+           if(strlen($stringsum_long)>0){
                 $stringsum_long = sql_real_escape_string($stringsum_long);
-                $stringsum_a[]  = " match ($match) against ('$stringsum_long') ";
+                $stringsum_a[] = " match ($match) against ('$stringsum_long') ";
            }
 
            $stringsum .= implode("+", $stringsum_a);
@@ -205,7 +205,7 @@ class SEARCH {
     function boolean_sql_select_short($string, $match) {
         $match_a           = explode(',', $match);
         $score_unit_weight = .2;
-        for ($ith = 0; $ith< count($match_a); $ith++){
+        for($ith=0;$ith<count($match_a);$ith++){
             $score_a[$ith] =
                            " $score_unit_weight*(
                            LENGTH(" . sql_real_escape_string($match_a[$ith]) . ") -

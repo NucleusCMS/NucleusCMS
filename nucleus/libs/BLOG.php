@@ -479,8 +479,7 @@ class BLOG {
         if ($sqlquery == '')
         {
             // no query -> show everything
-            $extraquery = '';
-            $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $query, 1, 1);
+            $amountfound = $this->readLogAmount($template, $maxresults, '', $query, 1, 1);
         } else {
 
             // add LIMIT to query (to split search results into pages)
@@ -623,34 +622,28 @@ class BLOG {
     function showArchiveList($template, $mode = 'month', $limit = 0) {
         global $CONF, $catid, $manager;
 
-        if (!isset ($linkparams)) {
-        $linkparams = array();
-        }
-
-        if ($catid) {
-            $linkparams = array('catid' => $catid);
-        }
+        if ($catid) $linkparams = array('catid' => $catid);
+        else        $linkparams = array();
 
         $template =& $manager->getTemplate($template);
+        $data = array();
         $data['blogid'] = $this->getID();
 
         $tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
                                                        : '';
         echo TEMPLATE::fill($tplt, $data);
 
-        $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
+        $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) AS Day FROM '.sql_table('item')
         . ' WHERE iblog=' . $this->getID()
         . ' and itime <=' . mysqldate($this->getCorrectTime())  // don't show future items!
         . ' and idraft=0'; // don't show draft items
 
-        if ($catid)
-            $query .= ' and icat=' . intval($catid);
+        if ($catid)                             $query .= ' AND icat=' . intval($catid);
 
         $query .= ' GROUP BY Year';
-        if ($mode == 'month' || $mode == 'day')
-            $query .= ', Month';
-        if ($mode == 'day')
-            $query .= ', Day';
+        
+        if ($mode == 'month' || $mode == 'day') $query .= ', Month';
+        if ($mode == 'day')                     $query .= ', Day';
 
         $query .= ' ORDER BY itime DESC';
 
@@ -1021,10 +1014,31 @@ class BLOG {
         }
     }
 
+    /**
+      * Get the the setting for the line break handling
+      * [should be named as getConvertBreaks()]
+      */
     function convertBreaks() {
         return $this->getSetting('bconvertbreaks');
     }
+    
+    /**
+      * Set the the setting for the line break handling
+      * 
+      * @param $val
+      *     new value for bconvertbreaks
+      */
+    function setConvertBreaks($val) {
+        $this->setSetting('bconvertbreaks',$val);
+    }
 
+    /**
+      * Insert a javascript that includes information about the settings
+      * of an author:  ConvertBreaks, MediaUrl and AuthorId
+      * 
+      * @param $authorid
+      *     id of the author
+      */    
     function insertJavaScriptInfo($authorid = '') {
         global $member, $CONF;
 
@@ -1040,12 +1054,20 @@ class BLOG {
 <?php
     }
 
-    function setConvertBreaks($val) {
-        $this->setSetting('bconvertbreaks',$val);
-    }
+    /**
+      * Set the the setting for allowing to publish postings in the past
+      * 
+      * @param $val
+      *     new value for ballowpast
+      */
     function setAllowPastPosting($val) {
         $this->setSetting('ballowpast',$val);
     }
+    
+    /**
+      * Get the the setting if it is allowed to publish postings in the past
+      * [should be named as getAllowPastPosting()]
+      */
     function allowPastPosting() {
         return $this->getSetting('ballowpast');
     }
