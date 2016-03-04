@@ -109,12 +109,10 @@ class NP_SkinFiles extends NucleusPlugin {
 	
 	public function event_AdminPrePageHead(&$data) {
 		global $CONF;
-		$path = $CONF['PluginURL'];
 		if ($data['action'] != 'plugin_SkinFiles') {
 			return;
 		}
-		
-		$data['extrahead'] .= '<link rel="stylesheet" type="text/css" href="{$path}skinfiles/style.css" />';
+		$data['extrahead'] .= sprintf('<link rel="stylesheet" type="text/css" href="%sskinfiles/style.css" />',$CONF['PluginURL']);
 	}
 	
 	public function event_PrePluginOptionsEdit($data) {
