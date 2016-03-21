@@ -445,9 +445,7 @@ class BATCH extends ENCAPSULATE {
     // shortcut :)
     function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
     {
-        $call = 'showlist';
         $params = array($query, $type, $template);
-        return $this->doEncapsulate($call, $params, $errorMessage);
+        return $this->doEncapsulate('showlist', $params, $errorMessage);
     }
 }
-?>
