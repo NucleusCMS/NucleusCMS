@@ -1409,7 +1409,8 @@ class ADMIN {
             );
         } else {
             // TODO: set start item correctly for itemlist
-            $this->action_itemedit();
+            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);
+            exit;
         }
     }
 
@@ -5386,9 +5387,8 @@ selector();
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
         // to have to log in again.
-        getConfig();
-        //redirect($CONF['AdminURL'] . '?action=settingsedit');
-        $this->action_settingsedit(_MSG_SETTINGSCHANGED);
+        redirect($CONF['AdminURL'] . '?action=settingsedit');
+        // $this->action_settingsedit(_MSG_SETTINGSCHANGED);
     }
 
     /**
