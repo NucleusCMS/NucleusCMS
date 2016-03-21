@@ -64,27 +64,27 @@ class SEARCH {
             $stringsum = '';
         }
         if (strlen($this->inclusive) > 0) {
-           /* build sql for determining score for each record */
-           $result=explode(" ",$this->inclusive);
-           if (!isset($stringsum_long)) {
-               $stringsum_long = '';
-           }
-           for($cth=0;$cth<count($result);$cth++){
-               if(strlen($result[$cth])>=4){
-                   $stringsum_long .=  " $result[$cth] ";
-               }else{
-                   $stringsum_a[] = ' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
-               }
-           }
+            /* build sql for determining score for each record */
+            $result=explode(" ",$this->inclusive);
+            if (!isset($stringsum_long)) {
+                $stringsum_long = '';
+            }
+            for ($cth = 0; $cth < count($result); $cth++) {
+                if (strlen($result[$cth])>=4) {
+                    $stringsum_long .=  " $result[$cth] ";
+                } else {
+                    $stringsum_a[] = ' ' . $this->boolean_sql_select_short($result[$cth], $match) . ' ';
+                }
+            }
 
-           if(strlen($stringsum_long)>0){
+            if (strlen($stringsum_long) > 0) {
                 $stringsum_long = sql_real_escape_string($stringsum_long);
-                $stringsum_a[] = " match ($match) against ('$stringsum_long') ";
-           }
+                $stringsum_a[]  = " match ($match) against ('$stringsum_long') ";
+            }
 
-           $stringsum .= implode("+", $stringsum_a);
+            $stringsum .= implode("+", $stringsum_a);
 
-           return $stringsum;
+            return $stringsum;
         }
     }
 
@@ -109,7 +109,7 @@ class SEARCH {
         
         /* strip exlusive atoms */
         $result = preg_replace(
-"#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
+            "#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
             '',
             $result);
         
