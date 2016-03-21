@@ -353,6 +353,7 @@ define('_EBLOG_CURRENT_TEAM_MEMBER',				'このブログチームの現在のメ
 
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
+define('_LANG_CODE',		'ja');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'日本語 - 日本語 (UTF-8)');

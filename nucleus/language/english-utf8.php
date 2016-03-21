@@ -358,6 +358,7 @@ define('_EBLOG_CURRENT_TEAM_MEMBER',				'Members currently on your team:');
 
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
+define('_LANG_CODE',		'en');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'Japanese - &#26085;&#26412;&#35486; (UTF-8)');

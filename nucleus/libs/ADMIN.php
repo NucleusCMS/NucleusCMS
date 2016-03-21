@@ -5639,11 +5639,11 @@ selector();
 
         $baseUrl = hsc($CONF['AdminURL']);
         ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+<!DOCTYPE html>
+<html lang="<?php echo _LANG_CODE; ?>">
 <head>
     <base href="<?php echo $CONF['AdminURL'];?>" />
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+    <meta charset=<?php echo _CHARSET ?>" />
     <meta name="robots" content="noindex, nofollow" />
     <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
