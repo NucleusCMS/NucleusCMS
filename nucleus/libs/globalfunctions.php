@@ -771,7 +771,7 @@ function parseHighlight($query) {
     // TODO: add more intelligent splitting logic
 
     // get rid of quotes
-    $query = preg_replace('/\'|"/', '', $query);
+    $query = str_replace(array("'",'/'), '', $query);
 
     if (!$query) {
         return array();
@@ -1274,7 +1274,6 @@ function shorten($text, $maxlength, $toadd) {
 
     // 2. the actual shortening
     if (strlen($text) > $maxlength) {
-//        $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
         $text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET); // for Japanese
     }
 
@@ -1340,7 +1339,7 @@ function selectLanguage($language) {
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
+    include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 }
 
@@ -1474,7 +1473,7 @@ function includephp($filename) {
     // other
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
-    if (@file_exists($filename) ) {
+    if (@is_file($filename) ) {
         include_once($filename);
     }
 }
@@ -1487,7 +1486,9 @@ function includephp($filename) {
 function checkLanguage($lang) {
     global $DIR_LANG;
     # important note that '\' must be matched with '\\\\' in preg* expressions
-    return file_exists($DIR_LANG . preg_replace('#[\\\\|/]#', '', $lang) . '.php');
+
+    return is_file($DIR_LANG . str_replace(array('\\','/'), '', $lang) . '.php');
+
 }
 
 /**
@@ -1501,7 +1502,7 @@ function checkPlugin($plug) {
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    return file_exists($DIR_PLUGINS . preg_replace('#[\\\\|/]#', '', $plug) . '.php');
+    return is_file($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
 
 }
 
@@ -1543,10 +1544,10 @@ function createLink($type, $params) {
 
     if ($usePathInfo) {
         $param = array(
-            'type'        =>  $type,
+            'type'      =>  $type,
             'params'    =>  $params,
-            'completed'    => &$created,
-            'url'        => &$url
+            'completed' => &$created,
+            'url'       => &$url
         );
         $manager->notify('GenerateURL', $param);
     }
@@ -2055,9 +2056,6 @@ function ticketForPlugin(){
         echo '<p>' . _ERROR_BADTICKET . "</p>\n";
 
         /* Show the form to confirm action */
-        // PHP 4.0.x support
-        $get=  (isset($_GET))  ? $_GET  : $HTTP_GET_VARS;
-        $post= (isset($_POST)) ? $_POST : $HTTP_POST_VARS;
         // Resolve URI and QUERY_STRING
         if ($uri=serverVar('REQUEST_URI'))
         {
@@ -2081,11 +2079,13 @@ function ticketForPlugin(){
             case 'POST':
                 echo '<form method="POST" action="'.hsc($uri.$qstring).'">';
                 $manager->addTicketHidden();
+                $post= $_POST;
                 _addInputTags($post);
                 break;
             case 'GET':
                 echo '<form method="GET" action="'.hsc($uri).'">';
                 $manager->addTicketHidden();
+                $get=  $_GET;
                 _addInputTags($get);
             default:
                 break;
