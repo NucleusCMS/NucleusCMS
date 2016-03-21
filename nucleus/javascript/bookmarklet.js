@@ -12,13 +12,6 @@
   *
   */
 
-/**
- * On browsers that have DOM support, the non-visible tabs of the bookmarklet are 
- * initially hidden. This is not defined in the CSS stylesheet since this causes 
- * problems with Opera (which does not seem to be sending form data for input
- * fields which are in a hidden block)
- *
-*/
 function help(url) {
 	popup = window.open(url,'helpwindow','status=no,toolbar=yes,scrollbars=yes,resizable=yes,width=500,height=500,top=0,left=0');
 	if (popup.focus) popup.focus();
