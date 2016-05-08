@@ -30,7 +30,47 @@
 	-- Start Of Configurable Part --
 */
 
-include('./install_lang_english.php');
+/****************************************
+ * modified part of the installation file.
+ *
+ * Auto-detection of the browser actual language
+ *
+ * Language codes in array $aLanguages need to be on two digits
+ * These digits are those of the ISO 639-1 country codes
+ *
+ * Usage example : $lang = autoSelectLanguage(array('fr','en','es','it','de'), 'en')
+ * The $lng_list can be extended with new country codes as the corresponding translations are done.
+ * each new translation file name must be in the pattern 'install_lang_??.php' where ?? is the country code.
+ *
+ * based on the function available at
+ *         http://www.apprendre-php.com/portions-de-script/script-23-dtection-automatique-de-la-langue-du-navigateur.html
+ * original @author Hugo Hamon
+ * original @version 0.1
+ * added here and slightly modified by Olivier Hammam
+ *
+ */
+
+$lng_list = array('en','fr');
+$lang = autoSelectLanguage($lng_list, 'fr');
+
+function autoSelectLanguage($aLanguages, $sDefault = 'en') {
+  if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    $aBrowserLanguages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
+    foreach($aBrowserLanguages as $sBrowserLanguage) {
+      $sLang = strtolower(substr($sBrowserLanguage,0,2));
+      if(in_array($sLang, $aLanguages)) {
+        return $sLang;
+      }
+    }
+  }
+  return $sDefault;
+  }
+
+include('./install_lang_'.$lang.'.php');
+
+// chmod('config.php', 0664);
+// chmod('media', 0775);
+// chmod('skins', 0775);
 
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
