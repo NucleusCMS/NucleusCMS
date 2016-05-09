@@ -1525,7 +1525,8 @@
 		}
 		$name = str_replace('\\','/',$name); // Avoid using "\" in Windows.
 		$name = rtrim($name, '/'); 
-		$name = (function_exists('mb_split')) ? end(mb_split("/",$name)) : end(explode("/",$name));
+		$name = (function_exists('mb_split')) ? mb_split("/",$name) : explode("/",$name);
+        $name = end($name); // Only variables can be passed by reference
 		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {
 			$name = mb_convert_encoding($name , _CHARSET , "UTF-8");
 		}
