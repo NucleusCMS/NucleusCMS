@@ -628,9 +628,13 @@ class SKIN {
             if (!is_file($filename))
                 return $text;
             $xml = simplexml_load_file($filename);
-            if (!$xml)
+
+            if (!$xml || !method_exists( $xml , 'children' ))
                 return $text;
             foreach ($xml->children() as $text_node) {
+                if (!is_object( $text_node ) || !method_exists( $text_node , 'getName' ))
+                    return $text;
+
                 if ($text_node->getName() != 'text')
                     continue;
                 $keyname = '';
