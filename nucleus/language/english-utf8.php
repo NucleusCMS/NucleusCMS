@@ -22,6 +22,12 @@
  */
 
 /********************************************
+ *        Start New for 3.7?                *
+ ********************************************/
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',        'Failed to Load XML');
+
+/********************************************
  *        Start New for 3.71                *
  ********************************************/
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
