@@ -17,6 +17,11 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+/********************************************
+ *        Start New for 3.7?                *
+ ********************************************/
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
 
 /********************************************
  *        Start New for 3.71                *

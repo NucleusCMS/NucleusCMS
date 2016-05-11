@@ -116,8 +116,16 @@ class SKINIMPORT {
  *                     Took this out since it messes up good XML if it has skins/templates
  *                     with CDATA sections. need to investigate consequences.
  *                     see bug [ 999914 ] Import fails (multiple skins in XML/one of them with CDATA)
+ * [2016/05/11]    Modified by piyoyo
+ *                     xml_parse : parce error occured from PHP 7.0.3(to 7.0.6) and later
+ *                     add readFileWithSimpleXML function
  */
     function readFile($filename, $metaOnly = 0) {
+        // php bug (windows) : php 7.0.3 and later : xml_parse will be parce error
+        if (version_compare(PHP_VERSION, '7.0.3', '>=')) {
+            return $this->readFileWithSimpleXML($filename, $metaOnly);
+        }
+
         // open file
         $this->fp = @fopen($filename, 'r');
         if (!$this->fp) {
@@ -462,7 +470,140 @@ class SKINIMPORT {
 
     }
 
+    function convValue($text)
+    {
+        static $flag = -1;
+        if ($flag == 0)
+            return (string) $text;
+        if ($flag == -1)
+        {
+            if ( (strtoupper(_CHARSET) == 'UTF-8')
+                or (strtoupper(_CHARSET) == 'ISO-8859-1')
+                or (!function_exists('mb_convert_encoding')) ) {
+                $flag = 0;
+            } else {
+                $flag = 1;
+            }
+        }
+        if ($flag == 1)
+            return mb_convert_encoding((string) $text, _CHARSET, 'UTF-8');
+        return (string) $text;
+    }
 
+    function readFileWithSimpleXML($filename, $metaOnly = 0)
+    {
+        unset($this->skins, $this->templates);
+        $this->skins = array();
+        $this->templates = array();
+
+        $src_text = @file_get_contents($filename);
+        if ($src_text === FALSE) {
+            return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
+        }
+
+        if (function_exists('mb_convert_encoding') && (strtoupper(_CHARSET) != 'ISO-8859-1')) {
+            mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
+            $temp_encode = mb_detect_encoding($src_text);
+        } else {
+            $temp_encode = null;
+        }
+
+        if ( (strtoupper($temp_encode) == 'UTF-8')
+            or (strtoupper($temp_encode) == 'ISO-8859-1')
+            or (!function_exists('mb_convert_encoding')) ) {
+            $xml = simplexml_load_string($src_text);
+        } else {
+            $xml = simplexml_load_string(mb_convert_encoding($src_text, 'UTF-8', $temp_encode));
+        }
+        unset($src_text);
+
+        if ($xml === FALSE) {
+            return _SKINIE_ERROR_FAILEDLOAD_XML;
+        }
+
+        if ($metaOnly)
+            $parents = array('meta');
+          else
+            $parents = array('meta', 'skin', 'template');
+
+        $data = array();
+        foreach($parents as $parent)
+        {
+          if ('meta' == $parent)
+          {
+              if (isset($data[$parent])) continue;
+              $data[$parent] = array();
+              $meta = $xml->xpath('/nucleusskin/meta');
+
+              if ($meta)
+              foreach($meta[0] as $child) {
+                  $name = $child->getName();
+                  if ('info' == $name)
+                  {
+                      $data[$parent][$name] = $this->convValue((string ) $child);
+                      $this->info =& $data[$parent][$name];
+                  }
+                  else
+                  { // skin template
+                      foreach($child->attributes() as $k => $v)
+                      {
+                          if ('name' == $k)
+                              $data[$parent][$name][] = (string ) $v;
+                     }
+                  }
+                 if ($metaOnly)
+                 {
+                      if (isset($data[$parent]['skin']))
+                      {
+                          foreach ($data[$parent]['skin'] as $v)
+                              $this->skins[$v] = '';
+                      }
+                      if (isset($data[$parent]['template']))
+                      {
+                          foreach ($data[$parent]['template'] as $v)
+                              $this->templates[$v] = '';
+                      }
+                 }
+              }
+              continue;
+          }
+          // skin template
+          $xml_first = $xml->xpath('/nucleusskin/'.$parent);
+          if (!$xml_first) continue;
+              foreach($xml_first as $child) {
+                  $item = array();
+                  $name = $child->getName(); // skin template
+                  $attributes = array();
+                  foreach($child->attributes() as $k => $v)
+                      $attributes[$k] = (string ) $v;
+                  $current_name = @$attributes['name'];
+
+                  $description = $child->xpath('description');
+                  $item['description'] = ($description ? $this->convValue((string ) $description[0]) : '');
+
+                  $parts = $child->xpath('part');
+                  foreach($parts as $part) {
+                      $attr = array();
+                      foreach($part->attributes() as $k => $v)
+                          $attr[$k] = (string ) $v;
+                      $part_name = @$attr['name'];
+                      $item['parts'][$part_name] = $this->convValue((string ) $part);
+                  }
+                  foreach(array('type','includeMode','includePrefix') as $a)
+                     $item[$a] = isset($attributes[$a]) ? $attributes[$a] : '';
+
+                  $data[$parent][$current_name] = $item;
+              }
+        }
+
+        if (!$metaOnly)
+        {
+            $this->skins =& $data['skin'];
+            $this->templates =& $data['template'];
+        }
+        ksort($this->skins);
+        ksort($this->templates);
+    }
 }
 
 
@@ -545,6 +686,11 @@ class SKINEXPORT {
             header('Expires: 0');
             header('Pragma: no-cache');
         }
+
+
+        // sort by skinname , templatename
+        asort($this->skins);
+        asort($this->templates);
 
         echo "<nucleusskin>\n";
 
