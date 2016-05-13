@@ -6646,4 +6646,35 @@ selector();
             echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
     }
 
+    function checkSecurityRisk() {
+        global $CONF;
+
+        if ($CONF['alertOnSecurityRisk'] == 1)
+        {
+            // check if files exist and generate an error if so
+            $aFiles = array(
+                '../install.sql' => _ERRORS_INSTALLSQL,
+                '../install.php' => _ERRORS_INSTALLPHP,
+                '../install' => _ERRORS_INSTALLDIR,
+                'upgrades'   => _ERRORS_UPGRADESDIR,
+                'convert'    => _ERRORS_CONVERTDIR
+            );
+            $aFound = array();
+            foreach($aFiles as $fileName => $fileDesc)
+            {
+                if (@file_exists($fileName))
+                    array_push($aFound, $fileDesc);
+            }
+            if (@is_writable('../config.php')) {
+                array_push($aFound, _ERRORS_CONFIGPHP);
+            }
+            if (count($aFound) > 0)
+            {
+                startUpError(
+                    _ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
+                    _ERRORS_STARTUPERROR3
+                );
+            }
+        }
+    }
 } // class ADMIN
