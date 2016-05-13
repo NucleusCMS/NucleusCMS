@@ -111,13 +111,7 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 	$CONF['installscript'] = 1;
 }
 
-// compatibility script for php < 4.1.0
-// ToDo: remove this here and from the core
-if (phpversion() >= '4.1.0') {
-	include_once('nucleus/libs/vars4.1.0.php');
-} else {
-	include_once('nucleus/libs/vars4.0.6.php');
-}
+include_once('nucleus/libs/vars4.1.0.php');
 
 // include core classes that are needed for login & plugin handling
 include_once('nucleus/libs/mysql.php');
