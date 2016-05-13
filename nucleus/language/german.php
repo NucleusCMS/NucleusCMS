@@ -77,13 +77,12 @@ define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging w
 define('_UPDATEDPING_MESSAGE',						'<h2>Website aktualisiert, jetzt werden verschiedene Weblog Sservices angepingt...</h2><p>This can take a while...</p><p>If you aren\'t automatically passed through, ');
 define('_UPDATEDPING_GOPINGPAGE',					'nocheinmal versuchen');
 define('_UPDATEDPING_PINGING',						'Pinging Services, bitte warten ...');
-define('_UPDATEDPING_VIEWITEM',						'Siehe Liste f¸r aktuelle Artikel f¸r ');
+define('_UPDATEDPING_VIEWITEM',						'Siehe Liste fÅE aktuelle Artikel fÅE ');
 define('_UPDATEDPING_VISITOWNSITE',					'Besuchen Sie Ihre Website');
 define('_UPDATEDPING_GOSENDPING',					'Sende Update Ping');
 
 // ADMIN.php systemoverview()
 define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'System info');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP und MySQL');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'Versionen');
 define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP Version');
 define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL Version');
