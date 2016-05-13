@@ -143,10 +143,10 @@ if ($MYSQL_HANDLER[0] == '')
     $MYSQL_HANDLER[0] = 'mysql';
 include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
-include($DIR_LIBS . 'MEMBER.php');
-include($DIR_LIBS . 'ACTIONLOG.php');
-include($DIR_LIBS . 'MANAGER.php');
-include($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'MEMBER.php');
+include_once($DIR_LIBS . 'ACTIONLOG.php');
+include_once($DIR_LIBS . 'MANAGER.php');
+include_once($DIR_LIBS . 'PLUGIN.php');
 
 $manager =& MANAGER::instance();
 
@@ -163,7 +163,7 @@ if (!isset($CONF['UsingAdminArea'])) {
 
 // only needed when updating logs
 if ($CONF['UsingAdminArea']) {
-    include($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
+    include_once($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
     include_once($DIR_LIBS . 'ADMIN.php');
 }
 
@@ -335,19 +335,19 @@ $param = array();
 $manager->notify('PreLoadMainLibs', $param);
 
 // load other classes
-include($DIR_LIBS . 'PARSER.php');
-include($DIR_LIBS . 'SKIN.php');
-include($DIR_LIBS . 'TEMPLATE.php');
-include($DIR_LIBS . 'BLOG.php');
-include($DIR_LIBS . 'BODYACTIONS.php');
-include($DIR_LIBS . 'COMMENTS.php');
-include($DIR_LIBS . 'COMMENT.php');
-//include($DIR_LIBS . 'ITEM.php');
-include($DIR_LIBS . 'NOTIFICATION.php');
-include($DIR_LIBS . 'BAN.php');
-include($DIR_LIBS . 'PAGEFACTORY.php');
-include($DIR_LIBS . 'SEARCH.php');
-include($DIR_LIBS . 'entity.php');
+include_once("{$DIR_LIBS}PARSER.php");
+include_once("{$DIR_LIBS}SKIN.php");
+include_once("{$DIR_LIBS}TEMPLATE.php");
+include_once("{$DIR_LIBS}BLOG.php");
+include_once("{$DIR_LIBS}BODYACTIONS.php");
+include_once("{$DIR_LIBS}COMMENTS.php");
+include_once("{$DIR_LIBS}COMMENT.php");
+//include_once("{$DIR_LIBS}ITEM.php");
+include_once("{$DIR_LIBS}NOTIFICATION.php");
+include_once("{$DIR_LIBS}BAN.php");
+include_once("{$DIR_LIBS}PAGEFACTORY.php");
+include_once("{$DIR_LIBS}SEARCH.php");
+include_once("{$DIR_LIBS}entity.php");
 
 
 // set lastVisit cookie (if allowed)
@@ -364,7 +364,7 @@ $language = getLanguageName();
 
 # important note that '\' must be matched with '\\\\' in preg* expressions
 
-include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
@@ -1230,7 +1230,7 @@ function selectLanguage($language) {
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+    include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 }
 
@@ -1345,7 +1345,7 @@ function includephp($filename) {
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
     if (file_exists($filename) ) {
-        include($filename);
+        include_once($filename);
     }
 }
 
@@ -1816,8 +1816,8 @@ function ticketForPlugin() {
             # original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
             # important note that '\' must be matched with '\\\\' in preg* expressions
 
-            include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
-            include($DIR_LIBS . 'PLUGINADMIN.php');
+            include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+            include_once($DIR_LIBS . 'PLUGINADMIN.php');
         }
         
         $oPluginAdmin = new PluginAdmin($plugin_name);
