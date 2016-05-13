@@ -387,7 +387,7 @@ class MEMBER {
 
         // send mail
 
-        @mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
+        @Utils::mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
 
         ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
 
