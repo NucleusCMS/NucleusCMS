@@ -167,9 +167,8 @@ class MEMBER {
       * (returns false if not a team member)
       */
     function isBlogAdmin($blogid) {
-        $query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
-               . ' tblog=' . intval($blogid)
-               . ' and tmember='. $this->getID();
+        $query = sprintf('SELECT tadmin FROM %s WHERE tblog=%d and tmember=%d',
+                          sql_table('team'), intval($blogid), $this->getID());
         $res = sql_query($query);
         if (sql_num_rows($res) == 0)
             return 0;
@@ -701,6 +700,10 @@ class MEMBER {
         $canlogin = intval($canlogin);
         $notes = sql_real_escape_string($notes);
         
+//        if (($admin) && !($canlogin)) {
+//            return _ERROR;
+//        }
+
         $query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
                . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
         sql_query($query);
@@ -832,6 +835,8 @@ class MEMBER {
      */
     public static function cleanupActivationTable()
     {
+        global $CONF, $DIR_LIBS;
+
         $actdays = 2;
         if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
             $actdays = intval($CONF['ActivationDays']);
@@ -844,6 +849,7 @@ class MEMBER {
         // 1. walk over all entries, and see if special actions need to be performed
         $res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
 
+        if ($res)
         while ($o = sql_fetch_object($res))
         {
             switch ($o->vtype)

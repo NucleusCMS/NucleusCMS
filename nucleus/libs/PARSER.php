@@ -91,11 +91,7 @@ class PARSER {
             $params = explode ($this->pdelim, $params);
 
             // trim parameters
-            // for PHP versions lower than 4.0.6:
-            //   - add // before '$params = ...'
-            //   - remove // before 'foreach'
-            $params = array_map('trim',$params);
-            // foreach ($params as $key => $value) { $params[$key] = trim($value); }
+             foreach ($params as $key => $value) { $params[$key] = trim($value); }
         } else {
             // no parameters
             $params = array();
@@ -104,7 +100,10 @@ class PARSER {
         $actionlc = strtolower($action);
 
         // skip execution of skinvars while inside an if condition which hides this part of the page
-        if (!$this->handler->if_currentlevel && ($actionlc != 'else') && ($actionlc != 'elseif') && ($actionlc != 'endif') && ($actionlc != 'ifnot') && ($actionlc != 'elseifnot') && (substr($actionlc,0,2) != 'if'))
+        if (!$this->handler->if_currentlevel
+            && ($actionlc != 'else') && ($actionlc != 'elseif')
+            && ($actionlc != 'endif') && ($actionlc != 'ifnot')
+            && ($actionlc != 'elseifnot') && (substr($actionlc,0,2) != 'if'))
             return;
 
         if ( in_array($actionlc, $this->actions) || $this->norestrictions )

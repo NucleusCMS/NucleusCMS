@@ -1183,7 +1183,10 @@ function shorten($text, $maxlength, $toadd) {
 
     // 2. the actual shortening
     if (strlen($text) > $maxlength) {
-        $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
+        if (function_exists('mb_strimwidth'))
+            $text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET);
+        else
+            $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
 
     }
 
@@ -1689,19 +1692,14 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
 function checkVars($aVars) {
 
     foreach ($aVars as $varName) {
-
-        if (phpversion() >= '4.1.0') {
-
-            if (   isset($_GET[$varName])
-                || isset($_POST[$varName])
-                || isset($_COOKIE[$varName])
-                || isset($_ENV[$varName])
-                || isset($_SESSION[$varName])
-                || isset($_FILES[$varName])
-            ) {
-                die('Sorry. An error occurred.');
-            }
-
+        if (   isset($_GET[$varName])
+            || isset($_POST[$varName])
+            || isset($_COOKIE[$varName])
+            || isset($_ENV[$varName])
+            || isset($_SESSION[$varName])
+            || isset($_FILES[$varName])
+        ) {
+            die('Sorry. An error occurred.');
         }
     }
 }
@@ -2215,7 +2213,7 @@ function ifset(&$var) {
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-    $query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
+    $query = sprintf("SELECT COUNT(*) as count FROM %s WHERE event='%s'", sql_table('plugin_event'), $event);
     $res = sql_query($query);
     $obj = sql_fetch_object($res);
     return $obj->count;

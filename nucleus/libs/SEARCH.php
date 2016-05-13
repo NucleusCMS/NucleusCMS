@@ -45,6 +45,7 @@ class SEARCH {
 
     function  boolean_sql_select($match){
         if (strlen($this->inclusive) > 0) {
+           $stringsum_long = '';
            /* build sql for determining score for each record */
            $result=explode(" ",$this->inclusive);
            for($cth=0;$cth<count($result);$cth++){
@@ -60,7 +61,7 @@ class SEARCH {
                 $stringsum_a[] = " match ($match) against ('$stringsum_long') ";
            }
 
-           $stringsum .= implode("+", $stringsum_a);
+           $stringsum = implode("+", $stringsum_a);
 
            return $stringsum;
         }
@@ -94,6 +95,9 @@ class SEARCH {
         $result = str_replace('(', ' ', $result);
         $result = str_replace(')', ' ', $result);
         $result = str_replace(',', ' ', $result);
+//        if (strtolower(_CHARSET) != 'utf-8' && function_exists('mb_convert_encoding')) {
+//            $result = mb_convert_encoding($result, _CHARSET, "UTF-8");
+//        }
 
         return $result;
     }

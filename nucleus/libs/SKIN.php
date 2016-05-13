@@ -220,7 +220,8 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
-        $query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
+        if(strpos($type, '/')!==false) return '';
+        $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         $res = sql_query($query);
 
         if (sql_num_rows($res) == 0)

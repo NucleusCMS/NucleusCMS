@@ -184,9 +184,9 @@ function showInstallForm() {
 
 <?php
 	echo phpversion();
-	$minVersion = '4.0.6';
+	$minVersion = '5.0.6';
 
-	if (phpversion() < $minVersion) {
+	if (version_compare(phpversion(), $minVersion, '<')) {
 		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
 	} elseif (phpversion() < '5') {
 		echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';

@@ -2647,6 +2647,7 @@ class ADMIN {
         <?php
             $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
             $aMemberNames = array();
+            if ($res)
             while ($o = sql_fetch_object($res))
                 array_push($aMemberNames, hsc($o->mname) . ' (' . hsc($o->mrealname). ')');
             echo implode(',', $aMemberNames);
@@ -3664,7 +3665,7 @@ class ADMIN {
 
         <p><?php echo sprintf(_BLOGCREATED_SIMPLEDESC2, hsc($bshortname)) ?></p>
 <pre><code>&lt;?php
-
+$CONF = array();
 $CONF['Self'] = '<b><?php echo hsc($bshortname)?>.php</b>';
 
 include('<i>./config.php</i>');
