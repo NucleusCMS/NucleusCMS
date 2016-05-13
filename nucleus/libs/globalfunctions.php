@@ -563,7 +563,29 @@ function getNucleusPatchLevel() {
  * e.g. 3.41 or 3.41/02
  */
 function getLatestVersion() {
+    global $CONF;
+
     if (!function_exists('curl_init')) return false;
+
+    // response version text ,  last request time
+    foreach(array('LatestVerText','LatestVerReqTime') as $key)
+    if (!array_key_exists($key,$CONF))
+    {
+        // `name`  varchar(20)
+        $query = sprintf("INSERT INTO %s (name,value) VALUES ('%s', '')", sql_table('config'), sql_real_escape_string($key));
+        sql_query($query);
+        $CONF[$key] = '';
+    }
+
+    $t = (!empty($CONF['LatestVerReqTime']) ? intval($CONF['LatestVerReqTime']):0);
+    $l_ver = (!empty($CONF['LatestVerText']) ? $CONF['LatestVerText']:'');
+    $elapsed_time = time()-$t;
+    // cache 180 minutes ,
+    if ($t>0 && ($elapsed_time > -60) && ($elapsed_time<60*180))
+    {
+        return $l_ver;
+    }
+
     $crl = curl_init();
     $timeout = 5;
     curl_setopt ($crl, CURLOPT_URL,'http://nucleuscms.org/version_check.php');
@@ -571,6 +593,13 @@ function getLatestVersion() {
     curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
     $ret = curl_exec($crl);
     curl_close($crl);
+
+    if (empty($ret))
+        $ret = '';
+
+    ADMIN::updateConfig('LatestVerText', $ret);
+    ADMIN::updateConfig('LatestVerReqTime', strval(time()) );
+
     return $ret;
 }
 

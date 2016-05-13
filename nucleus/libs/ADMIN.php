@@ -5255,7 +5255,7 @@ selector();
     /**
      * @todo document this
      */
-    function updateConfig($name, $val) {
+    static function updateConfig($name, $val) {
         $name = sql_real_escape_string($name);
         $val = trim(sql_real_escape_string($val));
 
