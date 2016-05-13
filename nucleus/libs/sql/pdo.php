@@ -30,12 +30,19 @@ if (!function_exists('sql_fetch_assoc'))
  * Errors before the database connection has been made
  */
     function startUpError($msg, $title) {
+        if (!defined('_CHARSET')) {
+            define('_CHARSET', 'UTF-8');
+        }
+        if (!defined('_HTML_XML_NAME_SPACE_AND_LANG_CODE')) {
+            define('_HTML_XML_NAME_SPACE_AND_LANG_CODE', 'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
+        }
+        sendContentType('text/html','',_CHARSET);
         ?>
-<html xmlns="http://www.w3.org/1999/xhtml">
-    <head>
-    <title><?php echo hsc($title)?></title></head>
+<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+    <head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
+    <title><?php echo hsc($title,ENT_QUOTES)?></title></head>
     <body>
-        <h1><?php echo hsc($title)?></h1>
+        <h1><?php echo hsc($title,ENT_QUOTES)?></h1>
         <?php echo $msg?>
     </body>
 </html>
