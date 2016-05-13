@@ -27,6 +27,8 @@ define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
 
 define('_TEAM_NO_SELECTABLE_MEMBERS',         'team does not have selectable members');
 
+define('_LISTS_FORM_SELECT_ALL_CATEGORY',    'All categories');
+
 define('_LISTS_ITEM_COUNT',      'Item count');
 define('_LISTS_ORDER',           'order');
 

@@ -373,6 +373,13 @@ class ADMIN {
                . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
                . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 
+        $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+        if ($request_catid > 0)
+          {
+              //  @todo NP_MultipleCategories
+              $query .= ' and icat= '.$request_catid;
+          }
+
         if ($search)
             $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
@@ -1034,6 +1041,12 @@ class ADMIN {
         $query =  'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime'
                . ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
                . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
+
+        $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+        if ($request_catid > 0)
+          {
+              $query .= ' and icat= '.$request_catid;
+          }
 
         if ($search)
             $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
