@@ -91,15 +91,32 @@ class BaseActions {
      */
     function parse_parsedinclude($filename) {
         // check current level
-        if ($this->level > 3) return;    // max. depth reached (avoid endless loop)
+        if ($this->level > 3)
+            return;    // max. depth reached (avoid endless loop)
+        global $skinid;
+        $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
-        if (!file_exists($file)) return;
+        if (!$skin->isValid && !file_exists($file))
+            return;
+        $contents = (strpos($filename,'/')===false ? $skin->getContent($filename) : false);
+        if (!$contents)
+        {
+            if (!is_file($file))
+            {
+                return;
+            }
         $contents = file_get_contents($file);
-        if (empty($contents)) return;
-        
+        if (empty($contents))
+            {
+            return;
+            }
+        }
         $this->level = $this->level + 1;
         // parse file contents
-        $this->parser->parse($contents);
+        if(strpos($contents,'<%') !== false)
+            $this->parser->parse($contents);
+        else
+            echo $contents;
 
         $this->level = $this->level - 1;
     }
