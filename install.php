@@ -100,7 +100,9 @@ $aConfSkinsToImport = array(
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 // make sure there's no unnecessary escaping:
-set_magic_quotes_runtime(0);
+if (version_compare(PHP_VERSION, '5.3.0', '<')) {
+    set_magic_quotes_runtime(0);
+}
 
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
@@ -826,7 +828,7 @@ function doInstall() {
 	// 14. Write config file ourselves (if possible)
 	$bConfigWritten = 0;
 
-	if (@file_exists('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') ) {
+	if (@is_file('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') ) {
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
 		$config_data .= "	// mySQL connection information\n";
@@ -858,7 +860,6 @@ function doInstall() {
 		$config_data .= "\n";
 		$config_data .= "	// include libs\n";
 		$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
-		$config_data .= "?" . ">";
 
 		$result = @fputs($fp, $config_data, strlen($config_data) );
 		fclose($fp);
@@ -904,7 +905,8 @@ function doInstall() {
 	// default is $MYSQL_HANDLER = array('mysql','mysql');
 	//$MYSQL_HANDLER = array('mysql','mysql');
 	//$MYSQL_HANDLER = array('pdo','mysql');
-	$MYSQL_HANDLER = array('mysql','');
+	//$MYSQL_HANDLER = array('mysql','');
+	$MYSQL_HANDLER = array('<?php echo $MYSQL_HANDLER[0];?>','<?php echo $MYSQL_HANDLER[1];?>');
 
 	// main nucleus directory
 	$DIR_NUCLEUS = '<b><?php echo $config_adminpath?></b>';

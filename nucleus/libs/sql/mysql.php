@@ -71,14 +71,27 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_disconnect($conn = false) {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
-        @mysql_close($conn);
+        if ($conn) {
+            @mysql_close($conn);
+        } else if ($MYSQL_CONN) {
+            @mysql_close($MYSQL_CONN);
+            $MYSQL_CONN = NULL;
+        }
     }
     
     function sql_close($conn = false) {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
-        @mysql_close($conn);
+        if ($conn) {
+            @mysql_close($conn);
+        } else if ($MYSQL_CONN) {
+            @mysql_close($MYSQL_CONN);
+            $MYSQL_CONN = NULL;
+        }
+    }
+
+    function sql_connected() {
+        global $MYSQL_CONN;
+        return $MYSQL_CONN ? true : false;
     }
 
     /**
