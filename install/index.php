@@ -30,48 +30,87 @@
 	-- Start Of Configurable Part --
 */
 
-/****************************************
- * modified part of the installation file.
- *
- * Auto-detection of the browser actual language
- *
- * Language codes in array $aLanguages need to be on two digits
- * These digits are those of the ISO 639-1 country codes
- *
- * Usage example : $lang = autoSelectLanguage(array('fr','en','es','it','de'), 'en')
- * The $lng_list can be extended with new country codes as the corresponding translations are done.
- * each new translation file name must be in the pattern 'install_lang_??.php' where ?? is the country code.
- *
- * based on the function available at
- *         http://www.apprendre-php.com/portions-de-script/script-23-dtection-automatique-de-la-langue-du-navigateur.html
- * original @author Hugo Hamon
- * original @version 0.1
- * added here and slightly modified by Olivier Hammam
- *
- */
+$path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
+$path = $path[0];
+if (preg_match('#/install$#', $path))
+{
+    header("Location: " . $path . "/");
+    exit;
+}
 
-$lng_list = array('en','fr', 'ja');
+include_once('../nucleus/libs/version.php');
+
+function get_install_lang_defs()
+{
+    static $val = null;
+    if (is_array($val))
+        return $val;
+    $val = array( // Deprecated a language other than UTF-8
+        'en' => array('name' => 'english',  'utf8'=>'english-utf8' ,  'title' => 'English'),
+        'ja' => array('name' => 'japanese', 'utf8'=>'japanese-utf8' , 'title' => '日本語 - Japanese'),
+        'fr' => array('name' => 'french',                             'title' => 'French'),
+//        'es' => array('name' => 'spanish',  'utf8'=>'spanish-utf8'  , 'title' => 'Spanish'),
+//        'ko' => array('name' => 'korean-utf',  'title' => '한국어 - Korean'),
+//        'zh_cn' => array('name' => '',  'title' => '中文 - Chinese simplified'),
+//        'zh_tw' => array('name' => 'traditional_chinese' , 'title' => '中文 - Chinese traditional'),
+    );
+    foreach (array_keys($val) as $key)
+        if (!is_file("./install_lang_${key}.php")) unset($val[$key]);
+    ksort($val);
+    return $val;
+}
+function get_install_lang_keys()
+{
+    static $val = null;
+    if (is_array($val))
+    return $val;
+    $val = array_keys(get_install_lang_defs());
+    return $val;
+}
+$install_lang_defs = get_install_lang_defs();
+$install_lang_keys = get_install_lang_keys();
+
 global $lang;
-$lang = autoSelectLanguage($lng_list, 'fr');
+if (isset($_POST['lang']))
+	$lang = strtolower( $_POST['lang'] );
+else if (isset($_GET['lang']))
+	$lang = strtolower( $_GET['lang'] );
 
-function autoSelectLanguage($aLanguages, $sDefault = 'en') {
-  if(!empty($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-    $aBrowserLanguages = explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']);
-    foreach($aBrowserLanguages as $sBrowserLanguage) {
-      $sLang = strtolower(substr($sBrowserLanguage,0,2));
-      if(in_array($sLang, $aLanguages)) {
-        return $sLang;
-      }
+if ($lang != '' && !in_array($lang, $install_lang_keys))
+    $lang = 'en';
+else if ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_${lang}.php"))
+{
+   // do nothing
+}
+else
+{
+    $v = '';
+    $http_lang = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+    foreach($http_lang as $key)
+    {
+        if (!isset($install_lang_defs[$key]))
+        {
+            $key = substr($key, 2);
+            if (!isset($install_lang_defs[$key]))
+                continue;
+        }
+        if ($key != 'en' && in_array($key, $install_lang_keys)
+                         && is_file("./install_lang_${key}.php") )
+           {  $v = $lang = $key; break; }
     }
-  }
-  return $sDefault;
-  }
+    if (!$v)
+       $lang = 'en';
+}
 
-include('./install_lang_'.$lang.'.php');
+	define('INSTALL_LANG' , $lang);
+	include_once("./install_lang_${lang}.php");
 
-// chmod('config.php', 0664);
-// chmod('media', 0775);
-// chmod('skins', 0775);
+    if ($lang != 'en')
+    {
+        ob_start();
+        include_once("./install_lang_en.php");
+        ob_end_clean();
+    }
 
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
@@ -156,6 +195,8 @@ include_once('../nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
  * Show the form for the installation settings
  */	
 function showInstallForm() {
+	global $lang;
+
 	// 0. pre check if all necessary files exist
 	doCheckFiles();
 
@@ -170,6 +211,7 @@ function showInstallForm() {
 			@import url('../nucleus/documentation/styles/manual.css');
 		--></style>
 		<script type="text/javascript"><!--
+			onload = function() { document.forms[0].reset(); }
 			var submitcount = 0;
 
 			// function to make sure the submit button only gets pressed once
@@ -185,12 +227,48 @@ function showInstallForm() {
 	</head>
 	<body>
 		<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
-		<form method="post" action="index.php">
 
 		<h1><?php echo _HEADER1; ?></h1>
 
 		<?php echo _TEXT1; ?>
 
+		<!-- select lang -->
+		<form method="post" action="index.php<?php echo "?lang=$lang";?>">
+		<h1><?php echo _HEADER_LANG_SELECT ?></h1>
+
+		<?php echo _TEXT_LANG_SELECT1_1; ?>
+
+		<?php
+            $install_lang_defs = get_install_lang_defs();
+			$s = '';
+//			$input_lang = strtolower((isset($_GET['lang']) ? strval($_GET['lang']) : $lang));
+			$input_lang = INSTALL_LANG;
+			foreach($install_lang_defs as $k=>$v)
+			{
+				$s2 = (($input_lang == $k) ? ' selected="selected"' : '');
+				$s .= sprintf("\t<option value=\"%s\"%s>%s</option>\n",
+					  $k , $s2  , htmlspecialchars($v['title']));
+			}
+
+		?>
+		<fieldset>
+			<legend><?php echo _TEXT_LANG_SELECT1_1_TAB_HEAD; ?></legend>
+			<table>
+				<tr>
+					<td><?php echo _TEXT_LANG_SELECT1_1_TAB_FIELD1; ?></td>
+					<td><?php echo htmlspecialchars($install_lang_defs[INSTALL_LANG]['title']); ?></td>
+					<td>
+						<select id="lang" name="lang" tabindex="10000" onChange="location.href='index.php?lang='+this.value;">
+						<?php echo $s; ?>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</fieldset>
+		</form>
+
+		<form method="post" action="index.php<?php echo "?lang=$lang";?>">
+		
 		<h1><?php echo _HEADER2; ?></h1>
 
 		<?php echo _TEXT2; ?>
@@ -256,7 +334,7 @@ function showInstallForm() {
 
 <?php
 	if (phpversion() < '5.0.0') {
-		echo ' <p class="deprecated">' . _TEXT2_WARN2 . '</p>';
+		echo ' <p class="deprecated">' . _TEXT2_WARN3 . '</p>';
 ?>
 </form>
 </body>
@@ -782,15 +860,9 @@ function doInstall() {
 	}
 
 	// 5a make first post
-//	if (strtoupper(_CHARSET) != 'UTF-8' && function_exists('mb_convert_encoding')) {
-//		$itm_title = mb_convert_encoding(_1ST_POST_TITLE, _CHARSET, 'UTF-8');
-//		$itm_body  = mb_convert_encoding(_1ST_POST, _CHARSET, 'UTF-8');
-//		$itm_more  = mb_convert_encoding(_1ST_POST2, _CHARSET, 'UTF-8');
-//	} else {
-		$itm_title = _1ST_POST_TITLE;
-		$itm_body  = _1ST_POST;
-		$itm_more  = _1ST_POST2;
-//	}
+		$itm_title = sql_real_escape_string(sprintf(_1ST_POST_TITLE, NUCELEUS_VERSION));
+		$itm_body  = sql_real_escape_string(_1ST_POST);
+		$itm_more  = sql_real_escape_string(_1ST_POST2);
 	$newpost = "INSERT INTO "
 			 . tableName('nucleus_item')
 			 . " VALUES ("
@@ -811,10 +883,12 @@ function doInstall() {
 	updateConfig('AdminEmail', $config_adminemail);
 	updateConfig('SiteName', $config_sitename);
 
+    $install_lang_defs = get_install_lang_defs();
     if ($charset == 'utf8') {
-		if ($lang == 'ja')  updateConfig('Language', 'japanese-utf8');
-		else
-			updateConfig('Language',   'english-utf8');
+        if (isset($install_lang_defs[$lang]['utf8']))
+            updateConfig('Language', $install_lang_defs[$lang]['utf8']);
+        else
+            updateConfig('Language', $install_lang_defs[$lang]['name']);
 	} else if ($charset == 'latin1') {
 			updateConfig('Language',   'english');
 	} else {
@@ -823,11 +897,11 @@ function doInstall() {
 
 	// 7. update GOD member
 	$query = 'UPDATE ' . tableName('nucleus_member')
-			. " SET mname='" . addslashes($user_name) . "',"
-			. " mrealname='" . addslashes($user_realname) . "',"
+			. " SET mname='" . sql_real_escape_string($user_name) . "',"
+			. " mrealname='" . sql_real_escape_string($user_realname) . "',"
 			. " mpassword='" . md5(addslashes($user_password) ) . "',"
-			. " murl='" . addslashes($config_indexurl) . "',"
-			. " memail='" . addslashes($user_email) . "',"
+			. " murl='" . sql_real_escape_string($config_indexurl) . "',"
+			. " memail='" . sql_real_escape_string($user_email) . "',"
 			. " madmin=1,"
 			. " mcanlogin=1"
 			. " WHERE mnumber=1";
@@ -836,26 +910,22 @@ function doInstall() {
 
 	// 8. update weblog settings
 	$query = 'UPDATE ' . tableName('nucleus_blog')
-			. " SET bname='" . addslashes($blog_name) . "',"
-			. " bshortname='" . addslashes($blog_shortname) . "',"
-			. " burl='" . addslashes($config_indexurl) . "'"
+			. " SET bname='" . sql_real_escape_string($blog_name) . "',"
+			. " bshortname='" . sql_real_escape_string($blog_shortname) . "',"
+			. " burl='" . sql_real_escape_string($config_indexurl) . "'"
 			. " WHERE bnumber=1";
 
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
 	// 8-2. update category settings
-//	if (strtoupper(_CHARSET) != 'UTF-8') {
-//		$cat_name = mb_convert_encoding(_GENERALCAT_NAME, _CHARSET, 'UTF-8');
-//		$cat_desc = mb_convert_encoding(_GENERALCAT_DESC, _CHARSET, 'UTF-8');
-//	} else {
-		$cat_name = _GENERALCAT_NAME;
-		$cat_desc = _GENERALCAT_DESC;
-//	}
+		$cat_name = sql_real_escape_string(_GENERALCAT_NAME);
+		$cat_desc = sql_real_escape_string(_GENERALCAT_DESC);
 	$query = 'UPDATE ' . tableName('nucleus_category')
 		   . " SET cname  = '" . $cat_name . "',"
 		   . " cdesc	  = '" . $cat_desc . "'"
 		   . " WHERE"
 		   . " catid	  = 1";
+//     . " SET cname = '${cat_name}', cdesc = '${cat_desc}' WHERE catid = 1");
 
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
@@ -1088,7 +1158,7 @@ function installCustomPlugs(&$manager) {
 
 	foreach ($aConfPlugsToInstall as $plugName) {
 		// do this before calling getPlugin (in case the plugin id is used there)
-		$query = 'INSERT INTO ' . sql_table('plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ', "' . addslashes($plugName) . '")';
+		$query = 'INSERT INTO ' . sql_table('plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ', "' . sql_real_escape_string($plugName) . '")';
 		sql_query($query);
 
 		// get and install the plugin
@@ -1097,7 +1167,7 @@ function installCustomPlugs(&$manager) {
 		$plugin->plugid = $numCurrent;
 
 		if (!$plugin) {
-			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . addslashes($plugName) . '\'');
+			sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pfile=\'' . sql_real_escape_string($plugName) . '\'');
 			$numCurrent--;
 			array_push($aErrors, _ERROR22 . $plugName);
 			continue;
@@ -1154,8 +1224,8 @@ function installCustomSkins(&$manager) {
 		$importer->reset();
 		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
 //      Todo: localize skin file
-//		$skinFile_2 = $DIR_SKINS . $skinName . "/skinbackup-${lang}.xml";
-//		if (($lang != 'en') && is_file($skinFile_2))
+//		$skinFile_2 = $DIR_SKINS . $skinName . sprintf("/skinbackup-%s.xml", INSTALL_LANG);
+//		if ((INSTALL_LANG != 'en') && is_file($skinFile_2))
 //			$skinFile = $skinFile_2;
 
 		if (!@file_exists($skinFile) ) {

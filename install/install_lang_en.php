@@ -16,6 +16,14 @@
  * @version $Id: install.php 1227 2007-12-14 16:48:40Z ehui $
  */
 
+/*  New for 3.71 */
+define('_HEADER_LANG_SELECT',			 'Language');
+define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 'Choose language');
+define('_TEXT_LANG_SELECT1_1_TAB_FIELD1',	'Language');
+define('_TEXT_LANG_SELECT1_1',	'Choose a language to use.');
+
+/*   */
+
 define('_ERROR1',	'Your PHP version does not have support for MySQL :(');
 define('_ERROR2',	'mySQL database name missing');
 define('_ERROR3',	'mySQL prefix was selected, but prefix is empty');
@@ -141,7 +149,7 @@ define('_HEADER10',	'Delete your install files');
 define('_TEXT15',	'<p>Files you should delete from your web server:</p>');
 define('_TEXT15_L1',	'<b>install/install.sql</b>: file containing table structures');
 define('_TEXT15_L2',	'<b>install/index.php</b>: this file');
-define('_TEXT15_L3',	'<b>install_lang_english.php</b>');
+define('_TEXT15_L3',	'<b>install_lang_*.php</b>');
 define('_TEXT15_L4',	'<b>install/*</b>');
 
 define('_TEXT16',	'<p>If you don\'t delete these files, you won\\\'t be able to open the admin area</p>');
@@ -155,8 +163,9 @@ define('_TEXT17',	'Go Back');
 
 define('_BUTTON1',	'Install Nucleus');
 
-define('_1ST_POST_TITLE',	'Welcome to Nucleus CMS v3.71');
-define('_1ST_POST',	'This is the first post on your Nucleus CMS. Nucleus offers you the building blocks you need to create a web presence. Whether you want to
-create a personal blog, a family page, or an online business site, Nucleus CMS can help you achieve your goals.');
+define('_GENERALCAT_NAME',		'general');
+
+define('_1ST_POST_TITLE',	'Welcome to Nucleus CMS Version %s');
+define('_1ST_POST',	'This is the first post on your Nucleus CMS. You can edit this page.');
 define('_1ST_POST2',	'');
 
