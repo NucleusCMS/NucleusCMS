@@ -245,7 +245,7 @@ class ACTIONS extends BaseActions {
             // use current blog
             $blogid = $blog->getID();
 
-        return $member->isBlogAdmin($blogid);
+        return $member->blogAdminRights($blogid);
     }
     
     /**

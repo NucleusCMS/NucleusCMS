@@ -572,7 +572,10 @@ class ADMIN {
                     if (sql_num_rows($r) < 2)
                         $error = _ERROR_ATLEASTONEADMIN;
                     else
+                    {
                         sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
+                        $error = '';
+                    }
                     break;
                 default:
                     $error = _BATCH_UNKNOWN . hsc($action);
@@ -2345,11 +2348,17 @@ class ADMIN {
         $password       = postVar('password');
         $repeatpassword = postVar('repeatpassword');
 
-        if ($password != $repeatpassword)
-            return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
+        if (!trim($password) || (trim($password) != $password)) {
+            return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
+        }
 
-        if ($password && (strlen($password) < 6))
+        if ($password != $repeatpassword) {
+            return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
+        }
+
+        if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
+        }
             
         if ($password) {
             $pwdvalid = true;
@@ -3607,10 +3616,8 @@ class ADMIN {
         // create new category
         $catdefname = (defined('_EBLOGDEFAULTCATEGORY_NAME') ? _EBLOGDEFAULTCATEGORY_NAME : 'General');
         $catdefdesc = (defined('_EBLOGDEFAULTCATEGORY_DESC') ? _EBLOGDEFAULTCATEGORY_DESC : 'Items that do not fit in other categories');
-        $sql = 'INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, "%s", "%s")';
-        sql_query(sprintf($sql, sql_table('category'), $blogid, $catdefname, $catdefdesc));
-//        sql_query(sprintf($sql, sql_table('category'), $blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC));
-//        sql_query('INSERT INTO '.sql_table('category')." (cblog, cname, cdesc) VALUES ($blogid, _EBLOGDEFAULTCATEGORY_NAME, _EBLOGDEFAULTCATEGORY_DESC)");
+        $sql = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')";
+        sql_query(sprintf($sql, sql_table('category'), $blogid, sql_real_escape_string($catdefname), sql_real_escape_string($catdefdesc)));
         $catid = sql_insert_id();
 
         // set as default category
@@ -4546,7 +4553,7 @@ selector();
             $tabstart = 75;
 
             while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">remove</a>)</li>';
+                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
             }
 
             echo '</ul>';
@@ -5488,7 +5495,7 @@ selector();
                . " SET value='$val'"
                . " WHERE name='$name'";
 
-        sql_query($query) or die("Query error: " . sql_error());
+        sql_query($query) or die((defined('_ADMIN_SQLDIE_QUERYERROR')?_ADMIN_SQLDIE_QUERYERROR:"Query error: ") . sql_error());
         return sql_insert_id();
     }
 
@@ -5586,6 +5593,7 @@ selector();
             $newestCompare = floatval($newestCompare);
             $newestCompare = sprintf('%04.2f', $newestCompare);
             $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
+            $currentVersion = floatval($currentVersion);
             $currentVersion = sprintf('%04.2f', $currentVersion);
             if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';

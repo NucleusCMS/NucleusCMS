@@ -176,7 +176,26 @@ class ACTION
         $message .= getMailFooter();
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
-        mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
+
+        if (!extension_loaded('mbstring') || ('iso-8859-1' == strtolower(_CHARSET)))
+        {
+            mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
+        }
+        else
+        {
+            $mb_lang = 'uni';
+            if ('utf-8' != strtolower(_CHARSET))
+            {
+                $lang = strtolower(str_replace(array('\\','/'), '', getLanguageName()));
+                if (stripos('japanese', $lang) !== FALSE)
+                   $mb_lang = 'ja';
+//                else if ('iso-8859-1' == strtolower(_CHARSET))
+//                   $mb_lang = 'en';
+            }
+            mb_language($mb_lang); // Valid languages are "Japanese", "ja","English","en" , "uni"
+            mb_internal_encoding(_CHARSET);
+            @mb_send_mail($tomem->getEmail(), $title, $message, "From: ". $fromMail);
+        }
 
         if ( postVar('url') )
         {
@@ -268,7 +287,7 @@ class ACTION
 
             // even though the member can not log in, set some random initial password. One never knows.
             srand( (double) microtime() * 1000000);
-            $initialPwd = md5(uniqid(rand(), TRUE) );
+            $initialPwd = md5(uniqid(mt_rand(), TRUE) );
 
             // create member (non admin/can not login/no notes/random string as password)
             $name = shorten(postVar('name'), 32, '');
@@ -293,6 +312,7 @@ class ACTION
             }
             else
             {
+                sendContentType('text/html', '', _CHARSET);
                 echo _MSG_ACTIVATION_SENT;
                 echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
                 echo "\n</body>\n</html>";
@@ -339,6 +359,7 @@ class ACTION
         else
         {
             global $CONF;
+            sendContentType('text/html', '', _CHARSET);
             echo _MSG_ACTIVATION_SENT;
             echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
         }
