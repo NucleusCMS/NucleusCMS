@@ -474,6 +474,15 @@ class MEMBER {
         sql_query($query);
     }
 
+    function writeCookieKey()
+    {
+        $query =  'UPDATE '.sql_table('member')
+               . " SET "
+               . "     mcookiekey='". sql_real_escape_string($this->getCookieKey()) . "'"
+               . " WHERE mnumber=" . $this->getID();
+        sql_query($query);
+    }
+
     function checkCookieKey($key) {
         return (($key != '') && ($key == $this->getCookieKey()));
     }
@@ -546,7 +555,7 @@ class MEMBER {
     function newCookieKey() {
         mt_srand( (double) microtime() * 1000000);
         $this->cookiekey = md5(uniqid(mt_rand()));
-        $this->write();
+        $this->writeCookieKey();
         return $this->cookiekey;
     }
 
