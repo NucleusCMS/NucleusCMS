@@ -39,4 +39,12 @@ class Utils
         }
     }
 
+    public static function strftime($format, $timestamp = '')
+    {
+        if (!extension_loaded('mbstring') || (setlocale(LC_CTYPE, 0) != 'Japanese_Japan.932'))
+            return strftime($format, $timestamp);
+
+        return mb_convert_encoding(strftime(mb_convert_encoding($format, 'CP932', _CHARSET), $timestamp), _CHARSET, 'CP932');
+//      return iconv('CP932', _CHARSET, strftime(iconv(_CHARSET, 'CP932', $format),$timestamp));
+    }
 }

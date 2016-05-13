@@ -312,7 +312,7 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar time
      */
     function parse_time($format = '') {
-        echo strftime(
+        echo Utils::strftime(
                 ($format == '') ? $this->template['FORMAT_TIME'] : $format,
                 $this->currentComment['timestamp']
             );

@@ -202,7 +202,7 @@ class BLOG {
                             'timestamp'    =>  $oldTS
                         );
                         $manager->notify('PreDateFoot', $param);
-                        $tmp_footer = strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
+                        $tmp_footer = Utils::strftime(isset($template['DATE_FOOTER'])?$template['DATE_FOOTER']:'', $oldTS);
                         $parser->parse($tmp_footer);
                         $param = array(
                             'blog'        => &$this,
@@ -217,7 +217,7 @@ class BLOG {
                     $manager->notify('PreDateHead', $param);
                     // note, to use templatvars in the dateheader, the %-characters need to be doubled in
                     // order to be preserved by strftime
-                    $tmp_header = strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
+                    $tmp_header = Utils::strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null), $timestamp);
                     $parser->parse($tmp_header);
                     $param = array(
                         'blog'        => &$this,
@@ -690,7 +690,7 @@ class BLOG {
             $manager->notify('PreArchiveListItem', $param);
 
             $temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],$archdata);
-            echo strftime($temp,$current->itime);
+            echo Utils::strftime($temp,$current->itime);
 
         }
 
