@@ -13,7 +13,7 @@
  * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
- * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>install.php</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
+ * ?><div style="font-size: xx-large;">If you see this text in your browser when you open <i>/install/</i>, your web server is not able to run PHP-scripts, and therefor Nucleus will not be able to run there. </div><div style="display: none"><?php
  */
 
 /**
@@ -23,7 +23,7 @@
  */
 
 /*
-	This part of the install.php code allows for customization of the install process.
+	This part of the index.php code allows for customization of the install process.
 	When distributing plugins or skins together with a Nucleus installation, the
 	configuration below will instruct to install them
 
@@ -50,7 +50,8 @@
  *
  */
 
-$lng_list = array('en','fr');
+$lng_list = array('en','fr', 'ja');
+global $lang;
 $lang = autoSelectLanguage($lng_list, 'fr');
 
 function autoSelectLanguage($aLanguages, $sDefault = 'en') {
@@ -77,7 +78,11 @@ include('./install_lang_'.$lang.'.php');
 //
 // example:
 //     array('NP_TrackBack', 'NP_MemberGoodies')
-$aConfPlugsToInstall = array('NP_SkinFiles','NP_SecurityEnforcer','NP_Text');
+$aConfPlugsToInstall = array(
+		'NP_SkinFiles',
+		'NP_SecurityEnforcer',
+//		'NP_Text'
+	);
 
 
 // array with skins to install. skins must be present under the skins/ directory with
@@ -111,18 +116,26 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
 	$CONF['installscript'] = 1;
 }
 
-include_once('nucleus/libs/vars4.1.0.php');
+include_once('../nucleus/libs/vars4.1.0.php');
 
 // include core classes that are needed for login & plugin handling
 if (!function_exists('mysql_query'))
     include_once('nucleus/libs/mysql.php');
+  else
+    define('_EXT_MYSQL_EMULATE' , 0);
+
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 //set the handler if different from mysql (or mysqli)
 //$MYSQL_HANDLER = array('pdo','mysql');
-if (!isset($MYSQL_HANDLER))
-	$MYSQL_HANDLER = array('mysql','');
-include_once('nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
+if (!isset($MYSQL_HANDLER)) {
+	if (extension_loaded('mysql') || extension_loaded('mysqli')) {
+		$MYSQL_HANDLER = array('mysql','');
+	} else {
+		$MYSQL_HANDLER = array('pdo','mysql');
+	}
+}
+include_once('../nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
 
 // check if mysql support is installed
@@ -150,9 +163,11 @@ function showInstallForm() {
 	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 	<html xmlns="http://www.w3.org/1999/xhtml">
 	<head>
+		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+		<meta name="robots" content="noindex,nofollow,noarchive" />
 		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
-			@import url('nucleus/documentation/styles/manual.css');
+			@import url('../nucleus/documentation/styles/manual.css');
 		--></style>
 		<script type="text/javascript"><!--
 			var submitcount = 0;
@@ -169,8 +184,8 @@ function showInstallForm() {
 		--></script>
 	</head>
 	<body>
-		<div style="text-align:center"><img src="./nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
-		<form method="post" action="install.php">
+		<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+		<form method="post" action="index.php">
 
 		<h1><?php echo _HEADER1; ?></h1>
 
@@ -182,23 +197,13 @@ function showInstallForm() {
 
 		<ul>
 			<li>PHP:
-
 <?php
 	echo phpversion();
-	$minVersion = '5.0.6';
-
-	if (version_compare(phpversion(), $minVersion, '<')) {
-		echo ' <span class="warning">', _TEXT2_WARN , $minVersion, '</span>';
-	} elseif (phpversion() < '5') {
-		echo ' <span class="warning">' . _TEXT2_WARN3 . '</span>';
-	}
 ?>
-
 			</li>
 			<li>MySQL:
-
 <?php
-	// Tturn on output buffer
+	// Turn on output buffer
 	// Needed to repress the output of the sql function that are
 	// not part of php (in this case the @ operator doesn't work) 
 	ob_start();
@@ -218,7 +223,7 @@ function showInstallForm() {
 		} else {
 			//$output = shell_exec('mysql -V');
 			$output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
-   			preg_match('@[0-9]+\.[0-9]+\.[0-9]+@', $output, $version);
+			preg_match('#[0-9]+\.[0-9]+\.[0-9]+#', $output, $version);
 			$match = explode('.', $version[0]);
 
 			if ($match[0] == '') {
@@ -234,14 +239,14 @@ function showInstallForm() {
 	$mysqlVersion = implode($match, '.');
 	$minVersion = '3.23';
 
-	if ($mysqlVersion == '0.0.0') {
+	if (version_compare($mysqlVersion, '0.0.0', '==')) {
 		echo _NOTIFICATION1;
 	}
 	else {
 		echo $mysqlVersion;
 	}
 	
-	if ($mysqlVersion < $minVersion) {
+	if (version_compare($mysqlVersion, $minVersion, '<')) {
 		echo ' <strong>', _TEXT2_WARN2 , $minVersion, '</strong>';
 	}
 ?>
@@ -250,8 +255,18 @@ function showInstallForm() {
 		</ul>
 
 <?php
+	if (phpversion() < '5.0.0') {
+		echo ' <p class="deprecated">' . _TEXT2_WARN2 . '</p>';
+?>
+</form>
+</body>
+</html>
+<?php
+		exit;
+	}
+
 	// tell people how they can have their config file filled out automatically
-	if (@file_exists('config.php') && @!is_writable('config.php') ) {
+	if (@is_file('../config.php') && @!is_writable('../config.php') ) {
 ?>
 
 		<h1><?php echo _HEADER3; ?></h1>
@@ -311,7 +326,9 @@ function showInstallForm() {
 					<td>
 						<select name="charset" tabindex="10000">
 							<option value="utf8" selected="selected">UTF-8</option>
+<?php  global $lang; if ($lang != 'ja') {  ?>
 							<option value="latin1" >iso-8859-1</option>
+<?php                      }  ?>
 						</select>
 					</td>
 				</tr>
@@ -343,7 +360,8 @@ function showInstallForm() {
 	}
 	*/
 
-	$basePath = dirname(str_replace('\\', '/', __FILE__)) . '/';
+	$basePath = str_replace('install', '', dirname(__FILE__));
+	$basePath = replaceDoubleBackslash($basePath);
 ?>
 
 		<fieldset>
@@ -353,7 +371,7 @@ function showInstallForm() {
 					<td><label for="if_IndexURL"><?php echo _TEXT5_TAB_FIELD1;?>:</label></td>
 					<td><input id="if_IndexURL" name="IndexURL" size="60" value="<?php
 						$url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
-						$url = str_replace('install.php', '', $url);
+						$url = str_replace('install/index.php', '', $url);
 						$url = replaceDoubleBackslash($url);
 
 						// add slash at end if necessary
@@ -397,7 +415,7 @@ function showInstallForm() {
 						if ($url) {
 							echo $url, 'skins/';
 						} ?>" />
-						<br />(used by imported skins)
+						<br />(<?php echo _TEXT5_TAB_FIELD7_2; ?>)
 					</td>
 				</tr>
 				<tr>
@@ -478,6 +496,10 @@ function showInstallForm() {
 			</table>
 		</fieldset>
 
+<?php
+    global $lang;
+	if ($lang != 'ja') {
+?>
 		<h1><?php echo _HEADER8; ?></h1>
 
 		<fieldset>
@@ -488,12 +510,17 @@ function showInstallForm() {
 				</tr>
 			</table>
 		</fieldset>
+<?php	}
+?>
 
 		<h1><?php echo _HEADER9; ?></h1>
 
 		<?php echo _TEXT9; ?>
 
-		<p><input name="action" value="go" type="hidden" /> <input type="submit" value="<?php echo _BUTTON1; ?>" onclick="return checkSubmit();" /></p>
+		<p>
+		<input name="action" value="go" type="hidden" />
+		<input type="submit" value="<?php echo _BUTTON1; ?>" onclick="return checkSubmit();" />
+		</p>
 
 		</form>
 	</body>
@@ -522,8 +549,9 @@ function tableName($unPrefixed) {
  */	
 function doInstall() {
 	global $mysql_usePrefix, $mysql_prefix, $weblog_ping;
+    global $lang;
 
-	// 0. put all POST-vars into vars
+    // 0. put all POST-vars into vars
 	$mysql_host = postVar('mySQL_host');
 	$mysql_user = postVar('mySQL_user');
 	$mysql_password = postVar('mySQL_password');
@@ -560,6 +588,7 @@ function doInstall() {
 	$config_actionurl = replaceDoubleBackslash($config_actionurl);
 	$config_adminpath = replaceDoubleBackslash($config_adminpath);
 	$config_skinspath = replaceDoubleBackslash($config_skinspath);
+	$config_mediapath  = replaceDoubleBackslash($config_mediapath);
 
 	// 1. check all the data
 	$errors = array();
@@ -572,7 +601,7 @@ function doInstall() {
 		array_push($errors, _ERROR3);
 	}
 
-	if (($mysql_usePrefix == 1) && (!preg_match('/^[a-zA-Z0-9_]+$/', $mysql_prefix) ) ) {
+	if (($mysql_usePrefix == 1) && (!preg_match('#^[a-zA-Z0-9_]+$#', $mysql_prefix) ) ) {
 		array_push($errors, _ERROR4);
 	}
 	if ($charset == 'latin1')
@@ -582,6 +611,7 @@ function doInstall() {
 	else
 	{
 		if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
+        $charset == 'utf8';
 	}
 
 	// TODO: add action.php check
@@ -639,9 +669,26 @@ function doInstall() {
 		_doError(_ERROR15 . ': ' . sql_error() );
 	}
 
+	global $MYSQL_HANDLER , $SQL_DBH;
+	if ($MYSQL_HANDLER[0] == 'pdo')
+		$SQL_DBH = $MYSQL_CONN;
+
 	// 3. try to create database (if needed)
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	$collation = ($charset === 'utf8') ? 'utf8_general_ci' : 'latin1_general_ci';
+	switch(strtolower($charset))
+	{
+//		case 'ujis':
+//			$collation = 'ujis_japanese_ci';
+//			break;
+		case 'latin1':
+			$collation = 'latin1_swedish_ci';
+			break;
+		case 'utf8':
+		default:
+			$collation = 'utf8_general_ci';
+	}
+
+
 	if ($mysql_create == 1) {
 		$sql = "CREATE DATABASE `{$mysql_database}`";
 		
@@ -653,6 +700,13 @@ function doInstall() {
 
 	// 4. try to select database
 	sql_select_db($mysql_database,$MYSQL_CONN) or _doError(_ERROR17);
+
+	/*
+	 * 4.5. set character set to this database in MySQL server
+	 * This processing is added by Nucleus CMS Japanese Package Release Team as of Mar.30, 2011
+	*/
+	sql_set_charset($charset);
+	
 
 	// 5. execute queries
 	$queries = file_get_contents('install.sql');
@@ -711,7 +765,7 @@ function doInstall() {
 
 	for ($idx = 0; $idx < $count; $idx++) {
 		$query = trim($queries[$idx]);
-		// echo "QUERY = <small>" . htmlspecialchars($query) . "</small><p>";
+		// echo "QUERY = " . htmlspecialchars($query) . "<p>";
 
 		if ($query) {
 
@@ -723,13 +777,29 @@ function doInstall() {
 				$query .= " DEFAULT CHARACTER SET {$charset} COLLATE {$collation}";
 			}
 			
-			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (<small>' . htmlspecialchars($query,ENT_QUOTES,_CHARSET) . '</small>): ' . sql_error($MYSQL_CONN) );
+			sql_query($query,$MYSQL_CONN) or _doError(_ERROR30 . ' (' . htmlspecialchars($query,ENT_QUOTES,_CHARSET) . '): ' . sql_error($MYSQL_CONN) );
 		}
 	}
 
 	// 5a make first post
-	$newpost = "INSERT INTO ". tableName('nucleus_item') ." VALUES (1, '" . _1ST_POST_TITLE . "', '" . _1ST_POST . "', '" . _1ST_POST2 . "', 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (<small>' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '</small>): ' . sql_error($MYSQL_CONN) );
+//	if (strtoupper(_CHARSET) != 'UTF-8' && function_exists('mb_convert_encoding')) {
+//		$itm_title = mb_convert_encoding(_1ST_POST_TITLE, _CHARSET, 'UTF-8');
+//		$itm_body  = mb_convert_encoding(_1ST_POST, _CHARSET, 'UTF-8');
+//		$itm_more  = mb_convert_encoding(_1ST_POST2, _CHARSET, 'UTF-8');
+//	} else {
+		$itm_title = _1ST_POST_TITLE;
+		$itm_body  = _1ST_POST;
+		$itm_more  = _1ST_POST2;
+//	}
+	$newpost = "INSERT INTO "
+			 . tableName('nucleus_item')
+			 . " VALUES ("
+			 . "1, "
+			 . "'" . $itm_title . "',"
+			 . " '" . $itm_body . "',"
+			 . " '" . $itm_more . "',"
+			 . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+	sql_query($newpost,$MYSQL_CONN) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '): ' . sql_error($MYSQL_CONN) );
 
 	// 6. update global settings
 	updateConfig('IndexURL', $config_indexurl);
@@ -740,9 +810,16 @@ function doInstall() {
 	updateConfig('ActionURL', $config_actionurl);
 	updateConfig('AdminEmail', $config_adminemail);
 	updateConfig('SiteName', $config_sitename);
-	
-	if ($charset === 'utf8')       updateConfig('Language', 'english-utf8');
-	elseif ($charset === 'latin1') updateConfig('Language', 'english');
+
+    if ($charset == 'utf8') {
+		if ($lang == 'ja')  updateConfig('Language', 'japanese-utf8');
+		else
+			updateConfig('Language',   'english-utf8');
+	} else if ($charset == 'latin1') {
+			updateConfig('Language',   'english');
+	} else {
+			updateConfig('Language',   'english-utf8');
+    }
 
 	// 7. update GOD member
 	$query = 'UPDATE ' . tableName('nucleus_member')
@@ -751,7 +828,8 @@ function doInstall() {
 			. " mpassword='" . md5(addslashes($user_password) ) . "',"
 			. " murl='" . addslashes($config_indexurl) . "',"
 			. " memail='" . addslashes($user_email) . "',"
-			. " madmin=1, mcanlogin=1"
+			. " madmin=1,"
+			. " mcanlogin=1"
 			. " WHERE mnumber=1";
 
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR19 . ': ' . sql_error($MYSQL_CONN) );
@@ -762,6 +840,22 @@ function doInstall() {
 			. " bshortname='" . addslashes($blog_shortname) . "',"
 			. " burl='" . addslashes($config_indexurl) . "'"
 			. " WHERE bnumber=1";
+
+	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
+
+	// 8-2. update category settings
+//	if (strtoupper(_CHARSET) != 'UTF-8') {
+//		$cat_name = mb_convert_encoding(_GENERALCAT_NAME, _CHARSET, 'UTF-8');
+//		$cat_desc = mb_convert_encoding(_GENERALCAT_DESC, _CHARSET, 'UTF-8');
+//	} else {
+		$cat_name = _GENERALCAT_NAME;
+		$cat_desc = _GENERALCAT_DESC;
+//	}
+	$query = 'UPDATE ' . tableName('nucleus_category')
+		   . " SET cname  = '" . $cat_name . "',"
+		   . " cdesc	  = '" . $cat_desc . "'"
+		   . " WHERE"
+		   . " catid	  = 1";
 
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
@@ -823,7 +917,8 @@ function doInstall() {
 	// 14. Write config file ourselves (if possible)
 	$bConfigWritten = 0;
 
-	if (@is_file('config.php') && is_writable('config.php') && $fp = @fopen('config.php', 'w') ) {
+    $configFilename = dirname(dirname(__FILE__)) .DIRECTORY_SEPARATOR. 'config.php';
+	if (@is_file($configFilename) && is_writable($configFilename)) {
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
 		$config_data .= "	// mySQL connection information\n";
@@ -833,7 +928,7 @@ function doInstall() {
 		$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
 		$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
 		$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
-		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','mysql');\n";
+		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','');\n";
 		$config_data .= "	//\$MYSQL_HANDLER = array('mysql','mysql');\n";
 		$config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
 		$config_data .= "	\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
@@ -856,24 +951,28 @@ function doInstall() {
 		$config_data .= "	// include libs\n";
 		$config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
 
-		$result = @fputs($fp, $config_data, strlen($config_data) );
-		fclose($fp);
-		if(is_file('config.php')) @chmod('config.php',0444);
-
+        $result = @file_put_contents($configFilename, $config_data);
 		if ($result) {
+			if(is_file($configFilename)) @chmod($configFilename,0444);
 			$bConfigWritten = 1;
 		}
+        // if you fail to write on Windows, you check this.
+        //   check folder permission : open folder property and special permissions, click Properties, and then click the Security tab
+        //                             SYSTEM
+        //   apache config : DocumentRoot
 	}
 
 ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('nucleus/styles/manual.css');</style>
+	<style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 
 <?php
 	$aAllErrors = array_merge($aSkinErrors, $aPlugErrors);
@@ -886,7 +985,7 @@ function doInstall() {
 	if (!$bConfigWritten) { ?>
 		<h1><?php echo _TITLE3; ?></h1>
 
-		<? echo _TEXT10; ?>
+		<?php echo _TEXT10; ?>
 
 		<pre><code>&lt;?php
 	// mySQL connection information
@@ -897,10 +996,9 @@ function doInstall() {
 	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
 	
 	// new in 3.50. first element is db handler, the second is the db driver used by the handler
-	// default is $MYSQL_HANDLER = array('mysql','mysql');
-	//$MYSQL_HANDLER = array('mysql','mysql');
-	//$MYSQL_HANDLER = array('pdo','mysql');
+	// default is $MYSQL_HANDLER = array('mysql','');
 	//$MYSQL_HANDLER = array('mysql','');
+	//$MYSQL_HANDLER = array('pdo','mysql');
 	$MYSQL_HANDLER = array('<?php echo $MYSQL_HANDLER[0];?>','<?php echo $MYSQL_HANDLER[1];?>');
 
 	// main nucleus directory
@@ -952,6 +1050,8 @@ function doInstall() {
 	<ul>
 		<li><?php echo _TEXT15_L1; ?></li>
 		<li><?php echo _TEXT15_L2; ?></li>
+		<li><?php echo _TEXT15_L3; ?></li>
+		<li><?php echo _TEXT15_L4; ?></li>
 	</ul>
 
 	<?php echo _TEXT16; ?>
@@ -1053,6 +1153,10 @@ function installCustomSkins(&$manager) {
 	foreach ($aConfSkinsToImport as $skinName) {
 		$importer->reset();
 		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
+//      Todo: localize skin file
+//		$skinFile_2 = $DIR_SKINS . $skinName . "/skinbackup-${lang}.xml";
+//		if (($lang != 'en') && is_file($skinFile_2))
+//			$skinFile = $skinFile_2;
 
 		if (!@file_exists($skinFile) ) {
 			array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
@@ -1085,21 +1189,21 @@ function doCheckFiles() {
 	$missingfiles = array();
 	$files = array(
 		'install.sql',
-		'index.php',
-		'action.php',
-		'nucleus/index.php',
-		'nucleus/libs/globalfunctions.php',
-		'nucleus/libs/ADMIN.php',
-		'nucleus/libs/BLOG.php',
-		'nucleus/libs/COMMENT.php',
-		'nucleus/libs/COMMENTS.php',
-		'nucleus/libs/ITEM.php',
-		'nucleus/libs/MEMBER.php',
-		'nucleus/libs/SKIN.php',
-		'nucleus/libs/TEMPLATE.php',
-		'nucleus/libs/MEDIA.php',
-		'nucleus/libs/ACTIONLOG.php',
-		'nucleus/media.php'
+		'../index.php',
+		'../action.php',
+		'../nucleus/index.php',
+		'../nucleus/libs/globalfunctions.php',
+		'../nucleus/libs/ADMIN.php',
+		'../nucleus/libs/BLOG.php',
+		'../nucleus/libs/COMMENT.php',
+		'../nucleus/libs/COMMENTS.php',
+		'../nucleus/libs/ITEM.php',
+		'../nucleus/libs/MEMBER.php',
+		'../nucleus/libs/SKIN.php',
+		'../nucleus/libs/TEMPLATE.php',
+		'../nucleus/libs/MEDIA.php',
+		'../nucleus/libs/ACTIONLOG.php',
+		'../nucleus/media.php'
 		);
 
 	$count = count($files);
@@ -1125,12 +1229,11 @@ function doCheckFiles() {
  */
 function updateConfig($name, $val) {
 	global $MYSQL_CONN;
-	$name = addslashes($name);
-	$val = trim(addslashes($val) );
 
-	$query = 'UPDATE ' . tableName('nucleus_config')
-			. " SET value='$val'"
-			. " WHERE name='$name'";
+	$query = sprintf("UPDATE %s SET value='%s' WHERE name='%s'",
+                    tableName('nucleus_config'),
+                    sql_real_escape_string(trim($val)),
+                    sql_real_escape_string($name));
 
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR26 . ': ' . sql_error($MYSQL_CONN) );
 	return sql_insert_id($MYSQL_CONN);
@@ -1163,7 +1266,7 @@ function endsWithSlash($s) {
  * 			address which should be tested	
  */
 function _isValidMailAddress($address) {
-	if (preg_match("/^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$/", $address) ) {
+	if (preg_match("#^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$#", $address) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1175,13 +1278,11 @@ function _isValidMailAddress($address) {
  * Returns true if the given string is a valid shortname
  * logic: only letters and numbers are allowed, no spaces allowed
  * 
- * FIX: function eregi is deprecated since PHP 5.3.0
- * 
  * @param	$name
  * 			name which should be tested	
  */
 function _isValidShortName($name) {
-	if (preg_match("/^[a-zA-Z0-9]+$/", $name) ) {
+	if (preg_match("#^[a-zA-Z0-9]+$#", $name) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1192,13 +1293,11 @@ function _isValidShortName($name) {
  * Check if a display name is allowed
  * Returns true if the given string is a valid display name
  * 
- * FIX: function eregi is deprecated since PHP 5.3.0
- * 
  * @param	$name
  * 			name which should be tested	
  */
 function _isValidDisplayName($name) {
-	if (preg_match("/^[a-zA-Z0-9]+[a-zA-Z0-9 ]*[a-zA-Z0-9]+$/", $name) ) {
+	if (preg_match("#^[a-zA-Z0-9]+[a-zA-Z0-9 ]*[a-zA-Z0-9]+$#", $name) ) {
 		return 1;
 	} else {
 		return 0;
@@ -1216,16 +1315,18 @@ function _doError($msg) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('nucleus/styles/manual.css');</style>
+	<style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 	<h1><?php echo _ERROR27; ?></h1>
 
-	<p><?php echo _ERROR28; ?>: "<?php echo $msg?>";</p>
+	<p><?php echo _ERROR28; ?> "<?php echo $msg; ?>";</p>
 
-	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
@@ -1244,11 +1345,13 @@ function showErrorMessages($errors) {
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('nucleus/styles/manual.css');</style>
+	<style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style='text-align:center'><img src='./nucleus/styles/logo.gif' /></div> <!-- Nucleus logo -->
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 	<h1><?php echo _ERROR27; ?></h1>
 
 	<p><?php echo _ERROR29; ?>:</p>
@@ -1257,13 +1360,13 @@ function showErrorMessages($errors) {
 
 <?php
 	while($msg = array_shift($errors) ) {
-		echo '<li>', $msg, '</li>';
+		echo '<li>' . $msg . '</li>';
 	}
 ?>
 
 	</ul>
 
-	<p><a href="install.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 

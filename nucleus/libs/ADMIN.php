@@ -6890,8 +6890,8 @@ selector();
         {
             // check if files exist and generate an error if so
             $aFiles = array(
-                '../install.sql' => _ERRORS_INSTALLSQL,
-                '../install.php' => _ERRORS_INSTALLPHP,
+                '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized
+                '../install.php' => _ERRORS_INSTALLPHP,  // don't localized
                 '../install' => _ERRORS_INSTALLDIR,
                 'upgrades'   => _ERRORS_UPGRADESDIR,
                 'convert'    => _ERRORS_CONVERTDIR

@@ -141,8 +141,8 @@ define('_TEXT14_L1',	'Si vous ne souhaitez pas de commentaires vous pouvez les d
 define('_TEXT14_L2',	'Installer des plugins qui aident &agrave; &eacute;liminer les spams&nbsp;: <a href="http://faq.nucleuscms.org/item/45">Comment puis-je arr&ecirc;ter et retracer les spams&nbsp;? (FAQ en anglais)</a> (vous pouvez placer cette page dans les marque-pages pour la lire plus tard).');
 define('_HEADER10',	'Supprimer les fichiers d\'installation');
 define('_TEXT15',	'<p>Fichiers que vous devrez suprimer de votre serveur web&nbsp;:</p>');
-define('_TEXT15_L1',	'<b>install.sql</b>: fichier contenant la structure des tables');
-define('_TEXT15_L2',	'<b>install.php</b> (ce fichier)');
+define('_TEXT15_L1',	'<b>install/install.sql</b>: fichier contenant la structure des tables');
+define('_TEXT15_L2',	'<b>install/index.php</b> (ce fichier)');
 
 define('_TEXT16',	'<p>Si vous ne supprimez pas ces fichiers vous n\'aurez pas le droit d\'acc&eacute;der aux pages d\'administration</p>');
 

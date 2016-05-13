@@ -139,8 +139,10 @@ define('_TEXT14_L1',	'If you don\'t want comments you can disable them individua
 define('_TEXT14_L2',	'Install one of serveral plugins that help to avoid spam comments: <a href="http://faq.nucleuscms.org/item/45">How can I stop comment and trackback spam?</a> (you could bookmark this page to read it later).');
 define('_HEADER10',	'Delete your install files');
 define('_TEXT15',	'<p>Files you should delete from your web server:</p>');
-define('_TEXT15_L1',	'<b>install.sql</b>: file containing table structures');
-define('_TEXT15_L2',	'<b>install.php</b>: this file');
+define('_TEXT15_L1',	'<b>install/install.sql</b>: file containing table structures');
+define('_TEXT15_L2',	'<b>install/index.php</b>: this file');
+define('_TEXT15_L3',	'<b>install_lang_english.php</b>');
+define('_TEXT15_L4',	'<b>install/*</b>');
 
 define('_TEXT16',	'<p>If you don\'t delete these files, you won\\\'t be able to open the admin area</p>');
 
