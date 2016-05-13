@@ -42,6 +42,9 @@ define('_CAHANGE_CATEGORY_ORDER_TITLE',            'Please specify the order of 
 define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',     'The order of the following categories will be changed at once.If it is good, please press the button.');
 define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',        'Change the order');
 
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',        'Failed to Load XML');
+
  /********************************************
  *        Start New for 3.65                *
  ********************************************/
