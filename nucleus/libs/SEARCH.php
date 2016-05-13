@@ -70,18 +70,35 @@ class SEARCH {
 
     function  boolean_sql_select($match){
         if (strlen($this->inclusive) > 0) {
+            $min_word_len = 4;
+            $Engine = '';
+            $res = sql_query(sprintf("show table status like '%s'", sql_table('blog')));
+            if ($res && (($row = sql_fetch_assoc($res)) !== FALSE))
+                $Engine = $row['Engine'];
+            $v = '';
+            if ($Engine == 'MyISAM')
+                $v = 'ft_min_word_len';
+            if ($Engine == 'InnoDB')
+                $min_word_len = 3;
+            if ($v)
+            {
+               $res = sql_query("SHOW VARIABLES like 'ft_min_word_len'");
+               if ($res && (($row = sql_fetch_assoc($res)) !== FALSE))
+                 $min_word_len = max($row['Value'], 1);
+            }
+
            $stringsum_long = '';
            /* build sql for determining score for each record */
-           $result=explode(" ",$this->inclusive);
-           for($cth=0;$cth<count($result);$cth++){
-               if(strlen($result[$cth])>=4){
+           $result = explode(" ",$this->inclusive);
+           for($cth=0; $cth<count($result); $cth++) {
+               if(strlen($result[$cth]) >= $min_word_len) {
                    $stringsum_long .=  " $result[$cth] ";
-               }else{
+               } else {
                    $stringsum_a[] = ' '.$this->boolean_sql_select_short($result[$cth],$match).' ';
                }
            }
 
-           if(strlen($stringsum_long)>0){
+           if(strlen($stringsum_long)>0) {
                 $stringsum_long = sql_real_escape_string($stringsum_long);
                 $stringsum_a[] = " match ($match) against ('$stringsum_long') ";
            }
@@ -139,21 +156,15 @@ class SEARCH {
         $this->boolean_sql_where_cb1($match); // set the static $match
 
         $result = preg_replace_callback(
-
-            "/foo\[\(\'([^\)]{4,})\'\)\]bar/",
-
+           "/foo\[\(\'([^\)]{4,})\'\)\]bar/",
             array($this,'boolean_sql_where_cb1'),
-
             $result);
 
         $this->boolean_sql_where_cb2($match); // set the static $match
 
         $result = preg_replace_callback(
-
             "/foo\[\(\'([^\)]{1,3})\'\)\]bar/",
-
             array($this,'boolean_sql_where_cb2'),
-
             $result);
 
         return $result;
@@ -167,25 +178,21 @@ class SEARCH {
         return $result;
     }
 
-    function boolean_sql_where_cb1($matches){
-
+    function boolean_sql_where_cb1($matches) {
         static $match;
-
-        if (!is_array($matches)) $match=$matches;
-
-        else return ' match ('.$match.') against (\''.sql_real_escape_string($matches[1]).'\') > 0 ';
-
+        if (!is_array($matches))
+            $match = $matches; // set $match mode
+        else
+            return sprintf(" match (%s) against ('%s') > 0 ", $match, sql_real_escape_string($matches[1]));
     }
 
-    function boolean_sql_where_cb2($matches){
-
+    function boolean_sql_where_cb2($matches) {
         static $match;
-
-        if (!is_array($matches)) $match=$matches;
-
-        else return ' ('.$this->boolean_sql_where_short(sql_real_escape_string($mathes[1]),$match).') ';
-
-    }    
+        if (!is_array($matches))
+            $match = $matches; // set $match mode
+        else
+            return sprintf(" (%s) ", $this->boolean_sql_where_short(sql_real_escape_string($matches[1]), $match));
+    }
 
     function boolean_mark_atoms($string){
         $result = trim($string);
