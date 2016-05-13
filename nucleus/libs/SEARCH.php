@@ -155,7 +155,7 @@ class SEARCH {
         $result = preg_replace('# and #i', ' ', $result);
         $result = preg_replace('# or #i', ',', $result);
 
-        /* strip excessive whitespace */
+        // strip excessive whitespace
         $result = str_replace('( ', '(', $result);
         $result = str_replace(' )', ')', $result);
         $result = str_replace(', ', ',', $result);
@@ -167,7 +167,7 @@ class SEARCH {
         $result = trim($result);
         $result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
 
-        /* apply arbitrary function to all 'word' atoms */
+        // apply arbitrary function to all 'word' atoms
 
         $result_a = explode(' ', $result);
 
@@ -178,13 +178,13 @@ class SEARCH {
 
         $result = implode(' ', $result_a);
 
-        /* dispatch ' ' to ' AND ' */
+        // dispatch ' ' to ' AND '
         $result = str_replace(' ', ' AND ', $result);
 
-        /* dispatch ',' to ' OR ' */
+        // dispatch ',' to ' OR '
         $result = str_replace(',', ' OR ', $result);
 
-        /* dispatch '-' to ' NOT ' */
+        // dispatch '-' to ' NOT '
         $result = str_replace(' -', ' NOT ', $result);
         return $result;
     }
