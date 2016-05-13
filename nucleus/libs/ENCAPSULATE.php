@@ -203,6 +203,7 @@ class BATCH extends ENCAPSULATE {
                         break;
                     case 'category':
                         $options = array(
+                            'change_corder' => _BATCH_CAT_CAHANGE_ORDER ,
                             'delete'    => _BATCH_CAT_DELETE,
                             'move'        => _BATCH_CAT_MOVE,
                         );

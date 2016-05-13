@@ -25,6 +25,21 @@ define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
 define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'Database Driver');
 define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
 
+define('_TEAM_NO_SELECTABLE_MEMBERS',         'team does not have selectable members');
+
+define('_LISTS_ITEM_COUNT',      'Item count');
+define('_LISTS_ORDER',           'order');
+
+define('_EBLOG_CAT_ORDER',            "This is the order of the category.<br />\nInput value will be on the smaller in number (standard 100)");
+define('_EBLOG_CAT_ORDER_DESC2',      "Input value will be on the smaller in number (standard 100)");
+
+// category order changes (batch)
+define('_BATCH_CAT_CAHANGE_ORDER',                 'change the order');
+define('_ERROR_CAHANGE_CATEGORY_ORDER',            'You can not change the sort');
+define('_CAHANGE_CATEGORY_ORDER_TITLE',            'Please specify the order of the category');
+define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',     'The order of the following categories will be changed at once.If it is good, please press the button.');
+define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',        'Change the order');
+
  /********************************************
  *        Start New for 3.65                *
  ********************************************/
@@ -43,7 +58,6 @@ define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 character
  ********************************************/
 define('_SETTINGS_ADMINCSS',		'Admin Area Style');
 
- 
 /********************************************
  *        Start New for 3.50                *
  ********************************************/
@@ -52,7 +66,6 @@ define('_ARCHIVETYPE_YEAR', 'year');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
 define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
-
 
 /********************************************
  *        Start New for 3.40                *

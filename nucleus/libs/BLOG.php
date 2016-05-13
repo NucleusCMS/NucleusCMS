@@ -400,7 +400,7 @@ class BLOG {
       *        the new category-id in case of success.
       *        0 on failure
       */
-    function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC) {
+    function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC, $corder = null) {
         global $member, $manager;
 
         if ($member->blogAdminRights($this->getID())) {
@@ -423,11 +423,17 @@ class BLOG {
             $param = array(
                 'blog'            => &$this,
                 'name'            => &$catName,
-                'description'    => $catDescription
+                'description'    => $catDescription,
+                'order' => &$corder
             );
             $manager->notify('PreAddCategory', $param);
 
-            $query = 'INSERT INTO '.sql_table('category').' (cblog, cname, cdesc) VALUES (' . $this->getID() . ", '" . sql_real_escape_string($catName) . "', '" . sql_real_escape_string($catDescription) . "')";
+            $query = 'INSERT INTO '.sql_table('category').
+                ' (cblog, cname, cdesc' . ( is_null($corder) ? '':', corder' ) .  ')'.
+                ' VALUES (' . $this->getID() . ", '" . sql_real_escape_string($catName) . "', '"
+                            . sql_real_escape_string($catDescription) .  "'" .
+                         ( is_null($corder) ? '': sprintf(', %d', $corder) ) .
+                         ")";
             sql_query($query);
             $catid = sql_insert_id();
 
@@ -435,7 +441,8 @@ class BLOG {
                 'blog'            => &$this,
                 'name'            =>  $catName,
                 'description'    =>  $catDescription,
-                'catid'            =>  $catid
+                'catid'            =>  $catid,
+                'order' => $corder
             );
             $manager->notify('PostAddCategory', $param);
 
@@ -741,7 +748,11 @@ class BLOG {
                                 'currentcat' => $nocatselected 
                             ));
 
-        $query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' ORDER BY cname ASC';
+        $query = 'SELECT catid, cdesc as catdesc, cname as catname FROM '.sql_table('category').' WHERE cblog=' . $this->getID();
+        if (intval($CONF['DatabaseVersion']) >= 371)
+            $query .=  ' ORDER BY corder ASC,cname ASC';
+        else
+            $query .=  ' ORDER BY cname ASC';
         $res = sql_query($query);
 
 
@@ -990,6 +1001,14 @@ class BLOG {
         $res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
         return $o->cdesc;
+    }
+
+    public function getCategoryOrder($catid)
+    {
+        $res = sql_query('SELECT corder FROM '.sql_table('category')
+                       . ' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+        $o = sql_fetch_object($res);
+        return $o->corder;
     }
 
     /**

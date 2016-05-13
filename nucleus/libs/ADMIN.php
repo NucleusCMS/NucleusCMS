@@ -676,10 +676,17 @@ class ADMIN {
         if (($action == 'delete') && (requestVar('confirmation') != 'yes'))
             $this->batchAskDeleteConfirmation('category',$selected);
 
+        if ($action == 'change_corder')
+          {
+            if ( (!isset($_POST['new_corder']))
+                 || (!is_numeric($_POST['new_corder'])) )
+              $this->batchChangeCategorySelectOrder('category' , $selected );
+          }
+
         $this->pagehead();
 
         echo '<a href="index.php?action=overview">(',_BACKHOME,')</a>';
-        echo '<h2>',BATCH_CATEGORIES,'</h2>';
+        echo '<h2>',_BATCH_CATEGORIES,'</h2>';
         echo '<p>',_BATCH_EXECUTING,' <b>',hsc($action),'</b></p>';
         echo '<ul>';
 
@@ -695,6 +702,10 @@ class ADMIN {
                     break;
                 case 'move':
                     $error = $this->moveOneCategory($catid, $destBlogId);
+                    break;
+                case 'change_corder':
+                    $new_corder = intRequestVar('new_corder');
+                    $error = $this->changeOneCategoryOrder($catid, $new_corder);
                     break;
                 default:
                     $error = _BATCH_UNKNOWN . hsc($action);
@@ -774,6 +785,88 @@ class ADMIN {
 
         </div></form>
         <?php       $this->pagefoot();
+        exit;
+    }
+
+    function batchChangeCategorySelectOrder($type, $ids)
+    {
+        global $manager , $member , $CONF;
+
+        $this->pagehead();
+
+        if ($CONF['debug'])
+          {
+            echo "<!-- ". __CLASS__ . '::' . __FUNCTION__ . "  -->\n";
+            //var_dump($ids);
+          }
+        ?>
+        <h2><?php echo _CAHANGE_CATEGORY_ORDER_TITLE ?></h2>
+        <form method="post" action="index.php"><div>
+
+            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="batchaction" value="change_corder" />
+            <?php
+                $manager->addTicketHidden();
+
+                // insert selected Category numbers
+                $idx = 0;
+                foreach ($ids as $id)
+                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+
+                $def_oder = 100;
+                if ( isset($ids[0]) && ( intval($ids[0]) > 0 ) )
+                  {
+                      $ids[0] = intval($ids[0]);
+                      // $manager->existsCategory
+                      $bid = getBlogIDFromCatID($ids[0]);
+                      if ($member->blogAdminRights($bid))
+                        {
+                            $b = $manager->getBlog($bid);
+                            $def_oder = $b->getCategoryOrder($ids[0]);
+                        }
+                  }
+                echo sprintf('<input type="text" name="new_corder" value="%d" />', $def_oder);
+
+            ?>
+            <input type="submit" value="<?php echo _CAHANGE_CATEGORY_ORDER_BTN_TITLE ?>" onclick="return checkSubmit();" />
+
+        </div></form>
+        <?php
+        $s = '';
+
+        foreach ($ids as $id)
+        {
+            $bid = getBlogIDFromCatID($id);
+            if ($member->blogAdminRights($bid))
+              {
+                  unset($b , $o);
+                  $b = $manager->getBlog($bid);
+
+                  $res = sql_query('SELECT * FROM ' . sql_table('category')
+                                . ' WHERE cblog=' . $bid . ' and catid=' . intval($id));
+                  $o = sql_fetch_object($res);
+                  if (isset($o) && is_object($o))
+                    {
+                        $s .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>'
+                                    , hsc($o->corder), hsc($o->cname), hsc($o->cdesc)
+                        );
+                        continue;
+                    }
+              }
+            $s .= sprintf('<tr><td>error</td><td>catid:%d</td><td></td></tr>' , $id);
+        }
+        if ($s)
+          {
+              echo "<p>". _CAHANGE_CATEGORY_ORDER_CONFIRM_DESC . "</p>\n";
+              echo "<table>"
+                . sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>'
+                          , hsc( _LISTS_ORDER ), hsc( _LISTS_NAME ), hsc( _LISTS_DESC )
+                        )
+                . $s . "</table>\n";
+          }
+
+        $this->pagefoot();
+
         exit;
     }
 
@@ -880,7 +973,7 @@ class ADMIN {
                 }
 
                 // 2. for each category in that blog
-                $categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY cname ASC');
+                $categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY corder ASC, cname ASC');
                 while ($oCat = sql_fetch_object($categories)) {
                     if ($oCat->catid == $selected)
                         $selectText = ' selected="selected" ';
@@ -2660,7 +2753,14 @@ class ADMIN {
 
 
         <?php
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cblog='.$blog->getID().' ORDER BY cname';
+        $query =  'SELECT c.* , count(i.icat) as icount '
+               . ' FROM ' . sql_table('category') . ' c '
+               . '  LEFT JOIN ' . sql_table('item') . ' i '
+               . '   ON c . catid = i . icat '
+               . ' WHERE cblog=' . $blog->getID()
+               . ' GROUP BY c . catid '
+               . ' ORDER BY c.corder ASC , c.cname ASC ';
+
         $template['content'] = 'categorylist';
         $template['tabindex'] = 200;
 
@@ -2684,6 +2784,9 @@ class ADMIN {
         </tr><tr>
             <td><?php echo _EBLOG_CAT_DESC?></td>
             <td><input name="cdesc" size="40" maxlength="200" tabindex="310" /></td>
+        </tr><tr>
+            <td><?php echo _EBLOG_CAT_ORDER ?></td>
+            <td><input name="corder" size="40" maxlength="200" tabindex="320" value="100" /></td>
         </tr><tr>
             <td><?php echo _EBLOG_CAT_CREATE?></td>
             <td><input type="submit" value="<?php echo _EBLOG_CAT_CREATE?>" tabindex="320" /></td>
@@ -2714,6 +2817,18 @@ class ADMIN {
         $cname = postVar('cname');
         $cdesc = postVar('cdesc');
 
+        $corder = null;
+        if ( isset($_POST['corder']) )
+          {
+              $corder =& $_POST['corder'];
+              if ( (!is_null($corder))
+                && (is_numeric($corder))
+                 )
+                $corder = intval($corder);
+              else
+                $corder = null;
+          }
+
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
@@ -2723,7 +2838,7 @@ class ADMIN {
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $blog       =& $manager->getBlog($blogid);
-        $newCatID   =  $blog->createNewCategory($cname, $cdesc);
+        $newCatID   =  $blog->createNewCategory($cname, $cdesc, $corder);
 
         $this->action_blogsettings();
     }
@@ -2750,6 +2865,7 @@ class ADMIN {
 
         $cname = $obj->cname;
         $cdesc = $obj->cdesc;
+        $corder = $obj->corder;
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
         $this->pagehead($extrahead);
@@ -2773,6 +2889,10 @@ class ADMIN {
         </tr><tr>
             <td><?php echo _EBLOG_CAT_DESC?></td>
             <td><input type="text" name="cdesc" value="<?php echo hsc($cdesc)?>" size="40" maxlength="200" /></td>
+        </tr>
+        <tr>
+            <td><?php echo _EBLOG_CAT_ORDER?></td>
+            <td><input type="text" name="corder" value="<?php echo hsc($corder)?>" size="40" maxlength="200" /></td>
         </tr>
         <?php
             // insert plugin options
@@ -2802,6 +2922,18 @@ class ADMIN {
         $cdesc = postVar('cdesc');
         $desturl = postVar('desturl');
 
+        $corder = null;
+        if ( isset($_POST['corder']) )
+          {
+              $corder =& $_POST['corder'];
+              if ( (!is_null($corder))
+                && (is_numeric($corder))
+                 )
+                $corder = intval($corder);
+              else
+                $corder = null;
+          }
+
         $member->blogAdminRights($blogid) or $this->disallow();
 
         if (!isValidCategoryName($cname))
@@ -2814,9 +2946,12 @@ class ADMIN {
 
         $query =  'UPDATE '.sql_table('category').' SET'
                . " cname='" . sql_real_escape_string($cname) . "',"
-               . " cdesc='" . sql_real_escape_string($cdesc) . "'"
-               . " WHERE catid=" . $catid;
+               . " cdesc='" . sql_real_escape_string($cdesc) . "'";
 
+        if ( ! is_null( $corder) )
+            $query .=  sprintf(' , corder=%d' , $corder );
+
+        $query .= " WHERE catid=" . $catid;
         sql_query($query);
 
         // store plugin options
@@ -3016,6 +3151,53 @@ class ADMIN {
         $manager->notify('PostMoveCategory', $param);
 
     }
+
+
+    function changeOneCategoryOrder($catid, $new_corder)
+    {
+        global $manager, $member;
+
+        $catid = intval($catid);
+        $new_corder = intval($new_corder);
+
+        $blogid = intval(getBlogIDFromCatID($catid));
+
+        // mover should have admin rights on both blogs
+        if ( !$blogid || !$member->blogAdminRights($blogid) )
+            return _ERROR_DISALLOWED;
+
+        // get blogs
+        $blog =& $manager->getBlog($blogid);
+
+        // check if the category is valid
+        if (!$blog || !$blog->isValidCategory($catid))
+            return _ERROR_NOSUCHCATEGORY;
+
+        $old_corder = $blog->getCategoryOrder($catid);
+        $param = array(
+                'catid' => $catid,
+                'blog' => $blog ,
+                'old_corder' => $old_corder ,
+                'new_corder' => &$new_corder
+        );
+        $manager->notify('PreChangeCategoryOrder', $param);
+
+        // update category corder
+        $query = 'UPDATE '.sql_table('category')
+             .  ' SET corder=' . intval($new_corder)
+             . ' WHERE cblog='.$blogid.' AND catid='.$catid;
+        sql_query($query);
+
+        $param = array(
+                'catid' => $catid ,
+                'blog' => $blog ,
+                'old_corder' => $old_corder ,
+                'new_corder' => $new_corder
+        );
+        $manager->notify('PostChangeCategoryOrder', $param);
+
+    }
+
 
     /**
      * @todo document this
