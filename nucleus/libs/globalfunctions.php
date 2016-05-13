@@ -367,6 +367,22 @@ $language = getLanguageName();
 
 include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
+    if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+    {
+        // load undefined constant
+        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+        {
+            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+            {
+                // load default lang
+                ob_start();
+                @include_once($DIR_LANG . 'english-utf8' . '.php');
+                ob_end_clean();
+            }
+        }
+    }
+
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
 
@@ -1847,11 +1863,25 @@ function ticketForPlugin() {
         {
             $language = getLanguageName();
 
-            # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-            # original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
             # important note that '\' must be matched with '\\\\' in preg* expressions
-
             include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+
+            if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+                 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+            {
+                // load undefined constant
+                if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+                {
+                    if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+                    {
+                        // load default lang
+                        ob_start();
+                        @include_once($DIR_LANG . 'english-utf8' . '.php');
+                        ob_end_clean();
+                    }
+                }
+            }
+
             include_once($DIR_LIBS . 'PLUGINADMIN.php');
         }
         
