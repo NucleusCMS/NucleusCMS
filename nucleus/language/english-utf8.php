@@ -18,6 +18,13 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+/********************************************
+ *        Start New for 3.71                *
+ ********************************************/
+define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
+define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'Database Driver');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
+
  /********************************************
  *        Start New for 3.65                *
  ********************************************/

@@ -5118,6 +5118,7 @@ selector();
      */
     function action_systemoverview() {
         global $member, $nucleus, $CONF;
+        global $MYSQL_HANDLER;
 
         $this->pagehead();
 
@@ -5125,8 +5126,8 @@ selector();
 
         if ($member->isLoggedIn() && $member->isAdmin()) {
 
-            // Information about the used PHP and MySQL installation
-            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL . "</h3>\n";
+            // Information about the used PHP and Database installation
+            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDDB . "</h3>\n";
 
             // Version of PHP MySQL
             echo "<table>\n";
@@ -5136,8 +5137,23 @@ selector();
             echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
             echo "\t\t" . '<td>' . phpversion() . "</td>\n";
             echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_MYSQLVERSION . "</td>\n";
-            echo "\t\t" . '<td>' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
+            echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_DBANDVERSION . "</td>\n";
+            echo "\t\t" . '<td>';
+                if (($MYSQL_HANDLER[0] != 'pdo') ||  ($MYSQL_HANDLER[1] == 'mysql'))
+                    echo 'MySQL';
+                else
+                    hsc($MYSQL_HANDLER[1]);
+            echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
+            echo "\t</tr>";
+            // Databese Driver
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
+            echo "\t\t" . '<td>';
+                    if ($MYSQL_HANDLER[0] == 'pdo')
+                        echo 'pdo';
+                    else
+                        echo hsc($MYSQL_HANDLER[0]).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
+            echo "</td>\n";
             echo "\t</tr>";
             echo "</table>\n";
 
