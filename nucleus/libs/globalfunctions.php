@@ -752,9 +752,8 @@ function parseHighlight($query) {
     for ($i = 0; $i < count($aHighlight); $i++) {
         $aHighlight[$i] = trim($aHighlight[$i]);
 
-        if (strlen($aHighlight[$i]) < 3) {
-            unset($aHighlight[$i]);
-        }
+//        if (strlen($aHighlight[$i]) < 3)
+//            unset($aHighlight[$i]);
     }
 
     if (count($aHighlight) == 1) {
@@ -803,8 +802,10 @@ function getCatIDFromName($name) {
 
 function quickQuery($query) {
     $res = sql_query($query);
-    $obj = sql_fetch_object($res);
-    return $obj->result;
+    if ($res && is_object($obj = sql_fetch_object($res)))
+        return $obj->result;
+    else
+        return False;
 }
 
 function getPluginNameFromPid($pid) {
@@ -922,9 +923,9 @@ function selector() {
         global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 
         // sql queries for the timestamp of the first and the last published item
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
+        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC LIMIT 1";
         $first_timestamp=quickQuery ($query);
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
+        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC LIMIT 1";
         $last_timestamp=quickQuery ($query);
 
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
@@ -1013,6 +1014,32 @@ function selector() {
         global $startpos;
         $type = 'search';
         $query = stripslashes($query);
+
+        if (function_exists('mb_convert_encoding'))
+        {
+            if (preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)) {
+                $type = 'index';
+            }
+    //		$query = mb_convert_encoding($query, _CHARSET, $order . ' JIS, SJIS, ASCII');
+            switch(strtolower(_CHARSET)) {
+                case 'utf-8':
+                    $order = 'ASCII, UTF-8, EUC-JP, JIS, SJIS, EUC-CN, ISO-8859-1';
+                    break;
+                case 'gb2312':
+                    $order = 'ASCII, EUC-CN, EUC-JP, UTF-8, JIS, SJIS, ISO-8859-1';
+                    break;
+                case 'shift_jis':
+                    // Note that shift_jis is only supported for output.
+                    // Using shift_jis in DB is prohibited.
+                    $order = 'ASCII, SJIS, EUC-JP, UTF-8, JIS, EUC-CN, ISO-8859-1';
+                    break;
+                default:
+                    // euc-jp,iso-8859-x,windows-125x
+                    $order = 'ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1';
+                    break;
+            }
+            $query = mb_convert_encoding($query, _CHARSET, $order);
+        }
 
         if (is_numeric($blogid)) {
             $blogid = intVal($blogid);
