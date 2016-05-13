@@ -2309,7 +2309,18 @@ class ADMIN {
 
         ?>
             <h3><?php echo _TEAM_ADDNEW?></h3>
+<?php
+            // TODO: try to make it so only non-team-members are listed
+            // From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
+            $from_where = sprintf(" FROM %s WHERE mnumber NOT IN (SELECT tmember FROM %s WHERE tblog='%s')",
+                                  sql_table('member') , sql_table('team') , $blogid);
+            $query = "SELECT mname as text, mnumber as value" . $from_where;
+            $count_non_team_members = intval(quickQuery("SELECT count(*) AS result " . $from_where));
 
+            if ($count_non_team_members == 0)
+              echo _TEAM_NO_SELECTABLE_MEMBERS;
+            else {
+?>
             <form method='post' action='index.php'><div>
 
             <input type='hidden' name='action' value='teamaddmember' />
@@ -2318,11 +2329,7 @@ class ADMIN {
 
             <table><tr>
                 <td><?php echo _TEAM_CHOOSEMEMBER?></td>
-                <td><?php                   // TODO: try to make it so only non-team-members are listed
-                    // From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
-                    $query = "SELECT mname as text, mnumber as value FROM %s WHERE mnumber NOT IN (SELECT tmember FROM %s WHERE tblog='%s')";
-                    $query = sprintf($query, sql_table('member'),sql_table('team'),$blogid);
-
+                <td><?php
                     $template['name'] = 'memberid';
                     $template['tabindex'] = 10000;
                     showlist($query,'select',$template);
@@ -2337,6 +2344,7 @@ class ADMIN {
 
             </div></form>
         <?php
+         } /* end $count_non_team_members > 0 */
         $this->pagefoot();
     }
 
@@ -2354,6 +2362,7 @@ class ADMIN {
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $blog =& $manager->getBlog($blogid);
+        if ($member->existsID($memberid))
         if (!$blog->addTeamMember($memberid, $admin))
             $this->error(_ERROR_ALREADYONTEAM);
 
