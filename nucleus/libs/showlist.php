@@ -393,13 +393,33 @@ function listplug_nextBatchId() {
 }
 
 function listplug_table_commentlist($template, $type) {
+    static $amountComments = array();
+    global $action;
+
+//    $colspan = 3;
+//    if ( $action == 'blogcommentlist')
+//       $colspan++;
+
     switch($type) {
         case 'HEAD':
             echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
             break;
         case 'BODY':
+            global $member;
             $current = $template['current'];
             $current->ctime = strtotime($current->ctime);    // string -> unix timestamp
+            if (!isset($current->is_badmin) || $current->is_badmin)
+            {
+                $show_action_link = 1;
+                $show_action_link_itemcommentlist = ($action == 'blogcommentlist');
+            }
+            else
+            {
+                $current->iauthor = intval($current->iauthor);
+                $current->cmember = intval($current->cmember);
+                $show_action_link = ($current->cmember == $member->id) || ($current->iauthor == $member->id);
+                $show_action_link_itemcommentlist = ($action == 'blogcommentlist') && ($current->iauthor == $member->id);
+            }
 
             echo '<td>';
             echo date("Y-m-d@H:i",$current->ctime);
@@ -423,16 +443,48 @@ function listplug_table_commentlist($template, $type) {
 
             echo '<td>';
             $id = listplug_nextBatchId();
-            echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->cnumber,'" />';
+            if ($show_action_link)
+                echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->cnumber,'" />';
             echo '<label for="batch',$id,'">';
             echo $current->cbody;
             echo '</label>';
             echo '</td>';
 
+            if ($show_action_link)
+            {
             echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"._LISTS_EDIT."</a></td>";
             echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"._LISTS_DELETE."</a></td>";
+            }
+            else
+            {
+                echo "<td style=\"white-space:nowrap\">&nbsp;</td>";
+                echo "<td style=\"white-space:nowrap\">&nbsp;</td>";
+            }
             if ($template['canAddBan'])
                 echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"._LIST_COMMENT_BANIP."</a></td>";
+
+            // add link
+            if ($action == 'blogcommentlist')
+             {
+                if ($show_action_link_itemcommentlist)
+                {
+                    if (!isset($amountComments[$current->citem]))
+                    {
+                        $COMMENTS = new COMMENTS($current->citem);
+                        $amountComments[$current->citem] = $COMMENTS->amountComments();
+                    }
+                    echo '<td style=" word-break: break-all">';
+                    $s = sprintf('(%d) %s' , $amountComments[$current->citem], _LIST_COMMENT_LIST_FOR_ITEM);
+                    $s = sprintf(_LIST_BACK_TO, $s);
+                    printf('<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>'
+                           , $current->citem , $s );
+                    echo '</td>';
+                }
+                else
+                echo '<td>&nbsp;</td>';
+             }
+            // end link
+
             break;
     }
 }
@@ -602,15 +654,19 @@ function listplug_table_skinlist($template, $type) {
 
             echo "<td>" , hsc($current->sddesc);
                 // show list of defined parts
-                $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . ' ORDER BY stype');
+                $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber
+                    . " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC"
+                     );
                 $types = array();
                 while ($o = sql_fetch_object($r))
                     array_push($types,$o->stype);
                 if (sizeof($types) > 0) {
                     $friendlyNames = SKIN::getFriendlyNames();
-                    for ($i=0;$i<sizeof($types);$i++) {
+                    $skinNames = array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup');
+                    $total = sizeof($types);
+                    for ($i=0;$i<$total;$i++) {
                         $type = $types[$i];
-                        if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+                        if (in_array($type, $skinNames)) {
                             $types[$i] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . hsc($friendlyNames[$type]) . "</a></li>";
                         } else {
                             $types[$i] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . hsc($friendlyNames[$type]) . "</a></li>";
