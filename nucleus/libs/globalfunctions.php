@@ -23,14 +23,15 @@ $nucleus['version'] = 'v3.71';
 $nucleus['codename'] = '';
 
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+global $StartTime;
+$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
-$CONF['debug'] = 0;
-if ($CONF['debug']) {
+if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
 } else {
-    if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
+    if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
         ini_set('display_errors','0');
     if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
@@ -51,11 +52,11 @@ if ($CONF['debug']) {
         directory) are still on the server.
 */
 
-if (!isset($CONF['alertOnHeadersSent']) || (isset($CONF['alertOnHeadersSent'])&& $CONF['alertOnHeadersSent'] !== 0))
+if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
 {
     $CONF['alertOnHeadersSent']  = 1;
 }
-$CONF['alertOnSecurityRisk'] = 1;
+if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
 /*$CONF['ItemURL']           = $CONF['Self'];
 $CONF['ArchiveURL']          = $CONF['Self'];
 $CONF['ArchiveListURL']      = $CONF['Self'];
@@ -647,7 +648,10 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
             'charset'        => &$charset,
             'pageType'        =>  $pagetype
         );
+
+        if (!function_exists('sql_connected') || sql_connected())
         $manager->notify('PreSendContentType', $param);
+
         // strip strange characters
         $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
         $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
@@ -702,7 +706,7 @@ function highlight($text, $expression, $highlight) {
             {
                 if ($regex)
                 {
-                    $matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
+                    $matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
                 }
             }
             
@@ -710,7 +714,7 @@ function highlight($text, $expression, $highlight) {
         }
         else
         {
-            $result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
+            $result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
         }
     }
     
@@ -784,8 +788,8 @@ function getCatIDFromName($name) {
     return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
 }
 
-function quickQuery($q) {
-    $res = sql_query($q);
+function quickQuery($query) {
+    $res = sql_query($query);
     $obj = sql_fetch_object($res);
     return $obj->result;
 }
@@ -852,7 +856,7 @@ function selector() {
         global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
         // 1. get timestamp, blogid and catid for item
-        $query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
+        $query = sprintf("SELECT itime, iblog, icat FROM %s WHERE inumber='%d'" , sql_table('item'),intval($itemid));
         $res = sql_query($query);
         $obj = sql_fetch_object($res);
 
@@ -1244,7 +1248,10 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
     PARSER::setProperty('IncludePrefix', $includePrefix);
 
     if (!file_exists($filename) ) {
-        doError('A file is missing');
+        if (defined('_GFUNCTIONS_PARSEFILE_FILEMISSING'))
+            doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
+        else
+            doError('A file is missing');
     }
 
     $fsize = filesize($filename);
@@ -1344,7 +1351,7 @@ function includephp($filename) {
     // other
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
-    if (file_exists($filename) ) {
+    if (@file_exists($filename) ) {
         include_once($filename);
     }
 }
@@ -1790,7 +1797,7 @@ function ticketForPlugin() {
     {
         $p_translated=serverVar('SCRIPT_FILENAME');
     }
-    if ($file = file($p_translated) )
+    if ($file = @file($p_translated) )
     {
         $prevline='';
         foreach($file as $line)
@@ -2196,7 +2203,7 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
     if($encoding==='')
     {
         if(defined('_CHARSET')) $encoding = _CHARSET;
-        else                    $encoding = 'utf8';
+        else                    $encoding = 'utf-8';
     }
     if(version_compare(PHP_VERSION, '5.2.3', '>='))
         return htmlspecialchars($string, $flags, $encoding, false);

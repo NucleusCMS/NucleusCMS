@@ -22,7 +22,7 @@ function showlist($query, $type, $template) {
         if (sizeof($query) == 0)
             return 0;
 
-        call_user_func('listplug_' . $type, $template, 'HEAD');
+        call_user_func("listplug_{$type}", $template, 'HEAD');
 
         foreach ($query as $currentObj) {
             $template['current'] = $currentObj;
@@ -41,7 +41,7 @@ function showlist($query, $type, $template) {
         if ($numrows == 0)
             return 0;
 
-        call_user_func('listplug_' . $type, $template, 'HEAD');
+        call_user_func("listplug_{$type}", $template, 'HEAD');
 
         while($template['current'] = sql_fetch_object($res))
             call_user_func('listplug_' . $type, $template, 'BODY');
@@ -178,10 +178,13 @@ function listplug_table_pluginlist($template, $type) {
             if ($plug) {
                 echo '<td>';
                     echo '<strong>' , hsc($plug->getName()) , '</strong><br />';
-                    echo _LIST_PLUGS_AUTHOR, ' ' , hsc($plug->getAuthor()) , '<br />';
+                    if($plug->getAuthor()!=='Undefined')
+                        echo _LIST_PLUGS_AUTHOR, ' ' , hsc($plug->getAuthor()) , '<br />';
                     echo _LIST_PLUGS_VER, ' ' , hsc($plug->getVersion()) , '<br />';
-                    if ($plug->getURL())
+                    if ($plug->getURL()&&$plug->getURL()!=='Undefined')
                     echo '<a href="',hsc($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
+                    if ($plug->supportsFeature('HelpPage') > 0)
+                        echo "<a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
                 echo '</td>';
                 echo '<td>';
                     echo _LIST_PLUGS_DESC .'<br/>'. encode_desc($plug->getDescription());
@@ -409,7 +412,7 @@ function listplug_table_commentlist($template, $type) {
                                 echo '<br />';
                                 echo hsc($current->cmail);
                         }
-            if ($current->cemail != '') {
+            if (isset($current->cemail) && ($current->cemail != '')) {
                                 echo '<br />';
                                 echo hsc($current->cemail);
                         }

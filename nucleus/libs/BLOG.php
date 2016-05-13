@@ -480,7 +480,7 @@ class BLOG {
         {
             // no query -> show everything
             $extraquery = '';
-            $amountfound = $this->readLogAmount($template, $maxresults, $extraQuery, $query, 1, 1);
+            $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $query, 1, 1);
         } else {
 
             // add LIMIT to query (to split search results into pages)
