@@ -39,8 +39,9 @@ class SEARCH {
 
         // get all public searchable blogs, no matter what, include the current blog allways.
         $res = sql_query('SELECT bnumber FROM '.sql_table('blog').' WHERE bincludesearch=1 ');
-        while ($obj = sql_fetch_object($res))
+        while ($obj = sql_fetch_object($res)) {
             $this->blogs[] = intval($obj->bnumber);
+        }
     }
 
     function  boolean_sql_select($match){
@@ -88,7 +89,7 @@ class SEARCH {
         
         /* strip exlusive atoms */
         $result = preg_replace(
-"#\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\)#",
+            "#\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\)#",
             '',
             $result);
         

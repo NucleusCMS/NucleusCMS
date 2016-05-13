@@ -5754,7 +5754,8 @@ selector();
         // REGEDIT and bookmarklet code stolen from GreyMatter
 
         $sjisBlogName = sprintf(_WINREGFILE_TEXT, getBlogNameFromID($blogid));
-
+        if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')
+            $sjisBlogName = mb_convert_encoding($sjisBlogName, "SJIS-win", "auto");
 
         header('Content-Type: application/octetstream');
         header('Content-Disposition: filename="nucleus.reg"');
