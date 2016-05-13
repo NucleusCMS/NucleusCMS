@@ -16,6 +16,9 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
 
 	// metaWeblog.newPost
 	$f_metaWeblog_newPost_sig = array(array(
