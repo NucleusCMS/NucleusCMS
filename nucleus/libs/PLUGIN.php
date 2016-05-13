@@ -29,7 +29,7 @@ class NucleusPlugin {
 
     // these function _may_ be redefined in your plugin
 
-    function getMinNucleusVersion()    { return 150; }
+    function getMinNucleusVersion()    { return 350; }
     function getMinNucleusPatchLevel() { return 0; }
     function getEventList()            { return array(); }
     function getTableList()            { return array(); }
