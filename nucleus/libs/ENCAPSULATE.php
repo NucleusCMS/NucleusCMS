@@ -136,7 +136,7 @@ class NAVLIST extends ENCAPSULATE {
         <input type="hidden" name="action" value="<?php echo  $action; ?>" />
         <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
         <input type="hidden" name="start" value="0" />
-        <input type="text" name="search" value="<?php echo  $search; ?>" size="7" />
+        <input type="text" name="search" value="<?php echo  $search; ?>" size="16" />
         <input type="submit" value="&gt; <?php echo  _LISTS_SEARCH?>" />
         </div></form>
     </td><td>
