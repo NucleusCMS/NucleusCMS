@@ -33,9 +33,10 @@ class NP_Text extends NucleusPlugin {
 		}
 	}
 	 
-	function doSkinVar($skinType, $constant) {
+	function doSkinVar($skinType, $constant='') {
 		global $member, $CONF;
-		
+
+		if ($constant==='') return ;
 		$language = getLanguageName();
 		$getLanguage = isset($_GET['lang']) ? getVar('lang') : false;
 		$cookieLanguage = isset($_COOKIE['NP_Text']) ? cookieVar('NP_Text') : false;
@@ -57,9 +58,10 @@ class NP_Text extends NucleusPlugin {
 		
 	}
 	
-	function doTemplateVar(&$item, $constant) {
+	function doTemplateVar(&$item, $constant='') {
 		global $member, $CONF;
-		
+
+		if ($constant==='') return ;
 		$language = getLanguageName();
 		$getLanguage = isset($_GET['lang']) ? getVar('lang') : false;
 		$cookieLanguage = isset($_COOKIE['NP_Text']) ? cookieVar('NP_Text') : false;
