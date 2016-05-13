@@ -545,12 +545,12 @@ class SKINIMPORT {
                       if (isset($data[$parent]['skin']))
                       {
                           foreach ($data[$parent]['skin'] as $v)
-                              $this->skins[$v] = '';
+                              $this->skins[$v] = array();
                       }
                       if (isset($data[$parent]['template']))
                       {
                           foreach ($data[$parent]['template'] as $v)
-                              $this->templates[$v] = '';
+                              $this->templates[$v] = array();
                       }
                  }
               }
