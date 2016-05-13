@@ -1293,7 +1293,35 @@ function helpHtml($id) {
 
 function helplink($id) {
     global $CONF;
-    return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+
+    $doc_root = get_help_root_url(TRUE);
+
+    return '<a href="' . $doc_root . 'help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+}
+
+function get_help_root_url($subdir_search = FALSE) {
+    global $CONF, $DIR_NUCLEUS;
+
+    static $doc_root = array();
+    $key = $subdir_search ? 1 : 0;
+    if (!isset($doc_root[$key]))
+    {
+        $doc_root[$key] = $CONF['AdminURL'] . 'documentation/';
+        if ($subdir_search)
+        {
+            $lang = getLanguageName();
+            $items = array('japan'=>'ja', 'english'=>'en');
+            foreach($items as $k => $v)
+            {
+                if ((@stripos($lang , $k) !== false) && (is_dir($DIR_NUCLEUS . "documentation/" . $v)))
+                {
+                    $doc_root[$key] .= $v . '/';
+                    break;
+                }
+            }
+        }
+    }
+    return $doc_root[$key];
 }
 
 function getMailFooter() {

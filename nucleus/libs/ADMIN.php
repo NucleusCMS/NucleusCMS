@@ -5579,6 +5579,7 @@ selector();
         else
             echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
 
+        echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url(FALSE) , _HELP_TT);
         echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
     
         echo '<br />(';
