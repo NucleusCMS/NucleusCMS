@@ -15,6 +15,60 @@
 
 
 /********************************************
+ *        Start New for 3.71                *
+ ********************************************/
+define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
+define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'Database Driver');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
+
+define('_TEAM_NO_SELECTABLE_MEMBERS',         'team does not have selectable members');
+
+define('_LISTS_FORM_SELECT_ALL_CATEGORY',    'All categories');
+
+define('_LISTS_ITEM_COUNT',      'Item count');
+define('_LISTS_ORDER',           'order');
+
+define('_EBLOG_CAT_ORDER',            "This is the order of the category.<br />\nInput value will be on the smaller in number (standard 100)");
+define('_EBLOG_CAT_ORDER_DESC2',      "Input value will be on the smaller in number (standard 100)");
+
+// category order changes (batch)
+define('_BATCH_CAT_CAHANGE_ORDER',                 'change the order');
+define('_ERROR_CAHANGE_CATEGORY_ORDER',            'You can not change the sort');
+define('_CAHANGE_CATEGORY_ORDER_TITLE',            'Please specify the order of the category');
+define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',     'The order of the following categories will be changed at once.If it is good, please press the button.');
+define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',        'Change the order');
+
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',        'Failed to Load XML');
+
+ /********************************************
+ *        Start New for 3.65                *
+ ********************************************/
+define('_LISTS_AUTHOR', 'Author');
+define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
+ 
+/********************************************
+ *        Start New for 3.64                *
+ ********************************************/
+define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
+define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
+define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 characters.');
+
+/********************************************
+ *        Start New for 3.62                *
+ ********************************************/
+define('_SETTINGS_ADMINCSS',		'Admin Area Style');
+
+/********************************************
+ *        Start New for 3.50                *
+ ********************************************/
+define('_PLUGS_TITLE_GETPLUGINS',		'get more plugins...');
+define('_ARCHIVETYPE_YEAR', 'year');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
+define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
+
+/********************************************
  *        Start New for 3.40                *
  ********************************************/
 
@@ -85,7 +139,7 @@ define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging w
 define('_UPDATEDPING_MESSAGE',						'<h2>Website aktualisiert, jetzt werden verschiedene Weblog Sservices angepingt...</h2><p>This can take a while...</p><p>If you aren\'t automatically passed through, ');
 define('_UPDATEDPING_GOPINGPAGE',					'nocheinmal versuchen');
 define('_UPDATEDPING_PINGING',						'Pinging Services, bitte warten ...');
-define('_UPDATEDPING_VIEWITEM',						'Siehe Liste f・ aktuelle Artikel f・ ');
+define('_UPDATEDPING_VIEWITEM',						'Siehe Liste fﾂ・ aktuelle Artikel fﾂ・ ');
 define('_UPDATEDPING_VISITOWNSITE',					'Besuchen Sie Ihre Website');
 define('_UPDATEDPING_GOSENDPING',					'Sende Update Ping');
 
@@ -513,7 +567,7 @@ define('_BACKTOMANAGE',				'Zur&uuml;ck zur Nucleus Verwaltung');
 
 
 // charset to use
-define('_CHARSET',					'iso-8859-1');
+define('_CHARSET',					'UTF-8');
 
 // global stuff
 define('_LOGOUT',					'Abmelden');
