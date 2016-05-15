@@ -55,6 +55,7 @@ class ACTIONS extends BaseActions {
      *  Set the skin
      */
     function setSkin(&$skin) {
+		unset($this->skin);
         $this->skin =& $skin;
     }
 
@@ -62,6 +63,7 @@ class ACTIONS extends BaseActions {
      *  Set the parser
      */
     function setParser(&$parser) {
+		unset($this->parser);
         $this->parser =& $parser;
     }
 
@@ -94,6 +96,7 @@ class ACTIONS extends BaseActions {
      */
     function checkCondition($field, $name='', $value = '') {
         global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
+//        global $mobiledetect;
 
         $condition = 0;
         switch($field) {
@@ -130,6 +133,20 @@ class ACTIONS extends BaseActions {
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
+			case 'commentclosed':
+				$condition = $this->parse_commentclosed();
+				break;
+			case 'hascomment':
+				$condition = $this->parse_hascomment();
+				break;
+//			case 'ismobile':
+//			case 'ismobileaccess':
+//				$condition = isMobileAccess();
+//				break;
+//			case 'istablet':
+//				$condition = $mobiledetect->isTablet();
+
+				break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
@@ -379,7 +396,7 @@ class ACTIONS extends BaseActions {
       * @param $catname
       *        The name of the category to use
       */
-    function _setBlogCategory(&$blog, $catname) {
+    function _setBlogCategory($blog, $catname) {
         global $catid;
         if ($catname != '')
             $blog->setSelectedCategoryByName($catname);
@@ -440,7 +457,9 @@ class ACTIONS extends BaseActions {
      * Code that opens a bookmarklet in an popup window
      */
     function parse_addpopupcode() {
-        echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+        echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();";
+        echo "winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');";
+        echo "winbm.focus();return false;";
     }
     
     /**
@@ -1381,7 +1400,16 @@ class ACTIONS extends BaseActions {
         $manager->addTicketHidden();
     }
 
-    /**
+	/**
+	 * Parse ticket_id
+	 */
+	function parse_ticket_id()
+	{
+		global $manager;
+		printf("%s" , $manager->_generateTicket());
+	}
+
+	/**
      *    Parse skinvar todaylink
      *    A link to the today page (depending on selected blog, etc...)
      */
@@ -1426,6 +1454,26 @@ class ACTIONS extends BaseActions {
         $this->_postBlogContent('sticky',$b);
     }
 
+	function parse_commentclosed()
+	{
+		global $blog, $itemid, $manager;
+
+		$itemid = intval($itemid);
+		// if item is closed, show message and do nothing
+		$item =& $manager->getItem($itemid,0,0);
+		if ($item['closed'] || !$blog->commentsEnabled())
+		  { return TRUE; } else { return FALSE; }
+	}
+
+	function parse_hascomment()
+	{
+		global $itemid;
+
+		$itemid = intval($itemid);
+		$sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+						   sql_table('comment'), intval($itemid));
+		$res = intval(quickQuery($sqlText));
+		return ($res > 0);
+	}
 
 }
-?>

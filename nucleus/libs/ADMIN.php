@@ -777,10 +777,10 @@ class ADMIN {
         global $manager;
         $this->pagehead();
         ?>
-        <h2><?php echo _MOVECAT_TITLE?></h2>
+        <h2><?php echo _MOVECAT_TITLE; ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $type; ?>" />
             <input type="hidden" name="batchaction" value="move" />
             <?php
                 $manager->addTicketHidden();
@@ -893,11 +893,11 @@ class ADMIN {
 
         $this->pagehead();
         ?>
-        <h2><?php echo _BATCH_DELETE_CONFIRM?></h2>
+        <h2><?php echo _BATCH_DELETE_CONFIRM; ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
-            <?php $manager->addTicketHidden() ?>
+            <input type="hidden" name="action" value="batch<?php echo $type; ?>" />
+            <?php $manager->addTicketHidden(); ?>
             <input type="hidden" name="batchaction" value="delete" />
             <input type="hidden" name="confirmation" value="yes" />
             <?php               // insert selected item numbers
@@ -1150,7 +1150,7 @@ class ADMIN {
         $query =  'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cmember=' . $member->getID();
 
         if ($search)
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
+            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
 
         $query .= ' ORDER BY ctime DESC'
                 . " LIMIT $start,$amount";
@@ -1206,7 +1206,7 @@ class ADMIN {
         $query =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
 
         if ($search != '')
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
+            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
 
 
         $query .= ' ORDER BY ctime DESC'
@@ -1408,7 +1408,7 @@ class ADMIN {
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="itemdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden(); ?>
                 <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
                 <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>"  tabindex="10" />
             </div></form>
@@ -1466,9 +1466,11 @@ class ADMIN {
 
         $blog =& $manager->getBlog($blogid);
         $currenttime = $blog->getCorrectTime(time());
-        $result = sql_query("SELECT * FROM ".sql_table('item').
-            " WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
-        if (sql_num_rows($result) > 0) {
+
+        $result = sql_query("SELECT count(*) FROM ".sql_table('item').
+            " WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime).' limit 1')
+            ;
+        if ($result && (intval(sql_result($result)) > 0)) {
                 $blog->setFuturePost();
         }
         else {
@@ -1610,8 +1612,6 @@ class ADMIN {
 
         // change <br /> to \n
         $comment['body'] = str_replace('<br />', '', $comment['body']);
-        // replaced eregi_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-        /* original eregi_replace: eregi_replace("<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>", "\\1", $comment['body']) */
 
         $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
         
@@ -1681,10 +1681,8 @@ class ADMIN {
         $url = postVar('url');
         $email = postVar('email');
         $body = postVar('body');
-        # replaced eregi() below with preg_match(). ereg* functions are deprecated in PHP 5.3.0
-        # original eregi: eregi("[a-zA-Z0-9|\.,;:!\?=\/\\]{90,90}", $body) != FALSE
-        # important note that '\' must be matched with '\\\\' in preg* expressions
 
+        # important note that '\' must be matched with '\\\\' in preg* expressions
         // intercept words that are too long
         if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
         {
@@ -1760,7 +1758,7 @@ class ADMIN {
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="commentdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden(); ?>
                 <input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
             </div></form>
@@ -2000,6 +1998,8 @@ class ADMIN {
                     if (preg_match('#^(.*)\.php$#', $filename, $matches) )
                     {
                         $name = $matches[1];
+//                        if (!check_abalable_language_name($name))
+//                          continue;
                         echo "<option value=\"$name\"";
                         if ($name == $mem->getLanguage() )
                         {
@@ -2117,8 +2117,8 @@ class ADMIN {
              || (!$canlogin && $mem->isAdmin() && $mem->canLogin())
            )
         {
-            $r = sql_query('SELECT * FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
-            if (sql_num_rows($r) < 2)
+            $r = sql_query('SELECT count(*) FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
+            if (intval(sql_result($r)) <= 1)
                 $this->error(_ERROR_ATLEASTONEADMIN);
         }
 
@@ -2448,7 +2448,7 @@ class ADMIN {
             <?php $manager->addTicketHidden() ?>
 
             <table><tr>
-                <td><?php echo _TEAM_CHOOSEMEMBER?></td>
+                <td><?php echo _TEAM_CHOOSEMEMBER; ?></td>
                 <td><?php
                     $template['name'] = 'memberid';
                     $template['tabindex'] = 10000;
@@ -2464,7 +2464,7 @@ class ADMIN {
 
             </div></form>
         <?php
-         } /* end $count_non_team_members > 0 */
+         } // end $count_non_team_members > 0
         $this->pagefoot();
     }
 
@@ -2567,9 +2567,9 @@ class ADMIN {
         if ($tmem->isBlogAdmin($blogid)) {
             // check if there are more blog members left and at least one admin
             // (check for at least two admins before deletion)
-            $query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
+            $query = 'SELECT count(*) FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
             $r = sql_query($query);
-            if (sql_num_rows($r) < 2)
+			if ($r && intval(sql_result($r)) < 2)
                 return _ERROR_ATLEASTONEBLOGADMIN;
         }
 
@@ -2601,8 +2601,8 @@ class ADMIN {
 
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
-            $r = sql_query('SELECT * FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
-            if (sql_num_rows($r) == 1)
+            $r = sql_query('SELECT count(*) FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
+			if (intval(sql_result($r)) == 1)
                 $this->error(_ERROR_ATLEASTONEBLOGADMIN);
         }
 
@@ -2746,7 +2746,8 @@ class ADMIN {
                 <?php
                     $query =  'SELECT cname as text, catid as value'
                            . ' FROM '.sql_table('category')
-                           . ' WHERE cblog=' . $blog->getID();
+                           . ' WHERE cblog=' . $blog->getID()
+						   . ' ORDER BY corder ASC , cname ASC ';
                     $template['name'] = 'defcat';
                     $template['selected'] = $blog->getDefaultCategory();
                     $template['tabindex'] = 110;
@@ -2860,9 +2861,10 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
+        $query = 'SELECT count(*) FROM '.sql_table('category')
+               . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0)
+		if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $blog       =& $manager->getBlog($blogid);
@@ -2967,9 +2969,9 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0)
+		if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  'UPDATE '.sql_table('category').' SET'
@@ -3022,9 +3024,9 @@ class ADMIN {
             $this->error(_ERROR_DELETEDEFCATEGORY);
 
         // check if catid is the only category left for blogid
-        $query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
-        if (sql_num_rows($res) == 1)
+		if (intval(sql_result($res)) == 1)
             $this->error(_ERROR_DELETELASTCATEGORY);
 
 
@@ -3092,9 +3094,9 @@ class ADMIN {
             return _ERROR_DELETEDEFCATEGORY;
 
         // check if catid is the only category left for blogid
-        $query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
-        if (sql_num_rows($res) == 1)
+		if (intval(sql_result($res)) == 1)
             return _ERROR_DELETELASTCATEGORY;
 
         $param = array('catid' => $catid);
@@ -3799,7 +3801,7 @@ selector();
                 <th colspan="2"><?php echo _SKINIE_EXPORT_SKINS?></th>
             </tr><tr>
     <?php       // show list of skins
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc'));
+        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname');
         while ($skinObj = sql_fetch_object($res)) {
             $id = 'skinexp' . $skinObj->sdnumber;
             echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
@@ -3811,7 +3813,7 @@ selector();
         echo '<th colspan="2">',_SKINIE_EXPORT_TEMPLATES,'</th></tr><tr>';
 
         // show list of templates
-        $res = sql_query('SELECT * FROM '.sql_table('template_desc'));
+        $res = sql_query('SELECT * FROM '.sql_table('template_desc').' ORDER BY tdname');
         while ($templateObj = sql_fetch_object($res)) {
             $id = 'templateexp' . $templateObj->tdnumber;
             echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
@@ -4549,15 +4551,13 @@ selector();
         echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
         echo '</form>' . "\r\n";
 
-        if ($res && sql_num_rows($res) > 0) {
-            echo '<ul>';
+        if ($res) {
             $tabstart = 75;
-
+			$s = '';
             while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
+                $s .= '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
             }
-
-            echo '</ul>';
+			if ($s) echo '<ul>'.$s.'</ul>';
         }
 
         ?>
@@ -4645,7 +4645,7 @@ selector();
         $type = trim($type);
         $type = strtolower($type);
 
-        if (!isValidShortName($type)) {
+        if (!isValidSkinPartsName($type)) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
         }
 
@@ -4862,7 +4862,7 @@ selector();
         $skinid = intRequestVar('skinid');
         $skintype = requestVar('type');
 
-        if (!isValidShortName($skintype)) {
+        if (!isValidSkinPartsName($skintype)) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
@@ -5040,6 +5040,8 @@ selector();
                     if (preg_match('#^(.*)\.php$#', $filename, $matches) )
                     {
                         $name = $matches[1];
+//                        if (!check_abalable_language_name($name))
+//                          continue;
                         echo "<option value=\"$name\"";
                         if ($name == $CONF['Language'])
                         {
@@ -5378,7 +5380,11 @@ selector();
             echo "<table>\n";
             echo "\t<tr>\n";
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
+            echo "\t</tr>\n";
+
+            if (version_compare(PHP_VERSION, '5.3.0', '<'))
+            {
+                echo "<tr>\n";
             echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
             $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
             echo "\t\t" . '<td>' . $mqg . "</td>\n";
@@ -5386,11 +5392,27 @@ selector();
             echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
             $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
             echo "\t\t" . '<td>' . $mqr . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>register_globals' . "</td>\n";
+                echo "\t</tr>\n";
+            }
+            if (version_compare(PHP_VERSION, '5.4.0', '<'))
+            {
+                echo "<tr>\n";
+            echo "\t\t" . '<td width="50%">register_globals' . "</td>\n";
             $rg = ini_get('register_globals') ? 'On' : 'Off';
             echo "\t\t" . '<td>' . $rg . "</td>\n";
-            echo "\t</tr>";
+                echo "\t</tr>";
+            }
+				echo "<tr>\n";
+				echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
+				$rg = ini_get('default_charset');
+				echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
+				echo "\t</tr>";
+
+				echo "<tr>\n";
+				echo "\t\t" . '<td>date.timezone' . "</td>\n";
+				$rg = ini_get('date.timezone');
+				echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
+				echo "\t</tr>";
             echo "</table>\n";
 
             // Information about GD library
@@ -5510,7 +5532,7 @@ selector();
         <h2>Error!</h2>
         <?php       echo $msg;
         echo "<br />";
-        echo "<a href='index.php' onclick='history.back()'>"._BACK."</a>";
+        echo "<a href='index.php' onclick='history.back(); return false;'>"._BACK."</a>";
         $this->pagefoot();
         exit;
     }
@@ -6346,7 +6368,7 @@ selector();
         echo '<h2>',_PLUGS_HELP_TITLE,': ',hsc($plugName),'</h2>';
 
         $plug =& $manager->getPlugin($plugName);
-        $cplugindir = $DIR_PLUGINS.$plug->getShortName() . '/';
+        $cplugindir = $plug->getDirectory();
         if(is_file("{$cplugindir}help.php"))
             $helpFile = "{$cplugindir}help.php";
         elseif(is_file("{$cplugindir}help.html"))
@@ -6356,11 +6378,16 @@ selector();
         elseif(is_file("{$cplugindir}help/index.html"))
             $helpFile = "{$cplugindir}help/index.html";
         
-        if ($plug->supportsFeature('HelpPage') > 0 && isset($helpFile)) {
-            if(substr($helpFile,-4)==='.php') include_once($helpFile);
-            else                              @readfile($helpFile);
-        } else {
-            echo '<p>Error: ', _ERROR_PLUGNOHELPFILE,'</p>';
+        if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@file_exists($helpFile)))
+        {
+            if(substr($helpFile,-4)==='.php')
+                include_once($helpFile);
+            else
+                @readfile($helpFile);
+        }
+        else
+        {
+            echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
             echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
         }
 
@@ -6385,8 +6412,8 @@ selector();
             $this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');
 
         // get number of currently installed plugins
-        $res = sql_query('SELECT * FROM '.sql_table('plugin'));
-        $numCurrent = sql_num_rows($res);
+        $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
+		$numCurrent = intval(sql_result($res));
 
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
@@ -6438,8 +6465,9 @@ selector();
         foreach ($pluginList as $pluginName)
         {
 
-            $res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-            if (sql_num_rows($res) == 0)
+            $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+			$ct = intval(sql_result($res));
+			if ($ct == 0)
             {
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
@@ -6664,8 +6692,8 @@ selector();
         $o = sql_fetch_object($res);
         $oldOrder = $o->porder;
 
-        $res = sql_query('SELECT * FROM '.sql_table('plugin'));
-        $maxOrder = sql_num_rows($res);
+        $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
+		$maxOrder = intval(sql_result($res));
 
         // 2. calculate new order number
         $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;

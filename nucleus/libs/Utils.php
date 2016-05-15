@@ -20,6 +20,15 @@ class Utils
 
         if (!extension_loaded('mbstring') || ('iso-8859-1' == strtolower(_CHARSET)))
         {
+            if ('utf-8' == strtolower(_CHARSET)
+                && (!isset($args[3]) || (FALSE===stripos($args[3], 'utf-8'))))
+            {
+                $additional_headers = 'Content-Type: text/plain; charset=utf-8';
+                if (isset($args[3]))
+                    $args[3] = rtrim($args[3]) . "\n" . $additional_headers;
+                else
+                    $args[3] = $additional_headers;
+            }
             return call_user_func_array('mail', $args);
         }
         else

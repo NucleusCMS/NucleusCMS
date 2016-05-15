@@ -160,16 +160,21 @@ class NucleusPlugin {
         if ($this->plugin_options == 0)
         {
             $this->plugin_options = array();
-            $query = sql_query(
-                 'SELECT d.oname as name, o.ovalue as value '.
-                 'FROM '.
-                 sql_table('plugin_option').' o, '.
-                 sql_table('plugin_option_desc').' d '.
-                 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
-            );
-            while ($row = sql_fetch_object($query))
-                $this->plugin_options[strtolower($row->name)] = $row->value;
-        }
+			$sql = 'SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value '
+					. ' FROM '
+					. sql_table('plugin_option_desc').' d '
+					. ' LEFT JOIN ' . sql_table('plugin_option').' o '
+					. '   ON d.oid=o.oid AND o.ocontextid=0 '
+					. ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
+					. ' group by d.oid'
+					;
+			$res = sql_query($sql);
+			if ($res)
+			  while ( $row = sql_fetch_object($res) )
+				{
+					$this->plugin_options[strtolower($row->name)] = $row->value;
+				}
+	  }
         if (isset($this->plugin_options[strtolower($name)]))
             return $this->plugin_options[strtolower($name)];
         else

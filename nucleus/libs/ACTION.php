@@ -59,12 +59,9 @@ class ACTION
                 return $this->forgotPassword();
             break;
 
-            case 'votepositive':
-                return $this->doKarma('pos');
-            break;
-
             case 'votenegative':
-                return $this->doKarma('neg');
+            case 'votepositive':
+                return $this->doVote($action == 'votepositive' ? '+' : '-');
             break;
 
             case 'plugin':
@@ -325,6 +322,12 @@ class ACTION
         /*if (!$mem->canLogin())
             doError(_ERROR_NOLOGON_NOACTIVATE);*/
 
+        // check if user halt or invalid
+        if ( method_exists($mem, 'isHalt') && $mem->isHalt() )
+        {
+            doError(_ERROR_LOGIN_MEMBER_HALT_OR_INVALID);
+        }
+
         // check if e-mail address is correct
         if ( !($mem->getEmail() == postVar('email') ) )
         {
@@ -349,11 +352,18 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Handle karma votes
      */
-    function doKarma($type)
+	function doKarma($type)
+	{
+		return doVote(($type == 'pos' || $type == '+') ? '+' : '-' ));
+	}
+
+    /**
+	 *  Handle votes
+     */
+    function doVote($type)
     {
         global $itemid, $member, $CONF, $manager;
 
@@ -367,9 +377,13 @@ class ACTION
         $this->checkban($blogid);
 
         $karma =& $manager->getKarma($itemid);
+        $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR') );
+
+        $params = array('done'=> false, 'type'=>$type, 'allow'=> &$isVoteAllowed );
+        $manager->notify('PreVote', $params);
 
         // check if not already voted
-        if ( !$karma->isVoteAllowed(serverVar('REMOTE_ADDR') ) )
+        if ( !$isVoteAllowed )
         {
             doError(_ERROR_VOTEDBEFORE);
         }
@@ -384,14 +398,17 @@ class ACTION
 
         switch ( $type )
         {
-            case 'pos':
+            case '+':
                 $karma->votePositive();
             break;
 
-            case 'neg':
+            case '-':
                 $karma->voteNegative();
             break;
         }
+
+        $params = array('done'=> false, 'type'=>$type);
+        $manager->notify('PostVote', $params);
 
 //        $blogid = getBlogIDFromItemID($itemid);
         $blog =& $manager->getBlog($blogid);

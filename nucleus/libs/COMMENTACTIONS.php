@@ -79,10 +79,12 @@ class COMMENTACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
+		unset($this->parser);
         $this->parser =& $parser;
     }
 
     function setCommentsObj(&$commentsObj) {
+		unset($this->commentsObj);
         $this->commentsObj =& $commentsObj;
     }
 
@@ -97,7 +99,7 @@ class COMMENTACTIONS extends BaseActions {
         // begin if: member comment
         if ($comment['memberid'] != 0)
         {
-            $comment['authtext'] = $template['COMMENTS_AUTH'];
+            $comment['authtext'] = @$this->template['COMMENTS_AUTH'];
 
             $mem =& $manager->getMember($comment['memberid']);
             $comment['user'] = $mem->getDisplayName();

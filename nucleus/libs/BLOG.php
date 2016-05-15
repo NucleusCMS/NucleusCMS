@@ -180,10 +180,11 @@ class BLOG {
         // execute query
         $items = sql_query($query);
 
+		$numrows = 0;
         // loop over all items
         $old_date = 0;
         while ($item = sql_fetch_object($items)) {
-
+			$numrows ++;
             $item->timestamp = strtotime($item->itime); // string timestamp -> unix timestamp
 
             // action handler needs to know the item we're handling
@@ -244,8 +245,6 @@ class BLOG {
             $parser->parse($template['ITEM_FOOTER']);
 
         }
-
-        $numrows = sql_num_rows($items);
 
         // add another date footer if there was at least one item
         if ( ($numrows > 0) && $dateheads )
@@ -974,9 +973,10 @@ class BLOG {
       *     category id
       */
     function isValidCategory($catid) {
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid)
+				.' limit 1';
         $res = sql_query($query);
-        return (sql_num_rows($res) != 0);
+		return (intval(sql_result($res)) > 0);
     }
 
     /**
@@ -988,7 +988,8 @@ class BLOG {
     function getCategoryName($catid) {
         $res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
-        return $o->cname;
+		if (is_object($o))
+	        return $o->cname;
     }
 
     /**
@@ -1007,8 +1008,10 @@ class BLOG {
     {
         $res = sql_query('SELECT corder FROM '.sql_table('category')
                        . ' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
+        if (!$res)
+            return null;
         $o = sql_fetch_object($res);
-        return $o->corder;
+        return intval($o->corder);
     }
 
     /**

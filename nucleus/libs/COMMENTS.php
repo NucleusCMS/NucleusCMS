@@ -47,6 +47,7 @@ class COMMENTS {
      *        itemActions object, that will take care of the parsing
      */
     function setItemActions(&$itemActions) {
+		unset($this->itemActions);
         $this->itemActions =& $itemActions;
     }
 

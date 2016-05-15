@@ -186,9 +186,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     /**
       * executes an SQL result request
       */
-    function sql_result($res, $row, $col)
+    function sql_result($res, $row = 0, $col = 0)
     {
-        return mysql_result($res,$row,$col);
+        return mysql_result($res, $row, $col);
     }
     
     /**

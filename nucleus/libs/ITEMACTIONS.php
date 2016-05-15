@@ -72,7 +72,6 @@ class ITEMACTIONS extends BaseActions {
             'authorid',
             'authorlink',
             'catid',
-            'karma',
             'date',
             'time',
             'query',
@@ -81,6 +80,7 @@ class ITEMACTIONS extends BaseActions {
             'closed',
             'syndicate_title',
             'syndicate_description',
+            'karma',
             'karmaposlink',
             'karmaneglink',
             'new',
@@ -114,10 +114,12 @@ class ITEMACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
+		unset($this->parser);
         $this->parser =& $parser;
     }
     
     function setCurrentItem(&$item) {
+		unset($this->currentItem);
         $this->currentItem =& $item;
         global $currentitemid;
         if (is_array($this->currentItem)) {
@@ -128,6 +130,7 @@ class ITEMACTIONS extends BaseActions {
     }
     
     function setBlog(&$blog) {
+		unset($this->blog);
         $this->blog =& $blog;
     }
 
