@@ -5613,13 +5613,7 @@ selector();
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
             echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
             $newestVersion = getLatestVersion();
-            $newestCompare = str_replace('/','.',$newestVersion);
-            $newestCompare = floatval($newestCompare);
-            $newestCompare = sprintf('%04.2f', $newestCompare);
-            $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
-            $currentVersion = floatval($currentVersion);
-            $currentVersion = sprintf('%04.2f', $currentVersion);
-            if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
+            if ($newestVersion && nucleus_version_compare($newestVersion, NUCELEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
         } else {

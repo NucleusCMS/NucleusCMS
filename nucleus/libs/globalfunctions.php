@@ -2339,3 +2339,26 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
         return htmlspecialchars($string, $flags, $encoding);
     }
 }
+
+function nucleus_version_compare($version1, $version2, $operator = '')
+{
+    // examples: 3.66  3.7  v3.7 v3.71
+    $args = func_get_args();
+    for($i = 0; $i<=1; $i++)
+    {
+        $args[$i] = str_replace(array('_','-','+','/'), '.', $args[$i]);
+        $args[$i] = preg_replace('#^[^0-9]+#', '', $args[$i]);
+        $ver = explode('.', $args[$i]);
+        $major = intval($ver[0]);
+        if ($major <= 3)
+        {   // minor version
+            $x = @intval($ver[1]);
+            if ($x >= 10)
+                $ver[1] = sprintf('%d.%d', $x / 10 , $x % 10);
+            else
+                $ver[1] = sprintf('%d.0', $x);
+        }
+        $args[$i] = implode('.', $ver);
+    }
+    return call_user_func_array('version_compare', $args);
+}
