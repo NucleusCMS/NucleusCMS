@@ -45,8 +45,8 @@ function upgrade_do150() {
     // try to add cblog column when it does not exists yet
     //The logic on the old code seems off, but my replacement may not be correct either--AWB
     //$query = 'SELECT * FROM '.sql_table('comment').' WHERE cblog=0 LIMIT 1';
-    //$res = mysql_query($query);
-    //if (!$res || (mysql_num_rows($res) > 0)) {
+    //$res = sql_query($query);
+    //if (!$res || (sql_num_rows($res) > 0)) {
     
     if(!upgrade_checkIfColumnExists('comment', 'cblog')){
         $query = 'ALTER TABLE '.sql_table('comment')." ADD cblog int(11) NOT NULL default '0'";
@@ -55,7 +55,7 @@ function upgrade_do150() {
         $query = 'SELECT inumber, iblog FROM '.sql_table('item').', '.sql_table('comment').' WHERE inumber=citem AND cblog=0';
         $res = sql_query($query);
 
-        while($o = mysql_fetch_object($res)) {
+        while($o = sql_fetch_object($res)) {
             $query = 'UPDATE '.sql_table('comment')." SET cblog='".$o->iblog."' WHERE citem='".$o->inumber."'";
             upgrade_query('Filling cblog column for item ' . $o->inumber, $query);
         }
@@ -72,7 +72,7 @@ function upgrade_do150() {
     // add 'EDITLINK' to all templates
     $query = 'SELECT tdnumber FROM '.sql_table('template_desc');
     $res = sql_query($query);    // get all template ids
-    while ($obj = mysql_fetch_object($res)) {
+    while ($obj = sql_fetch_object($res)) {
         $tid = $obj->tdnumber;     // template id
     
         $query = 'INSERT INTO '.sql_table('template')." VALUES ($tid, 'EDITLINK', '<a href=\"<%editlink%>\" onclick=\"<%editpopupcode%>\">edit</a>');";
@@ -82,7 +82,7 @@ function upgrade_do150() {
     
     // in templates: update DATE_HEADER templates
     $res = sql_query('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'DATE_HEADER\'');
-    while ($o = mysql_fetch_object($res)) {
+    while ($o = sql_fetch_object($res)) {
         $newval = str_replace('<%daylink%>','<%%daylink%%>',$o->tcontent);
         $query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'DATE_HEADER\'';
         upgrade_query('Updating DATE_HEADER part in template ' . $o->tdesc, $query);
@@ -90,7 +90,7 @@ function upgrade_do150() {
     
     // in templates: add 'comments'-templatevar to all non-empty ITEM templates    
     $res = sql_query('SELECT * FROM '.sql_table('template').' WHERE tpartname=\'ITEM\'');
-    while ($o = mysql_fetch_object($res)) {
+    while ($o = sql_fetch_object($res)) {
         if (!strstr($o->tcontent,'<%comments%>')) {
             $newval = $o->tcontent . '<%comments%>';
             $query = 'UPDATE '.sql_table('template').' SET tcontent=\''. addslashes($newval).'\' WHERE tdesc=' . $o->tdesc . ' AND tpartname=\'ITEM\'';

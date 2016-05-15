@@ -191,8 +191,8 @@ class Backup
         //
         // Ok lets grab the fields...
         //
-        $result = mysql_query("SHOW FIELDS FROM $tablename");
-        $row = mysql_fetch_array($result);
+        $result = sql_query("SHOW FIELDS FROM $tablename");
+        $row = sql_fetch_array($result);
         while ($row) {
     
             echo '    `' . $row['Field'] . '` ' . $row['Type'];
@@ -206,7 +206,7 @@ class Backup
             if($row['Extra'] != "")
                 echo ' ' . $row['Extra'];
     
-            $row = mysql_fetch_array($result);
+            $row = sql_fetch_array($result);
     
             // add comma's except for last one
             if ($row)
@@ -216,8 +216,8 @@ class Backup
         //
         // Get any Indexed fields from the database...
         //
-        $result = mysql_query("SHOW KEYS FROM $tablename");
-        while($row = mysql_fetch_array($result)) {
+        $result = sql_query("SHOW KEYS FROM $tablename");
+        while($row = sql_fetch_array($result)) {
             $kname = $row['Key_name'];
     
             if(($kname != 'PRIMARY') && ($row['Non_unique'] == 0))
