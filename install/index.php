@@ -159,7 +159,7 @@ include_once('../nucleus/libs/vars4.1.0.php');
 
 // include core classes that are needed for login & plugin handling
 if (!function_exists('mysql_query'))
-    include_once('nucleus/libs/mysql.php');
+    include_once('../nucleus/libs/mysql.php');
   else
     define('_EXT_MYSQL_EMULATE' , 0);
 
