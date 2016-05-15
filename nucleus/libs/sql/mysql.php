@@ -71,7 +71,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if (!sql_select_db($MYSQL_DATABASE,$MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
             $MYSQL_CONN = NULL;
-            startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+            $msg = '';
+            $pattern = '/(Access denied for user|Unknown database|db handler is null)/i';
+            if (preg_match($pattern, mysql_error(), $m))
+                $msg .=  $m[1];
+            startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
 
         if (defined('_CHARSET')){
