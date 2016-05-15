@@ -125,10 +125,6 @@ define('_TEXT7_TAB_FIELD1',	'Nom du blog');
 define('_TEXT7_TAB_FIELD2',	'Nom abr&eacute;g&eacute;');
 define('_TEXT7_TAB_FIELD2_2',	'Les caract&egrave;res accept&eacute;s sont&nbsp;: a-z et 0-9, espaces interdits');
 
-define('_HEADER8',	'Weblog Ping');
-define('_TEXT8_TAB_HEADER',	'Weblog Ping');
-define('_TEXT8_TAB_FIELD1',	'Install NP_Ping weblog pinging plugin');
-
 define('_HEADER9',	'Valider');
 define('_TEXT9',	'<p>V&eacute;rifiez les informations ci-dessus et cliquez sur le bouton ci-dessous pour cr&eacute;er vos tables et les donn&eacute;es initiales. Ceci peut prendre un certain temps, donc ayez de la patience. <strong>CLIQUER SUR LE BOUTON UNE SEULE FOIS&nbsp;!</strong></p>');
 

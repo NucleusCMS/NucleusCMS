@@ -131,10 +131,6 @@ define('_TEXT7_TAB_FIELD1',	'Blog Name');
 define('_TEXT7_TAB_FIELD2',	'Blog Short Name');
 define('_TEXT7_TAB_FIELD2_2',	'allowed characters: a-z and 0-9, no spaces allowed');
 
-define('_HEADER8',	'Weblog Ping');
-define('_TEXT8_TAB_HEADER',	'Weblog Ping');
-define('_TEXT8_TAB_FIELD1',	'Install NP_Ping weblog pinging plugin');
-
 define('_HEADER9',	'Submit');
 define('_TEXT9',	'<p>Verify the data above, and click the button below to set up your database tables and initial data. This can take a while, so have patience. <strong>ONLY CLICK THE BUTTON ONCE !</strong></p>');
 
