@@ -365,7 +365,15 @@ $language = getLanguageName();
 
 # important note that '\' must be matched with '\\\\' in preg* expressions
 
-include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+foreach(array('','archive/') as $p)
+{
+    $f = $DIR_LANG  . $p . str_replace(array('\\','/'), '', $language) . '.php';
+    if (is_file($f))
+    {
+        include_once($f);
+        break;
+    }
+}
 
     if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
          && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
