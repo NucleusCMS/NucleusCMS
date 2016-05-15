@@ -373,7 +373,7 @@ define('_LANGUAGEFILES_GERMAN',						'ドイツ語 - Deutsch (iso-8859-1)');
 define('_LANGUAGEFILES_HUNGARIAN',					'ハンガリー語 - Magyar (iso-8859-2)');
 define('_LANGUAGEFILES_ITALIANO',					'イタリア語 - Italiano (iso-8859-1)');
 define('_LANGUAGEFILES_KOREAN-EUC-KR',				'韓国語 - &#54620;&#44397;&#50612; (euc-kr)');
-define('_LANGUAGEFILES_KOREAN-UTF',					'韓国語 - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_KOREAN-UTF8',					'韓国語 - &#54620;&#44397;&#50612; (utf-8)');
 define('_LANGUAGEFILES_LATVIAN',					'ラトビア語 - Latvie&scaron;u (windows-1257)');
 define('_LANGUAGEFILES_NEDERLANDS',					'オランダ語 - Nederlands (iso-8859-15)');
 define('_LANGUAGEFILES_PERSIAN',					'ペルシア語 - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
