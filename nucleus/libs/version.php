@@ -16,5 +16,5 @@
 
  */
 
-define('NUCELEUS_VERSION'    , '3.71');
-define('NUCELEUS_VERSION_ID' ,    370);
+define('NUCLEUS_VERSION'    , '3.71');
+define('NUCLEUS_VERSION_ID' ,    370);

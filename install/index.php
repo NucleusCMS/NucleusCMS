@@ -842,7 +842,7 @@ function doInstall() {
 	}
 
 	// 5a make first post
-		$itm_title = sql_real_escape_string(sprintf(_1ST_POST_TITLE, NUCELEUS_VERSION));
+		$itm_title = sql_real_escape_string(sprintf(_1ST_POST_TITLE, NUCLEUS_VERSION));
 		$itm_body  = sql_real_escape_string(_1ST_POST);
 		$itm_more  = sql_real_escape_string(_1ST_POST2);
 	$newpost = "INSERT INTO "
