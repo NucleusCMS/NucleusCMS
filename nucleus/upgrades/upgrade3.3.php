@@ -17,7 +17,7 @@
 function upgrade_do330() {
 
     if (upgrade_checkinstall(330))
-        return 'already installed';
+        return _UPG_TEXT_ALREADY_INSTALLED;
 
     if (!upgrade_checkIfColumnExists('comment','cemail')) {
         $query = "  ALTER TABLE `" . sql_table('comment') . "`
@@ -62,7 +62,7 @@ function upgrade_do330() {
     $query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'"; 
     $res = sql_query($query);
     if (sql_num_rows($res) > 0) {
-        echo "<li>Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin. Also, NP_Ping is replacing NP_PingPong. If you have NP_PingPing installed, please also remove it.</li>";
+        echo "<li>" . _UPG_TEXT_NOTE_PING01 . "</li>";
     }
 }
 

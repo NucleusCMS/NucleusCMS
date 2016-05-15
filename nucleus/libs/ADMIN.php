@@ -5582,7 +5582,7 @@ selector();
      * @todo document this
      */
     function pagehead($extrahead = '') {
-        global $member, $nucleus, $CONF, $manager;
+        global $member, $nucleus, $CONF, $manager, $DIR_NUCLEUS;
 
         $param = array(
             'extrahead'    => &$extrahead,
@@ -5595,6 +5595,16 @@ selector();
         {
             sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
             $CONF['AdminCSS'] = 'original';
+        }
+        foreach(array($CONF['AdminCSS'], 'original', 'contemporary') as $name)
+        {
+            $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', remove_all_directory_separator($name));
+            if (@is_file($fname))
+            {
+                if ($CONF['AdminCSS'] != $name)
+                    $CONF['AdminCSS'] = $name;
+                    break;
+            }
         }
 
         ?>
@@ -5648,6 +5658,13 @@ selector();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCELEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
+
+            if (intval($CONF['DatabaseVersion']) < NUCLEUS_DATABASE_VERSION_ID)
+            {
+                printf(')<br />(<a style="color:red" href="%s">Current Database is old(%d). Upgrade Nucleus Database</a>',
+                        $CONF['AdminURL'] . 'upgrades/' , $CONF['DatabaseVersion']);
+            }
+
         } else {
             echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
         }
