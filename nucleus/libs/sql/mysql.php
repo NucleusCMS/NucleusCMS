@@ -457,8 +457,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             case 'japanese-euc':
                 $charset_name = 'ujis';
                 break;
-            case 'korean-euc-kr':
-            case 'korean-utf':
+            case 'korean-utf8':
             case 'persian':
             default:
                 $charset_name = 'utf8';

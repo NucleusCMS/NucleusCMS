@@ -375,7 +375,6 @@ define('_LANGUAGEFILES_GALEGO',						'Galego - Galego (iso-8859-1)');
 define('_LANGUAGEFILES_GERMAN',						'German - Deutsch (iso-8859-1)');
 define('_LANGUAGEFILES_HUNGARIAN',					'Hungarian - Magyar (iso-8859-2)');
 define('_LANGUAGEFILES_ITALIANO',					'Italiano - Italiano (iso-8859-1)');
-define('_LANGUAGEFILES_KOREAN-EUC-KR',				'Korean - &#54620;&#44397;&#50612; (euc-kr)');
 define('_LANGUAGEFILES_KOREAN-UTF8',				'Korean - &#54620;&#44397;&#50612; (utf-8)');
 define('_LANGUAGEFILES_LATVIAN',					'Latvian - Latvie&scaron;u (windows-1257)');
 define('_LANGUAGEFILES_NEDERLANDS',					'Duch - Nederlands (iso-8859-15)');
