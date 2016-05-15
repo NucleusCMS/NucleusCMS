@@ -229,38 +229,67 @@ class ADMIN {
 
         if ($amount != 0) {
             echo '<h2>' . _OVERVIEW_YRDRAFTS . '</h2>';
+
+            $sw = (($member->isAdmin()) && ($showAll == 'yes'));
+
+            // Todo display author
+			$query =  'SELECT bnumber, count(*)'
+                . sprintf(' , sum(iauthor=%d)', $member->getID())
+				   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
+				   . ' WHERE '
+                   . ' iblog=bnumber and idraft=1'
+				   . ' GROUP BY bnumber'
+				   . ' ORDER BY bnumber ASC';
+
+			$items = array();
+			$stmt = sql_query($query);
+			if ($stmt)
+			{
+				while($row = sql_fetch_row($stmt))
+				{
+					$items[] = array_merge($row);
+				}
+				sql_free_result($stmt);
+			}
+
+            $has_hidden_items = 0;
+            $TeamBlogs = $member->getTeamBlogs(0);
+			$amountdrafts = 0;
+			foreach($items as $item)
+			{
+                // blogid  sum(item)  sum(item which belong to current user)
+//                var_dump($item);
+                $count_blog_items     = intval($item[1]);
+                $count_current_author = intval($item[2]);
+                $current_bid = intval($item[0]);
+                if ($member->isAdmin() && ($count_blog_items!=$count_current_author))
+                    $has_hidden_items++;
+                // Check user have a item
+                if (!$sw && $count_current_author==0)
+                    continue;
+
+                // Todo: showall : Display whether the item belongs to
+				$ct = ($sw ? $count_blog_items : $count_current_author);
+				$div_out = ($ct>5);
+				if ($div_out)
+					echo '<div style="width: 100%; height: 150px; overflow: auto;">';
+
             $query =  'SELECT ititle, inumber, bshortname'
                    . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
-                   . ' WHERE iauthor='.$member->getID().' and iblog=bnumber and idraft=1';
+                           . ' WHERE'
+                           .     ($sw ? '' : sprintf(' iauthor=%d AND', $member->getID()))
+						   . sprintf(' iblog=bnumber AND iblog=%d', $current_bid)
+						   . ' AND idraft=1 ORDER BY inumber DESC';
             $template['content'] = 'draftlist';
-            $amountdrafts = showlist($query, 'table', $template);
-            if ($amountdrafts == 0)
-                echo _OVERVIEW_NODRAFTS;
-        }
-                
-        if ($amount != 0) {
-            $yrBlogs = $member->getAdminBlogs();
-            if ($showAll != 'yes') {
-                $admBlogs = array();
-                foreach ($yrBlogs as $value) {
-                    if ($member->isBlogAdmin(intval($value))) {
-                        $admBlogs[] = intval($value);
-                    }
-                }
-                $yrBlogs = $admBlogs;
-            }
-            
-            if (count($yrBlogs) > 0) {
-                echo '<h2>' . _OVERVIEW_OTHER_DRAFTS . '</h2>';
-                $query =  'SELECT ititle, inumber, bshortname, mname'
-                       . ' FROM ' . sql_table('item'). ', ' . sql_table('blog'). ', ' . sql_table('member')
-                       . ' WHERE iauthor<>'.$member->getID().' and iblog IN ('.implode(",",$yrBlogs).') and iblog=bnumber and iauthor=mnumber and idraft=1'
-                       . ' ORDER BY iblog ASC';
-                $template['content'] = 'otherdraftlist';
-                $amountdrafts = showlist($query, 'table', $template);
+            $amountdrafts += showlist($query, 'table', $template);
+
+				if ($div_out)
+					echo '</div>';
+			}
                 if ($amountdrafts == 0)
                     echo _OVERVIEW_NODRAFTS;
-            }
+		if (($showAll != 'yes') && ($member->isAdmin()) && $has_hidden_items)
+            echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
         }
 
         /* ---- user settings ---- */
@@ -369,8 +398,8 @@ class ADMIN {
 
         $search = postVar('search');    // search through items
 
-        $query =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime'
-               . ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
+        $query_view =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime';
+        $query = ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
                . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 
         $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
@@ -387,17 +416,20 @@ class ADMIN {
         if (!$member->blogAdminRights($blogid))
             $query .= ' and iauthor=' . $member->getID();
 
+        $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
         $query .= ' ORDER BY itime DESC'
                 . " LIMIT $start,$amount";
+
+        $query_view .= $query;
 
         $template['content'] = 'itemlist';
         $template['now'] = $blog->getCorrectTime(time());
 
         $manager->loadClass("ENCAPSULATE");
         $navList = new NAVLIST('itemlist', $start, $amount, 0, 1000, $blogid, $search, 0);
-        $navList->showBatchList('item', $query, 'table', $template);
-
+        $navList->total = $total;
+        $navList->showBatchList('item', $query_view, 'table', $template);
 
         $this->pagefoot();
     }
