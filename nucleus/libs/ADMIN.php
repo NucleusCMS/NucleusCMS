@@ -4850,7 +4850,7 @@ selector();
         $skinid = intRequestVar('skinid');
         $skintype = requestVar('type');
 
-        if (!isValidShortName($skintype)) {
+        if (!isValidSkinPartsName($skintype)) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
@@ -5497,6 +5497,10 @@ selector();
             echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
             echo "\t\t" . '<td>' . $np . "</td>\n";
             echo "\t</tr>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td width="50%">' . 'Nucleus CMS database version' . "</td>\n";
+            echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
+            echo "\t</tr>\n";
             echo "</table>\n";
 
             // Important settings of the installation
@@ -5612,7 +5616,7 @@ selector();
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
-    <meta name="robots" content="noindex, nofollow" />
+    <meta name="robots" content="noindex, nofollow, noarchive" />
     <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
