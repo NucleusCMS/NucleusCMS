@@ -24,6 +24,14 @@
 	-- Start Of Configurable Part --
 */
 
+$path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
+$path = $path[0];
+if (preg_match('#/install$#', $path))
+{
+    header("Location: " . $path . "/");
+    exit;
+}
+
 global $lang;
 if (isset($_POST['lang']))
 	$lang = strtolower( $_POST['lang'] );
