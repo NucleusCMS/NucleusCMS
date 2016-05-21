@@ -113,7 +113,7 @@ function mysql_error($dblink = NULL)
 {
     global $MYSQL_CONN;
     $link = ($dblink ? $dblink : $MYSQL_CONN);
-    return mysqli_error($link);
+    return @mysqli_error($link);
 }
 
 function mysql_select_db($db, $dblink = NULL)
