@@ -5627,7 +5627,7 @@ selector();
      * @todo document this
      */
     function pagehead($extrahead = '') {
-        global $member, $nucleus, $CONF, $manager, $action;
+        global $member, $nucleus, $CONF, $manager, $action, $DIR_NUCLEUS;
 
 		sendContentType('text/html');
 		
@@ -5636,6 +5636,17 @@ selector();
             'action'    =>  $this->action
         );
         $manager->notify('AdminPrePageHead', $param);
+
+        foreach(array($CONF['AdminCSS'], 'contemporary_jp', 'contemporary', 'original') as $name)
+        {
+            $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', str_replace(array('\\','/'), '', $name));
+            if (@is_file($fname))
+            {
+                if ($CONF['AdminCSS'] != $name)
+                    $CONF['AdminCSS'] = $name;
+                break;
+            }
+        }
 
         $baseUrl = hsc($CONF['AdminURL']);
         ?>
