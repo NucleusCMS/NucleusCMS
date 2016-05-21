@@ -5627,7 +5627,7 @@ selector();
      * @todo document this
      */
     function pagehead($extrahead = '') {
-        global $member, $nucleus, $CONF, $manager, $action;
+        global $member, $nucleus, $CONF, $manager, $action, $DIR_NUCLEUS;
 
 		sendContentType('text/html');
 		
@@ -5636,6 +5636,17 @@ selector();
             'action'    =>  $this->action
         );
         $manager->notify('AdminPrePageHead', $param);
+
+        foreach(array($CONF['AdminCSS'], 'contemporary_jp', 'contemporary', 'original') as $name)
+        {
+            $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', str_replace(array('\\','/'), '', $name));
+            if (@is_file($fname))
+            {
+                if ($CONF['AdminCSS'] != $name)
+                    $CONF['AdminCSS'] = $name;
+                break;
+            }
+        }
 
         $baseUrl = hsc($CONF['AdminURL']);
         ?>
@@ -5718,13 +5729,7 @@ selector();
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
             echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
             $newestVersion = getLatestVersion();
-            $newestCompare = str_replace('/','.',$newestVersion);
-            $newestCompare = floatval($newestCompare);
-            $newestCompare = sprintf('%04.2f', $newestCompare);
-            $currentVersion = str_replace(array('/','v'),array('.',''),$nucleus['version']);
-            $currentVersion = floatval($currentVersion);
-            $currentVersion = sprintf('%04.2f', $currentVersion);
-            if ($newestVersion && version_compare($newestCompare,$currentVersion) > 0) {
+            if ($newestVersion && nucleus_version_compare($newestVersion, NUCELEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="'._ADMINPAGEFOOT_OFFICIALURL.'upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
         } else {
