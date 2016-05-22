@@ -27,6 +27,7 @@ sendContentType('text/html', 'createaccount', _CHARSET);
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET; ?>" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _CREATE_ACCOUNT_TITLE; ?></title>
 	<style type="text/css">@import url(nucleus/styles/manual.css);</style>
 </head>
