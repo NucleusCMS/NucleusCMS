@@ -143,22 +143,23 @@ class MEMBER {
         $query =  sprintf('SELECT * FROM %s WHERE %s', sql_table('member'), $where);
 
         $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-
-        $this->setRealName($obj->mrealname);
-        $this->setEmail($obj->memail);
-        $this->password = $obj->mpassword;
-        $this->setCookieKey($obj->mcookiekey);
-        $this->setURL($obj->murl);
-        $this->setDisplayName($obj->mname);
-        $this->setAdmin($obj->madmin);
-        $this->id = $obj->mnumber;
-        $this->setCanLogin($obj->mcanlogin);
-        $this->setNotes($obj->mnotes);
-        $this->setLanguage($obj->deflang);
-        $this->setAutosave($obj->mautosave);
-
-        return sql_num_rows($res);
+        if ($res && ($obj = sql_fetch_object($res)))
+        {
+            $this->setRealName($obj->mrealname);
+            $this->setEmail($obj->memail);
+            $this->password = $obj->mpassword;
+            $this->setCookieKey($obj->mcookiekey);
+            $this->setURL($obj->murl);
+            $this->setDisplayName($obj->mname);
+            $this->setAdmin($obj->madmin);
+            $this->id = $obj->mnumber;
+            $this->setCanLogin($obj->mcanlogin);
+            $this->setNotes($obj->mnotes);
+            $this->setLanguage($obj->deflang);
+            $this->setAutosave($obj->mautosave);
+            return 1;
+        }
+        return 0; // not found or removed user
     }
 
 
