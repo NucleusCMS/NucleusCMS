@@ -8,7 +8,7 @@ body {
 	background-color: #fff;
 	color: #000;
 	font-family: verdana, arial;
-	font-size: small;
+	font-size: medium;
 }
 
 @media screen {
@@ -48,7 +48,7 @@ a:hover {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	font-size: small;
+	font-size: medium;
 	font-style: normal;
 	font-weight: normal;
 }
@@ -78,7 +78,7 @@ h2 {
 pre, .note, .faq .answer {
 	background-color: #ddd;
 	padding: 10px;
-	font-size: small;
+	font-size: medium;
 }
 
 .screenshot {
@@ -115,7 +115,7 @@ th, td {
 
 td {
 	background-color: #dddddd;
-	font-size: small;
+	font-size: medium;
 	vertical-align: top;
 	text-align: left;
 }
@@ -131,7 +131,7 @@ input, select, option, textarea {
 }
 
 tt, code, samp {
-	font-size: small;
+	font-size: medium;
 }
 
 .warning {

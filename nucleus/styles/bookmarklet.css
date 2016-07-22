@@ -5,7 +5,7 @@
 */
 
 body {
-	font-size: small;
+	font-size: medium;
 	background: #fff;
 	color: #000;
     font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif
@@ -60,7 +60,7 @@ h1 {
 .shortcuts {
 	float: right; 
 	text-align: right;
-	font-size: x-small;
+	/*font-size: x-small;*/
 }
 
 #options {
@@ -110,7 +110,7 @@ table {
 th {
 	background: #bbc;
 	color: #000;
-	font-size: small;
+	font-size: medium;
 }
 
 th, td {
@@ -121,7 +121,7 @@ th, td {
 td {
 	background: #fff;
 	border: 1px solid #ddd;
-	font-size: small;
+	font-size: medium;
 	vertical-align: top;
 	text-align: left;
 }
