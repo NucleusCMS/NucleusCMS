@@ -19,13 +19,13 @@ class COMMENTACTIONS extends BaseActions {
 
     // ref to COMMENTS object which is using this object to handle
     // its templatevars
-    var $commentsObj;
+    public $commentsObj;
 
     // template to use to parse the comments
-    var $template;
+    public $template;
 
     // comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
-    var $currentComment;
+    public $currentComment;
 
     function __construct(&$comments) {
         // call constructor of superclass first

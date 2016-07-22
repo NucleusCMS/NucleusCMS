@@ -18,22 +18,22 @@
 class MEMBER {
 
     // 1 when authenticated, 0 when not
-    var $loggedin = 0;
-    var $password;        // not the actual password, but rather a MD5 hash
+    public $loggedin = 0;
+    public $password;        // not the actual password, but rather a MD5 hash
 
-    var $cookiekey;        // value that should also be in the client cookie to allow authentication
+    public $cookiekey;        // value that should also be in the client cookie to allow authentication
 
     // member info
-    var $id = -1;
-    var $realname;
-    var $displayname;
-    var $email;
-    var $url;
-    var $language = '';        // name of the language file to use (e.g. 'english' -> english.php)
-    var $admin = 0;            // (either 0 or 1)
-    var $canlogin = 0;        // (either 0 or 1)
-    var $notes;
-    var $autosave = 1;        // if the member use the autosave draft function
+    public $id = -1;
+    public $realname;
+    public $displayname;
+    public $email;
+    public $url;
+    public $language = '';        // name of the language file to use (e.g. 'english' -> english.php)
+    public $admin = 0;            // (either 0 or 1)
+    public $canlogin = 0;        // (either 0 or 1)
+    public $notes;
+    public $autosave = 1;        // if the member use the autosave draft function
 
     /**
      * Constructor for a member object

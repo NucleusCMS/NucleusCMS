@@ -17,14 +17,14 @@
 class KARMA {
 
     // id of item about which this object contains information
-    var $itemid;
+    public $itemid;
 
     // indicates if the karma vote info has already been intialized from the DB
-    var $inforead;
+    public $inforead;
 
     // amount of positive/negative votes
-    var $karmapos;
-    var $karmaneg;
+    public $karmapos;
+    public $karmaneg;
 
     function __construct($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
         // itemid

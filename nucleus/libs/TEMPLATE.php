@@ -17,7 +17,7 @@
  */
 class TEMPLATE {
 
-    var $id;
+    public $id;
 
     public function TEMPLATE($templateid) { $this->__construct($templateid); }
     function __construct($templateid) {

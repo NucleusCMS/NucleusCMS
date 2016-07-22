@@ -23,17 +23,17 @@ require_once dirname(__FILE__) . '/ITEMACTIONS.php';
 class BLOG {
 
     // blog id
-    var $blogid;
+    public $blogid;
 
     // ID of currently selected category
-    var $selectedcatid;
+    public $selectedcatid;
 
     // After creating an object of the blog class, contains true if the BLOG object is
     // valid (the blog exists)
-    var $isValid;
+    public $isValid;
 
     // associative array, containing all blogsettings (use the get/set functions instead)
-    var $settings;
+    public $settings;
 
     /**
      * Creates a new BLOG object for the given blog

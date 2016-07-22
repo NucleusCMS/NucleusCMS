@@ -30,12 +30,12 @@ class MANAGER {
      * The $items, $blogs, ... arrays map an id to an object (for plugins, the name is used
      * rather than an ID)
      */
-    var $items;
-    var $blogs;
-    var $plugins;
-    var $karma;
-    var $templates;
-    var $members;
+    public $items;
+    public $blogs;
+    public $plugins;
+    public $karma;
+    public $templates;
+    public $members;
 
     /**
      * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
@@ -43,7 +43,7 @@ class MANAGER {
      *
      * $cachedInfo['installedPlugins'] = array($pid -> $name)
      */
-    var $cachedInfo;
+    public $cachedInfo;
 
     /**
       * The plugin subscriptionlist
@@ -52,7 +52,7 @@ class MANAGER {
       *     $subscriptions[$EventName] = array containing names of plugin classes to be
       *                                  notified when that event happens
       */
-    var $subscriptions;
+    public $subscriptions;
 
     /**
       * Returns the only instance of this class. Creates the instance if it
@@ -448,7 +448,7 @@ class MANAGER {
         requests. tickets are user specific
     */
 
-    var $currentRequestTicket = '';
+    public $currentRequestTicket = '';
 
     /**
      * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)

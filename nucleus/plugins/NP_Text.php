@@ -2,9 +2,9 @@
  
 class NP_Text extends NucleusPlugin {
 	
-	var $incModePref = array();
-	var $errorLogged = false;
-	var $constantPrefix = "SL_";
+	public $incModePref = array();
+	public $errorLogged = false;
+	public $constantPrefix = "SL_";
  
 	function getEventList() { return array('PreSkinParse'); }
 	function getName() { return 'Text'; }

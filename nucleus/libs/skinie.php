@@ -20,30 +20,30 @@ class SKINIMPORT {
 
     // hardcoded value (see constructor). When 1, interesting info about the
     // parsing process is sent to the output
-    var $debug;
+    public $debug;
 
     // parser/file pointer
-    var $parser;
-    var $fp;
+    public $parser;
+    public $fp;
 
     // which data has been read?
-    var $metaDataRead;
-    var $allRead;
+    public $metaDataRead;
+    public $allRead;
 
     // extracted data
-    var $skins;
-    var $templates;
-    var $info;
+    public $skins;
+    public $templates;
+    public $info;
 
     // to maintain track of where we are inside the XML file
-    var $inXml;
-    var $inData;
-    var $inMeta;
-    var $inSkin;
-    var $inTemplate;
-    var $currentName;
-    var $currentPartName;
-    var $cdata;
+    public $inXml;
+    public $inData;
+    public $inMeta;
+    public $inSkin;
+    public $inTemplate;
+    public $currentName;
+    public $currentPartName;
+    public $cdata;
 
 
 
@@ -616,9 +616,9 @@ class SKINIMPORT {
 
 class SKINEXPORT {
 
-    var $templates;
-    var $skins;
-    var $info;
+    public $templates;
+    public $skins;
+    public $info;
 
     /**
      * Constructor initializes data structures

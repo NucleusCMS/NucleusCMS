@@ -23,10 +23,10 @@
 
 class SEARCH {
 
-    var $querystring;
-    var $marked;
-    var $inclusive;
-    var $blogs;
+    public $querystring;
+    public $marked;
+    public $inclusive;
+    public $blogs;
     private $is_jp_mode;
 
     public function SEARCH($text) { $this->__construct($text); }

@@ -18,10 +18,10 @@
 
 class PluginAdmin {
 
-    var $strFullName;        // NP_SomeThing
-    var $plugin;            // ref. to plugin object
-    var $bValid;            // evaluates to true when object is considered valid
-    var $admin;                // ref to an admin object
+    public $strFullName;        // NP_SomeThing
+    public $plugin;            // ref. to plugin object
+    public $bValid;            // evaluates to true when object is considered valid
+    public $admin;                // ref to an admin object
 
     function __construct($pluginName)
     {
