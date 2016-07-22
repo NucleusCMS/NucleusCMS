@@ -12,7 +12,7 @@ body
 	background: #505050 url(images/bg.gif);
 	color: #494949;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Trebuchet, Arial, sans-serif;
-	font-size: 11px;
+	font-size: medium;
 	padding: 15px 0;
 	margin: 0;
 }
@@ -169,7 +169,7 @@ a:hover, a:active
 }
 .contentbody
 {
-	font-size:13px;
+	font-size:medium;
 	text-align: justify;
 	padding: 0 0 16px 0;
 }
@@ -179,29 +179,29 @@ a:hover, a:active
 -------------------------------------------------*/
 .contentitemcategory
 {
+	font-size:0.9em;
 	background: url(images/bgcategory.gif) center left no-repeat;
-	font-size: 10px;
 	line-height: 12px;
 	padding: 0 10px 0 14px;
 }
 .contentitempostedby
 {
+	font-size:0.9em;
 	background: url(images/bgpostedby.gif) center left no-repeat;
-	font-size: 10px;
 	line-height: 12px;
 	padding: 0 10px 0 12px;
 }
 .contentitemcomments
 {
+	font-size:0.9em;
 	background: url(images/bgcomment.gif) center left no-repeat;
-	font-size: 10px;
 	line-height: 12px;
 	padding: 0 10px 0 13px;
 }
 .contentitemedit
 {
+	font-size:0.9em;
 	background: url(images/bgedit.gif) center left no-repeat;
-	font-size: 10px;
 	line-height: 12px;
 	padding: 0 10px 0 11px;
 }
@@ -264,7 +264,7 @@ a:hover, a:active
 }
 .itemcomment h3
 {
-	font-size: 12px;
+	font-size: 0.9em;
 }
 
 /*-------------------------------------------------
@@ -292,7 +292,7 @@ a:hover, a:active
 {
 	background: #E5E5E5 url(images/sidetitlebg.gif);
 	color: #3A3523;
-	font-size: 12px;
+	font-size: 0.9em;
 	font-weight: bold;
 	font-family: "Georgia", "Lucida Grande", "Lucida Sans Unicode", Arial, "Trebuchet MS", sans-serif;
 	padding: 4px 10px;
@@ -332,6 +332,7 @@ a:hover, a:active
 
 #copyrights
 {
+	font-size: 0.8em;
 	color: #474747;
 }
 
@@ -355,7 +356,7 @@ a:hover, a:active
 }
 .formfield {
 	display:block;
-	font-size: 11px;
+	font-size: 0.9em;
 	background: white;
 	color: #494949;
 	border-top: 1px solid #868686;
@@ -366,7 +367,7 @@ a:hover, a:active
 }
 .formbutton
 {
-	font-size: 11px;
+	font-size: 0.9em;
 	background: white;
 	color: #494949;
 	border-top: 1px solid #D4D2CF;

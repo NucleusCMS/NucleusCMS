@@ -231,14 +231,14 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
-<small class="contentitemcategory">
+<span class="contentitemcategory">
 Category: <a href="<%categorylink%>" title="Category: <%Category%>"><%Category%></a>
-</small>
+</span>
 </div>
 <div class="contentitem2">
-<small class="contentitempostedby">
+<span class="contentitempostedby">
 Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
-</small>
+</span>
 </div>
 <%comments%>
 <%edit%>
@@ -253,9 +253,9 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 </p>]]></part>
 
 		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
-<small class="contentitemedit">
+<span class="contentitemedit">
 <a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
-</small>
+</span>
 </div>]]></part>
 
 		<part name="COMMENTS_ONE"><![CDATA[Comment]]></part>
@@ -263,15 +263,15 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 		<part name="COMMENTS_MANY"><![CDATA[Comments]]></part>
 
 		<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
-<small class="contentitemcomments">
+<span class="contentitemcomments">
 <a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'">Add comment</a>
-</small>
+</span>
 </div>]]></part>
 
 		<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
-<small class="contentitemcomments">
+<span class="contentitemcomments">
 <a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'"><%commentcount%> <%commentword%></a>
-</small>
+</span>
 </div>]]></part>
 
 		<part name="ARCHIVELIST_LISTITEM"><![CDATA[<dd>
@@ -317,14 +317,14 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
-<small class="contentitemcategory">
+<span class="contentitemcategory">
 Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
-</small>
+</span>
 </div>
 <div class="contentitem2">
-<small class="contentitempostedby">
+<span class="contentitempostedby">
 Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
-</small>
+</span>
 </div>
 <%edit%>
 </div>
@@ -346,9 +346,9 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 </div>]]></part>
 
 		<part name="EDITLINK"><![CDATA[<div class="contentitem4">
-<small class="contentitemedit">
+<span class="contentitemedit">
 <a href="<%editlink%>" title="Make changes to your entry" onclick="<%editpopupcode%>" >Edit item</a>
-</small>
+</span>
 </div>]]></part>
 
 		<part name="COMMENTS_ONE"><![CDATA[comment]]></part>
