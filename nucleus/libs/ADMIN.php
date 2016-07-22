@@ -2860,6 +2860,12 @@ class ADMIN {
             
             $param = array('blog' => &$blog);
             $manager->notify('BlogSettingsFormExtras', $param);
+            echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
+            echo '<form action="index.php" method="GET">';
+            echo '<input type="hidden" name="action" value="bookmarklet" />';
+            echo sprintf('<input type="hidden" name="blogid" value="%s" />', $blogid);
+            echo sprintf('<input type="submit" value="%s" />', _BLOGLIST_TT_BMLET);
+            echo '</form>';
 
         $this->pagefoot();
     }
