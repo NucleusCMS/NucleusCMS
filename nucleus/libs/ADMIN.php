@@ -3593,9 +3593,25 @@ class ADMIN {
                 <?php help('teamadmin'); ?>
             </td>
             <td><?php echo _EBLOG_ADMIN_MSG?></td>
-        </tr><tr>
+        </tr>
+        <tr>
+            <td><?php echo _EBLOG_DISABLECOMMENTS; ?>
+            </td>
+            <td><?php $this->input_yesno('comments',1,150); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo _EBLOG_ANONYMOUS; ?>
+            </td>
+            <td><?php $this->input_yesno('public',0,151); ?></td>
+        </tr>
+        <tr>
+            <td><?php echo _EBLOG_REQUIREDEMAIL?>
+            </td>
+            <td><?php $this->input_yesno('reqemail',0,152); ?></td>
+        </tr>
+        <tr>
             <td><?php echo _EBLOG_CREATE?></td>
-            <td><input type="submit" tabindex="120" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+            <td><input type="submit" tabindex="200" value="<?php echo _EBLOG_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
         </tr></table>
 
         </div></form>
@@ -3617,6 +3633,9 @@ class ADMIN {
         $btimeoffset    = postVar('timeoffset');
         $bdesc          = trim(postVar('desc'));
         $bdefskin       = postVar('defskin');
+        $bpublic        = intPostVar('public') ? '1' : '0';
+        $bcomments      = intPostVar('comments') ? '1' : '0';
+        $breqemail      = intPostVar('reqemail') ? '1' : '0';
 
         if (!isValidShortName($bshortname))
             $this->error(_ERROR_BADSHORTBLOGNAME);
@@ -3642,7 +3661,9 @@ class ADMIN {
         $bdefskin    = sql_real_escape_string($bdefskin);
 
         // create blog
-        $query = 'INSERT INTO '.sql_table('blog')." (bname, bshortname, bdesc, btimeoffset, bdefskin) VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin')";
+        $query = 'INSERT INTO '.sql_table('blog')
+                . " (bname, bshortname, bdesc, btimeoffset, bdefskin, bcomments, bpublic, breqemail)"
+                . " VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin', $bcomments, $bpublic, $breqemail)";
         sql_query($query);
         $blogid = sql_insert_id();
         $blog   =& $manager->getBlog($blogid);
