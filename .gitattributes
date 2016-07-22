@@ -23,4 +23,5 @@
 .gitattributes       export-ignore
 /build               export-ignore
 /nucleus/convert     export-ignore
+/nucleus/language/archive     export-ignore
 

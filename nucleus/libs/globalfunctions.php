@@ -1269,6 +1269,7 @@ function removeBreaks($var) {
 // shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd) {
+    $maxlength = intval($maxlength);
     // 1. remove entities...
     $trans = get_html_translation_table(HTML_ENTITIES);
 
@@ -1300,7 +1301,10 @@ function mysqldate($timestamp) {
   */
 function selectBlog($shortname) {
     global $blogid, $archivelist;
-    $blogid = getBlogIDFromName($shortname);
+    $blogid = intval($blogid);
+    if (!($blogid > 0)) {
+        $blogid = getBlogIDFromName($shortname);
+    }
 
     // also force archivelist variable, if it is set
     if ($archivelist) {
@@ -1506,7 +1510,6 @@ function checkLanguage($lang) {
  * @return bool
  **/
 function checkPlugin($plug) {
-
     global $DIR_PLUGINS;
 
     # important note that '\' must be matched with '\\\\' in preg* expressions

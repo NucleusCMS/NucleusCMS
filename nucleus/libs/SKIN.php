@@ -157,15 +157,15 @@ class SKIN {
      * @param string $type
      */
     function parse($type) {
-        global $manager, $CONF;
+        global $manager, $CONF, $skinid;
         
         $param = array(
             'skin' => &$this,
             'type' =>  $type
         );
         $manager->notify('InitSkinParse', $param);
+        $skinid = $this->id;
 
-        
         // set output type
         sendContentType($this->getContentType(), 'skin', _CHARSET);
         
@@ -193,8 +193,8 @@ class SKIN {
             'contents'    => &$contents
         );
         $manager->notify('PreSkinParse', $param);
+        $skinid = $this->id;
 
-        
         // set IncludeMode properties of parser
         PARSER::setProperty('IncludeMode',$this->getIncludeMode());
         PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
@@ -212,6 +212,7 @@ class SKIN {
         $manager->notify('PostSkinParse', $param);
 
 
+        $skinid = $this->id;
     }
 
     /**
@@ -242,9 +243,13 @@ class SKIN {
         sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
 
         // write new thingie
-        if ($content) {
+        if ( strlen($content) > 0 ) {
             sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
         }
+
+        global $resultCache, $manager;
+        $resultCache = array();
+        $manager->clearCachedInfo('sql_fetch_object');
     }
 
     /**
@@ -266,6 +271,10 @@ class SKIN {
                . " sdincpref='" . sql_real_escape_string($includePrefix) . "'"
                . " WHERE sdnumber=" . $this->getID();
         sql_query($query);
+
+        global $resultCache, $manager;
+        $resultCache = array();
+        $manager->clearCachedInfo('sql_fetch_object');
     }
 
     /**
@@ -465,5 +474,3 @@ class SKIN {
     }
 
 }
-
-?>

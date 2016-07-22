@@ -216,7 +216,9 @@ class ADMIN {
         }
         $template['content'] = 'bloglist';
         $template['superadmin'] = $member->isAdmin();
+        echo '<div>';
         $amount = showlist($query,'table',$template);
+        echo '</div>';
 
         if (($showAll != 'yes') && ($member->isAdmin())) {
             $total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
@@ -418,7 +420,7 @@ class ADMIN {
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
-        $query .= ' ORDER BY itime DESC'
+        $query .= ' ORDER BY itime DESC, inumber DESC'
                 . " LIMIT $start,$amount";
 
         $query_view .= $query;
@@ -1932,7 +1934,7 @@ class ADMIN {
     /**
      * Usermanagement main
      */
-    function action_usermanagement() {
+    function action_usermanagement($msg='') {
         global $member, $manager;
 
         // check if allowed
@@ -1940,6 +1942,9 @@ class ADMIN {
 
         $this->pagehead();
 
+        if ($msg)
+            echo _MESSAGE , ': ', $msg;
+        
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
         echo '<h2>' . _MEMBERS_TITLE .'</h2>';
@@ -2015,7 +2020,7 @@ class ADMIN {
     /**
      * @todo document this
      */
-    function action_editmembersettings($memberid = '') {
+    function action_editmembersettings($memberid = '', $msg='') {
         global $member, $manager, $CONF;
 
         if ($memberid == '')
@@ -2026,6 +2031,8 @@ class ADMIN {
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
         $this->pagehead($extrahead);
+        if ($msg)
+            echo _MESSAGE , ': ', $msg;
 
         // show message to go back to member overview (only for admins)
         if ($member->isAdmin())
@@ -2064,16 +2071,16 @@ class ADMIN {
             <td><?php echo _MEMBERS_REALNAME?></td>
             <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" /></td>
         </tr>
-        <tr>
         <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
+        <tr>
             <td><?php echo _MEMBERS_PWD?></td>
-            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" /></td>
+            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off"  /></td>
         </tr>
         <tr>
             <td><?php echo _MEMBERS_REPPWD?></td>
-            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" /></td>
-        <?php } ?>
+            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
         </tr>
+        <?php } ?>
         <tr>
             <td><?php echo _MEMBERS_EMAIL?>
                 <br /><small><?php echo _MEMBERS_EMAIL_EDIT?></small>
@@ -2408,10 +2415,10 @@ class ADMIN {
 
                         <table><tr>
                             <td><?php echo _MEMBERS_PWD?></td>
-                            <td><input type="password" maxlength="40" size="16" name="password" /></td>
+                            <td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
                         </tr><tr>
                             <td><?php echo _MEMBERS_REPPWD?></td>
-                            <td><input type="password" maxlength="40" size="16" name="repeatpassword" /></td>
+                            <td><input type="password" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
                         <?php
 
                             global $manager;
@@ -2479,9 +2486,15 @@ class ADMIN {
         if ($password) {
             $pwdvalid = true;
             $pwderror = '';
+
             global $manager;
-            $data = array('password' => $password, 'errormessage' => &$pwderror, 'valid' => &$pwdvalid);
-            $manager->notify('PrePasswordSet', $data);
+            $param = array(
+                'password'        =>  $password,
+                'errormessage'    =>  &$pwderror,
+                'valid'            => &$pwdvalid
+            );
+            $manager->notify('PrePasswordSet', $param);
+
             if (!$pwdvalid) {
                 return $this->_showActivationPage($key,$pwderror);
             }
@@ -2685,7 +2698,7 @@ class ADMIN {
             // (check for at least two admins before deletion)
             $query = 'SELECT count(*) FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
             $r = sql_query($query);
-			if ($r && intval(sql_result($r)) < 2)
+            if ($r && intval(sql_result($r)) < 2)
                 return _ERROR_ATLEASTONEBLOGADMIN;
         }
 
@@ -2718,7 +2731,7 @@ class ADMIN {
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
             $r = sql_query('SELECT count(*) FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
-			if (intval(sql_result($r)) == 1)
+            if (intval(sql_result($r)) == 1)
                 $this->error(_ERROR_ATLEASTONEBLOGADMIN);
         }
 
@@ -2740,7 +2753,7 @@ class ADMIN {
     /**
      * @todo document this
      */
-    function action_blogsettings() {
+    function action_blogsettings($message='') {
         global $member, $manager;
 
         $blogid = intRequestVar('blogid');
@@ -2756,6 +2769,7 @@ class ADMIN {
         echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
         ?>
         <h2><?php echo _EBLOG_TITLE?>: '<?php echo $this->bloglink($blog)?>'</h2>
+        <?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
 
         <h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 
@@ -2863,7 +2877,7 @@ class ADMIN {
                     $query =  'SELECT cname as text, catid as value'
                            . ' FROM '.sql_table('category')
                            . ' WHERE cblog=' . $blog->getID()
-						   . ' ORDER BY corder ASC , cname ASC ';
+                           . ' ORDER BY corder ASC , cname ASC ';
                     $template['name'] = 'defcat';
                     $template['selected'] = $blog->getDefaultCategory();
                     $template['tabindex'] = 110;
@@ -3148,7 +3162,7 @@ class ADMIN {
         // check if catid is the only category left for blogid
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
-		if (intval(sql_result($res)) == 1)
+        if (intval(sql_result($res)) == 1)
             $this->error(_ERROR_DELETELASTCATEGORY);
 
 
@@ -3218,7 +3232,7 @@ class ADMIN {
         // check if catid is the only category left for blogid
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
-		if (intval(sql_result($res)) == 1)
+        if (intval(sql_result($res)) == 1)
             return _ERROR_DELETELASTCATEGORY;
 
         $param = array('catid' => $catid);
@@ -4386,6 +4400,9 @@ selector();
         $name = sql_real_escape_string($name);
         $desc = sql_real_escape_string($desc);
 
+        // 0. clear SqlCache
+        $manager->clearCachedInfo('sql_fetch_object');
+
         // 1. Remove all template parts
         $query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
         sql_query($query);
@@ -4698,11 +4715,11 @@ selector();
 
         if ($res) {
             $tabstart = 75;
-			$s = '';
+            $s = '';
             while ($row = sql_fetch_assoc($res)) {
                 $s .= '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
             }
-			if ($s) echo '<ul>'.$s.'</ul>';
+            if ($s) echo '<ul>'.$s.'</ul>';
         }
 
         ?>
@@ -4807,7 +4824,7 @@ selector();
         <?php           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
 
-
+        <div style="width:100%;">
         <form method="post" action="index.php">
         <div>
 
@@ -4855,6 +4872,7 @@ selector();
         $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
             showlist($query,'table',array('content'=>'shortnames'));
         echo '</div></form>';
+        echo "\n</div>\n";
         $this->pagefoot();
     }
 
@@ -5106,7 +5124,7 @@ selector();
     /**
      * @todo document this
      */
-    function action_settingsedit() {
+    function action_settingsedit($message='') {
         global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 
         $member->isAdmin() or $this->disallow();
@@ -5117,6 +5135,7 @@ selector();
         ?>
 
         <h2><?php echo _SETTINGS_TITLE?></h2>
+        <?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
 
         <form action="index.php" method="post">
         <div>
@@ -5677,9 +5696,8 @@ selector();
      */
     function error($msg) {
         $this->pagehead();
-        ?>
-        <h2>Error!</h2>
-        <?php       echo $msg;
+        echo  "<h2>Error!</h2>\n";
+        echo $msg;
         echo "<br />";
         echo "<a href='index.php' onclick='history.back(); return false;'>"._BACK."</a>";
         $this->pagefoot();
@@ -5726,7 +5744,7 @@ selector();
 
         ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+<html <?php if (defined('_HTML_XML_NAME_SPACE_AND_LANG_CODE')) echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
     <meta name="robots" content="noindex, nofollow, noarchive" />
@@ -5743,7 +5761,7 @@ selector();
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
     <meta http-equiv="Expires" content="-1" />
 
-<?php echo $extrahead?>
+<?php echo $extrahead; ?>
 </head>
 <body>
 <div id="adminwrapper">
@@ -5985,8 +6003,13 @@ selector();
             <?php
                 $url = 'index.php?action=regfile&blogid=' . intval($blogid);
                 $url = $manager->addTicketToUrl($url);
-            ?>
-            <?php echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . hsc($url) . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2; ?>
+            ?><?php
+        if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')
+            $tmpurl = hsc($url, ENT_QUOTES, "SJIS");
+        else
+            $tmpurl = hsc($url);
+        echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . $tmpurl . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2;
+?>
         </p>
 
         <p>
@@ -6886,7 +6909,7 @@ selector();
 
             <h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
 
-            <?php if  ($message) echo $message?>
+            <?php if  ($message) echo $message; ?>
 
             <form action="index.php" method="post">
             <div>

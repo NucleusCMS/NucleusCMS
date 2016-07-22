@@ -264,13 +264,13 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 
 		<part name="COMMENTS_NONE"><![CDATA[<div class="contentitem3">
 <span class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'">Add comment</a>
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle%>'">Add comment</a>
 </span>
 </div>]]></part>
 
 		<part name="COMMENTS_TOOMUCH"><![CDATA[<div class="contentitem3">
 <span class="contentitemcomments">
-<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle(attribute)%>'"><%commentcount%> <%commentword%></a>
+<a href="<%itemlink%>#c" rel="bookmark" title="Add comment on '<%itemtitle%>'"><%commentcount%> <%commentword%></a>
 </span>
 </div>]]></part>
 

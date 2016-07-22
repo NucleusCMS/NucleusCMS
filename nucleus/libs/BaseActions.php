@@ -97,7 +97,9 @@ class BaseActions {
         $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
         if (!$skin->isValid && !file_exists($file))
+        {
             return;
+        }
         $contents = (strpos($filename,'/')===false ? $skin->getContent($filename) : false);
         if (!$contents)
         {
@@ -339,4 +341,3 @@ class BaseActions {
         $this->_updateTopIfCondition();
     }
 }
-?>

@@ -533,7 +533,8 @@ class ITEMACTIONS extends BaseActions {
         $actions->setHighlight($this->strHighlight);
         $actions->setCurrentItem($this->currentItem);
         //$actions->setParser($parser);
-        $parser->parse($actions->highlight($data));
+        $param = $actions->highlight($data);
+        $parser->parse($param);
     }
 
     /*
@@ -788,4 +789,3 @@ class ITEMACTIONS extends BaseActions {
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 }
-?>

@@ -258,6 +258,9 @@ class MANAGER {
                 // check if class exists (avoid errors in eval'd code)
                 if (!class_exists($name))
                 {
+                    if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
+                        define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
+                    }
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
                     return 0;
                 }
@@ -366,6 +369,24 @@ class MANAGER {
 
     function clearCachedInfo($what) {
         unset($this->cachedInfo[$what]);
+    }
+
+    function initSqlCacheInfo($what, $query='')
+    {
+        if (isset($this->cachedInfo[$what][$query])) return;
+        
+        switch ($what)
+        {
+            case 'sql_num_rows':
+                $rs = sql_query($query);
+                $this->cachedInfo['sql_num_rows'][$query] = sql_num_rows($rs);
+                break;
+            case 'sql_fetch_object':
+                $rs  = sql_query($query);
+                $obj = sql_fetch_object($rs);
+                $this->cachedInfo['sql_fetch_object'][$query] = is_object($obj) ? $obj->result : '';
+                break;
+        }
     }
 
     /**

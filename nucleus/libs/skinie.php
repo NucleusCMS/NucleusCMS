@@ -624,7 +624,7 @@ class SKINEXPORT {
     /**
      * Constructor initializes data structures
      */
-    function SKINEXPORT() {
+    function __construct() {
         // list of templateIDs to export
         $this->templates = array();
 

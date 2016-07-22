@@ -180,11 +180,11 @@ class BLOG {
         // execute query
         $items = sql_query($query);
 
-		$numrows = 0;
+        $numrows = 0;
         // loop over all items
         $old_date = 0;
         while ($item = sql_fetch_object($items)) {
-			$numrows ++;
+            $numrows ++;
             $item->timestamp = strtotime($item->itime); // string timestamp -> unix timestamp
 
             // action handler needs to know the item we're handling
@@ -634,6 +634,7 @@ class BLOG {
         }
 
         $template =& $manager->getTemplate($template);
+        $archdata = array();
         $archdata['blogid'] = $this->getID();
 
         $tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
