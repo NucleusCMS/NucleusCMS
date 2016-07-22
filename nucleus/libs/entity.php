@@ -3,7 +3,6 @@
 class entity {
 
     public static function named_to_numeric ($string) {
-//        $string = preg_replace('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/e', "entity::_named('\\1', '\\2') . '\\3'", $string);
         $string = preg_replace_callback('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/', array('self', 'named_to_numeric_callback') , $string);
         return $string;    
     }
@@ -15,10 +14,8 @@ class entity {
 
     public static function normalize_numeric ($string) {
         global $_entities;
-//        $string = preg_replace('/&#([0-9]+)(;)?/e', "'&#x'.dechex('\\1').';'", $string);
         $string = preg_replace_callback('/&#([0-9]+)(;)?/', array('self', 'normalize_numeric_callback1') , $string);
 
-//        $string = preg_replace('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/e', "'&#x' . strtoupper('\\2') . ';\\4'", $string);
         $string = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/', array('self', 'normalize_numeric_callback2') , $string);
 
         $string = strtr($string, $_entities['cp1251']);
@@ -62,14 +59,12 @@ class entity {
 
     public static function numeric_to_named ($string) {
         global $_entities;
-//        $string = preg_replace('/&#[Xx]([0-9A-Fa-f]+)/e', "'&#'.hexdec('\\1')", $string);
         $string = preg_replace_callback('/&#[Xx]([0-9A-Fa-f]+)/', array('self', 'numeric_to_named_callback') , $string);
         $string = strtr($string, array_flip($_entities['named']));
         return $string;    
     }
     
     private static function numeric_to_named_callback ($matches) {
-//        "'&#'.hexdec('\\1')"
         return '&#'.hexdec($matches[1]);
     }
 

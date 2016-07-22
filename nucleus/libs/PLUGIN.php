@@ -553,7 +553,7 @@ class NucleusPlugin {
      *
      * (static method)
      */
-    function _deleteOptionValues($context, $contextid) {
+    public static function _deleteOptionValues($context, $contextid) {
         // delete all associated plugin options
         $aOIDs = array();
             // find ids
@@ -576,7 +576,7 @@ class NucleusPlugin {
      * @author TeRanEX
      * @static
      */
-    function getOptionMeta($typeExtra) {
+    public static function getOptionMeta($typeExtra) {
         $tmpMeta = explode(';', $typeExtra);
         $meta = array();
         for ($i = 0; $i < count($tmpMeta); $i++) {
@@ -597,7 +597,7 @@ class NucleusPlugin {
      * @return string the selectlist
      * @author TeRanEX
      */
-    function getOptionSelectValues($typeExtra) {
+    public static function getOptionSelectValues($typeExtra) {
         $meta = NucleusPlugin::getOptionMeta($typeExtra);
         //the select list must always be the first part
         return $meta['select'];
@@ -633,7 +633,7 @@ class NucleusPlugin {
      *        formcontrols into the page (by ex: itemOptions for new item)
      * @static
      */
-    function _applyPluginOptions(&$aOptions, $newContextid = 0) {
+    public static function _applyPluginOptions(&$aOptions, $newContextid = 0) {
         global $manager;
         if (!is_array($aOptions)) return;
 
@@ -678,14 +678,14 @@ class NucleusPlugin {
 
                         //trigger event PrePluginOptionsUpdate to give the plugin the
                         //possibility to change/validate the new value for the option
-                        $data = array(
+                        $param = array(
                             'context'        => $o->ocontext,
                             'plugid'        => $o->opid,
                             'optionname'    => $o->oname,
                             'contextid'        => $contextid,
                             'value'            => &$value
                         );
-                        $manager->notify('PrePluginOptionsUpdate', $data);
+                        $manager->notify('PrePluginOptionsUpdate', $param);
 
                         // delete the old value for the option
                         sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));

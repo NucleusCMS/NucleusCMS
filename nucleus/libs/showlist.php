@@ -757,4 +757,3 @@ function listplug_table_banlist($template, $type) {
     }
 }
 
-?>
