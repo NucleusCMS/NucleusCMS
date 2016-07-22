@@ -263,6 +263,20 @@ class MEMBER {
     }
 
     /**
+      * returns true if this member can clone an item,
+      *
+      * @param itemid
+      */
+    function canCloneItem($itemid) {
+        if ($this->isAdmin()) return 1;
+        $query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
+        $res = sql_query($query);
+        if ($res && ($obj = sql_fetch_object($res)))
+            return ($obj->iauthor == $this->getID()) or $this->isTeamMember($obj->iblog);
+        return FALSE;
+    }
+
+    /**
       * returns true if this member can move/update an item to a given category,
       * false if not (see comments fot the tests that are executed)
       *

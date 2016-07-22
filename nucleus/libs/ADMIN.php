@@ -1550,14 +1550,28 @@ class ADMIN {
         $itemid = intRequestVar('itemid');
         $tbl_item = sql_table('item');
 
+        // only allow if user have valid clone privileges
+        $member->canCloneItem($itemid) or $this->disallow();
+
+        // Todo: notify event, option
+//        ITEM::cloneItem($itemid);
+
         $dist = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
         $src  = "ititle,ibody,imore,iblog,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,icat,ikarmaneg,iposted";
         $query = sprintf("INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s", $tbl_item, $dist, $src, $tbl_item, $itemid);
-        sql_query($query);
+        if (sql_query($query))
+        {
+//            $new_itemid = sql_insert_id();
+//            $param = array(
+//                'itemid'           => $new_itemid,
+//                'is_same_category' => TRUE
+//            );
+//            $manager->notify('PostCloneItem', $param);
+        }
         // get blogid first
         $blogid = getBlogIdFromItemId($itemid);
         $this->action_itemlist($blogid);
-    }
+   }
 
     /**
      * @todo document this
