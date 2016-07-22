@@ -168,13 +168,10 @@ class MEMBER {
       * (returns false if not a team member)
       */
     function isBlogAdmin($blogid) {
-        $query = sprintf('SELECT tadmin FROM %s WHERE tblog=%d and tmember=%d',
-                          sql_table('team'), intval($blogid), $this->getID());
-        $res = sql_query($query);
-        if (sql_num_rows($res) == 0)
-            return 0;
-        else
-            return (sql_result($res,0,0) == 1) ;
+        $query = sprintf('SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d',
+                          sql_table('team'), intval($blogid), $this->getID())
+                . ' LIMIT 1';
+        return intval(quickQuery($query)) > 0;
     }
 
     function blogAdminRights($blogid) {
@@ -190,11 +187,11 @@ class MEMBER {
       * Returns true if this member is a team member of the given blog
       */
     function isTeamMember($blogid) {
-        $query = 'SELECT * FROM '.sql_table('team').' WHERE'
+        $query = 'SELECT count(*) AS result FROM '.sql_table('team').' WHERE'
                . ' tblog=' . intval($blogid)
-               . ' and tmember='. $this->getID();
-        $res = sql_query($query);
-        return (sql_num_rows($res) != 0);
+               . ' AND tmember='. $this->getID()
+               . ' LIMIT 1';
+        return intval(quickQuery($query)) > 0;
     }
 
     function canAddItem($catid) {
@@ -261,8 +258,8 @@ class MEMBER {
       * posted by the member left
       */
     function canBeDeleted() {
-        $res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-        return (sql_num_rows($res) == 0);
+        $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE iauthor=' . $this->getID();
+        return (intval(quickQuery($sql)) == 0);
     }
 
     /**
@@ -407,7 +404,7 @@ class MEMBER {
             $query = 'SELECT tblog as blogid from '.sql_table('team').' where tadmin=1 and tmember=' . $this->getID();
 
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0) {
+        if (!empty($res)) {
             while ($obj = sql_fetch_object($res)) {
                 array_push($blogs, $obj->blogid);
             }
@@ -429,7 +426,7 @@ class MEMBER {
             $query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
 
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0) {
+        if (!empty($res)) {
             while ($obj = sql_fetch_object($res)) {
                 array_push($blogs, $obj->blogid);
             }
@@ -629,8 +626,9 @@ class MEMBER {
      * @static
      */
     public static function exists($name) {
-        $r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".sql_real_escape_string($name)."'");
-        return (sql_num_rows($r) != 0);
+        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE mname='%s' LIMIT 1",
+                        sql_table('member'), sql_real_escape_string($name));
+        return (intval(quickQuery($sql)) > 0);
     }
 
     /**
@@ -639,8 +637,8 @@ class MEMBER {
      * @static
      */
     public static function existsID($id) {
-        $r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
-        return (sql_num_rows($r) != 0);
+        $sql = 'SELECT count(*) AS result FROM '.sql_table('member')." WHERE mnumber='".intval($id)."' LIMIT 1";
+        return (intval(quickQuery($sql)) > 0);
     }
 
     /**
@@ -725,10 +723,9 @@ class MEMBER {
         $query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key). '\'';
         $res = sql_query($query);
 
-        if (!$res || (sql_num_rows($res) == 0))
-            return 0;
-        else
-            return sql_fetch_object($res);
+        if ($res && ($o = sql_fetch_object($res)))
+            return $o;
+        return 0;
     }
 
     /**

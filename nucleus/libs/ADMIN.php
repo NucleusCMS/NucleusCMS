@@ -600,8 +600,8 @@ class ADMIN {
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one super-admin
-                    $r = sql_query('SELECT * FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1');
-                    if (sql_num_rows($r) < 2)
+                    $sql = 'SELECT count(*) as result FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1';
+                    if (intval(quickQuery($sql)) < 2)
                         $error = _ERROR_ATLEASTONEADMIN;
                     else
                     {
@@ -673,8 +673,8 @@ class ADMIN {
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one admin
-                    $r = sql_query('SELECT * FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid);
-                    if (sql_num_rows($r) < 2)
+                    $sql = 'SELECT count(*) as result FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid;
+                    if (intval(quickQuery($sql)) < 2)
                         $error = _ERROR_ATLEASTONEBLOGADMIN;
                     else
                         sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
@@ -1000,13 +1000,12 @@ class ADMIN {
 
         // 1. select blogs (we'll create optiongroups)
         // (only select those blogs that have the user on the team)
-        $queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
+        $queryBlogs = sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
+        $queryBlogs_count = 'SELECT count(*) as result FROM '.$queryBlogs;
+        $queryBlogs = 'SELECT bnumber, bname FROM '.$queryBlogs;
         $blogs = sql_query($queryBlogs);
         if ($mode == 'category') {
-            if (sql_num_rows($blogs) > 1)
-                $multipleBlogs = 1;
-            else
-                $multipleBlogs = 0;
+            $multipleBlogs = intval(quickQuery($queryBlogs_count)) > 1;
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)

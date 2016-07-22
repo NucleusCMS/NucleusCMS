@@ -44,7 +44,7 @@ class SKIN {
         // read skin name/description/content type
         $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
         $obj = sql_fetch_object($res);
-        $this->isValid = (sql_num_rows($res) > 0);
+        $this->isValid = is_object($obj);
         if (!$this->isValid)
             return;
 
@@ -224,10 +224,9 @@ class SKIN {
         $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         $res = sql_query($query);
 
-        if (sql_num_rows($res) == 0)
+        if (!$res || (empty($r = sql_fetch_array($res))))
             return '';
-        else
-            return sql_result($res, 0, 0);
+        return $r[0];
     }
 
     /**

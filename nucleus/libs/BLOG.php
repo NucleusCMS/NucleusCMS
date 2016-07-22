@@ -409,11 +409,14 @@ class BLOG {
                 $catName = _CREATED_NEW_CATEGORY_NAME;
                 $i = 1;
 
-                $res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-                while (sql_num_rows($res) > 0)
+                $res = TRUE;
+                while ($res !== false)
                 {
+                    $sql = 'SELECT catid AS result FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID();
+                    $res = quickQuery($sql);
+                    if (empty($res))
+                        break;
                     $i++;
-                    $res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
                 }
 
                 $catName = $catName . $i;
@@ -914,11 +917,9 @@ class BLOG {
                . ' WHERE bnumber=' . $this->blogid;
         $res = sql_query($query);
 
-        $this->isValid = (sql_num_rows($res) > 0);
+        $this->isValid = ($res && !empty( $this->settings = sql_fetch_assoc($res) ));
         if (!$this->isValid)
-            return;
-
-        $this->settings = sql_fetch_assoc($res);
+            $this->settings = array();
     }
 
     /**
@@ -1022,8 +1023,7 @@ class BLOG {
       */
     function getCategoryIdFromName($name) {
         $res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
-        if (sql_num_rows($res) > 0) {
-            $o = sql_fetch_object($res);
+        if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
         } else {
             return $this->getDefaultCategory();
@@ -1301,8 +1301,9 @@ class BLOG {
       *     blog shortname
       */
     public static function exists($name) {
-        $r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
-        return (sql_num_rows($r) != 0);
+        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
+                       sql_table('blog'), sql_real_escape_string($name));
+        return intval(quickQuery($sql)) > 0;
     }
 
     /**
@@ -1313,8 +1314,9 @@ class BLOG {
       *     blog id
       */
     public static function existsID($id) {
-        $r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
-        return (sql_num_rows($r) != 0);
+        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bnumber=%d LIMIT 1",
+                       sql_table('blog'), intval($id));
+        return intval(quickQuery($sql)) > 0;
     }
 
     /**
@@ -1343,9 +1345,10 @@ class BLOG {
 
         if ($this->settings['bfuturepost'] == 1) {
             $blogid = $this->getID();
-            $result = sql_query("SELECT * FROM " . sql_table('item')
-                      . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()");
-            if (sql_num_rows($result) > 0) {
+            $sql = "SELECT count(*) AS result FROM " . sql_table('item')
+                      . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()"
+                      . ' LIMIT 1';
+            if (intval(quickQuery($sql)) > 0) {
                 // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
                 // Note that the plugins's calling order is subject to thri order in the plugin list
                 $pinged = false;
@@ -1359,9 +1362,10 @@ class BLOG {
                 sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
 
                 // check to see any pending future post, clear the flag is none
-                $result = sql_query("SELECT * FROM " . sql_table('item')
-                          . " WHERE iposted=0 AND iblog=" . $blogid);
-                if (sql_num_rows($result) == 0) {
+                $sql = "SELECT count(*) AS result FROM " . sql_table('item')
+                          . " WHERE iposted=0 AND iblog=" . $blogid
+                          . ' LIMIT 1';
+                if (intval(quickQuery($sql)) == 0) {
                     $this->clearFuturePost();
                 }
             }

@@ -63,9 +63,8 @@ class ITEM {
 
         $res = sql_query($query);
 
-        if (sql_num_rows($res) == 1)
+        if ($res && ($aItemInfo = sql_fetch_assoc($res)))
         {
-            $aItemInfo = sql_fetch_assoc($res);
             $aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
             return $aItemInfo;
         } else {
@@ -386,19 +385,19 @@ class ITEM {
 
         $id = intval($id);
 
-        $r = 'select * FROM '.sql_table('item').' WHERE inumber='.$id;
+        $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE inumber='.$id;
         if (!$future) {
             $bid = getBlogIDFromItemID($id);
             if (!$bid) return 0;
             $b =& $manager->getBlog($bid);
-            $r .= ' and itime<='.mysqldate($b->getCorrectTime());
+            $sql .= ' AND itime<='.mysqldate($b->getCorrectTime());
         }
         if (!$draft) {
-            $r .= ' and idraft=0';
+            $sql .= ' AND idraft=0';
         }
-        $r = sql_query($r);
+        $sql .= ' LIMIT 1';
 
-        return (sql_num_rows($r) != 0);
+        return (intval(quickQuery($sql)) > 0);
     }
 
     /**

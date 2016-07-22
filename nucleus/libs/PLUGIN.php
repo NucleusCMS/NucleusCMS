@@ -451,8 +451,12 @@ class NucleusPlugin {
 
         // get from DB
         $res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
-
-        if (!$res || (sql_num_rows($res) == 0)) {
+        $query_ovalue_exist =
+                'SELECT count(*) as result FROM ' . sql_table('plugin_option')
+              . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid)
+              . ' LIMIT 1';
+        $res_ovalue_exist = intval(quickQuery($query_ovalue_exist));
+        if (!$res || ($res_ovalue_exist == 0)) {
             $defVal = $this->_getDefVal($context, $name);
             $this->_aOptionValues[$key] = $defVal;
 
