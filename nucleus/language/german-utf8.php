@@ -25,6 +25,12 @@ define('_TEAM_NO_SELECTABLE_MEMBERS',         'team does not have selectable mem
 
 define('_LISTS_FORM_SELECT_ALL_CATEGORY',    'All categories');
 
+define('_LIST_BACK_TO',				'Back to %s');
+define('_LIST_COMMENT_LIST_FOR_BLOG',		'Blog-Kommentare Liste');
+define('_LIST_COMMENT_LIST_FOR_ITEM',		'Kommentare Liste der Elemente');
+define('_LIST_COMMENT_VIEW_ITEM',			'Artikel anzeigen');
+define('_LISTS_VIEW',						'Show');
+
 define('_LISTS_ITEM_COUNT',      'Item count');
 define('_LISTS_ORDER',           'order');
 

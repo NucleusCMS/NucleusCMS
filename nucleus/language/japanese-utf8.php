@@ -26,6 +26,12 @@ define('_TEAM_NO_SELECTABLE_MEMBERS',			'選択可能なメンバーはいませ
 
 define('_LISTS_FORM_SELECT_ALL_CATEGORY',	'すべてのカテゴリ');
 
+define('_LIST_BACK_TO',				'%sに戻る');
+define('_LIST_COMMENT_LIST_FOR_BLOG',		'ブログのコメント一覧');
+define('_LIST_COMMENT_LIST_FOR_ITEM',		'アイテムのコメント一覧');
+define('_LIST_COMMENT_VIEW_ITEM',			'アイテムを表示');
+define('_LISTS_VIEW',						'表示');
+
 define('_LISTS_ITEM_COUNT',	'アイテム数');
 define('_LISTS_ORDER',	'並び順');
 

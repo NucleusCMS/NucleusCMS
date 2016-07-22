@@ -373,17 +373,18 @@ function listplug_table_itemlist($template, $type) {
             echo "$current->ibody</td>";
             echo "<td  style=\"white-space:nowrap\" $cssclass>";
             echo     "<a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a>";
+            echo " / <a href='index.php?action=itemmove&amp;itemid={$current->inumber}'>" . _LISTS_MOVE . "</a>";
+            echo " / <a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>" . _LISTS_DELETE . "</a><br />";
+            printf(" <a href='%s' target=\"_blank\">%s</a><br />", createItemLink($current->inumber), _LISTS_VIEW);
             // evaluate amount of comments for the item
             $camount = $COMMENTS->amountComments();
             if ($camount>0) {
-                echo "<br /><a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
+                echo "<a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
                 echo "( " . sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments())." )</a>";
             }
             else {
-                echo "<br />" . _LIST_ITEM_NOCONTENT;
+                echo _LIST_ITEM_NOCONTENT;
             }
-            echo    "<br /><a href='index.php?action=itemmove&amp;itemid=$current->inumber'>"._LISTS_MOVE."</a>";
-            echo    "<br /><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a>";
             echo "</td>";
             break;
     }
