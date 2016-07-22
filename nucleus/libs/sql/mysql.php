@@ -290,6 +290,70 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     }
     
     /**
+     * Returns the array that column names of the table
+     */
+    function sql_getTableColumnNames($tablename)
+    {
+        global $MYSQL_CONN;
+        if (!$MYSQL_CONN) return array();
+
+        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $target = 'Field';
+
+        $items = array();
+        $res = mysql_query($sql);
+        if (!$res)
+            return array();
+        while( $row = mysql_fetch_array($res) )
+        {
+            if (isset($row[$target]))
+                $items[] = $row[$target];
+        }
+
+        if (count($items)>0)
+        {
+            sort($items);
+        }
+        return $items;
+    }
+
+    /**
+     * Returns the boolean value that column name of the table exist or not
+     */
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    {
+        $names = sql_getTableColumnNames($tablename);
+
+        if (count($names)>0)
+        {
+            if ($casesensitive)
+                return in_array( $ColumnName , $names );
+            else
+            {
+                foreach($names as $v)
+                    if ( strcasecmp( $ColumnName , $v ) == 0 )
+                    {
+                         return True;
+                    }
+            }
+        }
+        return False;
+    }
+
+    /**
+     * Returns the boolean value that column name of the table exist or not
+     */
+    function sql_existTableName($tablename)
+    {
+        global $MYSQL_CONN;
+        if (!$MYSQL_CONN) return FALSE;
+
+        $sql = 'SHOW TABLES LIKE :name ';
+        $res = mysql_query($sql);
+        return ($res && !empty(mysql_fetch_array($res)));
+    }
+
+    /**
       * Get SQL client version
       */
     function sql_get_client_info()
@@ -297,6 +361,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return mysql_get_client_info();
     }
     
+    function  sql_get_db()
+    {
+        global $MYSQL_CONN;
+        return $MYSQL_CONN;
+    }
+
     /**
       * Get SQL server version
       */
@@ -481,4 +551,5 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         $column = sql_fetch_object($columns);
         return isset($column->Collation) ? $column->Collation : false;
     }
+
 }
