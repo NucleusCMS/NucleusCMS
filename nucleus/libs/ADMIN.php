@@ -5710,20 +5710,17 @@ selector();
         $manager->notify('AdminPrePageFoot', $param);
 
         if ($member->isLoggedIn() && ($action != 'showlogin')) {
-            ?>
-            <h2><?php echo  _LOGOUT ?></h2>
-            <ul>
-                <li><a href="index.php?action=overview"><?php echo  _BACKHOME?></a></li>
-                <li><a href='index.php?action=logout'><?php echo  _LOGOUT?></a></li>
-            </ul>
-            <?php       }
-        ?>
-            <div class="foot">
-                <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
-                -
-                <a href="<?php echo _ADMINPAGEFOOT_DONATEURL ?>"><?php echo _ADMINPAGEFOOT_DONATE ?></a>
-            </div>
+            echo "\t\t" . sprintf('<h2>%s</h2>', _LOGOUT) . "\n";
+            echo "\t\t" . "<ul>" . "\n";
+            echo "\t\t\t" . sprintf('<li><a href="index.php?action=overview">%s</a></li>', _BACKHOME)  . "\n";
+            echo "\t\t\t" . sprintf('<li><a href="index.php?action=logout">%s</a></li>', _LOGOUT)  . "\n";
+            echo "\t\t" . "</ul>" . "\n";
+        }
 
+        echo "\t\t". sprintf('<div class="foot"><a href="%s">Nucleus CMS</a> &copy; 2002-%s</div>',
+                            _ADMINPAGEFOOT_OFFICIALURL, date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT) . "\n";
+
+        ?>
             </div><!-- content -->
 
             <div id="quickmenu">
