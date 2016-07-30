@@ -104,6 +104,7 @@
 <ul>
     <li><a href="#introduction">イントロダクション</a></li>
     <li><a href="#firstplug">はじめてプラグインを書いてみる</a></li>
+    <li><a href="#reserved_plugin_var">NucleusPlugin クラスのプロパティ(メンバ変数) 予約語一覧</a></li>
     <li><a href="#nucleusplugin"><code>NucleusPlugin</code> クラスの概要</a></li>
     <li><a href="#skinvars"><code>&lt;%plugin(...)%&gt;</code> スキン変数</a></li>
     <li><a href="#templatevars"><code>&lt;%plugin(...)%&gt;</code> テンプレート変数</a></li>
@@ -146,7 +147,64 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 <strong>注：</strong> プラグイン名は大文字・小文字を識別しますので、<code>Np_</code> や <code>np_</code> ではなく、<code>NP_</code> で始まることに気をつけてください。またプラグインがサブディレクトリを使用する場合は、サブディレクトリの名称は<em>すべて小文字にします</em>。
 </div>
 
+<p> (v3.xx)から<code>NP_プラグイン名.php</code>を プラグイン名(小文字) または NP_プラグイン名 のフォルダに配置できるようになりました(既存のプラグンの場合は、修正が必要です)。<br />
+</p>
+<p> (v3.xx)から<code>/your/path/nucleus/plugins/</code>の代わりに、<br />
+	個別フォルダ<br /><code>/your/path/nucleus/plugins/<b>NP_プラグイン名/</b></code><br />にプラグイン一式を配置できるようになりました。</p>
+<table border="1" cellspacing="2" cellpadding="2">
+<tbody>
+	<tr>
+		<th colspan="1" rowspan="2" style="text-align: center; vertical-align: middle;">Type</th>
+		<th colspan="1" rowspan="2" style="text-align: center; vertical-align: middle;">ver</th>
+		<th colspan="2" rowspan="1" >場所 /your/path/nucleus/plugins/</th>
+	</tr>
+	<tr><th>プラグインファイル名</th><th>サブディレクトリ</th></tr>
+	<tr>
+		<td style="text-align: center; vertical-align: middle;">1</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">all</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名.php<br /> NP_Sample.php</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/<br /> sample/</td>
+	</tr>
+	<tr>
+		<td style="text-align: center; vertical-align: middle;">2</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/NP_プラグイン名.php<br /> sample/NP_Sample.php</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/<br /> sample/</td>
+	</tr>
+	<tr>
+		<td style="text-align: center; vertical-align: middle;">3</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/NP_プラグイン名.php<br /> sample/NP_Sample.php</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/プラグイン名(小文字)/<br /> sample/sample/</td>
+	</tr>
+	<tr>
+		<td style="text-align: center; vertical-align: middle;">4</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/NP_プラグイン名.php<br /> NP_Sample/NP_Sample.php</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/プラグイン名(小文字)/<br /> NP_Sample/sample/</td>
+	</tr>
+	<tr>
+		<td style="text-align: center; vertical-align: middle;">5</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/NP_プラグイン名.php<br /> NP_Sample/NP_Sample.php</td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/<br /> NP_Sample/</td>
+	</tr>
+</tbody>
+</table>
+<div class="note">
+<strong>注：</strong> 複数存在した場合は、Type番号の小さいものが使われます。<br />
+<strong>参考：</strong> $this->getDirectory() , $this->getAdminURL()<br />
+</div>
 
+<h1>NucleusPluginクラスのプロパティ(メンバ変数) 予約語一覧<a id="reserved_plugin_var" name="reserved_plugin_var" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<p>NucleusPluginクラスでは、以下のクラスプロパティ(PHPメンバ変数)が予約されています。派生先のクラスでは、定義・変更しないようにお願いします。<br />
+また、プラグインのプロパティで plugin_で始まるものは、コア関数が将来使用するために予約されています。</p>
+<div class="note">
+<strong>注：</strong>予約語一覧: NucleusPluginクラス プロパティ<br />
+_aOptionValues , _aOptionToInfo<br />
+plugid , plugin_options<br />
+(v3.xx): plugin_admin_dir , plugin_admin_url_prefix , plugin_dir_type<br />
+</div>
 
 
 <h1>はじめてプラグインを書いてみる<a id="firstplug" name="firstplug" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
