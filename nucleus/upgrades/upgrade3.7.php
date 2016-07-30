@@ -15,6 +15,15 @@ function upgrade_do372() {
 	if (upgrade_checkinstall(372))
 		return 'already installed';
 
+    if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
+    {
+        $query = sprintf("ALTER TABLE `%s`
+                         ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';
+                         ", sql_table( 'blog' ));
+
+        upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+    }
+
 	// 3.71 -> 3.72
 	// update database version
 	update_version('372');
@@ -25,12 +34,15 @@ function upgrade_do371() {
     if (upgrade_checkinstall(371))
         return _UPG_TEXT_ALREADY_INSTALLED;
 
-    $query = sprintf("ALTER TABLE `%s`
-                    ADD `corder` int(11)     NOT NULL default '100',
-                    ADD INDEX `cblog` (`cblog`),
-                    ADD INDEX `corder` (`corder`);", sql_table('category'));
+    if ( !sql_existTableColumnName(sql_table('category'), 'corder') )
+    {
+        $query = sprintf("ALTER TABLE `%s`
+                        ADD `corder` int(11)     NOT NULL default '100',
+                        ADD INDEX `cblog` (`cblog`),
+                        ADD INDEX `corder` (`corder`);", sql_table('category'));
 
-    upgrade_query('Altering ' . sql_table('category') . ' table', $query);
+        upgrade_query('Altering ' . sql_table('category') . ' table', $query);
+    }
 
     // 3.70 -> 3.71
     // update database version

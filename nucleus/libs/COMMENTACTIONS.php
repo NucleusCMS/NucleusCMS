@@ -506,6 +506,15 @@ class COMMENTACTIONS extends BaseActions {
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
+            case 'commentclosed':
+                $condition = $this->parse_commentclosed();
+                break;
+            case 'hascomment':
+                $condition = $this->parse_hascomment();
+                break;
+            case 'authorvisible':
+                $condition = ($blog && $blog->getAuthorVisible());
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
@@ -706,5 +715,21 @@ class COMMENTACTIONS extends BaseActions {
 
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
+
+    function parse_commentclosed()
+	{
+//        return $this->commentsObj->itemActions->parse_commentclosed();
+		// if item is closed, show message and do nothing
+		if ($this->currentItem->closed || !$this->blog->commentsEnabled())
+		  { return TRUE; } else { return FALSE; }
+	}
+
+	function parse_hascomment()
+	{
+		$sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+						   sql_table('comment'), intval($this->currentItem->itemid));
+		$res = intval(quickQuery($sqlText));
+		return ($res > 0);
+	}
 
 }

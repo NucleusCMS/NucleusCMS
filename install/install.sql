@@ -38,6 +38,7 @@ CREATE TABLE `nucleus_blog` (
   `bincludesearch` tinyint(2) NOT NULL default '0',
   `breqemail` TINYINT( 2 ) DEFAULT '0' NOT NULL,
   `bfuturepost` TINYINT(2) DEFAULT '0' NOT NULL,
+  `bauthorvisible` tinyint(2)   NOT NULL default '1',
   PRIMARY KEY  (`bnumber`),
 --  UNIQUE KEY `bnumber` (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)

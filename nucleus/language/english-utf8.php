@@ -19,6 +19,12 @@
  */
 
 /********************************************
+ *        Start New for 3.72                *
+ ********************************************/
+// Blog option
+define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
+
+/********************************************
  *        Start New for 3.71                *
  ********************************************/
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');

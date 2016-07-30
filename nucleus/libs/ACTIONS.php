@@ -133,20 +133,15 @@ class ACTIONS extends BaseActions {
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
-			case 'commentclosed':
-				$condition = $this->parse_commentclosed();
-				break;
-			case 'hascomment':
-				$condition = $this->parse_hascomment();
-				break;
-//			case 'ismobile':
-//			case 'ismobileaccess':
-//				$condition = isMobileAccess();
-//				break;
-//			case 'istablet':
-//				$condition = $mobiledetect->isTablet();
-
-				break;
+            case 'commentclosed':
+                $condition = $this->parse_commentclosed();
+                break;
+            case 'hascomment':
+                $condition = $this->parse_hascomment();
+                break;
+            case 'authorvisible':
+                $condition = ($blog && $blog->getAuthorVisible());
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
