@@ -79,8 +79,7 @@
         }
 
         $res = sql_query($query);
-        $installed = ($res != 0) && (sql_num_rows($res) >= $minrows);
-
+        $installed = ($res && (sql_num_rows($res) >= $minrows));
         return $installed;
     }
 

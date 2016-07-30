@@ -5548,7 +5548,7 @@ selector();
                 if (($MYSQL_HANDLER[0] != 'pdo') ||  ($MYSQL_HANDLER[1] == 'mysql'))
                     echo 'MySQL';
                 else
-                    hsc($MYSQL_HANDLER[1]);
+                    echo hsc($MYSQL_HANDLER[1]);
             echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
             echo "\t</tr>";
             // Databese Driver

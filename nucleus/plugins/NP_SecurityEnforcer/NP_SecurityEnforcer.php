@@ -217,11 +217,12 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 		$minlength = intval($minlength);
 		$complexity = intval($complexity);
 
+        $message = '';
 		if ($minlength < 6 ) {
 			$minlength = 6;
 		}
 		if (strlen($passwd) < $minlength) {
-			$message = _SECURITYENFORCER_MIN_PWD_LENGTH . $this->pwd_min_length;
+			$message .= _SECURITYENFORCER_MIN_PWD_LENGTH . $this->pwd_min_length;
 		}
 
 		if ($complexity > 4) {

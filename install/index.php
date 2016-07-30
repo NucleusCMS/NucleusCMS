@@ -900,8 +900,8 @@ function doInstall() {
 	sql_query($query,$MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN) );
 
 	// 8-2. update category settings
-		$cat_name = sql_real_escape_string(_GENERALCAT_NAME);
-		$cat_desc = sql_real_escape_string(_GENERALCAT_DESC);
+		$cat_name = sql_real_escape_string( defined('_GENERALCAT_NAME') ? _GENERALCAT_NAME : 'general' );
+		$cat_desc = sql_real_escape_string( defined('_GENERALCAT_DESC') ? _GENERALCAT_DESC : '' );
 	$query = 'UPDATE ' . tableName('nucleus_category')
 		   . " SET cname  = '" . $cat_name . "',"
 		   . " cdesc	  = '" . $cat_desc . "'"

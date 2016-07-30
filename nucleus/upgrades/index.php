@@ -63,7 +63,8 @@ if (version_compare(phpversion(),'5.0.0','<'))
 elseif ($current == NUCLEUS_UPGRADE_VERSION_ID)
     $echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
 else {
-    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
+    $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
+    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , $tmp_title);
     $echo[] = '<div class="note">';
     $echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
     $echo[] = '</div>';

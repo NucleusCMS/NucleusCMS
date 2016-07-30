@@ -48,7 +48,7 @@ define('_UPG_TEXT_NOTE02',             'When upgrading from an older Nucleus ver
 define('_UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED', 'No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.');
 define('_UPG_TEXT_WARN_DEPRECATED_PHP4_STOP',    'Nucleus does not work with PHP4. It aborts the upgrade work, and whether we can use the PHP5 or more, check with your server administrator.');
 
-define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',        'Click here to upgrade the database to Nucleus v3.7');
+define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',        'Click here to upgrade the database to Nucleus v%s');
 
 define('_UPG_TEXT_NOTE50_WARNING',        'Note');
 define('_UPG_TEXT_NOTE50_MAKE_BACKUP',    "Don't forget to make a backup of your database every once in a while!<br/>\n It is suggested that you do so before upgrading the database in case things go wrong.");

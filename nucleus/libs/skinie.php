@@ -252,6 +252,7 @@ class SKINIMPORT {
             }
         }
 
+        if (is_array($this->templates))
         foreach ($this->templates as $templateName => $data) {
             // 1. if exists: delete all part data, update desc data
             //    if not exists: create desc
@@ -299,6 +300,7 @@ class SKINIMPORT {
     function checkTemplateNameClashes() {
         $clashes = array();
 
+        if (is_array($this->templates))
         foreach ($this->templates as $templateName => $data) {
             if (TEMPLATE::exists($templateName)) {
                 array_push($clashes, $templateName);
@@ -609,8 +611,10 @@ class SKINIMPORT {
             $this->skins =& $data['skin'];
             $this->templates =& $data['template'];
         }
-        ksort($this->skins);
-        ksort($this->templates);
+        if (is_array($this->skins))
+            ksort($this->skins);
+        if (is_array($this->templates))
+            ksort($this->templates);
     }
 }
 

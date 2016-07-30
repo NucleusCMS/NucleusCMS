@@ -414,13 +414,13 @@ function listplug_table_commentlist($template, $type) {
     static $amountComments = array();
     global $action;
 
-//    $colspan = 3;
-//    if ( $action == 'blogcommentlist')
-//       $colspan++;
+    $colspan = 3;
+    if ( $action == 'blogcommentlist')
+       $colspan++;
 
     switch($type) {
         case 'HEAD':
-            echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
+            echo "<th>"._LISTS_INFO."</th><th>"._LIST_COMMENT."</th><th colspan='". $colspan ."'>"._LISTS_ACTIONS."</th>";
             break;
         case 'BODY':
             global $member;

@@ -27,6 +27,8 @@ if (!$member->isAdmin()) {
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
+$from = intGetVar('from');
+
 if ($from < 300) {
     include('upgrade0.95.php');
     include('upgrade0.96.php');
@@ -37,8 +39,6 @@ if ($from < 300) {
     include('upgrade2.5.php');
     include('upgrade3.0.php');
 }
-
-$from = intGetVar('from');
 
 upgrade_start();
 
@@ -82,6 +82,9 @@ switch($from) {
     case 370:
         include_once('upgrade3.7.php');
         upgrade_do371();
+    case 371:
+        include_once('upgrade3.7.php');
+        upgrade_do372();
         break;
     default:
         echo "<li>" . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . "</li>";
