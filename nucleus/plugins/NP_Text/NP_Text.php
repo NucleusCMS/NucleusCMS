@@ -20,7 +20,7 @@ class NP_Text extends NucleusPlugin {
 	public function getName() { return 'Text'; }
 	public function getAuthor() { return 'Armon Toubman, Cacher'; }
     public function getURL() { return 'https://github.com/NucleusCMS/NP_Text'; } // 'http://nucleuscms.org/forum/viewtopic.php?t=14904';
-	public function getVersion() { return '0.53JP-8bceb304-patch1'; }
+	public function getVersion() { return '0.54 (0.53JP-8bceb304-patch1)'; }
 	public function getDescription() {
 		$desc = '言語ファイル中の定数を表示します。: <%Text(定数名)%>';
 		switch (preg_replace( '#\\\\|/#', '', getLanguageName())) {
