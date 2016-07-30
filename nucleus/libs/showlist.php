@@ -236,7 +236,17 @@ function listplug_table_pluginlist($template, $type) {
                 echo "<br /><a href='",hsc($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
                 echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
                 if ($plug && ($plug->hasAdminArea() > 0))
-                    echo "<br /><a href='".hsc($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
+                {
+                    if ($plug->supportsFeature('pluginadmin'))
+                    {
+                        $url = $manager->addTicketToUrl($baseUrl . 'pluginadmin');
+                        printf("<br /><a href='%s' tabindex='%s'>%s</a>", $url, $template['tabindex'], _LIST_PLUGS_ADMIN);
+                    }
+                    else
+                    {
+                        echo "<br /><a href='".hsc($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
+                    }
+                }
                 if ($plug && ($plug->supportsFeature('HelpPage') > 0))
                     echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
                 if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)

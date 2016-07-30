@@ -361,6 +361,12 @@ class MANAGER {
         return $plugin;
     }
 
+    function &getPluginFromPid($pid)
+    {
+        $name = getPluginNameFromPid($pid);
+        return $this->getPlugin( (is_string($name) ? $name : '') );
+    }
+
     /**
       * Checks if the given plugin IS loaded or not
       */
