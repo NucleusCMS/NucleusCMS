@@ -305,6 +305,90 @@ class ITEM {
     }
 
     /**
+     * Clone an item to another blog (no checks)
+     *
+     * Note: clone is PHP Reserved word
+     *      * @static
+     */
+    public static function cloneItem($itemid, $new_catid = 0) {
+        global $manager, $member;
+
+        $tbl_item = sql_table('item');
+        $itemid = intval($itemid);
+        $new_catid = intval($new_catid);
+
+       $query = sprintf("SELECT iblog,icat FROM %s WHERE inumber=%d", $tbl_item, $itemid);
+        if ($res = sql_query($query) && ($obj = sql_fetch_object($res)))
+        {
+            $src_blogid = intval($obj->iblog);
+            $src_catid  = intval($obj->icat);
+        }
+        else
+        {
+            return FALSE; // unkown error,  invalid inumber ?
+        }
+
+        // 
+        if ($new_catid <= 0)
+            $new_catid = $src_catid;
+        $is_same_cat = ($src_catid == $new_catid);
+
+        if (!$is_same_cat)
+        {
+            $new_blogid = getBlogIDFromCatID($new_catid);
+            if (!$new_blogid)
+                return FALSE; // unkown error,  invalid catid ?
+        }
+        else
+        {
+            $new_blogid = $src_blogid;
+        }
+
+//        if (!$member->canCloneItem($itemid) || !!$member->canAddItem($new_catid)) {
+//            return ;
+//        }
+
+        // Todo: event_PreCloneItem, event_PostCloneItem
+        // event_PreCloneItem
+        $param = array(
+//            'itemid'        => $itemid,
+//            'blogid'        => $new_blogid,
+//            'catid'         => $new_catid,
+            'src_itemid'    => $itemid,
+            'src_blogid'    => $src_blogid,
+            'src_catid'     => $src_catid,
+            'dest_blogid'   => $new_blogid,
+            'dest_catid'    => $new_catid,
+            'is_same_category' => $is_same_cat
+        );
+//        $manager->notify('PreCloneItem', $param); // not implemented yet
+
+        $new_iblog = $is_same_cat ? 'iblog' : sprintf('%d as iblog', $new_blogid);
+        $new_icat  = $is_same_cat ? 'icat'  : sprintf('%d as icat' , $new_catid);
+        $dist = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
+        $src  = "ititle,ibody,imore,${new_iblog},iauthor,itime,iclosed,'1' AS idraft,ikarmapos,${new_icat},ikarmaneg,iposted";
+        $query = sprintf("INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s", $tbl_item, $dist, $src, $tbl_item, $itemid);
+        if (sql_query($query))
+        {
+            $new_itemid = sql_insert_id();
+
+            // event_PostCloneItem
+            $param = array(
+                'itemid'        => $new_itemid,
+//                'blogid'        => $new_blogid,
+//                'catid'         => $new_catid,
+                'src_itemid'    => $itemid,
+                'src_blogid'    => $src_blogid,
+                'src_catid'     => $src_catid,
+                'dest_blogid'   => $new_blogid,
+                'dest_catid'    => $new_catid,
+                'is_same_category' => ($src_catid == $new_catid)
+            );
+//            $manager->notify('PostCloneItem', $param); // not implemented yet
+        }
+    }
+
+    /**
      * Move an item to another blog (no checks)
      *
      * @static
