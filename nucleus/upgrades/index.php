@@ -14,7 +14,7 @@
  *
  */
 
-define('NUCLEUS_UPGRADE_VERSION_ID' , 371);
+define('NUCLEUS_UPGRADE_VERSION_ID' , 372);
 
 include('upgrade.functions.php');
 
@@ -53,7 +53,7 @@ $echo[] = '</div>';
     elseif (!upgrade_checkinstall(370)) $current = 360;
     elseif (!upgrade_checkinstall(371)) $current = 370;
     elseif (!upgrade_checkinstall(372)) $current = 371;
-    else                                $current = 372;
+    else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
 
 if (version_compare(phpversion(),'5.0.0','<'))
     $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
