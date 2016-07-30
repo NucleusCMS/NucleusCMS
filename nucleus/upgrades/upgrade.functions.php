@@ -72,7 +72,7 @@
                 $query = sprintf('SELECT bincludesearch FROM %s LIMIT 1', sql_table('blog'));
                 $minrows = -1;
                 break;
-            default:  // 250 - 371
+            default:  // 250 - 372
                 $query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%d LIMIT 1", sql_table('config'), intval($version));
                 $minrows = 1;
                 break;

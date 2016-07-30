@@ -52,7 +52,8 @@ $echo[] = '</div>';
     elseif (!upgrade_checkinstall(360)) $current = 350;
     elseif (!upgrade_checkinstall(370)) $current = 360;
     elseif (!upgrade_checkinstall(371)) $current = 370;
-    else                                $current = 371;
+    elseif (!upgrade_checkinstall(372)) $current = 371;
+    else                                $current = 372;
 
 if (version_compare(phpversion(),'5.0.0','<'))
     $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
