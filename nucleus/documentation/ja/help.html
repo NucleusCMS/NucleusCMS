@@ -2613,6 +2613,26 @@ $HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 <li><strong>onteam</strong>：訪問者がログインし、現在のブログ、または、<em>name</em> で指示されたブログのチームに入っているか調べます。</li>
 <li><strong>admin</strong>：訪問者がログインし、現在のブログ、または<em>name</em> で指示されたブログの管理権限があるか調べます。</li>
 
+      <li><strong>authorvisible</strong> : 投稿者名の表示許可を確認します。<br>
+        &lt;%if(authorvisible)%&gt;<br>
+        投稿者: &lt;%if(loggedin)%&gt;&lt;a href=&quot;&lt;%authorlink%&gt;&quot; title=&quot;投稿者: &lt;%author%&gt;&quot;&gt;&lt;%author%&gt;&lt;/a&gt;&lt;%endif%&gt;
+        <br>&lt;%endif%&gt;
+      </li>
+      <li><strong>commentclosed </strong> : コメントが締め切られているか調べます。<br>
+        &lt;%if(commentclosed)%&gt;<br>
+        閉鎖中<br>
+        &lt;%else%&gt;<br>
+        ようこそ！<br>
+        &lt;%endif%&gt;<br>
+      </li>
+      <li><strong>hascomment</strong> :  コメントがあるか調べます。<br>
+        &lt;%if(hascomment)%&gt;<br>
+          コメントあり<br>
+        &lt;%else%&gt;<br>
+          コメントなし<br>
+        &lt;%endif%&gt;<br>
+      </li>
+
 </ul>
 </li>
 </ul>
