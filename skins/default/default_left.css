@@ -9,7 +9,8 @@
 -------------------------------------------------*/
 body
 {
-	background: #505050 url(images/bg.gif);
+    background: #FFFFE1;
+	/*background: #505050 url(images/bg.gif);*/
 	color: #494949;
 	font-family: "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Trebuchet, Arial, sans-serif;
 	font-size: medium;
@@ -31,21 +32,18 @@ h1,h2,h3,h4,h5,h6
 	font-family: "Georgia", "Lucida Grande", "Lucida Sans Unicode", "Trebuchet MS", Trebuchet, Arial, sans-serif;
 	font-weight: normal;
 	margin: 0;
+    word-break: break-all;
 }
 
 /* Lists */
-ul
+/*ul
 {
-	list-style: none;
-	padding: 0;
-	margin: 0;
 }
 li
 {
-	background: url(images/arrow.gif) left 5px no-repeat;
-	padding: 0 0 0 10px;
-	margin: 0 20px;
-}
+}*/
+
+
 
 /* Links */
 a:link, a:visited
@@ -97,7 +95,8 @@ a:hover, a:active
 {
 	position: relative;
 	width: 704px;
-	height: 168px;
+	height: 100px;
+	/*height: 168px;*/
 	/* large header image is defined below */
 	/* background: white url(images/header.jpg) no-repeat; */
 	background: white;
@@ -108,15 +107,25 @@ a:hover, a:active
 }
 #header h1
 {
+    margin: 0 6px;
+	height: 90px;
+	line-height: 80px;
+
+    /* #FCC800 #F3A68C #CAB8D9 #C0DCC0  */
+    background: #CAB8D9 linear-gradient(top center, #fff 0%, #CAB8D9 100%);
+    background: #CAB8D9 -moz-linear-gradient(top center, #fff 0%, #CAB8D9 100%);
+    background: #CAB8D9 -webkit-gradient(linear, center top, center bottom, from(#fff), to(#CAB8D9));
+
 	/* small header image specific lines */
-	height: 168px;
+/*	height: 168px;
 	width: 692px;
-	background: white url(images/header_sm.jpg) repeat-x 0 6px;
 	margin: 0 6px;
+	line-height: 160px;
+    background: white url(images/header_sm.jpg) repeat-x 0 6px;*/
+
 	/* end small header image specific lines */
 	font-size: 38px;
 	text-align: center;
-	line-height: 160px;
 }
 
 /*-------------------------------------------------
@@ -166,6 +175,7 @@ a:hover, a:active
 	font-size: 18px;
 	padding: 0 0 6px 0;
 	margin: 0;
+    word-break: break-all;
 }
 .contentbody
 {
@@ -222,13 +232,13 @@ a:hover, a:active
 }
 .contentitem3
 {
-	display: inline;
+	display: inline-block;
 	background: url(images/dotv.gif) left repeat-y;
 	padding: 0 0 0 10px;
 }
 .contentitem4
 {
-	display: inline;
+	display: inline-block;
 	padding: 0 0 0 10px;
 	background: url(images/dotv.gif) left repeat-y;
 }
@@ -275,6 +285,7 @@ a:hover, a:active
 	float: left;
 	width: 204px;
 	padding: 2px 0 0 0;
+    word-break: break-all;
 }
 .sidebar
 {
@@ -290,8 +301,10 @@ a:hover, a:active
 }
 .sidebardl dt
 {
-	background: #E5E5E5 url(images/sidetitlebg.gif);
-	color: #3A3523;
+	background: #3399FF ;//url(images/sidetitlebg.gif);
+	color: #FFFFFF;
+	/*background: #E5E5E5 url(images/sidetitlebg.gif);*/
+	/*color: #3A3523;*/
 	font-size: 0.9em;
 	font-weight: bold;
 	font-family: "Georgia", "Lucida Grande", "Lucida Sans Unicode", Arial, "Trebuchet MS", sans-serif;
@@ -299,13 +312,15 @@ a:hover, a:active
 }
 .sidebardl dd
 {
-	background: #EEEEEE;
+    background: #D7E4F2;
+	/*background: #EEEEEE;*/
 	padding: 2px 10px;
 	margin: 1px 0 0 0;
 }
 .sidebardl dd:hover
 {
-	background: #E7E7E7;
+    background: #B9D1EA;
+	/*background: #E7E7E7;*/
 	padding: 2px 10px;
 	margin: 1px 0 0 0;
 }
@@ -320,8 +335,9 @@ a:hover, a:active
 -------------------------------------------------*/
 #footer
 {
+	/*background: #FCD21B;*/
+	background: #CAB8D9;
 	width: 704px;
-	background: #FCD21B;
 	text-align: center;
 	padding: 10px 0 10px 0;
 	border-width: 0px 2px 2px 2px;
@@ -490,4 +506,17 @@ a:hover, a:active
 .rightbox {
 	float: right;
 	border-left: 2px solid #ccc;
+}
+
+/* allow class */
+.allow ul {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+.allow ul {
+	background: url(images/arrow.gif) left 5px no-repeat;
+	padding: 0 0 0 10px;
+	margin: 0 20px;
+    line-height: 2em;
 }
