@@ -5662,22 +5662,57 @@ selector();
             echo "<table>\n";
             echo "\t<tr>";
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
-            echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'ItemURL']</td>\n";
-            echo "\t\t" . '<td>' . $CONF['ItemURL'] . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
-            $ohs = $CONF['alertOnHeadersSent'] ?
-                        _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                        _ADMIN_SYSTEMOVERVIEW_DISABLE;
-            echo "\t\t" . '<td>' . $ohs . "</td>\n";
             echo "\t</tr>\n";
+
+            $items = array(); // name , value[, style sheet]
+            $items[] = array("\$CONF['Self']", $CONF['Self']);
+            $items[] = array("\$CONF['ItemURL']", $CONF['ItemURL']);
+            $items[] = array("\$CONF['alertOnHeadersSent']", ( $CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE ));
+            $items[] = array("\$CONF['debug']", ( $CONF['debug'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE ),
+                                                ( $CONF['debug'] ? 'color:red' : '' ));
+
+            foreach($items as $item)
+            {
+                echo "\t<tr>\n";
+                echo "\t\t" . '<td width="50%">'. $item[0] . "</td>\n";
+                $style = (isset($item[2]) && strlen($item[2])>0 ) ? " style='${item[2]}'" : '';
+                echo "\t\t" . "<td${style}>" . hsc($item[1]) . "</td>\n";
+                echo "\t</tr>\n";
+            }
+//            echo "</table>\n";
+
+            // Other settings of the installation
+            ksort($CONF);
+            $items = array('Self', 'ItemURL', 'alertOnHeadersSent', 'debug',
+                           'AdminEmail');
+            $items_warn_false = array('alertOnSecurityRisk');
+            $items_warn_true  = array();
+//            echo "<table>\n";
+//            echo "\t<tr>";
+//            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORESETTINGS_OTHER . "</th>\n";
+//            echo "\t</tr>\n";
+            foreach($CONF as $k=>$v)
+            if (!in_array( $k , $items ))
+            {
+                $style = '';
+                if (( in_array($k, $items_warn_true) && $v )
+                    ||
+                    ( in_array($k, $items_warn_false) && !$v )
+                    )
+                {
+                    $style = " style='color:red'";
+                }
+                echo "\t<tr>\n";
+                echo "\t\t" . '<td width="50%">'. $k . "</td>\n";
+                echo "\t\t" . "<td${style}>" . hsc($v) . "</td>\n";
+                echo "\t</tr>\n";
+            }
             echo "</table>\n";
 
-            // Link to the online version test at the Nucleus CMS website
+            // Mysql Emulate Functions
+            echo $this->getMysqlEmulateInfo();
+
+            // Link to the online version test at the core system official website
             echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
             if ($nucleus['codename'] != '') {
                 $codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
@@ -5696,6 +5731,46 @@ selector();
         }
 
         $this->pagefoot();
+    }
+
+    private function getMysqlEmulateInfo() {
+        if (!defined('_EXT_MYSQL_EMULATE') || (!_EXT_MYSQL_EMULATE))
+            return '';
+
+        $r = array('','','');
+        $lists = array(
+            'connect', 'pconnect', 'close', 'select_db', 'query',
+            'unbuffered_query', 'db_query', 'list_dbs', 'list_tables', 'list_fields',
+            'list_processes', 'error', 'errno', 'affected_rows', 'insert_id',
+            'result', 'num_rows', 'num_fields', 'fetch_row', 'fetch_array',
+            'fetch_assoc', 'fetch_object', 'data_seek', 'fetch_lengths', 'fetch_field',
+            'field_seek', 'free_result', 'field_name', 'field_table', 'field_len',
+            'field_type', 'field_flags', 'escape_string', 'real_escape_string', 'stat',
+            'thread_id', 'client_encoding', 'ping', 'get_client_info', 'get_host_info',
+            'get_proto_info', 'get_server_info', 'info', 'set_charset', 'fieldname',
+            'fieldtable', 'fieldlen', 'fieldtype', 'fieldflags', 'selectdb',
+            'freeresult', 'numfields', 'numrows', 'listdbs', 'listtables',
+            'listfields', 'db_name', 'dbname', 'tablename', 'table_name'
+            );
+
+        foreach ($lists as $i) {
+            $m = 'mysql_' . $i;
+            $s = 'sql_'   . $i;
+            if (function_exists($m))
+                $r[0] .= $m ." , ";
+            else
+            {
+                if (!function_exists($s))
+                    $r[1] .= $m ." , ";
+                else
+                    $r[1] .= "<b>$m</b> , ";
+            }
+        }
+
+        $tpl = "<table><tr><td>defined</td><td>%s</td></tr>" .
+               "<tr><td>undefined</td><td>%s</td></tr></table>";
+        return
+         "<h3>Emulated Mysql Functions (wrapper functions)</h3>\n" .sprintf($tpl, $r[0], $r[1]);
     }
 
     /**
