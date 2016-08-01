@@ -18,6 +18,10 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
+
 	// mt.supportedMethods
 	$f_mt_supportedMethods_sig = array(array(
 			// return type

@@ -377,6 +377,10 @@ class Backup
                 $sql_query = fread(fopen($backup_file_tmpname, 'r'), $fsize);
         }
     
+        // remove utf-8 bom
+        if (substr($sql_query, 0, 3) == "\xEF\xBB\xBF")
+            $sql_query = (strlen($sql_query)>3 ? substr($sql_query, 3) : '');
+
         // time to execute the query
         $this->_execute_queries($sql_query);
     }

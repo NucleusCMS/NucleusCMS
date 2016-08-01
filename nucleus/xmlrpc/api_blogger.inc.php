@@ -15,6 +15,9 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+// prevent direct access
+if (!isset($member))
+  exit;
 
 	// blogger.newPost
 	$f_blogger_newPost_sig = array(array(

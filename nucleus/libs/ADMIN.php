@@ -2223,7 +2223,7 @@ class ADMIN {
         // get activation info
         $info = MEMBER::getActivationInfo($key);
 
-        if (!$info || ($info->type == 'addresschange'))
+        if (!$info || ($info->vtype == 'addresschange'))
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 
         $mem = MEMBER::createFromId($info->vmember);
@@ -3502,10 +3502,11 @@ selector();
     function action_addnewlog2() {
         global $member, $manager;
 
+        $blogid = intRequestVar('blogid');
+
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $burl   = requestVar('url');
-        $blogid = intRequestVar('blogid');
 
         $blog =& $manager->getBlog($blogid);
         $blog->setURL(trim($burl));
@@ -5254,7 +5255,7 @@ selector();
     /**
      * @todo document this
      */
-    function updateConfig($name, $val) {
+    static function updateConfig($name, $val) {
         $name = sql_real_escape_string($name);
         $val = trim(sql_real_escape_string($val));
 
@@ -6646,4 +6647,35 @@ selector();
             echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
     }
 
+    function checkSecurityRisk() {
+        global $CONF;
+
+        if ($CONF['alertOnSecurityRisk'] == 1)
+        {
+            // check if files exist and generate an error if so
+            $aFiles = array(
+                '../install.sql' => _ERRORS_INSTALLSQL,
+                '../install.php' => _ERRORS_INSTALLPHP,
+                '../install' => _ERRORS_INSTALLDIR,
+                'upgrades'   => _ERRORS_UPGRADESDIR,
+                'convert'    => _ERRORS_CONVERTDIR
+            );
+            $aFound = array();
+            foreach($aFiles as $fileName => $fileDesc)
+            {
+                if (@file_exists($fileName))
+                    array_push($aFound, $fileDesc);
+            }
+            if (@is_writable('../config.php')) {
+                array_push($aFound, _ERRORS_CONFIGPHP);
+            }
+            if (count($aFound) > 0)
+            {
+                startUpError(
+                    _ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
+                    _ERRORS_STARTUPERROR3
+                );
+            }
+        }
+    }
 } // class ADMIN
