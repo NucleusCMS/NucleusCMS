@@ -5639,19 +5639,51 @@ selector();
             echo "<table>\n";
             echo "\t<tr>";
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'Self']</td>\n";
-            echo "\t\t" . '<td>' . $CONF['Self'] . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'ItemURL']</td>\n";
-            echo "\t\t" . '<td>' . $CONF['ItemURL'] . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . '$CONF[' . "'alertOnHeadersSent']</td>\n";
-            $ohs = $CONF['alertOnHeadersSent'] ?
-                        _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                        _ADMIN_SYSTEMOVERVIEW_DISABLE;
-            echo "\t\t" . '<td>' . $ohs . "</td>\n";
             echo "\t</tr>\n";
+
+            $items = array(); // name , value[, style sheet]
+            $items[] = array("\$CONF['Self']", $CONF['Self']);
+            $items[] = array("\$CONF['ItemURL']", $CONF['ItemURL']);
+            $items[] = array("\$CONF['alertOnHeadersSent']", ( $CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE ));
+            $items[] = array("\$CONF['debug']", ( $CONF['debug'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE ),
+                                                ( $CONF['debug'] ? 'color:red' : '' ));
+
+            foreach($items as $item)
+            {
+                echo "\t<tr>\n";
+                echo "\t\t" . '<td width="50%">'. $item[0] . "</td>\n";
+                $style = (isset($item[2]) && strlen($item[2])>0 ) ? " style='${item[2]}'" : '';
+                echo "\t\t" . "<td${style}>" . hsc($item[1]) . "</td>\n";
+                echo "\t</tr>\n";
+            }
+//            echo "</table>\n";
+
+            // Other settings of the installation
+            ksort($CONF);
+            $items = array('Self', 'ItemURL', 'alertOnHeadersSent', 'debug',
+                           'AdminEmail');
+            $items_warn_false = array('alertOnSecurityRisk');
+            $items_warn_true  = array();
+//            echo "<table>\n";
+//            echo "\t<tr>";
+//            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORESETTINGS_OTHER . "</th>\n";
+//            echo "\t</tr>\n";
+            foreach($CONF as $k=>$v)
+            if (!in_array( $k , $items ))
+            {
+                $style = '';
+                if (( in_array($k, $items_warn_true) && $v )
+                    ||
+                    ( in_array($k, $items_warn_false) && !$v )
+                    )
+                {
+                    $style = " style='color:red'";
+                }
+                echo "\t<tr>\n";
+                echo "\t\t" . '<td width="50%">'. $k . "</td>\n";
+                echo "\t\t" . "<td${style}>" . hsc($v) . "</td>\n";
+                echo "\t</tr>\n";
+            }
             echo "</table>\n";
 
             // Mysql Emulate Functions
