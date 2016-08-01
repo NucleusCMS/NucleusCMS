@@ -17,14 +17,14 @@
 class KARMA {
 
     // id of item about which this object contains information
-    var $itemid;
+    public $itemid;
 
     // indicates if the karma vote info has already been intialized from the DB
-    var $inforead;
+    public $inforead;
 
     // amount of positive/negative votes
-    var $karmapos;
-    var $karmaneg;
+    public $karmapos;
+    public $karmaneg;
 
     function __construct($itemid, $initpos = 0, $initneg = 0, $initread = 0) {
         // itemid
@@ -100,9 +100,9 @@ class KARMA {
 
     // checks if a vote is still allowed for an IP
     function isVoteAllowed($ip) {
-        $query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".sql_real_escape_string($ip)."'";
-        $res = sql_query($query);
-        return (sql_num_rows($res) == 0);
+        $sql = 'SELECT count(*) AS result FROM ' . sql_table('karma')
+             . sprintf(" WHERE itemid=%d AND ip='%s' LIMIT 1", $this->itemid, sql_real_escape_string($ip));
+        return ( intval(quickQuery($sql)) == 0 );
     }
 
     // save IP in database so no multiple votes are possible

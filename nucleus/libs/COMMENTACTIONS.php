@@ -19,13 +19,13 @@ class COMMENTACTIONS extends BaseActions {
 
     // ref to COMMENTS object which is using this object to handle
     // its templatevars
-    var $commentsObj;
+    public $commentsObj;
 
     // template to use to parse the comments
-    var $template;
+    public $template;
 
     // comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
-    var $currentComment;
+    public $currentComment;
 
     function __construct(&$comments) {
         // call constructor of superclass first
@@ -79,10 +79,12 @@ class COMMENTACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
+		unset($this->parser);
         $this->parser =& $parser;
     }
 
     function setCommentsObj(&$commentsObj) {
+		unset($this->commentsObj);
         $this->commentsObj =& $commentsObj;
     }
 
@@ -97,7 +99,7 @@ class COMMENTACTIONS extends BaseActions {
         // begin if: member comment
         if ($comment['memberid'] != 0)
         {
-            $comment['authtext'] = $template['COMMENTS_AUTH'];
+            $comment['authtext'] = @$this->template['COMMENTS_AUTH'];
 
             $mem =& $manager->getMember($comment['memberid']);
             $comment['user'] = $mem->getDisplayName();
@@ -284,10 +286,10 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar itemtitle
      */
     function parse_itemtitle($maxLength = 0) {
-        if ($maxLength == 0)
-            $this->commentsObj->itemActions->parse_title();
+        if (!is_numeric($maxLength) || intval($maxLength) == 0)
+            echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         else
-            $this->commentsObj->itemActions->parse_syndicate_title($maxLength);
+            $this->commentsObj->itemActions->parse_syndicate_title(intval($maxLength));
     }
 
     /**
@@ -312,7 +314,7 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar time
      */
     function parse_time($format = '') {
-        echo strftime(
+        echo Utils::strftime(
                 ($format == '') ? $this->template['FORMAT_TIME'] : $format,
                 $this->currentComment['timestamp']
             );
@@ -366,7 +368,7 @@ class COMMENTACTIONS extends BaseActions {
         if ( $mode == 'realname' && $this->currentComment['memberid'] > 0 )
         {
             $member =& $manager->getMember($this->currentComment['memberid']);
-            echo $member->getRealName();
+            echo hsc($member->getRealName());
         }
         else
         {
@@ -384,14 +386,14 @@ class COMMENTACTIONS extends BaseActions {
             $member =& $manager->getMember($this->currentComment['memberid']);
 
             if ($member->email != '')
-                echo $member->email;
+                echo hsc($member->email);
         }
         else
         {
             if (isValidMailAddress($this->currentComment['email']))
-                echo $this->currentComment['email'];
+                echo hsc($this->currentComment['email']);
             elseif (isValidMailAddress($this->currentComment['userid']))
-                echo $this->currentComment['userid'];
+                echo hsc($this->currentComment['userid']);
 //            if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
 //                echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
         }
@@ -420,14 +422,17 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar userlinkraw
      */
     function parse_userlinkraw() {
-        echo $this->currentComment['userlinkraw'];
+        if ( isset($this->currentComment['userlinkraw']) )
+            echo $this->currentComment['userlinkraw'];
     }
 
     /**
      * Parse templatevar userwebsite
      */
     function parse_userwebsite() {
-        if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
+        if ( ! isset($this->currentComment['userlinkraw']) )
+            return ;
+        if ( strpos($this->currentComment['userlinkraw'], 'http://') !== false )
             echo $this->currentComment['userlinkraw'];
     }
 
@@ -435,10 +440,12 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar userwebsitelink
      */
     function parse_userwebsitelink() {
-        if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false)) {
-            echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
+        if ( isset($this->currentComment['userlinkraw'])
+          && ( strpos($this->currentComment['userlinkraw'], 'http://') !== false )
+           ) {
+            echo '<a href="'.hsc($this->currentComment['userlinkraw']).'" rel="nofollow">'.hsc($this->currentComment['user']).'</a>';
         } else {
-            echo $this->currentComment['user'];
+            echo hsc($this->currentComment['user']);
         }
     }
 
@@ -701,4 +708,3 @@ class COMMENTACTIONS extends BaseActions {
     }
 
 }
-?>

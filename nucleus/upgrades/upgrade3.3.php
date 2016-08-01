@@ -17,7 +17,7 @@
 function upgrade_do330() {
 
     if (upgrade_checkinstall(330))
-        return 'already installed';
+        return _UPG_TEXT_ALREADY_INSTALLED;
 
     if (!upgrade_checkIfColumnExists('comment','cemail')) {
         $query = "  ALTER TABLE `" . sql_table('comment') . "`
@@ -34,7 +34,7 @@ function upgrade_do330() {
     }
 
     // check cmail column to separate to URL and cemail
-    mysql_query(
+    sql_query(
         'UPDATE ' . sql_table('comment') . ' ' . 
         "SET cemail = cmail, cmail = '' " .
         "WHERE cmail LIKE '%@%'"
@@ -60,9 +60,9 @@ function upgrade_do330() {
 
     // check to see if user turn on Weblogs.com ping, if so, suggest to install the plugin
     $query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'"; 
-    $res = mysql_query($query);
-    if (mysql_num_rows($res) > 0) {
-        echo "<li>Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin. Also, NP_Ping is replacing NP_PingPong. If you have NP_PingPing installed, please also remove it.</li>";
+    $res = sql_query($query);
+    if (sql_num_rows($res) > 0) {
+        echo "<li>" . _UPG_TEXT_NOTE_PING01 . "</li>";
     }
 }
 

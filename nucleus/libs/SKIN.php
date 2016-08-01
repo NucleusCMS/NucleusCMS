@@ -21,15 +21,15 @@ require_once dirname(__FILE__) . '/ACTIONS.php';
 class SKIN {
 
     // after creating a SKIN object, evaluates to true when the skin exists
-    var $isValid;
+    public $isValid;
 
     // skin characteristics. Use the getXXX methods rather than accessing directly
-    var $id;
-    var $description;
-    var $contentType;
-    var $includeMode;        // either 'normal' or 'skindir'
-    var $includePrefix;
-    var $name;
+    public $id;
+    public $description;
+    public $contentType;
+    public $includeMode;        // either 'normal' or 'skindir'
+    public $includePrefix;
+    public $name;
 
     /**
      * Constructor for a new SKIN object
@@ -38,13 +38,13 @@ class SKIN {
      *             id of the skin
      */
     public function SKIN($id) { $this->__construct($id); }
-    function __construct($id) {
+    public function __construct($id) {
         $this->id = intval($id);
 
         // read skin name/description/content type
         $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
         $obj = sql_fetch_object($res);
-        $this->isValid = (sql_num_rows($res) > 0);
+        $this->isValid = is_object($obj);
         if (!$this->isValid)
             return;
 
@@ -157,15 +157,15 @@ class SKIN {
      * @param string $type
      */
     function parse($type) {
-        global $manager, $CONF;
+        global $manager, $CONF, $skinid;
         
         $param = array(
             'skin' => &$this,
             'type' =>  $type
         );
         $manager->notify('InitSkinParse', $param);
+        $skinid = $this->id;
 
-        
         // set output type
         sendContentType($this->getContentType(), 'skin', _CHARSET);
         
@@ -193,8 +193,8 @@ class SKIN {
             'contents'    => &$contents
         );
         $manager->notify('PreSkinParse', $param);
+        $skinid = $this->id;
 
-        
         // set IncludeMode properties of parser
         PARSER::setProperty('IncludeMode',$this->getIncludeMode());
         PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());
@@ -212,6 +212,7 @@ class SKIN {
         $manager->notify('PostSkinParse', $param);
 
 
+        $skinid = $this->id;
     }
 
     /**
@@ -220,13 +221,13 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
-        $query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
+        if(strpos($type, '/')!==false) return '';
+        $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         $res = sql_query($query);
 
-        if (sql_num_rows($res) == 0)
+        if (!$res || (empty($r = sql_fetch_array($res))))
             return '';
-        else
-            return sql_result($res, 0, 0);
+        return $r[0];
     }
 
     /**
@@ -242,9 +243,13 @@ class SKIN {
         sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
 
         // write new thingie
-        if ($content) {
+        if ( strlen($content) > 0 ) {
             sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
         }
+
+        global $resultCache, $manager;
+        $resultCache = array();
+        $manager->clearCachedInfo('sql_fetch_object');
     }
 
     /**
@@ -266,6 +271,10 @@ class SKIN {
                . " sdincpref='" . sql_real_escape_string($includePrefix) . "'"
                . " WHERE sdnumber=" . $this->getID();
         sql_query($query);
+
+        global $resultCache, $manager;
+        $resultCache = array();
+        $manager->clearCachedInfo('sql_fetch_object');
     }
 
     /**
@@ -289,7 +298,7 @@ class SKIN {
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
         $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
-            $skintypes[strtolower($row['stype'])] = ucfirst($row['stype']);
+            $skintypes[strtolower($row['stype'])] = $row['stype'];
         }
 
         return $skintypes;
@@ -465,5 +474,3 @@ class SKIN {
     }
 
 }
-
-?>

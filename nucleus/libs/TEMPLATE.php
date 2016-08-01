@@ -17,7 +17,7 @@
  */
 class TEMPLATE {
 
-    var $id;
+    public $id;
 
     public function TEMPLATE($templateid) { $this->__construct($templateid); }
     function __construct($templateid) {
@@ -120,6 +120,7 @@ class TEMPLATE {
         );
         $manager->notify('PreTemplateRead', $param);
 
+        $template = array();
         $query = 'SELECT tpartname, tcontent'
                . ' FROM '.sql_table('template_desc').', '.sql_table('template')
                . ' WHERE tdesc=tdnumber and tdname="' . sql_real_escape_string($name) . '"';
@@ -161,15 +162,19 @@ class TEMPLATE {
     // returns true if there is a template with the given shortname
     // (static)
     public static function exists($name) {
-        $r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.sql_real_escape_string($name).'"');
-        return (sql_num_rows($r) != 0);
+        $sql = 'select count(*) as result FROM '.sql_table('template_desc')
+              . sprintf(" WHERE tdname='%s' limit 1", sql_real_escape_string($name));
+        $res = quickQuery($sql);
+        return (intval($res) > 0);
     }
 
     // returns true if there is a template with the given ID
     // (static)
     public static function existsID($id) {
-        $r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
-        return (sql_num_rows($r) != 0);
+        $sql = 'select count(*) as result FROM '.sql_table('template_desc')
+              . sprintf(" WHERE tdnumber=%d limit 1", intval($id));
+        $res = quickQuery($sql);
+        return (intval($res) > 0);
     }
 
     // (static)

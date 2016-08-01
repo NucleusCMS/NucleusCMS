@@ -17,13 +17,9 @@
 function upgrade_do350() {
 
     if (upgrade_checkinstall(350))
-        return 'already installed';
+        return _UPG_TEXT_ALREADY_INSTALLED;
     
-    // Give user warning if they are running old version of PHP
-        if (phpversion() < '5') {
-                echo 'WARNING: You are running NucleusCMS on a older version of PHP that is no longer supported by NucleusCMS. Please upgrade to PHP5!';
-        }
-    
+    $prefix = sql_table('');
     // changing the member table to lengthen display name (mname)
     $query = "    ALTER TABLE `" . sql_table('member') . "`
                     MODIFY `mname` varchar(32) NOT NULL default '' ;";
@@ -48,6 +44,6 @@ function upgrade_do350() {
     $rs = sql_query($query);
     $row = sql_fetch_assoc($rs);
     if($row['count']==1)
-        echo '<p>Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin</p>';
+        echo '<p>' . _UPG_TEXT_V035_WARN_PING . '</p>';
 
 }

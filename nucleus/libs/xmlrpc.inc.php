@@ -804,32 +804,32 @@
 
     class xmlrpc_client
     {
-        var $path;
-        var $server;
-        var $port=0;
-        var $method='http';
-        var $errno;
-        var $errstr;
-        var $debug=0;
-        var $username='';
-        var $password='';
-        var $authtype=1;
-        var $cert='';
-        var $certpass='';
-        var $cacert='';
-        var $cacertdir='';
-        var $key='';
-        var $keypass='';
-        var $verifypeer=true;
-        var $verifyhost=1;
-        var $no_multicall=false;
-        var $proxy='';
-        var $proxyport=0;
-        var $proxy_user='';
-        var $proxy_pass='';
-        var $proxy_authtype=1;
-        var $cookies=array();
-        var $extracurlopts=array();
+        public $path;
+        public $server;
+        public $port=0;
+        public $method='http';
+        public $errno;
+        public $errstr;
+        public $debug=0;
+        public $username='';
+        public $password='';
+        public $authtype=1;
+        public $cert='';
+        public $certpass='';
+        public $cacert='';
+        public $cacertdir='';
+        public $key='';
+        public $keypass='';
+        public $verifypeer=true;
+        public $verifyhost=1;
+        public $no_multicall=false;
+        public $proxy='';
+        public $proxyport=0;
+        public $proxy_user='';
+        public $proxy_pass='';
+        public $proxy_authtype=1;
+        public $cookies=array();
+        public $extracurlopts=array();
 
         /**
         * List of http compression methods accepted by the client for responses.
@@ -840,32 +840,32 @@
         * it supports. You might check for the presence of 'zlib' in the output of
         * curl_version() to determine wheter compression is supported or not
         */
-        var $accepted_compression = array();
+        public $accepted_compression = array();
         /**
         * Name of compression scheme to be used for sending requests.
         * Either null, gzip or deflate
         */
-        var $request_compression = '';
+        public $request_compression = '';
         /**
         * CURL handle: used for keep-alive connections (PHP 4.3.8 up, see:
         * http://curl.haxx.se/docs/faq.html#7.3)
         */
-        var $xmlrpc_curl_handle = null;
+        public $xmlrpc_curl_handle = null;
         /// Whether to use persistent connections for http 1.1 and https
-        var $keepalive = false;
+        public $keepalive = false;
         /// Charset encodings that can be decoded without problems by the client
-        var $accepted_charset_encodings = array();
+        public $accepted_charset_encodings = array();
         /// Charset encoding to be used in serializing request. NULL = use ASCII
-        var $request_charset_encoding = '';
+        public $request_charset_encoding = '';
         /**
         * Decides the content of xmlrpcresp objects returned by calls to send()
         * valid strings are 'xmlrpcvals', 'phpvals' or 'xml'
         */
-        var $return_type = 'xmlrpcvals';
+        public $return_type = 'xmlrpcvals';
         /**
         * Sent to servers in http headers
         */
-        var $user_agent;
+        public $user_agent;
 
         /**
         * @param string $path either the complete server URL or the PATH part of the xmlrc server URL, e.g. /xmlrpc/server.php
@@ -1952,15 +1952,15 @@
 
     class xmlrpcresp
     {
-        var $val = 0;
-        var $valtyp;
-        var $errno = 0;
-        var $errstr = '';
-        var $payload;
-        var $hdrs = array();
-        var $_cookies = array();
-        var $content_type = 'text/xml';
-        var $raw_data = '';
+        public $val = 0;
+        public $valtyp;
+        public $errno = 0;
+        public $errstr = '';
+        public $payload;
+        public $hdrs = array();
+        public $_cookies = array();
+        public $content_type = 'text/xml';
+        public $raw_data = '';
 
         /**
         * @param mixed $val either an xmlrpcval obj, a php value or the xml serialization of an xmlrpcval (a string)
@@ -2117,11 +2117,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 
     class xmlrpcmsg
     {
-        var $payload;
-        var $methodname;
-        var $params=array();
-        var $debug=0;
-        var $content_type = 'text/xml';
+        public $payload;
+        public $methodname;
+        public $params=array();
+        public $debug=0;
+        public $content_type = 'text/xml';
 
         /**
         * @param string $meth the name of the method to invoke
@@ -2751,9 +2751,9 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
 
     class xmlrpcval
     {
-        var $me=array();
-        var $mytype=0;
-        var $_php_class=null;
+        public $me=array();
+        public $mytype=0;
+        public $_php_class=null;
 
         /**
         * @param mixed $val

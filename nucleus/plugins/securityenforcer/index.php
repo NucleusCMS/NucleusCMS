@@ -11,6 +11,12 @@ Admin area for NP_SecurityEnforcer
 	// (where config.php is)
 	$strRel = '../../../';
 
+	if ( !is_file($strRel . 'config.php')
+		 && is_file($strRel.'../config.php'))
+	{
+		$strRel .= '../';
+	}
+
 	include($strRel . 'config.php');
 	if (!$member->isAdmin())
 		doError('Insufficient Permissions.');
@@ -33,13 +39,12 @@ Admin area for NP_SecurityEnforcer
 	// add styles to the <HEAD>
 	$oPluginAdmin->start('');
 	
-	// if form to unlock is posted
 	$message = '';
+	// if form to unlock is posted
 	if(postVar('action') == 'unlock') {
 		if (!$manager->checkTicket()) 
 			doError('Invalid Ticket');
 		$logins = postVar('unlock');
-		$message = '';
 		if(is_array($logins)) {
 			foreach ($logins as $entity) {
 				SE_unlockLogin($entity);
@@ -65,15 +70,16 @@ Admin area for NP_SecurityEnforcer
 	echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
 	// do query to get all entries, loop
 	$result = sql_query("SELECT * FROM ".sql_table("plug_securityenforcer")." WHERE fails >= ".$plug->max_failed_login);
-	if(sql_num_rows($result)) {
-		while($row = sql_fetch_assoc($result)) {
+	$nums = 0;
+    if ($result)
+	while($row = sql_fetch_assoc($result)) {
+			$nums++;
 			echo '<tr>';
-  				echo '<td>'.htmlspecialchars($row['login'],ENT_QUOTES,_CHARSET).'</td>';
-  				echo '<td><input type="checkbox" name="unlock[]" value="'.htmlspecialchars($row['login'],ENT_QUOTES,_CHARSET).'" />'._SECURITYENFORCER_UNLOCK.'</td>';
+  				echo '<td>'.hsc($row['login']).'</td>';
+  				echo '<td><input type="checkbox" name="unlock[]" value="'.hsc($row['login'],ENT_QUOTES).'" />'._SECURITYENFORCER_UNLOCK.'</td>';
 			echo '</tr>';
-		}
 	}
-	else {
+	if ($nums == 0) {
 		echo '<tr><td colspan="2"><strong>'._SECURITYENFORCER_ADMIN_NONE_LOCKED.'</strong></td></tr>';
 	}
 	echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
@@ -82,4 +88,3 @@ Admin area for NP_SecurityEnforcer
 	
 	$oPluginAdmin->end();
 
-?>

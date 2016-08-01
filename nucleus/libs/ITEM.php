@@ -17,7 +17,7 @@
  */
 class ITEM {
 
-    var $itemid;
+    public $itemid;
 
     /**
       * Constructor of an ITEM object
@@ -63,9 +63,8 @@ class ITEM {
 
         $res = sql_query($query);
 
-        if (sql_num_rows($res) == 1)
+        if ($res && ($aItemInfo = sql_fetch_assoc($res)))
         {
-            $aItemInfo = sql_fetch_assoc($res);
             $aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
             return $aItemInfo;
         } else {
@@ -205,8 +204,7 @@ class ITEM {
         $old_blogid = getBlogIDFromItemID($itemid);
 
         // move will be done on end of method
-        if ($new_blogid != $old_blogid)
-            $moveNeeded = 1;
+        $moveNeeded = (($new_blogid != $old_blogid) ? 1 : 0);
 
         // add <br /> before newlines
         $blog =& $manager->getBlog($new_blogid);
@@ -387,19 +385,19 @@ class ITEM {
 
         $id = intval($id);
 
-        $r = 'select * FROM '.sql_table('item').' WHERE inumber='.$id;
+        $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE inumber='.$id;
         if (!$future) {
             $bid = getBlogIDFromItemID($id);
             if (!$bid) return 0;
             $b =& $manager->getBlog($bid);
-            $r .= ' and itime<='.mysqldate($b->getCorrectTime());
+            $sql .= ' AND itime<='.mysqldate($b->getCorrectTime());
         }
         if (!$draft) {
-            $r .= ' and idraft=0';
+            $sql .= ' AND idraft=0';
         }
-        $r = sql_query($r);
+        $sql .= ' LIMIT 1';
 
-        return (sql_num_rows($r) != 0);
+        return (intval(quickQuery($sql)) > 0);
     }
 
     /**
@@ -420,6 +418,20 @@ class ITEM {
         $i_body = postVar('body');
         $i_title = postVar('title');
         $i_more = postVar('more');
+
+        if((strtoupper(_CHARSET) != 'UTF-8')
+           && ( ($mb = function_exists('mb_convert_encoding')) || function_exists('iconv') )
+          ) {
+            if ($mb) {
+                $i_body  = mb_convert_encoding($i_body,  _CHARSET, "UTF-8");
+                $i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
+                $i_more  = mb_convert_encoding($i_more,  _CHARSET, "UTF-8");
+            } else {
+                $i_body  = iconv("UTF-8", _CHARSET, $i_body);
+                $i_title = iconv("UTF-8", _CHARSET, $i_title);
+                $i_more  = iconv("UTF-8", _CHARSET, $i_more);
+            }
+        }
         //$i_actiontype = postVar('actiontype');
         $i_closed = intPostVar('closed');
         //$i_hour = intPostVar('hour');

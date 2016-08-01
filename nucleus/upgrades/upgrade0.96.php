@@ -74,7 +74,7 @@ function upgrade_do96() {
     
     $query = 'SELECT sdnumber FROM '.sql_table('skin_desc')." WHERE sdname='default'";
     $res = sql_query($query);
-    $obj = mysql_fetch_object($res);
+    $obj = sql_fetch_object($res);
     $skinid = $obj->sdnumber;
     $query = 'INSERT INTO '.sql_table('skin')." VALUES (" . $skinid . ", 'imagepopup', '<html xmlns=\"http://www.w3.org/1999/xhtml\">\r\n<head>\r\n  <title><%imagetext%></title>\r\n  <style type=\"text/css\">\r\n   img { border: none; }\r\n  </style>\r\n</head>\r\n<body>\r\n  <a href=\"javascript:window.close();\"><%image%></a>\r\n</body>\r\n</html>');";
     upgrade_query("Adding 'imagepopup' skinparts",$query);
@@ -82,7 +82,7 @@ function upgrade_do96() {
     // 7. add POPUP_CODE, MEDIA_CODE, IMAGE_CODE to ALL templates
     $query = 'SELECT tdnumber FROM '.sql_table('template_desc');
     $res = sql_query($query);    // get all template ids
-    while ($obj = mysql_fetch_object($res)) {
+    while ($obj = sql_fetch_object($res)) {
         $tid = $obj->tdnumber;     // template id
     
         $query = 'INSERT INTO '.sql_table('template')." VALUES ($tid, 'POPUP_CODE', '<%popuplink%>');";
