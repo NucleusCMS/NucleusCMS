@@ -21,15 +21,15 @@ require_once dirname(__FILE__) . '/ACTIONS.php';
 class SKIN {
 
     // after creating a SKIN object, evaluates to true when the skin exists
-    var $isValid;
+    public $isValid;
 
     // skin characteristics. Use the getXXX methods rather than accessing directly
-    var $id;
-    var $description;
-    var $contentType;
-    var $includeMode;        // either 'normal' or 'skindir'
-    var $includePrefix;
-    var $name;
+    public $id;
+    public $description;
+    public $contentType;
+    public $includeMode;        // either 'normal' or 'skindir'
+    public $includePrefix;
+    public $name;
 
     /**
      * Constructor for a new SKIN object

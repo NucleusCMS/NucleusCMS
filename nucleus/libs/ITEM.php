@@ -17,7 +17,7 @@
  */
 class ITEM {
 
-    var $itemid;
+    public $itemid;
 
     /**
       * Constructor of an ITEM object

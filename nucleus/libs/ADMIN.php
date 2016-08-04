@@ -27,7 +27,7 @@ class ADMIN {
     /**
      * @var string $action action currently being executed ($action=xxxx -> action_xxxx method)
      */
-    var $action;
+    public $action;
 
     /**
      * Class constructor

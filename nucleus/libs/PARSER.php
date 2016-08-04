@@ -24,19 +24,19 @@ require_once dirname(__FILE__) . '/BaseActions.php';
 class PARSER {
 
     // array with the names of all allowed actions
-    var $actions;
+    public $actions;
 
     // reference to actions handler
-    var $handler;
+    public $handler;
 
     // delimiters that can be used for skin/templatevars
-    var $delim;
+    public $delim;
 
     // parameter delimiter (to separate skinvar params)
-    var $pdelim;
+    public $pdelim;
 
     // usually set to 0. When set to 1, all skinvars are allowed regardless of $actions
-    var $norestrictions;
+    public $norestrictions;
 
     /**
      * Creates a new parser object with the given allowed actions

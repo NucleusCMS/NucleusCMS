@@ -276,10 +276,10 @@ class NucleusPlugin {
 
     // internal functions of the class starts here
 
-    var $_aOptionValues;    // oid_contextid => value
-    var $_aOptionToInfo;    // context_name => array('oid' => ..., 'default' => ...)
-    var $plugin_options;    // see getOption()
-    var $plugid;            // plugin id
+    public $_aOptionValues;    // oid_contextid => value
+    public $_aOptionToInfo;    // context_name => array('oid' => ..., 'default' => ...)
+    public $plugin_options;    // see getOption()
+    public $plugid;            // plugin id
 
 
     /**

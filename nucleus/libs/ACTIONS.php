@@ -20,22 +20,22 @@ class ACTIONS extends BaseActions {
 
     // part of the skin currently being parsed ('index', 'item', 'archive',
     // 'archivelist', 'member', 'search', 'error', 'imagepopup')
-    var $skintype;
+    public $skintype;
 
     // contains an assoc array with parameters that need to be included when
     // generating links to items/archives/... (e.g. catid)
-    var $linkparams;
+    public $linkparams;
 
     // reference to the skin object for which a part is being parsed
-    var $skin;
+    public $skin;
 
     // used when including templated forms from the include/ dir. The $formdata var
     // contains the values to fill out in there (assoc array name -> value)
-    var $formdata;
+    public $formdata;
 
     // filled out with the number of displayed items after calling one of the
     // (other)blog/(other)searchresults skinvars.
-    var $amountfound;
+    public $amountfound;
 
     /**
      * Constructor for a new ACTIONS object
