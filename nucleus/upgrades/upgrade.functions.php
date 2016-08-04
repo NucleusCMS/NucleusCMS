@@ -36,6 +36,9 @@
 
     function upgrade_checkinstall($version) {
         $installed = 0;
+        global $DB_DRIVER_NAME;
+
+        if ($DB_DRIVER_NAME == 'sqlite' && $version<=372)  return TRUE;
 
         switch($version) {
             case '95':

@@ -520,11 +520,11 @@ class ACTIONS extends BaseActions {
             // implode
             $format=implode(',',$args);
         } elseif ($d == 0 && $m !=0) {
-            $format = '%B %Y';
+            $format = (!defined('_DEFAULT_DATE_FORMAT_YB') ? '%B %Y' : _DEFAULT_DATE_FORMAT_YB);
         } elseif ($m == 0) {
-            $format = '%Y';
+            $format = (!defined('_DEFAULT_DATE_FORMAT_Y') ? '%Y' : _DEFAULT_DATE_FORMAT_Y);
         } else {
-            $format = '%d %B %Y';
+            $format = (!defined('_DEFAULT_DATE_FORMAT_YBD') ? '%d %B %Y' : _DEFAULT_DATE_FORMAT_YBD);
         }
 
         echo Utils::strftime($format, mktime(0,0,0,$m?$m:1,$d?$d:1,$y));

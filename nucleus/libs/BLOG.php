@@ -626,7 +626,7 @@ class BLOG {
         global $CONF, $catid, $manager;
 
         if (!isset ($linkparams)) {
-        $linkparams = array();
+            $linkparams = array();
         }
 
         if ($catid) {

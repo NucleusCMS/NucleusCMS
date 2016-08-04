@@ -210,7 +210,7 @@ if (!isset($CONF['Self']))
 if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
 
-/*    $CONF['ItemURL']        = $CONF['Self'];
+/*  $CONF['ItemURL']        = $CONF['Self'];
     $CONF['ArchiveURL']     = $CONF['Self'];
     $CONF['ArchiveListURL'] = $CONF['Self'];
     $CONF['MemberURL']      = $CONF['Self'];

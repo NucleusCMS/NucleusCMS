@@ -221,8 +221,12 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
+        global $DB_DRIVER_NAME;
         if(strpos($type, '/')!==false) return '';
-        $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
+        if (stripos('mysql' , $DB_DRIVER_NAME ) !== false)
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
+        else
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
         $res = sql_query($query);
 
         if (!$res || (empty($r = sql_fetch_array($res))))
@@ -246,7 +250,7 @@ class SKIN {
         // write new thingie
         if ( strlen($content) > 0 ) {
             $sql = 'INSERT INTO '.sql_table('skin') . "(scontent, stype, sdesc) VALUES";
-            if (!$SQL_DBH || !function_exists('sql_prepare_execute'))
+            if (!$SQL_DBH) // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
                 sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($skinid)) );
             else
                 sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($skinid)));

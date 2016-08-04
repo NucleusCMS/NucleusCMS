@@ -310,8 +310,7 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 <p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
 </body>
 </html>
-
-    <?php
+<?php
 }
 
 function bm_style() {
