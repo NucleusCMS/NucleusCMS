@@ -14,9 +14,22 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+
+/********************************************
+ *        Start New for                     *
+ ********************************************/
+
 /********************************************
  *        Start New for 3.72                *
  ********************************************/
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
+define('_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION', 'コア のデータベースバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    '重要な設定');
+
+define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージョン');
+
 // Blog option
 define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
 

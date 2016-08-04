@@ -1430,7 +1430,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_version() {
         global $nucleus;
-        echo 'Nucleus CMS ' . $nucleus['version'];
+        echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
     }
 
     /**

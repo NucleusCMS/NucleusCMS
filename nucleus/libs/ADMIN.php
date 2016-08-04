@@ -5637,23 +5637,21 @@ selector();
             echo "\t</tr>\n";
             echo "</table>\n";
 
-            // Information about the used Nucleus CMS
-            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
-            global $nucleus;
-            $nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
+            // Information about the used core system
+            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM . "</h3>\n";
             $np = getNucleusPatchLevel();
             echo "<table>\n";
             echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">Nucleus CMS' . "</th>\n";
+            echo "\t\t" . '<th colspan="2">' . hsc(CORE_APPLICATION_NAME) . "</th>\n";
             echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
-            echo "\t\t" . '<td>' . $nv . "</td>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_VERSION . "</td>\n";
+            echo "\t\t" . '<td>' . sprintf('%s (%d)', CORE_APPLICATION_VERSION, CORE_APPLICATION_VERSION_ID) . "</td>\n";
             echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL . "</td>\n";
             echo "\t\t" . '<td>' . $np . "</td>\n";
             echo "\t</tr>\n";
             echo "\t<tr>\n";
-            echo "\t\t" . '<td width="50%">' . 'Nucleus CMS database version' . "</td>\n";
+            echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION). "</td>\n";
             echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
             echo "\t</tr>\n";
             echo "</table>\n";
@@ -5661,7 +5659,7 @@ selector();
             // Important settings of the installation
             echo "<table>\n";
             echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS . "</th>\n";
+            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS . "</th>\n";
             echo "\t</tr>\n";
 
             $items = array(); // name , value[, style sheet]
@@ -5722,7 +5720,7 @@ selector();
             echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
             echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
-            echo 'Nucleus CMS ' . $nv . $codenamestring;
+            echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION) . hsc($codenamestring);
             echo '</a>';
         //echo '<br />';
         }
@@ -5884,22 +5882,22 @@ selector();
     
         $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
         
+        $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+            printf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
             $newestVersion = getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
 
-            if (intval($CONF['DatabaseVersion']) < NUCLEUS_DATABASE_VERSION_ID)
+            if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
             {
-                printf(')<br />(<a style="color:red" href="%s">Current Database is old(%d). Upgrade Nucleus Database</a>',
+                printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
                         $CONF['AdminURL'] . 'upgrades/' , $CONF['DatabaseVersion']);
             }
-
         } else {
-            echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+            echo $versionstring;
         }
         echo ')';
         echo '</div>';
@@ -5924,8 +5922,8 @@ selector();
             echo "\t\t" . "</ul>" . "\n";
         }
 
-        echo "\t\t". sprintf('<div class="foot"><a href="%s">Nucleus CMS</a> &copy; 2002-%s</div>',
-                            _ADMINPAGEFOOT_OFFICIALURL, date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT) . "\n";
+        echo "\t\t". sprintf('<div class="foot"><a href="%s">%s</a> &copy; 2002-%s</div>',
+                            _ADMINPAGEFOOT_OFFICIALURL, hsc(CORE_APPLICATION_NAME) , date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT) . "\n";
 
         ?>
             </div><!-- content -->

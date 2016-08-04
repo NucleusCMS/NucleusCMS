@@ -112,11 +112,11 @@ class Backup
             echo "# " . _BACKUP_BACKUPFILE_BACKUPDATE .  gmdate("d-m-Y H:i:s", time()) . " GMT\n";
         else
            echo "# backup-date: " .  gmdate("d-m-Y H:i:s", time()) . " GMT\n";
-        global $nucleus;
+
         if (defined('_BACKUP_BACKUPFILE_NUCLEUSVERSION'))
-            echo "# " . _BACKUP_BACKUPFILE_NUCLEUSVERSION . $nucleus['version'] . "\n";
+            echo "# " . _BACKUP_BACKUPFILE_NUCLEUSVERSION . CORE_APPLICATION_VERSION . "\n";
         else
-            echo "# Nucleus CMS version: " . $nucleus['version'] . "\n";
+            echo "# Nucleus CMS version: " . CORE_APPLICATION_VERSION . "\n";
         echo "#\n";
         if (defined('_BACKUP_WARNING_NUCLEUSVERSION'))
             echo "# " . _BACKUP_WARNING_NUCLEUSVERSION . "\n";
