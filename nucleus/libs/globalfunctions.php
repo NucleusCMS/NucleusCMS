@@ -128,20 +128,29 @@ if (!headers_sent() ) {
     header('Generator: Nucleus CMS ' . $nucleus['version']);
 }
 
-// include core classes that are needed for login & plugin handling
-if (!function_exists('mysql_query'))
-    include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
-else
-    define('_EXT_MYSQL_EMULATE' , 0);
+init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
-// added for 3.5 sql_* wrapper
-global $MYSQL_HANDLER;
-if (!isset($MYSQL_HANDLER))
-    $MYSQL_HANDLER = array('mysql','');
-if ($MYSQL_HANDLER[0] == '')
-    $MYSQL_HANDLER[0] = 'mysql';
-include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
-// end new for 3.5 sql_* wrapper
+global $DB_PHP_MODULE_NAME;
+if ($DB_PHP_MODULE_NAME != 'pdo')
+{
+    // deprecated method
+    // include core classes that are needed for login & plugin handling
+    if (!function_exists('mysql_query'))
+        include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+    else
+    {
+        if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
+            define('_EXT_MYSQL_EMULATE' , 0);
+    }
+}
+else
+{
+    // Todo: mysql wrapper for pdo? or deprecate mysql_* functions
+    if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
+        define('_EXT_MYSQL_EMULATE' , 0);
+}
+
+include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
 include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
@@ -2565,4 +2574,93 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
 
     ksort($items);
     return $items;
+}
+
+function init_nucleus_compatibility_mysql_handler()
+{
+    // added for 3.5 sql_* wrapper
+    global $MYSQL_HANDLER;
+    if (!isset($MYSQL_HANDLER))
+        $MYSQL_HANDLER = array('mysql','');
+    if ($MYSQL_HANDLER[0] == '')
+        $MYSQL_HANDLER[0] = 'mysql';
+    // end new for 3.5 sql_* wrapper
+
+    global $DB_PREFIX , $MYSQL_PREFIX;
+    if ( !isset($DB_PREFIX) && isset($MYSQL_PREFIX) )
+        $DB_PREFIX =& $MYSQL_PREFIX;
+
+    global $DB_HOST , $MYSQL_HOST;
+    if ( !isset($DB_HOST) && isset($MYSQL_HOST) )
+        $DB_HOST = @$MYSQL_HOST;
+
+    global $DB_USER , $MYSQL_USER;
+    if ( !isset($DB_USER) && isset($MYSQL_USER) )
+        $DB_USER = @$MYSQL_USER;
+
+    global $DB_PASSWORD , $MYSQL_PASSWORD;
+    if ( !isset($DB_PASSWORD) && isset($MYSQL_PASSWORD) )
+        $DB_PASSWORD = @$MYSQL_PASSWORD;
+
+    global $DB_DATABASE , $MYSQL_DATABASE;
+    if ( !isset($DB_DATABASE) && isset($MYSQL_DATABASE) )
+        $DB_DATABASE = @$MYSQL_DATABASE;
+
+    $MYSQL_HOST     = @$DB_HOST;
+    $MYSQL_USER     = @$DB_USER;
+    $MYSQL_PASSWORD = @$DB_PASSWORD;
+    $MYSQL_DATABASE = @$DB_DATABASE;
+
+    global $DB_PHP_MODULE_NAME;
+    if (!isset($DB_PHP_MODULE_NAME))
+    $DB_PHP_MODULE_NAME = 'pdo';
+    $DB_PHP_MODULE_NAME = strtolower($DB_PHP_MODULE_NAME);
+
+    global $MYSQL_HANDLER , $DB_DRIVER_NAME;
+    if (!isset($DB_DRIVER_NAME))
+    {
+//        if ($MYSQL_HANDLER[0] == 'mysql')
+//            trigger_error("Deprecated : use sql_ instead of mysql_ . ", E_USER_DEPRECATED);
+
+        if ( isset($MYSQL_HANDLER) )
+        {
+            if (
+                  ( is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER == 'mysql') )
+                  ||
+                  ( is_array($MYSQL_HANDLER) && (strtolower($MYSQL_HANDLER[0]) == 'mysql') )
+                )
+            {
+//                trigger_error("Critical Error : not allow mysql_ function. ", E_USER_ERROR);
+                $DB_PHP_MODULE_NAME = 'mysql';
+                $DB_DRIVER_NAME = 'mysql';
+            }
+
+            if ( !isset($DB_DRIVER_NAME) )
+            {
+                if ( is_array($MYSQL_HANDLER)
+                  && (strtolower($MYSQL_HANDLER[0])=='pdo')
+                  && isset($MYSQL_HANDLER[1])
+                )
+                    $DB_DRIVER_NAME = $MYSQL_HANDLER[1];
+                else
+                    $DB_DRIVER_NAME = 'mysql';
+            }
+        }
+    }
+    $DB_DRIVER_NAME = strtolower($DB_DRIVER_NAME);
+    // check invalid parameter
+    if ($DB_DRIVER_NAME == 'sqlite')
+    {
+        $DB_PHP_MODULE_NAME = 'pdo';
+//        echo "Error::config , Not implemented yet. Invalid db driver name.";
+//        exit;
+    }
+    if (!in_array($DB_PHP_MODULE_NAME, array('pdo', 'mysql')))
+        $DB_PHP_MODULE_NAME = 'pdo';
+    if (!in_array($DB_DRIVER_NAME, array('mysql', 'sqlite')))
+    {
+//        $DB_DRIVER_NAME = 'mysql';
+        echo "Error::config Invalid db driver name.";
+        exit;
+    }
 }
