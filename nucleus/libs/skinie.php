@@ -67,9 +67,6 @@ class SKINIMPORT {
         if ($this->parser)
             xml_parser_free($this->parser);
 
-        // XML file pointer
-        $this->fp = 0;
-
         // which data has been read?
         $this->metaDataRead = 0;
         $this->allRead = 0;
@@ -120,19 +117,12 @@ class SKINIMPORT {
         }
 
         // open file
-        $this->fp = @fopen($filename, 'r');
-        if (!$this->fp) {
+        $tempbuffer = @file_get_contents($filename);
+        if ($tempbuffer === FALSE) {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
         // here we go!
         $this->inXml = 1;
-
-        $tempbuffer = null;
-
-        while (!feof($this->fp)) {
-            $tempbuffer .= fread($this->fp, 4096);
-        }
-        fclose($this->fp);
 
 /*
     [2004-08-04] dekarma - Took this out since it messes up good XML if it has skins/templates
@@ -820,4 +810,3 @@ class SKINEXPORT {
     }
 }
 
-?>

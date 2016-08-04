@@ -96,7 +96,6 @@ class ACTIONS extends BaseActions {
      */
     function checkCondition($field, $name='', $value = '') {
         global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
-//        global $mobiledetect;
 
         $condition = 0;
         switch($field) {

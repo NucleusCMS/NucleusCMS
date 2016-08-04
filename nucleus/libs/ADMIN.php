@@ -2233,7 +2233,7 @@ class ADMIN {
             $this->error(_ERROR_REALNAMEMISSING);
 
         if (($deflang != '') && (!checkLanguage($deflang)))
-            $this->error(_ERROR_NOSUCHLANGUAGE);
+            $this->error(_ERROR_NOSUCHLANGUAGE . sprintf(' : <b>%s</b>' , hsc($deflang)) );
 
         // check if there will remain at least one site member with both the logon and admin rights
         // (check occurs when taking away one of these rights from such a member)
@@ -4650,16 +4650,16 @@ selector();
         <div>
 
         <input name="action" value="skinnew" type="hidden" />
-        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden(); ?>
         <table><tr>
-            <td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
+            <td><?php echo _SKIN_NAME; ?> <?php help('shortnames');?></td>
             <td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
         </tr><tr>
-            <td><?php echo _SKIN_DESC?></td>
+            <td><?php echo _SKIN_DESC; ?></td>
             <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
         </tr><tr>
-            <td><?php echo _SKIN_CREATE?></td>
-            <td><input type="submit" tabindex="10030" value="<?php echo _SKIN_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+            <td><?php echo _SKIN_CREATE; ?></td>
+            <td><input type="submit" tabindex="10030" value="<?php echo _SKIN_CREATE_BTN; ?>" onclick="return checkSubmit();" /></td>
         </tr></table>
 
         </div>

@@ -737,8 +737,8 @@ class MEMBER {
         $query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key). '\'';
         $res = sql_query($query);
 
-        if ($res && ($o = sql_fetch_object($res)))
-            return $o;
+        if ($res && ($obj = sql_fetch_object($res)))
+            return $obj;
         return 0;
     }
 

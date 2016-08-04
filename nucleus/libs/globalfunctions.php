@@ -15,6 +15,9 @@
  * @copyright Copyright (C) The Nucleus Group
 
  */
+if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+global $StartTime;
+$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
@@ -24,9 +27,6 @@ include_once($DIR_LIBS. 'version.php');
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
-if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
-global $StartTime;
-$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
@@ -191,12 +191,11 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
-if (!isset($CONF['Self'])) {
-    $CONF['Self'] = $CONF['IndexURL'];
-    // strip trailing /
-    if ($CONF['Self'][strlen($CONF['Self']) -1] == "/") {
-        $CONF['Self'] = substr($CONF['Self'], 0, strlen($CONF['Self']) -1);
-    }
+if (!isset($CONF['Self']))
+    $CONF['Self'] = rtrim($CONF['IndexURL'], '/'); // strip trailing
+
+if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
+    $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
 
 /*    $CONF['ItemURL']        = $CONF['Self'];
     $CONF['ArchiveURL']     = $CONF['Self'];
@@ -204,8 +203,8 @@ if (!isset($CONF['Self'])) {
     $CONF['MemberURL']      = $CONF['Self'];
     $CONF['SearchURL']      = $CONF['Self'];
     $CONF['BlogURL']        = $CONF['Self'];
-    $CONF['CategoryURL']    = $CONF['Self'];*/
-}
+    $CONF['CategoryURL']    = $CONF['Self'];
+*/
 
 $CONF['ItemURL'] = $CONF['Self'];
 $CONF['ArchiveURL'] = $CONF['Self'];
@@ -984,10 +983,12 @@ function selector() {
         global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 
         // sql queries for the timestamp of the first and the last published item
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC LIMIT 1";
-        $first_timestamp=quickQuery ($query);
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC LIMIT 1";
-        $last_timestamp=quickQuery ($query);
+        $blogid_tmp = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
+        $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s "
+                       . " WHERE idraft=0 AND iblog='%d'",
+                         sql_table('item'), $blogid_tmp);
+        $first_timestamp = quickQuery ($query . " ORDER BY itime ASC LIMIT 1");
+        $last_timestamp  = quickQuery ($query . " ORDER BY itime DESC LIMIT 1");
 
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
@@ -1227,7 +1228,8 @@ function getConfig() {
     $res = sql_query($query);
 
     while ($obj = sql_fetch_object($res) ) {
-        $CONF[$obj->name] = $obj->value;
+        if(!isset($CONF[$obj->name]))
+            $CONF[$obj->name] = $obj->value;
     }
 }
 
@@ -1466,6 +1468,36 @@ function getLanguageName() {
     }
 }
 
+function LoadCoreLanguage()
+{
+    static $loaded = FALSE;
+    if ($loaded)
+        return;
+    $loaded = TRUE;
+
+    global $DIR_LANG;
+    $language = remove_all_directory_separator(getLanguageName());
+    $filename = $DIR_LANG . $language . '.php';
+    if (file_exists($filename))
+        include_once ($filename);
+
+    if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+    {
+        // load undefined constant
+        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+        {
+            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+            {
+                // load default lang
+                ob_start();
+                @include_once($DIR_LANG . 'english-utf8' . '.php');
+                ob_end_clean();
+            }
+        }
+    }
+}
+
 /**
   * Includes a PHP file. This method can be called while parsing templates and skins
   */
@@ -1564,6 +1596,7 @@ function createLink($type, $params) {
 
     // ask plugins first
     $created = false;
+    $url     = '';
 
     if ($usePathInfo) {
         $param = array(
@@ -1943,11 +1976,7 @@ function ticketForPlugin() {
     /* Exit if not logged in. */
     if ( !$member->isLoggedIn() )
     {
-		global $DIR_LANG;
-		$language = remove_all_directory_separator(getLanguageName());
-		$filename = $DIR_LANG . $language . '.php';
-		if (file_exists($filename))
-		  include_once ($filename);
+        LoadCoreLanguage();
 		if (!defined('_GFUNCTIONS_YOU_AERNT_LOGGEDIN'))
 			define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN', 'You aren\'t logged in.');
 		exit("<html><head><title>Error</title></head><body>"
@@ -1984,27 +2013,7 @@ function ticketForPlugin() {
     {
         if (!class_exists('PluginAdmin'))
         {
-            $language = getLanguageName();
-
-            # important note that '\' must be matched with '\\\\' in preg* expressions
-            include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
-
-            if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
-                 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
-            {
-                // load undefined constant
-                if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
-                {
-                    if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
-                    {
-                        // load default lang
-                        ob_start();
-                        @include_once($DIR_LANG . 'english-utf8' . '.php');
-                        ob_end_clean();
-                    }
-                }
-            }
-
+            LoadCoreLanguage();
             include_once($DIR_LIBS . 'PLUGINADMIN.php');
         }
         

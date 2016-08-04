@@ -78,8 +78,11 @@
                 break;
         }
 
+        $count = 0;
         $res = sql_query($query);
-        $installed = ($res && (sql_num_rows($res) >= $minrows));
+        while ( $res && sql_fetch_object($res))
+            $count++;
+        $installed = ($res && ($count >= $minrows));
         return $installed;
     }
 

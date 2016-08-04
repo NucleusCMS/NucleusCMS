@@ -116,9 +116,8 @@ class PARSER {
             } else {
                 if ($CONF['DebugVars']==true) {
                     echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
-        }
+                }
             }
-            
         }
 
     }

@@ -1016,10 +1016,9 @@ class BLOG {
     {
         $res = sql_query('SELECT corder FROM '.sql_table('category')
                        . ' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-        if (!$res)
-            return null;
-        $o = sql_fetch_object($res);
-        return intval($o->corder);
+        if ($res && ($o = sql_fetch_object($res)))
+            return intval($o->corder);
+        return 100; // default
     }
 
     /**
@@ -1251,7 +1250,9 @@ class BLOG {
     }
 
     function getSetting($key) {
-        return $this->settings[$key];
+        if (isset($this->settings[$key]))
+            return $this->settings[$key];
+        return;
     }
 
     function getSettingDefault($key, $dafalutvalue) {

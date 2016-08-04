@@ -309,7 +309,7 @@ function listplug_plugOptionRow($current) {
             case 'textarea':
                 //$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
                 echo '<textarea class="pluginoption" cols="30" rows="5" name="',hsc($varname),'"';
-                if ($meta['access'] == 'readonly') {
+                if (array_key_exists('access', $meta) && $meta['access'] == 'readonly') {
                     echo ' readonly="readonly"';
                 }
                 echo '>',hsc($current['value']),'</textarea>';
