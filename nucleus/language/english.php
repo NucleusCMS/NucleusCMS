@@ -26,6 +26,16 @@
 /********************************************
  *        Start New for 3.72                *
  ********************************************/
+define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "Plugin %s was not loaded (does not support SqlApi_%s or SqlApi_SQL92. Please upgrade to the latest version of the plug-ins that support this feature.)");
+
+define('_DEFAULT_DATE_FORMAT_YMD',         '%d/%m/%Y');
+define('_DEFAULT_DATE_FORMAT_YBD',         '%d %B %Y');
+define('_DEFAULT_DATE_FORMAT_YM',          '%m %Y');
+define('_DEFAULT_DATE_FORMAT_YB',          '%B %Y');
+define('_DEFAULT_DATE_FORMAT_MD',          '%m %d');
+define('_DEFAULT_DATE_FORMAT_BD',          '%B %d');
+define('_DEFAULT_DATE_FORMAT_Y',           '%Y');
+
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'About system core');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'Core version');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'Core patch level');

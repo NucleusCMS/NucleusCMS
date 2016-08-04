@@ -22,6 +22,16 @@
 /********************************************
  *        Start New for 3.72                *
  ********************************************/
+define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPI_%s または SqlApi_SQL92 をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
+
+define('_DEFAULT_DATE_FORMAT_YMD',         '%Y年%m月%d日');
+define('_DEFAULT_DATE_FORMAT_YBD',         '%Y年%m月%d日');
+define('_DEFAULT_DATE_FORMAT_YM',          '%Y年%m月');
+define('_DEFAULT_DATE_FORMAT_YB',          '%Y年%m月');
+define('_DEFAULT_DATE_FORMAT_MD',          '%m月%d日');
+define('_DEFAULT_DATE_FORMAT_BD',          '%m月%d日');
+define('_DEFAULT_DATE_FORMAT_Y',           '%Y年');
+
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
