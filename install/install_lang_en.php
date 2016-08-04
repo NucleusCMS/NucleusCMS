@@ -16,6 +16,23 @@
  * @version $Id: install.php 1227 2007-12-14 16:48:40Z ehui $
  */
 
+/*  New for 5.0.0 */
+/*  New for 3.72 */
+define('_INSTALL_TEXT_DATABASE_SELECT' , 'Select Database');
+define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',				'Database login information');
+
+define('_INSTALL_TEXT_DATABASE_EXSIT',	'Database is already exits.');
+define('_INSTALL_TEXT_SETTINGS_NOEXSIT',	'../settings not exist');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1',	'../config.php  exist');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'For security reasons, if present, can not be installed.');
+
+define('_INSTALL_TEXT_VERSION',	      'Version');
+define('_INSTALL_TEXT_SELECT_TEXT',	  'select text');
+define('_INSTALL_TEXT_EXPERIMENTAL',  'experimental');
+
+define('_INST_CONF_ERROR1' , 'please run the <a href="./install/index.php">install script</a> or modify config.php');
+
+
 /*  New for 3.71 */
 define('_HEADER_LANG_SELECT',			 'Language');
 define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 'Choose language');
@@ -25,7 +42,7 @@ define('_TEXT_LANG_SELECT1_1',	'Choose a language to use.');
 /*   */
 
 define('_ERROR1',	'Your PHP version does not have support for MySQL :(');
-define('_ERROR2',	'mySQL database name missing');
+define('_ERROR_NO_DBNAME',	'mySQL database name missing');
 define('_ERROR3',	'mySQL prefix was selected, but prefix is empty');
 define('_ERROR4',	'mySQL prefix should only contain characters from the ranges A-Z, a-z, 0-9 or underscores');
 define('_ERROR5',	'One of the URLs does not end with a slash, or action url does not end with \'action.php\'');
@@ -33,6 +50,7 @@ define('_ERROR6',	'The path of the administration area does not end with a slash
 define('_ERROR7',	'The media path does not end with a slash');
 define('_ERROR8',	'The skins path does not end with a slash');
 define('_ERROR9',	'The path of the administration area does not exist on your server');
+
 define('_ERROR10',	'Invalid e-mail address given for user');
 define('_ERROR11',	'User name is not a valid display name (allowed chars: a-zA-Z0-9 and spaces)');
 define('_ERROR12',	'User password is empty');
@@ -83,7 +101,6 @@ define('_TEXT2_WARN3',	'WARNING: You are installing NucleusCMS on a older versio
 define('_HEADER3',	'Automatic <i>config.php</i> Update');
 define('_TEXT3',	'<p>If you want Nucleus to automatically update the <em>config.php</em> file, you\'ll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>444</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p> <p>If you choose not to make your file writable (or are unable to do so): don\'t worry. The installation process will provide you with the contents of the <em>config.php</em> file so you can upload it yourself.</p>');
 
-define('_HEADER4',	'MySQL Login Data');
 define('_TEXT4',	'<p>Enter your MySQL data below. This install script needs it to be able to create and fill your database tables. Afterwards, you\'ll also need to fill it out in <i>config.php</i>.</p> <p>If you don\'t know this information, contact your system administrator for more info. Often, the hostname will be \'localhost\'. If Nucleus found a \'default MySQL host\' in the PHP settings of your server, this host is already listed in the \'hostname\' field. There\'s no guarantee that this information is correct, though.</p>');
 define('_TEXT4_TAB_HEAD',	'General Database Settings');
 define('_TEXT4_TAB_FIELD1',	'Hostname');

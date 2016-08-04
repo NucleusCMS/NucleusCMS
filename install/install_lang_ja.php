@@ -10,6 +10,22 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+/*  New for 5.0.0 */
+/*  New for 3.72 */
+define('_INSTALL_TEXT_DATABASE_SELECT' ,     'データベースの選択');
+define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',	 'データベースのログイン情報');
+
+define('_INSTALL_TEXT_DATABASE_EXSIT',       'すでにデータベースがあります');
+define('_INSTALL_TEXT_SETTINGS_NOEXSIT',	 '../settingsフォルダがありません');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1',	'../config.php がすでにあります。');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'セキュリティ上の理由で、存在する場合は、インストールできません。');
+
+define('_INSTALL_TEXT_VERSION',	      'バージョン');
+define('_INSTALL_TEXT_SELECT_TEXT',	  'テキストを選択する');
+define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的, テスト中, 対応していないプラグインは使用できません');
+
+define('_INST_CONF_ERROR1' , '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。');
+
 /*  New for 3.71 */
 define('_HEADER_LANG_SELECT',			 '表示言語');
 define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 '表示言語の選択');
@@ -24,7 +40,7 @@ define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');
 define('_TEXT1_2_TAB_FIELD1',	'キャラクタセット');
 
 define('_ERROR1',				'使用中のPHPはMySQLをサポートしていません :(');
-define('_ERROR2',				'データベース名が見つかりません');
+define('_ERROR_NO_DBNAME',		'データベース名が見つかりません');
 define('_ERROR3',				'｢データベースプリフィックスを使用する｣が選択されていますが、プリフィックスが設定されていません。');
 define('_ERROR4',				'プリフィックスに使用できる文字は A-Z、a-z、0-9 と _(アンダーバー)のみです。');
 define('_ERROR5',				'URLのいづれかが｢/(スラッシュ)｣で終わっていないか、または機能決定ファイルのURLが｢action.php｣で終わっていません。');
@@ -34,6 +50,7 @@ define('_ERROR8',				'テーマファイルのディレクトリパスが｢/(�
 define('_ERROR9',				'管理エリアのディレクトリパスがサーバ上に存在しません。');
 define('_ERROR9_2',				'<tt>action.php</tt>ファイルへのURLが別のサーバを指しています。');
 define('_ERROR9_3',				'<tt>action.php</tt>ファイルへのURLにファイルが存在しません。');
+
 define('_ERROR10',				'メールアドレスが不正です。');
 define('_ERROR11',				'｢表示される名前｣に使用できない文字が含まれています。(使用できる文字：a-z と 0-9、最初と最後以外の空白)');
 define('_ERROR12',				'パスワードが入力されていません。');
@@ -67,7 +84,7 @@ define('_TITLE3',				'インストールはほぼ完了しました！');
 define('_TITLE4',				'インストールは完了しました！');
 define('_TITLE5',				'スパムとの戦い');
 
-define('_HEADER1',				'Nucleusのインストール');
+define('_HEADER1',				'本体のインストール');
 define('_TEXT1',				'<p>MySQLテーブルのセットアップと、config.php に入力するための情報を表示します（config.phpのパーミッションを0666にしておけば、後者の作業は自動的に行われます）。これをなす為に、いくつかの情報を入力する必要があります。</p><p>すべての欄の入力が必要です。オプション情報は、インストールが完了後Nucleusの管理領域から設定可能です。</p>');
 
 define('_HEADER2',				'PHP と MySQL のバージョン');
@@ -79,7 +96,6 @@ define('_TEXT2_WARN3',			'警告！ 動作しているPHPのバージョンが�
 define('_HEADER3',				'config.phpの自動設定');
 define('_TEXT3',				'<strong style="color:red;">config.phpへの書き込みができません。</strong>config.phpのパーミッションを<strong>666</strong>にしておけば、スクリプトが自動で設定情報を書き込みます。ただし、Nucleusのインストール完了後、<strong><em style="font-color:#f00;">必ず</em></strong>パーミッションを<strong>444</strong>に変更してください(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
 
-define('_HEADER4',				'MySQLのログイン情報');
 define('_TEXT4',				'<p>データベースのログイン情報を入力してください。この情報が分からない場合は、システム管理者かホスティング元に確認をとってください。ほとんどの場合、ホスト名は｢localhost｣です。もしNucleusがあなたのサーバのPHP設定から｢default MySQL host｣を検出していれば｢ホスト名｣に既に記入されているはずですが、この情報が正確であるという保証はありません。</p>');
 define('_TEXT4_TAB_HEAD',		'基本のデータベース設定');
 define('_TEXT4_TAB_FIELD1',		'ホスト名');
