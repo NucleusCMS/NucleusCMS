@@ -50,12 +50,8 @@ class NP_SkinFiles extends NucleusPlugin {
 	function getVersion() 	  { return '2.02'; }
 	function getDescription() { return 'A simple file manager for skins.';	}
 
-	function supportsFeature($what) {
-		switch($what)
-		{ case 'SqlTablePrefix':
-				return 1;
-			default:
-				return 0; }
+	function supportsFeature($feature) {
+		return in_array ($feature, array ('SqlTablePrefix', 'NotUseDbApi'));
 	}
 
 	function install() {

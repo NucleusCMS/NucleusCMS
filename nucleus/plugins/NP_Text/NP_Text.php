@@ -36,7 +36,7 @@ class NP_Text extends NucleusPlugin {
 		return $desc;
 	}
 	public function supportsFeature($feature) {
-		return in_array ($feature, array ('SqlTablePrefix', 'SqlApi'));
+		return in_array($feature, array('SqlTablePrefix', 'SqlApi', 'SqlApi_SQL92'));
 	}
 	public function install() {}
 	public function uninstall() {}
@@ -138,7 +138,7 @@ class NP_Text extends NucleusPlugin {
 	
 	public function skin_incmodepref() {
 		global $currentSkinName;
-		$sql = "SELECT * FROM ".sql_table("skin_desc")." WHERE sdname = '".$currentSkinName."'";
+		$sql = sprintf("SELECT * FROM %s WHERE sdname = %s", sql_table("skin_desc"), sql_quote_string($currentSkinName));
 		$result = sql_query($sql);
 		$row = sql_fetch_array($result, MYSQL_ASSOC);
 		return array($row['sdincmode'], $row['sdincpref']);
