@@ -340,4 +340,3 @@ class BaseActions {
         $this->_updateTopIfCondition();
     }
 }
-?>

@@ -278,4 +278,4 @@ class SEARCH {
         return $like;
     }
 }
-?>
+

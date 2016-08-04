@@ -79,10 +79,12 @@ class COMMENTACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
+        unset($this->parser);
         $this->parser =& $parser;
     }
 
     function setCommentsObj(&$commentsObj) {
+        unset($this->commentsObj);
         $this->commentsObj =& $commentsObj;
     }
 
@@ -284,10 +286,10 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar itemtitle
      */
     function parse_itemtitle($maxLength = 0) {
-        if ($maxLength == 0)
-            $this->commentsObj->itemActions->parse_title();
+        if (!is_numeric($maxLength) || intval($maxLength) == 0)
+            echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         else
-            $this->commentsObj->itemActions->parse_syndicate_title($maxLength);
+            $this->commentsObj->itemActions->parse_syndicate_title(intval($maxLength));
     }
 
     /**
@@ -366,7 +368,7 @@ class COMMENTACTIONS extends BaseActions {
         if ( $mode == 'realname' && $this->currentComment['memberid'] > 0 )
         {
             $member =& $manager->getMember($this->currentComment['memberid']);
-            echo $member->getRealName();
+            echo hsc($member->getRealName());
         }
         else
         {
@@ -384,14 +386,14 @@ class COMMENTACTIONS extends BaseActions {
             $member =& $manager->getMember($this->currentComment['memberid']);
 
             if ($member->email != '')
-                echo $member->email;
+                echo hsc($member->email);
         }
         else
         {
             if (isValidMailAddress($this->currentComment['email']))
-                echo $this->currentComment['email'];
+                echo hsc($this->currentComment['email']);
             elseif (isValidMailAddress($this->currentComment['userid']))
-                echo $this->currentComment['userid'];
+                echo hsc($this->currentComment['userid']);
 //            if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
 //                echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
         }
@@ -428,7 +430,9 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar userwebsite
      */
     function parse_userwebsite() {
-        if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false))
+        if ( ! isset($this->currentComment['userlinkraw']) )
+            return ;
+        if ( strpos($this->currentComment['userlinkraw'], 'http://') !== false )
             echo $this->currentComment['userlinkraw'];
     }
 
@@ -436,10 +440,12 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar userwebsitelink
      */
     function parse_userwebsitelink() {
-        if (!(strpos($this->currentComment['userlinkraw'], 'http://') === false)) {
-            echo '<a href="'.$this->currentComment['userlinkraw'].'" rel="nofollow">'.$this->currentComment['user'].'</a>';
+        if ( isset($this->currentComment['userlinkraw'])
+          && ( strpos($this->currentComment['userlinkraw'], 'http://') !== false )
+           ) {
+            echo '<a href="'.hsc($this->currentComment['userlinkraw']).'" rel="nofollow">'.hsc($this->currentComment['user']).'</a>';
         } else {
-            echo $this->currentComment['user'];
+            echo hsc($this->currentComment['user']);
         }
     }
 
@@ -702,4 +708,3 @@ class COMMENTACTIONS extends BaseActions {
     }
 
 }
-?>

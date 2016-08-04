@@ -852,6 +852,7 @@ class MEMBER {
         // 1. walk over all entries, and see if special actions need to be performed
         $res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
 
+        if ($res)
         while ($o = sql_fetch_object($res))
         {
             switch ($o->vtype)

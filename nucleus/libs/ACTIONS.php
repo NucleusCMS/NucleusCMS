@@ -55,6 +55,7 @@ class ACTIONS extends BaseActions {
      *  Set the skin
      */
     function setSkin(&$skin) {
+        unset($this->skin);
         $this->skin =& $skin;
     }
 
@@ -62,6 +63,7 @@ class ACTIONS extends BaseActions {
      *  Set the parser
      */
     function setParser(&$parser) {
+        unset($this->parser);
         $this->parser =& $parser;
     }
 
@@ -323,6 +325,7 @@ class ACTIONS extends BaseActions {
                     {
                         case 'index':
                             $sqlquery = $blog->getSqlBlog('', 'count');
+                            $url = $path;
                             break;
                         case 'search':
                             $unused_highlight = '';
@@ -378,7 +381,7 @@ class ACTIONS extends BaseActions {
       * @param $catname
       *        The name of the category to use
       */
-    function _setBlogCategory(&$blog, $catname) {
+    function _setBlogCategory($blog, $catname) {
         global $catid;
         if ($catname != '')
             $blog->setSelectedCategoryByName($catname);
@@ -429,7 +432,9 @@ class ACTIONS extends BaseActions {
      */
     function parse_addlink() {
         global $CONF, $member, $blog;
+        if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
             echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
+        }
     }
     
     /**
@@ -1429,4 +1434,4 @@ class ACTIONS extends BaseActions {
 
 
 }
-?>
+

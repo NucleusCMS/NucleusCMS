@@ -20,8 +20,8 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
-class MANAGER {
-
+class MANAGER
+{
     /**
      * Cached ITEM, BLOG, PLUGIN, KARMA and MEMBER objects. When these objects are requested
      * through the global $manager object (getItem, getBlog, ...), only the first call
@@ -60,7 +60,8 @@ class MANAGER {
       * $manager =& MANAGER::instance(); to get a reference to the object
       * instead of a copy
       */
-    public static function &instance() {
+    public static function &instance()
+    {
         static $instance = array();
         if (empty($instance)) {
             $instance[0] = new MANAGER();
@@ -71,7 +72,8 @@ class MANAGER {
     /**
       * The constructor of this class initializes the object caches
       */
-    function __construct() {
+    function __construct()
+    {
         $this->items = array();
         $this->blogs = array();
         $this->plugins = array();
@@ -85,11 +87,13 @@ class MANAGER {
       * first be loaded and then placed in the cache.
       * Intended use: $item =& $manager->getItem(1234)
       */
-    function &getItem($itemid, $allowdraft, $allowfuture) {
+    function &getItem($itemid, $allowdraft, $allowfuture)
+    {
         $item =& $this->items[$itemid];
 
         // check the draft and future rules if the item was already cached
-        if ($item) {
+        if ($item)
+        {
             if ((!$allowdraft) && ($item['draft']))
                 return 0;
 
@@ -97,7 +101,8 @@ class MANAGER {
             if ((!$allowfuture) && ($item['timestamp'] > $blog->getCorrectTime()))
                 return 0;
         }
-        if (!$item) {
+        if (!$item)
+        {
             // load class if needed
             $this->loadClass('ITEM');
             // load item object
@@ -110,14 +115,16 @@ class MANAGER {
     /**
       * Loads a class if it has not yet been loaded
       */
-    function loadClass($name) {
+    function loadClass($name)
+    {
         $this->_loadClass($name, $name . '.php');
     }
 
     /**
       * Checks if an item exists
       */
-    function existsItem($id,$future,$draft) {
+    function existsItem($id,$future,$draft)
+    {
         $this->_loadClass('ITEM','ITEM.php');
         return ITEM::exists($id,$future,$draft);
     }
@@ -125,14 +132,16 @@ class MANAGER {
     /**
       * Checks if a category exists
       */
-    function existsCategory($id) {
+    function existsCategory($id)
+    {
         return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
     }
 
     /**
       * Returns the blog object for a given blogid
       */
-    function &getBlog($blogid) {
+    function &getBlog($blogid)
+    {
         $blog =& $this->blogs[$blogid];
 
         if (!$blog) {
@@ -148,7 +157,8 @@ class MANAGER {
     /**
       * Checks if a blog exists
       */
-    function existsBlog($name) {
+    function existsBlog($name)
+    {
         $this->_loadClass('BLOG','BLOG.php');
         return BLOG::exists($name);
     }
@@ -156,7 +166,8 @@ class MANAGER {
     /**
       * Checks if a blog id exists
       */
-    function existsBlogID($id) {
+    function existsBlogID($id)
+    {
         $this->_loadClass('BLOG','BLOG.php');
         return BLOG::existsID($id);
     }
@@ -164,10 +175,12 @@ class MANAGER {
     /**
      * Returns a previously read template
      */
-    function &getTemplate($templateName) {
+    function &getTemplate($templateName)
+    {
         $template =& $this->templates[$templateName];
 
-        if (!$template) {
+        if (!$template)
+        {
             $template = TEMPLATE::read($templateName);
             $this->templates[$templateName] =& $template;
         }
@@ -177,10 +190,12 @@ class MANAGER {
     /**
      * Returns a KARMA object (karma votes)
      */
-    function &getKarma($itemid) {
+    function &getKarma($itemid)
+    {
         $karma =& $this->karma[$itemid];
 
-        if (!$karma) {
+        if (!$karma)
+        {
             // load class if needed
             $this->_loadClass('KARMA','KARMA.php');
             // create KARMA object
@@ -193,7 +208,8 @@ class MANAGER {
     /**
      * Returns a MEMBER object
      */
-    function &getMember($memberid) {
+    function &getMember($memberid)
+    {
         $mem =& $this->members[$memberid];
 
         if (!$mem) {
@@ -209,14 +225,16 @@ class MANAGER {
     /**
      * Set the global parser preferences
      */
-    function setParserProperty($name, $value) {
+    function setParserProperty($name, $value)
+    {
         $this->parserPrefs[$name] = $value;
     }
 
     /**
      * Get the global parser preferences
      */
-    function getParserProperty($name) {
+    function getParserProperty($name)
+    {
         return $this->parserPrefs[$name];
     }
 
@@ -225,10 +243,12 @@ class MANAGER {
       * 
       * private
       */
-    function _loadClass($name, $filename) {
-        if (!class_exists($name)) {
+    function _loadClass($name, $filename)
+    {
+        if (!class_exists($name))
+        {
                 global $DIR_LIBS;
-                include($DIR_LIBS . $filename);
+                include_once($DIR_LIBS . $filename);
         }
     }
 
@@ -237,8 +257,12 @@ class MANAGER {
       * 
       * private
       */
-    function _loadPlugin($name) {
-        if (!class_exists($name)) {
+    function _loadPlugin($name)
+    {
+        if (class_exists($name))
+            return ;
+        else
+        {
                 global $DIR_PLUGINS;
 
                 $fileName = $DIR_PLUGINS . $name . '.php';
@@ -298,7 +322,8 @@ class MANAGER {
     /**
      * Returns a PLUGIN object
      */
-    function &getPlugin($name) {
+    function &getPlugin($name)
+    {
         // retrieve the name of the plugin in the right capitalisation
         $name = $this->getUpperCaseName ($name);
         // get the plugin   
@@ -315,15 +340,18 @@ class MANAGER {
     /**
       * Checks if the given plugin IS loaded or not
       */
-    function &pluginLoaded($name) {
+    function &pluginLoaded($name)
+    {
         $plugin =& $this->plugins[$name];
         return $plugin;
     }
 
-    function &pidLoaded($pid) {
+    function &pidLoaded($pid)
+    {
         $plugin=false;
         reset($this->plugins);
-        while (list($name) = each($this->plugins)) {
+        while (list($name) = each($this->plugins))
+        {
             if ($pid!=$this->plugins[$name]->getId()) continue;
             $plugin= & $this->plugins[$name];
             break;
@@ -334,17 +362,20 @@ class MANAGER {
     /**
       * checks if the given plugin IS installed or not
       */
-    function pluginInstalled($name) {
+    function pluginInstalled($name)
+    {
         $this->_initPluginCacheInfo();
         return ($this->getPidFromName($name) != -1);
     }
 
-    function pidInstalled($pid) {
+    function pidInstalled($pid)
+    {
         $this->_initPluginCacheInfo();
         return ($this->cachedInfo['installedPlugins'][$pid] != '');
     }
 
-    function getPidFromName($name) {
+    function getPidFromName($name)
+    {
         $this->_initPluginCacheInfo();
         foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
         {
@@ -357,7 +388,8 @@ class MANAGER {
     /**
       * Retrieve the name of a plugin in the right capitalisation
       */
-    function getUpperCaseName ($name) {
+    function getUpperCaseName ($name)
+    {
         $this->_initPluginCacheInfo();
         foreach ($this->cachedInfo['installedPlugins'] as $pid => $pfile)
         {
@@ -367,7 +399,8 @@ class MANAGER {
         return -1;
     }
 
-    function clearCachedInfo($what) {
+    function clearCachedInfo($what)
+    {
         unset($this->cachedInfo[$what]);
     }
 
@@ -417,7 +450,8 @@ class MANAGER {
       *     Can contain any type of data, depending on the event type. Usually this is
       *     an itemid, blogid, ... but it can also be an array containing multiple values
       */
-    function notify($eventName, &$data) {
+    function notify($eventName, &$data)
+    {
         // load subscription list if needed
         if (!is_array($this->subscriptions))
             $this->_loadSubscriptions();
@@ -430,8 +464,10 @@ class MANAGER {
         }
 
         // notify all of them
-        if (is_array($listeners)) {
-            foreach($listeners as $listener) {
+        if (is_array($listeners))
+        {
+            foreach($listeners as $listener)
+            {
                 // load class if needed
                 $this->_loadPlugin($listener);
                 // do notify (if method exists)
@@ -445,7 +481,8 @@ class MANAGER {
     /**
       * Loads plugin subscriptions
       */
-    function _loadSubscriptions() {
+    function _loadSubscriptions()
+    {
         // initialize as array
         $this->subscriptions = array();
 
@@ -456,7 +493,6 @@ class MANAGER {
             $eventName = $o->event;
             $this->subscriptions[$eventName][] = $pluginName;
         }
-
     }
 
     /*

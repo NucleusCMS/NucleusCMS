@@ -763,10 +763,10 @@ class ADMIN {
         global $manager;
         $this->pagehead();
         ?>
-        <h2><?php echo _MOVECAT_TITLE?></h2>
+        <h2><?php echo _MOVECAT_TITLE; ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $type; ?>" />
             <input type="hidden" name="batchaction" value="move" />
             <?php
                 $manager->addTicketHidden();
@@ -879,11 +879,11 @@ class ADMIN {
 
         $this->pagehead();
         ?>
-        <h2><?php echo _BATCH_DELETE_CONFIRM?></h2>
+        <h2><?php echo _BATCH_DELETE_CONFIRM; ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
-            <?php $manager->addTicketHidden() ?>
+            <input type="hidden" name="action" value="batch<?php echo $type; ?>" />
+            <?php $manager->addTicketHidden(); ?>
             <input type="hidden" name="batchaction" value="delete" />
             <input type="hidden" name="confirmation" value="yes" />
             <?php               // insert selected item numbers
@@ -1162,10 +1162,11 @@ class ADMIN {
         $search = postVar('search');
 
 
-        $query = sprintf(' FROM %s LEFT OUTER JOIN %s ON mnumber=cmember WHERE cmember=%s', sql_table('comment'),sql_table('member'),$member->getID());
+        $query = sprintf(' FROM %s LEFT OUTER JOIN %s ON mnumber=cmember WHERE cmember=%d',
+                         sql_table('comment'),sql_table('member'),$member->getID());
 
         if ($search)
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
+            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1241,7 +1242,7 @@ class ADMIN {
         }
 
         if ($search != '')
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
+            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1447,7 +1448,7 @@ class ADMIN {
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="itemdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden(); ?>
                 <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
                 <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN?>"  tabindex="10" />
             </div></form>
@@ -1812,7 +1813,7 @@ class ADMIN {
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="commentdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden(); ?>
                 <input type="hidden" name="commentid" value="<?php echo  $commentid; ?>" />
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
             </div></form>
@@ -2403,7 +2404,7 @@ class ADMIN {
         $password       = postVar('password');
         $repeatpassword = postVar('repeatpassword');
 
-        if (!$password) {
+        if (!trim($password) || (trim($password) != $password)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
         }
         
@@ -2411,23 +2412,25 @@ class ADMIN {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
         }
         
-        if (strlen($password) < 6) {
+        if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
         }
         
-        $pwdvalid = true;
-        $pwderror = '';
-        
-        global $manager;
-        $param = array(
-            'password'        =>  $password,
-            'errormessage'    =>  &$pwderror,
-            'valid'            => &$pwdvalid
-        );
-        $manager->notify('PrePasswordSet', $param);
-        
-        if (!$pwdvalid) {
-            return $this->_showActivationPage($key,$pwderror);
+        if ($password) {
+            $pwdvalid = true;
+            $pwderror = '';
+
+            global $manager;
+            $param = array(
+                'password'        =>  $password,
+                'errormessage'    =>  &$pwderror,
+                'valid'            => &$pwdvalid
+            );
+            $manager->notify('PrePasswordSet', $param);
+
+            if (!$pwdvalid) {
+                return $this->_showActivationPage($key,$pwderror);
+            }
         }
         
         $error = '';
@@ -2507,7 +2510,7 @@ class ADMIN {
             <?php $manager->addTicketHidden() ?>
 
             <table><tr>
-                <td><?php echo _TEAM_CHOOSEMEMBER?></td>
+                <td><?php echo _TEAM_CHOOSEMEMBER; ?></td>
                 <td><?php
                     $template['name'] = 'memberid';
                     $template['tabindex'] = 10000;
@@ -2523,7 +2526,7 @@ class ADMIN {
 
             </div></form>
         <?php
-         } /* end $count_non_team_members > 0 */
+         } // end $count_non_team_members > 0
         $this->pagefoot();
     }
 
@@ -2707,6 +2710,7 @@ class ADMIN {
         <?php
             $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
             $aMemberNames = array();
+            if ($res)
             while ($o = sql_fetch_object($res))
                 array_push($aMemberNames, hsc($o->mname) . ' (' . hsc($o->mrealname). ')');
             echo implode(',', $aMemberNames);
@@ -4530,16 +4534,16 @@ selector();
         <div>
 
         <input name="action" value="skinnew" type="hidden" />
-        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden(); ?>
         <table><tr>
-            <td><?php echo _SKIN_NAME?> <?php help('shortnames');?></td>
+            <td><?php echo _SKIN_NAME; ?> <?php help('shortnames');?></td>
             <td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
         </tr><tr>
-            <td><?php echo _SKIN_DESC?></td>
+            <td><?php echo _SKIN_DESC; ?></td>
             <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
         </tr><tr>
-            <td><?php echo _SKIN_CREATE?></td>
-            <td><input type="submit" tabindex="10030" value="<?php echo _SKIN_CREATE_BTN?>" onclick="return checkSubmit();" /></td>
+            <td><?php echo _SKIN_CREATE; ?></td>
+            <td><input type="submit" tabindex="10030" value="<?php echo _SKIN_CREATE_BTN; ?>" onclick="return checkSubmit();" /></td>
         </tr></table>
 
         </div>
@@ -4776,7 +4780,8 @@ selector();
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
             showlist($query,'table',array('content'=>'shortnames'));
-        echo '</div></form></div>';
+        echo '</div></form>';
+        echo "\n</div>\n";
         $this->pagefoot();
     }
 
@@ -5420,7 +5425,7 @@ selector();
                 if (($MYSQL_HANDLER[0] != 'pdo') ||  ($MYSQL_HANDLER[1] == 'mysql'))
                     echo 'MySQL';
                 else
-                    hsc($MYSQL_HANDLER[1]);
+                    echo hsc($MYSQL_HANDLER[1]);
             echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
             echo "\t</tr>";
             // Databese Driver
@@ -5595,7 +5600,7 @@ selector();
                . " SET value='$val'"
                . " WHERE name='$name'";
 
-        sql_query($query) or die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+        sql_query($query) or die((defined('_ADMIN_SQLDIE_QUERYERROR')?_ADMIN_SQLDIE_QUERYERROR:"Query error: ") . sql_error());
         return sql_insert_id();
     }
 
@@ -5605,9 +5610,8 @@ selector();
      */
     function error($msg) {
         $this->pagehead();
-        ?>
-        <h2>Error!</h2>
-        <?php       echo '<div class="ng">'.$msg.'</div>';
+        echo  "<h2>Error!</h2>\n";
+        echo '<div class="ng">'.$msg.'</div>';
         echo "<br />";
         echo "<a href='index.php' onclick='history.back(); return false;'>"._BACK."</a>";
         $this->pagefoot();
@@ -6267,9 +6271,13 @@ selector();
      * @todo document this
      */
     function action_backupoverview() {
-        global $member, $manager;
+        global $member, $manager, $MYSQL_HANDLER;
 
         $member->isAdmin() or $this->disallow();
+
+        if (!in_array('mysql', $MYSQL_HANDLER)) {
+            $this->disallow();
+        }
 
         $this->pagehead();
 
@@ -6454,6 +6462,7 @@ selector();
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
 
+        echo "\n";
         $this->pagefoot();
     }
 
@@ -6480,7 +6489,7 @@ selector();
         echo '<h2>',_PLUGS_HELP_TITLE,': ',hsc($plugName),'</h2>';
 
         $plug =& $manager->getPlugin($plugName);
-        $cplugindir = $DIR_PLUGINS.$plug->getShortName() . '/';
+        $cplugindir = $plug->getDirectory();
         if(is_file("{$cplugindir}help.php"))
             $helpFile = "{$cplugindir}help.php";
         elseif(is_file("{$cplugindir}help.html"))

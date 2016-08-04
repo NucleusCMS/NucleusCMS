@@ -70,7 +70,7 @@ function listplug_select($template, $type) {
             $current = $template['current'];
 
             echo '<option value="' . hsc($current->value) . '"';
-            if ($template['selected'] == $current->value)
+            if (isset($template['selected']) && $template['selected'] == $current->value)
                 echo ' selected="selected" ';
             if (isset($template['shorten']) && $template['shorten'] > 0) {
                 echo ' title="'. hsc($current->text).'"';
@@ -742,4 +742,4 @@ function listplug_table_banlist($template, $type) {
     }
 }
 
-?>
+

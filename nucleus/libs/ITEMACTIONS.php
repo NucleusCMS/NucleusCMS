@@ -114,10 +114,12 @@ class ITEMACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
+        unset($this->parser);
         $this->parser =& $parser;
     }
     
     function setCurrentItem(&$item) {
+        unset($this->currentItem);
         $this->currentItem =& $item;
         global $currentitemid;
         if (is_array($this->currentItem)) {
@@ -128,6 +130,7 @@ class ITEMACTIONS extends BaseActions {
     }
     
     function setBlog(&$blog) {
+        unset($this->blog);
         $this->blog =& $blog;
     }
 
@@ -786,4 +789,3 @@ class ITEMACTIONS extends BaseActions {
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 }
-?>

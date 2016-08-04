@@ -479,6 +479,7 @@ class BLOG {
         if ($sqlquery == '')
         {
             // no query -> show everything
+            $extraquery = '';
             $amountfound = $this->readLogAmount($template, $maxresults, '', $query, 1, 1);
         } else {
 
@@ -981,7 +982,8 @@ class BLOG {
     function getCategoryName($catid) {
         $res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
-        return $o->cname;
+        if (is_object($o))
+            return $o->cname;
     }
 
     /**
@@ -1000,8 +1002,9 @@ class BLOG {
     {
         $res = sql_query('SELECT corder FROM '.sql_table('category')
                        . ' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-        $o = sql_fetch_object($res);
-        return $o->corder;
+        if ($res && ($o = sql_fetch_object($res)))
+            return intval($o->corder);
+        return 100; // default
     }
 
     function getCategoryIdFromName($name) {

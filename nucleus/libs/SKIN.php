@@ -38,7 +38,7 @@ class SKIN {
      *             id of the skin
      */
     public function SKIN($id) { $this->__construct($id); }
-    function __construct($id) {
+    public function __construct($id) {
         global $resultCache;
         
         $this->id = intval($id);
@@ -514,4 +514,4 @@ class SKIN {
 
 }
 
-?>
+

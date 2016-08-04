@@ -149,8 +149,9 @@ class PAGEFACTORY extends BaseActions {
 
         if (!is_file($filename))
             return '';
-        else
-            return file_get_contents($filename);
+
+        $contents = file_get_contents($filename);
+        return ($contents!==False ? $contents : '' );
     }
 
     // create category dropdown box
@@ -262,7 +263,7 @@ class PAGEFACTORY extends BaseActions {
     function parse_checkedonval($value, $name) {
         if (!isset($this->variables[$name])) $this->variables[$name] = '';
         if ($this->variables[$name] == $value)
-            echo 'checked="checked"';
+            echo "checked='checked'";
     }
 
     // extra javascript for input and textarea fields
