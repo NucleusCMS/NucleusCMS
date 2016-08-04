@@ -63,9 +63,14 @@ class TEMPLATE {
         // delete old thingie
         sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". sql_real_escape_string($type) ."' and tdesc=" . intval($id));
 
+        global $SQL_DBH;
         // write new thingie
-        if ($content) {
-            sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . sql_real_escape_string($content) . "', tpartname='" . sql_real_escape_string($type) . "', tdesc=" . intval($id));
+        if ( strlen($content) > 0 ) {
+            $sql = 'INSERT INTO '.sql_table('template') . "(tcontent, tpartname, tdesc) VALUES";
+            if (!$SQL_DBH || !function_exists('sql_prepare_execute'))
+                sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($id)) );
+            else
+                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($id)));
         }
     }
 

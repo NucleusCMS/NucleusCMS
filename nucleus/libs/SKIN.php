@@ -242,9 +242,14 @@ class SKIN {
         // delete old thingie
         sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
 
+        global $SQL_DBH;
         // write new thingie
         if ( strlen($content) > 0 ) {
-            sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
+            $sql = 'INSERT INTO '.sql_table('skin') . "(scontent, stype, sdesc) VALUES";
+            if (!$SQL_DBH || !function_exists('sql_prepare_execute'))
+                sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($skinid)) );
+            else
+                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($skinid)));
         }
 
         global $resultCache, $manager;
