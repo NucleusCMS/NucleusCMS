@@ -5524,7 +5524,7 @@ selector();
      */
     function action_systemoverview() {
         global $member, $nucleus, $CONF;
-        global $MYSQL_HANDLER;
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
         $this->pagehead();
 
@@ -5545,20 +5545,20 @@ selector();
             echo "\t</tr><tr>\n";
             echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_DBANDVERSION . "</td>\n";
             echo "\t\t" . '<td>';
-                if (($MYSQL_HANDLER[0] != 'pdo') ||  ($MYSQL_HANDLER[1] == 'mysql'))
+                if ($DB_DRIVER_NAME == 'mysql')
                     echo 'MySQL';
                 else
-                    echo hsc($MYSQL_HANDLER[1]);
+                    echo hsc($DB_DRIVER_NAME);
             echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
             echo "\t</tr>";
             // Databese Driver
             echo "\t<tr>\n";
             echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
             echo "\t\t" . '<td>';
-                    if ($MYSQL_HANDLER[0] == 'pdo')
+                    if ($DB_PHP_MODULE_NAME == 'pdo')
                         echo 'pdo';
                     else
-                        echo hsc($MYSQL_HANDLER[0]).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
+                        echo hsc($DB_PHP_MODULE_NAME).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
             echo "</td>\n";
             echo "\t</tr>";
             echo "</table>\n";
@@ -5907,7 +5907,7 @@ selector();
      * @todo document this
      */
     function pagefoot() {
-        global $action, $member, $manager;
+        global $action, $member, $manager, $DB_DRIVER_NAME;
 
         $param = array(
             'action' => $this->action
@@ -5984,7 +5984,9 @@ selector();
                         echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . '</a></li>';
                         echo '<li><a href="index.php?action=usermanagement">' . _QMENU_MANAGE_MEMBERS . '</a></li>';
                         echo '<li><a href="index.php?action=createnewlog">' . _QMENU_MANAGE_NEWBLOG . '</a></li>';
+                        if ($DB_DRIVER_NAME == 'mysql') {
                         echo '<li><a href="index.php?action=backupoverview">' . _QMENU_MANAGE_BACKUPS . '</a></li>';
+                        }
                         echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . '</a></li>';
                         echo '</ul>';
 
@@ -6431,9 +6433,13 @@ selector();
      * @todo document this
      */
     function action_backupoverview() {
-        global $member, $manager;
+        global $member, $manager, $DB_DRIVER_NAME;
 
         $member->isAdmin() or $this->disallow();
+
+        if ($DB_DRIVER_NAME != 'mysql') {
+            $this->disallow();
+        }
 
         $this->pagehead();
 

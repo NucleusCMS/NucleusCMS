@@ -54,9 +54,7 @@ if (!function_exists('sql_fetch_assoc'))
  * Connects to mysql server
  */
     function sql_connect_args($db_host = 'localhost', $db_user = '', $db_password = '', $db_name = '') {
-        global $CONF, $MYSQL_HANDLER;
-
-        $DB_DRIVER_NAME = $MYSQL_HANDLER[1];
+        global $CONF, $DB_DRIVER_NAME;
 
         try {
             if (strpos($db_host,':') === false) {
@@ -182,10 +180,10 @@ if (!function_exists('sql_fetch_assoc'))
  * Connects to mysql server
  */
     function sql_connect() {
-        global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
-        global $CONF;
+        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE, $DB_DRIVER_NAME;
+        global $CONF, $MYSQL_CONN, $SQL_DBH;
 
-        $SQL_DBH = sql_connect_args($MYSQL_HOST , $MYSQL_USER , $MYSQL_PASSWORD , $MYSQL_DATABASE);
+        $SQL_DBH = sql_connect_args($DB_HOST , $DB_USER , $DB_PASSWORD , $DB_DATABASE);
         if ( !$SQL_DBH )
         {
             $title = 'Connect Error';
@@ -295,8 +293,8 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_select_db($db,&$dbh=NULL)
     {
-        global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN, $MYSQL_HANDLER, $SQL_DBH;
-        global $CONF;
+        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE, $DB_DRIVER_NAME;
+        global $CONF, $MYSQL_CONN, $SQL_DBH;
 //echo '<hr />'.print_r($dbh,true).'<hr />';
 //exit;
         if ( !is_null($dbh) )
@@ -309,7 +307,7 @@ if (!function_exists('sql_fetch_assoc'))
         try
         {
             $SQL_DBH = NULL;
-            list($host,$port) = explode(":",$MYSQL_HOST);
+            list($host,$port) = explode(":",$DB_HOST);
             if (isset($port)) {
                 $portnum = $port;
                 $port = ';port='.trim($port);
@@ -318,46 +316,46 @@ if (!function_exists('sql_fetch_assoc'))
                 $port = '';
                 $portnum = '';
             }
-            //$SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.trim($host).$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+            //$SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.trim($host).$port.';dbname='.$db, $DB_USER, $DB_PASSWORD));
             //$SQL_DBH = sql_connect();
-            switch ($MYSQL_HANDLER[1]) {
+            switch ($DB_DRIVER_NAME) {
                 case 'sybase':
                 case 'dblib':
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db, $DB_USER, $DB_PASSWORD);
                 break;
                 case 'mssql':
                     if (is_numeric($portnum)) $port = ','.intval($portnum);
                     else $port = '';
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db, $DB_USER, $DB_PASSWORD);
                 break;
                 case 'oci':
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':dbname=//'.$host.$port.'/'.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':dbname=//'.$host.$port.'/'.$db, $DB_USER, $DB_PASSWORD);
                 break;
                 case 'odbc':
                     if (is_numeric($portnum)) $port = ';PORT='.intval($portnum);
                     else $port = '';
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME='.$host.$port.';DATABASE='.$db.';PROTOCOL=TCPIP;UID='.$MYSQL_USER.';PWD='.$MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME='.$host.$port.';DATABASE='.$db.';PROTOCOL=TCPIP;UID='.$DB_USER.';PWD='.$DB_PASSWORD);
                 break;
                 case 'pgsql':
                     if (is_numeric($portnum)) $port = ';port='.intval($portnum);
                     else $port = '';
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db, $DB_USER, $DB_PASSWORD);
                 break;
                 case 'sqlite':
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':'.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':'.$db, $DB_USER, $DB_PASSWORD);
                 break;
                 case 'sqlite2':
                     trigger_error("Critical Error : sqlite2 driver is not suported. ", E_USER_ERROR);
                     break;
                 default:
                     //mysql
-                    $SQL_DBH = new PDO($MYSQL_HANDLER[1].':host='.$host.$port.';dbname='.$db, $MYSQL_USER, $MYSQL_PASSWORD);
+                    $SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db, $DB_USER, $DB_PASSWORD);
                 break;
             }
             return 1;
@@ -756,8 +754,8 @@ if (!function_exists('sql_fetch_assoc'))
      * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset, $dbh=NULL) {
-        global $MYSQL_HANDLER,$SQL_DBH;
-        if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
+        global $DB_DRIVER_NAME, $SQL_DBH;
+        if ( $DB_DRIVER_NAME == 'mysql' ) {
             switch(strtolower($charset)){
                 case 'utf-8':
                 case 'utf8':
@@ -810,8 +808,8 @@ if (!function_exists('sql_fetch_assoc'))
 
     function sql_quote_identifier($text)
     {
-        global $MYSQL_HANDLER;
-        switch ($MYSQL_HANDLER[1])
+		global $DB_DRIVER_NAME;
+		switch ($DB_DRIVER_NAME)
         {
             case 'sqlite':
                 return '`'. str_replace("`","``",$text) . '`';

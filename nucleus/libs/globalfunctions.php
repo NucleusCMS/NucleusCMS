@@ -673,10 +673,10 @@ function getLatestVersion() {
  * returns a prefixed nucleus table name
  */
 function sql_table($name) {
-    global $MYSQL_PREFIX;
+    global $DB_PREFIX;
 
-    if ($MYSQL_PREFIX) {
-        return $MYSQL_PREFIX . 'nucleus_' . $name;
+    if (strlen($DB_PREFIX) > 0) {
+        return $DB_PREFIX . 'nucleus_' . $name;
     } else {
         return 'nucleus_' . $name;
     }
@@ -2667,4 +2667,8 @@ function init_nucleus_compatibility_mysql_handler()
         echo "Error::config Invalid db driver name.";
         exit;
     }
+    if ($DB_PHP_MODULE_NAME == 'mysql')
+        $MYSQL_HANDLER = array('mysql', '');
+    else
+        $MYSQL_HANDLER = array($DB_PHP_MODULE_NAME, $DB_DRIVER_NAME);
 }
