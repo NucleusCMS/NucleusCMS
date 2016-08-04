@@ -249,6 +249,33 @@ if (!function_exists('sql_fetch_assoc'))
         return $res;
     }
     
+    function sql_query_log(&$query, $override = false)
+    {
+        global $SQLCount;
+
+        if (!isset($SQLCount) || ($SQLCount == 0) )
+        {
+            $SQLCount = 0;
+            $override = true;
+        }
+        $SQLCount ++;
+        return ; //
+
+        $filename = dirname(__FILE__).DIRECTORY_SEPARATOR.'query_log.txt';
+        $handle = fopen($filename, ($override ? "w": "a") );
+        if ($handle)
+        {
+            if ($_SERVER['REQUEST_TIME_FLOAT'])
+            {
+                $s = sprintf('tick time : %.2f , query No %d' ,
+                         (float)microtime(true) - (float) $_SERVER['REQUEST_TIME_FLOAT']
+                        ,$SQLCount);
+                fwrite ($handle , $s."\r\n");
+            }
+            fwrite ($handle , "\t".preg_replace("/(\r\n|\n\r|\r|\n)/","\r\n", $query."\n") );
+            fclose($handle);
+        }
+    }
 /**
  * executes an SQL error
  */
@@ -764,6 +791,101 @@ if (!function_exists('sql_fetch_assoc'))
         return $res;
     }
 
+    function sql_print_error($text)
+    {
+        global $CONF;
+        if ( ! function_exists('addToLog') )
+            return ;
 
+        if (!isset($CONF['debug']) || (!$CONF['debug']))
+        {
+            addToLog(ERROR, $text);
+        }
+        else
+        {
+            addToLog(ERROR, $text);
+            print hsc($text);
+        }
+    }
+
+    function sql_quote_identifier($text)
+    {
+        global $MYSQL_HANDLER;
+        switch ($MYSQL_HANDLER[1])
+        {
+            case 'sqlite':
+                return '`'. str_replace("`","``",$text) . '`';
+            default :  // mysql
+                return '`'. sql_real_escape_string($text) . '`';
+        }
+    }
+
+    function sql_prepare($sql)
+    {
+        global $SQL_DBH, $CONF;
+        sql_query_log($sql);
+
+        if (!$SQL_DBH) return false;
+
+        $res = $SQL_DBH->prepare($sql);
+        if (!$res && $CONF['debug'])
+            sql_print_error(sql_error($SQL_DBH));
+        return $res;
+    }
+
+    function sql_execute($stmt , $input_parameters = array())
+    {
+        if (!$stmt)
+            return false;
+
+        if (!($stmt instanceof PDOStatement))
+        {
+            sql_print_error("error: param1 is not PDOStatement.");
+            return false;
+        }
+
+        if (!is_array($input_parameters))
+        {
+            sql_print_error("error: param2 is not array.");
+            return false;
+        }
+
+        return $stmt->execute($input_parameters);
+    }
+
+    function sql_prepare_execute($sql , $input_parameters = array())
+    {
+        global $SQL_DBH;
+        sql_query_log($sql);
+
+        if (!$SQL_DBH) return false;
+        $stmt = $SQL_DBH->prepare($sql);
+        if ( $stmt && $stmt->execute($input_parameters) )
+            return $stmt;
+        return false;
+    }
+
+    function sql_direct_getValue_AsInt($sql , $input_parameters = array())
+    {
+        if (!is_string($sql))
+        {
+            sql_print_error("error: param1 is not string.");
+            return 0;
+        }
+        $stmt = sql_prepare_execute($sql , $input_parameters);
+        if ($stmt)
+            $res = sql_fetch_column($stmt);
+        else
+            $res = 0;
+        return intval($res);
+    }
+
+    function sqldate($timestamp) {
+        return sql_quote_string(date('Y-m-d H:i:s', $timestamp));
+    }
+
+    function sql_timestamp_from_utime($timestamp) {
+        return date('Y-m-d H:i:s', $timestamp);
+    }
 
 }
