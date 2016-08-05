@@ -36,7 +36,8 @@ function upgrade_do331() {
     // check to see if user turn on Weblogs.com ping, if so, suggest to install the plugin
     $query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'"; 
     $res = sql_query($query);
-    if (sql_num_rows($res) > 0) {
+    if ($res && !($r = sql_fetch_array($res)) && !empty($r))  // Fix for PHP(-5.4) Parse error: empty($var = "") or empty(function())
+    {
         echo "<li>" . _UPG_TEXT_NOTE_PING01 . "</li>";
     }
 }

@@ -100,9 +100,9 @@ class KARMA {
 
     // checks if a vote is still allowed for an IP
     function isVoteAllowed($ip) {
-        $query = 'SELECT * FROM '.sql_table('karma')." WHERE itemid=$this->itemid and ip='".sql_real_escape_string($ip)."'";
-        $res = sql_query($query);
-        return (sql_num_rows($res) == 0);
+        $sql = 'SELECT count(*) AS result FROM ' . sql_table('karma')
+             . sprintf(" WHERE itemid=%d AND ip='%s' LIMIT 1", $this->itemid, sql_real_escape_string($ip));
+        return ( intval(quickQuery($sql)) == 0 );
     }
 
     // save IP in database so no multiple votes are possible

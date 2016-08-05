@@ -554,8 +554,8 @@ class ADMIN {
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one super-admin
-                    $r = sql_query('SELECT * FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1');
-                    if (sql_num_rows($r) < 2)
+                    $sql = 'SELECT count(*) as result FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1';
+                    if (intval(quickQuery($sql)) < 2)
                         $error = _ERROR_ATLEASTONEADMIN;
                     else
                     {
@@ -627,8 +627,8 @@ class ADMIN {
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one admin
-                    $r = sql_query('SELECT * FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid);
-                    if (sql_num_rows($r) < 2)
+                    $sql = 'SELECT count(*) as result FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid;
+                    if (intval(quickQuery($sql)) < 2)
                         $error = _ERROR_ATLEASTONEBLOGADMIN;
                     else
                         sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
@@ -954,13 +954,12 @@ class ADMIN {
 
         // 1. select blogs (we'll create optiongroups)
         // (only select those blogs that have the user on the team)
-        $queryBlogs =  'SELECT bnumber, bname FROM '.sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
+        $queryBlogs = sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
+        $queryBlogs_count = 'SELECT count(*) as result FROM '.$queryBlogs;
+        $queryBlogs = 'SELECT bnumber, bname FROM '.$queryBlogs;
         $blogs = sql_query($queryBlogs);
         if ($mode == 'category') {
-            if (sql_num_rows($blogs) > 1)
-                $multipleBlogs = 1;
-            else
-                $multipleBlogs = 0;
+            $multipleBlogs = intval(quickQuery($queryBlogs_count)) > 1;
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)
@@ -1506,9 +1505,11 @@ class ADMIN {
 
         $blog =& $manager->getBlog($blogid);
         $currenttime = $blog->getCorrectTime(time());
-        $result = sql_query("SELECT * FROM ".sql_table('item').
-            " WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime));
-        if (sql_num_rows($result) > 0) {
+
+        $result = sql_query("SELECT count(*) FROM ".sql_table('item').
+            " WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime).' limit 1')
+            ;
+        if ($result && (intval(sql_result($result)) > 0)) {
                 $blog->setFuturePost();
         }
         else {
@@ -2173,8 +2174,8 @@ class ADMIN {
              || (!$canlogin && $mem->isAdmin() && $mem->canLogin())
            )
         {
-            $r = sql_query('SELECT * FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
-            if (sql_num_rows($r) < 2)
+            $r = sql_query('SELECT count(*) FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
+            if (intval(sql_result($r)) <= 1)
                 $this->error(_ERROR_ATLEASTONEADMIN);
         }
 
@@ -2629,9 +2630,9 @@ class ADMIN {
         if ($tmem->isBlogAdmin($blogid)) {
             // check if there are more blog members left and at least one admin
             // (check for at least two admins before deletion)
-            $query = 'SELECT * FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
+            $query = 'SELECT count(*) FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
             $r = sql_query($query);
-            if (sql_num_rows($r) < 2)
+            if ($r && intval(sql_result($r)) < 2)
                 return _ERROR_ATLEASTONEBLOGADMIN;
         }
 
@@ -2663,8 +2664,8 @@ class ADMIN {
 
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
-            $r = sql_query('SELECT * FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
-            if (sql_num_rows($r) == 1)
+            $r = sql_query('SELECT count(*) FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
+            if (intval(sql_result($r)) == 1)
                 $this->error(_ERROR_ATLEASTONEBLOGADMIN);
         }
 
@@ -2927,9 +2928,10 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category') . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
+        $query = 'SELECT count(*) FROM '.sql_table('category')
+               . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0)
+        if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $blog       =& $manager->getBlog($blogid);
@@ -3034,9 +3036,9 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0)
+        if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  'UPDATE '.sql_table('category').' SET'
@@ -3089,9 +3091,9 @@ class ADMIN {
             $this->error(_ERROR_DELETEDEFCATEGORY);
 
         // check if catid is the only category left for blogid
-        $query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
-        if (sql_num_rows($res) == 1)
+        if (intval(sql_result($res)) == 1)
             $this->error(_ERROR_DELETELASTCATEGORY);
 
 
@@ -3159,9 +3161,9 @@ class ADMIN {
             return _ERROR_DELETEDEFCATEGORY;
 
         // check if catid is the only category left for blogid
-        $query = 'SELECT catid FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
-        if (sql_num_rows($res) == 1)
+        if (intval(sql_result($res)) == 1)
             return _ERROR_DELETELASTCATEGORY;
 
         $param = array('catid' => $catid);
@@ -4620,15 +4622,13 @@ selector();
         echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
         echo '</form>' . "\r\n";
 
-        if ($res && sql_num_rows($res) > 0) {
-            echo '<ul>';
+        if ($res) {
             $tabstart = 75;
-
+            $s = '';
             while ($row = sql_fetch_assoc($res)) {
-                echo '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
+                $s .= '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
             }
-
-            echo '</ul>';
+            if ($s) echo '<ul>'.$s.'</ul>';
         }
 
         ?>
@@ -6425,9 +6425,8 @@ selector();
             {
                 $name = $matches[1];
                 // only show in list when not yet installed
-                $res = sql_query('SELECT * FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '"');
-
-                if (sql_num_rows($res) == 0)
+                $res = intval(quickQuery('SELECT count(*) as result FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '" LIMIT 1'));
+                if ($res == 0)
                 {
                     array_push($candidates, $name);
                 }
@@ -6528,8 +6527,8 @@ selector();
             $this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');
 
         // get number of currently installed plugins
-        $res = sql_query('SELECT * FROM '.sql_table('plugin'));
-        $numCurrent = sql_num_rows($res);
+        $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
+		$numCurrent = intval(sql_result($res));
 
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
@@ -6581,8 +6580,9 @@ selector();
         foreach ($pluginList as $pluginName)
         {
 
-            $res = sql_query('SELECT * FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-            if (sql_num_rows($res) == 0)
+            $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+            $ct = intval(sql_result($res));
+            if ($ct == 0)
             {
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
@@ -6807,8 +6807,8 @@ selector();
         $o = sql_fetch_object($res);
         $oldOrder = $o->porder;
 
-        $res = sql_query('SELECT * FROM '.sql_table('plugin'));
-        $maxOrder = sql_num_rows($res);
+        $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
+        $maxOrder = intval(sql_result($res));
 
         // 2. calculate new order number
         $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;

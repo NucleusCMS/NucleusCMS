@@ -57,10 +57,11 @@
                 break;
         }
         
+        $count = 0;
         $res = sql_query($query);
-        if (($res) && (sql_num_rows($res) >= $minrows))
-            $installed = true;
-        
+        while ( $res && sql_fetch_object($res))
+            $count++;
+        $installed = ($res && ($count >= $minrows));
         return $installed;
     }
 

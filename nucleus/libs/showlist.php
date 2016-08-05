@@ -37,14 +37,17 @@ function showlist($query, $type, $template) {
         $res = sql_query($query);
 
         // don't do anything if there are no results
-        $numrows = sql_num_rows($res);
-        if ($numrows == 0)
+        $numrows = 0;
+        if ($res === false)
             return 0;
 
         call_user_func("listplug_{$type}", $template, 'HEAD');
 
         while($template['current'] = sql_fetch_object($res))
+        {
+            $numrows++;
             call_user_func('listplug_' . $type, $template, 'BODY');
+        }
 
         call_user_func('listplug_' . $type, $template, 'FOOT');
 

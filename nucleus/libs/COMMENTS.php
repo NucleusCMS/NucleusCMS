@@ -81,9 +81,13 @@ class COMMENTS {
                    . ' FROM '.sql_table('comment').' as c'
                    . ' WHERE c.citem=' . $this->itemid
                    . ' ORDER BY c.ctime';
+            $query_ct =  'SELECT count(*) AS result'
+                   . ' FROM '.sql_table('comment').' as c'
+                   . ' WHERE c.citem=' . $this->itemid
+                   . ' ORDER BY c.ctime';
 
             $comments = sql_query($query);
-            $this->commentcount = sql_num_rows($comments);
+            $this->commentcount = intval(quickQuery($query_ct));
         }
 
         // if no result was found

@@ -54,7 +54,7 @@ class SKIN {
         {
             $res   = sql_query($query);
             $obj   = sql_fetch_object($res);
-            $count = sql_num_rows($res);
+            $count = is_object($obj) ? 1 : 0;
             $resultCache[$query]          = $obj;
             $resultCache["count{$query}"] = $count;
         }
@@ -259,14 +259,17 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
+        global $MYSQL_HANDLER;
         if(strpos($type, '/')!==false) return '';
-        $query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
+        if (in_array('mysql' , $MYSQL_HANDLER ) !== false)
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
+        else
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
         $res = sql_query($query);
 
-        if (sql_num_rows($res) == 0)
+        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
             return '';
-        else
-            return sql_result($res, 0, 0);
+        return $r[0];
     }
 
     /**
