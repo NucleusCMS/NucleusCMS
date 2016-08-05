@@ -215,6 +215,13 @@ a:hover, a:active
 	line-height: 12px;
 	padding: 0 10px 0 11px;
 }
+.contentitemdatetime
+{
+	font-size:0.9em;
+	background: url(images/bgclock.gif) center left no-repeat;
+	line-height: 12px;
+	padding: 0 10px 0 12px;
+}
 .contentitem
 {
 	padding: 3px 0 0 0;
@@ -241,6 +248,12 @@ a:hover, a:active
 	display: inline-block;
 	padding: 0 0 0 10px;
 	background: url(images/dotv.gif) left repeat-y;
+}
+.contentitemnext
+{
+	display: inline-block;
+	background: url(images/dotv.gif) left repeat-y;
+	padding: 0 0 0 10px;
 }
 
 /*-------------------------------------------------
@@ -299,6 +312,7 @@ a:hover, a:active
 	padding: 0 0 10px 0;
 	margin: 0;
 }
+
 .sidebardl dt
 {
 	background: #3399FF ;//url(images/sidetitlebg.gif);

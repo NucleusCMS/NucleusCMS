@@ -227,13 +227,16 @@ body { margin: 0px; }
 		<description>Nucleus CMS default index template</description>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><%date%>: <a href="<%itemlink%>" title="<%_(Read entry)%>: <%title(attribute)%>"><%title(raw)%></a></h2>
+<h2><a href="<%itemlink%>" title="<%_(Read entry)%>: <%title(attribute)%>"><%title(raw)%></a></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
 <span class="contentitemcategory">
 <%_(Category)%>: <a href="<%categorylink%>" title="<%_(Category)%>: <%Category%>"><%Category%></a>
 </span>
+</div>
+<div class="contentitemnext">
+<span class="contentitemdatetime"><%date%></span>
 </div>
 <div class="contentitem2">
 <span class="contentitempostedby">
@@ -290,7 +293,7 @@ body { margin: 0px; }
 <a href="<%catlink%>" title="<%_(Category)%>: <%catname%>"><%catname%></a>
 </dd>]]></part>
 
-		<part name="FORMAT_DATE"><![CDATA[%d/%B]]></part>
+		<part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part>
 
 		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
@@ -313,13 +316,16 @@ body { margin: 0px; }
 		<description>Nucleus CMS default item template</description>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><%date%>: <%title(raw)%></h2>
+<h2><%title(raw)%></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
 <span class="contentitemcategory">
 <%_(Category)%>: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
 </span>
+</div>
+<div class="contentitemnext">
+<span class="contentitemdatetime"><%date%></span>
 </div>
 <%if(authorvisible)%><div class="contentitem2">
 <span class="contentitempostedby">
@@ -357,7 +363,7 @@ title="<%ip%> | Click to visit <%user%>'s website or send an email">
 
 		<part name="COMMENTS_NONE"><![CDATA[<div class="comments"><%_(No comments yet)%></div>]]></part>
 
-		<part name="FORMAT_DATE"><![CDATA[%d/%B]]></part>
+		<part name="FORMAT_DATE"><![CDATA[%Y-%m-%d]]></part>
 
 		<part name="FORMAT_TIME"><![CDATA[%X]]></part>
 
