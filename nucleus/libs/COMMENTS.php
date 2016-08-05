@@ -176,19 +176,19 @@ class COMMENTS {
         } // end if
 
         // begin if: commenter's name is too long
-        if ( strlen($comment['user']) > 40 )
+        if ( Utils::strlen($comment['user']) > 40 )
         {
             return _ERROR_USER_TOO_LONG;
         } // end if
 
         // begin if: commenter's email is too long
-        if ( strlen($comment['email']) > 100 )
+        if ( Utils::strlen($comment['email']) > 100 )
         {
             return _ERROR_EMAIL_TOO_LONG;
         } // end if
 
         // begin if: commenter's url is too long
-        if ( strlen($comment['userid']) > 100 )
+        if ( Utils::strlen($comment['userid']) > 100 )
         {
             return _ERROR_URL_TOO_LONG;
         } // end if
