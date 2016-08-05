@@ -2814,7 +2814,8 @@ class ADMIN {
                 <?php
                     $query =  'SELECT cname as text, catid as value'
                            . ' FROM '.sql_table('category')
-                           . ' WHERE cblog=' . $blog->getID();
+                           . ' WHERE cblog=' . $blog->getID()
+                           . ' ORDER BY corder ASC , cname ASC ';
                     $template['name'] = 'defcat';
                     $template['selected'] = $blog->getDefaultCategory();
                     $template['tabindex'] = 110;
@@ -3869,7 +3870,7 @@ selector();
                 <th colspan="2"><?php echo _SKINIE_EXPORT_SKINS?></th>
             </tr><tr>
     <?php       // show list of skins
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc'));
+        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname');
         while ($skinObj = sql_fetch_object($res)) {
             $id = 'skinexp' . $skinObj->sdnumber;
             echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
@@ -3881,7 +3882,7 @@ selector();
         echo '<th colspan="2">',_SKINIE_EXPORT_TEMPLATES,'</th></tr><tr>';
 
         // show list of templates
-        $res = sql_query('SELECT * FROM '.sql_table('template_desc'));
+        $res = sql_query('SELECT * FROM '.sql_table('template_desc').' ORDER BY tdname');
         while ($templateObj = sql_fetch_object($res)) {
             $id = 'templateexp' . $templateObj->tdnumber;
             echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
