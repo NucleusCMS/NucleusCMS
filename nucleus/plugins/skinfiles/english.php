@@ -1,8 +1,5 @@
 <?php
 
-   /*
-	*/
-
 define('_SKINFILES_TITLE',				'Skin Files');
 define('_SKINFILES_TOOLTIP',			'Manage skin files');
 
@@ -174,4 +171,10 @@ define('_SKINFILES_ERR_UPLOAD_FILE9',			'Error: The directory ');
 define('_SKINFILES_ERR_UPLOAD_FILE10',			'does not exist ');
 define('_SKINFILES_ERR_UPLOAD_FILE11',			'or you do not have permission to access that directory.');
 
+
+define('_SKINFILES_01',				'A simple file manager for skins.');
+define('_SKINFILES_02',				'The file is empty. Do you delete this? ');
+
+define('_SKINFILES_OPT_GENBACKUP',				'When editing, is back-up file generated?');
+define('_SKINFILES_OPT_BACKUPPREFIX',			'Prefix of the file name of the backup');
 ?>

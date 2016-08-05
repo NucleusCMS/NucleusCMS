@@ -1,9 +1,5 @@
 <?php
 
-   /*
-	* @version $NucleusJP: japanese-utf8.php,v 1.2 2007/01/29 22:07:42 kimitake Exp $
-	*/
-
 define('_SKINFILES_TITLE',				'スキンファイル');
 define('_SKINFILES_TOOLTIP',			'スキンファイルの管理');
 
@@ -174,4 +170,10 @@ define('_SKINFILES_ERR_UPLOAD_FILE9',			'エラー: ディレクトリ ');
 define('_SKINFILES_ERR_UPLOAD_FILE10',			'は存在しないか');
 define('_SKINFILES_ERR_UPLOAD_FILE11',			'そのディレクトリにアクセスする権限がありません。');
 
+
+define('_SKINFILES_01',				'Nucleus管理画面でスキンの構成ファイルを編集。NP_LinkToSkinFilesと組み合わせると便利');
+define('_SKINFILES_02',				'ファイルの中身がありません。削除しますか？ ');
+
+define('_SKINFILES_OPT_GENBACKUP',				'編集時にバックアップファイルを生成しますか？');
+define('_SKINFILES_OPT_BACKUPPREFIX',			'バックアップファイル名のプリフィックス');
 ?>
