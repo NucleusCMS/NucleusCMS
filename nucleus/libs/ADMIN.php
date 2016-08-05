@@ -5660,6 +5660,10 @@ selector();
             echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION). "</td>\n";
             echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
             echo "\t</tr>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td width="50%">' . '_CHARSET' . "</td>\n";
+            echo "\t\t" . '<td>' . _CHARSET . "</td>\n";
+            echo "\t</tr>\n";
             echo "</table>\n";
 
             // Important settings of the installation
