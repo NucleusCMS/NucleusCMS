@@ -524,4 +524,66 @@ class SKIN {
         return $CONF['SkinsURL'] . $this->includePrefix;
     }
 
+// _getText
+// Note: This function will may be specification change
+// Note: use only core functions
+// Notice: Do not call this function from user plugin
+// return Converted text
+    static public function _getText($text)
+    {
+        // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+        global $DIR_SKINS;
+        static $cached_array = null;
+        if (is_null($cached_array))
+        {
+            $cached_array = array();
+            // skin for default
+            $filename = $DIR_SKINS.'default/skintext.xml';
+            if (!is_file($filename))
+                return $text;
+            $xml = simplexml_load_file($filename);
+            if (!$xml)
+                return $text;
+            foreach ($xml->children() as $text_node) {
+                if ($text_node->getName() != 'text')
+                    continue;
+                $keyname = '';
+                $items = array();
+                foreach ($text_node->children() as $node) {
+                    $key   = $node->getName();
+                    $value = (string) $node;
+                    if ($key == 'key')
+                        $keyname = $value;
+                    else
+                        $items[$key] = $value;
+                }
+                if (!isset($items['default']))
+                    $items['default'] = $keyname;
+                $keyname = (function_exists ('mb_strtolower') ? mb_strtolower($keyname,'UTF-8') :  strtolower($keyname));
+                $cached_array[$keyname] = $items;
+//                var_dump($keyname, $items);
+            }
+        }
+        $key = strtolower($text);
+        if (array_key_exists($key, $cached_array) && isset($cached_array[$key][_LOCALE]))
+        {
+            $subkey = _LOCALE;
+            if (!isset($cached_array[$key][$subkey]))
+            {
+                if (!isset($cached_array[$key]['default']))
+                    return $text;
+                $subkey = 'default';
+            }
+            else
+            {
+                if (_CHARSET == 'UTF-8')
+                    return $cached_array[$key][_LOCALE];
+            }
+            if (!function_exists('mb_convert_encoding'))
+                return $text;
+            return mb_convert_encoding($cached_array[$key][$subkey], _CHARSET, 'UTF-8');
+        }
+        return $text; // not found
+    }
+
 }

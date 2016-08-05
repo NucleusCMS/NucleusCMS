@@ -619,6 +619,31 @@ class BLOG {
         return $query;
     }
 
+    private function _workaround_gettext_template(&$template)
+    {
+        // Note: ArchiveList is not parced. parcer not called.
+        // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+        // workaround for <%_()%>
+        foreach($template as $key => $value)
+        if ((strlen($value) > 0) && strpos($value, "<%_(")!==FALSE)
+          $template[$key] = preg_replace_callback ("#<%_\(([^)]*?)\)%>#", function ($m) { return SKIN::_getText($m[1]);  }, $value);
+//        var_dump($template);
+        if (!isset($template['LOCALE']) || !$template['LOCALE'])
+        {
+            if (PHP_OS == 'WINNT' && defined('_LOCALE_NAME_WINDOWS'))
+                $template['LOCALE'] = _LOCALE_NAME_WINDOWS;
+            else
+                $template['LOCALE'] = _LOCALE;
+            setlocale(LC_TIME, $template['LOCALE']);
+        }
+        if (_LOCALE == 'ja_JP')
+        {
+            if ($template['FORMAT_DATE'] == '%d/%m')
+                $template['FORMAT_DATE'] = '%m/%d';
+        }
+//        var_dump($template['LOCALE']);
+    }
+
     /**
       * Shows the archivelist using the given template
       */
@@ -637,8 +662,14 @@ class BLOG {
         $archdata = array();
         $archdata['blogid'] = $this->getID();
 
-        $tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
-                                                       : '';
+        // Note: ArchiveList is not parced. parcer not called.
+        // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+        // workaround for <%_()%>
+        $this->_workaround_gettext_template($template);
+
+        //
+        $tplt = !isset($template['ARCHIVELIST_HEADER']) ? '' : $template['ARCHIVELIST_HEADER'];
+
         echo TEMPLATE::fill($tplt, $archdata);
 
         $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
@@ -732,6 +763,11 @@ class BLOG {
         //$blogurl = createBlogLink($this->getURL(), $linkparams);
 
         $template =& $manager->getTemplate($template);
+
+        // Note: ArchiveList is not parced. parcer not called.
+        // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+        // workaround for <%_()%>
+        $this->_workaround_gettext_template($template);
 
         //: Change: Set nocatselected variable
         if ($this->getSelectedCategory()) {

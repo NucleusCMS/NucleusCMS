@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<items>
+  <text>
+    <key><![CDATA[sample]]></key>
+    <default><![CDATA[Sample]]></default>
+    <ja_JP><![CDATA[サンプル]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Sample2]]></key>
+    <ja_JP><![CDATA[サンプル2]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Archives]]></key>
+    <ja_JP><![CDATA[アーカイブ]]></ja_JP>
+  </text>
+
+  <text>
+    <key><![CDATA[Category]]></key>
+    <ja_JP><![CDATA[カテゴリー]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Categories]]></key>
+    <ja_JP><![CDATA[カテゴリー]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Posted by]]></key>
+    <ja_JP><![CDATA[投稿者]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Add comment]]></key>
+    <ja_JP><![CDATA[コメントを投稿する]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Today]]></key>
+    <ja_JP><![CDATA[今日]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[previous month]]></key>
+    <ja_JP><![CDATA[先月]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Previous]]></key>
+    <ja_JP><![CDATA[前の]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Next]]></key>
+    <ja_JP><![CDATA[次の]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Edit item]]></key>
+    <ja_JP><![CDATA[アイテムを編集する]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Admin]]></key>
+    <ja_JP><![CDATA[管理]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Add an item]]></key>
+    <ja_JP><![CDATA[アイテムの追加]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Navigation]]></key>
+    <ja_JP><![CDATA[ナビゲーション]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Blogs]]></key>
+    <ja_JP><![CDATA[ブログ]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Search]]></key>
+    <ja_JP><![CDATA[検索]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Login]]></key>
+    <ja_JP><![CDATA[ログイン]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Links]]></key>
+    <ja_JP><![CDATA[リンク]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Today's entry]]></key>
+    <ja_JP><![CDATA[今日の記事]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Admin Area]]></key>
+    <ja_JP><![CDATA[管理画面]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Add an item to your blog]]></key>
+    <ja_JP><![CDATA[記事を追加する]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Previous Item]]></key>
+    <ja_JP><![CDATA[前の記事]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Next Item]]></key>
+    <ja_JP><![CDATA[次の記事]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Monthly Archives]]></key>
+    <ja_JP><![CDATA[月別 アーカイブ]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[No comments yet]]></key>
+    <ja_JP><![CDATA[コメントはありません]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Make changes to your entry]]></key>
+    <ja_JP><![CDATA[記事を編集する]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Read entry]]></key>
+    <ja_JP><![CDATA[記事を読む]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Search Results]]></key>
+    <ja_JP><![CDATA[検索結果]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Real name]]></key>
+    <ja_JP><![CDATA[名前]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Website]]></key>
+    <ja_JP><![CDATA[ウェブサイト]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Send message]]></key>
+    <ja_JP><![CDATA[メッセージ送信]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Info about]]></key>
+    <ja_JP><![CDATA[情報]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Comments]]></key>
+    <ja_JP><![CDATA[コメント]]></ja_JP>
+  </text>  <text>
+    <key><![CDATA[Add Comment]]></key>
+    <ja_JP><![CDATA[コメントを追加する]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Error!]]></key>
+    <ja_JP><![CDATA[エラー!]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Sidebar]]></key>
+    <ja_JP><![CDATA[サイドバー]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Add comment on]]></key>
+    <ja_JP><![CDATA[コメントを追加する : ]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Read More]]></key>
+    <ja_JP><![CDATA[続きを読む]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Archive for]]></key>
+    <ja_JP><![CDATA[アーカイブ : ]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[You are currently viewing archive for]]></key>
+    <ja_JP><![CDATA[アーカイブ : ]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[All categories]]></key>
+    <ja_JP><![CDATA[すべてのカテゴリ]]></ja_JP>
+  </text>
+
+
+</items>

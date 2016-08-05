@@ -86,15 +86,17 @@ class PARSER {
         // split into action name + arguments
         if (strstr($action,'(')) {
             $paramStartPos = strpos($action, '(');
-            $params = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
+            $paramText = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
             $action = substr($action, 0, $paramStartPos);
-            $params = explode ($this->pdelim, $params);
+            $params = explode ($this->pdelim, $paramText);
 
             // trim parameters
-             foreach ($params as $key => $value) { $params[$key] = trim($value); }
+             foreach ($params as $key => $value)
+                 { $params[$key] = trim($value); }
         } else {
             // no parameters
             $params = array();
+            $paramText = '';
         }
 
         $actionlc = strtolower($action);
@@ -109,6 +111,16 @@ class PARSER {
         if ( in_array($actionlc, $this->actions) || $this->norestrictions )
         {
             call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
+        } else if ($action == '_') {
+            // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+            global $manager;
+            $paramText = trim($paramText);
+            if (strlen($paramText)>0)
+            {
+//               echo $this->handler->skin->_getText($paramText);
+               echo $manager->_getText('skin',$paramText);
+            }
+            return ;
         } else {
             // redirect to plugin action if possible
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {

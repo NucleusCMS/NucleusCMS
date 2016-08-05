@@ -1,64 +1,64 @@
 <!-- page menu -->
 <div class="sidebar">
 <dl class="sidebardl">
-<dt>Navigation</dt>
+<dt><%_(Navigation)%></dt>
 
 <!-- archive: navigation -->
 <%if(skintype,archive)%>
 <%if(archiveprevexists)%>
-<dd><a href="<%prevlink%>" title="Previous month">Previous <%archivetype%></a></dd>
+<dd><a href="<%prevlink%>" title="<%_(Previous month)%>"><%_(Previous)%> <%archivetype%></a></dd>
 <%else%>
 <dd>&nbsp;</dd>
 <%endif%>
 <%if(archivenextexists)%>
-<dd><a href="<%nextlink%>" title="Next month">Next <%archivetype%></a></dd>
+<dd><a href="<%nextlink%>" title="Next month"><%_(Next)%> <%archivetype%></a></dd>
 <%else%>
 <dd>&nbsp;</dd>
 <%endif%>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
-<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
+<dd><a href="<%archivelink%>" title="<%_(Archives)%>"><%_(Archives)%></a></dd>
 <%endif%>
 
 <!-- archivelist: navigation -->
 <%if(skintype,archivelist)%>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
-<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
+<dd><a href="<%archivelink%>" title="<%_(Archives)%>"><%_(Archives)%></a></dd>
 <%endif%>
 
 <!-- error: navigation -->
 <%if(skintype,error)%>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
 <%endif%>
 
 <!-- index: navigation -->
 <%if(skintype,index)%>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
-<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
+<dd><a href="<%archivelink%>" title="<%_(Archives)%>"><%_(Archives)%></a></dd>
 <%endif%>
 
 <!-- item: navigation -->
 <%if(skintype,item)%>
-<dd><a href="<%nextlink%>" title="Previous item">Previous Item</a></dd>
-<dd><a href="<%prevlink%>" title="Next item">Next Item</a></dd>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
-<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+<dd><a href="<%nextlink%>" title="<%_(Previous item)%>"><%_(Previous item)%></a></dd>
+<dd><a href="<%prevlink%>" title="<%_(Next item)%>"><%_(Next item)%></a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
+<dd><a href="<%archivelink%>" title="<%_(Archives)%>"><%_(Archives)%></a></dd>
 <%endif%>
 
 <!-- member: navigation -->
 <%if(skintype,member)%>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
 <%endif%>
 
 <!-- search: navigation -->
 <%if(skintype,search)%>
-<dd><a href="<%todaylink%>" title="Today's entry">Today</a></dd>
-<dd><a href="<%archivelink%>" title="Archives">Archives</a></dd>
+<dd><a href="<%todaylink%>" title="<%_(Today's entry)%>"><%_(Today)%></a></dd>
+<dd><a href="<%archivelink%>" title="<%_(Archives)%>"><%_(Archives)%></a></dd>
 <%endif%>
 
 <!-- admin link, only visible if logged in -->
 <%if(loggedin)%>
-<dd><a href="<%adminurl%>" title="Admin Area">Admin</a></dd>
-<dd><a href="<%addlink%>" onclick="<%addpopupcode%>" title="Add an item to your blog">Add an item</a></dd>
+<dd><a href="<%adminurl%>" title="<%_(Admin Area)%>"><%_(Admin)%></a></dd>
+<dd><a href="<%addlink%>" onclick="<%addpopupcode%>" title="<%_(Add an item to your blog)%>"><%_(Add an item)%></a></dd>
 <%endif%>
 </dl>
 </div>
@@ -68,7 +68,7 @@
 <%if(skintype,member)%><%else%>
 <div class="sidebar">
 <dl class="sidebardl">
-<dt>Categories</dt>
+<dt><%_(Categories)%></dt>
 <%categorylist(default/index)%>
 </dl>
 </div>
@@ -77,7 +77,7 @@
 <!-- bloglist-->
 <div class="sidebar">
 <dl class="sidebardl">
-<dt>Blogs</dt>
+<dt><%_(Blogs)%></dt>
 <%bloglist(default/index)%>
 </dl>
 </div>
@@ -85,7 +85,7 @@
 <!-- search form -->
 <div class="sidebar">
 <dl class="sidebardl">
-<dt>Search</dt>
+<dt><%_(Search)%></dt>
 <dd><%searchform%></dd>
 </dl>
 </div>
@@ -93,7 +93,7 @@
 <!-- login form -->
 <div class="sidebar">
 <dl class="sidebardl">
-<dt>Login</dt>
+<dt><%_(Login)%></dt>
 <dd><%loginform%></dd>
 </dl>
 </div>
@@ -101,7 +101,7 @@
 <!-- links -->
 <div class="sidebar">
 <dl class="sidebardl">
-<dt>Links</dt>
+<dt><%_(Links)%></dt>
 <dd><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></dd>
 <dd><a href="http://docs.nucleuscms.org/" title="Nucleus CMS Documentation">docs.nucleuscms.org</a></dd>
 <dd><a href="http://forum.nucleuscms.org" title="Nucleus CMS Support Forum">forum.nucleuscms.org</a></dd>
