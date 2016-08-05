@@ -537,6 +537,10 @@ class SKIN {
         if (is_null($cached_array))
         {
             $cached_array = array();
+            if (!extension_loaded('SimpleXML')) {
+                addToLog(DEBUG , 'Error: SimpleXML not loaded');
+                return $text;
+            }
             // skin for default
             $filename = $DIR_SKINS.'default/skintext.xml';
             if (!is_file($filename))

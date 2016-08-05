@@ -30,7 +30,7 @@
 	-- Start Of Configurable Part --
 */
 
-define('ENABLE_SQLITE_INSTALL', 1); // allow sqlite install , boolean
+define('ENABLE_SQLITE_INSTALL', ( !extension_loaded('PDO_SQLITE') ? 0 : 1) ); // allow sqlite install , boolean
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
