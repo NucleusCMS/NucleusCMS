@@ -760,6 +760,7 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_set_charset($charset, $dbh=NULL) {
         global $DB_DRIVER_NAME, $SQL_DBH;
         if ( $DB_DRIVER_NAME == 'mysql' ) {
+            $db = ($dbh ? $dbh : sql_get_db());
             switch(strtolower($charset)){
                 case 'utf-8':
                 case 'utf8':
@@ -778,20 +779,34 @@ if (!function_exists('sql_fetch_assoc'))
                     $charset = 'sjis';
                     break;
                 */
+                case 'iso-8859-1':
+                    $charset='latin1';
+                    break;
                 default:
-// Todo: chnage default utf8
-                    $charset = 'latin1';
+                    $converted = FALSE;
+                    if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
+                    {
+                        // ISO 8859-  2 8 7 9 13
+                        $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
+                        if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset']) )
+                        {
+                            $charset = $items['Charset'];
+                            $converted = TRUE;
+                        }
+                    }
+                    if (!$converted)
+                        $charset = 'utf8';
                     break;
             }
 
-            $db = ($dbh ? $dbh : sql_get_db());
             $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($db))));
             if (version_compare($mySqlVer, '4.1.0', '>='))
             {
                 $res = $db->exec("SET CHARACTER SET " . $charset);
             }
+            return $res;
         }
-        return $res;
+        return TRUE;
     }
 
     function sql_print_error($text)
