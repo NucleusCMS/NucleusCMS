@@ -35,6 +35,8 @@ define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql mo
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
 
+define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
+
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
 if (preg_match('#/install$#', $path))
@@ -506,7 +508,8 @@ function showInstallForm() {
                           switch ($input_lang)
                           {
                               case 'ja' :
-//                                  echo "\r<option value=\"ujis\" >EUC-JP</option>\n";
+                                  if (function_exists('mb_convert_encoding') && ENABLE_INSTALL_LANG_EUCJP)
+                                      echo "\r<option value=\"ujis\" >EUC-JP</option>\n";
                                   break;
                               default :
                                   echo "\t<option value=\"latin1\" >ISO-8859-1</option>\n";
@@ -747,7 +750,7 @@ function doInstall() {
 	$user_email = postVar('User_email');
 	$blog_name = postVar('Blog_name');
 	$blog_shortname = postVar('Blog_shortname');
-	$charset = postVar('charset');
+	$charset = strtolower(postVar('charset'));
 	$config_adminemail = $user_email;
 	$config_sitename = $blog_name;
 
@@ -790,15 +793,28 @@ function doInstall() {
 		array_push($errors, _ERROR4);
 	}
 
-	if ($charset == 'latin1')
-	{
-		if(!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1');
-	}
-	else
-	{
-		if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
-        $charset == 'utf8';
-	}
+    if (!function_exists('mb_convert_encoding') && $charset != 'latin1')
+        $charset = 'utf8';
+
+    switch ($charset)
+    {
+        case 'latin1': if(!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1');
+            define('_CHARSET_INSTALL', 'iso-8859-1');
+            break;
+        case 'ujis':
+            if (ENABLE_INSTALL_LANG_EUCJP) {
+                if(!defined('_CHARSET')) define('_CHARSET', 'EUC-JP');
+                define('_CHARSET_INSTALL', 'EUC-JP');
+            } else {
+                if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
+                $charset = 'utf8';
+            }
+            break;
+        default :
+            if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
+            $charset = 'utf8';
+            define('_CHARSET_INSTALL', 'UTF-8');
+    }
 
 	// TODO: add action.php check
 	if (!endsWithSlash($config_indexurl) || !endsWithSlash($config_adminurl) || !endsWithSlash($config_mediaurl) || !endsWithSlash($config_pluginurl) || !endsWithSlash($config_skinsurl) ) {
@@ -1030,30 +1046,32 @@ function doInstall() {
 	}
 
 	// 5a make first post
-		$itm_title = sql_real_escape_string(sprintf(_1ST_POST_TITLE, NUCLEUS_VERSION));
-		$itm_body  = sql_real_escape_string(_1ST_POST);
-		$itm_more  = sql_real_escape_string(_1ST_POST2);
+    // UTF-8
+    $itm_title = sprintf(_1ST_POST_TITLE, NUCLEUS_VERSION);
+    $itm_body  = _1ST_POST;
+    $itm_more  = _1ST_POST2;
+
 	$newpost = "INSERT INTO "
 			 . tableName('nucleus_item')
 			 . " VALUES ("
 			 . "1, "
-			 . "'" . $itm_title . "',"
-			 . " '" . $itm_body . "',"
-			 . " '" . $itm_more . "',"
+			 . sql_quote_string($itm_title) . ","
+			 . sql_quote_string($itm_body) . ","
+			 . sql_quote_string($itm_more) . ","
 			 . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
 	sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '): ' . sql_error() );
 
     if (DEBUG_INSTALL_STEPS)
         echo sprintf("Step6(%d)", __LINE__);
 	// 6. update global settings
-	updateConfig('IndexURL', $config_indexurl);
-	updateConfig('AdminURL', $config_adminurl);
-	updateConfig('MediaURL', $config_mediaurl);
-	updateConfig('SkinsURL', $config_skinsurl);
-	updateConfig('PluginURL', $config_pluginurl);
-	updateConfig('ActionURL', $config_actionurl);
+	updateConfig('IndexURL',   $config_indexurl);
+	updateConfig('AdminURL',   $config_adminurl);
+	updateConfig('MediaURL',   $config_mediaurl);
+	updateConfig('SkinsURL',   $config_skinsurl);
+	updateConfig('PluginURL',  $config_pluginurl);
+	updateConfig('ActionURL',  $config_actionurl);
 	updateConfig('AdminEmail', $config_adminemail);
-	updateConfig('SiteName', $config_sitename);
+	updateConfig('SiteName',   $config_sitename);
 
     $install_lang_defs = get_install_lang_defs();
     if ($charset == 'utf8') {
@@ -1063,6 +1081,8 @@ function doInstall() {
             updateConfig('Language', $install_lang_defs[$lang]['name']);
 	} else if ($charset == 'latin1') {
 			updateConfig('Language',   'english');
+	} else if ($charset == 'ujis') {
+			updateConfig('Language',   'japanese-euc');
 	} else {
 			updateConfig('Language',   'english-utf8');
     }
@@ -1075,8 +1095,8 @@ function doInstall() {
 			. " SET mname='" . sql_real_escape_string($user_name) . "',"
 			. " mrealname='" . sql_real_escape_string($user_realname) . "',"
 			. " mpassword='" . md5(addslashes($user_password) ) . "',"
-			. " murl='" . sql_real_escape_string($config_indexurl) . "',"
-			. " memail='" . sql_real_escape_string($user_email) . "',"
+			. " murl='"      . sql_real_escape_string($config_indexurl) . "',"
+			. " memail='"    . sql_real_escape_string($user_email) . "',"
 			. " madmin=1,"
 			. " mcanlogin=1"
 			. " WHERE mnumber=1";

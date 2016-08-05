@@ -1464,6 +1464,8 @@ function getMailFooter() {
 function getLanguageName() {
     global $CONF, $member;
 
+    LoadCoreLanguage();
+
     if ($member && $member->isLoggedIn() ) {
         // try to use members language
         $memlang = $member->getLanguage();
@@ -1510,6 +1512,7 @@ function LoadCoreLanguage()
             }
         }
     }
+    sql_set_charset(_CHARSET);
 }
 
 /**
@@ -2592,25 +2595,26 @@ function init_nucleus_compatibility_mysql_handler()
     // end new for 3.5 sql_* wrapper
 
     global $DB_PREFIX , $MYSQL_PREFIX;
-    if ( !isset($DB_PREFIX) && isset($MYSQL_PREFIX) )
-        $DB_PREFIX =& $MYSQL_PREFIX;
+    if ( !isset($DB_PREFIX) || !is_string($DB_PREFIX) )
+        $DB_PREFIX = !empty(@$MYSQL_PREFIX) ? $MYSQL_PREFIX : '';
 
     global $DB_HOST , $MYSQL_HOST;
-    if ( !isset($DB_HOST) && isset($MYSQL_HOST) )
-        $DB_HOST = @$MYSQL_HOST;
+    if ( !isset($DB_HOST) || !is_string($DB_HOST) )
+        $DB_HOST = !empty(@$MYSQL_HOST) ? $MYSQL_HOST : '';
 
     global $DB_USER , $MYSQL_USER;
-    if ( !isset($DB_USER) && isset($MYSQL_USER) )
-        $DB_USER = @$MYSQL_USER;
+    if ( !isset($DB_USER) || !is_string($DB_USER) )
+        $DB_USER = !empty(@$MYSQL_USER) ? $MYSQL_USER : '';
 
     global $DB_PASSWORD , $MYSQL_PASSWORD;
-    if ( !isset($DB_PASSWORD) && isset($MYSQL_PASSWORD) )
-        $DB_PASSWORD = @$MYSQL_PASSWORD;
+    if ( !isset($DB_PASSWORD) || !is_string($DB_PASSWORD) )
+        $DB_PASSWORD = !empty(@$MYSQL_PASSWORD) ? $MYSQL_PASSWORD : '';
 
     global $DB_DATABASE , $MYSQL_DATABASE;
-    if ( !isset($DB_DATABASE) && isset($MYSQL_DATABASE) )
-        $DB_DATABASE = @$MYSQL_DATABASE;
+    if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) )
+        $DB_DATABASE = !empty(@$MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
 
+    $MYSQL_PREFIX   = @$MYSQL_PREFIX;
     $MYSQL_HOST     = @$DB_HOST;
     $MYSQL_USER     = @$DB_USER;
     $MYSQL_PASSWORD = @$DB_PASSWORD;
@@ -2708,7 +2712,7 @@ function getValidLanguage($lang)
     // non utf-8
     if (checkBrowserLang('ja'))
     {
-        if (preg_match('#japanese$#i', $lang) && checkLanguage($lang))
+        if (preg_match('#^japanese#i', $lang) && checkLanguage($lang))
             return $lang;
         $lang = preg_replace('#-[a-z]$#i', '', $lang) . '-utf8';
     }

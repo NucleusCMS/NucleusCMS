@@ -151,7 +151,7 @@ if (!function_exists('sql_fetch_assoc'))
                     $resource->bindColumn('Value', $charset);
                     $resource->fetchAll();
                     // in trouble of encoding,uncomment the following line.
-                    // $charset = "ujis";
+                    // $charset = "ujis";    // Japanese EUC-JP
                     // $charset = "utf8";
                 }
                 sql_set_charset($charset , $DBH);
@@ -447,7 +447,9 @@ if (!function_exists('sql_fetch_assoc'))
     {
         // DELETE, INSERT, UPDATE
         // do not use : SELECT
-        return $res->rowCount();
+        if (is_object($res))
+            return $res->rowCount();
+        return 0;
     }
 
 /**
@@ -763,7 +765,7 @@ if (!function_exists('sql_fetch_assoc'))
                 case 'utf8':
                     $charset = 'utf8';
                     break;
-                case 'euc-jp':
+                case 'euc-jp':  // Japanese EUC-JP
                 case 'ujis':
                     $charset = 'ujis';
                     break;
@@ -771,12 +773,13 @@ if (!function_exists('sql_fetch_assoc'))
                     $charset = 'gb2312';
                     break;
                 /*
-                case 'shift_jis':
+                case 'shift_jis':  // Japanese Shift_JIS
                 case 'sjis':
                     $charset = 'sjis';
                     break;
                 */
                 default:
+// Todo: chnage default utf8
                     $charset = 'latin1';
                     break;
             }
