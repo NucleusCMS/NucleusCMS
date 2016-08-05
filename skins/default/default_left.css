@@ -404,9 +404,8 @@ a:hover, a:active
 }
 .searchform .formbutton
 {
-	width: 60px;
 	font-family: Tahoma, Arial, Trebuchet MS, Verdana, sans-serif;
-	padding: 2px 2px;
+	padding: 2px 15px;
 }
 .loginform .formfield
 {
