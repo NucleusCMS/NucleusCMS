@@ -619,6 +619,11 @@ class BLOG {
         return $query;
     }
 
+    public function _workaround_gettext_callback($m)
+    {
+        return SKIN::_getText($m[1]);
+    }
+
     private function _workaround_gettext_template(&$template)
     {
         // Note: ArchiveList is not parced. parcer not called.
@@ -626,7 +631,7 @@ class BLOG {
         // workaround for <%_()%>
         foreach($template as $key => $value)
         if ((strlen($value) > 0) && strpos($value, "<%_(")!==FALSE)
-          $template[$key] = preg_replace_callback ("#<%_\(([^)]*?)\)%>#", function ($m) { return SKIN::_getText($m[1]);  }, $value);
+          $template[$key] = preg_replace_callback ("#<%_\(([^)]*?)\)%>#", array($this, '_workaround_gettext_callback'), $value);
 //        var_dump($template);
         if (!isset($template['LOCALE']) || !$template['LOCALE'])
         {
@@ -954,7 +959,7 @@ class BLOG {
                . ' WHERE bnumber=' . $this->blogid;
         $res = sql_query($query);
 
-        $this->isValid = ($res && !empty( $this->settings = sql_fetch_assoc($res) ));
+        $this->isValid = ($res && ( $this->settings = sql_fetch_assoc($res) ) && !empty($this->settings) ); // PHP(-5.4) Parse error: empty($var = "")  syntax error
         if (!$this->isValid)
             $this->settings = array();
     }

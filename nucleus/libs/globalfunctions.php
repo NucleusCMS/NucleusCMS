@@ -307,7 +307,8 @@ if ($action == 'login') {
         }
         if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
         {
-            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"])[0];
+            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"]);
+            $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
             $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
             if ($remote_proxy_host !==FALSE && $remote_proxy_host!=$remote_proxy_ip)
@@ -2603,23 +2604,23 @@ function init_nucleus_compatibility_mysql_handler()
 
     global $DB_PREFIX , $MYSQL_PREFIX;
     if ( !isset($DB_PREFIX) || !is_string($DB_PREFIX) )
-        $DB_PREFIX = !empty(@$MYSQL_PREFIX) ? $MYSQL_PREFIX : '';
+        $DB_PREFIX = !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '';
 
     global $DB_HOST , $MYSQL_HOST;
     if ( !isset($DB_HOST) || !is_string($DB_HOST) )
-        $DB_HOST = !empty(@$MYSQL_HOST) ? $MYSQL_HOST : '';
+        $DB_HOST = !empty($MYSQL_HOST) ? $MYSQL_HOST : '';
 
     global $DB_USER , $MYSQL_USER;
     if ( !isset($DB_USER) || !is_string($DB_USER) )
-        $DB_USER = !empty(@$MYSQL_USER) ? $MYSQL_USER : '';
+        $DB_USER = !empty($MYSQL_USER) ? $MYSQL_USER : '';
 
     global $DB_PASSWORD , $MYSQL_PASSWORD;
     if ( !isset($DB_PASSWORD) || !is_string($DB_PASSWORD) )
-        $DB_PASSWORD = !empty(@$MYSQL_PASSWORD) ? $MYSQL_PASSWORD : '';
+        $DB_PASSWORD = !empty($MYSQL_PASSWORD) ? $MYSQL_PASSWORD : '';
 
     global $DB_DATABASE , $MYSQL_DATABASE;
     if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) )
-        $DB_DATABASE = !empty(@$MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
+        $DB_DATABASE = !empty($MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
 
     $MYSQL_PREFIX   = @$MYSQL_PREFIX;
     $MYSQL_HOST     = @$DB_HOST;

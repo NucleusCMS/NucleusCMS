@@ -351,7 +351,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
         $sql = 'SHOW TABLES LIKE :name ';
         $res = mysql_query($sql);
-        return ($res && !empty(mysql_fetch_array($res)));
+        return ($res && !($r = mysql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
     }
 
     /**

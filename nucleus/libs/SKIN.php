@@ -229,7 +229,7 @@ class SKIN {
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
         $res = sql_query($query);
 
-        if (!$res || (empty($r = sql_fetch_array($res))))
+        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // PHP(-5.4) Parse error: empty($var = "")  syntax error
             return '';
         return $r[0];
     }
