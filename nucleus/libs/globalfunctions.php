@@ -2695,8 +2695,9 @@ function checkBrowserLang($locale)
 function getValidLanguage($lang)
 {
     global $DB_DRIVER_NAME;
+    $pattern_replace = '#-[^\-]*$#i';
     if ( $DB_DRIVER_NAME != 'mysql' || (defined('_CHARSET') && constant('_CHARSET') == 'UTF-8') )
-        $lang = preg_replace('#-[a-z]$#i', '', $lang) . '-utf8';
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
 
     if ( preg_match('#-utf8$#i', $lang) )
     {
@@ -2704,7 +2705,7 @@ function getValidLanguage($lang)
             return $lang;
         if (checkBrowserLang('ja') && checkLanguage('japanese-utf8'))
             return 'japanese-utf8';
-        $lang = preg_replace('#-[a-z]$#i', '', $lang) . '-utf8';
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
         if ( checkLanguage($lang) )
             return $lang;
         return 'english-utf8';
@@ -2714,7 +2715,7 @@ function getValidLanguage($lang)
     {
         if (preg_match('#^japanese#i', $lang) && checkLanguage($lang))
             return $lang;
-        $lang = preg_replace('#-[a-z]$#i', '', $lang) . '-utf8';
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
     }
 
     if ( checkLanguage($lang) )

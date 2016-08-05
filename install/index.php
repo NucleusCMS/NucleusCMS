@@ -964,8 +964,9 @@ function doInstall() {
 	 * This processing is added by Nucleus CMS Japanese Package Release Team as of Mar.30, 2011
 	*/
 	if ($is_install_mysql)
-		sql_set_charset($charset);
-	
+	{
+		sql_set_charset('utf8'); // Don't localized
+	}
 
 	// 5. execute queries
 	if ($is_install_sqlite)
