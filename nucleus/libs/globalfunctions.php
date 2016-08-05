@@ -1513,6 +1513,13 @@ function LoadCoreLanguage()
         }
     }
     sql_set_charset(_CHARSET);
+
+    ini_set('default_charset', _CHARSET);
+    if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
+    {
+//        ini_set('default_charset', ''); // To suppress the content type of http header
+//        mb_internal_encoding(_CHARSET);
+    }
 }
 
 /**
