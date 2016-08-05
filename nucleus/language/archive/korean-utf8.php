@@ -5,6 +5,17 @@
 // Nucleus version: v1.0-v2.5 based with enamu & sicrone
 //
 
+/********************************************
+ *        Important Settings                *
+ ********************************************/
+if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
+if (!defined('_LOCALE'))  define('_LOCALE',  'ko_KR');  // common locale
+if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Korean');
+
+/********************************************
+ *        Start New for                     *
+ ********************************************/
+
 // START changed/added after 3.1 START
 
 // account activation
@@ -377,9 +388,6 @@ define('_BACKTOMANAGE',				'Nucleus 관리화면으로 돌아가기');
 
 
 
-
-// charset to use 
-define('_CHARSET',					'utf-8');
 
 // global stuff
 define('_LOGOUT',					'로그아웃');

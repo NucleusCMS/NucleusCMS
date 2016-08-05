@@ -14,6 +14,12 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+/********************************************
+ *        Important Settings                *
+ ********************************************/
+if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
+if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
+if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
 
 /********************************************
  *        Start New for                     *
@@ -101,7 +107,7 @@ define('_PLUGS_TITLE_GETPLUGINS',		'プラグインを入手…');
 define('_ARCHIVETYPE_YEAR', '年');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'新しいバージョンが入手可能かもしれません');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'アップグレードが入手可能かもしれません： v');
-define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPIをサポートしていません。データベースの接続方法を見直してください)");
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "プラグイン %s を読み込めませんでした。(このプラグインは SqlAPI または NotUseDbApi をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
 
 /********************************************
  *        Start New for 3.40                *
@@ -857,8 +863,6 @@ define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
 
 
-// charset to use
-define('_CHARSET',							'UTF-8');
 
 // global stuff
 define('_LOGOUT',							'ログアウト');

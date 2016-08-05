@@ -12,7 +12,9 @@
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
-
+if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
+if (!defined('_LOCALE'))  define('_LOCALE', 'de_DE');
+if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'german');
 
 /********************************************
  *        Start New for 3.71                *
@@ -572,8 +574,6 @@ define('_BACKTOMANAGE',				'Zur&uuml;ck zur Nucleus Verwaltung');
 
 
 
-// charset to use
-define('_CHARSET',					'UTF-8');
 
 // global stuff
 define('_LOGOUT',					'Abmelden');

@@ -11,6 +11,9 @@
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
+if (!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1'); // charset to use
+if (!defined('_LOCALE'))  define('_LOCALE', 'fr_FR');
+if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'french');
 
 /********************************************
  *        Start New for 3.71                *
@@ -810,8 +813,6 @@ define('_BACKTOMANAGE',			'Retour au menu de gestion de Nucleus');
 
 
 
-// charset to use
-define('_CHARSET',			'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',			'D�connexion');
