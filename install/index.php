@@ -277,6 +277,7 @@ function showInstallForm() {
 				 elm_install_db_host.style.display = "block";
 				 elm_install_db_user.style.display = "block";
 				 elm_install_db_password.style.display = "block";
+                 elm_charset.disabled = 0;
 			  }
 			  else
 			  {
@@ -286,6 +287,7 @@ function showInstallForm() {
 				 elm_install_db_user.style.display = "none";
 				 elm_install_db_password.style.display = "none";
                  elm_charset.selectedIndex = 0;
+                 elm_charset.disabled = 1;
 			  }
 			}
 
@@ -1625,7 +1627,8 @@ function _doError($msg) {
 	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
 	<h1><?php echo _ERROR27; ?></h1>
 
-	<p><?php echo _ERROR28; ?> "<?php echo $msg; ?>";</p>
+    <p><?php echo _ERROR28; ?></p>
+    <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
 
 	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
