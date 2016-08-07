@@ -15,9 +15,76 @@
  * English Nucleus Language File
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @copyright Copyright (C) The Nucleus Group
  */
+
+/********************************************
+ *        Important Settings                *
+ ********************************************/
+if (!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1'); // charset to use
+if (!defined('_LOCALE'))  define('_LOCALE', 'en_US');
+if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english');
+
+/********************************************
+ *        Start New for                     *
+ ********************************************/
+
+/********************************************
+ *        Start New for 3.72                *
+ ********************************************/
+define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "Plugin %s was not loaded (does not support SqlApi_%s or SqlApi_SQL92. Please upgrade to the latest version of the plug-ins that support this feature.)");
+
+define('_DEFAULT_DATE_FORMAT_YMD',         '%d/%m/%Y');
+define('_DEFAULT_DATE_FORMAT_YBD',         '%d %B %Y');
+define('_DEFAULT_DATE_FORMAT_YM',          '%m %Y');
+define('_DEFAULT_DATE_FORMAT_YB',          '%B %Y');
+define('_DEFAULT_DATE_FORMAT_MD',          '%m %d');
+define('_DEFAULT_DATE_FORMAT_BD',          '%B %d');
+define('_DEFAULT_DATE_FORMAT_Y',           '%Y');
+
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'About system core');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'Core version');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'Core patch level');
+define('_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION', 'Core database version');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    'Core important settings');
+
+define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');
+
+// Blog option
+define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
+
+/********************************************
+ *        Start New for 3.71                *
+ ********************************************/
+define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
+define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'Database Driver');
+define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
+
+define('_TEAM_NO_SELECTABLE_MEMBERS',         'team does not have selectable members');
+
+define('_LISTS_FORM_SELECT_ALL_CATEGORY',    'All categories');
+
+define('_LIST_BACK_TO',				'Back to %s');
+define('_LIST_COMMENT_LIST_FOR_BLOG',		'Blog comments list');
+define('_LIST_COMMENT_LIST_FOR_ITEM',		'Comments list of items');
+define('_LIST_COMMENT_VIEW_ITEM',			'Show item');
+define('_LISTS_VIEW',						'Show');
+
+define('_LISTS_ITEM_COUNT',      'Item count');
+define('_LISTS_ORDER',           'order');
+
+define('_EBLOG_CAT_ORDER',            "This is the order of the category.<br />\nInput value will be on the smaller in number (standard 100)");
+define('_EBLOG_CAT_ORDER_DESC2',      "Input value will be on the smaller in number (standard 100)");
+
+// category order changes (batch)
+define('_BATCH_CAT_CAHANGE_ORDER',                 'change the order');
+define('_ERROR_CAHANGE_CATEGORY_ORDER',            'You can not change the sort');
+define('_CAHANGE_CATEGORY_ORDER_TITLE',            'Please specify the order of the category');
+define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',     'The order of the following categories will be changed at once.If it is good, please press the button.');
+define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',        'Change the order');
+
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',        'Failed to Load XML');
 
  /********************************************
  *        Start New for 3.65                *
@@ -26,7 +93,7 @@ define('_LISTS_AUTHOR', 'Author');
 define('_OVERVIEW_OTHER_DRAFTS', 'Other Drafts');
  
 /********************************************
- *        Start New for 3.6x                *
+ *        Start New for 3.64                *
  ********************************************/
 define('_ERROR_USER_TOO_LONG', 'Please enter a name shorter than 40 characters.');
 define('_ERROR_EMAIL_TOO_LONG', 'Please enter an email shorter than 100 characters.');
@@ -37,7 +104,6 @@ define('_ERROR_URL_TOO_LONG', 'Please enter a website shorter than 100 character
  ********************************************/
 define('_SETTINGS_ADMINCSS',		'Admin Area Style');
 
- 
 /********************************************
  *        Start New for 3.50                *
  ********************************************/
@@ -45,8 +111,7 @@ define('_PLUGS_TITLE_GETPLUGINS',		'get more plugins...');
 define('_ARCHIVETYPE_YEAR', 'year');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'Newer Version Available');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'Upgrade available: v');
-define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi and you are trying to use a non-mysql db)");
-
+define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "Plugin %s was not loaded (does not support SqlApi or NotUseDbApi. Please upgrade to the latest version of the plug-ins that support this feature.)");
 
 /********************************************
  *        Start New for 3.40                *
@@ -246,7 +311,7 @@ define('_ACTIONURL_NOTLONGER_PARAMATER',			'actionurl is not longer a parameter 
 // ADMIN.php addToTemplate 'Query error: '
 define('_ADMIN_SQLDIE_QUERYERROR',					'Query error: ');
 
-// backyp.php Backup WARNING
+// backup.php Backup WARNING
 define('_BACKUP_BACKUPFILE_TITLE',					'This is a backup file generated by Nucleus');
 define('_BACKUP_BACKUPFILE_BACKUPDATE',				'backup-date:');
 define('_BACKUP_BACKUPFILE_NUCLEUSVERSION',			'Nucleus CMS version:');
@@ -265,7 +330,6 @@ define('_TEAM_ADD_NEWTEAMMEMBER',					'Added %s (ID=%d) to the team of blog "%s"
 
 // ADMIN.php systemoverview()
 define('_ADMIN_SYSTEMOVERVIEW_HEADING',				'System Overview');
-define('_ADMIN_SYSTEMOVERVIEW_PHPANDMYSQL',			'PHP and MySQL');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONS',			'Versions');
 define('_ADMIN_SYSTEMOVERVIEW_PHPVERSION',			'PHP version');
 define('_ADMIN_SYSTEMOVERVIEW_MYSQLVERSION',		'MySQL version');
@@ -333,7 +397,6 @@ define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xht
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'Japanese - &#26085;&#26412;&#35486; (UTF-8)');
 define('_LANGUAGEFILES_JAPANESE-EUC',				'Japanese - &#26085;&#26412;&#35486; (EUC)');
-define('_LANGUAGEFILES_JAPANESE-SJIS',				'Japanese - &#26085;&#26412;&#35486; (Shift-JIS)');
 define('_LANGUAGEFILES_ENGLISH-UTF8',				'English - English (UTF-8)');
 define('_LANGUAGEFILES_ENGLISH',					'English - English (iso-8859-1)');
 /*
@@ -353,8 +416,7 @@ define('_LANGUAGEFILES_GALEGO',						'Galego - Galego (iso-8859-1)');
 define('_LANGUAGEFILES_GERMAN',						'German - Deutsch (iso-8859-1)');
 define('_LANGUAGEFILES_HUNGARIAN',					'Hungarian - Magyar (iso-8859-2)');
 define('_LANGUAGEFILES_ITALIANO',					'Italiano - Italiano (iso-8859-1)');
-define('_LANGUAGEFILES_KOREAN-EUC-KR',				'Korean - &#54620;&#44397;&#50612; (euc-kr)');
-define('_LANGUAGEFILES_KOREAN-UTF',					'Korean - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_KOREAN-UTF8',				'Korean - &#54620;&#44397;&#50612; (utf-8)');
 define('_LANGUAGEFILES_LATVIAN',					'Latvian - Latvie&scaron;u (windows-1257)');
 define('_LANGUAGEFILES_NEDERLANDS',					'Duch - Nederlands (iso-8859-15)');
 define('_LANGUAGEFILES_PERSIAN',					'Persian - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
@@ -791,8 +853,6 @@ define('_BACKTOMANAGE',				'Back to Nucleus management');
 
 
 
-// charset to use
-define('_CHARSET',					'iso-8859-1');
 
 // global stuff
 define('_LOGOUT',					'Log Out');

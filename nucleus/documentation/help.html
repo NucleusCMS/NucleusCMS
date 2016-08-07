@@ -3450,7 +3450,27 @@ all
 			<li><strong>author,isonteam</strong>: checks if the comment author is a member of blog team of current item. (comment template fields only)</li>
 		</ul>
 	</li>
-	
+
+    <li><strong>authorvisible</strong> : check if allow the display of the item's author<br>
+      &lt;%if(authorvisible)%&gt;<br>
+      投稿者: &lt;%if(loggedin)%&gt;&lt;a href=&quot;&lt;%authorlink%&gt;&quot; title=&quot;Author: &lt;%author%&gt;&quot;&gt;&lt;%author%&gt;&lt;/a&gt;&lt;%endif%&gt;
+      <br>&lt;%endif%&gt;
+    </li>
+    <li><strong>commentclosed </strong> : check if comment is closed.<br>
+      &lt;%if(commentclosed)%&gt;<br>
+      Closed<br>
+      &lt;%else%&gt;<br>
+      Input comment<br>
+      &lt;%endif%&gt;<br>
+    </li>
+    <li><strong>hascomment</strong> :  check if item has comments.<br>
+      &lt;%if(hascomment)%&gt;<br>
+        comment list<br>
+      &lt;%else%&gt;<br>
+        No comments<br>
+      &lt;%endif%&gt;<br>
+    </li>
+    
 </ul>
 
 <h2>Skintypes</h2>

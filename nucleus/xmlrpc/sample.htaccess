@@ -1,0 +1,12 @@
+Order allow,deny
+Deny from all
+
+<Files ~ "^server.php$">
+##### Allow all access
+Allow from all
+### example:
+##### Allow softbank ybb
+# Allow from .bbtec.net
+##### Allow from local_ip_address
+# Allow from 127.0.0.1
+</Files>

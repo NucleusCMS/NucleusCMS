@@ -3,8 +3,8 @@
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
-		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" /> 
-		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />		
+		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
+		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
@@ -169,5 +169,4 @@
 	</script><%endif%>
 
 	</body>
-	</html>
-
+</html>

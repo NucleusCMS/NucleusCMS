@@ -1,7 +1,7 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -61,8 +61,7 @@
  * mt.supportedMethods
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @copyright Copyright (C) The Nucleus Group
  */
 $CONF = array();
 $DIR_LIBS = '';
@@ -126,12 +125,10 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 	// get category id (or id for default category when false category)
 	$catid = $blog->getCategoryIdFromName($catname);
 
-	if ($publish == 1) {
+	if ($publish == 1)
 		$draft = 0;
-	}
-	else {
+	else
 		$draft = 1;
-	}
 	
 	// not needed because BLOG:additem has the same code
 	/*if ($closed != 1)

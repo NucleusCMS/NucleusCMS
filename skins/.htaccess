@@ -2,3 +2,7 @@
 Order allow,deny
 Deny from all
 </FilesMatch>
+<FilesMatch "^skintext\.xml$">
+Order allow,deny
+Deny from all
+</FilesMatch>

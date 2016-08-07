@@ -30,9 +30,8 @@ This file contains tips and suggestions that might prove useful.
 	<li>
 		<a href="#searchengines">How to get your archives into search engines?</a>
 		<ul>
-			<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
+			<li><a href="#fancyurls">Fancy URLs</a></li>
 			<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
-			<li><a href="#fancyurls-2">Fancy URLs 2</a></li>
 		</ul>
 	</li>
 	<li><a href="#filepermissions">How to set file/dir permissions?</a></li>
@@ -69,30 +68,24 @@ Nucleus creates archives dynamically on users requests. The URL is then of the f
 <p>Two solutions are listed below. They're not guaranteed to work, however (wether they work or not depends on the webserver configuration)</p>
 
 <ol>
-	<li><a href="#searchengines-fancyurls">Fancy URLs</a></li>
+	<li><a href="#fancyurls">Fancy URLs</a></li>
 	<li><a href="#searchengines-rewrite">mod_rewrite</a></li>
-	<li><a href="#fancyurls-2">Fancy URLs 2</a></li>
 </ol>
 
 
-<h2><a name="searchengines-fancyurls"></a>Fancy URLs</h2>
+<h2><a name="fancyurls"></a>Fancy URLs</h2>
 
-<p>Nucleus v2.0 has a new option in the global settings 'URL mode'. Setting it to 'Fancy URL' mode, and performing the steps below, will make your URLs look like <code>http://example.org/item/1234</code> instead of <code>http://example.org/index.php?itemid=1234</code>. Search engines like these URLs better.</p>
+<p>Nucleus CMS offers an easier way to enable the basic Fancy URLs. There are only three steps necessary to install this solution:</p>
 
-<p>Installation steps:</p>
+<ol><li>Copy or move the <code>.htaccess</code> file from <code>extra/fancyurl</code> to the root directory of your Nucleus CMS installation.</li>
+<li>Edit the <code>index.php</code> file which you can find in your root directory. Change value of the <code>CONF['Self']</code> from the  default value (<code>'index.php'</code>) to the URL that points to your root directory, for example:<br />
+<pre>CONF['Self'] = 'http://yourdomain.com/yourNucleusDirectory';</pre>
+Don't use a slash at the end.<br /></li>
+<li>Enable the 'Fancy URLs' in the Nucleus admin area, you can find this setting under <em>Management &gt; Configuration</em>.</li></ol>
 
-<ol>
-	<li>Copy all files from the <code>/extra/fancyurls</code> directory (except for <code>index.html</code>) to your main nucleus dir (that's where your <code>index.php</code> and <code>action.php</code> file are)</li>
-	<li>If you have an already existing <code>.htaccess</code> file (most ftp-programs don't show hidden files by default, so don't start uploading it without checking your server). If you do, download that old one first, and copy the contents of the new <code>.htaccess</code> file (from the fancyurls folder) in your old one, and upload that...</li>
-	<li>Edit the <code>fancyurls.config.php</code> file so that <code>$CONF['Self']</code> points to your main directory. <br /><strong>NOTE: this time, and only this time, the URL should <em>NOT</em> end in a slash</strong></li>
-	<li>Also edit the <code>$CONF['Self']</code> variable in your <code>index.php</code>, if you don't want to end up with <code>index.php/item/1234</code> urls when people come via that way</li>
-	<li>Enable 'Fancy URLs' in the Nucleus admin area (nucleus management / edit settings)</li>
-	<li>Off you go!</li>
-</ol>
+<p>Everything done.</p>
 
-<p>When it doesn't work (e.g. you receive an Internal Server Error): bad luck... Remove the files again (don't forget the hidden file <code>.htaccess</code>) and reset the Fancy URLs setting in the admin area.</p>
-
-
+<p>If you want to use rewritten URLs like <code>item/this-is-a-title</code> you can find plugin solutions for it in the Nucleus Plugin Wiki, for example <a href="http://nucleus.slightlysome.net/plugins/lmfancierurl">NP_LMFancierURL</a>.</p>
 
 <h2><a name="searchengines-rewrite"></a>mod_rewrite</h2>
 
@@ -127,20 +120,6 @@ Now all you have to do is to update the link to your blog archives into <code>ar
 And now, wait until Google comes spidering again...
 </p>
 
-
-<h2><a name="fancyurls-2"></a>Fancy URLs 2</h2>
-
-<p>Nucleus CMS version 3.3 offers an easier way to enable the basic Fancy URLs. There are only three steps necessary to install this solution:</p>
-
-<ol><li>Copy or move the <code>.htaccess</code> file from <code>extra/fancyurl-2</code> to the root directory of your Nucleus CMS installation.</li>
-<li>Edit the <code>index.php</code> file which you can find in your root directory. Change value of the <code>CONF['Self']</code> from the  default value (<code>'index.php'</code>) to the URL that points to your root directory, for example:<br />
-<pre>CONF['Self'] = 'http://yourdomain.com/yourNucleusDirectory';</pre>
-Don't use a slash at the end.<br /></li>
-<li>Enable the 'Fancy URLs' in the Nucleus admin area, you can find this setting under <em>Management &gt; Configuration</em>.</li></ol>
-
-<p>Everything done.</p>
-
-<p>If you want to use rewritten URLs like <code>item/this-is-a-title</code> you can find plugin solutions for it in the Nucleus Plugin Wiki, for example <a href="http://wakka.xiffy.nl/fancierurl2">NP_FancierURL2</a>.</p>
 
 <h1>How to set file/dir permissions <a name="filepermissions" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 

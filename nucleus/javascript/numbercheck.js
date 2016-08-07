@@ -1,6 +1,6 @@
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2009 The Nucleus Group
+  * Copyright (C) The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -10,8 +10,6 @@
   *
   * script the check (on the clientside) if a entered value
   * is a valid number and remove the invalid chars
-  *
-  * $Id$
   */
 
 function checkNumeric(f)

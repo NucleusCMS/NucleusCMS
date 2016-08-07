@@ -1,0 +1,229 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
+<head>
+	<!--
+		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+		Copyright (C) 2002-2013 The Nucleus Group
+
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License
+		as published by the Free Software Foundation; either version 2
+		of the License, or (at your option) any later version.
+		(see nucleus/documentation/index.html#license for more info)
+	-->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta http-equiv="Content-Style-Type" content="text/css" />
+    <meta http-equiv="Content-Script-Type" content="text/javascript" />
+    <link rel="index" href="./index.html" />
+	<title>Nucleus - XML-RPC インターフェイス</title>
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+    <style type="text/css">
+        strong {
+            font-weight: bold;
+        }
+        em {
+            font-style: italic;
+        }
+    </style>
+	<script src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("javascript/fontsizeChanger.js");
+		});
+	</script>
+</head>
+<body>
+	<div id="fontSizeChanger">
+	<a href="#top" id="f_small">小</a>
+	<a href="#top" id="f_medium">中</a>
+	<a href="#top" id="f_large">大</a>
+	</div>
+<div id="body">
+
+<div class="heading">
+XML-RPC インターフェイス
+</div>
+
+<h1>はじめに</h1>
+
+<p>
+<a href="index.html">開発者マニュアルに戻る</a>
+</p>
+
+<p>
+このドキュメントはNucleusが提供するXML-RPCインターフェイスと、生成される<a href="#errorcodes">エラーメッセージ</a>についての解説です。この仕様は将来変更される可能性があることに注意して下さい。
+</p>
+
+<div class="note">
+NucleusにおけるXML-RPCインターフェイスのURLは以下のようになります：
+<br />
+<strong>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</strong>
+</div>
+
+<h1><a name="bloggerApi" id="bloggerApi">Blogger API (XML-RPC)</a></h1>
+
+<p>
+Nucleusは<a href="http://www.blogger.com/developers/api/1_docs/">Blogger API</a>に対応しています。これはBloggerと通信するツールやサービスに対して、Nucleusとも通信できるようにするものです。Nucleusの仕様により、いくつかのパラメータに若干の違いがあります。これについては後述の説明を参照して下さい。呼び出しや応答のメソッドは、もちろん、Bloggerのものと同じ構造になっています。
+</p>
+
+<p>
+ここに挙げたリストは利用できるメソッドの一覧です。クリックするとさらに詳しい情報を得ることができます（それぞれのリンク先はBlogger APIの仕様書やその<a href="http://groups.yahoo.com/group/bloggerDev">メーリングリスト</a>です）。
+</p>
+
+<ul>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_newPost.html">blogger.newPost</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_editPost.html">blogger.editPost</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/296">blogger.getPost</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/147">blogger.deletePost</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getUsersBlogs.html">blogger.getUsersBlogs</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/225">blogger.getRecentPosts</a></strong></li>
+	<li><strong><a href="http://groups.yahoo.com/group/bloggerDev/message/315">blogger.getUserInfo</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_getTemplate.html">blogger.getTemplate</a></strong></li>
+	<li><strong><a href="http://www.blogger.com/developers/api/1_docs/xmlrpc_setTemplate.html">blogger.setTemplate</a></strong></li>
+</ul>
+
+
+<p>
+Nucleusは内部的に異なる実装を用いているため、パラメータの扱いに若干の違いがあります。概説すると：
+</p>
+
+<ul>
+	<li>Appkeyは無視されます。</li>
+	<li>Nucleusの場合は本文のあとにタイトルとカテゴリが続きます。Bloggerでは 'コンテンツ' と呼ばれるは本文だけが存在します。これらの追加されたパーツを利用可能にするため、<samp>&lt;title&gt;</samp>や<samp>&lt;category&gt;</samp>をNucleusに送るコンテンツに含めることができます。これらのタグは getRecentPosts の呼び出しでのみ追加されます。</li>
+	<li>Bloggerで 'templates' と呼ばれているものに相当するのが、Nucleusの 'スキン' です。ひとつのシステムに複数のスキンを設定でき、それぞれのスキンをblogごとに使い分けることができます。メソッド blogger.setTemplate と blogger.getTemplate は、Nucleusのblog設定で選択されているblogのデフォルトスキンに影響します。'main' と 'archiveIndex' の二種類のテンプレートは、Nucleusの 'メインの目次ページ' と '月別アーカイブ一覧ページ' に相当します。（<em>訳注： Blogger の仕様がわからないので、この項不確か</em>)</li>
+	<li>項目 <code>publish</code> は、追加した項目がデフォルトでドラフトになるか公開になるかを決める箇所です。<code>blogger.editPost</code> を使う場合は、<code>publish</code> がドラフトと公開のどちらになっていても無視されます。</li>
+	<li><code>getUserInfo</code> を呼び出した場合、返値のうち 'lastname' は空になり、'firstname' にフルネームが入ります。これはNucleusが姓と名を分けない仕様になっていることに由来します。</li>
+	<li>メソッド <code>getRecentPostst</code> は <code>authorName</code> と <code>title</code> を追加パラメータとして返します。Bloggerもまたこれらの値を返します（この仕様は文書化されていないようですが）。</li>
+</ul>
+
+<h1><a id="metaweblog" name="metaweblog">metaWeblog API</a></h1>
+
+<p>
+Nucleus v1.1以降、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>もサポートされました。これはBlogger APIの拡張版です。 
+</p>
+
+<p>Nucleus v2.5では <code>newMediaObject</code> と <code>getRecentPosts</code> の二つのメソッドにも対応しました（これらは最初のmetaWeblog仕様には存在しませんでした）。</p>
+
+<p>
+利用可能なメソッド一覧は以下の通りです（<a href="http://www.xmlrpc.com/metaWeblogApi">specification</a>に詳しい情報があります）：
+</p>
+
+<ul>
+	<li>metaWeblog.newPost</li>
+	<li>metaWeblog.editPost</li>
+	<li>metaWeblog.getPost</li>
+	<li>metaWeblog.getCategories</li>
+	<li>metaWeblog.newMediaObject (v2.5)</li>
+	<li>metaWeblog.getRecentPosts (v2.5)</li>
+</ul>
+
+<p>Nucleus v3.22以降、<code>mt_text_more</code> と <code>m_tallow_comment</code>もサポートされました。これはmetaWeblog API の拡張版です。つまりこれらの拡張機能をサポートするアプリケーション、例えば Ectoなど、を使用した場合、「続き」を編集することができ、アイテムにコメントを許可するかどうかを決定することができるようになる、ということです。</p>
+
+<h1><a name="mtApi" id="mtApi">Movable Type API</a></h1>
+
+<p>v2.5から、Nucleusは<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html">Movable Type API</a>からのメソッドをサポートするようになりました。</p>
+
+<p>利用できるメソッドの一覧を以下に示します：</p>
+
+<ul>
+	<li>mt.supportedMethods</li>
+	<li>mt.supportedTextFilters</li>
+	<li>mt.publishPost</li>
+	<li>mt.getCategoryList</li>
+	<li>mt.getPostCategories</li>
+	<li>mt.setPostCategories</li>
+	<li>mt.getRecentPostTitles</li>
+	<li>mt.getTrackbackPings</li>
+</ul>
+
+<p>いくつかのノート：</p>
+
+<ul>
+	<li>Nucleusはアイテムひとつにつき一つだけカテゴリを設定することができます。これは 'primary' 以外のカテゴリ設定項目はすべて無視されることを意味します。</li>
+	<li>トラックバックはNucleusのコアではサポート対象外です（プラグインの導入によって利用することができるようになります）。このため、<code>mt.getTrackbackPings</code> のデフォルトの返値は空です。</li>
+	<li>Nucleusはテキストフィルタを実装していません。このため、<code>mt.getSupportedTextFilters</code> は空の値を返します。</li>
+</ul>
+
+<h1><a id="errorcodes" name="errorcodes">エラーコード</a></h1>
+
+<p>
+以下に示すのは、それぞれのメソッドから得られるエラーの種類です：
+</p>
+
+<table summary="エラーコード と エラーメッセージ">
+	<tr>
+		<th abbr="エラーコード">エラーコード</th>
+		<th abbr="エラーメッセージ">エラーメッセージ</th>
+	</tr>
+	<tr>
+		<td>801</td>
+		<td>Login Error <br />
+		ログインエラー（ユーザ名とパスワードの組み合わせが正しくないと推測されます）</td>
+	</tr>
+	<tr>
+		<td>802</td>
+		<td>No Such Blog<br />
+		指定されたBlogは存在しません</td>
+	</tr>
+	<tr>
+		<td>803</td>
+		<td>Not a Team Member<br />
+		チームに登録されていません</td>
+	</tr>
+	<tr>
+		<td>804</td>
+		<td>Cannot add Empty Items<br />
+		空のアイテムは投稿できません</td>
+	</tr>
+	<tr>
+		<td>805</td>
+		<td>Amount parameter must be in range 1..20<br />
+		パラメータの値は 1..20 の範囲でなければなりません（<em>getRecentItems</em></td>
+	</tr>
+	<tr>
+		<td>806</td>
+		<td>No Such Item<br />
+		指定されたアイテムは存在しません</td>
+	</tr>
+	<tr>
+		<td>807</td>
+		<td>Not Allowed to Alter Item<br />
+		アイテム追加の権限がありません</td>
+	</tr>
+	<tr>
+		<td>808</td>
+		<td>Invalid media type<br />
+		メディアタイプが不正です</td>
+	</tr>
+	<tr>
+		<td>809</td>
+		<td>File is too large<br />
+		ファイルが大きすぎます（最大のアップロードファイルサイズ）</td>
+	</tr>		
+	<tr>
+		<td>810</td>
+		<td>Other error on newMediaObject<br />
+		newMediaObject で予期せぬエラーが発生しました（何が起きたのかもう少し情報が含まれるでしょう）</td>
+
+	</tr>
+	<tr>
+		<td><em>その他のコード &lt; 100</em></td>
+		<td>Errors encountered by the Useful Inc. XML-RPC implementation<br />
+		Usefil Inc. XML-RPC の実行でエラーが発生しました</td>
+	</tr>
+	<tr>
+		<td><em>その他のコード &gt; 100</em></td>
+
+		<td>Errors encountered by the XML parser<br />
+		XML パーサでエラーが発生しました</td>
+	</tr>
+
+
+</table>
+
+</div>
+
+</body>
+</html>

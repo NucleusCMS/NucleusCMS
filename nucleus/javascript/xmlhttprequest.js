@@ -1,6 +1,6 @@
 /**
   * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/) 
-  * Copyright (C) 2002-2009 The Nucleus Group
+  * Copyright (C) The Nucleus Group
   *
   * This program is free software; you can redistribute it and/or
   * modify it under the terms of the GNU General Public License
@@ -37,9 +37,6 @@
   *     <input type="hidden" name="draftid" value="0" />
   * - Optionally a autosave now button can be add:
   *     <input type="button" name="autosavenow" value="AutoSave now" onclick="autoSaveDraft();" />
-  *
-  *
-  * $Id$
   */
 
 /**

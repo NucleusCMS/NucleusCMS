@@ -1,4 +1,4 @@
-NucleusCMS Version 3.70
+NucleusCMS Version 3.72
 ==========
 https://nucleuscms.github.io/
 Repository site

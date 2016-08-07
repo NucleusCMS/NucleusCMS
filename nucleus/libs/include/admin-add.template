@@ -48,7 +48,9 @@
 			<span id="prevbody">&#160;</span><br />
 			<span id="prevmore">&#160;</span><br />
 		</td>
-	</tr><tr>
+	</tr>
+	
+<tr>
 	
 <%ifblogsetting(bcomments)%>
 		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
@@ -62,7 +64,8 @@
 
 		<td><%text(_ADD_CATEGORY)%></td>
 		<td><%categories(40)%></td>
-	</tr><tr>
+</tr>
+<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
 			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
@@ -90,7 +93,8 @@
 			</div>
 			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
-	</tr><tr>
+	</tr>
+	<tr>
 		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
 		<td>
 			<%pluginextras%>

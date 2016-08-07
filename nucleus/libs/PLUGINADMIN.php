@@ -2,76 +2,74 @@
 
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2009 The Nucleus Group
+ * Copyright (C) The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- */
-/**
+ *
  * code to make it easier to create plugin admin areas
  *
  * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) 2002-2009 The Nucleus Group
- * @version $Id$
+ * @copyright Copyright (C) The Nucleus Group
  */
 
 class PluginAdmin {
 
-	var $strFullName;		// NP_SomeThing
-	var $plugin;			// ref. to plugin object
-	var $bValid;			// evaluates to true when object is considered valid
-	var $admin;				// ref to an admin object
+    public $strFullName;        // NP_SomeThing
+    public $plugin;            // ref. to plugin object
+    public $bValid;            // evaluates to true when object is considered valid
+    public $admin;                // ref to an admin object
 
-	function PluginAdmin($pluginName)
-	{
-		global $manager, $DIR_LIBS;
-                include_once($DIR_LIBS . 'ADMIN.php');
+    function __construct($pluginName)
+    {
+        global $manager, $DIR_LIBS;
+        include_once($DIR_LIBS . 'ADMIN.php');
+        
+        $this->strFullName = 'NP_' . $pluginName;
 
-		$this->strFullName = 'NP_' . $pluginName;
+        // check if plugin exists and is installed
+        if (!$manager->pluginInstalled($this->strFullName))
+            doError(_ERROR_INVALID_PLUGIN);
 
-		// check if plugin exists and is installed
-		if (!$manager->pluginInstalled($this->strFullName))
-			doError(_ERROR_INVALID_PLUGIN);
+        $this->plugin =& $manager->getPlugin($this->strFullName);
+        $this->bValid = $this->plugin;
 
-		$this->plugin =& $manager->getPlugin($this->strFullName);
-		$this->bValid = $this->plugin;
+        if (!$this->bValid)
+            doError(_ERROR_INVALID_PLUGIN);
 
-		if (!$this->bValid)
-			doError(_ERROR_INVALID_PLUGIN);
+        $this->admin = new ADMIN();
+        $this->admin->action = 'plugin_' . $pluginName;
+    }
 
-		$this->admin = new ADMIN();
-		$this->admin->action = 'plugin_' . $pluginName;
-	}
+    function start($extraHead = '')
+    {
+        global $CONF;
+        $strBaseHref  = '<base href="' . hsc($CONF['AdminURL']) . '" />';
+        $extraHead .= $strBaseHref;
 
-	function start($extraHead = '')
-	{
-		global $CONF;
-		$strBaseHref  = '<base href="' . hsc($CONF['AdminURL']) . '" />';
-		$extraHead .= $strBaseHref;
+        $this->admin->pagehead($extraHead);
+    }
 
-		$this->admin->pagehead($extraHead);
-	}
-
-	function end()
-	{
-		$this->_AddTicketByJS();
-		$this->admin->pagefoot();
-	}
+    function end()
+    {
+        $this->_AddTicketByJS();
+        $this->admin->pagefoot();
+    }
 
 /** 
  * Add ticket when not used in plugin's admin page
  * to avoid CSRF.
  */
-	function _AddTicketByJS(){
-		global $CONF,$ticketforplugin;
-		if (!($ticket=$ticketforplugin['ticket'])) {
-			//echo "\n<!--TicketForPlugin skipped-->\n";
-			return;
-		}
-		$ticket=hsc($ticket);
+    function _AddTicketByJS(){
+        global $CONF,$ticketforplugin;
+        if (!($ticket=$ticketforplugin['ticket'])) {
+            //echo "\n<!--TicketForPlugin skipped-->\n";
+            return;
+        }
+        $ticket=hsc($ticket);
  
 ?><script type="text/javascript">
 /*<![CDATA[*/
@@ -127,7 +125,7 @@ for (i=0;document.forms[i];i++){
 /*]]>*/
 </script><?php
  
-	}
+    }
 }
 
 
