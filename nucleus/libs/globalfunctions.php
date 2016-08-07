@@ -19,18 +19,21 @@
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-$nucleus['version'] = 'v3.71';
+include_once($DIR_LIBS. 'version.php');
+
+$nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+global $StartTime;
+$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
-$CONF['debug'] = 0;
-if ($CONF['debug']) {
+if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
 } else {
-    if(!isset($CONF['UsingAdminArea'])||$CONF['UsingAdminArea']!=1)
+    if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
         ini_set('display_errors','0');
     if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
@@ -51,11 +54,11 @@ if ($CONF['debug']) {
         directory) are still on the server.
 */
 
-if (!isset($CONF['alertOnHeadersSent']) || (isset($CONF['alertOnHeadersSent'])&& $CONF['alertOnHeadersSent'] !== 0))
+if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
 {
     $CONF['alertOnHeadersSent']  = 1;
 }
-$CONF['alertOnSecurityRisk'] = 1;
+if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
 /*$CONF['ItemURL']           = $CONF['Self'];
 $CONF['ArchiveURL']          = $CONF['Self'];
 $CONF['ArchiveListURL']      = $CONF['Self'];
@@ -90,11 +93,7 @@ if (!isset($CONF['installscript'])) {
 
 // we will use postVar, getVar, ... methods instead of _GET
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
-    if (phpversion() >= '4.1.0') {
-        include_once($DIR_LIBS . 'vars4.1.0.php');
-    } else {
-        include_once($DIR_LIBS . 'vars4.0.6.php');
-    }
+    include_once($DIR_LIBS . 'vars4.1.0.php');
 }
 
 // sanitize option
@@ -130,7 +129,11 @@ if (!headers_sent() ) {
 }
 
 // include core classes that are needed for login & plugin handling
-include_once($DIR_LIBS . 'mysql.php');
+if (!function_exists('mysql_query'))
+    include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+else
+    define('_EXT_MYSQL_EMULATE' , 0);
+
 // added for 3.5 sql_* wrapper
 global $MYSQL_HANDLER;
 if (!isset($MYSQL_HANDLER))
@@ -139,10 +142,11 @@ if ($MYSQL_HANDLER[0] == '')
     $MYSQL_HANDLER[0] = 'mysql';
 include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
 // end new for 3.5 sql_* wrapper
-include($DIR_LIBS . 'MEMBER.php');
-include($DIR_LIBS . 'ACTIONLOG.php');
-include($DIR_LIBS . 'MANAGER.php');
-include($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'MEMBER.php');
+include_once($DIR_LIBS . 'ACTIONLOG.php');
+include_once($DIR_LIBS . 'MANAGER.php');
+include_once($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'Utils.php');
 
 $manager =& MANAGER::instance();
 
@@ -150,6 +154,7 @@ $manager =& MANAGER::instance();
 //set_magic_quotes_runtime(0);
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
     ini_set('magic_quotes_runtime', '0');
+	set_magic_quotes_runtime(0);
 }
 
 // Avoid notices
@@ -159,7 +164,7 @@ if (!isset($CONF['UsingAdminArea'])) {
 
 // only needed when updating logs
 if ($CONF['UsingAdminArea']) {
-    include($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
+    include_once($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
     include_once($DIR_LIBS . 'ADMIN.php');
 }
 
@@ -245,6 +250,10 @@ default:
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
+    if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+        header("HTTP/1.0 404 Not Found");
+        exit;
+    }
     // Form Authentication
     $login = postVar('login');
     $pw = postVar('password');
@@ -274,7 +283,28 @@ if ($action == 'login') {
         );
         $manager->notify('LoginSuccess', $param);
         $errormessage = '';
-        ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+        $log_message = sprintf("Login successful for %s (sharedpc=%s)", $login, $shared);
+
+        $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
+        $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
+        if ($remote_ip !=='')
+        {
+            $log_message .= sprintf(" %s", $remote_ip);
+            if ($remote_host!==FALSE && $remote_host!=$remote_ip)
+                $log_message .= sprintf("(%s)", $remote_host);
+        }
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+        {
+            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"])[0];
+            $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
+            $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
+            if ($remote_proxy_host !==FALSE && $remote_proxy_host!=$remote_proxy_ip)
+                $log_message .= sprintf("(%s)", $remote_proxy_host);
+            unset($remote_proxy_ip, $remote_proxy_host);
+        }
+        ACTIONLOG::add(INFO, $log_message);
+        unset($log_message);
+        unset($remote_ip, $remote_host);
     } else {
         // errormessage for [%errordiv%]
         $trimlogin = trim($login);
@@ -327,19 +357,19 @@ $param = array();
 $manager->notify('PreLoadMainLibs', $param);
 
 // load other classes
-include($DIR_LIBS . 'PARSER.php');
-include($DIR_LIBS . 'SKIN.php');
-include($DIR_LIBS . 'TEMPLATE.php');
-include($DIR_LIBS . 'BLOG.php');
-include($DIR_LIBS . 'BODYACTIONS.php');
-include($DIR_LIBS . 'COMMENTS.php');
-include($DIR_LIBS . 'COMMENT.php');
-//include($DIR_LIBS . 'ITEM.php');
-include($DIR_LIBS . 'NOTIFICATION.php');
-include($DIR_LIBS . 'BAN.php');
-include($DIR_LIBS . 'PAGEFACTORY.php');
-include($DIR_LIBS . 'SEARCH.php');
-include($DIR_LIBS . 'entity.php');
+include_once("{$DIR_LIBS}PARSER.php");
+include_once("{$DIR_LIBS}SKIN.php");
+include_once("{$DIR_LIBS}TEMPLATE.php");
+include_once("{$DIR_LIBS}BLOG.php");
+include_once("{$DIR_LIBS}BODYACTIONS.php");
+include_once("{$DIR_LIBS}COMMENTS.php");
+include_once("{$DIR_LIBS}COMMENT.php");
+//include_once("{$DIR_LIBS}ITEM.php");
+include_once("{$DIR_LIBS}NOTIFICATION.php");
+include_once("{$DIR_LIBS}BAN.php");
+include_once("{$DIR_LIBS}PAGEFACTORY.php");
+include_once("{$DIR_LIBS}SEARCH.php");
+include_once("{$DIR_LIBS}entity.php");
 
 
 // set lastVisit cookie (if allowed)
@@ -356,7 +386,31 @@ $language = getLanguageName();
 
 # important note that '\' must be matched with '\\\\' in preg* expressions
 
-include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+foreach(array('','archive/') as $p)
+{
+    $f = $DIR_LANG  . $p . str_replace(array('\\','/'), '', $language) . '.php';
+    if (is_file($f))
+    {
+        include_once($f);
+        break;
+    }
+}
+
+    if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+    {
+        // load undefined constant
+        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+        {
+            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+            {
+                // load default lang
+                ob_start();
+                @include_once($DIR_LANG . 'english-utf8' . '.php');
+                ob_end_clean();
+            }
+        }
+    }
 
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
@@ -544,7 +598,7 @@ function intCookieVar($name) {
   * returns the currently used version (100 = 1.00, 101 = 1.01, etc...)
   */
 function getNucleusVersion() {
-    return 371;
+    return NUCLEUS_VERSION_ID;
 }
 
 /**
@@ -639,7 +693,10 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
             'charset'        => &$charset,
             'pageType'        =>  $pagetype
         );
+
+        if (!function_exists('sql_connected') || sql_connected())
         $manager->notify('PreSendContentType', $param);
+
         // strip strange characters
         $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
         $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
@@ -677,6 +734,7 @@ function highlight($text, $expression, $highlight) {
     // $matches[0][i] = HTML + text
     // $matches[1][i] = HTML
     // $matches[2][i] = text
+	$matches = array();
     preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
     
     // throw it all together again while applying the highlight to the text pieces
@@ -694,7 +752,7 @@ function highlight($text, $expression, $highlight) {
             {
                 if ($regex)
                 {
-                    $matches[2][$i] = preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
+                    $matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
                 }
             }
             
@@ -702,7 +760,7 @@ function highlight($text, $expression, $highlight) {
         }
         else
         {
-            $result .= preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
+            $result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
         }
     }
     
@@ -727,9 +785,8 @@ function parseHighlight($query) {
     for ($i = 0; $i < count($aHighlight); $i++) {
         $aHighlight[$i] = trim($aHighlight[$i]);
 
-        if (strlen($aHighlight[$i]) < 3) {
-            unset($aHighlight[$i]);
-        }
+//        if (strlen($aHighlight[$i]) < 3)
+//            unset($aHighlight[$i]);
     }
 
     if (count($aHighlight) == 1) {
@@ -752,38 +809,68 @@ function isValidMailAddress($address) {
 }
 
 // some helper functions
-function getBlogIDFromName($name) {
-    return quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
+function getBlogIDFromName($name)
+{
+    $res = quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
+    if ($res !== false)
+      $res = intval($res);
+    return $res;
 }
 
-function getBlogNameFromID($id) {
+function getBlogNameFromID($id)
+{
     return quickQuery('SELECT bname as result FROM ' . sql_table('blog') . ' WHERE bnumber=' . intval($id) );
 }
 
-function getBlogIDFromItemID($itemid) {
-    return quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid) );
+function getBlogIDFromItemID($itemid)
+{
+    $res = quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid) );
+    if ($res !== false)
+      $res = intval($res);
+    return $res;
 }
 
-function getBlogIDFromCommentID($commentid) {
-    return quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid) );
+function getBlogIDFromCommentID($commentid)
+{
+    $res = quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid) );
+    if ($res !== false)
+        $res = intval($res);
+    return $res;
 }
 
-function getBlogIDFromCatID($catid) {
-    return quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid) );
+function getBlogIDFromCatID($catid)
+{
+    $res = quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid) );
+    if ($res !== false)
+        $res = intval ($res);
+    return $res;
 }
 
-function getCatIDFromName($name) {
-    return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
+function getCatIDFromName($name)
+{
+    $res = quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
+	if ($res !== false)
+		$res = intval ($res);
+	return $res;
 }
 
-function quickQuery($q) {
-    $res = sql_query($q);
-    $obj = sql_fetch_object($res);
-    return $obj->result;
+function quickQuery($sqlText)
+{
+    $res = sql_query($sqlText);
+    if ($res && ($v = sql_fetch_array($res)))
+    {
+        if ( isset($v['result']) )
+          return $v['result'];
+        if ( isset($v[0]) )
+          return $v[0];
+    }
+    return FALSE;
 }
 
 function getPluginNameFromPid($pid) {
     $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
+    if (!$res)
+        return FALSE;
     $obj = sql_fetch_object($res);
     return $obj->pfile;
 }
@@ -811,13 +898,8 @@ function selector() {
     // show error when headers already sent out
     if (headers_sent() && $CONF['alertOnHeadersSent']) {
 
-        // try to get line number/filename (extra headers_sent params only exists in PHP 4.3+)
-        if (function_exists('version_compare') && version_compare('4.3.0', phpversion(), '<=') ) {
-            headers_sent($hsFile, $hsLine);
-            $extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
-        } else {
-            $extraInfo = '';
-        }
+        headers_sent($hsFile, $hsLine);
+        $extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
 
         startUpError(
             '<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
@@ -844,7 +926,7 @@ function selector() {
         global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
         // 1. get timestamp, blogid and catid for item
-        $query = 'SELECT itime, iblog, icat FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
+        $query = sprintf("SELECT itime, iblog, icat FROM %s WHERE inumber='%d'" , sql_table('item'),intval($itemid));
         $res = sql_query($query);
         $obj = sql_fetch_object($res);
 
@@ -902,9 +984,9 @@ function selector() {
         global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 
         // sql queries for the timestamp of the first and the last published item
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC";
+        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime ASC LIMIT 1";
         $first_timestamp=quickQuery ($query);
-        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC";
+        $query = "SELECT UNIX_TIMESTAMP(itime) as result FROM ".sql_table('item')." WHERE idraft=0 ORDER BY itime DESC LIMIT 1";
         $last_timestamp=quickQuery ($query);
 
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
@@ -994,6 +1076,32 @@ function selector() {
         $type = 'search';
         $query = stripslashes($query);
 
+        if (function_exists('mb_convert_encoding'))
+        {
+            if (preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)) {
+                $type = 'index';
+            }
+    //		$query = mb_convert_encoding($query, _CHARSET, $order . ' JIS, SJIS, ASCII');
+            switch(strtolower(_CHARSET)) {
+                case 'utf-8':
+                    $order = 'ASCII, UTF-8, EUC-JP, JIS, SJIS, EUC-CN, ISO-8859-1';
+                    break;
+                case 'gb2312':
+                    $order = 'ASCII, EUC-CN, EUC-JP, UTF-8, JIS, SJIS, ISO-8859-1';
+                    break;
+                case 'shift_jis':
+                    // Note that shift_jis is only supported for output.
+                    // Using shift_jis in DB is prohibited.
+                    $order = 'ASCII, SJIS, EUC-JP, UTF-8, JIS, EUC-CN, ISO-8859-1';
+                    break;
+                default:
+                    // euc-jp,iso-8859-x,windows-125x
+                    $order = 'ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1';
+                    break;
+            }
+            $query = mb_convert_encoding($query, _CHARSET, $order);
+        }
+
         if (is_numeric($blogid)) {
             $blogid = intVal($blogid);
         } else {
@@ -1062,7 +1170,7 @@ function selector() {
     }
 
     //$special = requestVar('special'); //get at top of file as global
-    if (!empty($special) && isValidShortName($special)) {
+    if (!empty($special) && isValidSkinPartsName($special)) {
         $type = strtolower($special);
     }
 
@@ -1144,6 +1252,11 @@ function isValidSkinName($name) {
     return preg_match('#^[a-z0-9/]+$#i', $name);
 }
 
+function isValidSkinPartsName($name)
+{
+	return preg_match('#^[a-z0-9_\-]+$#i', $name);
+}
+
 // add and remove linebreaks
 function addBreaks($var) {
     return nl2br($var);
@@ -1156,6 +1269,7 @@ function removeBreaks($var) {
 // shortens a text string to maxlength ($toadd) is what needs to be added
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd) {
+    $maxlength = intval($maxlength);
     // 1. remove entities...
     $trans = get_html_translation_table(HTML_ENTITIES);
 
@@ -1164,7 +1278,10 @@ function shorten($text, $maxlength, $toadd) {
 
     // 2. the actual shortening
     if (strlen($text) > $maxlength) {
-        $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
+        if (function_exists('mb_strimwidth'))
+            $text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET);
+        else
+            $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
 
     }
 
@@ -1176,7 +1293,7 @@ function shorten($text, $maxlength, $toadd) {
   * quotes around it.
   */
 function mysqldate($timestamp) {
-    return '"' . date('Y-m-d H:i:s', $timestamp) . '"';
+    return "'" . date('Y-m-d H:i:s', $timestamp) . "'";
 }
 
 /**
@@ -1184,7 +1301,10 @@ function mysqldate($timestamp) {
   */
 function selectBlog($shortname) {
     global $blogid, $archivelist;
-    $blogid = getBlogIDFromName($shortname);
+    $blogid = intval($blogid);
+    if (!($blogid > 0)) {
+        $blogid = getBlogIDFromName($shortname);
+    }
 
     // also force archivelist variable, if it is set
     if ($archivelist) {
@@ -1222,7 +1342,7 @@ function selectLanguage($language) {
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
+    include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
 }
 
@@ -1236,7 +1356,10 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
     PARSER::setProperty('IncludePrefix', $includePrefix);
 
     if (!file_exists($filename) ) {
-        doError('A file is missing');
+        if (defined('_GFUNCTIONS_PARSEFILE_FILEMISSING'))
+            doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
+        else
+            doError('A file is missing');
     }
 
     $fsize = filesize($filename);
@@ -1278,7 +1401,35 @@ function helpHtml($id) {
 
 function helplink($id) {
     global $CONF;
-    return '<a href="' . $CONF['AdminURL'] . 'documentation/help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+
+    $doc_root = get_help_root_url(TRUE);
+
+    return '<a href="' . $doc_root . 'help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+}
+
+function get_help_root_url($subdir_search = FALSE) {
+    global $CONF, $DIR_NUCLEUS;
+
+    static $doc_root = array();
+    $key = $subdir_search ? 1 : 0;
+    if (!isset($doc_root[$key]))
+    {
+        $doc_root[$key] = $CONF['AdminURL'] . 'documentation/';
+        if ($subdir_search)
+        {
+            $lang = getLanguageName();
+            $items = array('japan'=>'ja', 'english'=>'en');
+            foreach($items as $k => $v)
+            {
+                if ((@stripos($lang , $k) !== false) && (is_dir($DIR_NUCLEUS . "documentation/" . $v)))
+                {
+                    $doc_root[$key] .= $v . '/';
+                    break;
+                }
+            }
+        }
+    }
+    return $doc_root[$key];
 }
 
 function getMailFooter() {
@@ -1336,8 +1487,8 @@ function includephp($filename) {
     // other
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
-    if (file_exists($filename) ) {
-        include($filename);
+    if (@file_exists($filename) ) {
+        include_once($filename);
     }
 }
 
@@ -1350,8 +1501,7 @@ function checkLanguage($lang) {
     global $DIR_LANG;
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    return file_exists($DIR_LANG . str_replace(array('\\','/'), '', $lang) . '.php');
-
+    return file_exists($DIR_LANG . remove_all_directory_separator($lang) . '.php');
 }
 
 /**
@@ -1360,13 +1510,17 @@ function checkLanguage($lang) {
  * @return bool
  **/
 function checkPlugin($plug) {
-
     global $DIR_PLUGINS;
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     return file_exists($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
 
+}
+
+function remove_all_directory_separator($text)
+{
+  	return str_replace( array("\\" ,'/' , DIRECTORY_SEPARATOR ) , '' , $text);
 }
 
 /**
@@ -1632,26 +1786,21 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
             return date('Y-m-d\TH:i:s', $timestamp) . $tz;
 
         default :
-            return strftime($format ? $format : $defaultFormat, $timestamp);
+            return Utils::strftime($format ? $format : $defaultFormat, $timestamp);
     }
 }
 
 function checkVars($aVars) {
 
     foreach ($aVars as $varName) {
-
-        if (phpversion() >= '4.1.0') {
-
-            if (   isset($_GET[$varName])
-                || isset($_POST[$varName])
-                || isset($_COOKIE[$varName])
-                || isset($_ENV[$varName])
-                || isset($_SESSION[$varName])
-                || isset($_FILES[$varName])
-            ) {
-                die('Sorry. An error occurred.');
-            }
-
+        if (   isset($_GET[$varName])
+            || isset($_POST[$varName])
+            || isset($_COOKIE[$varName])
+            || isset($_ENV[$varName])
+            || isset($_SESSION[$varName])
+            || isset($_FILES[$varName])
+        ) {
+            die('Sorry. An error occurred.');
         }
     }
 }
@@ -1662,24 +1811,22 @@ function checkVars($aVars) {
  */
 function sanitizeParams()
 {
-
     $array = array();
     $str = '';
     $frontParam = '';
 
-    if (phpversion() >= '4.1.0') {
-        // REQUEST_URI of $_SERVER
+    // REQUEST_URI of $_SERVER
         $str =& $_SERVER["REQUEST_URI"];
         serverStringToArray($str, $array, $frontParam);
         sanitizeArray($array);
         arrayToServerString($array, $frontParam, $str);
 
-        // QUERY_STRING of $_SERVER
+    // QUERY_STRING of $_SERVER
+    unset($str);
         $str =& $_SERVER["QUERY_STRING"];
         serverStringToArray($str, $array, $frontParam);
         sanitizeArray($array);
         arrayToServerString($array, $frontParam, $str);
-    }
 
     // $_GET
     convArrayForSanitizing($_GET, $array);
@@ -1772,7 +1919,18 @@ function ticketForPlugin() {
     /* Exit if not logged in. */
     if ( !$member->isLoggedIn() )
     {
-        exit('You aren\'t logged in.');
+		global $DIR_LANG;
+		$language = remove_all_directory_separator(getLanguageName());
+		$filename = $DIR_LANG . $language . '.php';
+		if (file_exists($filename))
+		  include_once ($filename);
+		if (!defined('_GFUNCTIONS_YOU_AERNT_LOGGEDIN'))
+			define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN', 'You aren\'t logged in.');
+		exit("<html><head><title>Error</title></head><body>"
+				. _GFUNCTIONS_YOU_AERNT_LOGGEDIN
+				. "<br><br>\n"
+				. '<a href="javascript: back();">back</a>'
+				. "</body></html>");
     }
 
     global $manager,$DIR_LIBS,$DIR_LANG;
@@ -1782,7 +1940,7 @@ function ticketForPlugin() {
     {
         $p_translated=serverVar('SCRIPT_FILENAME');
     }
-    if ($file = file($p_translated) )
+    if ($file = @file($p_translated) )
     {
         $prevline='';
         foreach($file as $line)
@@ -1804,12 +1962,26 @@ function ticketForPlugin() {
         {
             $language = getLanguageName();
 
-            # replaced ereg_replace() below with preg_replace(). ereg* functions are deprecated in PHP 5.3.0
-            # original ereg_replace: ereg_replace( '[\\|/]', '', $language) . '.php')
             # important note that '\' must be matched with '\\\\' in preg* expressions
+            include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
 
-            include($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
-            include($DIR_LIBS . 'PLUGINADMIN.php');
+            if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+                 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+            {
+                // load undefined constant
+                if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+                {
+                    if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+                    {
+                        // load default lang
+                        ob_start();
+                        @include_once($DIR_LANG . 'english-utf8' . '.php');
+                        ob_end_clean();
+                    }
+                }
+            }
+
+            include_once($DIR_LIBS . 'PLUGINADMIN.php');
         }
         
         $oPluginAdmin = new PluginAdmin($plugin_name);
@@ -2136,12 +2308,9 @@ function getBookmarklet($blogid) {
  * @param mixed Variable
  * @return mixed Variable
  */
-function ifset(&$var) {
-    if (isset($var)) {
-        return $var;
-    }
-
-    return null;
+function ifset(&$var)
+{
+	return isset($var) ? $var : null;
 }
 
 /**
@@ -2151,7 +2320,7 @@ function ifset(&$var) {
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-    $query = 'SELECT COUNT(*) as count FROM ' . sql_table('plugin_event') . ' WHERE event=\'' . $event . '\'';
+    $query = sprintf("SELECT COUNT(*) as count FROM %s WHERE event='%s'", sql_table('plugin_event'), $event);
     $res = sql_query($query);
     $obj = sql_fetch_object($res);
     return $obj->count;
@@ -2188,7 +2357,7 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
     if($encoding==='')
     {
         if(defined('_CHARSET')) $encoding = _CHARSET;
-        else                    $encoding = 'utf8';
+        else                    $encoding = 'utf-8';
     }
     if(version_compare(PHP_VERSION, '5.2.3', '>='))
         return htmlspecialchars($string, $flags, $encoding, false);
@@ -2201,4 +2370,27 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
         
         return htmlspecialchars($string, $flags, $encoding);
     }
+}
+
+function nucleus_version_compare($version1, $version2, $operator = '')
+{
+    // examples: 3.66  3.7  v3.7 v3.71
+    $args = func_get_args();
+    for($i = 0; $i<=1; $i++)
+    {
+        $args[$i] = str_replace(array('_','-','+','/'), '.', $args[$i]);
+        $args[$i] = preg_replace('#^[^0-9]+#', '', $args[$i]);
+        $ver = explode('.', $args[$i]);
+        $major = intval($ver[0]);
+        if ($major <= 3)
+        {   // minor version
+            $x = @intval($ver[1]);
+            if ($x >= 10)
+                $ver[1] = sprintf('%d.%d', $x / 10 , $x % 10);
+            else
+                $ver[1] = sprintf('%d.0', $x);
+        }
+        $args[$i] = implode('.', $ver);
+    }
+    return call_user_func_array('version_compare', $args);
 }

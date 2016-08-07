@@ -25,10 +25,10 @@
 # requirements (there can be none), but merely suggestions.
 #
 class PasswordHash {
-    var $itoa64;
-    var $iteration_count_log2;
-    var $portable_hashes;
-    var $random_state;
+    public $itoa64;
+    public $iteration_count_log2;
+    public $portable_hashes;
+    public $random_state;
 
     function __construct($iteration_count_log2=8, $portable_hashes=true)
     {

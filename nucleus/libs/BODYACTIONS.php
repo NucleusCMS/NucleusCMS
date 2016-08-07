@@ -18,9 +18,9 @@
 
 class BODYACTIONS extends BaseActions {
 
-    var $currentItem;
+    public $currentItem;
 
-    var $template;
+    public $template;
 
     function __construct() {
         parent::__construct();

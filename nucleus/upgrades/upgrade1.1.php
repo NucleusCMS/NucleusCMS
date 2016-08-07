@@ -70,8 +70,8 @@ function upgrade_do110() {
         // 4. add 'general' categories for all blogs, and update nucleus_item
         $catid = 1;    // generate catids ourself
         $query = 'SELECT bnumber FROM '.sql_table('blog');
-        $res = mysql_query($query);
-        while ($current = mysql_fetch_object($res)) {
+        $res = sql_query($query);
+        while ($current = sql_fetch_object($res)) {
             $blogid = $current->bnumber;
             
             $query = 'INSERT INTO '.sql_table('category')." (catid, cblog, cname, cdesc) VALUES ($catid, $blogid, 'General', 'Items that do not fit in other categories')";
@@ -92,7 +92,7 @@ function upgrade_do110() {
         // 5. add template parts for category lists to all templates
         $query = 'SELECT tdnumber FROM '.sql_table('template_desc');
         $res = sql_query($query);    // get all template ids
-        while ($obj = mysql_fetch_object($res)) {
+        while ($obj = sql_fetch_object($res)) {
             $tid = $obj->tdnumber;     // template id
         
             $query = 'INSERT INTO '.sql_table('template')." VALUES ($tid, 'CATLIST_HEADER', '<ul><li><a href=\"<%blogurl%>\">All</a></li>');";

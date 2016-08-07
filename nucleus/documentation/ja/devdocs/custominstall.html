@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ja-JP" xml:lang="ja-JP">
+<head>
+	<!--
+		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+		Copyright (C) 2002-2013 The Nucleus Group
+
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License
+		as published by the Free Software Foundation; either version 2
+		of the License, or (at your option) any later version.
+		(see nucleus/documentation/index.html#license for more info)
+	-->
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="index" href="./index.html" />
+	<title>Nucleus - インストールスクリプトのカスタマイズ</title>
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+	<script src="http://www.google.com/jsapi"></script>
+	<script type="text/javascript">
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("javascript/fontsizeChanger.js");
+		});
+	</script>
+</head>
+<body>
+<div id="fontSizeChanger">
+<a href="#top" id="f_small">小</a>
+<a href="#top" id="f_medium">中</a>
+<a href="#top" id="f_large">大</a>
+</div>
+<div id="body">
+
+<div class="heading">
+インストールスクリプトのカスタマイズ
+</div>
+
+<p class="note">注：この機能はバージョン2.2以降のものです。</p>
+
+<h1>イントロダクション</h1>
+
+<p>
+<a href="index.html">開発者向けドキュメントの目次へ戻る</a>
+</p>
+
+<p>このドキュメントにはNucleusのインストール・スクリプトをどのようにカスタムするかという情報が書かれています。二つの方法でカスタマイズが可能です：</p>
+
+<ol>
+	<li>スキンの自動インストール</li>
+	<li>プラグインの自動インストール</li>
+</ol>
+
+<h1>設定</h1>
+
+<p><code>install/index.php</code>をエディタで開き、次のコードを探してください：</p>
+
+<pre><code>// array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
+// directory.
+//
+// example:
+//	 array('NP_TrackBack', 'NP_MemberGoodies')
+$aConfPlugsToInstall = array(
+	'NP_SkinFiles',
+);
+
+
+// array with skins to install. skins must be present under the skins/ directory with
+// a subdirectory having the same name that contains a skinbackup.xml file
+//
+// example:
+//	 array('base','rsd')
+$aConfSkinsToImport = array(
+	'atom',
+	'rss2.0',
+	'rsd',
+	'default',
+);</code></pre>
+
+<p>やるべき事はこのコードを変更するだけです：自動インストールしたいプラグインとスキンの名前を、例のような配列リストにしてください。</p>
+
+<h1>ファイルの取り込み</h1>
+
+<p>設定を変更した次は、ディストリビューションにファイルを追加する必要があります。</p>
+
+<h2>プラグインとスキン</h2>
+
+<p>プラグインは、<code>nucleus/plugins/</code>ディレクトリにファイルをおいてください。プラグインを手動でインストールする場合にするのと全く同じです。</p>
+
+<p>スキンは、手動でインポートする時と同様に、<code>skins/</code>直下にディレクトリをおいてください。<code>skinbackup.xml</code>をそこに入れておくことをお忘れ無く。</p>
+
+<h1>忘れてはいけないこと</h1>
+
+<p>再配布する前に、カスタマイズされたインストールスクリプトをテストすることを忘れないでください。</p>
+
+</div>
+
+</body>
+</html>

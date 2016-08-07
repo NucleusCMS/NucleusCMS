@@ -21,29 +21,29 @@
 class BaseActions {
 
     // depth level for includes (max. level is 3)
-    var $level;
+    public $level;
 
     // array of evaluated conditions (true/false). The element at the end is the one for the most nested
     // if block.
-    var $if_conditions;
+    public $if_conditions;
 
     // in the "elseif" / "elseifnot" sequences, if one of the conditions become "true" remained conditions should not
     // be tested. this variable (actually a stack) holds this information.
-    var $if_execute;
+    public $if_execute;
 
     // at all times, can be evaluated to either true if the current block needs to be displayed. This
     // variable is used to decide to skip skinvars in parts that will never be outputted.
-    var $if_currentlevel;
+    public $if_currentlevel;
 
     // contains a search string with keywords that need to be highlighted. These get parsed into $aHighlight
-    var $strHighlight;
+    public $strHighlight;
 
     // array of keywords that need to be highlighted in search results (see the highlight()
     // and parseHighlight() methods)
-    var $aHighlight;
+    public $aHighlight;
 
     // reference to the parser object that is using this object as actions-handler
-    var $parser;
+    public $parser;
 
     /**
      *  Constructor for a new BaseAction object
@@ -91,15 +91,34 @@ class BaseActions {
      */
     function parse_parsedinclude($filename) {
         // check current level
-        if ($this->level > 3) return;    // max. depth reached (avoid endless loop)
+        if ($this->level > 3)
+            return;    // max. depth reached (avoid endless loop)
+        global $skinid;
+        $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
-        if (!file_exists($file)) return;
+        if (!$skin->isValid && !file_exists($file))
+        {
+            return;
+        }
+        $contents = (strpos($filename,'/')===false ? $skin->getContent($filename) : false);
+        if (!$contents)
+        {
+            if (!is_file($file))
+            {
+                return;
+            }
         $contents = file_get_contents($file);
-        if (empty($contents)) return;
-        
+        if (empty($contents))
+            {
+            return;
+            }
+        }
         $this->level = $this->level + 1;
         // parse file contents
-        $this->parser->parse($contents);
+        if(strpos($contents,'<%') !== false)
+            $this->parser->parse($contents);
+        else
+            echo $contents;
 
         $this->level = $this->level - 1;
     }
@@ -322,4 +341,3 @@ class BaseActions {
         $this->_updateTopIfCondition();
     }
 }
-?>

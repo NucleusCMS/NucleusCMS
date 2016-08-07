@@ -13,6 +13,7 @@ body {
 body, td, th, a, li, ul, textarea {
 	color: #333;
 	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+    line-height: 1.5em;
 }
 
 /* basic link appearance */
@@ -28,7 +29,7 @@ a:hover {
 
 /* textareas */
 textarea {
-	font-size: small;
+	font-size: medium;
 	width: 95%;
 }
 
@@ -115,7 +116,6 @@ h1 {
 	margin: 0px;
 	padding: 0px;
 	
-	font-size:9pt;/*add yotaka 090323*/
 	color:#333;/* add */
 	
 	border-width: 1px;
@@ -159,7 +159,7 @@ h1 {
 }
 
 #quickmenu h2 {
-	font-size: small;
+	font-size: medium;
 	text-align: center;
 	padding: 1px 0px 1px 0px;
 	margin: 0px;
@@ -180,7 +180,7 @@ h1 {
 
 .loginname {
 	float: right;
-	font-size: small;
+	font-size: medium;
 	text-align: right;
 	line-height: normal;
 	padding-left: 5px;
@@ -242,24 +242,10 @@ h1 {
 	padding: 5px;
 }
 
-/* 
-	font size tricks, to make it work in all browsers
-	
-	See: 
-	http://diveintoaccessibility.org/day_26_using_relative_font_sizes.html
-
-	(netscape 4 trick is left out, Nucleus doesn't work anyway in that browser)	
-	#content should be 'small' (in standard-compliant browsers)
-	
-*/
-
 #content {
-  font-size: small;
-  voice-family: "\"}\"";
-  voice-family: inherit;
-  font-size: small;
+  font-size: medium;
 }
-html>body #content { font-size: small; }
+html>body #content { font-size: medium; }
 
 /* tables */
 table {
@@ -273,7 +259,7 @@ table {
 th {
 	background-color: #ddd;
 	color: #000;
-	font-size: small;
+	font-size: medium;
 }
 
 th, td {
@@ -285,7 +271,7 @@ th, td {
 td {
 	background-color: #fff;
 	border: 1px solid #ddd;
-	font-size: small;
+	font-size: medium;
 	vertical-align: top;
 	text-align: left;
 }

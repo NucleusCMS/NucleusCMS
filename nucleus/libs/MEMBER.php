@@ -18,22 +18,22 @@
 class MEMBER {
 
     // 1 when authenticated, 0 when not
-    var $loggedin = 0;
-    var $password;        // not the actual password, but rather a MD5 hash
+    public $loggedin = 0;
+    public $password;        // not the actual password, but rather a MD5 hash
 
-    var $cookiekey;        // value that should also be in the client cookie to allow authentication
+    public $cookiekey;        // value that should also be in the client cookie to allow authentication
 
     // member info
-    var $id = -1;
-    var $realname;
-    var $displayname;
-    var $email;
-    var $url;
-    var $language = '';        // name of the language file to use (e.g. 'english' -> english.php)
-    var $admin = 0;            // (either 0 or 1)
-    var $canlogin = 0;        // (either 0 or 1)
-    var $notes;
-    var $autosave = 1;        // if the member use the autosave draft function
+    public $id = -1;
+    public $realname;
+    public $displayname;
+    public $email;
+    public $url;
+    public $language = '';        // name of the language file to use (e.g. 'english' -> english.php)
+    public $admin = 0;            // (either 0 or 1)
+    public $canlogin = 0;        // (either 0 or 1)
+    public $notes;
+    public $autosave = 1;        // if the member use the autosave draft function
 
     /**
      * Constructor for a member object
@@ -143,22 +143,23 @@ class MEMBER {
         $query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
 
         $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-
-        $this->setRealName($obj->mrealname);
-        $this->setEmail($obj->memail);
-        $this->password = $obj->mpassword;
-        $this->setCookieKey($obj->mcookiekey);
-        $this->setURL($obj->murl);
-        $this->setDisplayName($obj->mname);
-        $this->setAdmin($obj->madmin);
-        $this->id = $obj->mnumber;
-        $this->setCanLogin($obj->mcanlogin);
-        $this->setNotes($obj->mnotes);
-        $this->setLanguage($obj->deflang);
-        $this->setAutosave($obj->mautosave);
-
-        return sql_num_rows($res);
+        if ($res && ($obj = sql_fetch_object($res)))
+        {
+            $this->setRealName($obj->mrealname);
+            $this->setEmail($obj->memail);
+            $this->password = $obj->mpassword;
+            $this->setCookieKey($obj->mcookiekey);
+            $this->setURL($obj->murl);
+            $this->setDisplayName($obj->mname);
+            $this->setAdmin($obj->madmin);
+            $this->id = $obj->mnumber;
+            $this->setCanLogin($obj->mcanlogin);
+            $this->setNotes($obj->mnotes);
+            $this->setLanguage($obj->deflang);
+            $this->setAutosave($obj->mautosave);
+            return 1;
+        }
+        return 0; // not found or removed user
     }
 
 
@@ -167,14 +168,10 @@ class MEMBER {
       * (returns false if not a team member)
       */
     function isBlogAdmin($blogid) {
-        $query = 'SELECT tadmin FROM '.sql_table('team').' WHERE'
-               . ' tblog=' . intval($blogid)
-               . ' and tmember='. $this->getID();
-        $res = sql_query($query);
-        if (sql_num_rows($res) == 0)
-            return 0;
-        else
-            return (sql_result($res,0,0) == 1) ;
+        $query = sprintf('SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d',
+                          sql_table('team'), intval($blogid), $this->getID())
+                . ' LIMIT 1';
+        return intval(quickQuery($query)) > 0;
     }
 
     function blogAdminRights($blogid) {
@@ -190,11 +187,11 @@ class MEMBER {
       * Returns true if this member is a team member of the given blog
       */
     function isTeamMember($blogid) {
-        $query = 'SELECT * FROM '.sql_table('team').' WHERE'
+        $query = 'SELECT count(*) AS result FROM '.sql_table('team').' WHERE'
                . ' tblog=' . intval($blogid)
-               . ' and tmember='. $this->getID();
-        $res = sql_query($query);
-        return (sql_num_rows($res) != 0);
+               . ' AND tmember='. $this->getID()
+               . ' LIMIT 1';
+        return intval(quickQuery($query)) > 0;
     }
 
     function canAddItem($catid) {
@@ -261,8 +258,22 @@ class MEMBER {
       * posted by the member left
       */
     function canBeDeleted() {
-        $res = sql_query('SELECT * FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-        return (sql_num_rows($res) == 0);
+        $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE iauthor=' . $this->getID();
+        return (intval(quickQuery($sql)) == 0);
+    }
+
+    /**
+      * returns true if this member can clone an item,
+      *
+      * @param itemid
+      */
+    function canCloneItem($itemid) {
+        if ($this->isAdmin()) return 1;
+        $query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
+        $res = sql_query($query);
+        if ($res && ($obj = sql_fetch_object($res)))
+            return ($obj->iauthor == $this->getID()) or $this->isTeamMember($obj->iblog);
+        return FALSE;
     }
 
     /**
@@ -388,7 +399,7 @@ class MEMBER {
 
         // send mail
 
-        @mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
+        @Utils::mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
 
         ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
 
@@ -407,7 +418,7 @@ class MEMBER {
             $query = 'SELECT tblog as blogid from '.sql_table('team').' where tadmin=1 and tmember=' . $this->getID();
 
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0) {
+        if (!empty($res)) {
             while ($obj = sql_fetch_object($res)) {
                 array_push($blogs, $obj->blogid);
             }
@@ -429,7 +440,7 @@ class MEMBER {
             $query = 'SELECT tblog as blogid from '.sql_table('team').' where tmember=' . $this->getID();
 
         $res = sql_query($query);
-        if (sql_num_rows($res) > 0) {
+        if (!empty($res)) {
             while ($obj = sql_fetch_object($res)) {
                 array_push($blogs, $obj->blogid);
             }
@@ -629,8 +640,9 @@ class MEMBER {
      * @static
      */
     public static function exists($name) {
-        $r = sql_query('select * FROM '.sql_table('member')." WHERE mname='".sql_real_escape_string($name)."'");
-        return (sql_num_rows($r) != 0);
+        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE mname='%s' LIMIT 1",
+                        sql_table('member'), sql_real_escape_string($name));
+        return (intval(quickQuery($sql)) > 0);
     }
 
     /**
@@ -639,8 +651,8 @@ class MEMBER {
      * @static
      */
     public static function existsID($id) {
-        $r = sql_query('select * FROM '.sql_table('member')." WHERE mnumber='".intval($id)."'");
-        return (sql_num_rows($r) != 0);
+        $sql = 'SELECT count(*) AS result FROM '.sql_table('member')." WHERE mnumber='".intval($id)."' LIMIT 1";
+        return (intval(quickQuery($sql)) > 0);
     }
 
     /**
@@ -701,6 +713,10 @@ class MEMBER {
         $canlogin = intval($canlogin);
         $notes = sql_real_escape_string($notes);
         
+//        if (($admin) && !($canlogin)) {
+//            return _ERROR;
+//        }
+
         $query = 'INSERT INTO '.sql_table('member')." (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
                . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
         sql_query($query);
@@ -721,10 +737,9 @@ class MEMBER {
         $query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key). '\'';
         $res = sql_query($query);
 
-        if (!$res || (sql_num_rows($res) == 0))
-            return 0;
-        else
-            return sql_fetch_object($res);
+        if ($res && ($o = sql_fetch_object($res)))
+            return $o;
+        return 0;
     }
 
     /**
@@ -832,6 +847,8 @@ class MEMBER {
      */
     public static function cleanupActivationTable()
     {
+        global $CONF, $DIR_LIBS;
+
         $actdays = 2;
         if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
             $actdays = intval($CONF['ActivationDays']);
@@ -844,6 +861,7 @@ class MEMBER {
         // 1. walk over all entries, and see if special actions need to be performed
         $res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
 
+        if ($res)
         while ($o = sql_fetch_object($res))
         {
             switch ($o->vtype)

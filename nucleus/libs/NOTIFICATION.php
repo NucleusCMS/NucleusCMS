@@ -18,7 +18,7 @@
 class NOTIFICATION {
 
     // array of addresses that need to get a notification
-    var $addresses = array();
+    public $addresses = array();
 
     /**
       * takes one string as argument, containing multiple e-mail addresses
@@ -56,7 +56,7 @@ class NOTIFICATION {
             if ($member->isLoggedIn() && ($member->getEmail() == $address))
                 continue;
 
-            @mail($address, $title, $message , "From: ". $from . "\nContent-Type: text/plain; charset=utf-8");
+            @Utils::mail($address, $title, $message , "From: ". $from);
         }
     }
 }

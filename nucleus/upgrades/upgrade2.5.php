@@ -48,7 +48,7 @@ function upgrade_do250() {
             $query = 'SELECT * FROM ' . sql_table('plugin_option') .' ORDER BY oid ASC';
             $res = sql_query($query);
             $aValues = array();
-            while ($o = mysql_fetch_object($res)) {
+            while ($o = sql_fetch_object($res)) {
                 $query = 'INSERT INTO ' . sql_table('plugin_option_desc')
                        .' (opid, oname, ocontext, odesc, otype)'
                        ." VALUES ("
@@ -61,7 +61,7 @@ function upgrade_do250() {
     
                 // store new id
                 $aValues[] = array ( 
-                                'id' => mysql_insert_id(),
+                                'id' => sql_insert_id(),
                                 'value' => $o->ovalue
                             );
             }

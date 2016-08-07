@@ -6,7 +6,7 @@
 
 body {
 	font-family: verdana, arial;
-	font-size: small;
+	font-size: medium;
 	background-color: #fff;
 	color: #000;
 }
@@ -35,7 +35,7 @@ a:hover {
 	position: absolute;
 	top: 5px;
 	right: 5px;
-	font-size: small;
+	font-size: medium;
 	font-style: normal;
 	font-weight: normal;
 }
@@ -61,7 +61,7 @@ h2 {
 pre, .note, .faq .answer {
 	background-color: #ddd;
 	padding: 10px;
-	font-size: small;
+	font-size: medium;
 }
 
 .faq .question {
@@ -92,7 +92,7 @@ th, td {
 
 td {
 	background-color: #dddddd;
-	font-size: small;
+	font-size: medium;
 	vertical-align: top;
 	text-align: left;
 }

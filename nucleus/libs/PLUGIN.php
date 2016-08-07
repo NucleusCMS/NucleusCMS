@@ -29,7 +29,7 @@ class NucleusPlugin {
 
     // these function _may_ be redefined in your plugin
 
-    function getMinNucleusVersion()    { return 150; }
+    function getMinNucleusVersion()    { return 350; }
     function getMinNucleusPatchLevel() { return 0; }
     function getEventList()            { return array(); }
     function getTableList()            { return array(); }
@@ -160,16 +160,21 @@ class NucleusPlugin {
         if ($this->plugin_options == 0)
         {
             $this->plugin_options = array();
-            $query = sql_query(
-                 'SELECT d.oname as name, o.ovalue as value '.
-                 'FROM '.
-                 sql_table('plugin_option').' o, '.
-                 sql_table('plugin_option_desc').' d '.
-                 'WHERE d.opid='. intval($this->getID()).' AND d.oid=o.oid'
-            );
-            while ($row = sql_fetch_object($query))
-                $this->plugin_options[strtolower($row->name)] = $row->value;
-        }
+			$sql = 'SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value '
+					. ' FROM '
+					. sql_table('plugin_option_desc').' d '
+					. ' LEFT JOIN ' . sql_table('plugin_option').' o '
+					. '   ON d.oid=o.oid AND o.ocontextid=0 '
+					. ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
+					. ' group by d.oid'
+					;
+			$res = sql_query($sql);
+			if ($res)
+			  while ( $row = sql_fetch_object($res) )
+				{
+					$this->plugin_options[strtolower($row->name)] = $row->value;
+				}
+	  }
         if (isset($this->plugin_options[strtolower($name)]))
             return $this->plugin_options[strtolower($name)];
         else
@@ -281,16 +286,19 @@ class NucleusPlugin {
     // constructor doesn't seem to work in 3.65 or doesn't get called before something
     // uses the _getOID() method. Set init values here as quick workaround.
 
-    var $_aOptionValues = array();    // oid_contextid => value
-    var $_aOptionToInfo = array();    // context_name => array('oid' => ..., 'default' => ...)
-    var $plugin_options = 0;    // see getOption()
-    var $plugid;            // plugin id
+    public $_aOptionValues = array();    // oid_contextid => value
+    public $_aOptionToInfo = array();    // context_name => array('oid' => ..., 'default' => ...)
+    public $plugin_options = 0;    // see getOption()
+    public $plugid;            // plugin id
 
 
     /**
      * Class constructor: Initializes some internal data
      */
     function NucleusPlugin() {
+        $this->__construct();
+    }
+    function __construct() {
         $this->_aOptionValues = array();    // oid_contextid => value
         $this->_aOptionToInfo = array();    // context_name => array('oid' => ..., 'default' => ...)
         $this->plugin_options = 0;
@@ -446,8 +454,12 @@ class NucleusPlugin {
 
         // get from DB
         $res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
-
-        if (!$res || (sql_num_rows($res) == 0)) {
+        $query_ovalue_exist =
+                'SELECT count(*) as result FROM ' . sql_table('plugin_option')
+              . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid)
+              . ' LIMIT 1';
+        $res_ovalue_exist = intval(quickQuery($query_ovalue_exist));
+        if (!$res || ($res_ovalue_exist == 0)) {
             $defVal = $this->_getDefVal($context, $name);
             $this->_aOptionValues[$key] = $defVal;
 
@@ -544,7 +556,7 @@ class NucleusPlugin {
      *
      * (static method)
      */
-    function _deleteOptionValues($context, $contextid) {
+    public static function _deleteOptionValues($context, $contextid) {
         // delete all associated plugin options
         $aOIDs = array();
             // find ids
@@ -567,7 +579,7 @@ class NucleusPlugin {
      * @author TeRanEX
      * @static
      */
-    function getOptionMeta($typeExtra) {
+    public static function getOptionMeta($typeExtra) {
         $tmpMeta = explode(';', $typeExtra);
         $meta = array();
         for ($i = 0; $i < count($tmpMeta); $i++) {
@@ -588,7 +600,7 @@ class NucleusPlugin {
      * @return string the selectlist
      * @author TeRanEX
      */
-    function getOptionSelectValues($typeExtra) {
+    public static function getOptionSelectValues($typeExtra) {
         $meta = NucleusPlugin::getOptionMeta($typeExtra);
         //the select list must always be the first part
         return $meta['select'];
@@ -624,7 +636,7 @@ class NucleusPlugin {
      *        formcontrols into the page (by ex: itemOptions for new item)
      * @static
      */
-    function _applyPluginOptions(&$aOptions, $newContextid = 0) {
+    public static function _applyPluginOptions(&$aOptions, $newContextid = 0) {
         global $manager;
         if (!is_array($aOptions)) return;
 
@@ -669,14 +681,14 @@ class NucleusPlugin {
 
                         //trigger event PrePluginOptionsUpdate to give the plugin the
                         //possibility to change/validate the new value for the option
-                        $data = array(
+                        $param = array(
                             'context'        => $o->ocontext,
                             'plugid'        => $o->opid,
                             'optionname'    => $o->oname,
                             'contextid'        => $contextid,
                             'value'            => &$value
                         );
-                        $manager->notify('PrePluginOptionsUpdate', $data);
+                        $manager->notify('PrePluginOptionsUpdate', $param);
 
                         // delete the old value for the option
                         sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));

@@ -59,12 +59,9 @@ class ACTION
                 return $this->forgotPassword();
             break;
 
-            case 'votepositive':
-                return $this->doKarma('pos');
-            break;
-
             case 'votenegative':
-                return $this->doKarma('neg');
+            case 'votepositive':
+                return $this->doVote($action == 'votepositive' ? '+' : '-');
             break;
 
             case 'plugin':
@@ -176,7 +173,8 @@ class ACTION
         $message .= getMailFooter();
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
-        mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
+
+        @Utils::mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
 
         if ( postVar('url') )
         {
@@ -268,7 +266,7 @@ class ACTION
 
             // even though the member can not log in, set some random initial password. One never knows.
             srand( (double) microtime() * 1000000);
-            $initialPwd = md5(uniqid(rand(), TRUE) );
+            $initialPwd = md5(uniqid(mt_rand(), TRUE) );
 
             // create member (non admin/can not login/no notes/random string as password)
             $name = shorten(postVar('name'), 32, '');
@@ -293,6 +291,7 @@ class ACTION
             }
             else
             {
+                sendContentType('text/html', '', _CHARSET);
                 echo _MSG_ACTIVATION_SENT;
                 echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
                 echo "\n</body>\n</html>";
@@ -323,6 +322,12 @@ class ACTION
         /*if (!$mem->canLogin())
             doError(_ERROR_NOLOGON_NOACTIVATE);*/
 
+        // check if user halt or invalid
+        if ( method_exists($mem, 'isHalt') && $mem->isHalt() )
+        {
+            doError(_ERROR_LOGIN_MEMBER_HALT_OR_INVALID);
+        }
+
         // check if e-mail address is correct
         if ( !($mem->getEmail() == postVar('email') ) )
         {
@@ -339,6 +344,7 @@ class ACTION
         else
         {
             global $CONF;
+            sendContentType('text/html', '', _CHARSET);
             echo _MSG_ACTIVATION_SENT;
             echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
         }
@@ -346,11 +352,18 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Handle karma votes
      */
-    function doKarma($type)
+	function doKarma($type)
+	{
+		return doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
+	}
+
+    /**
+	 *  Handle votes
+     */
+    function doVote($type)
     {
         global $itemid, $member, $CONF, $manager;
 
@@ -364,9 +377,13 @@ class ACTION
         $this->checkban($blogid);
 
         $karma =& $manager->getKarma($itemid);
+        $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR') );
+
+        $params = array('done'=> false, 'type'=>$type, 'allow'=> &$isVoteAllowed );
+        $manager->notify('PreVote', $params);
 
         // check if not already voted
-        if ( !$karma->isVoteAllowed(serverVar('REMOTE_ADDR') ) )
+        if ( !$isVoteAllowed )
         {
             doError(_ERROR_VOTEDBEFORE);
         }
@@ -381,14 +398,17 @@ class ACTION
 
         switch ( $type )
         {
-            case 'pos':
+            case '+':
                 $karma->votePositive();
             break;
 
-            case 'neg':
+            case '-':
                 $karma->voteNegative();
             break;
         }
+
+        $params = array('done'=> false, 'type'=>$type);
+        $manager->notify('PostVote', $params);
 
 //        $blogid = getBlogIDFromItemID($itemid);
         $blog =& $manager->getBlog($blogid);

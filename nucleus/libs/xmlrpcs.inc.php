@@ -436,43 +436,43 @@
         * Array defining php functions exposed as xmlrpc methods by this server
         * @access private
         */
-        var $dmap=array();
+        public $dmap=array();
         /**
         * Defines how functions in dmap will be invoked: either using an xmlrpc msg object
         * or plain php values.
         * valid strings are 'xmlrpcvals', 'phpvals' or 'epivals'
         */
-        var $functions_parameters_type='xmlrpcvals';
+        public $functions_parameters_type='xmlrpcvals';
         /**
         * Option used for fine-tuning the encoding the php values returned from
         * functions registered in the dispatch map when the functions_parameters_types
         * member is set to 'phpvals'
         * @see php_xmlrpc_encode for a list of values
         */
-        var $phpvals_encoding_options = array( 'auto_dates' );
+        public $phpvals_encoding_options = array( 'auto_dates' );
         /// controls whether the server is going to echo debugging messages back to the client as comments in response body. valid values: 0,1,2,3
-        var $debug = 1;
+        public $debug = 1;
         /**
         * Controls behaviour of server when invoked user function throws an exception:
         * 0 = catch it and return an 'internal error' xmlrpc response (default)
         * 1 = catch it and return an xmlrpc response with the error corresponding to the exception
         * 2 = allow the exception to float to the upper layers
         */
-        var $exception_handling = 0;
+        public $exception_handling = 0;
         /**
         * When set to true, it will enable HTTP compression of the response, in case
         * the client has declared its support for compression in the request.
         */
-        var $compress_response = false;
+        public $compress_response = false;
         /**
         * List of http compression methods accepted by the server for requests.
         * NB: PHP supports deflate, gzip compressions out of the box if compiled w. zlib
         */
-        var $accepted_compression = array();
+        public $accepted_compression = array();
         /// shall we serve calls to system.* methods?
-        var $allow_system_funcs = true;
+        public $allow_system_funcs = true;
         /// list of charset encodings natively accepted for requests
-        var $accepted_charset_encodings = array();
+        public $accepted_charset_encodings = array();
         /**
         * charset encoding to be used for response.
         * NB: if we can, we will convert the generated response from internal_encoding to the intended one.
@@ -482,16 +482,16 @@
         * or 'auto' (use client-specified charset encoding or same as request if request headers do not specify it (unless request is US-ASCII: then use library default anyway).
         * NB: pretty dangerous if you accept every charset and do not have mbstring enabled)
         */
-        var $response_charset_encoding = '';
+        public $response_charset_encoding = '';
         /**
         * Storage for internal debug info
         * @access private
         */
-        var $debug_info = '';
+        public $debug_info = '';
         /**
         * Extra data passed at runtime to method handling functions. Used only by EPI layer
         */
-        var $user_data = null;
+        public $user_data = null;
 
         /**
         * @param array $dispmap the dispatch map with definition of exposed services

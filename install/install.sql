@@ -50,10 +50,13 @@ CREATE TABLE `nucleus_category` (
   `cblog` int(11) NOT NULL default '0',
   `cname` varchar(200) default NULL,
   `cdesc` varchar(200) default NULL,
-  PRIMARY KEY  (`catid`)
+  `corder` int(11)     NOT NULL default '100',
+  PRIMARY KEY  (`catid`),
+  INDEX `cblog` (`cblog`),
+  INDEX `corder` (`corder`)
 ) ENGINE=MyISAM;
 
-INSERT INTO `nucleus_category` VALUES (1, 1, 'General', 'Items that do not fit in other categories');
+INSERT INTO `nucleus_category` VALUES (1, 1, 'General', 'Items that do not fit in other categories',100);
 
 CREATE TABLE `nucleus_comment` (
   `cnumber` int(11) NOT NULL auto_increment,

@@ -30,12 +30,12 @@ class MANAGER {
      * The $items, $blogs, ... arrays map an id to an object (for plugins, the name is used
      * rather than an ID)
      */
-    var $items;
-    var $blogs;
-    var $plugins;
-    var $karma;
-    var $templates;
-    var $members;
+    public $items;
+    public $blogs;
+    public $plugins;
+    public $karma;
+    public $templates;
+    public $members;
 
     /**
      * cachedInfo to avoid repeated SQL queries (see pidInstalled/pluginInstalled/getPidFromName)
@@ -43,7 +43,7 @@ class MANAGER {
      *
      * $cachedInfo['installedPlugins'] = array($pid -> $name)
      */
-    var $cachedInfo;
+    public $cachedInfo;
 
     /**
       * The plugin subscriptionlist
@@ -52,7 +52,7 @@ class MANAGER {
       *     $subscriptions[$EventName] = array containing names of plugin classes to be
       *                                  notified when that event happens
       */
-    var $subscriptions;
+    public $subscriptions;
 
     /**
       * Returns the only instance of this class. Creates the instance if it
@@ -258,6 +258,9 @@ class MANAGER {
                 // check if class exists (avoid errors in eval'd code)
                 if (!class_exists($name))
                 {
+                    if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
+                        define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
+                    }
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
                     return 0;
                 }
@@ -368,6 +371,24 @@ class MANAGER {
         unset($this->cachedInfo[$what]);
     }
 
+    function initSqlCacheInfo($what, $query='')
+    {
+        if (isset($this->cachedInfo[$what][$query])) return;
+        
+        switch ($what)
+        {
+            case 'sql_num_rows':
+                $rs = sql_query($query);
+                $this->cachedInfo['sql_num_rows'][$query] = sql_num_rows($rs);
+                break;
+            case 'sql_fetch_object':
+                $rs  = sql_query($query);
+                $obj = sql_fetch_object($rs);
+                $this->cachedInfo['sql_fetch_object'][$query] = is_object($obj) ? $obj->result : '';
+                break;
+        }
+    }
+
     /**
      * Loads some info on the first call only
      */
@@ -434,6 +455,7 @@ class MANAGER {
         $this->subscriptions = array();
 
         $res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
+        if ($res)
         while ($o = sql_fetch_object($res)) {
             $pluginName = $o->pfile;
             $eventName = $o->event;
@@ -447,7 +469,7 @@ class MANAGER {
         requests. tickets are user specific
     */
 
-    var $currentRequestTicket = '';
+    public $currentRequestTicket = '';
 
     /**
      * GET requests: Adds ticket to URL (URL should NOT be html-encoded!, ticket is added at the end)

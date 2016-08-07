@@ -17,3 +17,11 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+
+# export-ignore
+.gitignore           export-ignore
+.gitattributes       export-ignore
+/build               export-ignore
+/nucleus/convert     export-ignore
+/nucleus/language/archive     export-ignore
+
