@@ -1,11 +1,11 @@
 CREATE TABLE `nucleus_actionlog` (
-  `timestamp`  datetime     NOT NULL default '0000-00-00 00:00:00',
+  `timestamp`  datetime     NOT NULL default '2002-11-16 15:19:00',
   `message`    varchar(255) NOT NULL default ''
 ) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_activation` (
   `vkey`    varchar(40)  NOT NULL default '',
-  `vtime`   datetime     NOT NULL default '0000-00-00 00:00:00',
+  `vtime`   datetime     NOT NULL default '2002-11-16 15:19:00',
   `vmember` int(11)      NOT NULL default '0',
   `vtype`   varchar(15)  NOT NULL default '',
   `vextra`  varchar(128) NOT NULL default '',
@@ -87,7 +87,7 @@ CREATE TABLE `nucleus_comment` (
   `cemail`  varchar(100),
   `cmember` int(11)               default NULL,
   `citem`   int(11)      NOT NULL default '0',
-  `ctime`   datetime     NOT NULL default '0000-00-00 00:00:00',
+  `ctime`   datetime     NOT NULL default '2002-11-16 15:19:00',
   `chost`   varchar(60)           default NULL,
   `cip`     varchar(15)  NOT NULL default '',
   `cblog`   int(11)      NOT NULL default '0',
@@ -147,7 +147,7 @@ CREATE TABLE `nucleus_item` (
   `imore`     mediumtext,
   `iblog`     int(11)      NOT NULL default '0',
   `iauthor`   int(11)      NOT NULL default '0',
-  `itime`     datetime     NOT NULL default '0000-00-00 00:00:00',
+  `itime`     datetime     NOT NULL default '2002-11-16 15:19:00',
   `iclosed`   tinyint(2)   NOT NULL default '0',
   `idraft`    tinyint(2)   NOT NULL default '0',
   `ikarmapos` int(11)      NOT NULL default '0',
@@ -277,7 +277,7 @@ CREATE TABLE `nucleus_template_desc` (
 
 CREATE TABLE `nucleus_tickets` (
   `ticket` varchar(40) NOT NULL default '',
-  `ctime` datetime     NOT NULL default '0000-00-00 00:00:00',
+  `ctime` datetime     NOT NULL default '2002-11-16 15:19:00',
   `member` int(11)     NOT NULL default '0',
   PRIMARY KEY  (`ticket`,`member`)
 ) ENGINE=MyISAM;
