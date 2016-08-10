@@ -20,30 +20,30 @@ class SKINIMPORT {
 
     // hardcoded value (see constructor). When 1, interesting info about the
     // parsing process is sent to the output
-    var $debug;
+    public $debug;
 
     // parser/file pointer
-    var $parser;
-    var $fp;
+    public $parser;
+    public $fp;
 
     // which data has been read?
-    var $metaDataRead;
-    var $allRead;
+    public $metaDataRead;
+    public $allRead;
 
     // extracted data
-    var $skins;
-    var $templates;
-    var $info;
+    public $skins;
+    public $templates;
+    public $info;
 
     // to maintain track of where we are inside the XML file
-    var $inXml;
-    var $inData;
-    var $inMeta;
-    var $inSkin;
-    var $inTemplate;
-    var $currentName;
-    var $currentPartName;
-    var $cdata;
+    public $inXml;
+    public $inData;
+    public $inMeta;
+    public $inSkin;
+    public $inTemplate;
+    public $currentName;
+    public $currentPartName;
+    public $cdata;
 
 
 
@@ -244,6 +244,7 @@ class SKINIMPORT {
             }
         }
 
+        if (is_array($this->templates))
         foreach ($this->templates as $templateName => $data) {
             // 1. if exists: delete all part data, update desc data
             //    if not exists: create desc
@@ -291,6 +292,7 @@ class SKINIMPORT {
     function checkTemplateNameClashes() {
         $clashes = array();
 
+        if (is_array($this->templates))
         foreach ($this->templates as $templateName => $data) {
             if (TEMPLATE::exists($templateName)) {
                 array_push($clashes, $templateName);
@@ -305,7 +307,7 @@ class SKINIMPORT {
      */
     function startElement($parser, $name, $attrs) {
         foreach($attrs as $key=>$value) {
-            $attrs[$key]=hsc($value);
+            $attrs[$key] = hsc($value);
         }
 
         if ($this->debug) {
@@ -601,17 +603,19 @@ class SKINIMPORT {
             $this->skins =& $data['skin'];
             $this->templates =& $data['template'];
         }
-        ksort($this->skins);
-        ksort($this->templates);
+        if (is_array($this->skins))
+            ksort($this->skins);
+        if (is_array($this->templates))
+            ksort($this->templates);
     }
 }
 
 
 class SKINEXPORT {
 
-    var $templates;
-    var $skins;
-    var $info;
+    public $templates;
+    public $skins;
+    public $info;
 
     /**
      * Constructor initializes data structures
@@ -686,7 +690,6 @@ class SKINEXPORT {
             header('Expires: 0');
             header('Pragma: no-cache');
         }
-
 
         // sort by skinname , templatename
         asort($this->skins);
@@ -817,4 +820,3 @@ class SKINEXPORT {
     }
 }
 
-?>

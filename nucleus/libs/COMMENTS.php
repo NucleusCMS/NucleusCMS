@@ -22,13 +22,13 @@ require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
 class COMMENTS {
 
     // item for which comment are being displayed
-    var $itemid;
+    public $itemid;
 
     // reference to the itemActions object that is calling the showComments function
-    var $itemActions;
+    public $itemActions;
 
     // total amount of comments displayed
-    var $commentcount;
+    public $commentcount;
 
     /**
      * Creates a new COMMENTS object for the given blog and item
@@ -47,6 +47,7 @@ class COMMENTS {
      *        itemActions object, that will take care of the parsing
      */
     function setItemActions(&$itemActions) {
+        unset($this->itemActions);
         $this->itemActions =& $itemActions;
     }
 
@@ -80,9 +81,13 @@ class COMMENTS {
                    . ' FROM '.sql_table('comment').' as c'
                    . ' WHERE c.citem=' . $this->itemid
                    . ' ORDER BY c.ctime';
+            $query_ct =  'SELECT count(*) AS result'
+                   . ' FROM '.sql_table('comment').' as c'
+                   . ' WHERE c.citem=' . $this->itemid
+                   . ' ORDER BY c.ctime';
 
             $comments = sql_query($query);
-            $this->commentcount = sql_num_rows($comments);
+            $this->commentcount = intval(quickQuery($query_ct));
         }
 
         // if no result was found

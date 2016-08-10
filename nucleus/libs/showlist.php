@@ -37,14 +37,17 @@ function showlist($query, $type, $template) {
         $res = sql_query($query);
 
         // don't do anything if there are no results
-        $numrows = sql_num_rows($res);
-        if ($numrows == 0)
+        $numrows = 0;
+        if ($res === false)
             return 0;
 
         call_user_func("listplug_{$type}", $template, 'HEAD');
 
         while($template['current'] = sql_fetch_object($res))
+        {
+            $numrows++;
             call_user_func('listplug_' . $type, $template, 'BODY');
+        }
 
         call_user_func('listplug_' . $type, $template, 'FOOT');
 
@@ -70,7 +73,7 @@ function listplug_select($template, $type) {
             $current = $template['current'];
 
             echo '<option value="' . hsc($current->value) . '"';
-            if ($template['selected'] == $current->value)
+            if (isset($template['selected']) && $template['selected'] == $current->value)
                 echo ' selected="selected" ';
             if (isset($template['shorten']) && $template['shorten'] > 0) {
                 echo ' title="'. hsc($current->text).'"';
@@ -611,7 +614,7 @@ function listplug_table_templatelist($template, $type) {
 }
 
 function listplug_table_skinlist($template, $type) {
-    global $CONF, $DIR_SKINS, $manager;
+    global $CONF, $DIR_SKINS, $manager, $MYSQL_HANDLER;
     switch($type) {
         case 'HEAD':
             echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
@@ -666,6 +669,18 @@ function listplug_table_skinlist($template, $type) {
                 $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber
                     . " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC"
                      );
+                if (in_array('mysql', $MYSQL_HANDLER))
+                    $order = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
+                else
+                {
+                    $tmp_items = array('member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index');
+                    $tmp_ct = count($tmp_items);
+                    $order = "";
+                    for($i = 0; $i<$tmp_ct; $i++)
+                        $order .= sprintf(" WHEN '%s' THEN %d", $tmp_items[$i], $tmp_ct-$i); // DESC
+                    $order = " ORDER BY CASE stype ${order} END , stype ASC";
+                }
+                $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . $order);
                 $types = array();
                 while ($o = sql_fetch_object($r))
                     array_push($types,$o->stype);
@@ -742,4 +757,4 @@ function listplug_table_banlist($template, $type) {
     }
 }
 
-?>
+

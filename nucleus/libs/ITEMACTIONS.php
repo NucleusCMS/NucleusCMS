@@ -18,25 +18,25 @@ class ITEMACTIONS extends BaseActions {
 
     // contains an assoc array with parameters that need to be included when
     // generating links to items/archives/... (e.g. catid)
-    var $linkparams;
+    public $linkparams;
 
     // true when the current user is a blog admin (and thus allowed to edit all items)
-    var $allowEditAll;
+    public $allowEditAll;
 
     // timestamp of last visit
-    var $lastVisit;
+    public $lastVisit;
 
     // item currently being handled (mysql result object, see BLOG::showUsingQuery)
-    var $currentItem;
+    public $currentItem;
 
     // reference to the blog currently being displayed
-    var $blog;
+    public $blog;
 
     // associative array with template info (part name => contents)
-    var $template;
+    public $template;
 
     // true when comments need to be displayed
-    var $showComments;
+    public $showComments;
 
     function __construct(&$blog) {
         // call constructor of superclass first
@@ -114,10 +114,12 @@ class ITEMACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
+        unset($this->parser);
         $this->parser =& $parser;
     }
     
     function setCurrentItem(&$item) {
+        unset($this->currentItem);
         $this->currentItem =& $item;
         global $currentitemid;
         if (is_array($this->currentItem)) {
@@ -128,6 +130,7 @@ class ITEMACTIONS extends BaseActions {
     }
     
     function setBlog(&$blog) {
+        unset($this->blog);
         $this->blog =& $blog;
     }
 
@@ -786,4 +789,3 @@ class ITEMACTIONS extends BaseActions {
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 }
-?>

@@ -21,15 +21,15 @@ require_once dirname(__FILE__) . '/ACTIONS.php';
 class SKIN {
 
     // after creating a SKIN object, evaluates to true when the skin exists
-    var $isValid;
+    public $isValid;
 
     // skin characteristics. Use the getXXX methods rather than accessing directly
-    var $id;
-    var $description;
-    var $contentType;
-    var $includeMode;        // either 'normal' or 'skindir'
-    var $includePrefix;
-    var $name;
+    public $id;
+    public $description;
+    public $contentType;
+    public $includeMode;        // either 'normal' or 'skindir'
+    public $includePrefix;
+    public $name;
 
     /**
      * Constructor for a new SKIN object
@@ -38,7 +38,7 @@ class SKIN {
      *             id of the skin
      */
     public function SKIN($id) { $this->__construct($id); }
-    function __construct($id) {
+    public function __construct($id) {
         global $resultCache;
         
         $this->id = intval($id);
@@ -54,7 +54,7 @@ class SKIN {
         {
             $res   = sql_query($query);
             $obj   = sql_fetch_object($res);
-            $count = sql_num_rows($res);
+            $count = is_object($obj) ? 1 : 0;
             $resultCache[$query]          = $obj;
             $resultCache["count{$query}"] = $count;
         }
@@ -259,14 +259,17 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
+        global $MYSQL_HANDLER;
         if(strpos($type, '/')!==false) return '';
-        $query = 'SELECT scontent FROM '.sql_table('skin')." WHERE sdesc=$this->id and stype='". sql_real_escape_string($type) ."'";
+        if (in_array('mysql' , $MYSQL_HANDLER ) !== false)
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
+        else
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
         $res = sql_query($query);
 
-        if (sql_num_rows($res) == 0)
+        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
             return '';
-        else
-            return sql_result($res, 0, 0);
+        return $r[0];
     }
 
     /**
@@ -281,9 +284,14 @@ class SKIN {
         // delete old thingie
         sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
 
+        global $SQL_DBH;
         // write new thingie
-        if ($content) {
-            sql_query('INSERT INTO '.sql_table('skin')." SET scontent='" . sql_real_escape_string($content) . "', stype='" . sql_real_escape_string($type) . "', sdesc=" . intval($skinid));
+        if ( strlen($content) > 0 ) {
+            $sql = 'INSERT INTO '.sql_table('skin') . "(scontent, stype, sdesc) VALUES";
+            if (!$SQL_DBH || !function_exists('sql_prepare_execute'))
+                sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($skinid)) );
+            else
+                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($skinid)));
         }
 
         global $resultCache, $manager;
@@ -514,4 +522,4 @@ class SKIN {
 
 }
 
-?>
+

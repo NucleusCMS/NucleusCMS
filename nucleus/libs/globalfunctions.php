@@ -733,6 +733,7 @@ function highlight($text, $expression, $highlight) {
     // $matches[0][i] = HTML + text
     // $matches[1][i] = HTML
     // $matches[2][i] = text
+    $matches = array();
     preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
     
     // throw it all together again while applying the highlight to the text pieces
@@ -808,28 +809,49 @@ function isValidMailAddress($address) {
 }
 
 // some helper functions
-function getBlogIDFromName($name) {
-    return quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
+function getBlogIDFromName($name)
+{
+    $res = quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
+    if ($res !== false)
+      $res = intval($res);
+    return $res;
 }
 
-function getBlogNameFromID($id) {
+function getBlogNameFromID($id)
+{
     return quickQuery('SELECT bname as result FROM ' . sql_table('blog') . ' WHERE bnumber=' . intval($id) );
 }
 
-function getBlogIDFromItemID($itemid) {
-    return quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid) );
+function getBlogIDFromItemID($itemid)
+{
+    $res = quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid) );
+    if ($res !== false)
+      $res = intval($res);
+    return $res;
 }
 
-function getBlogIDFromCommentID($commentid) {
-    return quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid) );
+function getBlogIDFromCommentID($commentid)
+{
+    $res = quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid) );
+    if ($res !== false)
+        $res = intval($res);
+    return $res;
 }
 
-function getBlogIDFromCatID($catid) {
-    return quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid) );
+function getBlogIDFromCatID($catid)
+{
+    $res = quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid) );
+    if ($res !== false)
+        $res = intval ($res);
+    return $res;
 }
 
-function getCatIDFromName($name) {
-    return quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
+function getCatIDFromName($name)
+{
+    $res = quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
+    if ($res !== false)
+        $res = intval ($res);
+    return $res;
 }
 
 function quickQuery($query) {
@@ -842,6 +864,8 @@ function quickQuery($query) {
 
 function getPluginNameFromPid($pid) {
     $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
+    if (!$res)
+        return FALSE;
     $obj = sql_fetch_object($res);
     return $obj->pfile;
 }
@@ -897,7 +921,7 @@ function selector() {
         global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
         // 1. get timestamp, blogid and catid for item
-        $query = sprintf("SELECT itime, iblog, icat FROM %s WHERE inumber='%s'" , sql_table('item'),intval($itemid));
+        $query = sprintf("SELECT itime, iblog, icat FROM %s WHERE inumber='%d'" , sql_table('item'),intval($itemid));
         $res = sql_query($query);
         $obj = sql_fetch_object($res);
 
@@ -929,8 +953,10 @@ function selector() {
 
         $b =& $manager->getBlog($blogid);
 
-        if ($b->isValidCategory($catid) ) $catextra = " AND icat={$catid}";
-        else                              $catextra = '';
+        if ($b->isValidCategory($catid) )
+            $catextra = " AND icat={$catid}";
+        else
+            $catextra = '';
 
         // get previous itemid and title
         $param = array(sql_table('item'), mysqldate($timestamp), $blogid, $catextra);
@@ -1286,7 +1312,7 @@ function shorten($text, $maxlength, $toadd) {
   * quotes around it.
   */
 function mysqldate($timestamp) {
-    return '"' . date('Y-m-d H:i:s', $timestamp) . '"';
+    return "'" . date('Y-m-d H:i:s', $timestamp) . "'";
 }
 
 /**
@@ -1294,7 +1320,8 @@ function mysqldate($timestamp) {
   */
 function selectBlog($shortname) {
     global $blogid, $archivelist;
-    if (!$blogid) {
+    $blogid = intval($blogid);
+    if (!($blogid>0)) {
         $blogid = getBlogIDFromName($shortname);
     }
 
@@ -1354,7 +1381,10 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
     PARSER::setProperty('IncludePrefix', $includePrefix);
 
     if (!file_exists($filename) ) {
-        doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
+        if (defined('_GFUNCTIONS_PARSEFILE_FILEMISSING'))
+            doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
+        else
+            doError('A file is missing');
     }
 
     $fsize = filesize($filename);
@@ -1498,7 +1528,6 @@ function checkLanguage($lang) {
  * @return bool
  **/
 function checkPlugin($plug) {
-
     global $DIR_PLUGINS;
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
@@ -1542,6 +1571,7 @@ function createLink($type, $params) {
 
     // ask plugins first
     $created = false;
+    $url     = '';
 
     if ($usePathInfo) {
         $param = array(
@@ -1900,6 +1930,7 @@ function sanitizeParams()
     arrayToServerString($array, $frontParam, $str);
 
     // QUERY_STRING of $_SERVER
+    unset($str);
     $str =& $_SERVER["QUERY_STRING"];
     serverStringToArray($str, $array, $frontParam);
     sanitizeArray($array);
@@ -1965,6 +1996,7 @@ function ticketForPlugin(){
     $plugins=array();
     $query='SELECT `pfile` FROM '.sql_table('plugin');
     $res=sql_query($query);
+
     while($row=sql_fetch_row($res))
     {
         $name=substr($row[0],3);
@@ -2057,6 +2089,7 @@ function ticketForPlugin(){
         echo '<p>' . _ERROR_BADTICKET . "</p>\n";
 
         /* Show the form to confirm action */
+
         // Resolve URI and QUERY_STRING
         if ($uri=serverVar('REQUEST_URI'))
         {
@@ -2375,12 +2408,9 @@ function getBookmarklet($blogid) {
  * @param mixed Variable
  * @return mixed Variable
  */
-function ifset(&$var) {
-    if (isset($var)) {
-        return $var;
-    }
-
-    return null;
+function ifset(&$var)
+{
+    return isset($var) ? $var : null;
 }
 
 /**

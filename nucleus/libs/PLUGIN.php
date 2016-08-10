@@ -276,10 +276,10 @@ class NucleusPlugin {
 
     // internal functions of the class starts here
 
-    var $_aOptionValues;    // oid_contextid => value
-    var $_aOptionToInfo;    // context_name => array('oid' => ..., 'default' => ...)
-    var $plugin_options;    // see getOption()
-    var $plugid;            // plugin id
+    public $_aOptionValues;    // oid_contextid => value
+    public $_aOptionToInfo;    // context_name => array('oid' => ..., 'default' => ...)
+    public $plugin_options;    // see getOption()
+    public $plugid;            // plugin id
 
 
     /**
@@ -441,8 +441,12 @@ class NucleusPlugin {
 
         // get from DB
         $res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
-
-        if (!$res || (sql_num_rows($res) == 0)) {
+        $query_ovalue_exist =
+                'SELECT count(*) as result FROM ' . sql_table('plugin_option')
+              . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid)
+              . ' LIMIT 1';
+        $res_ovalue_exist = intval(quickQuery($query_ovalue_exist));
+        if (!$res || ($res_ovalue_exist == 0)) {
             $defVal = $this->_getDefVal($context, $name);
             $this->_aOptionValues[$key] = $defVal;
 

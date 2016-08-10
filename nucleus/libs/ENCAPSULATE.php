@@ -202,7 +202,7 @@ EOD;
                 <input type="hidden" name="start" value="<?php echo  $next; ?>" />
             </form>
 <?php else:?>
-                <?php echo _LISTS_NEXT; ?> &gt; &gt;
+                <?php echo _LISTS_NEXT; ?> &gt;&gt;
 <?php endif;?>
         <?php echo $page_navigation; ?>
         </td>

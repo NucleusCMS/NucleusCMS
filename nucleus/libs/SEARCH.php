@@ -23,10 +23,10 @@
 
 class SEARCH {
 
-    var $querystring;
-    var $marked;
-    var $inclusive;
-    var $blogs;
+    public $querystring;
+    public $marked;
+    public $inclusive;
+    public $blogs;
 
     public function SEARCH($text) { $this->__construct($text); }
     function __construct($text) {
@@ -278,4 +278,4 @@ class SEARCH {
         return $like;
     }
 }
-?>
+

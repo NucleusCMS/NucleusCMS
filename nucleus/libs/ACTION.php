@@ -351,7 +351,6 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Handle karma votes
      */

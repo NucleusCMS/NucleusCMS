@@ -18,9 +18,9 @@
 
 class BODYACTIONS extends BaseActions {
 
-    var $currentItem;
+    public $currentItem;
 
-    var $template;
+    public $template;
 
     function __construct() {
         parent::__construct();
@@ -431,4 +431,4 @@ class BODYACTIONS extends BaseActions {
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 }
-?>
+

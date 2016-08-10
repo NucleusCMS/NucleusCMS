@@ -20,22 +20,22 @@ class ACTIONS extends BaseActions {
 
     // part of the skin currently being parsed ('index', 'item', 'archive',
     // 'archivelist', 'member', 'search', 'error', 'imagepopup')
-    var $skintype;
+    public $skintype;
 
     // contains an assoc array with parameters that need to be included when
     // generating links to items/archives/... (e.g. catid)
-    var $linkparams;
+    public $linkparams;
 
     // reference to the skin object for which a part is being parsed
-    var $skin;
+    public $skin;
 
     // used when including templated forms from the include/ dir. The $formdata var
     // contains the values to fill out in there (assoc array name -> value)
-    var $formdata;
+    public $formdata;
 
     // filled out with the number of displayed items after calling one of the
     // (other)blog/(other)searchresults skinvars.
-    var $amountfound;
+    public $amountfound;
 
     /**
      * Constructor for a new ACTIONS object
@@ -55,6 +55,7 @@ class ACTIONS extends BaseActions {
      *  Set the skin
      */
     function setSkin(&$skin) {
+        unset($this->skin);
         $this->skin =& $skin;
     }
 
@@ -62,6 +63,7 @@ class ACTIONS extends BaseActions {
      *  Set the parser
      */
     function setParser(&$parser) {
+        unset($this->parser);
         $this->parser =& $parser;
     }
 
@@ -323,6 +325,7 @@ class ACTIONS extends BaseActions {
                     {
                         case 'index':
                             $sqlquery = $blog->getSqlBlog('', 'count');
+                            $url = $path;
                             break;
                         case 'search':
                             $unused_highlight = '';
@@ -378,7 +381,7 @@ class ACTIONS extends BaseActions {
       * @param $catname
       *        The name of the category to use
       */
-    function _setBlogCategory(&$blog, $catname) {
+    function _setBlogCategory($blog, $catname) {
         global $catid;
         if ($catname != '')
             $blog->setSelectedCategoryByName($catname);
@@ -429,7 +432,9 @@ class ACTIONS extends BaseActions {
      */
     function parse_addlink() {
         global $CONF, $member, $blog;
+        if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
             echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
+        }
     }
     
     /**
@@ -1429,4 +1434,4 @@ class ACTIONS extends BaseActions {
 
 
 }
-?>
+

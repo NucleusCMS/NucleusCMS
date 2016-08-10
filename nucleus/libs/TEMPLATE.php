@@ -17,7 +17,7 @@
  */
 class TEMPLATE {
 
-    var $id;
+    public $id;
 
     public function TEMPLATE($templateid) { $this->__construct($templateid); }
     function __construct($templateid) {
@@ -63,9 +63,14 @@ class TEMPLATE {
         // delete old thingie
         sql_query('DELETE FROM '.sql_table('template')." WHERE tpartname='". sql_real_escape_string($type) ."' and tdesc=" . intval($id));
 
+        global $SQL_DBH;
         // write new thingie
-        if ($content) {
-            sql_query('INSERT INTO '.sql_table('template')." SET tcontent='" . sql_real_escape_string($content) . "', tpartname='" . sql_real_escape_string($type) . "', tdesc=" . intval($id));
+        if ( strlen($content) > 0 ) {
+            $sql = 'INSERT INTO '.sql_table('template') . "(tcontent, tpartname, tdesc) VALUES";
+            if (!$SQL_DBH || !function_exists('sql_prepare_execute'))
+                sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($id)) );
+            else
+                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($id)));
         }
     }
 
@@ -162,15 +167,19 @@ class TEMPLATE {
     // returns true if there is a template with the given shortname
     // (static)
     public static function exists($name) {
-        $r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdname="'.sql_real_escape_string($name).'"');
-        return (sql_num_rows($r) != 0);
+        $sql = 'select count(*) as result FROM '.sql_table('template_desc')
+              . sprintf(" WHERE tdname='%s' limit 1", sql_real_escape_string($name));
+        $res = quickQuery($sql);
+        return (intval($res) > 0);
     }
 
     // returns true if there is a template with the given ID
     // (static)
     public static function existsID($id) {
-        $r = sql_query('select * FROM '.sql_table('template_desc').' WHERE tdnumber='.intval($id));
-        return (sql_num_rows($r) != 0);
+        $sql = 'select count(*) as result FROM '.sql_table('template_desc')
+              . sprintf(" WHERE tdnumber=%d limit 1", intval($id));
+        $res = quickQuery($sql);
+        return (intval($res) > 0);
     }
 
     // (static)

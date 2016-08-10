@@ -23,17 +23,17 @@ require_once dirname(__FILE__) . '/ITEMACTIONS.php';
 class BLOG {
 
     // blog id
-    var $blogid;
+    public $blogid;
 
     // ID of currently selected category
-    var $selectedcatid;
+    public $selectedcatid;
 
     // After creating an object of the blog class, contains true if the BLOG object is
     // valid (the blog exists)
-    var $isValid;
+    public $isValid;
 
     // associative array, containing all blogsettings (use the get/set functions instead)
-    var $settings;
+    public $settings;
 
     /**
      * Creates a new BLOG object for the given blog
@@ -180,10 +180,11 @@ class BLOG {
         // execute query
         $items = sql_query($query);
 
+        $numrows = 0;
         // loop over all items
         $old_date = 0;
         while ($item = sql_fetch_object($items)) {
-
+            $numrows ++;
             $item->timestamp = strtotime($item->itime); // string timestamp -> unix timestamp
 
             // action handler needs to know the item we're handling
@@ -244,8 +245,6 @@ class BLOG {
             $parser->parse($template['ITEM_FOOTER']);
 
         }
-
-        $numrows = sql_num_rows($items);
 
         // add another date footer if there was at least one item
         if ( ($numrows > 0) && $dateheads )
@@ -410,11 +409,14 @@ class BLOG {
                 $catName = _CREATED_NEW_CATEGORY_NAME;
                 $i = 1;
 
-                $res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
-                while (sql_num_rows($res) > 0)
+                $res = TRUE;
+                while ($res !== false)
                 {
+                    $sql = 'SELECT catid AS result FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID();
+                    $res = quickQuery($sql);
+                    if (empty($res))
+                        break;
                     $i++;
-                    $res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cname='".$catName.$i."' and cblog=".$this->getID());
                 }
 
                 $catName = $catName . $i;
@@ -479,6 +481,7 @@ class BLOG {
         if ($sqlquery == '')
         {
             // no query -> show everything
+            $extraquery = '';
             $amountfound = $this->readLogAmount($template, $maxresults, '', $query, 1, 1);
         } else {
 
@@ -905,11 +908,10 @@ class BLOG {
                . ' WHERE bnumber=' . $this->blogid;
         $res = sql_query($query);
 
-        $this->isValid = (sql_num_rows($res) > 0);
+        $this->settings = ( $res ? sql_fetch_assoc($res) : array() );
+        $this->isValid = !empty($this->settings);
         if (!$this->isValid)
-            return;
-
-        $this->settings = sql_fetch_assoc($res);
+            $this->settings = array();
     }
 
     /**
@@ -964,12 +966,13 @@ class BLOG {
       *     category id
       */
     function isValidCategory($catid) {
-        global $manager;
-        $query = 'SELECT * FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid);
-        $manager->initSqlCacheInfo('sql_num_rows',$query);
-        $count = $manager->cachedInfo['sql_num_rows'][$query];
-        
-        return ($count != 0);
+        global $manager, $MYSQL_HANDLER;
+        $query = 'SELECT count(*) as result FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' AND catid=' . intval($catid)
+                .' LIMIT 1';
+        $manager->initSqlCacheInfo('sql_fetch_object',$query);
+        $count = intval($manager->cachedInfo['sql_fetch_object'][$query]);
+
+        return ($count > 0);
     }
 
     /**
@@ -981,7 +984,8 @@ class BLOG {
     function getCategoryName($catid) {
         $res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
-        return $o->cname;
+        if (is_object($o))
+            return $o->cname;
     }
 
     /**
@@ -1000,14 +1004,14 @@ class BLOG {
     {
         $res = sql_query('SELECT corder FROM '.sql_table('category')
                        . ' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-        $o = sql_fetch_object($res);
-        return $o->corder;
+        if ($res && ($o = sql_fetch_object($res)))
+            return intval($o->corder);
+        return 100; // default
     }
 
     function getCategoryIdFromName($name) {
         $res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
-        if (sql_num_rows($res) > 0) {
-            $o = sql_fetch_object($res);
+        if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
         } else {
             return $this->getDefaultCategory();
@@ -1285,8 +1289,9 @@ class BLOG {
       *     blog shortname
       */
     public static function exists($name) {
-        $r = sql_query('select * FROM '.sql_table('blog').' WHERE bshortname="'.sql_real_escape_string($name).'"');
-        return (sql_num_rows($r) != 0);
+        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
+                       sql_table('blog'), sql_real_escape_string($name));
+        return intval(quickQuery($sql)) > 0;
     }
 
     /**
@@ -1297,8 +1302,9 @@ class BLOG {
       *     blog id
       */
     public static function existsID($id) {
-        $r = sql_query('select * FROM '.sql_table('blog').' WHERE bnumber='.intval($id));
-        return (sql_num_rows($r) != 0);
+        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bnumber=%d LIMIT 1",
+                       sql_table('blog'), intval($id));
+        return intval(quickQuery($sql)) > 0;
     }
 
     /**
@@ -1327,9 +1333,10 @@ class BLOG {
 
         if ($this->settings['bfuturepost'] == 1) {
             $blogid = $this->getID();
-            $query = sprintf("SELECT * FROM %s WHERE iposted=0 AND iblog='%s' AND itime<NOW()", sql_table('item'), $blogid);
-            $result = sql_query($query);
-            if (sql_num_rows($result) > 0) {
+            $sql = "SELECT count(*) AS result FROM " . sql_table('item')
+                      . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()"
+                      . ' LIMIT 1';
+            if (intval(quickQuery($sql)) > 0) {
                 // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
                 // Note that the plugins's calling order is subject to thri order in the plugin list
                 $pinged = false;
@@ -1343,9 +1350,10 @@ class BLOG {
                 sql_query("UPDATE " . sql_table('item') . " SET iposted='1' WHERE iblog=" . $blogid . " AND itime<NOW()");
 
                 // check to see any pending future post, clear the flag is none
-                $result = sql_query("SELECT * FROM " . sql_table('item')
-                          . " WHERE iposted=0 AND iblog=" . $blogid);
-                if (sql_num_rows($result) == 0) {
+                $sql = "SELECT count(*) AS result FROM " . sql_table('item')
+                          . " WHERE iposted=0 AND iblog=" . $blogid
+                          . ' LIMIT 1';
+                if (intval(quickQuery($sql)) == 0) {
                     $this->clearFuturePost();
                 }
             }
