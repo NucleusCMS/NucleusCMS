@@ -5823,7 +5823,7 @@ selector();
      * @todo document this
      */
     function pagehead($extrahead = '') {
-        global $member, $nucleus, $CONF, $manager, $DIR_NUCLEUS;
+        global $CONF, $manager, $DIR_NUCLEUS;
 
         $param = array(
             'extrahead'    => &$extrahead,
@@ -5876,6 +5876,13 @@ selector();
 </div>
 <div id="container">
 <div id="content">
+	<?php
+	    $this->loginname();
+    }
+    
+    function loginname() {
+    	global $member, $nucleus, $CONF;
+    	?>
 <div class="loginname">
 <?php
         if ($member->isLoggedIn())
@@ -5917,7 +5924,7 @@ selector();
      * @todo document this
      */
     function pagefoot() {
-        global $action, $member, $manager, $DB_DRIVER_NAME;
+        global $manager;
 
         $param = array(
             'action' => $this->action
@@ -5937,7 +5944,13 @@ selector();
 
         ?>
             </div><!-- content -->
+    	<?php
+        	$this->quickmenu();
+    }
 
+    function quickmenu() {
+    	global $action, $member, $manager, $DB_DRIVER_NAME;
+    	?>
             <div id="quickmenu">
 
                 <?php               // ---- user settings ----
