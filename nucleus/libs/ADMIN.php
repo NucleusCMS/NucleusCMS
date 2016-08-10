@@ -5827,14 +5827,6 @@ selector();
         );
         $manager->notify('AdminPrePageFoot', $param);
 
-        if ($member->isLoggedIn() && ($action != 'showlogin')) {
-            ?>
-            <h2><?php echo  _LOGOUT ?></h2>
-            <ul>
-                <li><a href="index.php?action=overview"><?php echo  _BACKHOME?></a></li>
-                <li><a href='index.php?action=logout'><?php echo  _LOGOUT?></a></li>
-            </ul>
-            <?php       }
         ?>
             <div class="foot">
                 <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>"><?php echo hsc(CORE_APPLICATION_NAME); ?></a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
