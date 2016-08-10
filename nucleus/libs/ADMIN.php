@@ -5931,14 +5931,6 @@ selector();
         );
         $manager->notify('AdminPrePageFoot', $param);
 
-        if ($member->isLoggedIn() && ($action != 'showlogin')) {
-            echo "\t\t" . sprintf('<h2>%s</h2>', _LOGOUT) . "\n";
-            echo "\t\t" . "<ul>" . "\n";
-            echo "\t\t\t" . sprintf('<li><a href="index.php?action=overview">%s</a></li>', _BACKHOME)  . "\n";
-            echo "\t\t\t" . sprintf('<li><a href="index.php?action=logout">%s</a></li>', _LOGOUT)  . "\n";
-            echo "\t\t" . "</ul>" . "\n";
-        }
-
         echo "\t\t". sprintf('<div class="foot"><a href="%s">%s</a> &copy; 2002-%s</div>',
                             _ADMINPAGEFOOT_OFFICIALURL, hsc(CORE_APPLICATION_NAME) , date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT) . "\n";
 
