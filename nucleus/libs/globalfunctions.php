@@ -373,27 +373,8 @@ if (!headers_sent() ) {
 }
 
 // read language file, only after user has been initialized
+LoadCoreLanguage();
 $language = getLanguageName();
-
-# important note that '\' must be matched with '\\\\' in preg* expressions
-include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
-
-    if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
-         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
-    {
-        // load undefined constant
-        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
-        {
-            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
-            {
-                // load default lang
-                ob_start();
-                @include_once($DIR_LANG . 'english-utf8' . '.php');
-                ob_end_clean();
-            }
-        }
-    }
-
 
 // check if valid charset
 if (!encoding_check(false, false, _CHARSET)) {
@@ -1478,6 +1459,8 @@ function getMailFooter() {
 function getLanguageName() {
     global $CONF, $member;
 
+    LoadCoreLanguage();
+
     if ($member && $member->isLoggedIn() ) {
         // try to use members language
         $memlang = $member->getLanguage();
@@ -1492,6 +1475,45 @@ function getLanguageName() {
         return $CONF['Language'];
     } else {
         return 'english';
+    }
+}
+
+function LoadCoreLanguage()
+{
+    static $loaded = FALSE;
+    if ($loaded)
+        return;
+    $loaded = TRUE;
+
+    global $DIR_LANG;
+    $language = remove_all_directory_separator(getLanguageName());
+    $language = getValidLanguage($language);
+    $filename = $DIR_LANG . $language . '.php';
+    if (file_exists($filename))
+        include_once ($filename);
+
+    if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
+         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+    {
+        // load undefined constant
+        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+        {
+            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+            {
+                // load default lang
+                ob_start();
+                @include_once($DIR_LANG . 'english-utf8' . '.php');
+                ob_end_clean();
+            }
+        }
+    }
+    sql_set_charset(_CHARSET);
+
+    ini_set('default_charset', _CHARSET);
+    if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
+    {
+//        ini_set('default_charset', ''); // To suppress the content type of http header
+//        mb_internal_encoding(_CHARSET);
     }
 }
 
@@ -2069,10 +2091,14 @@ function ticketForPlugin(){
     /* Exit if not logged in. */
     if ( !$member->isLoggedIn() )
     {
-        global $DIR_LANG;
-        $language = getLanguageName();
-        include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-        exit(sprintf('<a href="%s">%s</a>',$CONF['AdminURL'],_GFUNCTIONS_YOU_AERNT_LOGGEDIN));
+        LoadCoreLanguage();
+		if (!defined('_GFUNCTIONS_YOU_AERNT_LOGGEDIN'))
+			define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN', 'You aren\'t logged in.');
+		exit("<html><head><title>Error</title></head><body>"
+				. _GFUNCTIONS_YOU_AERNT_LOGGEDIN
+				. "<br><br>\n"
+				. '<a href="javascript: back();">back</a>'
+				. "</body></html>");
     }
 
     global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
@@ -2102,27 +2128,7 @@ function ticketForPlugin(){
     {
         if (!class_exists('PluginAdmin'))
         {
-            $language = getLanguageName();
-            
-            # important note that '\' must be matched with '\\\\' in preg* expressions
-            include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-
-            if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
-                 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
-            {
-                // load undefined constant
-                if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
-                {
-                    if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
-                    {
-                        // load default lang
-                        ob_start();
-                        @include_once($DIR_LANG . 'english-utf8' . '.php');
-                        ob_end_clean();
-                    }
-                }
-            }
-
+            LoadCoreLanguage();
             include_once($DIR_LIBS . 'PLUGINADMIN.php');
         }
         
@@ -2811,4 +2817,49 @@ function init_nucleus_compatibility_mysql_handler()
         $MYSQL_HANDLER = array('mysql', '');
     else
         $MYSQL_HANDLER = array($DB_PHP_MODULE_NAME, $DB_DRIVER_NAME);
+}
+
+function checkBrowserLang($locale)
+{
+    static $http_lang = null;
+    if (is_array($http_lang))
+        return (in_array(strtolower($locale), $http_lang));
+
+    $items = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+    if ($items === FALSE)
+        $items = array();
+    $http_lang = array_map('substr', $items, array(0, 2));
+//var_dump(__FUNCTION__,__LINE__, $items, $http_lang, $locale);
+    return (in_array(strtolower($locale), $http_lang));
+}
+
+function getValidLanguage($lang)
+{
+    global $DB_DRIVER_NAME;
+    $pattern_replace = '#-[^\-]*$#i';
+    if ( $DB_DRIVER_NAME != 'mysql' || (defined('_CHARSET') && constant('_CHARSET') == 'UTF-8') )
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+
+    if ( preg_match('#-utf8$#i', $lang) )
+    {
+        if ( checkLanguage($lang) )
+            return $lang;
+        if (checkBrowserLang('ja') && checkLanguage('japanese-utf8'))
+            return 'japanese-utf8';
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+        if ( checkLanguage($lang) )
+            return $lang;
+        return 'english-utf8';
+    }
+    // non utf-8
+    if (checkBrowserLang('ja'))
+    {
+        if (preg_match('#^japanese#i', $lang) && checkLanguage($lang))
+            return $lang;
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+    }
+
+    if ( checkLanguage($lang) )
+        return $lang;
+    return 'english-utf8';
 }
