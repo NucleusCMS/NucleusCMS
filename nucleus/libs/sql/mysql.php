@@ -64,15 +64,20 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       * Connects to mysql server
       */
     function sql_connect() {
-        global $MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD, $MYSQL_DATABASE, $MYSQL_CONN;
+        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
+        global $MYSQL_CONN;
 
-        if(substr(PHP_OS,0,3)==='WIN' && $MYSQL_HOST==='localhost')
+        if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost')
             $MYSQL_HOST = '127.0.0.1';
-        $MYSQL_CONN = @mysql_connect($MYSQL_HOST, $MYSQL_USER, $MYSQL_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
-        if (!sql_select_db($MYSQL_DATABASE,$MYSQL_CONN)) {
+        $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
+        if (!sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
             $MYSQL_CONN = NULL;
-            startUpError('<p>Could not select database: ' . mysql_error() . '</p>', 'Connect Error');
+            $msg = '';
+            $pattern = '/(Access denied for user|Unknown database|db handler is null)/i';
+            if (preg_match($pattern, mysql_error(), $m))
+                $msg .=  $m[1];
+            startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
 
         if (defined('_CHARSET')){
@@ -190,7 +195,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     /**
       * executes an SQL result request
       */
-    function sql_result($res, $row, $col)
+    function sql_result($res, $row = 0, $col = 0)
     {
         return mysql_result($res,$row,$col);
     }
@@ -290,6 +295,70 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     }
     
     /**
+     * Returns the array that column names of the table
+     */
+    function sql_getTableColumnNames($tablename)
+    {
+        global $MYSQL_CONN;
+        if (!$MYSQL_CONN) return array();
+
+        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $target = 'Field';
+
+        $items = array();
+        $res = mysql_query($sql);
+        if (!$res)
+            return array();
+        while( $row = mysql_fetch_array($res) )
+        {
+            if (isset($row[$target]))
+                $items[] = $row[$target];
+        }
+
+        if (count($items)>0)
+        {
+            sort($items);
+        }
+        return $items;
+    }
+
+    /**
+     * Returns the boolean value that column name of the table exist or not
+     */
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    {
+        $names = sql_getTableColumnNames($tablename);
+
+        if (count($names)>0)
+        {
+            if ($casesensitive)
+                return in_array( $ColumnName , $names );
+            else
+            {
+                foreach($names as $v)
+                    if ( strcasecmp( $ColumnName , $v ) == 0 )
+                    {
+                         return True;
+                    }
+            }
+        }
+        return False;
+    }
+
+    /**
+     * Returns the boolean value that column name of the table exist or not
+     */
+    function sql_existTableName($tablename)
+    {
+        global $MYSQL_CONN;
+        if (!$MYSQL_CONN) return FALSE;
+
+        $sql = 'SHOW TABLES LIKE :name ';
+        $res = mysql_query($sql);
+        return ($res && !($r = mysql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
+    }
+
+    /**
       * Get SQL client version
       */
     function sql_get_client_info()
@@ -297,6 +366,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return mysql_get_client_info();
     }
     
+    function  sql_get_db()
+    {
+        global $MYSQL_CONN;
+        return $MYSQL_CONN;
+    }
+
     /**
       * Get SQL server version
       */
@@ -407,6 +482,17 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             case 'euc-jp'       : $charset='ujis'; break;
             case 'iso-8859-1'   : $charset='latin1'; break;
             case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
+            default :
+                if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
+                {
+                    $db = sql_get_db();
+                    if ($db)
+                    { // ISO 8859-  2 8 7 9 13
+                        $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
+                        if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset']) )
+                            return $items['Charset'];
+                    }
+                }
         }
         return $charset;
     }
@@ -461,8 +547,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             case 'japanese-euc':
                 $charset_name = 'ujis';
                 break;
-            case 'korean-euc-kr':
-            case 'korean-utf':
+            case 'korean-utf8':
             case 'persian':
             default:
                 $charset_name = 'utf8';
@@ -482,4 +567,5 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         $column = sql_fetch_object($columns);
         return isset($column->Collation) ? $column->Collation : false;
     }
+
 }

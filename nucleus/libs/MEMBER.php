@@ -385,9 +385,7 @@ class MEMBER {
 
         // send mail
 
-        mb_language('ja');
-        mb_internal_encoding(_CHARSET);
-        @mb_send_mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
+        @Utils::mail($this->getEmail(), $title ,$message,'From: ' . $CONF['AdminEmail']);
 
         ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
 

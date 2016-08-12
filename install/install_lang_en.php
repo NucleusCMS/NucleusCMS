@@ -1,8 +1,7 @@
 <?php
 /*
- * Nucleus: PHP/MySQL Weblog CMS
- * Copyright (C) 2002-2015 The Nucleus Group　Japan (http://japan.nucleuscms.org/)
- * Copyright (C) 2002-2013 The Nucleus Group  (http://nucleuscms.org/)
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) 2002-2007 The Nucleus Group
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -10,6 +9,29 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
+
+/**
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) 2002-2007 The Nucleus Group
+ * @version $Id: install.php 1227 2007-12-14 16:48:40Z ehui $
+ */
+
+/*  New for 5.0.0 */
+/*  New for 3.72 */
+define('_INSTALL_TEXT_DATABASE_SELECT' , 'Select Database');
+define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',				'Database login information');
+
+define('_INSTALL_TEXT_DATABASE_EXSIT',	'Database is already exits.');
+define('_INSTALL_TEXT_SETTINGS_NOEXSIT',	'../settings not exist');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1',	'../config.php  exist');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'For security reasons, if present, can not be installed.');
+
+define('_INSTALL_TEXT_VERSION',	      'Version');
+define('_INSTALL_TEXT_SELECT_TEXT',	  'select text');
+define('_INSTALL_TEXT_EXPERIMENTAL',  'experimental');
+
+define('_INST_CONF_ERROR1' , 'please run the <a href="./install/index.php">install script</a> or modify config.php');
+
 
 /*  New for 3.71 */
 define('_HEADER_LANG_SELECT',			 'Language');
@@ -20,7 +42,7 @@ define('_TEXT_LANG_SELECT1_1',	'Choose a language to use.');
 /*   */
 
 define('_ERROR1',	'Your PHP version does not have support for MySQL :(');
-define('_ERROR2',	'mySQL database name missing');
+define('_ERROR_NO_DBNAME',	'mySQL database name missing');
 define('_ERROR3',	'mySQL prefix was selected, but prefix is empty');
 define('_ERROR4',	'mySQL prefix should only contain characters from the ranges A-Z, a-z, 0-9 or underscores');
 define('_ERROR5',	'One of the URLs does not end with a slash, or action url does not end with \'action.php\'');
@@ -28,6 +50,7 @@ define('_ERROR6',	'The path of the administration area does not end with a slash
 define('_ERROR7',	'The media path does not end with a slash');
 define('_ERROR8',	'The skins path does not end with a slash');
 define('_ERROR9',	'The path of the administration area does not exist on your server');
+
 define('_ERROR10',	'Invalid e-mail address given for user');
 define('_ERROR11',	'User name is not a valid display name (allowed chars: a-zA-Z0-9 and spaces)');
 define('_ERROR12',	'User password is empty');
@@ -78,7 +101,6 @@ define('_TEXT2_WARN3',	'WARNING: You are installing NucleusCMS on a older versio
 define('_HEADER3',	'Automatic <i>config.php</i> Update');
 define('_TEXT3',	'<p>If you want Nucleus to automatically update the <em>config.php</em> file, you\'ll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>444</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p> <p>If you choose not to make your file writable (or are unable to do so): don\'t worry. The installation process will provide you with the contents of the <em>config.php</em> file so you can upload it yourself.</p>');
 
-define('_HEADER4',	'MySQL Login Data');
 define('_TEXT4',	'<p>Enter your MySQL data below. This install script needs it to be able to create and fill your database tables. Afterwards, you\'ll also need to fill it out in <i>config.php</i>.</p> <p>If you don\'t know this information, contact your system administrator for more info. Often, the hostname will be \'localhost\'. If Nucleus found a \'default MySQL host\' in the PHP settings of your server, this host is already listed in the \'hostname\' field. There\'s no guarantee that this information is correct, though.</p>');
 define('_TEXT4_TAB_HEAD',	'General Database Settings');
 define('_TEXT4_TAB_FIELD1',	'Hostname');
@@ -126,10 +148,6 @@ define('_TEXT7_TAB_FIELD1',	'Blog Name');
 define('_TEXT7_TAB_FIELD2',	'Blog Short Name');
 define('_TEXT7_TAB_FIELD2_2',	'allowed characters: a-z and 0-9, no spaces allowed');
 
-define('_HEADER8',	'Weblog Ping');
-define('_TEXT8_TAB_HEADER',	'Weblog Ping');
-define('_TEXT8_TAB_FIELD1',	'Install NP_Ping weblog pinging plugin');
-
 define('_HEADER9',	'Submit');
 define('_TEXT9',	'<p>Verify the data above, and click the button below to set up your database tables and initial data. This can take a while, so have patience. <strong>ONLY CLICK THE BUTTON ONCE !</strong></p>');
 
@@ -142,9 +160,9 @@ define('_TEXT14_L1',	'If you don\'t want comments you can disable them individua
 define('_TEXT14_L2',	'Install one of serveral plugins that help to avoid spam comments: <a href="http://faq.nucleuscms.org/item/45">How can I stop comment and trackback spam?</a> (you could bookmark this page to read it later).');
 define('_HEADER10',	'Delete your install files');
 define('_TEXT15',	'<p>Files you should delete from your web server:</p>');
-define('_TEXT15_L1',	'<b>install.sql</b>: file containing table structures');
-define('_TEXT15_L2',	'<b>install.php</b>: this file');
-define('_TEXT15_L3',	'<b>install_lang_english.php</b>');
+define('_TEXT15_L1',	'<b>install/install.sql</b>: file containing table structures');
+define('_TEXT15_L2',	'<b>install/index.php</b>: this file');
+define('_TEXT15_L3',	'<b>install_lang_*.php</b>');
 define('_TEXT15_L4',	'<b>install/*</b>');
 
 define('_TEXT16',	'<p>If you don\'t delete these files, you won\\\'t be able to open the admin area</p>');
@@ -160,9 +178,7 @@ define('_BUTTON1',	'Install Nucleus');
 
 define('_GENERALCAT_NAME',		'general');
 
-define('_1ST_POST_TITLE',	'Welcome to Nucleus CMS v3.71');
-define('_1ST_POST',	'This is the first post on your Nucleus CMS. Nucleus offers you the building blocks you need to create a web presence. Whether you want to
-create a personal blog, a family page, or an online business site, Nucleus CMS can help you achieve your goals.<br /> <br /> We\\\'ve loaded this first entry with links and information to get you started. Though you can delete this entry, it will eventually scroll off the main page as you add content to your site. Add your comments while you learn to work with Nucleus CMS, or bookmark this page so you can come back to it when you need to.');
-define('_1ST_POST2',	'<b>Home - <a href=\"http://japan.nucleuscms.org/\" title=\"Nucleus CMS Japan\">japan.nucleuscms.org</a></b><br /><b>Home - <a href=\"http://nucleuscms.org/\" title=\"Nucleus CMS home\">nucleuscms.org</a></b><br /> Welcome to the world of Nucleus CMS. In 2001 a set of PHP scripts were let loose on the open Internet. Those scripts, which took user-generated data and used it to dynamically create html pages, contained the ideas and the algorithms that are the core of today\\\'s Nucleus CMS. Though Nucleus CMS 3.5 is far more flexible and powerful than the scripts from which it emerged, it still expresses the values that guided its birth: flexibility, security, and computational elegance.<br /> <br /> Thanks to an international community of sophisticated developers and designers, Nucleus CMS remains simple enough for anyone to learn, and expandable enough to allow you to build almost any website you can imagine. Nucleus CMS lets you integrate text, images, and user comments in a seamless package that will make your web presence as serious, professional, personal, or fun as you want it to be. We hope you enjoy its power.<br /> <br /> <b>Documentation - <a href=\"http://docs.nucleuscms.org/\" title=\"Nucleus CMS Documentation\">docs.nucleuscms.org</a></b><br /> The install process places a <a href=\"nucleus/documentation/\">user</a> and a <a href=\"nucleus/documentation/devdocs/\">developer</a> documentation on your web server. Pop-up <a href=\"/nucleus/documentation/help.html\">help</a> is available throughout the administration area to assist you in maintaining and customizing your site. When in the Nucleus CMS admin area, click on this symbol <img src=\"nucleus/documentation/icon-help.gif\" width=\"15\" height=\"15\" alt=\"help icon\" /> for context-sensitive help. You can also read this documentation online under <a href=\"http://docs.nucleuscms.org/\" title=\"Nucleus CMS Documentation\">docs.nucleuscms.org</a>.<br /> <br /> <b>Frequently Asked Questions - <a nicetitle=\"Nucleus CMS FAQ\" href=\"http://faq.nucleuscms.org/\">faq.nucleuscms.org</a></b><br /> If you need more information about managing, extending or troubleshooting your Nucleus CMS the Nucleus FAQ is the first place to search information. Over 170 frequently asked questions are answered from experienced Nucleus users.<br /> <br /> <b>Support - <a href=\"http://forum.nucleuscms.org/\" title=\"Nucleus CMS Support Forum\">forum.nucleuscms.org</a></b><br /> Should you require assistance, please don\\\'t hesitate to <a href=\"http://forum.nucleuscms.org/faq.php\">join</a> the 6,800+ registered users on our forums. With its built-in search capability of the 73,000+ posted articles, your answers are just a few clicks away. Remember: almost any question you think of has already been asked on the forums, and almost anything you want to do with Nucleus has been tried and explained there. Be sure to check them out.<br /> <br /> <b>Demonstration - <a href=\"http://demo.nucleuscms.org/\" title=\"Nucleus CMS Demonstration\">demo.nucleuscms.org</a></b><br /> Want to play around, test changes or tell a friend or relative about Nucleus CMS? Visit our live <a href=\"http://demo.nucleuscms.org/\">demo site</a>.<br /> <br /> <b>Skins - <a href=\"http://skins.nucleuscms.org/\" title=\"Nucleus CMS Skins\">skins.nucleuscms.org</a></b><br /> The combination of multi-weblogs and skins/templates make for a powerful duo in personalizing your site or designing one for a friend, relative or business client. Import new skins to change the look of your website, or create your own skins and share them with the Nucleus community! Help designing or modifying skins is only a few clicks away in the Nucleus forums.<br /> <br /> <b>Plugins - <a href=\"http://plugins.nucleuscms.org/\" title=\"Nucleus plugins\">plugins.nucleuscms.org</a></b><br /> Looking to add some extra functionality to the base Nucleus CMS package? Our <a href=\"http://wiki.nucleuscms.org/plugin\">plugin repository</a> gives you plenty of ways to extend and expand what Nucleus CMS can do; your imagination and creativity are the only limit on how Nucleus CMS can work for you.<br /> <br /> <b>Development - <a href=\"http://dev.nucleuscms.org/\" title=\"Nucleus Development\">dev.nucleuscms.org</a></b><br /> If you need more information about the Nucleus development you can find Informations in the developer documents at <a href=\"http://dev.nucleuscms.org/\" title=\"Nucleus Development\">dev.nucleuscms.org</a> or in the <a href=\"http://forum.nucleuscms.org/\">Support Forum</a>. Sourceforge.net graciously hosts our <a href=\"http://sourceforge.net/projects/nucleuscms/\">Open Source project page</a> which contains our software downloads and CVS repository.<br /> <br /> <b>Donators</b><br /> We would like to thank these <a href=\"http://nucleuscms.org/donators.php\">nice people</a> for their <a href=\"http://nucleuscms.org/donate.php\">support</a>. <em>Thanks all!</em><br /> <br /> <b>Vote for Nucleus CMS</b><br /> Like Nucleus CMS? Vote for us at <a href=\"http://www.hotscripts.com/Detailed/13368.html?RID=nucleus@demuynck.org\">HotScripts</a> and <a href=\"http://www.opensourcecms.com/index.php?option=content&task=view&id=145\">opensourceCMS</a>.<br /> <br /> <b>License</b><br /> When we speak of free software, we are referring to freedom, not price. Our <a href=\"http://www.gnu.org/licenses/gpl.html\">General Public Licenses</a> are designed to make sure that you have the freedom to distribute copies of free software (and charge for this service if you wish), that you receive source code or can get it if you want it, that you can change the software or use pieces of it in new free programs; and that you know you can do these things.');
+define('_1ST_POST_TITLE',	'Welcome to Nucleus CMS Version %s');
+define('_1ST_POST',	'This is the first post on your Nucleus CMS. You can edit this page.');
+define('_1ST_POST2',	'');
 
-?>

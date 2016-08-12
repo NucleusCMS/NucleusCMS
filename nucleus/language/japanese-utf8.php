@@ -17,15 +17,29 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+
 /********************************************
- *        Start New for 3.7?                *
+ *        Start New for 3.80                *
  ********************************************/
-// Skin import/export
-define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
+define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPI_%s または SqlApi_SQL92 をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
+
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'コア のデータベースバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    '重要な設定');
+
+define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージョン');
+
+// Blog option
+define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
 
 /********************************************
  *        Start New for 3.71                *
  ********************************************/
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
+
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'データベース と バージョン');
 define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'データベースのドライバ');
 define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP と データベース');

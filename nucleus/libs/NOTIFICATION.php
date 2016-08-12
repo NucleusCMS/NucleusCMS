@@ -56,9 +56,7 @@ class NOTIFICATION {
             if ($member->isLoggedIn() && ($member->getEmail() == $address))
                 continue;
 
-            @mb_language('ja');
-            @mb_internal_encoding(_CHARSET);
-            @mb_send_mail($address, $title, $message, "From: ". $from);
+            @Utils::mail($address, $title, $message, "From: ". $from);
         }
     }
 }

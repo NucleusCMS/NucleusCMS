@@ -2052,19 +2052,24 @@ class ADMIN {
                 <select name="deflang" tabindex="85">
                     <option value=""><?php echo _MEMBERS_USESITELANG?></option>
                 <?php               // show a dropdown list of all available languages
-                global $DIR_LANG;
+                global $DIR_LANG, $DB_DRIVER_NAME;
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle))
                 {
-                    if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+                    $sub_pattern = ($DB_DRIVER_NAME == 'mysql' ?  '((.*))' : '((.*)-utf8)');
+                    if ( preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches) )
                     {
-                        $name = $matches[1];
-                        echo "<option value=\"$name\"";
-                        if ($name == $mem->getLanguage() )
+                        $name = $matches[2];
+                        $s_fullname = $matches[1];
+                        $s_displaytext = hsc($name);
+//                        if (!check_abalable_language_name($name))
+//                          continue;
+                        echo sprintf('<option value="%s"' , hsc($s_fullname));
+                        if ( $s_fullname == $mem->getLanguage() )
                         {
                             echo " selected=\"selected\"";
                         }
-                        echo ">$name</option>";
+                        echo sprintf(">%s</option>", $s_displaytext);
                     }
                 }
                 closedir($dirhandle);
@@ -2764,7 +2769,28 @@ class ADMIN {
                 ?>
 
             </td>
-        </tr><tr>
+        </tr>
+        <?php
+                if ( !$blog->existsSetting('bauthorvisible')
+                    && !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
+                {
+                    // Force Upgrade
+                    BLOG::UpgardeAddColumnAuthorVisible();
+                }
+        ?>
+        <tr>
+            <td><?php echo _EBLOG_VISIBLE_ITEM_AUTHOR; ?> <?php help('authorvisible'); ?>
+            </td>
+            <td><?php
+                if ( $blog->existsSetting('bauthorvisible') || sql_existTableColumnName(sql_table('blog'), 'bauthorvisible'))
+                {
+                    $this->input_yesno('authorvisible', $blog->getAuthorVisible(), 53);
+                }
+                else
+                    echo "Needs to upgrade column name `authorvisible`. please reload.";
+            ?></td>
+        </tr>
+        <tr>
             <td><?php echo _EBLOG_LINEBREAKS?> <?php help('convertbreaks'); ?>
             </td>
             <td><?php $this->input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>
@@ -3358,6 +3384,7 @@ class ADMIN {
         $blog->setDefaultCategory(intPostVar('defcat'));
         $blog->setSearchable(intPostVar('searchable'));
         $blog->setEmailRequired(intPostVar('reqemail'));
+        $blog->setAuthorvisible(intPostVar('authorvisible'));
 
         $blog->writeSettings();
 
@@ -5107,19 +5134,24 @@ selector();
 
                 <select name="Language" tabindex="10050">
                 <?php               // show a dropdown list of all available languages
-                global $DIR_LANG;
+                global $DIR_LANG, $DB_DRIVER_NAME;
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle) )
                 {
-                    if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+                    $sub_pattern = ($DB_DRIVER_NAME == 'mysql' ?  '((.*))' : '((.*)-utf8)');
+                    if ( preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches) )
                     {
-                        $name = $matches[1];
-                        echo "<option value=\"$name\"";
-                        if ($name == $CONF['Language'])
+                        $name = $matches[2];
+                        $s_fullname = $matches[1];
+                        $s_displaytext = hsc($name);
+//                        if (!check_abalable_language_name($name))
+//                          continue;
+                        echo sprintf('<option value="%s"' , hsc($s_fullname));
+                        if ($s_fullname == $CONF['Language'])
                         {
                             echo " selected=\"selected\"";
                         }
-                        echo ">$name</option>";
+                        echo sprintf(">%s</option>", $s_displaytext);
                     }
                 }
                 closedir($dirhandle);
@@ -5445,18 +5477,38 @@ selector();
             echo "<table>\n";
             echo "\t<tr>\n";
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
-            $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $mqg . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
-            $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $mqr . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>register_globals' . "</td>\n";
-            $rg = ini_get('register_globals') ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $rg . "</td>\n";
+            echo "\t</tr>\n";
+
+            if (version_compare(PHP_VERSION, '5.3.0', '<'))
+            {
+                echo "<tr>\n";
+                echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
+                $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $mqg . "</td>\n";
+                echo "\t</tr><tr>\n";
+                echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+                $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $mqr . "</td>\n";
+                echo "\t</tr>\n";
+            }
+            if (version_compare(PHP_VERSION, '5.4.0', '<'))
+            {
+                echo "<tr>\n";
+                echo "\t\t" . '<td width="50%">register_globals' . "</td>\n";
+                $rg = ini_get('register_globals') ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $rg . "</td>\n";
+                echo "\t</tr>";
+            }
+            echo "<tr>\n";
+            echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
+            $rg = ini_get('default_charset');
+            echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
+            echo "\t</tr>";
+
+            echo "<tr>\n";
+            echo "\t\t" . '<td>date.timezone' . "</td>\n";
+            $rg = ini_get('date.timezone');
+            echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
             echo "\t</tr>";
             echo "</table>\n";
 
@@ -5495,20 +5547,26 @@ selector();
             echo "\t</tr>\n";
             echo "</table>\n";
 
-            // Information about the used Nucleus CMS
-            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSSYSTEM . "</h3>\n";
-            global $nucleus;
-            $nv = getNucleusVersion() / 100 . '(' . $nucleus['version'] . ')';
+            // Information about the used core system
+            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM . "</h3>\n";
             $np = getNucleusPatchLevel();
             echo "<table>\n";
             echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">Nucleus CMS' . "</th>\n";
+            echo "\t\t" . '<th colspan="2">' . hsc(CORE_APPLICATION_NAME) . "</th>\n";
             echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSVERSION . "</td>\n";
-            echo "\t\t" . '<td>' . $nv . "</td>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_VERSION . "</td>\n";
+            echo "\t\t" . '<td>' . sprintf('%s (%d)', CORE_APPLICATION_VERSION, CORE_APPLICATION_VERSION_ID) . "</td>\n";
             echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL . "</td>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL . "</td>\n";
             echo "\t\t" . '<td>' . $np . "</td>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION). "</td>\n";
+            echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td width="50%">' . '_CHARSET' . "</td>\n";
+            echo "\t\t" . '<td>' . _CHARSET . "</td>\n";
             echo "\t</tr>\n";
             echo "</table>\n";
 
@@ -5529,7 +5587,7 @@ selector();
             // Mysql Emulate Functions
             echo $this->getMysqlEmulateInfo();
 
-            // Link to the online version test at the Nucleus CMS website
+            // Link to the online version test at the core system official website
             echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
             if ($nucleus['codename'] != '') {
                 $codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
@@ -5539,7 +5597,7 @@ selector();
             echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
             echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
-            echo 'Nucleus CMS ' . $nv . $codenamestring;
+            echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION) . hsc($codenamestring);
             echo '</a>';
         //echo '<br />';
         }
@@ -5730,15 +5788,22 @@ selector();
     
         $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
         
+        $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+            printf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
             $newestVersion = getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="'._ADMINPAGEFOOT_OFFICIALURL.'upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
+
+            if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
+            {
+                printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
+                        $CONF['AdminURL'] . 'upgrades/' , $CONF['DatabaseVersion']);
+            }
         } else {
-            echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+            echo $versionstring;
         }
         echo ')';
         echo '</div>';
@@ -5765,7 +5830,7 @@ selector();
             <?php       }
         ?>
             <div class="foot">
-                <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>">Nucleus CMS</a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
+                <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>"><?php echo hsc(CORE_APPLICATION_NAME); ?></a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
             </div>
 
             </div><!-- content -->
@@ -6413,49 +6478,51 @@ selector();
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
             
 <?php
+        $list_installed_PluginName = array();
+        $sql = 'SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC';
+        if ($res = sql_query($sql))
+        {
+            while ( $v = sql_fetch_array($res) )
+            {
+                $list_installed_PluginName[$v[0]] = strtolower($v[0]);
+            }
+        }
         // find a list of possibly non-installed plugins
         $candidates = array();
 
         global $DIR_PLUGINS;
 
-        $dirhandle = opendir($DIR_PLUGINS);
-
-        while ($filename = readdir($dirhandle) )
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, TRUE);
+//        var_dump(__FUNCTION__, $status, $plugins);
+        if ( $status['result'] && count($plugins)>0 )
+            foreach ($plugins as $key => $value)
         {
-            if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
-            {
-                $name = $matches[1];
+                $name = $value['name'];
                 // only show in list when not yet installed
-                $res = intval(quickQuery('SELECT count(*) as result FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '" LIMIT 1'));
-                if ($res == 0)
+                if ( ! in_array(strtolower('NP_' . $name) , $list_installed_PluginName) )
                 {
                     array_push($candidates, $name);
                 }
             }
-        }
-        closedir($dirhandle);
         
         if (sizeof($candidates) > 0)
         {
-?>
-
-            <p><?php echo _PLUGS_ADD_TEXT?></p>
-
-            <form method='post' action='index.php'><div>
-                <input type='hidden' name='action' value='pluginadd' />
-                <?php $manager->addTicketHidden() ?>
-                <select name="filename" tabindex="30">
-<?php
+            $options = array();
             foreach($candidates as $name)
             {
-                echo '<option value="NP_',$name,'">',hsc($name),'</option>';
+                $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc( $name ));
             }
-?>
-                </select>
-                <input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
-            </div></form>
+            $options_tag = implode( "\n  ", $options );
 
-<?php
+            echo "<p>". _PLUGS_ADD_TEXT ."</p>\n";
+
+            echo "<form method='post' action='index.php'><div>\n";
+            echo "  <input type='hidden' name='action' value='pluginadd' />\n";
+            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
+            echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
+            printf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+            echo "</div></form>\n";
         }
         else
         {

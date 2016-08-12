@@ -259,9 +259,9 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
-        global $MYSQL_HANDLER;
+        global $DB_DRIVER_NAME;
         if(strpos($type, '/')!==false) return '';
-        if (in_array('mysql' , $MYSQL_HANDLER ) !== false)
+        if ( 'mysql' == $DB_DRIVER_NAME )
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         else
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
@@ -518,6 +518,48 @@ class SKIN {
         }
 
         return array_merge($defaultActions, $extraActions);
+    }
+
+    public function changeSkinByName($name) {
+      $id = $this->getIdFromName($name);
+      return $this->changeSkinById($id);
+    }
+
+    public function changeSkinById($id) {
+        $id = intval($id);
+
+        if( $id>0 && $this->id==$id )
+            return true;
+
+        if( $id<=0 || !$this->existsID($id) )
+            return false;
+
+        // read skin name/description/content type
+        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
+        $obj = sql_fetch_object($res);
+        if (!is_object($obj))
+            return false;
+
+        $this->isValid = true;
+        $this->id = $id;
+        $this->name = $obj->sdname;
+        $this->description = $obj->sddesc;
+        $this->contentType = $obj->sdtype;
+        $this->includeMode = $obj->sdincmode;
+        $this->includePrefix = $obj->sdincpref;
+        return true;
+    }
+
+    static public function getRootURL()
+    {
+        global $CONF;
+        return $CONF['SkinsURL'];
+    }
+
+    public function getURL()
+    {
+        global $CONF;
+        return $CONF['SkinsURL'] . $this->includePrefix;
     }
 
 }

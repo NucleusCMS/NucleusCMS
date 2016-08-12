@@ -924,6 +924,11 @@ class BLOG {
         if (!is_float($offset))
             $offset = intval($offset);
 
+        $q_bauthorvisible = (
+                ! sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') ? '' :
+                "   bauthorvisible=" . intval($this->getAuthorVisible()) . ","
+                );
+
         $query =  'UPDATE '.sql_table('blog')
                . " SET bname='" . sql_real_escape_string($this->getName()) . "',"
                . "     bshortname='". sql_real_escape_string($this->getShortName()) . "',"
@@ -941,6 +946,7 @@ class BLOG {
                . "     bdesc='" . sql_real_escape_string($this->getDescription()) . "',"
                . "     bdefcat=" . intval($this->getDefaultCategory()) . ","
                . "     bdefskin=" . intval($this->getDefaultSkin()) . ","
+               . $q_bauthorvisible
                . "     bincludesearch=" . intval($this->getSearchable())
                . " WHERE bnumber=" . intval($this->getID());
         sql_query($query);
@@ -966,7 +972,7 @@ class BLOG {
       *     category id
       */
     function isValidCategory($catid) {
-        global $manager, $MYSQL_HANDLER;
+        global $manager;
         $query = 'SELECT count(*) as result FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' AND catid=' . intval($catid)
                 .' LIMIT 1';
         $manager->initSqlCacheInfo('sql_fetch_object',$query);
@@ -1227,7 +1233,19 @@ class BLOG {
         $this->setSetting('bdefcat',$val);
     }
 
+    function existsSetting($key) {
+        return isset($this->settings[$key]);
+    }
+
     function getSetting($key) {
+        if (isset($this->settings[$key]))
+            return $this->settings[$key];
+        return;
+    }
+
+    function getSettingDefault($key, $dafalutvalue) {
+        if (!isset($this->settings[$key]))
+            return $dafalutvalue;
         return $this->settings[$key];
     }
 
@@ -1453,6 +1471,24 @@ class BLOG {
         return $query;
     }
 
-}
+    function getAuthorVisible() {
+        return intval($this->getSettingDefault('bauthorvisible', 1 ));
+    }
 
-?>
+    function setAuthorVisible($val) {
+        $this->setSetting('bauthorvisible', ($val ? 1 : 0) );
+    }
+
+    static function UpgardeAddColumnAuthorVisible()
+    {
+        global $CONF;
+
+        if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
+        {
+            $sql = sprintf("ALTER TABLE `%s` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';", sql_table( 'blog' ));
+            $res = sql_query($sql);
+            return $res !== FALSE;
+        }
+    }
+
+}

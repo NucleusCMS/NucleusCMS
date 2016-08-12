@@ -247,6 +247,9 @@ class BODYACTIONS extends BaseActions {
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
+            case 'authorvisible':
+                $condition = ($blog && $blog->getAuthorVisible());
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;

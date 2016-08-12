@@ -266,6 +266,26 @@ class MANAGER
                 global $DIR_PLUGINS;
 
                 $fileName = $DIR_PLUGINS . $name . '.php';
+        $shortname = strtolower(preg_replace('#^NP_#', '', $name));
+
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        $plugin_dir_type = 0;
+        foreach(array($fileName ,
+                        $DIR_PLUGINS . $shortname.'/'. $name . '.php' ,
+                        $DIR_PLUGINS . $name.'/'. $name . '.php') as $key=>$f)
+        {
+            if (file_exists($f))
+            {
+                $fileName = $f;
+                $plugin_dir_type = 10*$key+1;
+                if ( $plugin_dir_type==11 && is_dir($DIR_PLUGINS . $shortname . '/' . $shortname) )
+                    $plugin_dir_type = 12;
+                if ( $plugin_dir_type==21 && !is_dir($DIR_PLUGINS . $name . '/' . $shortname) )
+                    $plugin_dir_type = 22;
+                break;
+            }
+        }
+
 
                 if (!file_exists($fileName))
                 {
@@ -295,9 +315,39 @@ class MANAGER
                 // get plugid
                 $this->plugins[$name]->plugid = $this->getPidFromName($name);
 
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        if ( is_object($this->plugins[$name]) )
+        {
+            $o_plugin = $this->plugins[$name];
+            $o_plugin->plugin_dir_type = $plugin_dir_type;
+            switch($plugin_dir_type)
+            {
+                case 1: // NP_*.php              , shortname/
+                    $o_plugin->plugin_admin_dir = $DIR_PLUGINS . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = '';
+                    break;
+                case 11: // shortname/NP_*.php    , shortname/
+                    $o_plugin->plugin_admin_dir = $DIR_PLUGINS . $o_plugin->getShortName().'/';
+                    $o_plugin->plugin_admin_url_prefix = '';
+                    break;
+                case 12: // shortname/NP_*.php         , shortname/shortname/
+                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/' . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = $o_plugin->getShortName() . '/';
+                    break;
+                case 21: // NP_*/NP_*.php         , NP_*/shortname/
+                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/' . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = $name . '/';
+                    break;
+                case 22: // NP_*/NP_*.php        , NP_*/
+                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/';
+                    $o_plugin->plugin_admin_url_prefix = $name . '/';
+                    break;
+            }
+        }
+
                 // unload plugin if a prefix is used and the plugin cannot handle this^
-                global $MYSQL_PREFIX;
-                if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
+                global $DB_PREFIX;
+                if (($DB_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
                 {
                     unset($this->plugins[$name]);
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
@@ -305,13 +355,37 @@ class MANAGER
                 }
 
                 // unload plugin if using non-mysql handler and plugin does not support it 
-                global $MYSQL_HANDLER;
-                if ((!in_array('mysql',$MYSQL_HANDLER)) && !$this->plugins[$name]->supportsFeature('SqlApi'))
+                $is_NotUseDbApi = (($this->plugins[$name]->supportsFeature('NotUseDbApi'))
+                                || ($this->plugins[$name]->supportsFeature('NoSql')));
+
+                global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+                // check SqlApi
+                if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
                 {
-                    unset($this->plugins[$name]);
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
-                    return 0;
-                }
+                    // plugin uses DB query
+                    // unload plugin if using non-mysql handler and plugin does not support it
+                    if (!$this->plugins[$name]->supportsFeature('SqlApi'))
+                    {
+                        unset($this->plugins[$name]);
+                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+                        return 0;
+                    }
+//                         DB       Standard SQL
+//                        MySQL5  : - SQL:2008
+//                        SQLite3 : SQL92
+                    // unload plugin if using non-mysql handler and plugin does not support it
+                    if ( ( 'mysql' != $DB_DRIVER_NAME )
+                            &&
+                            !($this->plugins[$name]->supportsFeature('SqlApi_'.$DB_DRIVER_NAME)
+                              || $this->plugins[$name]->supportsFeature('SqlApi_SQL92')
+                           )
+                        )
+                    {
+                        unset($this->plugins[$name]);
+                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
+                        return 0;
+                    }
+                } // end : plugin uses DB query
 
                 // call init method
                 $this->plugins[$name]->init();
@@ -335,6 +409,12 @@ class MANAGER
             $plugin =& $this->plugins[$name];
         }
         return $plugin;
+    }
+
+    function &getPluginFromPid($pid)
+    {
+        $name = getPluginNameFromPid($pid);
+        return $this->getPlugin( (is_string($name) ? $name : '') );
     }
 
     /**
@@ -521,9 +601,13 @@ class MANAGER
      */
     function addTicketHidden()
     {
-        $ticket = $this->_generateTicket();
+        echo $this->getHtmlInputTicketHidden();
+    }
 
-        echo sprintf('<input type="hidden" name="ticket" value="%s" />', hsc($ticket));
+    function getHtmlInputTicketHidden()
+    {
+        $ticket = $this->_generateTicket();
+        return '<input type="hidden" name="ticket" value="' . htmlspecialchars($ticket) . '" />';
     }
 
     /**

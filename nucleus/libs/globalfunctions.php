@@ -21,6 +21,10 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 include_once($DIR_LIBS. 'version.php');
 
+define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
+define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
+define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
+define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
@@ -139,24 +143,33 @@ if (!headers_sent() ) {
     header('Generator: Nucleus CMS ' . $nucleus['version']);
 }
 
-// include core classes that are needed for login & plugin handling
-if (!function_exists('mysql_query'))
-    include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
-else
-    define('_EXT_MYSQL_EMULATE' , 0);
+init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
-// added for 3.5 sql_* wrapper
-global $MYSQL_HANDLER;
-if (!isset($MYSQL_HANDLER))
-    $MYSQL_HANDLER = array('mysql','');
-if ($MYSQL_HANDLER[0] == '')
-    $MYSQL_HANDLER[0] = 'mysql';
-include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
-// end new for 3.5 sql_* wrapper
+global $DB_PHP_MODULE_NAME;
+if ($DB_PHP_MODULE_NAME != 'pdo')
+{
+    // include core classes that are needed for login & plugin handling
+    if (!function_exists('mysql_query'))
+        include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+    else
+    {
+        if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
+            define('_EXT_MYSQL_EMULATE' , 0);
+    }
+}
+else
+{
+    // Todo: mysql wrapper for pdo? or deprecate mysql_* functions
+    if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
+        define('_EXT_MYSQL_EMULATE' , 0);
+}
+
+include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
 include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
 include_once($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'Utils.php');
 
 $manager =& MANAGER::instance();
 
@@ -282,7 +295,29 @@ if ($action == 'login') {
         );
         $manager->notify('LoginSuccess', $param);
         $errormessage = '';
-        ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+        $log_message = sprintf("Login successful for %s (sharedpc=%s)", $login, $shared);
+
+        $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
+        $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
+        if ($remote_ip !=='')
+        {
+            $log_message .= sprintf(" %s", $remote_ip);
+            if ($remote_host!==FALSE && $remote_host!=$remote_ip)
+                $log_message .= sprintf("(%s)", $remote_host);
+        }
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+        {
+            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"]);
+            $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
+            $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
+            $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
+            if ($remote_proxy_host !==FALSE && $remote_proxy_host!=$remote_proxy_ip)
+                $log_message .= sprintf("(%s)", $remote_proxy_host);
+            unset($remote_proxy_ip, $remote_proxy_host);
+        }
+        ACTIONLOG::add(INFO, $log_message);
+        unset($log_message);
+        unset($remote_ip, $remote_host);
     } else {
         // errormessage for [%errordiv%]
         $trimlogin = trim($login);
@@ -360,27 +395,8 @@ if (!headers_sent() ) {
 }
 
 // read language file, only after user has been initialized
+LoadCoreLanguage();
 $language = getLanguageName();
-
-# important note that '\' must be matched with '\\\\' in preg* expressions
-include_once($DIR_LANG . str_replace(array('\\','/'), '', $language) . '.php');
-
-    if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
-         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
-    {
-        // load undefined constant
-        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
-        {
-            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
-            {
-                // load default lang
-                ob_start();
-                @include_once($DIR_LANG . 'english-utf8' . '.php');
-                ob_end_clean();
-            }
-        }
-    }
-
 
 // check if valid charset
 if (!encoding_check(false, false, _CHARSET)) {
@@ -638,10 +654,10 @@ function getLatestVersion() {
  * returns a prefixed nucleus table name
  */
 function sql_table($name) {
-    global $MYSQL_PREFIX;
+    global $DB_PREFIX;
 
-    if ($MYSQL_PREFIX) {
-        return $MYSQL_PREFIX . 'nucleus_' . $name;
+    if (strlen($DB_PREFIX) > 0) {
+        return $DB_PREFIX . 'nucleus_' . $name;
     } else {
         return 'nucleus_' . $name;
     }
@@ -1465,6 +1481,8 @@ function getMailFooter() {
 function getLanguageName() {
     global $CONF, $member;
 
+    LoadCoreLanguage();
+
     if ($member && $member->isLoggedIn() ) {
         // try to use members language
         $memlang = $member->getLanguage();
@@ -1479,6 +1497,45 @@ function getLanguageName() {
         return $CONF['Language'];
     } else {
         return 'english';
+    }
+}
+
+function LoadCoreLanguage()
+{
+    static $loaded = FALSE;
+    if ($loaded)
+        return;
+    $loaded = TRUE;
+
+    global $DIR_LANG;
+    $language = remove_all_directory_separator(getLanguageName());
+    $language = getValidLanguage($language);
+    $filename = $DIR_LANG . $language . '.php';
+    if (file_exists($filename))
+        include_once ($filename);
+
+    if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
+         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+    {
+        // load undefined constant
+        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
+        {
+            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
+            {
+                // load default lang
+                ob_start();
+                @include_once($DIR_LANG . 'english-utf8' . '.php');
+                ob_end_clean();
+            }
+        }
+    }
+    sql_set_charset(_CHARSET);
+
+    ini_set('default_charset', _CHARSET);
+    if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
+    {
+//        ini_set('default_charset', ''); // To suppress the content type of http header
+//        mb_internal_encoding(_CHARSET);
     }
 }
 
@@ -1530,10 +1587,21 @@ function checkLanguage($lang) {
 function checkPlugin($plug) {
     global $DIR_PLUGINS;
 
-    # important note that '\' must be matched with '\\\\' in preg* expressions
+    // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    $pl_name = remove_all_directory_separator($plug);
+    $shortname = strtolower(preg_replace('#^NP_#', '', $plug));
+    $fname = $pl_name . '.php';
+    foreach(array($fname, "{$shortname}/{$fname}", "{$pl_name}/{$fname}") as $f)
+    if (is_file($DIR_PLUGINS . $f))
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
 
-    return is_file($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
-
+function remove_all_directory_separator($text)
+{
+    return str_replace( array("\\" ,'/' , DIRECTORY_SEPARATOR ) , '' , $text);
 }
 
 /**
@@ -1989,8 +2057,26 @@ function ticketForPlugin(){
     /* Solve the plugin php file or admin directory */
     $phppath=substr($p_translated,strlen($d_plugins));
     $phppath=preg_replace('#^/#','',$phppath);// Remove the first "/" if exists.
-    $path=preg_replace('#^NP_(.*)\.php$#','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
-    $path=preg_replace('#^([^/]*)/(.*)$#','$1',$path); // Remove the "/" and beyond.
+
+    // NP_Plugin.php , plugin/* , NP_Plugin/NP_Plugin.php
+//	var_dump(__FUNCTION__, $phppath);
+    // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    $path = $phppath;
+    if ( preg_match('#^NP_([^/]+)(/|$)#', $path, $m) || preg_match('#^[^/]*/+NP_([^/]+)(/|$)#', $path, $m) )
+    {
+        // Remove the first "NP_" and the last ".php" if exists.
+        $unsecure_value = preg_replace('#\.php$#', '', $m[1]);
+        $unsecure_plugin_name = $unsecure_value;
+        $unsecure_plugin_name_short = strtolower($unsecure_value);
+    }
+    else
+    {
+        $unsecure_value = preg_replace('#(?:^|.+/)NP_([^/]*)\.php$#', '$1', $path); // Remove the first "NP_" and the last ".php" if exists.
+        $unsecure_value = preg_replace('#^([^/]*)/(.*)$#', '$1', $unsecure_value); // Remove the "/" and beyond.
+        $unsecure_plugin_name = $unsecure_value;
+        $unsecure_plugin_name_short = strtolower($unsecure_value);
+    }
+//	var_dump(__FUNCTION__, $path);
 
     /* Solve the plugin name. */
     $plugins=array();
@@ -2004,13 +2090,13 @@ function ticketForPlugin(){
     }
     sql_free_result($res);
     
-    if ($plugins[$path])
+    if ($plugins[$unsecure_plugin_name_short])
     {
-        $plugin_name = $plugins[$path];
+        $plugin_name = $plugins[$unsecure_plugin_name_short];
     }
-    else if (in_array($path, $plugins))
+    else if (in_array($unsecure_plugin_name_short, $plugins))
     {
-        $plugin_name = $path;
+        $plugin_name = $unsecure_plugin_name_short;
     }
     else
     {
@@ -2027,10 +2113,14 @@ function ticketForPlugin(){
     /* Exit if not logged in. */
     if ( !$member->isLoggedIn() )
     {
-        global $DIR_LANG;
-        $language = getLanguageName();
-        include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-        exit(sprintf('<a href="%s">%s</a>',$CONF['AdminURL'],_GFUNCTIONS_YOU_AERNT_LOGGEDIN));
+        LoadCoreLanguage();
+		if (!defined('_GFUNCTIONS_YOU_AERNT_LOGGEDIN'))
+			define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN', 'You aren\'t logged in.');
+		exit("<html><head><title>Error</title></head><body>"
+				. _GFUNCTIONS_YOU_AERNT_LOGGEDIN
+				. "<br><br>\n"
+				. '<a href="javascript: back();">back</a>'
+				. "</body></html>");
     }
 
     global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
@@ -2060,27 +2150,7 @@ function ticketForPlugin(){
     {
         if (!class_exists('PluginAdmin'))
         {
-            $language = getLanguageName();
-            
-            # important note that '\' must be matched with '\\\\' in preg* expressions
-            include_once($DIR_LANG . preg_replace('#[\\\\|/]#', '', $language) . '.php');
-
-            if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
-                 && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
-            {
-                // load undefined constant
-                if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
-                {
-                    if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
-                    {
-                        // load default lang
-                        ob_start();
-                        @include_once($DIR_LANG . 'english-utf8' . '.php');
-                        ob_end_clean();
-                    }
-                }
-            }
-
+            LoadCoreLanguage();
             include_once($DIR_LIBS . 'PLUGINADMIN.php');
         }
         
@@ -2536,4 +2606,282 @@ function nucleus_version_compare($version1, $version2, $operator = '')
         $args[$i] = implode('.', $ver);
     }
     return call_user_func_array('version_compare', $args);
+}
+
+// getPluginListsFromDirName
+// Note: This function will may be specification change
+// Note: use only core functions
+// Notice: Do not call this function from user plugin
+// return Plugin Lists on SearchDir
+// mode  1 , 2 : all $lists
+function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
+{
+    static $lists = array();
+
+    $status = array('result'=>FALSE);
+    $SearchDir = str_replace("\\", '/', $SearchDir);
+    if ( strlen($SearchDir)>0 && substr($SearchDir, -1, 1)!='/' )
+        $SearchDir .= '/';
+
+    if ( $clearcache && isset($lists[$SearchDir]) )
+         unset($lists[$SearchDir]);
+    if ( isset($lists[$SearchDir]) )
+    {
+        $status = array('result'=>TRUE, 'is_cache'=>TRUE);
+        return $lists[$SearchDir];
+    }
+    if ( !is_dir($SearchDir) )
+        return FALSE;
+
+    $lists[$SearchDir] = array();
+    $items = &$lists[$SearchDir];
+
+    $dirhandle = opendir($SearchDir);
+    if ($dirhandle === FALSE)
+        return FALSE;
+
+    $status['is_cache'] = FALSE;
+    $status['result']   = TRUE;
+
+    // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    while ( false !== ($filename = readdir($dirhandle)) )
+    {
+        $current_file = $SearchDir . $filename;
+        $pattern_php = '#^NP_(.*)\.php$#';
+        $pattern = '#^NP_(.*)$#';
+        $item = array();
+
+        $saved_type = 0;
+        if (is_file($current_file))
+        {  // NP_*.php
+            // type 1 , old_admin_area
+            if (!preg_match($pattern_php, $filename, $matches))
+                continue;
+            $saved_type = 1;
+            $name = $matches[1];
+            $saved_type = 1;
+            $item['dir'] = $SearchDir;
+            $item['dir_admin'] = $SearchDir . strtolower($name) . '/';
+            $item['php'] = $SearchDir . $filename;
+        }
+        else
+        {  // directory
+            if ($filename == '.' || $filename == '..')
+                continue;
+            if ( preg_match($pattern, $filename, $matches) )
+            {
+                // type 4 or 5
+                $name = $matches[1];
+                $pl_own_dir  = $current_file . '/';
+                $pl_own_dir_plfile = $pl_own_dir . $filename . '.php';
+                if (! (is_dir($pl_own_dir) && (is_file($pl_own_dir_plfile))) )
+                    continue;
+                $item['dir'] = $pl_own_dir;
+                $item['php'] = $pl_own_dir_plfile;
+                if ( is_dir($pl_own_dir . strtolower($name)) )
+                {
+                    $saved_type = 4;
+                    $item['dir_admin'] = $pl_own_dir . strtolower($name) . '/';
+                }
+                else
+                {
+                    $saved_type = 5;
+                    $item['dir_admin'] = $pl_own_dir;
+                }
+            }
+            else
+            {
+                // find shortname/NP_*.php
+                $pat = '';
+                foreach(str_split(strtolower($filename)) as $value)
+                {
+                    if ( ord($value) >= ord('a') && ord($value) <= ord('z') )
+                        $pat .= '[' . $value . strtoupper($value) . ']'; // strtoupper($value)
+                    else
+                        $pat .= $value;
+                }
+                $files = glob($current_file . '/' . 'NP_' . $pat . '.php', GLOB_NOSORT);
+
+                if ($files === FALSE || count($files)==0)
+                    continue;
+
+                $sub_file = basename($files[0]);
+                if ( !preg_match($pattern_php, $sub_file, $matches))
+                    continue;
+                // type: 2 , old_admin_area
+                $name = $matches[1];
+                $shortname = strtolower($name);
+                $saved_type = 2;
+                $item['dir'] = $SearchDir;
+                $item['php'] = $SearchDir . $filename . '/' . $sub_file;
+                $item['dir_admin'] = $SearchDir . $filename . '/' ;
+                if (  is_dir( $SearchDir . $filename . '/' . $shortname ))
+                {
+                    $saved_type = 3;
+                    $item['dir_admin'] = $SearchDir . $filename . '/' . $shortname . '/';
+                }
+            }
+        }
+
+        if ( $saved_type )
+        {
+            $shortname = strtolower($name);
+            $item['name'] = $name;
+            $item['shortname'] = $shortname;
+            $item['class_name'] = 'NP_' . $name;
+            $item['feature_dir_type'] = $saved_type; // type of Plugin Folder , 0: unkown, 1: normal, 2: has own dir
+            if ( isset($items[$shortname]) )
+            {
+                // Note: duplication : show error or add log ?
+                if ( $saved_type >= $items[$shortname]['feature_dir_type'] )
+                    continue;
+            }
+            unset($items[$shortname]);
+            $items[$shortname] = &$item;
+            unset($item);
+        }
+    }
+    closedir($dirhandle);
+
+    ksort($items);
+    return $items;
+}
+
+function init_nucleus_compatibility_mysql_handler()
+{
+    // added for 3.5 sql_* wrapper
+    global $MYSQL_HANDLER;
+    if (!isset($MYSQL_HANDLER))
+        $MYSQL_HANDLER = array('mysql','');
+    if ($MYSQL_HANDLER[0] == '')
+        $MYSQL_HANDLER[0] = 'mysql';
+    // end new for 3.5 sql_* wrapper
+
+    global $DB_PREFIX , $MYSQL_PREFIX;
+    if ( !isset($DB_PREFIX) || !is_string($DB_PREFIX) )
+        $DB_PREFIX = (isset($MYSQL_PREFIX) && !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '');
+
+    global $DB_HOST , $MYSQL_HOST;
+    if ( !isset($DB_HOST) || !is_string($DB_HOST) )
+        $DB_HOST = !empty($MYSQL_HOST) ? $MYSQL_HOST : '';
+
+    global $DB_USER , $MYSQL_USER;
+    if ( !isset($DB_USER) || !is_string($DB_USER) )
+        $DB_USER = !empty($MYSQL_USER) ? $MYSQL_USER : '';
+
+    global $DB_PASSWORD , $MYSQL_PASSWORD;
+    if ( !isset($DB_PASSWORD) || !is_string($DB_PASSWORD) )
+        $DB_PASSWORD = !empty($MYSQL_PASSWORD) ? $MYSQL_PASSWORD : '';
+
+    global $DB_DATABASE , $MYSQL_DATABASE;
+    if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) )
+        $DB_DATABASE = !empty($MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
+
+    $MYSQL_PREFIX   = @$DB_PREFIX;
+    $MYSQL_HOST     = @$DB_HOST;
+    $MYSQL_USER     = @$DB_USER;
+    $MYSQL_PASSWORD = @$DB_PASSWORD;
+    $MYSQL_DATABASE = @$DB_DATABASE;
+
+    global $DB_PHP_MODULE_NAME;
+    if (!isset($DB_PHP_MODULE_NAME))
+    $DB_PHP_MODULE_NAME = 'pdo';
+    $DB_PHP_MODULE_NAME = strtolower($DB_PHP_MODULE_NAME);
+
+    global $MYSQL_HANDLER , $DB_DRIVER_NAME;
+    if (!isset($DB_DRIVER_NAME))
+    {
+//        if ($MYSQL_HANDLER[0] == 'mysql')
+//            trigger_error("Deprecated : use sql_ instead of mysql_ . ", E_USER_DEPRECATED);
+
+        if ( isset($MYSQL_HANDLER) )
+        {
+            if (
+                  ( is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER == 'mysql') )
+                  ||
+                  ( is_array($MYSQL_HANDLER) && (strtolower($MYSQL_HANDLER[0]) == 'mysql') )
+                )
+            {
+//                trigger_error("Critical Error : not allow mysql_ function. ", E_USER_ERROR);
+                $DB_PHP_MODULE_NAME = 'mysql';
+                $DB_DRIVER_NAME = 'mysql';
+            }
+
+            if ( !isset($DB_DRIVER_NAME) )
+            {
+                if ( is_array($MYSQL_HANDLER)
+                  && (strtolower($MYSQL_HANDLER[0])=='pdo')
+                  && isset($MYSQL_HANDLER[1])
+                )
+                    $DB_DRIVER_NAME = $MYSQL_HANDLER[1];
+                else
+                    $DB_DRIVER_NAME = 'mysql';
+            }
+        }
+    }
+    $DB_DRIVER_NAME = strtolower($DB_DRIVER_NAME);
+    // check invalid parameter
+    if ($DB_DRIVER_NAME == 'sqlite')
+    {
+        $DB_PHP_MODULE_NAME = 'pdo';
+//        echo "Error::config , Not implemented yet. Invalid db driver name.";
+//        exit;
+    }
+    if (!in_array($DB_PHP_MODULE_NAME, array('pdo', 'mysql')))
+        $DB_PHP_MODULE_NAME = 'pdo';
+    if (!in_array($DB_DRIVER_NAME, array('mysql', 'sqlite')))
+    {
+//        $DB_DRIVER_NAME = 'mysql';
+        echo "Error::config Invalid db driver name.";
+        exit;
+    }
+    if ($DB_PHP_MODULE_NAME == 'mysql')
+        $MYSQL_HANDLER = array('mysql', '');
+    else
+        $MYSQL_HANDLER = array($DB_PHP_MODULE_NAME, $DB_DRIVER_NAME);
+}
+
+function checkBrowserLang($locale)
+{
+    static $http_lang = null;
+    if (is_array($http_lang))
+        return (in_array(strtolower($locale), $http_lang));
+
+    $items = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+    if ($items === FALSE)
+        $items = array();
+    $http_lang = array_map('substr', $items, array(0, 2));
+//var_dump(__FUNCTION__,__LINE__, $items, $http_lang, $locale);
+    return (in_array(strtolower($locale), $http_lang));
+}
+
+function getValidLanguage($lang)
+{
+    global $DB_DRIVER_NAME;
+    $pattern_replace = '#-[^\-]*$#i';
+    if ( $DB_DRIVER_NAME != 'mysql' || (defined('_CHARSET') && constant('_CHARSET') == 'UTF-8') )
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+
+    if ( preg_match('#-utf8$#i', $lang) )
+    {
+        if ( checkLanguage($lang) )
+            return $lang;
+        if (checkBrowserLang('ja') && checkLanguage('japanese-utf8'))
+            return 'japanese-utf8';
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+        if ( checkLanguage($lang) )
+            return $lang;
+        return 'english-utf8';
+    }
+    // non utf-8
+    if (checkBrowserLang('ja'))
+    {
+        if (preg_match('#^japanese#i', $lang) && checkLanguage($lang))
+            return $lang;
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+    }
+
+    if ( checkLanguage($lang) )
+        return $lang;
+    return 'english-utf8';
 }

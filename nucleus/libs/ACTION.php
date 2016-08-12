@@ -176,9 +176,7 @@ class ACTION
         $message .= getMailFooter();
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
-        mb_language('ja');
-        mb_internal_encoding(_CHARSET);
-        @mb_send_mail($tomem->getEmail(), $title, $message, "From: ". $fromMail);
+        @Utils::mail($tomem->getEmail(), $title, $message, "From: ". $fromMail);
 
         if ( postVar('url') )
         {

@@ -328,6 +328,11 @@ class ITEMACTIONS extends BaseActions {
      * Parse templatevar author
      */
     function parse_author($which = '') {
+        global $blog;
+
+        if (!$blog || !$blog->getAuthorVisible())
+            return "";
+
         switch($which)
         {
             case 'realname':
@@ -604,6 +609,9 @@ class ITEMACTIONS extends BaseActions {
                 break; */
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
+                break;
+            case 'authorvisible':
+                $condition = ($blog && $blog->getAuthorVisible());
                 break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);

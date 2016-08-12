@@ -26,7 +26,7 @@ CREATE TABLE `nucleus_blog` (
   `bcomments`      tinyint(2)   NOT NULL default '1',
   `bmaxcomments`   int(11)      NOT NULL default '0',
   `btimeoffset`    decimal(3,1) NOT NULL default '0.0',
-  `bnotify`        varchar(128)           default NULL,
+  `bnotify`        varchar(128)          default NULL,
   `burl`           varchar(100)          default NULL,
   `bupdate`        varchar(60)           default NULL,
   `bdefskin`       int(11)      NOT NULL default '1',
@@ -38,6 +38,7 @@ CREATE TABLE `nucleus_blog` (
   `bincludesearch` tinyint(2)   NOT NULL default '0',
   `breqemail`      tinyint(2)   NOT NULL default '0',
   `bfuturepost`    tinyint(2)   NOT NULL default '0',
+  `bauthorvisible` tinyint(2)   NOT NULL default '1',
   PRIMARY KEY  (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
 ) ENGINE=MyISAM;
@@ -54,14 +55,15 @@ INSERT INTO `nucleus_blog` VALUES (
     'http://localhost:8080/nucleus/',   /* burl */
     '',                                 /* bupdate */
     5,                                  /* bdefskin */
-    1,                                  /* bpublic */
+    0,                                  /* bpublic */
     1,                                  /* bconvertbreaks */
     1,                                  /* bdefcat */
     1,                                  /* bnotifytype */
     1,                                  /* ballowpast */
     0,                                  /* bincludesearch */
     0,                                  /* breqemail */
-    0                                   /* bfuturepost */
+    0,                                  /* bfuturepost */
+    1                                   /* bauthorvisible */
 );
 
 CREATE TABLE `nucleus_category` (
@@ -133,7 +135,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('SkinsURL',          'http://localhost:8080/nucleus/skins/'),
     ('ActionURL',         'http://localhost:8080/nucleus/action.php'),
     ('URLMode',           'normal'),
-    ('DatabaseVersion',   '371'),
+    ('DatabaseVersion',   '380'),
     ('DebugVars',         '0'),
     ('DefaultListSize',   '10'),
     ('AdminCSS',          'contemporary_jp');
