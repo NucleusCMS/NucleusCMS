@@ -616,11 +616,11 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 カテゴリー: <a href="<%categorylink%>" title="カテゴリー: <%Category%>"><%Category%></a>
 </small>
 </div>
-<div class="contentitem2">
+<%if(authorvisible)%><div class="contentitem2">
 <small class="contentitempostedby">
 投稿者: <a href="<%authorlink%>" title="投稿者: <%author%>"><%author%></a>
 </small>
-</div>
+</div><%endif%>
 <%comments%>
 <%edit%>
 </div>
@@ -663,11 +663,11 @@ WEBサイト: <a href="<%member(url)%>"><%member(url)%></a>
 カテゴリー: <a href="<%categorylink%>" title="カテゴリー: <%category%>"><%category%></a>
 </small>
 </div>
-<div class="contentitem2">
+<%if(authorvisible)%><div class="contentitem2">
 <small class="contentitempostedby">
 投稿者: <a href="<%authorlink%>" title="投稿者: <%author%>"><%author%></a>
 </small>
-</div>
+</div><%endif%>
 <%edit%>
 </div>
 <div class="contentbody">
@@ -777,11 +777,11 @@ title="<%user%>さんにメールを送るかサイトを訪れる。">
 カテゴリー: <a href="<%categorylink%>" title="カテゴリー: <%Category%>"><%Category%></a>
 </small>
 </div>
-<div class="contentitem2">
+<%if(authorvisible)%><div class="contentitem2">
 <small class="contentitempostedby">
 投稿者: <a href="<%authorlink%>" title="投稿者: <%author%>"><%author%></a>
 </small>
-</div>
+</div><%endif%>
 <%comments%>
 <%edit%>
 </div>

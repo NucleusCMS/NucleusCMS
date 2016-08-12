@@ -17,15 +17,19 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+
 /********************************************
- *        Start New for 3.7?                *
+ *        Start New for 3.80                *
  ********************************************/
-// Skin import/export
-define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
+// Blog option
+define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
 
 /********************************************
  *        Start New for 3.71                *
  ********************************************/
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
+
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'データベース と バージョン');
 define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'データベースのドライバ');
 define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP と データベース');

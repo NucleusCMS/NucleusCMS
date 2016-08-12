@@ -2769,7 +2769,28 @@ class ADMIN {
                 ?>
 
             </td>
-        </tr><tr>
+        </tr>
+        <?php
+                if ( !$blog->existsSetting('bauthorvisible')
+                    && !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
+                {
+                    // Force Upgrade
+                    BLOG::UpgardeAddColumnAuthorVisible();
+                }
+        ?>
+        <tr>
+            <td><?php echo _EBLOG_VISIBLE_ITEM_AUTHOR; ?> <?php help('authorvisible'); ?>
+            </td>
+            <td><?php
+                if ( $blog->existsSetting('bauthorvisible') || sql_existTableColumnName(sql_table('blog'), 'bauthorvisible'))
+                {
+                    $this->input_yesno('authorvisible', $blog->getAuthorVisible(), 53);
+                }
+                else
+                    echo "Needs to upgrade column name `authorvisible`. please reload.";
+            ?></td>
+        </tr>
+        <tr>
             <td><?php echo _EBLOG_LINEBREAKS?> <?php help('convertbreaks'); ?>
             </td>
             <td><?php $this->input_yesno('convertbreaks',$blog->convertBreaks(),55); ?></td>
@@ -3363,6 +3384,7 @@ class ADMIN {
         $blog->setDefaultCategory(intPostVar('defcat'));
         $blog->setSearchable(intPostVar('searchable'));
         $blog->setEmailRequired(intPostVar('reqemail'));
+        $blog->setAuthorvisible(intPostVar('authorvisible'));
 
         $blog->writeSettings();
 

@@ -605,11 +605,11 @@ Website: <a href="<%member(url)%>"><%member(url)%></a>
 Category: <a href="<%categorylink%>" title="Category: <%Category%>"><%Category%></a>
 </small>
 </div>
-<div class="contentitem2">
+<%if(authorvisible)%><div class="contentitem2">
 <small class="contentitempostedby">
 Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 </small>
-</div>
+</div><%endif%>
 <%comments%>
 <%edit%>
 </div>
@@ -651,11 +651,11 @@ Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
 </small>
 </div>
-<div class="contentitem2">
+<%if(authorvisible)%><div class="contentitem2">
 <small class="contentitempostedby">
 Author: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 </small>
-</div>
+</div><%endif%>
 <%edit%>
 </div>
 <div class="contentbody">
@@ -762,11 +762,11 @@ title="<%user%>">
 Category: <a href="<%categorylink%>" title="Category: <%category%>"><%category%></a>
 </small>
 </div>
-<div class="contentitem2">
+<%if(authorvisible)%><div class="contentitem2">
 <small class="contentitempostedby">
 Posted by: <a href="<%authorlink%>" title="Author: <%author%>"><%author%></a>
 </small>
-</div>
+</div><%endif%>
 <%comments%>
 <%edit%>
 </div>

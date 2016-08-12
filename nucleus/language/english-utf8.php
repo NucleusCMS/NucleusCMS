@@ -22,14 +22,17 @@
  */
 
 /********************************************
- *        Start New for 3.7?                *
+ *        Start New for 3.80                *
  ********************************************/
-// Skin import/export
-define('_SKINIE_ERROR_FAILEDLOAD_XML',        'Failed to Load XML');
+// Blog option
+define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
 
 /********************************************
  *        Start New for 3.71                *
  ********************************************/
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',        'Failed to Load XML');
+
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');
 define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'Database Driver');
 define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP and Database');
