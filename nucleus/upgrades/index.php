@@ -14,6 +14,8 @@
  *
  */
 
+define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
+
 include('upgrade.functions.php');
 
 load_upgrade_lang();
@@ -44,14 +46,16 @@ elseif (!upgrade_checkinstall(350)) $current = 340;
 elseif (!upgrade_checkinstall(360)) $current = 350;
 elseif (!upgrade_checkinstall(370)) $current = 360;
 elseif (!upgrade_checkinstall(371)) $current = 370;
-else                                $current = 371;
+elseif (!upgrade_checkinstall(380)) $current = 371;
+else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
 
 if (version_compare(phpversion(),'5.0.0','<'))
     $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
-elseif ($current == 371)
+elseif ($current == NUCLEUS_UPGRADE_VERSION_ID)
     $echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
 else {
-    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , _UPG_TEXT_CLICK_HERE_TO_UPGRADE);
+    $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
+    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , $tmp_title);
     $echo[] = '<div class="note">';
     $echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
     $echo[] = '</div>';
@@ -60,7 +64,7 @@ else {
 $from = intGetVar('from');
 if (!$from) $from = $current;
 
-if (version_compare('5.0.0',phpversion(),'<=') && $from < 371) {
+if (version_compare('5.0.0',phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSION_ID) {
     $sth = array();
     if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
     if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.

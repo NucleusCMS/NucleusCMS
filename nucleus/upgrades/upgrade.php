@@ -60,6 +60,10 @@ switch($from) {
         include_once('upgrade3.7.php');
         upgrade_do371();
         break;
+    case 371:
+        include_once('upgrade3.8.php');
+        upgrade_do380();
+        break;
     default:
         echo "<li>" . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . "</li>";
         break;
