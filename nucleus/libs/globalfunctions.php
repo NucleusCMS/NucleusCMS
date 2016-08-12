@@ -1530,10 +1530,21 @@ function checkLanguage($lang) {
 function checkPlugin($plug) {
     global $DIR_PLUGINS;
 
-    # important note that '\' must be matched with '\\\\' in preg* expressions
+    // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    $pl_name = remove_all_directory_separator($plug);
+    $shortname = strtolower(preg_replace('#^NP_#', '', $plug));
+    $fname = $pl_name . '.php';
+    foreach(array($fname, "{$shortname}/{$fname}", "{$pl_name}/{$fname}") as $f)
+    if (is_file($DIR_PLUGINS . $f))
+    {
+        return TRUE;
+    }
+    return FALSE;
+}
 
-    return is_file($DIR_PLUGINS . str_replace(array('\\','/'), '', $plug) . '.php');
-
+function remove_all_directory_separator($text)
+{
+    return str_replace( array("\\" ,'/' , DIRECTORY_SEPARATOR ) , '' , $text);
 }
 
 /**
@@ -1989,8 +2000,26 @@ function ticketForPlugin(){
     /* Solve the plugin php file or admin directory */
     $phppath=substr($p_translated,strlen($d_plugins));
     $phppath=preg_replace('#^/#','',$phppath);// Remove the first "/" if exists.
-    $path=preg_replace('#^NP_(.*)\.php$#','$1',$phppath); // Remove the first "NP_" and the last ".php" if exists.
-    $path=preg_replace('#^([^/]*)/(.*)$#','$1',$path); // Remove the "/" and beyond.
+
+    // NP_Plugin.php , plugin/* , NP_Plugin/NP_Plugin.php
+//	var_dump(__FUNCTION__, $phppath);
+    // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    $path = $phppath;
+    if ( preg_match('#^NP_([^/]+)(/|$)#', $path, $m) || preg_match('#^[^/]*/+NP_([^/]+)(/|$)#', $path, $m) )
+    {
+        // Remove the first "NP_" and the last ".php" if exists.
+        $unsecure_value = preg_replace('#\.php$#', '', $m[1]);
+        $unsecure_plugin_name = $unsecure_value;
+        $unsecure_plugin_name_short = strtolower($unsecure_value);
+    }
+    else
+    {
+        $unsecure_value = preg_replace('#(?:^|.+/)NP_([^/]*)\.php$#', '$1', $path); // Remove the first "NP_" and the last ".php" if exists.
+        $unsecure_value = preg_replace('#^([^/]*)/(.*)$#', '$1', $unsecure_value); // Remove the "/" and beyond.
+        $unsecure_plugin_name = $unsecure_value;
+        $unsecure_plugin_name_short = strtolower($unsecure_value);
+    }
+//	var_dump(__FUNCTION__, $path);
 
     /* Solve the plugin name. */
     $plugins=array();
@@ -2004,13 +2033,13 @@ function ticketForPlugin(){
     }
     sql_free_result($res);
     
-    if ($plugins[$path])
+    if ($plugins[$unsecure_plugin_name_short])
     {
-        $plugin_name = $plugins[$path];
+        $plugin_name = $plugins[$unsecure_plugin_name_short];
     }
-    else if (in_array($path, $plugins))
+    else if (in_array($unsecure_plugin_name_short, $plugins))
     {
-        $plugin_name = $path;
+        $plugin_name = $unsecure_plugin_name_short;
     }
     else
     {
@@ -2536,4 +2565,143 @@ function nucleus_version_compare($version1, $version2, $operator = '')
         $args[$i] = implode('.', $ver);
     }
     return call_user_func_array('version_compare', $args);
+}
+
+// getPluginListsFromDirName
+// Note: This function will may be specification change
+// Note: use only core functions
+// Notice: Do not call this function from user plugin
+// return Plugin Lists on SearchDir
+// mode  1 , 2 : all $lists
+function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
+{
+    static $lists = array();
+
+    $status = array('result'=>FALSE);
+    $SearchDir = str_replace("\\", '/', $SearchDir);
+    if ( strlen($SearchDir)>0 && substr($SearchDir, -1, 1)!='/' )
+        $SearchDir .= '/';
+
+    if ( $clearcache && isset($lists[$SearchDir]) )
+         unset($lists[$SearchDir]);
+    if ( isset($lists[$SearchDir]) )
+    {
+        $status = array('result'=>TRUE, 'is_cache'=>TRUE);
+        return $lists[$SearchDir];
+    }
+    if ( !is_dir($SearchDir) )
+        return FALSE;
+
+    $lists[$SearchDir] = array();
+    $items = &$lists[$SearchDir];
+
+    $dirhandle = opendir($SearchDir);
+    if ($dirhandle === FALSE)
+        return FALSE;
+
+    $status['is_cache'] = FALSE;
+    $status['result']   = TRUE;
+
+    // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    while ( false !== ($filename = readdir($dirhandle)) )
+    {
+        $current_file = $SearchDir . $filename;
+        $pattern_php = '#^NP_(.*)\.php$#';
+        $pattern = '#^NP_(.*)$#';
+        $item = array();
+
+        $saved_type = 0;
+        if (is_file($current_file))
+        {  // NP_*.php
+            // type 1 , old_admin_area
+            if (!preg_match($pattern_php, $filename, $matches))
+                continue;
+            $saved_type = 1;
+            $name = $matches[1];
+            $saved_type = 1;
+            $item['dir'] = $SearchDir;
+            $item['dir_admin'] = $SearchDir . strtolower($name) . '/';
+            $item['php'] = $SearchDir . $filename;
+        }
+        else
+        {  // directory
+            if ($filename == '.' || $filename == '..')
+                continue;
+            if ( preg_match($pattern, $filename, $matches) )
+            {
+                // type 4 or 5
+                $name = $matches[1];
+                $pl_own_dir  = $current_file . '/';
+                $pl_own_dir_plfile = $pl_own_dir . $filename . '.php';
+                if (! (is_dir($pl_own_dir) && (is_file($pl_own_dir_plfile))) )
+                    continue;
+                $item['dir'] = $pl_own_dir;
+                $item['php'] = $pl_own_dir_plfile;
+                if ( is_dir($pl_own_dir . strtolower($name)) )
+                {
+                    $saved_type = 4;
+                    $item['dir_admin'] = $pl_own_dir . strtolower($name) . '/';
+                }
+                else
+                {
+                    $saved_type = 5;
+                    $item['dir_admin'] = $pl_own_dir;
+                }
+            }
+            else
+            {
+                // find shortname/NP_*.php
+                $pat = '';
+                foreach(str_split(strtolower($filename)) as $value)
+                {
+                    if ( ord($value) >= ord('a') && ord($value) <= ord('z') )
+                        $pat .= '[' . $value . strtoupper($value) . ']'; // strtoupper($value)
+                    else
+                        $pat .= $value;
+                }
+                $files = glob($current_file . '/' . 'NP_' . $pat . '.php', GLOB_NOSORT);
+
+                if ($files === FALSE || count($files)==0)
+                    continue;
+
+                $sub_file = basename($files[0]);
+                if ( !preg_match($pattern_php, $sub_file, $matches))
+                    continue;
+                // type: 2 , old_admin_area
+                $name = $matches[1];
+                $shortname = strtolower($name);
+                $saved_type = 2;
+                $item['dir'] = $SearchDir;
+                $item['php'] = $SearchDir . $filename . '/' . $sub_file;
+                $item['dir_admin'] = $SearchDir . $filename . '/' ;
+                if (  is_dir( $SearchDir . $filename . '/' . $shortname ))
+                {
+                    $saved_type = 3;
+                    $item['dir_admin'] = $SearchDir . $filename . '/' . $shortname . '/';
+                }
+            }
+        }
+
+        if ( $saved_type )
+        {
+            $shortname = strtolower($name);
+            $item['name'] = $name;
+            $item['shortname'] = $shortname;
+            $item['class_name'] = 'NP_' . $name;
+            $item['feature_dir_type'] = $saved_type; // type of Plugin Folder , 0: unkown, 1: normal, 2: has own dir
+            if ( isset($items[$shortname]) )
+            {
+                // Note: duplication : show error or add log ?
+                if ( $saved_type >= $items[$shortname]['feature_dir_type'] )
+                    continue;
+            }
+            unset($items[$shortname]);
+            $items[$shortname] = &$item;
+            unset($item);
+        }
+    }
+    closedir($dirhandle);
+
+    ksort($items);
+    return $items;
 }

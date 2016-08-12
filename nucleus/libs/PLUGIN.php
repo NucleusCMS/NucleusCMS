@@ -236,9 +236,14 @@ class NucleusPlugin {
       * public
       */
     function getAdminURL() {
-        global $CONF;
+        global $CONF, $manager;
+
+        if (isset($this->plugin_admin_url_prefix))
+            return $CONF['PluginURL'] . $this->plugin_admin_url_prefix . $this->getShortName() . '/';
         return $CONF['PluginURL'] . $this->getShortName() . '/';
     }
+
+    function getAdminDir() { return $this->getDirectory(); }
 
     /**
       * Returns the directory where the admin directory is located and
@@ -248,6 +253,8 @@ class NucleusPlugin {
       */
     function getDirectory() {
         global $DIR_PLUGINS;
+        if ( isset($this->plugin_admin_dir) )
+            { return $this->plugin_admin_dir; }
         return $DIR_PLUGINS . $this->getShortName() . '/';
     }
 

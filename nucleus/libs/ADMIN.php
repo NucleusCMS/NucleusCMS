@@ -6413,49 +6413,51 @@ selector();
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
             
 <?php
+        $list_installed_PluginName = array();
+        $sql = 'SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC';
+        if ($res = sql_query($sql))
+        {
+            while ( $v = sql_fetch_array($res) )
+            {
+                $list_installed_PluginName[$v[0]] = strtolower($v[0]);
+            }
+        }
         // find a list of possibly non-installed plugins
         $candidates = array();
 
         global $DIR_PLUGINS;
 
-        $dirhandle = opendir($DIR_PLUGINS);
-
-        while ($filename = readdir($dirhandle) )
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, TRUE);
+//        var_dump(__FUNCTION__, $status, $plugins);
+        if ( $status['result'] && count($plugins)>0 )
+            foreach ($plugins as $key => $value)
         {
-            if (preg_match('#^NP_(.*)\.php$#', $filename, $matches) )
-            {
-                $name = $matches[1];
+                $name = $value['name'];
                 // only show in list when not yet installed
-                $res = intval(quickQuery('SELECT count(*) as result FROM ' . sql_table('plugin') . ' WHERE `pfile` = "NP_' . sql_real_escape_string($name) . '" LIMIT 1'));
-                if ($res == 0)
+                if ( ! in_array(strtolower('NP_' . $name) , $list_installed_PluginName) )
                 {
                     array_push($candidates, $name);
                 }
             }
-        }
-        closedir($dirhandle);
         
         if (sizeof($candidates) > 0)
         {
-?>
-
-            <p><?php echo _PLUGS_ADD_TEXT?></p>
-
-            <form method='post' action='index.php'><div>
-                <input type='hidden' name='action' value='pluginadd' />
-                <?php $manager->addTicketHidden() ?>
-                <select name="filename" tabindex="30">
-<?php
+            $options = array();
             foreach($candidates as $name)
             {
-                echo '<option value="NP_',$name,'">',hsc($name),'</option>';
+                $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc( $name ));
             }
-?>
-                </select>
-                <input type='submit' tabindex="40" value='<?php echo _PLUGS_BTN_INSTALL?>' />
-            </div></form>
+            $options_tag = implode( "\n  ", $options );
 
-<?php
+            echo "<p>". _PLUGS_ADD_TEXT ."</p>\n";
+
+            echo "<form method='post' action='index.php'><div>\n";
+            echo "  <input type='hidden' name='action' value='pluginadd' />\n";
+            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
+            echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
+            printf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+            echo "</div></form>\n";
         }
         else
         {

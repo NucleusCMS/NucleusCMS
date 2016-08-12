@@ -266,6 +266,26 @@ class MANAGER
                 global $DIR_PLUGINS;
 
                 $fileName = $DIR_PLUGINS . $name . '.php';
+        $shortname = strtolower(preg_replace('#^NP_#', '', $name));
+
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        $plugin_dir_type = 0;
+        foreach(array($fileName ,
+                        $DIR_PLUGINS . $shortname.'/'. $name . '.php' ,
+                        $DIR_PLUGINS . $name.'/'. $name . '.php') as $key=>$f)
+        {
+            if (file_exists($f))
+            {
+                $fileName = $f;
+                $plugin_dir_type = 10*$key+1;
+                if ( $plugin_dir_type==11 && is_dir($DIR_PLUGINS . $shortname . '/' . $shortname) )
+                    $plugin_dir_type = 12;
+                if ( $plugin_dir_type==21 && !is_dir($DIR_PLUGINS . $name . '/' . $shortname) )
+                    $plugin_dir_type = 22;
+                break;
+            }
+        }
+
 
                 if (!file_exists($fileName))
                 {
@@ -294,6 +314,36 @@ class MANAGER
 
                 // get plugid
                 $this->plugins[$name]->plugid = $this->getPidFromName($name);
+
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        if ( is_object($this->plugins[$name]) )
+        {
+            $o_plugin = $this->plugins[$name];
+            $o_plugin->plugin_dir_type = $plugin_dir_type;
+            switch($plugin_dir_type)
+            {
+                case 1: // NP_*.php              , shortname/
+                    $o_plugin->plugin_admin_dir = $DIR_PLUGINS . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = '';
+                    break;
+                case 11: // shortname/NP_*.php    , shortname/
+                    $o_plugin->plugin_admin_dir = $DIR_PLUGINS . $o_plugin->getShortName().'/';
+                    $o_plugin->plugin_admin_url_prefix = '';
+                    break;
+                case 12: // shortname/NP_*.php         , shortname/shortname/
+                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/' . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = $o_plugin->getShortName() . '/';
+                    break;
+                case 21: // NP_*/NP_*.php         , NP_*/shortname/
+                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/' . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = $name . '/';
+                    break;
+                case 22: // NP_*/NP_*.php        , NP_*/
+                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/';
+                    $o_plugin->plugin_admin_url_prefix = $name . '/';
+                    break;
+            }
+        }
 
                 // unload plugin if a prefix is used and the plugin cannot handle this^
                 global $MYSQL_PREFIX;
@@ -521,9 +571,13 @@ class MANAGER
      */
     function addTicketHidden()
     {
-        $ticket = $this->_generateTicket();
+        echo $this->getHtmlInputTicketHidden();
+    }
 
-        echo sprintf('<input type="hidden" name="ticket" value="%s" />', hsc($ticket));
+    function getHtmlInputTicketHidden()
+    {
+        $ticket = $this->_generateTicket();
+        return '<input type="hidden" name="ticket" value="' . htmlspecialchars($ticket) . '" />';
     }
 
     /**
