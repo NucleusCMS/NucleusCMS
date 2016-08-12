@@ -395,35 +395,9 @@ if (!headers_sent() ) {
 }
 
 // read language file, only after user has been initialized
+LoadCoreLanguage();
 $language = getLanguageName();
 
-# important note that '\' must be matched with '\\\\' in preg* expressions
-
-foreach(array('','archive/') as $p)
-{
-    $f = $DIR_LANG  . $p . str_replace(array('\\','/'), '', $language) . '.php';
-    if (is_file($f))
-    {
-        include_once($f);
-        break;
-    }
-}
-
-    if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
-         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
-    {
-        // load undefined constant
-        if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
-        {
-            if (@is_file($DIR_LANG . 'english-utf8' . '.php'))
-            {
-                // load default lang
-                ob_start();
-                @include_once($DIR_LANG . 'english-utf8' . '.php');
-                ob_end_clean();
-            }
-        }
-    }
 
 /*
     Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
@@ -1498,7 +1472,7 @@ function LoadCoreLanguage()
     if (file_exists($filename))
         include_once ($filename);
 
-    if ((!defined('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION'))
+    if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
          && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
     {
         // load undefined constant
@@ -2604,7 +2578,7 @@ function init_nucleus_compatibility_mysql_handler()
 
     global $DB_PREFIX , $MYSQL_PREFIX;
     if ( !isset($DB_PREFIX) || !is_string($DB_PREFIX) )
-        $DB_PREFIX = !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '';
+        $DB_PREFIX = (isset($MYSQL_PREFIX) && !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '');
 
     global $DB_HOST , $MYSQL_HOST;
     if ( !isset($DB_HOST) || !is_string($DB_HOST) )

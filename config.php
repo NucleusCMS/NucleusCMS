@@ -19,16 +19,16 @@ $MYSQL_HANDLER = array('mysql','');
 // main nucleus directory
 $DIR_BASE = dirname(__FILE__) . '/';
 
-//$DIR_NUCLEUS = '/your/path/to/nucleus/';
 //$DIR_NUCLEUS = $DIR_BASE . 'nucleus/';
+//$DIR_NUCLEUS = '/your/path/to/nucleus/';
 
 // media dir
-//$DIR_MEDIA = '/your/path/to/media/';
 $DIR_MEDIA = $DIR_BASE . 'media/';
+//$DIR_MEDIA = '/your/path/to/media/';
 
 // extra skin files for imported skins
-//$DIR_SKINS = '/your/path/to/skins/';
 $DIR_SKINS = $DIR_BASE . 'skins/';
+//$DIR_SKINS = '/your/path/to/skins/';
 
 // these dirs are normally subdirs of the nucleus dir, but
 // you can redefine them if you wish

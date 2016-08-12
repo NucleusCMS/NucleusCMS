@@ -45,7 +45,7 @@ define('_DEFAULT_DATE_FORMAT_Y',           '%Y');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'About system core');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'Core version');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'Core patch level');
-define('_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION', 'Core database version');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'Core database version');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    'Core important settings');
 
 define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');

@@ -41,7 +41,7 @@ define('_DEFAULT_DATE_FORMAT_Y',           '%Y年');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
-define('_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION', 'コア のデータベースバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'コア のデータベースバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    '重要な設定');
 
 define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージョン');

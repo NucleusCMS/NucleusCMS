@@ -13,9 +13,9 @@
 
 class NP_SecurityEnforcer extends NucleusPlugin {
 	public function getName()			{ return 'SecurityEnforcer'; }
-	public function getAuthor()		{ return 'Frank Truscott + Cacher';	}
-	public function getURL()			{ return 'https://github.com/NucleusCMS/NP_SecurityEnforcer';	} // 'http://revcetera.com/ftruscot'
-	public function getVersion()		{ return '1.03'; } // 1.03 (1.02JP-f2fb07c8-patch1)
+	public function getAuthor()		{ return 'Misc authors';	} // Frank Truscott + Cacher
+	public function getURL()			{ return '';	} // https://github.com/NucleusCMS/NP_SecurityEnforcer
+	public function getVersion()		{ return '1.03'; }
 	public function getDescription()	{ return _SECURITYENFORCER_DESCRIPTION;}
 	public function getTableList()	{ return array(sql_table('plug_securityenforcer')); }
 	public function hasAdminArea()	{ return 1; }

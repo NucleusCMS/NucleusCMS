@@ -5657,7 +5657,7 @@ selector();
             echo "\t\t" . '<td>' . $np . "</td>\n";
             echo "\t</tr>\n";
             echo "\t<tr>\n";
-            echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION). "</td>\n";
+            echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION). "</td>\n";
             echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
             echo "\t</tr>\n";
             echo "\t<tr>\n";
