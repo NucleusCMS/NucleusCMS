@@ -295,7 +295,29 @@ if ($action == 'login') {
         );
         $manager->notify('LoginSuccess', $param);
         $errormessage = '';
-        ACTIONLOG::add(INFO, "Login successful for $login (sharedpc=$shared)");
+        $log_message = sprintf("Login successful for %s (sharedpc=%s)", $login, $shared);
+
+        $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
+        $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
+        if ($remote_ip !=='')
+        {
+            $log_message .= sprintf(" %s", $remote_ip);
+            if ($remote_host!==FALSE && $remote_host!=$remote_ip)
+                $log_message .= sprintf("(%s)", $remote_host);
+        }
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+        {
+            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"]);
+            $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
+            $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
+            $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
+            if ($remote_proxy_host !==FALSE && $remote_proxy_host!=$remote_proxy_ip)
+                $log_message .= sprintf("(%s)", $remote_proxy_host);
+            unset($remote_proxy_ip, $remote_proxy_host);
+        }
+        ACTIONLOG::add(INFO, $log_message);
+        unset($log_message);
+        unset($remote_ip, $remote_host);
     } else {
         // errormessage for [%errordiv%]
         $trimlogin = trim($login);
