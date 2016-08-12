@@ -1,4 +1,5 @@
 <?php
+
 /* ==========================================================================================
  * Nucleus SkinFiles Plugin
  *
@@ -45,10 +46,10 @@
 class NP_SkinFiles extends NucleusPlugin {
 	public function getName() { return 'SkinFiles'; }
 	public function getAuthor() { return 'Misc authors'; }
-	public function getURL() { return 'http://wakka.xiffy.nl/skinfiles'; }
+	public function getURL() { return ''; }
 	public function getVersion() { return '2.032'; }
 	public function getDescription() { return _SKINFILES_01; }
-	public function supportsFeature($feature)	{ return in_array ($feature, array ('SqlTablePrefix', 'SqlApi', 'HelpPage'));}
+	public function supportsFeature($feature)	{ return in_array ($feature, array ('SqlTablePrefix', 'NotUseDbApi', 'HelpPage'));}
 	public function hasAdminArea() { return 1; }
 	
 	public function install() {
@@ -80,7 +81,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	}
 	
 	public function init() {
-		$language = preg_replace( '#\\\\|/#', '', getLanguageName());
+		$language = str_replace(array('\\','/'), '', getLanguageName());
 		if (file_exists($this->getDirectory().$language.'.php')) {
 			include_once($this->getDirectory().$language.'.php');
 		} else {
@@ -91,16 +92,16 @@ class NP_SkinFiles extends NucleusPlugin {
 	
 	public function event_QuickMenu(&$data) {
 		global $member;
-		
+
 		if (!($member->isLoggedIn() && $member->isAdmin())) {
 			return;
 		}
-		
+
 		array_push(
 			$data['options'], 
 			array(
-				 'title'	=> _SKINFILES_TITLE,
-				 'url'	  => $this->getAdminURL(),
+				 'title'   => _SKINFILES_TITLE,
+				 'url'     => $this->getAdminURL(),
 				 'tooltip' => _SKINFILES_TOOLTIP
 			)
 		);
