@@ -21,6 +21,16 @@
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPI_%s または SqlApi_SQL92 をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
+
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'コア のデータベースバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    '重要な設定');
+
+define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージョン');
+
 // Blog option
 define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
 

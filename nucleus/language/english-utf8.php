@@ -24,6 +24,16 @@
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "Plugin %s was not loaded (does not support SqlApi_%s or SqlApi_SQL92. Please upgrade to the latest version of the plug-ins that support this feature.)");
+
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'About system core');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'Core version');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'Core patch level');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'Core database version');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    'Core important settings');
+
+define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');
+
 // Blog option
 define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
 

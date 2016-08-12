@@ -21,6 +21,10 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 include_once($DIR_LIBS. 'version.php');
 
+define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
+define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
+define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
+define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
