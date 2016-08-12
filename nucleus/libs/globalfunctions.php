@@ -2622,7 +2622,7 @@ function init_nucleus_compatibility_mysql_handler()
     if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) )
         $DB_DATABASE = !empty($MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
 
-    $MYSQL_PREFIX   = @$MYSQL_PREFIX;
+    $MYSQL_PREFIX   = @$DB_PREFIX;
     $MYSQL_HOST     = @$DB_HOST;
     $MYSQL_USER     = @$DB_USER;
     $MYSQL_PASSWORD = @$DB_PASSWORD;
