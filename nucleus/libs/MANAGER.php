@@ -355,13 +355,37 @@ class MANAGER
                 }
 
                 // unload plugin if using non-mysql handler and plugin does not support it 
-                global $DB_DRIVER_NAME;
-                if (('mysql' != $DB_DRIVER_NAME) && !$this->plugins[$name]->supportsFeature('SqlApi'))
+                $is_NotUseDbApi = (($this->plugins[$name]->supportsFeature('NotUseDbApi'))
+                                || ($this->plugins[$name]->supportsFeature('NoSql')));
+
+                global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+                // check SqlApi
+                if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
                 {
-                    unset($this->plugins[$name]);
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
-                    return 0;
-                }
+                    // plugin uses DB query
+                    // unload plugin if using non-mysql handler and plugin does not support it
+                    if (!$this->plugins[$name]->supportsFeature('SqlApi'))
+                    {
+                        unset($this->plugins[$name]);
+                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+                        return 0;
+                    }
+//                         DB       Standard SQL
+//                        MySQL5  : - SQL:2008
+//                        SQLite3 : SQL92
+                    // unload plugin if using non-mysql handler and plugin does not support it
+                    if ( ( 'mysql' != $DB_DRIVER_NAME )
+                            &&
+                            !($this->plugins[$name]->supportsFeature('SqlApi_'.$DB_DRIVER_NAME)
+                              || $this->plugins[$name]->supportsFeature('SqlApi_SQL92')
+                           )
+                        )
+                    {
+                        unset($this->plugins[$name]);
+                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
+                        return 0;
+                    }
+                } // end : plugin uses DB query
 
                 // call init method
                 $this->plugins[$name]->init();
