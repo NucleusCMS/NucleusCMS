@@ -4,23 +4,23 @@
  * Version 0.53JP for PHP5
  * Written By Cacher, Jan.16, 2011
  * Original was written by Armon Toubman, Jan.18, 2007
+ * This plugin depends needs PHP mbstring extension or mb_emurator scripts Andy Matsubara released.
  * 
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
  * as published by the Free Software Foundation; either version 3
  * of the License, or (at your option) any later version.
  */
- 
+
 class NP_Text extends NucleusPlugin {
-	
 	private $incModePref = array();
 	private $constantPrefix = "SL_";
 	
 	public function getEventList() { return array('PreSkinParse'); }
 	public function getName() { return 'Text'; }
-	public function getAuthor() { return 'Armon Toubman, Cacher'; }
-    public function getURL() { return 'https://github.com/NucleusCMS/NP_Text'; } // 'http://nucleuscms.org/forum/viewtopic.php?t=14904';
-	public function getVersion() { return '0.54 (0.53JP-8bceb304-patch1)'; }
+	public function getAuthor() { return 'Misc authors'; } // Armon Toubman, Cacher
+	public function getURL() { return ''; } // https://github.com/NucleusCMS/NP_Text
+	public function getVersion() { return '0.54'; }
 	public function getDescription() {
 		$desc = '言語ファイル中の定数を表示します。: <%Text(定数名)%>';
 		switch (preg_replace( '#\\\\|/#', '', getLanguageName())) {
@@ -61,21 +61,15 @@ class NP_Text extends NucleusPlugin {
 		$getLanguage = isset($_GET['lang']) ? getVar('lang') : false;
 		$cookieLanguage = isset($_COOKIE['NP_Text']) ? cookieVar('NP_Text') : false;
 		
-//		if( !$member->isLoggedIn() ) {
-			if( $getLanguage ) {
-				$this->use_lang($getLanguage, $constant);
-			}
-			elseif( $cookieLanguage ) {
-				$this->use_lang($cookieLanguage, $constant);
-			}
-			else {
-				$this->use_lang($language, $constant);
-			}
-//		}
-//		else {
-//			$this->use_lang($language, $constant);
-//		}
-		
+		if( $getLanguage ) {
+			$this->use_lang($getLanguage, $constant);
+		}
+		elseif ( $cookieLanguage ) {
+			$this->use_lang($cookieLanguage, $constant);
+		}
+		else {
+			$this->use_lang($language, $constant);
+		}
 	}
 	
 	public function doTemplateVar(&$item, $constant='') {
@@ -86,20 +80,15 @@ class NP_Text extends NucleusPlugin {
 		$getLanguage = isset($_GET['lang']) ? getVar('lang') : false;
 		$cookieLanguage = isset($_COOKIE['NP_Text']) ? cookieVar('NP_Text') : false;
 		
-//		if( !$member->isLoggedIn() ) {
-			if( $getLanguage ) {
-				$this->use_lang($getLanguage, $constant);
-			}
-			elseif( $cookieLanguage ) {
-				$this->use_lang($cookieLanguage, $constant);
-			}
-			else {
-				$this->use_lang($language, $constant);
-			}
-//		}
-//		else {
-//			$this->use_lang($language, $constant);
-//		}
+		if( $getLanguage ) {
+			$this->use_lang($getLanguage, $constant);
+		}
+		elseif( $cookieLanguage ) {
+			$this->use_lang($cookieLanguage, $constant);
+		}
+		else {
+			$this->use_lang($language, $constant);
+		}
 	}
 	
 	public function use_lang($language, $constant) {
@@ -107,7 +96,7 @@ class NP_Text extends NucleusPlugin {
 		
 		$filename = '';
 		
-		if( $this->incModePref[0] == "normal" ) {
+		if ( $this->incModePref[0] == "normal" ) {
 			$filename = $filename.$this->incModePref[1];
 			$filename = $filename."language/";
 			$filename = $filename.$language;
@@ -120,27 +109,27 @@ class NP_Text extends NucleusPlugin {
 			$filename = $filename.".php";
 		}
 		
-		if( is_file($filename) ) {
+		if ( is_file($filename) ) {
 			include($filename);
 		} else {
 			addToLog(1, "NP_Text cannot find ".$filename);
 		}
 		
-		if( defined($this->constantPrefix.$constant) ) {
+		if ( defined($this->constantPrefix.$constant) ) {
 			echo constant($this->constantPrefix.$constant);
 		} else {
 			echo $this->constantPrefix.$constant;
 			if( is_file($filename) ) {
 				addToLog(1, "NP_Text cannot find definition for ".$this->constantPrefix.$constant." in ".$filename);
 			}
-		}			
+		}
 	}
 	
 	public function skin_incmodepref() {
 		global $currentSkinName;
 		$sql = sprintf("SELECT * FROM %s WHERE sdname = %s", sql_table("skin_desc"), sql_quote_string($currentSkinName));
 		$result = sql_query($sql);
-		$row = sql_fetch_array($result, MYSQL_ASSOC);
+		$row = sql_fetch_assoc($result);
 		return array($row['sdincmode'], $row['sdincpref']);
 	}
 }

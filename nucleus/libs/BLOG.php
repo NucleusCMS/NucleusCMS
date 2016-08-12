@@ -959,7 +959,8 @@ class BLOG {
                . ' WHERE bnumber=' . $this->blogid;
         $res = sql_query($query);
 
-        $this->isValid = ($res && ( $this->settings = sql_fetch_assoc($res) ) && !empty($this->settings) ); // PHP(-5.4) Parse error: empty($var = "")  syntax error
+        $this->settings = ( $res ? sql_fetch_assoc($res) : array() );
+        $this->isValid = !empty($this->settings);
         if (!$this->isValid)
             $this->settings = array();
     }

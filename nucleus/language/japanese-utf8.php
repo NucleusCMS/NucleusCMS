@@ -26,7 +26,7 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese'
  ********************************************/
 
 /********************************************
- *        Start New for 3.72                *
+ *        Start New for 3.80                *
  ********************************************/
 define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPI_%s または SqlApi_SQL92 をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
 
@@ -41,7 +41,7 @@ define('_DEFAULT_DATE_FORMAT_Y',           '%Y年');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
-define('_ADMIN_SYSTEMOVERVIEW_CORE__DB_VERSION', 'コア のデータベースバージョン');
+define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'コア のデータベースバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    '重要な設定');
 
 define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージョン');
