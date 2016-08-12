@@ -14,7 +14,7 @@
  *
  */
 
-define('NUCLEUS_UPGRADE_VERSION_ID' , 372);
+define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
 
 include('upgrade.functions.php');
 
@@ -52,7 +52,7 @@ $echo[] = '</div>';
     elseif (!upgrade_checkinstall(360)) $current = 350;
     elseif (!upgrade_checkinstall(370)) $current = 360;
     elseif (!upgrade_checkinstall(371)) $current = 370;
-    elseif (!upgrade_checkinstall(372)) $current = 371;
+    elseif (!upgrade_checkinstall(380)) $current = 371;
     else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
 
 if (version_compare(phpversion(),'5.0.0','<'))

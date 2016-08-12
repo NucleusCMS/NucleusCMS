@@ -10,25 +10,6 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-function upgrade_do372() {
-
-	if (upgrade_checkinstall(372))
-		return 'already installed';
-
-    if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
-    {
-        $query = sprintf("ALTER TABLE `%s`
-                         ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';
-                         ", sql_table( 'blog' ));
-
-        upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
-    }
-
-	// 3.71 -> 3.72
-	// update database version
-	update_version('372');
-}
-
 function upgrade_do371() {
 
     if (upgrade_checkinstall(371))

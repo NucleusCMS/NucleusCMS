@@ -38,7 +38,7 @@
         $installed = 0;
         global $DB_DRIVER_NAME;
 
-        if ($DB_DRIVER_NAME == 'sqlite' && $version<=372)  return TRUE;
+        if ($DB_DRIVER_NAME == 'sqlite' && $version<=380)  return TRUE;
 
         switch($version) {
             case '95':
@@ -75,7 +75,7 @@
                 $query = sprintf('SELECT bincludesearch FROM %s LIMIT 1', sql_table('blog'));
                 $minrows = -1;
                 break;
-            default:  // 250 - 372
+            default:  // 250 - 380
                 $query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%d LIMIT 1", sql_table('config'), intval($version));
                 $minrows = 1;
                 break;

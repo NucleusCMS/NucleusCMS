@@ -30,7 +30,7 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english')
  ********************************************/
 
 /********************************************
- *        Start New for 3.72                *
+ *        Start New for 3.80                *
  ********************************************/
 define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "Plugin %s was not loaded (does not support SqlApi_%s or SqlApi_SQL92. Please upgrade to the latest version of the plug-ins that support this feature.)");
 
