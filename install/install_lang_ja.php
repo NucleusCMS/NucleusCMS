@@ -10,6 +10,21 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+/*  New for 3.72 */
+define('_INSTALL_TEXT_DATABASE_SELECT' ,     'データベースの選択');
+define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',	 'データベースのログイン情報');
+
+define('_INSTALL_TEXT_DATABASE_EXSIT',       'すでにデータベースがあります');
+define('_INSTALL_TEXT_SETTINGS_NOEXSIT',	 '../settingsフォルダがありません');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1',	'../config.php がすでにあります。');
+define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'セキュリティ上の理由で、存在する場合は、インストールできません。');
+
+define('_INSTALL_TEXT_VERSION',	      'バージョン');
+define('_INSTALL_TEXT_SELECT_TEXT',	  'テキストを選択する');
+define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的, テスト中, 対応していないプラグインは使用できません');
+
+define('_INST_CONF_ERROR1' , '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。');
+
 /*  New for 3.71 */
 define('_HEADER_LANG_SELECT',			 '表示言語');
 define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 '表示言語の選択');
@@ -24,7 +39,7 @@ define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');
 define('_TEXT1_2_TAB_FIELD1',	'キャラクタセット');
 
 define('_ERROR1',				'使用中のPHPはMySQLをサポートしていません :(');
-define('_ERROR2',				'データベース名が見つかりません');
+define('_ERROR_NO_DBNAME',		'データベース名が見つかりません');
 define('_ERROR3',				'｢データベースプリフィックスを使用する｣が選択されていますが、プリフィックスが設定されていません。');
 define('_ERROR4',				'プリフィックスに使用できる文字は A-Z、a-z、0-9 と _(アンダーバー)のみです。');
 define('_ERROR5',				'URLのいづれかが｢/(スラッシュ)｣で終わっていないか、または機能決定ファイルのURLが｢action.php｣で終わっていません。');
@@ -34,6 +49,7 @@ define('_ERROR8',				'テーマファイルのディレクトリパスが｢/(�
 define('_ERROR9',				'管理エリアのディレクトリパスがサーバ上に存在しません。');
 define('_ERROR9_2',				'<tt>action.php</tt>ファイルへのURLが別のサーバを指しています。');
 define('_ERROR9_3',				'<tt>action.php</tt>ファイルへのURLにファイルが存在しません。');
+
 define('_ERROR10',				'メールアドレスが不正です。');
 define('_ERROR11',				'｢表示される名前｣に使用できない文字が含まれています。(使用できる文字：a-z と 0-9、最初と最後以外の空白)');
 define('_ERROR12',				'パスワードが入力されていません。');
@@ -67,18 +83,18 @@ define('_TITLE3',				'インストールはほぼ完了しました！');
 define('_TITLE4',				'インストールは完了しました！');
 define('_TITLE5',				'スパムとの戦い');
 
-define('_HEADER1',				'Nucleusのインストール');
+define('_HEADER1',				'本体のインストール');
 define('_TEXT1',				'<p>MySQLテーブルのセットアップと、config.php に入力するための情報を表示します（config.phpのパーミッションを0666にしておけば、後者の作業は自動的に行われます）。これをなす為に、いくつかの情報を入力する必要があります。</p><p>すべての欄の入力が必要です。オプション情報は、インストールが完了後Nucleusの管理領域から設定可能です。</p>');
 
 define('_HEADER2',				'PHP と MySQL のバージョン');
 define('_TEXT2',				'<p>以下はあなたのウェブホストにおけるPHPとMySQLサーバーのバージョンです。Nucleusのサポートフォーラムに問題を報告する時は、この情報を書き添えてください。</p>');
 define('_TEXT2_WARN1',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
-define('_TEXT2_WARN2',			'警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。インストール作業を中止します。PHP5以上が使えないかどうか、サーバ管理者に確認して下さい。');
+define('_TEXT2_WARN2',			'情報: 動作に次のバージョン以降のMySQLが必要です。');
+define('_TEXT2_WARN3',			'警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。インストール作業を中止します。PHP5以上が使えないかどうか、サーバ管理者に確認して下さい。');
 
 define('_HEADER3',				'config.phpの自動設定');
 define('_TEXT3',				'<strong style="color:red;">config.phpへの書き込みができません。</strong>config.phpのパーミッションを<strong>666</strong>にしておけば、スクリプトが自動で設定情報を書き込みます。ただし、Nucleusのインストール完了後、<strong><em style="font-color:#f00;">必ず</em></strong>パーミッションを<strong>444</strong>に変更してください(<a href="../nucleus/documentation/tips.html#filepermissions">パーミッション変更の簡易ガイド</a>)。</p>');
 
-define('_HEADER4',				'MySQLのログイン情報');
 define('_TEXT4',				'<p>データベースのログイン情報を入力してください。この情報が分からない場合は、システム管理者かホスティング元に確認をとってください。ほとんどの場合、ホスト名は｢localhost｣です。もしNucleusがあなたのサーバのPHP設定から｢default MySQL host｣を検出していれば｢ホスト名｣に既に記入されているはずですが、この情報が正確であるという保証はありません。</p>');
 define('_TEXT4_TAB_HEAD',		'基本のデータベース設定');
 define('_TEXT4_TAB_FIELD1',		'ホスト名');
@@ -146,7 +162,7 @@ define('_TEXT15',				'<p>ウェブサーバから /install/ ディレクトリ�
 define('_TEXT15_L1',			'<b>install/install.sql</b>：テーブルの構造を内包するファイル');
 define('_TEXT15_L2',			'<b>install/index.php</b>：このファイル');
 //define('_TEXT15_L3',			'<b>install_lang_japanese.php</b>：インストーラの言語ファイル');
-define('_TEXT15_L3',			'<b>install/install_lang_japanese.php</b>：インストーラの言語ファイル');
+define('_TEXT15_L3',			'<b>install/install_lang_*.php</b>：インストーラの言語ファイル');
 define('_TEXT15_L4',			'<b>install/*</b>：インストーラの入っているフォルダ');
 define('_TEXT16',			'<p>もしこのディレクトリを削除していなければ、管理領域を開くことができません。</p>');
 
@@ -162,51 +178,7 @@ define('_BUTTON1',				'インストールを実行する');
 // General category
 define('_GENERALCAT_NAME',		'総合');
 define('_GENERALCAT_DESC',		'投稿した記事に合うカテゴリが無い時にこのカテゴリを使用すると良いでしょう');
-define('_1ST_POST_TITLE',		'Nucleus CMS バージョン3.71へようこそ');
-define('_1ST_POST',				'ウェブサイトの作成を補助する積み木がここにあります。それは心躍るブログになるかもしれませんし、見る人を和ませる家族のサイトになるかもしれませんし、実り多い趣味のサイトになるかもしれません。あるいは現在のあなたには想像がつかないものになることだってあるでしょう。<br />
-<br />用途が思いつきませんでしたか？ それならここへ来て正解です。なぜならあなた同様私たちにもわからないのですから。');
-define('_1ST_POST2',			'これはサイトにおける最初のエントリーです。スタートを切りやすいように、リンクと情報を入れておきました。<br />
-<br />
-この記事を削除することもできますが、どちらにせよ記事を追加していくことによってやがてメインページからは見えなくなります。Nucleusを扱ううちに生じたメモをコメントとして追加し、将来アクセスできるようにこのページをブックマークしておくのも手です。<br />
-<br />
-<b>リンク</b><br />
-<br />
-Nucleus CMSの<a href="http://japan.nucleuscms.org">日本語ページ japan.nucleuscms.org</a>
-<br />
-Nucleus CMSの<a href="http://nucleuscms.org">本家</a> ページ。<br />
-<br />
-Nucleus CMSのSourceForge<a href="http://sourceforge.net/projects/nucleuscms/">プロジェクト</a>（<a href="http://sourceforge.jp/projects/nucleus-jp/">日本版</a>）ページ。<br />
-<br />
-Nucleus CMSの<a href="http://wakka.xiffy.nl/Plugin/">プラグイン倉庫</a>と<a href="http://japan.nucleuscms.org/wiki/plugins">日本語のリスト</a>ページ。<br />
-<br />
-<b>ドキュメント - <a href="http://docs.nucleuscms.org/">docs.nucleuscms.org</a></b><br />
-<br />
-Nucleusの<a href="http://japan.nucleuscms.org/faq.php">FAQ（よくある質問集）</a>（<a href="http://nucleuscms.org/faq.php">原文</a>）ページ。<br />
-<br />
-インストール方法等は<a href="nucleus/documentation/">ユーザー向け</a>と<a href="nucleus/documentation/devdocs/">開発者向け</a>文書がファイルに含まれています。<br />
-<br />
-ポップアップ<a href="./nucleus/documentation/help.html">ヘルプ</a>が管理エリアのいたるところにあり、サイトのカスタマイズやデザインを手助けしてくれることでしょう。<br />
-<br />
-一度用意されているドキュメントに目を通したら、<a href="http://wiki.nucleuscms.org/">Wiki</a>（<a href="http://japan.nucleuscms.org/wiki/">日本版</a>）を訪れてください。ユーザーの書いたハウツーや小技が掲載されています。<br />
-<br />
-<b>サポート</b><br />
-<br />
-<a href="http://japan.nucleuscms.org/forum/">japan.nucleuscms.org/forum/</a>（日本版）<br />
-<a href="http://forum.nucleuscms.org/">forum.nucleuscms.org</a>（本家）<br />
-<br />
-<a href="http://forum.nucleuscms.org/groupcp.php?g=3">moderators</a>とサポートフォーラムで活動する全てのボランティアに感謝します。<br />
-<br />
-もし手助けが必要なら、私たちのフォーラムに参加してください。投稿された記事を検索できるようになっておりますので、求める答えに数回のクリックでたどり着けるかもしれません。<br />
-<br />
-<b>Personalization - <a href="http://skins.nucleuscms.org/">skins.nucleuscms.org</a></b><br />
-<br />
-マルチウェブログとスキン/テンプレートの組み合わせは強力な相乗効果を生み出します。個人的なサイト作成、友人や親戚あるいはクライアントに対するサイトデザインいずれに対してもです。<br />
-<br />
-登録されたサイト一覧ページを訪れることで特色あるサイトを見つけることができるかもしれません。<br />
-<a href="http://nucleuscms.org/sites.php">Nucleusで運用されているサイト</a>（<a href="http://japan.nucleuscms.org/sites.php">日本版</a>）。<br />
-<br />
-<br />
-<b>ライセンス</b><br />
-<br />
-私達が用いる「フリー・ソフトウェア」という言葉の「フリー」は価格ではなく<a href="https://www.google.co.jp/search?q=FSF+%E8%87%AA%E7%94%B1%E3%81%AA%E3%82%BD%E3%83%95%E3%83%88%E3%82%A6%E3%82%A7%E3%82%A2">「自由」</a>を意味します。私たちの<a href="http://www.gnu.org/licenses/gpl.html">GNU General Public Licenses(一般公有使用許諾書)</a>（<a href="http://www.gnu.org/licenses/gpl.ja.html">日本語訳(参考)</a>と<a href="http://www.atmarkit.co.jp/aig/03linux/gpl.html">概要</a>）は、フリー・ソフトウェアの複製物を自由に頒布できること(そして、望むならこのサービスに対して対価を請求できること)、ソース・コードを実際に受け取るか希望しさえすれば入手することが可能であること、入手したソフトウェアを変更したり新しいフリー・プログラムの一部として使用できること、以上の各内容を行なうことができるということをユーザ自身が知っていることを実現できるようにデザインされています。');
+define('_1ST_POST_TITLE',		'Nucleus CMS バージョン%sへようこそ');
+define('_1ST_POST',				'これは、最初のページです。そのまま内容を編集して使うことができます。');
+define('_1ST_POST2',			'');
 
