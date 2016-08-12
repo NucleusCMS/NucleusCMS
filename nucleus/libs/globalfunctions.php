@@ -141,15 +141,26 @@ if (!headers_sent() ) {
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
-// include core classes that are needed for login & plugin handling
-if (!function_exists('mysql_query'))
-    include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
-else
-    define('_EXT_MYSQL_EMULATE' , 0);
-
 global $DB_PHP_MODULE_NAME;
-include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
+if ($DB_PHP_MODULE_NAME != 'pdo')
+{
+    // include core classes that are needed for login & plugin handling
+    if (!function_exists('mysql_query'))
+        include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+    else
+    {
+        if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
+            define('_EXT_MYSQL_EMULATE' , 0);
+    }
+}
+else
+{
+    // Todo: mysql wrapper for pdo? or deprecate mysql_* functions
+    if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
+        define('_EXT_MYSQL_EMULATE' , 0);
+}
 
+include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
 include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
@@ -638,7 +649,7 @@ function getLatestVersion() {
 function sql_table($name) {
     global $DB_PREFIX;
 
-    if ($DB_PREFIX) {
+    if (strlen($DB_PREFIX) > 0) {
         return $DB_PREFIX . 'nucleus_' . $name;
     } else {
         return 'nucleus_' . $name;
