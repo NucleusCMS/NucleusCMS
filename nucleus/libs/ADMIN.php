@@ -2052,19 +2052,24 @@ class ADMIN {
                 <select name="deflang" tabindex="85">
                     <option value=""><?php echo _MEMBERS_USESITELANG?></option>
                 <?php               // show a dropdown list of all available languages
-                global $DIR_LANG;
+                global $DIR_LANG, $DB_DRIVER_NAME;
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle))
                 {
-                    if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+                    $sub_pattern = ($DB_DRIVER_NAME == 'mysql' ?  '((.*))' : '((.*)-utf8)');
+                    if ( preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches) )
                     {
-                        $name = $matches[1];
-                        echo "<option value=\"$name\"";
-                        if ($name == $mem->getLanguage() )
+                        $name = $matches[2];
+                        $s_fullname = $matches[1];
+                        $s_displaytext = hsc($name);
+//                        if (!check_abalable_language_name($name))
+//                          continue;
+                        echo sprintf('<option value="%s"' , hsc($s_fullname));
+                        if ( $s_fullname == $mem->getLanguage() )
                         {
                             echo " selected=\"selected\"";
                         }
-                        echo ">$name</option>";
+                        echo sprintf(">%s</option>", $s_displaytext);
                     }
                 }
                 closedir($dirhandle);
@@ -5107,19 +5112,24 @@ selector();
 
                 <select name="Language" tabindex="10050">
                 <?php               // show a dropdown list of all available languages
-                global $DIR_LANG;
+                global $DIR_LANG, $DB_DRIVER_NAME;
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle) )
                 {
-                    if (preg_match('#^(.*)\.php$#', $filename, $matches) )
+                    $sub_pattern = ($DB_DRIVER_NAME == 'mysql' ?  '((.*))' : '((.*)-utf8)');
+                    if ( preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches) )
                     {
-                        $name = $matches[1];
-                        echo "<option value=\"$name\"";
-                        if ($name == $CONF['Language'])
+                        $name = $matches[2];
+                        $s_fullname = $matches[1];
+                        $s_displaytext = hsc($name);
+//                        if (!check_abalable_language_name($name))
+//                          continue;
+                        echo sprintf('<option value="%s"' , hsc($s_fullname));
+                        if ($s_fullname == $CONF['Language'])
                         {
                             echo " selected=\"selected\"";
                         }
-                        echo ">$name</option>";
+                        echo sprintf(">%s</option>", $s_displaytext);
                     }
                 }
                 closedir($dirhandle);
