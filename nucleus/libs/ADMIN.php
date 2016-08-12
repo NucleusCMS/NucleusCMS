@@ -5477,18 +5477,38 @@ selector();
             echo "<table>\n";
             echo "\t<tr>\n";
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
-            $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $mqg . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
-            $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $mqr . "</td>\n";
-            echo "\t</tr><tr>\n";
-            echo "\t\t" . '<td>register_globals' . "</td>\n";
-            $rg = ini_get('register_globals') ? 'On' : 'Off';
-            echo "\t\t" . '<td>' . $rg . "</td>\n";
+            echo "\t</tr>\n";
+
+            if (version_compare(PHP_VERSION, '5.3.0', '<'))
+            {
+                echo "<tr>\n";
+                echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
+                $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $mqg . "</td>\n";
+                echo "\t</tr><tr>\n";
+                echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
+                $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $mqr . "</td>\n";
+                echo "\t</tr>\n";
+            }
+            if (version_compare(PHP_VERSION, '5.4.0', '<'))
+            {
+                echo "<tr>\n";
+                echo "\t\t" . '<td width="50%">register_globals' . "</td>\n";
+                $rg = ini_get('register_globals') ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $rg . "</td>\n";
+                echo "\t</tr>";
+            }
+            echo "<tr>\n";
+            echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
+            $rg = ini_get('default_charset');
+            echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
+            echo "\t</tr>";
+
+            echo "<tr>\n";
+            echo "\t\t" . '<td>date.timezone' . "</td>\n";
+            $rg = ini_get('date.timezone');
+            echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
             echo "\t</tr>";
             echo "</table>\n";
 
