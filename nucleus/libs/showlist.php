@@ -614,7 +614,7 @@ function listplug_table_templatelist($template, $type) {
 }
 
 function listplug_table_skinlist($template, $type) {
-    global $CONF, $DIR_SKINS, $manager, $MYSQL_HANDLER;
+    global $CONF, $DIR_SKINS, $manager, $DB_DRIVER_NAME;
     switch($type) {
         case 'HEAD':
             echo "<th>"._LISTS_NAME."</th><th>"._LISTS_DESC."</th><th colspan='3'>"._LISTS_ACTIONS."</th>";
@@ -666,7 +666,7 @@ function listplug_table_skinlist($template, $type) {
 
             echo '<td class="availableSkinTypes">' . hsc($current->sddesc);
                 // show list of defined parts
-                if (in_array('mysql', $MYSQL_HANDLER))
+                if ( 'mysql' == $DB_DRIVER_NAME )
                     $order = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
                 else
                 {

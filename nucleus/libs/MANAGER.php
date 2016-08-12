@@ -346,8 +346,8 @@ class MANAGER
         }
 
                 // unload plugin if a prefix is used and the plugin cannot handle this^
-                global $MYSQL_PREFIX;
-                if (($MYSQL_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
+                global $DB_PREFIX;
+                if (($DB_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
                 {
                     unset($this->plugins[$name]);
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
@@ -355,8 +355,8 @@ class MANAGER
                 }
 
                 // unload plugin if using non-mysql handler and plugin does not support it 
-                global $MYSQL_HANDLER;
-                if ((!in_array('mysql',$MYSQL_HANDLER)) && !$this->plugins[$name]->supportsFeature('SqlApi'))
+                global $DB_DRIVER_NAME;
+                if (('mysql' != $DB_DRIVER_NAME) && !$this->plugins[$name]->supportsFeature('SqlApi'))
                 {
                     unset($this->plugins[$name]);
                     ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));

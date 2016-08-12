@@ -259,9 +259,9 @@ class SKIN {
      * @param $type type of the skin (e.g. index, item, search ...)
      */
     function getContent($type) {
-        global $MYSQL_HANDLER;
+        global $DB_DRIVER_NAME;
         if(strpos($type, '/')!==false) return '';
-        if (in_array('mysql' , $MYSQL_HANDLER ) !== false)
+        if ( 'mysql' == $DB_DRIVER_NAME )
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         else
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
