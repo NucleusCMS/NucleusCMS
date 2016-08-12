@@ -147,18 +147,14 @@ if (!function_exists('mysql_query'))
 else
     define('_EXT_MYSQL_EMULATE' , 0);
 
-// added for 3.5 sql_* wrapper
-global $MYSQL_HANDLER;
-if (!isset($MYSQL_HANDLER))
-    $MYSQL_HANDLER = array('mysql','');
-if ($MYSQL_HANDLER[0] == '')
-    $MYSQL_HANDLER[0] = 'mysql';
-include_once($DIR_LIBS . 'sql/'.$MYSQL_HANDLER[0].'.php');
-// end new for 3.5 sql_* wrapper
+global $DB_PHP_MODULE_NAME;
+include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
+
 include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
 include_once($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'Utils.php');
 
 $manager =& MANAGER::instance();
 
@@ -640,10 +636,10 @@ function getLatestVersion() {
  * returns a prefixed nucleus table name
  */
 function sql_table($name) {
-    global $MYSQL_PREFIX;
+    global $DB_PREFIX;
 
-    if ($MYSQL_PREFIX) {
-        return $MYSQL_PREFIX . 'nucleus_' . $name;
+    if ($DB_PREFIX) {
+        return $DB_PREFIX . 'nucleus_' . $name;
     } else {
         return 'nucleus_' . $name;
     }
@@ -2720,7 +2716,7 @@ function init_nucleus_compatibility_mysql_handler()
 
     global $DB_PREFIX , $MYSQL_PREFIX;
     if ( !isset($DB_PREFIX) || !is_string($DB_PREFIX) )
-        $DB_PREFIX = !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '';
+        $DB_PREFIX = (isset($MYSQL_PREFIX) && !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '');
 
     global $DB_HOST , $MYSQL_HOST;
     if ( !isset($DB_HOST) || !is_string($DB_HOST) )
@@ -2738,7 +2734,7 @@ function init_nucleus_compatibility_mysql_handler()
     if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) )
         $DB_DATABASE = !empty($MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
 
-    $MYSQL_PREFIX   = @$MYSQL_PREFIX;
+    $MYSQL_PREFIX   = @$DB_PREFIX;
     $MYSQL_HOST     = @$DB_HOST;
     $MYSQL_USER     = @$DB_USER;
     $MYSQL_PASSWORD = @$DB_PASSWORD;

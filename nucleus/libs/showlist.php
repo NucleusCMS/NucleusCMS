@@ -666,9 +666,6 @@ function listplug_table_skinlist($template, $type) {
 
             echo '<td class="availableSkinTypes">' . hsc($current->sddesc);
                 // show list of defined parts
-                $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber
-                    . " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC"
-                     );
                 if (in_array('mysql', $MYSQL_HANDLER))
                     $order = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
                 else

@@ -800,25 +800,28 @@ function doInstall() {
     if (!function_exists('mb_convert_encoding') && $charset != 'latin1')
         $charset = 'utf8';
 
-    switch ($charset)
+    if (!defined('_CHARSET'))
+        define('_CHARSET', 'UTF-8');
+
+    $install_db_charset = $charset;
+    switch ($install_db_charset)
     {
-        case 'latin1': if(!defined('_CHARSET')) define('_CHARSET', 'iso-8859-1');
+        case 'latin1':
             define('_CHARSET_INSTALL', 'iso-8859-1');
             break;
         case 'ujis':
             if (ENABLE_INSTALL_LANG_EUCJP) {
-                if(!defined('_CHARSET')) define('_CHARSET', 'EUC-JP');
                 define('_CHARSET_INSTALL', 'EUC-JP');
             } else {
-                if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
-                $charset = 'utf8';
+                $install_db_charset = 'utf8';
+                define('_CHARSET_INSTALL', 'UTF-8');
             }
             break;
         default :
-            if(!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
             $charset = 'utf8';
             define('_CHARSET_INSTALL', 'UTF-8');
     }
+    $charset = 'utf8';
 
 	// TODO: add action.php check
 	if (!endsWithSlash($config_indexurl) || !endsWithSlash($config_adminurl) || !endsWithSlash($config_mediaurl) || !endsWithSlash($config_pluginurl) || !endsWithSlash($config_skinsurl) ) {
@@ -934,7 +937,7 @@ function doInstall() {
 	if ($is_install_mysql)
 {
 	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	switch(strtolower($charset))
+	switch(strtolower($install_db_charset))
 	{
 		case 'ujis':
 			$collation = 'ujis_japanese_ci';
@@ -951,7 +954,7 @@ function doInstall() {
 		$sql = "CREATE DATABASE `{$mysql_database}`";
 		
 	if (version_compare($mySqlVer, '4.1.0', '>='))
-		$sql .= " DEFAULT CHARACTER SET {$charset} COLLATE {$collation}";
+		$sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
 	
 		sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
 	}
@@ -1043,7 +1046,7 @@ function doInstall() {
 			if ($is_install_mysql)
 			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && version_compare($mySqlVer, '4.1.0', '>='))
 			{
-				$query .= " DEFAULT CHARACTER SET {$charset} COLLATE {$collation}";
+				$query .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
 			}
 			
 			sql_query($query) or _doError(_ERROR30 . ' (' . htmlspecialchars($query,ENT_QUOTES,_CHARSET) . '): ' . sql_error() );
@@ -1079,14 +1082,14 @@ function doInstall() {
 	updateConfig('SiteName',   $config_sitename);
 
     $install_lang_defs = get_install_lang_defs();
-    if ($charset == 'utf8') {
+    if ($install_db_charset == 'utf8') {
         if (isset($install_lang_defs[$lang]['utf8']))
             updateConfig('Language', $install_lang_defs[$lang]['utf8']);
         else
             updateConfig('Language', $install_lang_defs[$lang]['name']);
-	} else if ($charset == 'latin1') {
+	} else if ($install_db_charset == 'latin1') {
 			updateConfig('Language',   'english');
-	} else if ($charset == 'ujis') {
+	} else if ($install_db_charset == 'ujis') {
 			updateConfig('Language',   'japanese-euc');
 	} else {
 			updateConfig('Language',   'english-utf8');
@@ -1447,7 +1450,7 @@ function installCustomSkins(&$manager) {
 
 	$importer = new SKINIMPORT();
 
-	foreach ($aConfSkinsToImport as $skinName) {
+    foreach ($aConfSkinsToImport as $skinName) {
 		$importer->reset();
 		$skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
 //      Todo: localize skin file

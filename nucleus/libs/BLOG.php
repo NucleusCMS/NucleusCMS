@@ -966,7 +966,7 @@ class BLOG {
       *     category id
       */
     function isValidCategory($catid) {
-        global $manager, $MYSQL_HANDLER;
+        global $manager;
         $query = 'SELECT count(*) as result FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' AND catid=' . intval($catid)
                 .' LIMIT 1';
         $manager->initSqlCacheInfo('sql_fetch_object',$query);
