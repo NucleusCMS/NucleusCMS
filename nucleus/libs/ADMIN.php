@@ -4206,21 +4206,23 @@ selector();
             </td>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_ITEMS?> <?php help('templateitems'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);
-    $this->_templateEditRow($template, _TEMPLATE_ITEMBODY, 'ITEM', '', 9, 1);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);
+    $this->_templateEditRow($template, _TEMPLATE_ITEMBODY,   'ITEM', '', 9, 1);
     $this->_templateEditRow($template, _TEMPLATE_ITEMFOOTER, 'ITEM_FOOTER', '', 10);
-    $this->_templateEditRow($template, _TEMPLATE_MORELINK, 'MORELINK', 'morelink', 20);
-    $this->_templateEditRow($template, _TEMPLATE_EDITLINK, 'EDITLINK', 'editlink', 25);
-    $this->_templateEditRow($template, _TEMPLATE_NEW, 'NEW', 'new', 30);
+    $this->_templateEditRow($template, _TEMPLATE_MORELINK,   'MORELINK', 'morelink', 20);
+    $this->_templateEditRow($template, _TEMPLATE_EDITLINK,   'EDITLINK', 'editlink', 25);
+    $this->_templateEditRow($template, _TEMPLATE_NEW,        'NEW', 'new', 30);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_COMMENTS_ANY?> <?php help('templatecomments'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);
-    $this->_templateEditRow($template, _TEMPLATE_CBODY, 'COMMENTS_BODY', 'commentbody', 50, 1);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);
+    $this->_templateEditRow($template, _TEMPLATE_CBODY,   'COMMENTS_BODY', 'commentbody', 50, 1);
     $this->_templateEditRow($template, _TEMPLATE_CFOOTER, 'COMMENTS_FOOTER', 'commentheaders', 60);
-    $this->_templateEditRow($template, _TEMPLATE_CONE, 'COMMENTS_ONE', 'commentwords', 70);
-    $this->_templateEditRow($template, _TEMPLATE_CMANY, 'COMMENTS_MANY', 'commentwords', 80);
-    $this->_templateEditRow($template, _TEMPLATE_CMORE, 'COMMENTS_CONTINUED', 'commentcontinued', 90);
+    $this->_templateEditRow($template, _TEMPLATE_CONE,    'COMMENTS_ONE', 'commentwords', 70);
+    $this->_templateEditRow($template, _TEMPLATE_CMANY,   'COMMENTS_MANY', 'commentwords', 80);
+    $this->_templateEditRow($template, _TEMPLATE_CMORE,   'COMMENTS_CONTINUED', 'commentcontinued', 90);
     $this->_templateEditRow($template, _TEMPLATE_CMEXTRA, 'COMMENTS_AUTH', 'memberextra', 100);
 ?>
         </tr><tr>
@@ -4230,44 +4232,51 @@ selector();
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_COMMENTS_TOOMUCH?> <?php help('templatecomments'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_CTOOMUCH, 'COMMENTS_TOOMUCH', '', 120);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_ARCHIVELIST?> <?php help('templatearchivelists'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);
-    $this->_templateEditRow($template, _TEMPLATE_AITEM, 'ARCHIVELIST_LISTITEM', '', 140);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);
+    $this->_templateEditRow($template, _TEMPLATE_AITEM,   'ARCHIVELIST_LISTITEM', '', 140);
     $this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_BLOGLIST?> <?php help('templatebloglists'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
-    $this->_templateEditRow($template, _TEMPLATE_BLOGITEM, 'BLOGLIST_LISTITEM', '', 170);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
+    $this->_templateEditRow($template, _TEMPLATE_BLOGITEM,   'BLOGLIST_LISTITEM', '', 170);
     $this->_templateEditRow($template, _TEMPLATE_BLOGFOOTER, 'BLOGLIST_FOOTER', '', 180);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST?> <?php help('templatecategorylists'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
-    $this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 200);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
+    $this->_templateEditRow($template, _TEMPLATE_CATITEM,   'CATLIST_LISTITEM', '', 200);
     $this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 210);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_DATETIME?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_DHEADER, 'DATE_HEADER', 'dateheads', 220);
     $this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 230);
     $this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 240);
     $this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 250);
-    $this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 260);
+    $this->_templateEditRow($template, _TEMPLATE_LOCALE,  'LOCALE', 'locale', 260);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_IMAGE?> <?php help('templatepopups'); ?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_PCODE, 'POPUP_CODE', '', 270);
     $this->_templateEditRow($template, _TEMPLATE_ICODE, 'IMAGE_CODE', '', 280);
     $this->_templateEditRow($template, _TEMPLATE_MCODE, 'MEDIA_CODE', '', 290);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_SEARCH?></th>
-<?php    $this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
-    $this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound',310);
+<?php
+    $this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight',300);
+    $this->_templateEditRow($template, _TEMPLATE_SNOTFOUND,  'SEARCH_NOTHINGFOUND', 'nothingfound',310);
 ?>
         </tr><tr>
             <th colspan="2"><?php echo _TEMPLATE_PLUGIN_FIELDS?></th>
