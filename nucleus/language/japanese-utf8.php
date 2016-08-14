@@ -28,6 +28,27 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese'
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'データベースの最適化/修復');
+define('_ADMIN_TITLE_OPTIMIZE',      '最適化');
+define('_ADMIN_TITLE_REPAIR',        '修復');
+define('_ADMIN_FILESIZE',            'ファイルサイズ');
+define('_ADMIN_NEW',                 '新しい');
+define('_ADMIN_OLD',                 '古い');
+define('_ADMIN_TABLENAME',           'テーブル名');
+define('_ADMIN_CONFIRM_TITLE_OPTIMIZE',    'テーブルの最適化をしますか');
+define('_ADMIN_CONFIRM_TITLE_AUTO_REPAIR', 'テーブルの自動修復をしますか');
+define('_ADMIN_EXEC_TITLE_AUTO_REPAIR',    'テーブルの自動修復をしました');
+define('_ADMIN_EXEC_TITLE_OPTIMIZE',       'テーブルの最適化をしました');
+define('_ADMIN_BTN_TITLE_AUTO_REPAIR',     '修復をする');
+define('_ADMIN_BTN_TITLE_OPTIMIZE',        '最適化をする');
+define('_ADMIN_PLEASE_OPTIMIZE',           '最適化をしてください');
+
+define('_PROBLEMS_FOUND_ON_TABLE',   'テーブルに問題がみつかりました');
+define('_NO_PROBLEMS_FOUND',         '問題は見つかりませんでした');
+define('_NOT_IMPLEMENTED_YET',       'まだ実装されていません');
+define('_SIZE',                      'サイズ');
+define('_OVERHEAD',                  'オーバーヘッド');
+
 define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPI_%s または SqlApi_SQL92 をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
 
 define('_DEFAULT_DATE_FORMAT_YMD',         '%Y年%m月%d日');
