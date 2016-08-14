@@ -290,7 +290,7 @@ class MANAGER
                     if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
                         define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
                     }
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
+                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
                     return 0;
                 }
 
@@ -303,7 +303,7 @@ class MANAGER
                     if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
                         define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
                     }
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
+                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
                     return 0;
                 }
 
@@ -348,7 +348,7 @@ class MANAGER
                 if (($DB_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
                 {
                     unset($this->plugins[$name]);
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
+                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
                     return 0;
                 }
 
@@ -365,7 +365,7 @@ class MANAGER
                     if (!$this->plugins[$name]->supportsFeature('SqlApi'))
                     {
                         unset($this->plugins[$name]);
-                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+                        ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
                         return 0;
                     }
 //                         DB       Standard SQL
@@ -380,7 +380,7 @@ class MANAGER
                         )
                     {
                         unset($this->plugins[$name]);
-                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
+                        ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
                         return 0;
                     }
                 } // end : plugin uses DB query
