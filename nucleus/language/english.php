@@ -30,8 +30,29 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english')
  ********************************************/
 
 /********************************************
- *        Start New for 3.72                *
+ *        Start New for 3.80                *
  ********************************************/
+define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'Database Optimization/Repair');
+define('_ADMIN_TITLE_OPTIMIZE',      'Optimize');
+define('_ADMIN_TITLE_REPAIR',        'Repair');
+define('_ADMIN_FILESIZE',            'File size');
+define('_ADMIN_NEW',                 'New');
+define('_ADMIN_OLD',                 'Old');
+define('_ADMIN_TABLENAME',           'Table name');
+define('_ADMIN_CONFIRM_TITLE_OPTIMIZE',    'Are you sure you want to optimize the tables?');
+define('_ADMIN_CONFIRM_TITLE_AUTO_REPAIR', 'Are you sure you want to automatically repair the tables?');
+define('_ADMIN_EXEC_TITLE_AUTO_REPAIR',    'tables repaired.');
+define('_ADMIN_EXEC_TITLE_OPTIMIZE',       'tables optimized.');
+define('_ADMIN_BTN_TITLE_AUTO_REPAIR',     'Repair');
+define('_ADMIN_BTN_TITLE_OPTIMIZE',        'Optimize');
+define('_ADMIN_PLEASE_OPTIMIZE',           'Optimize please');
+
+define('_PROBLEMS_FOUND_ON_TABLE',   'problems found on table');
+define('_NO_PROBLEMS_FOUND',         'No problems found');
+define('_NOT_IMPLEMENTED_YET',       'Not implemented yet.');
+define('_SIZE',                      'Size');
+define('_OVERHEAD',                  'Overhead');
+
 define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "Plugin %s was not loaded (does not support SqlApi_%s or SqlApi_SQL92. Please upgrade to the latest version of the plug-ins that support this feature.)");
 
 define('_DEFAULT_DATE_FORMAT_YMD',         '%d/%m/%Y');

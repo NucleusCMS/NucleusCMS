@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<items>
+  <text>
+    <key><![CDATA[Connected Driver is not mysql]]></key>
+    <ja_JP><![CDATA[接続ドライバがmysqlではありません]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Error failed]]></key>
+    <ja_JP><![CDATA[エラー 失敗]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Error:]]></key>
+    <ja_JP><![CDATA[エラー:]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Database file is already exists]]></key>
+    <ja_JP><![CDATA[データベースファイルはすでに存在します]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[If you want to convert, please try again move the old file]]></key>
+    <ja_JP><![CDATA[コンバートする場合は、古いファイルを移動してやり直してください ]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[If you want to convert start, please press the start button]]></key>
+    <ja_JP><![CDATA[コンバートを開始する場合は、開始ボタンを押してください]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Start convert]]></key>
+    <ja_JP><![CDATA[コンバートを開始する]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Save file path:]]></key>
+    <ja_JP><![CDATA[ファイルの保存先:]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Conversion was over. Please update the config.php of contents]]></key>
+    <ja_JP><![CDATA[変換が終わりました。config.phpの内容を更新してください]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Before conversion, please upgrade of the core]]></key>
+    <ja_JP><![CDATA[変換の前に、コアのアップグレードをしてください]]></ja_JP>
+  </text>
+
+
+</items>
