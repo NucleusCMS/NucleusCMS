@@ -1,12 +1,12 @@
 * convtool
 
-ŸŽ©“®‚Å•ÏŠ·‚ðs‚¤•û–@
+â—†è‡ªå‹•ã§å¤‰æ›ã‚’è¡Œã†æ–¹æ³•
 
-(1) web‚©‚ç‚±‚ÌƒtƒHƒ‹ƒ_‚ÉƒAƒNƒZƒX‚µ‚Ü‚·
+(1) webã‹ã‚‰ã“ã®ãƒ•ã‚©ãƒ«ãƒ€ã«ã‚¢ã‚¯ã‚»ã‚¹ã—ã¾ã™
 
-(2) ƒƒOƒCƒ“‚µ‚Ä•ÏŠ·‚ð‚µ‚Ü‚·
+(2) ãƒ­ã‚°ã‚¤ãƒ³ã—ã¦å¤‰æ›ã‚’ã—ã¾ã™
 
-(3) config.php‚Ì•ÏX ‚ð‚µ‚Ü‚·
+(3) config.phpã®å¤‰æ›´ ã‚’ã—ã¾ã™
     $MYSQL_HANDLER = array('pdo','sqlite');
     if ($MYSQL_HANDLER[1]=='sqlite')
     {
@@ -14,24 +14,24 @@
 //     $MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
     }
 
-ŸŽè“®‚Ås‚¤•û–@
-Eƒ^ƒCƒ€ƒAƒEƒg‚µ‚Ä‚µ‚Ü‚¤ê‡
-EƒGƒ‰[‚ªo‚éê‡
-E•ÒW‚µ‚½‚¢ê‡
-‚ÍA‚±‚¿‚ç‚ð„§B
+â—†æ‰‹å‹•ã§è¡Œã†æ–¹æ³•
+ãƒ»ã‚¿ã‚¤ãƒ ã‚¢ã‚¦ãƒˆã—ã¦ã—ã¾ã†å ´åˆ
+ãƒ»ã‚¨ãƒ©ãƒ¼ãŒå‡ºã‚‹å ´åˆ
+ãƒ»ç·¨é›†ã—ãŸã„å ´åˆ
+ã¯ã€ã“ã¡ã‚‰ã‚’æŽ¨å¥¨ã€‚
 
-(1) config_conv_test.php ‚ðì¬
-   config.php‚©‚çƒRƒs[
+(1) config_conv_test.php ã‚’ä½œæˆ
+   config.phpã‹ã‚‰ã‚³ãƒ”ãƒ¼
 
-(2) ƒf[ƒ^ƒx[ƒX‚ðsqlite‚É•ÏŠ·
+(2) ãƒ‡ãƒ¼ã‚¿ãƒ™ãƒ¼ã‚¹ã‚’sqliteã«å¤‰æ›
 php conv_sql_mysql_to_sqlite.php > nucleus-sqlite.sql
 sqlite3 db_nucleus.sqlite < nucleus-sqlite.sql
-‚Ü‚½‚Í
+ã¾ãŸã¯
 php conv_sql_mysql_to_sqlite.php | sqlite3 db_nucleus.sqlite
 
-(3) db_nucleus.sqlite ‚ð settingsƒtƒHƒ‹ƒ_‚ÉˆÚ“®‚µ‚Ü‚·
+(3) db_nucleus.sqlite ã‚’ settingsãƒ•ã‚©ãƒ«ãƒ€ã«ç§»å‹•ã—ã¾ã™
 
-(4) config.php‚Ì•ÏX
+(4) config.phpã®å¤‰æ›´
     $MYSQL_HANDLER = array('pdo','sqlite');
     if ($MYSQL_HANDLER[1]=='sqlite')
     {
