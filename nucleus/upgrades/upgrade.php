@@ -83,7 +83,7 @@ switch($from) {
         include_once('upgrade3.7.php');
         upgrade_do371();
     case 371:
-        include_once('upgrade3.7.php');
+        include_once('upgrade3.8.php');
         upgrade_do380();
         break;
     default:
