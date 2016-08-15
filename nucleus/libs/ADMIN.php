@@ -146,7 +146,7 @@ class ADMIN {
             header("HTTP/1.0 404 Not Found");
             exit;
         }
-        
+
         // skip to overview when allowed
         if ($member->isLoggedIn() && $member->canLogin()) {
             $this->action_overview();
@@ -792,7 +792,7 @@ class ADMIN {
     function batchChangeCategorySelectOrder($type, $ids)
     {
         global $manager , $member , $CONF;
-        
+
         $this->pagehead();
 
         if ($CONF['debug'])
@@ -865,7 +865,7 @@ class ADMIN {
                         )
                 . $s . "</table>\n";
           }
-        
+
         $this->pagefoot();
 
         exit;
@@ -1669,9 +1669,9 @@ class ADMIN {
 
         // change <br /> to \n
         $comment['body'] = str_replace('<br />','',$comment['body']);
-        
+
         $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
-        
+
         $this->pagehead();
 
         ?>
@@ -1738,13 +1738,13 @@ class ADMIN {
         $url = postVar('url');
         $email = postVar('email');
         $body = postVar('body');
-        
+
         // intercept words that are too long
         if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
         {
             $this->error(_ERROR_COMMENT_LONGWORD);
         }
-        
+
         // check length
         if (strlen($body) < 3)
         {
@@ -1754,7 +1754,7 @@ class ADMIN {
         {
             $this->error(_ERROR_COMMENT_TOOLONG);
         }
-        
+
         // prepare body
         $body = COMMENT::prepareBody($body);
 
@@ -1882,7 +1882,7 @@ class ADMIN {
 
         if ($msg)
             echo _MESSAGE , ': ', $msg;
-        
+
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
         echo '<h2>' . _MEMBERS_TITLE .'</h2>';
@@ -2073,7 +2073,7 @@ class ADMIN {
                     }
                 }
                 closedir($dirhandle);
-                
+
                 ?>
                 </select>
 
@@ -2390,7 +2390,7 @@ class ADMIN {
      * @author dekarma
      */
     function action_activatesetpwd() {
-        
+
         $key = postVar('key');
 
         // clean up old activation keys
@@ -2413,15 +2413,15 @@ class ADMIN {
         if (!trim($password) || (trim($password) != $password)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
         }
-        
+
         if ($password != $repeatpassword) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
         }
-        
+
         if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
         }
-        
+
         if ($password) {
             $pwdvalid = true;
             $pwderror = '';
@@ -2438,7 +2438,7 @@ class ADMIN {
                 return $this->_showActivationPage($key,$pwderror);
             }
         }
-        
+
         $error = '';
         $param = array(
             'type'        =>  'activation',
@@ -2914,7 +2914,7 @@ class ADMIN {
         <?php
 
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-            
+
             $param = array('blog' => &$blog);
             $manager->notify('BlogSettingsFormExtras', $param);
             echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
@@ -3727,19 +3727,19 @@ class ADMIN {
         $memberid = $member->getID();
         $query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
         sql_query($query);
-        
+
         $itemdeftitle = (defined('_EBLOG_FIRSTITEM_TITLE') ? _EBLOG_FIRSTITEM_TITLE : 'First Item');
         $itemdefbody = (defined('_EBLOG_FIRSTITEM_BODY') ? _EBLOG_FIRSTITEM_BODY : 'This is the first item in your weblog. Feel free to delete it.');
-        
+
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
-        
-        
+
+
         $param = array(
             'blog' => &$blog
         );
         $manager->notify('PostAddBlog', $param);
-        
+
         $param = array(
             'blog'            => &$blog,
             'name'            =>  _EBLOGDEFAULTCATEGORY_NAME,
@@ -5243,7 +5243,7 @@ selector();
                 <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
             </td>
         </tr><tr>
-            <td><?php echo _SETTINGS_ADMINCSS?> 
+            <td><?php echo _SETTINGS_ADMINCSS?>
             </td>
             <td>
                 <select name="AdminCSS" tabindex="10080">
@@ -5375,7 +5375,7 @@ selector();
 
         <?php
             echo '<h2>',_PLUGINS_EXTRA,'</h2>';
-            
+
             $param = array();
             $manager->notify('GeneralSettingsFormExtras', $param);
 
@@ -5702,7 +5702,7 @@ selector();
         global $member, $nucleus, $CONF, $manager, $action, $DIR_NUCLEUS;
 
 		sendContentType('text/html');
-		
+
         $param = array(
             'extrahead'    => &$extrahead,
             'action'    =>  $this->action
@@ -5748,11 +5748,11 @@ selector();
             var qmenu_own     = jQuery.cookie('qmenu_own');
             var qmenu_layuot  = jQuery.cookie('qmenu_layuot');
             var qmenu_plugins = jQuery.cookie('qmenu_plugins');
-            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show(); 
-            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show(); 
-            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show(); 
-            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show(); 
-          
+            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show();
+            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show();
+            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show();
+            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show();
+
           jQuery('.accordion').click(function() {
             var child = jQuery(this).next('ul');
             jQuery(child).slideToggle('fast', function() {
@@ -5784,7 +5784,7 @@ selector();
 <?php
         $this->loginname();
     }
-    
+
     function loginname() {
         global $member, $nucleus, $CONF;
         ?>
@@ -5796,14 +5796,14 @@ selector();
                 . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> | ";
         else
             echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
-    
+
         echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url() , _HELP_TT);
         echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-    
+
         echo '<br />(';
-    
+
         $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-        
+
         $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
@@ -5845,7 +5845,7 @@ selector();
         <?php
         $this->quickmenu();
     }
-    
+
     function quickmenu() {
         global $action, $member, $manager;
         ?>
@@ -6490,7 +6490,7 @@ selector();
             </div></form>
 
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
-            
+
 <?php
         $list_installed_PluginName = array();
         $sql = 'SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC';
@@ -6519,7 +6519,7 @@ selector();
                     array_push($candidates, $name);
                 }
             }
-        
+
         if (sizeof($candidates) > 0)
         {
             $options = array();
@@ -6579,7 +6579,7 @@ selector();
             $helpFile = "{$cplugindir}help/index.php";
         elseif(is_file("{$cplugindir}help/index.html"))
             $helpFile = "{$cplugindir}help/index.html";
-        
+
         if ($plug->supportsFeature('HelpPage') > 0 && isset($helpFile)) {
             if(substr($helpFile,-4)==='.php') include_once($helpFile);
             else                              @readfile($helpFile);
@@ -7065,7 +7065,7 @@ selector();
                 }
                 echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])).'</th></tr>';
             }
-            
+
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
             if (@$meta['access'] != 'hidden') {
                 echo '<tr>';
@@ -7110,7 +7110,7 @@ selector();
 
     function checkSecurityRisk() {
         global $CONF;
-        
+
         if ($CONF['alertOnSecurityRisk'] == 1)
         {
             // check if files exist and generate an error if so

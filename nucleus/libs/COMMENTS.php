@@ -39,7 +39,7 @@ class COMMENTS {
     function __construct($itemid) {
         $this->itemid = intval($itemid);
     }
-    
+
     /**
      * Used when parsing comments
      *
@@ -380,7 +380,7 @@ class COMMENTS {
 
     /**
      * Checks if a comment is valid and call plugins
-     * that can check if the comment is a spam comment      
+     * that can check if the comment is a spam comment
      */
     function isValidComment(&$comment, &$spamcheck) {
 

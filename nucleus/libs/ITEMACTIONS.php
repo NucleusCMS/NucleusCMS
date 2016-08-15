@@ -117,7 +117,7 @@ class ITEMACTIONS extends BaseActions {
         unset($this->parser);
         $this->parser =& $parser;
     }
-    
+
     function setCurrentItem(&$item) {
         unset($this->currentItem);
         $this->currentItem =& $item;
@@ -128,7 +128,7 @@ class ITEMACTIONS extends BaseActions {
             $currentitemid = $this->currentItem->itemid;
         }
     }
-    
+
     function setBlog(&$blog) {
         unset($this->blog);
         $this->blog =& $blog;
@@ -552,9 +552,9 @@ class ITEMACTIONS extends BaseActions {
         $this->parser->actions = $this->getDefinedActions();
     }
     */
-    
+
     // function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields
-    
+
         /**
      * Checks conditions for if statements
      *
@@ -603,7 +603,7 @@ class ITEMACTIONS extends BaseActions {
                 break;
             case 'archivenextexists':
                 $condition = ($archivenextexists == true);
-                break; 
+                break;
             case 'skintype':
                 $condition = ($name == $this->skintype);
                 break; */
@@ -618,8 +618,8 @@ class ITEMACTIONS extends BaseActions {
                 break;
         }
         return $condition;
-    }    
-    
+    }
+
     /**
      *  Different checks for a category
      */
@@ -643,14 +643,14 @@ class ITEMACTIONS extends BaseActions {
 
         return false;
     }
-    
-        
+
+
     /**
      *  Different checks for an author
      */
     function _ifAuthor($name = '', $value='') {
         global $member, $manager;
-        
+
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
@@ -666,31 +666,31 @@ class ITEMACTIONS extends BaseActions {
         }
 
         // check if author is admin
-        if (($name == 'isadmin')) {            
+        if (($name == 'isadmin')) {
             $aid = intval($this->currentItem->authorid);
-            $blogid = intval($b->getID());            
+            $blogid = intval($b->getID());
             $amember =& $manager->getMember($aid);
             if ($amember->isAdmin())
                 return true;
-                
+
             return $amember->isBlogAdmin($blogid);
         }
 
         return false;
     }
-    
+
     /**
      *  Different checks for a category
      */
     function _ifItemCategory($name = '', $value='') {
         global $catid, $manager;
-        
+
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
         if (($name != 'catname' && $name != 'catid') || ($value == ''))
             return $b->isValidCategory($catid);
-            
+
         $icatid = $this->currentItem->catid;
         //$icategory = $this->currentItem->category;
 
@@ -708,7 +708,7 @@ class ITEMACTIONS extends BaseActions {
         return false;
     }
 
-    
+
     /**
      *  Checks if a member is on the team of a blog and return his rights
      */
@@ -751,7 +751,7 @@ class ITEMACTIONS extends BaseActions {
         return $member->isBlogAdmin($blogid);
     }
 
-    
+
     /**
      *    hasplugin,PlugName
      *       -> checks if plugin exists

@@ -478,7 +478,7 @@ class NucleusPlugin {
      */
     function _getAllOptions($context, $name) {
         $aOptions = array();
-        
+
         global $resultCache;
         if(isset($resultCache["aOptions{$context}"]))
             $aOptions = $resultCache["aOptions{$context}"];
@@ -493,13 +493,13 @@ class NucleusPlugin {
             elseif($context==='item')
                 $query = 'SELECT inumber as contextid FROM ' . sql_table('item');
             else $query = '';
-            
+
             if($query==='') return false;
-            
+
             $oid = $this->_getOID($context, $name);
             if (!$oid) return array();
             $defVal = $this->_getDefVal($context, $name);
-            
+
             $r = sql_query($query);
             if ($r)
             {
@@ -508,7 +508,7 @@ class NucleusPlugin {
                     $aOptions[$o->contextid] = $defVal;
                 }
             }
-            
+
             $resultCache["aOptions{$context}"] = $aOptions;
             $query = 'SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid;
             $res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
@@ -518,7 +518,7 @@ class NucleusPlugin {
             }
             $resultCache["aOptions{$context}"] = $aOptions;
         }
-        
+
         return $aOptions;
     }
 
@@ -550,7 +550,7 @@ class NucleusPlugin {
             return null;
         }
     }
-    
+
     function _getDefVal($context, $name) {
         $key = $context . '_' . $name;
         $info = $this->_aOptionToInfo[$key];
