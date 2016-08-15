@@ -7423,7 +7423,7 @@ EOD;
             $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
             $res = sql_query($sql);
             while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
-              if ($row['status'] == 'status')
+              if ($row['Msg_type'] == 'status')
                 if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date')
                     $items[$row['Table']] = $row;
         }

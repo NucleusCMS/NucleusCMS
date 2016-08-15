@@ -223,13 +223,13 @@ class SKIN {
     function getContent($type) {
         global $DB_DRIVER_NAME;
         if(strpos($type, '/')!==false) return '';
-        if (stripos('mysql' , $DB_DRIVER_NAME ) !== false)
+        if ( 'mysql' == $DB_DRIVER_NAME )
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         else
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
         $res = sql_query($query);
 
-        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // PHP(-5.4) Parse error: empty($var = "")  syntax error
+        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
             return '';
         return $r[0];
     }
