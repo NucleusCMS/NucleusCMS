@@ -355,13 +355,13 @@ class ACTION
     /**
      *  Handle karma votes
      */
-	function doKarma($type)
-	{
-		return doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
-	}
+    function doKarma($type)
+    {
+        return doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
+    }
 
     /**
-	 *  Handle votes
+     *  Handle votes
      */
     function doVote($type)
     {

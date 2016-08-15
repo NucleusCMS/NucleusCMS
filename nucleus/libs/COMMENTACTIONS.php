@@ -79,12 +79,12 @@ class COMMENTACTIONS extends BaseActions {
     }
 
     function setParser(&$parser) {
-		unset($this->parser);
+        unset($this->parser);
         $this->parser =& $parser;
     }
 
     function setCommentsObj(&$commentsObj) {
-		unset($this->commentsObj);
+        unset($this->commentsObj);
         $this->commentsObj =& $commentsObj;
     }
 
@@ -717,19 +717,19 @@ class COMMENTACTIONS extends BaseActions {
     }
 
     function parse_commentclosed()
-	{
+    {
 //        return $this->commentsObj->itemActions->parse_commentclosed();
-		// if item is closed, show message and do nothing
-		if ($this->currentItem->closed || !$this->blog->commentsEnabled())
-		  { return TRUE; } else { return FALSE; }
-	}
+        // if item is closed, show message and do nothing
+        if ($this->currentItem->closed || !$this->blog->commentsEnabled())
+          { return TRUE; } else { return FALSE; }
+    }
 
-	function parse_hascomment()
-	{
-		$sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-						   sql_table('comment'), intval($this->currentItem->itemid));
-		$res = intval(quickQuery($sqlText));
-		return ($res > 0);
-	}
+    function parse_hascomment()
+    {
+        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                           sql_table('comment'), intval($this->currentItem->itemid));
+        $res = intval(quickQuery($sqlText));
+        return ($res > 0);
+    }
 
 }

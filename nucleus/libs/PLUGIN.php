@@ -18,8 +18,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 class NucleusPlugin {
-	public $is_db_sqlite = false;
-	public $is_db_mysql  = false;
+    public $is_db_sqlite = false;
+    public $is_db_mysql  = false;
 
     // these functions _have_ to be redefined in your plugin
 
@@ -162,21 +162,21 @@ class NucleusPlugin {
         if ($this->plugin_options == 0)
         {
             $this->plugin_options = array();
-			$sql = 'SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value '
-					. ' FROM '
-					. sql_table('plugin_option_desc').' d '
-					. ' LEFT JOIN ' . sql_table('plugin_option').' o '
-					. '   ON d.oid=o.oid AND o.ocontextid=0 '
-					. ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
-					. ' group by d.oid'
-					;
-			$res = sql_query($sql);
-			if ($res)
-			  while ( $row = sql_fetch_object($res) )
-				{
-					$this->plugin_options[strtolower($row->name)] = $row->value;
-				}
-	  }
+            $sql = 'SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value '
+                    . ' FROM '
+                    . sql_table('plugin_option_desc').' d '
+                    . ' LEFT JOIN ' . sql_table('plugin_option').' o '
+                    . '   ON d.oid=o.oid AND o.ocontextid=0 '
+                    . ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
+                    . ' group by d.oid'
+                    ;
+            $res = sql_query($sql);
+            if ($res)
+              while ( $row = sql_fetch_object($res) )
+                {
+                    $this->plugin_options[strtolower($row->name)] = $row->value;
+                }
+      }
         if (isset($this->plugin_options[strtolower($name)]))
             return $this->plugin_options[strtolower($name)];
         else
@@ -557,7 +557,7 @@ class NucleusPlugin {
             return null;
         }
     }
-    
+
     function _getDefVal($context, $name) {
         $key = $context . '_' . $name;
         $info = $this->_aOptionToInfo[$key];

@@ -46,8 +46,8 @@ function mysql_query($query, $dblink = NULL)
     return mysqli_query($link, $query);
 }
 
-function mysql_fetch_object($res) 
-{ 
+function mysql_fetch_object($res)
+{
     return mysqli_fetch_object($res);
 }
 
@@ -59,15 +59,15 @@ function mysql_fetch_array($res , $result_type = MYSQL_BOTH)
     // MYSQLI_BOTH  = MYSQL_BOTH   : 3
 }
 
-function mysql_fetch_assoc($res) 
-{ 
+function mysql_fetch_assoc($res)
+{
     return mysqli_fetch_assoc($res);
-}    
+}
 
-function mysql_fetch_row($res) 
-{ 
+function mysql_fetch_row($res)
+{
     return mysqli_fetch_row($res);
-}    
+}
 
 function mysql_num_rows($res)
 {

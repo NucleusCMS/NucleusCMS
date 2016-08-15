@@ -237,30 +237,30 @@ class ADMIN {
             $sw = (($member->isAdmin()) && ($showAll == 'yes'));
 
             // Todo display author
-			$query =  'SELECT bnumber, count(*)'
+            $query =  'SELECT bnumber, count(*)'
                 . sprintf(' , sum(iauthor=%d)', $member->getID())
-				   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
-				   . ' WHERE '
+                   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
+                   . ' WHERE '
                    . ' iblog=bnumber and idraft=1'
-				   . ' GROUP BY bnumber'
-				   . ' ORDER BY bnumber ASC';
+                   . ' GROUP BY bnumber'
+                   . ' ORDER BY bnumber ASC';
 
-			$items = array();
-			$stmt = sql_query($query);
-			if ($stmt)
-			{
-				while($row = sql_fetch_row($stmt))
-				{
-					$items[] = array_merge($row);
-				}
-				sql_free_result($stmt);
-			}
+            $items = array();
+            $stmt = sql_query($query);
+            if ($stmt)
+            {
+                while($row = sql_fetch_row($stmt))
+                {
+                    $items[] = array_merge($row);
+                }
+                sql_free_result($stmt);
+            }
 
             $has_hidden_items = 0;
             $TeamBlogs = $member->getTeamBlogs(0);
-			$amountdrafts = 0;
-			foreach($items as $item)
-			{
+            $amountdrafts = 0;
+            foreach($items as $item)
+            {
                 // blogid  sum(item)  sum(item which belong to current user)
 //                var_dump($item);
                 $count_blog_items     = intval($item[1]);
@@ -273,26 +273,26 @@ class ADMIN {
                     continue;
 
                 // Todo: showall : Display whether the item belongs to
-				$ct = ($sw ? $count_blog_items : $count_current_author);
-				$div_out = ($ct>5);
-				if ($div_out)
-					echo '<div style="width: 100%; height: 150px; overflow: auto;">';
+                $ct = ($sw ? $count_blog_items : $count_current_author);
+                $div_out = ($ct>5);
+                if ($div_out)
+                    echo '<div style="width: 100%; height: 150px; overflow: auto;">';
 
             $query =  'SELECT ititle, inumber, bshortname'
                    . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
                            . ' WHERE'
                            .     ($sw ? '' : sprintf(' iauthor=%d AND', $member->getID()))
-						   . sprintf(' iblog=bnumber AND iblog=%d', $current_bid)
-						   . ' AND idraft=1 ORDER BY inumber DESC';
+                           . sprintf(' iblog=bnumber AND iblog=%d', $current_bid)
+                           . ' AND idraft=1 ORDER BY inumber DESC';
             $template['content'] = 'draftlist';
             $amountdrafts += showlist($query, 'table', $template);
 
-				if ($div_out)
-					echo '</div>';
-			}
+                if ($div_out)
+                    echo '</div>';
+            }
                 if ($amountdrafts == 0)
                     echo _OVERVIEW_NODRAFTS;
-		if (($showAll != 'yes') && ($member->isAdmin()) && $has_hidden_items)
+        if (($showAll != 'yes') && ($member->isAdmin()) && $has_hidden_items)
             echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
         }
 
@@ -1629,7 +1629,7 @@ class ADMIN {
         // get blogid first
         $blogid = getBlogIdFromItemId($itemid);
         $this->action_itemlist($blogid);
-   }
+    }
 
     /**
      * @todo document this
@@ -1735,7 +1735,7 @@ class ADMIN {
         $comment['body'] = str_replace('<br />', '', $comment['body']);
 
         $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
-        
+
         $this->pagehead();
 
         ?>
@@ -1809,7 +1809,7 @@ class ADMIN {
         {
             $this->error(_ERROR_COMMENT_LONGWORD);
         }
-        
+
         // check length
         if (strlen($body) < 3)
         {
@@ -1819,7 +1819,7 @@ class ADMIN {
         {
             $this->error(_ERROR_COMMENT_TOOLONG);
         }
-        
+
         // prepare body
         $body = COMMENT::prepareBody($body);
 
@@ -1947,7 +1947,7 @@ class ADMIN {
 
         if ($msg)
             echo _MESSAGE , ': ', $msg;
-        
+
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
         echo '<h2>' . _MEMBERS_TITLE .'</h2>';
@@ -2138,7 +2138,7 @@ class ADMIN {
                     }
                 }
                 closedir($dirhandle);
-                
+
                 ?>
                 </select>
 
@@ -2457,7 +2457,7 @@ class ADMIN {
      * @author dekarma
      */
     function action_activatesetpwd() {
-        
+
         $key = postVar('key');
 
         // clean up old activation keys
@@ -2488,7 +2488,7 @@ class ADMIN {
         if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
         }
-            
+
         if ($password) {
             $pwdvalid = true;
             $pwderror = '';
@@ -2983,7 +2983,7 @@ class ADMIN {
         <?php
 
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-            
+
             $param = array('blog' => &$blog);
             $manager->notify('BlogSettingsFormExtras', $param);
             echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
@@ -3027,7 +3027,7 @@ class ADMIN {
         $query = 'SELECT count(*) FROM '.sql_table('category')
                . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
         $res = sql_query($query);
-		if (intval(sql_result($res)) > 0)
+        if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $blog       =& $manager->getBlog($blogid);
@@ -3134,7 +3134,7 @@ class ADMIN {
 
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
         $res = sql_query($query);
-		if (intval(sql_result($res)) > 0)
+        if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  'UPDATE '.sql_table('category').' SET'
@@ -3816,7 +3816,7 @@ class ADMIN {
         $memberid = $member->getID();
         $query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
         sql_query($query);
-        
+
         $item_deftitle = (defined('_EBLOG_FIRSTITEM_TITLE') ? _EBLOG_FIRSTITEM_TITLE : 'First Item');
         $item_defbody = (defined('_EBLOG_FIRSTITEM_BODY') ? _EBLOG_FIRSTITEM_BODY : 'This is the first item in your weblog. Feel free to delete it.');
 
@@ -3825,12 +3825,12 @@ class ADMIN {
             // change item comment closed : It prevents from unintended comment.
             sql_query(sprintf('UPDATE %s SET iclosed=1 WHERE inumber=%d', sql_table('item'), $new_itemid));
         }
-        
+
         $param = array(
             'blog' => &$blog
         );
         $manager->notify('PostAddBlog', $param);
-        
+
         $param = array(
             'blog'            => &$blog,
             'name'            =>  _EBLOGDEFAULTCATEGORY_NAME,
@@ -5334,7 +5334,7 @@ selector();
                 <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
             </td>
         </tr><tr>
-            <td><?php echo _SETTINGS_ADMINCSS?> 
+            <td><?php echo _SETTINGS_ADMINCSS?>
             </td>
             <td>
                 <select name="AdminCSS" tabindex="10080">
@@ -5471,7 +5471,7 @@ selector();
 
         <?php
             echo '<h2>',_PLUGINS_EXTRA,'</h2>';
-            
+
             $param = array();
             $manager->notify('GeneralSettingsFormExtras', $param);
 
@@ -5606,17 +5606,17 @@ selector();
             echo "\t\t" . '<td>' . $rg . "</td>\n";
                 echo "\t</tr>";
             }
-				echo "<tr>\n";
-				echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
-				$rg = ini_get('default_charset');
-				echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
-				echo "\t</tr>";
+                echo "<tr>\n";
+                echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
+                $rg = ini_get('default_charset');
+                echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
+                echo "\t</tr>";
 
-				echo "<tr>\n";
-				echo "\t\t" . '<td>date.timezone' . "</td>\n";
-				$rg = ini_get('date.timezone');
-				echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
-				echo "\t</tr>";
+                echo "<tr>\n";
+                echo "\t\t" . '<td>date.timezone' . "</td>\n";
+                $rg = ini_get('date.timezone');
+                echo "\t\t" . '<td>' . ($rg ? $rg : 'none' ) . "</td>\n";
+                echo "\t</tr>";
             echo "</table>\n";
 
             // Information about GD library
@@ -5843,7 +5843,7 @@ selector();
         $manager->notify('AdminPrePageHead', $param);
 
         $baseUrl = hsc($CONF['AdminURL']);
-        if (!array_key_exists('AdminCSS',$CONF)) 
+        if (!array_key_exists('AdminCSS',$CONF))
         {
             sql_query("INSERT INTO ".sql_table('config')." VALUES ('AdminCSS', 'original')");
             $CONF['AdminCSS'] = 'original';
@@ -5887,13 +5887,13 @@ selector();
 </div>
 <div id="container">
 <div id="content">
-	<?php
-	    $this->loginname();
+    <?php
+        $this->loginname();
     }
-    
+
     function loginname() {
-    	global $member, $nucleus, $CONF;
-    	?>
+        global $member, $nucleus, $CONF;
+        ?>
 <div class="loginname">
 <?php
         if ($member->isLoggedIn())
@@ -5905,9 +5905,9 @@ selector();
 
         echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url(FALSE) , _HELP_TT);
         echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-    
+
         echo '<br />(';
-    
+
         $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
 
         $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
@@ -5947,13 +5947,13 @@ selector();
 
         ?>
             </div><!-- content -->
-    	<?php
-        	$this->quickmenu();
+        <?php
+            $this->quickmenu();
     }
 
     function quickmenu() {
-    	global $action, $member, $manager, $DB_DRIVER_NAME;
-    	?>
+        global $action, $member, $manager, $DB_DRIVER_NAME;
+        ?>
             <div id="quickmenu">
 
                 <?php               // ---- user settings ----
@@ -6598,7 +6598,7 @@ selector();
             </div></form>
 
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
-            
+
 <?php
         $list_installed_PluginName = array();
         $sql = 'SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC';
@@ -6686,7 +6686,7 @@ selector();
             $helpFile = "{$cplugindir}help/index.php";
         elseif(is_file("{$cplugindir}help/index.html"))
             $helpFile = "{$cplugindir}help/index.html";
-        
+
         if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@file_exists($helpFile)))
         {
             if(substr($helpFile,-4)==='.php')
@@ -6722,7 +6722,7 @@ selector();
 
         // get number of currently installed plugins
         $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
-		$numCurrent = intval(sql_result($res));
+        $numCurrent = intval(sql_result($res));
 
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
@@ -6775,8 +6775,8 @@ selector();
         {
 
             $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
-			$ct = intval(sql_result($res));
-			if ($ct == 0)
+            $ct = intval(sql_result($res));
+            if ($ct == 0)
             {
                 // uninstall plugin again...
                 $this->deleteOnePlugin($plugin->getID());
@@ -7002,7 +7002,7 @@ selector();
         $oldOrder = $o->porder;
 
         $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
-		$maxOrder = intval(sql_result($res));
+        $maxOrder = intval(sql_result($res));
 
         // 2. calculate new order number
         $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
@@ -7039,7 +7039,7 @@ selector();
         if (!is_file($plugin_admin_php_file))
             $this->error(_ERROR_PLUGFILEERROR);
 
-		$url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
+        $url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
         if (!defined('ENABLE_PLUGIN_ADMIN_V2'))
             define('ENABLE_PLUGIN_ADMIN_V2', TRUE);
         if (ENABLE_PLUGIN_ADMIN_V2)
@@ -7219,7 +7219,7 @@ selector();
                 }
                 echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])).'</th></tr>';
             }
-            
+
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
             if (@$meta['access'] != 'hidden') {
                 echo '<tr>';

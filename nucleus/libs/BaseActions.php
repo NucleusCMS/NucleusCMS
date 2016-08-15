@@ -107,8 +107,8 @@ class BaseActions {
             {
                 return;
             }
-        $contents = file_get_contents($file);
-        if (empty($contents))
+            $contents = file_get_contents($file);
+            if (empty($contents))
             {
             return;
             }
