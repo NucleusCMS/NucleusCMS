@@ -132,6 +132,12 @@ class ACTIONS extends BaseActions {
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
+            case 'commentclosed':
+                $condition = $this->parse_commentclosed();
+                break;
+            case 'hascomment':
+                $condition = $this->parse_hascomment();
+                break;
             case 'authorvisible':
                 $condition = ($blog && $blog->getAuthorVisible());
                 break;
@@ -1444,6 +1450,26 @@ class ACTIONS extends BaseActions {
         $this->_postBlogContent('sticky',$b);
     }
 
+    function parse_commentclosed()
+    {
+        global $blog, $itemid, $manager;
+
+        $itemid = intval($itemid);
+        // if item is closed, show message and do nothing
+        $item =& $manager->getItem($itemid,0,0);
+        if ($item['closed'] || !$blog->commentsEnabled())
+          { return TRUE; } else { return FALSE; }
+    }
+
+    function parse_hascomment()
+    {
+        global $itemid;
+
+        $itemid = intval($itemid);
+        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                           sql_table('comment'), intval($itemid));
+        $res = intval(quickQuery($sqlText));
+        return ($res > 0);
+    }
 
 }
-
