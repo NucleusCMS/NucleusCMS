@@ -175,22 +175,20 @@ class COMMENTS {
             return _ERROR_EMAIL_REQUIRED;
         } // end if
 
-        ## Note usage of mb_strlen() vs strlen() below ##
-
         // begin if: commenter's name is too long
-        if ( mb_strlen($comment['user']) > 40 )
+        if ( Utils::strlen($comment['user']) > 40 )
         {
             return _ERROR_USER_TOO_LONG;
         } // end if
 
         // begin if: commenter's email is too long
-        if ( mb_strlen($comment['email']) > 100 )
+        if ( Utils::strlen($comment['email']) > 100 )
         {
             return _ERROR_EMAIL_TOO_LONG;
         } // end if
 
         // begin if: commenter's url is too long
-        if ( mb_strlen($comment['userid']) > 100 )
+        if ( Utils::strlen($comment['userid']) > 100 )
         {
             return _ERROR_URL_TOO_LONG;
         } // end if

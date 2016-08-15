@@ -419,10 +419,18 @@ class ITEM {
         $i_title = postVar('title');
         $i_more = postVar('more');
 
-        if(strtoupper(_CHARSET) != 'UTF-8'){
-            $i_body  = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
-            $i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
-            $i_more  = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
+        if((strtoupper(_CHARSET) != 'UTF-8')
+           && ( ($mb = function_exists('mb_convert_encoding')) || function_exists('iconv') )
+          ) {
+            if ($mb) {
+                $i_body  = mb_convert_encoding($i_body,  _CHARSET, "UTF-8");
+                $i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
+                $i_more  = mb_convert_encoding($i_more,  _CHARSET, "UTF-8");
+            } else {
+                $i_body  = iconv("UTF-8", _CHARSET, $i_body);
+                $i_title = iconv("UTF-8", _CHARSET, $i_title);
+                $i_more  = iconv("UTF-8", _CHARSET, $i_more);
+            }
         }
         //$i_actiontype = postVar('actiontype');
         $i_closed = intPostVar('closed');

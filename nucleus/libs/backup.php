@@ -199,10 +199,17 @@ class Backup
         //
         // Grab the data from the table.
         //
+        $row_count = intval(quickQuery("SELECT count(*) AS result FROM ${tablename}"));
         $result = sql_query("SELECT * FROM $tablename");
+        if (!$result) return;
     
-        if(sql_num_rows($result) > 0)
-            echo "\n#\n# " . sprintf(_BACKUP_BACKUPFILE_TABLEDATAFOR, $tablename) . "\n#\n";
+        if($row_count > 0)
+        {
+            if (defined('_BACKUP_BACKUPFILE_TABLEDATAFOR'))
+                echo "\n#\n# " . sprintf(_BACKUP_BACKUPFILE_TABLEDATAFOR, $tablename) . "\n#\n";
+            else
+                echo "\n#\n# Table Data for $tablename\n#\n";
+        }
             
         $num_fields = sql_num_fields($result);
         
@@ -477,4 +484,3 @@ class Backup
 
 }
 
-?>

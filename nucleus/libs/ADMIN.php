@@ -6351,11 +6351,11 @@ selector();
      * @todo document this
      */
     function action_backupoverview() {
-        global $member, $manager, $MYSQL_HANDLER;
+        global $member, $manager, $DB_DRIVER_NAME;
 
         $member->isAdmin() or $this->disallow();
 
-        if (!in_array('mysql', $MYSQL_HANDLER)) {
+        if ($DB_DRIVER_NAME != 'mysql') {
             $this->disallow();
         }
 

@@ -261,11 +261,10 @@ class MANAGER
     {
         if (class_exists($name))
             return ;
-        else
-        {
-                global $DIR_PLUGINS;
 
-                $fileName = $DIR_PLUGINS . $name . '.php';
+        global $DIR_PLUGINS;
+
+        $fileName = $DIR_PLUGINS . $name . '.php';
         $shortname = strtolower(preg_replace('#^NP_#', '', $name));
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
@@ -286,13 +285,12 @@ class MANAGER
             }
         }
 
-
                 if (!file_exists($fileName))
                 {
                     if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
                         define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
                     }
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
+                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
                     return 0;
                 }
 
@@ -305,7 +303,7 @@ class MANAGER
                     if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
                         define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
                     }
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
+                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
                     return 0;
                 }
 
@@ -350,7 +348,7 @@ class MANAGER
                 if (($DB_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
                 {
                     unset($this->plugins[$name]);
-                    ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
+                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
                     return 0;
                 }
 
@@ -367,7 +365,7 @@ class MANAGER
                     if (!$this->plugins[$name]->supportsFeature('SqlApi'))
                     {
                         unset($this->plugins[$name]);
-                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
+                        ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
                         return 0;
                     }
 //                         DB       Standard SQL
@@ -382,7 +380,7 @@ class MANAGER
                         )
                     {
                         unset($this->plugins[$name]);
-                        ACTIONLOG::add(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
+                        ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
                         return 0;
                     }
                 } // end : plugin uses DB query
@@ -390,7 +388,6 @@ class MANAGER
                 // call init method
                 $this->plugins[$name]->init();
 
-        }
     }
 
     /**
@@ -567,7 +564,8 @@ class MANAGER
         // initialize as array
         $this->subscriptions = array();
 
-        $res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p WHERE e.pid=p.pid ORDER BY p.porder ASC');
+        $res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p'
+                       . ' WHERE e.pid=p.pid ORDER BY p.porder ASC');
         if ($res)
         while ($o = sql_fetch_object($res)) {
             $pluginName = $o->pfile;
@@ -589,11 +587,10 @@ class MANAGER
     function addTicketToUrl($url)
     {
         $ticketCode = 'ticket=' . $this->_generateTicket();
-        
-        if (strstr($url, '?')) $_ = '&';
-        else                   $_ = '?';
-        
-        return "{$url}{$_}{$ticketCode}";
+        if (strstr($url, '?'))
+            return $url . '&' . $ticketCode;
+        else
+            return $url . '?' . $ticketCode;
     }
 
     /**

@@ -18,6 +18,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 class NucleusPlugin {
+    public $is_db_sqlite = false;
+    public $is_db_mysql  = false;
 
     // these functions _have_ to be redefined in your plugin
 
@@ -296,6 +298,8 @@ class NucleusPlugin {
         $this->_aOptionValues = array();    // oid_contextid => value
         $this->_aOptionToInfo = array();    // context_name => array('oid' => ..., 'default' => ...)
         $this->plugin_options = 0;
+
+        $this->init_driver_flag();
     }
 
     /**
@@ -709,6 +713,19 @@ class NucleusPlugin {
                 $plugin=& $manager->pidLoaded($o->opid);
                 if ($plugin) $plugin->clearOptionValueCache();
             }
+        }
+    }
+
+    private function init_driver_flag()
+    {
+        global $DB_DRIVER_NAME;
+        switch (strtolower($DB_DRIVER_NAME))
+        {
+            case 'sqlite':
+                $this->is_db_sqlite = true;
+                break;
+            default:
+                $this->is_db_mysql  = true;
         }
     }
 }

@@ -512,11 +512,11 @@ class ACTIONS extends BaseActions {
             // implode
             $format=implode(',',$args);
         } elseif ($d == 0 && $m !=0) {
-            $format = '%B %Y';
+            $format = (!defined('_DEFAULT_DATE_FORMAT_YB') ? '%B %Y' : _DEFAULT_DATE_FORMAT_YB);
         } elseif ($m == 0) {
-            $format = '%Y';
+            $format = (!defined('_DEFAULT_DATE_FORMAT_Y') ? '%Y' : _DEFAULT_DATE_FORMAT_Y);
         } else {
-            $format = '%d %B %Y';
+            $format = (!defined('_DEFAULT_DATE_FORMAT_YBD') ? '%d %B %Y' : _DEFAULT_DATE_FORMAT_YBD);
         }
 
         echo strftimejp($format,mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
@@ -1391,6 +1391,15 @@ class ACTIONS extends BaseActions {
     }
 
     /**
+     * Parse ticket_id
+     */
+    function parse_ticket_id()
+    {
+        global $manager;
+        printf("%s" , $manager->_generateTicket());
+    }
+
+    /**
      *    Parse skinvar todaylink
      *    A link to the today page (depending on selected blog, etc...)
      */
@@ -1417,7 +1426,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_version() {
         global $nucleus;
-        echo 'Nucleus CMS ' . $nucleus['version'];
+        echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
     }
 
     /**

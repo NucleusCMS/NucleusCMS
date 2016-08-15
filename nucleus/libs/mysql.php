@@ -113,6 +113,8 @@ function mysql_error($dblink = NULL)
 {
     global $MYSQL_CONN;
     $link = ($dblink ? $dblink : $MYSQL_CONN);
+    if (!$link)
+        return 'db handler is null';
     return @mysqli_error($link);
 }
 

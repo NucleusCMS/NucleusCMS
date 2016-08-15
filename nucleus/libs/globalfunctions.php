@@ -15,6 +15,9 @@
  * @copyright Copyright (C) The Nucleus Group
 
  */
+if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+global $StartTime;
+$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
@@ -28,7 +31,6 @@ define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
-if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
@@ -177,6 +179,7 @@ $manager =& MANAGER::instance();
 //set_magic_quotes_runtime(0);
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
     ini_set('magic_quotes_runtime', '0');
+    set_magic_quotes_runtime(0);
 }
 
 // Avoid notices
@@ -1189,7 +1192,7 @@ function selector() {
     }
 
     //$special = requestVar('special'); //get at top of file as global
-    if (!empty($special) && isValidShortName($special)) {
+    if (!empty($special) && isValidSkinPartsName($special)) {
         $type = strtolower($special);
     }
 
@@ -1272,6 +1275,11 @@ function isValidTemplateName($name) {
 
 function isValidSkinName($name) {
     return preg_match('#^[a-z0-9/]+$#i', $name);
+}
+
+function isValidSkinPartsName($name)
+{
+    return preg_match('#^[a-z0-9_\-]+$#i', $name);
 }
 
 // add and remove linebreaks

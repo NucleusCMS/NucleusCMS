@@ -91,7 +91,8 @@ class BaseActions {
      */
     function parse_parsedinclude($filename) {
         // check current level
-        if ($this->level > 3) return;    // max. depth reached (avoid endless loop)
+        if ($this->level > 3)
+            return;    // max. depth reached (avoid endless loop)
         global $skinid;
         $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
@@ -99,7 +100,7 @@ class BaseActions {
         {
             return;
         }
-        $contents = strpos($filename,'/')===false ? $skin->getContent($filename) : false;
+        $contents = (strpos($filename,'/')===false ? $skin->getContent($filename) : false);
         if (!$contents)
         {
             if (!is_file($file))

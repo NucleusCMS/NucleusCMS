@@ -66,13 +66,9 @@ class NAVLIST extends ENCAPSULATE {
     function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE)
     {
         $batch = new BATCH($batchtype);
-
-        $this->doEncapsulate(
-                array(&$batch, 'showlist'),
-                array(&$query, $type, $template),
-                $errorMessage
-        );
-
+        $call = array($batch, 'showlist');
+        $params = array(&$query, $type, $template);
+        $this->doEncapsulate($call, $params, $errorMessage);
     }
 
 
@@ -445,7 +441,9 @@ class BATCH extends ENCAPSULATE {
     // shortcut :)
     function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
     {
+        $call = 'showlist';
         $params = array($query, $type, $template);
-        return $this->doEncapsulate('showlist', $params, $errorMessage);
+        return $this->doEncapsulate($call, $params, $errorMessage);
     }
 }
+

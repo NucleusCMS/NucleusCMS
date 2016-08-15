@@ -72,7 +72,6 @@ class ITEMACTIONS extends BaseActions {
             'authorid',
             'authorlink',
             'catid',
-            'karma',
             'date',
             'time',
             'query',
@@ -81,6 +80,7 @@ class ITEMACTIONS extends BaseActions {
             'closed',
             'syndicate_title',
             'syndicate_description',
+            'karma',
             'karmaposlink',
             'karmaneglink',
             'new',
@@ -538,8 +538,8 @@ class ITEMACTIONS extends BaseActions {
         $actions->setHighlight($this->strHighlight);
         $actions->setCurrentItem($this->currentItem);
         //$actions->setParser($parser);
-        $p_data = $actions->highlight($data);
-        $parser->parse($p_data);
+        $param = $actions->highlight($data);
+        $parser->parse($param);
     }
 
     /*
