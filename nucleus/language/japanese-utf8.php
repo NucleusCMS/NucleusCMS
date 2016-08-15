@@ -17,6 +17,16 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+/********************************************
+ *        Important Settings                *
+ ********************************************/
+if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
+if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
+if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
+
+/********************************************
+ *        Start New for                     *
+ ********************************************/
 
 /********************************************
  *        Start New for 3.80                *
@@ -44,6 +54,14 @@ define('_OVERHEAD',                  'オーバーヘッド');
 
 define('_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT',   "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPI_%s または SqlApi_SQL92 をサポートしていません。プラグインをこの機能に対応した最新版に更新してください)");
 
+define('_DEFAULT_DATE_FORMAT_YMD',         '%Y年%m月%d日');
+define('_DEFAULT_DATE_FORMAT_YBD',         '%Y年%m月%d日');
+define('_DEFAULT_DATE_FORMAT_YM',          '%Y年%m月');
+define('_DEFAULT_DATE_FORMAT_YB',          '%Y年%m月');
+define('_DEFAULT_DATE_FORMAT_MD',          '%m月%d日');
+define('_DEFAULT_DATE_FORMAT_BD',          '%m月%d日');
+define('_DEFAULT_DATE_FORMAT_Y',           '%Y年');
+
 define('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM',      'システムのコアについて');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_VERSION',     'コア のバージョン');
 define('_ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL',  'コア のパッチレベル');
@@ -58,9 +76,6 @@ define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示�
 /********************************************
  *        Start New for 3.71                *
  ********************************************/
-// Skin import/export
-define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
-
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'データベース と バージョン');
 define('_ADMIN_SYSTEMOVERVIEW_DBDRIVER',      'データベースのドライバ');
 define('_ADMIN_SYSTEMOVERVIEW_PHPANDDB',      'PHP と データベース');
@@ -88,6 +103,9 @@ define('_CAHANGE_CATEGORY_ORDER_TITLE',		  'カテゴリーの並び順を指定
 define('_CAHANGE_CATEGORY_ORDER_CONFIRM_DESC',	'以下のカテゴリーの並び順が一括で変更されます。よろしければ、ボタンを押してください。');
 define('_CAHANGE_CATEGORY_ORDER_BTN_TITLE',	  '並び順を変更する');
 
+// Skin import/export
+define('_SKINIE_ERROR_FAILEDLOAD_XML',         'XMLのロードに失敗しました');
+
 define('_ADD_DATEINPUTNOW',       '現在時刻');
 define('_ADD_DATEINPUTRESET',     'リセット');
 
@@ -103,7 +121,6 @@ define('_ERROR_URL_TOO_LONG',				'ウェブサイトを40文字以内で入力�
  ********************************************/
 define('_SETTINGS_ADMINCSS',		'管理領域のスタイルシート');
 
-
 /********************************************
  *        Start New for 3.50                *
  ********************************************/
@@ -112,7 +129,6 @@ define('_ARCHIVETYPE_YEAR', '年');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE',		'新しいバージョンが入手可能かもしれません');
 define('_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT',		'アップグレードが入手可能かもしれません： v');
 define('_MANAGER_PLUGINSQLAPI_NOTSUPPORT', "プラグイン %s を読み込めませんでした。(このプラグインはSqlAPIをサポートしていません。データベースの接続方法を見直してください)");
-
 
 /********************************************
  *        Start New for 3.40                *
@@ -418,8 +434,7 @@ define('_LANGUAGEFILES_GALEGO',						'ガリシア語 - Galego (iso-8859-1)');
 define('_LANGUAGEFILES_GERMAN',						'ドイツ語 - Deutsch (iso-8859-1)');
 define('_LANGUAGEFILES_HUNGARIAN',					'ハンガリー語 - Magyar (iso-8859-2)');
 define('_LANGUAGEFILES_ITALIANO',					'イタリア語 - Italiano (iso-8859-1)');
-define('_LANGUAGEFILES_KOREAN-EUC-KR',				'韓国語 - &#54620;&#44397;&#50612; (euc-kr)');
-define('_LANGUAGEFILES_KOREAN-UTF',					'韓国語 - &#54620;&#44397;&#50612; (utf-8)');
+define('_LANGUAGEFILES_KOREAN-UTF8',					'韓国語 - &#54620;&#44397;&#50612; (utf-8)');
 define('_LANGUAGEFILES_LATVIAN',					'ラトビア語 - Latvie&scaron;u (windows-1257)');
 define('_LANGUAGEFILES_NEDERLANDS',					'オランダ語 - Nederlands (iso-8859-15)');
 define('_LANGUAGEFILES_PERSIAN',					'ペルシア語 - &#1601;&#1575;&#1585;&#1587;&#1740; (utf-8)');
@@ -870,8 +885,6 @@ define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
 
 
-// charset to use
-define('_CHARSET',							'UTF-8');
 
 // global stuff
 define('_LOGOUT',							'ログアウト');
