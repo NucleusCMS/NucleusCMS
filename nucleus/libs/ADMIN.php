@@ -6909,6 +6909,48 @@ selector();
     /**
      * @todo document this
      */
+    function action_pluginadmin($message = '')
+    {
+        global $member, $manager;
+
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
+
+        $pid = intRequestVar('plugid');
+        if (!$manager->pidInstalled($pid))
+            $this->error(_ERROR_NOSUCHPLUGIN);
+
+//        $o_plugin = $manager->pidLoaded($pid);
+        $o_plugin = $manager->getPluginFromPid($pid);
+        if (!$o_plugin || !is_object( $o_plugin ))
+            $this->error(_ERROR_PLUGFILEERROR . $o_plugin);
+//
+        $plugin_admin_php_file = $o_plugin->getDirectory() . 'index.php';
+        if (!is_file($plugin_admin_php_file))
+            $this->error(_ERROR_PLUGFILEERROR);
+
+        $url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
+        if (!defined('ENABLE_PLUGIN_ADMIN_V2'))
+            define('ENABLE_PLUGIN_ADMIN_V2', TRUE);
+        if (ENABLE_PLUGIN_ADMIN_V2)
+        {
+            define('PLUGIN_ADMIN_BASE_URL', $url);
+//            $this->pagehead();
+            include_once($plugin_admin_php_file);
+//            $this->pagefoot();
+        }
+        else
+        {
+            // TODO: redirect old admin page or Error message
+            $this->pagehead();
+            echo "not implemented";
+            $this->pagefoot();
+        }
+    }
+
+    /**
+     * @todo document this
+     */
     function action_pluginoptions($message = '') {
         global $member, $manager;
 

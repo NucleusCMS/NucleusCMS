@@ -237,9 +237,13 @@ class NucleusPlugin {
       *
       * public
       */
-    function getAdminURL() {
+    function getAdminURL()
+    {
         global $CONF, $manager;
 
+        if ($this->supportsFeature('pluginadmin'))
+//            return  $CONF['AdminURL']. 'index.php?plugid=' . $this->getID() . '&action=pluginadmin';
+          return $manager->addTicketToUrl('index.php?plugid=' . $this->getID() . '&action=pluginadmin');
         if (isset($this->plugin_admin_url_prefix))
             return $CONF['PluginURL'] . $this->plugin_admin_url_prefix . $this->getShortName() . '/';
         return $CONF['PluginURL'] . $this->getShortName() . '/';
