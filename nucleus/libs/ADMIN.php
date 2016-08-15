@@ -109,7 +109,8 @@ class ADMIN {
             'templateedit',
             'templatedelete',
             'activate',
-            'systemoverview'
+            'systemoverview',
+            'optimizeoverview'
         );
 /*
         // the rest of the actions needs to be checked
@@ -303,6 +304,7 @@ class ADMIN {
         echo '<h2>' . _MANAGE_EXTRA . '</h2>';
         echo '<ul>';
         echo '<li><a href="index.php?action=backupoverview">'._OVERVIEW_BACKUP.'</a></li>';
+        echo '<li><a href="index.php?action=optimizeoverview">'._ADMIN_DATABASE_OPTIMIZATION_REPAIR.'</a></li>';
         echo '<li><a href="index.php?action=pluginlist">'._OVERVIEW_PLUGINS.'</a></li>';
         echo '</ul>';
 
@@ -7137,4 +7139,260 @@ selector();
             }
         }
     }
+
+    /**
+     * @todo document this
+     */
+    function action_optimizeoverview() {
+        global $member, $manager, $DB_DRIVER_NAME;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+        printf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
+
+        if (isset($_POST['mode']) && isset($_POST['step']))
+        {
+            if ($DB_DRIVER_NAME == 'sqlite' && PostVar('mode')=='optimize' && PostVar('step')=='start')
+            {
+                echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
+                echo sprintf("%s %s : %s<br />\n", _ADMIN_OLD, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
+                $this->db_optimize_sqlite();
+                echo sprintf("%s %s : %s<br />\n", _ADMIN_NEW, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
+
+                $this->pagefoot();
+                return;
+            }
+        }
+
+        if (in_array($DB_DRIVER_NAME, array('mysql', 'sqlite')))
+        {
+            printf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
+
+            if ($DB_DRIVER_NAME == 'sqlite')
+            {
+                echo _ADMIN_FILESIZE . " : " . $this->get_db_sqliteFileSizeText();
+                $btn_title = _ADMIN_TITLE_OPTIMIZE;
+                $s = <<<EOD
+        <form method="post" action="index.php"><p>
+        <input type="hidden" name="action" value="optimizeoverview" />
+        <input type="hidden" name="mode"   value="optimize" />
+        <input type="hidden" name="step"   value="start" />
+        <input type="submit" value="${btn_title}" tabindex="20" />
+        </p></form>
+EOD;
+                echo $s;
+            }
+            else
+            {
+                if (!$this->db_mysql_checktables(TRUE))
+                    printf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
+                else
+                {
+                    $tables = array();
+                    $confirmOptimize = FALSE;
+                    $has_big = FALSE;
+                    $warn_size = 10*pow(10,6); // 10 Mega Byte
+                    $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+                    while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+                    {
+                        $tables[$row['Name']] = $row;
+                        if ($row['Engine'] != 'InnoDB')
+                        {
+                            if (intval($row['Data_free'])>0)
+                                $confirmOptimize = TRUE;
+                            if (intval($row['Data_free']) > $warn_size) // 10*pow(10,6)
+                               $has_big = TRUE;
+                        }
+                    }
+                    if ($confirmOptimize)
+                    {
+                        if (isset($_POST['mode']) && isset($_POST['step'])
+                            && PostVar('mode')=='optimize' && PostVar('step')=='start')
+                        {
+                            echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
+                            if ($this->db_optimize_mysql())
+                                printf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
+                            $this->pagefoot();
+                            return;
+                        }
+                        if ($has_big)
+                            printf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
+                        printf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
+                        $btn_title = hsc(_ADMIN_BTN_TITLE_OPTIMIZE);
+                $s = <<<EOD
+        <form method="post" action="index.php"><p>
+        <input type="hidden" name="action" value="optimizeoverview" />
+        <input type="hidden" name="mode"   value="optimize" />
+        <input type="hidden" name="step"   value="start" />
+        <input type="submit" value="${btn_title}" tabindex="20" />
+        </p></form>
+EOD;
+                        echo $s;
+                    }
+                    echo "<table>";
+                    echo sprintf("<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th></tr>",
+                                 hsc(_ADMIN_TABLENAME), hsc(_SIZE), hsc(_OVERHEAD));
+                    foreach($tables as $key => $item)
+                    {
+                        echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                                     hsc($key), hsc($item['Data_length']), hsc($item['Data_free']), hsc($item['Engine']));
+                    }
+                    echo "</table>";
+                }
+            }
+        }
+
+        if (in_array($DB_DRIVER_NAME, array('mysql')))
+        {
+            printf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
+            $this->db_mysql_checktables();
+        }
+
+        $this->pagefoot();
+    }
+
+    private function db_mysql_checktables($checkonly = FALSE)
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql')
+            return array();
+        $tables = array();
+        $res = sql_query(sprintf("SHOW TABLES LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_array($res)) && !empty($row))
+            $tables[] = $row[0];
+
+        $items = array();
+        if (count($tables))
+        {
+            $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
+            $res = sql_query($sql);
+            while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+              if ($row['Msg_type'] == 'status')
+                if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date')
+                    $items[$row['Table']] = $row;
+        }
+
+        if ($checkonly)
+            return count($items)==0;
+
+        if (count($items)>0)
+        {
+            if (isset($_POST['mode']) && isset($_POST['step'])
+                && PostVar('mode')=='repaire' && PostVar('step')=='start')
+            {
+                echo "<p>" . hsc(_ADMIN_EXEC_TITLE_AUTO_REPAIR) . "</p>";
+                echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
+                // REPAIR   TABLE tablename1[, tablename2, ..]
+                // result : Table  Op  Msg_type   Msg_text :  tablename   repair    status   OK
+                $sql = "REPAIR TABLE `" . implode("`, `", array_keys($items)) . "`";
+                $res = sql_query($sql);
+                $items = array();
+                while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+                        $items[$row['Table']] = $row;
+            }
+            else
+            {
+                echo "<p>" . hsc(_PROBLEMS_FOUND_ON_TABLE) . "</p>";
+                echo "<p>" . hsc(_ADMIN_CONFIRM_TITLE_AUTO_REPAIR) . "</p>";
+                $btn_title = hsc(_ADMIN_BTN_TITLE_AUTO_REPAIR);
+                $s = <<<EOD
+        <form method="post" action="index.php"><p>
+        <input type="hidden" name="action" value="optimizeoverview" />
+        <input type="hidden" name="mode"   value="repaire" />
+        <input type="hidden" name="step"   value="start" />
+        <input type="submit" value="${btn_title}" tabindex="20" />
+        </p></form>
+EOD;
+                echo $s;
+            }
+            echo "<table>";
+            echo sprintf("<tr><th>%s</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
+            foreach($items as $key => $item)
+            {
+                echo sprintf("<tr><td>%s</td><td>%s</td></tr>", hsc($key), hsc($item['Msg_text']));
+            }
+            echo "</table>";
+        }
+        else
+            echo hsc(_NO_PROBLEMS_FOUND);
+    }
+
+    private function db_optimize_mysql()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql')
+            return FALSE;
+
+        $success = FALSE;
+
+        $tables = array();
+        $inotables = array();
+        $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+            if (intval($row['Data_free'])>0)
+            {
+                if ($row['Engine'] == 'InnoDB')
+                    $inotables[] = $row['Name'];
+                else
+                    $tables[] = $row['Name'];
+            }
+
+        if (count($tables)>0)
+        {
+            // OPTIMIZE TABLE tablename1[, tablename2, ..]
+            // result : Table  Op  Msg_type   Msg_text :  tablename   optimize   status   OK
+            $sql = "OPTIMIZE TABLE `" . implode("`, `", $tables) . "`";
+            $res = sql_query($sql);
+            echo "<table>";
+            echo sprintf("<tr><th>%s</th><th>Msg_type</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
+            while($res && ($row = sql_fetch_assoc($res)))
+            { // Table , Op , Msg_type , Msg_text
+                echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>", hsc($row['Table']), hsc($row['Msg_type']), hsc($row['Msg_text']));
+            }
+            echo "</table>";
+            if ($res)
+                sql_free_result($res);
+            $success = TRUE;
+//            echo sprintf('<div>%s</div>', hsc($sql));
+        }
+        if (count($inotables)>0)
+        {
+            // InnoDB issue
+            // Can not optimize manually;
+            // Table does not support optimize, doing recreate + analyze instead
+            //  x : ALTER TABLE tablename ENGINE='InnoDB';
+//            foreach($inotables as $tablename)
+//                sql_query(sprintf("ALTER TABLE %s ENGINE='InnoDB'", $tablename));
+            echo sprintf('<p>InnoDB can not optimize manually</p>', hsc($sql));
+            echo '<ul>';
+            foreach($inotables as $tablename)
+                echo sprintf('<li>%s</li>', hsc($tablename));
+            echo '</ul>';
+        }
+        return $success;
+    }
+
+    private function db_optimize_sqlite()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'sqlite')
+            return FALSE;
+        sql_query('vacuum;');
+    }
+
+    private function get_db_sqliteFileSizeText()
+    {
+        global $DB_DRIVER_NAME, $DB_DATABASE;
+        if ($DB_DRIVER_NAME != 'sqlite')
+            return FALSE;
+        clearstatcache();
+        $size = filesize($DB_DATABASE);
+        $t = array('', 'K', 'M', 'G', 'T');
+        $n = min(4, ($size>0 ? floor(log($size,10) / 3) : 0));
+        $sizetext = sprintf('%d %s', $size/pow(10,$n*3), $t[$n] );
+        return sprintf("%s(%d) byte", $sizetext, $size);
+    }
+
 } // class ADMIN
