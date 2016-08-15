@@ -34,13 +34,32 @@
     <ja_JP><![CDATA[ファイルの保存先:]]></ja_JP>
   </text>
   <text>
-    <key><![CDATA[Conversion was over. Please update the config.php of contents]]></key>
-    <ja_JP><![CDATA[変換が終わりました。config.phpの内容を更新してください]]></ja_JP>
+    <key><![CDATA[Conversion was over]]></key>
+    <ja_JP><![CDATA[変換が終わりました]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Please edit the config.php manually]]></key>
+    <ja_JP><![CDATA[config.phpを手動で修正してください]]></ja_JP>
   </text>
   <text>
     <key><![CDATA[Before conversion, please upgrade of the core]]></key>
     <ja_JP><![CDATA[変換の前に、コアのアップグレードをしてください]]></ja_JP>
   </text>
-
+  <text>
+    <key><![CDATA[Visit your web site]]></key>
+    <ja_JP><![CDATA[ウェブサイトの確認]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Login to the admin area]]></key>
+    <ja_JP><![CDATA[管理領域にログインする]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Visit your site now]]></key>
+    <ja_JP><![CDATA[すぐにサイトへ行ってみる]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[Download the config.php]]></key>
+    <ja_JP><![CDATA[config.phpをダウンロードする]]></ja_JP>
+  </text>
 
 </items>
