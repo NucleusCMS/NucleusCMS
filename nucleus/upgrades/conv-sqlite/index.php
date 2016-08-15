@@ -275,6 +275,7 @@ class ConvertInstaller
             </p></form>
 EOD;
                     echo $s;
+            $this->showUnSupportedPlugins();
         }
 
         echo sprintf('<p><a href="index.php" onclick="history.back();">%s</a></p>', $this->_('Back'));
@@ -458,6 +459,29 @@ EOD;
         header("Content-Length: " . strlen($contents));
         echo $contents;
         exit;
+    }
+
+    public function showUnSupportedPlugins()
+    {
+        global $manager;
+        $items = array();
+        $res = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC' , sql_table('plugin')));
+        while($res && ($row = sql_fetch_array($res)))
+        {
+            $plugin = $manager->getPlugin($row[1]);
+            if (is_object($plugin) && ($plugin->supportsFeature('NotUseDbApi') || $plugin->supportsFeature('NoSql')
+                    || $plugin->supportsFeature('SqlApi_SQL92') || $plugin->supportsFeature('SqlApi_sqlite')))
+                continue;
+            $items[] = $row[1];
+        }
+        if (count($items) == 0)
+            return;
+        sort($items);
+        echo "<h2>" . hsc($this->_('The following installed plugins does not correspond to sqlite')) . "</h2>\n";
+        echo "<table><ol>";
+        foreach($items as $item)
+           printf('<li>%s</li>', $item);
+        echo "</ol></table>";
     }
 
 }

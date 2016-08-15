@@ -2,6 +2,10 @@
 
 <items>
   <text>
+    <key><![CDATA[Convert database to sqlite]]></key>
+    <ja_JP><![CDATA[データベースをsqliteに変換します]]></ja_JP>
+  </text>
+  <text>
     <key><![CDATA[Connected Driver is not mysql]]></key>
     <ja_JP><![CDATA[接続ドライバがmysqlではありません]]></ja_JP>
   </text>
@@ -60,6 +64,10 @@
   <text>
     <key><![CDATA[Download the config.php]]></key>
     <ja_JP><![CDATA[config.phpをダウンロードする]]></ja_JP>
+  </text>
+  <text>
+    <key><![CDATA[The following installed plugins does not correspond to sqlite]]></key>
+    <ja_JP><![CDATA[次のインストールされているプラグインはsqliteに対応していません]]></ja_JP>
   </text>
 
 </items>
