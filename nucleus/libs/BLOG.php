@@ -655,10 +655,7 @@ class BLOG {
     function showArchiveList($template, $mode = 'month', $limit = 0) {
         global $CONF, $catid, $manager;
 
-        if (!isset ($linkparams)) {
-            $linkparams = array();
-        }
-
+        $linkparams = array();
         if ($catid) {
             $linkparams = array('catid' => $catid);
         }
@@ -679,11 +676,11 @@ class BLOG {
 
         $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM '.sql_table('item')
         . ' WHERE iblog=' . $this->getID()
-        . ' and itime <=' . mysqldate($this->getCorrectTime())    // don't show future items!
-        . ' and idraft=0'; // don't show draft items
+        . ' AND itime <=' . mysqldate($this->getCorrectTime())    // don't show future items!
+        . ' AND idraft=0'; // don't show draft items
 
         if ($catid)
-            $query .= ' and icat=' . intval($catid);
+            $query .= ' AND icat=' . intval($catid);
 
         $query .= ' GROUP BY Year';
         if ($mode == 'month' || $mode == 'day')
@@ -1024,9 +1021,9 @@ class BLOG {
       */
     function isValidCategory($catid) {
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid)
-				.' limit 1';
+                .' LIMIT 1';
         $res = sql_query($query);
-		return (intval(sql_result($res)) > 0);
+        return (intval(sql_result($res)) > 0);
     }
 
     /**

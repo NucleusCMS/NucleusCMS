@@ -1,12 +1,14 @@
-* convtool
+﻿* convtool
 
 ◆自動で変換を行う方法
 
-(1) webからこのフォルダにアクセスします
+(1) ルートフォルダのconfig.php: 移行したいサイトのconfig.phpになっているか確認してください。
 
-(2) ログインして変換をします
+(2) webからこのフォルダにアクセスします
 
-(3) config.phpの変更 をします
+(3) ログインして変換をします
+
+(4) config.phpの変更 をします
     $MYSQL_HANDLER = array('pdo','sqlite');
     if ($MYSQL_HANDLER[1]=='sqlite')
     {
@@ -20,8 +22,7 @@
 ・編集したい場合
 は、こちらを推奨。
 
-(1) config_conv_test.php を作成
-   config.phpからコピー
+(1) ルートフォルダのconfig.php: 移行したいサイトのconfig.phpになっているか確認してください。
 
 (2) データベースをsqliteに変換
 php conv_sql_mysql_to_sqlite.php > nucleus-sqlite.sql

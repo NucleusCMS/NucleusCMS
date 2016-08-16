@@ -20,7 +20,7 @@ ob_start();
 define('_CHARSET', 'UTF-8');
 
 // auto search config.php
-$basepath = realpath(dirname(__FILE__) . '/../../');
+$basepath = realpath(dirname(__FILE__) . '/../../../');
 if (substr($basepath, -1,1) != DIRECTORY_SEPARATOR)
     $basepath .= DIRECTORY_SEPARATOR;
 $config_file = $basepath . 'config.php';
@@ -74,12 +74,18 @@ class ConvertInstaller
 
         if ($member->isAdmin())
         {
+            if (isset($_GET['export_config']) && $_GET['export_config']=='yes' )
+                $this->export_config();
+
             if (is_file($this->target_db_filename))
             {
                 $msg = $this->_('Database file is already exists') . "<br />"
                      . "settings/db_nucleus.sqlite" . "<br />"
                      . $this->_('If you want to convert, please try again move the old file');
-                $msg .= "<br /><hr><br />config.php<br />" .  $this->getDefaultConfig();
+                $msg .= "<br /><hr><br /><p>config.php</p>" .  $this->getDefaultConfig();
+                $msg .= "<p>" . $this->_('Download the config.php') . "</p>\n";
+                $msg .= "<p>Download <a href=\"./index.php?export_config=yes\" target=\"_blank\">config.php</a></p>\n";
+
                 $this->error( $msg );
                 exit;
             }
@@ -129,6 +135,7 @@ class ConvertInstaller
     function showLogin($type)
     {
         $this->printHead( $this->_('Login Please') );
+        $name = isset($_POST['login']) ? "value='".hsc(strval($_POST['login']))."' " : '';
         ?>
         <h1><?php echo $this->_('Login Please'); ?></h1>
         <p><?php echo  $this->_('Enter your data'); ?>:</p>
@@ -136,7 +143,7 @@ class ConvertInstaller
         <form method="post" action="<?php echo $type ?>">
 
           <ul>
-            <li><?php echo $this->_('Login name'); ?> <input name="login" /></li>
+            <li><?php echo $this->_('Login name'); ?> <input name="login" <?php echo $name; ?>/></li>
             <li><?php echo $this->_('Login Password'); ?> <input name="password" type="password" /></li>
           </ul>
 
@@ -226,6 +233,7 @@ class ConvertInstaller
 
     public function start()
     {
+        global $CONF;
         $this->printHead( $this->_('Convert data mysql to sqlite') );
 
         // check mysql database
@@ -237,9 +245,18 @@ class ConvertInstaller
             $this->doConvert();
             clearstatcache();
             echo sprintf("Size: %d", filesize($this->target_db_filename));
-            echo "\n<p>" . $this->_('Conversion was over. Please update the config.php of contents') . "</p>\n";
+            echo "\n<p>" . $this->_('Conversion was over') . "</p>\n";
+            echo "<h2>" . $this->_('Please edit the config.php manually') . "</h2>\n";
+            echo "<p>config.php</p>\n";
             echo $this->getDefaultConfig();
+            echo "<p>" . $this->_('Download the config.php') . "</p>\n";
+            echo "<p>Download <a href=\"./index.php?export_config=yes\" target=\"_blank\">config.php</a></p>\n";
 
+        	printf("<h1>%s</h1>", $this->_('Visit your web site'));
+        	echo "<p><ul>";
+        	printf('<li><a href="%s">%s</a></li>', $CONF['AdminURL'], $this->_('Login to the admin area'));
+        	printf('<li><a href="%s">%s</a></li>', $CONF['BlogURL'],  $this->_('Visit your site now'));
+        	echo "</ul></p>";
 //            echo "\n<h3>" . $this->_('Error failed') . "</h3>\n";
 //            echo "\n<p>" . $this->_('Error:') . "</p>\n";
 //            echo sprintf("<blockquote><div>%s</div></blockquote>", $this->_('Sorry') . ', ' . $this->_('not implemented yet'));
@@ -258,6 +275,7 @@ class ConvertInstaller
             </p></form>
 EOD;
                     echo $s;
+            $this->showUnSupportedPlugins();
         }
 
         echo sprintf('<p><a href="index.php" onclick="history.back();">%s</a></p>', $this->_('Back'));
@@ -314,15 +332,156 @@ EOD;
 
     public function getDefaultConfig()
     {
-        return '<blockquote><pre>'
-            . '$MYSQL_HANDLER = array(&#039;pdo&#039;,&#039;sqlite&#039;);
-if ($MYSQL_HANDLER[1]==&#039;sqlite&#039;)
+        $short =<<<EOD
+<blockquote><pre style="width:100%; overflow: auto; background-color: #ffffe1"><b>//</b>\$MYSQL_HANDLER = array('mysql','');<b>
+\$MYSQL_HANDLER = array(&#039;pdo&#039;,&#039;sqlite&#039;);
+if (\$MYSQL_HANDLER[1]==&#039;sqlite&#039;)
 {
-   $MYSQL_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
-// $MYSQL_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
+   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
+// \$MYSQL_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
+}</b></pre></blockquote>
+EOD;
+        return $short;
+    }
+
+    public function getCompleteConfig()
+    {
+        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE, $DB_PREFIX;
+        global $DIR_NUCLEUS,  $DIR_MEDIA, $DIR_SKINS;
+        global $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
+        global $DIR_BASE;
+        
+        $newDir = array();
+        foreach(array('DIR_NUCLEUS'=>'nucleus', 'DIR_MEDIA'=>'media', 'DIR_SKINS'=>'skins') as $key => $value)
+        {
+            $newDir[$key] = sprintf("'%s'", $$key);
+            if (!isset($DIR_BASE) || strlen($DIR_BASE)==0)
+                continue;
+            if ($DIR_BASE. $value .'/' == $$key)
+                $newDir[$key] = "\$DIR_BASE . '${value}/'";
+            else if (0 === strpos($$key, $DIR_BASE))
+                $newDir[$key] = sprintf("\$DIR_BASE . '%s'", substr($$key, strlen($DIR_BASE)));
+        }
+
+        foreach(array('DIR_PLUGINS'=>'plugins', 'DIR_LANG'=>'language', 'DIR_LIBS'=>'libs') as $key => $value)
+        {
+            if ($DIR_NUCLEUS. $value .'/' == $$key)
+                $newDir[$key] = "\$DIR_NUCLEUS . '${value}/'";
+            else if (0 === strpos($$key, $DIR_NUCLEUS))
+                $newDir[$key] = sprintf("\$DIR_NUCLEUS . '%s'", substr($$key, strlen($DIR_NUCLEUS)));
+            else
+               $newDir[$key] = sprintf("'%s'", $$key);
+//           var_dump(__LINE__, $DIR_NUCLEUS, $key, $value, $$key);
+        }
+
+        $s =<<<EOD
+<?php
+
+// This file contains variables with the locations of the data dirs
+// and basic functions that every page can use
+
+// mySQL connection information
+\$MYSQL_HOST     = '$DB_HOST';
+\$MYSQL_USER     = '$DB_USER';
+\$MYSQL_PASSWORD = '$DB_PASSWORD';
+\$MYSQL_DATABASE = '$DB_DATABASE';
+\$MYSQL_PREFIX   = '$DB_PREFIX';
+
+// new in 3.50. first element is db handler, the second is the db driver used by the handler
+// default is \$MYSQL_HANDLER = array('mysql','');
+//\$MYSQL_HANDLER = array('pdo','mysql');
+\$MYSQL_HANDLER = array('pdo','sqlite');
+//\$MYSQL_HANDLER = array('mysql','');
+
+if (\$MYSQL_HANDLER[1]=='sqlite')
+{
+   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+// \$MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
-'
-                    . '</pre></blockquote>';
+
+// main nucleus directory
+\$DIR_BASE = dirname(__FILE__) . '/';
+
+//\$DIR_NUCLEUS = \$DIR_BASE . 'nucleus/';
+\$DIR_NUCLEUS = {$newDir['DIR_NUCLEUS']};
+//\$DIR_NUCLEUS = '/your/path/to/nucleus/';
+
+// media dir
+//\$DIR_MEDIA = \$DIR_BASE . 'media/';
+\$DIR_MEDIA = {$newDir['DIR_MEDIA']};
+//\$DIR_MEDIA = '/your/path/to/media/';
+
+// extra skin files for imported skins
+//\$DIR_SKINS = \$DIR_BASE . 'skins/';
+\$DIR_SKINS = {$newDir['DIR_SKINS']};
+//\$DIR_SKINS = '/your/path/to/skins/';
+
+// these dirs are normally subdirs of the nucleus dir, but
+// you can redefine them if you wish
+//\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';
+\$DIR_PLUGINS = {$newDir['DIR_PLUGINS']};
+
+//\$DIR_LANG = \$DIR_NUCLEUS . 'language/';
+\$DIR_LANG = {$newDir['DIR_LANG']};
+
+//\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';
+\$DIR_LIBS = {$newDir['DIR_LIBS']};
+
+if (!isset(\$DIR_NUCLEUS) || !@is_file(\$DIR_LIBS . 'globalfunctions.php')) {
+    foreach(array(\$DIR_LIBS , dirname(__FILE__).'/nucleus/libs/') as \$path)
+        if (@is_file(\$path.'config-error.php')) @include(\$path.'config-error.php');
+    header('Content-type: text/html; charset=utf-8');
+    echo '<h1>Configuration error</h1>';
+    echo '<p>please run the <a href="./install/index.php">install script</a> or modify config.php</p>';
+	exit;
+}
+
+// include libs
+include(\$DIR_LIBS.'globalfunctions.php');
+
+EOD;
+        return $s;
+    }
+
+    private function export_config()
+    {
+//        if (headers_sent())
+//        {
+//            $msg = $this->_('error: headers_sent');
+//            $this->error( $msg );
+//        }
+
+        $contents = $this->getCompleteConfig(); 
+        header('Content-Type: text/plain');
+        header('Content-Disposition: attachment; filename="config.php"');
+        header('Expires: 0');
+        header('Pragma: no-cache');
+        header("Content-Length: " . strlen($contents));
+        echo $contents;
+        exit;
+    }
+
+    public function showUnSupportedPlugins()
+    {
+        global $manager;
+        $items = array();
+        $res = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC' , sql_table('plugin')));
+        while($res && ($row = sql_fetch_array($res)))
+        {
+            $plugin = $manager->getPlugin($row[1]);
+            if (is_object($plugin) && ($plugin->supportsFeature('NotUseDbApi') || $plugin->supportsFeature('NoSql')
+                    || $plugin->supportsFeature('SqlApi_SQL92') || $plugin->supportsFeature('SqlApi_sqlite')))
+                continue;
+            $items[] = $row[1];
+        }
+        if (count($items) == 0)
+            return;
+        sort($items);
+        echo "<h2>" . hsc($this->_('The following installed plugins does not correspond to sqlite')) . "</h2>\n";
+        echo "<table><ol>";
+        foreach($items as $item)
+           printf('<li>%s</li>', $item);
+        echo "</ol></table>";
     }
 
 }

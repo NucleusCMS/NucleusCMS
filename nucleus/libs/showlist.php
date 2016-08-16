@@ -671,7 +671,7 @@ function listplug_table_skinlist($template, $type) {
 
             echo "<td>" , hsc($current->sddesc);
                 // show list of defined parts
-                if ($DB_DRIVER_NAME == 'mysql')
+                if ( 'mysql' == $DB_DRIVER_NAME )
                     $order = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
                 else
                 {

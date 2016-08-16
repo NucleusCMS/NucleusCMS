@@ -76,7 +76,7 @@ class PAGEFACTORY extends BaseActions {
             'ticket',
             'autosave',
             'autosaveinfo',
-            'ifautosave',
+            'ifautosave'
         );
 
         // TODO: maybe add 'skin' later on?

@@ -14,7 +14,14 @@ $MYSQL_PREFIX = '';
 // default is $MYSQL_HANDLER = array('mysql','');
 //$MYSQL_HANDLER = array('mysql','');
 //$MYSQL_HANDLER = array('pdo','mysql');
+//$MYSQL_HANDLER = array('pdo','sqlite');
 $MYSQL_HANDLER = array('mysql','');
+
+if ($MYSQL_HANDLER[1]=='sqlite')
+{
+   $MYSQL_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+// $MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
+}
 
 // main nucleus directory
 $DIR_BASE = dirname(__FILE__) . '/';

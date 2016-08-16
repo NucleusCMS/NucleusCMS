@@ -291,7 +291,8 @@ class ACTION
             }
             else
             {
-                sendContentType('text/html', '', _CHARSET);
+                if (!headers_sent())
+                    sendContentType('text/html', '', _CHARSET);
                 echo _MSG_ACTIVATION_SENT;
                 echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
                 echo "\n</body>\n</html>";
@@ -355,13 +356,13 @@ class ACTION
     /**
      *  Handle karma votes
      */
-	function doKarma($type)
-	{
-		return doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
-	}
+    function doKarma($type)
+    {
+        return doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
+    }
 
     /**
-	 *  Handle votes
+     *  Handle votes
      */
     function doVote($type)
     {

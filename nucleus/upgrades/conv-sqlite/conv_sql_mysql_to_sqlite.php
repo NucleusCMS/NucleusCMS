@@ -27,7 +27,7 @@ if (php_sapi_name() != 'cli')
 
 ob_start();
 $config_php = 'config.php';
-foreach(array('','../','../../') as $dir)
+foreach(array('','../','../../../') as $dir)
     if (is_file("${dir}config.php"))
     {
         $config_php = "${dir}config.php";

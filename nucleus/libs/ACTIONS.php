@@ -55,7 +55,7 @@ class ACTIONS extends BaseActions {
      *  Set the skin
      */
     function setSkin(&$skin) {
-		unset($this->skin);
+        unset($this->skin);
         $this->skin =& $skin;
     }
 
@@ -63,7 +63,7 @@ class ACTIONS extends BaseActions {
      *  Set the parser
      */
     function setParser(&$parser) {
-		unset($this->parser);
+        unset($this->parser);
         $this->parser =& $parser;
     }
 
@@ -258,7 +258,7 @@ class ACTIONS extends BaseActions {
 
         return $member->blogAdminRights($blogid);
     }
-    
+
     /**
      * returns either
      *        - a raw link (html/xml encoded) when no linktext is provided
@@ -274,7 +274,7 @@ class ACTIONS extends BaseActions {
             $l = $u;
         return $l;
     }
-    
+
     /**
      * Outputs a next/prev link
      *
@@ -317,12 +317,12 @@ class ACTIONS extends BaseActions {
             case 'next':
                 global $navigationItems;
                 if (!isset($navigationItems)) $navigationItems = 0;
-                
+
                 if ($recount)
                     $iAmountOnPage = 0;
-                else 
+                else
                     $iAmountOnPage = $this->amountfound;
-                
+
                 if (intval($navigationItems) > 0) {
                     $iAmountOnPage = intval($navigationItems) - intval($startpos);
                 }
@@ -361,7 +361,7 @@ class ACTIONS extends BaseActions {
     }
 
     /**
-     *  Creates an item link and if no id is given a todaylink 
+     *  Creates an item link and if no id is given a todaylink
      */
     function _itemlink($id, $linktext = '') {
         global $CONF;
@@ -370,9 +370,9 @@ class ACTIONS extends BaseActions {
         else
             $this->parse_todaylink($linktext);
     }
-    
+
     /**
-     *  Creates an archive link and if no id is given a todaylink 
+     *  Creates an archive link and if no id is given a todaylink
      */
     function _archivelink($id, $linktext = '') {
         global $CONF, $blog;
@@ -381,7 +381,7 @@ class ACTIONS extends BaseActions {
         else
             $this->parse_todaylink($linktext);
     }
-    
+
     /**
       * Helper function that sets the category that a blog will need to use
       *
@@ -421,7 +421,7 @@ class ACTIONS extends BaseActions {
         );
         $manager->notify('PostBlogContent', $param);
     }
-    
+
     /**
      * Parse skinvar additemform
      */
@@ -434,7 +434,7 @@ class ACTIONS extends BaseActions {
         $blog->InsertJavaScriptInfo();
         $this->doForm('additemform');
     }
-    
+
     /**
      * Parse skinvar addlink
      * A Link that allows to open a bookmarklet to add an item
@@ -445,7 +445,7 @@ class ACTIONS extends BaseActions {
             echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
         }
     }
-    
+
     /**
      * Parse skinvar addpopupcode
      * Code that opens a bookmarklet in an popup window
@@ -455,10 +455,10 @@ class ACTIONS extends BaseActions {
         echo "winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');";
         echo "winbm.focus();return false;";
     }
-    
+
     /**
      * Parse skinvar adminurl
-     * (shortcut for admin url)     
+     * (shortcut for admin url)
      */
     function parse_adminurl() {
         $this->parse_sitevar('adminurl');
@@ -532,7 +532,7 @@ class ACTIONS extends BaseActions {
 
     /**
      *  Parse skinvar archivedaylist
-     */         
+     */
     function parse_archivedaylist($template, $category = 'all', $limit = 0) {
         global $blog;
         if ($category == 'all') $category = '';
@@ -541,7 +541,7 @@ class ACTIONS extends BaseActions {
         $blog->showArchiveList($template, 'day', $limit);
         $this->_postBlogContent('archivelist',$blog);
     }
-    
+
     /**
      *    A link to the archives for the current blog (or for default blog)
      */
@@ -591,18 +591,18 @@ class ACTIONS extends BaseActions {
         $this->amountfound = $blog->readLog($template, $limit, $offset, $startpos);
         $this->_postBlogContent('blog',$blog);
     }
-    
+
     /*
     *    Parse skinvar bloglist
     *    Shows a list of all blogs
-    *    bnametype: whether 'name' or 'shortname' is used for the link text       
+    *    bnametype: whether 'name' or 'shortname' is used for the link text
     *    orderby: order criteria
-    *    direction: order ascending or descending          
+    *    direction: order ascending or descending
     */
     function parse_bloglist($template, $bnametype = '', $orderby='number', $direction='asc') {
         BLOG::showBlogList($template, $bnametype, $orderby, $direction);
     }
-    
+
     /**
      * Parse skinvar blogsetting
      */
@@ -626,7 +626,7 @@ class ACTIONS extends BaseActions {
                 break;
         }
     }
-    
+
     /**
      * Parse callback
      */
@@ -636,7 +636,7 @@ class ACTIONS extends BaseActions {
         $param = array('type' => $type);
         $manager->notify($eventName, $param);
     }
-    
+
     /**
      * Parse skinvar category
      */
@@ -657,17 +657,17 @@ class ACTIONS extends BaseActions {
                 break;
         }
     }
-    
+
     /**
      * Parse categorylist
      */
     function parse_categorylist($template, $blogname = '') {
         global $blog, $manager;
-        
+
         // when no blog found
         if (($blogname == '') && (!is_object($blog)))
             return 0;
-            
+
         if ($blogname == '') {
             $this->_preBlogContent('categorylist',$blog);
             $blog->showCategoryList($template);
@@ -679,14 +679,14 @@ class ACTIONS extends BaseActions {
             $this->_postBlogContent('categorylist',$b);
         }
     }
-    
+
     /**
      * Parse skinvar charset
      */
     function parse_charset() {
         echo _CHARSET;
     }
-    
+
     /**
      * Parse skinvar commentform
      */
@@ -708,12 +708,12 @@ class ACTIONS extends BaseActions {
             $this->doForm('commentform-closed');
             return;
         }
-        
+
         if (!$blog->isPublic() && !$member->isLoggedIn()) {
             $this->doForm('commentform-closedtopublic');
             return;
         }
-        
+
         if (!$destinationurl)
         {
             $destinationurl = createLink(
@@ -761,10 +761,10 @@ class ACTIONS extends BaseActions {
             $this->doForm('commentform-loggedin');
         }
     }
-    
+
     /**
      * Parse skinvar comments
-     * include comments for one item     
+     * include comments for one item
      */
     function parse_comments($template) {
         global $itemid, $manager, $blog, $highlight;
@@ -791,7 +791,7 @@ class ACTIONS extends BaseActions {
         if ($errormessage)
             echo '<div class="error">', hsc($errormessage),'</div>';
     }
-    
+
     /**
      * Parse skinvar errormessage
      */
@@ -799,14 +799,14 @@ class ACTIONS extends BaseActions {
         global $errormessage;
         echo $errormessage;
     }
-    
+
     /**
      * Parse formdata
      */
     function parse_formdata($what) {
         echo $this->formdata[$what];
     }
-    
+
     /**
      * Parse ifcat
      */
@@ -855,7 +855,7 @@ class ACTIONS extends BaseActions {
                 break;
         }
     }
-    
+
     /**
      * Parse skinvar imagetext
      */
@@ -865,7 +865,7 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse skinvar item
-     * include one item (no comments)     
+     * include one item (no comments)
      */
     function parse_item($template) {
         global $blog, $itemid, $highlight;
@@ -884,7 +884,7 @@ class ACTIONS extends BaseActions {
         global $itemid;
         echo $itemid;
     }
-    
+
     /**
      * Parse skinvar itemlink
      */
@@ -935,7 +935,7 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse skinvar member
-     * (includes a member info thingie)     
+     * (includes a member info thingie)
      */
     function parse_member($what) {
         global $memberinfo, $member, $CONF;
@@ -996,7 +996,7 @@ class ACTIONS extends BaseActions {
             }
         }
     }
-    
+
     /**
      * Parse skinvar membermailform
      */
@@ -1031,7 +1031,7 @@ class ACTIONS extends BaseActions {
         }
 
     }
-    
+
     /**
      * Parse skinvar nextarchive
      */
@@ -1106,10 +1106,10 @@ class ACTIONS extends BaseActions {
         );
         $this->doForm('nucleusbutton');
     }
-    
+
     /**
      * Parse skinvar otherarchive
-     */    
+     */
     function parse_otherarchive($blogname, $template, $category = '') {
         global $archive, $manager;
         sscanf($archive,'%d-%d-%d',$y,$m,$d);
@@ -1119,7 +1119,7 @@ class ACTIONS extends BaseActions {
         $b->showArchive($template, $y, $m, $d);
         $this->_postBlogContent('otherachive',$b);
     }
-    
+
     /**
      * Parse skinvar otherarchivedaylist
      */
@@ -1132,7 +1132,7 @@ class ACTIONS extends BaseActions {
         $b->showArchiveList($template, 'day', $limit);
         $this->_postBlogContent('otherarchivelist',$b);
     }
-    
+
     /**
      * Parse skinvar otherarchivelist
      */
@@ -1215,7 +1215,7 @@ class ACTIONS extends BaseActions {
 
         call_user_func_array(array($plugin,'doSkinVar'), $params);
     }
-    
+
     /**
      * Parse skinvar prevarchive
      */
@@ -1243,7 +1243,7 @@ class ACTIONS extends BaseActions {
 
     /*
      * Parse skinvar previtem
-     * (include itemid of prev item)          
+     * (include itemid of prev item)
      */
     function parse_previtem() {
         global $itemidprev;
@@ -1289,13 +1289,13 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse skinvar query
-     * (includes the search query)     
+     * (includes the search query)
      */
     function parse_query() {
         global $query;
         echo hsc($query);
     }
-    
+
     /**
      * Parse skinvar referer
      */
@@ -1368,7 +1368,7 @@ class ACTIONS extends BaseActions {
     function parse_skinname() {
         echo $this->skin->getName();
     }
-    
+
     /**
      * Parse skintype (experimental)
      */
@@ -1385,7 +1385,7 @@ class ACTIONS extends BaseActions {
             eval("echo $which;");
         }
     }
-    
+
     /**
      * Parse ticket
      */
@@ -1394,16 +1394,16 @@ class ACTIONS extends BaseActions {
         $manager->addTicketHidden();
     }
 
-	/**
-	 * Parse ticket_id
-	 */
-	function parse_ticket_id()
-	{
-		global $manager;
-		printf("%s" , $manager->_generateTicket());
-	}
+    /**
+     * Parse ticket_id
+     */
+    function parse_ticket_id()
+    {
+        global $manager;
+        printf("%s" , $manager->_generateTicket());
+    }
 
-	/**
+    /**
      *    Parse skinvar todaylink
      *    A link to the today page (depending on selected blog, etc...)
      */
@@ -1417,7 +1417,7 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse vars
-     * When commentform is not used, to include a hidden field with itemid     
+     * When commentform is not used, to include a hidden field with itemid
      */
     function parse_vars() {
         global $itemid;
@@ -1426,7 +1426,7 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse skinvar version
-     * (include nucleus versionnumber)     
+     * (include nucleus versionnumber)
      */
     function parse_version() {
         global $nucleus;
@@ -1438,7 +1438,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_sticky($itemnumber = 0, $template = '') {
         global $manager;
-        
+
         $itemnumber = intval($itemnumber);
         $itemarray = array($itemnumber);
 
@@ -1448,26 +1448,26 @@ class ACTIONS extends BaseActions {
         $this->_postBlogContent('sticky',$b);
     }
 
-	function parse_commentclosed()
-	{
-		global $blog, $itemid, $manager;
+    function parse_commentclosed()
+    {
+        global $blog, $itemid, $manager;
 
-		$itemid = intval($itemid);
-		// if item is closed, show message and do nothing
-		$item =& $manager->getItem($itemid,0,0);
-		if ($item['closed'] || !$blog->commentsEnabled())
-		  { return TRUE; } else { return FALSE; }
-	}
+        $itemid = intval($itemid);
+        // if item is closed, show message and do nothing
+        $item =& $manager->getItem($itemid,0,0);
+        if ($item['closed'] || !$blog->commentsEnabled())
+          { return TRUE; } else { return FALSE; }
+    }
 
-	function parse_hascomment()
-	{
-		global $itemid;
+    function parse_hascomment()
+    {
+        global $itemid;
 
-		$itemid = intval($itemid);
-		$sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-						   sql_table('comment'), intval($itemid));
-		$res = intval(quickQuery($sqlText));
-		return ($res > 0);
-	}
+        $itemid = intval($itemid);
+        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                           sql_table('comment'), intval($itemid));
+        $res = intval(quickQuery($sqlText));
+        return ($res > 0);
+    }
 
 }
