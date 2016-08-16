@@ -18,6 +18,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 class NucleusPlugin {
+    public $is_db_sqlite = false;
+    public $is_db_mysql  = false;
 
     // these functions _have_ to be redefined in your plugin
 
@@ -235,9 +237,13 @@ class NucleusPlugin {
       *
       * public
       */
-    function getAdminURL() {
+    function getAdminURL()
+    {
         global $CONF, $manager;
 
+        if ($this->supportsFeature('pluginadmin'))
+//            return  $CONF['AdminURL']. 'index.php?plugid=' . $this->getID() . '&action=pluginadmin';
+          return $manager->addTicketToUrl('index.php?plugid=' . $this->getID() . '&action=pluginadmin');
         if (isset($this->plugin_admin_url_prefix))
             return $CONF['PluginURL'] . $this->plugin_admin_url_prefix . $this->getShortName() . '/';
         return $CONF['PluginURL'] . $this->getShortName() . '/';
@@ -296,6 +302,8 @@ class NucleusPlugin {
         $this->_aOptionValues = array();    // oid_contextid => value
         $this->_aOptionToInfo = array();    // context_name => array('oid' => ..., 'default' => ...)
         $this->plugin_options = 0;
+
+        $this->init_driver_flag();
     }
 
     /**
@@ -478,7 +486,7 @@ class NucleusPlugin {
      */
     function _getAllOptions($context, $name) {
         $aOptions = array();
-        
+
         global $resultCache;
         if(isset($resultCache["aOptions{$context}"]))
             $aOptions = $resultCache["aOptions{$context}"];
@@ -493,13 +501,13 @@ class NucleusPlugin {
             elseif($context==='item')
                 $query = 'SELECT inumber as contextid FROM ' . sql_table('item');
             else $query = '';
-            
+
             if($query==='') return false;
-            
+
             $oid = $this->_getOID($context, $name);
             if (!$oid) return array();
             $defVal = $this->_getDefVal($context, $name);
-            
+
             $r = sql_query($query);
             if ($r)
             {
@@ -508,7 +516,7 @@ class NucleusPlugin {
                     $aOptions[$o->contextid] = $defVal;
                 }
             }
-            
+
             $resultCache["aOptions{$context}"] = $aOptions;
             $query = 'SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid;
             $res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
@@ -518,7 +526,7 @@ class NucleusPlugin {
             }
             $resultCache["aOptions{$context}"] = $aOptions;
         }
-        
+
         return $aOptions;
     }
 
@@ -550,7 +558,7 @@ class NucleusPlugin {
             return null;
         }
     }
-    
+
     function _getDefVal($context, $name) {
         $key = $context . '_' . $name;
         $info = $this->_aOptionToInfo[$key];
@@ -709,6 +717,19 @@ class NucleusPlugin {
                 $plugin=& $manager->pidLoaded($o->opid);
                 if ($plugin) $plugin->clearOptionValueCache();
             }
+        }
+    }
+
+    private function init_driver_flag()
+    {
+        global $DB_DRIVER_NAME;
+        switch (strtolower($DB_DRIVER_NAME))
+        {
+            case 'sqlite':
+                $this->is_db_sqlite = true;
+                break;
+            default:
+                $this->is_db_mysql  = true;
         }
     }
 }

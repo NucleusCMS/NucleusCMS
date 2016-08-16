@@ -72,7 +72,6 @@ class ITEMACTIONS extends BaseActions {
             'authorid',
             'authorlink',
             'catid',
-            'karma',
             'date',
             'time',
             'query',
@@ -81,6 +80,7 @@ class ITEMACTIONS extends BaseActions {
             'closed',
             'syndicate_title',
             'syndicate_description',
+            'karma',
             'karmaposlink',
             'karmaneglink',
             'new',
@@ -117,7 +117,7 @@ class ITEMACTIONS extends BaseActions {
         unset($this->parser);
         $this->parser =& $parser;
     }
-    
+
     function setCurrentItem(&$item) {
         unset($this->currentItem);
         $this->currentItem =& $item;
@@ -128,7 +128,7 @@ class ITEMACTIONS extends BaseActions {
             $currentitemid = $this->currentItem->itemid;
         }
     }
-    
+
     function setBlog(&$blog) {
         unset($this->blog);
         $this->blog =& $blog;
@@ -538,8 +538,8 @@ class ITEMACTIONS extends BaseActions {
         $actions->setHighlight($this->strHighlight);
         $actions->setCurrentItem($this->currentItem);
         //$actions->setParser($parser);
-        $p_data = $actions->highlight($data);
-        $parser->parse($p_data);
+        $param = $actions->highlight($data);
+        $parser->parse($param);
     }
 
     /*
@@ -552,9 +552,9 @@ class ITEMACTIONS extends BaseActions {
         $this->parser->actions = $this->getDefinedActions();
     }
     */
-    
+
     // function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields
-    
+
         /**
      * Checks conditions for if statements
      *
@@ -603,12 +603,18 @@ class ITEMACTIONS extends BaseActions {
                 break;
             case 'archivenextexists':
                 $condition = ($archivenextexists == true);
-                break; 
+                break;
             case 'skintype':
                 $condition = ($name == $this->skintype);
                 break; */
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
+                break;
+            case 'commentclosed':
+                $condition = $this->parse_commentclosed();
+                break;
+            case 'hascomment':
+                $condition = $this->parse_hascomment();
                 break;
             case 'authorvisible':
                 $condition = ($blog && $blog->getAuthorVisible());
@@ -618,8 +624,8 @@ class ITEMACTIONS extends BaseActions {
                 break;
         }
         return $condition;
-    }    
-    
+    }
+
     /**
      *  Different checks for a category
      */
@@ -643,14 +649,14 @@ class ITEMACTIONS extends BaseActions {
 
         return false;
     }
-    
-        
+
+
     /**
      *  Different checks for an author
      */
     function _ifAuthor($name = '', $value='') {
         global $member, $manager;
-        
+
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
@@ -666,31 +672,31 @@ class ITEMACTIONS extends BaseActions {
         }
 
         // check if author is admin
-        if (($name == 'isadmin')) {            
+        if (($name == 'isadmin')) {
             $aid = intval($this->currentItem->authorid);
-            $blogid = intval($b->getID());            
+            $blogid = intval($b->getID());
             $amember =& $manager->getMember($aid);
             if ($amember->isAdmin())
                 return true;
-                
+
             return $amember->isBlogAdmin($blogid);
         }
 
         return false;
     }
-    
+
     /**
      *  Different checks for a category
      */
     function _ifItemCategory($name = '', $value='') {
         global $catid, $manager;
-        
+
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
         if (($name != 'catname' && $name != 'catid') || ($value == ''))
             return $b->isValidCategory($catid);
-            
+
         $icatid = $this->currentItem->catid;
         //$icategory = $this->currentItem->category;
 
@@ -708,7 +714,7 @@ class ITEMACTIONS extends BaseActions {
         return false;
     }
 
-    
+
     /**
      *  Checks if a member is on the team of a blog and return his rights
      */
@@ -751,7 +757,7 @@ class ITEMACTIONS extends BaseActions {
         return $member->isBlogAdmin($blogid);
     }
 
-    
+
     /**
      *    hasplugin,PlugName
      *       -> checks if plugin exists
@@ -796,4 +802,20 @@ class ITEMACTIONS extends BaseActions {
 
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
+
+    function parse_commentclosed()
+    {
+        // if item is closed, show message and do nothing
+        if ($this->currentItem->closed || !$this->blog->commentsEnabled())
+          { return TRUE; } else { return FALSE; }
+    }
+
+    function parse_hascomment()
+    {
+        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                           sql_table('comment'), intval($this->currentItem->itemid));
+        $res = intval(quickQuery($sqlText));
+        return ($res > 0);
+    }
+
 }

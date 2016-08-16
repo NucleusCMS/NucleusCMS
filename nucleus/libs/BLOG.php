@@ -482,7 +482,7 @@ class BLOG {
         {
             // no query -> show everything
             $extraquery = '';
-            $amountfound = $this->readLogAmount($template, $maxresults, '', $query, 1, 1);
+            $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $query, 1, 1);
         } else {
 
             // add LIMIT to query (to split search results into pages)
@@ -625,8 +625,10 @@ class BLOG {
     function showArchiveList($template, $mode = 'month', $limit = 0) {
         global $CONF, $catid, $manager;
 
-        if ($catid) $linkparams = array('catid' => $catid);
-        else        $linkparams = array();
+        $linkparams = array();
+        if ($catid) {
+            $linkparams = array('catid' => $catid);
+        }
 
         $template =& $manager->getTemplate($template);
         $data = array();
@@ -638,15 +640,17 @@ class BLOG {
 
         $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) AS Day FROM '.sql_table('item')
         . ' WHERE iblog=' . $this->getID()
-        . ' and itime <=' . mysqldate($this->getCorrectTime())  // don't show future items!
-        . ' and idraft=0'; // don't show draft items
+        . ' AND itime <=' . mysqldate($this->getCorrectTime())  // don't show future items!
+        . ' AND idraft=0'; // don't show draft items
 
-        if ($catid)                             $query .= ' AND icat=' . intval($catid);
+        if ($catid)
+            $query .= ' AND icat=' . intval($catid);
 
         $query .= ' GROUP BY Year';
-        
-        if ($mode == 'month' || $mode == 'day') $query .= ', Month';
-        if ($mode == 'day')                     $query .= ', Day';
+        if ($mode == 'month' || $mode == 'day')
+            $query .= ', Month';
+        if ($mode == 'day')
+            $query .= ', Day';
 
         $query .= ' ORDER BY itime DESC';
 
@@ -1015,6 +1019,12 @@ class BLOG {
         return 100; // default
     }
 
+    /**
+      * Get the category id for a given category name
+      * 
+      * @param $name
+      *     category name
+      */
     function getCategoryIdFromName($name) {
         $res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
         if ($res && ($o = sql_fetch_object($res))) {

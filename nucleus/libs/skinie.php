@@ -168,6 +168,7 @@ class SKINIMPORT {
                 echo _ERROR . ': ' . xml_error_string(xml_get_error_code($this->parser)) . '<br />';
             }
         }
+
         // all done
         $this->inXml = 0;
         fclose($temp);

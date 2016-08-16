@@ -241,7 +241,17 @@ function listplug_table_pluginlist($template, $type) {
                 echo "{$up} | {$down}";
                 echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
                 if ($plug && ($plug->hasAdminArea() > 0))
-                    echo "<br /><a href='".hsc($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
+                {
+                    if ($plug->supportsFeature('pluginadmin'))
+                    {
+                        $url = $manager->addTicketToUrl($baseUrl . 'pluginadmin');
+                        printf("<br /><a href='%s' tabindex='%s'>%s</a>", $url, $template['tabindex'], _LIST_PLUGS_ADMIN);
+                    }
+                    else
+                    {
+                        echo "<br /><a href='".hsc($plug->getAdminURL())."'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_ADMIN,"</a>";
+                    }
+                }
                 if (quickQuery('SELECT COUNT(*) AS result FROM '.sql_table('plugin_option_desc').' WHERE ocontext=\'global\' and opid='.$current->pid) > 0)
                     echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_OPTIONS,"</a>";
             echo '</td>';
@@ -723,6 +733,23 @@ function listplug_table_draftlist($template, $type) {
     }
 }
 
+function listplug_table_otherdraftlist($template, $type) {
+    switch($type) {
+        case 'HEAD':
+            echo "<th>"._LISTS_BLOG."</th><th>"._LISTS_TITLE."</th><th>"._LISTS_AUTHOR."</th><th colspan='2'>"._LISTS_ACTIONS."</th>";
+            break;
+        case 'BODY':
+            $current = $template['current'];
+
+            echo '<td>', hsc($current->bshortname) , '</td>';
+            echo '<td>', hsc(strip_tags($current->ititle)) , '</td>';
+            echo '<td>', hsc($current->mname) , '</td>';
+            echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"._LISTS_EDIT."</a></td>";
+            echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"._LISTS_DELETE."</a></td>";
+
+            break;
+    }
+}
 
 function listplug_table_actionlist($template, $type) {
     switch($type) {
@@ -753,5 +780,4 @@ function listplug_table_banlist($template, $type) {
             break;
     }
 }
-
 

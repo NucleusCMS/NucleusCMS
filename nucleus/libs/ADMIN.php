@@ -109,7 +109,8 @@ class ADMIN {
             'templateedit',
             'templatedelete',
             'activate',
-            'systemoverview'
+            'systemoverview',
+            'optimizeoverview'
         );
 /*
         // the rest of the actions needs to be checked
@@ -146,7 +147,7 @@ class ADMIN {
             header("HTTP/1.0 404 Not Found");
             exit;
         }
-        
+
         // skip to overview when allowed
         if ($member->isLoggedIn() && $member->canLogin()) {
             $this->action_overview();
@@ -303,6 +304,7 @@ class ADMIN {
         echo '<h2>' . _MANAGE_EXTRA . '</h2>';
         echo '<ul>';
         echo '<li><a href="index.php?action=backupoverview">'._OVERVIEW_BACKUP.'</a></li>';
+        echo '<li><a href="index.php?action=optimizeoverview">'._ADMIN_DATABASE_OPTIMIZATION_REPAIR.'</a></li>';
         echo '<li><a href="index.php?action=pluginlist">'._OVERVIEW_PLUGINS.'</a></li>';
         echo '</ul>';
 
@@ -792,7 +794,7 @@ class ADMIN {
     function batchChangeCategorySelectOrder($type, $ids)
     {
         global $manager , $member , $CONF;
-        
+
         $this->pagehead();
 
         if ($CONF['debug'])
@@ -865,7 +867,7 @@ class ADMIN {
                         )
                 . $s . "</table>\n";
           }
-        
+
         $this->pagefoot();
 
         exit;
@@ -1669,9 +1671,9 @@ class ADMIN {
 
         // change <br /> to \n
         $comment['body'] = str_replace('<br />','',$comment['body']);
-        
+
         $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
-        
+
         $this->pagehead();
 
         ?>
@@ -1738,13 +1740,13 @@ class ADMIN {
         $url = postVar('url');
         $email = postVar('email');
         $body = postVar('body');
-        
+
         // intercept words that are too long
         if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
         {
             $this->error(_ERROR_COMMENT_LONGWORD);
         }
-        
+
         // check length
         if (strlen($body) < 3)
         {
@@ -1754,7 +1756,7 @@ class ADMIN {
         {
             $this->error(_ERROR_COMMENT_TOOLONG);
         }
-        
+
         // prepare body
         $body = COMMENT::prepareBody($body);
 
@@ -1882,7 +1884,7 @@ class ADMIN {
 
         if ($msg)
             echo _MESSAGE , ': ', $msg;
-        
+
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
         echo '<h2>' . _MEMBERS_TITLE .'</h2>';
@@ -2073,7 +2075,7 @@ class ADMIN {
                     }
                 }
                 closedir($dirhandle);
-                
+
                 ?>
                 </select>
 
@@ -2390,7 +2392,7 @@ class ADMIN {
      * @author dekarma
      */
     function action_activatesetpwd() {
-        
+
         $key = postVar('key');
 
         // clean up old activation keys
@@ -2413,15 +2415,15 @@ class ADMIN {
         if (!trim($password) || (trim($password) != $password)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
         }
-        
+
         if ($password != $repeatpassword) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISMATCH);
         }
-        
+
         if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
         }
-        
+
         if ($password) {
             $pwdvalid = true;
             $pwderror = '';
@@ -2438,7 +2440,7 @@ class ADMIN {
                 return $this->_showActivationPage($key,$pwderror);
             }
         }
-        
+
         $error = '';
         $param = array(
             'type'        =>  'activation',
@@ -2914,7 +2916,7 @@ class ADMIN {
         <?php
 
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
-            
+
             $param = array('blog' => &$blog);
             $manager->notify('BlogSettingsFormExtras', $param);
             echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
@@ -3727,19 +3729,19 @@ class ADMIN {
         $memberid = $member->getID();
         $query = 'INSERT INTO '.sql_table('team')." (tmember, tblog, tadmin) VALUES ($memberid, $blogid, 1)";
         sql_query($query);
-        
+
         $itemdeftitle = (defined('_EBLOG_FIRSTITEM_TITLE') ? _EBLOG_FIRSTITEM_TITLE : 'First Item');
         $itemdefbody = (defined('_EBLOG_FIRSTITEM_BODY') ? _EBLOG_FIRSTITEM_BODY : 'This is the first item in your weblog. Feel free to delete it.');
-        
+
         $blog->additem($blog->getDefaultCategory(),$itemdeftitle,$itemdefbody,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
         //$blog->additem($blog->getDefaultCategory(),_EBLOG_FIRSTITEM_TITLE,_EBLOG_FIRSTITEM_BODY,'',$blogid, $memberid,$blog->getCorrectTime(),0,0,0);
-        
-        
+
+
         $param = array(
             'blog' => &$blog
         );
         $manager->notify('PostAddBlog', $param);
-        
+
         $param = array(
             'blog'            => &$blog,
             'name'            =>  _EBLOGDEFAULTCATEGORY_NAME,
@@ -5243,7 +5245,7 @@ selector();
                 <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
             </td>
         </tr><tr>
-            <td><?php echo _SETTINGS_ADMINCSS?> 
+            <td><?php echo _SETTINGS_ADMINCSS?>
             </td>
             <td>
                 <select name="AdminCSS" tabindex="10080">
@@ -5375,7 +5377,7 @@ selector();
 
         <?php
             echo '<h2>',_PLUGINS_EXTRA,'</h2>';
-            
+
             $param = array();
             $manager->notify('GeneralSettingsFormExtras', $param);
 
@@ -5702,7 +5704,7 @@ selector();
         global $member, $nucleus, $CONF, $manager, $action, $DIR_NUCLEUS;
 
 		sendContentType('text/html');
-		
+
         $param = array(
             'extrahead'    => &$extrahead,
             'action'    =>  $this->action
@@ -5748,11 +5750,11 @@ selector();
             var qmenu_own     = jQuery.cookie('qmenu_own');
             var qmenu_layuot  = jQuery.cookie('qmenu_layuot');
             var qmenu_plugins = jQuery.cookie('qmenu_plugins');
-            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show(); 
-            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show(); 
-            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show(); 
-            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show(); 
-          
+            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show();
+            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show();
+            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show();
+            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show();
+
           jQuery('.accordion').click(function() {
             var child = jQuery(this).next('ul');
             jQuery(child).slideToggle('fast', function() {
@@ -5784,7 +5786,7 @@ selector();
 <?php
         $this->loginname();
     }
-    
+
     function loginname() {
         global $member, $nucleus, $CONF;
         ?>
@@ -5796,14 +5798,14 @@ selector();
                 . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> | ";
         else
             echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
-    
+
         echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url() , _HELP_TT);
         echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-    
+
         echo '<br />(';
-    
+
         $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-        
+
         $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
@@ -5845,7 +5847,7 @@ selector();
         <?php
         $this->quickmenu();
     }
-    
+
     function quickmenu() {
         global $action, $member, $manager;
         ?>
@@ -6351,11 +6353,11 @@ selector();
      * @todo document this
      */
     function action_backupoverview() {
-        global $member, $manager, $MYSQL_HANDLER;
+        global $member, $manager, $DB_DRIVER_NAME;
 
         $member->isAdmin() or $this->disallow();
 
-        if (!in_array('mysql', $MYSQL_HANDLER)) {
+        if ($DB_DRIVER_NAME != 'mysql') {
             $this->disallow();
         }
 
@@ -6490,7 +6492,7 @@ selector();
             </div></form>
 
             <h3><?php echo _PLUGS_TITLE_NEW?></h3>
-            
+
 <?php
         $list_installed_PluginName = array();
         $sql = 'SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC';
@@ -6519,7 +6521,7 @@ selector();
                     array_push($candidates, $name);
                 }
             }
-        
+
         if (sizeof($candidates) > 0)
         {
             $options = array();
@@ -6579,7 +6581,7 @@ selector();
             $helpFile = "{$cplugindir}help/index.php";
         elseif(is_file("{$cplugindir}help/index.html"))
             $helpFile = "{$cplugindir}help/index.html";
-        
+
         if ($plug->supportsFeature('HelpPage') > 0 && isset($helpFile)) {
             if(substr($helpFile,-4)==='.php') include_once($helpFile);
             else                              @readfile($helpFile);
@@ -6907,6 +6909,48 @@ selector();
     /**
      * @todo document this
      */
+    function action_pluginadmin($message = '')
+    {
+        global $member, $manager;
+
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
+
+        $pid = intRequestVar('plugid');
+        if (!$manager->pidInstalled($pid))
+            $this->error(_ERROR_NOSUCHPLUGIN);
+
+//        $o_plugin = $manager->pidLoaded($pid);
+        $o_plugin = $manager->getPluginFromPid($pid);
+        if (!$o_plugin || !is_object( $o_plugin ))
+            $this->error(_ERROR_PLUGFILEERROR . $o_plugin);
+//
+        $plugin_admin_php_file = $o_plugin->getDirectory() . 'index.php';
+        if (!is_file($plugin_admin_php_file))
+            $this->error(_ERROR_PLUGFILEERROR);
+
+        $url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
+        if (!defined('ENABLE_PLUGIN_ADMIN_V2'))
+            define('ENABLE_PLUGIN_ADMIN_V2', TRUE);
+        if (ENABLE_PLUGIN_ADMIN_V2)
+        {
+            define('PLUGIN_ADMIN_BASE_URL', $url);
+//            $this->pagehead();
+            include_once($plugin_admin_php_file);
+//            $this->pagefoot();
+        }
+        else
+        {
+            // TODO: redirect old admin page or Error message
+            $this->pagehead();
+            echo "not implemented";
+            $this->pagefoot();
+        }
+    }
+
+    /**
+     * @todo document this
+     */
     function action_pluginoptions($message = '') {
         global $member, $manager;
 
@@ -7065,7 +7109,7 @@ selector();
                 }
                 echo '<tr><th colspan="2">'.sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])).'</th></tr>';
             }
-            
+
             $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
             if (@$meta['access'] != 'hidden') {
                 echo '<tr>';
@@ -7110,7 +7154,7 @@ selector();
 
     function checkSecurityRisk() {
         global $CONF;
-        
+
         if ($CONF['alertOnSecurityRisk'] == 1)
         {
             // check if files exist and generate an error if so
@@ -7137,4 +7181,260 @@ selector();
             }
         }
     }
+
+    /**
+     * @todo document this
+     */
+    function action_optimizeoverview() {
+        global $member, $manager, $DB_DRIVER_NAME;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+        printf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
+
+        if (isset($_POST['mode']) && isset($_POST['step']))
+        {
+            if ($DB_DRIVER_NAME == 'sqlite' && PostVar('mode')=='optimize' && PostVar('step')=='start')
+            {
+                echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
+                echo sprintf("%s %s : %s<br />\n", _ADMIN_OLD, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
+                $this->db_optimize_sqlite();
+                echo sprintf("%s %s : %s<br />\n", _ADMIN_NEW, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
+
+                $this->pagefoot();
+                return;
+            }
+        }
+
+        if (in_array($DB_DRIVER_NAME, array('mysql', 'sqlite')))
+        {
+            printf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
+
+            if ($DB_DRIVER_NAME == 'sqlite')
+            {
+                echo _ADMIN_FILESIZE . " : " . $this->get_db_sqliteFileSizeText();
+                $btn_title = _ADMIN_TITLE_OPTIMIZE;
+                $s = <<<EOD
+        <form method="post" action="index.php"><p>
+        <input type="hidden" name="action" value="optimizeoverview" />
+        <input type="hidden" name="mode"   value="optimize" />
+        <input type="hidden" name="step"   value="start" />
+        <input type="submit" value="${btn_title}" tabindex="20" />
+        </p></form>
+EOD;
+                echo $s;
+            }
+            else
+            {
+                if (!$this->db_mysql_checktables(TRUE))
+                    printf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
+                else
+                {
+                    $tables = array();
+                    $confirmOptimize = FALSE;
+                    $has_big = FALSE;
+                    $warn_size = 10*pow(10,6); // 10 Mega Byte
+                    $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+                    while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+                    {
+                        $tables[$row['Name']] = $row;
+                        if ($row['Engine'] != 'InnoDB')
+                        {
+                            if (intval($row['Data_free'])>0)
+                                $confirmOptimize = TRUE;
+                            if (intval($row['Data_free']) > $warn_size) // 10*pow(10,6)
+                               $has_big = TRUE;
+                        }
+                    }
+                    if ($confirmOptimize)
+                    {
+                        if (isset($_POST['mode']) && isset($_POST['step'])
+                            && PostVar('mode')=='optimize' && PostVar('step')=='start')
+                        {
+                            echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
+                            if ($this->db_optimize_mysql())
+                                printf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
+                            $this->pagefoot();
+                            return;
+                        }
+                        if ($has_big)
+                            printf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
+                        printf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
+                        $btn_title = hsc(_ADMIN_BTN_TITLE_OPTIMIZE);
+                $s = <<<EOD
+        <form method="post" action="index.php"><p>
+        <input type="hidden" name="action" value="optimizeoverview" />
+        <input type="hidden" name="mode"   value="optimize" />
+        <input type="hidden" name="step"   value="start" />
+        <input type="submit" value="${btn_title}" tabindex="20" />
+        </p></form>
+EOD;
+                        echo $s;
+                    }
+                    echo "<table>";
+                    echo sprintf("<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th></tr>",
+                                 hsc(_ADMIN_TABLENAME), hsc(_SIZE), hsc(_OVERHEAD));
+                    foreach($tables as $key => $item)
+                    {
+                        echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                                     hsc($key), hsc($item['Data_length']), hsc($item['Data_free']), hsc($item['Engine']));
+                    }
+                    echo "</table>";
+                }
+            }
+        }
+
+        if (in_array($DB_DRIVER_NAME, array('mysql')))
+        {
+            printf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
+            $this->db_mysql_checktables();
+        }
+
+        $this->pagefoot();
+    }
+
+    private function db_mysql_checktables($checkonly = FALSE)
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql')
+            return array();
+        $tables = array();
+        $res = sql_query(sprintf("SHOW TABLES LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_array($res)) && !empty($row))
+            $tables[] = $row[0];
+
+        $items = array();
+        if (count($tables))
+        {
+            $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
+            $res = sql_query($sql);
+            while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+              if ($row['Msg_type'] == 'status')
+                if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date')
+                    $items[$row['Table']] = $row;
+        }
+
+        if ($checkonly)
+            return count($items)==0;
+
+        if (count($items)>0)
+        {
+            if (isset($_POST['mode']) && isset($_POST['step'])
+                && PostVar('mode')=='repaire' && PostVar('step')=='start')
+            {
+                echo "<p>" . hsc(_ADMIN_EXEC_TITLE_AUTO_REPAIR) . "</p>";
+                echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
+                // REPAIR   TABLE tablename1[, tablename2, ..]
+                // result : Table  Op  Msg_type   Msg_text :  tablename   repair    status   OK
+                $sql = "REPAIR TABLE `" . implode("`, `", array_keys($items)) . "`";
+                $res = sql_query($sql);
+                $items = array();
+                while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+                        $items[$row['Table']] = $row;
+            }
+            else
+            {
+                echo "<p>" . hsc(_PROBLEMS_FOUND_ON_TABLE) . "</p>";
+                echo "<p>" . hsc(_ADMIN_CONFIRM_TITLE_AUTO_REPAIR) . "</p>";
+                $btn_title = hsc(_ADMIN_BTN_TITLE_AUTO_REPAIR);
+                $s = <<<EOD
+        <form method="post" action="index.php"><p>
+        <input type="hidden" name="action" value="optimizeoverview" />
+        <input type="hidden" name="mode"   value="repaire" />
+        <input type="hidden" name="step"   value="start" />
+        <input type="submit" value="${btn_title}" tabindex="20" />
+        </p></form>
+EOD;
+                echo $s;
+            }
+            echo "<table>";
+            echo sprintf("<tr><th>%s</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
+            foreach($items as $key => $item)
+            {
+                echo sprintf("<tr><td>%s</td><td>%s</td></tr>", hsc($key), hsc($item['Msg_text']));
+            }
+            echo "</table>";
+        }
+        else
+            echo hsc(_NO_PROBLEMS_FOUND);
+    }
+
+    private function db_optimize_mysql()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql')
+            return FALSE;
+
+        $success = FALSE;
+
+        $tables = array();
+        $inotables = array();
+        $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+            if (intval($row['Data_free'])>0)
+            {
+                if ($row['Engine'] == 'InnoDB')
+                    $inotables[] = $row['Name'];
+                else
+                    $tables[] = $row['Name'];
+            }
+
+        if (count($tables)>0)
+        {
+            // OPTIMIZE TABLE tablename1[, tablename2, ..]
+            // result : Table  Op  Msg_type   Msg_text :  tablename   optimize   status   OK
+            $sql = "OPTIMIZE TABLE `" . implode("`, `", $tables) . "`";
+            $res = sql_query($sql);
+            echo "<table>";
+            echo sprintf("<tr><th>%s</th><th>Msg_type</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
+            while($res && ($row = sql_fetch_assoc($res)))
+            { // Table , Op , Msg_type , Msg_text
+                echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>", hsc($row['Table']), hsc($row['Msg_type']), hsc($row['Msg_text']));
+            }
+            echo "</table>";
+            if ($res)
+                sql_free_result($res);
+            $success = TRUE;
+//            echo sprintf('<div>%s</div>', hsc($sql));
+        }
+        if (count($inotables)>0)
+        {
+            // InnoDB issue
+            // Can not optimize manually;
+            // Table does not support optimize, doing recreate + analyze instead
+            //  x : ALTER TABLE tablename ENGINE='InnoDB';
+//            foreach($inotables as $tablename)
+//                sql_query(sprintf("ALTER TABLE %s ENGINE='InnoDB'", $tablename));
+            echo sprintf('<p>InnoDB can not optimize manually</p>', hsc($sql));
+            echo '<ul>';
+            foreach($inotables as $tablename)
+                echo sprintf('<li>%s</li>', hsc($tablename));
+            echo '</ul>';
+        }
+        return $success;
+    }
+
+    private function db_optimize_sqlite()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'sqlite')
+            return FALSE;
+        sql_query('vacuum;');
+    }
+
+    private function get_db_sqliteFileSizeText()
+    {
+        global $DB_DRIVER_NAME, $DB_DATABASE;
+        if ($DB_DRIVER_NAME != 'sqlite')
+            return FALSE;
+        clearstatcache();
+        $size = filesize($DB_DATABASE);
+        $t = array('', 'K', 'M', 'G', 'T');
+        $n = min(4, ($size>0 ? floor(log($size,10) / 3) : 0));
+        $sizetext = sprintf('%d %s', $size/pow(10,$n*3), $t[$n] );
+        return sprintf("%s(%d) byte", $sizetext, $size);
+    }
+
 } // class ADMIN

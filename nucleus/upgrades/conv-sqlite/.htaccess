@@ -1,0 +1,8 @@
+DirectoryIndex index.html index.htm index.php .ht
+
+# allow only index.*
+# (?!  negative assertion
+<FilesMatch "^(?!\.ht|index\.|$)">
+Order allow,deny
+Deny from all
+</FilesMatch>

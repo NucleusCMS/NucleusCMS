@@ -45,6 +45,26 @@ class ACTIONLOG {
     }
 
     /**
+      * (Static) Method to add a message to the action log
+      * If the same message, the old one will be erased.
+      */
+    public static function addUnique($level, $message) {
+        global $member, $CONF;
+
+        if ($CONF['LogLevel'] < $level)
+            return;
+
+        $msg = $message;
+        if ($member && $member->isLoggedIn())
+            $msg = "[" . $member->getDisplayName() . "] " . $msg;
+
+        $query = sprintf("DELETE FROM `%s` WHERE message = %s" , sql_table('actionlog') , sql_quote_string($msg) );
+        sql_query($query);
+
+        ACTIONLOG::add($level, $message);
+    }
+
+    /**
       * (Static) Method to clear the whole action log
       */
     public static function clear() {
