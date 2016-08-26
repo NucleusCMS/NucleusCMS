@@ -45,6 +45,8 @@ define('_EDIT_DATE_FORMAT_SEPARATOR',       '年,月,日,時,分');
 define('_EDIT_DATE_FORMAT_DESC',            '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
 define('_FEATURE_WARN_UPGRADE_DESC',        'この機能を利用するにはデータベースのアップグレードが必要です');
 
+define('_MEMBERS_PASSWORD_INFO',				'(パスワードは6文字以上必要です)');
+
 define('_NUMBER_OF_POST',		'投稿数');
 define('_NUMBER_OF_COMMENT',	'コメント数');
 

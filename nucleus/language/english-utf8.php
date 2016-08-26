@@ -52,6 +52,8 @@ define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
 define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
 define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
 
+define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
+
 define('_NUMBER_OF_POST',		'Number of post');
 define('_NUMBER_OF_COMMENT',	'Number of comment');
 

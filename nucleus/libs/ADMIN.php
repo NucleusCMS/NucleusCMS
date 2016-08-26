@@ -1945,7 +1945,9 @@ class ADMIN {
                 <td><?php echo _MEMBERS_REALNAME?></td>
                 <td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
             </tr><tr>
-                <td><?php echo _MEMBERS_PWD?></td>
+                <td><?php echo _MEMBERS_PWD?>
+                <br /><small><?php echo _MEMBERS_PASSWORD_INFO?></small>
+                </td>
                 <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
             </tr><tr>
                 <td><?php echo _MEMBERS_REPPWD?></td>
@@ -2038,7 +2040,9 @@ class ADMIN {
         </tr>
         <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
         <tr>
-            <td><?php echo _MEMBERS_PWD?></td>
+            <td><?php echo _MEMBERS_PWD?>
+            <br /><small><?php echo _MEMBERS_PASSWORD_INFO?></small>
+            </td>
             <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
         </tr>
         <tr>
@@ -2387,7 +2391,9 @@ class ADMIN {
                         <input type="hidden" name="key" value="<?php echo hsc($key) ?>" />
 
                         <table><tr>
-                            <td><?php echo _MEMBERS_PWD?></td>
+                            <td><?php echo _MEMBERS_PWD?>
+                            <br /><small><?php echo _MEMBERS_PASSWORD_INFO?></small>
+                            </td>
                             <td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
                         </tr><tr>
                             <td><?php echo _MEMBERS_REPPWD?></td>
