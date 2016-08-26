@@ -6747,6 +6747,9 @@ selector();
                     sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.sql_real_escape_string($eventName).'\')');
             }
         }
+        $manager->_loadSubscriptions();
+        $data = array();
+        $manager->notify('PostUpdatePlugin', $data );
 
         redirect($CONF['AdminURL'] . '?action=pluginlist');
 //        $this->action_pluginlist();
