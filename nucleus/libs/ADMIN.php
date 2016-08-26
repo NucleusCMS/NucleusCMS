@@ -310,6 +310,9 @@ class ADMIN {
         echo '<li><a href="index.php?action=pluginlist">'._OVERVIEW_PLUGINS.'</a></li>';
         echo '</ul>';
 
+        echo '<h2>' . hsc(_LINKS) . '</h2>';
+        echo '<ul>' . str_replace('<a ', '<a target="_blank"  ', _MANAGE_LINKS_ITEMS) . '</ul>';
+
         $this->pagefoot();
     }
 

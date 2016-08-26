@@ -25,6 +25,20 @@ if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
 
 /********************************************
+ *        Admin Links Settings                *
+ ********************************************/
+define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="Nucleus CMS 日本 japan.nucleuscms.org">Nucleus CMS 日本</a></li>
+<li><a href="http://japan.nucleuscms.org/forum/" title="サポートフォーラム japan.nucleuscms.org/forum/">Nucleus CMS 日本 サポートフォーラム</a></li>
+<li><a href="http://japan.nucleuscms.org/documentation/" title="Nucleus CMS 日本 マニュアル japan.nucleuscms.org/documentation/">Nucleus CMS 日本 マニュアル</a></li>
+<li><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki japan.nucleuscms.org/wiki/">Nucleus CMS 日本 Wiki</a></li>
+<li><a href="http://japan.nucleuscms.org/wiki/skins" title="Nucleus CMS 日本 スキン japan.nucleuscms.org/wiki/skins">Nucleus CMS 日本 スキン</a></li>
+<li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS 日本 プラグイン nucleuscms.org/wiki/doku.php/plugin">Nucleus CMS 日本 プラグイン</a></li>
+<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
+<li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
+<li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
+');
+
+/********************************************
  *        Start New for                     *
  ********************************************/
 
@@ -105,6 +119,8 @@ define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージ
 
 // Blog option
 define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
+
+define('_LINKS',                                'リンク');
 
 /********************************************
  *        Start New for 3.71                *
