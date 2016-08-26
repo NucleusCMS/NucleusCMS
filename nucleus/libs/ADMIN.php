@@ -99,6 +99,8 @@ class ADMIN {
             'banlistnew',
             'memberedit',
             'memberdelete',
+            'memberhalt',
+//			'pluginadmin',
             'pluginhelp',
             'pluginoptions',
             'plugindelete',
@@ -2063,6 +2065,9 @@ class ADMIN {
             </tr><tr>
                 <td><?php echo _MEMBERS_CANLOGIN?> <?php help('canlogin'); ?></td>
                 <td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
+			</tr><tr>
+				<td><?php echo _ADMIN_MEMBER_HALT_TITLE?> <?php help('halt'); ?></td>
+				<td><?php if ($member->id != $mem->id) $this->input_yesno('halt',$mem->isHalt(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
         <?php } ?>
         </tr>
         <tr>
@@ -2156,6 +2161,7 @@ class ADMIN {
         $canlogin       = postVar('canlogin');
         $notes          = strip_tags(postVar('notes'));
         $deflang        = postVar('deflang');
+        $mhalt    = intPostVar('halt');
 
         $mem = MEMBER::createFromID($memberid);
 
@@ -2200,8 +2206,9 @@ class ADMIN {
 
         // check if there will remain at least one site member with both the logon and admin rights
         // (check occurs when taking away one of these rights from such a member)
-        if (    (!$admin && $mem->isAdmin() && $mem->canLogin())
-             || (!$canlogin && $mem->isAdmin() && $mem->canLogin())
+        if (    (!$admin && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()))
+             || (!$canlogin && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()))
+             || ($mhalt && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()) )
            )
         {
             $r = sql_query('SELECT count(*) FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
@@ -2228,6 +2235,8 @@ class ADMIN {
         if ($member->isAdmin()) {
             $mem->setAdmin($admin);
             $mem->setCanLogin($canlogin);
+			if ($mem->id != $member->id)
+				$mem->setHalt( $mhalt ? 1 : 0 );
         }
 
         $autosave = postVar ('autosave');
@@ -2327,7 +2336,7 @@ class ADMIN {
 
         $mem = MEMBER::createFromId($info->vmember);
 
-        if (!$mem)
+        if (!$mem || $mem->isHalt())
             $this->error(_ERROR_ACTIVATE);
 
         $text = '';
@@ -2429,7 +2438,7 @@ class ADMIN {
 
         $mem = MEMBER::createFromId($info->vmember);
 
-        if (!$mem)
+        if (!$mem || $mem->isHalt())
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
 
         $password       = postVar('password');
@@ -3517,6 +3526,81 @@ class ADMIN {
     /**
      * @todo document this
      */
+	function action_memberhalt()
+	{
+		global $member, $manager;
+
+		$memberid = intRequestVar('memberid');
+
+		if (($member->getID() == $memberid) || ($member->isAdmin() != 1))
+		{
+			$this->disallow();
+			return ;
+		}
+//    $this->disallow();
+
+		$mem = MEMBER::createFromID($memberid);
+
+		$this->pagehead();
+
+		$s = "<h2>"._ADMIN_MEMBER_HALT_CONFIRM_TITLE."</h2>\n";
+		$s .= "<p>".($mem->isHalt() ? _ERROR_ADMIN_MEMBER_ALREADY_HALTED : _ADMIN_MEMBER_HALT_CONFIRM_TEXT)."<br /><br />\n";
+
+		$s .= sprintf("member number : <b>%s</b><br />\n" , htmlspecialchars($mem->getID()) );
+		$s .= sprintf("%s <b>%s</b><br />\n" , _LOGIN_NAME , htmlspecialchars($mem->getDisplayName()) );
+		$s .= "<br />\n";
+		$s .= sprintf("%s <b>%s</b><br />\n" , _MEMBERS_REALNAME , htmlspecialchars($mem->getRealName()) );
+		$s .= sprintf("%s : <b>%s</b><br />\n"
+				, _ADMIN_MEMBER_SUPERADMIN
+				, htmlspecialchars($mem->isAdmin() ? _YES : _NO , null, _CHARSET) );
+
+		$s .= sprintf("%s : <b>%s</b><br />\n"
+				, _MEMBERS_CANLOGIN
+				, htmlspecialchars($mem->canLogin() ? _YES : _NO , null, _CHARSET) );
+
+
+		$s .=  "</b></p>";
+		echo $s;
+
+		if ($mem->isHalt())
+		  {
+		  }
+		else
+		  {
+?>
+			<form method="post" action="index.php"><div>
+			<input type="hidden" name="action" value="memberhaltconfirm_execute" />
+			<?php $manager->addTicketHidden() ?>
+			<input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
+			<input type="submit" tabindex="10" value="<?php echo _ADMIN_MEMBER_HALT_CONFIRM_DONE_BTN?>" />
+			</div></form>
+<?php
+		  }
+		$this->pagefoot();
+	}
+
+ 	function action_memberhaltconfirm_execute()
+	{
+		global $member;
+
+		$memberid = intRequestVar('memberid');
+
+		if (($member->getID() == $memberid) || ($member->isAdmin() != 1))
+		{
+		  $this->disallow();
+		  return ;
+		}
+
+		$error = $this->haltOneMember($memberid);
+		if ($error)
+			$this->error($error);
+
+		if ($member->isAdmin())
+		  $this->action_usermanagement();
+		 else
+		  $this->action_overview(_ADMIN_MEMBER_HALT_DONE);
+	}
+
     function action_memberdelete() {
         global $member, $manager;
 
@@ -3607,6 +3691,39 @@ class ADMIN {
 
         return '';
     }
+
+	static function haltOneMember($memberid)
+	{
+		global $manager , $member;
+
+		$memberid = intval($memberid);
+		if (!$memberid)
+		return '';
+
+		$mem = MEMBER::createFromID($memberid);
+
+		if ($mem->isHalt())
+			return _ERROR_ADMIN_MEMBER_ALREADY_HALTED;
+
+		if ($member->id == $mem->id)
+			return _ERROR_ADMIN_MEMBER_HALT_SELF;
+
+//		$manager->notify('PreStopMember', array('member' => &$mem));
+
+		/* stop member for memberid */
+		$query = 'UPDATE ' . sql_table('member') . ' SET mhalt=1 /*, mcanlogin=0*/ WHERE mnumber='.$memberid;
+		ob_start();
+		   sql_query($query);
+		$s = ob_get_clean();
+		ob_end_clean();
+// ALTER TABLE nucleus_member ADD COLUMN mhalt INTEGER default 0 NOT NULL
+//		$manager->notify('PostStopMember', array('member' => &$mem));
+
+		if ($s)
+		  return $s;
+
+		return '';
+	}
 
     /**
      * @todo document this

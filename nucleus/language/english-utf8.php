@@ -52,6 +52,20 @@ define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
 define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
 define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
 
+define('_ADMIN_CAN_DELETE',	'Can be deleted');
+define('_ADMIN_MEMBER_HALT_TITLE' ,             'Halt a member');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'Halt a member');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TEXT' ,      'Trying to stop the following member');
+define('_ADMIN_MEMBER_HALT_CONFIRM_DONE_BTN' ,  'Execute stop a member');
+define('_ADMIN_MEMBER_SUPERADMIN',              'Sper admin');
+define('_LISTS_HALT',		'Halt');
+define('_LISTS_HALTING',  	'Under suspension');
+define('_ERROR_ADMIN_MEMBER_HALT_SELF',         'Perhaps this member, because it is the management\'s own logged in, you can not stop.');
+define('_ERROR_ADMIN_MEMBER_ALREADY_HALTED',    'This member is already stopped.');
+define('_ERROR_LOGIN_MEMBER_HALT_OR_INVALID',   'This member is invalid or stop.');
+define('_ERROR_LOGIN_DISALLOWED_BY_HALT',       'This member is currently disabled. Logon is not permitted. If you\'re have an account of the administrative user, please log back in as an administrative user.');
+define('_GFUNCTIONS_LOGIN_FAILED_HALT_TXT',     'Member [% s] is disabled or stopped. You can not log in.');
+
 define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'Database Optimization/Repair');
 define('_ADMIN_TITLE_OPTIMIZE',      'Optimize');
 define('_ADMIN_TITLE_REPAIR',        'Repair');

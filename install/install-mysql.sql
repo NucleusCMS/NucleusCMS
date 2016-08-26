@@ -190,11 +190,20 @@ CREATE TABLE `nucleus_member` (
   `mcookiekey` varchar(40)           default NULL,
   `deflang`    varchar(20)  NOT NULL default '',
   `mautosave`  tinyint(2)   NOT NULL default '0',
+  `mhalt`      tinyint(2)   NOT NULL default '0',
+  `mhalt_reason`  varchar(100) NOT NULL default '',
   PRIMARY KEY         (`mnumber`),
   UNIQUE  KEY `mname` (`mname`)
 ) ENGINE=MyISAM;
 
-INSERT INTO `nucleus_member` VALUES (
+INSERT INTO `nucleus_member` (
+  mnumber, mname, mrealname,
+  mpassword,
+  memail, murl, mnotes,
+  madmin, mcanlogin, mcookiekey,
+  deflang, mautosave
+  )
+  VALUES (
     1,                                  /* mnumber */
     'example',                          /* mname */
     'example',                          /* mrealname */
