@@ -28,6 +28,8 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese'
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_MEMBERS_PASSWORD_INFO',				'(パスワードは6文字以上必要です)');
+
 define('_ADD_DATEINPUTNOW',       '現在時刻');
 define('_ADD_DATEINPUTRESET',     'リセット');
 define('_EDIT_DATE_FORMAT',           'year,month,day');

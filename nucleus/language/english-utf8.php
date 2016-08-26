@@ -32,6 +32,8 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english')
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
+
 define('_ADD_DATEINPUTNOW',       'now');
 define('_ADD_DATEINPUTRESET',     'reset');
 define('_EDIT_DATE_FORMAT',           'day,month,year');
