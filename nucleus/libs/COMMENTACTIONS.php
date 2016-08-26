@@ -188,7 +188,7 @@ class COMMENTACTIONS extends BaseActions {
         global $manager;
         $blogid = getBlogIDFromItemID($this->commentsObj->itemid);
         $blog =& $manager->getBlog($blogid);
-        echo $blog->getURL();
+        echo $blog->getRealURL();
     }
 
     /**

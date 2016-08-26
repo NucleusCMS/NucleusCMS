@@ -1621,7 +1621,11 @@ function createLink($type, $params) {
             if ($usePathInfo) {
                 $url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
             } else {
-                $url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+                global $blogid;
+                if ($blogid == $params['blogid'] && ($CONF['BlogURL'] != 'index.php'))
+                    $url = $CONF['BlogURL']  . '?blogid=' . $params['blogid'];
+                else
+                    $url = $CONF['IndexURL'] . '?blogid=' . $params['blogid'];
             }
             break;
     }

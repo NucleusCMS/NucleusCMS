@@ -366,6 +366,7 @@ class BLOG {
         if ($temp['scheme']) {
             $mailto_msg .= createItemLink($itemid) . "\n\n";
         } else {
+            // Todo:
             $tempurl = $this->getURL();
             if (substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php') {
                 $mailto_msg .= $tempurl . '?itemid=' . $itemid . "\n\n";
@@ -911,33 +912,35 @@ class BLOG {
 
         $query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM '.sql_table('blog').' ORDER BY '.$orderby.' '.$direction;
         $res = sql_query($query);
+        if ($res) {
+            $usePathInfo = ($CONF['URLMode'] == 'pathinfo');
+            while ($bldata = sql_fetch_assoc($res)) {
+                $list = array();
 
-        while ($bldata = sql_fetch_assoc($res)) {
+    //            $list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
+                if (strlen(trim($bldata['burl']))>0)
+                    $list['bloglink'] = $bldata['burl'];
+                else 
+                    $list['bloglink'] = createBlogidLink($bldata['bnumber']);
 
-            $list = array();
+                $list['blogdesc'] = $bldata['bdesc'];
 
-//            $list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
-            $list['bloglink'] = createBlogidLink($bldata['bnumber']);
+                $list['blogurl'] = $bldata['burl'];
 
-            $list['blogdesc'] = $bldata['bdesc'];
+                if ($bnametype=='shortname') {
+                    $list['blogname'] = $bldata['bshortname'];
+                }
+                else { // all other cases
+                    $list['blogname'] = $bldata['bname'];
+                }
 
-            $list['blogurl'] = $bldata['burl'];
+                $param = array('listitem' => &$list);
+                $manager->notify('PreBlogListItem', $param);
 
-            if ($bnametype=='shortname') {
-                $list['blogname'] = $bldata['bshortname'];
+                echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
             }
-            else { // all other cases
-                $list['blogname'] = $bldata['bname'];
-            }
-
-            $param = array('listitem' => &$list);
-            $manager->notify('PreBlogListItem', $param);
-
-            echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
-
+            sql_free_result($res);
         }
-
-        sql_free_result($res);
 
         echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
                             array(
@@ -1188,6 +1191,13 @@ class BLOG {
 
     function getURL() {
         return $this->getSetting('burl');
+    }
+
+    function getRealURL() {
+        $url = $this->getSetting('burl');
+        if (strlen(trim($url))==0)
+            $url = createBlogidLink($this->getID());
+        return $url;
     }
 
     function getDefaultSkin() {

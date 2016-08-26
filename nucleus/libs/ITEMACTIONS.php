@@ -241,7 +241,7 @@ class ITEMACTIONS extends BaseActions {
      * Parse templatevar blogurl
      */
     function parse_blogurl() {
-        echo $this->blog->getURL();
+        echo $this->blog->getRealURL();
     }
 
     /**
