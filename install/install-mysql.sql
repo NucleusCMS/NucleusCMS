@@ -34,7 +34,7 @@ CREATE TABLE `nucleus_blog` (
   `bconvertbreaks` tinyint(2)   NOT NULL default '1',
   `bdefcat`        int(11)               default NULL,
   `bnotifytype`    int(11)      NOT NULL default '15',
-  `ballowpast`     tinyint(2)   NOT NULL default '0',
+  `ballowpast`     tinyint(2)   NOT NULL default '1',
   `bincludesearch` tinyint(2)   NOT NULL default '0',
   `breqemail`      tinyint(2)   NOT NULL default '0',
   `bfuturepost`    tinyint(2)   NOT NULL default '0',

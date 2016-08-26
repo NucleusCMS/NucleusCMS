@@ -42,6 +42,12 @@ function upgrade_do380() {
         upgrade_query('Altering ' . sql_table('member') . ' table', $query);
     }
 
+    $mode = (sql_existTableColumnName(sql_table('blog'), 'ballowpast') ? 'MODIFY' : 'ADD'); // sqlite not support MODIFY COLUMN
+    $query = sprintf("ALTER TABLE `%s`
+                     ${mode} COLUMN `ballowpast` tinyint(2)   NOT NULL default '1';
+                     ", sql_table( 'blog' ));
+    upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+
 	//  -> 3.80
 	// update database version
 	update_version('380');
