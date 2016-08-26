@@ -31,6 +31,15 @@ define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
+$default_user_agent = array('ie' => array());
+$default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
+$default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['default'] = &$default_user_agent['ie']['11'];
+// http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
+if ( ! defined('DEFAULT_USER_AGENT') )
+  define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
+ini_set( 'user_agent' , DEFAULT_USER_AGENT );
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
