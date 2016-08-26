@@ -545,11 +545,13 @@ class NucleusPlugin {
         $this->_aOptionToInfo = array();
         $query = 'SELECT oid, oname, ocontext, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . intval($this->plugid);
         $res = sql_query($query);
-        while ($o = sql_fetch_object($res)) {
-            $k = $o->ocontext . '_' . $o->oname;
-            $this->_aOptionToInfo[$k] = array('oid' => $o->oid, 'default' => $o->odef);
+        if ($res) {
+            while ($o = sql_fetch_object($res)) {
+                $k = $o->ocontext . '_' . $o->oname;
+                $this->_aOptionToInfo[$k] = array('oid' => $o->oid, 'default' => $o->odef);
+            }
+            sql_free_result($res);
         }
-        sql_free_result($res);
 
         if (array_key_exists($key, $this->_aOptionToInfo)) {
             return $this->_aOptionToInfo[$key]['oid'];

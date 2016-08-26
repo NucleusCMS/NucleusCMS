@@ -249,8 +249,9 @@ class MEMBER {
 
         $query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
         $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-        return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+        if ($res && ($obj = sql_fetch_object($res)) && is_object($obj))
+            return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+        return false;
     }
 
     /**

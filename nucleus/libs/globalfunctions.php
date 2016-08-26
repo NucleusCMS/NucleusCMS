@@ -63,19 +63,6 @@ if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
     $CONF['alertOnHeadersSent']  = 1;
 }
 if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
-/*$CONF['ItemURL']           = $CONF['Self'];
-$CONF['ArchiveURL']          = $CONF['Self'];
-$CONF['ArchiveListURL']      = $CONF['Self'];
-$CONF['MemberURL']           = $CONF['Self'];
-$CONF['SearchURL']           = $CONF['Self'];
-$CONF['BlogURL']             = $CONF['Self'];
-$CONF['CategoryURL']         = $CONF['Self'];
-
-// switch URLMode back to normal when $CONF['Self'] ends in .php
-// this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
-    $CONF['URLMode'] = 'normal';
-}*/
 
 /*
     Set these to 1 to allow viewing of future items or draft items
@@ -210,22 +197,13 @@ if (!isset($CONF['Self']))
 if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
 
-/*  $CONF['ItemURL']        = $CONF['Self'];
-    $CONF['ArchiveURL']     = $CONF['Self'];
-    $CONF['ArchiveListURL'] = $CONF['Self'];
-    $CONF['MemberURL']      = $CONF['Self'];
-    $CONF['SearchURL']      = $CONF['Self'];
-    $CONF['BlogURL']        = $CONF['Self'];
-    $CONF['CategoryURL']    = $CONF['Self'];
-*/
-
-$CONF['ItemURL'] = $CONF['Self'];
-$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ItemURL']        = $CONF['Self'];
+$CONF['ArchiveURL']     = $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL'] = $CONF['Self'];
-$CONF['SearchURL'] = $CONF['Self'];
-$CONF['BlogURL'] = $CONF['Self'];
-$CONF['CategoryURL'] = $CONF['Self'];
+$CONF['MemberURL']      = $CONF['Self'];
+$CONF['SearchURL']      = $CONF['Self'];
+$CONF['BlogURL']        = $CONF['Self'];
+$CONF['CategoryURL']    = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
@@ -397,22 +375,6 @@ if (!headers_sent() ) {
 // read language file, only after user has been initialized
 LoadCoreLanguage();
 $language = getLanguageName();
-
-
-/*
-    Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-
-// To remove after v2.5 is released and language files have been updated.
-// Including this makes sure that language files for v2.5beta can still be used for v2.5final
-// without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
-if (!defined('_MEMBERS_BYPASS'))
-{
-    define('_SETTINGS_EXTAUTH',         'Enable External Authentication');
-    define('_WARNING_EXTAUTH',          'Warning: Enable only if needed.');
-    define('_MEMBERS_BYPASS',           'Use External Authentication');
-}
-
-*/
 
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
 if (!defined('_ARCHIVETYPE_MONTH') )
@@ -661,14 +623,6 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
     global $manager, $CONF;
 
     if (!headers_sent() ) {
-        // if content type is application/xhtml+xml, only send it to browsers
-        // that can handle it (IE6 cannot). Otherwise, send text/html
-
-        // v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
-        //       application/xhtml+xml still causes too much problems with the javascript implementations
-
-        // v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
-        //       application/xhtml+xml seems to be working, so we're going to use it if we can.
         if (
                 ($contenttype == 'application/xhtml+xml')
             &&  (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
@@ -978,6 +932,7 @@ function selector() {
         $first_timestamp = quickQuery ($query . " ORDER BY itime ASC LIMIT 1");
         $last_timestamp  = quickQuery ($query . " ORDER BY itime DESC LIMIT 1");
 
+        $y = $m = $d = '';
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
         if ($d != 0) {
