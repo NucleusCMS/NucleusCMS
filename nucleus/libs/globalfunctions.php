@@ -141,8 +141,11 @@ $error        = '';
 $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
-if (!headers_sent() ) {
-    header('Generator: Nucleus CMS ' . $nucleus['version']);
+if (!isset($CONF['expose_generator']))
+  $CONF['expose_generator'] = false;
+
+if ( !headers_sent() && $CONF['expose_generator'] ) {
+    header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
 }
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
