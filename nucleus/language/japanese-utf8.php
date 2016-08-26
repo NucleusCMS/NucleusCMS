@@ -28,6 +28,9 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese'
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_NUMBER_OF_POST',		'投稿数');
+define('_NUMBER_OF_COMMENT',	'コメント数');
+
 define('_ADMIN_CAN_DELETE',	'削除可能');
 define('_ADMIN_MEMBER_HALT_TITLE' ,             'メンバーの停止');
 define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'メンバーの停止');

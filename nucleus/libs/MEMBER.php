@@ -292,6 +292,19 @@ class MEMBER {
         return (intval(quickQuery($sql)) == 0);
     }
 
+	function getTotalPosts()
+	{
+		$res = sql_query('SELECT count(*) FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		return intval(sql_result($res,0,0));
+	}
+
+	function getTotalComments()
+	{
+		$sql = 'SELECT count(*) FROM ' . sql_table('comment') . ' WHERE cmember=' . $this->getID();
+		$res = sql_query($sql);
+		return intval(sql_result($res,0,0));
+	}
+
     /**
       * returns true if this member can clone an item,
       *

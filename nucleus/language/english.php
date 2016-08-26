@@ -32,6 +32,9 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english')
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_NUMBER_OF_POST',		'Number of post');
+define('_NUMBER_OF_COMMENT',	'Number of comment');
+
 define('_ADMIN_CAN_DELETE',	'Can be deleted');
 define('_ADMIN_MEMBER_HALT_TITLE' ,             'Halt a member');
 define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'Halt a member');

@@ -3654,16 +3654,20 @@ class ADMIN {
         $mem = MEMBER::createFromID($memberid);
 
         $this->pagehead();
-        ?>
-            <h2><?php echo _DELETE_CONFIRM?></h2>
 
-            <p><?php echo _CONFIRMTXT_MEMBER?><b><?php echo hsc($mem->getDisplayName()) ?></b>
-            </p>
+		echo	"<h2>" . _DELETE_CONFIRM . "</h2>";
+		echo "<p>" . _CONFIRMTXT_MEMBER . "<br />\n<b>"
+			 . hsc($mem->getDisplayName()) . "</b></p>";
 
-            <p>
-            <?php echo _WARNINGTXT_NOTDELMEDIAFILES ?>
-            </p>
+		$totalposts    = $mem->getTotalPosts();
+		$totalcomments = $mem->getTotalComments();
+		echo "<p>" . _NUMBER_OF_POST . " : <b>" . $totalposts . "</b></p>";
+		echo "<p>" . _NUMBER_OF_COMMENT . " : <b>" . $totalcomments . "</b></p>";
 
+		echo "<p>" . _ADMIN_CAN_DELETE . " : <b>" . ($mem->canBeDeleted() ? _YES : _NO ) . "</b></p>";
+
+		echo "<p>" . _WARNINGTXT_NOTDELMEDIAFILES . "</p>";
+		?>
             <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="memberdeleteconfirm" />
             <?php $manager->addTicketHidden() ?>
