@@ -167,12 +167,25 @@ CREATE TABLE `nucleus_member` (
   `mcookiekey` varchar(40)           default NULL,
   `deflang`    varchar(20)  NOT NULL default '',
   `mautosave`  tinyint(2)   NOT NULL default '1',
+  `mhalt`      tinyint(2)   NOT NULL default '0',
+  `mhalt_reason`  varchar(100) NOT NULL default '',
   PRIMARY KEY  (`mnumber`),
 --  UNIQUE KEY `mnumber` (`mnumber`),
   UNIQUE KEY `mname` (`mname`)
 ) ENGINE=MyISAM;
 
-INSERT INTO `nucleus_member` VALUES (1, 'example', 'example', '1a79a4d60de6718e8e5b326e338ae533', 'example@example.org', 'http://localhost:8080/nucleus/', '', 1, 1, 'd767aefc60415859570d64c649257f19', '', 1);
+INSERT INTO `nucleus_member` (
+  mnumber, mname, mrealname,
+  mpassword,
+  memail, murl, mnotes,
+  madmin, mcanlogin, mcookiekey
+  )
+  VALUES (
+    1, 'example', 'example',
+    '1a79a4d60de6718e8e5b326e338ae533', /* mpassword */
+    'example@example.org', 'http://localhost:8080/nucleus/', '',
+    1, 1, 'd767aefc60415859570d64c649257f19'
+);
 
 CREATE TABLE `nucleus_plugin` (
   `pid`    int(11)     NOT NULL auto_increment,

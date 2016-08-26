@@ -305,7 +305,11 @@ if ($action == 'login') {
         }
         else 
         {
-            $errormessage = 'Login failed for ' . $login;
+			loadCoreLanguage(false);
+			if ($member->isHalt())
+				$errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
+			else
+				$errormessage = 'Login failed for ' . $login;
         }
         $param = array('username' => $login);
         $manager->notify('LoginFailed', $param);

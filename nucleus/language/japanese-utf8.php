@@ -28,6 +28,20 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese'
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADMIN_CAN_DELETE',	'削除可能');
+define('_ADMIN_MEMBER_HALT_TITLE' ,             'メンバーの停止');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'メンバーの停止');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TEXT' ,      '以下のメンバーを停止しようとしています');
+define('_ADMIN_MEMBER_HALT_CONFIRM_DONE_BTN' ,  'メンバーの停止を実行する');
+define('_ADMIN_MEMBER_SUPERADMIN',              '最高管理権限(super admin)');
+define('_LISTS_HALT',		'停止');
+define('_LISTS_HALTING',  	'停止中');
+define('_ERROR_ADMIN_MEMBER_HALT_SELF',         'おそらくこのメンバーは、ログイン中の管理者自身であるため、停止できません。');
+define('_ERROR_ADMIN_MEMBER_ALREADY_HALTED',    'このメンバーは、すでに停止中です。');
+define('_ERROR_LOGIN_MEMBER_HALT_OR_INVALID',   'このメンバーは、停止中または無効です。');
+define('_ERROR_LOGIN_DISALLOWED_BY_HALT',       'このメンバーは、現在無効です。ログインは認められていません。 もしあなたが管理ユーザーのアカウントを持っているのなら、管理ユーザーとしてログインしなおしてください。');
+define('_GFUNCTIONS_LOGIN_FAILED_HALT_TXT',     'メンバー[ %s ]は、無効又は停止中です。ログインはできません。');
+
 define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'データベースの最適化/修復');
 define('_ADMIN_TITLE_OPTIMIZE',      '最適化');
 define('_ADMIN_TITLE_REPAIR',        '修復');

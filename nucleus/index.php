@@ -28,6 +28,12 @@
 	if ($action == 'logout')
 		$bNeedsLogin = true;
 
+	if ($member->isHalt())
+	{
+		$error       = '( '.$member->getDisplayName()  .  ' ) '._ERROR_LOGIN_DISALLOWED_BY_HALT;
+		$bNeedsLogin = true;
+	}
+
 	if (!$member->isLoggedIn() && !$bIsActivation)
 		$bNeedsLogin = true;
 
