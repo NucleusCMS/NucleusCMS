@@ -26,6 +26,9 @@ function showlist($query, $type, $template) {
 
         foreach ($query as $currentObj) {
             $template['current'] = $currentObj;
+            if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
+                && isset($template['current']->bnumber))
+                $template['current']->burl = createBlogidLink($template['current']->bnumber);
             call_user_func('listplug_' . $type, $template, 'BODY');
         }
 
@@ -46,6 +49,9 @@ function showlist($query, $type, $template) {
         while($template['current'] = sql_fetch_object($res))
         {
             $numrows++;
+            if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
+                && isset($template['current']->bnumber))
+                $template['current']->burl = createBlogidLink($template['current']->bnumber);
             call_user_func('listplug_' . $type, $template, 'BODY');
         }
 

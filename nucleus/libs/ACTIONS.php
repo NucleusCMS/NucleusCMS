@@ -611,7 +611,7 @@ class ACTIONS extends BaseActions {
                 echo hsc($blog->getID());
                 break;
             case 'url':
-                echo hsc($blog->getURL());
+                echo hsc($blog->getRealURL());
                 break;
             case 'name':
                 echo hsc($blog->getName());

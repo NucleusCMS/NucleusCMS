@@ -268,7 +268,7 @@ class ADMIN {
      * @param object BLOG
      */
     function bloglink(&$blog) {
-        return '<a href="'.hsc($blog->getURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. hsc( $blog->getName() ) .'</a>';
+        return '<a href="'.hsc($blog->getRealURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. hsc( $blog->getName() ) .'</a>';
     }
 
     /**

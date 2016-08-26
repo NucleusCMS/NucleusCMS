@@ -1155,6 +1155,13 @@ class BLOG {
         return $this->getSetting('burl');
     }
 
+    function getRealURL() {
+        $url = $this->getSetting('burl');
+        if (strlen(trim($url))==0)
+            $url = createBlogidLink($this->getID());
+        return $url;
+    }
+
     function getDefaultSkin() {
         return $this->getSetting('bdefskin');
     }
