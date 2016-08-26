@@ -28,6 +28,12 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese'
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADD_DATEINPUTNOW',       '現在時刻');
+define('_ADD_DATEINPUTRESET',     'リセット');
+define('_EDIT_DATE_FORMAT',           'year,month,day');
+define('_EDIT_DATE_FORMAT_SEPARATOR', '年,月,日,時,分');
+define('_EDIT_DATE_FORMAT_DESC',      '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
+
 define('_NUMBER_OF_POST',		'投稿数');
 define('_NUMBER_OF_COMMENT',	'コメント数');
 

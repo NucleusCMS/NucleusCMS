@@ -151,7 +151,63 @@ class PAGEFACTORY extends BaseActions {
             return '';
 
         $contents = file_get_contents($filename);
+
+        if (($contents!==False) && preg_match("#^(admin|bookmarklet)$#", $this->type) && preg_match("#^(add|edit)$#", $this->method, $m2)) {
+            $this->replace_date_time_picker($contents, ($m2 == 'add' ? 63 : 71));
+        }
+
         return ($contents!==False ? $contents : '' );
+    }
+
+    private function replace_date_time_picker(&$data, $startindex = 60)
+    {
+        $items = array();
+        $spa = explode(',', _EDIT_DATE_FORMAT_SEPARATOR);
+        foreach(array('itemtime','currenttime') as $stime)
+        {
+            $indent = $startindex;
+            $s = array();
+            foreach(explode(',', _EDIT_DATE_FORMAT) as $key=>$value)
+            {
+                switch($value)
+                {
+                    case 'year' :
+                      $s[] = '<input id="inputyear" name="year" tabindex="'.($indent++).'" size="4" value="<%'.$stime.'(year)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                      break;
+                    case 'month' :
+                      $s[] = '<input id="inputmonth" name="month" tabindex="'.($indent++).'" size="2" value="<%'.$stime.'(mon)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                      break;
+                    case 'day' :
+                      $s[] = '<input id="inputday" name="day" tabindex="'.($indent++).'" size="2" value="<%'.$stime.'(mday)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                      break;
+                    }
+              if (isset($spa[$key]))
+                  $s[] = $spa[$key];
+            }
+            $s[] = '<input id="inputhour" name="hour" tabindex="'.($indent++).'" size="2" value="<%'.$stime.'(hours)%>" onchange="document.forms[0].act_future.checked=true;" />';
+            $key = 3;
+            if (isset($spa[$key]))
+                $s[] = $spa[$key];
+            $s[] = '<input id="inputminutes" name="minutes" tabindex="'.($indent++).'" size="2" value="<%'.$stime.'(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />';
+            $key = 4;
+            if (isset($spa[$key]))
+                $s[] = $spa[$key];
+            $s[] = '<br />'. hsc(_ITEM_ADDEDITTEMPLATE_FORMAT). hsc(_EDIT_DATE_FORMAT_DESC);
+
+            $s[] = '<input tabindex="'.($indent++).'" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true; return edit_form_change_date_now();" />';
+            $s[] = '<input tabindex="'.($indent++).'" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = "return date_'.$stime.'_reset();" />';
+
+            $items[$stime] = &$s;
+            unset($s);
+        }
+
+        foreach($items as $key => $value)
+            $items[$key] =  implode("\n\t\t\t\t", $value);
+        $items['itemtime'] = str_replace('act_future.', 'act_changedate.', $items['itemtime']);
+
+        $data = str_replace('<%date_time_picker%>',               $items['currenttime'], $data);
+        $data = str_replace('<%date_time_picker(currenttime)%>',  $items['currenttime'], $data);
+        $data = str_replace('<%date_time_picker(itemtime)%>',     $items['itemtime'],    $data);
     }
 
     // create category dropdown box

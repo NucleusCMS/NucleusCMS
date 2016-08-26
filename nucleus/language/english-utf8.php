@@ -32,6 +32,12 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english')
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADD_DATEINPUTNOW',       'now');
+define('_ADD_DATEINPUTRESET',     'reset');
+define('_EDIT_DATE_FORMAT',           'day,month,year');
+define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
+
 define('_NUMBER_OF_POST',		'Number of post');
 define('_NUMBER_OF_COMMENT',	'Number of comment');
 
