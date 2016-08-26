@@ -52,6 +52,9 @@ define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
 define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
 define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
 
+define('_NUMBER_OF_POST',		'Number of post');
+define('_NUMBER_OF_COMMENT',	'Number of comment');
+
 define('_ADMIN_CAN_DELETE',	'Can be deleted');
 define('_ADMIN_MEMBER_HALT_TITLE' ,             'Halt a member');
 define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'Halt a member');
