@@ -56,6 +56,7 @@ This document contains information on how you can write your own Nucleus plugins
 <ul>
 	<li><a href="#introduction">Introduction</a></li>
 	<li><a href="#firstplug">Writing your first plugin</a></li>
+    <li><a href="#reserved_plugin_var">Reserved words of NucleusPlugin</a></li>
 	<li><a href="#nucleusplugin">Overview of the <code>NucleusPlugin</code> class</a></li>
 	<li><a href="#skinvars">The <code>&lt;%plugin(...)%&gt;</code> skinvar</a></li>
 	<li><a href="#templatevars">The <code>&lt;%plugin(...)%&gt;</code> templatevar</a></li>
@@ -100,6 +101,12 @@ All plugin files should be placed in the directory that is listed in <code>confi
 </div>
 
 
+<h1>Reserved words of NucleusPlugin<a id="reserved_plugin_var" name="reserved_plugin_var" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<div class="note">
+_aOptionValues , _aOptionToInfo<br />
+plugid , plugin_options<br />
+(v3.80): plugin_admin_dir , plugin_admin_url_prefix , plugin_dir_type<br />
+</div>
 
 
 <h1>Writing your first plugin <a name="firstplug" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
@@ -112,29 +119,15 @@ Ok, lets start by writing a simple plugin. Basically, each plugin is a PHP class
 
 class NP_HelloWorld extends NucleusPlugin
 {
-	// name of plugin
-	function getName()
-	{
-		return 'Hello World';
-	}
-
-	// author of plugin
-	function getAuthor()
-	{
-		return 'Wouter Demuynck';
-	}
+	function getName()    { return 'Hello World'; } // name of plugin
+	function getVersion() { return '1.0'; }         // version of the plugin
+	function getAuthor()  { return 'My name'; }     // author of plugin
 
 	// an URL to the plugin website
 	// can also be of the form mailto:foo@bar.com
 	function getURL()
 	{
 		return 'http://nucleuscms.org/';
-	}
-
-	// version of the plugin
-	function getVersion()
-	{
-		return '1.0';
 	}
 
 	// a description to be shown on the installed plugins listing
@@ -148,17 +141,18 @@ class NP_HelloWorld extends NucleusPlugin
 		echo 'Hello World!';
 	}
 
-	function supportsFeature ($what)
+	function supportsFeature ($feature)
 	{
-		switch ($what)
-		{
-			case 'SqlTablePrefix':
-				return 1;
-			case 'SqlApi':
-				return 1;
-			default:
-				return 0;
-		}
+		return in_array($feature, array(
+			'SqlTablePrefix',
+			'SqlApi',
+//			'SqlApi_sqlite',
+//			'SqlApi_SQL92',
+//			'NotUseDbApi',
+//			'HelpPage',
+//			'pluginadmin',
+//			'handleSpam',
+			));
 	}
 
 }
@@ -795,9 +789,11 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 	<tr>
 		<td>PrePluginOptionsEdit</td>
 		<td>
-			(v2.0b) before the 'edit plugin options' form is created.
-			<br />(v2.2) extra parameters
-	  <br />(v3.2) extra parameter for every option
+			<ul>
+				<li>(v2.0b) before the 'edit plugin options' form is created.</li>
+				<li>(v2.2) extra parameters</li>
+				<li>(v3.2) extra parameter for every option</li>
+			</ul>
 		</td>
 		<td><dl>
 			<dt class="ro">context</dt>
@@ -1062,6 +1058,26 @@ your stuff
 		</dl></td>
 	</tr>
 	<tr>
+        <td>PreDeleteSkinPart</td>
+        <td></td>
+        <td><dl>
+            <dt class="ro">skinid</dt>
+            <dd></dd>
+            <dt class="ro">skintype</dt>
+            <dd></dd>
+        </dl></td>
+    </tr>
+    <tr>
+        <td>PostDeleteSkinPart</td>
+        <td></td>
+        <td><dl>
+            <dt class="ro">skinid</dt>
+            <dd></dd>
+            <dt class="ro">skintype</dt>
+            <dd></dd>
+        </dl></td>
+    </tr>
+    <tr>
 		<td>PreDeletePlugin</td>
 		<td>(v2.0) Immediately before a plugin gets deleted from the database</td>
 		<td><dl>
@@ -1162,6 +1178,12 @@ your stuff
 			<dt class="ref obj">plugin</dt>
 			<dd>An object of the newly added plugin</dd>
 		</dl></td>
+	</tr>
+	<tr>
+		<td>PostUpdatePlugin</td>
+		<td>(v3.80) Immediately after a plugin list has been updated
+		</td>
+		<td>none</td>
 	</tr>
 	<tr>
 		<td>PreAddTeamMember</td>
@@ -1776,6 +1798,46 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 
 <p>Creates an option in the <code>item</code> context (see <code>createOption</code>)</p>
 
+<h3>[v3.80] updateOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p>Creates a new option or updates option in the <strong>global</strong> context</p>
+
+<table summary="updateOptionDesc"><tr>
+    <th abbr="param">parameter</th>
+    <th abbr="value">value</th>
+</tr><tr>
+    <td>$name</td>
+    <td>Option name</td>
+</tr><tr>
+    <td>$desc</td>
+    <td>Textual description, to be shown on the page where options can be edited</td>
+</tr><tr>
+    <td>$type</td>
+    <td>Option type (see above)</td>
+</tr><tr>
+    <td>$defValue</td>
+    <td>Initial value</td>
+</tr><tr>
+    <td>$typeExtras</td>
+    <td>Extra info on option type (see above)</td>
+</tr></table>
+
+<h3>[v3.80]  updateBlogOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p>Creates an option or updates option in the <strong>blog</strong> context (see <code>createOption</code>)</p>
+
+<h3>[v3.80]  updateCategoryOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p>Creates an option or updates option in the <strong>category</strong> context (see <code>createOption</code>)</p>
+
+<h3>[v3.80]  updateMemberOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p>Creates an option or updates option in the <strong>member</strong> context (see <code>createOption</code>)</p>
+
+<h3>[v3.80]  updateItemOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p>Creates an option or updates option in the <strong>item</strong> context (see <code>createOption</code>)</p>
+
 <h3>setOption($name, $value)</h3>
 
 <p>changes the value of an option that was already in the database</p>
@@ -1987,22 +2049,24 @@ class NP_HelloWorld extends NucleusPlugin {
 	// edit this variable to point to your site directory
 	// (where config.php is)
 	$strRel = '../../../';
+	if ( !is_file($strRel . 'config.php') && is_file($strRel.'../config.php'))
+		$strRel .= '../';
 
 	include($strRel . 'config.php');
-	if (!$member->isLoggedIn())
+	if (!$member-&gt;isLoggedIn())
 		doError('You\'re not logged in.');
 
 	include($DIR_LIBS . 'PLUGINADMIN.php');
 
 	// create the admin area page
 	$oPluginAdmin = new PluginAdmin('<strong>PluginName</strong>');
-	$oPluginAdmin->start();
+	$oPluginAdmin-&gt;start();
 
 	echo '&lt;h2&gt;Plugin Name&lt;/h2&gt;';
 
 	echo '&lt;p&gt;<strong>Page contents here</strong>&lt;p&gt;';
 
-	$oPluginAdmin->end();
+	$oPluginAdmin-&gt;end();
 
 ?&gt;</code></pre>
   </li>
@@ -2012,9 +2076,9 @@ class NP_HelloWorld extends NucleusPlugin {
 		array_push(
 			$data['options'],
 			array(
-				'title' => '<strong>Plugin Name</strong>',
-				'url' => $this->getAdminURL(),
-				'tooltip' => '<strong>Tooltip text</strong>'
+				'title'   =&gt; '<strong>Plugin Name</strong>',
+				'url'     =&gt; $this-&gt;getAdminURL(),
+				'tooltip' =&gt; '<strong>Tooltip text</strong>'
 			)
 		);
 	}</code></pre>
@@ -2029,13 +2093,13 @@ class NP_HelloWorld extends NucleusPlugin {
   <li> Optional. Make the <code>QuickMenu</code> entry optional, and restrict who sees it. The following assumes that an option, of type <code>yesno</code> and called <code>quickmenu</code>, exists in install(). It also will restrict viewing of the <code>QuickMenu</code> entry to super-admins and to blog-admins.
 	<pre class="example"><code>function event_QuickMenu(&$data) {
     // only show when option enabled
-    if ($this->getOption('quickmenu') != 'yes') return;
+    if ($this-&gt;getOption('quickmenu') != 'yes') return;
     global $member;
-    if (!$member->isAdmin() && !count($member->getAdminBlogs())) return;
+    if (!$member-&gt;isAdmin() && !count($member-&gt;getAdminBlogs())) return;
     array_push($data['options'],
-      	array('title' => 'PluginName',
-       	'url' => $this->getAdminURL(),
-       	'tooltip' => 'Administer NP_PluginName'));
+      	array('title' =&gt; 'PluginName',
+       	'url' =&gt; $this-&gt;getAdminURL(),
+       	'tooltip' =&gt; 'Administer NP_PluginName'));
 }</code></pre>
   </li>
 </ol>
