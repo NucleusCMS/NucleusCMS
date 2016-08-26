@@ -354,17 +354,34 @@ class NucleusPlugin {
      * private
      */
     function _createOption($context, $name, $desc, $type, $defValue, $typeExtras = '') {
+        if ($this->_existOptionDesc($context, $name))
+            return FALSE;
         // create in plugin_option_desc
-        $query = 'INSERT INTO ' . sql_table('plugin_option_desc')
-               .' (opid, oname, ocontext, odesc, otype, odef, oextra)'
-               .' VALUES ('.intval($this->plugid)
-                         .', \''.sql_real_escape_string($name).'\''
-                         .', \''.sql_real_escape_string($context).'\''
-                         .', \''.sql_real_escape_string($desc).'\''
-                         .', \''.sql_real_escape_string($type).'\''
-                         .', \''.sql_real_escape_string($defValue).'\''
-                         .', \''.sql_real_escape_string($typeExtras).'\')';
-        sql_query($query);
+        global $DB_PHP_MODULE_NAME;
+        if ($DB_PHP_MODULE_NAME == 'pdo')
+        {
+            $sql = 'INSERT INTO ' . sql_table('plugin_option_desc')
+                   .' (opid, oname, ocontext, odesc, otype, odef, oextra)'
+                   .' VALUES (' . sprintf("%d" , intval($this->plugid))
+                             . ', ? , ? , ? '
+                             . ', ? , ? , ? )';
+            $params = array( $name , $context , $desc
+                           , $type , $defValue , $typeExtras);
+            sql_prepare_execute($sql, $params);
+        }
+        else
+        {
+            $query = 'INSERT INTO ' . sql_table('plugin_option_desc')
+                   .' (opid, oname, ocontext, odesc, otype, odef, oextra)'
+                   .' VALUES ('.intval($this->plugid)
+                             .', \''.sql_real_escape_string($name).'\''
+                             .', \''.sql_real_escape_string($context).'\''
+                             .', \''.sql_real_escape_string($desc).'\''
+                             .', \''.sql_real_escape_string($type).'\''
+                             .', \''.sql_real_escape_string($defValue).'\''
+                             .', \''.sql_real_escape_string($typeExtras).'\')';
+            sql_query($query);
+        }
         $oid = sql_insert_id();
 
         $key = $context . '_' . $name;
@@ -734,4 +751,116 @@ class NucleusPlugin {
                 $this->is_db_mysql  = true;
         }
     }
-}
+
+    private function _existOptionDesc($context, $name)
+    {
+		return $this->_getOID($context, $name) ? TRUE : FALSE;
+        // check name in plugin_option_desc
+//        $sql = 'SELECT count(*) AS result FROM ' . sql_table('plugin_option_desc')
+//               . sprintf(' WHERE opid = %d AND ocontext = %s AND oname = %s LIMIT 1 ',
+//                       intval($this->plugid), sql_quote_string($context), sql_quote_string($name));
+//        return intval(quickQuery($sql)) > 0;
+    }
+
+    public function existOptionDesc($name)
+    {
+        return $this->_existOptionDesc('global' , $name);
+    }
+
+    public function existBlogOptionDesc($name)
+    {
+        return $this->_existOptionDesc('blog' , $name);
+    }
+
+    public function existCategoryOptionDesc($name)
+    {
+        return $this->_existOptionDesc('category' , $name);
+    }
+
+    public function existItemOptionDesc($name)
+    {
+        return $this->_existOptionDesc('item' , $name);
+    }
+    
+    public function existMemberOptionDesc($name)
+    {
+        return $this->_existOptionDesc('member' , $name);
+    }
+    
+    function _updateOptionDesc($context, $name, $desc, $type, $defValue, $typeExtras = '')
+    {
+        $context = (string) $context;
+        $name = (string) $name;
+        $desc = (string) $desc;
+        $type = (string) $type;
+        $defValue = (string) $defValue;
+        $typeExtras = (string) $typeExtras;
+
+        $e = $this->_existOptionDesc($context, $name);
+        // create in plugin_option_desc
+        if (!$e)
+            return $this->_createOption( $context , $name , $desc , $type , $defValue , $typeExtras );
+
+        global $DB_PHP_MODULE_NAME;
+        if ($DB_PHP_MODULE_NAME == 'pdo')
+        {
+            $sql = 'UPDATE ' . sql_table('plugin_option_desc')
+                   . ' SET '
+                   . ' odesc=? , otype=? , odef=? , oextra=? '
+                   . ' WHERE opid=? AND ocontext=? AND oname=? ' ;
+            $params = array( $desc , $type , $defValue, $typeExtras
+                           , intval($this->plugid) , $context , $name);
+            $stmt = sql_prepare_execute($sql, $params);
+//		trigger_error( implode(' : ', $stmt->errorInfo) );
+        }
+        else
+        {
+            $sql = 'UPDATE ' . sql_table('plugin_option_desc')
+                   . ' SET '
+                   . sprintf(' odesc=%s , otype=%s , odef=%s , oextra=%s ',
+                             sql_quote_string($desc),
+                             sql_quote_string($type),
+                             sql_quote_string($defValue),
+                             sql_quote_string($typeExtras)
+                           )
+                   . sprintf(' WHERE opid=%d AND ocontext=%s AND oname=%s ',
+                             intval($this->plugid),
+                             sql_quote_string($context),
+                             sql_quote_string($name)
+                           ) ;
+           sql_query($sql);
+        }
+
+        $oid = $this->_getOID($context, $name);
+        $key = $context . '_' . $name;
+        $this->_aOptionToInfo[$key] = array('oid' => $oid, 'default' => $defValue);
+        return TRUE;
+    }
+
+    function updateOptionDesc($name, $desc, $type, $defValue, $typeExtras = '')
+    {
+        return $this->_updateOptionDesc('global', $name, $desc, $type, $defValue, $typeExtras);
+    }
+
+    function updateBlogOptionDesc($context, $name, $desc, $type, $defValue, $typeExtras = '')
+    {
+        return $this->_updateOptionDesc('blog', $name, $desc, $type, $defValue, $typeExtras);
+    }
+
+    function updateCategoryOptionDesc($context, $name, $desc, $type, $defValue, $typeExtras = '')
+    {
+        return $this->_updateOptionDesc('category', $name, $desc, $type, $defValue, $typeExtras);
+    }
+    
+    function updateItemOptionDesc($context, $name, $desc, $type, $defValue, $typeExtras = '')
+    {
+        return $this->_updateOptionDesc('item', $name, $desc, $type, $defValue, $typeExtras);
+    }
+
+    function updateMemberOptionDesc($context, $name, $desc, $type, $defValue, $typeExtras = '')
+    {
+        return $this->_updateOptionDesc('member', $name, $desc, $type, $defValue, $typeExtras);
+    }
+
+} // end class
+
