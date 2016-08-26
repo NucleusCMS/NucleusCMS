@@ -103,12 +103,7 @@
 <dl class="sidebardl">
 <dt><%_(Links)%></dt>
 <dd><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></dd>
-<dd><a href="http://docs.nucleuscms.org/" title="Nucleus CMS Documentation">docs.nucleuscms.org</a></dd>
-<dd><a href="http://forum.nucleuscms.org" title="Nucleus CMS Support Forum">forum.nucleuscms.org</a></dd>
-<dd><a href="http://wiki.nucleuscms.org/" title="Nucleus CMS Wiki">wiki.nucleuscms.org</a></dd>
-<dd><a href="http://skins.nucleuscms.org/" title="Nucleus CMS Skins">skins.nucleuscms.org</a></dd>
-<dd><a href="http://wiki.nucleuscms.org/plugin" title="Nucleus CMS Plugins">plugins.nucleuscms.org</a></dd>
-<dd><a href="http://dev.nucleuscms.org/" title="Nucleus Developer Network">dev.nucleuscms.org</a></dd>
+<dd><a href="http://japan.nucleuscms.org" title="Nucleus CMS Home Japanease">japan.nucleuscms.org</a></dd>
 </dl>
 </div>
 

@@ -26,12 +26,25 @@ if (!defined('_LOCALE'))  define('_LOCALE', 'en_US');
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english');
 
 /********************************************
+ *        Admin Links Settings                *
+ ********************************************/
+define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
+<li><a href="http://nucleuscms.org/forum/" title="Nucleus CMS Support Forum">nucleuscms.org/forum/</a></li>
+<li><a href="http://nucleuscms.org/docs/" title="Nucleus CMS Documentation">nucleuscms.org/docs/</a></li>
+<li><a href="http://nucleuscms.org/wiki/" title="Nucleus CMS Wiki">nucleuscms.org/wiki/</a></li>
+<li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
+<li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS Plugins">nucleuscms.org/wiki/doku.php/plugin</a></li>
+<li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
+');
+
+/********************************************
  *        Start New for                     *
  ********************************************/
 
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_LINKS',                                'Links');
 define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
 
 define('_ADD_DATEINPUTNOW',       'now');
