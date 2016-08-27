@@ -31,6 +31,15 @@ define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
+$default_user_agent = array('ie' => array());
+$default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
+$default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['default'] = &$default_user_agent['ie']['11'];
+// http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
+if ( ! defined('DEFAULT_USER_AGENT') )
+  define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
+ini_set( 'user_agent' , DEFAULT_USER_AGENT );
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
@@ -63,19 +72,6 @@ if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
     $CONF['alertOnHeadersSent']  = 1;
 }
 if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
-/*$CONF['ItemURL']           = $CONF['Self'];
-$CONF['ArchiveURL']          = $CONF['Self'];
-$CONF['ArchiveListURL']      = $CONF['Self'];
-$CONF['MemberURL']           = $CONF['Self'];
-$CONF['SearchURL']           = $CONF['Self'];
-$CONF['BlogURL']             = $CONF['Self'];
-$CONF['CategoryURL']         = $CONF['Self'];
-
-// switch URLMode back to normal when $CONF['Self'] ends in .php
-// this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
-    $CONF['URLMode'] = 'normal';
-}*/
 
 /*
     Set these to 1 to allow viewing of future items or draft items
@@ -128,8 +124,11 @@ $error        = '';
 $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
-if (!headers_sent() ) {
-    header('Generator: Nucleus CMS ' . $nucleus['version']);
+if (!isset($CONF['expose_generator']))
+  $CONF['expose_generator'] = false;
+
+if ( !headers_sent() && $CONF['expose_generator'] ) {
+    header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
 }
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
@@ -210,22 +209,13 @@ if (!isset($CONF['Self']))
 if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
 
-/*  $CONF['ItemURL']        = $CONF['Self'];
-    $CONF['ArchiveURL']     = $CONF['Self'];
-    $CONF['ArchiveListURL'] = $CONF['Self'];
-    $CONF['MemberURL']      = $CONF['Self'];
-    $CONF['SearchURL']      = $CONF['Self'];
-    $CONF['BlogURL']        = $CONF['Self'];
-    $CONF['CategoryURL']    = $CONF['Self'];
-*/
-
-$CONF['ItemURL'] = $CONF['Self'];
-$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ItemURL']        = $CONF['Self'];
+$CONF['ArchiveURL']     = $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL'] = $CONF['Self'];
-$CONF['SearchURL'] = $CONF['Self'];
-$CONF['BlogURL'] = $CONF['Self'];
-$CONF['CategoryURL'] = $CONF['Self'];
+$CONF['MemberURL']      = $CONF['Self'];
+$CONF['SearchURL']      = $CONF['Self'];
+$CONF['BlogURL']        = $CONF['Self'];
+$CONF['CategoryURL']    = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
@@ -327,7 +317,11 @@ if ($action == 'login') {
         }
         else 
         {
-            $errormessage = 'Login failed for ' . $login;
+			loadCoreLanguage(false);
+			if ($member->isHalt())
+				$errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
+			else
+				$errormessage = 'Login failed for ' . $login;
         }
         $param = array('username' => $login);
         $manager->notify('LoginFailed', $param);
@@ -397,22 +391,6 @@ if (!headers_sent() ) {
 // read language file, only after user has been initialized
 LoadCoreLanguage();
 $language = getLanguageName();
-
-
-/*
-    Backed out for now: See http://forum.nucleuscms.org/viewtopic.php?t=3684 for details
-
-// To remove after v2.5 is released and language files have been updated.
-// Including this makes sure that language files for v2.5beta can still be used for v2.5final
-// without having weird _SETTINGS_EXTAUTH string showing up in the admin area.
-if (!defined('_MEMBERS_BYPASS'))
-{
-    define('_SETTINGS_EXTAUTH',         'Enable External Authentication');
-    define('_WARNING_EXTAUTH',          'Warning: Enable only if needed.');
-    define('_MEMBERS_BYPASS',           'Use External Authentication');
-}
-
-*/
 
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
 if (!defined('_ARCHIVETYPE_MONTH') )
@@ -661,14 +639,6 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
     global $manager, $CONF;
 
     if (!headers_sent() ) {
-        // if content type is application/xhtml+xml, only send it to browsers
-        // that can handle it (IE6 cannot). Otherwise, send text/html
-
-        // v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
-        //       application/xhtml+xml still causes too much problems with the javascript implementations
-
-        // v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
-        //       application/xhtml+xml seems to be working, so we're going to use it if we can.
         if (
                 ($contenttype == 'application/xhtml+xml')
             &&  (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
@@ -978,6 +948,7 @@ function selector() {
         $first_timestamp = quickQuery ($query . " ORDER BY itime ASC LIMIT 1");
         $last_timestamp  = quickQuery ($query . " ORDER BY itime DESC LIMIT 1");
 
+        $y = $m = $d = '';
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
         if ($d != 0) {
@@ -1662,7 +1633,11 @@ function createLink($type, $params) {
             if ($usePathInfo) {
                 $url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
             } else {
-                $url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+                global $blogid;
+                if ($blogid == $params['blogid'] && ($CONF['BlogURL'] != 'index.php'))
+                    $url = $CONF['BlogURL']  . '?blogid=' . $params['blogid'];
+                else
+                    $url = $CONF['IndexURL'] . '?blogid=' . $params['blogid'];
             }
             break;
     }
@@ -2328,7 +2303,7 @@ function getBookmarklet($blogid) {
     $document = 'document';
     $bookmarkletline = "javascript:Q='';x=".$document.";y=window;if(x.selection){Q=x.selection.createRange().text;}else if(y.getSelection){Q=y.getSelection();}else if(x.getSelection){Q=x.getSelection();}wingm=window.open('";
     $bookmarkletline .= $CONF['AdminURL'] . "bookmarklet.php?blogid=$blogid";
-    $bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width=600,height=550,left=10,top=10,status=yes,resizable=yes');wingm.focus();";
+    $bookmarkletline .="&logtext='+escape(Q)+'&loglink='+escape(x.location.href)+'&loglinktitle='+escape(x.title),'nucleusbm','scrollbars=yes,width='+window.parent.screen.width*0.9+',height='+window.parent.screen.height*0.9+',left=10,top=10,status=yes,resizable=yes');wingm.focus();";
 
     return $bookmarkletline;
 }

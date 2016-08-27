@@ -241,7 +241,7 @@ class ITEMACTIONS extends BaseActions {
      * Parse templatevar blogurl
      */
     function parse_blogurl() {
-        echo $this->blog->getURL();
+        echo $this->blog->getRealURL();
     }
 
     /**
@@ -521,7 +521,7 @@ class ITEMACTIONS extends BaseActions {
       * Parse templatevar editpopupcode
       */
     function parse_editpopupcode() {
-        echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=550,left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
+        echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width='+window.parent.screen.width*0.9+',height='+window.parent.screen.height*0.9+',left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
     }
 
     // helper functions

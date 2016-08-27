@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
+		<script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
@@ -115,13 +116,8 @@
 						<li>
 							<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 									<div class="indent">
-										<input id="inputday" name="day" tabindex="71" size="2" value="<%itemtime(mday)%>" onchange="document.forms[0].act_changedate.checked=true;" />/
-										<input id="inputmonth" name="month" tabindex="72" size="2" value="<%itemtime(mon)%>" onchange="document.forms[0].act_changedate.checked=true;" />/
-										<input id="inputyear" name="year" tabindex="73" size="4" value="<%itemtime(year)%>" onchange="document.forms[0].act_changedate.checked=true;" />
-										at
-										<input id="inputhour" name="hour" tabindex="74" size="2" value="<%itemtime(hours)%>" onchange="document.forms[0].act_changedate.checked=true;" />:
-										<input id="inputminutes" name="minutes" tabindex="75" size="2" value="<%itemtime(minutes)%>" onchange="document.forms[0].act_changedate.checked=true;" />
-										(dd/mm/yyyy hh:mm)
+										<%text(_ADD_PLACE_ON)%>
+										<%date_time_picker(itemtime)%>
 									</div>
 							</li>
 							<li>
@@ -166,5 +162,14 @@
 		var formtype = 'edit'; // Add or edit form
 	</script><%endif%>
 
+		<script type="text/javascript">
+		// datetime reset functions
+		function date_itemtime_reset( )
+		{
+			edit_form_change_date_ByValue( new Array(
+				 "<%itemtime(year)%>", "<%itemtime(mon)%>", "<%itemtime(mday)%>",
+				 "<%itemtime(hours)%>", "<%itemtime(minutes)%>" ) );
+		}
+		</script>
 	</body>
 </html>

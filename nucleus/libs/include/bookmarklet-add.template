@@ -7,6 +7,7 @@
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
+		<script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<%init%>
@@ -115,13 +116,7 @@
 					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 					<div class="indent">
 						<%text(_ADD_PLACE_ON)%>
-						<input id="inputday" name="day" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" />/
-						<input id="inputmonth" name="month" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" />/
-						<input id="inputyear" name="year" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" />
-						at
-						<input id="inputhour" name="hour" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" />:
-						<input id="inputminutes" name="minutes" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />
-						(dd/mm/yyyy hh:mm)
+						<%date_time_picker%>
 						<%ifblogsetting(ballowpast,0)%>
 							<br />
 							<%text(_ADD_NOPASTDATES)%>
@@ -168,5 +163,14 @@
 		var formtype = 'add'; // Add or edit form
 	</script><%endif%>
 
+		<script type="text/javascript">
+		// datetime reset functions
+		function date_currenttime_reset( )
+		{
+			edit_form_change_date_ByValue( new Array(
+				 "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
+				 "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
+		}
+		</script>
 	</body>
 </html>

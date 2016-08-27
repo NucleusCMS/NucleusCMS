@@ -452,7 +452,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_addpopupcode() {
         echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();";
-        echo "winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');";
+        echo "winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width='+window.parent.screen.width*0.9+',height='+window.parent.screen.height*0.9+',left=10,top=10,status=yes,resizable=yes');";
         echo "winbm.focus();return false;";
     }
 
@@ -613,7 +613,7 @@ class ACTIONS extends BaseActions {
                 echo hsc($blog->getID());
                 break;
             case 'url':
-                echo hsc($blog->getURL());
+                echo hsc($blog->getRealURL());
                 break;
             case 'name':
                 echo hsc($blog->getName());
