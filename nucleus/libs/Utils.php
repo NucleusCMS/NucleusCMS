@@ -4,6 +4,7 @@
 // Utils::mail()
 // Utils::strftime
 // Utils::strlen
+// Utils::httpGet
 
 if (!defined('_HAS_MBSTRING'))
     define('_HAS_MBSTRING', extension_loaded('mbstring'));
@@ -72,6 +73,70 @@ class Utils
         if (_HAS_MBSTRING)
             return mb_strlen($string, _CHARSET);
         return strlen($string);
+    }
+
+    public static function httpGet($url , $options = array('connecttimeout'=> 3))
+    {
+        $timeout = ((isset($options['timeout']) && $options['timeout']>0) ? $options['timeout'] : 0);
+        $connecttimeout = ((isset($options['connecttimeout']) && $options['connecttimeout']>0) ? $options['connecttimeout'] : 0);
+        $start = microtime(TRUE);
+
+        if (function_exists('curl_init'))
+        {
+            $crl = curl_init();
+            curl_setopt ($crl, CURLOPT_URL, $url);
+            curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
+            if ($timeout > 0)
+                curl_setopt ($crl, CURLOPT_TIMEOUT, $timeout);
+            if ($connecttimeout > 0)
+                curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $connecttimeout);
+            $ret = curl_exec($crl);
+            curl_close($crl);
+            return $ret;
+        }
+
+        if ($connecttimeout>0 && version_compare(PHP_VERSION, '5.2.1', '>=')) {
+            $opts = array('http'=>array('timeout'=> $connecttimeout)); // php-5.2.1 Added timeout.  default_socket_timeout
+            $sc = stream_context_create($opts);
+            $c = fopen($url, "r", FALSE, $sc);
+        } else {
+            $c = fopen($url, "r");
+        }
+        if ($c)
+        {
+            if ($timeout>0 && (microtime(TRUE)-$start > $timeout)) {
+                fclose($c);
+                return FALSE; // Timeout
+            }
+            if ($timeout>0)
+                stream_set_timeout($c, $timeout);
+            $data = '';
+            $stR = array($c);
+            $stW = null;
+            while (is_resource($c) && !feof($c)) {
+                $tv_sec = max(1, $timeout > 0 ? $timeout - ceil(microtime(TRUE)-$start) : 1);
+                if (!stream_select($stR, $stW, $stW, $tv_sec)) {
+                     fclose($c);
+                     return FALSE; // Timeout
+                }
+                $str = fgets($c, 500);
+                $data.= $str;
+
+                // Handling of "traditional" timeout
+                $info = stream_get_meta_data($c);
+                if ($info['timed_out']) {
+                    fclose($c);
+                    return FALSE; // Timeout
+                }
+                if ($timeout>0 && (microtime(TRUE)-$start > $timeout)) {
+                    fclose($c);
+                    return FALSE; // Timeout
+                }
+             }
+             fclose($c);
+             return $data;
+        }
+        return FALSE;
     }
 
 }
