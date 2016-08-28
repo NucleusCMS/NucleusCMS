@@ -41,40 +41,9 @@
         if ($DB_DRIVER_NAME == 'sqlite' && $version<=380)  return TRUE;
 
         switch($version) {
-            case '95':
-                $query = 'SELECT bconvertbreaks FROM '.sql_table('blog').' LIMIT 1';
-                $minrows = -1;
-                break;
-            case '96':
-                $query = 'SELECT cip FROM '.sql_table('comment').' LIMIT 1';
-                $minrows = -1;
-                break;
-            case '100':
-                $query = 'SELECT mcookiekey FROM '.sql_table('member').' LIMIT 1';
-                $minrows = -1;
-                break;
-            case '110':
-                $query = 'SELECT bnotifytype FROM '.sql_table('blog').' LIMIT 1';
-                $minrows = -1;
-                break;
-            case '150':
-                $query = 'SELECT * FROM '.sql_table('plugin_option').' LIMIT 1';
-                $minrows = -1;
-                break;
-            case '200':
-                $query = sprintf('SELECT sdincpref FROM %s LIMIT 1', sql_table('skin_desc'));
-                $minrows = -1;
-                break;
-            // dev only (v2.2)
-            case '220':
-                $query = sprintf('SELECT oid FROM %s LIMIT 1', sql_table('plugin_option_desc'));
-                $minrows = -1;
-                break;
-            // v2.5 beta
-            case '240':
-                $query = sprintf('SELECT bincludesearch FROM %s LIMIT 1', sql_table('blog'));
-                $minrows = -1;
-                break;
+            case '300':
+                if (!sql_existTableName(sql_table('config'))) //  < 250
+                    return FALSE;
             default:  // 250 - 380
                 $query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%d LIMIT 1", sql_table('config'), intval($version));
                 $minrows = 1;
@@ -90,12 +59,7 @@
     }
 
 
-    /** this function gets the nucleus version, even if the getNucleusVersion
-     * function does not exist yet
-     * return 96 for all versions < 100
-     */
     function upgrade_getNucleusVersion() {
-        if (!function_exists('getNucleusVersion')) return 96;
         return getNucleusVersion();
     }
 
@@ -176,7 +140,7 @@
         echo "<h1>" . _UPG_TEXT_UPGRADE_COMPLETED_TITLE . "</h1>\n";
         echo "<p>" . $msg . "</p>\n";
 
-        echo sprintf("<p>" . _UPG_TEXT_BACK_TO_OVERVIEW . "</p>\n", "index.php?from=" . $from);
+        echo sprintf("<p>" . _UPG_TEXT_BACK_TO_OVERVIEW . "</p>\n", "index.php" . ($from>0 ? '?from='.$from : ''));
 
         upgrade_foot();
         exit;

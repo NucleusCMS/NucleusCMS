@@ -29,35 +29,18 @@ if (!$member->isAdmin()) {
 
 $from = intGetVar('from');
 
-if ($from < 300) {
-    include('upgrade0.95.php');
-    include('upgrade0.96.php');
-    include('upgrade1.0.php');
-    include('upgrade1.1.php');
-    include('upgrade1.5.php');
-    include('upgrade2.0.php');
-    include('upgrade2.5.php');
-    include('upgrade3.0.php');
+if ($from < 300 && isset($_GET['from'])) {
+    $msg = '<p class="warning">'    . _UPG_TEXT_UPGRADE_ABORTED .'</p>'
+         . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
+         . '<p class="note">'       . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
+         . '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
+    upgrade_error($msg);
+    exit;
 }
 
 upgrade_start();
 
 switch($from) {
-    case 95:
-        upgrade_do95();
-        upgrade_do96();
-    case 96:
-        upgrade_do100();
-    case 100:
-        upgrade_do110();
-    case 110:
-        upgrade_do150();
-    case 150:
-        upgrade_do200();
-    case 200:
-        upgrade_do250();
-    case 250:
-        upgrade_do300();
     case 300:
         include_once('upgrade3.1.php');
         upgrade_do310();
