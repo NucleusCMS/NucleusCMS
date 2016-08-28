@@ -584,8 +584,6 @@ function getNucleusPatchLevel() {
 function getLatestVersion() {
     global $CONF;
 
-    if (!function_exists('curl_init')) return false;
-
     // response version text ,  last request time
     foreach(array('LatestVerText','LatestVerReqTime') as $key)
     if (!array_key_exists($key,$CONF))
@@ -605,13 +603,8 @@ function getLatestVersion() {
         return $l_ver;
     }
 
-    $crl = curl_init();
-    $timeout = 5;
-    curl_setopt ($crl, CURLOPT_URL,'http://nucleuscms.org/version_check.php');
-    curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $ret = curl_exec($crl);
-    curl_close($crl);
+    $options = array('timeout'=> 5, 'connecttimeout'=> 3);
+    $ret = Utils::httpGet('http://nucleuscms.org/version_check.php', $options);
 
     if (empty($ret))
         $ret = '';
