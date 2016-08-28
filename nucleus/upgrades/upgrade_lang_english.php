@@ -11,6 +11,10 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+define('_UPG_TEXT_UPGRADE_ABORTED',  'Aborted upgrade.');
+define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP',      'It does not support upgrading from older than version 3 core.');
+define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO', 'Please try again to upgrade to version 3.71 or earlier.');
+
 define('_UPG_TEXT_ALREADY_INSTALLED', 'already installed');
 define('_UPG_TEXT_V035_WARN_PING',      'Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin');
 define('_UPG_TEXT_NOTE_PING01',          'Note: The weblogs.com ping function is improved and moved into a plugin. To activate this function in v3.3, please go to plugin menu and install NP_Ping plugin. Also, NP_Ping is replacing NP_PingPong. If you have NP_PingPing installed, please also remove it.');
@@ -62,14 +66,6 @@ define('_UPG_TEXT_60_NOT_INSTALLED',        'not yet installed');
 define('_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS',     'Changes needed for Nucleus %s');
 
 /*******************/
-
-define('_UPG_TEXT_V096MEDIA',    "A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add");
-define('_UPG_TEXT_V096MEDIA02',    "Also, it will be necessary to create that directory yourself. If you want to make file upload possible, you should set the permissions of the media/ directory to 777 (see the documentation/tips.html in Nucleus 0.96+ for a quick guide on setting permissions).");
-
-define('_UPG_TEXT_V200_01',        "A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add");
-define('_UPG_TEXT_V200_02',        "Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area.");
-define('_UPG_TEXT_V200_RSS_RSD',     'RSS 2.0 and RSD skin');
-define('_UPG_TEXT_V200_04',             "When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)");
 
 define('_UPG_TEXT_V340_01',        "It is recommended that you apply some restrictions to what you allow the web server to do with files in the <i>media</i> and <i>skins</i> folders. These restrictions are not necessary to the functioning of the software, nor to the security of the software. However, they can be an important help under the security principle of denying any access that is not required.");
 define('_UPG_TEXT_V340_02',        "Instructions for applying the restrictions are found in the following two files on your server");

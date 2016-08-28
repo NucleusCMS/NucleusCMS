@@ -11,6 +11,10 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+define('_UPG_TEXT_UPGRADE_ABORTED',  'アップグレードを中止しました。');
+define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP',      'バージョン3より古いコアからのアップグレードはサポートされていません。');
+define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO', 'バージョン3.71以前にアップグレードしてからやり直してください。');
+
 define('_UPG_TEXT_ALREADY_INSTALLED', 'インストール済みです');
 define('_UPG_TEXT_V035_WARN_PING',      '注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。');
 define('_UPG_TEXT_NOTE_PING01',          'メモ: weblogs.com ping 機能が向上しプラグイン化されました。この機能を有効化するには、プラグインの管理メニューを開き、NP_Ping プラグインをインストールしてください。また NP_Ping は NP_PingPong を置き換えるものです。もしすでに NP_PingPong をインストール済みであれば削除してください。');
@@ -62,14 +66,6 @@ define('_UPG_TEXT_60_NOT_INSTALLED',        'インストールが必要');
 define('_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS',     'Nucleus %s 以降で必要な変更');
 
 /*******************/
-
-define('_UPG_TEXT_V096MEDIA',    'メディア機能を使用するために<i>config.php</i>を手動で変更する必要があります。下記の通り追加します');
-define('_UPG_TEXT_V096MEDIA02',    'また、ディレクトリもあなた自身の手で作る必要があります。もしファイルのアップロードを可能にしたいのであれば、media/ ディレクトリのパーミッションを777にします。（Nucleus 0.96+ のためのパーミッションの設定に関するクイックガイドが documentation/tips.html にあります）');
-
-define('_UPG_TEXT_V200_01',             'スキンの取り込み機能を使用するために%sを手動で変更する必要があります。下記の通り追加します');
-define('_UPG_TEXT_V200_02',             'また、ディレクトリもあなた自身の手で作る必要があります。これでダウンロードしたスキンを上記ディレクトリに展開したり、Nucleus 管理画面から取り込んだりできるようになります。');
-define('_UPG_TEXT_V200_RSS_RSD',     'RSS 2.0 と RSD スキン');
-define('_UPG_TEXT_V200_04',             'Nucleus 2.0 を新規にインストールしたとき、RSD(Really Simple Discovery) 用のスキンの他に、RSS 2.0(Really Simple Syndication)用のスキンもまたインストールされます。<code>xml-rss2.php</code> と <code>rsd.php</code> の両ファイルはアップグレードされますが、スキンに関しては手動でインストールする必要があります。<code>upgrade-files</code>の中身をアップロードしたあと、管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから両スキンをインストールすることができます（もしインストールするつもりがなければ、しなくても結構です）。');
 
 define('_UPG_TEXT_V340_01',        '<em>skins</em>ディレクトリと<em>media</em>ディレクトリに「.htaccess」を設置して、アクセス制限をかけることが推奨されます。この変更は、Nucleusの機能やセキュリティに直接関係があるわけではありませんが、不正アクセスを防ぐ為の重要な助けになるでしょう。');
 define('_UPG_TEXT_V340_02',        '手順は以下の2つのファイルに書いてありますので参考にしてください');

@@ -37,13 +37,7 @@ $echo[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
 $echo[] = '</div>';
 
 // calculate current version
-    if (!upgrade_checkinstall(96))      $current = 95;
-    elseif (!upgrade_checkinstall(100)) $current = 96;
-    elseif (!upgrade_checkinstall(110)) $current = 100;
-    elseif (!upgrade_checkinstall(150)) $current = 110;
-    elseif (!upgrade_checkinstall(200)) $current = 150;
-    elseif (!upgrade_checkinstall(250)) $current = 200;
-    elseif (!upgrade_checkinstall(300)) $current = 250;
+    if (!upgrade_checkinstall(300)) $current = 250;
     elseif (!upgrade_checkinstall(310)) $current = 300;
     elseif (!upgrade_checkinstall(320)) $current = 310;
     elseif (!upgrade_checkinstall(330)) $current = 320;
@@ -54,6 +48,15 @@ $echo[] = '</div>';
     elseif (!upgrade_checkinstall(371)) $current = 370;
     elseif (!upgrade_checkinstall(380)) $current = 371;
     else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
+
+if ($current < 300) {
+    $msg = '<p class="warning">' . _UPG_TEXT_UPGRADE_ABORTED .'</p>'
+         . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
+         . '<p class="note">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
+         . '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
+    upgrade_error($msg);
+    exit;
+}
 
 if (version_compare(phpversion(),'5.0.0','<'))
     $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
@@ -74,11 +77,9 @@ $from = intGetVar('from');
 if (!$from) 
     $from = $current;
 
-if ($from < NUCLEUS_UPGRADE_VERSION_ID)
+if (version_compare('5.0.0',phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSION_ID)
 {
     $sth = array();
-//    if (!$DIR_MEDIA) $sth[] = upgrade_manual_96();
-//    if (!$DIR_SKINS) $sth[] = upgrade_manual_200();
 
     if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
     if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
@@ -135,52 +136,6 @@ function upgrade_manual_atom1_0() {
         }
     }
     return !empty($echo) ? join("\n",$echo) : '';
-}
-
-function upgrade_manual_96() {
-    global $DIR_NUCLEUS;
-
-    $guess = hsc(str_replace("/nucleus/","/media/",$DIR_NUCLEUS));
-
-    $s = <<<EOL
-  <h2>Changes needed for Nucleus 0.96</h2>
-  <p>
-    A manual addition needs to be made to <i>config.php</i>, in order to get the media functions to work. Here's what to add:
-  </p>
-  <pre>
-  // path to media dir
-  \$DIR_MEDIA = '<b>${guess}</b>';
-  </pre>
-
-  <p>
-  Also, it will be necessary to create that directory yourself. If you want to make file upload possible, you should set the permissions of the media/ directory to 777 (see the documentation/tips.html in Nucleus 0.96+ for a quick guide on setting permissions).
-  </p>
-EOL;
-    return $s;
-}
-
-function upgrade_manual_200() {
-  global $DIR_NUCLEUS;
-
-  $guess = hsc(str_replace("/nucleus/","/skins/",$DIR_NUCLEUS));
-
-	$s = <<<EOL
-  <h2>Changes needed for Nucleus 2.0</h2>
-  <p>
-    A manual addition needs to be made to <i>config.php</i>, in order to get imported skins to work correctly. Here's what to add:
-  </p>
-  <pre>
-  // extra skin files for imported skins
-  \$DIR_SKINS = '<b>${guess}</b>';
-  </pre>
-
-  <p>Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area.</p>
-
-  <h3>RSS 2.0 and RSD skin</h3>
-
-  <p>When a fresh version of Nucleus 2.0 is installed, an RSS 2.0 (Really Simple Syndication) syndication skin is also installed, as well as an RSD skin (Really Simple Discovery). The files <code>xml-rss2.php</code> and <code>rsd.php</code> are available in the upgrade, however the skin itself needs to be installed manually. After you've uploaded the contents of the <code>upgrade-files</code>, open <code>admin area &gt; nucleus management &gt; skin import</code>. From there, you can install both skins. (Unless you don't want them installed, that is)</p>
-EOL;
-	return $s;
 }
 
 function upgrade_manual_340() {
