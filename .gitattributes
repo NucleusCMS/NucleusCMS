@@ -24,4 +24,9 @@
 /build               export-ignore
 /nucleus/convert     export-ignore
 /nucleus/language/archive     export-ignore
-
+/extra               export-ignore
+/install             export-ignore
+/media               export-ignore
+/skins               export-ignore
+/robots.txt          export-ignore
+/config.php          export-ignore
