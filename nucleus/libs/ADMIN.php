@@ -5818,7 +5818,7 @@ selector();
             if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
             {
                 printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
-                        $CONF['AdminURL'] . 'upgrades/' , $CONF['DatabaseVersion']);
+                        $CONF['IndexURL'] . '_upgrades/' , $CONF['DatabaseVersion']);
             }
         } else {
             echo $versionstring;
@@ -7160,7 +7160,7 @@ selector();
             // check if files exist and generate an error if so
             $aFiles = array(
              '../install' => _ERRORS_INSTALLDIR,
-                'upgrades'       => _ERRORS_UPGRADESDIR,
+             '../_upgrades'       => _ERRORS_UPGRADESDIR,
                 'convert'        => _ERRORS_CONVERTDIR
             );
             $aFound = array();
