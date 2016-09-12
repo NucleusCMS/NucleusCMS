@@ -20,11 +20,12 @@ ob_start();
 define('_CHARSET', 'UTF-8');
 
 // auto search config.php
-$basepath = realpath(dirname(__FILE__) . '/../../../');
+$basepath = realpath(dirname(__FILE__) . '/../../');
 if (substr($basepath, -1,1) != DIRECTORY_SEPARATOR)
     $basepath .= DIRECTORY_SEPARATOR;
 $config_file = $basepath . 'config.php';
-include_once($config_file);
+if(is_file($config_file)) include_once($config_file);
+else exit($config_file . ' Config file is not exists');
 ob_end_clean();
 
 $installer = new ConvertInstaller($basepath);
