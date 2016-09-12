@@ -243,7 +243,7 @@ define('_ITEM_ADDEDITTEMPLATE_MINUTE',				'Minute');
 define('_ERRORS_INSTALLSQL',						'install.sql should be deleted');
 define('_ERRORS_INSTALLDIR',						'install directory should be deleted');  // <add by shizuki />
 define('_ERRORS_INSTALLPHP',						'install.php should be deleted');
-define('_ERRORS_UPGRADESDIR',						'nucleus/upgrades directory should be deleted');
+define('_ERRORS_UPGRADESDIR',						'_upgrades directory should be deleted');
 define('_ERRORS_CONVERTDIR',						'nucleus/convert directory should be deleted');
 define('_ERRORS_CONFIGPHP',							'config.php should be non-writable (chmod to 444)');
 define('_ERRORS_STARTUPERROR1',						'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>');

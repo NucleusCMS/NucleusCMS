@@ -63,7 +63,7 @@ if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
         malfunction
     alertOnSecurityRisk
         Displays an error only when visiting the admin area, and when one or
-        more of the installation files (install.php, install.sql, upgrades/
+        more of the installation files (install.php, install.sql, _upgrades/
         directory) are still on the server.
 */
 

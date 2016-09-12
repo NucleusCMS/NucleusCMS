@@ -6051,7 +6051,7 @@ selector();
             if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
             {
                 printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
-                        $CONF['AdminURL'] . 'upgrades/' , $CONF['DatabaseVersion']);
+                        $CONF['IndexURL'] . '_upgrades/' , $CONF['DatabaseVersion']);
             }
         } else {
             echo $versionstring;
@@ -7404,7 +7404,7 @@ selector();
                 '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized
                 '../install.php' => _ERRORS_INSTALLPHP,  // don't localized
                 '../install' => _ERRORS_INSTALLDIR,
-                'upgrades'   => _ERRORS_UPGRADESDIR,
+                '../_upgrades'   => _ERRORS_UPGRADESDIR,
                 'convert'    => _ERRORS_CONVERTDIR
             );
             $aFound = array();
