@@ -156,6 +156,7 @@ class NP_SecurityEnforcer extends NucleusPlugin {
 			if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
 				$data['success'] = 0;
 				$data['allowlocal'] = 0;
+				if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8');
 				$info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, htmlspecialchars($login,ENT_QUOTES,_CHARSET), htmlspecialchars($ip,ENT_QUOTES,_CHARSET));
 				ACTIONLOG::add(INFO, $info);
 			}
