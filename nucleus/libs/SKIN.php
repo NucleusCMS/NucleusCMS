@@ -179,7 +179,7 @@ class SKIN {
         );
         $manager->notify('InitSkinParse', $param);
         $skinid = $this->id;
-        
+
         // set output type
         sendContentType($this->getContentType(), 'skin', _CHARSET);
         
@@ -208,7 +208,7 @@ class SKIN {
         );
         $manager->notify('PreSkinParse', $param);
         $skinid = $this->id;
-        
+
         // set IncludeMode properties of parser
         PARSER::setProperty('IncludeMode',$this->getIncludeMode());
         PARSER::setProperty('IncludePrefix',$this->getIncludePrefix());

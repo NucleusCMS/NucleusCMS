@@ -222,13 +222,13 @@ if (!isset($CONF['Self']))
 if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
 
-$CONF['ItemURL'] = $CONF['Self'];
-$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ItemURL']        = $CONF['Self'];
+$CONF['ArchiveURL']     = $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL'] = $CONF['Self'];
-$CONF['SearchURL'] = $CONF['Self'];
-$CONF['BlogURL'] = $CONF['Self'];
-$CONF['CategoryURL'] = $CONF['Self'];
+$CONF['MemberURL']      = $CONF['Self'];
+$CONF['SearchURL']      = $CONF['Self'];
+$CONF['BlogURL']        = $CONF['Self'];
+$CONF['CategoryURL']    = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15

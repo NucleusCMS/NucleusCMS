@@ -56,7 +56,7 @@ class NOTIFICATION {
             if ($member->isLoggedIn() && ($member->getEmail() == $address))
                 continue;
 
-            @Utils::mail($address, $title, $message, "From: ". $from);
+            @Utils::mail($address, $title, $message , "From: ". $from);
         }
     }
 }

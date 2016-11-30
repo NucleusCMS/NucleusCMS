@@ -137,7 +137,7 @@ if (!function_exists('sql_fetch_assoc'))
                     $DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db_name, $db_user, $db_password);
                 break;
             }
-    
+
 // <add for garble measure>
         // for mysql
             if ( $DBH && (stripos($DB_DRIVER_NAME, 'mysql') === 0) )
@@ -158,7 +158,7 @@ if (!function_exists('sql_fetch_assoc'))
                 sql_set_charset($charset , $DBH);
             }
 // </add for garble measure>*/
-            
+
         } catch (PDOException $e) {
             $DBH =NULL;
             if ($CONF['debug'])
@@ -173,10 +173,10 @@ if (!function_exists('sql_fetch_assoc'))
                 }
             startUpError($msg , 'Connect Error');
         }
-//echo '<hr />DBH: '.print_r($DBH,true).'<hr />';        
+//echo '<hr />DBH: '.print_r($DBH,true).'<hr />';
         return $DBH;
     }
-    
+
 /**
  * Connects to mysql server
  */
@@ -209,7 +209,7 @@ if (!function_exists('sql_fetch_assoc'))
         if (is_null($dbh)) $SQL_DBH = NULL;
         else $dbh = NULL;
     }
-    
+
     function sql_close(&$dbh=NULL) {
         global $SQL_DBH;
         if (is_null($dbh)) $SQL_DBH = NULL;
@@ -246,10 +246,10 @@ if (!function_exists('sql_fetch_assoc'))
             printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
                   , $errors[0].'-'.$errors[1].' '.$errors[2], hsc($query));
         }
-        
+
         return $res;
     }
-    
+
     function sql_query_log(&$query, $override = false)
     {
         global $SQLCount;
@@ -290,7 +290,7 @@ if (!function_exists('sql_fetch_assoc'))
         }
         else return '';
     }
-    
+
 /**
  * executes an SQL db select
  */
@@ -365,23 +365,23 @@ if (!function_exists('sql_fetch_assoc'))
         }
         catch (PDOException $e)
         {
-                if ($CONF['debug'])
-                    $msg =  '<p>a3 Error!: ' . $e->getMessage() . '</p>';
-                else
-                {
-                    $msg =  '<p>a3 Error!: ';
-                    $pattern = '/(Access denied for user|Unknown database)/i';
-                    if (preg_match($pattern, $e->getMessage(), $m))
-                        $msg .=  $m[1];
-                    $msg .=  '</p>';
-                }
-                startUpError($msg, 'Connect Error');
-                return 0;
+            if ($CONF['debug'])
+                $msg =  '<p>a3 Error!: ' . $e->getMessage() . '</p>';
+            else
+            {
+                $msg =  '<p>a3 Error!: ';
+                $pattern = '/(Access denied for user|Unknown database)/i';
+                if (preg_match($pattern, $e->getMessage(), $m))
+                    $msg .=  $m[1];
+                $msg .=  '</p>';
+            }
+            startUpError($msg, 'Connect Error');
+            return 0;
         }
     }
 
 /**
- * executes an SQL real escape 
+ * executes an SQL real escape
  */
     function sql_real_escape_string($val,$dbh=NULL)
     {
@@ -389,9 +389,9 @@ if (!function_exists('sql_fetch_assoc'))
         return (string) substr($s, 1, strlen($s) -2 );
 //        return addslashes($val);
     }
-    
+
 /**
- * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
+ * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed
  */
     function sql_quote_string($val,$dbh=NULL) {
         global $SQL_DBH;
@@ -400,19 +400,19 @@ if (!function_exists('sql_fetch_assoc'))
         else
             return $dbh->quote($val);
     }
-    
+
 /**
  * executes an SQL insert id
  */
     function sql_insert_id($dbh=NULL)
-    {   
+    {
         global $SQL_DBH;
         if (is_null($dbh))
             return $SQL_DBH->lastInsertId();
         else
             return $dbh->lastInsertId();
     }
-    
+
 /**
  * executes an SQL result request
  */
@@ -431,7 +431,7 @@ if (!function_exists('sql_fetch_assoc'))
             return $results[$col];
         }
     }
-    
+
 /**
  * frees sql result resources
  */
@@ -440,7 +440,7 @@ if (!function_exists('sql_fetch_assoc'))
         $res = NULL;
         return true;
     }
-    
+
 /**
  * returns number of rows in SQL result
  */
@@ -452,7 +452,7 @@ if (!function_exists('sql_fetch_assoc'))
             return $res->rowCount();
         return 0;
     }
-    
+
 /**
  * returns number of rows affected by SQL query
  */
@@ -460,7 +460,7 @@ if (!function_exists('sql_fetch_assoc'))
     {
         return $res->rowCount();
     }
-    
+
 /**
  * Get number of fields in result
  */
@@ -468,7 +468,7 @@ if (!function_exists('sql_fetch_assoc'))
     {
         return $res->columnCount();
     }
-    
+
 /**
  * fetches next row of SQL result as an associative array
  */
@@ -476,10 +476,10 @@ if (!function_exists('sql_fetch_assoc'))
     {
         $results = array();
         if ($res)
-        $results = $res->fetch(PDO::FETCH_ASSOC);   
+            $results = $res->fetch(PDO::FETCH_ASSOC);
         return $results;
     }
-    
+
 /**
  * Fetch a result row as an associative array, a numeric array, or both
  */
@@ -487,10 +487,10 @@ if (!function_exists('sql_fetch_assoc'))
     {
         $results = array();
         if ($res)
-        $results = $res->fetch(PDO::FETCH_BOTH);
+            $results = $res->fetch(PDO::FETCH_BOTH);
         return $results;
     }
-    
+
 /**
  * fetches next row of SQL result as an object
  */
@@ -498,10 +498,10 @@ if (!function_exists('sql_fetch_assoc'))
     {
         $results = NULL;
         if ( $res && is_object( $res ) )
-        $results = $res->fetchObject(); 
+            $results = $res->fetchObject();
         return $results;
     }
-    
+
 /**
  * Get a result row as an enumerated array
  */
@@ -509,10 +509,10 @@ if (!function_exists('sql_fetch_assoc'))
     {
         $results = array();
         if ($res)
-        $results = $res->fetch(PDO::FETCH_NUM); 
+            $results = $res->fetch(PDO::FETCH_NUM);
         return $results;
     }
-    
+
     function sql_fetch_column($res , $column_number = 0)
     {
         if ($res)
@@ -534,7 +534,7 @@ if (!function_exists('sql_fetch_assoc'))
         }
         return $obj;
     }
-    
+
 /**
  * Get current system status (returns string)
  */
@@ -547,7 +547,7 @@ if (!function_exists('sql_fetch_assoc'))
         else
             return '';
     }
-    
+
 /**
  * Returns the name of the character set
  */
@@ -560,7 +560,7 @@ if (!function_exists('sql_fetch_assoc'))
         else
             return '';
     }
-    
+
 /**
  * Returns the array that column names of the table
  */
@@ -657,7 +657,7 @@ if (!function_exists('sql_fetch_assoc'))
         global $SQL_DBH;
         return $SQL_DBH->getAttribute(constant("PDO::ATTR_CLIENT_VERSION"));
     }
-    
+
     function  sql_get_db()
     {
         global $SQL_DBH;
@@ -675,7 +675,7 @@ if (!function_exists('sql_fetch_assoc'))
         else
             return $dbh->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
     }
-    
+
 /**
  * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
  */
@@ -687,9 +687,9 @@ if (!function_exists('sql_fetch_assoc'))
         else
             return $dbh->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
     }
-    
+
 /**
- * Returns the SQL protocol on success, or FALSE on failure. 
+ * Returns the SQL protocol on success, or FALSE on failure.
  */
     function sql_get_proto_info($dbh=NULL)
     {
@@ -715,7 +715,7 @@ if (!function_exists('sql_fetch_assoc'))
 
 /**************************************************************************
     Unimplemented mysql_* functions
-    
+
 # mysql_ data_ seek (maybe useful)
 # mysql_ errno (maybe useful)
 # mysql_ fetch_ lengths (maybe useful)
@@ -754,9 +754,9 @@ if (!function_exists('sql_fetch_assoc'))
      * Jan.20, 2011 by kotorisan and cacher
      * refering to their conversation below,
      * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
-     * 
-     * NOTE:     shift_jis is only supported for output. Using shift_jis in DB is prohibited.
-     * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
+     *
+     * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
+     * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset, $dbh=NULL) {
         global $DB_DRIVER_NAME, $SQL_DBH;
@@ -805,10 +805,10 @@ if (!function_exists('sql_fetch_assoc'))
             {
                 $res = $db->exec("SET CHARACTER SET " . $charset);
             }
-        return $res;
-    }
+            return $res;
+        }
         return TRUE;
-}
+    }
 
     function sql_print_error($text)
     {

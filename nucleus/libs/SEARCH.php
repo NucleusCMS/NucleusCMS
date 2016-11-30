@@ -59,7 +59,7 @@ class SEARCH {
         }
     }
 
-    function  boolean_sql_select($match){
+    function boolean_sql_select($match){
         if (!isset($stringsum)) {
             $stringsum = '';
         }
@@ -150,7 +150,7 @@ class SEARCH {
 /*
     function boolean_mark_atoms($string){
         $result = trim($string);
-        $result = preg_replace("/([[:space:]]{2,})/",' ',$result);
+        $result = preg_replace("/([[:space:]]{2,})/", ' ', $result);
 
         # just added delimiters to regex and the 'i' for case-insensitive matching
 
@@ -203,7 +203,7 @@ class SEARCH {
 */
 
     function boolean_sql_select_short($string, $match) {
-        $match_a           = explode(',', $match);
+        $match_a = explode(',',$match);
         $score_unit_weight = .2;
         for($ith=0;$ith<count($match_a);$ith++){
             $score_a[$ith] =
@@ -227,14 +227,14 @@ class SEARCH {
         
         /* convert normal boolean operators to shortened syntax */
         $result = preg_replace('# not #i', ' -', $result);
-        $result = preg_replace('# and #i', ' ',  $result);
-        $result = preg_replace('# or #i',  ',',  $result);
+        $result = preg_replace('# and #i', ' ', $result);
+        $result = preg_replace('# or #i', ',', $result);
         
-        /* strip excessive whitespace */
-        $result = str_replace(', ', ',',  $result);
-        $result = str_replace(' ,', ',',  $result);
-        $result = str_replace('- ', '-',  $result);
-        $result = str_replace('+',  '',   $result);
+        // strip excessive whitespace
+        $result = str_replace(', ', ',', $result);
+        $result = str_replace(' ,', ',', $result);
+        $result = str_replace('- ', '-', $result);
+        $result = str_replace('+', '', $result);
         $result = str_replace(',',  ' ,', $result);
 
         return $result;

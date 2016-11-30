@@ -533,7 +533,6 @@ class MANAGER
         if (!is_array($this->subscriptions))
             $this->_loadSubscriptions();
 
-
         // get listening objects
         $listeners = false;
         if (isset($this->subscriptions[$eventName])) {

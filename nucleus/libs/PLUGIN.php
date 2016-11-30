@@ -698,10 +698,10 @@ class NucleusPlugin {
                         //trigger event PrePluginOptionsUpdate to give the plugin the
                         //possibility to change/validate the new value for the option
                         $param = array(
-                            'context'        =>  $o->ocontext,
-                            'plugid'        =>  $o->opid,
-                            'optionname'    =>  $o->oname,
-                            'contextid'        =>  $contextid,
+                            'context'        => $o->ocontext,
+                            'plugid'        => $o->opid,
+                            'optionname'    => $o->oname,
+                            'contextid'        => $contextid,
                             'value'            => &$value
                         );
                         $manager->notify('PrePluginOptionsUpdate', $param);

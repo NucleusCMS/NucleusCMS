@@ -66,6 +66,7 @@ if (!$from) $from = $current;
 
 if (version_compare('5.0.0',phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSION_ID) {
     $sth = array();
+
     if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
     if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
     if($from < 366) $sth[] = upgrade_manual_366();
@@ -121,22 +122,25 @@ function upgrade_manual_atom1_0() {
 }
 
 function upgrade_manual_340() {
-    $echo[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
-    $echo[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
-    $echo[] = '<p>';
-    $echo[] = _UPG_TEXT_V340_02 . '：';
-    $echo[] = '<ul>';
-    $echo[] = '<li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>';
-    $echo[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
-    $echo[] = '</ul>';
-    $echo[] = '</p>';
-    return join("\n",$echo);
+    $row = array();
+    $row[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
+    $row[] = '<p>';
+    $row[] = _UPG_TEXT_V340_02 . '：';
+    $row[] = '<ul>';
+    $row[] = '<li><a href="../../extra/htaccess/media/readme.ja.txt">extra/htaccess/media/readme.ja.txt</a></li>';
+    $row[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
+    $row[] = '</ul>';
+    $row[] = '</p>';
+    return join("\n", $row);
 }
 
 function upgrade_manual_366() {
+    $row = array();
     $content = @file_get_contents('../../action.php');
     if(strpos($content,'=&')===false) return '';
-    $echo[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
-    $echo[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
-    return join("\n",$echo);
+    $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+    return join("\n", $row);
 }
+

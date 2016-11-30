@@ -56,7 +56,7 @@
                 $minrows = 1;
                 break;
         }
-        
+
         $count = 0;
         $res = sql_query($query);
         while ( $res && sql_fetch_object($res))
@@ -198,9 +198,9 @@
 
     /**
      * @param $table
-     *      table to check (without prefix)
+     *        table to check (without prefix)
      * @param $aColumns
-     *      array of column names included
+     *        array of column names included
      */
     function upgrade_checkIfIndexExists($table, $aColumns) {
         // get info for indices from database

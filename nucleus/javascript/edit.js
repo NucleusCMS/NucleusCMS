@@ -229,7 +229,7 @@ function storeCaret (textEl) {
 
 	// also store lastselectedelement
 	lastSelected = textEl;
-	
+
 	nonie_FormType = textEl.name;
 
 	scrollTop = textEl.scrollTop;
@@ -244,14 +244,14 @@ function insertAtCaret (text) {
 		var caretPos = lastCaretPos;
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
 	} else if (!document.all && document.getElementById) {
-		mozReplace(document.getElementById('input' + nonie_FormType), text);				
+		mozReplace(document.getElementById('input' + nonie_FormType), text);
 		if(scrollTop>-1) {
 			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
 		}
 	} else if (textEl) {
 		textEl.value  += text;
 	} else {
-		document.getElementById('input' + nonie_FormType).value += text;		
+		document.getElementById('input' + nonie_FormType).value += text;
 		if(scrollTop>-1) {
 			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
 		}
@@ -262,12 +262,12 @@ function insertAtCaret (text) {
 // inserts a tag around the selected text
 function insertAroundCaret (textpre, textpost) {
 	var textEl = lastSelected;
-	
+
 	if (textEl && textEl.createTextRange && lastCaretPos) {
 		var caretPos = lastCaretPos;
 		caretPos.text = textpre + caretPos.text + textpost;
 	} else if (!document.all && document.getElementById) {
-		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);		
+		mozWrap(document.getElementById('input' + nonie_FormType), textpre, textpost);
 		if(scrollTop>-1) {
 			document.getElementById('input' + nonie_FormType).scrollTop = scrollTop;
 		}

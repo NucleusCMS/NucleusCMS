@@ -45,7 +45,7 @@ function upgrade_do340() {
         upgrade_query('Adding a new row for the autosave member option', $query);
     }
 
-        // 3.31 -> 3.4
+    // 3.3 -> 3.4
     // update database version
     update_version('340');
     

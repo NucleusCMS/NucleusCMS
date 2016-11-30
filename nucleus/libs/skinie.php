@@ -755,13 +755,7 @@ class SKINEXPORT {
 
             echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
 
-            $que = 'SELECT'
-                 . '    stype,'
-                 . '    scontent '
-                 . 'FROM '
-                 .      sql_table('skin')
-                 . ' WHERE'
-                 . '    sdesc = ' . $skinId;
+            $que = sprintf('SELECT stype, scontent FROM `%s` WHERE sdesc=%d', sql_table('skin'), $skinId);
             $res = sql_query($que);
             while ($partObj = sql_fetch_object($res)) {
                 $type  = hsc($partObj->stype);
@@ -792,13 +786,7 @@ class SKINEXPORT {
 
             echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
 
-            $que =  'SELECT'
-                 .     ' tpartname,'
-                 .     ' tcontent'
-                 . ' FROM '
-                 .     sql_table('template')
-                 . ' WHERE'
-                 .     ' tdesc = ' . $templateId;
+            $que = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d', sql_table('template'), $templateId);
             $res = sql_query($que);
             while ($partObj = sql_fetch_object($res)) {
                 $type  = hsc($partObj->tpartname);
