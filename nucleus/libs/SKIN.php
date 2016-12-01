@@ -179,6 +179,7 @@ class SKIN {
             // use base skin if this skin does not have contents
             $defskin = new SKIN($CONF['BaseSkin']);
             $contents = $defskin->getContent($type);
+            if (!$contents) $contents = $this->getContent('index');
             if (!$contents) {
                 echo _ERROR_SKIN;
                 return;
