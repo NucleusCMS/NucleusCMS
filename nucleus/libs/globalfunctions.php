@@ -380,7 +380,7 @@ include_once("{$DIR_LIBS}BLOG.php");
 include_once("{$DIR_LIBS}BODYACTIONS.php");
 include_once("{$DIR_LIBS}COMMENTS.php");
 include_once("{$DIR_LIBS}COMMENT.php");
-//include_once("{$DIR_LIBS}ITEM.php");
+include_once("{$DIR_LIBS}ITEM.php");
 include_once("{$DIR_LIBS}NOTIFICATION.php");
 include_once("{$DIR_LIBS}BAN.php");
 include_once("{$DIR_LIBS}PAGEFACTORY.php");
@@ -979,7 +979,9 @@ function selector() {
 
         // get previous itemid and title
         $param = array(sql_table('item'), mysqldate($timestamp), $blogid, $catextra);
-        $query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog='%s' %s ORDER BY itime DESC LIMIT 1", $param);
+        $query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog='%s' %s", $param);
+        ITEM::addShowQueryExpr_public($query);
+        $query .= ' ORDER BY itime DESC LIMIT 1';
         $res = sql_query($query);
 
         $obj = sql_fetch_object($res);
@@ -991,7 +993,9 @@ function selector() {
 
         // get next itemid and title
         $param = array(sql_table('item'),mysqldate($timestamp),mysqldate($b->getCorrectTime()),$blogid,$catextra);
-        $query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime>%s AND itime <= %s AND idraft=0 AND iblog='%s' %s ORDER BY itime ASC LIMIT 1", $param);
+        $query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime>%s AND itime <= %s AND idraft=0 AND iblog='%s' %s", $param);
+        ITEM::addShowQueryExpr_public($query);
+        $query .= ' ORDER BY itime ASC LIMIT 1';
         $res = sql_query($query);
 
         $obj = sql_fetch_object($res);
@@ -1010,11 +1014,16 @@ function selector() {
 
         // sql queries for the timestamp of the first and the last published item
         $blogid_tmp = (int)($blogid ? $blogid : $CONF['DefaultBlog']);
-        $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime ASC LIMIT 1", sql_table('item'), $blogid_tmp);
+        $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s'", sql_table('item'), $blogid_tmp);
+        ITEM::addShowQueryExpr_public($query);
+        $query .= " ORDER BY itime ASC LIMIT 1";
         $first_timestamp=quickQuery ($query);
-        $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s' ORDER BY itime DESC LIMIT 1", sql_table('item'), $blogid_tmp);
+        $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s WHERE idraft=0 AND iblog='%s'", sql_table('item'), $blogid_tmp);
+        ITEM::addShowQueryExpr_public($query);
+        $query .= " ORDER BY itime DESC LIMIT 1";
         $last_timestamp=quickQuery ($query);
 
+        $y = $m = $d = '';
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
         if ($d != 0) {

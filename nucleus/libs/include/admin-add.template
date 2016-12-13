@@ -66,30 +66,42 @@
 		<td><%categories(40)%></td>
 </tr>
 <tr>
+		<td><%text(_ADD_PUBLIC)%></td>
+		<td><%settabindex(41)%>
+<%iftext(_ENABLE_ITEM_PUBLIC_FEATURE,1)%>
+			<input name="public" type="radio" id="public" value="1" checked='checked' tabindex="<%tabindex(0)%>" /><label for="public"><%text(_ADD_PUBLIC)%></label>
+			<input name="public" type="radio" id="unpublic" value="0" tabindex="<%tabindex(0)%>" /><label for="unpublic" ><%text(_ADD_UNPUBLIC)%></label>
+			<div style="padding-top: 6px"><%text(_ADD_PUBLIC_TERM)%>
+				<div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1" tabindex="<%tabindex()%>" />
+									<label for="public_enable_term_start"><%text(_ADD_PUBLIC_TERM_START)%></label> : <%public_date_time_picker1%></div>
+				<div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1" tabindex="<%tabindex()%>" />
+									<label for="public_enable_term_end"><%text(_ADD_PUBLIC_TERM_END)%></label> : <%public_date_time_picker2%></div>
+				<div class="indent"><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%><%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%></div>
+				<div class="indent"><%text(_ADD_PUBLIC_TERM_DESC)%></div>
+			</div>
+<%else%>
+		<div class="note"><%text(_FEATURE_WARN_UPGRADE_DESC)%></div>
+		<input name="not_available_ipublic" type="hidden" value="1" />
+<%endif%>
+		</td>
+	</tr>
+	<tr>
 		<td><%text(_SUBMIT)%></td>
-		<td>
-			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="61" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+		<td><%copytabindex(,1)%>
+			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="<%tabindex(0,0)%>" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+
+<%settabindex(70)%><%copytabindex()%><%inctabindex()%>
 			<br />
-			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="<%tabindex(0,0)%>" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 			<div class="indent">
 				<%text(_ADD_PLACE_ON)%>
-				<input id="inputyear" name="year" tabindex="63" size="4" value="<%currenttime(year)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>
-				<input id="inputmonth" name="month" tabindex="64" size="2" value="<%currenttime(mon)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>
-				<input id="inputday" name="day" tabindex="65" size="2" value="<%currenttime(mday)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_DAY)%>
-				 
-				<input id="inputhour" name="hour" tabindex="66" size="2" value="<%currenttime(hours)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>
-				<input id="inputminutes" name="minutes" tabindex="67" size="2" value="<%currenttime(minutes)%>" onchange="document.forms[0].act_future.checked=true;" /><%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
-				<br /><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%>(yyyy)<%text(_ITEM_ADDEDITTEMPLATE_YEAR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MONTH)%>(dd)<%text(_ITEM_ADDEDITTEMPLATE_DAY)%> (hh)<%text(_ITEM_ADDEDITTEMPLATE_HOUR)%>(mm)<%text(_ITEM_ADDEDITTEMPLATE_MINUTE)%>
-				
-				<input tabindex="68" type="button" value="<%text(_ADD_DATEINPUTNOW)%>" onclick = 'document.forms[0].act_future.checked=true; return edit_form_change_date_now();' />
-				<input tabindex="69" type="button" value="<%text(_ADD_DATEINPUTRESET)%>" onclick = 'return date_currenttime_reset();' />
-
+				<%date_time_picker%>
 				<%ifblogsetting(ballowpast,0)%>
 					<br />
 					<%text(_ADD_NOPASTDATES)%>
 				<%endif%>
 			</div>
-			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+			<input name="actiontype" tabindex="<%tabindex(0,0)%>" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
 	</tr>
 	<%ifautosave()%>
@@ -107,7 +119,7 @@
 </tr>
 <%endif%>
 <tr>
-		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+		<td><%settabindex(100)%><%text(_ADD_PLUGIN_EXTRAS)%></td>
 		<td>
 			<%pluginextras%>
 		</td>
@@ -116,10 +128,10 @@
     <tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
-			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
+			<input tabindex="<%tabindex(1,1)%>" type="submit" value="<%text(_ADD_ADDITEM)%>" 
 				onclick="return checkSubmit();" />
 			<%ifautosave()%>
-			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+			<input tabindex="<%tabindex(1,1)%>" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
 				onclick="autoSaveDraft();" />
 			<%endif%>
 		</td>

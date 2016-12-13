@@ -116,7 +116,7 @@ if (!isset($member))
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
 
-		$old =& $manager->getItem($itemid,1,1);
+		$old =& $manager->getItem($itemid,1,1,0);
 		$wasdraft = ($old['draft']) ? 1 : 0;
 
 		return _edititem($itemid, $username, $password, $old['catid'], $title, $content, $more, $wasdraft, $publish, $closed);
@@ -275,7 +275,7 @@ if (!isset($member))
 		// 3. return the item
 		// Structure returned has dateCreated, userid, blogid and content
 
-		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
+		$item =& $manager->getItem($itemid,1,1,0); // (also allow drafts and future items)
 
 		$blog = new BLOG($blogid);
 		if ($blog->convertBreaks())
