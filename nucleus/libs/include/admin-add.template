@@ -18,16 +18,12 @@
 	<tr>
 		<th colspan="2"><%text(_ADD_CREATENEW)%></th>
 	</tr>
-	<%ifautosave()%><tr>
-		<td><%text(_AUTOSAVEDRAFT)%></td>
-		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-	</tr><%endif%>
 	<tr>
 		<td><%text(_ADD_TITLE)%></td>
 		<td><input 
 			<%jsinput(title)%>
 			tabindex="10"
-			size="60" 
+			size="50" 
 			maxlength="160" 
 			value="<%contents(title)%>"
 			/></td>
@@ -41,9 +37,23 @@
 				<%jsinput(body)%>
 				tabindex="20"
 				cols="60"
-				rows="20"><%contents(body)%></textarea>
+				rows="15"><%contents(body)%></textarea>
 		</td>
-	</tr><tr id="edit" style="display:none;">
+	</tr>
+	<tr>
+		<td><%text(_ADD_MORE)%> <%helplink(extended)%>
+		</td>
+		<td>
+			<%jsbuttonbar(media+preview)%>
+			<textarea 
+				<%jsinput(more)%>
+				tabindex="70"
+				cols="60"
+				rows="15"
+				><%contents(more)%></textarea>
+		</td>
+	</tr>
+	<tr id="edit" style="display:none;">
 		<td><%text(_ADD_PREVIEW)%></td>
 		<td><b><span id="prevtitle">&#160;</span></b><br />
 			<span id="prevbody">&#160;</span><br />
@@ -52,31 +62,37 @@
 	</tr>
 	
 <tr>
-	
-<%ifblogsetting(bcomments)%>
-		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-		<td>
-			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
-		</td>
-	</tr><tr>
-<%endif%>
-
-
 		<td><%text(_ADD_CATEGORY)%></td>
 		<td><%categories(40)%></td>
 </tr>
 <tr>
+		<td><%text(_ADD_PUBLIC)%></td>
+		<td><%settabindex(41)%>
+<%iftext(_ENABLE_ITEM_PUBLIC_FEATURE,1)%>
+			<input name="public" type="radio" id="public" value="1" checked='checked' tabindex="<%tabindex(0)%>" /><label for="public"><%text(_ADD_PUBLIC)%></label>
+			<input name="public" type="radio" id="unpublic" value="0" tabindex="<%tabindex(0)%>" /><label for="unpublic" ><%text(_ADD_UNPUBLIC)%></label>
+			<div style="padding-top: 6px"><%text(_ADD_PUBLIC_TERM)%>
+				<div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1" tabindex="<%tabindex()%>" />
+									<label for="public_enable_term_start"><%text(_ADD_PUBLIC_TERM_START)%></label> : <%public_date_time_picker1%></div>
+				<div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1" tabindex="<%tabindex()%>" />
+									<label for="public_enable_term_end"><%text(_ADD_PUBLIC_TERM_END)%></label> : <%public_date_time_picker2%></div>
+				<div class="indent"><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%><%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%></div>
+				<div class="indent"><%text(_ADD_PUBLIC_TERM_DESC)%></div>
+			</div>
+<%else%>
+		<div class="note"><%text(_FEATURE_WARN_UPGRADE_DESC)%></div>
+		<input name="not_available_ipublic" type="hidden" value="1" />
+<%endif%>
+		</td>
+	</tr>
+	<tr>
 		<td><%text(_SUBMIT)%></td>
-		<td>
-			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
-				onclick="return checkSubmit();" />
+		<td><%copytabindex(,1)%>
+			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="<%tabindex(0,0)%>" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
 
-			<br /><br />
-
-			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="61" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+<%settabindex(70)%><%copytabindex()%><%inctabindex()%>
 			<br />
-			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="<%tabindex(0,0)%>" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 			<div class="indent">
 				<%text(_ADD_PLACE_ON)%>
 				<%date_time_picker%>
@@ -85,38 +101,37 @@
 					<%text(_ADD_NOPASTDATES)%>
 				<%endif%>
 			</div>
-			<input name="actiontype" tabindex="61" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+			<input name="actiontype" tabindex="<%tabindex(0,0)%>" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
 	</tr>
+	<%ifautosave()%>
 	<tr>
-		<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+		<td><%text(_AUTOSAVEDRAFT)%></td>
+		<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+	</tr><%endif%>
+<%ifblogsetting(bcomments)%>
+<tr>
+		<td><%text(_ADD_DISABLE_COMMENTS)%></td>
+		<td>
+			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
+		</td>
+</tr>
+<%endif%>
+<tr>
+		<td><%settabindex(100)%><%text(_ADD_PLUGIN_EXTRAS)%></td>
 		<td>
 			<%pluginextras%>
 		</td>
 	</tr>
 			<%itemoptions%>	
     <tr>
-    	<th colspan="2"><%text(_ADD_MORE)%></th>
-	</tr><tr>
-		<td><%text(_ADD_MORE)%>
-			<br /><%helplink(extended)%>
-		</td>
-		<td>
-			<%jsbuttonbar(media+preview)%>		
-			<textarea 
-				<%jsinput(more)%>			
-				tabindex="70"
-				cols="60"
-				rows="20"
-				><%contents(more)%></textarea>
-		</td>
-	</tr><tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
-			<input tabindex="60" type="submit" value="<%text(_ADD_ADDITEM)%>" 
+			<input tabindex="<%tabindex(1,1)%>" type="submit" value="<%text(_ADD_ADDITEM)%>" 
 				onclick="return checkSubmit();" />
 			<%ifautosave()%>
-			<input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+			<input tabindex="<%tabindex(1,1)%>" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
 				onclick="autoSaveDraft();" />
 			<%endif%>
 		</td>
@@ -137,7 +152,7 @@
 	var goalurl = '../action.php'; // The PHP file where the content must be posted to
 	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 	var formtype = 'add'; // Add or edit form
-</script>
+</script>	
 <%endif%>
 
 <script type="text/javascript">
@@ -148,4 +163,12 @@ function date_currenttime_reset( )
 		 "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
          "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
 }
+jQuery('#inputmore').after('<a href="#" id="openmore" onclick="return false;"><%text(_EDITTEMPLATE_EMPTY)%></a>');
+jQuery('#inputmore').hide();
+jQuery('#inputmore').prev().hide();
+jQuery('#openmore').click(function(){
+	jQuery('#inputmore').show();
+	jQuery('#inputmore').prev().show();
+	jQuery('#openmore').hide();
+});
 </script>

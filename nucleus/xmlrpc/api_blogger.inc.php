@@ -79,7 +79,7 @@ if (!isset($member))
 		// get old title and extended part
 		if (!$manager->existsItem($itemid,1,1))
 			return _error(6,"No such item ($itemid)");
-		$old =& $manager->getItem($itemid,1,1);
+		$old =& $manager->getItem($itemid,1,1,0);
 
 		$blogid = getBlogIDFromItemID($itemid);
 
@@ -344,7 +344,7 @@ if (!isset($member))
 		// 3. return the item
 		// Structure returned has dateCreated, userid, blogid and content
 
-		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
+		$item =& $manager->getItem($itemid,1,1,0); // (also allow drafts and future items)
 		$blog = new BLOG($blogid);
 
 		// get category

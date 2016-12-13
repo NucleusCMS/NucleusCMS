@@ -87,7 +87,7 @@ class MANAGER
       * first be loaded and then placed in the cache.
       * Intended use: $item =& $manager->getItem(1234)
       */
-    function &getItem($itemid, $allowdraft, $allowfuture)
+    function &getItem($itemid, $allowdraft, $allowfuture, $allowtermfeature=1)
     {
         $item =& $this->items[$itemid];
 
@@ -106,7 +106,7 @@ class MANAGER
             // load class if needed
             $this->loadClass('ITEM');
             // load item object
-            $item = ITEM::getitem($itemid, $allowdraft, $allowfuture);
+            $item = ITEM::getitem($itemid, $allowdraft, $allowfuture, $allowtermfeature);
             $this->items[$itemid] = $item;
         }
         return $item;

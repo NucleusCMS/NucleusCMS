@@ -42,14 +42,25 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
-define('_LINKS',                                'リンク');
-define('_MEMBERS_PASSWORD_INFO',				'(パスワードは6文字以上必要です)');
+define('_ADD_PUBLIC',             '公開');
+define('_ADD_UNPUBLIC',           '非公開');
+define('_ADD_PUBLIC_TERM',        '公開期限の設定');
+define('_ADD_PUBLIC_TERM_DESC',   '期限を有効にするにはチェックをつけてください。どちらもチェックがない場合は、期限なしとなります');
+define('_ADD_PUBLIC_TERM_START',  '公開開始日時');
+define('_ADD_PUBLIC_TERM_END',    '公開終了日時');
+define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
+define('_ADD_PUBLIC_DATE_FORMAT',           'year,month,day');
+define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '年,月,日,時,分');
+define('_EDIT_DATE_FORMAT',                 'year,month,day');
+define('_EDIT_DATE_FORMAT_SEPARATOR',       '年,月,日,時,分');
+define('_EDIT_DATE_FORMAT_DESC',            '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
+define('_FEATURE_WARN_UPGRADE_DESC',        'この機能を利用するにはデータベースのアップグレードが必要です');
 
 define('_ADD_DATEINPUTNOW',       '現在時刻');
 define('_ADD_DATEINPUTRESET',     'リセット');
-define('_EDIT_DATE_FORMAT',           'year,month,day');
-define('_EDIT_DATE_FORMAT_SEPARATOR', '年,月,日,時,分');
-define('_EDIT_DATE_FORMAT_DESC',      '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
+
+define('_LINKS',                                'リンク');
+define('_MEMBERS_PASSWORD_INFO',				'(パスワードは6文字以上必要です)');
 
 define('_NUMBER_OF_POST',		'投稿数');
 define('_NUMBER_OF_COMMENT',	'コメント数');
@@ -450,6 +461,7 @@ define('_EBLOG_CURRENT_TEAM_MEMBER',				'このブログチームの現在のメ
 
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="ja" lang="ja"');
+define('_LANG_CODE',		'ja');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'日本語 - 日本語 (UTF-8)');

@@ -777,7 +777,7 @@ class ACTIONS extends BaseActions {
         $parser = new PARSER($actions->getDefinedActions(),$actions);
         $actions->setTemplate($template);
         $actions->setParser($parser);
-        $item = ITEM::getitem($itemid, 0, 0);
+        $item = ITEM::getitem($itemid, 0, 0, 1);
         $actions->setCurrentItem($item);
 
         $comments = new COMMENTS($itemid);
