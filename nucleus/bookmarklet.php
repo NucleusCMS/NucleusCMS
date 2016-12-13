@@ -136,6 +136,29 @@ function bm_doEditItem() {
         exit;
     }
 
+    $update_options = array('extraColValue' => array());
+    // value for public
+    if (intPostVar('not_available_ipublic') != 1 && item::existCol_ipublic()) {
+        $update_options['extraColValue']['ipublic'] = (intPostVar('public') ? 1 : 0);
+        $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
+        $update_options['extraColValue']['ipublic_enable_term_end'] = (intPostVar('public_enable_term_end') ? 1 : 0);
+        foreach (array('start', 'end') as $section)
+        {
+            /*
+             *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
+             *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+             */
+            $y = min(9999,max(0, intPostVar('year_public_term_' . $section)));
+            $mo = min(99,max(0, intPostVar('month_public_term_' . $section)));
+            $d = min(99,max(0, intPostVar('day_public_term_' . $section)));
+            $h = min(99,max(0, intPostVar('hour_public_term_' . $section)));
+            $mi = min(99,max(0, intPostVar('minute_public_term_' . $section)));
+            if ($y < 2000)
+                { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
+            $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+        }
+    }
+
     // create new category if needed (only on edit/changedate)
     if (strstr($catid,'newcat') ) {
         // get blogid
@@ -173,7 +196,7 @@ function bm_doEditItem() {
     }
 
     // update item for real
-    ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+    ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp, $update_options);
 
     if ($draftid > 0) {
         ITEM::delete($draftid);
@@ -275,7 +298,7 @@ function bm_doEditForm() {
         bm_doError(_ERROR_DISALLOWED);
     }
 
-    $item =& $manager->getItem($itemid, 1, 1);
+    $item =& $manager->getItem($itemid, 1, 1, 0);
     $blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
 
     $data = array('item' => &$item);
@@ -332,4 +355,3 @@ wingm.focus();
     <?php
 }
 
-?>

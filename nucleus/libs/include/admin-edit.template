@@ -16,10 +16,6 @@
 <table><tr>
 	<th colspan="2"><%text(_EDIT_ITEM)%></th>
 </tr>
-<%ifautosave()%><tr>
-	<td><%text(_AUTOSAVEDRAFT)%></td>
-	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-</tr><%endif%>
 <tr>
 	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
 	<td><%contents(author)%></td>
@@ -28,13 +24,13 @@
 	<td><input 
 			<%jsinput(title)%>
 			tabindex="10" 
-			size="60" 
+			size="50" 
 			maxlength="160" 
 			value="<%contents(title)%>" />
 	</td>
 </tr><tr>
 	<td>
-		<%text(_ADD_BODY)%>
+		<%text(_ADD_BODY)%> <%helplink(additem)%>
 	</td>
 	<td>
 		<%jsbuttonbar(media+preview)%>	
@@ -42,7 +38,20 @@
 			<%jsinput(body)%>
 			tabindex="20"
 			cols="60"
-			rows="20"><%contents(body)%></textarea>
+			rows="15"><%contents(body)%></textarea>
+	</td>
+</tr>
+<tr>
+	<td><%text(_ADD_MORE)%> <%helplink(extended)%>
+	</td>
+	<td>
+		<%jsbuttonbar(media+preview)%>
+		<textarea 
+			id="inputmore" 
+			<%jsinput(more)%>
+			tabindex="90" 
+			cols="60" 
+			rows="15"><%contents(more)%></textarea>
 	</td>
 </tr>
 <tr id="edit" style="display:none;">
@@ -54,34 +63,40 @@
 </tr>
 
 <tr>
-
-<%ifblogsetting(bcomments)%>
-		<td>
-			<%text(_ADD_DISABLE_COMMENTS)%>
-		</td>
-		<td> 
-			<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-			<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label>
-			<br />
-			<small><%text(_EDIT_COMMENTSNOTE)%></small>	
-		</td>
-	</tr><tr>				
-<%endif%>
-
 	<td><%text(_ADD_CATEGORY)%></td>
 	<td><%categories(40)%></td>
 </tr>
 <tr>
+	<td><%text(_ADD_PUBLIC)%></td>
+	<td><%settabindex(41)%>
+<%iftext(_ENABLE_ITEM_PUBLIC_FEATURE,1)%>
+		<input name="public" type="radio" id="public" value="1" <%checkedonval(1,public)%> tabindex="<%tabindex(0)%>" /><label for="public""><%text(_ADD_PUBLIC)%></label>
+		<input name="public" type="radio" id="unpublic" value="0" <%checkedonval(0,public)%> tabindex="<%tabindex()%>" /><label for="unpublic"><%text(_ADD_UNPUBLIC)%></label>
+		<div style="padding-top: 6px"><%text(_ADD_PUBLIC_TERM)%>
+			<div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1"
+								 <%checkedonval(1,public_enable_term_start)%> tabindex="<%tabindex()%>" />
+								<label for="public_enable_term_start"><%text(_ADD_PUBLIC_TERM_START)%></label> : <%public_date_time_picker1%></div>
+			<div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1"
+								 <%checkedonval(1,public_enable_term_end)%> tabindex="<%tabindex()%>" />
+								<label for="public_enable_term_end"><%text(_ADD_PUBLIC_TERM_END)%></label> : <%public_date_time_picker2%></div>
+			<div class="indent"><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%><%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%></div>
+			<div class="indent"><%text(_ADD_PUBLIC_TERM_DESC)%></div>
+		</div>
+<%else%>
+		<div class="note"><%text(_FEATURE_WARN_UPGRADE_DESC)%></div>
+		<input name="not_available_ipublic" type="hidden" value="1" />
+<%endif%>
+	</td>
+</tr>
+<tr>
 	<td><%text(_EDIT_SUBMIT)%></td>
 	<td>
-
-		<input type="submit" tabindex="60" value="<%text(_EDIT_SUBMIT)%>" onclick="return checkSubmit();" />
-
+<%copytabindex(,1)%>
 <%ifitemproperty(draft)%>
-		<br /><br />
-		<input name="actiontype" value="addnow" type="radio" id="act_now" /><label for="act_now" tabindex="61"><%text(_ADD_ADDNOW)%></label>
+		<br /><br /><%settabindex(70)%><%copytabindex()%><%inctabindex()%>
+		<input name="actiontype" value="addnow" type="radio" id="act_now" /><label for="act_now" tabindex="<%tabindex(0,0)%>"><%text(_ADD_ADDNOW)%></label>
 		<br />
-		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="61" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="<%tabindex(0,0)%>" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 		<div class="indent">
 			<%text(_ADD_PLACE_ON)%>
 			<%date_time_picker(currenttime)%>
@@ -90,17 +105,17 @@
 				<%text(_ADD_NOPASTDATES)%>
 			<%endif%>
 		</div>
-		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="61" /><label for="act_draft"><%text(_EDIT_BACKTODRAFTS)%></label> <%helplink(draft)%>
+		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="<%tabindex(0,0)%>" /><label for="act_draft"><%text(_EDIT_BACKTODRAFTS)%></label> <%helplink(draft)%>
 		<br />
-		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
+		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="<%tabindex(0,0)%>" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
 <%endif%>
 
 <%ifitemproperty(draft,0)%>
-	<br /><br />
-	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="61" /><label for="act_edit"><%text(_BMLET_EDIT)%></label>
+	<%settabindex(70)%><%copytabindex()%><%inctabindex()%>
+	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="<%tabindex(0,0)%>" /><label for="act_edit"><%text(_BMLET_EDIT)%></label>
 	<%ifblogsetting(ballowpast)%>
 		<br />
-		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="70" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
+		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="<%tabindex()%>" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
 			<div class="indent">
 				<%text(_ADD_PLACE_ON)%>
 				<%date_time_picker(itemtime)%>
@@ -108,40 +123,40 @@
 	<%endif%>	
 	<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
 	<br />
-	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="72" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
+	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
 <%endif%>
 
 	</td>
 </tr>
+<%ifautosave()%>
 <tr>
-	<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
+	<td><%text(_AUTOSAVEDRAFT)%></td>
+	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
+</tr><%endif%>
+<%ifblogsetting(bcomments)%>
+<tr>
+		<td>
+			<%text(_ADD_DISABLE_COMMENTS)%>
+		</td>
+		<td> 
+			<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
+			<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label> <small><%text(_EDIT_COMMENTSNOTE)%></small>
+		</td>
+	</tr>
+<%endif%>
+<tr>
+	<td><%settabindex(100)%><%text(_ADD_PLUGIN_EXTRAS)%></td>
 	<td>
 		<%pluginextras%>
 	</td>	
 </tr>
 			<%itemoptions%>	
 <tr>
-  	<th colspan="2"><%text(_ADD_MORE)%></th>
-</tr>
-<tr>
-	<td><%text(_ADD_MORE)%>
-		<br /><%helplink(extended)%>
-	</td>
-	<td>
-		<%jsbuttonbar(media+preview)%>
-		<textarea 
-			<%jsinput(more)%>
-			tabindex="90" 
-			cols="60" 
-			rows="20"><%contents(more)%></textarea>
-	</td>
-</tr>
-<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td>
-			<input tabindex="60" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
+			<input tabindex="<%tabindex(1,1)%>" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
 				onclick="return checkSubmit();" />
-			<%ifautosave()%><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+			<%ifautosave()%><input tabindex="<%tabindex(1,1)%>" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
 				onclick="autoSaveDraft();" /><%endif%>
 		</td>
 	
@@ -176,5 +191,15 @@ function date_itemtime_reset( )
     edit_form_change_date_ByValue( new Array(
          "<%itemtime(year)%>", "<%itemtime(mon)%>", "<%itemtime(mday)%>",
          "<%itemtime(hours)%>", "<%itemtime(minutes)%>" ) );
+}
+if(!jQuery('#inputmore').val()) {
+	jQuery('#inputmore').after('<a href="#" id="openmore" onclick="return false;"><%text(_EDITTEMPLATE_EMPTY)%></a>');
+	jQuery('#inputmore').hide();
+	jQuery('#inputmore').prev().hide();
+	jQuery('#openmore').click(function(){
+		jQuery('#inputmore').show();
+		jQuery('#inputmore').prev().show();
+		jQuery('#openmore').hide();
+	});
 }
 </script>

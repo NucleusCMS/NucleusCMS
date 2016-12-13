@@ -405,8 +405,40 @@ This document contains information on the fields inside the Nucleus database tab
 	<td>tinyint(2)</td>
 	<td>'1'</td>
 	<td>Is the item posted? 0 means it is awaiting publication on a future date.</td>
+</tr>
 
-</tr></table>
+<tr>
+		<td class="notnull">ipublic</td>
+		<td>tinyint(2)</td>
+		<td>1</td>
+		<td>Public the item(1= public/0= unpublic)<br />
+		Even though it is public, if itime is in the future it will not be displayed, so please be careful. Please note that this setting is not reflected in plugins not yet supported</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_enable_term_start</td>
+		<td>tinyint(2)</td>
+		<td>0</td>
+		<td>Enable item peroid(1= enabled / 0= )</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_enable_term_end</td>
+		<td>tinyint(2)</td>
+		<td>0</td>
+		<td>Enable item peroid(1= enabled / 0= )</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_term_start</td>
+		<td>datetime</td>
+		<td>2000-01-01 00:00:00</td>
+		<td>Period from</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_term_end</td>
+		<td>datetime</td>
+		<td>2099-01-01 00:00:00</td>
+		<td>Period to</td>
+	</tr>
+</table>
 
 
 <a id="nucleus_comment" name="nucleus_comment"></a>

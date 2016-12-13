@@ -1,168 +1,194 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html lang="<%text(_LANG_CODE)%>">
 	<head>
-		<meta http-equiv="Content-Type" content="text/html; charset=<%text(_CHARSET)%>" />
+		<meta charset=<%text(_CHARSET)%>" />
 		<title><%text(_ADD_ADDTO)%> '<%blogname%>'</title>
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.all.css" />
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.datepicker.css" />
+<%iftext(_LOCALE,ja_JP)%>
+		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.datepicker-ja.css" />
+<%endif%>
+		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
-		<script type="text/javascript" src="javascript/edit_date.js"></script>
+        <script type="text/javascript" src="javascript/edit_date.js"></script>
+		<script type="text/javascript" src="javascript/edit_public_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
+		<script type="text/javascript" src="javascript/jquery/jquery-migrate.min.js"></script>
+		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
+		<script type="text/javascript" src="javascript/jquery/ui/datepicker.min.js"></script>
+<%iftext(_LOCALE,ja_JP)%>
+		<script type="text/javascript" src="javascript/jquery/ui/i18n/datepicker-ja.js"></script>
+		<script type="text/javascript" src="javascript/jquery/ui/i18n/datepicker-ja-holiday.js"></script>
+<%endif%>
+
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
-			var nucleus_initbm_oldonload = window.onload;
-			function nucleus_initbm()
-			{
-				initStyles(); 
-				updAllPreviews();
-
-				if (nucleus_initbm_oldonload)
-					nucleus_initbm_oldonload();
-			}
-			window.onload = nucleus_initbm;
+		//<![CDATA[
+			$(document).ready(function() {
+				$(function(){
+//					var IE = '\v'=='v';
+					updAllPreviews();
+//					$("table tr td:first-child").css("width", "14%");
+//					if (!IE)
+//						$("#body textarea, #more textarea").resizable({ containment: 'parent' });
+					$("#tabs").tabs(); /* jquery-ui */
+					$(".addFuture").change(function() {
+						$("#act_future").attr('checked', 'checked');
+					});
+					$("#showPreview").click(function() {updAllPreviews();});
+					$("#goSubmit").click(function() {checkSubmit();document.addform.submit();});
+					$("#canselButton").click(function() {window.close();});
+					$("#saveDraft").click(function() {
+						$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
+						autoSaveDraft();
+					});
+//					$("#options tr td:nth-child(2)").css("width", "80% !important");
+//					$("#options tr th").css({
+//						width: "25%",
+//						whiteSpace: "normal"
+//					});
+				});
+			});
+		//]]>
 		</script>
 	</head>
 	<body>
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
-		<form id="addform" method="post" action="bookmarklet.php" ><div>
-			
-			<input name="action" type="hidden" value="additem" />
-			<input name="blogid" type="hidden" value="<%blogid%>" />
-			<input type="hidden" name="draftid" value="0" />
-			<%ticket%>
-			
-			<div id="submit" class="buttonbar">
-				<div id="switchbuttons">
-					<input type="button" onclick="flipBlock('body');" value="<%text(_BMLET_BODY)%> &gt;&gt;" />
-					<input type="button" onclick="flipBlock('more');" value="<%text(_BMLET_MORE)%> &gt;&gt;" />
-					<input type="button" onclick="flipBlock('options');" value="<%text(_BMLET_OPTIONS)%> &gt;&gt;" />
-					<input type="button" onclick="updAllPreviews(); flipBlock('preview');" value="<%text(_BMLET_PREVIEW)%> &gt;&gt;" />
+		<div id="submitbuttons">
+			<input id="goSubmit" type="button" value="<%text(_BMLET_EDIT)%>" tabindex="200" />
+			<%ifautosave()%><input id="saveDraft" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="400" /><%endif%>
+			<input id="canselButton" type="button" value="<%text(_BMLET_CANCEL)%>" tabindex="410" />
+		</div>
+		<form id="addform" name="addform" method="post" action="bookmarklet.php" >
+			<div id="tabs">
+				<ul>
+					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%></a></li>
+					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%></a></li>
+					<li><a href="#options" tabindex="320"><%text(_BMLET_OPTIONS)%></a></li>
+					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%></a></li>
+				</ul>
+				<input name="action" type="hidden" value="additem" />
+				<input name="blogid" type="hidden" value="<%blogid%>" />
+				<input type="hidden" name="draftid" value="0" />
+				<%ticket%>
+				<div id="body" class="contentblock">
+					<table summary="item body">
+						<tr>
+							<td style="width:20%"><%text(_ADD_TITLE)%></td>
+							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" tabindex="10" /></td>
+						</tr>
+						<tr>
+							<td><%text(_ADD_BODY)%> <%helplink(additem)%></td>
+							<td>
+								<%jsbuttonbar(media)%>
+								<textarea <%jsinput(body)%> cols="60" rows="20" tabindex="20"><%contents(body)%></textarea>
+							</td>
+						</tr>
+						<tr>
+							<td><%text(_ADD_CATEGORY)%></td>
+							<td><%categories(30)%></td>
+						</tr>
+					</table>
 				</div>
-				<input type="submit" value="<%text(_BMLET_ADD)%>" onclick="return checkSubmit();" />
-				<input type="button" value="<%text(_BMLET_CANCEL)%>" onclick="window.close();" />
-			</div>
-
-			<div id="body" class="contentblock">
-
-				<table>
-				<%ifautosave()%><tr>
-				<td><%text(_AUTOSAVEDRAFT)%></td>
-				<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-				</tr><%endif%>
-				<tr>
-				<td><%text(_ADD_TITLE)%></td>
-				<td>
-				<input 
-					<%jsinput(title)%>
-					type="text" size="60" maxlength="160" 
-					value="<%contents(title)%>"
-				/></td>
-				</tr><tr>
-				<td>
-				<%text(_ADD_BODY)%> <%helplink(additem)%></td>
-				<td>
-				<%jsbuttonbar(media)%>
-				<textarea 
-					<%jsinput(body)%>
-					cols="58" 
-					rows="12"><%contents(body)%></textarea>
-					
-				</td></tr>
-				<tr><td>
-				<%text(_ADD_CATEGORY)%></td>
-				<td><%categories%></td>
-				</tr>
-				<tr>
-				<%ifautosave()%><td><%text(_AUTOSAVEDRAFT_NOW)%></td>
-				<td><input tabindex="80" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" onclick="autoSaveDraft();" /></td><%endif%>
-				</tr>
-				</table>
-
-					
-			</div>
-			
-			<div id="more" class="contentblock">
-				<table>
-				<tr>
-				<td><%text(_ADD_MORE)%> <%helplink(extended)%></td>
-				<td>
-				<%jsbuttonbar(media)%>
-				<textarea 
-					<%jsinput(more)%>
-					cols="58" 
-					rows="17"><%contents(more)%></textarea>
-				</td></tr></table>
-			</div>
-			<div id="options" class="contentblock">
-				<table>
-				<%ifblogsetting(bcomments)%>
-					<tr>
-					<td><%text(_ADD_DISABLE_COMMENTS)%></td>
-					<td>
-					<input type='radio' name='closed' value='1' id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-					<input type='radio' name='closed' value='0' checked='checked' id="closed_no"/><label for="closed_no"><%text(_NO)%></label>
-					</td>
-					</tr>
-				<%endif%>
-				
-				<tr>
-				<td><%text(_ADD_DRAFTNFUTURE)%></td>
-				<td>
-					<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+				<div id="more" class="contentblock">
+					<table summary="item more">
+						<tr>
+							<td style="width:20%"><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+							<td>
+								<%jsbuttonbar(media)%>
+								<textarea <%jsinput(more)%> cols="60" rows="22" tabindex="40"><%contents(more)%></textarea>
+							</td>
+						</tr>
+					</table>
+				</div>
+				<div id="options" class="contentblock">
+					<table summary="item options">
+						<tr>
+							<td><%text(_ADD_PUBLIC)%></td>
+							<td>
+<%iftext(_ENABLE_ITEM_PUBLIC_FEATURE,1)%>
+								<input name="public" type="radio" id="public" value="1" checked='checked' /><label for="public" tabindex="52"><%text(_ADD_PUBLIC)%></label>
+								<input name="public" type="radio" id="unpublic" value="0" /><label for="unpublic" tabindex="53"><%text(_ADD_UNPUBLIC)%></label>
+								<div style="padding-top: 6px"><%text(_ADD_PUBLIC_TERM)%>
+									<div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1" tabindex="<%tabindex()%>" />
+														<label for="public_enable_term_start"><%text(_ADD_PUBLIC_TERM_START)%></label> : <%public_date_time_picker1%></div>
+									<div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1" tabindex="<%tabindex()%>" />
+														<label for="public_enable_term_end"><%text(_ADD_PUBLIC_TERM_END)%></label> : <%public_date_time_picker2%></div>
+									<div class="indent"><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%><%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%></div>
+									<div class="indent"><%text(_ADD_PUBLIC_TERM_DESC)%></div>
+								</div>
+<%else%>
+								<div class="note"><%text(_FEATURE_WARN_UPGRADE_DESC)%></div>
+								<input name="not_available_ipublic" type="hidden" value="1" />
+<%endif%>
+							</td>
+						</tr>
+						<%ifblogsetting(bcomments)%><tr>
+							<td style="width:20%"><%text(_ADD_DISABLE_COMMENTS)%></td>
+							<td>
+								<input type='radio' name='closed' value='1' id="closed_yes" tabindex="50" /><label for="closed_yes"><%text(_YES)%></label>
+								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" tabindex="50" /><label for="closed_no"><%text(_NO)%></label>
+							</td>
+						</tr><%endif%>
+						<tr>
+							<td style="width:20%"><%text(_ADD_DRAFTNFUTURE)%></td>
+							<td>
+								<ul class="nobullets">
+									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="60" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
+									<li><input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="60" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%></li>
+									<li>
+										<div class="indent">
+											<%text(_ADD_PLACE_ON)%>
+											<%date_time_picker%>
+											<%ifblogsetting(ballowpast,0)%><br /><%text(_ADD_NOPASTDATES)%><%endif%>
+										</div>
+									</li>
+									<li>
+										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+									</li>
+									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li -->
+								</ul>
+							</td>
+						</tr>
+						<tr>
+							<td><%settabindex(100)%><%text(_ADD_PLUGIN_EXTRAS)%></td>
+							<td><%pluginextras%></td>
+						</tr>
+						<%itemoptions%>
+					</table>
+				</div>
+				<div id="preview" class="contentblock">
+					<!-- h2><%text(_ADD_PREVIEW)%></h2 -->
+					<strong><span id="prevtitle">&#160;</span></strong>
 					<br />
-					<input name="actiontype" value="addfuture" type="radio" id="act_future" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
-					<div class="indent">
-						<%text(_ADD_PLACE_ON)%>
-						<%date_time_picker%>
-						<%ifblogsetting(ballowpast,0)%>
-							<br />
-							<%text(_ADD_NOPASTDATES)%>
-						<%endif%>
-					</div>
-					<input name="actiontype" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
-				</td>
-				</tr>
-				<tr>
-				<td><%text(_ADD_PLUGIN_EXTRAS)%></td>
-				<td>
-				<%pluginextras%></td>
-				</tr>
-				
-				
-				  <%itemoptions%>
-				</table>
-				
-
+					<span id="prevbody">&#160;</span>
+					<br />
+					<span id="prevmore">&#160;</span>
+				</div>
 			</div>
-			
-			<div id="preview" class="contentblock">
-				<h2><%text(_ADD_PREVIEW)%></h2>
-				
-				<b><span id="prevtitle">&#160;</span></b>
-				<br />
-				<span id="prevbody">&#160;</span>
-				<br />
-				<span id="prevmore">&#160;</span>
+			<div class="submitbuttons">
+				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
 			</div>
-			
-		</div></form>
-
-	<%ifautosave()%><script type="text/javascript">
-		var xmlhttprequest = new Array();
-		xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
-		xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
-		var seconds = now(); // Last AutoDraft time
-		var checks = 0; // Number of checks since last AutoDraft
-		var addform = document.getElementById('addform'); // The form id
-		var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
-		var goalurl = '../action.php'; // The PHP file where the content must be posted to
-		var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
-		var formtype = 'add'; // Add or edit form
-	</script><%endif%>
-
+		</form>
+		<%ifautosave()%><script type="text/javascript">
+			var xmlhttprequest = new Array();
+			xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
+			xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
+			var seconds = now(); // Last AutoDraft time
+			var checks = 0; // Number of checks since last AutoDraft
+			var addform = document.getElementById('addform'); // The form id
+			var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
+			var goalurl = '../action.php'; // The PHP file where the content must be posted to
+			var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+			var formtype = 'add'; // Add or edit form
+		</script><%endif%>
+		
 		<script type="text/javascript">
 		// datetime reset functions
 		function date_currenttime_reset( )

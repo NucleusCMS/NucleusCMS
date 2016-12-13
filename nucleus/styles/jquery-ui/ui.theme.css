@@ -1,0 +1,24 @@
+@charset 'UTF-8';
+
+/*
+* jQuery UI CSS Framework
+* Copyright (c) 2009 AUTHORS.txt (http://ui.jquery.com/about)
+* Dual licensed under the MIT (MIT-LICENSE.txt) and GPL (GPL-LICENSE.txt) licenses.
+* To view and modify this theme, visit http://ui.jquery.com/themeroller/?ffDefault=verdana,%20lucida,%20arial,%20helvetica,%20sans-serif&fwDefault=bold&fsDefault=1.1em&cornerRadius=4px&bgColorHeader=fecf03&bgTextureHeader=04_highlight_hard.png&bgImgOpacityHeader=72&borderColorHeader=fea503&fcHeader=494949&iconColorHeader=ffffff&bgColorContent=ffffff&bgTextureContent=01_flat.png&bgImgOpacityContent=100&borderColorContent=e0e0e0&fcContent=494949&iconColorContent=222222&bgColorDefault=eaeaea&bgTextureDefault=02_glass.png&bgImgOpacityDefault=100&borderColorDefault=cccccc&fcDefault=919191&iconColorDefault=fecf03&bgColorHover=fdf5ce&bgTextureHover=02_glass.png&bgImgOpacityHover=100&borderColorHover=fbcb09&fcHover=c77405&iconColorHover=ef8c08&bgColorActive=ffffff&bgTextureActive=02_glass.png&bgImgOpacityActive=65&borderColorActive=fea503&fcActive=494949&iconColorActive=ef8c08&bgColorHighlight=ffe45c&bgTextureHighlight=03_highlight_soft.png&bgImgOpacityHighlight=75&borderColorHighlight=fed22f&fcHighlight=363636&iconColorHighlight=228ef1&bgColorError=b81900&bgTextureError=08_diagonals_thick.png&bgImgOpacityError=18&borderColorError=cd0a0a&fcError=ffffff&iconColorError=fbcb09&bgColorOverlay=666666&bgTextureOverlay=08_diagonals_thick.png&bgImgOpacityOverlay=20&opacityOverlay=80&bgColorShadow=000000&bgTextureShadow=01_flat.png&bgImgOpacityShadow=10&opacityShadow=20&thicknessShadow=5px&offsetTopShadow=-5px&offsetLeftShadow=-5px&cornerRadiusShadow=5px
+*/
+
+
+/* Component containers
+----------------------------------*/
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-size: 1em; }
+.ui-widget-header { color: #494949; }
+.ui-widget-header a { color: #494949; }
+.ui-widget-content a { color: #494949; }
+
+/* Interaction states
+----------------------------------*/
+.ui-state-default a { color: #919191; text-decoration: none; outline: none; }
+.ui-state-hover a { color: #c77405; text-decoration: none; outline: none; }
+.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #ddd; border-top:1px solid #FFCC72; background-color: #ffffff; color: #494949; outline: none; }
+.ui-state-active a { color: #494949; outline: none; text-decoration: none; }
+

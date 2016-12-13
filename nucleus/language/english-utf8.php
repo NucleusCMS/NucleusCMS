@@ -44,14 +44,28 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
-define('_LINKS',                                'Links');
-define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
-
-define('_ADD_DATEINPUTNOW',       'now');
-define('_ADD_DATEINPUTRESET',     'reset');
+define('_ADD_PUBLIC',             'Public');
+define('_ADD_UNPUBLIC',           'Unpublic');
+define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
+define('_ADD_PUBLIC_TERM_DESC',   'Check if enable the expiration period');
+define('_ADD_PUBLIC_TERM_START',  'The date time of beginning');
+define('_ADD_PUBLIC_TERM_END',    'The date time of ending');
+define('_ADD_PUBLIC_DATE_FORMAT',           'day,month,year');
+define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
+//define('_ADD_PUBLIC_DATE_FORMAT',           'year,month,day');
+//define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+//define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(yyyy-mm-dd hh:mm)');
 define('_EDIT_DATE_FORMAT',           'day,month,year');
 define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
 define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
+define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
+
+define('_ADD_DATEINPUTNOW',       'now');
+define('_ADD_DATEINPUTRESET',     'reset');
+
+define('_LINKS',                                'Links');
+define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
 
 define('_NUMBER_OF_POST',		'Number of post');
 define('_NUMBER_OF_COMMENT',	'Number of comment');
@@ -452,6 +466,7 @@ define('_EBLOG_CURRENT_TEAM_MEMBER',				'Members currently on your team:');
 
 // HTML outputs
 define('_HTML_XML_NAME_SPACE_AND_LANG_CODE',		'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
+define('_LANG_CODE',		'en');
 
 // Language Files
 define('_LANGUAGEFILES_JAPANESE-UTF8',				'Japanese - &#26085;&#26412;&#35486; (UTF-8)');

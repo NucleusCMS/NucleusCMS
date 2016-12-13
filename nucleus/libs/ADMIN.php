@@ -1358,7 +1358,7 @@ class ADMIN {
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
-        $item =& $manager->getItem($itemid,1,1);
+        $item =& $manager->getItem($itemid,1,1,0);
         $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
         $param = array('item' => &$item);
@@ -1401,6 +1401,29 @@ class ADMIN {
         $more   = postVar('more');
         $closed = intPostVar('closed');
         $draftid = intPostVar('draftid');
+
+        $update_options = array('extraColValue' => array());
+        // value for public
+        if (intPostVar('not_available_ipublic') != 1 && item::existCol_ipublic()) {
+            $update_options['extraColValue']['ipublic'] = (intPostVar('public') ? 1 : 0);
+            $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
+            $update_options['extraColValue']['ipublic_enable_term_end'] = (intPostVar('public_enable_term_end') ? 1 : 0);
+            foreach (array('start', 'end') as $section)
+            {
+                /*
+                 *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
+                 *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+                 */
+                $y = min(9999,max(0, intPostVar('year_public_term_' . $section)));
+                $mo = min(99,max(0, intPostVar('month_public_term_' . $section)));
+                $d = min(99,max(0, intPostVar('day_public_term_' . $section)));
+                $h = min(99,max(0, intPostVar('hour_public_term_' . $section)));
+                $mi = min(99,max(0, intPostVar('minute_public_term_' . $section)));
+                if ($y < 2000)
+                    { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
+                $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+            }
+        }
 
         // default action = add now
         if (!$actiontype)
@@ -1445,7 +1468,7 @@ class ADMIN {
         }
 
         // edit the item for real
-        ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+        ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp, $update_options);
 
         $this->updateFuturePosted($blogid);
 
@@ -1482,7 +1505,7 @@ class ADMIN {
         if (!$manager->existsItem($itemid,1,1))
             $this->error(_ERROR_NOSUCHITEM);
 
-        $item =& $manager->getItem($itemid,1,1);
+        $item =& $manager->getItem($itemid,1,1,0);
         $title = hsc(strip_tags($item['title']));
         $body = strip_tags($item['body']);
         $body = hsc(shorten($body,300,'...'));
@@ -1582,7 +1605,7 @@ class ADMIN {
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
-        $item =& $manager->getItem($itemid,1,1);
+        $item =& $manager->getItem($itemid,1,1,0);
 
         $this->pagehead();
         ?>
@@ -1709,7 +1732,7 @@ class ADMIN {
         $blogid = getBlogIDFromItemID($result['itemid']);
         $blog =& $manager->getBlog($blogid);
         $btimestamp = $blog->getCorrectTime();
-        $item       = $manager->getItem(intval($result['itemid']), 1, 1);
+        $item       = $manager->getItem(intval($result['itemid']), 1, 1, 0);
 
         if ($result['status'] == 'newcategory') {
             $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemList&blogid=' . intval($blogid));
@@ -5989,19 +6012,58 @@ selector();
         }
 
         ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html <?php if (defined('_HTML_XML_NAME_SPACE_AND_LANG_CODE')) echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
+<!DOCTYPE html>
+<html lang="<?php echo _LANG_CODE; ?>">
 <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET ?>" />
+    <meta charset=<?php echo _CHARSET ?>" />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
             href="<?php echo $baseUrl?>styles/addedit.css" />
+	<link rel="stylesheet" type="text/css" href="<?php echo $baseUrl?>styles/jquery-ui/ui.datepicker.css" />
+<?php if (_LOCALE == 'ja_JP') { ?>
+    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl?>styles/jquery-ui/ui.datepicker-ja.css" />
+<?php } ?>
 
+    <style>
+/*    #quickmenu ul { display: none;}
+    #quickmenu  .accordion { cursor: pointer;}*/
+    </style>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
     <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
+<?php if ($this->action == 'createitem' || $this->action == 'itemedit') { ?>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit_public_date.js"></script>
+<?php } ?>
     <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
     <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/datepicker.min.js"></script>
+<?php if (_LOCALE == 'ja_JP') { ?>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/i18n/datepicker-ja.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/i18n/datepicker-ja-holiday.js"></script>
+<?php } ?>
+    <script>
+        jQuery(function () {
+            var qmenu_manage  = jQuery.cookie('qmenu_manage');
+            var qmenu_own     = jQuery.cookie('qmenu_own');
+            var qmenu_layuot  = jQuery.cookie('qmenu_layuot');
+            var qmenu_plugins = jQuery.cookie('qmenu_plugins');
+            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show();
+            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show();
+            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show();
+            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show();
+
+          jQuery('.accordion').click(function() {
+            var child = jQuery(this).next('ul');
+            jQuery(child).slideToggle('fast', function() {
+              jQuery.cookie(jQuery(child).attr('id'), jQuery(child).css('display'), { expires: 10 });
+            });
+          });
+        });
+    </script>
 
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />

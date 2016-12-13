@@ -202,6 +202,8 @@ class BaseActions {
      */
     function _updateIfExecute($condition) {
         $index = sizeof($this->if_execute) - 1;
+        if (!isset($this->if_execute[$index]))
+            $this->if_execute[$index] = 0;
         $this->if_execute[$index] = $this->if_execute[$index] || $condition;
     }
 

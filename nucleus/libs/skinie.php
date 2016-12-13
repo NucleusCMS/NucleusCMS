@@ -155,7 +155,7 @@ class SKINIMPORT {
         rewind($temp);
 
         while ( ($buffer = fread($temp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
-            if ($temp_encode && $has_mb_func) {
+            if ($temp_encode && $temp_encode!='UTF-8' && $has_mb_func) {
                 $buffer = mb_convert_encoding($buffer, 'UTF-8', $temp_encode);
             }
             $err = xml_parse( $this->parser, $buffer, feof($temp) );
