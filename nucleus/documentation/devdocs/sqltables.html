@@ -453,7 +453,39 @@
 	<td>1</td>
 	<td>アイテムに設定された投稿時刻を経過しているか？(1=している/0=していない)</td>
 
-</tr></table>
+</tr>
+	<tr>
+		<td class="notnull">ipublic</td>
+		<td>tinyint(2)</td>
+		<td>1</td>
+		<td>アイテムを公開します。(1= 公開/0=非公開)<br />
+		公開になっていても、itimeが未来の場合には、表示しないので注意してください。また未対応のプラグインではこの設定が反映されないので注意してください</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_enable_term_start</td>
+		<td>tinyint(2)</td>
+		<td>0</td>
+		<td>公開期限の開始日時の有効・無効。有効にすると公開期限内で公開します(1= 有効/0= 無効)</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_enable_term_end</td>
+		<td>tinyint(2)</td>
+		<td>0</td>
+		<td>公開期限の終了日時の有効・無効。有効にすると公開期限内で公開します(1= 有効/0= 無効)</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_term_start</td>
+		<td>datetime</td>
+		<td>2000-01-01 00:00:00</td>
+		<td>公開開始時間（サーバーとの時差を反映したもの）</td>
+	</tr>
+	<tr>
+		<td class="notnull">ipublic_term_end</td>
+		<td>datetime</td>
+		<td>2099-01-01 00:00:00</td>
+		<td>公開終了時間（サーバーとの時差を反映したもの）</td>
+	</tr>
+</table>
 
 
 

@@ -557,7 +557,7 @@ class COMMENTACTIONS extends BaseActions {
 
         $mem =& $manager->getMember($this->currentComment['memberid']);
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-        $citem =& $manager->getItem($this->currentComment['itemid'],1,1);
+        $citem =& $manager->getItem($this->currentComment['itemid'],1,1,0);
 
         // when no parameter is defined, just check if item author is current visitor
         if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor' && $name != 'isonteam')) {
@@ -602,7 +602,7 @@ class COMMENTACTIONS extends BaseActions {
         global $catid, $manager;
 
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-        $citem =& $manager->getItem($this->currentComment['itemid'],1,1);
+        $citem =& $manager->getItem($this->currentComment['itemid'],1,1,0);
         $icatid = $citem['catid'];
 
         // when no parameter is defined, just check if a category is selected

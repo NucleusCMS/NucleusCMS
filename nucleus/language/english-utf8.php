@@ -35,6 +35,23 @@ if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english')
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADD_PUBLIC',             'Public');
+define('_ADD_UNPUBLIC',           'Unpublic');
+define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
+define('_ADD_PUBLIC_TERM_DESC',   'Check if enable the expiration period');
+define('_ADD_PUBLIC_TERM_START',  'The date time of beginning');
+define('_ADD_PUBLIC_TERM_END',    'The date time of ending');
+define('_ADD_PUBLIC_DATE_FORMAT',           'day,month,year');
+define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
+//define('_ADD_PUBLIC_DATE_FORMAT',           'year,month,day');
+//define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+//define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(yyyy-mm-dd hh:mm)');
+define('_EDIT_DATE_FORMAT',           'day,month,year');
+define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
+define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
+
 define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'Database Optimization/Repair');
 define('_ADMIN_TITLE_OPTIMIZE',      'Optimize');
 define('_ADMIN_TITLE_REPAIR',        'Repair');
