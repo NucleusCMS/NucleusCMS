@@ -66,7 +66,7 @@ Nucleus is a Content Management System (CMS): a powerful set of PHP scripts that
 	<li>Easy backups</li>
 	<li>XML-RPC interface (implementing the <a href="http://plant.blogger.com/api/">Blogger API</a> and <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>)</li>
 	<li>XHTML-ready</li>
-	<li>Tools to import Blogger and GreyMatter blogs</li>
+	<li><s>Tools to import Blogger and GreyMatter blogs</s></li>
 	<li>...</li>
 </ul>
 
@@ -75,8 +75,13 @@ Requirements in order to run Nucleus: <small>(If you don't know if you fit the r
 </p>
 
 <ul>
-	<li><a href="http://www.php.net/">PHP</a> (version 5.0.5 or higher)</li>
-	<li>Access to a <a href="http://www.mysql.com/">MySQL</a> database (version 5 or higher)</li>
+	<li><a href="http://www.php.net/">PHP</a> (version 5.0.5 - 7.1, recommended version 5.6 or higher)</li>
+	<li>Access to the database: MySQL or SQLite
+		<ul>
+			<li>Access to a <a href="http://www.mysql.com/">MySQL</a> database (version 5 or higher)</li>
+			<li>SQLite version 3 (PHP: PDO PDO_SQLite)</li>
+		</ul>
+	</li>
 	<li>Some <acronym title="Hypertext Markup Language">HTML</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym> knowledge, to edit skins and templates</li>
 </ul>
 
@@ -374,18 +379,20 @@ File permissions need to be set correctly in order for the update file to work. 
 <h2>Code submissions</h2>
 
 <p>
-Many others... (check the <a href="history.html">history</a>)</p>
+Many others... (check the <a href="history.html">history</a><!-- and <a href="contributors.html">contributors</a>-->)</p>
 
 <h2>Libraries etc</h2>
 
 <ul>
+	<li><a href="https://jquery.org/">jQuery</a> : <a href="https://jquery.org/license/"> jQuery License</a></li>
+	<li><a href="http://jqueryui.com/">jQuery UI</a> : Licensed MIT</li>
+	<li>The XML-RPC interface uses the <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> implementation from <a href="http://www.usefulinc.com/">Useful Inc.</a>.</li>
 	<li>Jeff MacMichael (NP_SkinFiles plugin)</li>
 	<li>Ivan Fong, Roel, Moraes, Hcgtv (Nucleus 3.2 default skin)</li>
 	<li>Plugins are written by their respective authors.</li>
 	<li>Thanks should go out to the people that wrote language-files for Nucleus. You can <a href="http://nucleuscms.org/languages.php">download extra language files on the Nucleus website</a>.</li>
 	<li>The logo (the one with the yellow rays) was created by Rodrigo Moraes</li>
 	<li>The RSS 2.0 skin was created by <a href="http://www.xiffy.nl">Xiffy</a></li>
-	<li>The XML-RPC interface uses the <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> implementation from <a href="http://www.usefulinc.com/">Useful Inc.</a>.</li>
 	<li>The backup/restore code is largely inspired on the code used in <a href="http://phpbb.sourceforge.net/">phpBB</a>. </li>
 	<li>The JavaScript code used for the instant preview was originally inspired on the code used by <a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a> <small>(dutch)</small> and <a href="http://www.milov.nl/">milov.nl</a>.</li>
 	<li>The globe bullet next to links in the admin screen, comes from <a href="http://www.matterform.com/qbullets/legend.html">QBullets</a></li>
