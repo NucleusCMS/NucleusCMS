@@ -1059,6 +1059,9 @@ function doInstall() {
 
 	$newpost = "INSERT INTO "
 			 . tableName('nucleus_item')
+             . ' (`inumber`, `ititle`, `ibody`, `imore`,'
+             . '`iblog`, `iauthor`, `itime`,'
+             . '`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`)'
 			 . " VALUES ("
 			 . "1, "
 			 . sql_quote_string($itm_title) . ","
