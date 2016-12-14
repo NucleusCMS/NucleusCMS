@@ -568,4 +568,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return isset($column->Collation) ? $column->Collation : false;
     }
 
+    function sqldate($timestamp) {
+        return sql_quote_string(date('Y-m-d H:i:s', $timestamp));
+    }
+
+    function sql_timestamp_from_utime($timestamp) {
+        return date('Y-m-d H:i:s', $timestamp);
+    }
+
 }
