@@ -309,7 +309,7 @@ class PAGEFACTORY extends BaseActions {
     }
 
     function parse_bloglink() {
-        echo '<a href="'.hsc($this->blog->getURL()).'">'.hsc($this->blog->getName()).'</a>';
+        echo '<a href="'.hsc($this->blog->getRealURL()).'">'.hsc($this->blog->getName()).'</a>';
     }
 
     function parse_authorname() {

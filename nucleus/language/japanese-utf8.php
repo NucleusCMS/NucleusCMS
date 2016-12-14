@@ -25,6 +25,20 @@ if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
 
 /********************************************
+ *        Admin Links Settings                *
+ ********************************************/
+define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="Nucleus CMS 日本 japan.nucleuscms.org">Nucleus CMS 日本</a></li>
+<li><a href="http://japan.nucleuscms.org/forum/" title="サポートフォーラム japan.nucleuscms.org/forum/">Nucleus CMS 日本 サポートフォーラム</a></li>
+<li><a href="http://japan.nucleuscms.org/documentation/" title="Nucleus CMS 日本 マニュアル japan.nucleuscms.org/documentation/">Nucleus CMS 日本 マニュアル</a></li>
+<li><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki japan.nucleuscms.org/wiki/">Nucleus CMS 日本 Wiki</a></li>
+<li><a href="http://japan.nucleuscms.org/wiki/skins" title="Nucleus CMS 日本 スキン japan.nucleuscms.org/wiki/skins">Nucleus CMS 日本 スキン</a></li>
+<li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS 日本 プラグイン nucleuscms.org/wiki/doku.php/plugin">Nucleus CMS 日本 プラグイン</a></li>
+<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
+<li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
+<li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
+');
+
+/********************************************
  *        Start New for                     *
  ********************************************/
 
@@ -44,6 +58,25 @@ define('_EDIT_DATE_FORMAT',                 'year,month,day');
 define('_EDIT_DATE_FORMAT_SEPARATOR',       '年,月,日,時,分');
 define('_EDIT_DATE_FORMAT_DESC',            '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
 define('_FEATURE_WARN_UPGRADE_DESC',        'この機能を利用するにはデータベースのアップグレードが必要です');
+
+define('_MEMBERS_PASSWORD_INFO',				'(パスワードは6文字以上必要です)');
+
+define('_NUMBER_OF_POST',		'投稿数');
+define('_NUMBER_OF_COMMENT',	'コメント数');
+
+define('_ADMIN_CAN_DELETE',	'削除可能');
+define('_ADMIN_MEMBER_HALT_TITLE' ,             'メンバーの停止');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'メンバーの停止');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TEXT' ,      '以下のメンバーを停止しようとしています');
+define('_ADMIN_MEMBER_HALT_CONFIRM_DONE_BTN' ,  'メンバーの停止を実行する');
+define('_ADMIN_MEMBER_SUPERADMIN',              '最高管理権限(super admin)');
+define('_LISTS_HALT',		'停止');
+define('_LISTS_HALTING',  	'停止中');
+define('_ERROR_ADMIN_MEMBER_HALT_SELF',         'おそらくこのメンバーは、ログイン中の管理者自身であるため、停止できません。');
+define('_ERROR_ADMIN_MEMBER_ALREADY_HALTED',    'このメンバーは、すでに停止中です。');
+define('_ERROR_LOGIN_MEMBER_HALT_OR_INVALID',   'このメンバーは、停止中または無効です。');
+define('_ERROR_LOGIN_DISALLOWED_BY_HALT',       'このメンバーは、現在無効です。ログインは認められていません。 もしあなたが管理ユーザーのアカウントを持っているのなら、管理ユーザーとしてログインしなおしてください。');
+define('_GFUNCTIONS_LOGIN_FAILED_HALT_TXT',     'メンバー[ %s ]は、無効又は停止中です。ログインはできません。');
 
 define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'データベースの最適化/修復');
 define('_ADMIN_TITLE_OPTIMIZE',      '最適化');
@@ -86,6 +119,8 @@ define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージ
 
 // Blog option
 define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
+
+define('_LINKS',                                'リンク');
 
 /********************************************
  *        Start New for 3.71                *

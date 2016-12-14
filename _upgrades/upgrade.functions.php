@@ -20,7 +20,10 @@
  *     NOTE: With upgrade to 3.6, need to set this to use sql_* API           *
  **************************************************************/
 
-    include('../../config.php');
+    if (is_file('../config.php'))
+        include('../config.php');
+    else
+        include('../../config.php');
 
     function load_upgrade_lang() {
         $_ = getLanguageName();

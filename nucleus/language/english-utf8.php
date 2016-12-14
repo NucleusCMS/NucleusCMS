@@ -29,6 +29,18 @@ if (!defined('_LOCALE'))  define('_LOCALE', 'en_US');
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english');
 
 /********************************************
+ *        Admin Links Settings                *
+ ********************************************/
+define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
+<li><a href="http://nucleuscms.org/forum/" title="Nucleus CMS Support Forum">nucleuscms.org/forum/</a></li>
+<li><a href="http://nucleuscms.org/docs/" title="Nucleus CMS Documentation">nucleuscms.org/docs/</a></li>
+<li><a href="http://nucleuscms.org/wiki/" title="Nucleus CMS Wiki">nucleuscms.org/wiki/</a></li>
+<li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
+<li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS Plugins">nucleuscms.org/wiki/doku.php/plugin</a></li>
+<li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
+');
+
+/********************************************
  *        Start New for                     *
  ********************************************/
 
@@ -51,6 +63,25 @@ define('_EDIT_DATE_FORMAT',           'day,month,year');
 define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
 define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
 define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
+
+define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
+
+define('_NUMBER_OF_POST',		'Number of post');
+define('_NUMBER_OF_COMMENT',	'Number of comment');
+
+define('_ADMIN_CAN_DELETE',	'Can be deleted');
+define('_ADMIN_MEMBER_HALT_TITLE' ,             'Halt a member');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TITLE' ,     'Halt a member');
+define('_ADMIN_MEMBER_HALT_CONFIRM_TEXT' ,      'Trying to stop the following member');
+define('_ADMIN_MEMBER_HALT_CONFIRM_DONE_BTN' ,  'Execute stop a member');
+define('_ADMIN_MEMBER_SUPERADMIN',              'Sper admin');
+define('_LISTS_HALT',		'Halt');
+define('_LISTS_HALTING',  	'Under suspension');
+define('_ERROR_ADMIN_MEMBER_HALT_SELF',         'Perhaps this member, because it is the management\'s own logged in, you can not stop.');
+define('_ERROR_ADMIN_MEMBER_ALREADY_HALTED',    'This member is already stopped.');
+define('_ERROR_LOGIN_MEMBER_HALT_OR_INVALID',   'This member is invalid or stop.');
+define('_ERROR_LOGIN_DISALLOWED_BY_HALT',       'This member is currently disabled. Logon is not permitted. If you\'re have an account of the administrative user, please log back in as an administrative user.');
+define('_GFUNCTIONS_LOGIN_FAILED_HALT_TXT',     'Member [% s] is disabled or stopped. You can not log in.');
 
 define('_ADMIN_DATABASE_OPTIMIZATION_REPAIR',      'Database Optimization/Repair');
 define('_ADMIN_TITLE_OPTIMIZE',      'Optimize');
@@ -93,6 +124,8 @@ define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');
 
 // Blog option
 define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
+
+define('_LINKS',                                'Links');
 
 /********************************************
  *        Start New for 3.71                *

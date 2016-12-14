@@ -31,6 +31,15 @@ define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
+$default_user_agent = array('ie' => array());
+$default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
+$default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['default'] = &$default_user_agent['ie']['11'];
+// http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
+if ( ! defined('DEFAULT_USER_AGENT') )
+  define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
+ini_set( 'user_agent' , DEFAULT_USER_AGENT );
 
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
@@ -141,8 +150,11 @@ $error        = '';
 $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
-if (!headers_sent() ) {
-    header('Generator: Nucleus CMS ' . $nucleus['version']);
+if (!isset($CONF['expose_generator']))
+  $CONF['expose_generator'] = false;
+
+if ( !headers_sent() && $CONF['expose_generator'] ) {
+    header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
 }
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
@@ -330,7 +342,11 @@ if ($action == 'login') {
         }
         else 
         {
-            $errormessage = 'Login failed for ' . $login;
+			loadCoreLanguage(false);
+			if ($member->isHalt())
+				$errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
+			else
+				$errormessage = 'Login failed for ' . $login;
         }
         $param = array('username' => $login);
         $manager->notify('LoginFailed', $param);
@@ -615,8 +631,6 @@ function getNucleusPatchLevel() {
 function getLatestVersion() {
     global $CONF;
 
-    if (!function_exists('curl_init')) return false;
-
     // response version text ,  last request time
     foreach(array('LatestVerText','LatestVerReqTime') as $key)
     if (!array_key_exists($key,$CONF))
@@ -636,13 +650,8 @@ function getLatestVersion() {
         return $l_ver;
     }
 
-    $crl = curl_init();
-    $timeout = 5;
-    curl_setopt ($crl, CURLOPT_URL,'http://japan.nucleuscms.org/version_check.php');
-    curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
-    curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $timeout);
-    $ret = curl_exec($crl);
-    curl_close($crl);
+    $options = array('timeout'=> 5, 'connecttimeout'=> 3);
+    $ret = Utils::httpGet('http://japan.nucleuscms.org/version_check.php', $options);
 
     if (empty($ret))
         $ret = '';
@@ -1723,7 +1732,11 @@ function createLink($type, $params) {
             if ($usePathInfo) {
                 $url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
             } else {
-                $url = $CONF['BlogURL'] . '?blogid=' . $params['blogid'];
+                global $blogid;
+                if ($blogid == $params['blogid'] && ($CONF['BlogURL'] != 'index.php'))
+                    $url = $CONF['BlogURL']  . '?blogid=' . $params['blogid'];
+                else
+                    $url = $CONF['IndexURL'] . '?blogid=' . $params['blogid'];
             }
             break;
     }

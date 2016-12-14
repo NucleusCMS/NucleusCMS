@@ -26,6 +26,9 @@ function showlist($query, $type, $template) {
 
         foreach ($query as $currentObj) {
             $template['current'] = $currentObj;
+            if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
+                && isset($template['current']->bnumber))
+                $template['current']->burl = createBlogidLink($template['current']->bnumber);
             call_user_func('listplug_' . $type, $template, 'BODY');
         }
 
@@ -46,6 +49,9 @@ function showlist($query, $type, $template) {
         while($template['current'] = sql_fetch_object($res))
         {
             $numrows++;
+            if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
+                && isset($template['current']->bnumber))
+                $template['current']->burl = createBlogidLink($template['current']->bnumber);
             call_user_func('listplug_' . $type, $template, 'BODY');
         }
 
@@ -110,13 +116,14 @@ function listplug_table($template, $type) {
 }
 
 function listplug_table_memberlist($template, $type) {
+    global $member;
     switch($type) {
         case 'HEAD':
             echo '<th>' . _LIST_MEMBER_NAME . '</th><th>' . _LIST_MEMBER_RNAME . '</th><th>' . _LIST_MEMBER_URL . '</th><th>' . _LIST_MEMBER_ADMIN;
             help('superadmin');
             echo "</th><th>" . _LIST_MEMBER_LOGIN;
             help('canlogin');
-            echo "</th><th colspan='2'>" . _LISTS_ACTIONS. "</th>";
+            echo "</th><th colspan='3'>" . _LISTS_ACTIONS. "</th>";
             break;
         case 'BODY':
             $current = $template['current'];
@@ -134,6 +141,14 @@ function listplug_table_memberlist($template, $type) {
             echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
             echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
             echo "<td><a href='index.php?action=memberdelete&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
+
+            if ($member->id == $current->mnumber)
+                echo "<td></td>";
+             else if (isset($current->mhalt) && ($current->mhalt) )
+                echo "<td>".hsc(_LISTS_HALTING)."</td>";
+             else
+                echo "<td><a href='index.php?action=memberhalt&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"
+                    . hsc(_LISTS_HALT)."</a></td>";
             break;
     }
 }

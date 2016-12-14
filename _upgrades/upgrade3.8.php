@@ -12,8 +12,9 @@
 
 function upgrade_do380() {
     global $DB_DRIVER_NAME;
-	if (upgrade_checkinstall(380))
-		return 'already installed';
+
+    if (upgrade_checkinstall(380))
+        return 'already installed';
 
     if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
     {
@@ -22,6 +23,24 @@ function upgrade_do380() {
                          ", sql_table( 'blog' ));
 
         upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+    }
+
+    if ( !sql_existTableColumnName(sql_table('member'), 'mhalt') )
+    {
+        $query = sprintf("ALTER TABLE `%s`
+                         ADD COLUMN `mhalt` tinyint(2) NOT NULL default '0';
+                         ", sql_table( 'member' ));
+
+        upgrade_query('Altering ' . sql_table('member') . ' table', $query);
+    }
+
+    if ( !sql_existTableColumnName(sql_table('member'), 'mhalt_reason') )
+    {
+        $query = sprintf("ALTER TABLE `%s`
+                         ADD COLUMN `mhalt_reason` varchar(100) NOT NULL default '';
+                         ", sql_table( 'member' ));
+
+        upgrade_query('Altering ' . sql_table('member') . ' table', $query);
     }
 
     $table_item = sql_table('item');

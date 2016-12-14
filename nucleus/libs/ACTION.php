@@ -324,7 +324,7 @@ class ACTION
             doError(_ERROR_NOLOGON_NOACTIVATE);*/
 
         // check if user halt or invalid
-        if ( method_exists($mem, 'isHalt') && $mem->isHalt() )
+        if ( $mem->isHalt() )
         {
             doError(_ERROR_LOGIN_MEMBER_HALT_OR_INVALID);
         }

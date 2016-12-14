@@ -35,6 +35,8 @@ class MEMBER {
     public $notes;
     public $autosave = 1;        // if the member use the autosave draft function
 
+    private $halt = 0;
+
     /**
      * Constructor for a member object
      */
@@ -44,6 +46,24 @@ class MEMBER {
         include_once("{$DIR_LIBS}phpass.class.inc.php");
         $this->hasher = new PasswordHash();
     }
+
+	private function init_member()
+	{
+		$this->loggedin = 0;
+		unset($this->password); // not the actual password, but rather a MD5 hash
+		unset($this->cookiekey); // value that should also be in the client cookie to allow authentication
+		$this->id = -1;
+		unset($this->realname);
+		unset($this->displayname);
+		unset($this->email);
+		unset($this->url);
+		$this->language = '';		// name of the language file to use (e.g. 'english' -> english.php)
+		$this->admin = 0;			// (either 0 or 1)
+		$this->canlogin = 0;		// (either 0 or 1)
+		unset($this->notes);
+		$this->autosave = 1;		// if the member use the autosave draft function
+		$this->halt = 0;
+	}
 
     /**
      * Create a member object for a given displayname
@@ -135,6 +155,10 @@ class MEMBER {
         return $this->loggedin;
     }
 
+	function isHalt() {
+		return $this->halt;
+	}
+
     /**
      * Read member information from the database
      */
@@ -157,6 +181,11 @@ class MEMBER {
             $this->setNotes($obj->mnotes);
             $this->setLanguage($obj->deflang);
             $this->setAutosave($obj->mautosave);
+
+			$this->halt = @intval($obj->mhalt);
+			if ( $this->halt )
+				return 0;
+
             return 1;
         }
         return 0; // not found or removed user
@@ -249,8 +278,9 @@ class MEMBER {
 
         $query =  'SELECT iblog, iauthor FROM '.sql_table('item').' WHERE inumber=' . intval($itemid);
         $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-        return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+        if ($res && ($obj = sql_fetch_object($res)) && is_object($obj))
+            return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+        return false;
     }
 
     /**
@@ -261,6 +291,19 @@ class MEMBER {
         $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE iauthor=' . $this->getID();
         return (intval(quickQuery($sql)) == 0);
     }
+
+	function getTotalPosts()
+	{
+		$res = sql_query('SELECT count(*) FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+		return intval(sql_result($res,0,0));
+	}
+
+	function getTotalComments()
+	{
+		$sql = 'SELECT count(*) FROM ' . sql_table('comment') . ' WHERE cmember=' . $this->getID();
+		$res = sql_query($sql);
+		return intval(sql_result($res,0,0));
+	}
 
     /**
       * returns true if this member can move/update an item to a given category,
@@ -466,7 +509,8 @@ class MEMBER {
                . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
                . "     mcanlogin=" . $this->canLogin() . ","
                . "       deflang='" . sql_real_escape_string($this->getLanguage()) . "',"
-               . "       mautosave=" . intval($this->getAutosave()) . ""
+               . "       mautosave=" . intval($this->getAutosave()) . " , "
+               . "     mhalt=" . sprintf('%d', $this->halt) . ""
                . " WHERE mnumber=" . $this->getID();
         sql_query($query);
     }
@@ -486,6 +530,8 @@ class MEMBER {
 
     function password_verify($formv_password, $hash)
     {
+		if ( isset($this->halt) && ($this->halt) )
+			return false;
         global $CONF;
         
         if(strpos($hash, '$')!==false)
@@ -541,6 +587,11 @@ class MEMBER {
     function setPassword($pwd) {
         $this->password = $this->hasher->HashPassword($pwd);
     }
+
+	function setHalt($halt)
+	{
+		$this->halt = $halt ? 1 : 0;
+	}
 
     function getCookieKey() {
         return $this->cookiekey;
