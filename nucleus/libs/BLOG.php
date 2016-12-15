@@ -282,7 +282,7 @@ class BLOG {
     /**
       * Adds an item to this blog
       */
-    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1') {
+    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1', $options=array()) {
         global $manager;
 
         $blogid     = intval($blogid);
@@ -292,6 +292,10 @@ class BLOG {
         $more       = $more;
         $catid      = intval($catid);
         $isFuture = 0;
+        $otherCols= ((isset($options['otherCols']) && is_array($options['otherCols'])) ? $options['otherCols'] : array());
+
+        $extraNames  = '';
+        $extraValues = '';
 
         // convert newlines to <br />
         if ($this->convertBreaks()) {
@@ -310,6 +314,21 @@ class BLOG {
 
         $timestamp = date('Y-m-d H:i:s',$timestamp);
 
+        if (!empty($otherCols) && ITEM::existCol_ipublic()) {
+            foreach(array('ipublic','ipublic_enable_term_start', 'ipublic_enable_term_end') as $key) {
+                if (isset($otherCols[$key])) {
+                    $extraNames  .= ", " . $key;
+                    $extraValues .= sprintf(', %d', (0!=intval($otherCols[$key]) ? 1 : 0));
+                }
+            }
+            foreach(array('ipublic_term_start', 'ipublic_term_end') as $key) {
+                if (isset($otherCols[$key])) {
+                    $extraNames  .= ", " . $key;
+                    $extraValues .= sprintf(', %s', sql_quote_string($otherCols[$key]));
+                }
+            }
+        }
+
         $param = array(
         'title'        => &$title,
         'body'        => &$body,
@@ -327,10 +346,13 @@ class BLOG {
         $ibody = sql_real_escape_string($body);
         $imore = sql_real_escape_string($more);
 
-        $query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+        $query = 'INSERT INTO '.sql_table('item')
+               . ' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED' . $extraNames . ') '
+               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted"
+                        . "${extraValues})";
         sql_query($query);
         $itemid = sql_insert_id();
+        // todo: error itemid = 0
 
         $param = array('itemid' => $itemid);
         $manager->notify('PostAddItem', $param);
