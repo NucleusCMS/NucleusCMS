@@ -45,6 +45,19 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開(公開+下書きでない)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM',         '一般公開(公開+下書きでない+期限付き)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  '一般公開開始前(公開+下書きでない+期限付き)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_END',     '一般公開期限切れ(公開+下書きでない+期限付き)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_END',  '期限切れ(下書きでない+期限付き)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',            '公開');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC',        '非公開');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',             '下書き');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_PUBLIC',      '下書き+公開');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  '下書き+非公開');
+
 define('_ADD_PUBLIC',             '公開');
 define('_ADD_UNPUBLIC',           '非公開');
 define('_ADD_PUBLIC_TERM',        '公開期限の設定');

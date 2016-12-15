@@ -100,6 +100,7 @@ class NAVLIST extends ENCAPSULATE {
         $enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
         if ($enable_cat_select)
            $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+        $view_item_options = isset($_POST['view_item_options']) ? postVar('view_item_options') : 'all';
 
         $minamount = $this->minamount;
         $maxamount = $this->maxamount;
@@ -155,6 +156,7 @@ class NAVLIST extends ENCAPSULATE {
         <input type="hidden" name="action" value="{$action}" />
         <input type="hidden" name="amount" value="{$amount}" />
         <input type="hidden" id="page_select_start" name="start" value="{$start}" />
+        <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
         <input type="submit" value="{$btn_title_change}" />
     </form>
 EOD;
@@ -177,6 +179,7 @@ EOD;
                 <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
                 <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
                 <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+                <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
                 <input type="hidden" name="action" value="<?php echo  $action; ?>" />
                 <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
                 <input type="hidden" name="search" value="<?php echo  $search; ?>" />
@@ -193,6 +196,7 @@ EOD;
                 <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
                 <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
                 <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+                <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
                 <input type="hidden" name="action" value="<?php echo  $action; ?>" />
                 <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
                 <input type="hidden" name="start" value="<?php echo  $next; ?>" />
@@ -207,6 +211,7 @@ EOD;
             <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
             <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
             <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+            <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
             <input type="hidden" name="action" value="<?php echo  $action; ?>" />
             <input name="amount" size="3" value="<?php echo  $amount; ?>" /> <?php echo _LISTS_PERPAGE; ?>
             <input type="hidden" name="start" value="<?php echo  $start; ?>" />
@@ -216,7 +221,11 @@ EOD;
         </td>
         <td style="white-space: nowrap;">
             <form method="post" action="index.php">
-            <?php if ($enable_cat_select) echo $this->getFormSelectCategoryBlog($action, $blogid , $catid); ?>
+            <?php if ($enable_cat_select) {
+                        $query_extra = ADMIN::getQueryFilterForItemlist01($blogid, $view_item_options);
+                        echo $this->getFormSelectCategoryBlog($action, $blogid , $catid, 'catid', $query_extra);
+                   } ?>
+            <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
             <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
             <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
             <input type="hidden" name="action" value="<?php echo  $action; ?>" />
@@ -227,15 +236,89 @@ EOD;
             </form>
         </td>
     </tr>
+<?php if ($enable_cat_select) { ?>
+    <tr>
+        <td colspan="4">
+            <?php
+                $s = '_LISTS_FORM_SELECT_ITEM_OPTION_'.strtoupper($view_item_options);
+                $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
+                $style2 = 'border: 1px dashed #4A93F2; padding: 2px; background-color: bisque;';
+                printf('<div style="%s"><span style="%s">%s</span>', $style1, $style2, hsc(defined($s) ? constant($s) : $s));
+                echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
+            ?>
+            <div style="display: inline-block"><form method="post" action="index.php" style="display: inline-block">
+            <input type="submit" value="<?php echo _LISTS_CHANGE; ?>" />
+            <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
+            <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
+            <?php echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
+            <input type="hidden" name="action" value="<?php echo  $action; ?>" />
+            <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
+            <input type="hidden" name="search" value="<?php echo  $search; ?>" />
+            <input type="hidden" name="start" value="0" />
+            <?php echo $this->getFormSelectViewItemOptions($action, $blogid, $catid, $view_item_options); ?>
+            </form></div></div>
+        </td>
+    </tr>
+<?php } /* end if */ ?>
 </table>
     <?php    }
 
-    protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid')
+    protected function getFormSelectViewItemOptions($action, $blogid, $selected_catid = 0, $in_value='all', $input_name = 'view_item_options')
+    {
+        $list = array('all'
+            ,'normal'
+            ,'normal_term','normal_term_future','normal_term_end','non_draft_term_end'
+            ,'non_public','draft','draft_public', 'draft_non_public');
+        if (!in_array($in_value, $list))
+            $in_value = 'all';
+
+        // calc count
+        static $count_cached = array();
+        $cachekey = sprintf('%d_%d', $blogid, $selected_catid);
+        if (!isset($count_cached[$cachekey])) {
+            global $member;
+            $count_cached[$cachekey] = array();
+            foreach($list as $key) {
+                if ($action == 'browseownitems') {
+                     $sql = sprintf("SELECT count(*) as result FROM `%s` as i ", sql_table('item'))
+                          . sprintf(" LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ", sql_table('member'))
+                          . sprintf(" LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_table('team'))
+                          . sprintf(" WHERE i.iauthor=%d ", $member->getID())
+                          . ($selected_catid>0 ? sprintf(' AND i.icat=%d',$selected_catid) : '');
+                } else {
+                    // show one blog
+                     $sql = sprintf("SELECT count(*) as result FROM `%s` as i ", sql_table('item'))
+                          . sprintf(" LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ", sql_table('member'))
+                          . sprintf(" LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_table('team'))
+                          . ' WHERE '
+                          . sprintf(" i.iblog=%d ", $blogid)
+                          . sprintf(" AND (m.madmin=1 OR t.tadmin=1 OR i.iauthor=%d)", $member->getID())
+                          . ($selected_catid>0 ? sprintf(' AND i.icat=%d',$selected_catid) : '');
+                }
+                $query = $sql . ' ' . ADMIN::getQueryFilterForItemlist01( $blogid, $key);
+                $count_cached[$cachekey][$key] = intval(quickQuery($query));
+            }
+        }
+
+        $s = sprintf('<select name="%s" onChange="this.form.submit()">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
+        foreach($list as $key) {
+            $selected = ($key==$in_value ? 'selected' : '');
+            $title = '_LISTS_FORM_SELECT_ITEM_OPTION_'.strtoupper($key);
+            $title = hsc(defined($title) ? constant($title) : $key);
+            $title .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key]) ? $count_cached[$cachekey][$key] : 0) );
+            $s .= "\n\t\t". sprintf('<option value="%s" %s>%s</option>',
+                                     $key, $selected, $title)."\n";
+        }
+        $s .= "\t\t</select>\n";
+        return $s;
+    }
+
+    protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid', $extraQuery='')
     {
         global $member;
 
         if ($action == 'browseownitems')
-            return $this->getFormSelectCategoryOwn($blogid, $selected_catid, $input_name);
+            return $this->getFormSelectCategoryOwn($blogid, $selected_catid, $input_name, $extraQuery);
 
         if ( !$blogid )
           return '';
@@ -254,6 +337,7 @@ EOD;
         $sql = 'SELECT catid , cname , count(inumber) as count FROM ' . sql_table('category')
               . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
               . ' WHERE cblog=' . intval($blogid)
+              . " $extraQuery "
               . ' group BY catid '
               . ' ORDER BY corder ASC , cname ASC';
         $total = 0;
@@ -282,7 +366,7 @@ EOD;
         return $s;
     }
 
-    protected function getFormSelectCategoryOwn($blogid, $selected_catid = 0 , $input_name = 'catid')
+    protected function getFormSelectCategoryOwn($blogid, $selected_catid = 0 , $input_name = 'catid', $extraQuery='')
     {
         global $member;
         static $r = array();
@@ -301,6 +385,7 @@ EOD;
               . ' LEFT JOIN ' . sql_table('blog') . ' ON cblog=bnumber '
               . ' WHERE iauthor=' . intval($member->id)
 //              . (($blogid>0) ? sprintf(' cblog=%d', $blogid) : '')
+              . " $extraQuery "
               . ' group BY catid '
               . ' ORDER BY corder ASC , cname ASC';
 
