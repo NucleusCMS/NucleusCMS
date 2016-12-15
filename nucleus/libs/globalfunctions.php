@@ -907,7 +907,7 @@ function selector() {
         // get previous itemid and title
         $param = array(sql_table('item'), mysqldate($timestamp), $blogid, $catextra);
         $query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime<%s AND idraft=0 AND iblog='%s' %s", $param);
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
         $query .= ' ORDER BY itime DESC LIMIT 1';
         $res = sql_query($query);
 
@@ -921,7 +921,7 @@ function selector() {
         // get next itemid and title
         $param = array(sql_table('item'),mysqldate($timestamp),mysqldate($b->getCorrectTime()),$blogid,$catextra);
         $query = vsprintf("SELECT inumber, ititle FROM %s WHERE itime>%s AND itime <= %s AND idraft=0 AND iblog='%s' %s", $param);
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
         $query .= ' ORDER BY itime ASC LIMIT 1';
         $res = sql_query($query);
 
@@ -944,7 +944,7 @@ function selector() {
         $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s "
                        . " WHERE idraft=0 AND iblog='%d'",
                          sql_table('item'), $blogid_tmp);
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
         $first_timestamp = quickQuery ($query . " ORDER BY itime ASC LIMIT 1");
         $last_timestamp  = quickQuery ($query . " ORDER BY itime DESC LIMIT 1");
 
