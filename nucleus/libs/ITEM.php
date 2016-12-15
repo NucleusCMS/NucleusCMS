@@ -72,7 +72,7 @@ class ITEM {
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
         }
         if ($allowtermfeature) {
-            ITEM::addShowQueryExpr_public($query);
+            ITEM::addShowQueryFilterForPublicFeature($query);
         }
 
         $query .= ' LIMIT 1';
@@ -420,7 +420,7 @@ class ITEM {
             $sql .= ' AND idraft=0';
         }
         if (!isset($CONF['UsingAdminArea']) || $CONF['UsingAdminArea'] != 1) {
-           self::addShowQueryExpr_public($sql);
+           self::addShowQueryFilterForPublicFeature($sql);
         }
 
         $sql .= ' LIMIT 1';
@@ -522,15 +522,15 @@ class ITEM {
     }
 
     /*
-            if ( method_exists( 'ITEM', 'addShowQueryExpr_public' ))
-                    ITEM::addShowQueryExpr_public($query);
+            if ( method_exists( 'ITEM', 'addShowQueryFilterForPublicFeature' ))
+                    ITEM::addShowQueryFilterForPublicFeature($query);
      */
-    static function addShowQueryExpr_public(&$query, $table_alias="") {
-        $query .= self::getShowQueryExpr_public();
+    static function addShowQueryFilterForPublicFeature(&$query, $table_alias="") {
+        $query .= self::getShowQueryFilterForPublicFeature();
 //		echo "$query"; // debug
     }
 
-    static function getShowQueryExpr_public($table_alias="")
+    static function getShowQueryFilterForPublicFeature($table_alias="")
     {
         if (!self::existCol_ipublic())
             return '';  // needs upgrade database

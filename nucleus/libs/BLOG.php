@@ -93,7 +93,7 @@ class BLOG {
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
                      . ' and i.itime<' . mysqldate($timestamp_end);
 
-        ITEM::addShowQueryExpr_public($extra_query);
+        ITEM::addShowQueryFilterForPublicFeature($extra_query);
 
         $this->readLogAmount($templatename,0,$extra_query,'',1,1);
 
@@ -572,7 +572,7 @@ class BLOG {
             $query .= ' and i.itime>' . mysqldate($timestamp_start);
         }
 
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
 
         if ($mode == '')
         {
@@ -613,7 +613,7 @@ class BLOG {
         if ($this->getSelectedCategory())
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
 
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
 
         $query .= $extraQuery;
 
@@ -650,7 +650,7 @@ class BLOG {
         if ($catid)
             $query .= ' AND icat=' . intval($catid);
 
-        ITEM::addShowQueryExpr_public($query_where);
+        ITEM::addShowQueryFilterForPublicFeature($query_where);
 
         $query .= ' GROUP BY Year';
         if ($mode == 'month' || $mode == 'day')
@@ -1376,7 +1376,7 @@ class BLOG {
             $blogid = $this->getID();
             $sql = "SELECT count(*) AS result FROM " . sql_table('item')
                       . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()";
-             ITEM::addShowQueryExpr_public($sql);
+             ITEM::addShowQueryFilterForPublicFeature($sql);
              $sql .= ' LIMIT 1';
             if (intval(quickQuery($sql)) > 0) {
                 // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
@@ -1484,7 +1484,7 @@ class BLOG {
             
             if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts
             if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
-            ITEM::addShowQueryExpr_public($query);
+            ITEM::addShowQueryFilterForPublicFeature($query);
 
             //$query .= ' and i.inumber IN ('.$itemlist.')';
             $query .= ' and i.inumber='.intval($value);
