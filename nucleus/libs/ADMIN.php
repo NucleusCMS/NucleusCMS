@@ -418,6 +418,11 @@ class ADMIN {
               $query .= ' and icat= '.$request_catid;
           }
 
+        if (postVar('view_item_options')) {
+            $v = strval(postVar('view_item_options'));
+            $query .= $this->getQueryFilterForItemlist01(intval($blogid), $v);
+        }
+
         if ($search)
             $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
 
@@ -1084,6 +1089,11 @@ class ADMIN {
         $query_view = 'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime';
         $query = ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
                . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
+
+        if (postVar('view_item_options')) {
+            $v = strval(postVar('view_item_options'));
+            $query .= $this->getQueryFilterForItemlist01(0, $v);
+        }
 
         $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
         if ($request_catid > 0)
@@ -7741,6 +7751,85 @@ EOD;
         $n = min(4, ($size>0 ? floor(log($size,10) / 3) : 0));
         $sizetext = sprintf('%d %s', $size/pow(10,$n*3), $t[$n] );
         return sprintf("%s(%d) byte", $sizetext, $size);
+    }
+
+    static public function getQueryFilterForItemlist01($bid, $mode='all') {
+        // $bid = 0 : all blog
+        $v = strval($mode);
+        $where = '';
+        $t = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
+        switch ($v) {
+            case 'normal_term_end':
+                if ($bid) {
+                    if (is_object( $bid )) {
+                        $t = $bid->getCorrectTime();
+                    } else {
+                        global $manager;
+                        $o = $manager->getBlog($bid);
+                        if ($o)
+                            $t = $o->getCorrectTime();
+                    }
+                } else {
+                    global $member, $manager;
+                    $sql = sprintf('SELECT tblog as result FROM `%s` WHERE tmember=%d LIMIT 1', sql_table('team'), $member->getID());
+                    $res = intval(quickQuery($sql));
+                    if (!$res)
+                        $sql = sprintf('SELECT bnumber as result FROM `%s` LIMIT 1', sql_table('blog'));
+                    if ($res>0) {
+                        $o = $manager->getBlog($res);
+                        if ($o)
+                            $t = $o->getCorrectTime();
+                    }
+                }
+                break;
+        }
+        switch ($v) {
+            case 'all' :
+                break;
+            case 'public':     $where .= 'ipublic=1';
+                break;
+            case 'draft':      $where .= 'idraft=1';
+                break;
+            case 'non_draft':  $where .= 'idraft=0';
+                break;
+                break;
+            case 'non_public': $where .= 'ipublic=0';
+                break;
+            case 'normal':     $where .= 'idraft=0 AND ipublic=1';
+                break;
+            case 'draft_public':     $where .= 'idraft=1 AND ipublic=1';
+                break;
+            case 'draft_non_public': $where .= 'idraft=1 AND ipublic=0';
+                break;
+            case 'normal_term': $where .= 'ipublic=1 AND idraft=0'
+                                        . ' AND ( ipublic_enable_term_start=1 OR ipublic_enable_term_end=1 )';
+                break;
+            case 'normal_term_future':
+                $or_expr = array();
+                $or_expr[] = 'itime > ' . sqldate($t);
+                $or_expr[] = 'ipublic_enable_term_start=1 '
+                            . ' AND ipublic_term_start > ' . sqldate($t);
+                $where .= 'ipublic=1 AND idraft=0'
+                        . ' AND ((' . implode( ') OR (', $or_expr ) . '))';
+                break;
+            case 'normal_term_end':
+                $where .= 'ipublic=1 AND idraft=0'
+                        . ' AND ipublic_enable_term_end=1 '
+                        . ' AND ipublic_term_end <= ' . sqldate($t);
+                break;
+            case 'non_draft_term_end':
+                $where .= 'idraft=0'
+                        . ' AND ipublic_enable_term_end=1 '
+                        . ' AND ipublic_term_end <= ' . sqldate($t);
+                break;
+            default: // invalid $mode
+                $extra .= '1=0'; //
+                break;
+        }
+
+        if (empty($where))
+            return '';
+        return sprintf(' AND( %s ) ', $where);
     }
 
 } // class ADMIN

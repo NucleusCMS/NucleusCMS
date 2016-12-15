@@ -44,6 +44,19 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal(Public + Non-Draft)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM',         'Normal(Public + Non-Draft + has-period)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  'Normal future(Public +  Non-Draft + has-period)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_END',     'Normal expired(Public +  Non-Draft + has-period)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_END',  'Expired(Non-Draft + has-period)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',            'Public');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC',        'Unpublic');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',             'Draft');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_PUBLIC',      'Draft+Public');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  'Draft+Unpublic');
+
 define('_ADD_PUBLIC',             'Public');
 define('_ADD_UNPUBLIC',           'Unpublic');
 define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
