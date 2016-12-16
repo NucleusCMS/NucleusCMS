@@ -723,4 +723,11 @@ class MANAGER
        return SKIN::_getText($text);
     }
 
+    public function updateDatabaseItemStatus() {
+        // Nucleus datetime is not utc,  blog setting has time diff
+        if (!ITEM::existCol_istatus())
+                return ;
+        // not implemented yet
+    }
+
 }

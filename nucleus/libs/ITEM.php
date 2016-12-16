@@ -46,14 +46,14 @@ class ITEM {
                . ' i.ititle as title, i.ibody as body, m.mname as author, '
                . ' i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, '
                . ' i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid, ';
-        if (self::existCol_ipublic()) {
-            $query .=  ' i.ipublic as public, '
+        if (self::existCol_istatus()) {
+            $query .= " CASE i.idraft WHEN 1 THEN 'draft' ELSE i.istatus END AS status,"
                . ' i.ipublic_enable_term_start as public_enable_term_start,'
-               . ' i.ipublic_enable_term_end as public_enable_term_end,'
+               . ' i.ipublic_enable_term_end   as public_enable_term_end,'
                . ' i.ipublic_term_start as public_term_start,'
-               . ' i.ipublic_term_end as public_term_end';
+               . ' i.ipublic_term_end   as public_term_end';
         } else { // needs upgrade database
-            $query .= ' i.idraft as public, '
+            $query .= " CASE i.idraft WHEN 1 THEN 'draft' ELSE 'published' END AS status, "
                . ' 0 as public_enable_term_start,'
                . ' 0 as public_enable_term_end,'
                . " '2000-01-01 00:00:00' as public_term_start,"
@@ -120,6 +120,12 @@ class ITEM {
 
          $i_draftid =         intPostVar('draftid');
 
+        $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+        if ($i_status=='draft' || $i_actiontype == 'adddraft') {
+            $i_actiontype = 'adddraft';
+            $i_status     = 'draft';
+        }
+
          if (!$member->canAddItem($i_catid))
             return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
 
@@ -175,8 +181,10 @@ class ITEM {
             $posted = 1;
         }
 
-        if (intPostVar('not_available_ipublic') != 1 && ITEM::existCol_ipublic()) {
-            $otherCols['ipublic'] = (intPostVar('public') ? 1 : 0);
+        $draft_list = array('draft');
+
+        if (intPostVar('not_available_istatus') != 1 && ITEM::existCol_istatus()) {
+            $otherCols['istatus'] = $i_status;
             $otherCols['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
             $otherCols['ipublic_enable_term_end']   = (intPostVar('public_enable_term_end') ? 1 : 0);
             foreach (array('start', 'end') as $section)
@@ -193,6 +201,16 @@ class ITEM {
                 if ($y < 2000)
                     { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
                 $otherCols['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+                if ( !in_array($i_status, $draft_list)
+                     && $section == 'start'
+                     && $otherCols['istatus']=='published'
+                     && strcmp($otherCols['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+                {
+                    $otherCols['istatus'] = 'future';
+                }
+            }
+            if (in_array($i_status, $draft_list) && $otherCols['istatus']!=$i_status) {
+                $otherCols['istatus'] = $i_status;
             }
         }
 
@@ -620,12 +638,12 @@ class ITEM {
         return array('status' => 'added', 'draftid' => $itemid);
     }
 
-    static function existCol_ipublic() {
+    static function existCol_istatus() {
         static $res = NULL;
         if (is_null($res))
-            $res = sql_existTableColumnName(sql_table('item'), 'ipublic');
-        if (!defined('_ENABLE_ITEM_PUBLIC_FEATURE'))
-            define('_ENABLE_ITEM_PUBLIC_FEATURE', ($res ? 1 : 0));
+            $res = sql_existTableColumnName(sql_table('item'), 'istatus');
+        if (!defined('_ENABLE_ITEM_STATUS_FEATURE'))
+            define('_ENABLE_ITEM_STATUS_FEATURE', ($res ? 1 : 0));
         return $res;
     }
 
@@ -640,7 +658,7 @@ class ITEM {
 
     static function getShowQueryFilterForPublicFeature($table_alias="")
     {
-        if (!self::existCol_ipublic())
+        if (!self::existCol_istatus())
             return '';  // needs upgrade database
         
         $now = sqldate(time());
@@ -655,8 +673,28 @@ class ITEM {
                 . sprintf(" AND ${al}ipublic_term_start<=%s AND ${al}ipublic_term_end>%s", $now, $now);
         // combine each value with 'or condition'
         $expr = '(' . implode(') OR (', $expr) . ')';
-        $query = " AND (${al}ipublic = 1 AND ( $expr )) ";
+        $query = " AND (${al}istatus in ('published','future') AND ( $expr )) ";
         return $query;
+    }
+
+    static public function getValidStatusLists() {
+        return array(
+            'published',
+            'unpublished',
+            'future',
+            'deleted',
+            'draft',
+            'pending'
+        );
+    }
+    static public function convertValidStatusText($statusText, $defaultValue='published') {
+        if (empty($statusText) || !is_string($statusText))
+            return $defaultValue;
+        foreach(self::getValidStatusLists() as $validValue) {
+            if (strcasecmp(trim($statusText), $validValue) == 0)
+                return $validValue;
+        }
+        return $defaultValue;
     }
 
 }
