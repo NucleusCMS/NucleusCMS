@@ -705,4 +705,11 @@ class MANAGER
         return $this->currentRequestTicket;
     }
 
+    public function updateDatabaseItemStatus() {
+        // Nucleus datetime is not utc,  blog setting has time diff
+        if (!ITEM::existCol_istatus())
+                return ;
+        // not implemented yet
+    }
+
 }

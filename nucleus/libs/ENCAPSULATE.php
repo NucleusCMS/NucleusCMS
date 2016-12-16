@@ -265,10 +265,19 @@ EOD;
 
     protected function getFormSelectViewItemOptions($action, $blogid, $selected_catid = 0, $in_value='all', $input_name = 'view_item_options')
     {
+        global $CONF;
         $list = array('all'
             ,'normal'
             ,'normal_term','normal_term_future','normal_term_end','non_draft_term_end'
-            ,'non_public','draft','draft_public', 'draft_non_public');
+            ,'unpublished','draft');
+        if (!ITEM::existCol_istatus()) {
+            $list = array('all','normal','draft');
+        }
+        if ($CONF['debug']) {
+//            $list = array_mearray_merge(array(
+//                'normal_'
+//                ));
+        }
         if (!in_array($in_value, $list))
             $in_value = 'all';
 
