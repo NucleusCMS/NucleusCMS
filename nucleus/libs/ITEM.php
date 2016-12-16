@@ -72,7 +72,7 @@ class ITEM {
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
         }
         if ($allowtermfeature) {
-            ITEM::addShowQueryExpr_public($query);
+            ITEM::addShowQueryFilterForPublicFeature($query);
         }
 
         $query .= ' LIMIT 1';
@@ -100,6 +100,9 @@ class ITEM {
      */
     public static function createFromRequest() {
          global $member, $manager;
+
+         $new_options = array('otherCols' => array());
+         $otherCols =& $new_options['otherCols'];
 
          $i_author =         $member->getID();
          $i_body =             postVar('body');
@@ -172,7 +175,28 @@ class ITEM {
             $posted = 1;
         }
 
-        $itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted);
+        if (intPostVar('not_available_ipublic') != 1 && ITEM::existCol_ipublic()) {
+            $otherCols['ipublic'] = (intPostVar('public') ? 1 : 0);
+            $otherCols['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
+            $otherCols['ipublic_enable_term_end']   = (intPostVar('public_enable_term_end') ? 1 : 0);
+            foreach (array('start', 'end') as $section)
+            {
+                /*
+                 *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
+                 *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+                 */
+                $y = min(9999,max(0, intPostVar('year_public_term_' . $section)));
+                $mo = min(99,max(0, intPostVar('month_public_term_' . $section)));
+                $d = min(99,max(0, intPostVar('day_public_term_' . $section)));
+                $h = min(99,max(0, intPostVar('hour_public_term_' . $section)));
+                $mi = min(99,max(0, intPostVar('minute_public_term_' . $section)));
+                if ($y < 2000)
+                    { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
+                $otherCols['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+            }
+        }
+
+        $itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted, $new_options);
 
         //Setting the itemOptions
         $aOptions = requestArray('plugoption');
@@ -420,7 +444,7 @@ class ITEM {
             $sql .= ' AND idraft=0';
         }
         if (!isset($CONF['UsingAdminArea']) || $CONF['UsingAdminArea'] != 1) {
-           self::addShowQueryExpr_public($sql);
+           self::addShowQueryFilterForPublicFeature($sql);
         }
 
         $sql .= ' LIMIT 1';
@@ -522,15 +546,15 @@ class ITEM {
     }
 
     /*
-            if ( method_exists( 'ITEM', 'addShowQueryExpr_public' ))
-                    ITEM::addShowQueryExpr_public($query);
+            if ( method_exists( 'ITEM', 'addShowQueryFilterForPublicFeature' ))
+                    ITEM::addShowQueryFilterForPublicFeature($query);
      */
-    static function addShowQueryExpr_public(&$query, $table_alias="") {
-        $query .= self::getShowQueryExpr_public();
+    static function addShowQueryFilterForPublicFeature(&$query, $table_alias="") {
+        $query .= self::getShowQueryFilterForPublicFeature();
 //		echo "$query"; // debug
     }
 
-    static function getShowQueryExpr_public($table_alias="")
+    static function getShowQueryFilterForPublicFeature($table_alias="")
     {
         if (!self::existCol_ipublic())
             return '';  // needs upgrade database

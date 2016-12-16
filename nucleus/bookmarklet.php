@@ -154,7 +154,7 @@ function bm_doEditItem() {
 
     $update_options = array('extraColValue' => array());
     // value for public
-    if (intPostVar('not_available_ipublic') != 1 && item::existCol_ipublic()) {
+    if (intPostVar('not_available_ipublic') != 1 && ITEM::existCol_ipublic()) {
         $update_options['extraColValue']['ipublic'] = (intPostVar('public') ? 1 : 0);
         $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
         $update_options['extraColValue']['ipublic_enable_term_end'] = (intPostVar('public_enable_term_end') ? 1 : 0);

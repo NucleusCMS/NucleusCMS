@@ -93,7 +93,7 @@ class BLOG {
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
                      . ' and i.itime<' . mysqldate($timestamp_end);
 
-        ITEM::addShowQueryExpr_public($extra_query);
+        ITEM::addShowQueryFilterForPublicFeature($extra_query);
 
         $this->readLogAmount($templatename,0,$extra_query,'',1,1);
 
@@ -282,7 +282,7 @@ class BLOG {
     /**
       * Adds an item to this blog
       */
-    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1') {
+    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1', $options=array()) {
         global $manager;
 
         $blogid     = intval($blogid);
@@ -292,6 +292,10 @@ class BLOG {
         $more       = $more;
         $catid      = intval($catid);
         $isFuture = 0;
+        $otherCols= ((isset($options['otherCols']) && is_array($options['otherCols'])) ? $options['otherCols'] : array());
+
+        $extraNames  = '';
+        $extraValues = '';
 
         // convert newlines to <br />
         if ($this->convertBreaks()) {
@@ -310,6 +314,21 @@ class BLOG {
 
         $timestamp = date('Y-m-d H:i:s',$timestamp);
 
+        if (!empty($otherCols) && ITEM::existCol_ipublic()) {
+            foreach(array('ipublic','ipublic_enable_term_start', 'ipublic_enable_term_end') as $key) {
+                if (isset($otherCols[$key])) {
+                    $extraNames  .= ", " . $key;
+                    $extraValues .= sprintf(', %d', (0!=intval($otherCols[$key]) ? 1 : 0));
+                }
+            }
+            foreach(array('ipublic_term_start', 'ipublic_term_end') as $key) {
+                if (isset($otherCols[$key])) {
+                    $extraNames  .= ", " . $key;
+                    $extraValues .= sprintf(', %s', sql_quote_string($otherCols[$key]));
+                }
+            }
+        }
+
         $param = array(
         'title'        => &$title,
         'body'        => &$body,
@@ -327,10 +346,13 @@ class BLOG {
         $ibody = sql_real_escape_string($body);
         $imore = sql_real_escape_string($more);
 
-        $query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+        $query = 'INSERT INTO '.sql_table('item')
+               . ' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED' . $extraNames . ') '
+               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted"
+                        . "${extraValues})";
         sql_query($query);
         $itemid = sql_insert_id();
+        // todo: error itemid = 0
 
         $param = array('itemid' => $itemid);
         $manager->notify('PostAddItem', $param);
@@ -572,7 +594,7 @@ class BLOG {
             $query .= ' and i.itime>' . mysqldate($timestamp_start);
         }
 
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
 
         if ($mode == '')
         {
@@ -613,7 +635,7 @@ class BLOG {
         if ($this->getSelectedCategory())
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
 
-        ITEM::addShowQueryExpr_public($query);
+        ITEM::addShowQueryFilterForPublicFeature($query);
 
         $query .= $extraQuery;
 
@@ -650,7 +672,7 @@ class BLOG {
         if ($catid)
             $query .= ' AND icat=' . intval($catid);
 
-        ITEM::addShowQueryExpr_public($query_where);
+        ITEM::addShowQueryFilterForPublicFeature($query_where);
 
         $query .= ' GROUP BY Year';
         if ($mode == 'month' || $mode == 'day')
@@ -1376,7 +1398,7 @@ class BLOG {
             $blogid = $this->getID();
             $sql = "SELECT count(*) AS result FROM " . sql_table('item')
                       . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()";
-             ITEM::addShowQueryExpr_public($sql);
+             ITEM::addShowQueryFilterForPublicFeature($sql);
              $sql .= ' LIMIT 1';
             if (intval(quickQuery($sql)) > 0) {
                 // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
@@ -1484,7 +1506,7 @@ class BLOG {
             
             if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts
             if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
-            ITEM::addShowQueryExpr_public($query);
+            ITEM::addShowQueryFilterForPublicFeature($query);
 
             //$query .= ' and i.inumber IN ('.$itemlist.')';
             $query .= ' and i.inumber='.intval($value);
