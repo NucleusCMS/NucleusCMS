@@ -19,6 +19,10 @@ if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = micr
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
+//if (version_compare(phpversion(),'5.3.0','<')) {
+//    exit('The server module does not meet the execution minimum requirement. (-.-).');
+//}
+
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
