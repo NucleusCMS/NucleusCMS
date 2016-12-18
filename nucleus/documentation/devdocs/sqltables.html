@@ -408,11 +408,19 @@ This document contains information on the fields inside the Nucleus database tab
 </tr>
 
 <tr>
-		<td class="notnull">ipublic</td>
-		<td>tinyint(2)</td>
-		<td>1</td>
-		<td>Public the item(1= public/0= unpublic)<br />
-		Even though it is public, if itime is in the future it will not be displayed, so please be careful. Please note that this setting is not reflected in plugins not yet supported</td>
+		<td class="notnull">istatus</td>
+		<td>varchar(255)</td>
+		<td></td>
+		<td>
+			<ul>
+				<li>published: </li>
+				<li>unpublished: </li>
+				<li>future: </li>
+				<li>deleted: </li>
+				<li>draft: </li>
+				<li>pending: </li>
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<td class="notnull">ipublic_enable_term_start</td>

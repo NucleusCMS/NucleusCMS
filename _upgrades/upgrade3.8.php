@@ -43,14 +43,18 @@ function upgrade_do380() {
         upgrade_query('Altering ' . sql_table('member') . ' table', $query);
     }
 
-    $mode = (sql_existTableColumnName(sql_table('blog'), 'ballowpast') ? 'MODIFY' : 'ADD'); // sqlite not support MODIFY COLUMN
-    $query = sprintf("ALTER TABLE `%s`
-                     ${mode} COLUMN `ballowpast` tinyint(2)   NOT NULL default '1';
-                     ", sql_table( 'blog' ));
-    upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+    $upgrade_istatus = false;
+
+    if ($DB_DRIVER_NAME != 'sqlite') {
+        $mode = (sql_existTableColumnName(sql_table('blog'), 'ballowpast') ? 'MODIFY' : 'ADD'); // sqlite not support MODIFY COLUMN
+        $query = sprintf("ALTER TABLE `%s`
+                         ${mode} COLUMN `ballowpast` tinyint(2)   NOT NULL default '1';
+                         ", sql_table( 'blog' ));
+        upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+    }
 
     $table_item = sql_table('item');
-    foreach(array( 'ipublic' => "`ipublic` tinyint(2) NOT NULL default '1'",
+    foreach(array( 'istatus' => "`istatus` varchar(255) NOT NULL default 'published'",
                    'ipublic_enable_term_start' => "`ipublic_enable_term_start`  tinyint(2)   NOT NULL default '0'",
                    'ipublic_enable_term_end'   => "`ipublic_enable_term_end`    tinyint(2)   NOT NULL default '0'",
                    'ipublic_term_start'        => "`ipublic_term_start`         datetime     NOT NULL default '2000-01-01 00:00:00'",
@@ -66,8 +70,33 @@ function upgrade_do380() {
             } else {
                 $queries[0] .= sprintf(" , ADD INDEX `%s` (`%s`);", $key, $key);
             }
-            foreach($queries as $query)
+            foreach($queries as $query) {
                 upgrade_query('Altering ' . $table_item . ' table', $query);
+            }
+            if ($key=='istatus') {
+                $upgrade_istatus = true;
+            }
+        }
+    }
+    if ($upgrade_istatus) {
+        global $manager;
+        $query = sprintf('SELECT iblog AS blogid FROM %s GROUP BY iblog ORDER BY iblog ASC', $table_item);
+        $res = sql_query($query);
+        // each blogs : item count > 0
+        while($res && ($o = sql_fetch_object($res)) && is_object($o)) {
+            $blog = $manager->getBlog(intval($o->blogid));
+            $date = sqldate($blog->getCorrectTime());
+            // set to future
+            $query = sprintf("UPDATE `%s` SET `istatus`='future' WHERE itime>%s", $table_item, sql_quote_string($date));
+            upgrade_query('istatus: Changing initial value to future ', $query);
+            // free blog object
+            unset($manager->blogs[intval($o->blogid)]); // free memory
+        }
+        $queries = array();
+        $queries['draft']  = sprintf("UPDATE %s SET `istatus`='draft' WHERE idraft=1", $table_item);
+        foreach($queries as $key=>$query) {
+            upgrade_query('istatus: Changing initial value to '.$key , $query);
+            sql_query($query);
         }
     }
 

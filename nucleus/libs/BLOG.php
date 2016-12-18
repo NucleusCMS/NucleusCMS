@@ -49,6 +49,8 @@ class BLOG {
         // (the parse functions in SKIN.php will override this, so it's mainly useless)
         global $catid;
         $this->setSelectedCategory($catid);
+
+        $this->updateDatabaseItemStatus();  // update item.istatus
     }
 
     /**
@@ -314,14 +316,14 @@ class BLOG {
 
         $timestamp = date('Y-m-d H:i:s',$timestamp);
 
-        if (!empty($otherCols) && ITEM::existCol_ipublic()) {
-            foreach(array('ipublic','ipublic_enable_term_start', 'ipublic_enable_term_end') as $key) {
+        if (!empty($otherCols) && ITEM::existCol_istatus()) {
+            foreach(array('ipublic_enable_term_start', 'ipublic_enable_term_end') as $key) {
                 if (isset($otherCols[$key])) {
                     $extraNames  .= ", " . $key;
                     $extraValues .= sprintf(', %d', (0!=intval($otherCols[$key]) ? 1 : 0));
                 }
             }
-            foreach(array('ipublic_term_start', 'ipublic_term_end') as $key) {
+            foreach(array('istatus','ipublic_term_start', 'ipublic_term_end') as $key) {
                 if (isset($otherCols[$key])) {
                     $extraNames  .= ", " . $key;
                     $extraValues .= sprintf(', %s', sql_quote_string($otherCols[$key]));
@@ -1580,6 +1582,28 @@ class BLOG {
             $res = sql_query($sql);
             return $res !== FALSE;
         }
+    }
+
+    public function updateDatabaseItemStatus() {
+        if (!ITEM::existCol_istatus())
+                return ;
+        // todo: old plugin
+
+        // not implemented yet
+        $blog_current_time = $this->getCorrectTime();
+        $common_normal_filter    = "idraft=0 AND istatus in ('published','future')";
+        $common_future_filter    = "idraft=0 AND istatus ='future'";
+        // update: future
+        $filter = $common_future_filter
+                . ' AND itime <= ' . sqldate($blog_current_time)
+                . ' AND (ipublic_enable_term_start=0 '
+                . '      OR (ipublic_enable_term_start=1 AND ipublic_term_start <= ' . sqldate($blog_current_time) . ")"
+                . '     )'
+                . ' AND (ipublic_enable_term_end=0 '
+                . '      OR (ipublic_enable_term_end=1 AND ipublic_term_end > ' . sqldate($blog_current_time) . ")"
+                . '     )';
+        $query = sprintf("UPDATE `%s` SET istatus='published', iposted=1 WHERE %s", sql_table('item'), $filter);
+        sql_query($query);
     }
 
 }

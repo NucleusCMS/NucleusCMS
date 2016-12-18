@@ -136,10 +136,19 @@ function bm_doEditItem() {
         exit;
     }
 
+    $draft_list = array('draft');
+
+    $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+    if ($i_status=='draft' || $actiontype == 'adddraft' || $actiontype == 'backtodrafts') {
+        $actiontype = 'backtodrafts';
+        $i_status = 'draft';
+    }
+
     $update_options = array('extraColValue' => array());
     // value for public
-    if (intPostVar('not_available_ipublic') != 1 && ITEM::existCol_ipublic()) {
-        $update_options['extraColValue']['ipublic'] = (intPostVar('public') ? 1 : 0);
+    if (intPostVar('not_available_istatus') != 1 && ITEM::existCol_istatus()) {
+        $blog = $manager->getBlog($itemid);
+        $update_options['extraColValue']['istatus'] = $i_status;
         $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
         $update_options['extraColValue']['ipublic_enable_term_end'] = (intPostVar('public_enable_term_end') ? 1 : 0);
         foreach (array('start', 'end') as $section)
@@ -156,7 +165,17 @@ function bm_doEditItem() {
             if ($y < 2000)
                 { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
             $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+            if ( !in_array($i_status, $draft_list)
+                 && $section == 'start'
+                 && $update_options['extraColValue']['istatus']=='published'
+                 && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+            {
+                $update_options['extraColValue']['istatus'] = 'future';
+            }
         }
+    }
+    if (in_array($i_status, $draft_list) && $update_options['extraColValue']['istatus']!=$i_status) {
+        $update_options['extraColValue']['istatus'] = $i_status;
     }
 
     // create new category if needed (only on edit/changedate)
