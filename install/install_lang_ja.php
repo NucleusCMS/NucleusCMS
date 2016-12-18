@@ -10,6 +10,8 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP5.x以上が使えないかどうか、サーバ管理者に確認して下さい。');
+
 /*  New for 3.72 */
 define('_INSTALL_TEXT_DATABASE_SELECT' ,     'データベースの選択');
 define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',	 'データベースのログイン情報');
