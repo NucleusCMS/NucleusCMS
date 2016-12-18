@@ -1364,10 +1364,19 @@ class ADMIN {
         $closed = intPostVar('closed');
         $draftid = intPostVar('draftid');
 
+        $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+        if ($i_status=='draft' || $actiontype == 'adddraft' || $actiontype == 'backtodrafts') {
+            $actiontype = 'adddraft';
+            $i_status='draft';
+        }
+
+        $draft_list = array('draft');
+
         $update_options = array('extraColValue' => array());
         // value for public
-        if (intPostVar('not_available_ipublic') != 1 && ITEM::existCol_ipublic()) {
-            $update_options['extraColValue']['ipublic'] = (intPostVar('public') ? 1 : 0);
+        if (intPostVar('not_available_istatus') != 1 && ITEM::existCol_istatus()) {
+            $blog = $manager->getBlog($itemid);
+            $update_options['extraColValue']['istatus'] = $i_status;
             $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
             $update_options['extraColValue']['ipublic_enable_term_end'] = (intPostVar('public_enable_term_end') ? 1 : 0);
             foreach (array('start', 'end') as $section)
@@ -1384,6 +1393,13 @@ class ADMIN {
                 if ($y < 2000)
                     { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
                 $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+                if ( !in_array($i_status, $draft_list)
+                     && $section == 'start'
+                     && $update_options['extraColValue']['istatus']=='published'
+                     && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+                {
+                    $update_options['extraColValue']['istatus'] = 'future';
+                }
             }
         }
 
@@ -7646,25 +7662,29 @@ EOD;
                 }
                 break;
         }
+        $common_normal_filter   = "idraft=0 AND istatus in ('published','future')";
+        $common_nondraft_filter = "idraft=0 AND istatus<>'draft'";
+        $common_draft_filter    = "(idraft=1 OR istatus='draft')";
+        if (!ITEM::existCol_istatus()) {
+                $common_normal_filter   = "idraft=0";
+                $common_draft_filter    = "idraft=1";
+        }
         switch ($v) {
             case 'all' :
                 break;
-            case 'public':     $where .= 'ipublic=1';
+            case 'published':   $where .= "istatus='published'";
                 break;
-            case 'draft':      $where .= 'idraft=1';
+            case 'unpublished': $where .= "istatus='unpublished'";
                 break;
-            case 'non_draft':  $where .= 'idraft=0';
+            case 'future':      $where .= "istatus='future'";
                 break;
+            case 'draft':       $where .= $common_draft_filter;
                 break;
-            case 'non_public': $where .= 'ipublic=0';
+            case 'non_draft':  $where .= $common_nondraft_filter;
                 break;
-            case 'normal':     $where .= 'idraft=0 AND ipublic=1';
+            case 'normal':     $where .= $common_normal_filter;
                 break;
-            case 'draft_public':     $where .= 'idraft=1 AND ipublic=1';
-                break;
-            case 'draft_non_public': $where .= 'idraft=1 AND ipublic=0';
-                break;
-            case 'normal_term': $where .= 'ipublic=1 AND idraft=0'
+            case 'normal_term': $where .= $common_normal_filter
                                         . ' AND ( ipublic_enable_term_start=1 OR ipublic_enable_term_end=1 )';
                 break;
             case 'normal_term_future':
@@ -7672,16 +7692,16 @@ EOD;
                 $or_expr[] = 'itime > ' . sqldate($t);
                 $or_expr[] = 'ipublic_enable_term_start=1 '
                             . ' AND ipublic_term_start > ' . sqldate($t);
-                $where .= 'ipublic=1 AND idraft=0'
+                $where .= $common_normal_filter
                         . ' AND ((' . implode( ') OR (', $or_expr ) . '))';
                 break;
             case 'normal_term_end':
-                $where .= 'ipublic=1 AND idraft=0'
+                $where .= $common_normal_filter
                         . ' AND ipublic_enable_term_end=1 '
                         . ' AND ipublic_term_end <= ' . sqldate($t);
                 break;
             case 'non_draft_term_end':
-                $where .= 'idraft=0'
+                $where .= $common_nondraft_filter
                         . ' AND ipublic_enable_term_end=1 '
                         . ' AND ipublic_term_end <= ' . sqldate($t);
                 break;

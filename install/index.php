@@ -147,6 +147,11 @@ $aConfSkinsToImport = array(
 // don't give warnings for uninitialized vars
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
+if (version_compare(phpversion(), '5.0.5', '<')) {
+    $errors = array(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT);
+    showErrorMessages($errors); // exit to instalation
+}
+
 // make sure there's no unnecessary escaping:
 if (version_compare(PHP_VERSION, '5.3.0', '<')) {
     set_magic_quotes_runtime(0);

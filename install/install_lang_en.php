@@ -16,7 +16,8 @@
  * @version $Id: install.php 1227 2007-12-14 16:48:40Z ehui $
  */
 
-/*  New for 5.0.0 */
+define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  'The version of PHP that is running is outdated and does not meet the required minimum requirements.It will cancel the installation work.Please check with the server administrator whether PHP 5.x or higher can not be used.');
+
 /*  New for 3.72 */
 define('_INSTALL_TEXT_DATABASE_SELECT' , 'Select Database');
 define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',				'Database login information');
@@ -96,7 +97,7 @@ define('_HEADER2',	'PHP &amp; MySQL Versions');
 define('_TEXT2',	'<p>Below are the version numbers of the PHP interpreter and the MySQL server on your webhost. When reporting problems on the Nucleus Support Forum, please include this information.</p>');
 define('_TEXT2_WARN',	'WARNING: Nucleus requires at least PHP ');
 define('_TEXT2_WARN2',	'INFORMATION: Nucleus requires at least MySQL ');
-define('_TEXT2_WARN3',	'WARNING: You are installing NucleusCMS on a older version of PHP. PHP4 support will be depreciated in the next release, please consider upgrade to PHP5!');
+define('_TEXT2_WARN3',	'WARNING: The version of PHP that is running is outdated and does not meet the required minimum requirements.It will cancel the installation work.Please check with the server administrator whether PHP 5 or higher can not be used.');
 
 define('_HEADER3',	'Automatic <i>config.php</i> Update');
 define('_TEXT3',	'<p>If you want Nucleus to automatically update the <em>config.php</em> file, you\'ll need to make it writable. You can do this by changing the file permissions to <strong>666</strong>. After Nucleus is successfully installed, you can change the permissions back to <strong>444</strong> (<a href="nucleus/documentation/tips.html#filepermissions">Quick guide on how to change file permissions</a>).</p> <p>If you choose not to make your file writable (or are unable to do so): don\'t worry. The installation process will provide you with the contents of the <em>config.php</em> file so you can upload it yourself.</p>');

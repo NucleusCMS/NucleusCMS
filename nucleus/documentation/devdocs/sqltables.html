@@ -455,11 +455,19 @@
 
 </tr>
 	<tr>
-		<td class="notnull">ipublic</td>
-		<td>tinyint(2)</td>
+		<td class="notnull">istatus</td>
+		<td>varchar(255)</td>
 		<td>1</td>
-		<td>アイテムを公開します。(1= 公開/0=非公開)<br />
-		公開になっていても、itimeが未来の場合には、表示しないので注意してください。また未対応のプラグインではこの設定が反映されないので注意してください</td>
+		<td>アイテムの状態を表す文字列。
+			<ul>
+				<li>published: 公開中</li>
+				<li>unpublished: 非公開</li>
+				<li>future: 予約投稿</li>
+				<li>deleted: 削除済み(削除待ち)</li>
+				<li>draft: 下書き</li>
+				<li>pending: 下書き(承認待ち)</li>
+			</ul>
+		</td>
 	</tr>
 	<tr>
 		<td class="notnull">ipublic_enable_term_start</td>

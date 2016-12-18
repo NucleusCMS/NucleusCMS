@@ -79,6 +79,7 @@ class PAGEFACTORY extends BaseActions {
             'ifautosave',
             'publictime',
             'iftext',
+            'checked_valtext',
             'inctabindex',
             'copytabindex',
             'tabindex',
@@ -89,7 +90,7 @@ class PAGEFACTORY extends BaseActions {
         // TODO: maybe add other pages from admin area
         $this->allowedTypes = array('bookmarklet','admin');
 
-        ITEM::existCol_ipublic(); // set data
+        ITEM::existCol_istatus(); // set data
     }
 
     /**
@@ -180,30 +181,30 @@ class PAGEFACTORY extends BaseActions {
                 switch($value)
                 {
                     case 'year' :
-                      $s[] = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%'.$stime.'(year)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                      $s[] = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%'.$stime.'(year)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
                       break;
                     case 'month' :
-                      $s[] = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mon)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                      $s[] = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mon)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
                       break;
                     case 'day' :
-                      $s[] = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mday)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                      $s[] = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mday)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
                       break;
                     }
               if (isset($spa[$key]))
                   $s[] = $spa[$key];
             }
-            $s[] = '<input id="inputhour" name="hour" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(hours)%>" onchange="document.forms[0].act_future.checked=true;" />';
+            $s[] = '<input id="inputhour" name="hour" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(hours)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
             $key = 3;
             if (isset($spa[$key]))
                 $s[] = $spa[$key];
-            $s[] = '<input id="inputminutes" name="minutes" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />';
+            $s[] = '<input id="inputminutes" name="minutes" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(minutes)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
             $key = 4;
             if (isset($spa[$key]))
                 $s[] = $spa[$key];
             $s[] = '<br />'. hsc(_ITEM_ADDEDITTEMPLATE_FORMAT). hsc(_EDIT_DATE_FORMAT_DESC);
 
-            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true; return edit_form_change_date_now();" />';
-            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = "return date_'.$stime.'_reset();" />';
+            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true;  checked_act_draft(false); return edit_form_change_date_now();" />';
+            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = " checked_act_draft(false); return date_'.$stime.'_reset();" />';
 
             $items[$stime] = &$s;
             unset($s);
@@ -272,8 +273,8 @@ class PAGEFACTORY extends BaseActions {
                 $s[] = $spa[$key];
 //			$s[] = '<div>'. hsc(_ITEM_ADDEDITTEMPLATE_FORMAT). hsc(_ADD_PUBLIC_DATE_FORMAT_DESC). '</div>';
 
-//			$s[] = '<input tabindex="<%%tabindex()%%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true; return edit_form_change_date_now();" />';
-//			$s[] = '<input tabindex="<%%tabindex()%%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = "return date_'.$stime.'_reset();" />';
+//			$s[] = '<input tabindex="<%%tabindex()%%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true; return edit_form_change_date_now(); checked_act_draft(false);" />';
+//			$s[] = '<input tabindex="<%%tabindex()%%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = "return date_'.$stime.'_reset(); checked_act_draft(false);" />';
 
             array_unshift($s, '<input type="button" value="..." onclick=\'show_public_date_time_picker("' . $section . '"); return 0;\'>');
             array_unshift($s, '<input type="hidden" value="" id="hidden_public_date_time_picker_' . $section . '" class="hidden_public_date_time_picker">');
@@ -441,6 +442,12 @@ class PAGEFACTORY extends BaseActions {
     function parse_checkedonval($value, $name) {
         if (!isset($this->variables[$name])) $this->variables[$name] = '';
         if ($this->variables[$name] == $value)
+            echo "checked='checked'";
+    }
+
+    function parse_checked_valtext($name, $value) {
+        if (!isset($this->variables[$name])) $this->variables[$name] = '';
+        if (strcasecmp($this->variables[$name], $value) == 0)
             echo "checked='checked'";
     }
 
