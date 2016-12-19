@@ -5901,40 +5901,40 @@ selector();
             }
         }
 
-        $baseUrl = hsc($CONF['AdminURL']);
+        ob_start();
         ?>
 <!DOCTYPE html>
-<html lang="<?php echo _LANG_CODE; ?>">
+<html lang="<%_LANG_CODE%>">
 <head>
-    <base href="<?php echo $CONF['AdminURL'];?>" />
-    <meta charset=<?php echo _CHARSET ?>" />
+    <base href="<%AdminURL%>" />
+    <meta charset=<%_CHARSET%>" />
     <meta name="robots" content="noindex, nofollow" />
-    <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
-    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
-    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/addedit.css" />
-	<link rel="stylesheet" type="text/css" href="<?php echo $baseUrl?>styles/jquery-ui/ui.datepicker.css" />
+    <title><%SiteName%> - Admin</title>
+    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%baseUrl%>styles/admin_<%AdminCSS%>.css" />
+    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%baseUrl%>styles/addedit.css" />
+	<link rel="stylesheet" type="text/css" href="<%baseUrl%>styles/jquery-ui/ui.datepicker.css" />
 <?php if (_LOCALE == 'ja_JP') { ?>
-    <link rel="stylesheet" type="text/css" href="<?php echo $baseUrl?>styles/jquery-ui/ui.datepicker-ja.css" />
+    <link rel="stylesheet" type="text/css" href="<%baseUrl%>styles/jquery-ui/ui.datepicker-ja.css" />
 <?php } ?>
 
     <style>
     #quickmenu ul { display: none;}
     #quickmenu  .accordion { cursor: pointer;}
     </style>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/jquery.min.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/jquery.cookie.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/edit.js"></script>
 <?php if ($this->action == 'createitem' || $this->action == 'itemedit') { ?>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit_public_date.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/edit_public_date.js"></script>
 <?php } ?>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/datepicker.min.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/admin.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/compatibility.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/core_widget_tabs.min.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/datepicker.min.js"></script>
 <?php if (_LOCALE == 'ja_JP') { ?>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/i18n/datepicker-ja.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/i18n/datepicker-ja-holiday.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/i18n/datepicker-ja.js"></script>
+    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/i18n/datepicker-ja-holiday.js"></script>
 <?php } ?>
     <script>
         jQuery(function () {
@@ -5955,68 +5955,87 @@ selector();
           });
         });
     </script>
-
     <meta http-equiv="Pragma" content="no-cache" />
     <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
     <meta http-equiv="Expires" content="-1" />
-
-<?php echo $extrahead;?>
-<?php
-        $adminAlert = isset($CONF['adminAlert'])&&!empty($CONF['adminAlert']) ? $CONF['adminAlert'] : '';
-        if(defined($adminAlert)) $adminAlert = constant($adminAlert);
-        if($adminAlert) $adminAlert = sprintf('<script>alert("%s");</script>',$adminAlert);
-?>
+<%extrahead%>
 </head>
-<body class="<?php echo $action;?>">
+<body class="<%action%>">
 <div id="adminwrapper">
-<?php echo $adminAlert;?>
+<%adminAlert%>
 <div class="header">
-<h1><?php echo hsc($CONF['SiteName'])?></h1>
+<h1><%SiteName%></h1>
 </div>
 <div id="container">
 <div id="content">
+<%loginname%>
 <?php
-        $this->loginname();
+        $tpl = ob_get_clean();
+        $ph['baseUrl']    = hsc($CONF['AdminURL']);
+        $ph['AdminCSS']   = $CONF['AdminCSS'];
+        $ph['_LANG_CODE'] = _LANG_CODE;
+        $ph['_CHARSET']   = _CHARSET;
+        $ph['extrahead']  = $extrahead;
+        $ph['action']     = $action;
+        $ph['SiteName']   = hsc($CONF['SiteName']);
+        $adminAlert       = isset($CONF['adminAlert'])&&!empty($CONF['adminAlert']) ? $CONF['adminAlert'] : '';
+        if(defined($adminAlert)) $adminAlert = constant($adminAlert);
+        $ph['adminAlert'] = $adminAlert ? $adminAlert = sprintf('<script>alert("%s");</script>',$adminAlert) : '';
+        $ph['loginname']  = $this->loginname();
+        echo parseText($tpl,$ph);
     }
 
     function loginname() {
         global $member, $nucleus, $CONF;
+        ob_start();
         ?>
 <div class="loginname">
 <?php
         if ($member->isLoggedIn())
-            echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-                ." - <a href='index.php?action=logout'>" . _LOGOUT. "</a>"
-                . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> | ";
+            echo '<%_LOGGEDINAS%> <%displayName%> - <a href="index.php?action=logout"><%_LOGOUT%></a><br />'
+                . '<a href="index.php?action=overview"><%_ADMINHOME%></a> | ';
         else
-            echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
+            echo '<a href="index.php?action=showlogin" title="Log in"><%_NOTLOGGEDIN%></a><br />';
 
-        echo sprintf('<a href="%s">%s</a> | ' , get_help_root_url() , _HELP_TT);
-        echo "<a href='".$CONF['IndexURL']."'>"._YOURSITE."</a>";
-
+        echo '<a href="<%help_link%>"><%_HELP_TT%></a> | <a href="<%IndexURL%>"><%_YOURSITE%></a>';
         echo '<br />(';
 
-        $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-
-        $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
         if ($member->isLoggedIn() && $member->isAdmin()) {
-            $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-            printf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
+            echo '<a href="<%checkURL%>" title="<%_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE%>"><%versionName%></a>';
             $newestVersion = getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
-                echo '<br /><a style="color:red" href="'._ADMINPAGEFOOT_OFFICIALURL.'upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
+                echo '<br /><a style="color:red" href="<%_OFFICIALURL%>upgrade.php" title="<%_LATESTVERSION_TITLE%>"><%_LATESTVERSION_TEXT%><%latestVersion%></a>';
             }
 
-            if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
-            {
-                printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
-                        $CONF['IndexURL'] . '_upgrades/' , $CONF['DatabaseVersion']);
+            if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID) {
+                echo ')<br />(<a style="color:red" href="<%IndexURL%>_upgrades/">Current database is old(<%DatabaseVersion%>). Upgrade the core database</a>';
             }
         } else {
-            echo $versionstring;
+            echo 'Nucleus CMS';
         }
         echo ')';
         echo '</div>';
+        
+        $tpl = ob_get_clean();
+        $ph = $CONF;
+        $ph['_LOGGEDINAS'] = _LOGGEDINAS;
+        if($member->isLoggedIn())
+            $ph['displayName'] = $member->getDisplayName();
+        $ph['_LOGOUT'] = _LOGOUT;
+        $ph['_ADMINHOME'] = _ADMINHOME;
+        $ph['_NOTLOGGEDIN'] = _NOTLOGGEDIN;
+        $ph['help_link'] = get_help_root_url();
+        $ph['_HELP_TT'] = _HELP_TT;
+        $ph['_YOURSITE'] = _YOURSITE;
+        $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
+        $ph['versionName'] = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
+        $ph['checkURL'] = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+        $ph['_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE'] = hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE);
+        $ph['_OFFICIALURL'] = _ADMINPAGEFOOT_OFFICIALURL;
+        $ph['_LATESTVERSION_TITLE'] = _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE;
+        $ph['_LATESTVERSION_TEXT'] = _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT;
+        $ph['latestVersion'] = $newestVersion;
+        return parseText($tpl,$ph);
     }
 
     /**
@@ -6024,24 +6043,37 @@ selector();
      */
     function pagefoot() {
         global $manager, $member;
-
         $param = array(
             'action' => $this->action
         );
         $manager->notify('AdminPrePageFoot', $param);
 
-        ?>
+        $tpl = '
             <div class="foot">
-                <a href="<?php echo _ADMINPAGEFOOT_OFFICIALURL ?>"><?php echo hsc(CORE_APPLICATION_NAME); ?></a> &copy; 2002-<?php echo date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT; ?>
+                <a href="<%_ADMINPAGEFOOT_OFFICIALURL%>"><%CORE_APPLICATION_NAME%></a> &copy; 2002-<%date%> <%_ADMINPAGEFOOT_COPYRIGHT%>
+            </div>
+            </div><!-- content -->
+            <%quickmenu%>
+            <div class="clear"></div>
             </div>
 
-            </div><!-- content -->
-        <?php
-        $this->quickmenu();
+            <!-- adminwrapper -->
+            </div>
+            </body>
+            </html>
+            ';
+        $ph = array();
+        $ph['_ADMINPAGEFOOT_OFFICIALURL'] = _ADMINPAGEFOOT_COPYRIGHT;
+        $ph['CORE_APPLICATION_NAME']      = CORE_APPLICATION_NAME;
+        $ph['date']                       = date('Y');
+        $ph['_ADMINPAGEFOOT_COPYRIGHT']   = _ADMINPAGEFOOT_COPYRIGHT;
+        $ph['quickmenu'] = $this->quickmenu();
+        echo parseText($tpl,$ph);
     }
 
     function quickmenu() {
         global $action, $member, $manager;
+        ob_start();
         ?>
             <div id="quickmenu">
 
@@ -6142,16 +6174,10 @@ selector();
                 }
                 ?>
             </div>
-
             <!-- content / quickmenu container -->
-            <div class="clear"></div>    <!-- new -->
-            </div>
-
-            <!-- adminwrapper -->    <!-- new -->
-            </div>     <!-- new -->
-            </body>
-            </html>
-        <?php   }
+        <?php
+        return ob_get_clean();
+    }
 
     /**
      * @todo document this
