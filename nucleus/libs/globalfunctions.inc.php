@@ -2342,3 +2342,10 @@ function getValidLanguage($lang)
         return $lang;
     return 'english-utf8';
 }
+
+function parseText($tpl='',$ph=array()) {
+    foreach($ph as $k=>$v) {
+        $tpl = str_replace("<%{$k}%>", $v, $tpl);
+    }
+    return $tpl;
+}
