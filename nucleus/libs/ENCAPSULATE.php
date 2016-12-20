@@ -122,7 +122,7 @@ class NAVLIST extends ENCAPSULATE {
         <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
         <input type="hidden" name="search" value="<?php echo  $search; ?>" />
         <input type="hidden" name="start" value="<?php echo  $prev; ?>" />
-        <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
+        <input type="hidden" name="view_item_options" value="${view_item_options}" />
         </div></form>
     </td><td>
         <form method="post" action="index.php"><div>
@@ -196,7 +196,8 @@ class NAVLIST extends ENCAPSULATE {
         global $CONF;
         $list = array('all'
             ,'normal'
-            ,'normal_term','normal_term_future','normal_term_end','non_draft_term_end'
+            ,'normal_term_only','normal_term_future','normal_term_expired','non_draft_term_expired'
+            , 'invalid_term'
             ,'unpublished','draft');
         if (!ITEM::existCol_istatus()) {
             $list = array('all','normal','draft');
@@ -239,6 +240,8 @@ class NAVLIST extends ENCAPSULATE {
 
         $s = sprintf('<select name="%s" onChange="this.form.submit()">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
         foreach($list as $key) {
+            if ($key != 'all' && isset($count_cached[$cachekey][$key]) && ($count_cached[$cachekey][$key] == 0))
+                continue;
             $selected = ($key==$in_value ? 'selected' : '');
             $title = '_LISTS_FORM_SELECT_ITEM_OPTION_'.strtoupper($key);
             $title = hsc(defined($title) ? constant($title) : $key);
