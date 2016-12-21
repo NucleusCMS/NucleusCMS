@@ -79,7 +79,7 @@ function upgrade_do380() {
             $blog = $manager->getBlog(intval($o->blogid));
             $date = sqldate($blog->getCorrectTime());
             // set to future
-            $query = sprintf("UPDATE `%s` SET `istatus`='future' WHERE itime>%s", $table_item, sql_quote_string($date));
+            $query = sprintf("UPDATE `%s` SET `istatus`='future' WHERE itime>%s", $table_item, $date);
             upgrade_query('istatus: Changing initial value to future ', $query);
             // free blog object
             unset($manager->blogs[intval($o->blogid)]); // free memory
