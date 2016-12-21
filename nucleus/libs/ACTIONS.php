@@ -441,7 +441,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_addlink() {
         global $CONF, $member, $blog;
-        if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
+        if (isset($blog) && $member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
             echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
         }
     }
@@ -1413,8 +1413,10 @@ class ACTIONS extends BaseActions {
         global $blog, $CONF;
         if ($blog)
             echo $this->_link(createBlogidLink($blog->getID(),$this->linkparams), $linktext);
-        else
+        else if (isset($CONF['SiteUrl']) && strlen($CONF['SiteUrl'])>0)
             echo $this->_link($CONF['SiteUrl'], $linktext);
+        else
+            echo hsc($linktext);
     }
 
     /**

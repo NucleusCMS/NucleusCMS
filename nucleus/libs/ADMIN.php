@@ -6061,7 +6061,7 @@ selector();
             </html>
             ';
         $ph = array();
-        $ph['_ADMINPAGEFOOT_OFFICIALURL'] = _ADMINPAGEFOOT_COPYRIGHT;
+        $ph['_ADMINPAGEFOOT_OFFICIALURL'] = _ADMINPAGEFOOT_OFFICIALURL;
         $ph['CORE_APPLICATION_NAME']      = CORE_APPLICATION_NAME;
         $ph['date']                       = date('Y');
         $ph['_ADMINPAGEFOOT_COPYRIGHT']   = _ADMINPAGEFOOT_COPYRIGHT;
