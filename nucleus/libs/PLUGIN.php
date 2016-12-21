@@ -356,8 +356,13 @@ class NucleusPlugin {
     function _createOption($context, $name, $desc, $type, $defValue, $typeExtras = '') {
         if ($this->_existOptionDesc($context, $name))
             return FALSE;
+
+        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
+        if (strlen($name)>20 && ($DB_DRIVER_NAME!='sqlite')) {
+            ACTIONLOG::addUnique(ERROR, "Maximum number of characters exceeded : name : createOption[$context] $name ");
+        }
+
         // create in plugin_option_desc
-        global $DB_PHP_MODULE_NAME;
         if ($DB_PHP_MODULE_NAME == 'pdo')
         {
             $sql = 'INSERT INTO ' . sql_table('plugin_option_desc')
