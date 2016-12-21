@@ -88,8 +88,7 @@
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
-		<part name="imagepopup"><![CDATA[<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-
+		<part name="imagepopup"><![CDATA[<!DOCTYPE html>
 <html>
 <head>
 <title><%imagetext%></title>

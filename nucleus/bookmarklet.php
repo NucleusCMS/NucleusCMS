@@ -171,9 +171,6 @@ function bm_doEditItem() {
             }
         }
     }
-    if (in_array($i_status, $draft_list) && $update_options['extraColValue']['istatus']!=$i_status) {
-        $update_options['extraColValue']['istatus'] = $i_status;
-    }
 
     // create new category if needed (only on edit/changedate)
     if (strstr($catid,'newcat') ) {
@@ -234,8 +231,8 @@ function bm_loginAndPassThrough() {
     $log_linktitle = requestVar('loglinktitle');
 
     ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title>Nucleus</title>
     <?php bm_style(); ?>
@@ -336,8 +333,8 @@ function bm_doError($msg) {
 
 function bm_message($title, $head, $msg, $extrahead = '') {
     ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title><?php echo $title ?></title>
     <?php bm_style(); ?>

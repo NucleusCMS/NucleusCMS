@@ -1448,9 +1448,6 @@ class ADMIN {
                 }
             }
         }
-        if (in_array($i_status, $draft_list) && $update_options['extraColValue']['istatus']!=$i_status) {
-            $update_options['extraColValue']['istatus'] = $i_status;
-        }
 
         // default action = add now
         if (!$actiontype)

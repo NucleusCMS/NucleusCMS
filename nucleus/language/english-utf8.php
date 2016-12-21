@@ -24,6 +24,7 @@
 if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
 if (!defined('_LOCALE'))  define('_LOCALE', 'en_US');
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english');
+if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'en');
 
 /********************************************
  *        Admin Links Settings                *

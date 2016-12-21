@@ -207,9 +207,6 @@ class ITEM {
                     $otherCols['istatus'] = 'future';
                 }
             }
-            if (in_array($i_status, $draft_list) && $otherCols['istatus']!=$i_status) {
-                $otherCols['istatus'] = $i_status;
-            }
         }
 
         $itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted, $new_options);
