@@ -1364,13 +1364,12 @@ class ADMIN {
         $closed = intPostVar('closed');
         $draftid = intPostVar('draftid');
 
-        $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+        $i_status = ITEM::convertValidStatusText(postVar('act_status'), 'published');
         if ($i_status=='draft' || $actiontype == 'adddraft' || $actiontype == 'backtodrafts') {
             $actiontype = 'adddraft';
             $i_status='draft';
         }
 
-        $draft_list = array('draft');
 
         $update_options = array('extraColValue' => array());
         // value for public
@@ -1393,10 +1392,9 @@ class ADMIN {
                 if ($y < 2000)
                     { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
                 $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
-                if ( !in_array($i_status, $draft_list)
-                     && $section == 'start'
+                if ( $section == 'start'
                      && $update_options['extraColValue']['istatus']=='published'
-                     && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+                     && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sql_timestamp_from_utime($blog->getCorrectTime())) > 0)
                 {
                     $update_options['extraColValue']['istatus'] = 'future';
                 }

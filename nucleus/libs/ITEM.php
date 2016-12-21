@@ -120,7 +120,7 @@ class ITEM {
 
          $i_draftid =         intPostVar('draftid');
 
-        $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+        $i_status = ITEM::convertValidStatusText(postVar('act_status'), 'published');
         if ($i_status=='draft' || $i_actiontype == 'adddraft') {
             $i_actiontype = 'adddraft';
             $i_status     = 'draft';
@@ -181,7 +181,6 @@ class ITEM {
             $posted = 1;
         }
 
-        $draft_list = array('draft');
 
         if (intPostVar('not_available_istatus') != 1 && ITEM::existCol_istatus()) {
             $otherCols['istatus'] = $i_status;
@@ -201,10 +200,9 @@ class ITEM {
                 if ($y < 2000)
                     { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
                 $otherCols['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
-                if ( !in_array($i_status, $draft_list)
-                     && $section == 'start'
+                if ( $section == 'start'
                      && $otherCols['istatus']=='published'
-                     && strcmp($otherCols['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+                     && strcmp($otherCols['ipublic_term_' . $section], sql_timestamp_from_utime($blog->getCorrectTime())) > 0)
                 {
                     $otherCols['istatus'] = 'future';
                 }
