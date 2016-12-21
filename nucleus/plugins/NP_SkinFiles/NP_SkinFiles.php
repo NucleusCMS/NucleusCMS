@@ -41,13 +41,14 @@
  * 			cacher		- replace function 'basename' (PHP BUG)
  *						- add help
  *			Mocchi		- arrange codes for PHP5
+ * v2.1                 - support new folder feture
  */
 
 class NP_SkinFiles extends NucleusPlugin {
 	public function getName() { return 'SkinFiles'; }
 	public function getAuthor() { return 'Misc authors'; }
 	public function getURL() { return ''; }
-	public function getVersion() { return '2.032'; }
+	public function getVersion() { return '2.1'; }
 	public function getDescription() { return _SKINFILES_01; }
 	public function supportsFeature($feature)	{ return in_array ($feature, array ('SqlTablePrefix', 'NotUseDbApi', 'HelpPage'));}
 	public function hasAdminArea() { return 1; }
@@ -82,10 +83,11 @@ class NP_SkinFiles extends NucleusPlugin {
 	
 	public function init() {
 		$language = str_replace(array('\\','/'), '', getLanguageName());
-		if (file_exists($this->getDirectory().$language.'.php')) {
-			include_once($this->getDirectory().$language.'.php');
+		$lang_dir = $this->getDirectory(). 'language/';
+		if (file_exists($lang_dir.$language.'.php')) {
+			include_once($lang_dir.$language.'.php');
 		} else {
-			include_once($this->getDirectory().'english.php');
+			include_once($lang_dir.'english.php');
 		}
 		return;
 	}

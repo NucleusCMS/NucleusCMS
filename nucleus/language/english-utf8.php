@@ -24,6 +24,7 @@
 if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
 if (!defined('_LOCALE'))  define('_LOCALE', 'en_US');
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english');
+if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'en');
 
 /********************************************
  *        Admin Links Settings                *
@@ -46,11 +47,12 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
  ********************************************/
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal(Public + Non-Draft)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM',         'Normal(Public + Non-Draft + has-period)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  'Normal future(Public +  Non-Draft + has-period)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_END',     'Normal expired(Public +  Non-Draft + has-period)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_END',  'Expired(Non-Draft + has-period)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal published');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_ONLY',    'Normal published(has period only)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  'Normal future');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_EXPIRED', 'Normal expired');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_EXPIRED',  'Expired(Non-Draft + has-period)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_INVALID_TERM',      'Invalid period');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',            'Public');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLISHED',         'Published');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_UNPUBLISHED',       'Unpublic');

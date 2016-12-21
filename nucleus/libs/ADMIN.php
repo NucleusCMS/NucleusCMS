@@ -1412,13 +1412,12 @@ class ADMIN {
         $closed = intPostVar('closed');
         $draftid = intPostVar('draftid');
 
-        $draft_list = array('draft');
-
-        $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+        $i_status = ITEM::convertValidStatusText(postVar('act_status'), 'published');
         if ($i_status=='draft' || $actiontype == 'adddraft' || $actiontype == 'backtodrafts') {
             $actiontype = 'adddraft';
             $i_status='draft';
         }
+
 
         $update_options = array('extraColValue' => array());
         // value for public
@@ -1441,17 +1440,13 @@ class ADMIN {
                 if ($y < 2000)
                     { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
                 $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
-                if ( !in_array($i_status, $draft_list)
-                     && $section == 'start'
+                if ( $section == 'start'
                      && $update_options['extraColValue']['istatus']=='published'
-                     && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+                     && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sql_timestamp_from_utime($blog->getCorrectTime())) > 0)
                 {
                     $update_options['extraColValue']['istatus'] = 'future';
                 }
             }
-        }
-        if (in_array($i_status, $draft_list) && $update_options['extraColValue']['istatus']!=$i_status) {
-            $update_options['extraColValue']['istatus'] = $i_status;
         }
 
         // default action = add now
@@ -7778,7 +7773,10 @@ EOD;
         $where = '';
         $t = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
         switch ($v) {
-            case 'normal_term_end':
+            case 'all':
+            case 'draft':
+                break;
+            default:
                 if ($bid) {
                     if (is_object( $bid )) {
                         $t = $bid->getCorrectTime();
@@ -7803,6 +7801,14 @@ EOD;
                 break;
         }
         $common_normal_filter   = "idraft=0 AND istatus in ('published','future')";
+        $common_normal_duringperiod_filter = $common_normal_filter
+                        . sprintf(" AND itime <= %s" , sqldate($t))
+                        . ' AND ( ipublic_enable_term_start=0 OR'
+                        . sprintf(' ( ipublic_enable_term_start=1 AND ipublic_term_start <= %s)', sqldate($t))
+                        . '     )'
+                        . ' AND ( ipublic_enable_term_end=0 OR'
+                        . sprintf(' ( ipublic_enable_term_end=1 AND ipublic_term_end > %s)', sqldate($t))
+                        . '     )';
         $common_nondraft_filter = "idraft=0 AND istatus<>'draft'";
         $common_draft_filter    = "(idraft=1 OR istatus='draft')";
         if (!ITEM::existCol_istatus()) {
@@ -7823,7 +7829,12 @@ EOD;
                 break;
             case 'non_draft':  $where .= $common_nondraft_filter;
                 break;
-            case 'normal':     $where .= $common_normal_filter;
+            case 'normal':
+                $where .= $common_normal_duringperiod_filter;
+                break;
+            case 'normal_term_only':
+                $where .= $common_normal_duringperiod_filter
+                        . ' AND ( ipublic_enable_term_start=1 OR ipublic_enable_term_end=1 )';
                 break;
             case 'normal_term': $where .= $common_normal_filter
                                         . ' AND ( ipublic_enable_term_start=1 OR ipublic_enable_term_end=1 )';
@@ -7834,20 +7845,31 @@ EOD;
                 $or_expr[] = 'ipublic_enable_term_start=1 '
                             . ' AND ipublic_term_start > ' . sqldate($t);
                 $where .= $common_normal_filter
-                        . ' AND ((' . implode( ') OR (', $or_expr ) . '))';
+                        . ' AND ((' . implode( ') OR (', $or_expr ) . '))'
+                        . ' AND ( ipublic_enable_term_end=0 OR'
+                        . sprintf(' ( ipublic_enable_term_end=1 AND ipublic_term_end > %s)', sqldate($t))
+                        . '     ) ';
                 break;
-            case 'normal_term_end':
+            case 'normal_term_expired':
                 $where .= $common_normal_filter
                         . ' AND ipublic_enable_term_end=1 '
                         . ' AND ipublic_term_end <= ' . sqldate($t);
                 break;
-            case 'non_draft_term_end':
+            case 'non_draft_term_expired':
                 $where .= $common_nondraft_filter
                         . ' AND ipublic_enable_term_end=1 '
                         . ' AND ipublic_term_end <= ' . sqldate($t);
                 break;
+            case 'invalid_term':
+                $or_expr = array();
+                $or_expr[] .= ' ipublic_enable_term_start=1 AND ipublic_enable_term_end=1 '
+                            . ' AND ipublic_term_start>=ipublic_term_end ';
+                $or_expr[] = ' ipublic_enable_term_end=1 '
+                            . ' AND ipublic_term_end <= itime ';
+                $where .= '((' . implode( ') OR (', $or_expr ) . '))';
+                break;
             default: // invalid $mode
-                $extra .= '1=0'; //
+                $where .= '1=0'; //
                 break;
         }
 

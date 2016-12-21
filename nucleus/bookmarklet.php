@@ -136,9 +136,7 @@ function bm_doEditItem() {
         exit;
     }
 
-    $draft_list = array('draft');
-
-    $i_status = ITEM::convertValidStatusText(postVar('status'), 'published');
+    $i_status = ITEM::convertValidStatusText(postVar('act_status'), 'published');
     if ($i_status=='draft' || $actiontype == 'adddraft' || $actiontype == 'backtodrafts') {
         $actiontype = 'backtodrafts';
         $i_status = 'draft';
@@ -165,17 +163,13 @@ function bm_doEditItem() {
             if ($y < 2000)
                 { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
             $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
-            if ( !in_array($i_status, $draft_list)
-                 && $section == 'start'
+            if ( $section == 'start'
                  && $update_options['extraColValue']['istatus']=='published'
-                 && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sqldate($blog->getCorrectTime())) > 0)
+                 && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sql_timestamp_from_utime($blog->getCorrectTime())) > 0)
             {
                 $update_options['extraColValue']['istatus'] = 'future';
             }
         }
-    }
-    if (in_array($i_status, $draft_list) && $update_options['extraColValue']['istatus']!=$i_status) {
-        $update_options['extraColValue']['istatus'] = $i_status;
     }
 
     // create new category if needed (only on edit/changedate)
@@ -237,8 +231,8 @@ function bm_loginAndPassThrough() {
     $log_linktitle = requestVar('loglinktitle');
 
     ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title>Nucleus</title>
     <?php bm_style(); ?>
@@ -339,8 +333,8 @@ function bm_doError($msg) {
 
 function bm_message($title, $head, $msg, $extrahead = '') {
     ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
 <title><?php echo $title ?></title>
     <?php bm_style(); ?>

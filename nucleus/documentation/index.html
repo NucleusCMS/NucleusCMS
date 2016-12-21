@@ -1,7 +1,17 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-	<!-- $Id$ -->
+	<!--
+		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+		Copyright (C) 2002-2016 The Nucleus Group
+
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License
+		as published by the Free Software Foundation; either version 2
+		of the License, or (at your option) any later version.
+		(see nucleus/documentation/index.html#license for more info)
+	-->
+	<meta charset="UTF-8" />
 	<title>Nucleus CMS - Manual</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 </head>
@@ -9,7 +19,7 @@
 
 <div class="heading">
 Nucleus CMS Manual
-<i>(v3.3)</i>
+<i>(v3.80)</i>
 </div>
 
 <div class="note">
@@ -70,15 +80,17 @@ Nucleus is a Content Management System (CMS): a powerful set of PHP scripts that
 	<li>...</li>
 </ul>
 
+<h2>Operating environment</h2>
 <p>
 Requirements in order to run Nucleus: <small>(If you don't know if you fit the requirements, ask your system administrator)</small>
 </p>
 
 <ul>
+	<li>Web server</li>
 	<li><a href="http://www.php.net/">PHP</a> (version 5.0.5 - 7.1, recommended version 5.6 or higher)</li>
 	<li>Access to the database: MySQL or SQLite
 		<ul>
-			<li>Access to a <a href="http://www.mysql.com/">MySQL</a> database (version 5 or higher)</li>
+			<li><a href="http://www.mysql.com/">MySQL</a> database (version 5 or higher) or <a href="https://mariadb.org/">MariaDB</a> (version 5.5, 10.0 or higher)</li>
 			<li>SQLite version 3 (PHP: PDO PDO_SQLite)</li>
 		</ul>
 	</li>
@@ -88,7 +100,10 @@ Requirements in order to run Nucleus: <small>(If you don't know if you fit the r
 
 
 <p>
-Nucleus is intended for the people that want full control and 'tweakability' over their sites. If you're just looking for a very simple way to put up a site, or don't know any HTML, you might want to use a 'simpler' service such as <a href="http://www.blogger.com/">Blogger</a>.
+Nucleus is intended for the people that want full control and 'tweakability' over their sites.
+</p>
+<p class="note">
+If you're just looking for a very simple way to put up a site, or don't know any HTML, you might want to use a 'simpler' service such as <a href="http://www.blogger.com/">Blogger</a>.
 </p>
 
 
@@ -357,6 +372,7 @@ File permissions need to be set correctly in order for the update file to work. 
 </p>
 
 <ul>
+	<li>This document is outdated and may not match the current situation.</li>
 	<li>At the time of release, there are officially supported blog conversion tools available for Nucleus v3.3. We do have a set of code with which you can start, and are providing <a href="http://nucleuscms.org/convert.php">pointers to the import tools created by others</a>. A good starting point is also the Nucleus Forum section <a href="http://forum.nucleuscms.org/viewforum.php?f=17">Import Questions</a>. Because all blog system have a different structure it isn't possible to convert each system in another without a possible loss of information. The script authors try to minimize troubles and loss of information.</li>
 	<li>Ctrl + Shift + A shortcut might conflict with ICQ/Trillian</li>
 	<li>When PHP is running in SAFE mode, it's very likely that there will be problems when using the media directory (Nucleus will not be able to automatically detect image sizes, or disallow uploading)</li>

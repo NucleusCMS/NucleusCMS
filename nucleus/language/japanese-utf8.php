@@ -20,6 +20,7 @@
 if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
 if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
+if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'ja');
 
 /********************************************
  *        Admin Links Settings                *
@@ -44,11 +45,12 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
  ********************************************/
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開(公開+下書きでない)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM',         '一般公開(公開+下書きでない+期限付き)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  '一般公開開始前(公開+下書きでない+期限付き)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_END',     '一般公開期限切れ(公開+下書きでない+期限付き)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_END',  '期限切れ(下書きでない+期限付き)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開中');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_ONLY',    '一般公開中(期限付きのみ)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  '一般公開-開始前');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_EXPIRED', '一般公開-期限切れ');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_EXPIRED',  '期限切れ(下書きでない)');
+define('_LISTS_FORM_SELECT_ITEM_OPTION_INVALID_TERM',        '無効な期間指定');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',              '公開');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLISHED',           '公開中');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_UNPUBLISHED',         '非公開');

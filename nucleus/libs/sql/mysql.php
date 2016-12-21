@@ -31,13 +31,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if (!defined('_CHARSET')) {
             define('_CHARSET', 'UTF-8');
         }
-        if (!defined('_HTML_XML_NAME_SPACE_AND_LANG_CODE')) {
-            define('_HTML_XML_NAME_SPACE_AND_LANG_CODE', 'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
-        }
+        $lang = sprintf('lang="%s"', (defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en'));
         sendContentType('text/html','',_CHARSET);
         ?>
-<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-    <head><meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
+<!DOCTYPE html>
+<html <?php echo $lang; ?>>
+    <head><meta charset="<?php echo _CHARSET; ?>" />
     <title><?php echo hsc($title)?></title></head>
     <body>
         <h1><?php echo hsc($title)?></h1>

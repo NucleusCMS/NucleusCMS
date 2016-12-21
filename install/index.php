@@ -244,10 +244,10 @@ function showInstallForm() {
         define('_INSTALL_TEXT_EXPERIMENTAL', 'experimental');
 
 	?>
-	<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-	<html xmlns="http://www.w3.org/1999/xhtml">
+	<!DOCTYPE html>
+	<html>
 	<head>
-		<meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
+		<meta charset="UTF-8" />
 		<meta name="robots" content="noindex,nofollow,noarchive" />
 		<title><?php echo _TITLE; ?></title>
 		<style type="text/css"><!--
@@ -1254,10 +1254,10 @@ function doInstall() {
         echo sprintf("Step end(%d)", __LINE__);
 
 ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('../nucleus/styles/manual.css');</style>
@@ -1627,10 +1627,10 @@ function _isValidDisplayName($name) {
  */
 function _doError($msg) {
 	?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('../nucleus/styles/manual.css');</style>
@@ -1658,10 +1658,10 @@ function _doError($msg) {
  */
 function showErrorMessages($errors) {
 	?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
+<!DOCTYPE html>
+<html>
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
 	<style>@import url('../nucleus/styles/manual.css');</style>
