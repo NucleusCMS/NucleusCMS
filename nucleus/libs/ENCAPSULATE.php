@@ -34,13 +34,14 @@ class ENCAPSULATE {
         $list = ob_get_contents();
         ob_end_clean();
 
+        $this->isFootNavigation = ($nbOfRows > 0);
+        $this->showHead();
         if ($nbOfRows > 0) {
-            $this->showHead();
             echo $list;
-            $this->showFoot();
         } else {
-            echo $errorMessage;
+            printf("<p class='note'>%s</p>", hsc($errorMessage));
         }
+        $this->showFoot();
 
         return $nbOfRows;
     }
@@ -80,7 +81,9 @@ class NAVLIST extends ENCAPSULATE {
         $this->showNavigation();
     }
     function showFoot() {
-        $this->showNavigation();
+        if ($this->isFootNavigation) {
+            $this->showNavigation();
+        }
     }
 
     /**
@@ -104,17 +107,21 @@ class NAVLIST extends ENCAPSULATE {
            $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
         $view_item_options = isset($_POST['view_item_options']) ? postVar('view_item_options') : 'all';
 
-        // maxamount not used yet
-    //    if ($start + $amount <= $maxamount)
+        if (isset($this->total)) {
+            $maxamount = $this->total-1;
+            if ($start + $amount <= $maxamount)
+                $next = $start + $amount;
+            else
+                $next = $start;
+        } else {
             $next = $start + $amount;
-    //    else
-    //        $next = $start;
+        }
 
     ?>
     <table class="navigation">
     <tr><td>
         <form method="post" action="index.php"><div>
-        <input type="submit" value="&lt;&lt; <?php echo  _LISTS_PREV?>" />
+        <input type="submit" <?php if ($start <= 0) echo 'disabled'; ?> value="&lt;&lt; <?php echo _LISTS_PREV; ?>" />
         <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
         <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
         <?php if ($enable_cat_select) echo '<input type="hidden" name="catid" value="' . $catid . '" />'; ?>
@@ -122,7 +129,7 @@ class NAVLIST extends ENCAPSULATE {
         <input type="hidden" name="amount" value="<?php echo  $amount; ?>" />
         <input type="hidden" name="search" value="<?php echo  $search; ?>" />
         <input type="hidden" name="start" value="<?php echo  $prev; ?>" />
-        <input type="hidden" name="view_item_options" value="${view_item_options}" />
+        <input type="hidden" name="view_item_options" value="<?php echo $view_item_options; ?>" />
         </div></form>
     </td><td>
         <form method="post" action="index.php"><div>
