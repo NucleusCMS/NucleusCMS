@@ -268,17 +268,8 @@ EOD;
         global $CONF;
         $list = array('all'
             ,'normal'
-            ,'normal_term_only','normal_term_future','normal_term_expired','non_draft_term_expired'
-            , 'invalid_term'
-            ,'unpublished','draft');
-        if (!ITEM::existCol_istatus()) {
-            $list = array('all','normal','draft');
-        }
-        if ($CONF['debug']) {
-//            $list = array_mearray_merge(array(
-//                'normal_'
-//                ));
-        }
+            ,'normal_term_future'
+            ,'draft');
         if (!in_array($in_value, $list))
             $in_value = 'all';
 

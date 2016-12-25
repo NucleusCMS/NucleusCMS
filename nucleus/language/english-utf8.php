@@ -50,33 +50,12 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal published');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_ONLY',    'Normal published(has period only)');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  'Normal future');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_EXPIRED', 'Normal expired');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_EXPIRED',  'Expired(Non-Draft + has-period)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_INVALID_TERM',      'Invalid period');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',            'Public');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLISHED',         'Published');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_UNPUBLISHED',       'Unpublic');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',             'Draft');
 
-define('_ADD_DRAFT',              'Draft');
-define('_ADD_PUBLIC',             'Public');
-define('_ADD_UNPUBLIC',           'Unpublic');
-define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
-define('_ADD_PUBLIC_TERM_DESC',   'Check if enable the expiration period');
-define('_ADD_PUBLIC_TERM_START',  'The date time of beginning');
-define('_ADD_PUBLIC_TERM_END',    'The date time of ending');
-define('_ADD_PUBLIC_DATE_FORMAT',           'day,month,year');
-define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
-define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
-//define('_ADD_PUBLIC_DATE_FORMAT',           'year,month,day');
-//define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
-//define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(yyyy-mm-dd hh:mm)');
 define('_EDIT_DATE_FORMAT',           'day,month,year');
 define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
 define('_EDIT_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
-define('_FEATURE_WARN_UPGRADE_DESC',        'Database upgrade is required to use this FEATURE');
 
 define('_MEMBERS_PASSWORD_INFO',				'(Password should be at least 6 characters)');
 

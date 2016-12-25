@@ -1320,7 +1320,7 @@ class ADMIN {
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
-        $item =& $manager->getItem($itemid,1,1,0);
+        $item =& $manager->getItem($itemid,1,1);
         $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
         $param = array('item' => &$item);
@@ -1363,43 +1363,6 @@ class ADMIN {
         $more   = postVar('more');
         $closed = intPostVar('closed');
         $draftid = intPostVar('draftid');
-
-        $i_status = ITEM::convertValidStatusText(postVar('act_status'), 'published');
-        if ($i_status=='draft' || $actiontype == 'adddraft' || $actiontype == 'backtodrafts') {
-            $actiontype = 'adddraft';
-            $i_status='draft';
-        }
-
-
-        $update_options = array('extraColValue' => array());
-        // value for public
-        if (intPostVar('not_available_istatus') != 1 && ITEM::existCol_istatus()) {
-            $blog = $manager->getBlog($itemid);
-            $update_options['extraColValue']['istatus'] = $i_status;
-            $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
-            $update_options['extraColValue']['ipublic_enable_term_end'] = (intPostVar('public_enable_term_end') ? 1 : 0);
-            foreach (array('start', 'end') as $section)
-            {
-                /*
-                 *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
-                 *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
-                 */
-                $y = min(9999,max(0, intPostVar('year_public_term_' . $section)));
-                $mo = min(99,max(0, intPostVar('month_public_term_' . $section)));
-                $d = min(99,max(0, intPostVar('day_public_term_' . $section)));
-                $h = min(99,max(0, intPostVar('hour_public_term_' . $section)));
-                $mi = min(99,max(0, intPostVar('minute_public_term_' . $section)));
-                if ($y < 2000)
-                    { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
-                $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
-                if ( $section == 'start'
-                     && $update_options['extraColValue']['istatus']=='published'
-                     && strcmp($update_options['extraColValue']['ipublic_term_' . $section], sql_timestamp_from_utime($blog->getCorrectTime())) > 0)
-                {
-                    $update_options['extraColValue']['istatus'] = 'future';
-                }
-            }
-        }
 
         // default action = add now
         if (!$actiontype)
@@ -1444,7 +1407,7 @@ class ADMIN {
         }
 
         // edit the item for real
-        ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp, $update_options);
+        ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
         $this->updateFuturePosted($blogid);
 
@@ -1482,7 +1445,7 @@ class ADMIN {
         if (!$manager->existsItem($itemid,1,1))
             $this->error(_ERROR_NOSUCHITEM);
 
-        $item =& $manager->getItem($itemid,1,1,0);
+        $item =& $manager->getItem($itemid,1,1);
         $title = hsc(strip_tags($item['title']));
         $body = strip_tags($item['body']);
         $body = hsc(shorten($body,300,'...'));
@@ -1582,7 +1545,7 @@ class ADMIN {
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
-        $item =& $manager->getItem($itemid,1,1,0);
+        $item =& $manager->getItem($itemid,1,1);
 
         $this->pagehead();
         ?>
@@ -1695,7 +1658,7 @@ class ADMIN {
         $blogid = getBlogIDFromItemID($result['itemid']);
         $blog =& $manager->getBlog($blogid);
         $btimestamp = $blog->getCorrectTime();
-        $item       = $manager->getItem(intval($result['itemid']), 1, 1, 0);
+        $item       = $manager->getItem(intval($result['itemid']), 1, 1);
 
         if ($result['status'] == 'newcategory') {
             $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemList&blogid=' . intval($blogid));
@@ -5910,10 +5873,6 @@ selector();
     <title><%SiteName%> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%baseUrl%>styles/admin_<%AdminCSS%>.css" />
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%baseUrl%>styles/addedit.css" />
-	<link rel="stylesheet" type="text/css" href="<%baseUrl%>styles/jquery-ui/ui.datepicker.css" />
-<?php if (_LOCALE == 'ja_JP') { ?>
-    <link rel="stylesheet" type="text/css" href="<%baseUrl%>styles/jquery-ui/ui.datepicker-ja.css" />
-<?php } ?>
 
     <style>
     #quickmenu ul { display: none;}
@@ -5923,17 +5882,9 @@ selector();
     <script type="text/javascript" src="<%baseUrl%>javascript/jquery/jquery-migrate.min.js"></script>
     <script type="text/javascript" src="<%baseUrl%>javascript/jquery/jquery.cookie.js"></script>
     <script type="text/javascript" src="<%baseUrl%>javascript/edit.js"></script>
-<?php if ($this->action == 'createitem' || $this->action == 'itemedit') { ?>
-    <script type="text/javascript" src="<%baseUrl%>javascript/edit_public_date.js"></script>
-<?php } ?>
     <script type="text/javascript" src="<%baseUrl%>javascript/admin.js"></script>
     <script type="text/javascript" src="<%baseUrl%>javascript/compatibility.js"></script>
     <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/core_widget_tabs.min.js"></script>
-    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/datepicker.min.js"></script>
-<?php if (_LOCALE == 'ja_JP') { ?>
-    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/i18n/datepicker-ja.js"></script>
-    <script type="text/javascript" src="<%baseUrl%>javascript/jquery/ui/i18n/datepicker-ja-holiday.js"></script>
-<?php } ?>
     <script>
         jQuery(function () {
             var qmenu_manage  = jQuery.cookie('qmenu_manage');
@@ -7690,29 +7641,13 @@ EOD;
                 }
                 break;
         }
-        $common_normal_filter   = "idraft=0 AND istatus in ('published','future')";
+        $common_normal_filter   = "idraft=0";
         $common_normal_duringperiod_filter = $common_normal_filter
-                        . sprintf(" AND itime <= %s" , sqldate($t))
-                        . ' AND ( ipublic_enable_term_start=0 OR'
-                        . sprintf(' ( ipublic_enable_term_start=1 AND ipublic_term_start <= %s)', sqldate($t))
-                        . '     )'
-                        . ' AND ( ipublic_enable_term_end=0 OR'
-                        . sprintf(' ( ipublic_enable_term_end=1 AND ipublic_term_end > %s)', sqldate($t))
-                        . '     )';
-        $common_nondraft_filter = "idraft=0 AND istatus<>'draft'";
-        $common_draft_filter    = "(idraft=1 OR istatus='draft')";
-        if (!ITEM::existCol_istatus()) {
-                $common_normal_filter   = "idraft=0";
-                $common_draft_filter    = "idraft=1";
-        }
+                        . sprintf(" AND itime <= %s" , sqldate($t));
+        $common_nondraft_filter = "idraft=0";
+        $common_draft_filter    = "idraft=1";
         switch ($v) {
             case 'all' :
-                break;
-            case 'published':   $where .= "istatus='published'";
-                break;
-            case 'unpublished': $where .= "istatus='unpublished'";
-                break;
-            case 'future':      $where .= "istatus='future'";
                 break;
             case 'draft':       $where .= $common_draft_filter;
                 break;
@@ -7722,40 +7657,11 @@ EOD;
                 $where .= $common_normal_duringperiod_filter;
                 break;
             case 'normal_term_only':
-                $where .= $common_normal_duringperiod_filter
-                        . ' AND ( ipublic_enable_term_start=1 OR ipublic_enable_term_end=1 )';
-                break;
-            case 'normal_term': $where .= $common_normal_filter
-                                        . ' AND ( ipublic_enable_term_start=1 OR ipublic_enable_term_end=1 )';
+                $where .= $common_normal_duringperiod_filter;
                 break;
             case 'normal_term_future':
-                $or_expr = array();
-                $or_expr[] = 'itime > ' . sqldate($t);
-                $or_expr[] = 'ipublic_enable_term_start=1 '
-                            . ' AND ipublic_term_start > ' . sqldate($t);
                 $where .= $common_normal_filter
-                        . ' AND ((' . implode( ') OR (', $or_expr ) . '))'
-                        . ' AND ( ipublic_enable_term_end=0 OR'
-                        . sprintf(' ( ipublic_enable_term_end=1 AND ipublic_term_end > %s)', sqldate($t))
-                        . '     ) ';
-                break;
-            case 'normal_term_expired':
-                $where .= $common_normal_filter
-                        . ' AND ipublic_enable_term_end=1 '
-                        . ' AND ipublic_term_end <= ' . sqldate($t);
-                break;
-            case 'non_draft_term_expired':
-                $where .= $common_nondraft_filter
-                        . ' AND ipublic_enable_term_end=1 '
-                        . ' AND ipublic_term_end <= ' . sqldate($t);
-                break;
-            case 'invalid_term':
-                $or_expr = array();
-                $or_expr[] .= ' ipublic_enable_term_start=1 AND ipublic_enable_term_end=1 '
-                            . ' AND ipublic_term_start>=ipublic_term_end ';
-                $or_expr[] = ' ipublic_enable_term_end=1 '
-                            . ' AND ipublic_term_end <= itime ';
-                $where .= '((' . implode( ') OR (', $or_expr ) . '))';
+                        . sprintf(" AND itime > %s" , sqldate($t));
                 break;
             default: // invalid $mode
                 $where .= '1=0'; //

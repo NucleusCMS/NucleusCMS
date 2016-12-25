@@ -77,7 +77,6 @@ class PAGEFACTORY extends BaseActions {
             'autosave',
             'autosaveinfo',
             'ifautosave',
-            'publictime',
             'iftext',
             'checked_valtext',
             'inctabindex',
@@ -89,8 +88,6 @@ class PAGEFACTORY extends BaseActions {
         // TODO: maybe add 'skin' later on?
         // TODO: maybe add other pages from admin area
         $this->allowedTypes = array('bookmarklet','admin');
-
-        ITEM::existCol_istatus(); // set data
     }
 
     /**
@@ -163,7 +160,6 @@ class PAGEFACTORY extends BaseActions {
 
         if (($contents!==False) && preg_match("#^(admin|bookmarklet)$#", $this->type) && preg_match("#^(add|edit)$#", $this->method, $m2)) {
             $this->replace_date_time_picker($contents);
-            $this->replace_date_time_picker2($contents);
         }
 
         return ($contents!==False ? $contents : '' );
@@ -181,30 +177,30 @@ class PAGEFACTORY extends BaseActions {
                 switch($value)
                 {
                     case 'year' :
-                      $s[] = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%'.$stime.'(year)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
+                      $s[] = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%'.$stime.'(year)%>" onchange="document.forms[0].act_future.checked=true;" />';
                       break;
                     case 'month' :
-                      $s[] = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mon)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
+                      $s[] = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mon)%>" onchange="document.forms[0].act_future.checked=true;" />';
                       break;
                     case 'day' :
-                      $s[] = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mday)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
+                      $s[] = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(mday)%>" onchange="document.forms[0].act_future.checked=true;" />';
                       break;
                     }
               if (isset($spa[$key]))
                   $s[] = $spa[$key];
             }
-            $s[] = '<input id="inputhour" name="hour" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(hours)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
+            $s[] = '<input id="inputhour" name="hour" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(hours)%>" onchange="document.forms[0].act_future.checked=true;" />';
             $key = 3;
             if (isset($spa[$key]))
                 $s[] = $spa[$key];
-            $s[] = '<input id="inputminutes" name="minutes" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(minutes)%>" onchange="document.forms[0].act_future.checked=true; checked_act_draft(false);" />';
+            $s[] = '<input id="inputminutes" name="minutes" tabindex="<%tabindex()%>" size="2" value="<%'.$stime.'(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />';
             $key = 4;
             if (isset($spa[$key]))
                 $s[] = $spa[$key];
             $s[] = '<br />'. hsc(_ITEM_ADDEDITTEMPLATE_FORMAT). hsc(_EDIT_DATE_FORMAT_DESC);
 
-            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true;  checked_act_draft(false); return edit_form_change_date_now();" />';
-            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = " checked_act_draft(false); return date_'.$stime.'_reset();" />';
+            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true;  return edit_form_change_date_now();" />';
+            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = " return date_'.$stime.'_reset();" />';
 
             $items[$stime] = &$s;
             unset($s);
@@ -217,78 +213,6 @@ class PAGEFACTORY extends BaseActions {
         $data = str_replace('<%date_time_picker%>',               $items['currenttime'], $data);
         $data = str_replace('<%date_time_picker(currenttime)%>',  $items['currenttime'], $data);
         $data = str_replace('<%date_time_picker(itemtime)%>',     $items['itemtime'],    $data);
-    }
-
-    private function replace_date_time_picker2(&$data)
-    {
-        $items = array();
-        $spa = explode(',', _ADD_PUBLIC_DATE_FORMAT_SEPARATOR);
-
-        foreach(array('itemtime','currenttime') as $stime)
-        foreach(array('start','end') as $section)
-        {
-            $s = array();
-            $sterm = 'public_term_'.$section;
-            if (!isset($items[$stime]))
-                $items[$stime] = array();
-            foreach(explode(',', _ADD_PUBLIC_DATE_FORMAT) as $key=>$value)
-            {
-                switch($value)
-                {
-                    case 'year' :
-                      $s[] = sprintf('<input id="inputyear_%s" name="year_%s" tabindex="<%%tabindex()%%>" size="4"', $sterm, $sterm)
-                            . sprintf('value="<%%publictime(%s,%s,year)%%>"', $section, $stime)
-                            . ' type="number" maxlength=4 min=2000 max=2099 style="ime-mode:disabled; width: 4.5em"'
-                            . sprintf(' onchange="document.forms[0].public_enable_term_%s.checked=true;" />', $section);
-                      break;
-                    case 'month' :
-                      $s[] = sprintf('<input id="inputmonth_%s" name="month_%s" tabindex="<%%tabindex()%%>" size="2"', $sterm, $sterm)
-                            . sprintf('value="<%%publictime(%s,%s,month)%%>"', $section, $stime)
-                            . ' type="number" maxlength=2 min=1 max=12 style="ime-mode:disabled; width: 3em; text-align: right;"'
-                            . sprintf(' onchange="document.forms[0].public_enable_term_%s.checked=true;" />', $section);
-                      break;
-                    case 'day' :
-                      $s[] = sprintf('<input id="inputday_%s" name="day_%s" tabindex="<%%tabindex()%%>" size="2"', $sterm, $sterm)
-                            . sprintf('value="<%%publictime(%s,%s,day)%%>"', $section, $stime)
-                            . ' type="number" maxlength=2 min=1 max=31 style="ime-mode:disabled; width: 3em"'
-                            . sprintf(' onchange="document.forms[0].public_enable_term_%s.checked=true;" />', $section);
-                      break;
-                    }
-              if (isset($spa[$key]))
-                  $s[] = $spa[$key];
-            }
-            $s[] = sprintf('<input id="inputhour_%s" name="hour_%s" tabindex="<%%tabindex()%%>" size="2"', $sterm, $sterm)
-                . sprintf('value="<%%publictime(%s,%s,hour)%%>"', $section, $stime)
-                            . ' type="number" maxlength=2 min=0 max=23 style="ime-mode:disabled; width: 3em"'
-                . sprintf(' onchange="document.forms[0].public_enable_term_%s.checked=true;" />', $section);
-            $key = 3;
-            if (isset($spa[$key]))
-                $s[] = $spa[$key];
-            $s[] = sprintf('<input id="inputminute_%s" name="minute_%s" tabindex="<%%tabindex()%%>" size="2"', $sterm, $sterm)
-                . sprintf('value="<%%publictime(%s,%s,minute)%%>"', $section, $stime)
-                            . ' type="number" maxlength=2 min=0 max=59 style="ime-mode:disabled; width: 3em"'
-                . sprintf(' onchange="document.forms[0].public_enable_term_%s.checked=true;" />', $section);
-            $key = 4;
-            if (isset($spa[$key]))
-                $s[] = $spa[$key];
-//			$s[] = '<div>'. hsc(_ITEM_ADDEDITTEMPLATE_FORMAT). hsc(_ADD_PUBLIC_DATE_FORMAT_DESC). '</div>';
-
-//			$s[] = '<input tabindex="<%%tabindex()%%>" type="button" value="'. _ADD_DATEINPUTNOW   .'" onclick = "document.forms[0].act_future.checked=true; return edit_form_change_date_now(); checked_act_draft(false);" />';
-//			$s[] = '<input tabindex="<%%tabindex()%%>" type="button" value="'. _ADD_DATEINPUTRESET .'" onclick = "return date_'.$stime.'_reset(); checked_act_draft(false);" />';
-
-            array_unshift($s, '<input type="button" value="..." onclick=\'show_public_date_time_picker("' . $section . '"); return 0;\'>');
-            array_unshift($s, '<input type="hidden" value="" id="hidden_public_date_time_picker_' . $section . '" class="hidden_public_date_time_picker">');
-
-            $items[$stime][$sterm] = implode("\n\t\t\t\t", $s);
-            unset($s);
-        }
-
-        $data = str_replace('<%public_date_time_picker1%>',               $items['currenttime']['public_term_start'],   $data);
-        $data = str_replace('<%public_date_time_picker1(currenttime)%>',  $items['currenttime']['public_term_start'], $data);
-        $data = str_replace('<%public_date_time_picker1(itemtime)%>',     $items['itemtime']['public_term_start'],    $data);
-        $data = str_replace('<%public_date_time_picker2%>',               $items['currenttime']['public_term_end'],   $data);
-        $data = str_replace('<%public_date_time_picker2(currenttime)%>',  $items['currenttime']['public_term_end'],   $data);
-        $data = str_replace('<%public_date_time_picker2(itemtime)%>',     $items['itemtime']['public_term_end'],      $data);
     }
 
     // create category dropdown box
@@ -366,41 +290,6 @@ class PAGEFACTORY extends BaseActions {
     function parse_itemtime($what) {
         $itemtime = getdate($this->variables['timestamp']);
         echo $itemtime[$what];
-    }
-
-    function parse_publictime($section, $stime, $what) {
-        switch (strtolower($what)) {
-            case 'year'   : $idx = 1; break;
-            case 'month'  : $idx = 2; break;
-            case 'day'    : $idx = 3; break;
-            case 'hour'   : $idx = 4; break;
-            case 'minute' : $idx = 5; break;
-            case 'second' : $idx = 6; break;
-            default : $idx = 0;
-        }
-        switch (strtolower($section)) {
-            case 'start' :
-                if ($this->method == 'edit')
-                    $s = $this->variables['public_term_start'];
-                else {
-                    $s = date('Y-m-d H:i:s', $this->blog->getCorrectTime());
-                }
-                break;
-            case 'end'   :
-                if ($this->method == 'edit')
-                    $s = $this->variables['public_term_end'];
-                else {
-                    $d = $this->blog->getCorrectTime();
-                    $s = sprintf("%04d-%02d-%02d %02d:%02d:00", date('Y')+1, 1, 1, 0, 0);
-                }
-                break;
-            default :
-                $s = date('Y-m-d H:i:s', $this->blog->getCorrectTime());
-        }
-//		echo $idx. $what;
-        if ( ($idx>0) && preg_match("#^(\d+)-(\d+)-(\d+)\s(\d+):(\d+):(\d+)#i", $s , $m))
-            echo $m[$idx];
-//		return '';
     }
 
     // some init stuff for all forms
