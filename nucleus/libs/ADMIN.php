@@ -5971,6 +5971,7 @@ selector();
         $tpl = ob_get_clean();
         $ph['baseUrl']    = hsc($CONF['AdminURL']);
         $ph['AdminCSS']   = $CONF['AdminCSS'];
+        $ph['AdminURL']   = $CONF['AdminURL'];
         $ph['_LANG_CODE'] = _LANG_CODE;
         $ph['_CHARSET']   = _CHARSET;
         $ph['extrahead']  = $extrahead;
