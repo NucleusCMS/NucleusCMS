@@ -66,14 +66,20 @@ if ($current < 300) {
     exit;
 }
 
+$isUpgraded = FALSE;
+
 if (version_compare(phpversion(),'5.0.0','<'))
     $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
 //elseif ($current > NUCLEUS_UPGRADE_VERSION_ID) {
 //    exit('your core is old.'); // error
 //}
-elseif ($current == NUCLEUS_UPGRADE_VERSION_ID)
+elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+    $isUpgraded = TRUE;
     $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
-else {
+    $messages[] = "<br />";
+    if (!defined('_ERRORS_UPGRADESDIR')) defined('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
+    $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET));
+} else {
     $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
     $messages[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , $tmp_title);
     $messages[] = '<div class="note">';
@@ -99,10 +105,11 @@ if (version_compare('5.0.0',phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSIO
     if (!empty($sth)) {
         $messages[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
         $messages[] = $sth;
-    } else {
+    } else if ($isUpgraded) {
         $messages[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
     }
 }
+$messages[] = sprintf("<p><a href=\"%s\">%s</a></p>", $CONF['AdminURL'], _BACKHOME);
 
 upgrade_head();
 echo join("\n",$messages);
