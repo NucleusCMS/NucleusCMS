@@ -168,7 +168,7 @@ if (!isset($member))
 			return _error(6,"No such item ($itemid)");
 		$blogid = getBlogIDFromItemID($itemid);
 
-		$old =& $manager->getItem($itemid,1,1,0);
+		$old =& $manager->getItem($itemid,1,1);
 
 		if ($category == '')
 		{
@@ -454,7 +454,7 @@ if (!isset($member))
 			return _error(3,"Not a team member");
 
 		// 3. return the item
-		$item =& $manager->getItem($itemid,1,1,0); // (also allow drafts and future items)
+		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
 
 		$b = new BLOG($blogid);
 		if ($b->convertBreaks()) {

@@ -49,8 +49,6 @@ class BLOG {
         // (the parse functions in SKIN.php will override this, so it's mainly useless)
         global $catid;
         $this->setSelectedCategory($catid);
-
-        $this->updateDatabaseItemStatus();  // update item.istatus
     }
 
     /**
@@ -95,7 +93,6 @@ class BLOG {
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
                      . ' and i.itime<' . mysqldate($timestamp_end);
 
-        ITEM::addShowQueryFilterForPublicFeature($extra_query);
 
         $this->readLogAmount($templatename,0,$extra_query,'',1,1);
 
@@ -284,7 +281,7 @@ class BLOG {
     /**
       * Adds an item to this blog
       */
-    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1', $options=array()) {
+    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted='1') {
         global $manager;
 
         $blogid     = intval($blogid);
@@ -294,10 +291,6 @@ class BLOG {
         $more       = $more;
         $catid      = intval($catid);
         $isFuture = 0;
-        $otherCols= ((isset($options['otherCols']) && is_array($options['otherCols'])) ? $options['otherCols'] : array());
-
-        $extraNames  = '';
-        $extraValues = '';
 
         // convert newlines to <br />
         if ($this->convertBreaks()) {
@@ -316,21 +309,6 @@ class BLOG {
 
         $timestamp = date('Y-m-d H:i:s',$timestamp);
 
-        if (!empty($otherCols) && ITEM::existCol_istatus()) {
-            foreach(array('ipublic_enable_term_start', 'ipublic_enable_term_end') as $key) {
-                if (isset($otherCols[$key])) {
-                    $extraNames  .= ", " . $key;
-                    $extraValues .= sprintf(', %d', (0!=intval($otherCols[$key]) ? 1 : 0));
-                }
-            }
-            foreach(array('istatus','ipublic_term_start', 'ipublic_term_end') as $key) {
-                if (isset($otherCols[$key])) {
-                    $extraNames  .= ", " . $key;
-                    $extraValues .= sprintf(', %s', sql_quote_string($otherCols[$key]));
-                }
-            }
-        }
-
         $param = array(
         'title'        => &$title,
         'body'        => &$body,
@@ -348,13 +326,10 @@ class BLOG {
         $ibody = sql_real_escape_string($body);
         $imore = sql_real_escape_string($more);
 
-        $query = 'INSERT INTO '.sql_table('item')
-               . ' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED' . $extraNames . ') '
-               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted"
-                        . "${extraValues})";
+        $query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
+               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
         sql_query($query);
         $itemid = sql_insert_id();
-        // todo: error itemid = 0
 
         $param = array('itemid' => $itemid);
         $manager->notify('PostAddItem', $param);
@@ -597,8 +572,6 @@ class BLOG {
             $query .= ' and i.itime>' . mysqldate($timestamp_start);
         }
 
-        ITEM::addShowQueryFilterForPublicFeature($query);
-
         if ($mode == '')
         {
             if ($select)
@@ -638,7 +611,6 @@ class BLOG {
         if ($this->getSelectedCategory())
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
 
-        ITEM::addShowQueryFilterForPublicFeature($query);
 
         $query .= $extraQuery;
 
@@ -710,8 +682,6 @@ class BLOG {
 
         if ($catid)
             $query .= ' AND icat=' . intval($catid);
-
-        ITEM::addShowQueryFilterForPublicFeature($query_where);
 
         $query .= ' GROUP BY Year';
         if ($mode == 'month' || $mode == 'day')
@@ -1443,9 +1413,8 @@ class BLOG {
         if ($this->settings['bfuturepost'] == 1) {
             $blogid = $this->getID();
             $sql = "SELECT count(*) AS result FROM " . sql_table('item')
-                      . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()";
-             ITEM::addShowQueryFilterForPublicFeature($sql);
-             $sql .= ' LIMIT 1';
+                      . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()"
+                      . ' LIMIT 1';
             if (intval(quickQuery($sql)) > 0) {
                 // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
                 // Note that the plugins's calling order is subject to thri order in the plugin list
@@ -1552,7 +1521,6 @@ class BLOG {
             
             if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts
             if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
-            ITEM::addShowQueryFilterForPublicFeature($query);
 
             //$query .= ' and i.inumber IN ('.$itemlist.')';
             $query .= ' and i.inumber='.intval($value);
@@ -1582,28 +1550,6 @@ class BLOG {
             $res = sql_query($sql);
             return $res !== FALSE;
         }
-    }
-
-    public function updateDatabaseItemStatus() {
-        if (!ITEM::existCol_istatus())
-                return ;
-        // todo: old plugin
-
-        // not implemented yet
-        $blog_current_time = $this->getCorrectTime();
-        $common_normal_filter    = "idraft=0 AND istatus in ('published','future')";
-        $common_future_filter    = "idraft=0 AND istatus ='future'";
-        // update: future
-        $filter = $common_future_filter
-                . ' AND itime <= ' . sqldate($blog_current_time)
-                . ' AND (ipublic_enable_term_start=0 '
-                . '      OR (ipublic_enable_term_start=1 AND ipublic_term_start <= ' . sqldate($blog_current_time) . ")"
-                . '     )'
-                . ' AND (ipublic_enable_term_end=0 '
-                . '      OR (ipublic_enable_term_end=1 AND ipublic_term_end > ' . sqldate($blog_current_time) . ")"
-                . '     )';
-        $query = sprintf("UPDATE `%s` SET istatus='published', iposted=1 WHERE %s", sql_table('item'), $filter);
-        sql_query($query);
     }
 
 }

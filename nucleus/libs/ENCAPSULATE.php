@@ -203,9 +203,8 @@ class NAVLIST extends ENCAPSULATE {
     {
         $list = array('all'
             ,'normal'
-            ,'normal_term_only','normal_term_future','normal_term_expired','non_draft_term_expired'
-            , 'invalid_term'
-            ,'unpublished','draft');
+            ,'normal_term_future'
+            ,'draft');
         foreach($list as $key)
             if ($key == $name)
                 return $key;
@@ -217,17 +216,8 @@ class NAVLIST extends ENCAPSULATE {
         global $CONF;
         $list = array('all'
             ,'normal'
-            ,'normal_term_only','normal_term_future','normal_term_expired','non_draft_term_expired'
-            , 'invalid_term'
-            ,'unpublished','draft');
-        if (!ITEM::existCol_istatus()) {
-            $list = array('all','normal','draft');
-        }
-        if ($CONF['debug']) {
-//            $list = array_mearray_merge(array(
-//                'normal_'
-//                ));
-        }
+            ,'normal_term_future'
+            ,'draft');
         if (!in_array($in_value, $list))
             $in_value = 'all';
 
@@ -239,14 +229,14 @@ class NAVLIST extends ENCAPSULATE {
             $count_cached[$cachekey] = array();
             foreach($list as $key) {
                 if ($action == 'browseownitems') {
-                     $sql = sprintf("SELECT count(*) FROM `%s` as i ", sql_table('item'))
+                     $sql = sprintf("SELECT count(*) as result FROM `%s` as i ", sql_table('item'))
                           . sprintf(" LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ", sql_table('member'))
                           . sprintf(" LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_table('team'))
                           . sprintf(" WHERE i.iauthor=%d ", $member->getID())
                           . ($selected_catid>0 ? sprintf(' AND i.icat=%d',$selected_catid) : '');
                 } else {
                     // show one blog
-                     $sql = sprintf("SELECT count(*) FROM `%s` as i ", sql_table('item'))
+                     $sql = sprintf("SELECT count(*) as result FROM `%s` as i ", sql_table('item'))
                           . sprintf(" LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ", sql_table('member'))
                           . sprintf(" LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_table('team'))
                           . ' WHERE '
@@ -273,7 +263,6 @@ class NAVLIST extends ENCAPSULATE {
         $s .= "\t\t</select>\n";
         return $s;
     }
-
 
     protected function getFormSelectCategoryBlog($action, $blogid, $selected_catid = 0 , $input_name = 'catid', $extraQuery='')
     {

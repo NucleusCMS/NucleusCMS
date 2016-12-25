@@ -273,7 +273,7 @@ if (!isset($member))
 		if (!$mem->canAlterItem($itemid))
 			return _error(7,"Not allowed to alter item");
 
-		$old =& $manager->getItem($itemid,1,1,0);
+		$old =& $manager->getItem($itemid,1,1);
 
 		$catid = $blog->getCategoryIdFromName($category);
 
@@ -307,7 +307,7 @@ if (!isset($member))
 		if (!$mem->canAlterItem($itemid))
 			return _error(7, 'You are not allowed to request this information');
 
-		$info =& $manager->getItem($itemid,1,1,0);
+		$info =& $manager->getItem($itemid,1,1);
 		$catName = $blog->getCategoryName($info['catid']);
 
 		$struct = new xmlrpcval(
@@ -331,7 +331,7 @@ if (!isset($member))
 		// get item data
 		$blogid = getBlogIDFromItemID($itemid);
 		$blog = new BLOG($blogid);
-		$old =& $manager->getItem($itemid,1,1,0);
+		$old =& $manager->getItem($itemid,1,1);
 
 		return _edititem($itemid, $username, $password, $old['catid'], $old['title'], $old['body'], $old['more'], $old['draft'], 1, $old['closed']);
 	}

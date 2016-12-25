@@ -6,27 +6,15 @@
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.all.css" />
-		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.datepicker.css" />
-<%iftext(_LOCALE,ja_JP)%>
-		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.datepicker-ja.css" />
-<%endif%>
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/edit_date.js"></script>
-		<script type="text/javascript" src="javascript/edit_public_date.js"></script>
-		<script type="text/javascript" src="javascript/edit_others.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/jquery/jquery-migrate.min.js"></script>
 		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
-		<script type="text/javascript" src="javascript/jquery/ui/datepicker.min.js"></script>
-<%iftext(_LOCALE,ja_JP)%>
-		<script type="text/javascript" src="javascript/jquery/ui/i18n/datepicker-ja.js"></script>
-		<script type="text/javascript" src="javascript/jquery/ui/i18n/datepicker-ja-holiday.js"></script>
-<%endif%>
-
 		<%init%>
 		<%extrahead%>
 		<script type="text/javascript">
@@ -110,27 +98,6 @@
 				</div>
 				<div id="options" class="contentblock">
 					<table summary="item options">
-						<tr>
-							<td><%text(_ADD_PUBLIC)%></td>
-							<td>
-<%iftext(_ENABLE_ITEM_STATUS_FEATURE,1)%>
-								<input name="act_status" type="radio" id="status_published"   value="published" checked='checked' tabindex="<%tabindex(0)%>" onclick="checked_act_draft(false, this);" /><label for="status_published"><%text(_ADD_PUBLIC)%></label>
-								<input name="act_status" type="radio" id="status_unpublished" value="unpublished" tabindex="<%tabindex()%>" onclick="checked_act_draft(false, this);" /><label for="status_unpublished"><%text(_ADD_UNPUBLIC)%></label>
-								<input name="act_status" type="radio" id="status_draft" value="draft" tabindex="<%tabindex()%>" onclick="checked_act_draft(true, this);" /><label for="status_draft"><%text(_ADD_DRAFT)%></label>
-								<div style="padding-top: 6px"><%text(_ADD_PUBLIC_TERM)%>
-									<div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1" tabindex="<%tabindex()%>" />
-														<label for="public_enable_term_start"><%text(_ADD_PUBLIC_TERM_START)%></label> : <%public_date_time_picker1%></div>
-									<div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1" tabindex="<%tabindex()%>" />
-														<label for="public_enable_term_end"><%text(_ADD_PUBLIC_TERM_END)%></label> : <%public_date_time_picker2%></div>
-									<div class="indent"><%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%><%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%></div>
-									<div class="indent"><%text(_ADD_PUBLIC_TERM_DESC)%></div>
-								</div>
-<%else%>
-								<div class="note"><%text(_FEATURE_WARN_UPGRADE_DESC)%></div>
-								<input name="not_available_istatus" type="hidden" value="1" />
-<%endif%>
-							</td>
-						</tr>
 						<%ifblogsetting(bcomments)%><tr>
 							<td style="width:20%"><%text(_ADD_DISABLE_COMMENTS)%></td>
 							<td>
@@ -142,8 +109,8 @@
 							<td style="width:20%"><%text(_ADD_DRAFTNFUTURE)%></td>
 							<td>
 								<ul class="nobullets">
-									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="60" onclick="checked_act_draft(false, this);" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
-									<li><input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="60" onclick="checked_act_draft(false, this);" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%></li>
+									<li><input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="60" /><label for="act_now"><%text(_ADD_ADDNOW)%></label></li>
+									<li><input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="60" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%></li>
 									<li>
 										<div class="indent">
 											<%text(_ADD_PLACE_ON)%>
@@ -152,7 +119,7 @@
 										</div>
 									</li>
 									<li>
-										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60" onclick="checked_act_draft(true, this);" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 									</li>
 									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li -->
 								</ul>
