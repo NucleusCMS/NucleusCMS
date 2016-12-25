@@ -46,7 +46,7 @@ function getNucleusVersion() {
  * be tested without having to install CVS.
  */
 function getNucleusPatchLevel() {
-    return 0;
+    return NUCLEUS_PATCH_LEVEL;
 }
 
 /**
