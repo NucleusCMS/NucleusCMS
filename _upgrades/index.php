@@ -16,6 +16,14 @@
 
 define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
 
+$path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
+$path = $path[0];
+if (preg_match('#/_?upgrades$#', $path))
+{
+    header("Location: " . $path . "/");
+    exit;
+}
+
 include('upgrade.functions.php');
 
 load_upgrade_lang();
@@ -29,12 +37,12 @@ if (!$member->isAdmin()) {
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
-$echo = array();
-$echo[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
-$echo[] = '<div class="note"><b>Note:</b> ';
-$echo[] = _UPG_TEXT_NOTE01NEW;
-$echo[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
-$echo[] = '</div>';
+$messages = array();
+$messages[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
+$messages[] = '<div class="note"><b>Note:</b> ';
+$messages[] = _UPG_TEXT_NOTE01NEW;
+$messages[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
+$messages[] = '</div>';
 
 // calculate current version
     if (!upgrade_checkinstall(300)) $current = 250;
@@ -58,19 +66,25 @@ if ($current < 300) {
     exit;
 }
 
+$isUpgraded = FALSE;
+
 if (version_compare(phpversion(),'5.0.0','<'))
-    $echo[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
+    $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
 //elseif ($current > NUCLEUS_UPGRADE_VERSION_ID) {
 //    exit('your core is old.'); // error
 //}
-elseif ($current == NUCLEUS_UPGRADE_VERSION_ID)
-    $echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
-else {
+elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+    $isUpgraded = TRUE;
+    $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
+    $messages[] = "<br />";
+    if (!defined('_ERRORS_UPGRADESDIR')) defined('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
+    $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET));
+} else {
     $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
-    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , $tmp_title);
-    $echo[] = '<div class="note">';
-    $echo[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
-    $echo[] = '</div>';
+    $messages[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , $tmp_title);
+    $messages[] = '<div class="note">';
+    $messages[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+    $messages[] = '</div>';
 }
 
 $from = intGetVar('from');
@@ -86,18 +100,19 @@ if (version_compare('5.0.0',phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSIO
     if($from < 350) $sth[] = upgrade_manual_350();
     if($from < 366) $sth[] = upgrade_manual_366();
     
-    $echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
+    $messages[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
     $sth = trim(join('',$sth));
     if (!empty($sth)) {
-        $echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
-        $echo[] = $sth;
-    } else {
-        $echo[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
+        $messages[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
+        $messages[] = $sth;
+    } else if ($isUpgraded) {
+        $messages[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
     }
 }
+$messages[] = sprintf("<p><a href=\"%s\">%s</a></p>", $CONF['AdminURL'], _BACKHOME);
 
 upgrade_head();
-echo join("\n",$echo);
+echo join("\n",$messages);
 upgrade_foot();
 
 function upgrade_todo($ver) {
@@ -109,13 +124,13 @@ function upgrade_manual_atom1_0() {
     $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
     $res = sql_query($query);
     
-    $echo = array();
+    $messages = array();
     while ($o = sql_fetch_object($res)) {
         if ($o->sddesc=='Atom 0.3 weblog syndication') {
-            $echo[] = '<h2>Atom 1.0</h2>';
-            $echo[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
-            $echo[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
-            $echo[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
+            $messages[] = '<h2>Atom 1.0</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
         }
     }
 
@@ -129,13 +144,13 @@ function upgrade_manual_atom1_0() {
         $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
         $res = sql_query($query);
         if (!sql_fetch_object($res)) {
-            $echo[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
-            $echo[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
-            $echo[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
-            $echo[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
+            $messages[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
         }
     }
-    return !empty($echo) ? join("\n",$echo) : '';
+    return !empty($messages) ? join("\n",$messages) : '';
 }
 
 function upgrade_manual_340() {
