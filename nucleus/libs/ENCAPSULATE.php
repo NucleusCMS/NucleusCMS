@@ -100,7 +100,9 @@ class NAVLIST extends ENCAPSULATE {
         $enable_cat_select = in_array($action , array('itemlist' , 'browseownitems'));
         if ($enable_cat_select)
            $catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+
         $view_item_options = isset($_POST['view_item_options']) ? postVar('view_item_options') : 'all';
+        $view_item_options = self::getValidViewItemOption($view_item_options);
 
         $minamount = $this->minamount;
         $maxamount = $this->maxamount;
@@ -262,6 +264,18 @@ EOD;
 <?php } /* end if */ ?>
 </table>
     <?php    }
+
+    static function getValidViewItemOption($name, $default='all')
+    {
+        $list = array('all'
+            ,'normal'
+            ,'normal_term_future'
+            ,'draft');
+        foreach ( $list as $key )
+          if ($key == $name)
+            return $key;
+        return $default;
+    }
 
     protected function getFormSelectViewItemOptions($action, $blogid, $selected_catid = 0, $in_value='all', $input_name = 'view_item_options')
     {
