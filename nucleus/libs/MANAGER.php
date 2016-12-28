@@ -87,7 +87,7 @@ class MANAGER
       * first be loaded and then placed in the cache.
       * Intended use: $item =& $manager->getItem(1234)
       */
-    function &getItem($itemid, $allowdraft, $allowfuture, $allowtermfeature=1)
+    function &getItem($itemid, $allowdraft, $allowfuture)
     {
         $item =& $this->items[$itemid];
 
@@ -106,7 +106,7 @@ class MANAGER
             // load class if needed
             $this->loadClass('ITEM');
             // load item object
-            $item = ITEM::getitem($itemid, $allowdraft, $allowfuture, $allowtermfeature);
+            $item = ITEM::getitem($itemid, $allowdraft, $allowfuture);
             $this->items[$itemid] = $item;
         }
         return $item;
@@ -703,13 +703,6 @@ class MANAGER
             $this->currentRequestTicket = $ticket;
         }
         return $this->currentRequestTicket;
-    }
-
-    public function updateDatabaseItemStatus() {
-        // Nucleus datetime is not utc,  blog setting has time diff
-        if (!ITEM::existCol_istatus())
-                return ;
-        // not implemented yet
     }
 
 }

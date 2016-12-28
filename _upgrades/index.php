@@ -16,6 +16,14 @@
 
 define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
 
+$path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
+$path = $path[0];
+if (preg_match('#/_?upgrades$#', $path))
+{
+    header("Location: " . $path . "/");
+    exit;
+}
+
 include('upgrade.functions.php');
 
 load_upgrade_lang();

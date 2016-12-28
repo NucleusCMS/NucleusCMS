@@ -335,7 +335,7 @@ class MEMBER {
 
 
         // get item
-        $item =& $manager->getItem($itemid,1,1,0);
+        $item =& $manager->getItem($itemid,1,1);
 
         // old catid = new catid -> OK
         if ($item['catid'] == $newcat) return 1;

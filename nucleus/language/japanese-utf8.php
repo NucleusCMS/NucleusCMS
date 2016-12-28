@@ -48,30 +48,12 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開中');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_ONLY',    '一般公開中(期限付きのみ)');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  '一般公開-開始前');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_EXPIRED', '一般公開-期限切れ');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_EXPIRED',  '期限切れ(下書きでない)');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_INVALID_TERM',        '無効な期間指定');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',              '公開');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLISHED',           '公開中');
-define('_LISTS_FORM_SELECT_ITEM_OPTION_UNPUBLISHED',         '非公開');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',               '下書き');
 
-define('_ADD_DRAFT',              'ドラフト(下書き)');
-define('_ADD_PUBLIC',             '公開');
-define('_ADD_UNPUBLIC',           '非公開');
-define('_ADD_PUBLIC_TERM',        '公開期限の設定');
-define('_ADD_PUBLIC_TERM_DESC',   '期限を有効にするにはチェックをつけてください。どちらもチェックがない場合は、期限なしとなります');
-define('_ADD_PUBLIC_TERM_START',  '公開開始日時');
-define('_ADD_PUBLIC_TERM_END',    '公開終了日時');
-define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
-define('_ADD_PUBLIC_DATE_FORMAT',           'year,month,day');
-define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '年,月,日,時,分');
 define('_EDIT_DATE_FORMAT',                 'year,month,day');
 define('_EDIT_DATE_FORMAT_SEPARATOR',       '年,月,日,時,分');
 define('_EDIT_DATE_FORMAT_DESC',            '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
-define('_FEATURE_WARN_UPGRADE_DESC',        'この機能を利用するにはデータベースのアップグレードが必要です');
 
 define('_MEMBERS_PASSWORD_INFO',				'(パスワードは6文字以上必要です)');
 

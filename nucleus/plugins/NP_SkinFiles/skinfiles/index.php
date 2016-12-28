@@ -23,7 +23,9 @@
  * ==========================================================================================
  */
 	$DIR_LIBS = '';
- 	$strRel = '../../../'; 
+ 	$strRel = '../../../';
+	if (!is_file($strRel . 'config.php'))
+		$strRel .= '../';
 	require($strRel . 'config.php');
 	include_libs('PLUGINADMIN.php');
 
@@ -209,7 +211,7 @@
 		global $pluginUrl;
 		
 		$result  = '<a href="' . hsc($pluginUrl) . '" title="Go back to &laquo;skins&raquo;">';
-		$result .= '<img src="' . hsc($pluginUrl . 'home.gif') . '" alt="" /> skins</a> / ';
+		$result .= '<img src="' . hsc($pluginUrl . 'images/home.gif') . '" alt="" /> skins</a> / ';
 
 		$parts = explode('/', $relative);
 		$part = '';
@@ -220,7 +222,7 @@
 				
 				$result .= '<a href="' . hsc($pluginUrl . '?dir=' . rawurlencode($part)) . '" ';
 				$result .= 'title="Go back to &laquo;' . hsc($v) . '&raquo;">';
-				$result .= '<img src="' . hsc($pluginUrl . 'dir.gif') . '" alt="" /> ';
+				$result .= '<img src="' . hsc($pluginUrl . 'images/dir.gif') . '" alt="" /> ';
 				$result .= hsc($v) . '</a> / ';
 			}
 		}
@@ -237,14 +239,14 @@
 		switch ($ext) {
 			case 'htm':
 			case 'html':
-				return $pluginUrl . 'html.gif';
+				return $pluginUrl . 'images/html.gif';
 				break;
 
 			case 'txt':
 			case 'js':
 			case 'css':
 			case 'inc':
-				return $pluginUrl . 'text.gif';
+				return $pluginUrl . 'images/text.gif';
 				break;
 
 			case 'gif':
@@ -254,17 +256,17 @@
 			case 'bmp':
 			case 'xbmp':
 			case 'ico':
-				return $pluginUrl . 'image.gif';
+				return $pluginUrl . 'images/image.gif';
 				break;
 
 			case 'php':
 			case 'php3':
 			case 'php4':
-				return $pluginUrl . 'php.gif';
+				return $pluginUrl . 'images/php.gif';
 				break;
 				
 			default:
-				return $pluginUrl . 'generic.gif';
+				return $pluginUrl . 'images/generic.gif';
 				break;
 		}
 	}
@@ -350,12 +352,12 @@
 			if (is_readable ($directory . $name)) 
 			{
 				echo '<a href="' . hsc($pluginUrl . '?dir=' . rawurlencode($dir)) . '">';
-				echo '<img src="' . hsc($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
+				echo '<img src="' . hsc($pluginUrl . 'images/dir.gif') . '" alt="folder" /> ';
 				echo hsc($name).'</a>';			
 			}
 			else
 			{
-				echo '<img src="' . hsc($pluginUrl . 'dir.gif') . '" alt="folder" /> ';
+				echo '<img src="' . hsc($pluginUrl . 'images/dir.gif') . '" alt="folder" /> ';
 				echo hsc($name);			
 			}
 						
@@ -526,7 +528,7 @@
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
 			echo '<a href="' . hsc($editUrl) . '" title="' . _SKINFILES_RENAME . ' &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
+			echo '<img src="' . $pluginUrl . 'images/dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
 			echo '<form method="post" action="' . hsc($pluginUrl) . '">';
@@ -694,7 +696,7 @@
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
 			echo '<a href="' . hsc($delUrl) . '" title="' . _SKINFILES_DELETE . ' &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
+			echo '<img src="' . $pluginUrl . 'images/dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
 			echo '<form method="post" action="' . hsc($pluginUrl) . '">';
@@ -800,7 +802,7 @@
 
 			echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative);
 			echo '<a href="' . hsc($emptyUrl) . '" title="Empty &laquo;' . $file . '&raquo;">';
-			echo '<img src="' . $pluginUrl . 'dir.gif' . '" alt="" /> ' . $file . '</a></p>';
+			echo '<img src="' . $pluginUrl . 'images/dir.gif' . '" alt="" /> ' . $file . '</a></p>';
 
 			echo '<div class="dialogbox">';
 			echo '<form method="post" action="' . hsc($pluginUrl) . '">';
