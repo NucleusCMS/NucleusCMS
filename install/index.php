@@ -300,10 +300,11 @@ function showInstallForm() {
 		--></script>
 	</head>
 	<body>
-		<div style="text-align:center; font-size: xx-large"><img src="../nucleus/styles/logo.gif" alt="Nucleus CMS" /><br />
+		<div style="text-align:center; font-size: xx-large;margin-bottom:1em;"><img src="../nucleus/styles/logo.gif" alt="Nucleus CMS" /><br />
             <?php echo sprintf('%s %s', htmlspecialchars(_INSTALL_TEXT_VERSION,ENT_QUOTES,'UTF-8') , NUCLEUS_VERSION); ?>
         </div> <!-- Nucleus logo -->
 
+        <div class="wrap">
         <h1><?php echo sprintf('%s', htmlspecialchars(_HEADER1,ENT_QUOTES,'UTF-8')); ?></h1>
 
 		<?php echo _TEXT1; ?>
@@ -696,6 +697,7 @@ function showInstallForm() {
   var submitcount = 0;
 //-->
 </script>
+    </div>
 	</body>
 </html>
 

@@ -1,15 +1,19 @@
 @charset 'UTF-8';
 
 body {
-	background: #fff url(background.png) repeat-x;
+	background: linear-gradient(#f0f0f0, #ffffff);
 	padding-top: 13px;
 	color: #555;
-	/*font-family: verdana, arial;*/
-/*	font-family: "Hiragino Kaku Gothic Pro W3", "Meiryo", "MS PGothic", "Osaka", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif; */
-	font-family: Meiryo, "Hiragino Kaku Gothic Pro", "Osaka", "MS PGothic", "IPA UIGothic", "IPA mona UIGothic", "VL PGothic", "Sazanami Gothic", "DynaLab-dfghsgothic w5-jisx0208.1990-0", "DynaLab-dfggothic w5-iso8859-1", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
-	font-size: small;
+	font-family: Meiryo, "Hiragino Kaku Gothic Pro", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
 }
 
+div.wrap {
+    background-color:#fff;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:2em;
+    margin-bottom:2em;
+}
 input,text,select {font:inherit;}
 
 @media screen {
@@ -54,12 +58,6 @@ a: hover {
 	font-size: small;
 	font-style: normal;
 	font-weight: normal;
-}
-
-
-p {
-	text-indent: 10px;
-	margin-left:20px;
 }
 
 h1 {
