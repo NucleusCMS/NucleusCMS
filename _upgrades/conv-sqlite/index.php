@@ -106,7 +106,7 @@ class ConvertInstaller
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
-    <link rel="stylesheet" href="../styles/manual.css" type="text/css" />
+    <link rel="stylesheet" href="../nucleus/styles/manual.css" type="text/css" />
   </head>
   <body>
 <?php
