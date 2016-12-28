@@ -59,7 +59,7 @@
 				<ul>
 					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%></a></li>
 					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%></a></li>
-					<li><a href="#options" tabindex="320"><%text(_BMLET_OPTIONS)%></a></li>
+					<li><a href="#tab_options" tabindex="320"><%text(_BMLET_OPTIONS)%></a></li>
 					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%></a></li>
 				</ul>
 				<input name="action" type="hidden" value="additem" />
@@ -73,15 +73,15 @@
 							<td><input <%jsinput(title)%> type="text" size="60" maxlength="160" value="<%contents(title)%>" tabindex="10" /></td>
 						</tr>
 						<tr>
+							<td><%text(_ADD_CATEGORY)%></td>
+							<td><%categories(30)%></td>
+						</tr>
+						<tr>
 							<td><%text(_ADD_BODY)%> <%helplink(additem)%></td>
 							<td>
 								<%jsbuttonbar(media)%>
 								<textarea <%jsinput(body)%> cols="60" rows="20" tabindex="20"><%contents(body)%></textarea>
 							</td>
-						</tr>
-						<tr>
-							<td><%text(_ADD_CATEGORY)%></td>
-							<td><%categories(30)%></td>
 						</tr>
 					</table>
 				</div>
@@ -96,7 +96,7 @@
 						</tr>
 					</table>
 				</div>
-				<div id="options" class="contentblock">
+				<div id="tab_options" class="contentblock">
 					<table summary="item options">
 						<%ifblogsetting(bcomments)%><tr>
 							<td style="width:20%"><%text(_ADD_DISABLE_COMMENTS)%></td>
