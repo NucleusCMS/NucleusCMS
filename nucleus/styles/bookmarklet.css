@@ -63,10 +63,7 @@ h1 {
 	/*font-size: x-small;*/
 }
 
-#options {
-   margin-top:-15px;
-   }
-#options h2 {
+#tab_options h2 {
    margin:15px 0 0 0;
 }
 

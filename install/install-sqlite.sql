@@ -217,12 +217,7 @@ CREATE TABLE IF NOT EXISTS `nucleus_item` (
   `ikarmapos` int(11)      NOT NULL default '0',
   `icat`      int(11)               default NULL,
   `ikarmaneg` int(11)      NOT NULL default '0',
-  `iposted`   tinyint(2)   NOT NULL default '1',
-  `istatus`   varchar(255) NOT NULL default 'published',
-  `ipublic_enable_term_start`  tinyint(2)   NOT NULL default '0',
-  `ipublic_enable_term_end`    tinyint(2)   NOT NULL default '0',
-  `ipublic_term_start`   datetime     NOT NULL default '2000-01-01 00:00:00',
-  `ipublic_term_end`     datetime     NOT NULL default '2099-01-01 00:00:00'
+  `iposted`   tinyint(2)   NOT NULL default '1'
 /* ,  FULLTEXT KEY `ibody` (`ibody`, `ititle`, `imore`) */
 );
 
@@ -260,11 +255,6 @@ CREATE INDEX IF NOT EXISTS `nucleus_item_idx_idraft` on `nucleus_item` (`idraft`
 CREATE INDEX IF NOT EXISTS `nucleus_item_idx_icat` on `nucleus_item` (`icat`);
 /* warning : overflow index size */
   CREATE INDEX IF NOT EXISTS `nucleus_item_idx_ibody` on `nucleus_item` (`ibody`, `ititle`, `imore`);
-CREATE INDEX IF NOT EXISTS `nucleus_item_idx_istatus` on `nucleus_item` (`istatus`);
-CREATE INDEX IF NOT EXISTS `nucleus_item_idx_ipublic_enable_term_start` on `nucleus_item` (`ipublic_enable_term_start`);
-CREATE INDEX IF NOT EXISTS `nucleus_item_idx_ipublic_enable_term_end` on `nucleus_item` (`ipublic_enable_term_end`);
-CREATE INDEX IF NOT EXISTS `nucleus_item_idx_ipublic_term_start` on `nucleus_item` (`ipublic_term_start`);
-CREATE INDEX IF NOT EXISTS `nucleus_item_idx_ipublic_term_end` on `nucleus_item` (`ipublic_term_end`);
 
 
 CREATE TABLE IF NOT EXISTS `nucleus_karma` (

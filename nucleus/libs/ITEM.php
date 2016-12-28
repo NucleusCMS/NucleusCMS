@@ -37,7 +37,7 @@ class ITEM {
       * @param boolean $allowfuture
       * @static
       */
-    public static function getitem($itemid, $allowdraft, $allowfuture, $allowtermfeature) {
+    public static function getitem($itemid, $allowdraft, $allowfuture) {
         global $manager;
 
         $itemid = intval($itemid);
@@ -45,21 +45,8 @@ class ITEM {
         $query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
                . ' i.ititle as title, i.ibody as body, m.mname as author, '
                . ' i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, '
-               . ' i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid, ';
-        if (self::existCol_istatus()) {
-            $query .= " CASE i.idraft WHEN 1 THEN 'draft' ELSE i.istatus END AS status,"
-               . ' i.ipublic_enable_term_start as public_enable_term_start,'
-               . ' i.ipublic_enable_term_end   as public_enable_term_end,'
-               . ' i.ipublic_term_start as public_term_start,'
-               . ' i.ipublic_term_end   as public_term_end';
-        } else { // needs upgrade database
-            $query .= " CASE i.idraft WHEN 1 THEN 'draft' ELSE 'published' END AS status, "
-               . ' 0 as public_enable_term_start,'
-               . ' 0 as public_enable_term_end,'
-               . " '2000-01-01 00:00:00' as public_term_start,"
-               . " '2099-01-01 00:00:00' as public_term_end";
-        }
-        $query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, ' . sql_table('blog') . ' as b '
+               . ' i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid '
+               . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, ' . sql_table('blog') . ' as b '
                . ' WHERE i.inumber=' . $itemid
                . ' and i.iauthor=m.mnumber '
                . ' and i.iblog=b.bnumber';
@@ -70,9 +57,6 @@ class ITEM {
         if (!$allowfuture) {
             $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
-        }
-        if ($allowtermfeature) {
-            ITEM::addShowQueryFilterForPublicFeature($query);
         }
 
         $query .= ' LIMIT 1';
@@ -101,9 +85,6 @@ class ITEM {
     public static function createFromRequest() {
          global $member, $manager;
 
-         $new_options = array('otherCols' => array());
-         $otherCols =& $new_options['otherCols'];
-
          $i_author =         $member->getID();
          $i_body =             postVar('body');
          $i_title =            postVar('title');
@@ -119,12 +100,6 @@ class ITEM {
          $i_catid =         postVar('catid');
 
          $i_draftid =         intPostVar('draftid');
-
-        $i_status = ITEM::convertValidStatusText(postVar('act_status'), 'published');
-        if ($i_status=='draft' || $i_actiontype == 'adddraft') {
-            $i_actiontype = 'adddraft';
-            $i_status     = 'draft';
-        }
 
          if (!$member->canAddItem($i_catid))
             return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
@@ -181,35 +156,7 @@ class ITEM {
             $posted = 1;
         }
 
-
-        if (intPostVar('not_available_istatus') != 1 && ITEM::existCol_istatus()) {
-            $otherCols['istatus'] = $i_status;
-            $otherCols['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
-            $otherCols['ipublic_enable_term_end']   = (intPostVar('public_enable_term_end') ? 1 : 0);
-            foreach (array('start', 'end') as $section)
-            {
-                /*
-                 *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
-                 *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
-                 */
-                $y = min(9999,max(0, intPostVar('year_public_term_' . $section)));
-                $mo = min(99,max(0, intPostVar('month_public_term_' . $section)));
-                $d = min(99,max(0, intPostVar('day_public_term_' . $section)));
-                $h = min(99,max(0, intPostVar('hour_public_term_' . $section)));
-                $mi = min(99,max(0, intPostVar('minute_public_term_' . $section)));
-                if ($y < 2000)
-                    { $y = 2000; $mo = $d = 1; $h = $mi = 0; }
-                $otherCols['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
-                if ( $section == 'start'
-                     && $otherCols['istatus']=='published'
-                     && strcmp($otherCols['ipublic_term_' . $section], sql_timestamp_from_utime($blog->getCorrectTime())) > 0)
-                {
-                    $otherCols['istatus'] = 'future';
-                }
-            }
-        }
-
-        $itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted, $new_options);
+        $itemid = $blog->additem($i_catid, $i_title,$i_body,$i_more,$i_blogid,$i_author,$posttime,$i_closed,$i_draft,$posted);
 
         //Setting the itemOptions
         $aOptions = requestArray('plugoption');
@@ -244,7 +191,7 @@ class ITEM {
       *
       * @static
       */
-    public static function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0, $options = array()) {
+    public static function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
         global $manager;
 
         $itemid = intval($itemid);
@@ -286,14 +233,6 @@ class ITEM {
                . " imore='" . sql_real_escape_string($more) . "',"
                . " iclosed=" . intval($closed) . ","
                . " icat=" . intval($catid);
-
-        if (isset($options['extraColValue']) && is_array($options['extraColValue']))
-        foreach ($options['extraColValue'] as $key => $value) {
-            if (is_int($value))
-                $query .= sprintf(', %s = %d', $key, $value);
-            else
-                $query .= sprintf(', %s = %s', $key, sql_quote_string($value));
-        }
 
         // if we received an updated timestamp in the past, but past posting is not allowed,
         // reject that date change (timestamp = 0 will make sure the current date is kept)
@@ -526,7 +465,7 @@ class ITEM {
      * @static
      */
     public static function exists($id,$future,$draft) {
-        global $manager,$CONF;
+        global $manager;
 
         $id = intval($id);
 
@@ -540,10 +479,6 @@ class ITEM {
         if (!$draft) {
             $sql .= ' AND idraft=0';
         }
-        if (!isset($CONF['UsingAdminArea']) || $CONF['UsingAdminArea'] != 1) {
-           self::addShowQueryFilterForPublicFeature($sql);
-        }
-
         $sql .= ' LIMIT 1';
 
         return (intval(quickQuery($sql)) > 0);
@@ -631,65 +566,6 @@ class ITEM {
 
         // success
         return array('status' => 'added', 'draftid' => $itemid);
-    }
-
-    static function existCol_istatus() {
-        static $res = NULL;
-        if (is_null($res))
-            $res = sql_existTableColumnName(sql_table('item'), 'istatus');
-        if (!defined('_ENABLE_ITEM_STATUS_FEATURE'))
-            define('_ENABLE_ITEM_STATUS_FEATURE', ($res ? 1 : 0));
-        return $res;
-    }
-
-    /*
-            if ( method_exists( 'ITEM', 'addShowQueryFilterForPublicFeature' ))
-                    ITEM::addShowQueryFilterForPublicFeature($query);
-     */
-    static function addShowQueryFilterForPublicFeature(&$query, $table_alias="") {
-        $query .= self::getShowQueryFilterForPublicFeature();
-//		echo "$query"; // debug
-    }
-
-    static function getShowQueryFilterForPublicFeature($table_alias="")
-    {
-        if (!self::existCol_istatus())
-            return '';  // needs upgrade database
-        
-        $now = sqldate(time());
-        $al = (strlen(trim($table_alias)) == 0 ? '' : trim($table_alias).'.');
-        $expr = array();
-        $expr[] = "${al}ipublic_enable_term_start=0 AND ${al}ipublic_enable_term_end=0";
-        $expr[] = "${al}ipublic_enable_term_start=1 AND ${al}ipublic_enable_term_end=0"
-                . sprintf(" AND ${al}ipublic_term_start<=%s", $now);
-        $expr[] = "${al}ipublic_enable_term_start=0 AND ${al}ipublic_enable_term_end=1"
-                . sprintf(" AND ${al}ipublic_term_end>%s", $now);
-        $expr[] = "${al}ipublic_enable_term_start=1 AND ${al}ipublic_enable_term_end=1"
-                . sprintf(" AND ${al}ipublic_term_start<=%s AND ${al}ipublic_term_end>%s", $now, $now);
-        // combine each value with 'or condition'
-        $expr = '(' . implode(') OR (', $expr) . ')';
-        $query = " AND (${al}istatus in ('published','future') AND ( $expr )) ";
-        return $query;
-    }
-
-    static public function getValidStatusLists() {
-        return array(
-            'published',
-            'unpublished',
-            'future',
-            'deleted',
-            'draft',
-            'pending'
-        );
-    }
-    static public function convertValidStatusText($statusText, $defaultValue='published') {
-        if (empty($statusText) || !is_string($statusText))
-            return $defaultValue;
-        foreach(self::getValidStatusLists() as $validValue) {
-            if (strcasecmp(trim($statusText), $validValue) == 0)
-                return $validValue;
-        }
-        return $defaultValue;
     }
 
 }

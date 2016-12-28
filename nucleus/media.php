@@ -36,7 +36,7 @@ require_once('../config.php');
 //include($DIR_LIBS . 'MEDIA.php');    // media classes
 include_libs('MEDIA.php',false,false);
 
-sendContentType('application/xhtml+xml', 'media');
+//sendContentType('application/xhtml+xml', 'media');
 
 // user needs to be logged in to use this
 if (!$member->isLoggedIn()) {
@@ -396,7 +396,7 @@ function media_doError($msg) {
 function media_head() {
 ?>
 <!DOCTYPE html>
-    <html>
+<html>
     <head>
         <title>Nucleus Media</title>
         <link rel="stylesheet" type="text/css" href="styles/popups.css" />
