@@ -257,66 +257,78 @@ class MANAGER
       * 
       * private
       */
-    function _loadPlugin($name)
+    function _loadPlugin($NP_Name)
     {
-        if (class_exists($name))
+        if (class_exists($NP_Name))
             return ;
 
         global $DIR_PLUGINS;
 
-        $fileName = $DIR_PLUGINS . $name . '.php';
-        $shortname = strtolower(preg_replace('#^NP_#', '', $name));
+        $shortname = strtolower(preg_replace('#^NP_#', '', $NP_Name));
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
         $plugin_dir_type = 0;
-        foreach(array($fileName ,
-                        $DIR_PLUGINS . $shortname.'/'. $name . '.php' ,
-                        $DIR_PLUGINS . $name.'/'. $name . '.php') as $key=>$f)
+        $_ = array(
+                     'NP_Name.php'           => "{$NP_Name}.php"
+                    ,'shortname/NP_Name.php' => "{$shortname}/{$NP_Name}.php"
+                    ,'NP_Name/NP_Name.php'   => "{$NP_Name}/{$NP_Name}.php"
+                    );
+        $plugin_path = false;
+        foreach($_ as $key=>$f)
         {
-            if (file_exists($f))
+            $f = $DIR_PLUGINS.$f;
+            if (is_file($f))
             {
-                $fileName = $f;
-                $plugin_dir_type = 10*$key+1;
-                if ( $plugin_dir_type==11 && is_dir($DIR_PLUGINS . $shortname . '/' . $shortname) )
-                    $plugin_dir_type = 12;
-                if ( $plugin_dir_type==21 && !is_dir($DIR_PLUGINS . $name . '/' . $shortname) )
-                    $plugin_dir_type = 22;
+                $plugin_path = $f;
+                
+                if($key==='NP_Name.php')                    $plugin_dir_type = 1;
+                elseif($key==='shortname/NP_Name.php') {
+                    if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 12;
+                    else                                    $plugin_dir_type = 11;
+                }
+                elseif($key==='NP_Name/NP_Name.php') {
+                    if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 22;
+                    else                                    $plugin_dir_type = 21;
+                }
+                else                                        $plugin_path = false;  // ?
+                
                 break;
             }
         }
 
-                if (!file_exists($fileName))
-                {
-                    if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
-                        define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
-                    }
-                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $name));
-                    return 0;
-                }
+        if (!$plugin_path)
+        {
+            if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
+                define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
+            }
+            ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $NP_Name));
+            return 0;
+        }
 
-                // load plugin
-                include($fileName);
+        // load plugin
+        include($plugin_path);
 
-                // check if class exists (avoid errors in eval'd code)
-                if (!class_exists($name))
-                {
-                    if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
-                        define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
-                    }
-                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $name));
-                    return 0;
-                }
+        // check if class exists (avoid errors in eval'd code)
+        if (!class_exists($NP_Name))
+        {
+            if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
+                define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
+            }
+            ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $NP_Name));
+            return 0;
+        }
 
-                // add to plugin array
-                eval('$this->plugins[$name] = new ' . $name . '();');
+        // add to plugin array
+        $code = sprintf('$this->plugins[$NP_Name] = new %s();', $NP_Name);
+        eval($code);
 
-                // get plugid
-                $this->plugins[$name]->plugid = $this->getPidFromName($name);
+        // get plugid
+        $this->plugins[$NP_Name]->plugid = $this->getPidFromName($NP_Name);
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
-        if ( is_object($this->plugins[$name]) )
+        if ( is_object($this->plugins[$NP_Name]) )
         {
-            $o_plugin = $this->plugins[$name];
+            $o_plugin = $this->plugins[$NP_Name];
             $o_plugin->plugin_dir_type = $plugin_dir_type;
             switch($plugin_dir_type)
             {
@@ -328,66 +340,65 @@ class MANAGER
                     $o_plugin->plugin_admin_dir = $DIR_PLUGINS . $o_plugin->getShortName().'/';
                     $o_plugin->plugin_admin_url_prefix = '';
                     break;
-                case 12: // shortname/NP_*.php         , shortname/shortname/
-                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/' . $o_plugin->getShortName() . '/';
+                case 12: // shortname/NP_*.php    , shortname/shortname/
+                    $o_plugin->plugin_admin_dir = dirname($plugin_path) . '/' . $o_plugin->getShortName() . '/';
                     $o_plugin->plugin_admin_url_prefix = $o_plugin->getShortName() . '/';
                     break;
                 case 21: // NP_*/NP_*.php         , NP_*/shortname/
-                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/' . $o_plugin->getShortName() . '/';
-                    $o_plugin->plugin_admin_url_prefix = $name . '/';
+                    $o_plugin->plugin_admin_dir = dirname($plugin_path) . '/' . $o_plugin->getShortName() . '/';
+                    $o_plugin->plugin_admin_url_prefix = $NP_Name . '/';
                     break;
                 case 22: // NP_*/NP_*.php        , NP_*/
-                    $o_plugin->plugin_admin_dir = dirname($fileName) . '/';
-                    $o_plugin->plugin_admin_url_prefix = $name . '/';
+                    $o_plugin->plugin_admin_dir = dirname($plugin_path) . '/';
+                    $o_plugin->plugin_admin_url_prefix = $NP_Name . '/';
                     break;
             }
         }
 
-                // unload plugin if a prefix is used and the plugin cannot handle this^
-                global $DB_PREFIX;
-                if (($DB_PREFIX != '') && !$this->plugins[$name]->supportsFeature('SqlTablePrefix'))
-                {
-                    unset($this->plugins[$name]);
-                    ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $name));
-                    return 0;
-                }
+        // unload plugin if a prefix is used and the plugin cannot handle this^
+        global $DB_PREFIX;
+        if (($DB_PREFIX != '') && !$this->plugins[$NP_Name]->supportsFeature('SqlTablePrefix'))
+        {
+            unset($this->plugins[$NP_Name]);
+            ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $NP_Name));
+            return 0;
+        }
 
-                // unload plugin if using non-mysql handler and plugin does not support it 
-                $is_NotUseDbApi = (($this->plugins[$name]->supportsFeature('NotUseDbApi'))
-                                || ($this->plugins[$name]->supportsFeature('NoSql')));
+        // unload plugin if using non-mysql handler and plugin does not support it 
+        $is_NotUseDbApi = (($this->plugins[$NP_Name]->supportsFeature('NotUseDbApi'))
+                        || ($this->plugins[$NP_Name]->supportsFeature('NoSql')));
 
-                global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
-                // check SqlApi
-                if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
-                {
-                    // plugin uses DB query
-                    // unload plugin if using non-mysql handler and plugin does not support it
-                    if (!$this->plugins[$name]->supportsFeature('SqlApi'))
-                    {
-                        unset($this->plugins[$name]);
-                        ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $name));
-                        return 0;
-                    }
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        // check SqlApi
+        if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
+        {
+            // plugin uses DB query
+            // unload plugin if using non-mysql handler and plugin does not support it
+            if (!$this->plugins[$NP_Name]->supportsFeature('SqlApi'))
+            {
+                unset($this->plugins[$NP_Name]);
+                ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $NP_Name));
+                return 0;
+            }
 //                         DB       Standard SQL
 //                        MySQL5  : - SQL:2008
 //                        SQLite3 : SQL92
-                    // unload plugin if using non-mysql handler and plugin does not support it
-                    if ( ( 'mysql' != $DB_DRIVER_NAME )
-                            &&
-                            !($this->plugins[$name]->supportsFeature('SqlApi_'.$DB_DRIVER_NAME)
-                              || $this->plugins[$name]->supportsFeature('SqlApi_SQL92')
-                           )
-                        )
-                    {
-                        unset($this->plugins[$name]);
-                        ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $name, $DB_DRIVER_NAME));
-                        return 0;
-                    }
-                } // end : plugin uses DB query
+            // unload plugin if using non-mysql handler and plugin does not support it
+            if ( ( 'mysql' != $DB_DRIVER_NAME )
+                    &&
+                    !($this->plugins[$NP_Name]->supportsFeature('SqlApi_'.$DB_DRIVER_NAME)
+                      || $this->plugins[$NP_Name]->supportsFeature('SqlApi_SQL92')
+                   )
+                )
+            {
+                unset($this->plugins[$NP_Name]);
+                ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $NP_Name, $DB_DRIVER_NAME));
+                return 0;
+            }
+        } // end : plugin uses DB query
 
-                // call init method
-                $this->plugins[$name]->init();
-
+        // call init method
+        $this->plugins[$NP_Name]->init();
     }
 
     /**
