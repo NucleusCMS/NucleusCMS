@@ -8,18 +8,23 @@
 
 body {
 	background: #fff url(contemporary/background.png) repeat-x;
+	color: #333;
+	font-size:85%;
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", Meiryo,"Hiragino Kaku Gothic Pro",lucida, Arial,"Helvetica Neue",Helvetica,sans-serif;
 }
 
-body, td, th, a, li, ul, textarea {
-	color: #333;
-	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
-    line-height: 1.5em;
+td, th, textarea, input, select, option {
+	font:inherit;
+}
+th {
+}
+input[type=submit], input[type=button], input[type=file], button, select {
+	cursor:pointer;cursor:hand;
 }
 
 /* basic link appearance */
 a:link, a:visited {
 	color: #1D3565;
-	font-weight: bold;
 	text-decoration: none;
 }
 
@@ -258,7 +263,7 @@ table {
 
 th {
 	background-color: #ddd;
-	color: #000;
+	color: #333;
 	font-size: medium;
 }
 

@@ -97,7 +97,7 @@
     <meta charset="UTF-8" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <title><?php echo _UPG_TEXT_NUCLEUS_UPGRADE; ?></title>
-    <link rel="stylesheet" href="../styles/manual.css" type="text/css" />
+    <link rel="stylesheet" href="../nucleus/styles/manual.css" type="text/css" />
 </head>
 <body>
     <?php

@@ -5,10 +5,12 @@
 */
 
 body {
-	background-color: #fff;
-	color: #000;
-	font-family: verdana, arial;
-	font-size: medium;
+	background-color:#ffffff;
+	background: linear-gradient(#f0f0f0, #ffffff);
+	background-repeat: no-repeat;
+	padding-top: 13px;
+	color: #555;
+	font-family: Meiryo, "Hiragino Kaku Gothic Pro", arial, helvetica, sans-serif;
 }
 
 @media screen {
@@ -76,9 +78,10 @@ h2 {
 }
 
 pre, .note, .faq .answer {
-	background-color: #ddd;
+	background-color: #fff;
+	border:1px solid #ccc;
+	border-radius:8px;
 	padding: 10px;
-	font-size: medium;
 }
 
 .screenshot {
@@ -136,6 +139,16 @@ tt, code, samp {
 
 .warning {
 	color: red;
+}
+.warning a:visited, .warning a:link {
+	color: #f00;
+	border:1px solid #ccc;
+	padding:1em;
+	background-color:#fff1e8;
+	border-radius:8px;
+	display:block;
+	margin-bottom:1em;
+	text-align:center;
 }
 .ok {
 	color: green;
