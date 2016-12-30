@@ -269,9 +269,9 @@ class MANAGER
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
         $plugin_dir_type = 0;
         $_ = array(
-                     'NP_Name.php'           => "{$NP_Name}.php"
+                     'NP_Name/NP_Name.php'   => "{$NP_Name}/{$NP_Name}.php"
+                    ,'NP_Name.php'           => "{$NP_Name}.php"
                     ,'shortname/NP_Name.php' => "{$shortname}/{$NP_Name}.php"
-                    ,'NP_Name/NP_Name.php'   => "{$NP_Name}/{$NP_Name}.php"
                     );
         $plugin_path = false;
         foreach($_ as $key=>$f)
@@ -281,15 +281,15 @@ class MANAGER
             {
                 $plugin_path = $f;
                 
-                if($key==='NP_Name.php')                    $plugin_dir_type = 1;
+                if    ($key==='NP_Name/NP_Name.php') {
+                    if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 21;
+                    else                                    $plugin_dir_type = 22;
+                }
                 elseif($key==='shortname/NP_Name.php') {
-                    if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 12;
-                    else                                    $plugin_dir_type = 11;
+                    if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 11;
+                    else                                    $plugin_dir_type = 12;
                 }
-                elseif($key==='NP_Name/NP_Name.php') {
-                    if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 22;
-                    else                                    $plugin_dir_type = 21;
-                }
+                elseif($key==='NP_Name.php')                    $plugin_dir_type = 1;
                 else                                        $plugin_path = false;  // ?
                 
                 break;
