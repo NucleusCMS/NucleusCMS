@@ -20,9 +20,8 @@ ob_start();
 define('_CHARSET', 'UTF-8');
 
 // auto search config.php
-$basepath = realpath(dirname(__FILE__) . '/../../');
-if (substr($basepath, -1,1) != DIRECTORY_SEPARATOR)
-    $basepath .= DIRECTORY_SEPARATOR;
+$self = '_upgrades/conv-sqlite/index.php';
+$basepath = str_replace('\\','/', substr(__FILE__,0,-strlen($self)));
 $config_file = $basepath . 'config.php';
 if(is_file($config_file)) include_once($config_file);
 else exit($config_file . ' Config file is not exists');
@@ -37,7 +36,7 @@ class ConvertInstaller
     {
         global $member, $MYSQL_HANDLER, $CONF;
         $this->basepath = $basepath;
-        $this->target_db_filename = $basepath . 'settings' . DIRECTORY_SEPARATOR . 'db_nucleus.sqlite';
+        $this->target_db_filename = $basepath . 'settings/db_nucleus.sqlite';
 
 //        if (version_compare(PHP_VERSION, '5.3.0'))
 //        {
@@ -106,7 +105,7 @@ class ConvertInstaller
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <title><?php echo htmlspecialchars($title, ENT_QUOTES, 'UTF-8'); ?></title>
-    <link rel="stylesheet" href="../nucleus/styles/manual.css" type="text/css" />
+    <link rel="stylesheet" href="../../nucleus/documentation/styles/manual.css" type="text/css" />
   </head>
   <body>
 <?php
@@ -266,7 +265,7 @@ class ConvertInstaller
         else
         {
             echo "<p>"  . $this->_('If you want to convert start, please press the start button') ."</p>";
-            echo "<p>"  . $this->_('Save file path:') . " settings/</p>";
+            echo sprintf("<p>%s %ssettings/</p>", $this->_('Save file path:'), $this->basepath);
             // Todo : Note
             $btn_title = $this->_('Start convert');
                     $s = <<<EOD
@@ -286,7 +285,7 @@ EOD;
 
     private function doConvert()
     {
-        include_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "table_conv_mysql_to_sqlite.php");
+        include_once(dirname(__FILE__) . '/table_conv_mysql_to_sqlite.php');
 
         //$obj = new TableConvertor();
         $obj = new TableConvertor_mysql_to_sqlite();
@@ -338,7 +337,7 @@ EOD;
 \$MYSQL_HANDLER = array(&#039;pdo&#039;,&#039;sqlite&#039;);
 if (\$MYSQL_HANDLER[1]==&#039;sqlite&#039;)
 {
-   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
+   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, /, &#039;/settings/db_nucleus.sqlite&#039;);
 // \$MYSQL_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
 }</b></pre></blockquote>
 EOD;
@@ -396,7 +395,7 @@ EOD;
 
 if (\$MYSQL_HANDLER[1]=='sqlite')
 {
-   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+   \$MYSQL_DATABASE = dirname(__FILE__) . '/settings/db_nucleus.sqlite';
 // \$MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
 
