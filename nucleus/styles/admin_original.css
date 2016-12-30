@@ -1,22 +1,30 @@
+/*@charset 'UTF-8';*/
+
 /*
 	admin area style
 	
-	$Id$
+	$Id: admin.css 1261 2008-05-22 20:32:43Z kaigreve $
 */
 
 body {
-	background: #ffffff; 
+	background: #fff url(contemporary/background.png) repeat-x;
+	color: #333;
+	font-size:85%;
+	font-family: "Trebuchet MS", "Bitstream Vera Sans", Meiryo,"Hiragino Kaku Gothic Pro",lucida, Arial,"Helvetica Neue",Helvetica,sans-serif;
 }
 
-body, td, th, a, li, ul, textarea {
-	color: #000;
-	font-family: "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
+td, th, textarea, input, select, option {
+	font:inherit;
+}
+th {
+}
+input[type=submit], input[type=button], input[type=file], button, select {
+	cursor:pointer;cursor:hand;
 }
 
 /* basic link appearance */
 a:link, a:visited {
 	color: #1D3565;
-	font-weight: bold;
 	text-decoration: none;
 }
 
@@ -109,15 +117,15 @@ h1 {
 	top: 10px;
 	left: 10px;
 
-	width: 110px;
+	width: 150px;
 	margin: 0px;
 	padding: 0px;
 	
-	font-size: 70%;
+	color:#333;/* add */
 	
 	border-width: 1px;
 	border-style: solid;
-	border-color: black;
+	border-color: #bbb;
 
 	background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
 }
@@ -145,13 +153,13 @@ h1 {
 	display: block;
 	padding: 5px;
 	font-size: 1em;
-	line-height: 1.5em;
+	line-height: 1.5;
 	text-decoration: none;
 }
 
 #quickmenu a:hover {
 	background: #ffffff url(quickb-hover.jpg) top left fixed repeat-y; 
-	color: #000;
+	color: #333;
 	letter-spacing: 1px;
 }
 
@@ -162,7 +170,7 @@ h1 {
 	margin: 0px;
 	border-bottom: 1px solid #bbb; 	
 	background-color: #ddd;
-	color: #000;
+	color: #333;
 }
 
 #quickmenu form {
@@ -186,20 +194,22 @@ h1 {
 
 /* page content */
 #content {
-	margin-left: 135px;
+	margin-left: 163px;
 	font-style: normal;
 	text-decoration: none;
-	color: black;
+	color: #333;
 	text-align: justify;
 	line-height: 13pt;
 
 	border-width: 1px;
 	border-style: solid;
-	border-color: black;
+	border-color: #bbb;
 	
 	/* rounded borders in gecko-based browsers? why not :) */
 	-moz-border-radius: 10px;	
 
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
 	padding: 10px 10px 0 10px;	
 	
 	background-color: white;
@@ -252,14 +262,15 @@ table {
 }
 
 th {
-	background-color: #bbc;
-	color: #000;
+	background-color: #ddd;
+	color: #333;
 	font-size: medium;
 }
 
 th, td {
 	padding: 4px;
 	empty-cells: show;	
+	border: 1px solid #ddd; /* add */
 }
 
 td {
@@ -281,8 +292,11 @@ td a:hover {
 	text-decoration: underline;
 }
 
-td.draft, td.future {
+td.draft {
 	background-color: #ffe;
+}
+td.future {
+	background-color: #fff7f1;
 }
 
 tr.highlighted td {
@@ -294,7 +308,7 @@ table.navigation td, table.navigation th {
 }
 
 .batchoperations {
-	background-color: #eef;
+	background-color: #ebebf2;
 	width: auto;
 	padding: 5px;
 	text-align: right;
