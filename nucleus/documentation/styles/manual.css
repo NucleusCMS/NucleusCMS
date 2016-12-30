@@ -2,6 +2,7 @@
 
 body {
 	background: linear-gradient(#f0f0f0, #ffffff);
+	background-repeat:no-repeat;
 	padding-top: 13px;
 	color: #555;
 	font-family: Meiryo, "Hiragino Kaku Gothic Pro", "Trebuchet MS", "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
@@ -155,6 +156,26 @@ tt, code, samp {
 }
 .ok {
 	color: green;
+}
+
+.warning a:link, .warning a:visited {
+	color: red;
+	background-color:#fff1e8;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:1em;
+    display:block;
+    text-align:center;
+}
+
+.ok {
+	color: green;
+	background-color:#ebffe8;
+    border:1px solid #ccc;
+    border-radius:8px;
+    padding:1em;
+    display:block;
+    text-align:center;
 }
 
 acronym, abbr {
