@@ -169,7 +169,7 @@ if ($DB_PHP_MODULE_NAME != 'pdo')
 {
     // include core classes that are needed for login & plugin handling
     if (!function_exists('mysql_query'))
-        include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+        include_once($DIR_LIBS . 'sql/mysql_emulate.php'); // For PHP 7
     else
     {
         if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
