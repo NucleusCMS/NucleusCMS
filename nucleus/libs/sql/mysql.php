@@ -81,7 +81,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         }
 
         if (defined('_CHARSET')){
-            $charset  = get_mysql_charset_from_php_charset(_CHARSET);
+            $charset  = treat_char_name(_CHARSET);
         }else{
             $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
             $res = sql_query($query);
@@ -455,7 +455,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset) {
-        $charset = get_mysql_charset_from_php_charset($charset);
+        $charset = treat_char_name($charset);
         $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
         if (version_compare($mySqlVer, '4.1.0', '>=')) {
             if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
@@ -474,7 +474,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return isset($res) ? $res : false;
     }
 
-    function get_mysql_charset_from_php_charset($charset = 'utf-8')
+    function treat_char_name($charset = 'utf-8')
     {
         switch(strtolower($charset))
         {
