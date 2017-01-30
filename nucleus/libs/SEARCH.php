@@ -79,7 +79,8 @@ class SEARCH {
 
             if (strlen($stringsum_long) > 0) {
                 $stringsum_long = sql_real_escape_string($stringsum_long);
-                $stringsum_a[]  = " match ($match) against ('$stringsum_long') ";
+                $stringsum_long = trim($stringsum_long);
+                $stringsum_a[]  = sprintf(" match (%s) against ('%s') ", $match, $stringsum_long);
             }
 
             $stringsum .= implode("+", $stringsum_a);
