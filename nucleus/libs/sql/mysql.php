@@ -79,23 +79,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
                 $msg .=  $m[1];
             startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
-
-        if (defined('_CHARSET')){
-            $charset  = treat_char_name(_CHARSET);
-        }else{
-            $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
-            $res = sql_query($query);
-            if(!$res) exit('Language name fetch error');
-            $obj = sql_fetch_object($res);
-            $Language = $obj->value;
-            $charset = get_charname_from_langname($Language);
-            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name');
-            if($charset !== $charsetOfDB) {
-                global $CONF;
-                $CONF['adminAlert'] = '_MISSING_DB_ENCODING';
-                $charset = $charsetOfDB;
-            }
-        }
+        
+        $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+        $res = sql_query($query);
+        if(!$res) exit('Language name fetch error');
+        $lang = sql_fetch_object($res);
+        $charset = get_charname_from_langname($lang->value);
         sql_set_charset($charset);
         
         return $MYSQL_CONN;
@@ -455,7 +444,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset) {
-        $charset = treat_char_name($charset);
+        
+        if($charset!=='utf8mb4') $charset = treat_char_name($charset);
+        
         $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
         if (version_compare($mySqlVer, '4.1.0', '>=')) {
             if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
@@ -474,14 +465,21 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return isset($res) ? $res : false;
     }
 
-    function treat_char_name($charset = 'utf-8')
+    function treat_char_name($charset = 'utf8mb4')
     {
+        if($charset==='utf8mb4') return 'utf8mb4';
+        
         switch(strtolower($charset))
         {
-            case 'utf-8'        : $charset='utf8'; break;
-            case 'euc-jp'       : $charset='ujis'; break;
+            case 'euc-jp'       : $charset='ujis'  ; break;
             case 'iso-8859-1'   : $charset='latin1'; break;
             case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
+            case 'utf8'        :
+            case 'utf-8'        :
+                if(getCharSetFromDB(sql_table('config'),'name') ==='utf8mb4')
+                    $charset = 'utf8mb4';
+                else $charset='utf8';
+                break;
             default :
                 if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
                 {
@@ -501,7 +499,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     {
         $language_name = strtolower($language_name);
         
-        if(strpos($language_name,'utf8')!==false)
+        if(strpos(strtolower($language_name),'utf8')!==false)
             return 'utf8';
         
         switch($language_name)
