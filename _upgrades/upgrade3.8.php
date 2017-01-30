@@ -43,6 +43,12 @@ function upgrade_do380() {
         upgrade_query('Altering ' . sql_table('member') . ' table', $query);
     }
 
+    $query = sprintf("ALTER TABLE `%s`
+                    MODIFY COLUMN `ibody` mediumtext NOT NULL,
+                    MODIFY COLUMN `imore` mediumtext NOT NULL;", sql_table('item'));
+    
+    upgrade_query('Altering ' . sql_table('item') . ' table', $query);
+
 	//  -> 3.80
 	// update database version
 	update_version('380');

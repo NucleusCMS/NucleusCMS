@@ -40,8 +40,8 @@ function upgrade_do370() {
     
     // changing the blog table to lengthen bnotify field 
     $query = sprintf("ALTER TABLE `%s`
-                    MODIFY COLUMN `ibody` mediumtext default NULL,
-                    MODIFY COLUMN `imore` mediumtext default NULL;", sql_table('item'));
+                    MODIFY COLUMN `ibody` mediumtext NOT NULL,
+                    MODIFY COLUMN `imore` mediumtext NOT NULL;", sql_table('item'));
     
     upgrade_query('Altering ' . sql_table('item') . ' table', $query);
     
