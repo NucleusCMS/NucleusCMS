@@ -28,28 +28,28 @@ class SEARCH {
     public $inclusive;
     public $blogs;
 
-    public function SEARCH($text) { $this->__construct($text); }
-    function __construct($text) {
+    public function SEARCH($keywords) { $this->__construct($keywords); }
+    function __construct($keywords) {
         global $blogid;
-//        $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$text);
+//        $keywords = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$keywords);
         /* * * for jp * * * * * * * * * * */
         $this->encoding = strtolower(preg_replace('|[^a-z0-9-_]|i', '', _CHARSET));
         if ($this->encoding != 'utf-8') {
-            $text = mb_convert_encoding($text, "UTF-8", $this->encoding);
+            $keywords = mb_convert_encoding($keywords, "UTF-8", $this->encoding);
         }
-        $text = str_replace ("\xE3\x80\x80",' ',$text);
-        $text = preg_replace ("/[<>=?!#^()[\]:;\\%]/","",$text);
+        $keywords = str_replace ("\xE3\x80\x80",' ',$keywords);
+        $keywords = preg_replace ("/[<>=?!#^()[\]:;\\%]/","",$keywords);
 
         $this->ascii       = '[\x00-\x7F]';
         $this->two         = '[\xC0-\xDF][\x80-\xBF]';
         $this->three       = '[\xE0-\xEF][\x80-\xBF][\x80-\xBF]';
 
-        $this->jpmarked    = $this->boolean_mark_atoms_jp($text);
+        $this->jpmarked    = $this->boolean_mark_atoms_jp($keywords);
         /* * * * * * * * * * * * * * * * */
 
-        $this->querystring = $text;
-//        $this->marked      = $this->boolean_mark_atoms($text);
-        $this->inclusive   = $this->boolean_inclusive_atoms($text);
+        $this->querystring = $keywords;
+//        $this->marked      = $this->boolean_mark_atoms($keywords);
+        $this->inclusive   = $this->boolean_inclusive_atoms($keywords);
         $this->blogs       = array();
 
         // get all public searchable blogs, no matter what, include the current blog allways.
@@ -60,87 +60,76 @@ class SEARCH {
     }
 
     function boolean_sql_select($match){
-        if (!isset($stringsum)) {
-            $stringsum = '';
+        
+        if (strlen($this->inclusive) == 0) return;
+        
+        if (!isset($stringsum)) $stringsum = '';
+        
+        /* build sql for determining score for each record */
+        $result=explode(' ',$this->inclusive);
+        if (!isset($stringsum_long)) {
+            $stringsum_long = '';
         }
-        if (strlen($this->inclusive) > 0) {
-            /* build sql for determining score for each record */
-            $result=explode(" ",$this->inclusive);
-            if (!isset($stringsum_long)) {
-                $stringsum_long = '';
+        for ($cth = 0; $cth < count($result); $cth++) {
+            if (strlen($result[$cth])>=4) {
+                $stringsum_long .=  " $result[$cth] ";
+            } else {
+                $stringsum_a[] = ' ' . $this->boolean_sql_select_short($result[$cth], $match) . ' ';
             }
-            for ($cth = 0; $cth < count($result); $cth++) {
-                if (strlen($result[$cth])>=4) {
-                    $stringsum_long .=  " $result[$cth] ";
-                } else {
-                    $stringsum_a[] = ' ' . $this->boolean_sql_select_short($result[$cth], $match) . ' ';
-                }
-            }
-
-            if (strlen($stringsum_long) > 0) {
-                $stringsum_long = sql_real_escape_string($stringsum_long);
-                $stringsum_long = trim($stringsum_long);
-                $stringsum_a[]  = sprintf(" match (%s) against ('%s') ", $match, $stringsum_long);
-            }
-
-            $stringsum .= implode("+", $stringsum_a);
-
-            return $stringsum;
         }
+
+        if (strlen($stringsum_long) > 0) {
+            $stringsum_long = sql_real_escape_string($stringsum_long);
+            $stringsum_long = trim($stringsum_long);
+            $stringsum_a[]  = sprintf(" match (%s) against ('%s') ", $match, $stringsum_long);
+        }
+
+        $stringsum .= implode("+", $stringsum_a);
+
+        return $stringsum;
     }
 
     
 
-    function boolean_inclusive_atoms($string) {
-        $result = trim($string);
-        $result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
+    function boolean_inclusive_atoms($keywords) {
+        $keywords = trim($keywords);
+        $keywords = preg_replace("#([[:space:]]{2,})#", ' ', $keywords);
         
         # just added delimiters to regex and the 'i' for case-insensitive matching
         
         /* convert normal boolean operators to shortened syntax */
-        $result = preg_replace('# not #i', ' -', $result);
-        $result = preg_replace('# and #i', ' ', $result);
-        $result = preg_replace('# or #i', ',', $result);
+        $keywords = preg_replace('# not #i', ' -', $keywords);
+        $keywords = preg_replace('# and #i', ' ', $keywords);
+        $keywords = preg_replace('# or #i', ',', $keywords);
         
         /* drop unnecessary spaces */
-        $result = str_replace(' ,', ',', $result);
-        $result = str_replace(', ', ',', $result);
-        $result = str_replace('- ', '-', $result);
-        $result = str_replace('+', '', $result);
+        $keywords = str_replace(' ,', ',', $keywords);
+        $keywords = str_replace(', ', ',', $keywords);
+        $keywords = str_replace('- ', '-', $keywords);
+        $keywords = str_replace('+', '', $keywords);
         
         /* strip exlusive atoms */
-        $result = preg_replace(
+        $keywords = preg_replace(
             "#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
             '',
-            $result);
+            $keywords);
         
-        $result = str_replace('(', ' ', $result);
-        $result = str_replace(')', ' ', $result);
-        $result = str_replace(',', ' ', $result);
+        $keywords = str_replace('(', ' ', $keywords);
+        $keywords = str_replace(')', ' ', $keywords);
+        $keywords = str_replace(',', ' ', $keywords);
         if ($this->encoding != 'utf-8') {
-            $result = mb_convert_encoding($result, $this->encoding, "UTF-8");
+            $keywords = mb_convert_encoding($keywords, $this->encoding, "UTF-8");
         }
-        return $result;
+        return $keywords;
     }
 
     function boolean_sql_where($match) {
-/*
-        $result = $this->marked;
-        $result = preg_replace(
-            "/foo\[\(\'([^\)]{4,})\'\)\]bar/e",
-            " 'match ('.\$match.') against (\''.\$this->copyvalue(\"$1\").'\') > 0 ' ",
-            $result);
-        $result = preg_replace(
-            "/foo\[\(\'([^\)]{1,3})\'\)\]bar/e",
-            " '('.\$this->boolean_sql_where_short(\"$1\",\"$match\").')' ",
-            $result);
-*/
-        $result = $this->jpmarked; /* for jp */
-        $result = $this->boolean_sql_where_jp_short($result, $match);/* for jp */
+        $keywords = $this->jpmarked; /* for jp */
+        $where = $this->boolean_sql_where_jp_short($keywords, $match);/* for jp */
         if ($this->encoding != 'utf-8') {
-            $result = mb_convert_encoding($result, $this->encoding, "UTF-8");
+            $where = mb_convert_encoding($where, $this->encoding, "UTF-8");
         }
-        return $result;
+        return $where;
     }
 
     // there must be a simple way to simply copy a value with backslashes in it through
@@ -148,69 +137,15 @@ class SEARCH {
     function copyvalue($foo) {
         return $foo;
     }
-/*
-    function boolean_mark_atoms($string){
-        $result = trim($string);
-        $result = preg_replace("/([[:space:]]{2,})/", ' ', $result);
-
-        # just added delimiters to regex and the 'i' for case-insensitive matching
-
-        $result = preg_replace('# not #i', ' -', $result);
-        $result = preg_replace('# and #i', ' ', $result);
-        $result = preg_replace('# or #i', ',', $result);
-
-        // strip excessive whitespace
-        $result = str_replace('( ', '(', $result);
-        $result = str_replace(' )', ')', $result);
-        $result = str_replace(', ', ',', $result);
-        $result = str_replace(' ,', ',', $result);
-        $result = str_replace('- ', '-', $result);
-        $result = str_replace('+', '', $result);
-
-        // remove double spaces (we might have introduced some new ones above)
-        $result = trim($result);
-        $result = preg_replace("#([[:space:]]{2,})#", ' ', $result);
-
-        // apply arbitrary function to all 'word' atoms
-
-        $result_a = explode(' ', $result);
-
-        for($word = 0;$word<count($result_a);$word++)
-        {
-            $result_a[$word] = "foo[('".$result_a[$word]."')]bar";
-        }
-        $result = implode(" ",$result_a);
-
-        // dispatch ' ' to ' AND '
-        $result = str_replace(' ', ' AND ', $result);
-
-        // dispatch ',' to ' OR '
-        $result = str_replace(',', ' OR ', $result);
-
-        // dispatch '-' to ' NOT '
-        $result = str_replace(' -', ' NOT ', $result);
-        return $result;
-    }
-
-    function boolean_sql_where_short($string,$match){
-        $match_a = explode(',',$match);
-        for($ith=0;$ith<count($match_a);$ith++){
-            $like_a[$ith] = " $match_a[$ith] LIKE '% $string %' ";
-        }
-        $like = implode(" OR ",$like_a);
-
-        return $like;
-    }
-*/
 
     function boolean_sql_select_short($string, $match) {
-        $match_a = explode(',',$match);
+        $match = explode(',',$match);
         $score_unit_weight = .2;
-        for($ith=0;$ith<count($match_a);$ith++){
+        for($ith=0;$ith<count($match);$ith++){
             $score_a[$ith] =
                            " $score_unit_weight*(
-                           LENGTH(" . sql_real_escape_string($match_a[$ith]) . ") -
-                           LENGTH(REPLACE(LOWER(" . sql_real_escape_string($match_a[$ith]) . "),LOWER('" . sql_real_escape_string($string) . "'),'')))
+                           LENGTH(" . sql_real_escape_string($match[$ith]) . ") -
+                           LENGTH(REPLACE(LOWER(" . sql_real_escape_string($match[$ith]) . "),LOWER('" . sql_real_escape_string($string) . "'),'')))
                            /LENGTH('" . sql_real_escape_string($string) . "') ";
         }
         $score = implode(" + ",$score_a);
@@ -222,56 +157,60 @@ class SEARCH {
     Make "WHERE" (jp)
 ***********************************************/
 
-    function boolean_mark_atoms_jp($string) {
-        $result = trim($string);
-        $result = preg_replace("/([[:space:]]{2,})/", ' ', $result);
+    function boolean_mark_atoms_jp($keywords) {
+        $keywords = trim($keywords);
+        $keywords = preg_replace("/([[:space:]]{2,})/", ' ', $keywords);
         
         /* convert normal boolean operators to shortened syntax */
-        $result = preg_replace('# not #i', ' -', $result);
-        $result = preg_replace('# and #i', ' ', $result);
-        $result = preg_replace('# or #i', ',', $result);
+        $keywords = preg_replace('# not #i', ' -', $keywords);
+        $keywords = preg_replace('# and #i', ' ', $keywords);
+        $keywords = preg_replace('# or #i', ',', $keywords);
         
         // strip excessive whitespace
-        $result = str_replace(', ', ',', $result);
-        $result = str_replace(' ,', ',', $result);
-        $result = str_replace('- ', '-', $result);
-        $result = str_replace('+', '', $result);
-        $result = str_replace(',',  ' ,', $result);
+        $keywords = str_replace(', ', ',', $keywords);
+        $keywords = str_replace(' ,', ',', $keywords);
+        $keywords = str_replace('- ', '-', $keywords);
+        $keywords = str_replace('+', '', $keywords);
+        $keywords = str_replace(',',  ' ,', $keywords);
 
-        return $result;
+        return $keywords;
     }
 
-    function boolean_sql_where_jp_short($string, $match) {
-        $match_a = explode(',', $match);
-        $key_a   = explode(' ', $string);
+    function boolean_sql_where_jp_short($keywords, $fields) {
+        $fields = explode(',', $fields);
+        $keywords   = explode(' ', $keywords);
 
-        for ($ith=0; $ith<count($match_a); $ith++) {
-//            $temp_a[$ith] = "(i.$match_a[$ith] LIKE '%" . sql_real_escape_string($key_a[0]) . "%') ";
-            $binKey       = preg_match('/[a-zA-Z]/', $key_a[0]) ? '' : 'BINARY';
-            $temp_a[$ith] = "(i.$match_a[$ith] LIKE " . $binKey . " '%" . sql_real_escape_string($key_a[0]) . "%') ";
+        $binKey       = preg_match('/[a-zA-Z]/', $keywords[0]) ? '' : 'BINARY';
+        $ph = array('bin'=>$binKey, 'keyword'=>sql_real_escape_string($keywords[0]));
+        for ($i=0; $i<count($fields); $i++) {
+            $ph['field'] = $fields[$i];
+            $_[$i] = parseText("(i.<%field%> LIKE <%bin%> '%<%keyword%>%') ", $ph);
         }
-        $like = '('.implode(' or ',$temp_a).')';
+        $like = '('.implode(' or ',$_).')';
 
-        for ($kn = 1; $kn < count($key_a); $kn++) {
-            $binKey       = preg_match('/[a-zA-Z]/', $key_a[$kn]) ? '' : 'BINARY';
-            if (substr($key_a[$kn], 0, 1) == ",") {
-                for($ith = 0; $ith < count($match_a); $ith++) {
-//                    $temp_a[$ith] = " (i.$match_a[$ith] LIKE '%" . sql_real_escape_string(substr($key_a[$kn],1)) . "%') ";
-                    $temp_a[$ith] = " (i.$match_a[$ith] LIKE " . $binKey . " '%" . sql_real_escape_string(substr($key_a[$kn], 1)) . "%') ";
+        for ($kn = 1; $kn < count($keywords); $kn++) {
+            $binKey       = preg_match('/[a-zA-Z]/', $keywords[$kn]) ? '' : 'BINARY';
+            if (substr($keywords[$kn], 0, 1) == ",") {
+                $ph = array('bin'=>$binKey, 'keyword'=>sql_real_escape_string(substr($keywords[$kn], 1)));
+                for($i = 0; $i < count($fields); $i++) {
+                    $ph['field'] =$fields[$i];
+                    $_[$i] = parseText(" (i.<%field%> LIKE <%bin%> '%<%keyword%>%') ", $ph);
                 }
-                $like .=' OR ('. implode(' or ', $temp_a).')';
-            }elseif(substr($key_a[$kn],0,1) != '-'){
-                for($ith=0;$ith<count($match_a);$ith++){
-//                    $temp_a[$ith] = " (i.$match_a[$ith] LIKE '%" . sql_real_escape_string($key_a[$kn]) . "%') ";
-                    $temp_a[$ith] = " (i.$match_a[$ith] LIKE " . $binKey . " '%" . sql_real_escape_string($key_a[$kn]) . "%') ";
+                $like .=' OR ('. implode(' or ', $_).')';
+            }elseif(substr($keywords[$kn],0,1) != '-'){
+                $ph = array('bin'=>$binKey, 'keyword'=>sql_real_escape_string($keywords[$kn]));
+                for($i=0;$i<count($fields);$i++){
+                    $ph['field'] =$fields[$i];
+                    $_[$i] = parseText(" (i.<%field%> LIKE <%bin%> '%<%keyword%>%') ", $ph);
                 }
-                $like .=' AND ('. implode(' or ', $temp_a).')';
+                $like .=' AND ('. implode(' or ', $_).')';
             }else{
-                for($ith=0;$ith<count($match_a);$ith++){
-//                    $temp_a[$ith] = " NOT(i.$match_a[$ith] LIKE '%" . sql_real_escape_string(substr($key_a[$kn],1)) . "%') ";
-                    $temp_a[$ith] = " NOT(i.$match_a[$ith] LIKE " . $binKey . " '%" . sql_real_escape_string(substr($key_a[$kn], 1)) . "%') ";
+                $ph = array('bin'=>$binKey, 'keyword'=>sql_real_escape_string(substr($keywords[$kn], 1)));
+                for($i=0;$i<count($fields);$i++){
+                    $ph['field'] =$fields[$i];
+                    $_[$i] = parseText(" NOT(i.<%field%> LIKE <%bin%> '%<%keyword%>%') ", $ph);
                 }
-                $like .=' AND ('. implode(' and ', $temp_a).')';
+                $like .=' AND ('. implode(' and ', $_).')';
             }
         }
         
