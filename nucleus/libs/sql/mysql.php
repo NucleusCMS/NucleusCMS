@@ -444,8 +444,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset) {
-        
-        if($charset!=='utf8mb4') $charset = treat_char_name($charset);
+        if(defined('NC_MTN_MODE') && NC_MTN_MODE==='install') $charset = 'utf8';
+        elseif($charset!=='utf8mb4')                          $charset = treat_char_name($charset);
         
         $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
         if (version_compare($mySqlVer, '4.1.0', '>=')) {

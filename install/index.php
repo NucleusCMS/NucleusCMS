@@ -23,6 +23,7 @@
 
 	-- Start Of Configurable Part --
 */
+define('NC_MTN_MODE', 'install');
 
 define('ENABLE_SQLITE_INSTALL', ( !extension_loaded('PDO_SQLITE') ? 0 : 1) ); // allow sqlite install , boolean
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
