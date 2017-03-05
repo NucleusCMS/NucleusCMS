@@ -127,9 +127,18 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_query($query,$conn = false) {
         global $SQLCount,$MYSQL_CONN,$SQLStack;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            if($MYSQL_CONN) $conn = $MYSQL_CONN;
+            else            sql_connect();
+        }
+        else exit($query);
         $bt = microtime(true);
-        $res = mysql_query($query,$conn) or print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
+        $res = mysql_query($query,$conn);
+        if(!$res) {
+            echo sprintf("mySQL error with query <b>%s</b> : %s<p />", $query, mysql_error($conn));
+            $_ = debug_backtrace();
+            print_r($_);
+        }
         $SQLCount++;
         $et = microtime(true) - $bt;
         $SQLStack[$SQLCount] = "[$SQLCount] {$et}s - {$query}";
