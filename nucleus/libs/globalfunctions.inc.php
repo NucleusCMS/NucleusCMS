@@ -567,6 +567,8 @@ function selector() {
         $query = mb_convert_encoding($query, _CHARSET, $order);
         if (is_numeric($blogid)) {
             $blogid = intVal($blogid);
+        } elseif(empty($blogid)) {
+            $blogid = $CONF['DefaultBlog'];
         } else {
             $blogid = getBlogIDFromName($blogid);
         }
