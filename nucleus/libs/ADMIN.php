@@ -5868,7 +5868,7 @@ selector();
 <html lang="<%_LANG_CODE%>">
 <head>
     <base href="<%AdminURL%>" />
-    <meta charset=<%_CHARSET%>" />
+    <meta charset="<%_CHARSET%>" />
     <meta name="robots" content="noindex, nofollow" />
     <title><%SiteName%> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<%baseUrl%>styles/admin_<%AdminCSS%>.css" />
