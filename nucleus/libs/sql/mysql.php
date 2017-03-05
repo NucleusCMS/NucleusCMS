@@ -67,6 +67,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
         global $MYSQL_CONN;
 
+        if($MYSQL_CONN) return $MYSQL_CONN;
+        
+        if(!$DB_HOST || !$DB_USER) exit('sql_connect error. Empty connect information.');
+        
         if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost')
             $MYSQL_HOST = '127.0.0.1';
         $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
