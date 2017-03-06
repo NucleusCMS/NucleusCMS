@@ -144,7 +144,7 @@ class PARSER {
                 $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
             } else {
                 if ($CONF['DebugVars']==true) {
-                    echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+                    echo hsc('<%' . sprintf('%s(%s)',$action,implode($this->pdelim, $params)) . '%>');
                 }
             }
 
