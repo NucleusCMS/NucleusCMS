@@ -146,6 +146,7 @@ class PARSER {
                 if ($CONF['DebugVars']==true) {
                     echo hsc('<%' . sprintf('%s(%s)',$action,implode($this->pdelim, $params)) . '%>');
                 }
+                elseif($action==='_GET' && isset($params[0])) echo hsc($_GET[$params[0]]);
             }
 
         }
