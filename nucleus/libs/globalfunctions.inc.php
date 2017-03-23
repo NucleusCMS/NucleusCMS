@@ -980,7 +980,6 @@ function LoadCoreLanguage()
             }
         }
     }
-    $charset = treat_char_name(_CHARSET);
     sql_set_charset(_CHARSET);
 
     ini_set('default_charset', _CHARSET);
