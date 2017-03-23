@@ -84,7 +84,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
         
-        $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+        $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('item'));
         $res = sql_query($query);
         if(!$res) exit('Language name fetch error');
         $lang = sql_fetch_object($res);
@@ -489,7 +489,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
             case 'utf8'        :
             case 'utf-8'        :
-                if(getCharSetFromDB(sql_table('config'),'name') ==='utf8mb4')
+                if(getCharSetFromDB(sql_table('item'),'ibody') ==='utf8mb4')
                     $charset = 'utf8mb4';
                 else $charset='utf8';
                 break;
