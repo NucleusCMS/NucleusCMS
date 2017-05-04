@@ -79,9 +79,9 @@ class convert {
             $sql = vsprintf("ALTER TABLE `%s` CONVERT TO CHARACTER SET %s COLLATE %s", $vs);
             sql_query($sql);
             
+            sql_query("SET NAMES {$new_charset}");
             $rs = sql_query("SELECT * FROM `{$srcTableName}`");
             if(0<sql_num_rows($rs)) {
-                sql_query("SET NAMES {$new_charset}");
                 while($row = sql_fetch_object($rs)) {
                     $fields = array();
                     $values = array();
