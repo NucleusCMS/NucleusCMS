@@ -145,16 +145,19 @@ if (!function_exists('sql_fetch_assoc'))
             {
                 if (defined('_CHARSET'))
                 {
-                    $charset  = _CHARSET;
+                    $charset  = get_mysql_charset_from_php_charset(_CHARSET);
                 }
                 else
                 {
-                    $resource = $DBH->query("show variables LIKE 'character_set_database'");
-                    $resource->bindColumn('Value', $charset);
-                    $resource->fetchAll();
-                    // in trouble of encoding,uncomment the following line.
-                    // $charset = "ujis";
-                    // $charset = "utf8";
+                    $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+                    $res = sql_query($query, $DBH);
+                    if(!$res) exit('Language name fetch error');
+                    $obj = sql_fetch_object($res);
+                    $Language = $obj->value;
+                    $charset = get_charname_from_langname($Language);
+                    $charsetOfDB = getCharSetFromDB(sql_table('config'),'name', $DBH);
+                    if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+                        $charset = $charsetOfDB; // work around for utf8mb4_general_ci
                 }
                 sql_set_charset($charset , $DBH);
             }
@@ -234,8 +237,11 @@ if (!function_exists('sql_fetch_assoc'))
 //print_r($dbh);
 //echo '<hr />';
 //echo $query.'<hr />';
-        if (is_null($dbh)) $res = $SQL_DBH->query($query);
-        else $res = $dbh->query($query);
+        $db = (!is_null($dbh) ? $dbh : $SQL_DBH);
+        if (is_object($db))
+            $res = $db->query($query);
+        else
+            $res = false;
         if (!$CONF['debug'])
             return $res;
 
@@ -255,8 +261,11 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_error($dbh=NULL)
     {
         global $SQL_DBH;
-        if (is_null($dbh)) $error = $SQL_DBH->errorInfo();
-        else $error = $dbh->errorInfo();
+        $db = (!is_null($dbh) ? $dbh : $SQL_DBH);
+        if ( is_object($db) )
+            $error = $db->errorInfo();
+        else
+            $error = array('Handle is not object','','');
         if ($error[0] != '00000') {
             return $error[0].'-'.$error[1].' '.$error[2];
         }
@@ -736,6 +745,9 @@ if (!function_exists('sql_fetch_assoc'))
                 case 'utf8':
                     $charset = 'utf8';
                     break;
+                case 'utf8mb4':
+                    $charset = 'utf8mb4';
+                    break;
                 case 'euc-jp':
                 case 'ujis':
                     $charset = 'ujis';
@@ -764,6 +776,87 @@ if (!function_exists('sql_fetch_assoc'))
         return $res;
     }
 
+    function get_mysql_charset_from_php_charset($charset = 'utf-8')
+    {
+        switch(strtolower($charset))
+        {
+            case 'utf-8'        : $charset='utf8'; break;
+            case 'euc-jp'       : $charset='ujis'; break;
+            case 'iso-8859-1'   : $charset='latin1'; break;
+            case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
+        }
+        return $charset;
+    }
 
+    function get_charname_from_langname($language_name='english-utf8')
+    {
+        $language_name = strtolower($language_name);
 
+        if(strpos($language_name,'utf8')!==false)
+            return 'utf8';
+
+        switch($language_name)
+        {
+            case 'english':
+            case 'catalan':
+            case 'finnish':
+            case 'french':
+            case 'galego':
+            case 'german':
+            case 'italiano':
+            case 'portuguese_brazil':
+            case 'spanish':
+                $charset_name = 'latin1';
+                break;
+            case 'hungarian': // iso-8859-2
+            case 'slovak': // iso-8859-2
+                $charset_name = 'latin2';
+                break;
+            case 'bulgarian': // iso-8859-5
+                $charset_name = 'koi8r';
+                break;
+            case 'chinese': // gb2312
+            case 'simchinese': // gb2312
+                $charset_name = 'gb2312';
+                break;
+            case 'chineseb5': // big5
+            case 'traditional_chinese': // big5
+                $charset_name = 'big5';
+                break;
+            case 'czech': // windows-1250
+                $charset_name = 'cp1250';
+                break;
+            case 'russian': // windows-1251
+                $charset_name = 'cp1251';
+                break;
+            case 'latvian': // windows-1257
+                $charset_name = 'cp1257';
+                break;
+            case 'nederlands': // iso-8859-15
+                $charset_name = 'latin9';
+                break;
+            case 'japanese-euc':
+                $charset_name = 'ujis';
+                break;
+            case 'korean-euc-kr':
+            case 'korean-utf':
+            case 'persian':
+            default:
+                $charset_name = 'utf8';
+        }
+        return $charset_name;
+    }
+
+    function getCharSetFromDB($tableName,$columnName, $dbh=NULL) {
+        $collation = getCollationFromDB($tableName,$columnName, $dbh);
+        if(strpos($collation,'_')===false) $charset = $collation;
+        else list($charset,$dummy) = explode('_', $collation, 2);
+        return $charset;
+    }
+
+    function getCollationFromDB($tableName,$columnName, $dbh=NULL) {
+        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $dbh);
+        $column = sql_fetch_object($columns);
+        return isset($column->Collation) ? $column->Collation : false;
+    }
 }
