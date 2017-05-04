@@ -84,7 +84,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
         
-        $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('item'));
+        $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
         $res = sql_query($query);
         if(!$res) exit('Language name fetch error');
         $lang = sql_fetch_object($res);
