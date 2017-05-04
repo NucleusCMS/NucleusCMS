@@ -142,20 +142,17 @@ if (!function_exists('sql_fetch_assoc'))
         // for mysql
             if ( $DBH && (stripos($DB_DRIVER_NAME, 'mysql') === 0) )
             {
-                if (defined('_CHARSET'))
-                {
-                    $charset  = _CHARSET;
-                }
-                else
-                {
-                    $resource = $DBH->query("show variables LIKE 'character_set_database'");
-                    $resource->bindColumn('Value', $charset);
-                    $resource->fetchAll();
-                    // in trouble of encoding,uncomment the following line.
-                    // $charset = "ujis";    // Japanese EUC-JP
-                    // $charset = "utf8";
-                }
-                sql_set_charset($charset , $DBH);
+				if (defined('_CHARSET')) {
+					$charset  = get_mysql_charset_from_php_charset(_CHARSET);
+				} else {
+					$query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+					$res = sql_query($query, $DBH);
+					if(!$res) exit('Language name fetch error');
+					$obj = sql_fetch_object($res);
+					$Language = $obj->value;
+					$charset = get_charname_from_langname($Language);
+				}
+				sql_set_charset_v2($charset , $DBH);
             }
 // </add for garble measure>*/
 
@@ -234,6 +231,11 @@ if (!function_exists('sql_fetch_assoc'))
 //echo '<hr />';
 //echo $query.'<hr />';
         $dbh = ( $dbh && is_object($dbh) ? $dbh : $SQL_DBH );
+        if (!is_object($dbh)) {
+			if (!$CONF['debug'])
+				return false;
+			echo "SQL error : db handle is not allocated";
+		}
         $res = $dbh->query($query);
         if (!$CONF['debug'])
             return $res;
@@ -767,6 +769,9 @@ if (!function_exists('sql_fetch_assoc'))
                 case 'utf8':
                     $charset = 'utf8';
                     break;
+				case 'utf8mb4':
+					$charset = 'utf8mb4';
+					break;
                 case 'euc-jp':  // Japanese EUC-JP
                 case 'ujis':
                     $charset = 'ujis';
@@ -809,6 +814,31 @@ if (!function_exists('sql_fetch_assoc'))
         }
         return TRUE;
     }
+
+	function sql_set_charset_v2($charset, $dbh=NULL) {
+		global $DB_DRIVER_NAME, $SQL_DBH;
+		$dbh = ($dbh ? $dbh : sql_get_db());
+		if ( $DB_DRIVER_NAME == 'mysql' ) {
+			$charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$dbh);
+			if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+				$charset = $charsetOfDB; // work around for utf8mb4_general_ci
+			return sql_set_charset($charset, $dbh);
+		} else {
+			return sql_set_charset($charset, $dbh);
+		}
+	}
+
+	function get_mysql_charset_from_php_charset($charset = 'utf-8')
+	{
+		switch(strtolower($charset))
+		{
+			case 'utf-8'        : $charset='utf8'; break;
+			case 'euc-jp'       : $charset='ujis'; break;
+			case 'iso-8859-1'   : $charset='latin1'; break;
+			case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
+		}
+		return $charset;
+	}
 
     function sql_print_error($text)
     {
@@ -986,16 +1016,17 @@ if (!function_exists('sql_fetch_assoc'))
         }
         return $charset_name;
     }
-    
-    function getCharSetFromDB($tableName,$columnName) {
-        $collation = getCollationFromDB($tableName,$columnName);
+
+    function getCharSetFromDB($tableName,$columnName, $dbh=NULL) {
+        $collation = getCollationFromDB($tableName,$columnName,$dbh);
         if(strpos($collation,'_')===false) $charset = $collation;
         else list($charset,$dummy) = explode('_', $collation, 2);
         return $charset;
     }
     
-    function getCollationFromDB($tableName,$columnName) {
-        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'");
+    function getCollationFromDB($tableName,$columnName, $dbh=NULL) {
+        $db = ($dbh ? $dbh : sql_get_db());
+        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $db);
         $column = sql_fetch_object($columns);
         return isset($column->Collation) ? $column->Collation : false;
     }
