@@ -366,13 +366,13 @@ table.navigation {
 table.navigation table {
 	border: none;
 	width: auto;
-	margin0;
+	margin:0;
     display:inline;
 }
 table.navigation form,
 table.navigation input
 {
-	margin0;
+	margin:0;
     display:inline;
 }
 
