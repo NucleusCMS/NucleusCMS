@@ -49,6 +49,13 @@ function upgrade_do380() {
                          ${mode} COLUMN `ballowpast` tinyint(2)   NOT NULL default '1';
                          ", sql_table( 'blog' ));
         upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
+
+        $query = sprintf("ALTER TABLE `%s`
+                    MODIFY COLUMN `ititle` varchar(160)  NOT NULL default '',
+                    MODIFY COLUMN `ibody`  mediumtext    NOT NULL default '',
+                    MODIFY COLUMN `imore`  mediumtext    NOT NULL default '';", sql_table('item'));
+    
+        upgrade_query('Altering ' . sql_table('item') . ' table', $query);
     }
 
 	//  -> 3.80

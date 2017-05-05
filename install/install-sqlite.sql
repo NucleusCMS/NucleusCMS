@@ -206,9 +206,9 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 
 CREATE TABLE IF NOT EXISTS `nucleus_item` (
   `inumber`   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,
-  `ititle`    varchar(160)          default NULL COLLATE NOCASE ,
-  `ibody`     text         NOT NULL COLLATE NOCASE ,
-  `imore`     text COLLATE NOCASE ,
+  `ititle`    varchar(160) NOT NULL default '' COLLATE NOCASE ,
+  `ibody`     text         NOT NULL default '' COLLATE NOCASE ,
+  `imore`     text         NOT NULL default '' COLLATE NOCASE ,
   `iblog`     int(11)      NOT NULL default '0',
   `iauthor`   int(11)      NOT NULL default '0',
   `itime`     datetime     NOT NULL default '0000-00-00 00:00:00',
