@@ -958,7 +958,7 @@ function LoadCoreLanguage()
         return;
     $loaded = TRUE;
 
-    global $DIR_LANG;
+    global $DIR_LANG, $SQL_DBH;
     $language = remove_all_directory_separator(getLanguageName());
     $language = getValidLanguage($language);
     $filename = $DIR_LANG . $language . '.php';
@@ -980,7 +980,10 @@ function LoadCoreLanguage()
             }
         }
     }
-    sql_set_charset(_CHARSET);
+	if (isset($SQL_DBH) && $SQL_DBH)
+	    sql_set_charset_v2(_CHARSET);
+	else
+	    sql_set_charset(_CHARSET);
 
     ini_set('default_charset', _CHARSET);
     if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
