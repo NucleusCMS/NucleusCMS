@@ -35,7 +35,7 @@ class ConvertInstaller
 
     public function __construct($basepath)
     {
-        global $member, $MYSQL_HANDLER, $CONF;
+        global $member, $CONF, $DB_DRIVER_NAME;
         $this->basepath = $basepath;
         $this->target_db_filename = $basepath . 'settings' . DIRECTORY_SEPARATOR . 'db_nucleus.sqlite';
 
@@ -58,9 +58,9 @@ class ConvertInstaller
             exit;
         }
 
-        if (!in_array('mysql', $MYSQL_HANDLER))
+        if ('mysql' != $DB_DRIVER_NAME)
         {
-            $msg = $this->_('Connected Driver is not mysql') . ' : ' . $MYSQL_HANDLER[1];
+            $msg = $this->_('Connected Driver is not mysql') . ' : ' . $DB_DRIVER_NAME;
             $this->error( $msg );
             exit;
         }
@@ -334,12 +334,12 @@ EOD;
     public function getDefaultConfig()
     {
         $short =<<<EOD
-<blockquote><pre style="width:100%; overflow: auto; background-color: #ffffe1"><b>//</b>\$MYSQL_HANDLER = array('mysql','');<b>
-\$MYSQL_HANDLER = array(&#039;pdo&#039;,&#039;sqlite&#039;);
-if (\$MYSQL_HANDLER[1]==&#039;sqlite&#039;)
+<blockquote><pre style="width:100%; overflow: auto; background-color: #ffffe1"><b>//</b>\$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';<b>
+\$DB_DRIVER_NAME = &#039;sqlite&#039;; \$DB_PHP_MODULE_NAME = &#039;pdo&#039;;
+if (\$DB_DRIVER_NAME==&#039;sqlite&#039;)
 {
-   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
-// \$MYSQL_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
+   \$DB_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
+// \$DB_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
 }</b></pre></blockquote>
 EOD;
         return $short;
@@ -382,22 +382,22 @@ EOD;
 // and basic functions that every page can use
 
 // mySQL connection information
-\$MYSQL_HOST     = '$DB_HOST';
-\$MYSQL_USER     = '$DB_USER';
-\$MYSQL_PASSWORD = '$DB_PASSWORD';
-\$MYSQL_DATABASE = '$DB_DATABASE';
-\$MYSQL_PREFIX   = '$DB_PREFIX';
+\$DB_HOST     = '$DB_HOST';
+\$DB_USER     = '$DB_USER';
+\$DB_PASSWORD = '$DB_PASSWORD';
+\$DB_DATABASE = '$DB_DATABASE';
+\$DB_PREFIX   = '$DB_PREFIX';
 
-// new in 3.50. first element is db handler, the second is the db driver used by the handler
-// default is \$MYSQL_HANDLER = array('mysql','');
-//\$MYSQL_HANDLER = array('pdo','mysql');
-\$MYSQL_HANDLER = array('pdo','sqlite');
-//\$MYSQL_HANDLER = array('mysql','');
+global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;
+// default is default is  \$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';
+//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'pdo';
+\$DB_DRIVER_NAME = 'sqlite';  \$DB_PHP_MODULE_NAME = 'pdo';
+//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'mysql';
 
-if (\$MYSQL_HANDLER[1]=='sqlite')
+if (\$DB_DRIVER_NAME=='sqlite')
 {
-   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
-// \$MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
+   \$DB_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+// \$DB_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
 
 // main nucleus directory

@@ -1214,20 +1214,23 @@ function doInstall() {
 
     $configFilename = dirname(dirname(__FILE__)) .DIRECTORY_SEPARATOR. 'config.php';
 	if (@is_file($configFilename) && is_writable($configFilename)) {
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME, $MYSQL_HANDLER;
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
-		$config_data .= "	// database connection information\n";
-		$config_data .= "	\$MYSQL_HOST = '" . $mysql_host . "';\n";
-		$config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
-		$config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
-		$config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
-		$config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
-		$config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
-		$config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','');\n";
-		$config_data .= "	//\$MYSQL_HANDLER = array('mysql','mysql');\n";
-		$config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
-		$config_data .= "	\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
+		$config_data .= "	// Database connection information\n";
+		$config_data .= "	\$DB_HOST = '" . $mysql_host . "';\n";
+		$config_data .= "	\$DB_USER = '" . $mysql_user . "';\n";
+		$config_data .= "	\$DB_PASSWORD = '" . $mysql_password . "';\n";
+		$config_data .= "	\$DB_DATABASE = '" . $mysql_database . "';\n";
+		$config_data .= "	\$DB_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
+		$config_data .= "\n";
+		$config_data .= "	global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;\n";
+		$config_data .= "	// Database driver settings\n";
+		$config_data .= "	// default is  \$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';\n";
+		$config_data .= "	//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'mysql';\n";
+		$config_data .= "	//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'pdo';\n";
+		$config_data .= "	//\$DB_DRIVER_NAME = 'sqlite'; \$DB_PHP_MODULE_NAME = 'pdo';\n";
+		$config_data .= "	\$DB_DRIVER_NAME = '".$DB_DRIVER_NAME."'; \$DB_PHP_MODULE_NAME = '".$DB_PHP_MODULE_NAME."';\n";
 		$config_data .= "\n";
 		$config_data .= "	// main nucleus directory\n";
 		$config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
@@ -1281,7 +1284,9 @@ function doInstall() {
 		echo '<ul><li>' . implode('</li><li>', $aAllErrors) . '</li></ul>';
 	}
 
-	if (!$bConfigWritten) { ?>
+	if (!$bConfigWritten) {
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+?>
 		<h1><?php echo _TITLE3; ?></h1>
 
 		<?php echo _TEXT10; ?>
@@ -1289,18 +1294,20 @@ function doInstall() {
 		<pre style="width: 100%; overflow: auto" id="src_config"><code>&lt;?php
 
 	// Database connection information
-	$MYSQL_HOST = '<b><?php echo $mysql_host?></b>';
-	$MYSQL_USER = '<b><?php echo $mysql_user?></b>';
-	$MYSQL_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
-	$MYSQL_DATABASE = '<b><?php echo $mysql_database?></b>';
-	$MYSQL_PREFIX = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
+	$DB_HOST = '<b><?php echo $mysql_host?></b>';
+	$DB_USER = '<b><?php echo $mysql_user?></b>';
+	$DB_PASSWORD = '<i><b>xxxxxxxxxxx</b></i>';
+	$DB_DATABASE = '<b><?php echo $mysql_database?></b>';
+	$DB_PREFIX   = '<b><?php echo ($mysql_usePrefix == 1)?$mysql_prefix:''?></b>';
 
-    global $MYSQL_HANDLER;
-	// new in 3.50. first element is db handler, the second is the db driver used by the handler
-	// default is $MYSQL_HANDLER = array('mysql','');
-	//$MYSQL_HANDLER = array('mysql','');
-	//$MYSQL_HANDLER = array('pdo','mysql');
-	$MYSQL_HANDLER = array('<?php echo $MYSQL_HANDLER[0];?>','<?php echo $MYSQL_HANDLER[1];?>');
+	global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+	// Database driver settings
+	// default is $DB_DRIVER_NAME = 'mysql'; $DB_PHP_MODULE_NAME = 'mysql';
+	//$DB_DRIVER_NAME = 'mysql'; $DB_PHP_MODULE_NAME = 'mysql';
+	//$DB_DRIVER_NAME = 'mysql'; $DB_PHP_MODULE_NAME = 'pdo';
+	//$DB_DRIVER_NAME = 'sqlite'; $DB_PHP_MODULE_NAME = 'pdo';
+
+	$DB_DRIVER_NAME = '<?php echo $DB_DRIVER_NAME; ?>'; $DB_PHP_MODULE_NAME = '<?php echo $DB_PHP_MODULE_NAME; ?>';
 
 	// main nucleus directory
 	$DIR_NUCLEUS = '<b><?php echo $config_adminpath; ?></b>';
