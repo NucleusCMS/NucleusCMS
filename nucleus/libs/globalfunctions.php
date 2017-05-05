@@ -1455,7 +1455,7 @@ function LoadCoreLanguage()
             }
         }
     }
-    sql_set_charset(_CHARSET);
+    sql_set_charset_v2(_CHARSET);
 
     ini_set('default_charset', _CHARSET);
     if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
