@@ -7465,10 +7465,18 @@ selector();
             }
             if (count($aFound) > 0)
             {
-                startUpError(
-                    _ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
-                    _ERRORS_STARTUPERROR3
-                );
+                $title = _ERRORS_STARTUPERROR3;
+                $msg = _ERRORS_STARTUPERROR1 . implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2;
+                // check core upgrade
+                if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
+                {
+                    $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
+                    $msg = sprintf('<h2>%s</h2>' , hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
+                    sprintf('<div><a style="color:red" href="%s">%s</a>(Current database %d)',
+                            $CONF['IndexURL'] . '_upgrades/' , hsc($link_title), $CONF['DatabaseVersion'])
+                    . '</div><br /><hr />' . $msg;
+                }
+                startUpError($msg, $title);
             }
         }
     }
