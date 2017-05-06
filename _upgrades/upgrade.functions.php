@@ -136,6 +136,9 @@
         upgrade_head();
 
         echo "<h1>" . _UPG_TEXT_EXECUTING_UPGRADES . "</h1>\n<ul>\n";
+
+        if (intGetVar('db_optimize') > 0)
+            upgrade_db_optimize();
     }
 
     function upgrade_end($msg = "") {
@@ -230,7 +233,7 @@
       * @return true if table exists, false otherwise.
       */
     function upgrade_checkIfTableExists($table){
-        $res = sql_query( sprntf("SHOW TABLES LIKE '%s'", sql_table($table)) );
+        $res = sql_query( sprintf("SHOW TABLES LIKE '%s'", sql_table($table)) );
         return ($res != 0) && (sql_num_rows($res) == 1);
     }
 
@@ -261,3 +264,35 @@
         $res = sql_query( sprintf('DESC `%s` `%s`', sql_table($table), $col) );
         return ($res != 0) && (sql_num_rows($res) == 1);
     }
+
+    function upgrade_db_optimize()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME == 'mysql')
+            upgrade_db_optimize_mysql();
+    }
+
+    function upgrade_db_optimize_mysql()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql')
+            return;
+
+        $tables = array();
+        $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
+            $tables[] = $row['Name'];
+
+        if (count($tables)>0)
+        {
+            foreach(array('REPAIR', 'OPTIMIZE') as $cmd) {
+                $sql = $cmd . " TABLE `" . implode("`, `", $tables) . "`";
+                $res = upgrade_query($cmd . ' TABLE', $sql);
+                while($res && ($row = sql_fetch_assoc($res)))
+                {  }
+                if ($res)
+                    sql_free_result($res);
+            }
+        }
+    }
+
