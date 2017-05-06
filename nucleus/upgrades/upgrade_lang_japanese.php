@@ -10,6 +10,7 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
+define('_UPG_TEXT_BACKHOME',  '管理ホームに戻る');
 
 define('_UPG_TEXT_ALREADY_INSTALLED', 'インストール済みです');
 define('_UPG_TEXT_V035_WARN_PING',      '注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。');

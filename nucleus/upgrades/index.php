@@ -92,6 +92,7 @@ if ($from < NUCLEUS_UPGRADE_VERSION_ID)
         $echo[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
     }
 }
+$echo[] = sprintf("<p><a href=\"%s\">%s</a></p>", $CONF['AdminURL'], _UPG_TEXT_BACKHOME);
 
 upgrade_head();
 echo join("\n",$echo);

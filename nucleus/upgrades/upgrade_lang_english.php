@@ -10,6 +10,7 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
+define('_UPG_TEXT_BACKHOME',  'Back to Nucleus management');
 
 define('_UPG_TEXT_ALREADY_INSTALLED', 'already installed');
 define('_UPG_TEXT_V035_WARN_PING',      'Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin');
