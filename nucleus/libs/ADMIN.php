@@ -5528,7 +5528,7 @@ selector();
                     hsc($MYSQL_HANDLER[1]);
             echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
             echo "\t</tr>";
-            // Databese Driver
+            // Database Driver
             echo "\t<tr>\n";
             echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
             echo "\t\t" . '<td>';
@@ -5538,6 +5538,16 @@ selector();
                         echo hsc($MYSQL_HANDLER[0]).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
             echo "</td>\n";
             echo "\t</tr>";
+            // Database charset
+            if (in_array('mysql',$MYSQL_HANDLER)) {
+                echo "\t<tr>";
+                echo "<td>Database charset\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo hsc(getCollationFromDB(sql_table('config'),'name'));
+                echo "</td>\n";
+                echo "\t</tr>";
+            }
             echo "</table>\n";
 
             // Important PHP settings
