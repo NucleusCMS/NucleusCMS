@@ -87,14 +87,15 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             $obj = sql_fetch_object($res);
             $Language = $obj->value;
             $charset = get_charname_from_langname($Language);
-            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name');
-            if($charset !== $charsetOfDB) {
+            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name', $MYSQL_CONN);
+            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+                $charset = $charsetOfDB; // work around for utf8mb4_general_ci
+            else if($charset !== $charsetOfDB) {
                 global $CONF;
                 $CONF['adminAlert'] = '_MISSING_DB_ENCODING';
-                $charset = $charsetOfDB;
             }
         }
-        sql_set_charset($charset);
+        sql_set_charset($charset, $MYSQL_CONN);
         
         return $MYSQL_CONN;
     }
@@ -449,7 +450,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
      * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
      */
-    function sql_set_charset($charset) {
+    function sql_set_charset($charset, $conn=false) {
+        $conn = ($conn ? $conn : sql_get_db());
         $charset = get_mysql_charset_from_php_charset($charset);
         $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
         if (version_compare($mySqlVer, '4.1.0', '>=')) {
@@ -458,15 +460,30 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             
             if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
             {
-                sql_query("SET CHARACTER SET {$charset}");
-                $res = mysql_set_charset($charset);
+                sql_query("SET CHARACTER SET {$charset}",$conn);
+                $res = mysql_set_charset($charset,$conn);
             }
+            elseif($charset==='utf8mb4')
+                $res = sql_query("SET NAMES 'utf8mb4'",$conn);
             elseif($charset==='utf8' && $_CHARSET==='utf-8')
-                $res = sql_query("SET NAMES 'utf8'");
+                $res = sql_query("SET NAMES 'utf8'",$conn);
             elseif($charset==='ujis' && $_CHARSET==='euc-jp')
-                $res = sql_query("SET NAMES 'ujis'");
+                $res = sql_query("SET NAMES 'ujis'",$conn);
         }
         return isset($res) ? $res : false;
+    }
+
+    function sql_set_charset_v2($charset, $conn=false) {
+        global $DB_DRIVER_NAME, $MYSQL_CONN;
+        $conn = ($conn ? $conn : sql_get_db());
+        if ( $DB_DRIVER_NAME == 'mysql' ) {
+            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$conn);
+            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+                $charset = $charsetOfDB; // work around for utf8mb4_general_ci
+            return sql_set_charset($charset, $conn);
+        } else {
+            return sql_set_charset($charset, $conn);
+        }
     }
 
     function get_mysql_charset_from_php_charset($charset = 'utf-8')

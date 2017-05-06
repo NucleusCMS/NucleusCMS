@@ -11,6 +11,8 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+define('_UPG_TEXT_BACKHOME',  'Back to Nucleus management');
+
 define('_UPG_TEXT_UPGRADE_ABORTED',  'Aborted upgrade.');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP',      'It does not support upgrading from older than version 3 core.');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO', 'Please try again to upgrade to version 3.71 or earlier.');

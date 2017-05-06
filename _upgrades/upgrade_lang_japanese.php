@@ -11,6 +11,8 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+define('_UPG_TEXT_BACKHOME',  '管理ホームに戻る');
+
 define('_UPG_TEXT_UPGRADE_ABORTED',  'アップグレードを中止しました。');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP',      'バージョン3より古いコアからのアップグレードはサポートされていません。');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO', 'バージョン3.71以前にアップグレードしてからやり直してください。');

@@ -5707,7 +5707,7 @@ selector();
                     echo hsc($DB_DRIVER_NAME);
             echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
             echo "\t</tr>";
-            // Databese Driver
+            // Database Driver
             echo "\t<tr>\n";
             echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
             echo "\t\t" . '<td>';
@@ -5717,6 +5717,16 @@ selector();
                         echo hsc($DB_PHP_MODULE_NAME).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
             echo "</td>\n";
             echo "\t</tr>";
+            // Database charset
+            if ($DB_DRIVER_NAME == 'mysql') {
+                echo "\t<tr>";
+                echo "<td>Database charset\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo hsc(getCollationFromDB(sql_table('config'),'name'));
+                echo "</td>\n";
+                echo "\t</tr>";
+            }
             echo "</table>\n";
 
             // Important PHP settings
@@ -7455,10 +7465,18 @@ selector();
             }
             if (count($aFound) > 0)
             {
-                startUpError(
-                    _ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
-                    _ERRORS_STARTUPERROR3
-                );
+                $title = _ERRORS_STARTUPERROR3;
+                $msg = _ERRORS_STARTUPERROR1 . implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2;
+                // check core upgrade
+                if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
+                {
+                    $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
+                    $msg = sprintf('<h2>%s</h2>' , hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
+                    sprintf('<div><a style="color:red" href="%s">%s</a>(Current database %d)',
+                            $CONF['IndexURL'] . '_upgrades/' , hsc($link_title), $CONF['DatabaseVersion'])
+                    . '</div><br /><hr />' . $msg;
+                }
+                startUpError($msg, $title);
             }
         }
     }

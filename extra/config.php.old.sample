@@ -3,25 +3,24 @@
 // This file contains variables with the locations of the data dirs
 // and basic functions that every page can use
 
-// Database connection information
-$DB_HOST = 'hostname';
-$DB_USER = 'username';
-$DB_PASSWORD = 'password';
-$DB_DATABASE = 'databasename';
-$DB_PREFIX   = '';
+// mySQL connection information
+$MYSQL_HOST = 'hostname';
+$MYSQL_USER = 'username';
+$MYSQL_PASSWORD = 'password';
+$MYSQL_DATABASE = 'databasename';
+$MYSQL_PREFIX = '';
 
-global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
-// Database driver settings
-// default is  $DB_DRIVER_NAME = 'mysql'; $DB_PHP_MODULE_NAME = 'mysql';
-//$DB_DRIVER_NAME = 'mysql';  $DB_PHP_MODULE_NAME = 'mysql';
-//$DB_DRIVER_NAME = 'mysql';  $DB_PHP_MODULE_NAME = 'pdo';
-//$DB_DRIVER_NAME = 'sqlite'; $DB_PHP_MODULE_NAME = 'pdo';
-$DB_DRIVER_NAME = 'mysql'; $DB_PHP_MODULE_NAME = 'mysql';
+// new in 3.50. first element is db handler, the second is the db driver used by the handler
+// default is $MYSQL_HANDLER = array('mysql','');
+//$MYSQL_HANDLER = array('mysql','');
+//$MYSQL_HANDLER = array('pdo','mysql');
+//$MYSQL_HANDLER = array('pdo','sqlite');
+$MYSQL_HANDLER = array('mysql','');
 
-if ($DB_DRIVER_NAME=='sqlite')
+if ($MYSQL_HANDLER[1]=='sqlite')
 {
-   $DB_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
-// $DB_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
+   $MYSQL_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+// $MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
 
 // main nucleus directory
@@ -50,7 +49,7 @@ if (!isset($DIR_NUCLEUS) || !@is_file($DIR_LIBS . 'globalfunctions.php')) {
     header('Content-type: text/html; charset=utf-8');
     echo '<h1>Configuration error</h1>';
     echo '<p>please run the <a href="./install/index.php">install script</a> or modify config.php</p>';
-    exit;
+	exit;
 }
 
 // include libs

@@ -45,6 +45,9 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'Database upgrade is required.');
+define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'Click here to upgrade the database to Nucleus v%s');
+
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal published');

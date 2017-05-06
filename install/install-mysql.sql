@@ -40,7 +40,6 @@ CREATE TABLE `nucleus_blog` (
   `bfuturepost`    tinyint(2)   NOT NULL default '0',
   `bauthorvisible` tinyint(2)   NOT NULL default '1',
   PRIMARY KEY  (`bnumber`),
---  UNIQUE KEY `bnumber` (`bnumber`),
   UNIQUE KEY `bshortname` (`bshortname`)
 ) ENGINE=MyISAM;
 
@@ -78,7 +77,6 @@ CREATE TABLE `nucleus_comment` (
   `cip`     varchar(15)  NOT NULL default '',
   `cblog`   int(11)      NOT NULL default '0',
   PRIMARY KEY  (`cnumber`),
---  UNIQUE KEY `cnumber` (`cnumber`),
   KEY `citem` (`citem`),
   FULLTEXT KEY `cbody` (`cbody`),
   INDEX `cblog` (`cblog`)
@@ -128,9 +126,9 @@ INSERT INTO `nucleus_config` VALUES ('AdminCSS', 'contemporary');
 
 CREATE TABLE `nucleus_item` (
   `inumber`   int(11)      NOT NULL auto_increment,
-  `ititle`    varchar(160)          default NULL,
-  `ibody`     mediumtext         NOT NULL,
-  `imore`     mediumtext,
+  `ititle`    varchar(160) NOT NULL default '',
+  `ibody`     mediumtext   NOT NULL default '',
+  `imore`     mediumtext   NOT NULL default '',
   `iblog`     int(11)      NOT NULL default '0',
   `iauthor`   int(11)      NOT NULL default '0',
   `itime`     datetime     NOT NULL default '2002-11-16 15:19:00',
@@ -169,7 +167,6 @@ CREATE TABLE `nucleus_member` (
   `mhalt`      tinyint(2)   NOT NULL default '0',
   `mhalt_reason`  varchar(100) NOT NULL default '',
   PRIMARY KEY  (`mnumber`),
---  UNIQUE KEY `mnumber` (`mnumber`),
   UNIQUE KEY `mname` (`mname`)
 ) ENGINE=MyISAM;
 
@@ -191,7 +188,6 @@ CREATE TABLE `nucleus_plugin` (
   `pfile`  varchar(40) NOT NULL default '',
   `porder` int(11)     NOT NULL default '0',
   PRIMARY KEY     (`pid`),
---  KEY `pid` (`pid`),
   KEY    `porder` (`porder`)
 ) ENGINE=MyISAM;
 
@@ -240,7 +236,6 @@ CREATE TABLE `nucleus_skin_desc` (
   `sdincmode` varchar(10) NOT NULL default 'normal',
   `sdincpref` varchar(50) NOT NULL default '',
   PRIMARY KEY  (`sdnumber`),
---  UNIQUE KEY `sdnumber` (`sdnumber`),
   UNIQUE KEY `sdname` (`sdname`)
 ) ENGINE=MyISAM;
 
@@ -283,7 +278,6 @@ CREATE TABLE `nucleus_template_desc` (
   `tdname`   varchar(64) NOT NULL default '',
   `tddesc`   varchar(200)         default NULL,
   PRIMARY KEY  (`tdnumber`),
---  UNIQUE KEY `tdnumber` (`tdnumber`),
   UNIQUE KEY `tdname` (`tdname`)
 ) ENGINE=MyISAM;
 

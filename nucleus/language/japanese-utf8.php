@@ -43,6 +43,9 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'データベースのアップグレードが必要です');
+define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
+
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開中');
