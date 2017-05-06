@@ -88,10 +88,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             $Language = $obj->value;
             $charset = get_charname_from_langname($Language);
             $charsetOfDB = getCharSetFromDB(sql_table('config'),'name');
-            if($charset !== $charsetOfDB) {
+            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+                $charset = $charsetOfDB; // work around for utf8mb4_general_ci
+            else if($charset !== $charsetOfDB) {
                 global $CONF;
                 $CONF['adminAlert'] = '_MISSING_DB_ENCODING';
-                $charset = $charsetOfDB;
             }
         }
         sql_set_charset($charset);
@@ -461,6 +462,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
                 sql_query("SET CHARACTER SET {$charset}");
                 $res = mysql_set_charset($charset);
             }
+            elseif($charset==='utf8mb4')
+                $res = sql_query("SET NAMES 'utf8mb4'");
             elseif($charset==='utf8' && $_CHARSET==='utf-8')
                 $res = sql_query("SET NAMES 'utf8'");
             elseif($charset==='ujis' && $_CHARSET==='euc-jp')
