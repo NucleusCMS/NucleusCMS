@@ -3,7 +3,7 @@
 	<head>
 		<!--
 			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
-			Copyright (C) 2002-2016 The Nucleus Group
+			Copyright (C) 2002-2017 The Nucleus Group
 
 			This program is free software; you can redistribute it and/or
 			modify it under the terms of the GNU General Public License
@@ -48,7 +48,7 @@
 
 		<ul>
 			<li><a href="#about">Nucleus CMS とは</a></li>
-			<li><a href="#license">GPLライセンスについて</a></li>
+			<li><a href="#license">ライセンスについて</a></li>
 			<li><a href="#installation">インストールガイド</a></li>
 			<li><a href="skins.html">スキンとテンプレートの編集(ページデザイン)</a> (別ファイル)</li>
 			<li><a href="#security">セキュリティについて</a></li>
@@ -58,7 +58,7 @@
 			<li><a href="#trouble">困った時は (FAQ)</a></li>
 			<li><a href="tips.html">便利な使い方のヒント</a> (別ファイル)</li>
 			<li><a href="history.html">履歴</a> (別ファイル)</li>
-			<li><a href="#credits">謝辞</a></li>
+			<li><a href="#acknowledgments">謝辞</a></li>
 		</ul>
 
 		<h1>Nucleus とは<a name="about" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
@@ -99,7 +99,7 @@
 
 		<ul>
 			<li>Webサーバー</li>
-			<li><a href="http://jp.php.net/manual/ja/">PHP</a> (バージョン 5.0.5 - 7.1, PHP5.6以降を推奨)</li>
+			<li><a href="http://php.net/manual/ja/">PHP</a> (バージョン 5.0.5 - 7.1, PHP5.6以降を推奨)</li>
 			<li>データベース: MySQL または SQLite のいづれか１つ必要になります
 				<ul>
 					<li><a href="http://dev.mysql.com/doc/">MySQL</a> データベース (バージョン 5 以降) または <a href="https://mariadb.org/">MariaDB</a> (バージョン 5.5, 10.0 以降)</li>
@@ -128,12 +128,12 @@
 		<p>
 			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 			<br />
-			Copyright (C) 2002-2016 The Nucleus Group
+			Copyright (C) 2002-2017 The Nucleus Group
 		</p>
 
 		<p>このプログラムはフリーウェアです。
-		フリーソフトウェア財団(the Free Software Foundation)が公表したGNU一般公共使用許諾(GNU General Public License)の
-		「バージョン2」或いはそれ以降の各バージョンの中からいずれかを選択し、
+		フリーソフトウェア財団(the Free Software Foundation)が公表した<a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU一般公共使用許諾(GNU General Public License)の
+		「バージョン2」</a>或いはそれ以降の各バージョンの中からいずれかを選択し、
 		そのバージョンが定める条項に従ったうえで、本プログラムの再配布・改変を認めています。</p>
 
 		<p>このプログラムがご自身の使用目的に合ったものであれば幸いです。
@@ -141,9 +141,12 @@
 		いかなる保証もいたしません。
 		詳細につきましてはGNU 一般公有使用許諾書をお読みください。</p>
 
-		<p>このプログラムと併せて<a href="../../license.txt">GNU General Public Licenseのコピー</a>
-		をお受け取りのはずかと思いますが、受取られていない方は「Free Software
-		Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA」までその旨をお知らせ下さい。</p>
+		<p>このプログラムと併せて<a href="../../documentation/licenses/nucleus/license.txt">GNU General Public Licenseのコピー</a>
+		をお受け取りのはずかと思いますが、お受け取りになられていない場合は、<a href="https://www.gnu.org/licenses/gpl-2.0.txt">こちらにアクセス</a>してコピーをお受け取りください</p>
+
+		<p>
+			付属するライブラリ等の使用にあたり、それらの各ライセンスに同意する必要があります。
+		</p>
 
 		<p>
 			このソフトウェアを所有することは、これらの条件に同意することを意味します。これらの条件に同意されない方は、所持するこのソフトウェアのコピーを削除してください。
@@ -327,6 +330,9 @@
 
 
 		<h1>XML-RPC インターフェイス <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+		<div class="note">
+			※この機能はメンテナンスされていません。
+		</div>
 
 		<div class="note">
 			Nucleusの XML-RPC インターフェイスのURL:
@@ -369,7 +375,7 @@
 		<div class="faq">
 			<div class="question">トップページにアクセスすると「Connection Error」と表示されました。なぜですか？</div>
 			<div class="answer">
-			Nucleusがデータベースサーバにアクセスできないことを意味しています。<i>config.php</i>の最初で定義しているデータベース接続情報が正確かどうかをもう一度確認してみてください(パスワードがxxxxxxのままというケースがよくあります)。 また、本当にmySQLサーバがダウンしているのが原因かもしれません。
+			データベースサーバにアクセスできないことを意味しています。<i>config.php</i>の最初で定義しているデータベース接続情報が正確かどうかをもう一度確認してみてください(パスワードがxxxxxxのままというケースがよくあります)。 また、本当にmySQLサーバがダウンしているのが原因かもしれません。
 			</div>
 		</div>
 
@@ -391,18 +397,17 @@
 		</div>
 
 
-		<h1>謝辞 <a name="credits" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+		<h1>謝辞 <a name="acknowledgments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 		<h2>作者</h2>
 
 		<ul>
-			<li>Wouter Demuynck</li>
+			<li>The Nucleus Group , The NucleusCMS Japan Team , その他の作者の方々 </li>
 		</ul>
 
 		<h2>コアファイル改良</h2>
-
 		<ul>
-			<li>その他たくさんの方々... (<a href="history.html">開発履歴</a>をご覧下さい)</li>
+			<li>たくさんの方々... (<a href="history.html">開発履歴</a>, <a href="contributors.html">貢献者一覧</a>をご覧下さい)</li>
 		</ul>
 
 		<h2>ライブラリなど</h2>
@@ -414,7 +419,6 @@
 			<li>Jeff MacMichael氏（NP_SkinFiles プラグイン）</li>
 			<li>Ivan Fong氏、Moraes氏、Hcgtv氏（Nucleus 3.2 標準スキン）</li>
 			<li>各種プラグイン作者の方々</li>
-			<li>言語ファイルを提供してくださった方々 (<a href="http://nucleuscms.org/languages.php">NucleusのWebサイトにて言語ファイルのダウンロードができます</a>)</li>
 			<li>ロゴを作成してくださったRodrigo Moraes氏</li>
 			<li>RSS 2.0 スキン作成された <a href="http://www.xiffy.nl">Xiffy</a>氏</li>
 			<li>バックアップ/リストア部分の開発の元にさせていただいた <a href="http://phpbb.sourceforge.net/">phpBB</a> </li>

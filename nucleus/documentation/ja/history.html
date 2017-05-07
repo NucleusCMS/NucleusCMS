@@ -62,25 +62,26 @@
 		<li>[重要,新機能] pluginのsupportsFeatureに 'SqlApi_SQL92' , 'SqlApi_ドライバ名' が追加されました。</li>
 		<li>[新機能] インストーラー：SQLiteインストールが追加されました。(実験的)<br />
 			mysqlからデータを移行したい場合は、<a href="../../../_upgrades/conv-sqlite/">_upgrades/conv-sqlite/</a>にアクセスしてください。変換は一方通行です。現時点において、sqliteのデータをmysqlに戻す機能はありません。</li>
-		<li>[変更]: インストーラー：メールアドレスに ～@localhost を使用できるように変更しました。</li>
-		<li>[変更]: スキンテーブルに 列spartstypeを追加しパーツとページを分離しました。</li>
+		<li>[変更] インストーラー：メールアドレスに ～@localhost を使用できるように変更しました。</li>
+		<li>[変更] スキンテーブルに 列spartstypeを追加しパーツとページを分離しました。</li>
+		<li>[変更] プラグインロード中のエラー発生時に実行が中断されないようにtryエラー処理を追加しました(PHP7以降のみ)。</li>
 		</ul>
 	</li>
 	<li>
 		<strong>Nucleus v3.71(2016年?月?日)</strong>
 		<ul>
 			<li>[重要] CVE-2011-3760 : Nucleusのシステム情報を取得される脆弱性を修正(重要度・低)</li>
-			<li>[不具合修正]: Fatal error: Using $this : MEMBER::create()</li>
+			<li>[不具合修正] Fatal error: Using $this : MEMBER::create()</li>
 			<li>[新機能] PHP7対応(インストーラ調整・mysql関数のラッパー組み込みなど)</li>
 			<li>[新機能] アイテム一覧画面にアイテム複製機能を追加</li>
 			<li>[新機能] カテゴリの並べ替え機能(categoryテーブルにcorderを追加)</li>
-			<li>[変更]: 更新 - xmlrpc.inc.php 2.2 から 3.0.1 に変更しました</li>
-			<li>[変更]: NP_Ping プラグインがパッケージから削除されました。</li>
-			<li>[変更]: ルートフォルダのbenchmark.incを削除</li>
-			<li>[変更]: Nucleus version 3.4以降から更新されていない言語ファイルの整理.</li>
-			<li>[追加]: Utils.php , version.php を nucleus/libs/ フォルダに追加しました。</li>
-			<li>[追加]: nucleus_version_compare 関数が追加されました。</li>
-			<li>その他: 不具合修正、関数追加など</li>
+			<li>[変更] 更新 - xmlrpc.inc.php 2.2 から 3.0.1 に変更しました</li>
+			<li>[変更] NP_Ping プラグインがパッケージから削除されました。</li>
+			<li>[変更] ルートフォルダのbenchmark.incを削除</li>
+			<li>[変更] Nucleus version 3.4以降から更新されていない言語ファイルの整理.</li>
+			<li>[追加] Utils.php , version.php を nucleus/libs/ フォルダに追加しました。</li>
+			<li>[追加] nucleus_version_compare 関数が追加されました。</li>
+			<li>[その他] 不具合修正、関数追加など</li>
 		</ul>
 	</li>
 </ul>
