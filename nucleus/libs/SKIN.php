@@ -88,12 +88,26 @@ class SKIN {
 		return self::existsSpecialPageName($this->id, $name);
 	}
 
+	public static function existsSpecialPartsName($skinid, $name)
+	{
+		return self::existsSpecialNameEx($skinid, $name, 'parts');
+	}
+
 	public static function existsSpecialPageName($skinid, $name)
+	{
+		return self::existsSpecialNameEx($skinid, $name, 'specialpage');
+	}
+
+	public static function existsSpecialNameEx($skinid, $name, $spartstype = 'specialpage')
 	{
 		global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
-		$sql = sprintf("SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d AND spartstype = 'specialpage'",
-						sql_table('skin'), intval($skinid));
+        $exp = '';
+        if ($spartstype !== '')
+            $exp = sprintf(" AND spartstype = '%s'", ($spartstype == 'specialpage' ? 'specialpage' : 'parts' ));
+
+		$sql = sprintf("SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d ",
+						sql_table('skin'), intval($skinid)) . $exp;
 
 		if ($DB_PHP_MODULE_NAME == 'pdo') {
 			if (stripos('sqlite' , $DB_DRIVER_NAME ) !== false)
