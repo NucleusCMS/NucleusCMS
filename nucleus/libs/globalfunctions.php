@@ -20,7 +20,7 @@ global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 //if (version_compare(phpversion(),'5.3.0','<')) {
-//    exit('The server module does not meet the execution minimum requirement. (-.-).');
+//    exit('The php of server module does not meet the execution minimum requirement. (-.-).');
 //}
 
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));

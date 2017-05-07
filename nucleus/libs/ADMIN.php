@@ -423,8 +423,10 @@ class ADMIN {
             $query .= $this->getQueryFilterForItemlist01(intval($blogid), $v);
         }
 
-        if ($search)
-            $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
+		if ($search) {
+			$query .= ' and ((ititle LIKE \'%' . sql_real_escape_string($search) . '%\') or (ibody LIKE \'%'
+					. sql_real_escape_string($search) . '%\') or (imore LIKE \'%' . sql_real_escape_string($search) . '%\'))';
+		}
 
         // non-blog-admins can only edit/delete their own items
         if (!$member->blogAdminRights($blogid))
@@ -790,10 +792,10 @@ class ADMIN {
         global $manager;
         $this->pagehead();
         ?>
-        <h2><?php echo _MOVE_TITLE?></h2>
+        <h2><?php echo _MOVE_TITLE; ?></h2>
         <form method="post" action="index.php"><div>
 
-            <input type="hidden" name="action" value="batch<?php echo $type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $type; ?>" />
             <input type="hidden" name="batchaction" value="move" />
             <?php
                 $manager->addTicketHidden();
@@ -809,7 +811,7 @@ class ADMIN {
             ?>
 
 
-            <input type="submit" value="<?php echo _MOVE_BTN?>" onclick="return checkSubmit();" />
+            <input type="submit" value="<?php echo _MOVE_BTN; ?>" onclick="return checkSubmit();" />
 
         </div></form>
         <?php       $this->pagefoot();
@@ -909,7 +911,9 @@ class ADMIN {
                   if (isset($o) && is_object($o))
                     {
                         $s .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>'
-                                    , hsc($o->corder), hsc($o->cname), hsc($o->cdesc)
+                                    , hsc($o->corder)
+                                    , hsc($o->cname)
+                                    , hsc($o->cdesc)
                         );
                         continue;
                     }
@@ -921,7 +925,9 @@ class ADMIN {
               echo "<p>". _CAHANGE_CATEGORY_ORDER_CONFIRM_DESC . "</p>\n";
               echo "<table>"
                 . sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>'
-                          , hsc( _LISTS_ORDER ), hsc( _LISTS_NAME ), hsc( _LISTS_DESC )
+                          , hsc( _LISTS_ORDER )
+                          , hsc( _LISTS_NAME )
+                          , hsc( _LISTS_DESC )
                         )
                 . $s . "</table>\n";
           }
@@ -970,6 +976,42 @@ class ADMIN {
         exit;
     }
 
+	function batchAskConfirmation($batchtype, $ids, $batchaction, $title, $title_confirm_btn) {
+		global $manager;
+
+		$this->pagehead();
+		$type = $batchtype;
+		?>
+		<h2><?php echo $title; ?></h2>
+		<form method="post" action="index.php"><div>
+
+			<input type="hidden" name="action" value="batch<?php echo $type; ?>" />
+			<?php $manager->addTicketHidden(); ?>
+			<input type="hidden" name="batchaction" value="<?php echo $batchaction; ?>" />
+			<input type="hidden" name="confirmation" value="yes" />
+			<?php			   // insert selected item numbers
+				$idx = 0;
+				foreach ($ids as $id)
+					echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+
+				// add hidden vars for team & comment
+				if ($type == 'team')
+				{
+					echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
+				}
+				if ($type == 'comment')
+				{
+					echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
+				}
+
+			?>
+
+			<input type="submit" value="<?php echo $title_confirm_btn; ?>" onclick="return checkSubmit();" />
+
+		</div></form>
+		<?php	   $this->pagefoot();
+		exit;
+	}
 
     /**
      * Inserts a HTML select element with choices for all categories to which the current
@@ -1102,7 +1144,7 @@ class ADMIN {
           }
 
         if ($search)
-            $query .= ' and ((ititle LIKE "%' . sql_real_escape_string($search) . '%") or (ibody LIKE "%' . sql_real_escape_string($search) . '%") or (imore LIKE "%' . sql_real_escape_string($search) . '%"))';
+            $query .= ' and ((ititle LIKE \'%' . sql_real_escape_string($search) . '%\') or (ibody LIKE \'%' . sql_real_escape_string($search) . '%\') or (imore LIKE \'%' . sql_real_escape_string($search) . '%\'))';
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1182,7 +1224,7 @@ class ADMIN {
         $query = ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
         if ($search)
-            $query .= ' and cbody LIKE "%' . sql_real_escape_string($search) . '%"';
+            $query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1292,7 +1334,7 @@ class ADMIN {
         if ($member->isAdmin() || $member->isBlogAdmin($blogid))
         {
             $query_view =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem';
-            $query =  ' FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember WHERE cblog=' . intval($blogid);
+            $query =  ' FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember';
         }
         else
         {
@@ -1301,9 +1343,9 @@ class ADMIN {
                     ' LEFT OUTER JOIN '.sql_table('member').
                     '  ON mnumber=cmember'.
                     ' LEFT OUTER JOIN '.sql_table('item').
-                    '  ON citem=inumber '.
-                    ' WHERE cblog=' . intval($blogid);
+                    '  ON citem=inumber ';
         }
+		$query .= ' WHERE cblog=' . intval($blogid);
 
         if ($search != '')
             $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
@@ -2274,11 +2316,12 @@ class ADMIN {
                 $this->error(_ERROR_ATLEASTONEADMIN);
         }
 
-        if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
+        if ($CONF['AllowLoginEdit'] || $member->isAdmin())
+        {
             $mem->setDisplayName($name);
-            if ($password)
-                $mem->setPassword($password);
         }
+        if ($password)
+            $mem->setPassword($password);
 
         $oldEmail = $mem->getEmail();
 
@@ -2290,7 +2333,8 @@ class ADMIN {
 
 
         // only allow super-admins to make changes to the admin status
-        if ($member->isAdmin()) {
+        if ($member->isAdmin())
+        {
             $mem->setAdmin($admin);
             $mem->setCanLogin($canlogin);
 			if ($mem->id != $member->id)
@@ -2315,7 +2359,9 @@ class ADMIN {
         // if email changed, generate new password
         if ($oldEmail != $mem->getEmail())
         {
-            $mem->sendActivationLink('addresschange', $oldEmail);
+            if (!$mem->isHalt()) {
+                $mem->sendActivationLink('addresschange', $oldEmail);
+            }
             // logout member
             $mem->newCookieKey();
 
@@ -3683,9 +3729,13 @@ class ADMIN {
 		echo "<p>" . _NUMBER_OF_POST . " : <b>" . $totalposts . "</b></p>";
 		echo "<p>" . _NUMBER_OF_COMMENT . " : <b>" . $totalcomments . "</b></p>";
 
-		echo "<p>" . _ADMIN_CAN_DELETE . " : <b>" . ($mem->canBeDeleted() ? _YES : _NO ) . "</b></p>";
+		$canBeDeleted = $mem->canBeDeleted();
+		echo "<p>" . _ADMIN_CAN_DELETE . " : <b>" . ($canBeDeleted ? _YES : _NO ) . "</b></p>";
 
 		echo "<p>" . _WARNINGTXT_NOTDELMEDIAFILES . "</p>";
+		if (!$canBeDeleted)
+			echo "<p>" . _ERROR_DELETEMEMBER . "</p>";
+		else {
 		?>
             <form method="post" action="index.php"><div>
             <input type="hidden" name="action" value="memberdeleteconfirm" />
@@ -3694,6 +3744,7 @@ class ADMIN {
             <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
             </div></form>
         <?php
+		}
         $this->pagefoot();
     }
 
