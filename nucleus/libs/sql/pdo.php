@@ -55,6 +55,13 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_connect_args($db_host = 'localhost', $db_user = '', $db_password = '', $db_name = '') {
         global $CONF, $DB_DRIVER_NAME;
 
+        if (!class_exists('PDO')) {
+            exit('Critical error. pdo module is not loaded.');
+        }
+        if (!(defined('PDO::ATTR_SERVER_VERSION'))) {
+            exit('The php of server does not meet the execution minimum requirement.');
+        }
+
         try {
             if (strpos($db_host,':') === false) {
                 $host = $db_host;
@@ -136,7 +143,6 @@ if (!function_exists('sql_fetch_assoc'))
                 break;
             }
 
-// <add for garble measure>
         // for mysql
             if ( $DBH && (stripos($DB_DRIVER_NAME, 'mysql') === 0) )
             {
@@ -157,8 +163,13 @@ if (!function_exists('sql_fetch_assoc'))
                         $charset = $charsetOfDB; // work around for utf8mb4_general_ci
                 }
                 sql_set_charset($charset , $DBH);
+
+                if ($DBH && version_compare(PHP_VERSION, '5.2.0', '<' ))
+                {
+                    // HY000-2014 Cannot execute queries while other unbuffered queries are active.
+                    $DBH->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+                }
             }
-// </add for garble measure>*/
 
         } catch (PDOException $e) {
             $DBH =NULL;
