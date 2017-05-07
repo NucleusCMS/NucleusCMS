@@ -81,7 +81,7 @@ elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
     $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET));
 } else {
     $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
-    $messages[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s">%s</a></p>', $current , $tmp_title);
+    $messages[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s&db_optimize=1">%s</a></p>', $current , $tmp_title);
     $messages[] = '<div class="note">';
     $messages[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
     $messages[] = '</div>';
