@@ -23,6 +23,8 @@ $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 //    exit('The server module does not meet the execution minimum requirement. (-.-).');
 //}
 
+define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
+
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
