@@ -257,7 +257,42 @@ class MANAGER
       * 
       * private
       */
-    function _loadPlugin($NP_Name)
+    private function _loadPlugin($NP_Name)
+    {
+        if (!HAS_CATCH_ERROR) {
+            $this->_loadPluginRaw($NP_Name);
+            return class_exists($NP_Name);
+        }
+        return $this->_loadPluginTry($NP_Name);
+    }
+
+    private function _loadPluginTry($NP_Name)
+    {
+        $success = false;
+        try
+        {
+            $this->_loadPluginRaw($NP_Name);
+            $success = class_exists($NP_Name);
+        }
+        catch (Error $e)
+        {
+            global $member, $CONF;
+            if ($member && $member->isLoggedIn() && $member->isAdmin())
+            {
+                $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                               $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                if ($CONF['DebugVars'])
+                {
+                    var_dump($e->getMessage());
+                    // $e->getTraceAsString
+                }
+                ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+            }
+        }
+       return $success;
+    }
+
+    private function _loadPluginRaw($NP_Name)
     {
         if (class_exists($NP_Name))
             return ;
