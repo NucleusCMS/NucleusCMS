@@ -4893,7 +4893,7 @@ selector();
             $tabstart = 75;
             $s = '';
             while ($row = sql_fetch_assoc($res)) {
-                $s .= '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
+                $s .= '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc($row['stype']) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
             }
             if ($s) echo '<ul>'.$s.'</ul>';
         }
@@ -4995,7 +4995,7 @@ selector();
         ?>
         <p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo hsc($skin->getName()) ?>': <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
+        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo hsc($skin->getName()) ?>': <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type); ?></h2>
 
         <?php           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
         ?>
@@ -5011,7 +5011,7 @@ selector();
 
         <input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
         <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+        (skin type: <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type); ?>)
         <?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
             help('skinpart' . $type);
         } else {
@@ -5024,7 +5024,7 @@ selector();
         <br />
         <input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
         <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+        (skin type: <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type); ?>)
 
         <br /><br />
         <?php echo _SKIN_ALLOWEDVARS?>
