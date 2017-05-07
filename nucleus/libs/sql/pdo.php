@@ -811,10 +811,7 @@ if (!function_exists('sql_fetch_assoc'))
             }
 
             $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($db))));
-            if (version_compare($mySqlVer, '4.1.0', '>='))
-            {
-                $res = $db->exec("SET CHARACTER SET " . $charset);
-            }
+            $res = $db->exec("SET CHARACTER SET " . $charset);
             return $res;
         }
         return TRUE;

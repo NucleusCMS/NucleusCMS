@@ -964,8 +964,7 @@ function doInstall() {
 	if ($mysql_create == 1) {
 		$sql = "CREATE DATABASE `{$mysql_database}`";
 		
-	if (version_compare($mySqlVer, '4.1.0', '>='))
-		$sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
+	$sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
 	
 		sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
 	}
@@ -1009,8 +1008,6 @@ function doInstall() {
 	else
 	{ // mysql
 		$queries = file_get_contents('install-mysql.sql');
-		if (version_compare($mySqlVer, '5.0.0', '<'))
-		  $queries = str_replace ( 'ENGINE=MyISAM' , 'TYPE=MyISAM' , $queries );
 		$queries = preg_split("#(;\n|;\r)#m", $queries);
 	}
 
@@ -1055,7 +1052,7 @@ function doInstall() {
 			}
 			
 			if ($is_install_mysql)
-			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && version_compare($mySqlVer, '4.1.0', '>='))
+			if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0)
 			{
 				$query .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
 			}
