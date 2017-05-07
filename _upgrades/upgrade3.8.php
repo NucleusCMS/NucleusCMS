@@ -58,7 +58,67 @@ function upgrade_do380() {
         upgrade_query('Altering ' . sql_table('item') . ' table', $query);
     }
 
+    upgrade_do380_Skin_UpgardeAddColumnSpartstype();
+
 	//  -> 3.80
 	// update database version
 	update_version('380');
+}
+
+function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
+{
+    global $DB_DRIVER_NAME;
+
+    if ( sql_existTableColumnName(sql_table('skin'), 'spartstype' ))
+        return;
+
+    $upgrade_msg = sprintf("Altering TABLE `%s` ", sql_table('skin'));
+
+    if ($DB_DRIVER_NAME == 'mysql')
+    {
+        $sql = sprintf('ALTER TABLE `%s` ', sql_table('skin'))
+             . "ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts', "
+             . 'DROP PRIMARY KEY, ADD PRIMARY KEY (`sdesc`,`stype`,`spartstype`);';
+        upgrade_query($upgrade_msg, $sql);
+        return;
+    }
+    else if ($DB_DRIVER_NAME == 'sqlite')
+    {
+        $dbh =  sql_get_db();
+        $sql = '';
+        if ($dbh->beginTransaction())
+        {
+            $isSuccess = True;
+            // table
+            $isSuccess = $dbh->query(sprintf("ALTER TABLE `%s` RENAME TO `%s`", sql_table('skin'), sql_table('old_skin')));
+            if ($isSuccess)
+            {
+                $sql = sprintf("CREATE TABLE IF NOT EXISTS `%s` (
+                                  `sdesc`    int(11)     NOT NULL default '0',
+                                  `stype`    varchar(20) NOT NULL default '' COLLATE NOCASE ,
+                                  `scontent` text        NOT NULL ,
+                                  `spartstype`  varchar(20) NOT NULL default 'parts' ,
+                                  PRIMARY KEY  (`sdesc`,`stype`)
+                                )", sql_table('skin'));
+                $isSuccess = $dbh->query($sql);
+                if ($isSuccess)
+                {
+                    $sql = sprintf("INSERT INTO `%s` (`sdesc`, `stype`, `scontent`, `spartstype`) "
+                                    . "SELECT `sdesc`, `stype`, `scontent`, 'parts' AS `spartstype` FROM `%s`",
+                                    sql_table('skin'), sql_table('old_skin'));
+                    $isSuccess = ($dbh->exec($sql) !== FALSE);
+                }
+                if ($isSuccess)
+                    $isSuccess = $dbh->query(sprintf("DROP TABLE `%s`", sql_table('old_skin')));
+            }
+            if ($isSuccess && $dbh->commit())
+            {
+                upgrade_query($upgrade_msg, "SELECT 'OK'");
+                return;
+            }
+            $dbh->rollBack();
+        }
+        upgrade_query($upgrade_msg, "Failure");
+    }
+
 }

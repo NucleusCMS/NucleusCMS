@@ -1134,8 +1134,15 @@ function selector() {
         $skinid = $blog->getDefaultSkin();
     }
 
+	$skin_options = array('spartstype'=>'parts');
+
     //$special = requestVar('special'); //get at top of file as global
-    if (!empty($special) && isValidSkinPartsName($special)) {
+    if (!empty($special) && isValidSkinSpecialPageName($special)) {
+        if (!$skinid)
+            doError(_ERROR_SKIN);
+        if (!$skinid || !SKIN::existsSpecialPageName($skinid, $special))
+            doError(_ERROR_NOSUCHPAGE);
+        $skin_options['spartstype'] = 'specialpage';
         $type = strtolower($special);
     }
 
@@ -1146,11 +1153,12 @@ function selector() {
     }
     
     // set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
-    global $skinpart;
+	global $skinpart, $skin_sparts_type;
     $skinpart = $type;
+	$skin_sparts_type = $skin_options['spartstype']; // parts or specialpage
     
     // parse the skin
-    $skin->parse($type);
+	$skin->parse($type, $skin_options);
 
     // check to see we should throw JustPosted event
     $blog->checkJustPosted();
@@ -1177,6 +1185,13 @@ function doError($msg, $skin = '') {
             $skin = new SKIN($CONF['BaseSkin']);
         }
 
+    }
+
+    if ($manager->existsBlogID($blogid) )
+    {
+        $blog =& $manager->getBlog($blogid);
+        $CONF['SiteName'] = $blog->getName();
+        $CONF['IndexURL'] = $blog->getURL();
     }
 
     $skinid = $skin->id;
@@ -1223,6 +1238,12 @@ function isValidSkinPartsName($name)
 	return preg_match('#^[a-z0-9_\-]+$#i', $name);
 }
 
+function isValidSkinSpecialPageName($name)
+{
+	return preg_match('@^[^\?\/#]+$@i', $name);
+}
+
+
 // add and remove linebreaks
 function addBreaks($var) {
     return nl2br($var);
@@ -1267,6 +1288,7 @@ function mysqldate($timestamp) {
   */
 function selectBlog($shortname) {
     global $blogid, $archivelist;
+
     $blogid = intval($blogid);
     if (!($blogid > 0)) {
         $blogid = getBlogIDFromName($shortname);
@@ -1476,7 +1498,8 @@ function LoadCoreLanguage()
 /**
   * Includes a PHP file. This method can be called while parsing templates and skins
   */
-function includephp($filename) {
+function includephp($filename)
+{
     // make predefined variables global, so most simple scripts can be used here
 
     // apache (names taken from PHP doc)
@@ -1668,7 +1691,8 @@ function createBlogLink($url, $params) {
 function addLinkParams($link, $params) {
     global $CONF;
 
-    if (is_array($params) ) {
+	if ( is_array($params) && (count($params) > 0) )
+	{
 
         if ($CONF['URLMode'] == 'pathinfo') {
             foreach ($params as $param => $value) {
@@ -2363,6 +2387,11 @@ function cleanFileName($str) {
     $str = substr($str,0,$ext_point);
 
     return preg_replace("/[^a-z0-9-]/","_",$str).$ext;
+}
+
+function escapeHTML($string,  $flags = ENT_QUOTES )
+{
+    return htmlspecialchars( $string , $flags , (defined('_CHARSET') ? _CHARSET : 'UTF-8') );
 }
 
 function hsc($string, $flags=ENT_QUOTES, $encoding='') {

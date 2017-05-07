@@ -45,6 +45,10 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ERROR_NOSUCHPAGE',				'No such page');
+define('_SKIN_PARTS_SPECIAL_PAGE',     'Special skin page');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE',  'Do you really want to delete this special skin page?');
+
 define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'Database upgrade is required.');
 define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'Click here to upgrade the database to Nucleus v%s');
 

@@ -338,6 +338,7 @@ CREATE TABLE IF NOT EXISTS `nucleus_skin` (
   `sdesc`    int(11)     NOT NULL default '0',
   `stype`    varchar(20) NOT NULL default '' COLLATE NOCASE ,
   `scontent` text        NOT NULL ,
+  `spartstype`  varchar(20) NOT NULL default 'parts' ,
   PRIMARY KEY  (`sdesc`,`stype`)
 );
 

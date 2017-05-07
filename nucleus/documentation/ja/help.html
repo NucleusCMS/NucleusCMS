@@ -805,14 +805,26 @@ img { border: none; }
 <a name="skinpartspecial"></a>
 <h1>スキン：スペシャルスキンパーツ</h1>
 
-<p>このスキンパーツは、特別な見せ方をしたいコンテンツやブログの内容以外のコンテンツ、例えばフォームや静的なコンテンツ、もしくはNucleusとは切り離された動的なコンテンツ等を表示する為に使用します。
-スペシャルスキンパーツは次のようにして表示します。
-(<code>fred</code>という名前でスペシャルスキンパーツを作った場合)</p>
-<code>http://www.yoursite.tld/index.php?special=fred</code>
-<p>このスキンタイプに関するさらなる議論は、NucleusCMS本家サポートフォーラムで行われています。:
+<p>このスキンパーツは、使いたい部品を登録しスキンに取り込んで使うことができます。<br />
+(<code>Links</code>という名前でスペシャルスキンパーツを作った場合)</p>
+<code><%parsedinclude(Links)%></code>
 
-<a href="http://forum.nucleuscms.org/viewtopic.php?t=16501" title="Special Skin Parts">Nucleus 3.31 and Static Pages</a></p>
-<p>標準的なスペシャルスキンパーツ:</p>
+<p>この例は、リンクをページに挿入します。
+ページから切り離されることにより、該当部分の編集が容易になります。</p>
+</div>
+
+<div class="page">
+<a name="skinpartspecialpage"></a>
+<h1>スキン：スペシャルスキンページ</h1>
+
+<p>このスキンパーツは、特別な見せ方をしたいコンテンツやブログの内容以外のコンテンツ、例えばフォームや静的なコンテンツ、もしくはNucleusとは切り離された動的なコンテンツ等を表示する為に使用します。
+また、使いたい部品としてスキンに取り込んで使うこともできます。</p>
+<p>スペシャルスキンページは次のようにして表示します。
+(<code>fred</code>という名前でスペシャルスキンページを作った場合)</p>
+<code>http://www.yoursite.tld/index.php?special=fred</code>
+
+
+<p>標準的なスペシャルスキンページ:</p>
 <pre>
 &lt;html&gt;
 &lt;head&gt;

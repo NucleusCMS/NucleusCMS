@@ -240,6 +240,15 @@ class SKINIMPORT {
             foreach ($data['parts'] as $partName => $partContent) {
                 $skinObj->update($partName, $partContent);
             }
+			// 3. add specialpage
+			//  spartstype = 'specialpage'
+			if (isset($data['specialpage']))
+			{
+				foreach ($data['specialpage'] as $pageName => $pageData) {
+					$options = array('spartstype'=>'specialpage');
+					$skinObj->update($pageName, (isset($pageData['content']) ? (string) $pageData['content'] : ''), $options);
+				}
+			}
         }
 
         if (is_array($this->templates))
@@ -349,6 +358,7 @@ class SKINIMPORT {
                 // no action needed
                 break;
             case 'part':
+            case 'specialpage':
                 $this->currentPartName = $attrs['name'];
                 break;
             default:
@@ -402,6 +412,11 @@ class SKINIMPORT {
                     $this->skins[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
                 } else {
                     $this->templates[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
+                }
+                break;
+            case 'specialpage':
+                if ($this->inSkin) {
+                    $this->skins[$this->currentName]['specialpage'][$this->currentPartName]['content'] = $this->getCharacterData();
                 }
                 break;
             default:
@@ -489,7 +504,7 @@ class SKINIMPORT {
         return (string) $text;
     }
 
-    function readFileWithSimpleXML($filename, $metaOnly = 0)
+	private function readFileWithSimpleXML($filename, $metaOnly = 0)
     {
         unset($this->skins, $this->templates);
         $this->skins = array();
@@ -581,6 +596,7 @@ class SKINIMPORT {
                   $description = $child->xpath('description');
                   $item['description'] = ($description ? $this->convValue((string ) $description[0]) : '');
 
+				// parts
                   $parts = $child->xpath('part');
                   foreach($parts as $part) {
                       $attr = array();
@@ -589,6 +605,21 @@ class SKINIMPORT {
                       $part_name = @$attr['name'];
                       $item['parts'][$part_name] = $this->convValue((string ) $part);
                   }
+				// specialpage
+				//  spartstype = 'specialpage'
+				$xml_pages = $child->xpath('specialpage');
+				foreach($xml_pages as $xml_page)
+				{
+					$attr = array();
+					foreach($xml_page->attributes() as $k => $v)
+						$attr[$k] = (string ) $v;
+					$part_name = @$attr['name'];
+					$page_data = array_merge($attr);
+					$page_data['content'] = $this->convValue((string ) $xml_page);
+					$item['specialpage'][$part_name] = $page_data;
+				}
+
+				//
                   foreach(array('type','includeMode','includePrefix') as $a)
                      $item[$a] = isset($attributes[$a]) ? $attributes[$a] : '';
 
@@ -598,8 +629,10 @@ class SKINIMPORT {
 
         if (!$metaOnly)
         {
-            $this->skins =& $data['skin'];
-            $this->templates =& $data['template'];
+			if (isset($data['skin']))
+				$this->skins =& $data['skin'];
+			if (isset($data['template']))
+				$this->templates =& $data['template'];
         }
         if (is_array($this->skins))
             ksort($this->skins);
@@ -749,18 +782,26 @@ class SKINEXPORT {
 
             echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
 
-            $que = sprintf('SELECT stype, scontent FROM `%s` WHERE sdesc=%d', sql_table('skin'), $skinId);
-            $res = sql_query($que);
-            while ($partObj = sql_fetch_object($res)) {
-                $type  = hsc($partObj->stype, ENT_QUOTES);
-                $cdata = $this->escapeCDATA($partObj->scontent);
-                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
-                    $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
-                }
-                echo "\t\t" . '<part name="' . $type . '">';
-                echo '<![CDATA[' . $cdata . ']]>';
-                echo "</part>\n\n";
+			$suborder2 = "CASE WHEN spartstype = 'specialpage' THEN 1"
+						. " WHEN stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') THEN 1"
+						. " ELSE 0"
+						. " END AS suborder2";
+
+			$sql = sprintf("SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
+							$suborder2, sql_table('skin'), intval($skinId));
+			$sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
+			$res = sql_query($sql);
+			while ($partObj = sql_fetch_object($res)) {
+				$type  = escapeHTML($partObj->stype, ENT_QUOTES);
+				$cdata = $this->escapeCDATA($partObj->scontent);
+				$tmptag = ($partObj->spartstype == 'specialpage' ? 'specialpage' : 'part');
+				if (strtoupper(_CHARSET) != 'UTF-8') {
+					$type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+					$cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+				}
+				printf("\t\t" . '<%s name="%s">', $tmptag, $type);
+				echo '<![CDATA[' . $cdata . ']]>';
+				echo "</${tmptag}>\n\n";
             }
 
             echo "\t</skin>\n\n\n";
@@ -780,7 +821,8 @@ class SKINEXPORT {
 
             echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
 
-            $que = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d', sql_table('template'), $templateId);
+            $que = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d',
+							sql_table('template'), $templateId);
             $res = sql_query($que);
             while ($partObj = sql_fetch_object($res)) {
                 $type  = hsc($partObj->tpartname, ENT_QUOTES);

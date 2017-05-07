@@ -83,6 +83,39 @@ class SKIN {
         return quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id)) > 0;
     }
 
+	public function existsSpecialName($name)
+	{
+		return self::existsSpecialPageName($this->id, $name);
+	}
+
+	public static function existsSpecialPageName($skinid, $name)
+	{
+		global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+
+		$sql = sprintf("SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d AND spartstype = 'specialpage'",
+						sql_table('skin'), intval($skinid));
+
+		if ($DB_PHP_MODULE_NAME == 'pdo') {
+			if (stripos('sqlite' , $DB_DRIVER_NAME ) !== false)
+				$sql .= " AND lower(stype) = ?";
+			else
+				$sql .= " AND stype = ?";
+		} else {
+			$sql .= " AND stype = " . sql_quote_string($name);
+		}
+
+		$sql .= " LIMIT 1 ";
+
+		if ($DB_PHP_MODULE_NAME == 'pdo')
+			$res = sql_prepare_execute($sql , array( $name ));
+		else
+			$res = sql_query($sql);
+
+		if ($res && ($o = sql_fetch_object($res)))
+			return (intval($o->result) > 0);
+		return FALSE;
+	}
+
     /**
      * Returns a skin given its shortname
      * @param string $name Skin shortname
@@ -99,13 +132,15 @@ class SKIN {
      * @return int Skin ID
      * @static
      */
-    public static function getIdFromName($name) {
+    public static function getIdFromName($name)
+    {
         $query =  'SELECT sdnumber'
                . ' FROM '.sql_table('skin_desc')
                . ' WHERE sdname="'.sql_real_escape_string($name).'"';
         $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-        return $obj->sdnumber;
+		if ($res && ($obj = sql_fetch_object($res)))
+	        return $obj->sdnumber;
+        return 0;
     }
 
     /**
@@ -156,14 +191,17 @@ class SKIN {
      * 
      * @param string $type
      */
-    function parse($type) {
+    function parse($type, $options = array()) {
         global $manager, $CONF, $skinid;
         
-        $param = array(
+		$spartstype = (isset($options['spartstype']) ? $options['spartstype'] : 'parts');
+
+        $notify_data = array(
             'skin' => &$this,
-            'type' =>  $type
+            'type' =>  $type,
+			'partstype' => $spartstype
         );
-        $manager->notify('InitSkinParse', $param);
+        $manager->notify('InitSkinParse', $notify_data);
         $skinid = $this->id;
 
         // set output type
@@ -173,13 +211,20 @@ class SKIN {
         global $currentSkinName;
         $currentSkinName = $this->getName();
         
-        $contents = $this->getContent($type);
+		$getcontents_options = array('spartstype' => $spartstype);
+		$contents = $this->getContent($type, $getcontents_options);
         
         if (!$contents) {
+			if ($spartstype == 'specialpage')
+			{
+				doError(_ERROR_NOSUCHPAGE);
+				echo _ERROR_NOSUCHPAGE;
+				return;
+			}
             // use base skin if this skin does not have contents
             $defskin = new SKIN($CONF['BaseSkin']);
-            $contents = $defskin->getContent($type);
-            if (!$contents) $contents = $this->getContent('index');
+			$contents = $defskin->getContent($type, $getcontents_options);
+//          if (!$contents) $contents = $this->getContent('index');
             if (!$contents) {
                 echo _ERROR_SKIN;
                 return;
@@ -191,7 +236,8 @@ class SKIN {
         $param = array(
             'skin'        => &$this,
             'type'        =>  $type,
-            'contents'    => &$contents
+            'contents'    => &$contents,
+			'partstype' => $spartstype
         );
         $manager->notify('PreSkinParse', $param);
         $skinid = $this->id;
@@ -221,13 +267,20 @@ class SKIN {
      * 
      * @param $type type of the skin (e.g. index, item, search ...)
      */
-    function getContent($type) {
+    function getContent($type, $options = array())
+	{
         global $DB_DRIVER_NAME;
         if(strpos($type, '/')!==false) return '';
         if ( 'mysql' == $DB_DRIVER_NAME )
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         else
             $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
+
+		$spartstype = 'parts';
+		if ($options && isset($options['spartstype']) && (strlen($options['spartstype'])>0))
+			$spartstype = (string) $options['spartstype'];
+		$sql .= " AND spartstype = " . sql_quote_string($spartstype);
+
         $res = sql_query($query);
 
         if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
@@ -241,20 +294,33 @@ class SKIN {
      * @param $type type of the skin part (e.g. index, item, search ...) 
      * @param $content new content for this skin part
      */
-    function update($type, $content) {
+    function update($type, $content, $options = array()) {
         $skinid = $this->id;
 
+		$spartstype = 'parts';
+		if ($options && isset($options['spartstype']) && (strlen($options['spartstype'])>0))
+			$spartstype = (string) $options['spartstype'];
+
         // delete old thingie
-        sql_query('DELETE FROM '.sql_table('skin')." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid));
+        sql_query('DELETE FROM '.sql_table('skin')
+				." WHERE stype='".sql_real_escape_string($type)."' and sdesc=" . intval($skinid)
+				." AND spartstype = " . sql_quote_string( (string) $spartstype )
+		);
 
         global $SQL_DBH;
         // write new thingie
         if ( strlen($content) > 0 ) {
-            $sql = 'INSERT INTO '.sql_table('skin') . "(scontent, stype, sdesc) VALUES";
-            if (!$SQL_DBH) // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-                sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($skinid)) );
-            else
-                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($skinid)));
+            $sql = 'INSERT INTO '.sql_table('skin') . "(scontent, stype, sdesc, spartstype) VALUES";
+            if (!$SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
+                $sql .= sprintf("('%s', '%s', %d, '%s')",
+											sql_real_escape_string($content),
+											sql_real_escape_string($type),
+											intval($skinid),
+											sql_real_escape_string($spartstype));
+                sql_query($sql);
+			} else {
+                sql_prepare_execute($sql . '(?, ?, ?, ?)' , array($content, $type, intval($skinid), (string) $spartstype) );
+            }
         }
 
         global $resultCache, $manager;
@@ -306,6 +372,7 @@ class SKIN {
         );
 
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
+		$query .= " AND spartstype = 'parts'";
         $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
             $skintypes[strtolower($row['stype'])] = $row['stype'];
