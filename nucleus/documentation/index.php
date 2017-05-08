@@ -8,7 +8,10 @@ if (!isset($_SERVER['HTTP_USER_AGENT']) || preg_match('/bot|wget|spider|clawler|
     exit;
 }
 
-foreach(array('ja') as $lang)
+$lang_lists = array('ja'
+//				,'fr'
+		);
+foreach($lang_lists as $lang)
 {
     $filename = sprintf('%s/%s/index.html', dirname(__FILE__) , $lang);
     if (in_array($lang, $http_accept_language) && is_file($filename))
@@ -16,6 +19,14 @@ foreach(array('ja') as $lang)
         header(sprintf('Location: %s/', $lang));
         exit;
     }
+}
+
+$lang = 'en';
+$filename = sprintf('%s/%s/index.html', dirname(__FILE__) , $lang);
+if (in_array($lang, $http_accept_language) && is_file($filename))
+{
+	header(sprintf('Location: %s/', $lang));
+	exit;
 }
 
 $filename = sprintf('%s/index.html', dirname(__FILE__));
