@@ -112,6 +112,13 @@ if (!function_exists('sql_fetch_assoc'))
                     ini_set('default_charset', "UTF-8");
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
+
+                    // check file path
+                    $db_path = trim(dirname($db_name));
+                    if ((strlen($db_path) == 0) || !is_dir($db_path)
+                        || (strpos(str_replace("\\", '/', $db_path), '/') === FALSE))
+                        exit('ERROR : database filename maybe wrong ');
+
                     $DBH = new PDO($DB_DRIVER_NAME.':'.$db_name, $db_user, $db_password);
                     if ($DBH)
                     {
