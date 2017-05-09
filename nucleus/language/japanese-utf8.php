@@ -14,6 +14,11 @@
 // Note for Japanese users
 // このファイルは Nucleus の UTF-8 版日本語ランゲージファイルです。
 
+/********************************************
+ *        Start New for 3.7x                *
+ ********************************************/
+define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'データベースのアップグレードが必要です');
+define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
 
 /********************************************
  *        Start New for 3.71                *
