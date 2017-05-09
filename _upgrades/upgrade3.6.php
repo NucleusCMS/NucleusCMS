@@ -15,6 +15,8 @@
  * @version $Id: upgrade3.5.php 1416 2009-09-24 15:58:08Z ftruscot $
  */
 
+upgrade_do360();
+
 function upgrade_do360() {
 
     if (upgrade_checkinstall(360))

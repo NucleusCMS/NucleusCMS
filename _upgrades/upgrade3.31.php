@@ -10,6 +10,8 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+upgrade_do331();
+
 function upgrade_do331() {
 
     if (upgrade_checkinstall(331))

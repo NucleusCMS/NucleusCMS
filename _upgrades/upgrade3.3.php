@@ -14,6 +14,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+upgrade_do330();
+
 function upgrade_do330() {
 
     if (upgrade_checkinstall(330))

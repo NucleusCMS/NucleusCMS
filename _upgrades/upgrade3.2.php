@@ -14,6 +14,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+upgrade_do320();
+
 function upgrade_do320() {
 
     if (upgrade_checkinstall(320))

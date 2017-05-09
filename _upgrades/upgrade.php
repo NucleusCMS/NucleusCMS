@@ -32,42 +32,20 @@ $from = intGetVar('from');
 upgrade_start();
 
 switch($from) {
-    case 300:
-        include_once('upgrade3.1.php');
-        upgrade_do310();
-    case 310:
-        include_once('upgrade3.2.php');
-        upgrade_do320();
-    case 320:
-        include_once('upgrade3.3.php');
-        upgrade_do330();
-    case 330:
-        include_once('upgrade3.31.php');
-        upgrade_do331();
-    case 331:
-        include_once('upgrade3.4.php');
-        upgrade_do340();
-    case 340:
-        include_once('upgrade3.5.php');
-        upgrade_do350();
-    case 350:
-        include_once('upgrade3.6.php');
-        upgrade_do360();
+    case 300:include_once('upgrade3.1.php');
+    case 310:include_once('upgrade3.2.php');
+    case 320:include_once('upgrade3.3.php');
+    case 330:include_once('upgrade3.31.php');
+    case 331:include_once('upgrade3.4.php');
+    case 340:include_once('upgrade3.5.php');
+    case 350:include_once('upgrade3.6.php');
     case 360:
-        include_once('upgrade3.7.php');
-        upgrade_do370();
-    case 370:
-        include_once('upgrade3.7.php');
-        upgrade_do371();
-    case 371:
-        include_once('upgrade3.8.php');
-        upgrade_do380();
+    case 370:include_once('upgrade3.7.php');
+    case 371:include_once('upgrade3.8.php');
         break;
     default:
         echo "<li>" . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . "</li>";
         break;
 }
-
-
 
 upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );

@@ -10,6 +10,9 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+if($from==360) upgrade_do370();
+if($from<=370) upgrade_do371();
+
 function upgrade_do371() {
 
     if (upgrade_checkinstall(371))

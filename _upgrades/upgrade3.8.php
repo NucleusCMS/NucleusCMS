@@ -10,6 +10,8 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+upgrade_do380();
+
 function upgrade_do380() {
     global $DB_DRIVER_NAME;
 
