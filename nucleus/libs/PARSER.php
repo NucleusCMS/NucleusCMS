@@ -124,7 +124,38 @@ class PARSER {
         } else {
             // redirect to plugin action if possible
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
-                $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
+                if (!HAS_CATCH_ERROR) {
+                    $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
+                } else {
+                    try
+                    {
+                        $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
+                    }
+                    catch (Error $e)
+                    {
+                        global $member, $CONF;
+                        if ($member && $member->isLoggedIn() && $member->isAdmin())
+                        {
+                            $NP_Name = 'NP_'.$action;
+                            $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                                           $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                            // debug
+//							error_reporting(E_ALL);
+//							error_reporting(E_ERROR | E_WARNING | E_PARSE);
+//							ini_set('display_errors', 1);
+                            if ($CONF['DebugVars'])
+                                var_dump($e->getMessage());
+                            ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+//							ini_set('display_errors','0');
+                            if (get_class($e) != 'ArgumentCountError')
+                                throw $e;
+                        }
+                        else
+                        {
+                            throw $e;
+                        }
+                    }
+                }
             } else {
                 if ($CONF['DebugVars']==true) {
                     echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';

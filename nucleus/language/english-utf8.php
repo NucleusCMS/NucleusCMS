@@ -45,6 +45,19 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_ERROR_NOSUCHPAGE',				'No such page');
+define('_SKIN_PARTS_SPECIAL_PAGE',     'Special skin page');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE',  'Do you really want to delete this special skin page?');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE',  'Do you really want to change this special skin parts type?');
+define('_ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST',          'There are no special skin parts.');
+define('_ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST',     'There are no special skin page.');
+define('_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE',       'can not change the type of special skin part');
+define('_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE',  'can not change the type of special skin page');
+define('_ADMIN_TEXT_CHANGE_CONFIRM',     'Please check the change');
+define('_ADMIN_TEXT_CHANGE',             'change');
+define('_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PAGE',     'Change to special skin page');
+define('_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PARTS',    'Change to special skin part');
+
 define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'Database upgrade is required.');
 define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'Click here to upgrade the database to Nucleus v%s');
 

@@ -199,6 +199,7 @@ class MEMBER {
     function isBlogAdmin($blogid) {
         $query = sprintf('SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d',
                           sql_table('team'), intval($blogid), $this->getID())
+                . ' AND tadmin=1' // A bug from the beginning.result is isTeamMember. Fix it.
                 . ' LIMIT 1';
         return intval(quickQuery($query)) > 0;
     }

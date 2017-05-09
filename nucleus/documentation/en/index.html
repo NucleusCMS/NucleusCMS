@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<!--
+		Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+		Copyright (C) 2002-2017 The Nucleus Group
+
+		This program is free software; you can redistribute it and/or
+		modify it under the terms of the GNU General Public License
+		as published by the Free Software Foundation; either version 2
+		of the License, or (at your option) any later version.
+		(see nucleus/documentation/index.html#license for more info)
+	-->
+	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<title>Nucleus CMS - Manual</title>
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+</head>
+<body>
+
+<div class="heading">
+Nucleus CMS Manual
+<i>(v3.80)</i>
+</div>
+
+<div class="note">
+<b>Notes:</b>
+<ul>
+	<li>This manual only contains information that is not already contained in the popup-help (<a href="help.html">help.html</a>) available from the administration area. This document also contains instruction for the <a href="#installation">installation</a> of Nucleus.</li>
+	<li>If you're a developer, <a href="devdocs/index.html">extra developer documentation</a> is available.</li>
+</ul>
+</div>
+
+<h1><a name="toc"></a>Table Of Contents</h1>
+
+<ul>
+	<li><a href="#about">About Nucleus CMS</a></li>
+	<li><a href="#license">License</a></li>
+	<li><a href="#installation">Installation</a></li>
+	<li><a href="skins.html">Modifying skins and templates</a> (separate file)</li>
+	<li><a href="#security">Security Aspects</a></li>
+	<li><a href="#performance">Performance Aspects</a></li>
+<!-- <li><a href="#import">Importing from other tools</a></li> -->
+	<li><a href="#comments">What's allowed/disallowed in comments?</a></li>
+	<li><a href="#xmlrpc">XML-RPC Interface</a></li>
+	<li><a href="#trouble">Troubleshooting (FAQ)</a></li>
+	<li><a href="tips.html">Tips &amp; Suggestions</a> (separate file)</li>
+	<li><a href="#known">Known Problems</a></li>
+	<li><a href="history.html">Version History</a> (separate file)</li>
+	<li><a href="#acknowledgments">Acknowledgments</a></li>
+</ul>
+
+<h1>About Nucleus <a name="about" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus is a Content Management System (CMS): a powerful set of PHP scripts that allow you to maintain one or more weblogs or online journals. A short summary of the most important features is given below:
+</p>
+
+<ul>
+	<li>Runs on your own server</li>
+	<li>One or more weblogs, even on the same page</li>
+	<li>Plugin-interface to add extra functionality</li>
+	<li>Comments</li>
+	<li>Archives</li>
+	<li>Categories</li>
+	<li>Search</li>
+	<li>Multiple authors</li>
+	<li>Future items</li>
+	<li>Drafts</li>
+	<li>Extensive administration area</li>
+	<li>Media library and file upload</li>
+	<li>Fully customizable skins and templates</li>
+	<li>Skin import/export</li>
+	<li>Banlist against commenting system abuse</li>
+	<li>RSS syndication</li>
+	<li>Easy installation</li>
+	<li>Easy backups</li>
+	<li>XML-RPC interface (implementing the <a href="http://plant.blogger.com/api/">Blogger API</a> and <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>)</li>
+	<li>XHTML-ready</li>
+	<li><s>Tools to import Blogger and GreyMatter blogs</s></li>
+	<li>...</li>
+</ul>
+
+<h2>Operating environment</h2>
+<p>
+Requirements in order to run Nucleus: <small>(If you don't know if you fit the requirements, ask your system administrator)</small>
+</p>
+
+<ul>
+	<li>Web server</li>
+	<li><a href="http://www.php.net/">PHP</a> (version 5.0.5 - 7.1, recommended version 5.6 or higher)</li>
+	<li>Access to the database: MySQL or SQLite
+		<ul>
+			<li><a href="http://www.mysql.com/">MySQL</a> database (version 5 or higher) or <a href="https://mariadb.org/">MariaDB</a> (version 5.5, 10.0 or higher)</li>
+			<li>SQLite version 3 (PHP: PDO PDO_SQLite)</li>
+		</ul>
+	</li>
+	<li>Some <acronym title="Hypertext Markup Language">HTML</acronym> and <acronym title="Cascading Style Sheets">CSS</acronym> knowledge, to edit skins and templates</li>
+</ul>
+
+
+
+<p>
+Nucleus is intended for the people that want full control and 'tweakability' over their sites.
+</p>
+<p class="note">
+If you're just looking for a very simple way to put up a site, or don't know any HTML, you might want to use a 'simpler' service such as <a href="http://www.blogger.com/">Blogger</a>.
+</p>
+
+
+
+
+<a name="license"></a>
+<h1>License <a name="copyright" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+<br />
+Copyright (C) 2002-2017 The Nucleus Group
+</p>
+
+<p>This program is free software; you can redistribute it and/or
+modify it under the terms of the GNU General Public License
+as published by the Free Software Foundation; either <a href="https://www.gnu.org/licenses/gpl-2.0.html">version 2</a>
+of the License, or (at your option) any later version.</p>
+
+<p>This program is distributed in the hope that it will be useful,
+but WITHOUT ANY WARRANTY; without even the implied warranty of
+MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+GNU General Public License for more details.</p>
+
+<p>You should have received a <a href="../licenses/nucleus/license.txt">copy of the GNU General Public License</a>
+along with this program; if not, <a href="https://www.gnu.org/licenses/gpl-2.0.txt">please visit here and pick it up.</a>.</p>
+
+<p>
+For the attached third party library, the license of each library is applied
+</p>
+
+<p>
+Your possession of this software signifies that you agree to these terms. Please delete your copy of this software if you don't agree to these terms.
+</p>
+
+
+<h1>Installation <a name="installation" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<div class="note">
+<b>Note:</b> If you are upgrading, you should see the <a href="http://www.nucleuscms.org/upgrade.php">upgrade instructions</a> on the Nucleus website.
+</div>
+
+<p>
+Installing Nucleus is done through some steps:
+</p>
+
+<h2>1. Unzip</h2>
+
+<p>
+Unzip all files to a directory of your computer. Make sure the path names are used when unzipping. You should end up with the following directory structure (* stands for a number of files):
+</p>
+
+<pre>
+/*                           (main files for site)
+/nucleus/*                   (main files for admin-area)
+/nucleus/javascript/*        (javascript helper scripts)
+/nucleus/libs/*              (Nucleus core libs)
+/nucleus/language/*          (definitions of languages)
+/nucleus/plugins/*           (plugin-dir)
+/nucleus/xmlrpc/*            (XML-RPC interface)
+/nucleus/documentation/*     (Documentation + admin-area help)
+/nucleus/styles/*            (stylesheets for docs &amp; admin-area)
+/nucleus/forms/*             (skeletons for commentforms etc)
+/extra/*                     (extra goodies, e.g. needed files to enable fancy URLs)
+/skins/*                     (skins directory [imported skins will go here])
+/media/*                     (media library directory [emtpy])
+</pre>
+
+
+<h2>2. Upload files</h2>
+
+<p>
+Upload all files to your server, using your favorite FTP program. Make sure to upload .php files in ASCII mode! It might not work otherwise.
+</p>
+
+<h3>Optional:</h3>
+
+<ol>
+	<li>
+		To make your install process even easier, you can change the file permissions on <em>config.php</em> to <strong>666</strong>. This way, the install script will be able to update it automatically instead of you having it to do manually. (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>)
+	</li>
+	<li>
+		If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to <strong>777</strong> (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>). (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
+	</li>
+	<li>
+		If you want to use the SkinFiles plugin to edit files, you'll need to change the permissions on all files and directories under the /skins/ directory. To be able to edit files, they should be <i>chmod</i>ded to <strong>666</strong> (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>). To be able to create new files or directories, the parent directory should be <i>chmod</i>ded to <strong>777</strong>.
+	</li>
+</ol>
+
+
+<h2>3. Run install/index.php</h2>
+
+<p>
+Open your web browser open the URL below, where you adapt the <i>yoursite</i> and <i>yourpath</i> parts.
+</p>
+
+<pre>
+http://www.yoursite.com/yourpath/install/index.php
+</pre>
+
+<p>
+This install-script will prompt you for some information, and perform most of the installation for you. When everything has succeeded, <i>install/index.php</i> will provide you with further instructions. (you'll still need to delete some files manually)
+</p>
+
+<div class="note">
+<b>Note:</b> When you open <i>install/index.php</i> in your browser and you see the text "If you see this text in your browser...", or you are prompted to download 'install.php', then your web server does not support PHP, and you won't be able to run Nucleus there.
+</div>
+
+<h2>4. Done!</h2>
+
+<p>
+You should now be able to visit your site at http://yoursite.com/weblog/ (or whatever URL maps to the location where you uploaded the Nucleus site main files)
+</p>
+
+
+
+
+
+
+
+<h1>Security Aspects <a name="security" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h2>mySQL passwords</h2>
+
+<p>
+Since Nucleus needs to connect to a mySQL database from a PHP-script, the password for that database must be stored inside a PHP-file. On multi-user systems, this might cause an unevitable security risk: On some systems, other users will be able to read your login information. You might want to contact your system operator to find out how secure it is to store sensible information inside PHP-scripts.
+</p>
+
+<p>
+The problem above is common to all PHP scripts that need to connect to a database. As a user, there's usually nothing you can do about it in order to make things 100% secure. We just want you to be aware of this potential danger.
+</p>
+
+<h2>Cookies</h2>
+
+<p>
+Nucleus uses cookies to store user login information. This could cause a security risk when your cookies are stolen. Although your password is not derivable from the cookie <small>(the values stored in the cookie are the username and a randomly generated string)</small>, there could be ways to 'fake' the cookie on another computer and thus to get logged in.
+</p>
+
+<h2>Media dir</h2>
+
+<p>
+When you want to enable file upload, you'll need to set the permissions of the media dir to 777, which means that <b>everyone</b> on that server will be able to delete/add/... files. The reason why this is needed, is that PHP mostly runs as the httpd user, and that user needs to be able to access this dir and write to it. Here also, there's no way around this.
+</p>
+
+
+
+
+
+<h1>Performance Aspects <a name="performance" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Contradictory to some other weblog/online journal scripts, Nucleus does not generate a static version of all items. This means that every time a page is requested, the PHP parser is called and the database is accessed to dynamically create the requested page.
+</p>
+
+<p>
+For small web sites, this should not cause any problem. For web sites that get dozens of hits per second, the effect on the systems performance isn't really known. So far, no problems have been reported by Nucleus users (some are running pretty big sites on it, with 30 or more weblogs on a single installation).
+</p>
+
+
+
+
+<!--
+<h1>Importing From Other Tools <a name="import" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus contains some conversion scripts that allow you to import the data from your 'old' weblog tool into your Nucleus weblog. No data is destroyed during this process.
+</p>
+
+<p>
+More information is available on the <a href="http://www.nucleuscms.org/convert.php">Nucleus website</a>. At the time of release, the only available conversion tools are those for Blogger and GreyMatter blogs.
+</p>
+-->
+
+
+<h1>What's allowed/disallowed in comments? <a name="comments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>
+Nucleus has some built-in rules concerning comments:
+</p>
+
+<ul>
+	<li>words longer than 90 characters are not allowed (why: layout might get messed up when people do that) </li>
+	<li>the actual comment should be at least 3 characters long</li>
+	<li>comments cannot be longer than 5000 characters </li>
+	<li>guests need to enter a username of at least 2 characters </li>
+	<li>guests cannot use quotes or newlines in username/email </li>
+	<li>each sequence of 3 newlines in the body gets replaced by a single newline (why: layout)</li>
+	<li>HTML tags are replaced by entities</li>
+	<li>the comment is trimmed (leading and trailing whitespace is left of)</li>
+	<li>URLs are 'hreffed'. To avoid layout mess-ups, the URLs are shortened.</li>
+</ul>
+
+<p>
+As for now, all of these rules and parameters are hardwired into the code.
+</p>
+
+
+
+
+
+
+<h1>XML-RPC Interface <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<div class="note">
+The URL for the Nucleus XML-RPC interface is:
+<br />
+<b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
+</div>
+
+<p>
+<a href="http://www.xmlrpc.com/">XML-RPC</a> is a format for remote calls using XML messages. Sounds complex, but implementing an XML-RPC interface into an application allows other services to communicate with it.
+</p>
+
+<p>
+Currently, there are three APIs supported: the <a href="http://plant.blogger.com/api/">Blogger API</a>, the <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>, and the <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>. If you want an examples of a client that uses these interfaces, try <a href="http://www.wbloggar.com/">w.Bloggar</a> (Windows) or <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS).
+</p>
+
+<p>
+The available calls to the interface are described in the development documentation, which can be <a href="http://nucleuscms.org/download.php">separately downloaded</a>, or <a href="http://nucleuscms.org/documentation/devdocs/xmlrpc.html">viewed online</a>.
+</p>
+
+
+
+<h1>Troubleshooting (FAQ) <a name="trouble" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Below, some of the most common problems with and questions about Nucleus are answered. Please read these first before you ask for help. In many cases, the solution can be found here.
+</p>
+
+<div class="faq">
+<div class="question">I get an error: <q>Cannot send headers. Headers already sent...</q></div>
+<div class="answer">
+This problem is usually caused by whitespace at the beginning or end of <code>config.php</code>. Check if it has spaces or newlines before the starting <tt>&lt;?</tt> or after the ending <tt>?&gt;</tt>. If there are, remove them. The problem can also have to do with spaces in the language file or one of the installed plugins.
+</div>
+</div>
+
+<div class="faq">
+<div class="question">When I try to run install.php, I'm prompted if I want to download install.php</div>
+<div class="answer">Your web server is not set up to support PHP scripts. You won't be able to install Nucleus on such a system.</div>
+</div>
+
+<div class="faq">
+<div class="question">When I try to visit my website, I get a 'Connection Error'. Why?</div>
+<div class="answer">
+The reason why this error is shown is that Nucleus cannot connect to your database server for one reason or another, or it cannot select the database. One possible reason is that your login information in <i>config.php</i> is incorrect. Another is that the mySQL server is down.
+</div>
+</div>
+
+<div class="faq">
+<div class="question">I can't get my update file to work!</div>
+<div class="answer">
+File permissions need to be set correctly in order for the update file to work. The update file also needs to exist prior to changing the blogsettings. (e.g. you can create an empty file and upload it). About the file permissions, make sure the update file is <i>chmod</i>ded to 666 and the directories are <i>chmod</i>ded to 755. (<a href="tips.html#filepermissions">Quick guide on changing file permissions</a>)
+</div>
+</div>
+
+<div class="faq">
+<div class="question">I don't want the XML-RPC interface to be available</div>
+<div class="answer">You can simply delete the xmlrpc/ directory without causing trouble.</div>
+</div>
+
+<div class="faq">
+<div class="question">I don't want RSS syndication (headlines) to be available</div>
+<div class="answer">You can safely delete the xml-rss.php (headlines.php) file and the 'xmlrss' (headlines) skin/template</div>
+</div>
+
+
+<h1>Known Problems <a name="known" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<p>Some known issues/bugs:
+</p>
+
+<ul>
+	<li>This document is outdated and may not match the current situation.</li>
+	<li>At the time of release, there are officially supported blog conversion tools available for Nucleus v3.3. We do have a set of code with which you can start, and are providing <a href="http://nucleuscms.org/convert.php">pointers to the import tools created by others</a>. A good starting point is also the Nucleus Forum section <a href="http://forum.nucleuscms.org/viewforum.php?f=17">Import Questions</a>. Because all blog system have a different structure it isn't possible to convert each system in another without a possible loss of information. The script authors try to minimize troubles and loss of information.</li>
+	<li>Ctrl + Shift + A shortcut might conflict with ICQ/Trillian</li>
+	<li>When PHP is running in SAFE mode, it's very likely that there will be problems when using the media directory (Nucleus will not be able to automatically detect image sizes, or disallow uploading)</li>
+	<li>Entities can get messed up in the RSS channel (e.g. &amp;amp; becomes &amp;amp;amp;)</li>
+	<li>The notify-address option in blogsettings has a preset limit of 255 chars, which means you can't put too many e-mail addresses in there.</li>
+	<li>Live preview doesn't work correctly in Mozilla</li>
+	<li>Internet Explorer 6 seems to be occasionally closing itsself after adding an item. The item is added, though. (it's been a while since the last complaint about that, so it <em>might</em> have disappeared)</li>
+</ul>
+
+
+
+<h1>Acknowledgments <a name="acknowledgments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h1>Author</h1>
+
+<ul>
+	<li>The Nucleus Group and The NucleusCMS Japan Team and other authors</li>
+</ul>
+
+<h2>Code submissions</h2>
+<p>
+Many others... (check the <a href="history.html">history</a> and <a href="contributors.html">contributors</a>)</p>
+
+<h2>Libraries etc</h2>
+
+<ul>
+	<li><a href="https://jquery.org/">jQuery</a> : <a href="https://jquery.org/license/"> jQuery License</a></li>
+	<li><a href="http://jqueryui.com/">jQuery UI</a> : Licensed MIT</li>
+	<li>The XML-RPC interface uses the <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> implementation from <a href="http://www.usefulinc.com/">Useful Inc.</a>.</li>
+	<li>Jeff MacMichael (NP_SkinFiles plugin)</li>
+	<li>Ivan Fong, Roel, Moraes, Hcgtv (Nucleus 3.2 default skin)</li>
+	<li>Plugins are written by their respective authors.</li>
+	<li>The logo (the one with the yellow rays) was created by Rodrigo Moraes</li>
+	<li>The RSS 2.0 skin was created by <a href="http://www.xiffy.nl">Xiffy</a></li>
+	<li>The backup/restore code is largely inspired on the code used in <a href="http://phpbb.sourceforge.net/">phpBB</a>. </li>
+	<li>The JavaScript code used for the instant preview was originally inspired on the code used by <a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a> <small>(dutch)</small> and <a href="http://www.milov.nl/">milov.nl</a>.</li>
+	<li>The globe bullet next to links in the admin screen, comes from <a href="http://www.matterform.com/qbullets/legend.html">QBullets</a></li>
+</ul>
+
+<h2>Thanks!</h2>
+
+<p>
+Many thanks should also go to all people who have helped Nucleus to become what it is today.</p>
+
+<ul>
+	<li>Special thanks to the Nucleus forum moderators and frequent forum visitors.</li>
+</ul>
+
+
+
+</body>
+</html>

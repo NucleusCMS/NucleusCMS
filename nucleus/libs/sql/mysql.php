@@ -454,22 +454,22 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         $conn = ($conn ? $conn : sql_get_db());
         $charset = get_mysql_charset_from_php_charset($charset);
         $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-        if (version_compare($mySqlVer, '4.1.0', '>=')) {
-            if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
-            else $_CHARSET = '';
-            
-            if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
-            {
-                sql_query("SET CHARACTER SET {$charset}",$conn);
-                $res = mysql_set_charset($charset,$conn);
-            }
-            elseif($charset==='utf8mb4')
-                $res = sql_query("SET NAMES 'utf8mb4'",$conn);
-            elseif($charset==='utf8' && $_CHARSET==='utf-8')
-                $res = sql_query("SET NAMES 'utf8'",$conn);
-            elseif($charset==='ujis' && $_CHARSET==='euc-jp')
-                $res = sql_query("SET NAMES 'ujis'",$conn);
+
+        if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
+        else $_CHARSET = '';
+
+        if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
+        {
+            sql_query("SET CHARACTER SET {$charset}",$conn);
+            $res = mysql_set_charset($charset,$conn);
         }
+        elseif($charset==='utf8mb4')
+            $res = sql_query("SET NAMES 'utf8mb4'",$conn);
+        elseif($charset==='utf8' && $_CHARSET==='utf-8')
+            $res = sql_query("SET NAMES 'utf8'",$conn);
+        elseif($charset==='ujis' && $_CHARSET==='euc-jp')
+            $res = sql_query("SET NAMES 'ujis'",$conn);
+
         return isset($res) ? $res : false;
     }
 
