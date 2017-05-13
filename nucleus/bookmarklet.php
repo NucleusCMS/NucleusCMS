@@ -147,7 +147,7 @@ function bm_doEditItem() {
 
         // show error when sth goes wrong
         if (!$catid) {
-            bm_doError('Could not create new category');
+            bm_doError(_BOOKMARKLET_ERROR_COULDNTNEWCAT);
         }
     }
 
