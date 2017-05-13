@@ -220,7 +220,12 @@ function showInstallForm() {
 					submitcount++;
 					return true;
 				} else {
-					return false;
+					return window.confirm("<?php
+                          if (defined('_INSTALL_TEXTCOMFIRM_RETRY_SEND'))
+                              echo _INSTALL_TEXTCOMFIRM_RETRY_SEND;
+                          else
+                              echo 'Please send is only once. Do you actually send it again with this content?';
+                                           ?>");
 				}
 			}
 		--></script>
