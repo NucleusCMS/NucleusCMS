@@ -44,6 +44,7 @@ function upgrade_do380() {
     }
 
     if ($DB_DRIVER_NAME != 'sqlite') {
+        // mysql
         $mode = (sql_existTableColumnName(sql_table('blog'), 'ballowpast') ? 'MODIFY' : 'ADD'); // sqlite not support MODIFY COLUMN
         $query = sprintf("ALTER TABLE `%s`
                          ${mode} COLUMN `ballowpast` tinyint(2)   NOT NULL default '1';
@@ -56,6 +57,16 @@ function upgrade_do380() {
                     MODIFY COLUMN `imore`  mediumtext    NOT NULL default '';", sql_table('item'));
     
         upgrade_query('Altering ' . sql_table('item') . ' table', $query);
+
+        $query = sprintf("ALTER TABLE `%s`
+                         MODIFY COLUMN `name` varchar(50)  NOT NULL default '';
+                         ", sql_table( 'config' ));
+        upgrade_query('Altering ' . sql_table('config') . ' table', $query);
+
+        $query = sprintf("ALTER TABLE `%s`
+                         MODIFY COLUMN `oname` varchar(50) NOT NULL default '';
+                         ", sql_table( 'plugin_option_desc' ));
+        upgrade_query('Altering ' . sql_table('plugin_option_desc') . ' table', $query);
     }
 
     upgrade_do380_Skin_UpgardeAddColumnSpartstype();
