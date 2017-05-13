@@ -315,7 +315,7 @@ a:hover, a:active
 
 .sidebardl dt
 {
-	background: #3399FF ;//url(images/sidetitlebg.gif);
+	background: #3399FF ;/* url(images/sidetitlebg.gif); */
 	color: #FFFFFF;
 	/*background: #E5E5E5 url(images/sidetitlebg.gif);*/
 	/*color: #3A3523;*/

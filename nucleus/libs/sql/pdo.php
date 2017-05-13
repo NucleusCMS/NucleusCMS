@@ -62,6 +62,12 @@ if (!function_exists('sql_fetch_assoc'))
             exit('The php of server does not meet the execution minimum requirement.');
         }
 
+//        if (method_exists('PDO', 'getAvailableDrivers'))
+//            $AvailableDrivers = PDO::getAvailableDrivers();
+//        else
+//            $AvailableDrivers = array('mysql');
+//        var_dump($AvailableDrivers);
+
         try {
             if (strpos($db_host,':') === false) {
                 $host = $db_host;
@@ -108,10 +114,22 @@ if (!function_exists('sql_fetch_assoc'))
                     else $port = '';
                     $DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db_name, $db_user, $db_password);
                 break;
-                case 'sqlite':
+                case 'sqlite':  // sqlite3
                     ini_set('default_charset', "UTF-8");
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
+
+                    if ( version_compare( PHP_VERSION , '5.2.0', '<' )) {
+                        // php5.1 : pdo_sqlite driver is sqlite2
+                        // HY000-1 unsupported file format
+                        $msg = 'Critical error: PHP 5.2 or higher is required.';
+                        startUpError($msg , 'Connect Error');
+                    }
+
+                    if ( !extension_loaded('PDO_SQLITE')) {
+                        $msg = 'Critical error: pdo_sqlite module is not loaded.';
+                        startUpError($msg , 'Connect Error');
+                    }
 
                     // check file path
                     $db_path = trim(dirname($db_name));
@@ -181,11 +199,11 @@ if (!function_exists('sql_fetch_assoc'))
         } catch (PDOException $e) {
             $DBH =NULL;
             if ($CONF['debug'])
-                $msg =  '<p>a1 Error!: ' . $e->getMessage() . '</p>';
+                $msg =  '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
             else
                 {
                     $msg =  '<p>a1 Error!: ';
-                    $pattern = '/(Access denied for user|Unknown database)/i';
+                    $pattern = '/(Access denied for user|Unknown database|could not find driver)/i';
                     if (preg_match($pattern, $e->getMessage(), $m))
                         $msg .=  $m[1];
                     $msg .=  '</p>';
@@ -246,6 +264,7 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_query($query,$dbh=NULL) {
         global $CONF, $SQLCount,$SQL_DBH;
         $SQLCount++;
+        $debug = (!isset($CONF['debug']) || !$CONF['debug']);
 //echo '<hr />SQL_DBH: ';
 //print_r($SQL_DBH);
 //echo '<hr />DBH: ';
@@ -253,21 +272,29 @@ if (!function_exists('sql_fetch_assoc'))
 //echo '<hr />';
 //echo $query.'<hr />';
         $db = ( !is_null($dbh) ? $dbh : $SQL_DBH );
-        if (is_object($db))
+        if (is_object($db) && ($db instanceof PDO))
             $res = $db->query($query);
         else
             $res = false;
-        if (!$CONF['debug'])
+        if (!$debug)
             return $res;
 
         $style = 'height:100px; overflow:auto; background:#C0DCC0';
+        $msg_text = '';
         if ($res === false) {
-            printf("SQL error with query <div style=\"${style}\">%s</div>: <p />", hsc(sql_error($dbh)) . '<br />' . hsc($query));
+            $msg_text = ((is_object($db) && ($db instanceof PDO)) ? sql_error($dbh) : 'Handle is null or not pdo object.');
+            printf("SQL error with query <div style=\"${style}\">%s</div>: <p />", hsc($msg_text) . '<br />' . hsc($query));
         } else if ($res->errorCode() != '00000') {
             $errors = $res->errorInfo();
+            $msg_text = $errors[0].'-'.$errors[1].' '.$errors[2];
             printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
-                  , $errors[0].'-'.$errors[1].' '.$errors[2], hsc($query));
+                  , hsc($msg_text), hsc($query));
         }
+//        if ($msg_text && class_exists( 'ACTIONLOG') && method_exists('ACTIONLOG', 'addUnique')) {
+//            $obj = sql_get_db(); // check null
+//            if (($obj) && ($obj instanceof PDO))
+//                ACTIONLOG::addUnique(ERROR, sprintf('SQL error with query : %s : %s', $msg_text, $query));
+//        }
 
         return $res;
     }

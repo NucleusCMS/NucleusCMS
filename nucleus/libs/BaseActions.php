@@ -110,7 +110,7 @@ class BaseActions {
             $contents = file_get_contents($file);
             if (empty($contents))
             {
-            return;
+                return;
             }
         }
         $this->level = $this->level + 1;
