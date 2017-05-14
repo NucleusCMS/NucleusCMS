@@ -162,6 +162,12 @@ if ( !headers_sent() && $CONF['expose_generator'] ) {
     header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
 }
 
+// Avoid the ClickJacking attack
+if ( !headers_sent() && (!defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || (! _DISABLE_FEATURE_SECURITY_CLICKJACKING)) )
+{
+	header('X-Frame-Options: SAMEORIGIN');
+}
+
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
 global $DB_PHP_MODULE_NAME;
