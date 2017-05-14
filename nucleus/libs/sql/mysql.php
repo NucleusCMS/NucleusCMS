@@ -513,7 +513,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     {
         $language_name = strtolower($language_name);
         
-        if(strpos($language_name,'utf8')!==false)
+        if(stripos($language_name,'utf8')!==false)
             return 'utf8';
         
         switch($language_name)

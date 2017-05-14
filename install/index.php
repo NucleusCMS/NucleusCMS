@@ -176,7 +176,7 @@ include_once('../nucleus/libs/vars4.1.0.php');
 
 // include core classes that are needed for login & plugin handling
 if (!function_exists('mysql_query'))
-    include_once('../nucleus/libs/mysql.php');
+    include_once('../nucleus/libs/sql/mysql_emulate.php');
   else
     define('_EXT_MYSQL_EMULATE' , 0);
 
@@ -302,7 +302,12 @@ function showInstallForm() {
 					submitcount++;
 					return true;
 				} else {
-					return false;
+					return window.confirm("<?php
+                          if (defined('_INSTALL_TEXTCOMFIRM_RETRY_SEND'))
+                              echo _INSTALL_TEXTCOMFIRM_RETRY_SEND;
+                          else
+                              echo 'Please send is only once. Do you actually send it again with this content?';
+                                           ?>");
 				}
 			}
 		--></script>

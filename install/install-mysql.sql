@@ -83,7 +83,7 @@ CREATE TABLE `nucleus_comment` (
 ) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
-  `name`  varchar(20)  NOT NULL default '',
+  `name`  varchar(50)  NOT NULL default '',
   `value` varchar(128)          default NULL,
   PRIMARY KEY  (`name`)
 ) ENGINE=MyISAM;
@@ -207,7 +207,7 @@ CREATE TABLE `nucleus_plugin_option` (
 CREATE TABLE `nucleus_plugin_option_desc` (
   `oid`      int(11)     NOT NULL auto_increment,
   `opid`     int(11)     NOT NULL default '0',
-  `oname`    varchar(20) NOT NULL default '',
+  `oname`    varchar(50) NOT NULL default '',
   `ocontext` varchar(20) NOT NULL default '',
   `odesc`    varchar(255)         default NULL,
   `otype`    varchar(20)          default NULL,

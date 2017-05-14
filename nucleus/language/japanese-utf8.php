@@ -43,6 +43,8 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_SETTINGS_ENABLE_RSS',         'RSSの出力を有効にする');
+
 define('_ERROR_NOSUCHPAGE',            '指定されたページはありません');
 define('_SKIN_PARTS_SPECIAL_PAGE',     'スペシャルスキンページ');
 define('_CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE',  '本当にこのスペシャルスキンページを削除してもいいですか？');

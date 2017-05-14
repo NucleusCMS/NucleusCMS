@@ -151,7 +151,7 @@ if ($DB_PHP_MODULE_NAME != 'pdo')
     // deprecated method
     // include core classes that are needed for login & plugin handling
     if (!function_exists('mysql_query'))
-        include_once($DIR_LIBS . 'mysql.php'); // For PHP 7
+        include_once($DIR_LIBS . 'sql/mysql_emulate.php'); // For PHP 7
     else
     {
         if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
@@ -830,11 +830,11 @@ function quickQuery($sqlText)
 }
 
 function getPluginNameFromPid($pid) {
-    $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' WHERE pid=' . intval($pid) );
-    if (!$res)
-        return FALSE;
-    $obj = sql_fetch_object($res);
-    return $obj->pfile;
+    $query = sprintf('SELECT pfile FROM `%s` WHERE pid=%d', sql_table('plugin'), intval($pid));
+    $res = sql_query($query);
+    if ($res && ($obj = sql_fetch_object($res)))
+        return $obj->pfile;
+    return FALSE;
 }
 
 function selector() {
@@ -920,9 +920,7 @@ function selector() {
         $query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
         $res = sql_query($query);
 
-        $obj = sql_fetch_object($res);
-
-        if ($obj) {
+        if ($res && ($obj = sql_fetch_object($res))) {
             $itemidprev = $obj->inumber;
             $itemtitleprev = $obj->ititle;
         }
@@ -931,9 +929,7 @@ function selector() {
         $query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
         $res = sql_query($query);
 
-        $obj = sql_fetch_object($res);
-
-        if ($obj) {
+        if ($res && ($obj = sql_fetch_object($res))) {
             $itemidnext = $obj->inumber;
             $itemtitlenext = $obj->ititle;
         }
@@ -1203,9 +1199,10 @@ function doError($msg, $skin = '') {
 function getConfig() {
     global $CONF;
 
-    $query = 'SELECT * FROM ' . sql_table('config');
+    $query = sprintf('SELECT * FROM `%s`' , sql_table('config'));
     $res = sql_query($query);
 
+    if ($res)
     while ($obj = sql_fetch_object($res) ) {
         if(!isset($CONF[$obj->name]))
             $CONF[$obj->name] = $obj->value;
@@ -1949,12 +1946,15 @@ function ticketForPlugin() {
     $query = 'SELECT `pfile` FROM '.sql_table('plugin');
     $res = sql_query($query);
 
-    while($row = sql_fetch_row($res) )
+    if ($res)
     {
-        $name = substr($row[0], 3);
-        $plugins[strtolower($name)] = $name;
+        while($row = sql_fetch_row($res) )
+        {
+            $name = substr($row[0], 3);
+            $plugins[strtolower($name)] = $name;
+        }
+        sql_free_result($res);
     }
-    sql_free_result($res);
     
     if ($plugins[$unsecure_plugin_name_short])
     {
@@ -2356,10 +2356,11 @@ function ifset(&$var)
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-    $query = sprintf("SELECT COUNT(*) as count FROM %s WHERE event='%s'", sql_table('plugin_event'), $event);
+    $query = sprintf("SELECT COUNT(*) as count FROM `%s` WHERE event='%s'", sql_table('plugin_event'), $event);
     $res = sql_query($query);
-    $obj = sql_fetch_object($res);
-    return $obj->count;
+    if ($res && ($obj = sql_fetch_object($res)))
+        return $obj->count;
+    return 0; // unknown error
 }
 
 /**

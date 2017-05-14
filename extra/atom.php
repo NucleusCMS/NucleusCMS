@@ -23,6 +23,12 @@ $CONF['Self'] = 'atom.php';
 
 include('./config.php');
 
+if (isset($CONF['DisableRSS']) && $CONF['DisableRSS']) {
+    header("HTTP/1.0 404 Not Found");
+    echo "<html><head><title>404 Not Found</title></head><h1>404 Not Found</h1><body></body></html>";
+    exit;
+}
+
 if (!$CONF['DisableSite']) {
 	// get feed into $feed
 	ob_start();
@@ -41,6 +47,10 @@ if (!$CONF['DisableSite']) {
 		header('HTTP/1.0 304 Not Modified');
 		header('Content-Length: 0');
 	} else {
+		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {
+			$feed = mb_convert_encoding($feed, "UTF-8", _CHARSET);
+		}
+		header("Content-Type: application/xml");
 		// dump feed
 		echo $feed;
 	}
