@@ -45,6 +45,8 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_SETTINGS_ENABLE_RSS',         'RSSの出力を有効にする');
+
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開中');

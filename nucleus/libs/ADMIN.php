@@ -5364,7 +5364,18 @@ selector();
                              ?>
 
                        </td>
-        </tr><tr>
+        </tr>
+
+        <tr>
+            <td><?php echo _SETTINGS_ENABLE_RSS . "( xml-rss2.php , rsd.php )"; ?></td>
+                       <td><?php
+                       $enable_rss = !isset($CONF['DisableRSS']) || !$CONF['DisableRSS'];
+                       $this->input_yesno('EnableRSS', $enable_rss, 10077);
+                             ?>
+                       </td>
+        </tr>
+
+        <tr>
             <td><?php echo _SETTINGS_DEBUGVARS?> <?php help('debugvars');?></td>
                        <td><?php
 
@@ -5572,6 +5583,7 @@ selector();
         $this->updateConfig('DebugVars',        postVar('DebugVars'));
         $this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
         $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
+        $this->updateOrInsertConfig('DisableRSS',    (postVar('EnableRSS') ? '0' : '1'));
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
@@ -5813,6 +5825,40 @@ selector();
         sql_query($query) or die((defined('_ADMIN_SQLDIE_QUERYERROR')?_ADMIN_SQLDIE_QUERYERROR:"Query error: ") . sql_error());
         return sql_insert_id();
     }
+
+   static function updateOrInsertConfig($name, $value) {
+     global $DB_PHP_MODULE_NAME;
+
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $sql = sprintf("SELECT COUNT(*) AS result FROM `%s` WHERE name = ?", sql_table('config'));
+            $res = sql_prepare_execute($sql, array((string) $name));
+            if ($res && ($row = sql_fetch_row($res)) && ($row[0] > 0))
+                return self::updateConfig($name, $value);
+        } else {
+            $sql = sprintf("SELECT COUNT(*) AS result FROM `%s` WHERE name = '%s'",
+                           sql_table('config'),
+                           sql_real_escape_string( $name )
+                          );
+            if (intval(quickQuery($sql) != 0))
+                return self::updateConfig($name, $value);
+        }
+
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $sql = sprintf("INSERT INTO `%s` (name, value) VALUES(?, ?)", sql_table('config'));
+            $res = sql_prepare_execute($sql, array((string) $name, trim((string) $value)));
+        } else {
+            $sql = sprintf("INSERT INTO `%s` (name, value) VALUES('%s', '%s')",
+                           sql_table('config'),
+                           sql_real_escape_string( $name ),
+                           sql_real_escape_string( trim($value) )
+                            );
+            $res = sql_query($sql);
+        }
+
+        $res or die((defined('_ADMIN_SQLDIE_QUERYERROR')?_ADMIN_SQLDIE_QUERYERROR:"Query error: ") . sql_error());
+        return sql_insert_id();
+    }
+
 
     /**
      * Error message
