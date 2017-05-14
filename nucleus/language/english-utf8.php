@@ -47,6 +47,8 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+define('_SETTINGS_ENABLE_RSS',          'Enable RSS output');
+
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal published');

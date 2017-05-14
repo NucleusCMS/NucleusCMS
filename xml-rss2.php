@@ -24,6 +24,12 @@ $CONF = array();
 
 include('./config.php');
 
+if (isset($CONF['DisableRSS']) && $CONF['DisableRSS']) {
+    header("HTTP/1.0 404 Not Found");
+    echo "<html><head><title>404 Not Found</title></head><h1>404 Not Found</h1><body></body></html>";
+    exit;
+}
+
 if (!$CONF['DisableSite']) {
 
 	// get feed into $feed

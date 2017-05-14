@@ -50,12 +50,25 @@ if (!function_exists('sql_fetch_assoc'))
 <?php
     exit;
     }
-    
+
 /**
  * Connects to mysql server
  */
     function sql_connect_args($db_host = 'localhost', $db_user = '', $db_password = '', $db_name = '') {
         global $CONF, $DB_DRIVER_NAME;
+
+        if (!class_exists('PDO')) {
+            exit('Critical error. pdo module is not loaded.');
+        }
+        if (!(defined('PDO::ATTR_SERVER_VERSION'))) {
+            exit('The php of server does not meet the execution minimum requirement.');
+        }
+
+//        if (method_exists('PDO', 'getAvailableDrivers'))
+//            $AvailableDrivers = PDO::getAvailableDrivers();
+//        else
+//            $AvailableDrivers = array('mysql');
+//        var_dump($AvailableDrivers);
 
         try {
             if (strpos($db_host,':') === false) {
@@ -74,7 +87,7 @@ if (!function_exists('sql_fetch_assoc'))
                     $portnum = '';
                 }
             }
-            
+
             switch ($DB_DRIVER_NAME) {
                 case 'sybase':
                 case 'dblib':
@@ -103,10 +116,29 @@ if (!function_exists('sql_fetch_assoc'))
                     else $port = '';
                     $DBH = new PDO($DB_DRIVER_NAME.':host='.$host.$port.';dbname='.$db_name, $db_user, $db_password);
                 break;
-                case 'sqlite':
+                case 'sqlite':  // sqlite3
                     ini_set('default_charset', "UTF-8");
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
+
+                    if ( version_compare( PHP_VERSION , '5.2.0', '<' )) {
+                        // php5.1 : pdo_sqlite driver is sqlite2
+                        // HY000-1 unsupported file format
+                        $msg = 'Critical error: PHP 5.2 or higher is required.';
+                        startUpError($msg , 'Connect Error');
+                    }
+
+                    if ( !extension_loaded('PDO_SQLITE')) {
+                        $msg = 'Critical error: pdo_sqlite module is not loaded.';
+                        startUpError($msg , 'Connect Error');
+                    }
+
+                    // check file path
+                    $db_path = trim(dirname($db_name));
+                    if ((strlen($db_path) == 0) || !is_dir($db_path)
+                        || (strpos(str_replace("\\", '/', $db_path), '/') === FALSE))
+                        exit('ERROR : database filename maybe wrong ');
+
                     $DBH = new PDO($DB_DRIVER_NAME.':'.$db_name, $db_user, $db_password);
                     if ($DBH)
                     {
@@ -138,7 +170,6 @@ if (!function_exists('sql_fetch_assoc'))
                 break;
             }
 
-// <add for garble measure>
         // for mysql
             if ( $DBH && (stripos($DB_DRIVER_NAME, 'mysql') === 0) )
             {
@@ -153,17 +184,22 @@ if (!function_exists('sql_fetch_assoc'))
 					$charset = get_charname_from_langname($Language);
 				}
 				sql_set_charset_v2($charset , $DBH);
+
+                if ($DBH && version_compare(PHP_VERSION, '5.2.0', '<' ))
+                {
+                    // HY000-2014 Cannot execute queries while other unbuffered queries are active.
+                    $DBH->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+                }
             }
-// </add for garble measure>*/
 
         } catch (PDOException $e) {
             $DBH =NULL;
             if ($CONF['debug'])
-                $msg =  '<p>a1 Error!: ' . $e->getMessage() . '</p>';
+                $msg =  '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
             else
                 {
                     $msg =  '<p>a1 Error!: ';
-                    $pattern = '/(Access denied for user|Unknown database)/i';
+                    $pattern = '/(Access denied for user|Unknown database|could not find driver)/i';
                     if (preg_match($pattern, $e->getMessage(), $m))
                         $msg .=  $m[1];
                     $msg .=  '</p>';
@@ -245,8 +281,9 @@ if (!function_exists('sql_fetch_assoc'))
             printf("SQL error with query <div style=\"${style}\">%s</div>: <p />", hsc(sql_error($dbh)) . '<br />' . hsc($query));
         } else if ($res->errorCode() != '00000') {
             $errors = $res->errorInfo();
+            $msg_text = $errors[0].'-'.$errors[1].' '.$errors[2];
             printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
-                  , $errors[0].'-'.$errors[1].' '.$errors[2], hsc($query));
+                  , hsc($msg_text), hsc($query));
         }
 
         return $res;
@@ -828,18 +865,6 @@ if (!function_exists('sql_fetch_assoc'))
 		}
 	}
 
-	function get_mysql_charset_from_php_charset($charset = 'utf-8')
-	{
-		switch(strtolower($charset))
-		{
-			case 'utf-8'        : $charset='utf8'; break;
-			case 'euc-jp'       : $charset='ujis'; break;
-			case 'iso-8859-1'   : $charset='latin1'; break;
-			case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
-		}
-		return $charset;
-	}
-
     function sql_print_error($text)
     {
         global $CONF;
@@ -929,6 +954,26 @@ if (!function_exists('sql_fetch_assoc'))
         return intval($res);
     }
 
+    function sqldate($timestamp) {
+        return sql_quote_string(date('Y-m-d H:i:s', $timestamp));
+    }
+
+    function sql_timestamp_from_utime($timestamp) {
+        return date('Y-m-d H:i:s', $timestamp);
+    }
+
+	function get_mysql_charset_from_php_charset($charset = 'utf-8')
+	{
+		switch(strtolower($charset))
+		{
+			case 'utf-8'        : $charset='utf8'; break;
+			case 'euc-jp'       : $charset='ujis'; break;
+			case 'iso-8859-1'   : $charset='latin1'; break;
+			case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
+		}
+		return $charset;
+	}
+
     function treat_char_name($charset = 'utf8mb4')
     {
         if($charset==='utf8mb4') return 'utf8mb4';
@@ -958,14 +1003,14 @@ if (!function_exists('sql_fetch_assoc'))
         }
         return $charset;
     }
-    
+
     function get_charname_from_langname($language_name='english-utf8')
     {
         $language_name = strtolower($language_name);
-        
+
         if(strpos(strtolower($language_name),'utf8')!==false)
             return 'utf8';
-        
+
         switch($language_name)
         {
             case 'english':
@@ -1018,25 +1063,15 @@ if (!function_exists('sql_fetch_assoc'))
     }
 
     function getCharSetFromDB($tableName,$columnName, $dbh=NULL) {
-        $collation = getCollationFromDB($tableName,$columnName,$dbh);
+        $collation = getCollationFromDB($tableName,$columnName, $dbh);
         if(strpos($collation,'_')===false) $charset = $collation;
         else list($charset,$dummy) = explode('_', $collation, 2);
         return $charset;
     }
-    
+
     function getCollationFromDB($tableName,$columnName, $dbh=NULL) {
-        $db = ($dbh ? $dbh : sql_get_db());
-        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $db);
+        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $dbh);
         $column = sql_fetch_object($columns);
         return isset($column->Collation) ? $column->Collation : false;
     }
-
-    function sqldate($timestamp) {
-        return sql_quote_string(date('Y-m-d H:i:s', $timestamp));
-    }
-
-    function sql_timestamp_from_utime($timestamp) {
-        return date('Y-m-d H:i:s', $timestamp);
-    }
-
 }
