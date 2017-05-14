@@ -128,7 +128,7 @@ CREATE INDEX IF NOT EXISTS `nucleus_comment_idx_cblog` on `nucleus_comment` (`cb
   CREATE INDEX IF NOT EXISTS `nucleus_comment_idx_cbody` on `nucleus_comment` (`cbody`);
 
 CREATE TABLE IF NOT EXISTS `nucleus_config` (
-  `name`  varchar(20)  NOT NULL default '' COLLATE NOCASE ,
+  `name`  varchar(50)  NOT NULL default '' COLLATE NOCASE ,
   `value` varchar(128)          default NULL COLLATE NOCASE ,
   PRIMARY KEY  (`name`)
 );
@@ -325,7 +325,7 @@ CREATE INDEX IF NOT EXISTS `nucleus_plugin_option_idx_ocontextid` on `nucleus_pl
 CREATE TABLE IF NOT EXISTS `nucleus_plugin_option_desc` (
   `oid`      INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,
   `opid`     int(11)     NOT NULL default '0',
-  `oname`    varchar(20) NOT NULL default '' COLLATE NOCASE ,
+  `oname`    varchar(50) NOT NULL default '' COLLATE NOCASE ,
   `ocontext` varchar(20) NOT NULL default '' COLLATE NOCASE ,
   `odesc`    varchar(255)         default NULL COLLATE NOCASE ,
   `otype`    varchar(20)          default NULL COLLATE NOCASE ,

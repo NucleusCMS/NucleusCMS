@@ -51,6 +51,16 @@ function upgrade_do380() {
     
     upgrade_query('Altering ' . sql_table('item') . ' table', $query);
 
+    $query = sprintf("ALTER TABLE `%s`
+                     MODIFY COLUMN `name` varchar(50)  NOT NULL default '';
+                     ", sql_table( 'config' ));
+    upgrade_query('Altering ' . sql_table('config') . ' table', $query);
+
+    $query = sprintf("ALTER TABLE `%s`
+                     MODIFY COLUMN `oname` varchar(50) NOT NULL default '';
+                     ", sql_table( 'plugin_option_desc' ));
+    upgrade_query('Altering ' . sql_table('plugin_option_desc') . ' table', $query);
+
 	//  -> 3.80
 	// update database version
 	update_version('380');
