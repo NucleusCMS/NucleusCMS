@@ -130,7 +130,7 @@ class ITEM {
 
             // show error when sth goes wrong
             if (!$i_catid)
-                return array('status' => 'error','message' => 'Could not create new category');
+                return array('status' => 'error','message' => _ERROR_CATCREATEFAIL);
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);

@@ -10,6 +10,9 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+/*  New for 3.71-fix */
+define('_INSTALL_TEXTCOMFIRM_RETRY_SEND',  '送信は、１回だけにしてください。本当に、この内容でもう一度送信していいですか？');
+
 /*  New for 3.71 */
 define('_HEADER_LANG_SELECT',			 '表示言語');
 define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 '表示言語の選択');
