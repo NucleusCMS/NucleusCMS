@@ -259,7 +259,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
-            ob_end_flush();
+            @ob_end_flush();
             $this->_updateIfExecute(1);
             $this->_addIfCondition(0);
         } elseif ($this->if_execute[sizeof($this->if_execute) - 1]) {
@@ -278,7 +278,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
-            ob_end_flush();
+            @ob_end_flush();
             $this->_updateIfExecute(1);
             $this->_addIfCondition(0);
         } elseif ($this->if_execute[sizeof($this->if_execute) - 1]) {
@@ -310,7 +310,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
-            ob_end_flush();
+            @ob_end_flush();
             $this->_updateIfExecute(1);
             $this->_addIfCondition(0);
         } elseif ($this->if_execute[sizeof($this->if_execute) - 1]) {
@@ -333,7 +333,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
 
         if ($this->if_currentlevel) {
-            ob_end_flush();
+            @ob_end_flush();
         } else {
             ob_end_clean();
         }

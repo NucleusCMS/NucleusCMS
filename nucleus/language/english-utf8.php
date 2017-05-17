@@ -1,7 +1,7 @@
 <?php
 // English Nucleus Language File
 //
-// Author: Wouter Demuynck
+// Author: The Nucleus Group and other authors
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -14,8 +14,6 @@
 /**
  * English Nucleus Language File
  *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) The Nucleus Group
  */
 
 /********************************************

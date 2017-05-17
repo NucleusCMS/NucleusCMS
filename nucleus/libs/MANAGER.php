@@ -718,7 +718,9 @@ class MANAGER
     {
         // remove tickets older than 1 hour
         $oldTime = time() - 60 * 60;
-        $query = 'DELETE FROM ' . sql_table('tickets'). ' WHERE ctime < \'' . date('Y-m-d H:i:s',$oldTime) .'\'';
+        $query = sprintf("DELETE FROM %s WHERE ctime < '%s'",
+                         sql_table('tickets'),
+                         date('Y-m-d H:i:s',$oldTime));
         sql_query($query);
     }
 
@@ -731,7 +733,7 @@ class MANAGER
         {
             // generate new ticket (only one ticket will be generated per page request)
             // and store in database
-            global $member;
+            global $member, $DB_PHP_MODULE_NAME;
             // get member id
             if (!$member->isLoggedIn())
                 $memberId = -1;
@@ -746,10 +748,21 @@ class MANAGER
                 $ticket = md5(uniqid(mt_rand(), true));
 
                 // add in database as non-active
-                $query = 'INSERT INTO ' . sql_table('tickets') . ' (ticket, member, ctime) ';
-                $query .= 'VALUES (\'' . sql_real_escape_string($ticket). '\', \'' . intval($memberId). '\', \'' . date('Y-m-d H:i:s',time()) . '\')';
-                if (sql_query($query))
-                    $ok = true;
+                if ($DB_PHP_MODULE_NAME == 'pdo') {
+                    $input_parameters = array((string) $ticket, intval($memberId), date('Y-m-d H:i:s',time()));
+                    $query = sprintf('INSERT INTO `%s` (ticket, member, ctime) VALUES (?, ?, ?)' , sql_table('tickets'));
+                    if (sql_prepare_execute($query, $input_parameters))
+                        break;
+                } else {  // mysql driver
+                    $params = array(sql_table('tickets'),
+                                    sql_real_escape_string($ticket),
+                                    intval($memberId),
+                                    date('Y-m-d H:i:s',time())
+                              );
+                    $query = vsprintf("INSERT INTO `%s` (ticket, member, ctime) VALUES ('%s', '%s', '%s')", $params);
+                    if (sql_query($query))
+                        break;
+                }
             }
 
             $this->currentRequestTicket = $ticket;

@@ -376,6 +376,8 @@ function showInstallForm() {
 	// not part of php (in this case the @ operator doesn't work) 
 	ob_start();
 	// note: this piece of code is taken from phpMyAdmin
+	if (!defined('_CHARSET'))
+		define ('_CHARSET', 'UTF-8');
 	$conn = sql_connect_args('localhost','','');
 	$result = @sql_query('SELECT VERSION() AS version',$conn);
 
