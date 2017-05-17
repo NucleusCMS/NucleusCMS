@@ -44,9 +44,11 @@ ob_end_clean();
 ini_set('display_errors','0');
 //ini_set('display_errors', 'stderr'); // 0, 1, stderr, stdout
 
-if (!in_array("mysql", $MYSQL_HANDLER))
+global $DB_DRIVER_NAME;
+
+if ("mysql" != $DB_DRIVER_NAME)
 {
-    echo 'error : $MYSQL_HANDLER is not mysql.' . "\n";
+    echo 'error : $DB_DRIVER_NAME is not mysql.' . "\n";
     exit;
 }
 

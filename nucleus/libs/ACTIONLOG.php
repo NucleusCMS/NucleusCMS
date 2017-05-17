@@ -27,7 +27,7 @@ class ACTIONLOG {
       * (Static) Method to add a message to the action log
       */
     public static function add($level, $message) {
-        global $member, $CONF;
+        global $member, $CONF, $DB_PHP_MODULE_NAME;
 
         if ($CONF['LogLevel'] < $level)
             return;
@@ -35,11 +35,16 @@ class ACTIONLOG {
         if ($member && $member->isLoggedIn())
             $message = "[" . $member->getDisplayName() . "] " . $message;
 
-        $message = sql_real_escape_string($message);        // add slashes
-        $timestamp = date("Y-m-d H:i:s",time());    // format timestamp
-        $query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
-
-        sql_query($query);
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $timestamp = date("Y-m-d H:i:s",time());    // format timestamp
+            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES (?, ?)" , sql_table('actionlog'));
+            sql_prepare_execute($query , array((string) $timestamp, (string) $message));
+        } else {
+            $message = sql_real_escape_string($message);        // add slashes
+            $timestamp = date("Y-m-d H:i:s",time());    // format timestamp
+            $query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
+            sql_query($query);
+        }
 
         ACTIONLOG::trimLog();
     }
@@ -49,7 +54,7 @@ class ACTIONLOG {
       * If the same message, the old one will be erased.
       */
     public static function addUnique($level, $message) {
-        global $member, $CONF;
+        global $member, $CONF, $DB_PHP_MODULE_NAME;
 
         if ($CONF['LogLevel'] < $level)
             return;
@@ -58,8 +63,13 @@ class ACTIONLOG {
         if ($member && $member->isLoggedIn())
             $msg = "[" . $member->getDisplayName() . "] " . $msg;
 
-        $query = sprintf("DELETE FROM `%s` WHERE message = %s" , sql_table('actionlog') , sql_quote_string($msg) );
-        sql_query($query);
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $query = sprintf("DELETE FROM `%s` WHERE message = ?" , sql_table('actionlog'));
+            sql_prepare_execute($query , array((string) $msg));
+        } else {
+            $query = sprintf("DELETE FROM `%s` WHERE message = %s" , sql_table('actionlog') , sql_quote_string($msg) );
+            sql_query($query);
+        }
 
         ACTIONLOG::add($level, $message);
     }

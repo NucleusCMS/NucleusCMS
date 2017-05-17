@@ -68,10 +68,10 @@
 	<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td><%copytabindex(,1)%>
-			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="<%tabindex(0,0)%>"" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
+			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="<%tabindex(0,0)%>" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>
 <%settabindex(70)%><%copytabindex()%><%inctabindex()%>
 			<br />
-			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="<%tabindex(0,0)%>"" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="<%tabindex(0,0)%>" /><label for="act_future" ><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
 			<div class="indent">
 				<%text(_ADD_PLACE_ON)%>
 				<%date_time_picker%>
@@ -80,7 +80,7 @@
 					<%text(_ADD_NOPASTDATES)%>
 				<%endif%>
 			</div>
-			<input name="actiontype" tabindex="<%tabindex(0,0)%>" value="adddraft" type="radio" id="act_draft"" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+			<input name="actiontype" tabindex="<%tabindex(0,0)%>" value="adddraft" type="radio" id="act_draft" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 		</td>
 	</tr>
 	<%ifautosave()%>

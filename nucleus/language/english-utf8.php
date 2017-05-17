@@ -1,10 +1,7 @@
 <?php
 // English Nucleus Language File
 //
-// Author: Wouter Demuynck
-//
-// Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.7
+// Author: The Nucleus Group and The NucleusCMS Japan Team and other authors
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
@@ -13,9 +10,6 @@
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
-
-// Note for English
-// This file is ENGLISH Language File for NucleusCMS
 
 /**
  * English Nucleus Language File
@@ -27,6 +21,7 @@
 if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
 if (!defined('_LOCALE'))  define('_LOCALE', 'en_US');
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'english');
+if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'en');
 
 /********************************************
  *        Admin Links Settings                *
@@ -48,6 +43,9 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
  *        Start New for 3.80                *
  ********************************************/
 define('_SETTINGS_ENABLE_RSS',          'Enable RSS output');
+
+define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'Database upgrade is required.');
+define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'Click here to upgrade the database to Nucleus v%s');
 
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');

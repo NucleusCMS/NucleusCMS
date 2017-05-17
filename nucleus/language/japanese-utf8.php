@@ -1,14 +1,11 @@
 <?php
 // Japanese (UTF-8) Nucleus Language File
 //
-// Author: chrome (chrome@cgi.no-ip.org)
-// Modified by: Osamu Higuchi (osamu@higuchi.com)
-// Modified by: shizuki (shizuki@kinezumi.net)
-// Nucleus version: v1.0-v3.7
+// Author: The NucleusCMS Japan Team and other authors
 //
 // Please note: if you want to translate this file to your own language, be aware
 // that in a next Nucleus version, new variables might be added and some other ones
-// might be deleted. Therefor, it's important to list the Nucleus version for which
+// might be deleted. Therefore, it's important to list the Nucleus version for which
 // the file was written in your document.
 //
 // Fully translated language file can be sent to us and will be made
@@ -23,6 +20,7 @@
 if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
 if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
 if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
+if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'ja');
 
 /********************************************
  *        Admin Links Settings                *
@@ -46,6 +44,9 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
  *        Start New for 3.80                *
  ********************************************/
 define('_SETTINGS_ENABLE_RSS',         'RSSの出力を有効にする');
+
+define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'データベースのアップグレードが必要です');
+define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
 
 define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
 define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');

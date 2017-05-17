@@ -257,7 +257,42 @@ class MANAGER
       * 
       * private
       */
-    function _loadPlugin($NP_Name)
+    private function _loadPlugin($NP_Name)
+    {
+        if (!HAS_CATCH_ERROR) {
+            $this->_loadPluginRaw($NP_Name);
+            return class_exists($NP_Name);
+        }
+        return $this->_loadPluginTry($NP_Name);
+    }
+
+    private function _loadPluginTry($NP_Name)
+    {
+        $success = false;
+        try
+        {
+            $this->_loadPluginRaw($NP_Name);
+            $success = class_exists($NP_Name);
+        }
+        catch (Error $e)
+        {
+            global $member, $CONF;
+            if ($member && $member->isLoggedIn() && $member->isAdmin())
+            {
+                $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                               $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                if ($CONF['DebugVars'])
+                {
+                    var_dump($e->getMessage());
+                    // $e->getTraceAsString
+                }
+                ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+            }
+        }
+       return $success;
+    }
+
+    private function _loadPluginRaw($NP_Name)
     {
         if (class_exists($NP_Name))
             return ;
@@ -559,7 +594,7 @@ class MANAGER
                 $this->_loadPlugin($listener);
                 // do notify (if method exists)
                 $event_funcname = 'event_' . $eventName;
-                if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname ))
+                if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname))
                     $this->plugins[$listener]->$event_funcname($data);
             }
         }
@@ -676,7 +711,9 @@ class MANAGER
     {
         // remove tickets older than 1 hour
         $oldTime = time() - 60 * 60;
-        $query = sprintf("DELETE FROM %s WHERE ctime < '%s'", sql_table('tickets'),date('Y-m-d H:i:s',$oldTime));
+        $query = sprintf("DELETE FROM %s WHERE ctime < '%s'",
+                         sql_table('tickets'),
+                         date('Y-m-d H:i:s',$oldTime));
         sql_query($query);
     }
 
@@ -689,7 +726,7 @@ class MANAGER
         {
             // generate new ticket (only one ticket will be generated per page request)
             // and store in database
-            global $member;
+            global $member, $DB_PHP_MODULE_NAME;
             // get member id
             if (!$member->isLoggedIn())
                 $memberId = -1;
@@ -704,11 +741,21 @@ class MANAGER
                 $ticket = md5(uniqid(mt_rand(), true));
 
                 // add in database as non-active
-                $params = array(sql_table('tickets'), sql_real_escape_string($ticket), intval($memberId), date('Y-m-d H:i:s',time()));
-                $query = vsprintf("INSERT INTO %s (ticket, member, ctime) VALUES ('%s', '%s', '%s')", $params);
-                
-                if (sql_query($query))
-                    $ok = true;
+                if ($DB_PHP_MODULE_NAME == 'pdo') {
+                    $input_parameters = array((string) $ticket, intval($memberId), date('Y-m-d H:i:s',time()));
+                    $query = sprintf('INSERT INTO `%s` (ticket, member, ctime) VALUES (?, ?, ?)' , sql_table('tickets'));
+                    if (sql_prepare_execute($query, $input_parameters))
+                        break;
+                } else {  // mysql driver
+                    $params = array(sql_table('tickets'),
+                                    sql_real_escape_string($ticket),
+                                    intval($memberId),
+                                    date('Y-m-d H:i:s',time())
+                              );
+                    $query = vsprintf("INSERT INTO `%s` (ticket, member, ctime) VALUES ('%s', '%s', '%s')", $params);
+                    if (sql_query($query))
+                        break;
+                }
             }
 
             $this->currentRequestTicket = $ticket;

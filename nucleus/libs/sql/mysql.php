@@ -31,14 +31,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if (!defined('_CHARSET')) {
             define('_CHARSET', 'UTF-8');
         }
-        if (!defined('_HTML_XML_NAME_SPACE_AND_LANG_CODE')) {
-            define('_HTML_XML_NAME_SPACE_AND_LANG_CODE', 'xmlns="http://www.w3.org/1999/xhtml" xml:lang="en-us" lang="en-us"');
-        }
+        $lang = sprintf('lang="%s"', (defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en'));
         sendContentType('text/html','',_CHARSET);
         ?>
-<html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
-    <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=<?php echo _CHARSET?>" />
+<!DOCTYPE html>
+<html <?php echo $lang; ?>>
+    <head><meta charset="<?php echo _CHARSET; ?>" />
     <title><?php echo hsc($title)?></title></head>
     <body>
         <h1><?php echo hsc($title)?></h1>
@@ -68,9 +66,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
 
         if($MYSQL_CONN) return $MYSQL_CONN;
-        
+
         if(!$DB_HOST || !$DB_USER) exit('sql_connect error. Empty connect information.');
-        
+
         if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost')
             $MYSQL_HOST = '127.0.0.1';
         $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
@@ -83,13 +81,25 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
                 $msg .=  $m[1];
             startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
-        
-        $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
-        $res = sql_query($query);
-        if(!$res) exit('Language name fetch error');
-        $lang = sql_fetch_object($res);
-        $charset = get_charname_from_langname($lang->value);
-        sql_set_charset($charset);
+
+        if (defined('_CHARSET')){
+            $charset  = get_mysql_charset_from_php_charset(_CHARSET);
+        }else{
+            $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+            $res = sql_query($query);
+            if(!$res) exit('Language name fetch error');
+            $obj = sql_fetch_object($res);
+            $Language = $obj->value;
+            $charset = get_charname_from_langname($Language);
+            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name', $MYSQL_CONN);
+            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+                $charset = $charsetOfDB; // work around for utf8mb4_general_ci
+            else if($charset !== $charsetOfDB) {
+                global $CONF;
+                $CONF['adminAlert'] = '_MISSING_DB_ENCODING';
+            }
+        }
+        sql_set_charset($charset, $MYSQL_CONN);
         
         return $MYSQL_CONN;
     }
@@ -126,7 +136,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       * executes an SQL query
       */
     function sql_query($query,$conn = false) {
-        global $SQLCount,$MYSQL_CONN,$SQLStack;
+        global $SQLCount, $MYSQL_CONN, $CONF, $SQLStack;
         if (!$conn) {
             if($MYSQL_CONN) $conn = $MYSQL_CONN;
             else            sql_connect();
@@ -134,7 +144,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         else exit($query);
         $bt = microtime(true);
         $res = mysql_query($query,$conn);
-        if(!$res) {
+        if (!$res && $CONF['debug']) {
             echo sprintf("mySQL error with query <b>%s</b> : %s<p />", $query, mysql_error($conn));
             $_ = debug_backtrace();
             print_r($_);
@@ -453,8 +463,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * refering to their conversation below,
      * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
      * 
-     * NOTE:     shift_jis is only supported for output. Using shift_jis in DB is prohibited.
-     * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
+     * NOTE: shift_jis is only supported for output. Using shift_jis in DB is prohibited.
+     * NOTE: iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset) {
         if(defined('NC_MTN_MODE') && NC_MTN_MODE==='install') $charset = 'utf8';
@@ -465,10 +475,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
             else $_CHARSET = '';
             
-            if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
+            if(version_compare($mySqlVer, '5.0.7', '>='))
             {
-                sql_query("SET CHARACTER SET {$charset}");
-                $res = mysql_set_charset($charset);
+                if (function_exists('mysql_set_charset'))
+                    $res = mysql_set_charset($charset);
+                else
+                    $res = sql_query("SET CHARACTER SET {$charset}");
             }
             elseif($charset==='utf8' && $_CHARSET==='utf-8')
                 $res = sql_query("SET NAMES 'utf8'");
