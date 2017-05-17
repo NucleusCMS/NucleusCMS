@@ -408,7 +408,7 @@ class ADMIN {
 
         $search = postVar('search');    // search through items
 
-        $query_view =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime';
+        $query_view =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime, bnumber, catid';
         $query = ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
                . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
 
@@ -2138,7 +2138,7 @@ class ADMIN {
             <td><?php echo _MEMBERS_PWD?>
             <br /><small><?php echo _MEMBERS_PASSWORD_INFO?></small>
             </td>
-            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off"  /></td>
+            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
         </tr>
         <tr>
             <td><?php echo _MEMBERS_REPPWD?></td>
@@ -2309,7 +2309,7 @@ class ADMIN {
         // (check occurs when taking away one of these rights from such a member)
         if (    (!$admin && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()))
              || (!$canlogin && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()))
-			 || ($mhalt && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()) )
+             || ($mhalt && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()) )
            )
         {
             $r = sql_query('SELECT count(*) FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');

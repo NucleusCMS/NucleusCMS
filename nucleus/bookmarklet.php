@@ -44,6 +44,10 @@ if ($action == '') {
     $action = 'add';
 }
 
+$actiontype = postVar('actiontype');
+if($actiontype==='delete'||$actiontype==='itemdeleteconfirm')
+    $action = $actiontype;
+
 sendContentType('text/html', 'bookmarklet-' . $action);
 
 // check ticket
@@ -76,6 +80,14 @@ switch ($action) {
         bm_doEditItem();
         break;
 
+    case 'delete' :
+         bm_doDeleteItem();
+        break;
+
+    case 'itemdeleteconfirm' :
+        bm_doDeleteItemComplete();
+        break;
+
     // on login, 'action' gets changed to 'nextaction'
     case 'login':
         bm_doError('Something went wrong');
@@ -102,7 +114,11 @@ function bm_doAddItem() {
     $blog =& $manager->getBlog($blogid);
 
     if ($result['status'] == 'newcategory') {
-        $message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'] . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
+        $href      = 'index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'];
+        $onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
+        $title     = _BOOKMARKLET_NEW_WINDOW;
+        $aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
+        $message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
         $extrahead = '';
     } else {
         $message = _ITEM_ADDED;
@@ -110,6 +126,37 @@ function bm_doAddItem() {
     }
 
     bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
+}
+
+function bm_doDeleteItem()
+{
+    global $manager;
+        $msg = <<< EOT
+<p><%_CONFIRMTXT_ITEM%></p>
+<p><%itemtitle%></p>
+<form method="post" action="bookmarklet.php"><div>
+<input type="hidden" name="action" value="itemdeleteconfirm" />
+<input type="hidden" name="ticket" value="<%ticket%>" />
+<input type="hidden" name="itemid" value="<%itemid%>" />
+<input type="submit" value="<%_DELETE_CONFIRM_BTN%>"  tabindex="10" />
+</div></form>
+EOT;
+        $ticket = $manager->getNewTicket();
+        $itemid = intRequestVar('itemid');
+        $title = postVar('title');
+        $msg = str_replace(array('<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>','<%ticket%>','<%itemid%>','<%itemtitle%>'), array(_CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,$ticket,$itemid,$title), $msg);
+        bm_message(_DELETE_CONFIRM_BTN, _DELETE_CONFIRM, $msg, '', 0);
+        exit;
+}
+
+function bm_doDeleteItemComplete()
+{
+    global $manager;
+    $manager->loadClass('ITEM');
+    $itemid = intRequestVar('itemid');
+    ITEM::delete($itemid);
+    bm_message(_DELETED_ITEM, _DELETED_ITEM, _DELETED_ITEM);
+    exit;
 }
 
 function bm_doEditItem() {
@@ -129,12 +176,6 @@ function bm_doEditItem() {
     $closed = intPostVar('closed');
     $actiontype = postVar('actiontype');
     $draftid = intPostVar('draftid');
-
-    // redirect to admin area on delete (has delete confirmation)
-    if ($actiontype == 'delete') {
-        redirect('index.php?action=itemdelete&itemid=' . $itemid);
-        exit;
-    }
 
     // create new category if needed (only on edit/changedate)
     if (strstr($catid,'newcat') ) {
@@ -169,7 +210,7 @@ function bm_doEditItem() {
             $timestamp = 0;
             break;
         default:
-            bm_doError('Something went wrong');
+            bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
     }
 
     // update item for real
@@ -181,7 +222,12 @@ function bm_doEditItem() {
 
     // show success message
     if ($catid != intPostVar('catid') ) {
-        bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>', '');
+        $href      = 'index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid;
+        $onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
+        $title     = _BOOKMARKLET_NEW_WINDOW;
+        $aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
+        $message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
+        bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>', '');
     } else {
         bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
     }
@@ -232,6 +278,11 @@ function bm_doShowForm() {
     $log_text = trim(requestVar('logtext'));
     $log_link = requestVar('loglink');
     $log_linktitle = requestVar('loglinktitle');
+
+    if (function_exists('mb_convert_encoding')) {
+        $log_text = uniDecode($log_text,_CHARSET);
+        $log_linktitle = uniDecode($log_linktitle,_CHARSET);
+    }
 
     if (!BLOG::existsID($blogid) ) {
         bm_doError(_ERROR_NOSUCHBLOG);
@@ -295,7 +346,7 @@ function bm_doError($msg) {
     die;
 }
 
-function bm_message($title, $head, $msg, $extrahead = '') {
+function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
     ?>
 <!DOCTYPE html>
 <html>
@@ -307,7 +358,9 @@ function bm_message($title, $head, $msg, $extrahead = '') {
 <body>
 <h1><?php echo $head; ?></h1>
 <p><?php echo $msg; ?></p>
+<?php if($showClose):?>
 <p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
+<?php endif; ?>
 </body>
 </html>
 <?php
@@ -330,5 +383,26 @@ wingm = window.open('<?php echo $CONF['AdminURL']?>bookmarklet.php?blogid=<?php 
 wingm.focus();
 </script>
     <?php
+}
+
+function uniDecode($str,$charcode){
+    $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/", 'toUtf8', $str);
+    return mb_convert_encoding($text, $charcode, 'UTF-8');
+}
+function toUtf8($ar){
+    foreach($ar as $val){
+        $val = intval(substr($val,2),16);
+        if($val < 0x7F){        // 0000-007F
+            $c .= chr($val);
+        }elseif($val < 0x800) { // 0080-0800
+            $c .= chr(0xC0 | ($val / 64));
+            $c .= chr(0x80 | ($val % 64));
+        }else{                // 0800-FFFF
+            $c .= chr(0xE0 | (($val / 64) / 64));
+            $c .= chr(0x80 | (($val / 64) % 64));
+            $c .= chr(0x80 | ($val % 64));
+        }
+    }
+    return $c;
 }
 

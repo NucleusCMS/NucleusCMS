@@ -65,6 +65,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
         global $MYSQL_CONN;
 
+        if($MYSQL_CONN) return $MYSQL_CONN;
+
+        if(!$DB_HOST || !$DB_USER) exit('sql_connect error. Empty connect information.');
+
         if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost')
             $MYSQL_HOST = '127.0.0.1';
         $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
@@ -132,10 +136,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       * executes an SQL query
       */
     function sql_query($query,$conn = false) {
-        global $SQLCount,$MYSQL_CONN;
+        global $SQLCount, $MYSQL_CONN, $CONF;
         if (!$conn) $conn = $MYSQL_CONN;
         $SQLCount++;
-        $res = mysql_query($query,$conn) or print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
+        $res = mysql_query($query,$conn);
+        if (!$res && $CONF['debug']) {
+            print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
+        }
         return $res;
     }
     
@@ -447,8 +454,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * refering to their conversation below,
      * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
      * 
-     * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
-     * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
+     * NOTE: shift_jis is only supported for output. Using shift_jis in DB is prohibited.
+     * NOTE: iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset, $conn=false) {
         $conn = ($conn ? $conn : sql_get_db());
@@ -458,10 +465,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
         else $_CHARSET = '';
 
-        if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
+        if(version_compare($mySqlVer, '5.0.7', '>='))
         {
-            sql_query("SET CHARACTER SET {$charset}",$conn);
-            $res = mysql_set_charset($charset,$conn);
+            if (function_exists('mysql_set_charset'))
+                $res = mysql_set_charset($charset,$conn);
+            else
+                $res = sql_query("SET CHARACTER SET {$charset}",$conn);
         }
         elseif($charset==='utf8mb4')
             $res = sql_query("SET NAMES 'utf8mb4'",$conn);
@@ -567,15 +576,15 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return $charset_name;
     }
     
-    function getCharSetFromDB($tableName,$columnName) {
-        $collation = getCollationFromDB($tableName,$columnName);
+    function getCharSetFromDB($tableName,$columnName, $dbh=NULL) {
+        $collation = getCollationFromDB($tableName,$columnName,$dbh);
         if(strpos($collation,'_')===false) $charset = $collation;
         else list($charset,$dummy) = explode('_', $collation, 2);
         return $charset;
     }
     
-    function getCollationFromDB($tableName,$columnName) {
-        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'");
+    function getCollationFromDB($tableName,$columnName, $dbh=NULL) {
+        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $dbh);
         $column = sql_fetch_object($columns);
         return isset($column->Collation) ? $column->Collation : false;
     }

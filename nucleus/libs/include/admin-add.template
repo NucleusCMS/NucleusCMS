@@ -65,7 +65,7 @@
 		<td><%text(_ADD_CATEGORY)%></td>
 		<td><%categories(40)%></td>
 </tr>
-<tr>
+	<tr>
 		<td><%text(_SUBMIT)%></td>
 		<td><%copytabindex(,1)%>
 			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="<%tabindex(0,0)%>" /><label for="act_now"><%text(_ADD_ADDNOW)%></label>

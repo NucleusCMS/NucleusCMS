@@ -88,8 +88,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     if ($DB_DRIVER_NAME == 'mysql')
     {
         $sql = sprintf('ALTER TABLE `%s` ', sql_table('skin'))
-             . "ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts', "
-             . 'DROP PRIMARY KEY, ADD PRIMARY KEY (`sdesc`,`stype`,`spartstype`);';
+             . "ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts';"
         upgrade_query($upgrade_msg, $sql);
         return;
     }

@@ -426,7 +426,7 @@ class BLOG {
             $param = array(
                 'blog'            => &$this,
                 'name'            => &$catName,
-                'description'    => $catDescription,
+                'description'     => $catDescription,
                 'order' => &$corder
             );
             $manager->notify('PreAddCategory', $param);
@@ -1038,8 +1038,8 @@ class BLOG {
     function getCategoryName($catid) {
         $res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
         $o = sql_fetch_object($res);
-		if (is_object($o))
-	        return $o->cname;
+        if (is_object($o))
+            return $o->cname;
     }
 
     /**
