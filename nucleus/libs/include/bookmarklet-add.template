@@ -9,7 +9,7 @@
 		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
-        <script type="text/javascript" src="javascript/edit_date.js"></script>
+		<script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
 		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
@@ -119,7 +119,7 @@
 										</div>
 									</li>
 									<li>
-										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60"" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
+										<input name="actiontype" value="adddraft" type="radio" id="act_draft" tabindex="60" /><label for="act_draft"><%text(_ADD_ADDDRAFT)%></label> <%helplink(draft)%>
 									</li>
 									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" checked="checked" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li -->
 								</ul>

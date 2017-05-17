@@ -61,6 +61,10 @@ function upgrade_do380() {
                      ", sql_table( 'plugin_option_desc' ));
     upgrade_query('Altering ' . sql_table('plugin_option_desc') . ' table', $query);
 
+    $query = sprintf("ALTER TABLE `%s`
+                     ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts';
+                     ", sql_table( 'skin' ));
+    upgrade_query('Altering ' . sql_table('skin') . ' table', $query);
 	//  -> 3.80
 	// update database version
 	update_version('380');

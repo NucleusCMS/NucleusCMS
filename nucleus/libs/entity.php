@@ -27,7 +27,7 @@ class entity {
     private static function normalize_numeric_callback2 ($matches) {
         return '&#x' . strtoupper($matches[2]) . ';' . $matches[4];
     }
- 
+
     public static function numeric_to_utf8 ($string) {
         $string = preg_replace_callback('/&#([0-9]+)(;)?/', array('self', 'numeric_to_utf8_callback1') , $string);
 
@@ -58,7 +58,7 @@ class entity {
     private static function numeric_to_named_callback ($matches) {
         return '&#'.hexdec($matches[1]);
     }
-    
+
     public static function specialchars ($string, $type = 'xml') {
         $apos = $type == 'xml' ? '&apos;' : '&#39;';
         $specialchars = array (

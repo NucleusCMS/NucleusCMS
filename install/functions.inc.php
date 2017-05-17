@@ -120,7 +120,7 @@ function showInstallForm() {
 	$ph['_TEXT1_2'] = _TEXT1_2;
 	$ph['_TEXT1_2_TAB_HEAD'] = _TEXT1_2_TAB_HEAD;
 	$ph['_TEXT1_2_TAB_FIELD1'] = _TEXT1_2_TAB_FIELD1;
-    if ($input_lang==='ja' && function_exists('mb_convert_encoding') && ENABLE_INSTALL_LANG_EUCJP)
+    if (INSTALL_LANG==='ja' && function_exists('mb_convert_encoding') && ENABLE_INSTALL_LANG_EUCJP)
         $ph['euc_option'] =  '<option value="ujis" >EUC-JP</option>';
     else $ph['euc_option'] = '';
     $ph['_HEADER5'] = _HEADER5;
@@ -237,7 +237,7 @@ function doInstall() {
 	// 1. check all the data
 	$errors = array();
 
-	if (!$mysql_database && $is_install_sqlite)                   array_push($errors, _ERROR_NO_DBNAME);
+	if (!$mysql_database && !$is_install_sqlite)                  array_push($errors, _ERROR_NO_DBNAME);
 	if (($mysql_usePrefix == 1) && (strlen($mysql_prefix) == 0) ) array_push($errors, _ERROR3);
 
 	if (($mysql_usePrefix == 1) && (!preg_match('#^[a-zA-Z0-9_]+$#', $mysql_prefix) ) )

@@ -33,13 +33,14 @@ class ENCAPSULATE {
         // get list contents and stop buffering
         $list = ob_get_clean();
 
+        $this->isFootNavigation = ($nbOfRows > 0);
+        $this->showHead();
         if ($nbOfRows > 0) {
-            $this->showHead();
             echo $list;
-            $this->showFoot();
         } else {
             echo $errorMessage;
         }
+        $this->showFoot();
 
         return $nbOfRows;
     }
@@ -52,6 +53,9 @@ class NAVLIST extends ENCAPSULATE {
 
     public $total = null;
 
+    function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
+        $this->__construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid);
+    }
     function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
         $this->action = $action;
         $this->start = $start;
@@ -76,7 +80,9 @@ class NAVLIST extends ENCAPSULATE {
         $this->showNavigation();
     }
     function showFoot() {
-        $this->showNavigation();
+        if ($this->isFootNavigation) {
+            $this->showNavigation();
+        }
     }
 
     /**
@@ -271,9 +277,9 @@ EOD;
             ,'normal'
             ,'normal_term_future'
             ,'draft');
-        foreach ( $list as $key )
-          if ($key == $name)
-            return $key;
+        foreach($list as $key)
+            if ($key == $name)
+                return $key;
         return $default;
     }
 
@@ -439,7 +445,7 @@ EOD;
         foreach($blog_titles as $b_id => $title)
           $s .= sprintf("\t<optgroup label='%s'>%s\n\t</optgroup>\n",
                         htmlentities($title , ENT_COMPAT , _CHARSET),
-                          "\n\t\t".implode( "\n\t\t" , $lists[$b_id] )
+                        "\n\t\t".implode( "\n\t\t" , $lists[$b_id] )
                   );
         $s .= "\t\t</select>\n";
 
@@ -453,6 +459,9 @@ EOD;
  * A class used to encapsulate a list of some sort in a batch selection
  */
 class BATCH extends ENCAPSULATE {
+    function BATCH($type) {
+        $this->__construct($type);
+    }
     function __construct($type) {
         $this->type = $type;
     }

@@ -115,7 +115,7 @@ class BaseActions {
         }
         $this->level = $this->level + 1;
         // parse file contents
-        if(strpos($contents,'<%')!==false)
+        if(strpos($contents,'<%') !== false)
             $this->parser->parse($contents);
         else
             echo $contents;
@@ -259,7 +259,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
-            echo ob_get_clean();
+            @ob_end_flush();
             $this->_updateIfExecute(1);
             $this->_addIfCondition(0);
         } elseif ($this->if_execute[sizeof($this->if_execute) - 1]) {
@@ -278,7 +278,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
-            echo ob_get_clean();
+            @ob_end_flush();
             $this->_updateIfExecute(1);
             $this->_addIfCondition(0);
         } elseif ($this->if_execute[sizeof($this->if_execute) - 1]) {
@@ -310,7 +310,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
-            echo ob_get_clean();
+            @ob_end_flush();
             $this->_updateIfExecute(1);
             $this->_addIfCondition(0);
         } elseif ($this->if_execute[sizeof($this->if_execute) - 1]) {
@@ -333,7 +333,7 @@ class BaseActions {
         if (sizeof($this->if_conditions) == 0) return;
 
         if ($this->if_currentlevel) {
-            echo ob_get_clean();
+            @ob_end_flush();
         } else {
             ob_end_clean();
         }

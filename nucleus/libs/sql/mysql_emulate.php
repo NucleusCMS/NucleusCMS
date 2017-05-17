@@ -48,7 +48,9 @@ function mysql_query($query, $dblink = NULL)
 
 function mysql_fetch_object($res)
 {
-    if(is_object($res)) return mysqli_fetch_object($res);
+	if(!is_object($res))
+		return false;
+	return mysqli_fetch_object($res);
 }
 
 function mysql_fetch_array($res , $result_type = MYSQL_BOTH)

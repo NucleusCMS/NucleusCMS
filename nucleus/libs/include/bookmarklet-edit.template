@@ -110,17 +110,17 @@
 							<td style="width:20%"><%text(_EDIT_SUBMIT)%></td>
 							<td>
 								<ul class="nobullets">
-									<li><input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60"" /><label for="act_edit"><%text(_BMLET_EDIT)%></label></li>
-									<li><input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60"" /><label for="act_delete"><%text(_BMLET_DELETE)%></label></li>
+									<li><input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60" /><label for="act_edit"><%text(_BMLET_EDIT)%></label></li>
+									<li><input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60" /><label for="act_delete"><%text(_BMLET_DELETE)%></label></li>
 									<%ifblogsetting(ballowpast)%><li>
-										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60"" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
+										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
 										<div class="indent">
 											<%text(_ADD_PLACE_ON)%>
 											<%date_time_picker(itemtime)%>
 										</div>
 									</li><%endif%>
 									<li>
-										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60"" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
+										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
 									</li>
 									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li -->
 								</ul>

@@ -314,7 +314,7 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar time
      */
     function parse_time($format = '') {
-        echo strftimejp(
+        echo Utils::strftime(
                 ($format == '') ? $this->template['FORMAT_TIME'] : $format,
                 $this->currentComment['timestamp']
             );
@@ -422,8 +422,8 @@ class COMMENTACTIONS extends BaseActions {
      * Parse templatevar userlinkraw
      */
     function parse_userlinkraw() {
-        if (isset($this->currentComment['userlinkraw']))
-          echo $this->currentComment['userlinkraw'];
+        if ( isset($this->currentComment['userlinkraw']) )
+            echo $this->currentComment['userlinkraw'];
     }
 
     /**

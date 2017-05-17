@@ -289,6 +289,7 @@ class COMMENTS {
             }
             else
             {
+                // Todo:
                 $tempurl = $settings->getURL();
 
                 if ( substr($tempurl, -1) == '/' || substr($tempurl, -4) == '.php' )
