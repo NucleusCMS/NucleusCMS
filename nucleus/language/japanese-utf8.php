@@ -356,7 +356,7 @@ define('_BAN_BANBLOGNAME',							'%s のみ');
 define('_PLUGIN_OPTIONS_TITLE',						'%s のオプション設定');
 
 // Plugin file loda error
-define('_PLUGINFILE_COULDNT_BELOADED',				'エラー: プラグインファイル <strong>%s.php</strong> を読み込めませんでした。ファイルが存在しない、もくは使用中の Nucleus 上で動作させるために必要な機能がプラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
+define('_PLUGINFILE_COULDNT_BELOADED',				'エラー: プラグインファイル <strong>%s.php</strong> を読み込めませんでした。ファイルが存在しない、もしくは使用中の Nucleus 上で動作させるために必要な機能がプラグインでサポートされていません。(<a href="?action=actionlog">管理操作履歴</a>に詳細があります。)');
 
 //ITEM add/edit template (for japanese only)
 define('_ITEM_ADDEDITTEMPLATE_FORMAT',				'フォーマット：');
