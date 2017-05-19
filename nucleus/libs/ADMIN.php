@@ -903,12 +903,13 @@ class ADMIN {
         <?php
         $s = '';
 
+        if (isset($b))
+            unset($b);
         foreach ($ids as $id)
         {
             $bid = getBlogIDFromCatID($id);
             if ($member->blogAdminRights($bid))
               {
-                  unset($b , $o);
                   $b = $manager->getBlog($bid);
 
                   $res = sql_query('SELECT * FROM ' . sql_table('category')
@@ -923,6 +924,7 @@ class ADMIN {
                         );
                         continue;
                     }
+                  unset($b , $o);
               }
             $s .= sprintf('<tr><td>error</td><td>catid:%d</td><td></td></tr>' , $id);
         }
