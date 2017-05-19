@@ -217,6 +217,17 @@ CREATE TABLE `nucleus_plugin_option_desc` (
   UNIQUE KEY `oid` (`oid`)
 ) ENGINE=MyISAM;
 
+CREATE TABLE `nucleus_cached_data` (
+  `cd_type`        varchar(50)   NOT NULL default '',
+  `cd_sub_type`    varchar(50)   NOT NULL default '',
+  `cd_sub_id`      int(11)       NOT NULL,
+  `cd_allow_auto_clean`  tinyint(2)   NOT NULL default '1',
+  `cd_name`        varchar(100)  NOT NULL,
+  `cd_value`       text          NOT NULL,
+  `cd_datetime`    datetime      NOT NULL,
+  PRIMARY KEY  (`cd_type`, `cd_sub_type`, `cd_sub_id`, `cd_name`)
+) ENGINE=MyISAM;
+
 CREATE TABLE `nucleus_skin` (
   `sdesc`    int(11)     NOT NULL default '0',
   `stype`    varchar(20) NOT NULL default '',
