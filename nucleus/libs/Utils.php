@@ -80,6 +80,7 @@ class Utils
         $timeout = ((isset($options['timeout']) && $options['timeout']>0) ? $options['timeout'] : 0);
         $connecttimeout = ((isset($options['connecttimeout']) && $options['connecttimeout']>0) ? $options['connecttimeout'] : 0);
         $start = microtime(TRUE);
+        $reply_response = (isset($options['reply_response']) && $options['reply_response']);
 
         if (function_exists('curl_init'))
         {
@@ -90,8 +91,31 @@ class Utils
                 curl_setopt ($crl, CURLOPT_TIMEOUT, $timeout);
             if ($connecttimeout > 0)
                 curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $connecttimeout);
-            $ret = curl_exec($crl);
-            curl_close($crl);
+            if (preg_match('#^https://#', $url))
+                curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
+            if (isset($options['useragent']) && !empty($options['useragent']))
+                curl_setopt($crl, CURLOPT_USERAGENT, $options['useragent']);
+            else
+                curl_setopt($crl, CURLOPT_USERAGENT, DEFAULT_USER_AGENT);
+            // request
+            if ($reply_response)
+            {
+                curl_setopt($crl, CURLOPT_HEADER, 1);
+                $ret = curl_exec($crl);
+                if ($ret !== false)
+                {
+                    $info = curl_getinfo($crl);
+                    $header = substr ($ret, 0, $info["header_size"]);
+                    $body   = substr ($ret, $info["header_size"]);
+                    $ret = array('header' => &$header, 'body'=> &$body);
+                }
+                curl_close($crl);
+            }
+            else
+            {
+                $ret = curl_exec($crl);
+                curl_close($crl);
+            }
             return $ret;
         }
 
@@ -104,6 +128,9 @@ class Utils
         }
         if ($c)
         {
+            $meta = array();
+            if ($reply_response)
+                $meta = stream_get_meta_data($c);
             if ($timeout>0 && (microtime(TRUE)-$start > $timeout)) {
                 fclose($c);
                 return FALSE; // Timeout
@@ -134,6 +161,8 @@ class Utils
                 }
              }
              fclose($c);
+             if (!empty($meta) && isset($meta['wrapper_data']))
+                 return array('header' => (string) implode("\n", $meta['wrapper_data']), 'body'=> &$data);
              return $data;
         }
         return FALSE;
