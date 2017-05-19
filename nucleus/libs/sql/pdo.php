@@ -972,6 +972,10 @@ if (!function_exists('sql_fetch_assoc'))
         return date('Y-m-d H:i:s', $timestamp);
     }
 
+    function sql_gmDateTime_from_utime($timestamp) {
+        return gmdate('Y-m-d H:i:s', $timestamp);
+    }
+
     function get_mysql_charset_from_php_charset($charset = 'utf-8')
     {
         switch(strtolower($charset))
