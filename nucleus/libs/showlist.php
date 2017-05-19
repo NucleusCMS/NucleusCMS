@@ -205,6 +205,17 @@ function listplug_table_pluginlist($template, $type) {
                         echo "<a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
                 echo '</td>';
                 echo '<td>';
+                // plugin update check
+                $update_info = $plug->checkRemoteUpdate();
+                if ($update_info['result']) {
+                    $dl_url = $update_info['download'];
+                    echo "<strong style='color: red'>" . hsc(_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE) . "</strong><br />";
+                    echo "Latest version: " . hsc($update_info['version']) . "<br />";
+                    if (!empty($update_info['download']))
+                        printf('Get URL : <a href="%s" target="_blank">%s</a><br />', hsc($update_info['download']), hsc($update_info['download']));
+                    echo "<br />";
+                }
+                // plugin Description
                 if($plug->getDescription()!=='Undefined')
                 {
                     $raw_desc = $plug->getDescription();
