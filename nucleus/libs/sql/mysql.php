@@ -597,4 +597,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return date('Y-m-d H:i:s', $timestamp);
     }
 
+    function sql_gmDateTime_from_utime($timestamp) {
+        return gmdate('Y-m-d H:i:s', $timestamp);
+    }
+
 }
