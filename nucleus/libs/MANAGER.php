@@ -390,18 +390,18 @@ class MANAGER
             }
         }
 
+        // unload plugin if using non-mysql handler and plugin does not support it 
+        $is_NotUseDbApi = (($this->plugins[$NP_Name]->supportsFeature('NotUseDbApi'))
+                        || ($this->plugins[$NP_Name]->supportsFeature('NoSql')));
+
         // unload plugin if a prefix is used and the plugin cannot handle this^
         global $DB_PREFIX;
-        if (($DB_PREFIX != '') && !$this->plugins[$NP_Name]->supportsFeature('SqlTablePrefix'))
+        if (!$is_NotUseDbApi && ($DB_PREFIX != '') && !$this->plugins[$NP_Name]->supportsFeature('SqlTablePrefix'))
         {
             unset($this->plugins[$NP_Name]);
             ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $NP_Name));
             return 0;
         }
-
-        // unload plugin if using non-mysql handler and plugin does not support it 
-        $is_NotUseDbApi = (($this->plugins[$NP_Name]->supportsFeature('NotUseDbApi'))
-                        || ($this->plugins[$NP_Name]->supportsFeature('NoSql')));
 
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
         // check SqlApi
