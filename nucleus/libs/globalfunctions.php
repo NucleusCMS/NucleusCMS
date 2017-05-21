@@ -415,6 +415,7 @@ include_once("{$DIR_LIBS}BAN.php");
 include_once("{$DIR_LIBS}PAGEFACTORY.php");
 include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}entity.php");
+include_once("{$DIR_LIBS}CoreCachedData.php");
 
 
 // set lastVisit cookie (if allowed)

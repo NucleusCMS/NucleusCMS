@@ -903,12 +903,13 @@ class ADMIN {
         <?php
         $s = '';
 
+        if (isset($b))
+            unset($b);
         foreach ($ids as $id)
         {
             $bid = getBlogIDFromCatID($id);
             if ($member->blogAdminRights($bid))
               {
-                  unset($b , $o);
                   $b = $manager->getBlog($bid);
 
                   $res = sql_query('SELECT * FROM ' . sql_table('category')
@@ -923,6 +924,7 @@ class ADMIN {
                         );
                         continue;
                     }
+                  unset($b , $o);
               }
             $s .= sprintf('<tr><td>error</td><td>catid:%d</td><td></td></tr>' , $id);
         }
@@ -7157,6 +7159,11 @@ selector();
         // delete row
         sql_query('DELETE FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
+        // delete cached_data
+        if (CoreCachedData::existTable())
+            sql_query(sprintf("DELETE FROM `%s` WHERE `cd_type` = 'plugin_remote_latest_version' AND `cd_sub_id` = %d",
+                              sql_table('cached_data'), $pid));
+
         $manager->clearCachedInfo('installedPlugins');
         $param = array('plugid' => $pid);
         $manager->notify('PostDeletePlugin', $param);
@@ -7822,6 +7829,120 @@ EOD;
         if (empty($where))
             return '';
         return sprintf(' AND( %s ) ', $where);
+    }
+
+    static function getRemotePluginVersion($NP_Name, $trim = false)
+    {
+        static $cached = null;
+        if (!function_exists('json_decode')) // PHP 5 >= 5.2.0
+            return false;
+
+        $expired_time = time() - 60*60*6; // cache expired time 6 hour
+
+        if ($cached === false)
+            return false;
+
+        $col_type      = 'plugin_remote_list';
+        $col_sub_type  = 'comma';
+        $col_name      = 'github';
+
+        if (is_null($cached))
+        {
+            if (!CoreCachedData::existTable())
+            {
+                $cached = false;
+                return false;
+            }
+           $cached = CoreCachedData::getDataEx($col_type, $col_sub_type, 0, $col_name, $expired_time);
+        }
+
+        $http_options = array('connecttimeout'=> 5, 'timeout'=>5);
+        if (empty($cached) || $cached['expired'])
+        {
+            $http_raw_options = array_merge($http_options, array('reply_response'=> 1));
+            if (!is_array($cached))
+                $cached = array('value' => '');
+            $url = "https://api.github.com/users/NucleusCMS/repos";
+            ini_set( 'user_agent' , DEFAULT_USER_AGENT );
+            $count = 0;
+            $values = array();
+            $nexturl = $url;
+            while( $count<100 && ($s = Utils::httpGet($nexturl , $http_raw_options)) )
+            {
+                $count++;
+                if (!is_array($s))
+                    $s = array('body' => $s);
+                if (!empty($s['body']) && (substr(ltrim($s['body']),0,1) == '['))
+                {
+                    $obj = json_decode($s['body']);
+                    if (!empty($obj))
+                    {
+                        foreach($obj as $item)
+                        {
+                            if (isset($item->name) && preg_match('#^NP_#', $item->name))
+                            {
+                               $values[strtolower($item->name)] = (string) $item->name;
+                            }
+                        }
+                    }
+                }
+                if (!isset($s['header']) || empty($s['header']))
+                    break;
+//                var_dump($s['header']);
+                // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
+                $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
+                if (!preg_match( $pattern , $s['header'], $m ))
+                    break;
+                $nextpage = intval($m[1]);
+                if (($count+1) != $nextpage)
+                    break;
+                $nexturl = $url . '?page=' . $nextpage;
+            }
+            if (!empty($values))
+            {
+                ksort($values);
+//                var_dump($values);
+                $cached['list'] =& $values;
+                $cached['value'] = implode(',', $values);
+                CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
+            }
+        }
+
+        if (!empty($cached['value']) && !isset($cached['list']) )
+        {
+            $cached['list'] = array();
+            foreach(explode(',', $cached['value'] ) as $item)
+            {
+                $item = trim($item);
+                if (!empty($item))
+                    $cached['list'][strtolower($item)] = (string) $item;
+            }
+        }
+
+        $url = false;
+        $force_get = false; // debug
+        if (isset($cached['list']) && isset($cached['list'][strtolower($NP_Name)]))
+        {
+            $repo_name = $cached['list'][strtolower($NP_Name)];
+            $url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
+        }
+
+        if (empty($url) && empty($cached['list']) && $force_get)
+            $url = "https://raw.githubusercontent.com/NucleusCMS/${NP_Name}/master/${NP_Name}.php"; // debug
+
+        if (empty($url))
+            return false;
+
+        $s = Utils::httpGet($url , array('connecttimeout'=> 2, 'timeout'=>2));
+        $pattern = '/getVersion\s*\([^"\']+?return\s+["\']([^"\']+?)["\']/im';
+
+        if (preg_match($pattern , $s, $m))
+        {
+            if ($trim)
+               return preg_replace('#[^0-9\.\-\_]+.+?$#', '' , $m[1]);
+            return $m[1];
+        }
+        return false;
     }
 
 } // class ADMIN

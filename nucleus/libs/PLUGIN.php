@@ -867,5 +867,69 @@ class NucleusPlugin {
         return $this->_updateOptionDesc('member', $name, $desc, $type, $defValue, $typeExtras);
     }
 
+    public function getRemoteVersion()
+    {
+        $NP_Name = get_class($this); // get_called_class();
+        if ( in_array($NP_Name, array('NP_SkinFiles', 'NP_SecurityEnforcer', 'NP_Text')) )
+            return false;  // bundled plugins
+        return ADMIN::getRemotePluginVersion($NP_Name, true);
+    }
+
+    public function checkRemoteUpdate()
+    {
+        static $enable_db = null;
+        $ret_val = array('result' => false, 'version' => '', 'download'=>'');
+//        if (!function_exists('get_called_class'))
+//            return $ret_val;
+        $NP_Name = get_class($this); // get_called_class();
+        if (is_null($enable_db))
+            $enable_db = CoreCachedData::existTable();
+        if (!$enable_db)
+            return $ret_val;
+
+        global $DB_PHP_MODULE_NAME;
+        $use_cache   = false;
+        $exist_cache = false;
+        $offset = 60*60*24*3; // cache expired time 3days
+        $expired_time = time() - $offset;
+
+        $col_type      = 'plugin_remote_latest_version';
+        $col_sub_type  = 'text';
+        $col_name      = 'github';
+        $col_sub_id    = $this->getID();
+
+        // check cache data
+        $data = CoreCachedData::getDataEx($col_type, $col_sub_type, $col_sub_id, $col_name, $expired_time);
+        if (!empty($data) && !$data['expired'])
+        {
+            $use_cache = true;
+            $ver2 = $data['value'];
+        }
+
+        if (!$use_cache)
+        {
+            // get latest
+            $ver2 = $this->getRemoteVersion();
+            if (empty($ver2))
+                $ver2 = '';
+            // save db
+            if (!empty($ver2))
+                CoreCachedData::setDataEx($col_type, $col_sub_type, $col_sub_id, $col_name, $ver2);
+        }
+
+        if (empty($ver2))
+            return $ret_val;
+        // compare version
+        $ver1 = $this->getVersion();
+
+        if ( version_compare($ver1, $ver2, '<') )
+        {
+            $ret_val['result']  = true;
+            $ret_val['version']  = $ver2;
+            $ret_val['download'] = sprintf("https://github.com/NucleusCMS/%s/archive/master.zip", $NP_Name);
+        }
+        return $ret_val;
+    }
+
 } // end class
 
