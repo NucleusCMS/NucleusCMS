@@ -141,7 +141,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             if($MYSQL_CONN) $conn = $MYSQL_CONN;
             else            sql_connect();
         }
-        else exit($query);
+
         $bt = microtime(true);
         $res = mysql_query($query,$conn);
         if (!$res && $CONF['debug']) {

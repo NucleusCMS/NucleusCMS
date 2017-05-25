@@ -476,8 +476,10 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_free_result($res)
     {
-        $res = NULL;
-        return true;
+        if (is_object($res) && ($res instanceof PDOStatement))
+            return $res->closeCursor();
+        trigger_error('argument is not instanceof PDOStatement', E_USER_NOTICE);
+        return false;
     }
 
 /**
