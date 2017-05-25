@@ -24,28 +24,7 @@ $MYSQL_CONN = 0;
 
 if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 {
-    /**
-     * Errors before the database connection has been made
-     */
-    function startUpError($msg, $title) {
-        if (!defined('_CHARSET')) {
-            define('_CHARSET', 'UTF-8');
-        }
-        $lang = sprintf('lang="%s"', (defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en'));
-        sendContentType('text/html','',_CHARSET);
-        ?>
-<!DOCTYPE html>
-<html <?php echo $lang; ?>>
-    <head><meta charset="<?php echo _CHARSET; ?>" />
-    <title><?php echo hsc($title)?></title></head>
-    <body>
-        <h1><?php echo hsc($title)?></h1>
-        <?php echo $msg?>
-    </body>
-</html>
-<?php
-        exit;
-    }
+    include(dirname(__FILE__) . '/sql_common_functions.php');
 
     /**
       * Connects to mysql server with arguments
@@ -141,7 +120,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         $SQLCount++;
         $res = mysql_query($query,$conn);
         if (!$res && $CONF['debug']) {
-            print("mySQL error with query $query: " . mysql_error($conn) . '<p />');
+            echo sprintf("mySQL error with query <b>%s</b> : %s<p />", $query, mysql_error($conn));
+            $_ = debug_backtrace();
+            print_r($_);
         }
         return $res;
     }
@@ -493,112 +474,6 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         } else {
             return sql_set_charset($charset, $conn);
         }
-    }
-
-    function get_mysql_charset_from_php_charset($charset = 'utf-8')
-    {
-        switch(strtolower($charset))
-        {
-            case 'utf-8'        : $charset='utf8'; break;
-            case 'euc-jp'       : $charset='ujis'; break;
-            case 'iso-8859-1'   : $charset='latin1'; break;
-            case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
-            default :
-                if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
-                {
-                    $db = sql_get_db();
-                    if ($db)
-                    { // ISO 8859-  2 8 7 9 13
-                        $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
-                        if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset']) )
-                            return $items['Charset'];
-                    }
-                }
-        }
-        return $charset;
-    }
-    
-    function get_charname_from_langname($language_name='english-utf8')
-    {
-        $language_name = strtolower($language_name);
-        
-        if(stripos($language_name,'utf8')!==false)
-            return 'utf8';
-        
-        switch($language_name)
-        {
-            case 'english':
-            case 'catalan':
-            case 'finnish':
-            case 'french':
-            case 'galego':
-            case 'german':
-            case 'italiano':
-            case 'portuguese_brazil':
-            case 'spanish':
-                $charset_name = 'latin1';
-                break;
-            case 'hungarian': // iso-8859-2
-            case 'slovak': // iso-8859-2
-                $charset_name = 'latin2';
-                break;
-            case 'bulgarian': // iso-8859-5
-                $charset_name = 'koi8r';
-                break;
-            case 'chinese': // gb2312
-            case 'simchinese': // gb2312
-                $charset_name = 'gb2312';
-                break;
-            case 'chineseb5': // big5
-            case 'traditional_chinese': // big5
-                $charset_name = 'big5';
-                break;
-            case 'czech': // windows-1250
-                $charset_name = 'cp1250';
-                break;
-            case 'russian': // windows-1251
-                $charset_name = 'cp1251';
-                break;
-            case 'latvian': // windows-1257
-                $charset_name = 'cp1257'; 
-                break;
-            case 'nederlands': // iso-8859-15
-                $charset_name = 'latin9';
-                break;
-            case 'japanese-euc':
-                $charset_name = 'ujis';
-                break;
-            case 'korean-utf8':
-            case 'persian':
-            default:
-                $charset_name = 'utf8';
-        }
-        return $charset_name;
-    }
-    
-    function getCharSetFromDB($tableName,$columnName, $dbh=NULL) {
-        $collation = getCollationFromDB($tableName,$columnName,$dbh);
-        if(strpos($collation,'_')===false) $charset = $collation;
-        else list($charset,$dummy) = explode('_', $collation, 2);
-        return $charset;
-    }
-    
-    function getCollationFromDB($tableName,$columnName, $dbh=NULL) {
-        $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $dbh);
-        $column = sql_fetch_object($columns);
-        return isset($column->Collation) ? $column->Collation : false;
-    }
-
-    function sqldate($timestamp) {
-        return sql_quote_string(date('Y-m-d H:i:s', $timestamp));
-    }
-
-    function sql_timestamp_from_utime($timestamp) {
-        return date('Y-m-d H:i:s', $timestamp);
-    }
-
-    function sql_gmDateTime_from_utime($timestamp) {
-        return gmdate('Y-m-d H:i:s', $timestamp);
     }
 
 }
