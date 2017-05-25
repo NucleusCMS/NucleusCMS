@@ -390,12 +390,22 @@ class MANAGER
             }
         }
 
-        // unload plugin if using non-mysql handler and plugin does not support it 
+        if ( !$this->checkIfOk_supportsFeature_onLoadPlugin($NP_Name) )
+            return 0;
+
+        // call init method
+        $this->plugins[$NP_Name]->init();
+    }
+
+    private function checkIfOk_supportsFeature_onLoadPlugin($NP_Name)
+    {
+        global $DB_PREFIX, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+
+        // unload plugin if using non-mysql handler and plugin does not support it
         $is_NotUseDbApi = (($this->plugins[$NP_Name]->supportsFeature('NotUseDbApi'))
                         || ($this->plugins[$NP_Name]->supportsFeature('NoSql')));
 
         // unload plugin if a prefix is used and the plugin cannot handle this^
-        global $DB_PREFIX;
         if (!$is_NotUseDbApi && ($DB_PREFIX != '') && !$this->plugins[$NP_Name]->supportsFeature('SqlTablePrefix'))
         {
             unset($this->plugins[$NP_Name]);
@@ -403,7 +413,6 @@ class MANAGER
             return 0;
         }
 
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
         // check SqlApi
         if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
         {
@@ -432,8 +441,7 @@ class MANAGER
             }
         } // end : plugin uses DB query
 
-        // call init method
-        $this->plugins[$NP_Name]->init();
+        return TRUE;
     }
 
     /**
