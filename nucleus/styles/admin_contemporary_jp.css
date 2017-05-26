@@ -8,7 +8,7 @@ body {
 	background: #ffffff url(contemporary_jp/background.png) repeat-x;
 	color: #333;
 	font-size:85%;
-	font-family: "Bitstream Vera Sans", lucida, Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro","MS PGothic",sans-serif;
+	font-family: "Bitstream Vera Sans", lucida, Arial,"Helvetica Neue",Helvetica,Meiryo,"Hiragino Kaku Gothic Pro",sans-serif;
 }
 
 td, th, textarea, input, select, option {
@@ -138,7 +138,7 @@ h1 {
 	the top of the quickmenu and the contents will not line up
 */
 #quickmenu {
-	position: fixed;
+	position: absolute;
 	overflow: hidden;
 	
 	top: 10px;
@@ -292,7 +292,7 @@ h1 {
 #content ul {
 	line-height:1.5em;
 /*	list-style-type:square;*/
-	margin:0 0 0.5em 30px;
+	margin:0 0 0.5em 20px;
 	padding:0;
 	list-style-image:url(contemporary_jp/bullet.gif);
 }
@@ -429,5 +429,4 @@ table.navigation td, table.navigation th {
 }
 
 table .availableSkinTypes ul li {
-	list-style: none;
 }
