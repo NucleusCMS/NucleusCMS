@@ -341,7 +341,7 @@ class MANAGER
         }
 
         // load plugin
-        include($plugin_path);
+        @include($plugin_path);
 
         // check if class exists (avoid errors in eval'd code)
         if (!class_exists($NP_Name))
