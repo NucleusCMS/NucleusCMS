@@ -888,15 +888,13 @@ function help($id) {
 
 function helpHtml($id) {
     global $CONF;
-    return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" title="' . _HELP_TT . '" /></a>';
+    return sprintf('%s<img src="%sdocumentation/icon-help.gif" width="15" height="15" alt="%s" title="%s" /></a>',helplink($id),$CONF['AdminURL'],_HELP_TT,_HELP_TT);
 }
 
 function helplink($id) {
     global $CONF;
 
-    $doc_root = get_help_root_url();
-
-    return '<a href="' . $doc_root . 'help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+    return sprintf('<a href="%shelp.html#%s" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">',get_help_root_url(),$id);
 }
 
 function get_help_root_url() {
