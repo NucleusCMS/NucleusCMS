@@ -52,9 +52,14 @@ if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
 if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
+    ini_set('display_errors', 1);
 } else {
     if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
-        ini_set('display_errors','0');
+        ini_set('display_errors',0);
+    else {
+        ini_set('display_errors', 1);
+        error_reporting(E_ALL & ~E_NOTICE);
+    }
     if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 }
