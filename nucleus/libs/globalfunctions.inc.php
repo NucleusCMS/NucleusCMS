@@ -1578,6 +1578,9 @@ function ticketForPlugin(){
 				. '<a href="javascript: back();">back</a>'
 				. "</body></html>");
     }
+    
+    ini_set('display_errors', 1);
+    error_reporting(E_ALL & ~E_NOTICE);
 
     global $manager,$DIR_LIBS,$DIR_LANG,$HTTP_GET_VARS,$HTTP_POST_VARS;
 
