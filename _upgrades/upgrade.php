@@ -13,6 +13,8 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
+ini_set('display_errors', 1);
+error_reporting(E_ALL & ~E_NOTICE);
 
 include('upgrade.functions.php');
 
