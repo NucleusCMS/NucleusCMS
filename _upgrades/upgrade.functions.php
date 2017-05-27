@@ -272,3 +272,50 @@
         $res = sql_query( sprintf('DESC `%s` `%s`', sql_table($table), $col) );
         return ($res != 0) && (sql_num_rows($res) == 1);
     }
+
+if(!method_exists('sql_existTableColumnName')) {
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    {
+        $names = sql_getTableColumnNames($tablename);
+
+        if (count($names)>0)
+        {
+            if ($casesensitive)
+                return in_array( $ColumnName , $names );
+            else
+            {
+                foreach($names as $v)
+                    if ( strcasecmp( $ColumnName , $v ) == 0 )
+                    {
+                         return True;
+                    }
+            }
+        }
+        return False;
+    }
+    
+    function sql_getTableColumnNames($tablename)
+    {
+        global $MYSQL_CONN;
+        if (!$MYSQL_CONN) return array();
+
+        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $target = 'Field';
+
+        $items = array();
+        $res = mysql_query($sql);
+        if (!$res)
+            return array();
+        while( $row = mysql_fetch_array($res) )
+        {
+            if (isset($row[$target]))
+                $items[] = $row[$target];
+        }
+
+        if (count($items)>0)
+        {
+            sort($items);
+        }
+        return $items;
+    }
+}
