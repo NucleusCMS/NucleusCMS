@@ -96,7 +96,7 @@ class CoreCachedData
                 ACTIONLOG::addUnique(ERROR, sprintf('%s : $name is to long:%d : %s', __FUNCTION__ , strlen($name), $name));
         }
 
-        $datetime = sql_gmDateTime_from_utime(time());
+        $datetime = sql_gmDateTime_from_utime($_SERVER['REQUEST_TIME']);
         if (self::existDataEx($type, $sub_type, $sub_id, $name))
         {
             // update data
