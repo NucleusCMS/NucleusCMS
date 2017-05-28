@@ -55,6 +55,7 @@ function mysql_fetch_object($res)
 
 function mysql_fetch_array($res , $result_type = MYSQL_BOTH)
 {
+    if(!is_object($res)) return false;
     return mysqli_fetch_array($res, $result_type);
     // MYSQLI_ASSOC = MYSQL_ASSOC  : 1
     // MYSQLI_NUM   = MYSQL_NUM    : 2
@@ -63,26 +64,31 @@ function mysql_fetch_array($res , $result_type = MYSQL_BOTH)
 
 function mysql_fetch_assoc($res)
 {
+    if(!is_object($res)) return false;
     return mysqli_fetch_assoc($res);
 }
 
 function mysql_fetch_row($res)
 {
+    if(!is_object($res)) return false;
     return mysqli_fetch_row($res);
 }
 
 function mysql_num_rows($res)
 {
+    if(!is_object($res)) return false;
     return mysqli_num_rows($res);
 }
 
 function mysql_num_fields($res)
 {
+    if(!is_object($res)) return false;
     return mysqli_num_fields($res);
 }
 
 function mysql_free_result($res)
 {
+    if(!is_object($res)) return false;
     return mysqli_free_result($res);
 }
 
