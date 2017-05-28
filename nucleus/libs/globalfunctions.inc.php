@@ -1313,7 +1313,7 @@ function checkVars()
 /*
     Date format functions (to be used from [%date(..)%] skinvars
 */
-function formatDate($format, $timestamp, $defaultFormat, &$blog) {
+function formatDate($format, $timestamp, $defaultFormat, &$blog=false) {
     // apply blog offset (#42)
     $boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
     $offset = date('Z', $timestamp) + $boffset;
