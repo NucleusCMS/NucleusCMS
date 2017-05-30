@@ -208,7 +208,7 @@ CREATE TABLE IF NOT EXISTS `${tablename}` (
   `cd_sub_id`      int(11)       NOT NULL,
   `cd_allow_auto_clean`  tinyint(2)   NOT NULL default '1',
   `cd_name`        varchar(100)  NOT NULL COLLATE NOCASE,
-  `cd_value`       text          NOT NULL,
+  `cd_value`       mediumtext    NOT NULL,
   `cd_datetime`    datetime      NOT NULL,
   PRIMARY KEY  (`cd_type`, `cd_sub_type`, `cd_sub_id`, `cd_name`)
 );
@@ -226,7 +226,7 @@ CREATE TABLE `${tablename}` (
   `cd_sub_id`      int(11)       NOT NULL,
   `cd_allow_auto_clean`  tinyint(2)   NOT NULL default '1',
   `cd_name`        varchar(100)  NOT NULL,
-  `cd_value`       text          NOT NULL,
+  `cd_value`       mediumtext    NOT NULL,
   `cd_datetime`    datetime      NOT NULL,
   PRIMARY KEY  (`cd_type`, `cd_sub_type`, `cd_sub_id`, `cd_name`)
 ) ENGINE=MyISAM;
