@@ -250,9 +250,7 @@ function showInstallForm() {
 		<meta charset="UTF-8" />
 		<meta name="robots" content="noindex,nofollow,noarchive" />
 		<title><?php echo _TITLE; ?></title>
-		<style type="text/css"><!--
-			@import url('../nucleus/documentation/styles/manual.css');
-		--></style>
+		<link rel="stylesheet" href="../nucleus/styles/manual.css">
 		<script type="text/javascript"><!--
 			onload = function() { document.forms[0].reset(); }
 			var submitcount = 0;
@@ -1275,7 +1273,7 @@ function doInstall() {
 	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('../nucleus/styles/manual.css');</style>
+	<link rel="stylesheet" href="../nucleus/styles/manual.css">
 </head>
 <body>
 	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
@@ -1652,7 +1650,7 @@ function _doError($msg) {
 	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('../nucleus/styles/manual.css');</style>
+	<link rel="stylesheet" href="../nucleus/styles/manual.css">
 </head>
 <body>
 	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
@@ -1683,7 +1681,7 @@ function showErrorMessages($errors) {
 	<meta charset="UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('../nucleus/styles/manual.css');</style>
+	<link rel="stylesheet" href="../nucleus/styles/manual.css">
 </head>
 <body>
 	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
