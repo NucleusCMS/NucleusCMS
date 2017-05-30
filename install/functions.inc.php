@@ -71,6 +71,9 @@ function showInstallForm() {
     $ph['_INSTALL_TEXT_VERSION'] = sprintf('%s %s', htmlspecialchars(_INSTALL_TEXT_VERSION,ENT_QUOTES,'UTF-8') , NUCLEUS_VERSION);
     $ph['_HEADER1'] = sprintf('%s', hsc(_HEADER1));
     $ph['_TEXT1'] = _TEXT1;
+    if (!@is_writable('../')) {
+        $ph['_TEXT1'] .= sprintf('<p class="note">%s</p>', _INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE);
+    }
     $ph['lang'] = $lang;
     $ph['_HEADER_LANG_SELECT'] = _HEADER_LANG_SELECT;
     $ph['_TEXT_LANG_SELECT1_1'] = _TEXT_LANG_SELECT1_1;
@@ -624,7 +627,9 @@ function doInstall() {
 	$bConfigWritten = 0;
 
     $configFilename = dirname(dirname(__FILE__)) . '/config.php';
-	if (@is_file($configFilename) && is_writable($configFilename)) {
+	if (!@is_file($configFilename)
+//      || (@is_file($configFilename) && is_writable($configFilename))
+		) {
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME, $MYSQL_HANDLER;
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line

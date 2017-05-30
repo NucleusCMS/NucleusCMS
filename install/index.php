@@ -170,7 +170,10 @@ if ($DB_PHP_MODULE_NAME == 'pdo') {
 }
 elseif (!function_exists('mysql_query') ) _doError(_ERROR1);
 
-
+// check config.php, v3.80-
+if (@is_file('../config.php')) {
+    _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
+}
 
 if (postVar('action') == 'go') doInstall();
 else                           showInstallForm();

@@ -10,6 +10,8 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
+define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');
+define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',  'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP5.x以上が使えないかどうか、サーバ管理者に確認して下さい。');
 
 /*  New for 3.72 */
@@ -86,7 +88,7 @@ define('_TITLE4',				'インストールは完了しました！');
 define('_TITLE5',				'スパムとの戦い');
 
 define('_HEADER1',				'本体のインストール');
-define('_TEXT1',				'<p>MySQLテーブルのセットアップと、config.php に入力するための情報を表示します（config.phpのパーミッションを0666にしておけば、後者の作業は自動的に行われます）。これをなす為に、いくつかの情報を入力する必要があります。</p><p>すべての欄の入力が必要です。オプション情報は、インストールが完了後Nucleusの管理領域から設定可能です。</p>');
+define('_TEXT1',				'<p>MySQLテーブルのセットアップと、config.php に入力するための情報を表示します。これをなす為に、いくつかの情報を入力する必要があります。</p><p>すべての欄の入力が必要です。オプション情報は、インストールが完了後Nucleusの管理領域から設定可能です。</p>');
 
 define('_HEADER2',				'PHP のバージョン');
 define('_TEXT2',				'<p>以下はあなたのウェブホストにおけるPHPのバージョンです。Nucleusのサポートフォーラムに問題を報告する時は、この情報を書き添えてください。</p>');
