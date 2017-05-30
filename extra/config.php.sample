@@ -27,7 +27,7 @@ if ($DB_DRIVER_NAME=='sqlite')
 // main nucleus directory
 $DIR_BASE = dirname(__FILE__) . '/';
 
-//$DIR_NUCLEUS = $DIR_BASE . 'nucleus/';
+$DIR_NUCLEUS = $DIR_BASE . 'nucleus/';
 //$DIR_NUCLEUS = '/your/path/to/nucleus/';
 
 // media dir
