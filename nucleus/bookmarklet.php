@@ -349,14 +349,32 @@ function bm_style() {
 
 function bm_doContextMenuCode() {
     global $CONF;
+    // https://msdn.microsoft.com/ja-jp/library/ms534165(v=vs.85).aspx
+
+    $baseurl = $CONF['AdminURL'] . "bookmarklet.php?blogid=" . intGetVar('blogid');
     ?>
 <script type="text/javascript" defer="defer">
-doc = external.menuArguments.document;
-lt = escape(doc.selection.createRange().text);
-loglink = escape(external.menuArguments.location.href);
-loglinktitle = escape(doc.title);
-wingm = window.open('<?php echo $CONF['AdminURL']?>bookmarklet.php?blogid=<?php echo intGetVar('blogid')?>&logtext=' + lt + '&loglink=' + loglink + '&loglinktitle=' + loglinktitle, 'nucleusbm', 'scrollbars=yes,width=710,height=500,left=10,top=10,status=yes,resizable=yes');
-wingm.focus();
+var oWindow   = window.external.menuArguments;
+var oDocument = oWindow.document;
+var lt;
+<?php
+// debug
+//    echo "alert(typeof oWindow.getSelection);";
+//    // can not access href , ie xss filter
+//    echo "alert(typeof oWindow.location.href);";
+//    echo "if (typeof oWindow.location.href == 'unknown') { for (var name in oWindow.location) { alert(name); } }";
+?>
+if (typeof oWindow.getSelection == "function") {
+    lt = escape(oWindow.getSelection().getRangeAt(0).toString());
+} else {
+    lt = escape(oDocument.selection.createRange().text);
+}
+loglink = ((typeof oWindow.location.href == 'unknown') ? '' : escape(oWindow.location.href));
+loglinktitle = escape(oDocument.title);
+wingm = window.open('<?php echo $baseurl; ?>&logtext=' + lt + '&loglink=' + loglink + '&loglinktitle=' + loglinktitle, 'nucleusbm', 'scrollbars=yes,width='+window.parent.screen.width*0.9+',height='+window.parent.screen.height*0.9+',left=10,top=10,status=yes,resizable=yes');
+if (wingm) {
+    wingm.focus();
+}
 </script>
     <?php
 }

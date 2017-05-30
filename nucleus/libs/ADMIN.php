@@ -6286,27 +6286,49 @@ selector();
      * @todo document this
      */
     function action_regfile() {
-        global $member, $CONF;
+        global $member, $CONF, $manager;
 
         $blogid = intRequestVar('blogid');
 
         $member->teamRights($blogid) or $this->disallow();
 
-        // header-code stolen from phpMyAdmin
-        // REGEDIT and bookmarklet code stolen from GreyMatter
+        if (!function_exists('mb_convert_encoding'))
+            $this->disallow();
 
-        $sjisBlogName = sprintf(_WINREGFILE_TEXT, getBlogNameFromID($blogid));
-        $sjisBlogName = mb_convert_encoding($sjisBlogName, "SJIS", "auto");
+        if (!BLOG::existsID($blogid))
+            $this->disallow();
+
+        $utf8BlogName = getBlogNameFromID($blogid);
+        if ( stripos(_CHARSET, 'UTF-8') === FALSE )
+            $utf8BlogName = mb_convert_encoding($utf8BlogName, 'UTF-8', _CHARSET);
+        $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
+        $utf8BlogName = str_replace(array("\r","\n"), '', $utf8BlogName); // remove cr lf
+        $format = (_CHARSET=='UTF-8' ?  _WINREGFILE_TEXT : mb_convert_encoding(_WINREGFILE_TEXT, 'UTF-8', _CHARSET));
+        $reg_key_name = sprintf($format, $utf8BlogName);
+
+        $blog = $manager->getBlog($blogid);
+        $output_filename = sprintf("nucleus-%s.reg", str_replace('\\', '', $blog->getShortName()) );
+
+        $lines = array();
+        $lines[] = "Windows Registry Editor Version 5.00";
+        $lines[] = "";
+        $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
+        $url = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid);
+        $lines[] = sprintf('@="%s"', $url);
+        $lines[] = '"contexts"=hex:31';      // https://msdn.microsoft.com/ja-jp/library/aa753589(v=vs.85).aspx
+
+        // UTF16-little endian
+        $data = "\xFF\xFE" . mb_convert_encoding(implode("\r\n", $lines) , 'UTF-16LE', 'UTF-8');
 
         header('Content-Type: application/octetstream');
-        header('Content-Disposition: filename="nucleus.reg"');
-        header('Pragma: no-cache');
-        header('Expires: 0');
+        header(sprintf('Content-Disposition: filename="%s"', $output_filename));
+        header(sprintf('Content-Length: %d', strlen($data)));
+        header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: no-cache'); // HTTP/1.0
+        header('Expires: Sun, 01 Jan 2017 00:00:00 GMT');   // Date in the past
 
-        echo "REGEDIT4\n";
-        echo "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $sjisBlogName . "]\n";
-        echo '@="' . $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid)."\"\n";
-        echo '"contexts"=hex:31';
+        echo $data; // output data
+        exit;
     }
 
     /**
