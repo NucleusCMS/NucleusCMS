@@ -2610,7 +2610,7 @@ class ADMIN {
 
         echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(",_BACK_TO_BLOGSETTINGS,")</a></p>";
 
-        echo '<h2>' . _TEAM_TITLE . getBlogNameFromID($blogid) . '</h2>';
+        echo '<h2>' . _TEAM_TITLE . hsc(getBlogNameFromID($blogid)) . '</h2>';
 
         echo '<h3>' . _TEAM_CURRENT . '</h3>';
 
