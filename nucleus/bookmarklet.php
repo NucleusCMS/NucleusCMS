@@ -90,7 +90,7 @@ switch ($action) {
 
     // on login, 'action' gets changed to 'nextaction'
     case 'login':
-        bm_doError('Something went wrong');
+        bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
         break;
 
     // shows the fill in form
@@ -242,8 +242,9 @@ function bm_loginAndPassThrough() {
 
     ?>
 <!DOCTYPE html>
-<html>
+<html <?php printf('lang="%s"', _HTML5_LANG); ?>>
 <head>
+<meta charset="<?php echo _CHARSET ?>" />
 <title>Nucleus</title>
     <?php bm_style(); ?>
 </head>
@@ -349,8 +350,9 @@ function bm_doError($msg) {
 function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
     ?>
 <!DOCTYPE html>
-<html>
+<html <?php printf('lang="%s"', _HTML5_LANG); ?>>
 <head>
+<meta charset="<?php echo _CHARSET ?>" />
 <title><?php echo $title ?></title>
     <?php bm_style(); ?>
     <?php echo $extrahead; ?>
