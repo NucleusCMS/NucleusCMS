@@ -1,3 +1,4 @@
 /test
 *.sqlite
 /nbproject/private/
+/config.php

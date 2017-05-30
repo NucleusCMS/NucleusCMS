@@ -25,6 +25,12 @@
 	$CONF = array();
 	$CONF['UsingAdminArea'] = 1;
 
+    if (!@is_file('../config.php')) {
+        if (@is_file('../install/index.php') && !headers_sent()) {
+            header('Location: ../install/');
+            exit;
+        }
+    }
 	// include the admin code
 	require_once('../config.php');
 

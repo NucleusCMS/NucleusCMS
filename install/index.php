@@ -213,6 +213,11 @@ else
 	}
 }
 
+    // check config.php, v3.80-
+    if (@is_file('../config.php')) {
+        _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
+    }
+
 	if (postVar('action') == 'go') {
 		doInstall();
 	} else {
@@ -319,6 +324,11 @@ function showInstallForm() {
         <h1><?php echo sprintf('%s', htmlspecialchars(_HEADER1,ENT_QUOTES,'UTF-8')); ?></h1>
 
 		<?php echo _TEXT1; ?>
+<?php
+    if (!@is_writable('../')) {
+        printf('<p class="note">%s</p>', _INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE);
+    }
+?>
 
 		<!-- select lang -->
 		<form method="post" action="index.php<?php echo "?lang=$lang";?>">
@@ -1216,7 +1226,9 @@ function doInstall() {
 	$bConfigWritten = 0;
 
     $configFilename = dirname(dirname(__FILE__)) .DIRECTORY_SEPARATOR. 'config.php';
-	if (@is_file($configFilename) && is_writable($configFilename)) {
+	if (!@is_file($configFilename)
+//        || (@is_file($configFilename) && is_writable($configFilename))
+       ) {
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 		$config_data = '<' . '?php' . "\n\n";
 		//$config_data .= "\n"; (extraneous, just added extra \n to previous line
@@ -1660,7 +1672,10 @@ function _doError($msg) {
     <p><?php echo _ERROR28; ?></p>
     <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
 
-	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+<!--
+    <p><a href="../nucleus/documentation/#installation" target="_blank"><?php echo "Installation manual"; ?></a></p>
+-->
 </body>
 </html>
 

@@ -183,10 +183,12 @@ Upload all files to your server, using your favorite FTP program. Make sure to u
 <h3>Optional:</h3>
 
 <ol>
+<!--
 	<li>
 		To make your install process even easier, you can change the file permissions on <em>config.php</em> to <strong>666</strong>. This way, the install script will be able to update it automatically instead of you having it to do manually. (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>)
 	</li>
-	<li>
+-->
+<li>
 		If you want to use file upload, you'll need to add write permissions to the /media/ directory. This is needed in order to allow PHP to write uploaded files into that directory. The directory should be <i>chmod</i>ded to <strong>777</strong> (<a href="tips.html#filepermissions">Quick guide on how to change file permissions</a>). (If you have root access, you can instead <tt>chgrp</tt> the directory to the user that is running the <tt>httpd</tt> process (usually <tt>httpd</tt> or <tt>nobody</tt>, then <tt>chmod 775</tt> the directory).
 	</li>
 	<li>
