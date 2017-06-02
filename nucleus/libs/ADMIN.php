@@ -6127,7 +6127,7 @@ selector();
         $ph['_LOGOUT'] = _LOGOUT;
         $ph['_ADMINHOME'] = _ADMINHOME;
         $ph['_NOTLOGGEDIN'] = _NOTLOGGEDIN;
-        $ph['help_link'] = get_help_root_url();
+        $ph['help_link'] = isset($CONF['help_link']) ? $CONF['help_link'] : get_help_root_url();
         $ph['_HELP_TT'] = _HELP_TT;
         $ph['_YOURSITE'] = _YOURSITE;
         $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
