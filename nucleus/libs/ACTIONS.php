@@ -16,6 +16,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+require_once dirname(__FILE__) . '/BaseActions.php';
+
 class ACTIONS extends BaseActions {
 
     // part of the skin currently being parsed ('index', 'item', 'archive',
