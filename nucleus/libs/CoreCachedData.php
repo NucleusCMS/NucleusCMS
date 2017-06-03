@@ -202,7 +202,7 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
         $sql =<<<EOD
-CREATE TABLE IF NOT EXISTS `${tablename}` (
+CREATE TABLE IF NOT EXISTS `{$tablename}` (
   `cd_type`        varchar(50)   NOT NULL default '' COLLATE NOCASE,
   `cd_sub_type`    varchar(50)   NOT NULL default '' COLLATE NOCASE,
   `cd_sub_id`      int(11)       NOT NULL,
@@ -220,7 +220,7 @@ EOD;
     {
         $tablename = sql_table(self::base_tablename);
         $sql =<<<EOD
-CREATE TABLE `${tablename}` (
+CREATE TABLE `{$tablename}` (
   `cd_type`        varchar(50)   NOT NULL default '',
   `cd_sub_type`    varchar(50)   NOT NULL default '',
   `cd_sub_id`      int(11)       NOT NULL,
