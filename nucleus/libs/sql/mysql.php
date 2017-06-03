@@ -123,10 +123,10 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 
         $bt = microtime(true);
         $res = mysql_query($query,$conn);
-        if (!$res && $CONF['debug']) {
-            echo sprintf("mySQL error with query <b>%s</b> : %s<p />", $query, mysql_error($conn));
-            $_ = debug_backtrace();
-            print_r($_);
+        if (!$res) {
+            ACTIONLOG::add(WARNING, strip_tags($str));
+            echo $str;
+            if($CONF['debug']) print_r(debug_backtrace());
         }
         $SQLCount++;
         $et = microtime(true) - $bt;
