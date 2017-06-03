@@ -124,6 +124,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         $bt = microtime(true);
         $res = mysql_query($query,$conn);
         if (!$res) {
+            $str = sprintf("[SQL error] <b>%s</b> : %s <br />(%s)<p />", sql_error($conn), $query, hsc($_SERVER['REQUEST_URI']));
             ACTIONLOG::add(WARNING, strip_tags($str));
             echo $str;
             if($CONF['debug']) print_r(debug_backtrace());
