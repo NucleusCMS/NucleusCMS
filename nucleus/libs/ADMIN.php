@@ -7856,6 +7856,10 @@ EOD;
     static function getRemotePluginVersion($NP_Name, $trim = false)
     {
         static $cached = null;
+        static $forbidden = null;
+        
+        if($forbidden) return;
+        
         if (!function_exists('json_decode')) // PHP 5 >= 5.2.0
             return false;
 
@@ -7891,6 +7895,10 @@ EOD;
             $nexturl = $url;
             while( $count<100 && ($s = Utils::httpGet($nexturl , $http_raw_options)) )
             {
+                if(strpos($s['header'],'403 Forbidden')!==false) {
+                    $forbidden = 1;
+                    break;
+                }
                 $count++;
                 if (!is_array($s))
                     $s = array('body' => $s);
