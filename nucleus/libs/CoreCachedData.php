@@ -46,9 +46,9 @@ class CoreCachedData
                   . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
                   . " AND `cd_name` = ? ";
             $input_parameters = array($type, $sub_type, $sub_id, $name);
-            if (empty($expire_datetime))
+            if (!empty($expire_datetime))
             {
-                $sql .= " AND `cd_datetime` = ?";
+                $sql .= " AND `cd_datetime` < ?";
                 $input_parameters[] = $expire_datetime;
             }
             $sql .= " LIMIT 1";
@@ -65,9 +65,9 @@ class CoreCachedData
                             $sub_id,
                             sql_real_escape_string( $name )
                           );
-            if (empty($expire_datetime))
+            if (!empty($expire_datetime))
             {
-                $sql .= sprintf(" AND `cd_datetime` = '%s'", sql_real_escape_string( $expire_datetime ));
+                $sql .= sprintf(" AND `cd_datetime` < '%s'", sql_real_escape_string( $expire_datetime ));
             }
             $res = quickQuery($sql);
             return intval($res) > 0;
