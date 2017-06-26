@@ -10,7 +10,7 @@ class CoreCachedData
     {
     }
 
-    function existTable()
+    public static function existTable()
     {
         static $ret = null;
         if (!is_null($ret))
@@ -128,7 +128,7 @@ class CoreCachedData
         sql_query($sql);
     }
 
-    function getDataEx($type, $sub_type, $sub_id, $name, $expire_time = null)
+    public static function getDataEx($type, $sub_type, $sub_id, $name, $expire_time = null)
     {
         $tablename = sql_table(self::base_tablename);
 
