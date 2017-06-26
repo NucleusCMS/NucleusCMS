@@ -15,6 +15,10 @@
  * @copyright Copyright (C) The Nucleus Group
 
  */
+
+global $DIR_NUCLEUS;
+if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
+
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
