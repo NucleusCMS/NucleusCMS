@@ -1,0 +1,68 @@
+body {font-family:Meiryo,"Hiragino Kaku Gothic Pro",Arial,"Helvetica Neue",Helvetica,sans-serif;olor:#555;
+margin:1em auto;width:80%;}
+h1,h2,h3 {color:#596d9d;font-weight:normal;}
+.ok {
+    background-color: #dff0d8;
+    border-color: #d0e9c6;
+    color: #3c763d;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+input[type=text],input[type=password], .btn {
+font-family:inherit;
+padding: .5rem .75rem;
+font-size: 1rem;
+line-height: 1.25;
+color: #464a4c;
+background-color: #fff;
+border: 1px solid rgba(0,0,0,.15);
+border-radius: .25rem;
+}
+
+.btn-warning {
+    color: #fff;
+    background-color: #f0ad4e;
+    border-color: #f0ad4e;
+    text-decoration:none;
+}
+
+.note {
+    background-color: #fcf8e3;
+    border-color: #faf2cc;
+    color: #8a6d3b;
+    padding: .75rem 1.25rem;
+    margin-bottom: 1rem;
+    border: 1px solid transparent;
+    border-radius: .25rem;
+}
+input[type=text],input[type=password] {
+font-family:inherit;
+padding: .5rem .75rem;
+font-size: 1rem;
+line-height: 1.25;
+color: #464a4c;
+background-color: #fff;
+border: 1px solid rgba(0,0,0,.15);
+border-radius: .25rem;
+}
+
+input[type=submit] {
+color: #fff;
+background-color: #596d9d;
+font-family:inherit;
+border-color: #596d9d;
+display: inline-block;
+font-weight: 400;
+line-height: 1.25;
+text-align: center;
+white-space: nowrap;
+vertical-align: middle;
+border: 1px solid transparent;
+padding: .5rem 1rem;
+font-size: 1rem;
+border-radius: .25rem;
+cursor:pointer;
+}
+

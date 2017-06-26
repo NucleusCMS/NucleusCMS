@@ -87,7 +87,7 @@
         <form method="post" action="<?php echo $type?>">
 
             <ul>
-                <li><?php echo _UPG_TEXT_NAME; ?>: <input name="login" /></li>
+                <li><?php echo _UPG_TEXT_NAME; ?>: <input name="login" type="text" /></li>
                 <li><?php echo _UPG_TEXT_PASSWORD; ?> <input name="password" type="password" /></li>
             </ul>
 
@@ -114,7 +114,7 @@
     <meta http-equiv="content-type" content="application/xhtml+xml; charset=UTF-8" />
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <title><?php echo _UPG_TEXT_NUCLEUS_UPGRADE; ?></title>
-    <link rel="stylesheet" href="../nucleus/documentation/styles/manual.css" type="text/css" />
+    <link rel="stylesheet" href="style.css" type="text/css" />
 </head>
 <body>
     <?php
