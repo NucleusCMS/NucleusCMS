@@ -31,10 +31,10 @@
 
 	$language = str_replace( array('\\','/'), '', getLanguageName());
 	$langfile = $language.'.php';
-	if (file_exists($langfile))
-		include_once($langfile);
+	if (is_file('language/'.$langfile))
+		include_once('language/'.$langfile);
 	else
-		include_once('english.php');
+		include_once('language/english.php');
 
 	/**
 	  * Create admin area
