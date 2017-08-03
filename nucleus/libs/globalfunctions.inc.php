@@ -95,7 +95,7 @@ function getLatestVersion() {
     }
 
     $options = array('timeout'=> 5, 'connecttimeout'=> 3);
-    $ret = Utils::httpGet('http://nucleuscms.org/version_check.php', $options);
+    $ret = @Utils::httpGet('http://nucleuscms.org/version_check.php', $options);
 
     if (empty($ret))
         $ret = '';

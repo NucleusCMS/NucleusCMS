@@ -8245,6 +8245,10 @@ EOD;
                 $count++;
                 if (!is_array($s))
                     $s = array('body' => $s);
+                if (isset($s['header'])) {
+                    if (stripos($s['header'],"\nStatus: 200 OK")===false || stripos($s['header'],"\nContent-Type: application/json")===false)
+                        break;
+                }
                 if (!empty($s['body']) && (substr(ltrim($s['body']),0,1) == '['))
                 {
                     $obj = json_decode($s['body']);
@@ -8271,14 +8275,16 @@ EOD;
                     break;
                 $nexturl = $url . '?page=' . $nextpage;
             }
-            if (!empty($values))
+            if (empty($values))
             {
-                ksort($values);
-//                var_dump($values);
-                $cached['list'] =& $values;
-                $cached['value'] = implode(',', $values);
-                CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
+                $cached = false;
+                return false;
             }
+            ksort($values);
+//                var_dump($values);
+            $cached['list'] =& $values;
+            $cached['value'] = implode(',', $values);
+            CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
         }
 
         if (!empty($cached['value']) && !isset($cached['list']) )
