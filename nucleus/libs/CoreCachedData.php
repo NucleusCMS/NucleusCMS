@@ -10,7 +10,7 @@ class CoreCachedData
     {
     }
 
-    function existTable()
+    public static function existTable()
     {
         static $ret = null;
         if (!is_null($ret))
@@ -29,7 +29,7 @@ class CoreCachedData
 //    function CleanBy_subtype($type, $sub_type)
 //    function CleanBy_Id($type, $sub_type, $sub_id)
 
-    function existDataEx($type, $sub_type, $sub_id, $name, $expire_time = null)
+    public static function existDataEx($type, $sub_type, $sub_id, $name, $expire_time = null)
     {
         global $DB_PHP_MODULE_NAME;
         $tablename = sql_table(self::base_tablename);
@@ -46,9 +46,9 @@ class CoreCachedData
                   . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
                   . " AND `cd_name` = ? ";
             $input_parameters = array($type, $sub_type, $sub_id, $name);
-            if (empty($expire_datetime))
+            if (!empty($expire_datetime))
             {
-                $sql .= " AND `cd_datetime` = ?";
+                $sql .= " AND `cd_datetime` > ?";
                 $input_parameters[] = $expire_datetime;
             }
             $sql .= " LIMIT 1";
@@ -65,9 +65,9 @@ class CoreCachedData
                             $sub_id,
                             sql_real_escape_string( $name )
                           );
-            if (empty($expire_datetime))
+            if (!empty($expire_datetime))
             {
-                $sql .= sprintf(" AND `cd_datetime` = '%s'", sql_real_escape_string( $expire_datetime ));
+                $sql .= sprintf(" AND `cd_datetime` > '%s'", sql_real_escape_string( $expire_datetime ));
             }
             $res = quickQuery($sql);
             return intval($res) > 0;
@@ -100,7 +100,7 @@ class CoreCachedData
         if (self::existDataEx($type, $sub_type, $sub_id, $name))
         {
             // update data
-            $sql = "UPDATE `${tablename}`"
+            $sql = "UPDATE `{$tablename}`"
                   . sprintf(" SET `cd_value` = '%s', `cd_datetime` = '%s'",
                             sql_real_escape_string($value),
                             sql_real_escape_string($datetime))
@@ -115,7 +115,7 @@ class CoreCachedData
         }
 
         // insert data
-        $sql = "INSERT INTO `${tablename}`"
+        $sql = "INSERT INTO `{$tablename}`"
               . "(`cd_type`, `cd_sub_type`, `cd_sub_id`, `cd_name`, `cd_value`, `cd_datetime`)"
               . sprintf(" VALUES('%s', '%s', %d, '%s', '%s', '%s') ",
                         sql_real_escape_string( $type ),
@@ -147,7 +147,7 @@ class CoreCachedData
         {
             $sql .= sprintf(" `cd_datetime` < '%s' AS 'expired'", sql_real_escape_string($expire_datetime) );
         }
-        $sql .= " FROM `${tablename}`"
+        $sql .= " FROM `{$tablename}`"
                   . sprintf(" WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                             sql_real_escape_string( $type ),
                             sql_real_escape_string( $sub_type ),
@@ -179,7 +179,7 @@ class CoreCachedData
         if (!self::existDataEx($type, $sub_type, $sub_id, $name))
             return;
 
-        $sql = "DELETE FROM `${tablename}`"
+        $sql = "DELETE FROM `{$tablename}`"
                   . sprintf(" WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                             sql_real_escape_string( $type ),
                             sql_real_escape_string( $sub_type ),
@@ -202,7 +202,7 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
         $sql =<<<EOD
-CREATE TABLE IF NOT EXISTS `${tablename}` (
+CREATE TABLE IF NOT EXISTS `{$tablename}` (
   `cd_type`        varchar(50)   NOT NULL default '' COLLATE NOCASE,
   `cd_sub_type`    varchar(50)   NOT NULL default '' COLLATE NOCASE,
   `cd_sub_id`      int(11)       NOT NULL,
@@ -220,7 +220,7 @@ EOD;
     {
         $tablename = sql_table(self::base_tablename);
         $sql =<<<EOD
-CREATE TABLE `${tablename}` (
+CREATE TABLE `{$tablename}` (
   `cd_type`        varchar(50)   NOT NULL default '',
   `cd_sub_type`    varchar(50)   NOT NULL default '',
   `cd_sub_id`      int(11)       NOT NULL,
