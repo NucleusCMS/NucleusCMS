@@ -36,7 +36,7 @@ class NP_Text extends NucleusPlugin {
 		return $desc;
 	}
 	public function supportsFeature($feature) {
-		return in_array($feature, array('SqlTablePrefix', 'SqlApi', 'SqlApi_SQL92'));
+		return in_array($feature, array('SqlTablePrefix', 'SqlApi'));
 	}
 	public function install() {}
 	public function uninstall() {}

@@ -50,7 +50,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	public function getURL() { return ''; }
 	public function getVersion() { return '2.1'; }
 	public function getDescription() { return _SKINFILES_01; }
-	public function supportsFeature($feature)	{ return in_array ($feature, array ('SqlTablePrefix', 'NotUseDbApi', 'HelpPage'));}
+	public function supportsFeature($feature)	{ return in_array ($feature, array ('SqlTablePrefix', 'HelpPage'));}
 	public function hasAdminArea() { return 1; }
 	
 	public function install() {
