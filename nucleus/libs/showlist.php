@@ -719,7 +719,7 @@ function listplug_table_skinlist($template, $type) {
                 $types = array();
 				$parts = array(array(),array());
                 while ($o = sql_fetch_object($r))
-                    array_push($types,$o->stype);
+                    $types[] = $o->stype;
                 if (sizeof($types) > 0) {
                     $friendlyNames = SKIN::getFriendlyNames();
 					for ($i=0;$i<sizeof($types);$i++) {
@@ -746,7 +746,7 @@ function listplug_table_skinlist($template, $type) {
 			$names = array();
             if ($has_spartstype && $res)
 			while ($o = sql_fetch_object($res))
-				array_push($names, $o->stype);
+				$names[] = $o->stype;
 			if (count($names)>0)
 			{
 				printf("<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s", _SKIN_PARTS_SPECIAL_PAGE);

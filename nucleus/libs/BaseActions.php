@@ -172,7 +172,7 @@ class BaseActions {
      */
     function _addIfCondition($condition) {
 
-        array_push($this->if_conditions,$condition);
+        $this->if_conditions[] = $condition;
 
         $this->_updateTopIfCondition();
 
@@ -193,7 +193,7 @@ class BaseActions {
      * Helper function for elseif / elseifnot
      */
     function _addIfExecute() {
-        array_push($this->if_execute, 0);
+        $this->if_execute[] = 0;
     }
 
     /**
