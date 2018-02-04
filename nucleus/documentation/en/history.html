@@ -39,9 +39,8 @@
             <li>CHANGE: Change plugin path of (NP_SkinFiles, NP_SecurityEnforcer, NP_Text).<br />Please you remove old files<ul><li>plugins/NP_SkinFiles.php</li><li>plugins/skinfiles/*</li><li>plugins/NP_SecurityEnforcer.php</li><li>plugins/securityenforcer/*</li><li>plugins/NP_Text.php</li></ul></li>
             <li>ADD: Add Skin Class functions changeSkinByName, changeSkinById, getRootURL, getURL.</li>
             <li>IMPORTANT,NEW: New global variable $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME.</li>
-            <li>IMPORTANT,CHANGE:  NotUseDbApi has been added to the supportsFeature of plugin. Plugin that does not use a query, please return the True in NotUseDbApi.</li>
-            <li>IMPORTANT,CHANGE:  SqlApi_SQL92, SqlApi_drivername has been added to the supportsFeature of plugin .</li>
-            <li>IMPORTANT,CHANGE:  Removed supportsFeature('SqlTablePrefix').</li>
+            <li>IMPORTANT,CHANGE:  SqlApi_SQL92, SqlApi_drivername has been added to the supportsFeature of sqlite's plugin .</li>
+            <li>IMPORTANT,CHANGE:  Remove supportsFeature [SqlTablePrefix, SqlApi].</li>
             <li>IMPORTANT,CHANGE:  The length of the next column has been changed from 20 to 50 : nucleus_plugin_option.oname, nucleus_config.name</li>
             <li>NEW: Installer: SQLite installations have been added.(Experimental)<br />
                 If you want to migrate data from mysql, please access the <a href="../../../_upgrades/conv-sqlite/">_upgrades/conv-sqlite/</a>. Conversion is one way. At the present time, there is no function that returns the data of sqlite to mysql.</li>

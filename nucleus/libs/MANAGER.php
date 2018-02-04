@@ -399,23 +399,26 @@ class MANAGER
 
     private function checkIfOk_supportsFeature_onLoadPlugin($NP_Name)
     {
+        global $DB_DRIVER_NAME;
+        $flag = TRUE;
+        if ( 'mysql' != $DB_DRIVER_NAME )
+        {
+            $flag = $this->checkIfOk_supportsFeature_db($NP_Name);
+        }
+        return $flag;
+    }
+
+    private function checkIfOk_supportsFeature_db($NP_Name)
+    {
         global $DB_PREFIX, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
-        // unload plugin if using non-mysql handler and plugin does not support it
-        $is_NotUseDbApi = (($this->plugins[$NP_Name]->supportsFeature('NotUseDbApi'))
-                        || ($this->plugins[$NP_Name]->supportsFeature('NoSql')));
+        $tablelist = $this->plugins[$NP_Name]->getTableList();
+        if (empty($tablelist))
+            return TRUE;
 
         // check SqlApi
-        if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
+        if ($DB_PHP_MODULE_NAME == 'pdo')
         {
-            // plugin uses DB query
-            // unload plugin if using non-mysql handler and plugin does not support it
-            if (!$this->plugins[$NP_Name]->supportsFeature('SqlApi'))
-            {
-                unset($this->plugins[$NP_Name]);
-                ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_NOTSUPPORT, $NP_Name));
-                return 0;
-            }
 //                         DB       Standard SQL
 //                        MySQL5  : - SQL:2008
 //                        SQLite3 : SQL92
