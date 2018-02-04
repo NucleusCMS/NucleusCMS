@@ -217,8 +217,9 @@ function listplug_table_pluginlist($template, $type) {
                     }
                     // plugin Description
                     echo _LIST_PLUGS_DESC .'<br />'. hsc($plug->getDescription());
-                    if (sizeof($plug->getEventList()) > 0) {
-                        echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',hsc(implode($plug->getEventList(),', '));
+                    $pl_event_list = $plug->_getEventList();
+                    if (count($pl_event_list) > 0) {
+                        echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',hsc(implode($pl_event_list,', '));
                         // check the database to see if it is up-to-date and notice the user if not
                     }
                     if (!$plug->subscribtionListIsUptodate()) {
