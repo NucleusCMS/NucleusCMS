@@ -14,8 +14,6 @@ define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルー�
 define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',  'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP5.x以上が使えないかどうか、サーバ管理者に確認して下さい。');
 
-define('_INSTALL_TEXTCOMFIRM_RETRY_SEND',  '送信は、１回だけにしてください。本当に、この内容でもう一度送信していいですか？');
-
 /*  New for 3.72 */
 define('_INSTALL_TEXT_DATABASE_SELECT' ,     'データベースの選択');
 define('_INSTALL_TEXT_DATABASE_LOGIN_INFO',	 'データベースのログイン情報');
@@ -92,8 +90,8 @@ define('_TITLE5',				'スパムとの戦い');
 define('_HEADER1',				'本体のインストール');
 define('_TEXT1',				'<p>MySQLテーブルのセットアップと、config.php に入力するための情報を表示します。これをなす為に、いくつかの情報を入力する必要があります。</p><p>すべての欄の入力が必要です。オプション情報は、インストールが完了後Nucleusの管理領域から設定可能です。</p>');
 
-define('_HEADER2',				'PHP と MySQL のバージョン');
-define('_TEXT2',				'<p>以下はあなたのウェブホストにおけるPHPとMySQLサーバーのバージョンです。Nucleusのサポートフォーラムに問題を報告する時は、この情報を書き添えてください。</p>');
+define('_HEADER2',				'PHP のバージョン');
+define('_TEXT2',				'<p>以下はあなたのウェブホストにおけるPHPのバージョンです。Nucleusのサポートフォーラムに問題を報告する時は、この情報を書き添えてください。</p>');
 define('_TEXT2_WARN1',			' 注意: Nucleusの動作には少なくともバージョン %s が必要です');
 define('_TEXT2_WARN2',			'情報: 動作に次のバージョン以降のMySQLが必要です。');
 define('_TEXT2_WARN3',			'警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。インストール作業を中止します。PHP5以上が使えないかどうか、サーバ管理者に確認して下さい。');
