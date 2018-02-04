@@ -465,7 +465,7 @@ class MEMBER {
         $res = sql_query($query);
         if (!empty($res)) {
             while ($obj = sql_fetch_object($res)) {
-                array_push($blogs, $obj->blogid);
+                $blogs[] = $obj->blogid;
             }
         }
 
@@ -487,7 +487,7 @@ class MEMBER {
         $res = sql_query($query);
         if (!empty($res)) {
             while ($obj = sql_fetch_object($res)) {
-                array_push($blogs, $obj->blogid);
+                $blogs[] = $obj->blogid;
             }
         }
 

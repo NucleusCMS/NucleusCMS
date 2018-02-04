@@ -84,7 +84,7 @@ class MEDIA {
         while ($filename = readdir($dirhandle)) {
             // only add files that match the filter
             if (!@is_dir($filename) && MEDIA::checkFilter($filename, $filter))
-                array_push($filelist, new MEDIAOBJECT($collection, $filename, filemtime($mediadir . $filename)));
+                $filelist[] = new MEDIAOBJECT($collection, $filename, filemtime($mediadir . $filename));
         }
         closedir($dirhandle);
 
