@@ -116,11 +116,14 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_query($query,$conn = false) {
         global $SQLCount, $MYSQL_CONN, $CONF;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+           $conn = $MYSQL_CONN;
+        }
         $SQLCount++;
         $res = mysql_query($query,$conn);
         if (!$res && $CONF['debug']) {
-            echo sprintf("mySQL error with query <b>%s</b> : %s<p />", $query, mysql_error($conn));
+            echo sprintf("mySQL error with query <b>%s</b> : %s<p />",
+                         $query, mysql_error($conn));
             $_ = debug_backtrace();
             print_r($_);
         }
@@ -181,6 +184,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_result($res, $row = 0, $col = 0)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_result($res, $row, $col);
     }
     
@@ -189,6 +194,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_free_result($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_free_result($res);
     }
     
@@ -197,6 +204,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      */
     function sql_num_rows($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_num_rows($res);
     }
     
@@ -215,6 +224,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_num_fields($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_num_fields($res);
     }
     
@@ -223,6 +234,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_fetch_assoc($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_fetch_assoc($res);
     }
     
@@ -231,6 +244,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_fetch_array($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_fetch_array($res);
     }
     
@@ -239,6 +254,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_fetch_object($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_fetch_object($res);
     }
     
@@ -247,6 +264,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_fetch_row($res)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_fetch_row($res);
     }
     
@@ -255,6 +274,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_fetch_field($res,$offset = 0)
     {
+        if(!is_sql_result($res))
+           return false;
         return mysql_fetch_field($res,$offset);
     }
     

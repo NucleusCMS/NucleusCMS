@@ -15,6 +15,10 @@
  * @copyright Copyright (C) The Nucleus Group
 
  */
+
+global $DIR_NUCLEUS;
+//if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
+
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
@@ -36,7 +40,7 @@ define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
-$nucleus['codename'] = '';
+$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'dev' : '');
 
 $default_user_agent = array('ie' => array());
 $default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
@@ -52,11 +56,28 @@ if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
 if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
+    ini_set('display_errors', 1);
 } else {
     if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
         ini_set('display_errors','0');
     if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+}
+
+/*
+ * Set default time zone
+ * By Japanese Packaging Team, Jan.27, 2011
+ * For private server which has no condition for default time zone
+ */
+
+if (function_exists('date_default_timezone_get')) {
+    if (FALSE == ($timezone = @date_default_timezone_get())) {
+        $timezone = 'UTC';
+    }
+}
+
+if (function_exists('date_default_timezone_set')) {
+     @date_default_timezone_set($timezone);
 }
 
 /*
@@ -406,6 +427,13 @@ if (!headers_sent() ) {
 LoadCoreLanguage();
 $language = getLanguageName();
 
+// check if valid charset
+if (function_exists('encoding_check'))
+if (!encoding_check(false, false, _CHARSET)) {
+    foreach(array($_GET, $_POST) as $input) {
+        array_walk($input, 'encoding_check');
+    }
+}
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
 if (!defined('_ARCHIVETYPE_MONTH') )
 {

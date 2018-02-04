@@ -59,6 +59,11 @@ class PARSER {
      * Parses the given contents and outputs it
      */
     function parse(&$contents) {
+        if(strpos($contents,'<%')===false)
+        {
+            echo $contents;
+            return;
+        }
 
         $pieces = preg_split('/'.$this->delim.'/',$contents);
 

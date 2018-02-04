@@ -173,3 +173,7 @@
         $column = sql_fetch_object($columns);
         return isset($column->Collation) ? $column->Collation : false;
     }
+    
+    function is_sql_result($res) {
+        return _EXT_MYSQL_EMULATE ? is_object($res) : is_resource($res);
+    }

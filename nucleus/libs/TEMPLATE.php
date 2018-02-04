@@ -35,12 +35,12 @@ class TEMPLATE {
 
     // (static)
     public static function getIdFromName($name) {
-        $query =  'SELECT tdnumber'
-               . ' FROM '.sql_table('template_desc')
-               . ' WHERE tdname="'.sql_real_escape_string($name).'"';
-        $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-        return $obj->tdnumber;
+        $query =  sprintf("SELECT tdnumber FROM %s WHERE tdname='%s'",
+                          sql_table('template_desc'),
+                          sql_real_escape_string($name));
+        if (($res = sql_query($query)) && ($obj = sql_fetch_object($res)))
+            return $obj->tdnumber;
+        return 0;
     }
 
     /**
@@ -127,8 +127,10 @@ class TEMPLATE {
 
         $template = array();
         $query = 'SELECT tpartname, tcontent'
-               . ' FROM '.sql_table('template_desc').', '.sql_table('template')
-               . ' WHERE tdesc=tdnumber and tdname="' . sql_real_escape_string($name) . '"';
+               . sprintf(" FROM %s, %s WHERE tdesc=tdnumber AND tdname='%s'",
+                           sql_table('template_desc'),
+                           sql_table('template'),
+                           sql_real_escape_string($name));
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res))
             $template[$obj->tpartname] = $obj->tcontent;

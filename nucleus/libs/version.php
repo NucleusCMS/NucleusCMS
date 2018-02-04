@@ -20,3 +20,5 @@ define('NUCLEUS_VERSION'    , '3.80');
 define('NUCLEUS_VERSION_ID' ,    380);
 define('NUCLEUS_PATCH_LEVEL' ,     0);
 define('NUCLEUS_DATABASE_VERSION_ID' ,    380);
+
+define('NUCLEUS_DEVELOP' ,    1);

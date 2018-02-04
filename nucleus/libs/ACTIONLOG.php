@@ -33,16 +33,15 @@ class ACTIONLOG {
             return;
 
         if ($member && $member->isLoggedIn())
-            $message = "[" . $member->getDisplayName() . "] " . $message;
+            $message = sprintf('[%s] %s', $member->getDisplayName(), $message);
 
+        $timestamp = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);    // format timestamp
         if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $timestamp = date("Y-m-d H:i:s",time());    // format timestamp
             $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES (?, ?)" , sql_table('actionlog'));
             sql_prepare_execute($query , array((string) $timestamp, (string) $message));
         } else {
             $message = sql_real_escape_string($message);        // add slashes
-            $timestamp = date("Y-m-d H:i:s",time());    // format timestamp
-            $query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
+            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES ('%s', '%s')", sql_table('actionlog'), $timestamp, $message);
             sql_query($query);
         }
 

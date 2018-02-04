@@ -31,10 +31,10 @@
 
 	$language = str_replace( array('\\','/'), '', getLanguageName());
 	$langfile = $language.'.php';
-	if (file_exists($langfile))
-		include_once($langfile);
+	if (is_file('language/'.$langfile))
+		include_once('language/'.$langfile);
 	else
-		include_once('english.php');
+		include_once('language/english.php');
 
 	/**
 	  * Create admin area
@@ -216,7 +216,7 @@
 		$parts = explode('/', $relative);
 		$part = '';
 		
-		while (list(,$v) = each ($parts)) {
+		foreach ($parts as $v) {
 			if ($v != '') {
 				$part .= $v . '/';
 				
@@ -343,7 +343,7 @@
 		echo '<th>' . _SKINFILES_NAME . '</th><th>' . _SKINFILES_SIZE . '</th><th>' . _SKINFILES_LAST_MODIFIED . '</th><th colspan="4">' . _SKINFILES_ACTIONS . '</th>';
 		echo '</tr></thead>';
 
-		while (list($name, $stat) = each($dirs)) {
+		foreach ($dirs as $name => $stat) {
 			
 			$dir = sfRelativePath($directory . $name . '/');
 				
@@ -386,8 +386,7 @@
 			echo '</tr>';
 		}
 
-
-		while (list($name, $stat) = each($files)) {
+		foreach ($files as $name => $stat) {
 
 			$file = sfRelativePath($directory . $name);
 

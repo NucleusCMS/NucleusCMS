@@ -95,7 +95,7 @@ function getLatestVersion() {
     }
 
     $options = array('timeout'=> 5, 'connecttimeout'=> 3);
-    $ret = Utils::httpGet('http://nucleuscms.org/version_check.php', $options);
+    $ret = @Utils::httpGet('http://nucleuscms.org/version_check.php', $options);
 
     if (empty($ret))
         $ret = '';
@@ -146,6 +146,14 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
             header('Content-Type: ' . $contenttype . '; charset=' . $charset);
         } else {
             header('Content-Type: ' . $contenttype);
+        }
+
+        if (function_exists('encoding_check')) {
+            // check if valid charset
+            if (!encoding_check(false,false,$charset)) {
+                foreach(array($_GET, $_POST) as $input)
+                    array_walk($input, 'encoding_check');
+            }
         }
     }
 }
@@ -252,7 +260,7 @@ function isValidMailAddress($address) {
 // some helper functions
 function getBlogIDFromName($name)
 {
-    $res = quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
+    $res = quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . " WHERE bshortname='" . sql_real_escape_string($name) . "'");
     if ($res !== false)
       $res = intval($res);
     return $res;
@@ -289,7 +297,7 @@ function getBlogIDFromCatID($catid)
 
 function getCatIDFromName($name)
 {
-    $res = quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
+    $res = quickQuery('SELECT catid as result FROM ' . sql_table('category') . " WHERE cname='" . sql_real_escape_string($name) . "'");
 	if ($res !== false)
 		$res = intval ($res);
 	return $res;
@@ -340,11 +348,11 @@ function selector() {
     if (headers_sent() && $CONF['alertOnHeadersSent']) {
 
         headers_sent($hsFile, $hsLine);
-        $extraInfo = ' in <code>' . $hsFile . '</code> line <code>' . $hsLine . '</code>';
+        $extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
 
         startUpError(
-            '<p>The page headers have already been sent out' . $extraInfo . '. This could cause Nucleus not to work in the expected way.</p><p>Usually, this is caused by spaces or newlines at the end of the <code>config.php</code> file, at the end of the language file or at the end of a plugin file. Please check this and try again.</p><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnHeadersSent\']</code> in <code>globalfunctions.php</code> to <code>0</code></p>',
-            'Page headers already sent'
+            sprintf(_GFUNCTIONS_HEADERSALREADYSENT_TXT,$extraInfo),
+            _GFUNCTIONS_HEADERSALREADYSENT_TITLE
         );
         exit;
     }
@@ -375,6 +383,15 @@ function selector() {
         // deny access
         
         if ($blogid && (intval($blogid) != $obj->iblog) ) {
+            if (!headers_sent()) {
+                $b =& $manager->getBlog($obj->iblog);
+                $CONF['ItemURL'] = $b->getURL();
+                if ($CONF['URLMode'] == 'pathinfo' and substr($CONF['ItemURL'],-1) == '/')
+                    $CONF['ItemURL'] = substr($CONF['ItemURL'], 0, -1);
+                $correctURL = createItemLink($itemid, '');
+                redirect($correctURL);
+                exit;
+            }
             doError(_ERROR_NOSUCHITEM);
         }
 
@@ -390,13 +407,17 @@ function selector() {
         $b =& $manager->getBlog($blogid);
 
         if ($b->isValidCategory($catid) ) {
-            $catextra = ' and icat=' . $catid;
+            $catextra = ' AND icat=' . $catid;
         } else {
             $catextra = '';
         }
 
         // get previous itemid and title
-        $query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime<' . mysqldate($timestamp) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime DESC LIMIT 1';
+        $query = 'SELECT inumber, ititle FROM ' . sql_table('item')
+               . ' WHERE itime<' . mysqldate($timestamp)
+               . ' AND idraft=0 AND iblog=' . $blogid
+               . $catextra
+               . ' ORDER BY itime DESC LIMIT 1';
         $res = sql_query($query);
 
         if ($res && ($obj = sql_fetch_object($res))) {
@@ -405,7 +426,12 @@ function selector() {
         }
 
         // get next itemid and title
-        $query = 'SELECT inumber, ititle FROM ' . sql_table('item') . ' WHERE itime>' . mysqldate($timestamp) . ' and itime <= ' . mysqldate($b->getCorrectTime()) . ' and idraft=0 and iblog=' . $blogid . $catextra . ' ORDER BY itime ASC LIMIT 1';
+        $query = 'SELECT inumber, ititle FROM ' . sql_table('item')
+               . ' WHERE itime>' . mysqldate($timestamp)
+               . ' AND itime <= ' . mysqldate($b->getCorrectTime())
+               . ' AND idraft=0 AND iblog=' . $blogid
+               . $catextra
+               . ' ORDER BY itime ASC LIMIT 1';
         $res = sql_query($query);
 
         if ($res && ($obj = sql_fetch_object($res))) {
@@ -544,6 +570,8 @@ function selector() {
 
         if (is_numeric($blogid)) {
             $blogid = intVal($blogid);
+//        } elseif(empty($blogid)) {
+//            $blogid = $CONF['DefaultBlog'];
         } else {
             $blogid = getBlogIDFromName($blogid);
         }
@@ -721,12 +749,35 @@ function isValidSkinSpecialPageName($name)
 
 
 // add and remove linebreaks
-function addBreaks($var) {
-    return nl2br($var);
+function addBreaks($text) {
+//    if($mode==='nl2br') return nl2br($text);
+    
+    $text = str_replace(array("\r\n","\r"),"\n",$text);
+    
+    $blockElms  = 'br,table,tbody,tr,td,th,thead,tfoot,caption,colgroup,div';
+    $blockElms .= ',dl,dd,dt,ul,ol,li,pre,select,option,form,map,area,blockquote';
+    $blockElms .= ',address,math,style,input,p,h1,h2,h3,h4,h5,h6,hr,object,param,embed';
+    $blockElms .= ',noframes,noscript,section,article,aside,hgroup,footer,address,code';
+    $blockElms = explode(',', $blockElms);
+    $lines = explode("\n",$text);
+    $c = count($lines);
+    foreach($lines as $i=>$line)
+    {
+        $line = rtrim($line);
+        if($i===$c-1) break;
+        foreach($blockElms as $block)
+        {
+            if(preg_match("@</?{$block}" . '[^>]*>$@',$line))
+                continue 2;
+        }
+        $lines[$i] = "{$line}<br />";
+    }
+    return join("\n", $lines);
 }
 
 function removeBreaks($var) {
-    return preg_replace("/<br \/>([\r\n])/", "$1", $var);
+    if(strpos($var,"\r")!==false) $var = str_replace("\r",'',$var);
+    return preg_replace("@<br[ /]*>\n@i", "\n", $var);
 }
 
 // shortens a text string to maxlength ($toadd) is what needs to be added
@@ -939,6 +990,7 @@ function LoadCoreLanguage()
         return;
     $loaded = TRUE;
 
+//    global $DIR_LANG, $SQL_DBH;
     global $DIR_LANG;
     $language = remove_all_directory_separator(getLanguageName());
     $language = getValidLanguage($language);
@@ -962,6 +1014,10 @@ function LoadCoreLanguage()
         }
     }
     sql_set_charset_v2(_CHARSET);
+//	if (isset($SQL_DBH) && $SQL_DBH)
+//	    sql_set_charset_v2(_CHARSET);
+//	else
+//	    sql_set_charset(_CHARSET);
 
     ini_set('default_charset', _CHARSET);
     if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
@@ -988,12 +1044,14 @@ function includephp($filename)
     global $REQUEST_URI;
 
     // php (taken from PHP doc)
+//    global $argv, $argc, $PHP_SELF, $HTTP_COOKIE_VARS, $HTTP_GET_VARS, $HTTP_POST_VARS;
+//    global $HTTP_POST_FILES, $HTTP_ENV_VARS, $HTTP_SERVER_VARS, $HTTP_SESSION_VARS;
     global $argv, $argc, $PHP_SELF;
 
     // other
     global $PATH_INFO, $HTTPS, $HTTP_RAW_POST_DATA, $HTTP_X_FORWARDED_FOR;
 
-    if (@file_exists($filename) ) {
+    if (@is_file($filename) ) {
         include_once($filename);
     }
 }
@@ -1264,6 +1322,7 @@ function passVar($key, $value) {
     ?><input type="hidden" name="<?php echo hsc($key)?>" value="<?php echo hsc(undoMagic($value) )?>" /><?php
 }
 
+
 /*
     Date format functions (to be used from [%date(..)%] skinvars
 */
@@ -1308,6 +1367,13 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog) {
     }
 }
 
+/*
+ * checkVars()
+ *
+ * @param    string    $variables
+ * @return    void
+ */
+
 function checkVars($aVars) {
 
     foreach ($aVars as $varName) {
@@ -1323,15 +1389,120 @@ function checkVars($aVars) {
     }
 }
 
+//function checkVars()
+//{
+//    $variables = array('nucleus', 'CONF', 'DIR_LIBS',
+//        'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE',
+//        'DIR_LOCALES', 'DIR_PLUGINS',
+//        'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES');
+//
+//    foreach ( $variables as $variable )
+//    {
+//        if ( isset($_GET[$variable])
+//          || isset($_POST[$variable])
+//          || isset($_COOKIE[$variable])
+//          || isset($_ENV[$variable])
+//          || (isset($_SESSION[$variable]) && session_id()!=='')
+//          || isset($_FILES[$variable]) )
+//        {
+//            die('Sorry. An error occurred.');
+//        }
+//    }
+//    return;
+//}
+
+//function encoding_check($val, $key, $encoding=false, $exclude=false) {
+//    /*
+//      When 3rd argument is set, return if checked already.
+//      When 4th argument is set, set the excluded key(s).
+//    */
+//    static $search=false, $checked=array(), $excludes=array();
+//    if ($exclude!==false) {
+//        if (is_array($exclude)) {
+//            foreach($exclude as $v) $excludes[$v]=true;
+//        } else $excludes[$exclude]=true;
+//        return;
+//    }
+//    if ($encoding!==false) {
+//        switch($encoding=strtolower($encoding)){
+//            case 'utf-8':
+//                $search='/([\x00-\x7F]+'.
+//                    '|[\xC2-\xDF][\x80-\xBF]'.
+//                    '|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]'.
+//                    '|[\xF0-\xF7][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
+//                    '|[\xF8-\xFB][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
+//                    '|[\xFC-\xFD][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF])/';
+//                    break;
+//            case 'euc-jp':
+//                $search='/([\x00-\x7F]+'.
+//                    '|[\x8E][\xA0-\xDF]'.
+//                    '|[\x8F]?[\xA1-\xFE][\xA1-\xFE])/';
+//                break;
+//            case 'gb2312':
+//                $search='/([\x00-\x7F]+'.
+//                    '|[\xA1-\xF7][\xA1-\xFE])/';
+//                break;
+//            case 'shift_jis':
+//                // Note that shift_jis is only supported for output.
+//                // Using shift_jis in DB is prohibited.
+//                $search='/([\x00-\x7F\xA1-\xDF]+'.
+//                    '|[\x81-\x9F\xE0-\xFC][\x40-\xFC])/';
+//                break;
+//            default:
+//                $search=false;
+//                if (preg_match('/^iso\-8859\-[0-9]{1,2}$/',$encoding)) break;
+//                if (preg_match('/^windows\-125[0-8]$/',$encoding)) break;
+//                startUpError('<p>Unknown or non-supported encoding.</p>', 'Encoding Error');
+//                exit;
+//        }
+//        if (isset($checked[$encoding])) return true; // Already checked.
+//        $checked[$encoding]=true;
+//    }
+//    if ($key===false) return false; // Not yet checked.
+//    if ($search===false) return true; // non-multibyte encoding
+//    if (isset($excludes[$key])) return true; // This key isn't checked.
+//    if (is_array($val)) {
+//        array_walk($val, 'encoding_check');
+//    } else {
+//        $result=preg_replace($search,'',$val);
+//        if (strlen($result)!=0) {
+//            startUpError('<p>Invalid input.</p>', 'Input Error');
+//            exit;
+//        }
+//    }
+//    $result=preg_replace($search,'',$key);
+//    if (strlen($result)!=0) {
+//        startUpError('<p>Invalid input.</p>', 'Input Error');
+//        exit;
+//    }
+//    return true;
+//}
+
 /**
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
  * to avoid XSS
  */
 function sanitizeParams()
 {
+    global $HTTP_SERVER_VARS;
+
     $array = array();
     $str = '';
     $frontParam = '';
+
+/*
+    // REQUEST_URI of $HTTP_SERVER_VARS
+    $str =& $HTTP_SERVER_VARS["REQUEST_URI"];
+    serverStringToArray($str, $array, $frontParam);
+    sanitizeArray($array);
+    arrayToServerString($array, $frontParam, $str);
+
+    // QUERY_STRING of $HTTP_SERVER_VARS
+    $str =& $HTTP_SERVER_VARS["QUERY_STRING"];
+    serverStringToArray($str, $array, $frontParam);
+    sanitizeArray($array);
+    arrayToServerString($array, $frontParam, $str);
+*/
 
     // REQUEST_URI of $_SERVER
         $str =& $_SERVER["REQUEST_URI"];
@@ -1797,6 +1968,15 @@ function encode_desc(&$data)
     $data = strtr($data,$to_entities);
 
     return $data;
+// jp
+//    _$to_entities = get_html_translation_table(HTML_ENTITIES);
+    $to_entities = get_html_translation_table(HTML_SPECIALCHARS,ENT_QUOTES); // for Japanese
+    $from_entities = array_flip($to_entities);
+    $data = str_replace('<br />', '\n', $data); //hack
+    $data = strtr($data,$from_entities);
+    $data = strtr($data,$to_entities);
+    $data = str_replace('\n', '<br />', $data); //hack
+    return $data;
 }
 
 /**
@@ -1835,7 +2015,8 @@ function ifset(&$var)
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-    $query = sprintf("SELECT COUNT(*) as count FROM `%s` WHERE event='%s'", sql_table('plugin_event'), $event);
+    $query = sprintf("SELECT COUNT(*) as count FROM `%s` WHERE event='%s'",
+                     sql_table('plugin_event'), $event);
     $res = sql_query($query);
     if ($res && ($obj = sql_fetch_object($res)))
         return $obj->count;
@@ -1874,6 +2055,10 @@ function escapeHTML($string,  $flags = ENT_QUOTES )
     return htmlspecialchars( $string , $flags , (defined('_CHARSET') ? _CHARSET : 'UTF-8') );
 }
 
+function strftimejp($format,$timestamp = ''){
+    return Utils::strftime($format,$timestamp);
+}
+
 function hsc($string, $flags=ENT_QUOTES, $encoding='') {
     if($encoding==='')
     {
@@ -1891,6 +2076,27 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
         
         return htmlspecialchars($string, $flags, $encoding);
     }
+}
+
+function coreSkinVar($key='')
+{
+    if($key==='<%BenchMark%>')
+    {
+        global $SQLCount;
+        $EndTime = microtime(true);
+        $loadtime = $EndTime - $_SERVER['REQUEST_TIME_FLOAT'];
+        $rs = sprintf("%.3f sec / %d queries", $loadtime, $SQLCount);
+    }
+    elseif($key==='<%DebugInfo%>')
+    {
+        global $SQLStack, $doActionStack;
+        $rs  = sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$SQLStack));
+        $rs .= sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$doActionStack));
+        
+    }
+    else $rs = '';
+    
+    return $rs;
 }
 
 function nucleus_version_compare($version1, $version2, $operator = '')
@@ -2192,4 +2398,11 @@ function getValidLanguage($lang)
     if ( checkLanguage($lang) )
         return $lang;
     return 'english-utf8';
+}
+
+function parseText($tpl='',$ph=array()) {
+    foreach($ph as $k=>$v) {
+        $tpl = str_replace("<%{$k}%>", $v, $tpl);
+    }
+    return $tpl;
 }

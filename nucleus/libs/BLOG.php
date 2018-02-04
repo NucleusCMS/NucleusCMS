@@ -642,7 +642,7 @@ class BLOG {
                 $template['LOCALE'] = _LOCALE;
             setlocale(LC_TIME, $template['LOCALE']);
         }
-        if (_LOCALE == 'ja_JP')
+        if ((_LOCALE == 'ja_JP') && isset($template['FORMAT_DATE']))
         {
             if ($template['FORMAT_DATE'] == '%d/%m')
                 $template['FORMAT_DATE'] = '%m/%d';
@@ -931,7 +931,7 @@ class BLOG {
                     $list['blogname'] = $bldata['bshortname'];
                 }
                 else { // all other cases
-                    $list['blogname'] = $bldata['bname'];
+                    $list['blogname'] = hsc($bldata['bname']);
                 }
 
                 $param = array('listitem' => &$list);
@@ -1023,10 +1023,13 @@ class BLOG {
       *     category id
       */
     function isValidCategory($catid) {
-        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid)
-                .' LIMIT 1';
-        $res = sql_query($query);
-        return (intval(sql_result($res)) > 0);
+        $query = sprintf('SELECT count(*) FROM %s WHERE cblog=%d AND catid=%d LIMIT 1',
+                         sql_table('category'),
+                         $this->getID(),
+                         intval($catid));
+        if ($res = sql_query($query))
+            return (intval(sql_result($res)) > 0);
+        return FALSE;
     }
 
     /**
@@ -1036,10 +1039,13 @@ class BLOG {
       *     category id
       */
     function getCategoryName($catid) {
-        $res = sql_query('SELECT cname FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-        $o = sql_fetch_object($res);
-        if (is_object($o))
+        $query = sprintf('SELECT cname FROM %s WHERE cblog=%d AND catid=%d',
+                         sql_table('category'),
+                         $this->getID(),
+                         intval($catid));
+        if (($res = sql_query($query)) && ($o = sql_fetch_object($res)))
             return $o->cname;
+        return "";
     }
 
     /**
@@ -1049,16 +1055,22 @@ class BLOG {
       *     category id
       */
     function getCategoryDesc($catid) {
-        $res = sql_query('SELECT cdesc FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-        $o = sql_fetch_object($res);
-        return $o->cdesc;
+        $query = sprintf('SELECT cdesc FROM %s WHERE cblog=%d AND catid=%d',
+                         sql_table('category'),
+                         $this->getID(),
+                         intval($catid));
+        if (($res = sql_query($query)) && ($o = sql_fetch_object($res)))
+            return $o->cdesc;
+        return "";
     }
 
     public function getCategoryOrder($catid)
     {
-        $res = sql_query('SELECT corder FROM '.sql_table('category')
-                       . ' WHERE cblog='.$this->getID().' and catid=' . intval($catid));
-        if ($res && ($o = sql_fetch_object($res)))
+        $query = sprintf('SELECT corder FROM %s WHERE cblog=%d AND catid=%d',
+                         sql_table('category'),
+                         $this->getID(),
+                         intval($catid));
+        if (($res = sql_query($query)) && ($o = sql_fetch_object($res)))
             return intval($o->corder);
         return 100; // default
     }
@@ -1070,7 +1082,12 @@ class BLOG {
       *     category name
       */
     function getCategoryIdFromName($name) {
-        $res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
+        $query = sprintf("SELECT catid FROM %s WHERE cblog=%d AND cname='%s'",
+                        sql_table('category'),
+                        $this->getID(),
+                        sql_real_escape_string($name)
+                    );
+        $res = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
         } else {
@@ -1338,11 +1355,15 @@ class BLOG {
         $manager->notify('PreAddTeamMember', $param);
 
         // add to team
-        $query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
-               . 'VALUES (' . $memberid .', '.$this->getID().', "'.$admin.'")';
+        $query = sprintf("INSERT INTO %s (TMEMBER, TBLOG, TADMIN) "
+                        ."VALUES(%d, %d, %d)",
+                        sql_table('team'),
+                        $memberid,
+                        $this->getID(),
+                        ($admin ? 1 : 0)
+                    );
         sql_query($query);
 
-        
         $param = array(
             'blog'        => &$this,
             'member'    => &$tmem,
@@ -1368,9 +1389,9 @@ class BLOG {
       *     blog shortname
       */
     public static function exists($name) {
-        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
+        $query = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
                        sql_table('blog'), sql_real_escape_string($name));
-        return intval(quickQuery($sql)) > 0;
+        return intval(quickQuery($query)) > 0;
     }
 
     /**
@@ -1381,9 +1402,9 @@ class BLOG {
       *     blog id
       */
     public static function existsID($id) {
-        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bnumber=%d LIMIT 1",
+        $query = sprintf("SELECT count(*) AS result FROM %s WHERE bnumber=%d LIMIT 1",
                        sql_table('blog'), intval($id));
-        return intval(quickQuery($sql)) > 0;
+        return intval(quickQuery($query)) > 0;
     }
 
     /**
@@ -1546,8 +1567,8 @@ class BLOG {
 
         if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
         {
-            $sql = sprintf("ALTER TABLE `%s` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';", sql_table( 'blog' ));
-            $res = sql_query($sql);
+            $query = sprintf("ALTER TABLE `%s` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';", sql_table( 'blog' ));
+            $res = sql_query($query);
             return $res !== FALSE;
         }
     }

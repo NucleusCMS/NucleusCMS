@@ -230,7 +230,7 @@ class PAGEFACTORY extends BaseActions {
     }
 
     function parse_blogname() {
-        echo $this->blog->getName();
+        echo hsc($this->blog->getName());
     }
 
     function parse_bloglink() {

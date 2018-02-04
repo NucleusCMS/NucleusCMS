@@ -88,7 +88,7 @@ class MEMBER {
     }
 
     function readFromName($displayname) {
-        return $this->read("mname='".sql_real_escape_string($displayname)."'");
+        return $this->read(sprintf("mname='%s'", sql_real_escape_string($displayname)));
     }
 
     function readFromID($id) {
@@ -164,7 +164,8 @@ class MEMBER {
      */
     function read($where) {
         // read info
-        $query =  'SELECT * FROM '.sql_table('member') . ' WHERE ' . $where;
+        $query =  sprintf('SELECT * FROM %s WHERE %s',
+                          sql_table('member'), $where);
 
         $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res)))
