@@ -66,9 +66,8 @@ class NucleusPlugin {
      * @returns 1 if the feature is reported, 0 if not
      * @param $feature
      *        Name of the feature. See plugin documentation for more info
-     *            'SqlTablePrefix' -> if the plugin uses the sql_table() method to get table names
      *            'HelpPage' -> if the plugin provides a helppage
-     *                              'SqlApi' -> if the plugin uses the complete sql_* api (must also require nucleuscms 3.5)
+     *            'SqlApi'   -> if the plugin uses the complete sql_* api (must also require nucleuscms 3.5)
      */
     function supportsFeature($feature) {
         return 0;
