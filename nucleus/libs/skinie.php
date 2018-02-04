@@ -160,7 +160,7 @@ class SKINIMPORT {
             }
             $err = xml_parse( $this->parser, $buffer, feof($temp) );
             if (!$err && $this->debug) {
-                echo 'ERROR: ', xml_error_string(xml_get_error_code($this->parser)), '<br />';
+                printf('ERROR: %s<br />', xml_error_string(xml_get_error_code($this->parser)));
             }
         }
 
@@ -318,7 +318,7 @@ class SKINIMPORT {
         }
 
         if ($this->debug) {
-            echo 'START: ' . hsc($name, ENT_QUOTES) . '<br />';
+            printf('START: %s<br />', hsc($name, ENT_QUOTES));
         }
 
         switch ($name) {
@@ -376,7 +376,7 @@ class SKINIMPORT {
       */
     function endElement($parser, $name) {
         if ($this->debug) {
-            echo 'END: ' . hsc($name, ENT_QUOTES) . '<br />';
+            printf('END: %s<br />', hsc($name, ENT_QUOTES));
         }
 
         switch ($name) {

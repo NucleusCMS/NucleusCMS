@@ -62,10 +62,6 @@
     }
 
 
-    function upgrade_getNucleusVersion() {
-        return getNucleusVersion();
-    }
-
     function upgrade_showLogin($type) {
         upgrade_head();
     ?>
@@ -296,3 +292,61 @@
         }
     }
 
+if(!function_exists('sql_existTableColumnName')) {
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    {
+        $names = sql_getTableColumnNames($tablename);
+
+        if (count($names)>0)
+        {
+            if ($casesensitive)
+                return in_array( $ColumnName , $names );
+            else
+            {
+                foreach($names as $v)
+                    if ( strcasecmp( $ColumnName , $v ) == 0 )
+                    {
+                         return True;
+                    }
+            }
+        }
+        return False;
+    }
+
+    if(!function_exists('sql_query')) {
+        function sql_query($query, $link_identifier =NULL) {
+            return mysql_query($query, $link_identifier);
+        }
+    }
+
+    if(!function_exists('sql_fetch_array')) {
+        function sql_fetch_array($result, $result_type = MYSQL_BOTH) {
+            return mysql_fetch_array($result, $result_type);
+        }
+    }
+
+    function sql_getTableColumnNames($tablename)
+    {
+        global $MYSQL_CONN, $SQL_DBH;
+        if (!$MYSQL_CONN && !$SQL_DBH) return array();
+
+        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $target = 'Field';
+
+        $items = array();
+        $res = sql_query($sql);
+        if (!$res)
+            return array();
+        while( $row = sql_fetch_array($res) )
+        {
+            if (isset($row[$target]))
+                $items[] = $row[$target];
+        }
+
+        if (count($items)>0)
+        {
+            sort($items);
+        }
+        return $items;
+    }
+}

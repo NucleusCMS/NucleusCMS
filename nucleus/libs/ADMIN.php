@@ -435,7 +435,7 @@ class ADMIN {
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
-        $query .= ' ORDER BY itime DESC, inumber DESC'
+        $query .= ' ORDER BY idraft ASC, itime DESC, inumber DESC'
                 . " LIMIT $start,$amount";
 
         $query_view .= $query;
@@ -1151,7 +1151,7 @@ class ADMIN {
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
-        $query .= ' ORDER BY itime DESC, inumber DESC'
+        $query .= ' ORDER BY idraft ASC, itime DESC, inumber DESC'
                 . " LIMIT $start,$amount";
 
         $query_view .= $query;
@@ -1520,6 +1520,8 @@ class ADMIN {
         } else {
             // TODO: set start item correctly for itemlist
             $this->action_itemlist(getBlogIDFromItemID($itemid));
+//            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);
+//            exit;
         }
     }
 
@@ -2384,6 +2386,7 @@ class ADMIN {
             $this->action_login(_MSG_LOGINAGAIN, 0);
         } else {
             $this->action_overview(_MSG_SETTINGSCHANGED);
+//            $this->action_editmembersettings($memberid,_MSG_SETTINGSCHANGED);
         }
     }
 
@@ -3545,6 +3548,7 @@ class ADMIN {
 
 
         $this->action_overview(_MSG_SETTINGSCHANGED);
+//        $this->action_blogsettings(_MSG_SETTINGSCHANGED);
     }
 
     /**
@@ -3789,8 +3793,10 @@ class ADMIN {
 
         /* unlink comments from memberid */
         if ($memberid) {
-            $query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. sql_real_escape_string($mem->getDisplayName())
-                   .'" WHERE cmember='.$memberid;
+            $query = sprintf("UPDATE %s SET cmember=0, cuser='%s' WHERE cmember=%d",
+                        sql_table('comment'),
+                        sql_real_escape_string($mem->getDisplayName()),
+                        $memberid);
             sql_query($query);
         }
 
@@ -3997,8 +4003,12 @@ class ADMIN {
         // create new category
         $catdefname = (defined('_EBLOGDEFAULTCATEGORY_NAME') ? _EBLOGDEFAULTCATEGORY_NAME : 'General');
         $catdefdesc = (defined('_EBLOGDEFAULTCATEGORY_DESC') ? _EBLOGDEFAULTCATEGORY_DESC : 'Items that do not fit in other categories');
-        $sql = "INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')";
-        sql_query(sprintf($sql, sql_table('category'), $blogid, sql_real_escape_string($catdefname), sql_real_escape_string($catdefdesc)));
+        $sql = sprintf("INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')",
+                        sql_table('category'),
+                        $blogid,
+                        sql_real_escape_string($catdefname),
+                        sql_real_escape_string($catdefdesc));
+        sql_query($sql);
         $catid = sql_insert_id();
 
         // set as default category
@@ -7307,7 +7317,10 @@ selector();
         $manager->notify('PreAddPlugin', $param);
 
         // do this before calling getPlugin (in case the plugin id is used there)
-        $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
+        $query = sprintf("INSERT INTO %s (porder, pfile) VALUES (%d, '%s')",
+                         sql_table('plugin'),
+                         $newOrder,
+                         sql_real_escape_string($name));
         sql_query($query);
         $iPid = sql_insert_id();
 
@@ -7348,7 +7361,7 @@ selector();
         foreach ($pluginList as $pluginName)
         {
 
-            $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+            $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . " WHERE pfile='" . $pluginName . "'");
             $ct = intval(sql_result($res));
             if ($ct == 0)
             {
@@ -8245,6 +8258,10 @@ EOD;
                 $count++;
                 if (!is_array($s))
                     $s = array('body' => $s);
+                if (isset($s['header'])) {
+                    if (stripos($s['header'],"\nStatus: 200 OK")===false || stripos($s['header'],"\nContent-Type: application/json")===false)
+                        break;
+                }
                 if (!empty($s['body']) && (substr(ltrim($s['body']),0,1) == '['))
                 {
                     $obj = json_decode($s['body']);
@@ -8271,14 +8288,16 @@ EOD;
                     break;
                 $nexturl = $url . '?page=' . $nextpage;
             }
-            if (!empty($values))
+            if (empty($values))
             {
-                ksort($values);
-//                var_dump($values);
-                $cached['list'] =& $values;
-                $cached['value'] = implode(',', $values);
-                CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
+                $cached = false;
+                return false;
             }
+            ksort($values);
+//                var_dump($values);
+            $cached['list'] =& $values;
+            $cached['value'] = implode(',', $values);
+            CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
         }
 
         if (!empty($cached['value']) && !isset($cached['list']) )

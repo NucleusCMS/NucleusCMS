@@ -7,7 +7,7 @@ function get_install_lang_defs()
     $val = array( // Deprecated a language other than UTF-8
         'en' => array('name' => 'english',  'utf8'=>'english-utf8' ,  'title' => 'English'),
         'ja' => array('name' => 'japanese', 'utf8'=>'japanese-utf8' , 'title' => '日本語 - Japanese'),
-//        'fr' => array('name' => 'french',   'utf8'=>'french-utf8'  ,  'title' => 'French'),
+        'fr' => array('name' => 'french',   'utf8'=>'french-utf8'  ,  'title' => 'French'),
 //        'es' => array('name' => 'spanish',  'utf8'=>'spanish-utf8'  , 'title' => 'Spanish'),
 //        'ko' => array('name' => 'korean-utf',  'title' => '한국어 - Korean'),
 //        'zh_cn' => array('name' => '',  'title' => '中文 - Chinese simplified'),
@@ -369,30 +369,35 @@ function doInstall() {
 
 	// 3. try to create database (if needed)
 	if ($is_install_mysql)
-{
-	$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-	switch(strtolower($install_db_charset))
 	{
-		case 'ujis':
-			$collation = 'ujis_japanese_ci';
-			break;
-		case 'latin1':
-			$collation = 'latin1_swedish_ci';
-			break;
-		case 'utf8':
-		default:
-			$collation = 'utf8_general_ci';
-	}
+		$mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+		switch(strtolower($install_db_charset))
+		{
+			case 'ujis':
+				$collation = 'ujis_japanese_ci';
+				break;
+			case 'latin1':
+				$collation = 'latin1_swedish_ci';
+				break;
+			case 'utf8':
+			default:
+				$collation = 'utf8_general_ci';
+				if (version_compare( '5.5.0', $mySqlVer, '<=' ) && ($res = sql_query("SHOW CHARACTER SET LIKE 'utf8mb4'")))
+				{
+					$install_db_charset = 'utf8mb4';
+					$collation  = 'utf8mb4_general_ci';
+				}
+		}
 
-	if ($mysql_create == 1) {
-		$sql = "CREATE DATABASE `{$mysql_database}`";
-		
-	if (version_compare($mySqlVer, '4.1.0', '>='))
-		$sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
-	
-		sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
+		if ($mysql_create == 1) {
+			$sql = "CREATE DATABASE `{$mysql_database}`";
+
+		if (version_compare($mySqlVer, '4.1.0', '>='))
+			$sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
+
+			sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
+		}
 	}
-}
 
 	// 4. try to select database
 	if ($is_install_mysql)

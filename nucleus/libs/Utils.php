@@ -57,12 +57,12 @@ class Utils
     {
         if (! _HAS_MBSTRING )
             return strftime($format, $timestamp);
-        $locale = setlocale(LC_CTYPE, 0);
-        if ((setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')) {
+        $locale = setlocale(LC_CTYPE, "0");
+        if ((setlocale(LC_CTYPE, "0") == 'Japanese_Japan.932')) {
             return mb_convert_encoding(strftime(mb_convert_encoding($format, 'CP932', _CHARSET), $timestamp), _CHARSET, 'CP932');
         //      return iconv('CP932', _CHARSET, strftime(iconv(_CHARSET, 'CP932', $format),$timestamp));
         }
-//var_dump(setlocale(LC_CTYPE, 0),setlocale(LC_TIME, 0), $format, $timestamp, strftime($format, $timestamp), mb_internal_encoding()); // debug
+//var_dump(setlocale(LC_CTYPE, "0"),setlocale(LC_TIME, "0"), $format, $timestamp, strftime($format, $timestamp), mb_internal_encoding()); // debug
         if (PHP_OS=='CYGWIN')
             setlocale(LC_TIME , sprintf('%s.%s', _LOCALE, _CHARSET));
         return strftime($format, $timestamp);

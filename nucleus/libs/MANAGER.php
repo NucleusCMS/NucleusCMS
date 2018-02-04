@@ -479,15 +479,14 @@ class MANAGER
 
     function &pidLoaded($pid)
     {
-        $plugin=false;
         reset($this->plugins);
-        while (list($name) = each($this->plugins))
+        foreach ($this->plugins as $plugin)
         {
-            if ($pid!=$this->plugins[$name]->getId()) continue;
-            $plugin= & $this->plugins[$name];
-            break;
+            if ($pid != $plugin->getId())
+                continue;
+            return $plugin;
         }
-        return $plugin;
+        return FALSE;
     }
 
     /**
@@ -702,7 +701,10 @@ class MANAGER
             $memberId = $member->getID();
 
         // check if ticket is a valid one
-        $query = 'SELECT COUNT(*) as result FROM ' . sql_table('tickets') . ' WHERE member=' . intval($memberId). ' and ticket=\''.sql_real_escape_string($ticket).'\'';
+        $query = sprintf("SELECT COUNT(*) as result FROM %s WHERE member=%d AND ticket='%s'",
+                         sql_table('tickets'),
+                         intval($memberId),
+                         sql_real_escape_string($ticket));
         if (quickQuery($query) == 1)
         {
             // [in the original implementation, the checked ticket was deleted. This would lead to invalid

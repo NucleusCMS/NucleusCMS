@@ -73,6 +73,7 @@ function stripslashes_array($data) {
 
 function undoSybaseQuotes_array($data) {
     return is_array($data) ? array_map('undoSybaseQuotes', $data) : stripslashes($data);
+//jp    return is_array($data) ? array_map('undoSybaseQuotes_array', $data) : str_replace("''", "'", $data);
 }
 
 function undoSybaseQuotes($data) {

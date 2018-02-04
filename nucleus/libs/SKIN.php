@@ -42,9 +42,13 @@ class SKIN {
         $this->id = intval($id);
 
         // read skin name/description/content type
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
-        $obj = sql_fetch_object($res);
-        $this->isValid = is_object($obj);
+        $query = sprintf('SELECT * FROM %s WHERE sdnumber=%d',
+                         sql_table('skin_desc'), $this->id);
+        $res = sql_query($query);
+        if ($res && ($obj = sql_fetch_object($res)))
+            $this->isValid = is_object($obj);
+        else
+            $this->isValid = FALSE;
         if (!$this->isValid)
             return;
 
@@ -70,7 +74,10 @@ class SKIN {
      * @static
      */
     public static function exists($name) {
-        return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.sql_real_escape_string($name).'"') > 0;
+        $query = sprintf("SELECT count(*) AS result FROM %s WHERE sdname='%s'",
+                         sql_table('skin_desc'),
+                         sql_real_escape_string($name));
+        return intval(quickQuery($query)) > 0;
     }
 
     /**
@@ -80,7 +87,7 @@ class SKIN {
      * @static
      */
     public static function existsID($id) {
-        return quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id)) > 0;
+        return intval(quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id))) > 0;
     }
 
 	public function existsSpecialName($name)
@@ -150,7 +157,7 @@ class SKIN {
     {
         $query =  'SELECT sdnumber'
                . ' FROM '.sql_table('skin_desc')
-               . ' WHERE sdname="'.sql_real_escape_string($name).'"';
+               . " WHERE sdname='".sql_real_escape_string($name)."'";
         $res = sql_query($query);
 		if ($res && ($obj = sql_fetch_object($res)))
 	        return $obj->sdnumber;
@@ -283,17 +290,25 @@ class SKIN {
      */
     function getContent($type, $options = array())
 	{
-        global $DB_DRIVER_NAME;
+        global $DB_DRIVER_NAME, $CONF;
         if(strpos($type, '/')!==false) return '';
         if ( 'mysql' == $DB_DRIVER_NAME )
-            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'",
+                             sql_table('skin'),
+                             $this->id,
+                             sql_real_escape_string($type));
         else
-            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'", sql_table('skin'), $this->id, sql_real_escape_string(strtolower($type)));
+            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'",
+                             sql_table('skin'),
+                             $this->id,
+                             sql_real_escape_string(strtolower($type)));
 
 		$spartstype = 'parts';
-		if ($options && isset($options['spartstype']) && (strlen($options['spartstype'])>0))
+		if ($options && isset($options['spartstype']) && (strlen($options['spartstype'])>0)
+            && (intval($CONF['DatabaseVersion']) >= 380) ) {
 			$spartstype = (string) $options['spartstype'];
-		$sql .= " AND spartstype = " . sql_quote_string($spartstype);
+			$query .= " AND spartstype = " . sql_quote_string($spartstype);
+		}
 
         $res = sql_query($query);
 
@@ -385,7 +400,8 @@ class SKIN {
             'imagepopup' => _SKIN_PART_POPUP
         );
 
-        $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
+        $query = "SELECT stype FROM " . sql_table('skin')
+               . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
 		$query .= " AND spartstype = 'parts'";
         $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
