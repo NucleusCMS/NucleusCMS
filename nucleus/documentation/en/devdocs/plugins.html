@@ -144,8 +144,8 @@ class NP_HelloWorld extends NucleusPlugin
 	function supportsFeature ($feature)
 	{
 		return in_array($feature, array(
-			'SqlTablePrefix',
-			'SqlApi',
+//			'SqlTablePrefix',  // removed after v3.80
+//			'SqlApi',
 //			'SqlApi_sqlite',
 //			'SqlApi_SQL92',
 //			'NotUseDbApi',
@@ -1987,7 +1987,7 @@ you must do this for every interaction with the database. Be sure to indicate th
 
 <ol>
 	<li>Instead of using a fixed tablename like <code>nucleus_item</code>, use the global function <code>sql_table('item')</code> to generate the prefixed tablename</li>
-	<li>Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlTablePrefix')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 2.0 when a custom prefix has been set (as a precaution)</li>
+	<li>Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlTablePrefix')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 2.0 to 3.7x when a custom prefix has been set (as a precaution)</li>
 	<li>v3.5+. Make sure your plugin returns <code>1</code> (<code>true</code>) when <code>supportsFeature('SqlApi')</code> is called on it. If it doesn't, you won't be able to load the plugin on Nucleus versions > 3.5 when a user is using a non-mysql database backend (as a precaution)</li>
 </ol>
 
