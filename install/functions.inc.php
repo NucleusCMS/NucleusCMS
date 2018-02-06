@@ -515,7 +515,7 @@ function doInstall() {
 	updateConfig('SiteName',   $config_sitename);
 
     $install_lang_defs = get_install_lang_defs();
-    if ($install_db_charset == 'utf8') {
+    if (($install_db_charset == 'utf8') || ($install_db_charset == 'utf8mb4')) {
         if (isset($install_lang_defs[$lang]['utf8']))
             updateConfig('Language', $install_lang_defs[$lang]['utf8']);
         else
