@@ -215,6 +215,7 @@
 
         $aIndices = array();
         $res = sql_query( sprintf('show index from %s', sql_table($table)) );
+        if ($res)
         while ($o = sql_fetch_object($res)) {
             if (!$aIndices[$o->Key_name]) {
                 $aIndices[$o->Key_name] = array();
@@ -241,7 +242,7 @@
       * @return true if table exists, false otherwise.
       */
     function upgrade_checkIfTableExists($table){
-        $res = sql_query( sprntf("SHOW TABLES LIKE '%s'", sql_table($table)) );
+        $res = sql_query( sprintf("SHOW TABLES LIKE '%s'", sql_table($table)) );
         return ($res != 0) && (sql_num_rows($res) == 1);
     }
 
@@ -273,7 +274,7 @@
         return ($res != 0) && (sql_num_rows($res) == 1);
     }
 
-if(!method_exists('sql_existTableColumnName')) {
+if(!function_exists('sql_existTableColumnName')) {
     function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
     {
         $names = sql_getTableColumnNames($tablename);
@@ -293,20 +294,32 @@ if(!method_exists('sql_existTableColumnName')) {
         }
         return False;
     }
-    
+
+    if(!function_exists('sql_query')) {
+        function sql_query($query, $link_identifier =NULL) {
+            return mysql_query($query, $link_identifier);
+        }
+    }
+
+    if(!function_exists('sql_fetch_array')) {
+        function sql_fetch_array($result, $result_type = MYSQL_BOTH) {
+            return mysql_fetch_array($result, $result_type);
+        }
+    }
+
     function sql_getTableColumnNames($tablename)
     {
-        global $MYSQL_CONN;
-        if (!$MYSQL_CONN) return array();
+        global $MYSQL_CONN, $SQL_DBH;
+        if (!$MYSQL_CONN && !$SQL_DBH) return array();
 
         $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
         $target = 'Field';
 
         $items = array();
-        $res = mysql_query($sql);
+        $res = sql_query($sql);
         if (!$res)
             return array();
-        while( $row = mysql_fetch_array($res) )
+        while( $row = sql_fetch_array($res) )
         {
             if (isset($row[$target]))
                 $items[] = $row[$target];

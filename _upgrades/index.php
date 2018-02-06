@@ -14,6 +14,7 @@
  *
  */
 
+define('NUCLEUS_UPGRADE_VERSION' ,   "3.80");
 define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
 
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
