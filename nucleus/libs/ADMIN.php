@@ -3777,8 +3777,10 @@ class ADMIN {
 
         /* unlink comments from memberid */
         if ($memberid) {
-            $query = 'UPDATE ' . sql_table('comment') . ' SET cmember="0", cuser="'. sql_real_escape_string($mem->getDisplayName())
-                   .'" WHERE cmember='.$memberid;
+            $query = sprintf("UPDATE `%s` SET cmember=0, cuser='%s' WHERE cmember=%d",
+                            sql_table('comment'),
+                            sql_real_escape_string($mem->getDisplayName()),
+                            $memberid);
             sql_query($query);
         }
 
@@ -6967,7 +6969,10 @@ selector();
         $manager->notify('PreAddPlugin', $param);
 
         // do this before calling getPlugin (in case the plugin id is used there)
-        $query = 'INSERT INTO '.sql_table('plugin').' (porder, pfile) VALUES ('.$newOrder.',"'.sql_real_escape_string($name).'")';
+        $query = sprintf("INSERT INTO `%s` (porder, pfile) VALUES (%d, '%s')",
+                        sql_table('plugin'),
+                        $newOrder,
+                        sql_real_escape_string($name));
         sql_query($query);
         $iPid = sql_insert_id();
 
@@ -7007,8 +7012,10 @@ selector();
         $pluginList = $plugin->getPluginDep();
         foreach ($pluginList as $pluginName)
         {
-
-            $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . ' WHERE pfile="' . $pluginName . '"');
+            $query = sprintf("SELECT count(*) FROM `%s` WHERE pfile='%s'",
+                            sql_table('plugin'),
+                            sql_real_escape_string($pluginName));
+            $res = sql_query($query);
             $ct = intval(sql_result($res));
             if ($ct == 0)
             {
@@ -7046,13 +7053,19 @@ selector();
         // loop over all installed plugins
         $res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
         while($o = sql_fetch_object($res)) {
-            $pid = $o->pid;
+            $pid = intval($o->pid);
             $plug =& $manager->getPlugin($o->pfile);
             if ($plug)
             {
                 $eventList = $plug->_getEventList();
                 foreach ($eventList as $eventName)
-                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.sql_real_escape_string($eventName).'\')');
+                {
+                    $query = sprintf("INSERT INTO `%s` (pid, event) VALUES (%d, '%s')",
+                                    sql_table('plugin_event'),
+                                    $pid,
+                                    sql_real_escape_string($eventName));
+                    sql_query($query);
+                }
             }
         }
         $manager->_loadSubscriptions();

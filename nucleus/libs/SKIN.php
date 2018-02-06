@@ -84,7 +84,10 @@ class SKIN {
      * @static
      */
     public static function exists($name) {
-        return quickQuery('select count(*) as result FROM '.sql_table('skin_desc').' WHERE sdname="'.sql_real_escape_string($name).'"') > 0;
+        $query = sprintf("SELECT count(*) AS result FROM `%s` WHERE sdname='%s'",
+                        sql_table('skin_desc'),
+                        sql_real_escape_string($name));
+        return intval(quickQuery($query)) > 0;
     }
 
     /**
@@ -114,9 +117,9 @@ class SKIN {
      * @static
      */
     public static function getIdFromName($name) {
-        $query =  'SELECT sdnumber'
-               . ' FROM '.sql_table('skin_desc')
-               . ' WHERE sdname="'.sql_real_escape_string($name).'"';
+        $query = sprintf("SELECT sdnumber FROM `%s` WHERE sdname='%s'",
+                        sql_table('skin_desc'),
+                        sql_real_escape_string($name));
         $res = sql_query($query);
         $obj = sql_fetch_object($res);
         return $obj->sdnumber;

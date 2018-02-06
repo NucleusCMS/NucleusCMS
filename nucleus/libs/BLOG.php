@@ -1026,7 +1026,9 @@ class BLOG {
       *     category name
       */
     function getCategoryIdFromName($name) {
-        $res = sql_query('SELECT catid FROM '.sql_table('category').' WHERE cblog='.$this->getID().' and cname="' . sql_real_escape_string($name) . '"');
+        $query = sprintf("SELECT catid FROM `%s` WHERE cblog=%d AND cname='%s'",
+                        sql_table('category'), $this->getID(), sql_real_escape_string($name));
+        $res = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
         } else {

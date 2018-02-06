@@ -346,11 +346,11 @@ class COMMENTS {
         $qSql       = 'SELECT COUNT(*) AS result '
                     . 'FROM ' . sql_table('comment')
                     . ' WHERE '
-                    .      'cmail   = "' . $url . '"'
-                    . ' AND cmember = "' . $memberid . '"'
-                    . ' AND cbody   = "' . $body . '"'
-                    . ' AND citem   = "' . $itemid . '"'
-                    . ' AND cblog   = "' . $blogid . '"';
+                    . "     cmail   = '{$url}'"
+                    . " AND cmember = '{$memberid}'"
+					. " AND cbody   = '{$body}'"
+                    . " AND citem   = '{$itemid}'"
+					. " AND cblog   = '{$blogid}'";
         $result     = (integer) quickQuery($qSql);
 
         if ( $result > 0 )
