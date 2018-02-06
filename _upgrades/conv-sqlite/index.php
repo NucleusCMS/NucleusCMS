@@ -469,9 +469,13 @@ EOD;
         while($res && ($row = sql_fetch_array($res)))
         {
             $plugin = $manager->getPlugin($row[1]);
-            if (is_object($plugin) && ($plugin->supportsFeature('NotUseDbApi') || $plugin->supportsFeature('NoSql')
-                    || $plugin->supportsFeature('SqlApi_SQL92') || $plugin->supportsFeature('SqlApi_sqlite')))
+            $tablelist = $plugin->getTableList();
+            if (empty($tablelist))
                 continue;
+            if (is_object($plugin)
+                && ($plugin->supportsFeature('SqlApi_SQL92') || $plugin->supportsFeature('SqlApi_sqlite'))) {
+                continue;
+            }
             $items[] = $row[1];
         }
         if (count($items) == 0)

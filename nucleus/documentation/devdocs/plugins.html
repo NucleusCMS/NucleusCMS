@@ -2033,10 +2033,18 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <ol>
     <li>カスタム・テーブル名を利用できるため、注意が必要です。<code>nucleus_item</code> などの固定されたテーブル名の代わりに、テーブル名のプレフィックスを生成するために <code>sql_table('item') </code>というグローバルファンクションを利用します。</li>
-    <li><code>supportsFeature('SqlTablePrefix')</code> が呼ばれたときにプラグインが1（真）を返すようにします。これがないと、カスタムプレフィックスがセットされている場合でバージョンが2.0より大きいNucleusではプラグインをロードできません（用心のため）。</li>
+    <li>(v2.0 - 3.71まで) : <code>supportsFeature('SqlTablePrefix')</code> が呼ばれたときにプラグインが1（真）を返すようにします。これがないと、カスタムプレフィックスがセットされている場合でバージョンが2.0から3.71までのNucleusではプラグインをロードできません（用心のため）。<br />
+        sql_table関数の十分な周知期間(14年以上)が経過したため、v3.80以降は不要になり、プラグインのロード時にsupportsFeature('SqlTablePrefix')のチェックは行いません。</li>
     <li>v3.5以降:<code>supportsFeature('SqlApi')</code> が呼ばれたときにプラグインが1（真）を返すようにします。3.5以降のバージョンでは、データベースのバックエンドにmysqlでないものを使用している場合にプラグインをロードできなくなります（用心のため）。</li>
+    <li>v3.5以降: pdoドライバ使用時は、「mysql_*」関数は使えません。「sql_*」関数を使用してください。</li>
+<!--
     <li>v4.0以降:「mysql_*」関数は使えません。「sql_*」関数を使用してください。</li>
+-->
 </ol>
+<div class="note">
+<strong>注：</strong> DELETE, INSERT, UPDATE 文　以外で sql_num_rowsを使用している場合は 置き換えてください。
+sqliteでは、SELECT文でのsql_num_rowsは未対応です。予期せぬ結果が発生する恐れがあります。
+</div>
 
 <h2>独自テーブル</h2>
 
