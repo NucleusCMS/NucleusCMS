@@ -405,14 +405,6 @@ class MANAGER
         $is_NotUseDbApi = (($this->plugins[$NP_Name]->supportsFeature('NotUseDbApi'))
                         || ($this->plugins[$NP_Name]->supportsFeature('NoSql')));
 
-        // unload plugin if a prefix is used and the plugin cannot handle this^
-        if (!$is_NotUseDbApi && ($DB_PREFIX != '') && !$this->plugins[$NP_Name]->supportsFeature('SqlTablePrefix'))
-        {
-            unset($this->plugins[$NP_Name]);
-            ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT, $NP_Name));
-            return 0;
-        }
-
         // check SqlApi
         if ( !$is_NotUseDbApi && ($DB_PHP_MODULE_NAME == 'pdo'))
         {

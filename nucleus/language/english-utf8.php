@@ -438,7 +438,6 @@ define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			"You aren't logged in.");
 
 // MANAGER.php
 define('_MANAGER_PLUGINFILE_NOCLASS',				"Plugin %s was not loaded (Class not found in file, possible parse error)");
-define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"Plugin %s was not loaded (does not support SqlTablePrefix)");
 
 // mysql.php
 define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>No suitable mySQL library was found to run Nucleus</p>");

@@ -437,7 +437,6 @@ define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN',			'ログインしていません');
 
 // MANAGER.php
 define('_MANAGER_PLUGINFILE_NOCLASS',				"プラグイン「%s」を読み込めませんでした(ファイル内にプラグインクラスが存在しません)");
-define('_MANAGER_PLUGINTABLEPREFIX_NOTSUPPORT',		"プラグイン「%s」を読み込めませんでした(｢SqlTablePrefix｣をサポートしていません)");
 
 // mysql.php
 define('_NO_SUITABLE_MYSQL_LIBRARY',				"<p>Nucleusを動かすのに必要なmySQL用のライブラリがインストールされていません</p>");
