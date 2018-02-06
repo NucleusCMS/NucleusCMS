@@ -126,7 +126,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if (!$res) {
             $uri = hsc(serverVar('REQUEST_URI'));
             $str = sprintf("[SQL error] %s : %s (%s)", sql_error($conn), $query, $uri);
-            ACTIONLOG::add(WARNING, $str);
+            if (class_exists('ACTIONLOG'))
+                ACTIONLOG::add(WARNING, $str);
             echo 'error';
             if($CONF['debug']) print_r(debug_backtrace());
         }

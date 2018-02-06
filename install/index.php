@@ -227,7 +227,7 @@ function showErrorMessages($errors) {
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<meta name="robots" content="noindex,nofollow,noarchive" />
 	<title><?php echo _TITLE; ?></title>
-	<style>@import url('../nucleus/styles/manual.css');</style>
+	<link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css" />
 </head>
 <body>
 	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
