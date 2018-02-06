@@ -121,6 +121,13 @@ define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示�
 
 define('_LINKS',                                'リンク');
 
+define('_ADMIN_LOST_PSWD_TEXT_TITLE', "パスワードを忘れましたか？");
+define('_ADMIN_LOST_PSWD_TEXT_1', "以下にユーザー名とメールアドレスを入力してください。新しいパスワードを設定するページへのリンクの入ったメールが送信されます。");
+define('_ADMIN_LOST_PSWD_TEXT_2', "もしユーザー名をお忘れなら、あなたのNucleusサイト管理者に連絡してください。");
+define('_ADMIN_LOST_PSWD_TEXT_3', "認証用リンクの送信");
+define('_ADMIN_LOST_PSWD_TEXT_USENAME', "ユーザー名(ログインID)：");
+define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "メールアドレス：");
+
 /********************************************
  *        Start New for 3.71                *
  ********************************************/

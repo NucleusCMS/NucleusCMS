@@ -111,6 +111,7 @@ class ADMIN {
             'templateedit',
             'templatedelete',
             'activate',
+            'lost_pwd',
             'systemoverview',
             'optimizeoverview'
         );
@@ -173,7 +174,7 @@ class ADMIN {
         <br />
         <small>
             <input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED?></label>
-            <br /><a href="forgotpassword.html"><?php echo _LOGIN_FORGOT?></a>
+            <br /><a href="index.php?action=lost_pwd"><?php echo _LOGIN_FORGOT?></a>
         </small>
         <?php           // pass through vars
 
@@ -7973,6 +7974,57 @@ EOD;
             return $m[1];
         }
         return false;
+    }
+
+    function action_lost_pwd()
+    {
+        global $member;
+
+        if ($member->isLoggedIn()) {
+            if (headers_sent()) {
+                $this->pagehead();
+                echo _GFUNCTIONS_HEADERSALREADYSENT_TITLE;
+                $this->pagefoot();
+                exit;
+            }
+            redirect('index.php');
+        }
+
+        // show form
+
+        $this->pagehead();
+
+//		$post_url = './index.php'; // Not implemented yet.
+        $post_url = '../action.php';
+            $title = _ADMIN_LOST_PSWD_TEXT_TITLE;
+            $msg1  = _ADMIN_LOST_PSWD_TEXT_1;
+            $msg2  = _ADMIN_LOST_PSWD_TEXT_2;
+            $msg3  = _ADMIN_LOST_PSWD_TEXT_3;
+            $msg_username  = _ADMIN_LOST_PSWD_TEXT_USENAME; // _LOGINFORM_NAME
+            $msg_email     = _ADMIN_LOST_PSWD_TEXT_EMAIL;  // _MEMBERMAIL_MAIL
+
+            $s =<<<EOL
+        <h2>$title</h2>
+        <p>$msg1</p>
+        <form method="post" action="$post_url">
+            <p>
+                <label for="nucleus_pf_username">$msg_username</label><br />
+                <input type="text" name="name" id="nucleus_pf_username" /><br />
+
+                <label for="nucleus_pf_email">$msg_email</label><br />
+                <input type="text" name="email" id="nucleus_pf_email" /><br />
+                <br />
+
+                <input type="hidden" name="action" value="forgotpassword" />
+                <input type="submit" value="$msg3" class="transparent" />
+            </p>
+        </form>
+
+        <p>$msg2</p>
+EOL;
+            echo $s;
+        $this->pagefoot();
+        exit;
     }
 
 } // class ADMIN

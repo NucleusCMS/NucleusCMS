@@ -56,6 +56,10 @@
 		$bNeedsLogin = true;
 	}
 
+	if ($action=='lost_pwd' && (strcasecmp($_SERVER['REQUEST_METHOD'],'GET')==0)) {
+		$bNeedsLogin = FALSE;
+	}
+
 	if ($bNeedsLogin)
 	{
 		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
