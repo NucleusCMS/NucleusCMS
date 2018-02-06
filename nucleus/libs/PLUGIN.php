@@ -551,6 +551,20 @@ class NucleusPlugin {
         return $aOptions;
     }
 
+    final public function _getEventList() {
+        static $res = NULL;
+        if (!is_null($res))
+            return $res;
+        $res = array();
+        $list = get_class_methods($this);
+        if (!empty($list)) {
+            foreach($list as $name)
+                if (strncmp($name, "event_" , 6 )==0)
+                    $res[] = substr($name, 6);
+        }
+        return $res;
+    }
+
     /**
      * Gets the 'option identifier' that corresponds to a given option name.
      * When this method is called for the first time, all the OIDs for the plugin
@@ -656,10 +670,11 @@ class NucleusPlugin {
         while($a = sql_fetch_array($res)) {
             array_push($ev, $a['event']);
         }
-        if (count($ev) != count($this->getEventList())) {
+        $pl_event_list = $this->_getEventList();
+        if (count($ev) != count($pl_event_list)) {
             return false;
         }
-        $d = array_diff($ev, $this->getEventList());
+        $d = array_diff($ev, $pl_event_list);
         if (count($d) > 0) {
             // there are differences so the db is not up-to-date
             return false;
