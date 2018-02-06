@@ -117,6 +117,7 @@
     <li><a href="#dependency">プラグイン依存チェック</a></li>
 	<li><a href="#internationalization">プラグインの国際化</a></li>
 	<li><a href="#skinvar-formatting">スキン変数の出力の書式</a></li>
+	<li><a href="#sqlite">SQLite 対応プラグインの作り方</a></li>
 	<li><a href="#additional-reading">追記事項</a></li>
 <!--    <li><a href="#parser">Using the <code>PARSER</code> class</a></li>
     <li><a href="#"></a></li>
@@ -147,9 +148,9 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 <strong>注：</strong> プラグイン名は大文字・小文字を識別しますので、<code>Np_</code> や <code>np_</code> ではなく、<code>NP_</code> で始まることに気をつけてください。またプラグインがサブディレクトリを使用する場合は、サブディレクトリの名称は<em>すべて小文字にします</em>。
 </div>
 
-<p> (v3.xx)から<code>NP_プラグイン名.php</code>を プラグイン名(小文字) または NP_プラグイン名 のフォルダに配置できるようになりました(既存のプラグンの場合は、修正が必要です)。<br />
+<p> (v3.80)から<code>NP_プラグイン名.php</code>を プラグイン名(小文字) または NP_プラグイン名 のフォルダに配置できるようになりました(既存のプラグンの場合は、修正が必要です)。<br />
 </p>
-<p> (v3.xx)から<code>/your/path/nucleus/plugins/</code>の代わりに、<br />
+<p> (v3.80)から<code>/your/path/nucleus/plugins/</code>の代わりに、<br />
 	個別フォルダ<br /><code>/your/path/nucleus/plugins/<b>NP_プラグイン名/</b></code><br />にプラグイン一式を配置できるようになりました。</p>
 <table border="1" cellspacing="2" cellpadding="2">
 <tbody>
@@ -167,25 +168,25 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 	</tr>
 	<tr>
 		<td style="text-align: center; vertical-align: middle;">2</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/NP_プラグイン名.php<br /> sample/NP_Sample.php</td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/<br /> sample/</td>
 	</tr>
 	<tr>
 		<td style="text-align: center; vertical-align: middle;">3</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/NP_プラグイン名.php<br /> sample/NP_Sample.php</td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/プラグイン名(小文字)/<br /> sample/sample/</td>
 	</tr>
 	<tr>
 		<td style="text-align: center; vertical-align: middle;">4</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/NP_プラグイン名.php<br /> NP_Sample/NP_Sample.php</td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/プラグイン名(小文字)/<br /> NP_Sample/sample/</td>
 	</tr>
 	<tr>
 		<td style="text-align: center; vertical-align: middle;">5</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.xx)<br /></td>
+		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/NP_プラグイン名.php<br /> NP_Sample/NP_Sample.php</td>
 		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/<br /> NP_Sample/</td>
 	</tr>
@@ -203,7 +204,7 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 <strong>注：</strong>予約語一覧: NucleusPluginクラス プロパティ<br />
 _aOptionValues , _aOptionToInfo<br />
 plugid , plugin_options<br />
-(v3.xx): plugin_admin_dir , plugin_admin_url_prefix , plugin_dir_type<br />
+(v3.80): plugin_admin_dir , plugin_admin_url_prefix , plugin_dir_type<br />
 </div>
 
 
@@ -227,6 +228,18 @@ class NP_HelloWorld extends NucleusPlugin
     {
         echo 'Hello World!';
     }
+
+	function supportsFeature ($feature)
+	{
+		return in_array($feature, array(
+//			'SqlTablePrefix',  // v3.80で廃止
+//			'SqlApi',          // v3.80で廃止
+//			'SqlApi_sqlite',   // v3.80- [sqlite]
+//			'SqlApi_SQL92',    // v3.80- [sqlite]
+//			'HelpPage',
+//			'pluginadmin',
+//			'handleSpam',
+			));
 }
 </code></pre>
 
@@ -1268,6 +1281,14 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
         </dl></td>
     </tr>
     <tr>
+        <td>PostUpdatePlugin</td>
+        <td>(v3.80) 登録リストの更新を完了した直後<br />
+            <br />
+            プラグイン管理：登録リストのアップデートを押した直後に発生します。<br />
+        </td>
+        <td>なし</td>
+    </tr>
+    <tr>
         <td>PreAddTeamMember</td>
         <td>(v2.0) メンバーがblogチームに追加される直前</td>
         <td><dl>
@@ -1885,6 +1906,46 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <p><strong>アイテム</strong>のコンテクストで新しいオプションを生成します（<code>createOption</code>を参照）。</p>
 
+<h3>[v3.80] updateOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p><strong>グローバル</strong>なコンテクストで、更新または新しいオプションを生成します。</p>
+
+<table summary="updateOptionDesc"><tr>
+    <th abbr="param">パラメータ</th>
+    <th abbr="value">値</th>
+</tr><tr>
+    <td>$name</td>
+    <td>オプション名</td>
+</tr><tr>
+    <td>$desc</td>
+    <td>オプション編集画面で表示される説明文</td>
+</tr><tr>
+    <td>$type</td>
+    <td>オプションタイプ（前出）</td>
+</tr><tr>
+    <td>$defValue</td>
+    <td>初期値</td>
+</tr><tr>
+    <td>$typeExtras</td>
+    <td>オプションタイプの追加情報（前出）</td>
+</tr></table>
+
+<h3>[v3.80]  updateBlogOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p><strong>blog</strong>のコンテクストで、更新または新しいオプションを生成します。（<code>updateOptionDesc</code>を参照）。</p>
+
+<h3>[v3.80]  updateCategoryOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p><strong>カテゴリー</strong>のコンテクストで、更新または新しいオプションを生成します。（<code>updateOptionDesc</code>を参照）。</p>
+
+<h3>[v3.80]  updateMemberOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p><strong>メンバー</strong>のコンテクストで、更新または新しいオプションを生成します。（<code>updateOptionDesc</code>を参照）。</p>
+
+<h3>[v3.80]  updateItemOptionDesc($name, $desc, $type, $defValue = '', $typeExtras = '')</h3>
+
+<p><strong>アイテム</strong>のコンテクストで、更新または新しいオプションを生成します。（<code>updateOptionDesc</code>を参照）。</p>
+
 <h3>setOption($name, $value)</h3>
 
 <p>すでにデータベースに存在するオプションの値を変更します。</p>
@@ -2018,6 +2079,37 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <p>与えられたオプションの最初の値を返します。結果は配列で、各要素がそれぞれのアイテムID ('id') の値 ('value') を持つ配列になっています（パラメータは<code>getBlogOptionTop</code>を参照）。</p>
 
+<h3>[v3.80] existOptionDesc($name)</h3>
+
+<p><strong>グローバル</strong>なコンテクストでオプションが定義されているか調べます。</p>
+
+<table summary="existOptionDesc">
+	<tr>
+		<th abbr="param">パラメータ</th>
+		<th abbr="value">値</th>
+	</tr>
+	<tr>
+		<td>$name</td>
+		<td>オプション名</td>
+	</tr>
+</table>
+
+<h3>[v3.80] existBlogOptionDesc($name)</h3>
+
+<p><strong>blog</strong>のコンテクストでオプションが定義されているか調べます。（<code>existOptionDesc</code>を参照）。</p>
+
+<h3>[v3.80] existCategoryOptionDesc($name)</h3>
+
+<p><strong>カテゴリー</strong>のコンテクストでオプションが定義されているか調べます。（<code>existOptionDesc</code>を参照）。</p>
+
+<h3>[v3.80] existItemOptionDesc($name)</h3>
+
+<p><strong>アイテム</strong>のコンテクストでオプションが定義されているか調べます。（<code>existOptionDesc</code>を参照）。</p>
+
+<h3>[v3.80] existMemberOptionDesc($name)</h3>
+
+<p><strong>メンバー</strong>のコンテクストでオプションが定義されているか調べます。（<code>existOptionDesc</code>を参照）。</p>
+
 <div class="note">
 <strong>注：</strong> プラグインクラス内のコンストラクタから、これらのファンクションを呼ぶことはできません。プラグインがロードされた後にこれらを実行したいときは、かわりに<code>init()</code>メソッド内に置きます。
 </div>
@@ -2086,6 +2178,8 @@ sqliteでは、SELECT文でのsql_num_rowsは未対応です。予期せぬ結�
     // edit this variable to point to your site directory
     // (where config.php is)
     $strRel = '../../../';
+    if ( !is_file($strRel . 'config.php') && is_file($strRel.'../config.php'))
+        $strRel .= '../';
 
     include($strRel . 'config.php');
     if (!$member-&gt;isLoggedIn())
@@ -2533,6 +2627,51 @@ foreach ($couples as $values) {
 }</code></pre>
 
 	</li>
+</ol>
+
+
+<h1>SQLite 対応プラグインの作り方 <a name="sqlite" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+<p>v3.8からデータベースにSQLiteが追加されました。プラグインをSQLiteに対応させるには少しの修正が必要です。</p>
+<p>標準SQL92に従った書き方をしていれば、データベースの種類に依存しないプラグインを作成することができます。</p>
+<ol>
+  <li>supportsFeatureに SqlApi_sqlite を追加します。データベース言語に依存しない場合は、SqlApi_SQL92を追加してください。
+      <pre class="example"><code>function supportsFeature($feature) {
+  return in_array($feature , array('SqlTablePrefix', 'SqlApi', 'SqlApi_sqlite'));
+}</code></pre>
+      <pre class="example"><code>function supportsFeature($feature) {
+  return in_array($feature , array('SqlTablePrefix', 'SqlApi', 'SqlApi_SQL92'));
+}</code></pre>
+  </li>
+  <li>v3.8以前の対応プラグインにする場合は、init関数に次の行を追加してください。
+      <pre class="example"><code>function init() {
+  $this->is_db_sqlite = (isset($this->is_db_sqlite) && $this->is_db_sqlite);
+}</code></pre>
+    以下のコードでも同じことができます
+      <pre class="example"><code>function init() {
+  global $MYSQL_HANDLER;
+  $this->is_db_sqlite = ('sqlite' == $MYSQL_HANDLER[1]);
+}</code></pre>
+  </li>
+  <li>SQL文の共存できない部分はコードを分離します
+      <pre class="example"><code>function install() {
+  if ($this->is_db_sqlite) {
+    // sqlite用のコード
+    sql_query('SQL文');
+  } else {
+    // mysqlのコード
+    sql_query('SQL文');
+}</code></pre>
+    CREATE構文は、データベースの種類ごとに書き方が違う場合が多いのでコードを分離したほうがいいでしょう。
+  </li>
+</ol>
+<p>以上のステップでSQLiteに対応したプラグインができあがります。</p>
+<h2>既存のプラグインをSQLiteに対応させるための確認事項。</h2>
+<ol>
+  <li>'SqlApi'対応プラグインにします。mysql_*関数をすべてsql_関数に置き換えます</li>
+  <li>SELECT 文でsql_num_rowsが使用しない。SELECT 文でsql_num_rowsは対応していません。SELECT countを使用した文に変更してください。</li>
+  <li>INSERT .. SET  文を使用しない。対応していません。</li>
+  <li>INSERT文で列名を省略しない。</li>
+  <li>MySQL特有の構文を使用したい場合は、SQL文をSQLite用とに分離する。</li>
 </ol>
 
 
