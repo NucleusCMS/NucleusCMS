@@ -196,6 +196,8 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('URLMode',           'normal');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('DatabaseName',      'Nucleus');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DatabaseVersion',   '380');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DebugVars',         '0');

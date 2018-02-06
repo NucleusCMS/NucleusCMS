@@ -16,6 +16,8 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL & ~E_NOTICE);
 
+global $CONF;
+
 include('upgrade.functions.php');
 
 load_upgrade_lang();
@@ -28,6 +30,18 @@ if (!$member->isLoggedIn()) {
 if (!$member->isAdmin()) {
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
+
+// [start] Reject a forked project database incompatible with Nucleus
+if (!empty($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
+	upgrade_error('It is an incompatible database.');
+}
+if ((intval($CONF['DatabaseVersion']) >= 380) || (intval($from)>=380)) {
+	$query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName' AND value='Nucleus'", sql_table('config'));
+	$res = quickQuery($query);
+	if (empty($res))
+		upgrade_error('It is an incompatible database.');
+}
+// [end] Reject a forked project database incompatible with Nucleus
 
 $from = intGetVar('from');
 

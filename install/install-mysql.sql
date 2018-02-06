@@ -135,6 +135,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('SkinsURL',          'http://localhost:8080/nucleus/skins/'),
     ('ActionURL',         'http://localhost:8080/nucleus/action.php'),
     ('URLMode',           'normal'),
+    ('DatabaseName',      'Nucleus'),
     ('DatabaseVersion',   '380'),
     ('DebugVars',         '0'),
     ('DefaultListSize',   '10'),

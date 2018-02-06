@@ -18,6 +18,13 @@ function upgrade_do380() {
     if (upgrade_checkinstall(380))
         return 'already installed';
 
+	$query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName'", sql_table('config'));
+	$res = quickQuery($query);
+	if (empty($res)) {
+		$query = sprintf("INSERT INTO `%s` (name, value) VALUES('DatabaseName', 'Nucleus')", sql_table('config'));
+		upgrade_query('Updating ' . sql_table('config') . ' ', $query);
+	}
+
     if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
     {
         $query = sprintf("ALTER TABLE `%s`
