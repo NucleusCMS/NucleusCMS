@@ -2851,7 +2851,7 @@ class ADMIN {
             $aMemberNames = array();
             if ($res)
             while ($o = sql_fetch_object($res))
-                array_push($aMemberNames, hsc($o->mname) . ' (' . hsc($o->mrealname). ')');
+                $aMemberNames[] = hsc($o->mname) . ' (' . hsc($o->mrealname). ')';
             echo implode(',', $aMemberNames);
         ?>
         </p>
@@ -6527,13 +6527,13 @@ selector();
 
         if (!$allblogs) {
             if (BAN::removeBan($blogid, $iprange))
-                array_push($deleted, $blogid);
+                $deleted[] = $blogid;
         } else {
             // get blogs fot which member has admin rights
             $adminblogs = $member->getAdminBlogs();
             foreach ($adminblogs as $blogje) {
                 if (BAN::removeBan($blogje, $iprange))
-                    array_push($deleted, $blogje);
+                    $deleted[] = $blogje;
             }
         }
 
@@ -6862,7 +6862,7 @@ selector();
                 // only show in list when not yet installed
                 if ( ! in_array(strtolower('NP_' . $name) , $list_installed_PluginName) )
                 {
-                    array_push($candidates, $name);
+                    $candidates[] = $name;
                 }
             }
 
@@ -7166,7 +7166,7 @@ selector();
         $res = sql_query('SELECT oid FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
         $aOIDs = array();
         while ($o = sql_fetch_object($res)) {
-            array_push($aOIDs, $o->oid);
+            $aOIDs[] = $o->oid;
         }
 
         // delete from plugin_option and plugin_option_desc
@@ -7338,7 +7338,7 @@ selector();
         $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ' WHERE ocontext=\'global\' and opid=' . $pid . ' ORDER BY oid ASC';
         $r = sql_query($query);
         while ($o = sql_fetch_object($r)) {
-            array_push($aOIDs, $o->oid);
+            $aOIDs[] = $o->oid;
             $aOptions[$o->oid] = array(
                         'oid' => $o->oid,
                         'value' => $o->odef,
@@ -7427,7 +7427,7 @@ selector();
             else
                 $value = $o->odef;
 
-            array_push($aOptions, array(
+            $aOptions[] = array(
                 'pid' => $o->pid,
                 'pfile' => $o->pfile,
                 'oid' => $o->oid,
@@ -7438,7 +7438,7 @@ selector();
                 'typeinfo' => $o->oextra,
                 'contextid' => $contextid,
                 'extra' => ''
-            ));
+            );
         }
 
         global $manager;
@@ -7519,10 +7519,10 @@ selector();
             foreach($aFiles as $fileName => $fileDesc)
             {
                 if (@is_dir($fileName))
-                    array_push($aFound, $fileDesc);
+                    $aFound[] = $fileDesc;
             }
             if (@is_writable('../config.php')) {
-                array_push($aFound, _ERRORS_CONFIGPHP);
+                $aFound[] = _ERRORS_CONFIGPHP;
             }
             if (count($aFound) > 0)
             {

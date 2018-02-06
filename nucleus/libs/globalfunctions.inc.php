@@ -1779,7 +1779,7 @@ function convArrayForSanitizing($src, &$array)
     $array = array();
     foreach ($src as $key => $val) {
         if (key_exists($key, $_GET)) {
-            array_push($array, sprintf("%s=%s", $key, $val));
+            $array[] = sprintf("%s=%s", $key, $val);
         }
     }
 }
@@ -1879,7 +1879,7 @@ function _links_init() {
 
 function _links_add($match) {
    global $tmp_links;
-   array_push($tmp_links, $match[1]);
+   $tmp_links[] = $match[1];
    return $match[2] . ' [' . sizeof($tmp_links) .']';
 }
 

@@ -616,7 +616,7 @@ class NucleusPlugin {
         $query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.sql_real_escape_string($context).'\'';
         $res = sql_query($query);
         while ($o = sql_fetch_object($res))
-            array_push($aOIDs, $o->oid);
+            $aOIDs[] = $o->oid;
         sql_free_result($res);
             // delete those options. go go go
         if (count($aOIDs) > 0) {
@@ -668,7 +668,7 @@ class NucleusPlugin {
         $res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->getID());
         $ev = array();
         while($a = sql_fetch_array($res)) {
-            array_push($ev, $a['event']);
+            $ev[] = $a['event'];
         }
         $pl_event_list = $this->_getEventList();
         if (count($ev) != count($pl_event_list)) {

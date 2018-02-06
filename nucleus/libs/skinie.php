@@ -281,7 +281,7 @@ class SKINIMPORT {
 
         foreach ($this->skins as $skinName => $data) {
             if (SKIN::exists($skinName)) {
-                array_push($clashes, $skinName);
+                $clashes[] = $skinName;
             }
         }
 
@@ -298,7 +298,7 @@ class SKINIMPORT {
         if (is_array($this->templates))
         foreach ($this->templates as $templateName => $data) {
             if (TEMPLATE::exists($templateName)) {
-                array_push($clashes, $templateName);
+                $clashes[] = $templateName;
             }
         }
 

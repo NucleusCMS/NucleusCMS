@@ -220,7 +220,7 @@
             if (!$aIndices[$o->Key_name]) {
                 $aIndices[$o->Key_name] = array();
             }
-            array_push($aIndices[$o->Key_name], $o->Column_name);
+            $aIndices[$o->Key_name][] = $o->Column_name;
         }
 
         // compare each index with parameter

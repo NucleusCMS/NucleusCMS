@@ -717,7 +717,7 @@ function listplug_table_skinlist($template, $type) {
                 $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . $order);
                 $types = array();
                 while ($o = sql_fetch_object($r))
-                    array_push($types,$o->stype);
+                    $types[] = $o->stype;
                 if (sizeof($types) > 0) {
                     $friendlyNames = SKIN::getFriendlyNames();
                     $skinNames = array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup');
