@@ -2348,3 +2348,14 @@ function parseText($tpl='',$ph=array()) {
     }
     return $tpl;
 }
+
+function loadCoreClassFor_spl($classname) {
+    if (@is_file(__DIR__ . "/{$classname}.php"))
+        require_once __DIR__ . "/{$classname}.php";
+}
+
+function loadCoreClassFor_spl_prephp53($classname) { // for PHP 5.1.0 - 5.2
+    global $DIR_LIBS;
+    if (@is_file("{$DIR_LIBS}/{$classname}.php"))
+        require_once "{$DIR_LIBS}/{$classname}.php";
+}
