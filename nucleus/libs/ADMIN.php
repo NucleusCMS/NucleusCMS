@@ -2179,7 +2179,7 @@ class ADMIN {
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle))
                 {
-                    $sub_pattern = ($DB_DRIVER_NAME == 'mysql' ?  '((.*))' : '((.*)-utf8)');
+                    $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET!='UTF-8')) ?  '((.*))' : '((.*)-utf8)');
                     if ( preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches) )
                     {
                         $name = $matches[2];
@@ -5399,7 +5399,7 @@ selector();
                 $dirhandle = opendir($DIR_LANG);
                 while ($filename = readdir($dirhandle) )
                 {
-                    $sub_pattern = ($DB_DRIVER_NAME == 'mysql' ?  '((.*))' : '((.*)-utf8)');
+                    $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET!='UTF-8')) ?  '((.*))' : '((.*)-utf8)');
                     if ( preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches) )
                     {
                         $name = $matches[2];
