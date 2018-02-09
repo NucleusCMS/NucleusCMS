@@ -478,6 +478,19 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             elseif($charset==='ujis' && $_CHARSET==='euc-jp')
                 $res = sql_query("SET NAMES 'ujis'");
         }
+
+        // retry : workaround for Can't initialize character set utf8mb4
+        if (($res === FALSE) && $charset==='utf8mb4')
+        {  // utf8mb4 : mysql_version 5.5 or higher
+            foreach(array('utf8','utf8mb4') as $charset)
+                if (function_exists('mysql_set_charset'))
+                    $res = mysql_set_charset($charset);
+                else
+                    $res = sql_query("SET CHARACTER SET {$charset}");
+            if (!$res)
+                $res = sql_query("SET CHARACTER SET utf8mb4");
+        }
+
         return isset($res) ? $res : false;
     }
 }
