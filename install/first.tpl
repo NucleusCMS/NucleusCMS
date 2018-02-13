@@ -4,7 +4,7 @@
     <meta charset="utf-8">
     <meta name="robots" content="noindex,nofollow,noarchive" />
     <title><%_TITLE%></title>
-    <link rel="stylesheet" type="text/css" href="../nucleus/documentation/styles/manual.css" media="screen">
+    <link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css" media="screen">
     <style type="text/css">
         #submit {
             width: 100%;
