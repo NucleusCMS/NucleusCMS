@@ -29,7 +29,7 @@ include_once('functions.inc.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
 include_once('../nucleus/libs/vars4.1.0.php');
 
-define('NC_BASE_PATH', str_replace(array('\\','install'), array('/',''), dirname(__FILE__)));
+define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
 
 define('ENABLE_SQLITE_INSTALL', ( !extension_loaded('PDO_SQLITE') ? 0 : 1) ); // allow sqlite install , boolean
