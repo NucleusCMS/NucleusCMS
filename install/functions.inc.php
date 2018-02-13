@@ -945,3 +945,74 @@ function _isValidDisplayName($name) {
 		return 0;
 	}
 }
+
+/*
+ * Shows error message
+ * 
+ * @param	$msg
+ * 			error message
+ */
+function _doError($msg) {
+	?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<title><?php echo _TITLE; ?></title>
+	<style>@import url('../nucleus/styles/manual.css');</style>
+</head>
+<body>
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+	<h1><?php echo _ERROR27; ?></h1>
+
+    <p><?php echo _ERROR28; ?></p>
+    <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
+
+	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+</body>
+</html>
+
+<?php
+	exit;
+}
+
+/*
+ * Shows error messages
+ * 
+ * @param	$errors
+ * 			array with error messages
+ */
+function showErrorMessages($errors) {
+	?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<meta name="robots" content="noindex,nofollow,noarchive" />
+	<title><?php echo _TITLE; ?></title>
+	<link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css">
+</head>
+<body>
+	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+	<h1><?php echo _ERROR27; ?></h1>
+
+	<p><?php echo _ERROR29; ?>:</p>
+
+	<ul>
+
+<?php
+	while($msg = array_shift($errors) ) {
+		echo '<li>' . $msg . '</li>';
+	}
+?>
+
+	</ul>
+
+	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+</body>
+</html>
+
+<?php
+	exit;
+}
