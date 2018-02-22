@@ -14,7 +14,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-function getVar($name, $default='') {
+function getVar($name, $default=NULL) {
     if (!isset($_GET[$name])) {
         return $default;
     }
@@ -22,7 +22,7 @@ function getVar($name, $default='') {
     return undoMagic($_GET[$name]);
 }
 
-function postVar($name, $default='') {
+function postVar($name, $default=NULL) {
     if (!isset($_POST[$name])) {
         return $default;
     }
@@ -30,7 +30,7 @@ function postVar($name, $default='') {
     return undoMagic($_POST[$name]);
 }
 
-function cookieVar($name, $default='') {
+function cookieVar($name, $default=NULL) {
     if (!isset($_COOKIE[$name])) {
         return $default;
     }
@@ -49,7 +49,7 @@ function requestVar($name) {
         return;
 }
 
-function serverVar($name, $default=false) {
+function serverVar($name, $default=NULL) {
     if (!isset($_SERVER[$name])) {
         return $default;
     }
@@ -114,9 +114,9 @@ function passRequestVars() {
     }
 }
 
-function postFileInfo($name) {
+function postFileInfo($name, $default=NULL) {
     if (!isset($_FILES[$name])) {
-        return false;
+        return $default;
     }
 
     return $_FILES[$name];
