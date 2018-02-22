@@ -6411,13 +6411,13 @@ selector();
 /*    #quickmenu ul { display: none;}
     #quickmenu  .accordion { cursor: pointer;}*/
     </style>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/edit.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/admin.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
-    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/edit.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/admin.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
     <script>
         jQuery(function () {
             var qmenu_manage  = jQuery.cookie('qmenu_manage');
@@ -6437,10 +6437,6 @@ selector();
           });
         });
     </script>
-
-    <meta http-equiv="Pragma" content="no-cache" />
-    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-    <meta http-equiv="Expires" content="-1" />
 
 <?php echo $extrahead; ?>
 </head>
