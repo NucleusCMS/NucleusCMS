@@ -19,7 +19,7 @@ function getVar($name, $default=NULL) {
         return $default;
     }
 
-    return undoMagic($_GET[$name]);
+    return $_GET[$name];
 }
 
 function postVar($name, $default=NULL) {
@@ -27,7 +27,7 @@ function postVar($name, $default=NULL) {
         return $default;
     }
 
-    return undoMagic($_POST[$name]);
+    return $_POST[$name];
 }
 
 function cookieVar($name, $default=NULL) {
@@ -35,18 +35,15 @@ function cookieVar($name, $default=NULL) {
         return $default;
     }
 
-    return undoMagic($_COOKIE[$name]);
+    return $_COOKIE[$name];
 }
 
-function requestVar($name) {
-    if(array_key_exists($name,$_REQUEST))
-        return undoMagic($_REQUEST[$name]);
-    elseif( array_key_exists($name,$_GET))
-        return undoMagic($_GET[$name]);
-    elseif( array_key_exists($name,$_POST))
-        return undoMagic($_POST[$name]);
-    else
-        return;
+function requestVar($name, $default=NULL) {
+    if(array_key_exists($name,$_REQUEST)) return $_REQUEST[$name];
+    if( array_key_exists($name,$_GET))    return $_GET[$name];
+    if( array_key_exists($name,$_POST))   return $_POST[$name];
+    
+    return $default;
 }
 
 function serverVar($name, $default=NULL) {
