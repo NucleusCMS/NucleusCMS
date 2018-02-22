@@ -6400,7 +6400,7 @@ selector();
 <!DOCTYPE html>
 <html lang="<?php echo _LANG_CODE; ?>">
 <head>
-    <meta charset=<?php echo _CHARSET ?>" />
+    <meta charset="<?php echo _CHARSET ?>" />
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
