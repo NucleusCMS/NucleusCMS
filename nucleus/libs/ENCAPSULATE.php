@@ -253,11 +253,11 @@ class NAVLIST extends ENCAPSULATE {
         foreach($list as $key) {
             if ($key != 'all' && isset($count_cached[$cachekey][$key]) && ($count_cached[$cachekey][$key] == 0))
                 continue;
-            $selected = ($key==$in_value ? 'selected' : '');
+            $selected = ($key==$in_value ? ' selected' : '');
             $title = '_LISTS_FORM_SELECT_ITEM_OPTION_'.strtoupper($key);
             $title = hsc(defined($title) ? constant($title) : $key);
             $title .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key]) ? $count_cached[$cachekey][$key] : 0) );
-            $s .= "\n\t\t". sprintf('<option value="%s" %s>%s</option>',
+            $s .= "\n\t\t". sprintf('<option value="%s"%s>%s</option>',
                                      $key, $selected, $title)."\n";
         }
         $s .= "\t\t</select>\n";
@@ -307,7 +307,7 @@ class NAVLIST extends ENCAPSULATE {
 
         $s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
         $s .= "\n\t\t".'<option value="0"'
-              . ( $selected ? '' : 'selected' )
+              . ( $selected ? '' : ' selected' )
               .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
               . sprintf('(%d)' , $total) . "</option>\n";
         $s .= "\t\t".implode( "\n\t\t" , $lists )."\n";
@@ -352,8 +352,8 @@ class NAVLIST extends ENCAPSULATE {
               if (!isset($lists[$b_id]))
                 $lists[$b_id] = array();
 
-              $lists[$b_id][] = sprintf('<option value="%d" %s>' , intval($row['catid'])
-                       , ( intval($row['catid']) == $selected_catid ? 'selected' : '') )
+              $lists[$b_id][] = sprintf('<option value="%d"%s>' , intval($row['catid'])
+                       , ( intval($row['catid']) == $selected_catid ? ' selected' : '') )
                        . hsc( $row['cname'])
                        . sprintf('(%d)' , $row['count']) . '</option>';
               $total += $row['count'];
@@ -365,13 +365,13 @@ class NAVLIST extends ENCAPSULATE {
 
         $s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
         $s .= "\n\t\t".'<option value="0"'
-              . ( $selected ? '' : 'selected' )
+              . ( $selected ? '' : ' selected' )
               .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
               . sprintf('(%d)' , $total) . "</option>\n";
 
         // group
         foreach($blog_titles as $b_id => $title)
-          $s .= sprintf("\t<optgroup label='%s'>%s\n\t</optgroup>\n",
+          $s .= sprintf("\t".'<optgroup label="%s">%s'."\n\t</optgroup>\n",
                         htmlentities($title , ENT_COMPAT , _CHARSET),
                         "\n\t\t".implode( "\n\t\t" , $lists[$b_id] )
                   );
