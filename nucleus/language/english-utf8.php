@@ -603,7 +603,7 @@ define('_SETTINGS_JSTOOLBAR',		'Javascript Toolbar Style');
 define('_SETTINGS_JSTOOLBAR_FULL',	'Full Toolbar (IE)');
 define('_SETTINGS_JSTOOLBAR_SIMPLE','Simple Toolbar (Non-IE)');
 define('_SETTINGS_JSTOOLBAR_NONE',	'Disable Toolbar');
-define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/en/tips.html#searchengines-fancyurls">How to activate fancy URLs</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
 define('_PLUGINS_EXTRA',			'Extra Plugin Settings');

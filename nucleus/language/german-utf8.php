@@ -234,7 +234,7 @@ define('_SETTINGS_JSTOOLBAR',		'Javascript Werkzeugleisten-Stil');
 define('_SETTINGS_JSTOOLBAR_FULL',	'Vollst&auml;ndige Werkzeugleiste (IE)');
 define('_SETTINGS_JSTOOLBAR_SIMPLE','Einfache Werkzeugleiste (Nicht-IE)');
 define('_SETTINGS_JSTOOLBAR_NONE',	'Deaktiviere Werkzeugleiste');
-define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/tips.html#searchengines-fancyurls">Wie werden Fancy URLs aktiviert</a>)');
+define('_SETTINGS_URLMODE_HELP',	'(Info: <a href="documentation/en/tips.html#searchengines-fancyurls">Wie werden Fancy URLs aktiviert</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
 define('_PLUGINS_EXTRA',			'Zus&auml;tzliche Plugin Einstellungen');

@@ -603,7 +603,7 @@ define('_SETTINGS_JSTOOLBAR',				'Javascriptツールバーのスタイル');
 define('_SETTINGS_JSTOOLBAR_FULL',			'フル・ツールバー(IE)');
 define('_SETTINGS_JSTOOLBAR_SIMPLE',		'シンプル・ツールバー(IE以外)');
 define('_SETTINGS_JSTOOLBAR_NONE',			'ツールバーを使わない');
-define('_SETTINGS_URLMODE_HELP',			'(参考：<a href="documentation/tips.html#searchengines-fancyurls">FancyURLを有効にする方法</a>)');
+define('_SETTINGS_URLMODE_HELP',			'(参考：<a href="documentation/ja/tips.html#searchengines-fancyurls">FancyURLを有効にする方法</a>)');
 
 // extra plugin settings part when editing categories/members/blogs/...
 define('_PLUGINS_EXTRA',					'プラグインによる追加設定');
