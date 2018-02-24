@@ -1283,7 +1283,7 @@ function passVar($key, $value) {
     }
 
     // other values: do stripslashes if needed
-    ?><input type="hidden" name="<?php echo hsc($key)?>" value="<?php echo hsc(undoMagic($value) )?>" /><?php
+    ?><input type="hidden" name="<?php echo hsc($key)?>" value="<?php echo hsc($value); ?>" /><?php
 }
 
 /**
@@ -1672,7 +1672,6 @@ function _addInputTags(&$keys,$prefix=''){
         if ($prefix) $key=$prefix.'['.$key.']';
         if (is_array($value)) _addInputTags($value,$key);
         else {
-            if (get_magic_quotes_gpc()) $value=stripslashes($value);
             if ($key=='ticket') continue;
             echo '<input type="hidden" name="'.hsc($key).
                 '" value="'.hsc($value).'" />'."\n";
@@ -1743,11 +1742,6 @@ function sanitizeArray(&$array)
             continue;
         }
 
-        // when magic quotes is on, need to use stripslashes,
-        // and then addslashes
-        if (get_magic_quotes_gpc()) {
-            $val = stripslashes($val);
-        }
         // note that we must use addslashes here because this function is called before the db connection is made
         // and sql_real_escape_string needs a db connection
         $val = addslashes($val);
@@ -2358,4 +2352,11 @@ function loadCoreClassFor_spl_prephp53($classname) { // for PHP 5.1.0 - 5.2
     global $DIR_LIBS;
     if (@is_file("{$DIR_LIBS}/{$classname}.php"))
         require_once "{$DIR_LIBS}/{$classname}.php";
+}
+
+if (!function_exists('get_magic_quotes_gpc')) {
+    function get_magic_quotes_gpc() { return FALSE; }
+}
+if (!function_exists('get_magic_quotes_runtime')) {
+    function get_magic_quotes_runtime() { return FALSE; }
 }

@@ -5752,18 +5752,6 @@ selector();
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
             echo "\t</tr>\n";
 
-            if (version_compare(PHP_VERSION, '5.3.0', '<'))
-            {
-                echo "<tr>\n";
-                echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
-                $mqg = get_magic_quotes_gpc() ? 'On' : 'Off';
-                echo "\t\t" . '<td>' . $mqg . "</td>\n";
-                echo "\t</tr><tr>\n";
-                echo "\t\t" . '<td>magic_quotes_runtime' . "</td>\n";
-                $mqr = get_magic_quotes_runtime() ? 'On' : 'Off';
-                echo "\t\t" . '<td>' . $mqr . "</td>\n";
-                echo "\t</tr>\n";
-            }
             if (version_compare(PHP_VERSION, '5.4.0', '<'))
             {
                 echo "<tr>\n";
