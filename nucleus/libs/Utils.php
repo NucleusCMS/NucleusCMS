@@ -142,12 +142,16 @@ class Utils
                     $header = substr ($ret, 0, $info["header_size"]);
                     $body   = substr ($ret, $info["header_size"]);
                     $ret = array('header' => &$header, 'body'=> &$body);
+                    if (200 != curl_getinfo($crl, CURLINFO_RESPONSE_CODE))
+                        $ret = FALSE;
                 }
                 curl_close($crl);
             }
             else
             {
                 $ret = curl_exec($crl);
+                if (200 != curl_getinfo($crl, CURLINFO_RESPONSE_CODE))
+                    $ret = FALSE;
                 curl_close($crl);
             }
             return $ret;
