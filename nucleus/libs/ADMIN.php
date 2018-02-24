@@ -5989,6 +5989,8 @@ selector();
 
 		sendContentType('text/html');
 
+        checkOutputCompression();
+
         $param = array(
             'extrahead'    => &$extrahead,
             'action'    =>  $this->action

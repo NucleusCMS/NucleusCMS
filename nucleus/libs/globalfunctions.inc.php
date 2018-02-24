@@ -655,6 +655,7 @@ function selector() {
     
     // parse the skin
     $output = $skin->parse($type);
+    checkOutputCompression();
     echo $output;
 
     // check to see we should throw JustPosted event
@@ -687,6 +688,7 @@ function doError($msg, $skin = '') {
     $skinid = $skin->id;
     $errormessage = $msg;
     $output = $skin->parse('error');
+    checkOutputCompression();
     echo $output;
     exit;
 }
@@ -2359,4 +2361,18 @@ if (!function_exists('get_magic_quotes_gpc')) {
 }
 if (!function_exists('get_magic_quotes_runtime')) {
     function get_magic_quotes_runtime() { return FALSE; }
+}
+
+function checkOutputCompression() {
+    // supports Content-Encoding: gzip
+    if (!extension_loaded('zlib') || headers_sent() || ob_get_level())
+        return;
+    $output_compression = ini_get('zlib.output_compression');
+    // check false or '' or '0'
+    if ($output_compression === FASLE || $output_compression === ''
+        || $output_compression === '0')
+    {
+        ini_set('zlib.output_compression_level', -1);
+        ob_start("ob_gzhandler");
+    }
 }
