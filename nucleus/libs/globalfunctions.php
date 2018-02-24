@@ -52,7 +52,12 @@ if ( ! defined('DEFAULT_USER_AGENT') )
   define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
 ini_set( 'user_agent' , DEFAULT_USER_AGENT );
 
-if(ini_get('register_globals')) exit('Should be change off register_globals.');
+if (version_compare(phpversion(),'5.4.0','<')) {
+    if(ini_get('register_globals')) exit('Should be change off register_globals.');
+    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
+    $magic_quotes_sybase = ini_get('magic_quotes_sybase');
+    if($magic_quotes_sybase!==FALSE && boolval($magic_quotes_sybase)) exit('Should be remove magic_quotes_sybase in php.ini');
+}
 
 if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
