@@ -6356,6 +6356,8 @@ selector();
     function pagehead($extrahead = '') {
         global $CONF, $manager, $DIR_NUCLEUS;
 
+        checkOutputCompression();
+
         $param = array(
             'extrahead'    => &$extrahead,
             'action'    =>  $this->action
