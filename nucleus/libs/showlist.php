@@ -200,9 +200,7 @@ function listplug_table_pluginlist($template, $type) {
                         echo _LIST_PLUGS_AUTHOR, ' ' , hsc($plug->getAuthor()) , '<br />';
                     echo _LIST_PLUGS_VER, ' ' , hsc($plug->getVersion()) , '<br />';
                     if ($plug->getURL()&&$plug->getURL()!=='Undefined')
-                    echo '<a href="',hsc($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a><br />';
-                    if ($plug->supportsFeature('HelpPage') > 0)
-                        echo "<a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='".$template['tabindex']."'>",_LIST_PLUGS_HELP,"</a>";
+                    echo '<a href="',hsc($plug->getURL()),'" tabindex="'.$template['tabindex'].'">',_LIST_PLUGS_SITE,'</a>';
                 echo '</td>';
                 echo '<td>';
                     // plugin update check
@@ -216,7 +214,7 @@ function listplug_table_pluginlist($template, $type) {
                         echo "<br />";
                     }
                     // plugin Description
-                    echo _LIST_PLUGS_DESC .'<br />'. hsc($plug->getDescription());
+                    echo hsc($plug->getDescription());
                     $pl_event_list = $plug->_getEventList();
                     if (count($pl_event_list) > 0) {
                         echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',hsc(implode($pl_event_list,', '));
@@ -254,13 +252,13 @@ function listplug_table_pluginlist($template, $type) {
             } else {
                 echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED, hsc($current->pfile)) . '</td>';
             }
-            echo '<td>';
+            echo '<td style="white-space:nowrap;">';
 
                 $baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
                 $url = $manager->addTicketToUrl($baseUrl . 'pluginup');
                 echo "<a href='",hsc($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UP,"</a>";
                 $url = $manager->addTicketToUrl($baseUrl . 'plugindown');
-                echo "<br /><a href='",hsc($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
+                echo " | <a href='",hsc($url),"' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_DOWN,"</a>";
                 echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='".$template['tabindex']."'>",_LIST_PLUGS_UNINSTALL,"</a>";
                 if ($plug && ($plug->hasAdminArea() > 0))
                 {
