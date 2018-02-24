@@ -119,7 +119,9 @@ h1 {
 	border-style: solid;
 	border-color: #bbb;
 
-	background: #ffffff url(quickb.jpg) top left fixed repeat-y; 
+	background: #ffffff url(quickb.jpg) top left fixed repeat-y;
+	
+	font-size:.95em;
 }
 
 #quickmenu ul {
