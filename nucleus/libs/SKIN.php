@@ -251,6 +251,13 @@ class SKIN {
             $rs = coreSkinVar('<%DebugInfo%>');
             $output = str_replace('<%DebugInfo%>', $rs, $output);
         }
+
+        $len_leak = ob_get_length();
+        if (!empty($len_leak) && !empty($CONF['debug']) && $CONF['debug']) {
+            global $member;
+            if ($member->isAdmin())
+                ACTIONLOG::addUnique(WARNING , 'Leak msg PostSkinParse: ' . ob_get_contents());
+        }
         ob_end_clean();
         
         $skinid = $this->id;
