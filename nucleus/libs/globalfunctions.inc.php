@@ -661,7 +661,8 @@ function selector() {
 	$skin_sparts_type = $skin_options['spartstype']; // parts or specialpage
     
     // parse the skin
-	$skin->parse($type, $skin_options);
+	$output = $skin->parse($type, $skin_options);
+    echo $output;
 
     // check to see we should throw JustPosted event
     $blog->checkJustPosted();
@@ -699,7 +700,8 @@ function doError($msg, $skin = '') {
 
     $skinid = $skin->id;
     $errormessage = $msg;
-    $skin->parse('error');
+    $output = $skin->parse('error');
+    echo $output;
     exit;
 }
 
