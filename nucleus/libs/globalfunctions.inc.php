@@ -80,7 +80,7 @@ function getLatestVersion() {
     $options = array('timeout'=> 5, 'connecttimeout'=> 3);
     $ret = Utils::httpGet('http://japan.nucleuscms.org/version_check.php', $options);
 
-    if (empty($ret))
+    if (empty($ret) || !preg_match('@^[0-9\./]+$@ms', $ret))
         $ret = '';
 
     ADMIN::updateConfig('LatestVerText', $ret);
