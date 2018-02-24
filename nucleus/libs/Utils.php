@@ -55,17 +55,51 @@ class Utils
 
     public static function strftime($format, $timestamp = '')
     {
+        if (!is_string($format) || (strlen($format)==0))
+            return '';
         if (! _HAS_MBSTRING )
             return strftime($format, $timestamp);
-        $locale = setlocale(LC_CTYPE, 0);
-        if ((setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')) {
-            return mb_convert_encoding(strftime(mb_convert_encoding($format, 'CP932', _CHARSET), $timestamp), _CHARSET, 'CP932');
-        //      return iconv('CP932', _CHARSET, strftime(iconv(_CHARSET, 'CP932', $format),$timestamp));
+        $old_locale = setlocale(LC_CTYPE, '0'); // backup locale : maintained per process, not thread
+        $locale = setlocale(LC_CTYPE, '');
+        try{
+            if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+                $locale_mbcahrset = FALSE;
+                // PHP not support wcsftime, so format cannot contain unicode charactors.
+                // curl http://php.net/manual/ja/mbstring.supported-encodings.php | grep -Po CP[0-9]+ | grep -Po [0-9]+ | sort -n | uniq | xargs -IXXX echo "XXX|" | paste -s | tr -d "[:space:]"
+                // 850|866|932|936|949|950|1251|1252  //|50220|50221|50222|51932|
+                // Codepage: https://msdn.microsoft.com/ja-jp/library/windows/desktop/dd317756(v=vs.85).aspx
+                // The locale name form : https://msdn.microsoft.com/en-us/library/hzz3tw78.aspx
+                if (preg_match('/\.(850|866|932|936|949|950|1251|1252)$/', $locale, $m)) {
+                    $codepage = intval($m[1]);
+                    if (in_array($codepage, array(1251,1252)))
+                        $locale_mbcahrset = "windows-{$m[1]}";
+                    else if ($codepage == 932)
+                        $locale_mbcahrset = 'SJIS-win';
+                    else
+                        $locale_mbcahrset = "CP{$codepage}";
+                }
+                if ($locale_mbcahrset) {
+                    // Workaround for %e format
+                    $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+                    // Workaround for Multibyte and ANSI character sets.
+                    $res = mb_convert_encoding(strftime(mb_convert_encoding($format, $locale_mbcahrset, _CHARSET), $timestamp), _CHARSET, $locale_mbcahrset);
+//                    if ($old_locale != $locale)
+//                        setlocale(LC_CTYPE, $old_locale); // restore locale
+//    var_dump(basename(__FILE__).':'. __LINE__, $old_locale, $locale, $format, $timestamp, $res); // debug
+                    return $res;
+                }
+            }
+            if (PHP_OS=='CYGWIN')
+                setlocale(LC_TIME , sprintf('%s.%s', _LOCALE, _CHARSET));
+            $res = strftime($format, $timestamp);
+            if ($old_locale != $locale)
+                setlocale(LC_CTYPE, $old_locale); // restore locale
+//    var_dump(basename(__FILE__).':'. __LINE__ ,$locale, $format, $timestamp, $res); // debug
+            return $res;
+        } catch (Exception $e) {
+            if ($old_locale != $locale)
+                setlocale(LC_CTYPE, $old_locale); // restore locale
         }
-//var_dump(setlocale(LC_CTYPE, 0),setlocale(LC_TIME, 0), $format, $timestamp, strftime($format, $timestamp), mb_internal_encoding()); // debug
-        if (PHP_OS=='CYGWIN')
-            setlocale(LC_TIME , sprintf('%s.%s', _LOCALE, _CHARSET));
-        return strftime($format, $timestamp);
     }
 
     public static function strlen($string)
@@ -108,12 +142,16 @@ class Utils
                     $header = substr ($ret, 0, $info["header_size"]);
                     $body   = substr ($ret, $info["header_size"]);
                     $ret = array('header' => &$header, 'body'=> &$body);
+                    if (200 != curl_getinfo($crl, CURLINFO_RESPONSE_CODE))
+                        $ret = FALSE;
                 }
                 curl_close($crl);
             }
             else
             {
                 $ret = curl_exec($crl);
+                if (200 != curl_getinfo($crl, CURLINFO_RESPONSE_CODE))
+                    $ret = FALSE;
                 curl_close($crl);
             }
             return $ret;
