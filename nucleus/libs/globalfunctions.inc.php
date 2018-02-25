@@ -136,7 +136,7 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
         );
 
         if (!function_exists('sql_connected') || sql_connected())
-        $manager->notify('PreSendContentType', $param);
+            $manager->notify('PreSendContentType', $param);
 
         // strip strange characters
         $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
@@ -183,7 +183,7 @@ function highlight($text, $expression, $highlight) {
     // $matches[0][i] = HTML + text
     // $matches[1][i] = HTML
     // $matches[2][i] = text
-	$matches = array();
+    $matches = array();
     preg_match_all('/(<[^>]+>)([^<>]*)/', $text, $matches);
     
     // throw it all together again while applying the highlight to the text pieces
@@ -234,8 +234,9 @@ function parseHighlight($query) {
     for ($i = 0; $i < count($aHighlight); $i++) {
         $aHighlight[$i] = trim($aHighlight[$i]);
 
-//        if (strlen($aHighlight[$i]) < 3)
+//        if (strlen($aHighlight[$i]) < 3) {
 //            unset($aHighlight[$i]);
+//        }
     }
 
     if (count($aHighlight) == 1) {
