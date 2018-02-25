@@ -2423,6 +2423,10 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
     return $query;
 }
 
+function parseQuickQuery($query='',$ph=array()) {
+    return quickQuery(parseQuery($query,$ph));
+}
+
 function loadCoreClassFor_spl($classname) {
     if (@is_file(__DIR__ . "/{$classname}.php"))
         require_once __DIR__ . "/{$classname}.php";
