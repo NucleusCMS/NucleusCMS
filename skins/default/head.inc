@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta charset=<%charset%>" />
+<meta charset="<%charset%>" />
 
 <!-- meta information for search engines -->
 <meta name="generator" content="<%version%>" />
