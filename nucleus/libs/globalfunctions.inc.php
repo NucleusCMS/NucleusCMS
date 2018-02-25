@@ -2345,6 +2345,24 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
     return $tpl;
 }
 
+function parseQuery($query='',$ph=array()) { // $ph is placeholders
+    
+    if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
+    
+    foreach($ph as $k=>$v) {
+        $query = str_replace("<%{$k}%>", $v, $query);
+        if(strpos($query,"<%{$k}:escape%>")!==false)
+        {
+            $query = str_replace("<%{$k}:escape%>", sql_real_escape_string($v), $query);
+        }
+        if(strpos($query,"<%{$k}:int%>")!==false)
+        {
+            $query = str_replace("<%{$k}:int%>", (int)$v, $query);
+        }
+    }
+    return $query;
+}
+
 function loadCoreClassFor_spl($classname) {
     if (@is_file(__DIR__ . "/{$classname}.php"))
         require_once __DIR__ . "/{$classname}.php";
