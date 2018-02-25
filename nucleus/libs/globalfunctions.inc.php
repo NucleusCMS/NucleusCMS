@@ -109,7 +109,7 @@ function getLatestVersion() {
 /**
  * returns a prefixed nucleus table name
  */
-function sql_table($name) {
+function sql_table($name='') {
     global $DB_PREFIX;
 
     if (strlen($DB_PREFIX) > 0) {
