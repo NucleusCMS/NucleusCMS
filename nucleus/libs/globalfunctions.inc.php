@@ -544,10 +544,10 @@ function selector() {
             doError(_ERROR_NOSUCHBLOG);
         }
 
-    } elseif ($query) {
+    } elseif ($GLOBALS['query']) {
         global $startpos;
         $type = 'search';
-        $query = stripslashes($query);
+        $query = stripslashes($GLOBALS['query']);
 
         if (function_exists('mb_convert_encoding'))
         {
