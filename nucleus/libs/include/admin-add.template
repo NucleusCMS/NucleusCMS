@@ -26,8 +26,9 @@
 			size="50" 
 			maxlength="160" 
 			value="<%contents(title)%>"
-			/></td>
-	</tr><tr>
+			/>
+	</td>
+	</tr><tr class="body">
 		<td>
 			<%text(_ADD_BODY)%> <%helplink(additem)%>
 		</td>
@@ -40,10 +41,11 @@
 				rows="15"><%contents(body)%></textarea>
 		</td>
 	</tr>
-	<tr>
+	<tr class="more">
 		<td><%text(_ADD_MORE)%> <%helplink(extended)%>
 		</td>
 		<td>
+		<div id="moreforms">
 			<%jsbuttonbar(media+preview)%>
 			<textarea 
 				<%jsinput(more)%>
@@ -51,6 +53,8 @@
 				cols="60"
 				rows="15"
 				><%contents(more)%></textarea>
+		</div>
+		<a href="#" id="openmore" onclick="return false;"><%text(_EDITTEMPLATE_EMPTY)%></a>
 		</td>
 	</tr>
 	<tr id="edit" style="display:none;">
@@ -142,12 +146,15 @@ function date_currenttime_reset( )
 		 "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
          "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
 }
-jQuery('#inputmore').after('<a href="#" id="openmore" onclick="return false;"><%text(_EDITTEMPLATE_EMPTY)%></a>');
-jQuery('#inputmore').hide();
-jQuery('#inputmore').prev().hide();
-jQuery('#openmore').click(function(){
-	jQuery('#inputmore').show();
-	jQuery('#inputmore').prev().show();
+if(!jQuery('#inputmore').val()) {
+	jQuery('div#moreforms').hide();
+	jQuery('#openmore').show();
+	jQuery('#openmore').click(function(){
+		jQuery('div#moreforms').show();
+		jQuery('#openmore').hide();
+	});
+}
+else {
 	jQuery('#openmore').hide();
-});
+}
 </script>
