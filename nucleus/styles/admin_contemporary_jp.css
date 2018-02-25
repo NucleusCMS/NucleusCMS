@@ -430,3 +430,9 @@ table.navigation td, table.navigation th {
 
 table .availableSkinTypes ul li {
 }
+
+.filter {
+    border-radius:5px;
+    padding: 4px;
+    background-color: #ddd;
+}

@@ -323,3 +323,9 @@ table.navigation td, table.navigation th {
 	margin:10px -10px 0 -10px;
 	text-align: center;
 }
+
+.filter {
+    border-radius:5px;
+    padding: 4px;
+    background-color: #ddd;
+}
