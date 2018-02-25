@@ -1097,7 +1097,7 @@ function checkPlugin($plug) {
     $shortname = strtolower(preg_replace('#^NP_#', '', $plug));
     $fname = $pl_name . '.php';
     foreach(array($fname, "{$shortname}/{$fname}", "{$pl_name}/{$fname}") as $f)
-    if (file_exists($DIR_PLUGINS . $f))
+    if (is_file($DIR_PLUGINS . $f))
     {
         return TRUE;
     }
