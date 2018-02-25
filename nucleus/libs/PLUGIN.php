@@ -33,7 +33,7 @@ class NucleusPlugin {
 
     function getMinNucleusVersion()    { return 350; }
     function getMinNucleusPatchLevel() { return 0; }
-    function getEventList()            { return array(); }
+    function getEventList()            { return $this->_getEventList(); }
     function getTableList()            { return array(); }
     function hasAdminArea()            { return 0; }
 
