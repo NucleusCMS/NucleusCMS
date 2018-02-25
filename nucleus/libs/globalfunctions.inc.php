@@ -2411,6 +2411,14 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
     
     foreach($ph as $k=>$v) {
         $query = str_replace("<%{$k}%>", $v, $query);
+        if(strpos($query,"<%{$k}:escape%>")!==false)
+        {
+            $query = str_replace("<%{$k}:escape%>", sql_real_escape_string($v), $query);
+        }
+        if(strpos($query,"<%{$k}:int%>")!==false)
+        {
+            $query = str_replace("<%{$k}:int%>", (int)$v, $query);
+        }
     }
     return $query;
 }
