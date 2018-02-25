@@ -76,13 +76,13 @@ function getLatestVersion() {
     global $CONF;
 
     // response version text ,  last request time
-    foreach(array('LatestVerText','LatestVerReqTime') as $key)
-    if (!array_key_exists($key,$CONF))
+    foreach(array('LatestVerText','LatestVerReqTime') as $name)
     {
-        // `name`  varchar(20)
-        $query = sprintf("INSERT INTO %s (name,value) VALUES ('%s', '')", sql_table('config'), sql_real_escape_string($key));
-        sql_query($query);
-        $CONF[$key] = '';
+        if (isset($CONF[$name])) continue;
+        
+        $ph['name'] = $name;
+        sql_query(parseQuery("INSERT INTO <%prefix%>config (name,value) VALUES ('<%name%>','')", $ph));
+        $CONF[$name] = '';
     }
 
     $t = (!empty($CONF['LatestVerReqTime']) ? intval($CONF['LatestVerReqTime']):0);
@@ -317,8 +317,8 @@ function quickQuery($sqlText)
 }
 
 function getPluginNameFromPid($pid) {
-    $query = sprintf('SELECT pfile FROM `%s` WHERE pid=%d', sql_table('plugin'), intval($pid));
-    $res = sql_query($query);
+    $ph['pid'] = intval($pid);
+    $res = sql_query( parseQuery('SELECT pfile FROM `<%prefix%>plugin` WHERE pid=<%pid%>', $ph) );
     if ($res && ($obj = sql_fetch_object($res)))
         return $obj->pfile;
     return FALSE;
@@ -375,8 +375,8 @@ function selector() {
         global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
 
         // 1. get timestamp, blogid and catid for item
-        $query = sprintf("SELECT itime, iblog, icat FROM %s WHERE inumber='%d'" , sql_table('item'),intval($itemid));
-        $res = sql_query($query);
+        $ph['inumber'] = (int)$itemid;
+        $res = sql_query( parseQuery("SELECT itime, iblog, icat FROM <%prefix%>item WHERE inumber='<%inumber%>'", $ph) );
         $obj = sql_fetch_object($res);
 
         // if a different blog id has been set through the request or selectBlog(),
@@ -413,12 +413,14 @@ function selector() {
         }
 
         // get previous itemid and title
-        $query = 'SELECT inumber, ititle FROM ' . sql_table('item')
-               . ' WHERE itime<' . mysqldate($timestamp)
-               . ' AND idraft=0 AND iblog=' . $blogid
-               . $catextra
+        $ph = array();
+        $ph['itime'] = strtotime($obj->itime);
+        $ph['blogid'] = $blogid;
+        $ph['catextra'] = $catextra;
+        $query = 'SELECT inumber, ititle FROM <%prefix%>item'
+               . ' WHERE itime < <%itime%> AND idraft=0 AND iblog=<%blogid%> <%catextra%>'
                . ' ORDER BY itime DESC LIMIT 1';
-        $res = sql_query($query);
+        $res = sql_query(parseQuery($query));
 
         if ($res && ($obj = sql_fetch_object($res))) {
             $itemidprev = $obj->inumber;
@@ -426,13 +428,12 @@ function selector() {
         }
 
         // get next itemid and title
-        $query = 'SELECT inumber, ititle FROM ' . sql_table('item')
-               . ' WHERE itime>' . mysqldate($timestamp)
-               . ' AND itime <= ' . mysqldate($b->getCorrectTime())
-               . ' AND idraft=0 AND iblog=' . $blogid
-               . $catextra
+        $ph['catextra'] = $catextra;
+        $ph['now']      = mysqldate($b->getCorrectTime());
+        $query = 'SELECT inumber, ititle FROM <%prefix%>item'
+               . ' WHERE itime > <%itime%> AND itime <= <%now%> AND idraft=0 AND iblog=<%blogid%> <%catextra%>'
                . ' ORDER BY itime ASC LIMIT 1';
-        $res = sql_query($query);
+        $res = sql_query(parseQuery($query));
 
         if ($res && ($obj = sql_fetch_object($res))) {
             $itemidnext = $obj->inumber;
@@ -447,12 +448,12 @@ function selector() {
         global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 
         // sql queries for the timestamp of the first and the last published item
-        $blogid_tmp = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
-        $query = sprintf("SELECT UNIX_TIMESTAMP(itime) as result FROM %s "
-                       . " WHERE idraft=0 AND iblog='%d'",
-                         sql_table('item'), $blogid_tmp);
-        $first_timestamp = quickQuery ($query . " ORDER BY itime ASC LIMIT 1");
-        $last_timestamp  = quickQuery ($query . " ORDER BY itime DESC LIMIT 1");
+        $ph = array();
+        $ph['iblog'] = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
+        $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM <%prefix%>item WHERE idraft=0 AND iblog='<%iblog%>'",$ph);
+        
+        $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
+        $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
 
         $y = $m = $d = '';
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
@@ -710,8 +711,7 @@ function doError($msg, $skin = '') {
 function getConfig() {
     global $CONF;
 
-    $query = sprintf('SELECT * FROM `%s`' , sql_table('config'));
-    $res = sql_query($query);
+    $res = sql_query(parseQuery('SELECT * FROM `<%prefix%>config`'));
 
     if ($res)
     while ($obj = sql_fetch_object($res) ) {
@@ -1597,8 +1597,7 @@ function ticketForPlugin() {
 
     /* Solve the plugin name. */
     $plugins = array();
-    $query = 'SELECT `pfile` FROM '.sql_table('plugin');
-    $res = sql_query($query);
+    $res = sql_query( parseQuery('SELECT `pfile` FROM <%prefix%>plugin') );
 
     if ($res)
     {
@@ -2013,9 +2012,8 @@ function ifset(&$var)
  * @return number of subscriber(s)
  */
 function numberOfEventSubscriber($event) {
-    $query = sprintf("SELECT COUNT(*) as count FROM `%s` WHERE event='%s'",
-                     sql_table('plugin_event'), $event);
-    $res = sql_query($query);
+    $ph['event'] = $event;
+    $res = sql_query( parseQuery("SELECT COUNT(*) as count FROM `<%prefix%>plugin_event` WHERE event='<%event%>'", $ph) );
     if ($res && ($obj = sql_fetch_object($res)))
         return $obj->count;
     return 0; // unknown error
