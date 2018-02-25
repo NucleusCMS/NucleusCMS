@@ -23,7 +23,7 @@ class NucleusPlugin {
 
     // these functions _have_ to be redefined in your plugin
 
-    function getName()        { return 'Undefined'; }
+    function getName()        { return get_class($this); }
     function getAuthor()      { return 'Undefined'; }
     function getURL()         { return 'Undefined'; }
     function getVersion()     { return '0.0'; }
