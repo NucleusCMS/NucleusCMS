@@ -546,10 +546,10 @@ function selector() {
             doError(_ERROR_NOSUCHBLOG);
         }
 
-    } elseif ($query) {
+    } elseif ($GLOBALS['query']) {
         global $startpos;
         $type = 'search';
-        $query = stripslashes($query);
+        $query = stripslashes($GLOBALS['query']);
         if(preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)){
                     $type = 'index';
         }
