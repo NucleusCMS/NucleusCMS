@@ -2,8 +2,6 @@
 
 /*
 	admin area style
-	
-	$Id: admin.css 1261 2008-05-22 20:32:43Z kaigreve $
 */
 
 body {
@@ -113,7 +111,7 @@ h1 {
 	margin: 0px;
 	padding: 0px;
 	
-	color:#333;/* add */
+	color:#333;
 	
 	border-width: 1px;
 	border-style: solid;
@@ -182,7 +180,7 @@ h1 {
 	right: 10px;
 	text-align: right;
 	line-height: normal;
-    padding:10px;
+    padding:9px;
 	border:1px solid #ccc;
 	border-radius:5px;
 	background-color: rgba(255,255,255,.8);
@@ -260,12 +258,11 @@ th {
 th, td {
 	padding: 4px;
 	empty-cells: show;	
-	border: 1px solid #ddd; /* add */
+	border: 1px solid #ddd;
 }
 
 td {
 	background-color: #fff;
-	border: 1px solid #ddd;
 	vertical-align: top;
 	text-align: left;
 }
@@ -313,4 +310,10 @@ table.navigation td, table.navigation th {
 #inputtitle {
     font-size:1.3em;
     padding:5px;
+}
+
+.filter {
+    border-radius:5px;
+    padding: 4px;
+    background-color: #ddd;
 }

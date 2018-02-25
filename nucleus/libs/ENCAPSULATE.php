@@ -178,8 +178,7 @@ class NAVLIST extends ENCAPSULATE {
             <?php
                 $s = '_LISTS_FORM_SELECT_ITEM_OPTION_'.strtoupper($view_item_options);
                 $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
-                $style2 = 'border: 1px dashed #4A93F2; padding: 2px; background-color: bisque;';
-                printf('<div style="%s"><span style="%s">%s</span>', $style1, $style2, hsc(defined($s) ? constant($s) : $s));
+                printf('<div style="%s"><span class="filter">%s</span>', $style1, hsc(defined($s) ? constant($s) : $s));
                 echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
             ?>
             <div style="display: inline-block"><form method="post" action="index.php" style="display: inline-block">
