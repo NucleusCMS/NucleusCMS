@@ -264,32 +264,34 @@ function isValidMailAddress($address) {
 }
 
 // some helper functions
-function getBlogIDFromName($name)
+function getBlogIDFromName($bshortname)
 {
-    $query = sprintf("SELECT bnumber as result FROM `%s` WHERE bshortname='%s'",
-                    sql_table('blog'), sql_real_escape_string($name));
-    $res = quickQuery($query);
+    $ph['bshortname'] = sql_real_escape_string($bshortname);
+    $res = parseQuickQuery("SELECT bnumber as result FROM <%prefix%>blog WHERE bshortname='<%bshortname%>'", $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
 }
 
-function getBlogNameFromID($id)
+function getBlogNameFromID($bnumber)
 {
-    return quickQuery('SELECT bname as result FROM ' . sql_table('blog') . ' WHERE bnumber=' . intval($id) );
+    $ph['bnumber'] = (int)$bnumber;
+    return parseQuickQuery('SELECT bname as result FROM <%prefix%>blog WHERE bnumber=<%bnumber%>', $ph);
 }
 
-function getBlogIDFromItemID($itemid)
+function getBlogIDFromItemID($inumber)
 {
-    $res = quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid) );
+    $ph['inumber'] = (int)$inumber;
+    $res = parseQuickQuery('SELECT iblog as result FROM <%prefix%>item WHERE inumber=<%inumber%>', $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
 }
 
-function getBlogIDFromCommentID($commentid)
+function getBlogIDFromCommentID($cnumber)
 {
-    $res = quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid) );
+    $ph['cnumber'] = (int)$cnumber;
+    $res = parseQuickQuery('SELECT cblog as result FROM <%prefix%>comment WHERE cnumber=<%cnumber%>', $ph);
     if ($res !== false)
         $res = intval($res);
     return $res;
@@ -297,20 +299,20 @@ function getBlogIDFromCommentID($commentid)
 
 function getBlogIDFromCatID($catid)
 {
-    $res = quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid) );
+    $ph['catid'] = (int)$catid;
+    $res = parseQuickQuery('SELECT cblog as result FROM <%prefix%>category WHERE catid=<%catid%>', $ph);
     if ($res !== false)
         $res = intval ($res);
     return $res;
 }
 
-function getCatIDFromName($name)
+function getCatIDFromName($cname)
 {
-    $query = sprintf("SELECT catid as result FROM `%s` WHERE cname='%s'",
-                    sql_table('category'), sql_real_escape_string($name));
-    $res = quickQuery($query);
-    if ($res !== false)
-        $res = intval ($res);
-    return $res;
+    $ph['cname'] = sql_real_escape_string($cname);
+    $res = parseQuickQuery("SELECT catid as result FROM <%prefix%>category WHERE cname='<%cname%>'", $ph);
+	if ($res !== false)
+		$res = intval ($res);
+	return $res;
 }
 
 function quickQuery($query) {
