@@ -2405,6 +2405,16 @@ function parseText($tpl='',$ph=array()) {
     return $tpl;
 }
 
+function parseQuery($query='',$ph=array()) { // $ph is placeholders
+    
+    if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
+    
+    foreach($ph as $k=>$v) {
+        $query = str_replace("<%{$k}%>", $v, $query);
+    }
+    return $query;
+}
+
 function loadCoreClassFor_spl($classname) {
     if (@is_file(__DIR__ . "/{$classname}.php"))
         require_once __DIR__ . "/{$classname}.php";
