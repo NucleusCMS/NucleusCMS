@@ -921,15 +921,19 @@ function help($id) {
 
 function helpHtml($id) {
     global $CONF;
-    return helplink($id) . '<img src="' . $CONF['AdminURL'] . 'documentation/icon-help.gif" width="15" height="15" alt="' . _HELP_TT . '" title="' . _HELP_TT . '" /></a>';
+    $ph['help_link'] = helplink($id);
+    $ph['AdminURL']  = $CONF['AdminURL'];
+    $ph['alt_text'] = _HELP_TT;
+    return parseText('<%help_link%><img src="<%AdminURL%>documentation/icon-help.gif" width="15" height="15" alt="<%alt_text%>" /></a>',$ph);
 }
 
 function helplink($id) {
     global $CONF;
 
-    $doc_root = get_help_root_url(TRUE);
+    $ph['help_dir'] = get_help_root_url(TRUE);
+    $ph['id'] = $id;
 
-    return '<a href="' . $doc_root . 'help.html#'. $id . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">';
+    return parseText('<a href="<%help_dir%>help.html#<%id%>" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">', $ph);
 }
 
 function get_help_root_url($subdir_search = FALSE) {
