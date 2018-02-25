@@ -2338,7 +2338,7 @@ function getValidLanguage($lang)
     return 'english-utf8';
 }
 
-function parseText($tpl='',$ph=array()) {
+function parseText($tpl='',$ph=array()) { // $ph is placeholders
     foreach($ph as $k=>$v) {
         $tpl = str_replace("<%{$k}%>", $v, $tpl);
     }
