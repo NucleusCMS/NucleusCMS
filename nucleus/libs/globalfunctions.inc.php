@@ -950,11 +950,12 @@ function get_help_root_url($subdir_search = FALSE) {
             $items = array('japan'=>'ja', 'english'=>'en');
             foreach($items as $k => $v)
             {
-                if ((@stripos($lang , $k) !== false) && (is_dir($DIR_NUCLEUS . "documentation/" . $v)))
+                if (@stripos($lang , $k)===false || !is_dir($DIR_NUCLEUS . 'documentation/' . $v))
                 {
-                    $doc_root[$key] .= $v . '/';
-                    break;
+                    continue;
                 }
+                $doc_root[$key] .= $v . '/';
+                break;
             }
         }
     }
