@@ -127,6 +127,10 @@ define('_ADMIN_LOST_PSWD_TEXT_3', "Send Activation Link");
 define('_ADMIN_LOST_PSWD_TEXT_USENAME', "Username:");
 define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "Email address:");
 
+define('_SETTINGS_ENABLE_TIDY', "Enable html auto-formatting by Tidy");
+define('_SETTINGS_ENABLE_TIDY_FORCE_HTML5', "Tidy: Force HTML5");
+define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: Indent the html tag");
+
 /********************************************
  *        Start New for 3.71                *
  ********************************************/
