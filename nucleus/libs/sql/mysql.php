@@ -307,6 +307,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if (!$MYSQL_CONN) return array();
 
+        if(strpos($tablename,'<%prefix%>')!==false) {
+            $tablename = parseQuery($tablename);
+        }
         $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
         $target = 'Field';
 
@@ -358,6 +361,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if (!$MYSQL_CONN) return FALSE;
 
+        if(strpos($tablename,'<%prefix%>')!==false) {
+            $tablename = parseQuery($tablename);
+        }
         $sql = sprintf("SHOW TABLES LIKE '%s' ", mysql_real_escape_string($tablename));
         $res = mysql_query($sql);
         return ($res && ($r = mysql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
