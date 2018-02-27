@@ -225,6 +225,7 @@ class SKIN {
         ob_start();
         $parser->parse($contents);
         $output = ob_get_contents();
+        @ob_clean();
         
         $md5['<%BenchMark%>'] = md5('<%BenchMark%>');
         if(strpos($output,$md5['<%BenchMark%>'])!==false)
@@ -255,8 +256,9 @@ class SKIN {
         $len_leak = ob_get_length();
         if (!empty($len_leak) && !empty($CONF['debug']) && $CONF['debug']) {
             global $member;
-            if ($member->isAdmin())
-                ACTIONLOG::addUnique(WARNING , 'Leak msg PostSkinParse: ' . ob_get_contents());
+            if ($member->isAdmin() && ini_get('display_errors')) {
+                $output .= ob_get_contents();
+            }
         }
         ob_end_clean();
         

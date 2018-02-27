@@ -428,7 +428,7 @@ function selector() {
         $query = 'SELECT inumber, ititle FROM <%prefix%>item'
                . ' WHERE itime < <%itime%> AND idraft=0 AND iblog=<%blogid%> <%catextra%>'
                . ' ORDER BY itime DESC LIMIT 1';
-        $res = sql_query(parseQuery($query));
+        $res = sql_query(parseQuery($query, $ph));
 
         if ($res && ($obj = sql_fetch_object($res))) {
             $itemidprev = $obj->inumber;
@@ -441,7 +441,7 @@ function selector() {
         $query = 'SELECT inumber, ititle FROM <%prefix%>item'
                . ' WHERE itime > <%itime%> AND itime <= <%now%> AND idraft=0 AND iblog=<%blogid%> <%catextra%>'
                . ' ORDER BY itime ASC LIMIT 1';
-        $res = sql_query(parseQuery($query));
+        $res = sql_query(parseQuery($query, $ph));
 
         if ($res && ($obj = sql_fetch_object($res))) {
             $itemidnext = $obj->inumber;
@@ -2404,7 +2404,7 @@ function checkOutputCompression() {
         return;
     $output_compression = ini_get('zlib.output_compression');
     // check false or '' or '0'
-    if ($output_compression === FASLE || $output_compression === ''
+    if ($output_compression === FALSE || $output_compression === ''
         || $output_compression === '0')
     {
         ini_set('zlib.output_compression_level', -1);
