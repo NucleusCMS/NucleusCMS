@@ -760,7 +760,7 @@ function installCustomPlugs(&$manager) {
 		$plug =& $manager->getPlugin($o->pfile);
 
 		if ($plug) {
-			$eventList = $plug->getEventList();
+			$eventList = $plug->_getEventList();
 
 			foreach ($eventList as $eventName) {
 				sql_query('INSERT INTO ' . sql_table('plugin_event') . ' (pid, event) VALUES (' . $pid . ', \'' . $eventName . '\')');
