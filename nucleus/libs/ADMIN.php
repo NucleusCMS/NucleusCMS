@@ -426,8 +426,8 @@ class ADMIN {
         }
 
 		if ($search) {
-			$query .= ' and ((ititle LIKE \'%' . sql_real_escape_string($search) . '%\') or (ibody LIKE \'%'
-					. sql_real_escape_string($search) . '%\') or (imore LIKE \'%' . sql_real_escape_string($search) . '%\'))';
+			$query .= ' and ((ititle LIKE ' . sql_quote_string('%'.$search.'%') . ') or (ibody LIKE '
+					. sql_quote_string('%'.$search.'%') . ') or (imore LIKE ' . sql_quote_string('%'.$search.'%') . '))';
 		}
 
         // non-blog-admins can only edit/delete their own items
@@ -1148,7 +1148,7 @@ class ADMIN {
           }
 
         if ($search)
-            $query .= ' and ((ititle LIKE \'%' . sql_real_escape_string($search) . '%\') or (ibody LIKE \'%' . sql_real_escape_string($search) . '%\') or (imore LIKE \'%' . sql_real_escape_string($search) . '%\'))';
+            $query .= ' and ((ititle LIKE ' . sql_quote_string('%'.$search.'%') . ') or (ibody LIKE ' . sql_quote_string('%'.$search.'%') . ') or (imore LIKE ' . sql_quote_string('%'.$search.'%') . '))';
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1228,7 +1228,7 @@ class ADMIN {
         $query = ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
         if ($search)
-            $query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+            $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1276,7 +1276,7 @@ class ADMIN {
                          sql_table('comment'),sql_table('member'),$member->getID());
 
         if ($search)
-            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
+            $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1352,7 +1352,7 @@ class ADMIN {
 		$query .= ' WHERE cblog=' . intval($blogid);
 
         if ($search != '')
-            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
+            $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1890,7 +1890,7 @@ class ADMIN {
         $manager->notify('PreUpdateComment', $param);
 
         $query =  'UPDATE '.sql_table('comment')
-               . " SET cmail = '" . sql_real_escape_string($url) . "', cemail = '" . sql_real_escape_string($email) . "', cbody = '" . sql_real_escape_string($body) . "'"
+               . ' SET cmail = ' . sql_quote_string($url) . ', cemail = ' . sql_quote_string($email) . ', cbody = ' . sql_quote_string($body)
                . " WHERE cnumber=" . $commentid;
         sql_query($query);
 
@@ -3105,7 +3105,7 @@ class ADMIN {
             $this->error(_ERROR_BADCATEGORYNAME);
 
         $query = 'SELECT count(*) FROM '.sql_table('category')
-               . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
+               . ' WHERE cname=' . sql_quote_string($cname).' and cblog=' . intval($blogid);
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
@@ -3212,14 +3212,14 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=' . sql_quote_string($cname).' and cblog=' . intval($blogid) . " and not(catid=$catid)";
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  'UPDATE '.sql_table('category').' SET'
-               . " cname='" . sql_real_escape_string($cname) . "',"
-               . " cdesc='" . sql_real_escape_string($cdesc) . "'";
+               . ' cname=' . sql_quote_string($cname) . ','
+               . ' cdesc=' . sql_quote_string($cdesc);
 
         if ( ! is_null( $corder) )
             $query .=  sprintf(' , corder=%d' , $corder );
@@ -3794,9 +3794,9 @@ class ADMIN {
 
         /* unlink comments from memberid */
         if ($memberid) {
-            $query = sprintf("UPDATE %s SET cmember=0, cuser='%s' WHERE cmember=%d",
+            $query = sprintf("UPDATE %s SET cmember=0, cuser=%s WHERE cmember=%d",
                         sql_table('comment'),
-                        sql_real_escape_string($mem->getDisplayName()),
+                        sql_quote_string($mem->getDisplayName()),
                         $memberid);
             sql_query($query);
         }
@@ -3987,16 +3987,16 @@ class ADMIN {
 
 
         // add slashes for sql queries
-        $bname       = sql_real_escape_string($bname);
-        $bshortname  = sql_real_escape_string($bshortname);
-        $btimeoffset = sql_real_escape_string($btimeoffset);
-        $bdesc       = sql_real_escape_string($bdesc);
-        $bdefskin    = sql_real_escape_string($bdefskin);
+        $bname       = sql_quote_string($bname);
+        $bshortname  = sql_quote_string($bshortname);
+        $btimeoffset = sql_quote_string($btimeoffset);
+        $bdesc       = sql_quote_string($bdesc);
+        $bdefskin    = sql_quote_string($bdefskin);
 
         // create blog
         $query = 'INSERT INTO '.sql_table('blog')
                 . " (bname, bshortname, bdesc, btimeoffset, bdefskin, bcomments, bpublic, breqemail)"
-                . " VALUES ('$bname', '$bshortname', '$bdesc', '$btimeoffset', '$bdefskin', $bcomments, $bpublic, $breqemail)";
+                . " VALUES ($bname, $bshortname, $bdesc, $btimeoffset, $bdefskin, $bcomments, $bpublic, $breqemail)";
         sql_query($query);
         $blogid = sql_insert_id();
         $blog   =& $manager->getBlog($blogid);
@@ -4004,11 +4004,11 @@ class ADMIN {
         // create new category
         $catdefname = (defined('_EBLOGDEFAULTCATEGORY_NAME') ? _EBLOGDEFAULTCATEGORY_NAME : 'General');
         $catdefdesc = (defined('_EBLOGDEFAULTCATEGORY_DESC') ? _EBLOGDEFAULTCATEGORY_DESC : 'Items that do not fit in other categories');
-        $sql = sprintf("INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, '%s', '%s')",
+        $sql = sprintf("INSERT INTO %s (cblog, cname, cdesc) VALUES (%d, %s, %s)",
                         sql_table('category'),
                         $blogid,
-                        sql_real_escape_string($catdefname),
-                        sql_real_escape_string($catdefdesc));
+                        sql_quote_string($catdefname),
+                        sql_quote_string($catdefdesc));
         sql_query($sql);
         $catid = sql_insert_id();
 
@@ -4637,10 +4637,6 @@ selector();
         if ((TEMPLATE::getNameFromId($templateid) != $name) && TEMPLATE::exists($name))
             $this->error(_ERROR_DUPTEMPLATENAME);
 
-
-        $name = sql_real_escape_string($name);
-        $desc = sql_real_escape_string($desc);
-
         // 0. clear SqlCache
         $manager->clearCachedInfo('sql_fetch_object');
 
@@ -4650,8 +4646,8 @@ selector();
 
         // 2. Update description
         $query =  'UPDATE '.sql_table('template_desc').' SET'
-               . " tdname='" . $name . "',"
-               . " tddesc='" . $desc . "'"
+               . ' tdname=' . sql_quote_string($name) . ','
+               . ' tddesc=' . sql_quote_string($desc)
                . " WHERE tdnumber=" . $templateid;
         sql_query($query);
 
@@ -4709,16 +4705,16 @@ selector();
      * @todo document this
      */
     function addToTemplate($id, $partname, $content) {
-        $partname = sql_real_escape_string($partname);
-        $content = sql_real_escape_string($content);
-
         $id = intval($id);
 
         // don't add empty parts:
         if (!trim($content)) return -1;
 
+        $partname = sql_quote_string($partname);
+        $content = sql_quote_string($content);
+
         $query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
-               . "VALUES ($id, '$partname', '$content')";
+               . "VALUES ($id, $partname, $content)";
         sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
         return sql_insert_id();
     }
@@ -5551,10 +5547,10 @@ selector();
             $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
             sql_prepare_execute($sql , array($partstype_to, $skinid, $skintype));
         } else {
-            $sql .= sprintf("SET spartstype = '%s' WHERE sdesc=%d AND stype='%s'",
-                            sql_real_escape_string($partstype_to),
+            $sql .= sprintf("SET spartstype = %s WHERE sdesc=%d AND stype=%s",
+                            sql_quote_string($partstype_to),
                             $skinid,
-                            sql_real_escape_string($skintype));
+                            sql_quote_string($skintype));
             sql_query($sql);
         }
 
@@ -5623,7 +5619,7 @@ selector();
         $newid = intval($newid);
         $content = $skin->getContent($type);
         if ($content) {
-            $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,'". sql_real_escape_string($content)."', '". sql_real_escape_string($type)."')";
+            $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,". sql_quote_string($content).', '. sql_quote_string($type).')';
             sql_query($query);
         }
     }
@@ -6332,12 +6328,9 @@ selector();
      * @todo document this
      */
     static function updateConfig($name, $val) {
-        $name = sql_real_escape_string($name);
-        $val = trim(sql_real_escape_string($val));
-
         $query = 'UPDATE '.sql_table('config')
-               . " SET value='$val'"
-               . " WHERE name='$name'";
+               . ' SET value=' . sql_quote_string(trim($val))
+               . ' WHERE name=' . sql_quote_string($name);
 
         sql_query($query) or die((defined('_ADMIN_SQLDIE_QUERYERROR')?_ADMIN_SQLDIE_QUERYERROR:"Query error: ") . sql_error());
         return sql_insert_id();
@@ -6352,9 +6345,9 @@ selector();
             if ($res && ($row = sql_fetch_row($res)) && ($row[0] > 0))
                 return self::updateConfig($name, $value);
         } else {
-            $sql = sprintf("SELECT COUNT(*) AS result FROM `%s` WHERE name = '%s'",
+            $sql = sprintf('SELECT COUNT(*) AS result FROM `%s` WHERE name=%s',
                            sql_table('config'),
-                           sql_real_escape_string( $name )
+                           sql_quote_string( $name )
                           );
             if (intval(quickQuery($sql) != 0))
                 return self::updateConfig($name, $value);
@@ -6364,10 +6357,10 @@ selector();
             $sql = sprintf("INSERT INTO `%s` (name, value) VALUES(?, ?)", sql_table('config'));
             $res = sql_prepare_execute($sql, array((string) $name, trim((string) $value)));
         } else {
-            $sql = sprintf("INSERT INTO `%s` (name, value) VALUES('%s', '%s')",
+            $sql = sprintf('INSERT INTO `%s` (name, value) VALUES(%s, %s)',
                            sql_table('config'),
-                           sql_real_escape_string( $name ),
-                           sql_real_escape_string( trim($value) )
+                           sql_quote_string( $name ),
+                           sql_quote_string( trim($value) )
                             );
             $res = sql_query($sql);
         }
@@ -7360,10 +7353,10 @@ selector();
         $manager->notify('PreAddPlugin', $param);
 
         // do this before calling getPlugin (in case the plugin id is used there)
-        $query = sprintf("INSERT INTO %s (porder, pfile) VALUES (%d, '%s')",
+        $query = sprintf('INSERT INTO %s (porder, pfile) VALUES (%d, %s)',
                          sql_table('plugin'),
                          $newOrder,
-                         sql_real_escape_string($name));
+                         sql_quote_string($name));
         sql_query($query);
         $iPid = sql_insert_id();
 
@@ -7448,7 +7441,7 @@ selector();
             {
                 $eventList = $plug->_getEventList();
                 foreach ($eventList as $eventName)
-                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', \''.sql_real_escape_string($eventName).'\')');
+                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', '.sql_quote_string($eventName).')');
             }
         }
         $manager->_loadSubscriptions();
@@ -7814,7 +7807,7 @@ selector();
 
         // get list of oids per pid
         $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-               . ' WHERE opid=pid and ocontext=\''.sql_real_escape_string($context).'\' ORDER BY porder, oid ASC';
+               . ' WHERE opid=pid and ocontext='.sql_quote_string($context).' ORDER BY porder, oid ASC';
         $res = sql_query($query);
         $aOptions = array();
         while ($o = sql_fetch_object($res)) {

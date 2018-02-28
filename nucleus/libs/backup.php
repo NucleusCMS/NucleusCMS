@@ -399,7 +399,7 @@ class Backup
                     echo ' NULL';
                 } elseif ($row[$j] != '') {
                     // data
-                    echo " '" . sql_real_escape_string($row[$j]) . "'";
+                    echo ' ' . sql_quote_string($row[$j]);
                 } else {
                     // empty column (!= no data!)
                     echo "''";
@@ -407,7 +407,7 @@ class Backup
     
                 // only add comma when not last column
                 if ($j != ($num_fields - 1))
-                    echo ",";
+                    echo ',';
             }
     
             echo ");\n";

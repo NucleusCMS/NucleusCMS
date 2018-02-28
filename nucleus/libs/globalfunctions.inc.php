@@ -261,8 +261,8 @@ function isValidMailAddress($address) {
 // some helper functions
 function getBlogIDFromName($bshortname)
 {
-    $ph['bshortname'] = sql_real_escape_string($bshortname);
-    $res = parseQuickQuery("SELECT bnumber as result FROM <%prefix%>blog WHERE bshortname='<%bshortname%>'", $ph);
+    $ph['bshortname'] = sql_quote_string($bshortname);
+    $res = parseQuickQuery("SELECT bnumber as result FROM <%prefix%>blog WHERE bshortname=<%bshortname%>", $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
@@ -303,8 +303,8 @@ function getBlogIDFromCatID($catid)
 
 function getCatIDFromName($cname)
 {
-    $ph['cname'] = sql_real_escape_string($cname);
-    $res = parseQuickQuery("SELECT catid as result FROM <%prefix%>category WHERE cname='<%cname%>'", $ph);
+    $ph['cname'] = sql_quote_string($cname);
+    $res = parseQuickQuery("SELECT catid as result FROM <%prefix%>category WHERE cname=<%cname%>", $ph);
 	if ($res !== false)
 		$res = intval ($res);
 	return $res;

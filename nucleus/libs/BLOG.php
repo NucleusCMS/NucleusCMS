@@ -310,24 +310,24 @@ class BLOG {
         $timestamp = date('Y-m-d H:i:s',$timestamp);
 
         $param = array(
-        'title'        => &$title,
-        'body'        => &$body,
-        'more'        => &$more,
-        'blog'        => &$this,
-        'authorid'    => &$authorid,
-        'timestamp'    => &$timestamp,
+        'title'     => &$title,
+        'body'      => &$body,
+        'more'      => &$more,
+        'blog'      => &$this,
+        'authorid'  => &$authorid,
+        'timestamp' => &$timestamp,
         'closed'    => &$closed,
-        'draft'        => &$draft,
-        'catid'        => &$catid
+        'draft'     => &$draft,
+        'catid'     => &$catid
         );
         $manager->notify('PreAddItem', $param);
 
-        $ititle = sql_real_escape_string($title);
-        $ibody = sql_real_escape_string($body);
-        $imore = sql_real_escape_string($more);
+        $ititle = sql_quote_string($title);
+        $ibody  = sql_quote_string($body);
+        $imore  = sql_quote_string($more);
 
         $query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-               . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+               . "VALUES ($ititle, $ibody, $imore, $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
         sql_query($query);
         $itemid = sql_insert_id();
 
@@ -433,10 +433,10 @@ class BLOG {
 
             $query = 'INSERT INTO '.sql_table('category').
                 ' (cblog, cname, cdesc' . ( is_null($corder) ? '':', corder' ) .  ')'.
-                ' VALUES (' . $this->getID() . ", '" . sql_real_escape_string($catName) . "', '"
-                            . sql_real_escape_string($catDescription) .  "'" .
+                ' VALUES (' . $this->getID() . ', ' . sql_quote_string($catName) . ', '
+                            . sql_quote_string($catDescription) .
                          ( is_null($corder) ? '': sprintf(', %d', $corder) ) .
-                         ")";
+                         ')';
             sql_query($query);
             $catid = sql_insert_id();
 
@@ -1082,10 +1082,10 @@ class BLOG {
       *     category name
       */
     function getCategoryIdFromName($name) {
-        $query = sprintf("SELECT catid FROM %s WHERE cblog=%d AND cname='%s'",
+        $query = sprintf("SELECT catid FROM %s WHERE cblog=%d AND cname=%s",
                         sql_table('category'),
                         $this->getID(),
-                        sql_real_escape_string($name)
+                        sql_quote_string($name)
                     );
         $res = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
@@ -1389,8 +1389,8 @@ class BLOG {
       *     blog shortname
       */
     public static function exists($name) {
-        $query = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
-                       sql_table('blog'), sql_real_escape_string($name));
+        $query = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname=%s LIMIT 1",
+                       sql_table('blog'), sql_quote_string($name));
         return intval(quickQuery($query)) > 0;
     }
 

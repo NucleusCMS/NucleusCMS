@@ -40,8 +40,8 @@ class ACTIONLOG {
             $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES (?, ?)" , sql_table('actionlog'));
             sql_prepare_execute($query , array((string) $timestamp, (string) $message));
         } else {
-            $message = sql_real_escape_string($message);        // add slashes
-            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES ('%s', '%s')", sql_table('actionlog'), $timestamp, $message);
+            $message = sql_quote_string($message);        // add slashes
+            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)", sql_table('actionlog'), $timestamp, $message);
             sql_query($query);
         }
 
