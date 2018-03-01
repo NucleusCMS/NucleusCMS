@@ -28,6 +28,7 @@ class SEARCH {
     public $inclusive;
     public $blogs;
     private $is_jp_mode;
+    private $jp_marked
 
     public function SEARCH($text) { $this->__construct($text); }
     function __construct($text) {
@@ -48,7 +49,7 @@ class SEARCH {
             $this->two    = '[\xC0-\xDF][\x80-\xBF]';
             $this->three  = '[\xE0-\xEF][\x80-\xBF][\x80-\xBF]';
 
-            $this->jpmarked	= $this->boolean_mark_atoms_jp($text);
+            $this->jp_marked	= $this->boolean_mark_atoms_jp($text);
             /* * * * * * * * * * * * * * * * */
         } else {
             $text = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/",'',$text);
@@ -170,7 +171,7 @@ class SEARCH {
         return $result;
     }
     protected function boolean_sql_where_jp($match) {
-        $result = $this->jpmarked; /* for jp */
+        $result = $this->jp_marked; /* for jp */
         $result = $this->boolean_sql_where_jp_short($result, $match); /* for jp */
         if ($this->encoding != 'utf-8') {
             $result = mb_convert_encoding($result, $this->encoding, 'UTF-8');
