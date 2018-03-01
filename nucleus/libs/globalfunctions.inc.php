@@ -2418,8 +2418,11 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
     
     if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
-    
+    $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     foreach($ph as $k=>$v) {
+        if(strpos($v,'<%')!==false) {
+            $v = str_replace('<%',"<{$esc}%",$v);
+        }
         $query = str_replace("<%{$k}%>", $v, $query);
         if(strpos($query,"<%{$k}:escape%>")!==false)
         {
@@ -2429,6 +2432,9 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
         {
             $query = str_replace("<%{$k}:int%>", (int)$v, $query);
         }
+    }
+    if(strpos($query,"<{$esc}%")!==false) {
+        $query = str_replace("<{$esc}%",'<%',$query);
     }
     return $query;
 }
