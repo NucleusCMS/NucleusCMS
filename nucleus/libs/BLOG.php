@@ -527,7 +527,13 @@ class BLOG {
      */
     function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
     {
-        $searchclass = new SEARCH($query);
+        global $DIR_LIBS;
+        
+        if (stripos(getLanguageName(),'japanese')!==false) {
+            include_once("{$DIR_LIBS}SEARCH_JA.php");
+            $searchclass = new SEARCH_JA($query);
+        }
+        else $searchclass = new SEARCH($query);
 
         $highlight    = $searchclass->inclusive;
 
