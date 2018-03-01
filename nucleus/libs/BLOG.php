@@ -562,14 +562,14 @@ class BLOG {
             $query = 'SELECT COUNT(*) as result ';
         }
 
-        $query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+        $query .= parseQuery(' FROM <%prefix%>item as i, <%prefix%>member as m, <%prefix%>category as c')
                . ' WHERE i.iauthor=m.mnumber'
-               . ' and i.icat=c.catid'
-               . ' and i.idraft=0'  // exclude drafts
+               . ' AND i.icat=c.catid'
+               . ' AND i.idraft=0'  // exclude drafts
                . $selectblogs
                     // don't show future items
-               . ' and i.itime<=' . mysqldate($this->getCorrectTime())
-               . ' and '.$where;
+               . ' AND i.itime<=' . mysqldate($this->getCorrectTime())
+               . ' AND '.$where;
 
         // take into account amount of months to search
         if ($amountMonths > 0)
@@ -607,7 +607,7 @@ class BLOG {
         else
             $query = 'SELECT COUNT(*) as result ';
 
-        $query .= ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, '.sql_table('category').' as c'
+        $query .= parseQuery(' FROM <%prefix%>item as i, <%prefix%>member as m, <%prefix%>category as c')
                . ' WHERE i.iblog='.$this->blogid
                . ' and i.iauthor=m.mnumber'
                . ' and i.icat=c.catid'
@@ -1517,10 +1517,7 @@ class BLOG {
                     .   ' i.icat as catid,'
                     .   ' i.iclosed as closed';
 
-            $query .= ' FROM '
-                    . '<%prefix%>item as i, '
-                    . '<%prefix%>member as m, '
-                    . '<%prefix%>category as c'
+            $query .= ' FROM <%prefix%>item as i, <%prefix%>member as m, <%prefix%>category as c'
                     . ' WHERE'
                     .    ' i.iblog='.$this->blogid
                    . ' and i.iauthor=m.mnumber'
