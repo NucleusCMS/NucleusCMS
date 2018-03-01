@@ -240,23 +240,19 @@ class ADMIN {
             $sw = (($member->isAdmin()) && ($showAll == 'yes'));
 
             // Todo display author
-            $query =  'SELECT bnumber, count(*)'
-                . sprintf(' , sum(iauthor=%d)', $member->getID())
-                   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
-                   . ' WHERE '
-                   . ' iblog=bnumber and idraft=1'
-                   . ' GROUP BY bnumber'
-                   . ' ORDER BY bnumber ASC';
+            $ph = array('iauthor'=>$member->getID());
+            $query =  parseQuery('SELECT bnumber, count(*), sum(iauthor=<%iauthor%>) FROM <%prefix%>item, <%prefix%>blog', $ph)
+                   . ' WHERE iblog=bnumber and idraft=1 GROUP BY bnumber ORDER BY bnumber ASC';
 
             $items = array();
-            $stmt = sql_query($query);
-            if ($stmt)
+            $rs = sql_query($query);
+            if ($rs)
             {
-                while($row = sql_fetch_row($stmt))
+                while($row = sql_fetch_row($rs))
                 {
                     $items[] = array_merge($row);
                 }
-                sql_free_result($stmt);
+                sql_free_result($rs);
             }
 
             $has_hidden_items = 0;
@@ -265,10 +261,9 @@ class ADMIN {
             foreach($items as $item)
             {
                 // blogid  sum(item)  sum(item which belong to current user)
-//                var_dump($item);
                 $count_blog_items     = intval($item[1]);
                 $count_current_author = intval($item[2]);
-                $current_bid = intval($item[0]);
+                $current_bid          = intval($item[0]);
                 if ($member->isAdmin() && ($count_blog_items!=$count_current_author))
                     $has_hidden_items++;
                 // Check user have a item
@@ -281,8 +276,7 @@ class ADMIN {
                 if ($div_out)
                     echo '<div style="width: 100%; height: 150px; overflow: auto;">';
 
-            $query =  'SELECT ititle, inumber, bshortname'
-                   . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
+            $query =  parseQuery('SELECT ititle, inumber, bshortname FROM <%prefix%>item, <%prefix%>blog')
                            . ' WHERE'
                            .     ($sw ? '' : sprintf(' iauthor=%d AND', $member->getID()))
                            . sprintf(' iblog=bnumber AND iblog=%d', $current_bid)
@@ -378,10 +372,13 @@ class ADMIN {
     function action_itemlist($blogid = '') {
         global $member, $manager, $CONF;
 
-        if ($blogid == '')
-            $blogid = intRequestVar('blogid');
+        if (!$blogid) $blogid = intRequestVar('blogid');
 
-        $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
+        if (!$member->teamRights($blogid)) {
+            if (!$member->isAdmin()) {
+                $this->disallow();
+            }
+        }
 
         $this->pagehead();
         $blog =& $manager->getBlog($blogid);
@@ -410,8 +407,9 @@ class ADMIN {
         $search = postVar('search');    // search through items
 
         $query_view =  'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime, bnumber, catid';
-        $query = ' FROM ' . sql_table('item') . ', ' . sql_table('blog') . ', ' . sql_table('member') . ', ' . sql_table('category')
-               . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=' . $blogid;
+        $ph['iblog'] = $blogid;
+        $query = parseQuery(' FROM <%prefix%>item, <%prefix%>blog, <%prefix%>member, <%prefix%>category'
+               . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=<%iblog%>', $ph);
 
         $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
         if ($request_catid > 0)
@@ -425,10 +423,10 @@ class ADMIN {
             $query .= $this->getQueryFilterForItemlist01(intval($blogid), $v);
         }
 
-		if ($search) {
-			$query .= ' and ((ititle LIKE ' . sql_quote_string('%'.$search.'%') . ') or (ibody LIKE '
-					. sql_quote_string('%'.$search.'%') . ') or (imore LIKE ' . sql_quote_string('%'.$search.'%') . '))';
-		}
+        if ($search) {
+            $ph['search'] = sql_quote_string('%'.$search.'%');
+            $query .= parseQuery(' AND ( (ititle LIKE <%search%>) OR (ibody LIKE <%search%>) OR (imore LIKE <%search%>) )', $ph);
+        }
 
         // non-blog-admins can only edit/delete their own items
         if (!$member->blogAdminRights($blogid))
@@ -1133,8 +1131,9 @@ class ADMIN {
         $search = postVar('search');    // search through items
 
         $query_view = 'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime';
-        $query = ' FROM '.sql_table('item').', '.sql_table('blog') . ', '.sql_table('member') . ', '.sql_table('category')
-               . ' WHERE iauthor='. $member->getID() .' and iauthor=mnumber and iblog=bnumber and icat=catid';
+        $ph['iauthor'] = $member->getID();
+        $query = parseQuery(' FROM <%prefix%>item, <%prefix%>blog, <%prefix%>member, <%prefix%>category'
+               . ' WHERE iauthor=<%iauthor%> and iauthor=mnumber and iblog=bnumber and icat=catid', $ph);
 
         if (postVar('view_item_options')) {
             $v = strval(postVar('view_item_options'));
@@ -1147,8 +1146,11 @@ class ADMIN {
               $query .= ' and icat= '.$request_catid;
           }
 
-        if ($search)
-            $query .= ' and ((ititle LIKE ' . sql_quote_string('%'.$search.'%') . ') or (ibody LIKE ' . sql_quote_string('%'.$search.'%') . ') or (imore LIKE ' . sql_quote_string('%'.$search.'%') . '))';
+        if ($search) {
+            $ph = array();
+            $ph['search'] = sql_quote_string('%'.$search.'%');
+            $query .= parseQuery(' and ((ititle LIKE <%search%>) or (ibody LIKE <%search%>) or (imore LIKE <%search%>))', $ph);
+        }
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1272,8 +1274,8 @@ class ADMIN {
         $search = postVar('search');
 
 
-        $query = sprintf(' FROM %s LEFT OUTER JOIN %s ON mnumber=cmember WHERE cmember=%d',
-                         sql_table('comment'),sql_table('member'),$member->getID());
+        $ph['cmember'] = $member->getID();
+        $query = parseQuery(' FROM <%prefix%>comment LEFT OUTER JOIN <%prefix%>member ON mnumber=cmember WHERE cmember=<%cmember%>',$ph);
 
         if ($search)
             $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
@@ -1676,9 +1678,10 @@ class ADMIN {
         // Todo: notify event, option
 //        ITEM::cloneItem($itemid);
 
-        $dist = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
-        $src  = "ititle,ibody,imore,iblog,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,icat,ikarmaneg,iposted";
-        $query = sprintf("INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s", $tbl_item, $dist, $src, $tbl_item, $itemid);
+        $ph['dist']    = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
+        $ph['src']     = "ititle,ibody,imore,iblog,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,icat,ikarmaneg,iposted";
+        $ph['inumber'] = $itemid;
+        $query = parseQuery("INSERT INTO <%prefix%>item(<%dist%>) SELECT <%src%> FROM <%prefix%>item WHERE inumber=<%inumber%>", $ph);
         if (sql_query($query))
         {
 //            $new_itemid = sql_insert_id();
@@ -2647,8 +2650,8 @@ class ADMIN {
 <?php
             // TODO: try to make it so only non-team-members are listed
             // From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
-            $from_where = sprintf(" FROM %s WHERE mnumber NOT IN (SELECT tmember FROM %s WHERE tblog='%s')",
-                                  sql_table('member') , sql_table('team') , $blogid);
+            $ph['tblog'] = $blogid;
+            $from_where = parseQuery(' FROM <%prefix%>member WHERE mnumber NOT IN (SELECT tmember FROM <%prefix%>team WHERE tblog=<%tblog%>)', $ph);
             $query = "SELECT mname as text, mnumber as value" . $from_where;
             $count_non_team_members = intval(quickQuery("SELECT count(*) AS result " . $from_where));
 
@@ -3212,14 +3215,16 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=' . sql_quote_string($cname).' and cblog=' . intval($blogid) . " and not(catid=$catid)";
+        $ph['cname'] = sql_quote_string($cname);
+        $ph['cdesc'] = sql_quote_string($cdesc);
+        $ph['cblog'] = (int)$blogid;
+        $ph['catid'] = $catid;
+        $query = parseQuery('SELECT count(*) FROM <%prefix%>category WHERE cname=<%cname%> AND cblog=<%cblog%> AND catid!=<%catid%>', $ph);
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
-        $query =  'UPDATE '.sql_table('category').' SET'
-               . ' cname=' . sql_quote_string($cname) . ','
-               . ' cdesc=' . sql_quote_string($cdesc);
+        $query =  parseQuery('UPDATE <%prefix%>category SET cname=<%cname%>, cdesc=<%cdesc%>', $ph);
 
         if ( ! is_null( $corder) )
             $query .=  sprintf(' , corder=%d' , $corder );
