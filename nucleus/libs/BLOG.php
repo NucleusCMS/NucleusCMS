@@ -535,7 +535,7 @@ class BLOG {
         }
         else $searchclass = new SEARCH($query);
 
-        $highlight    = $searchclass->inclusive;
+        $highlight = $searchclass->inclusive;
 
         // if querystring is empty, return empty string
         if ($searchclass->inclusive == '')
@@ -581,12 +581,9 @@ class BLOG {
 
         if ($mode == '')
         {
-            if ($select)
-                $query .= ' ORDER BY score DESC';
-            else
-                $query .= ' ORDER BY i.itime DESC ';
+            if ($select) $query .= ' ORDER BY score DESC';
+            else         $query .= ' ORDER BY i.itime DESC ';
         }
-
         return $query;
     }
 
