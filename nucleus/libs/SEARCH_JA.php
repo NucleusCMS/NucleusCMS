@@ -74,7 +74,7 @@ class SEARCH_JA extends SEARCH {
         $_ = array();
         foreach($fields as $field) {
             $ph['field'] = $field;
-            if(preg_match('/[a-zA-Z]/', $keywords[0]))
+            if(preg_match('/[0-9a-zA-Z]+/', $ph['keyword']))
                 $_[] = parseQuery("(i.<%field%> LIKE '%<%keyword%>%') ", $ph);
             else
                 $_[] = parseQuery("(i.<%field%> LIKE BINARY '%<%keyword%>%') ", $ph);

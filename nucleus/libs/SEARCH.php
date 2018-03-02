@@ -49,42 +49,39 @@ class SEARCH {
     function  boolean_sql_select($field){
         if (!strlen($this->inclusive) ) return false;
         
-        $min_word_len = 4;
-        $Engine = '';
         $res = sql_query( parseQuery("SHOW TABLE STATUS LIKE '<%prefix%>blog'") );
-        if ($res && (($row = sql_fetch_assoc($res)) !== FALSE))
-            $Engine = $row['Engine'];
-        $v = '';
-        if ($Engine == 'MyISAM')
-            $v = 'ft_min_word_len';
-        if ($Engine == 'InnoDB')
-            $min_word_len = 3;
-        if ($v)
-        {
-           $res = sql_query("SHOW VARIABLES LIKE 'ft_min_word_len'");
-           if ($res && (($row = sql_fetch_assoc($res)) !== FALSE))
-             $min_word_len = max($row['Value'], 1);
+        
+        if ($res) {
+            $row = sql_fetch_assoc($res);
+            if ($row['Engine'] == 'InnoDB') {
+                $min_word_len = 3;
+            }
+            elseif ($row['Engine'] == 'MyISAM') {
+               $res = sql_query("SHOW VARIABLES LIKE 'ft_min_word_len'");
+               if ($res && (($row = sql_fetch_assoc($res)) !== FALSE))
+                 $min_word_len = max($row['Value'], 1);
+            }
+            else $min_word_len = 4;
+        }
+        else $min_word_len = 4;
+        
+        $stringsum_long = '';
+        /* build sql for determining score for each record */
+        $keywords = explode(' ',$this->inclusive);
+        foreach ($keywords as $keyword) {
+            if(strlen($keyword) >= $min_word_len) {
+                $stringsum_long .=  " $keyword ";
+            } else {
+                $stringsum_a[] = ' ' . $this->boolean_sql_select_short($keyword,$field) . ' ';
+            }
         }
 
-       $stringsum_long = '';
-       /* build sql for determining score for each record */
-       $keywords = explode(' ',$this->inclusive);
-       foreach ($keywords as $keyword) {
-           if(strlen($keyword) >= $min_word_len) {
-               $stringsum_long .=  " $keyword ";
-           } else {
-               $stringsum_a[] = ' ' . $this->boolean_sql_select_short($keyword,$field) . ' ';
-           }
-       }
-
-       if(strlen($stringsum_long)>0) {
+        if(strlen($stringsum_long)>0) {
             $stringsum_long = sql_quote_string($stringsum_long);
             $stringsum_a[] = " match ($field) against ($stringsum_long) ";
-       }
+        }
 
-       $stringsum = join('+', $stringsum_a);
-
-       return $stringsum;
+        return join('+', $stringsum_a);
     }
 
     
@@ -184,11 +181,11 @@ class SEARCH {
         $fields = explode(',',$field);
         $ph['score_unit_weight'] = .2;
         $score_a = array();
+        $tpl = " <%score_unit_weight%>*(LENGTH(<%field%>) - LENGTH(REPLACE(LOWER(<%field%>), LOWER(<%string%>), '')))/LENGTH(<%string%>) ";
         foreach($fields as $field){
             $ph['field']  = sql_real_escape_string($field);
             $ph['string'] = sql_quote_string($string);
-            $tpl = " <%score_unit_weight%>*(LENGTH(<%field%>) - LENGTH(REPLACE(LOWER(<%field%>), LOWER(<%string%>), '')))/LENGTH(<%string%>) ";
-            $score_a[] = parseText($tpl, $ph);
+            $score_a[] = parseQuery($tpl, $ph);
         }
         $score = join(' + ',$score_a);
 
