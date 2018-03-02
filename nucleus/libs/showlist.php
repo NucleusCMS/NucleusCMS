@@ -16,52 +16,61 @@
  */
 
 // can take either an array of objects, or an SQL query
-function showlist($query, $type, $template) {
+function showlist($data, $type, $template) {
+    if (is_array($data)) return showlist_by_array($data, $type, $template);
+    else                 return showlist_by_query($data, $type, $template);
+}
 
-    if (is_array($query)) {
-        if (sizeof($query) == 0)
-            return 0;
+function showlist_by_array($query, $type, $template) {
+    
+    if (count($query) == 0) return 0;
 
-        call_user_func("listplug_{$type}", $template, 'HEAD');
+    call_user_func("listplug_{$type}", $template, 'HEAD');
 
-        foreach ($query as $currentObj) {
-            $template['current'] = $currentObj;
-            if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
-                && isset($template['current']->bnumber))
-                $template['current']->burl = createBlogidLink($template['current']->bnumber);
-            call_user_func('listplug_' . $type, $template, 'BODY');
-        }
-
-        call_user_func('listplug_' . $type, $template, 'FOOT');
-
-        return sizeof($query);
-
-    } else {
-        $res = sql_query($query);
-
-        // don't do anything if there are no results
-        $numrows = 0;
-        if ($res === false)
-            return 0;
-
-        call_user_func("listplug_{$type}", $template, 'HEAD');
-
-        while($template['current'] = sql_fetch_object($res))
+    foreach ($query as $currentObj) {
+        $template['current'] = $currentObj;
+        if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
+            && isset($template['current']->bnumber))
         {
-            $numrows++;
-            if (   isset($template['current']->burl) && strlen($template['current']->burl)==0
-                && isset($template['current']->bnumber))
-                $template['current']->burl = createBlogidLink($template['current']->bnumber);
-            call_user_func('listplug_' . $type, $template, 'BODY');
+            $template['current']->burl = createBlogidLink($template['current']->bnumber);
         }
-
-        call_user_func('listplug_' . $type, $template, 'FOOT');
-
-        sql_free_result($res);
-
-        // return amount of results
-        return $numrows;
+        call_user_func("listplug_{$type}", $template, 'BODY');
     }
+
+    call_user_func("listplug_{$type}", $template, 'FOOT');
+
+    return count($query);
+}
+
+function showlist_by_query($query, $type, $template) {
+    
+    $res = sql_query($query);
+    
+    if (!$res) return 0;
+
+    // don't do anything if there are no results
+    $numrows = 0;
+
+    call_user_func("listplug_{$type}", $template, 'HEAD');
+
+    while($template['current'] = sql_fetch_object($res))
+    {
+        $numrows++;
+        if (   isset($template['current']->burl)
+            && strlen($template['current']->burl)==0
+            && isset($template['current']->bnumber))
+        {
+            $template['current']->burl = createBlogidLink($template['current']->bnumber);
+        }
+        call_user_func("listplug_{$type}", $template, 'BODY');
+    }
+
+    call_user_func("listplug_{$type}", $template, 'FOOT');
+
+    sql_free_result($res);
+
+    // return amount of results
+    return $numrows;
 }
 
 function listplug_select($template, $type) {
