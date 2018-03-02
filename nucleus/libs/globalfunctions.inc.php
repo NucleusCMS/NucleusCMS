@@ -2420,6 +2420,9 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
     if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     foreach($ph as $k=>$v) {
+        
+        if(strpos($query,'<%')===false) break;
+        
         if(strpos($v,'<%')!==false) {
             $v = str_replace('<%',"<{$esc}%",$v);
         }
