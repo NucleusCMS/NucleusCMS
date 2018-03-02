@@ -953,54 +953,36 @@ class BLOG {
       * Write the blog settings
       */
     function writeSettings() {
-
+    	
         // (can't use floatval since not available prior to PHP 4.2)
         $btimeoffset = $this->getTimeOffset();
-        if (!is_float($btimeoffset)) $btimeoffset = intval($btimeoffset);
         
-        $ph = array();
-        $ph['bname']          = sql_quote_string($this->getName());
-        $ph['bshortname']     = sql_quote_string($this->getShortName());
-        $ph['bcomments']      = (int)$this->commentsEnabled();
-        $ph['bmaxcomments']   = (int)$this->getMaxComments();
-        $ph['btimeoffset']    = $btimeoffset;
-        $ph['bpublic']        = (int)$this->isPublic();
-        $ph['breqemail']      = (int)$this->emailRequired();
-        $ph['bconvertbreaks'] = (int)$this->convertBreaks();
-        $ph['ballowpast']     = (int)$this->allowPastPosting();
-        $ph['bnotify']        = sql_quote_string($this->getNotifyAddress());
-        $ph['bnotifytype']    = (int)$this->getNotifyType();
-        $ph['burl']           = sql_quote_string($this->getURL());
-        $ph['bupdate']        = sql_quote_string($this->getUpdateFile());
-        $ph['bdesc']          = sql_quote_string($this->getDescription());
-        $ph['bdefcat']        = (int)$this->getDefaultCategory();
-        $ph['bdefskin']       = (int)$this->getDefaultSkin();
-        $ph['bincludesearch'] = (int)$this->getSearchable();
-        $ph['bnumber']        = (int)$this->getID();
+        $v = array();
+        
+        $v['bname']          = $this->getName();
+        $v['bshortname']     = $this->getShortName();
+        $v['bcomments']      = (int)$this->commentsEnabled();
+        $v['bmaxcomments']   = (int)$this->getMaxComments();
+        $v['btimeoffset']    = is_float($btimeoffset) ? $btimeoffset : (int)$btimeoffset;
+        $v['bpublic']        = (int)$this->isPublic();
+        $v['breqemail']      = (int)$this->emailRequired();
+        $v['bconvertbreaks'] = (int)$this->convertBreaks();
+        $v['ballowpast']     = (int)$this->allowPastPosting();
+        $v['bnotify']        = $this->getNotifyAddress();
+        $v['bnotifytype']    = (int)$this->getNotifyType();
+        $v['burl']           = $this->getURL();
+        $v['bupdate']        = $this->getUpdateFile();
+        $v['bdesc']          = $this->getDescription();
+        $v['bdefcat']        = (int)$this->getDefaultCategory();
+        $v['bdefskin']       = (int)$this->getDefaultSkin();
+        $v['bincludesearch'] = (int)$this->getSearchable();
+        $v['bnumber']        = (int)$this->getID();
         if (sql_existTableColumnName('<%prefix%>blog', 'bauthorvisible')) {
-            $ph['bauthorvisible'] = (int)$this->getAuthorVisible();
+            $v['bauthorvisible'] = (int)$this->getAuthorVisible();
         }
-        $query =  'UPDATE <%prefix%>blog'
-               . ' SET bname=<%bname%>,'
-               . '     bshortname=<%bshortname%>,'
-               . '     bcomments=<%bcomments%>,'
-               . '     bmaxcomments=<%bmaxcomments%>,'
-               . '     btimeoffset=<%btimeoffset%>,'
-               . '     bpublic=<%bpublic%>,'
-               . '     breqemail=<%breqemail%>,'
-               . '     bconvertbreaks=<%bconvertbreaks%>,'
-               . '     ballowpast=<%ballowpast%>,'
-               . '     bnotify=<%bnotify%>,'
-               . '     bnotifytype=<%bnotifytype%>,'
-               . '     burl=<%burl%>,'
-               . '     bupdate=<%bupdate%>,'
-               . '     bdesc=<%bdesc%>,'
-               . '     bdefcat=<%bdefcat%>,'
-               . '     bdefskin=<%bdefskin%>,'
-               . '     bincludesearch=<%bincludesearch%>'
-               . (isset($ph['bauthorvisible'])) ? 'bauthorvisible=<%bauthorvisible%>,' : ''
-               . ' WHERE bnumber=<%bnumber%>';
-        sql_query(parseQuery($query,$ph));
+        
+        $where = parseQuery('bnumber=<%bnumber%>',$v);
+        updateQuery('<%prefix%>blog', $v, $where);
     }
 
     /**
