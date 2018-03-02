@@ -925,7 +925,7 @@ function helpHtml($id) {
     $ph['help_link'] = helplink($id);
     $ph['AdminURL']  = $CONF['AdminURL'];
     $ph['alt_text'] = _HELP_TT;
-    return parseText('<%help_link%><img src="<%AdminURL%>documentation/icon-help.gif" width="15" height="15" alt="<%alt_text%>" /></a>',$ph);
+    return parseHtml('{%help_link%}<img src="{%AdminURL%}documentation/icon-help.gif" width="15" height="15" alt="{%alt_text%}" /></a>',$ph);
 }
 
 function helplink($id) {
@@ -934,7 +934,7 @@ function helplink($id) {
     $ph['help_dir'] = get_help_root_url(TRUE);
     $ph['id'] = $id;
 
-    return parseText('<a href="<%help_dir%>help.html#<%id%>" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">', $ph);
+    return parseHtml('<a href="{%help_dir%}help.html#{%id%}" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">', $ph);
 }
 
 function get_help_root_url($subdir_search = FALSE) {
