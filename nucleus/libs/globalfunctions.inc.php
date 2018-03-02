@@ -2416,6 +2416,32 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
     return $tpl;
 }
 
+function parseHtml($query='',$ph=array()) { // $ph is placeholders
+    
+    $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
+    
+    foreach($ph as $k=>$v) {
+        if(strpos($query,'{%')===false) break;
+        
+        if(strpos($v,'{%')!==false) {
+            $v = str_replace('{%',"[{$esc}%",$v);
+        }
+        $query = str_replace("{%{$k}%}", $v, $query);
+        if(strpos($query,"{%{$k}:hsc%}")!==false)
+        {
+            $query = str_replace("{%{$k}:hsc%}", hsc($v), $query);
+        }
+        if(strpos($query,"{%{$k}:urlencode%}")!==false)
+        {
+            $query = str_replace("{%{$k}:urlencode%}", urlencode($v), $query);
+        }
+    }
+    if(strpos($query,'{'.$esc.'%')!==false) {
+        $query = str_replace('{'.$esc.'%','{%',$query);
+    }
+    return $query;
+}
+
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
     
     if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
