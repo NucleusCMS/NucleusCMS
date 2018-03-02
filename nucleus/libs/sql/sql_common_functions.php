@@ -177,3 +177,31 @@
     function is_sql_result($res) {
         return _EXT_MYSQL_EMULATE ? is_object($res) : is_resource($res);
     }
+    
+    function updateQuery($table_name, $values, $where='', $extra=array()) {
+        
+        $table = parseQuery($table);
+        
+        if(is_array($where)) $where = join(' ', $where);
+        
+        if (!is_array($values)) $pairs = $values;
+        else {
+            foreach ($values as $key => $value) {
+                if(is_null($value) || strtolower($value) === 'null') {
+                    $value = 'NULL';
+                }
+                elseif(strpos($key,':expr')!==false) {
+                    $key = str_replace(':expr','',$key);
+                }
+                else {
+                    $value = sql_quote_string($value);
+                }
+                $pair[$key] = "`{$key}`={$value}";
+            }
+            $pairs = join(',',$pair);
+        }
+        
+        if($where != '')    $where = "WHERE {$where}";
+        
+        return sql_query("UPDATE {$table} SET {$pairs} {$where}");
+    }
