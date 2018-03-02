@@ -74,31 +74,35 @@ function showlist_by_query($query, $type, $template) {
 }
 
 function listplug_select($template, $type) {
-    switch($type) {
-        case 'HEAD':
-            echo '<select name="' . ifset($template['name']) . '" tabindex="' . ifset($template['tabindex']) . '" ' . ifset($template['javascript']) . '>';
-
-            // add extra row if needed
-            if (ifset($template['extra'])) {
-                echo '<option value="', ifset($template['extraval']), '">', $template['extra'], '</option>';
-            }
-
-            break;
-        case 'BODY':
-            $current = $template['current'];
-
-            echo '<option value="' . hsc($current->value) . '"';
-            if (isset($template['selected']) && $template['selected'] == $current->value)
-                echo ' selected="selected" ';
-            if (isset($template['shorten']) && $template['shorten'] > 0) {
-                echo ' title="'. hsc($current->text).'"';
-                $current->text = shorten($current->text, $template['shorten'], $template['shortenel']);
-            }
-            echo '>' . hsc($current->text) . '</option>';
-            break;
-        case 'FOOT':
-            echo '</select>';
-            break;
+    if($type=='HEAD') {
+        $ph['name']       = ifset($template['name']);
+        $ph['tabindex']   = ifset($template['tabindex']);
+        $ph['javascript'] = ifset($template['javascript']);
+        $ph['extra']      = ifset($template['extra']);
+        $ph['extraval']   = ifset($template['extraval']);
+        echo parseHtml('<select name="{%name%}" tabindex="{%tabindex%}" {%javascript%}>', $ph);
+        
+        if ($ph['extra']) {
+            echo parseHtml('<option value="{%extraval%}">{%extra%}</option>', $ph);
+        }
+    }
+    elseif($type=='BODY') {
+        $current = $template['current'];
+        $ph = array();
+        $ph['value'] = $current->value;
+        $ph['selected'] = (isset($template['selected']) && $template['selected'] == $current->value) ? 'selected' : '';
+        if (isset($template['shorten']) && $template['shorten'] > 0) {
+            $ph['text']  = shorten($current->text, $template['shorten'], $template['shortenel']);
+            $ph['title'] = $current->value;
+        }
+        else {
+            $ph['text']  = $current->text;
+            $ph['title'] = '';
+        }
+        echo parseHtml('<option value="{%value:hsc%}" {%selected%} title="{%title:hsc%}">{%text:hsc%}</option>', $ph);
+    }
+    elseif($type=='FOOT') {
+        echo '</select>';
     }
 }
 
@@ -108,13 +112,15 @@ function listplug_table($template, $type) {
             echo "<table>";
             echo "<thead><tr>";
             // print head
-            call_user_func("listplug_table_" . $template['content'] , $template, 'HEAD');
+            $rs = call_user_func("listplug_table_" . $template['content'] , $template, 'HEAD');
+            if($rs) echo $rs;
             echo "</tr></thead><tbody>";
             break;
         case 'BODY':
             // print tabletype specific thingies
-            echo "<tr onmouseover='focusRow(this);' onmouseout='blurRow(this);'>";
-            call_user_func("listplug_table_" . $template['content'] , $template,  'BODY');
+            echo '<tr onmouseover="focusRow(this);" onmouseout="blurRow(this);">';
+            $rs = call_user_func("listplug_table_" . $template['content'] , $template,  'BODY');
+            if($rs) echo $rs;
             echo "</tr>";
             break;
         case 'FOOT':
@@ -126,39 +132,54 @@ function listplug_table($template, $type) {
 
 function listplug_table_memberlist($template, $type) {
     global $member;
-    switch($type) {
-        case 'HEAD':
-            echo '<th>' . _LIST_MEMBER_NAME . '</th><th>' . _LIST_MEMBER_RNAME . '</th><th>' . _LIST_MEMBER_URL . '</th><th>' . _LIST_MEMBER_ADMIN;
-            help('superadmin');
-            echo "</th><th>" . _LIST_MEMBER_LOGIN;
-            help('canlogin');
-            echo "</th><th colspan='3'>" . _LISTS_ACTIONS. "</th>";
-            break;
-        case 'BODY':
-            $current = $template['current'];
+    
+    if($type=='HEAD') {
+        $tpl = '<th>{%name%}</th><th>{%rname%}</th><th>{%url%}</th><th>{%admin%}{%help%}</th><th>{%login%}{%canlogin%}</th><th colspan="3">{%actions%}</th>';
+        $ph['name']     = _LIST_MEMBER_NAME;
+        $ph['rname']    = _LIST_MEMBER_RNAME;
+        $ph['url']      = _LIST_MEMBER_URL;
+        $ph['admin']    = _LIST_MEMBER_ADMIN;
+        $ph['login']    = _LIST_MEMBER_LOGIN;
+        $ph['help']     = helpHtml('superadmin');
+        $ph['canlogin'] = helpHtml('canlogin');
+        $ph['actions']  = _LISTS_ACTIONS;
+        return parseHtml($tpl,$ph);
+    }
+    elseif($type=='BODY') {
+        $current = $template['current'];
+        $ph = (array)$template['current'];
+        $ph['id']         = listplug_nextBatchId();
+        $ph['tabindex']   = $template['tabindex'];
+        $ph['madmin?']    = $current->madmin ? _YES : _NO;
+        $ph['mcanlogin?'] = $current->mcanlogin ? _YES : _NO;
+        $ph['edit']       = _LISTS_EDIT;
+        $ph['delete']     = _LISTS_DELETE;
+        $ph['halting']    = _LISTS_HALTING;
+        $ph['halt']       = _LISTS_HALT;
+        
+        $td = array();
+        $td[0] = '<input type="checkbox" id="batch{%id%}" name="batch[{%id%}]" value="{%mnumber%}" />';
+        $td[0] .= '<label for="batch{%id%}"><a href="mailto:{%memail:hsc%}" tabindex="{%tabindex%}">{%mname:hsc%}</a></label>';
+        $td[1] = '{%mrealname:hsc%}';
+        $td[2] = '<a href="{%murl:hsc%}" tabindex="{%tabindex%}">{%murl:hsc%}</a>';
+        $td[3] = '{%madmin?%}';
+        $td[4] = '{%mcanlogin?%}';
+        $td[5] = '<a href="index.php?action=memberedit&amp;memberid={%mnumber%}" tabindex="{%tabindex%}">{%edit%}</a>';
+        $td[6] = '<a href="index.php?action=memberdelete&amp;memberid={%mnumber%}" tabindex="{%tabindex%}">{%delete%}</a>';
 
-            echo '<td>';
-            $id = listplug_nextBatchId();
-            echo '<input type="checkbox" id="batch',$id,'" name="batch[',$id,']" value="',$current->mnumber,'" />';
-            echo '<label for="batch',$id,'">';
-            echo "<a href='mailto:", hsc($current->memail), "' tabindex='".$template['tabindex']."'>", hsc($current->mname), "</a>";
-            echo '</label>';
-            echo '</td>';
-            echo '<td>', hsc($current->mrealname), '</td>';
-            echo "<td><a href='", hsc($current->murl), "' tabindex='", $template['tabindex'] , "'>", hsc($current->murl), "</a></td>";
-            echo '<td>', ($current->madmin ? _YES : _NO),'</td>';
-            echo '<td>', ($current->mcanlogin ? _YES : _NO), '</td>';
-            echo "<td><a href='index.php?action=memberedit&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
-            echo "<td><a href='index.php?action=memberdelete&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"._LISTS_DELETE."</a></td>";
-
-			if ($member->id == $current->mnumber)
-				echo "<td></td>";
-			 else if (isset($current->mhalt) && ($current->mhalt) )
-				echo "<td>".hsc(_LISTS_HALTING)."</td>";
-			 else
-				echo "<td><a href='index.php?action=memberhalt&amp;memberid=$current->mnumber' tabindex='".$template['tabindex']."'>"
-					. hsc(_LISTS_HALT)."</a></td>";
-            break;
+        if ($member->id == $current->mnumber)
+            $td[7] = '-';
+        elseif (isset($current->mhalt) && ($current->mhalt) )
+            $td[7] = '{%halting:hsc%}';
+        else
+            $td[7] = '<a href="index.php?action=memberhalt&amp;memberid={%mnumber%}" tabindex="{%tabindex%}">{%halt:hsc%}</a>';
+        
+        $tpl = array();
+        foreach($td as $v) {
+            $tpl[] = '<td>' . $v . '</td>';
+        }
+        
+        return parseHtml(join("\n",$tpl), $ph);
     }
 }
 
@@ -232,7 +253,7 @@ function listplug_table_pluginlist($template, $type) {
                     if (!$plug->subscribtionListIsUptodate()) {
                         echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
                     }
-                    if (sizeof($plug->getPluginDep()) > 0) {
+                    if (count($plug->getPluginDep()) > 0) {
                         echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',hsc(implode($plug->getPluginDep(),', '));
                     }
 // <add by shizuki>
@@ -727,9 +748,9 @@ function listplug_table_skinlist($template, $type) {
 				$parts = array(array(),array());
                 while ($o = sql_fetch_object($r))
                     $types[] = $o->stype;
-                if (sizeof($types) > 0) {
+                if (count($types) > 0) {
                     $friendlyNames = SKIN::getFriendlyNames();
-					for ($i=0;$i<sizeof($types);$i++) {
+					for ($i=0;$i<count($types);$i++) {
 						$type = $types[$i];
 						if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
 							$parts[0][] = '<li>' . helpHtml('skinpart'.$type) . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
@@ -758,7 +779,7 @@ function listplug_table_skinlist($template, $type) {
 			{
 				printf("<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s", _SKIN_PARTS_SPECIAL_PAGE);
 				echo "<ul>";
-					for ($i=0;$i<sizeof($names);$i++)
+					for ($i=0;$i<count($names);$i++)
 					{
 						// todo: edit link ?
 						$editurl = sprintf('index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s', $current->sdnumber, $names[$i]);
