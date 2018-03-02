@@ -206,27 +206,24 @@ class ADMIN {
         /* ---- add items ---- */
         echo '<h2>' . _OVERVIEW_YRBLOGS . '</h2>';
 
-        $showAll = requestVar('showall');
-
-        if (($member->isAdmin()) && ($showAll == 'yes')) {
+        $ph = array();
+        if (requestVar('showall') == 'yes' && $member->isAdmin()) {
             // Super-Admins have access to all blogs! (no add item support though)
-            $query =  'SELECT bnumber, bname, 1 as tadmin, burl, bshortname'
-                   . ' FROM ' . sql_table('blog')
-                   . ' ORDER BY bname';
+            $query =  'SELECT bnumber, bname, 1 as tadmin, burl, bshortname FROM <%prefix%>blog ORDER BY bname';
         } else {
-            $query =  'SELECT bnumber, bname, tadmin, burl, bshortname'
-                   . ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
-                   . ' WHERE tblog=bnumber and tmember=' . $member->getID()
-                   . ' ORDER BY bname';
+            $query =  'SELECT bnumber, bname, tadmin, burl, bshortname FROM <%prefix%>blog, <%prefix%>team'
+                   . ' WHERE tblog=bnumber and tmember=<%tmember%> ORDER BY bname';
+            $ph['tmember'] = $member->getID();
         }
+        $query = parseQuery($query, $ph);
         $template['content'] = 'bloglist';
         $template['superadmin'] = $member->isAdmin();
         echo '<div>';
         $amount = showlist($query,'table',$template);
         echo '</div>';
 
-        if (($showAll != 'yes') && ($member->isAdmin())) {
-            $total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
+        if (requestVar('showall') != 'yes' && $member->isAdmin()) {
+            $total = quickQuery( parseQuery('SELECT COUNT(*) as result FROM <%prefix%>blog') );
             if ($total > $amount)
                 echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
         }
@@ -237,12 +234,10 @@ class ADMIN {
         if ($amount != 0) {
             echo '<h2>' . _OVERVIEW_YRDRAFTS . '</h2>';
 
-            $sw = (($member->isAdmin()) && ($showAll == 'yes'));
-
             // Todo display author
             $ph = array('iauthor'=>$member->getID());
             $query =  parseQuery('SELECT bnumber, count(*), sum(iauthor=<%iauthor%>) FROM <%prefix%>item, <%prefix%>blog', $ph)
-                   . ' WHERE iblog=bnumber and idraft=1 GROUP BY bnumber ORDER BY bnumber ASC';
+                   . ' WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY bnumber ASC';
 
             $items = array();
             $rs = sql_query($query);
@@ -258,39 +253,46 @@ class ADMIN {
             $has_hidden_items = 0;
             $TeamBlogs = $member->getTeamBlogs(0);
             $amountdrafts = 0;
+            $showall = (requestVar('showall') == 'yes' && $member->isAdmin());
+            
             foreach($items as $item)
             {
                 // blogid  sum(item)  sum(item which belong to current user)
+                $current_bid          = intval($item[0]);
                 $count_blog_items     = intval($item[1]);
                 $count_current_author = intval($item[2]);
-                $current_bid          = intval($item[0]);
-                if ($member->isAdmin() && ($count_blog_items!=$count_current_author))
+                
+                if ($member->isAdmin() && ($count_blog_items!=$count_current_author)) {
                     $has_hidden_items++;
+                }
+                
                 // Check user have a item
-                if (!$sw && $count_current_author==0)
+                if (!$showall && $count_current_author==0)
                     continue;
 
                 // Todo: showall : Display whether the item belongs to
-                $ct = ($sw ? $count_blog_items : $count_current_author);
+                $ct = ($showall ? $count_blog_items : $count_current_author);
                 $div_out = ($ct>5);
-                if ($div_out)
+                if ($div_out) {
                     echo '<div style="width: 100%; height: 150px; overflow: auto;">';
+                }
 
-            $query =  parseQuery('SELECT ititle, inumber, bshortname FROM <%prefix%>item, <%prefix%>blog')
+                $query =  parseQuery('SELECT ititle, inumber, bshortname FROM <%prefix%>item, <%prefix%>blog')
                            . ' WHERE'
-                           .     ($sw ? '' : sprintf(' iauthor=%d AND', $member->getID()))
+                           .     ($showall ? '' : sprintf(' iauthor=%d AND', $member->getID()))
                            . sprintf(' iblog=bnumber AND iblog=%d', $current_bid)
                            . ' AND idraft=1 ORDER BY inumber DESC';
-            $template['content'] = 'draftlist';
-            $amountdrafts += showlist($query, 'table', $template);
+                $template['content'] = 'draftlist';
+                $amountdrafts += showlist($query, 'table', $template);
 
-                if ($div_out)
-                    echo '</div>';
+                if ($div_out) echo '</div>';
+                    
             }
-                if ($amountdrafts == 0)
-                    echo _OVERVIEW_NODRAFTS;
-        if (($showAll != 'yes') && ($member->isAdmin()) && $has_hidden_items)
-            echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
+            if ($amountdrafts == 0) echo _OVERVIEW_NODRAFTS;
+                    
+            if ((requestVar('showall') != 'yes') && ($member->isAdmin()) && $has_hidden_items) {
+                echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
+            }
         }
 
         /* ---- user settings ---- */
