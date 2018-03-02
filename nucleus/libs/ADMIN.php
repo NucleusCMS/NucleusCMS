@@ -219,7 +219,7 @@ class ADMIN {
         $template['content'] = 'bloglist';
         $template['superadmin'] = $member->isAdmin();
         echo '<div>';
-        $amount = showlist($query,'table',$template);
+        $amount = showlist_by_query($query,'table',$template);
         echo '</div>';
 
         if (requestVar('showall') != 'yes' && $member->isAdmin()) {
@@ -277,20 +277,24 @@ class ADMIN {
                     echo '<div style="width: 100%; height: 150px; overflow: auto;">';
                 }
 
-                $query =  parseQuery('SELECT ititle, inumber, bshortname FROM <%prefix%>item, <%prefix%>blog')
-                           . ' WHERE'
-                           .     ($showall ? '' : sprintf(' iauthor=%d AND', $member->getID()))
-                           . sprintf(' iblog=bnumber AND iblog=%d', $current_bid)
-                           . ' AND idraft=1 ORDER BY inumber DESC';
+                $ph['iblog'] = $current_bid;
+                $query  = 'SELECT ititle, inumber, bshortname FROM <%prefix%>item, <%prefix%>blog';
+                $query .= ' WHERE';
+                if($showall) {
+                    $ph['iauthor'] = $member->getID();
+                    $query .= ' iauthor=<%iauthor%> AND';
+                }
+                $query .= ' iblog=bnumber AND iblog=<%iblog%> AND idraft=1 ORDER BY inumber DESC';
+                $query = parseQuery($query,$ph);
                 $template['content'] = 'draftlist';
-                $amountdrafts += showlist($query, 'table', $template);
+                $amountdrafts += showlist_by_query($query, 'table', $template);
 
                 if ($div_out) echo '</div>';
                     
             }
             if ($amountdrafts == 0) echo _OVERVIEW_NODRAFTS;
                     
-            if ((requestVar('showall') != 'yes') && ($member->isAdmin()) && $has_hidden_items) {
+            if ($has_hidden_items && requestVar('showall')!='yes' && $member->isAdmin()) {
                 echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
             }
         }
@@ -310,7 +314,6 @@ class ADMIN {
             echo '<li><a href="index.php?action=manage">',_OVERVIEW_MANAGE,'</a></li>';
             echo '</ul>';
         }
-
 
         $this->pagefoot();
     }
@@ -2021,14 +2024,14 @@ class ADMIN {
 
         echo '<h3>' . _MEMBERS_CURRENT .'</h3>';
 
+
+        $manager->loadClass('ENCAPSULATE');
+        
         // show list of members with actions
-        $query =  'SELECT *'
-               . ' FROM '.sql_table('member');
+        $batch = new BATCH('member');
+        $query =  parseQuery('SELECT * FROM <%prefix%>member');
         $template['content'] = 'memberlist';
         $template['tabindex'] = 10;
-
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new BATCH('member');
         $batch->showlist($query,'table',$template);
 
         echo '<h3>' . _MEMBERS_NEW .'</h3>';
@@ -2645,7 +2648,7 @@ class ADMIN {
 
         $manager->loadClass("ENCAPSULATE");
         $batch = new BATCH('team');
-        $batch->showlist($query, 'table', $template);
+        $batch->showList($query, 'table', $template);
 
         ?>
             <h3><?php echo _TEAM_ADDNEW?></h3>
@@ -2672,7 +2675,7 @@ class ADMIN {
                 <td><?php
                     $template['name'] = 'memberid';
                     $template['tabindex'] = 10000;
-                    showlist($query,'select',$template);
+                    showlist_by_query($query,'select',$template);
                 ?></td>
             </tr><tr>
                 <td><?php echo _TEAM_ADMIN?><?php help('teamadmin'); ?></td>
@@ -2908,12 +2911,11 @@ class ADMIN {
             </td>
             <td>
                 <?php
-                    $query =  'SELECT sdname as text, sdnumber as value'
-                           . ' FROM '.sql_table('skin_desc');
+                    $query =  'SELECT sdname as text, sdnumber as value FROM '.sql_table('skin_desc');
                     $template['name'] = 'defskin';
                     $template['selected'] = $blog->getDefaultSkin();
                     $template['tabindex'] = 50;
-                    showlist($query,'select',$template);
+                    showlist_by_query($query,'select',$template);
                 ?>
 
             </td>
@@ -2993,7 +2995,7 @@ class ADMIN {
                     $template['name'] = 'defcat';
                     $template['selected'] = $blog->getDefaultCategory();
                     $template['tabindex'] = 110;
-                    showlist($query,'select',$template);
+                    showlist_by_query($query,'select',$template);
                 ?>
             </td>
         </tr><tr>
@@ -3919,7 +3921,7 @@ class ADMIN {
                     $template['name'] = 'defskin';
                     $template['tabindex'] = 50;
                     $template['selected'] = $CONF['BaseSkin'];  // set default selected skin to be globally defined base skin
-                    showlist($query,'select',$template);
+                    showlist_by_query($query,'select',$template);
                 ?>
             </td>
         </tr><tr>
@@ -4426,7 +4428,7 @@ selector();
         $query = 'SELECT * FROM '.sql_table('template_desc').' ORDER BY tdname';
         $template['content'] = 'templatelist';
         $template['tabindex'] = 10;
-        showlist($query,'table',$template);
+        showlist_by_query($query,'table',$template);
 
         echo '<h3>' . _TEMPLATE_NEW_TITLE . '</h3>';
 
@@ -4862,7 +4864,7 @@ selector();
         $query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname';
         $template['content'] = 'skinlist';
         $template['tabindex'] = 10;
-        showlist($query,'table',$template);
+        showlist_by_query($query,'table',$template);
 
         echo '<h3>' . _SKIN_NEW_TITLE . '</h3>';
 
@@ -5236,10 +5238,10 @@ selector();
 
         echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
         $query = 'SELECT bshortname, bname FROM '.sql_table('blog');
-            showlist($query,'table',array('content'=>'shortblognames'));
+            showlist_by_query($query,'table',array('content'=>'shortblognames'));
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
-            showlist($query,'table',array('content'=>'shortnames'));
+            showlist_by_query($query,'table',array('content'=>'shortnames'));
 		echo '</div>';
         $this->pagefoot();
     }
@@ -5664,7 +5666,7 @@ selector();
                     $template['name'] = 'DefaultBlog';
                     $template['selected'] = $CONF['DefaultBlog'];
                     $template['tabindex'] = 10;
-                    showlist($query,'select',$template);
+                    showlist_by_query($query,'select',$template);
                 ?>
             </td>
         </tr><tr>
@@ -5676,7 +5678,7 @@ selector();
                     $template['name'] = 'BaseSkin';
                     $template['selected'] = $CONF['BaseSkin'];
                     $template['tabindex'] = 1;
-                    showlist($query,'select',$template);
+                    showlist_by_query($query,'select',$template);
                 ?>
             </td>
         </tr><tr>
@@ -6591,7 +6593,7 @@ selector();
                         $template['shorten'] = 10;
                         $template['shortenel'] = '';
                         $template['javascript'] = 'onchange="return form.submit()"';
-                        showlist($query,'select',$template);
+                        showlist_by_query($query,'select',$template);
 
                     echo '</div></form>';
 
@@ -6811,7 +6813,7 @@ selector();
 
         $query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
         $template['content'] = 'actionlist';
-        $amount = showlist($query,'table',$template);
+        $amount = showlist_by_query($query,'table',$template);
 
         $this->pagefoot();
 
@@ -6837,7 +6839,7 @@ selector();
 
         $query =  'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid.' ORDER BY iprange';
         $template['content'] = 'banlist';
-        $amount = showlist($query,'table',$template);
+        $amount = showlist_by_query($query,'table',$template);
 
         if ($amount == 0)
             echo _BAN_NONE;
@@ -7211,7 +7213,7 @@ selector();
 
         $template['content'] = 'pluginlist';
         $template['tabindex'] = 10;
-        showlist($query, 'table', $template);
+        showlist_by_query($query, 'table', $template);
 
 ?>
             <h3><?php echo _PLUGS_TITLE_UPDATE?></h3>
@@ -7761,7 +7763,7 @@ selector();
         $manager->notify('PrePluginOptionsEdit', $param);
 
         $template['content'] = 'plugoptionlist';
-        $amount = showlist($aOptions,'table',$template);
+        $amount = showlist_by_array($aOptions,'table',$template);
         if ($amount == 0)
             echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';
 
