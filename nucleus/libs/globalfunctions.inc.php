@@ -2410,6 +2410,7 @@ function getValidLanguage($lang)
 
 function parseText($tpl='',$ph=array()) { // $ph is placeholders
     foreach($ph as $k=>$v) {
+        if(strpos($query,'<%')===false) break;
         $tpl = str_replace("<%{$k}%>", $v, $tpl);
     }
     return $tpl;
