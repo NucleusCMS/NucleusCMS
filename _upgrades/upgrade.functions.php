@@ -391,3 +391,30 @@ if(!function_exists('sql_existTableColumnName')) {
         return $items;
     }
 }
+
+function upgrade_remove_RefNew($filename)
+{
+    if (!is_file($filename)
+       || !($src = file_get_contents($filename)))
+        return ;
+    $pattern = '/(\s*=\s*)&(\s*new\s)/ms';
+    if (preg_match($pattern, $src))
+    {
+        $src_new = preg_replace($pattern, '\\1\\2', $src);
+        $len = strlen($src_new);
+        if (($len > 0) && ($len != strlen($src)))
+        {
+            file_put_contents($filename, $src_new);
+        }
+    }
+}
+
+function upgrade_check_action_php()
+{
+    static $checked = false;
+    if ($checked)
+        return;
+    global $DIR_NUCLEUS;
+    $checked = true;
+    upgrade_remove_RefNew($DIR_NUCLEUS . '../action.php');
+}
