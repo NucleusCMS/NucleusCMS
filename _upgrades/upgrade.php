@@ -88,6 +88,11 @@ switch($from) {
         break;
 }
 
+global $upgrade_failures;
+if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures))
+{
+    upgrade_check_action_php();
+}
 
 
 upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );
