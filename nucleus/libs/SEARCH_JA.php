@@ -1,25 +1,29 @@
 <?php
 
 class SEARCH_JA extends SEARCH {
-    public function SEARCH($text) { $this->__construct($text); }
-    function __construct($text) {
+    
+    private $encoding;
+    
+    public function SEARCH($keywords) { $this->__construct($keywords); }
+    
+    function __construct($keywords) {
+        
         global $blogid;
 
-        $this->encoding = strtolower(preg_replace('|[^a-z0-9-_]|i', '', _CHARSET));
+        $this->encoding = strtolower(preg_replace('/[^a-z0-9-_]/i', '', _CHARSET));
         if ($this->encoding != 'utf-8') {
-            $text = mb_convert_encoding($text, 'UTF-8', $this->encoding);
+            $keywords = mb_convert_encoding($keywords, 'UTF-8', $this->encoding);
         }
-        $text = str_replace ("\xE3\x80\x80",' ',$text);
-        $text = preg_replace ("/[<>=?!#^()[\]:;\\%]/",'',$text);
+        $keywords = str_replace ("\xE3\x80\x80",' ',$keywords);
+        $keywords = preg_replace ("/[<>=?!#^()[\]:;\\%]/",'',$keywords);
 
         $this->ascii  = '[\x00-\x7F]';
         $this->two    = '[\xC0-\xDF][\x80-\xBF]';
         $this->three  = '[\xE0-\xEF][\x80-\xBF][\x80-\xBF]';
 
-        $this->marked = $this->boolean_mark_atoms($text);
+        $this->marked = $this->boolean_mark_atoms($keywords);
 
-        $this->querystring  = $text;
-        $this->inclusive    = $this->boolean_inclusive_atoms($text);
+        $this->inclusive    = $this->boolean_inclusive_atoms($keywords);
         $this->blogs        = array();
 
         // get all public searchable blogs, no matter what, include the current blog allways.
@@ -44,70 +48,74 @@ class SEARCH_JA extends SEARCH {
         return $result;
     }
 
-    function boolean_sql_where($field) {
-        $result = $this->marked;
-        $result = $this->boolean_sql_where_short($result, $field);
+    function boolean_sql_where($fields='') {
+        
+        if($fields) $this->fields = $fields;
+        
+        $result = $this->boolean_sql_where_short($this->marked);
         if ($this->encoding != 'utf-8') {
             $result = mb_convert_encoding($result, $this->encoding, 'UTF-8');
         }
         return $result;
     }
 
-    function boolean_mark_atoms($string) {
-        $result = preg_replace("/([[:space:]]{2,})/", ' ', trim($string));
+    function boolean_mark_atoms($keywords) {
+        $keywords = preg_replace("/([[:space:]]{2,})/", ' ', trim($keywords));
 
         /* convert normal boolean operators to shortened syntax */
-        $result = str_ireplace(array(' not ',' and ',' or '), array(' -',' ',','), $result);
+        $keywords = str_ireplace(array(' not ',' and ',' or '), array(' -',' ',','), $keywords);
 
         /* strip excessive whitespace */
-        $result = str_replace(array(' ,', ', '), ',', $result);
-        $result = str_replace(array('- ','+'), array('-',''), $result);
+        $keywords = str_replace(array(' ,', ', '), ',', $keywords);
+        $keywords = str_replace(array('- ','+'), array('-',''), $keywords);
 
-        return $result;
+        return $keywords;
 }
 
-    function boolean_sql_where_short($input_value, $field) {
-        $fields   = explode(',', $field);
+    function boolean_sql_where_short($input_value) {
+        
+        $fields   = explode(',', $this->fields);
         $keywords = explode(' ', $input_value);
-
+        
         $ph['keyword'] = sql_real_escape_string(array_shift($keywords));
+        
+        $tpl_ascii  = "(i.<%field%> LIKE '%<%keyword%>%')";
+        $tpl_binary = "(i.<%field%> LIKE BINARY '%<%keyword%>%')";
+        
         $_ = array();
+        $is_ascii = preg_match('/[0-9a-zA-Z]+/', $ph['keyword']);
         foreach($fields as $field) {
             $ph['field'] = $field;
-            if(preg_match('/[0-9a-zA-Z]+/', $ph['keyword']))
-                $_[] = parseQuery("(i.<%field%> LIKE '%<%keyword%>%') ", $ph);
-            else
-                $_[] = parseQuery("(i.<%field%> LIKE BINARY '%<%keyword%>%') ", $ph);
+            if($is_ascii) $_[] = parseQuery($tpl_ascii, $ph);
+            else          $_[] = parseQuery($tpl_binary, $ph);
         }
+        
         $like = array();
-        $like[] = '('.join(' OR ',$_).')';
+        $like[] = sprintf('(%s)', join(' OR ',$_));
         
         foreach ($keywords as $keyword) {
-            $ascii_only = preg_match('/[0-9a-zA-Z]+/', $keyword); // 英数字のみの場合は大文字小文字を判別しない曖昧検索
+            $is_ascii = preg_match('/[0-9a-zA-Z]+/', $keyword); // 英数字のみの場合は大文字小文字を判別しない曖昧検索
             $ph['keyword'] = sql_real_escape_string(ltrim($keyword, ',-'));
             $_ = array();
             
-            if(substr($keyword,0,1) == '-'){
+            if(substr($keyword,0,1) == '-') {
                 foreach($fields as $field) {
                     $ph['field'] = $field;
-                    if($ascii_only)
-                        $_[] = parseQuery(" NOT(i.<%field%> LIKE '%<%keyword%>%') ", $ph);
-                    else
-                        $_[] = parseQuery(" NOT(i.<%field%> LIKE BINARY '%<%keyword%>%') ", $ph);
+                    if($is_ascii) $_[] = parseQuery('NOT'.$tpl_ascii, $ph);
+                    else          $_[] = parseQuery('NOT'.$tpl_binary, $ph);
                 }
-                $like[] =' AND ('. join(' AND ', $_).')';
-            } else {
+                $like[] = sprintf(' AND (%s)', join(' AND ', $_));
+            }
+            else {
                 foreach($fields as $field) {
                     $ph['field'] = $field;
-                    if($ascii_only)
-                        $_[] = parseQuery(" (i.<%field%> LIKE '%<%keyword%>%') ", $ph);
-                    else
-                        $_[] = parseQuery(" (i.<%field%> LIKE BINARY '%<%keyword%>%') ", $ph);
+                    if($is_ascii) $_[] = parseQuery($tpl_ascii, $ph);
+                    else          $_[] = parseQuery($tpl_binary, $ph);
                 }
                 if (substr($keyword, 0, 1) == ',')
-                    $like[] =' OR ('. join(' OR ', $_).')';
+                    $like[] = sprintf(' OR (%s)', join(' OR ', $_));
                 else
-                    $like[] =' AND ('. join(' OR ', $_).')';
+                    $like[] = sprintf(' AND (%s)', join(' OR ', $_));
             }
         }
         

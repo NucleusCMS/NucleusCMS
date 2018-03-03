@@ -525,15 +525,17 @@ class BLOG {
      * @note
      *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
-    function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
+    function getSqlSearch($keywords, $amountMonths = 0, &$highlight, $mode = '')
     {
         global $DIR_LIBS;
         
         if (stripos(getLanguageName(),'japanese')!==false) {
             include_once("{$DIR_LIBS}SEARCH_JA.php");
-            $searchclass = new SEARCH_JA($query);
+            $searchclass = new SEARCH_JA($keywords);
         }
-        else $searchclass = new SEARCH($query);
+        else $searchclass = new SEARCH($keywords);
+        
+        $searchclass->set('fields','ititle,ibody,imore');
 
         $highlight = $searchclass->inclusive;
 
@@ -542,23 +544,25 @@ class BLOG {
             return '';
 
 
-        $where  = $searchclass->boolean_sql_where('ititle,ibody,imore');
-        $select = $searchclass->boolean_sql_select('ititle,ibody,imore');
+        $where  = $searchclass->boolean_sql_where();
+        $select = $searchclass->boolean_sql_select();
 
         // get list of blogs to search
-        $blogs      = $searchclass->blogs;      // array containing blogs that always need to be included
-        $blogs[]    = $this->getID();           // also search current blog (duh)
-        $blogs      = array_unique($blogs);     // remove duplicates
+        $blogs   = $searchclass->blogs;  // array containing blogs that always need to be included
+        $blogs[] = $this->getID();       // also search current blog (duh)
+        $blogs   = array_unique($blogs); // remove duplicates
         $selectblogs = '';
         if (count($blogs) > 0)
-            $selectblogs = ' and i.iblog in (' . implode(',', $blogs) . ')';
+            $selectblogs = ' AND i.iblog IN (' . join(',', $blogs) . ')';
 
         if ($mode == '')
         {
             $query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
-            if ($select)
+            if ($select) {
                 $query .= ', '.$select. ' as score ';
-        } else {
+            }
+        }
+        else {
             $query = 'SELECT COUNT(*) as result ';
         }
 
@@ -1476,7 +1480,7 @@ class BLOG {
             if (intval($value)) $items[] = intval($value);
         }
         if (!count($items)) return '';
-        //$itemlist = implode(',',$items);
+        //$itemlist = join(',',$items);
         $i = count($items);
         $query = '';
         foreach ($items as $inumber) {
