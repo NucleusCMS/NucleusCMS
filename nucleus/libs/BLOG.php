@@ -461,7 +461,7 @@ class BLOG {
     /**
      * Searches all months of this blog for the given query
      *
-     * @param $query
+     * @param $keywords
      *      search query
      * @param $template
      *      template to be used (__NAME__ of the template)
@@ -474,17 +474,17 @@ class BLOG {
      * @returns
      *      amount of hits found
      */
-    function search($query, $template, $amountMonths, $maxresults, $startpos) {
+    function search($keywords, $template, $amountMonths, $maxresults, $startpos) {
         global $CONF, $manager;
 
         $highlight  = '';
-        $sqlquery   = $this->getSqlSearch($query, $amountMonths, $highlight);
+        $sqlquery   = $this->getSqlSearch($keywords, $amountMonths, $highlight);
 
         if ($sqlquery == '')
         {
             // no query -> show everything
             $extraquery = '';
-            $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $query, 1, 1);
+            $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $keywords, 1, 1);
         } else {
 
             // add LIMIT to query (to split search results into pages)
@@ -499,7 +499,7 @@ class BLOG {
             {
                 $template =& $manager->getTemplate($template);
                 $vars = array(
-                    'query'     => hsc($query),
+                    'query'     => hsc($keywords),
                     'blogid'    => $this->getID()
                 );
                 echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'],$vars);
@@ -531,35 +531,39 @@ class BLOG {
         
         if (stripos(getLanguageName(),'japanese')!==false) {
             include_once("{$DIR_LIBS}SEARCH_JA.php");
-            $searchclass = new SEARCH_JA($keywords);
+            $search = new SEARCH_JA($keywords);
         }
-        else $searchclass = new SEARCH($keywords);
+        else $search = new SEARCH($keywords);
         
-        $searchclass->set('fields','ititle,ibody,imore');
-
-        $highlight = $searchclass->inclusive;
+        $search->set('fields','ititle,ibody,imore');
+        
+        $highlight = $search->highlight;
 
         // if querystring is empty, return empty string
-        if ($searchclass->inclusive == '')
+        if ($search->highlight == '')
             return '';
 
 
-        $where  = $searchclass->boolean_sql_where();
-        $select = $searchclass->boolean_sql_select();
+        $where = $search->boolean_sql_where();
+        
+        $score = $search->get_score();
 
         // get list of blogs to search
-        $blogs   = $searchclass->blogs;  // array containing blogs that always need to be included
-        $blogs[] = $this->getID();       // also search current blog (duh)
-        $blogs   = array_unique($blogs); // remove duplicates
-        $selectblogs = '';
-        if (count($blogs) > 0)
-            $selectblogs = ' AND i.iblog IN (' . join(',', $blogs) . ')';
+        $blogs   = $search->get_blogs();  // array containing blogs that always need to be included
+        if(!isset($blogs[$this->getID()])) {
+            $blogs[] = $this->getID();    // also search current blog (duh)
+        }
+        
+        if (1 < count($blogs))
+            $selectblogs = sprintf(' AND i.iblog IN (%s)', join(',', $blogs));
+        else
+            $selectblogs = sprintf(' AND i.iblog=%s', $this->getID());
 
         if ($mode == '')
         {
             $query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
-            if ($select) {
-                $query .= ', '.$select. ' as score ';
+            if ($score) {
+                $query .= ', '.$score. ' as score ';
             }
         }
         else {
@@ -585,8 +589,8 @@ class BLOG {
 
         if ($mode == '')
         {
-            if ($select) $query .= ' ORDER BY score DESC';
-            else         $query .= ' ORDER BY i.itime DESC ';
+            if ($score) $query .= ' ORDER BY score DESC';
+            else        $query .= ' ORDER BY i.itime DESC ';
         }
         return $query;
     }

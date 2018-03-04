@@ -23,119 +23,104 @@
 
 class SEARCH {
 
-    public $marked;
-    public $inclusive;
-    public $blogs;
+    public $highlight;
     public $fields;
+    public $keywords;
+    public $min_word_len;
 
     public function SEARCH($keywords) { $this->__construct($keywords); }
     
     public function __construct($keywords) {
         global $blogid;
 
-        $keywords = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/",'',$keywords);
-
-        $this->field     = 'ititle,ibody,imore';
+        $this->field = 'ititle,ibody,imore';
         
-        $this->marked    = $this->boolean_mark_atoms($keywords);
-        $this->inclusive = $this->boolean_inclusive_atoms($keywords);
-        $this->blogs     = array();
-
-        // get all public searchable blogs, no matter what, include the current blog allways.
-        $res = sql_query( parseQuery('SELECT bnumber FROM <%prefix%>blog WHERE bincludesearch=1') );
-        while ($obj = sql_fetch_object($res)) {
-            $this->blogs[] = intval($obj->bnumber);
-        }
+        $this->min_word_len = $this->get_min_word_len();
+        
+        $keywords = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/",'',$keywords);
+        $this->keywords = $this->_prepare($keywords);
+        $this->highlight = $this->get_highlight_words();
     }
 
+    public function get_blogs() {
+        // get all public searchable blogs, no matter what, include the current blog allways.
+        $res = sql_query( parseQuery('SELECT bnumber FROM <%prefix%>blog WHERE bincludesearch=1') );
+        $blogs = array();
+        while ($obj = sql_fetch_object($res)) {
+            $bnumber = (int)$obj->bnumber;
+            $blogs[$bnumber] = $bnumber;
+        }
+        return $blogs;
+    }
+    
     public function set($key, $value) {
         $this->$key = $value;
     }
     
-    public function  boolean_sql_select($fields=''){
+    public function  get_score($fields=''){
         
-        if (!strlen($this->inclusive) ) return false;
+        if (!strlen($this->highlight) ) return false;
         
         if ($fields) $this->fields = $fields;
         
-        $min_word_len = $this->get_min_word_len();
-        
-        $stringsum_long = '';
-        /* build sql for determining score for each record */
-        $keywords = explode(' ',$this->inclusive);
-        foreach ($keywords as $keyword) {
-            if($min_word_len <= strlen($keyword)) {
-                $stringsum_long .=  sprintf(' %s ', $keyword);
-            } else {
-                $stringsum_a[] = sprintf(' %s ', $this->boolean_sql_select_short($keyword));
+        preg_match_all('/([\-\+a-zA-Z0-9]+)/', $this->keywords, $keywords);
+        $m_against_stmt = array();
+        foreach($keywords[1] as $keyword) {
+            if(preg_match('@[0-9a-zA-Z\-\+]+@',$keyword) && $this->min_word_len <= strlen(trim($keyword,'-+ '))) {
+                $m_against_stmt[] = $keyword;
+            }
+            if(substr($keyword,0,1)!=='-') {
+                $score[] = sprintf(' %s ', $this->score_for_short_str($keyword));
             }
         }
-        
-        if(strlen($stringsum_long)>0) {
-            $stringsum_long = sql_quote_string($stringsum_long);
-            $stringsum_a[] = sprintf(' match (%s) against (%s) ', $this->fields, $stringsum_long);
+        if($m_against_stmt) {
+            $ph['field']    = $this->fields;
+            $ph['keywords'] = sql_quote_string(join(' ', $m_against_stmt));
+            $ph['score2'] = join(' + ',$score);
+            return parseQuery('<%score2%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph);
         }
-        return join('+', $stringsum_a);
     }
 
     public function get_min_word_len() {
+        
         $res = sql_query( parseQuery("SHOW TABLE STATUS LIKE '<%prefix%>blog'") );
-        $min_word_len = 4;
-        if ($res) {
+        if (!$res) return 4;
+        
+        $row = sql_fetch_assoc($res);
+        if ($row['Engine'] == 'InnoDB') {
+            return 3;
+        }
+        elseif ($row['Engine'] == 'MyISAM') {
+            $rs = sql_query("SHOW VARIABLES LIKE 'ft_min_word_len'");
             $row = sql_fetch_assoc($res);
-            if ($row['Engine'] == 'InnoDB') {
-                $min_word_len = 3;
-            }
-            elseif ($row['Engine'] == 'MyISAM') {
-               $rs = sql_query("SHOW VARIABLES LIKE 'ft_min_word_len'");
-               $row = sql_fetch_assoc($res);
-               if ($row) $min_word_len = max($row['Value'], 1);
+            if ($row) {
+                return max($row['Value'], 1);
             }
         }
-        return $min_word_len;
+        
+        return 4;
     }
     
-    public function boolean_mark_atoms($keywords){
-        
-        $keywords = $this->_prepare($keywords);
-
-        // strip excessive whitespace
-        $keywords = str_replace(array('( ', ' )'), array('(', ')'), $keywords);
-
-        // apply arbitrary function to all 'word' atoms
-        $keywords_array = preg_split('/ +/', $keywords);
-
-        foreach($keywords_array as $keyword) {
-            $_[] = sprintf("#foo#%s#bar#", $keyword);
-        }
-
-        $keywords = str_replace(array(' ', ',', ' -'), array(' AND ',' OR ',' NOT '), join(' ', $_) );
-        
-        return $keywords;
-    }
-
-    public function boolean_inclusive_atoms($string) {
-        
-        $keywords = $this->_prepare($string);
+    public function get_highlight_words() {
         
         /* strip exlusive atoms */
-        $keywords = preg_replace("#\-\([A-Za-z0-9]{1,}[A-Za-z0-9\-\.\_\,]{0,}\)#", '', $keywords);
-        $keywords = str_replace(array('(', ')', ','), ' ', $keywords);
+        $keywords =  explode(' ', $this->keywords);
+        foreach($keywords as $i=>$keyword) {
+            $keywords[$i] = ltrim($keyword,'-+');
+        }
 
-        return $keywords;
+        return join(' ', $keywords);
     }
-
+    
     public function _prepare($keywords) {
-        $keywords = preg_replace("/([[:space:]]{2,})/", ' ', trim($keywords));
+        $keywords = preg_replace("/(  +)/", ' ', trim($keywords));
         
         /* convert normal boolean operators to shortened syntax */
         $keywords = preg_replace('/ *not */i', ' -', $keywords);
-        $keywords = preg_replace('/ *and */i', ' ', $keywords);
-        $keywords = preg_replace('/ *or */i', ',', $keywords);
+        $keywords = preg_replace('/ *and */i', ' +', $keywords);
+        $keywords = preg_replace('/ *or */i', ' ', $keywords);
         
         $keywords = preg_replace('/ *, */', ',', $keywords);
-        $keywords = str_replace('- ', '-', $keywords);
-        $keywords = str_replace('+', '', $keywords);
         
         return trim($keywords);
     }
@@ -144,35 +129,61 @@ class SEARCH {
         
         if ($fields) $this->fields = $fields;
         
-        $result = preg_replace_callback("/#foo#(.{4,})#bar#/", array($this,'boolean_sql_where_cb1'), $this->marked);
-        
-        return preg_replace_callback(
-            "/#foo#(.{1,3})#bar#/", array($this,'boolean_sql_where_cb2'), $result);
+        preg_match_all('/([^ ]+)/', $this->keywords, $keywords);
+        $m_against_stmt = array();
+        $like_stmt      = array();
+        foreach($keywords[1] as $keyword) {
+            if(preg_match('@[0-9a-zA-Z\-\+]+@',$keyword) && $this->min_word_len <= strlen(trim($keyword,'-+ '))) {
+                $m_against_stmt[] = $keyword;
+            }
+            else  $like_stmt[]    = $keyword;
+        }
+        $_ = array();
+        if($m_against_stmt) $_[] = $this->get_against_stmt(join(' ', $m_against_stmt));
+        if($like_stmt) {
+            foreach($like_stmt as $keyword) {
+                $_[] = $this->get_like_stmt($keyword);
+            }
+        }
+        return join(' AND ', $_);
     }
 
-    public function boolean_sql_where_cb1($keyword) {
+    public function get_against_stmt($keyword) {
         $ph['field']    = $this->fields;
-        $ph['keywords'] = sql_quote_string($keyword[1]);
-        return parseQuery(' match (<%field%>) against (<%keywords%>) > 0 ', $ph);
+        $ph['keywords'] = sql_quote_string($keyword);
+        return parseQuery(' match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) > 0 ', $ph);
     }
 
-    function boolean_sql_where_cb2($keyword) {
-        $ph['like'] = $this->boolean_sql_where_short($keyword[1]);
+    function get_like_stmt($keyword) {
+        $ph['like'] = $this->boolean_sql_where_short($keyword);
         return parseQuery(' (<%like%>) ', $ph);
     }
 
     public function boolean_sql_where_short($keyword) {
+        
+        $isNotLike = (substr($keyword,0,1)==='-');
+        
+        $keyword = ltrim($keyword,'-+');
+        
         $fields = explode(',',$this->fields);
         $ph['keyword'] = sql_real_escape_string($keyword);
         $like = array();
         foreach($fields as $field){
             $ph['field'] = $field;
-            $like[] = parseQuery(" <%field%> LIKE '% <%keyword%> %' ", $ph);
+            if($isNotLike)
+                $like[] = parseQuery(" <%field%> NOT LIKE '%<%keyword%>%' ", $ph);
+            else
+                $like[] = parseQuery(" <%field%> LIKE '%<%keyword%>%' ", $ph);
         }
+        
+        if($isNotLike) {
+            return join(' AND ',$like);
+        }
+        
         return join(' OR ',$like);
     }
 
-    protected function boolean_sql_select_short($keyword) {
+    protected function score_for_short_str($keyword) {
         $fields = explode(',',$this->fields);
         $ph['score_unit_weight'] = .2;
         $score = array();

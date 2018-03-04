@@ -17,13 +17,9 @@ class SEARCH_JA extends SEARCH {
         $keywords = str_replace ("\xE3\x80\x80",' ',$keywords);
         $keywords = preg_replace ("/[<>=?!#^()[\]:;\\%]/",'',$keywords);
 
-        $this->ascii  = '[\x00-\x7F]';
-        $this->two    = '[\xC0-\xDF][\x80-\xBF]';
-        $this->three  = '[\xE0-\xEF][\x80-\xBF][\x80-\xBF]';
-
         $this->marked = $this->boolean_mark_atoms($keywords);
 
-        $this->inclusive    = $this->boolean_inclusive_atoms($keywords);
+        $this->highlight    = $this->get_highlight_words($keywords);
         $this->blogs        = array();
 
         // get all public searchable blogs, no matter what, include the current blog allways.
@@ -33,22 +29,26 @@ class SEARCH_JA extends SEARCH {
         }
     }
 
-    function boolean_inclusive_atoms($string) {
+    public function get_score($fields=''){
+        return false;
+    }
+    
+    public function get_highlight_words($string) {
         $result = $this->boolean_mark_atoms($string);
         
         /* strip exlusive atoms */
-        $pattern = "#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#";
+        $two    = '[\xC0-\xDF][\x80-\xBF]';
+        $three  = '[\xE0-\xEF][\x80-\xBF][\x80-\xBF]';
+        $pattern = "#\-\(([A-Za-z0-9]|$two|$three){1,}([A-Za-z0-9\-\.\_\,]|$two|$three){0,}\)#";
         $result = preg_replace($pattern, '', $result);
-        
-        $result = str_replace(array('(', ')', ','), ' ', $result);
         if ($this->encoding != 'utf-8') {
             $result = mb_convert_encoding($result, $this->encoding, 'UTF-8');
         }
-
+        $result = str_replace(array('(', ')', ','), ' ', $result);
         return $result;
     }
 
-    function boolean_sql_where($fields='') {
+    public function boolean_sql_where($fields='') {
         
         if($fields) $this->fields = $fields;
         
@@ -59,7 +59,7 @@ class SEARCH_JA extends SEARCH {
         return $result;
     }
 
-    function boolean_mark_atoms($keywords) {
+    public function boolean_mark_atoms($keywords) {
         $keywords = preg_replace("/([[:space:]]{2,})/", ' ', trim($keywords));
 
         /* convert normal boolean operators to shortened syntax */
@@ -72,7 +72,7 @@ class SEARCH_JA extends SEARCH {
         return $keywords;
 }
 
-    function boolean_sql_where_short($input_value) {
+    public function boolean_sql_where_short($input_value) {
         
         $fields   = explode(',', $this->fields);
         $keywords = explode(' ', $input_value);
