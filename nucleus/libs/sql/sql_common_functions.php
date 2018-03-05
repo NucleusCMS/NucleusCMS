@@ -218,3 +218,22 @@
         
         return sql_query("UPDATE {$table} SET {$pairs} {$where}");
     }
+    
+    function _getFieldsStringFromArray($fields=array()) {
+        
+        if(empty($fields)) return '*';
+        
+        $_ = array();
+        foreach($fields as $k=>$v) {
+            if(preg_match('@^[0-9]+$@',$k)) $_[] = $v;
+            elseif(strpos($v,',')!==false)  $_[] = $v;
+            elseif(strpos($v,' ')!==false)  $_[] = $v;
+            elseif($k!==$v)                 $_[] = "{$v} as {$k}";
+            else                            $_[] = $v;
+        }
+        if(stripos($_[0],'distinct')===0) {
+            $_[0] = preg_replace('@^distinct[, ]*@i','',$_[0]);
+        }
+        return join(',', $_);
+    }
+    
