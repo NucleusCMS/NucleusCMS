@@ -37,11 +37,15 @@ class SEARCH {
         
         $this->min_word_len = $this->get_min_word_len();
         
-        $keywords = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/",'',$keywords);
+        $keywords = $this->strip_chars($keywords);
         $this->keywords = $this->_prepare($keywords);
         $this->highlight = $this->get_highlight_words();
     }
 
+    private function strip_chars($keywords) {
+        return preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/",'',$keywords);
+    }
+    
     public function get_blogs() {
         // get all public searchable blogs, no matter what, include the current blog allways.
         $res = sql_query( parseQuery('SELECT bnumber FROM <%prefix%>blog WHERE bincludesearch=1') );
@@ -66,11 +70,11 @@ class SEARCH {
         preg_match_all('/([\-\+a-zA-Z0-9]+)/', $this->keywords, $keywords);
         $m_against_stmt = array();
         foreach($keywords[1] as $keyword) {
-            if(preg_match('@[0-9a-zA-Z\-\+]+@',$keyword) && $this->min_word_len <= strlen(trim($keyword,'-+ '))) {
+            if($this->is_long_word($keyword)) {
                 $m_against_stmt[] = $keyword;
             }
             if(substr($keyword,0,1)!=='-') {
-                $score[] = sprintf(' %s ', $this->score_for_short_str($keyword));
+                $score[] = sprintf(' %s ', $this->score_for_like_stmt($keyword));
             }
         }
         if($m_against_stmt) {
@@ -81,6 +85,10 @@ class SEARCH {
         }
     }
 
+    private function is_long_word($keyword) {
+        return ($this->min_word_len <= strlen(trim($keyword,'-+ ')));
+    }
+    
     public function get_min_word_len() {
         
         $res = sql_query( parseQuery("SHOW TABLE STATUS LIKE '<%prefix%>blog'") );
@@ -117,6 +125,7 @@ class SEARCH {
         
         /* convert normal boolean operators to shortened syntax */
         $keywords = preg_replace('/ *not */i', ' -', $keywords);
+        $keywords = str_replace('- ', '-', $keywords);
         $keywords = preg_replace('/ *and */i', ' +', $keywords);
         $keywords = preg_replace('/ *or */i', ' ', $keywords);
         
@@ -133,34 +142,28 @@ class SEARCH {
         $m_against_stmt = array();
         $like_stmt      = array();
         foreach($keywords[1] as $keyword) {
-            if(preg_match('@[0-9a-zA-Z\-\+]+@',$keyword) && $this->min_word_len <= strlen(trim($keyword,'-+ '))) {
+            if($this->is_long_word($keyword)) {
                 $m_against_stmt[] = $keyword;
             }
             else  $like_stmt[]    = $keyword;
         }
         $_ = array();
-        if($m_against_stmt) $_[] = $this->get_against_stmt(join(' ', $m_against_stmt));
+        if($m_against_stmt) $_[] = $this->get_ft_search_stmt(join(' ', $m_against_stmt));
         if($like_stmt) {
             foreach($like_stmt as $keyword) {
-                $_[] = $this->get_like_stmt($keyword);
+                $_[] = $this->get_like_search_stmt($keyword);
             }
         }
         return join(' AND ', $_);
     }
 
-    public function get_against_stmt($keyword) {
+    private function get_ft_search_stmt($keyword) {
         $ph['field']    = $this->fields;
         $ph['keywords'] = sql_quote_string($keyword);
         return parseQuery(' match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) > 0 ', $ph);
     }
 
-    function get_like_stmt($keyword) {
-        $ph['like'] = $this->boolean_sql_where_short($keyword);
-        return parseQuery(' (<%like%>) ', $ph);
-    }
-
-    public function boolean_sql_where_short($keyword) {
-        
+    private function get_like_search_stmt($keyword) {
         $isNotLike = (substr($keyword,0,1)==='-');
         
         $keyword = ltrim($keyword,'-+');
@@ -177,17 +180,20 @@ class SEARCH {
         }
         
         if($isNotLike) {
-            return join(' AND ',$like);
+            $ph['likes'] = join(' AND ',$like);
+        }
+        else {
+            $ph['likes'] = join(' OR ',$like);
         }
         
-        return join(' OR ',$like);
+        return parseQuery(' (<%likes%>) ', $ph);
     }
 
-    protected function score_for_short_str($keyword) {
+    private function score_for_like_stmt($keyword) {
+        
         $fields = explode(',',$this->fields);
-        $ph['score_unit_weight'] = .2;
         $score = array();
-        $tpl = " <%score_unit_weight%>*(LENGTH(<%field%>) - LENGTH(REPLACE(LOWER(<%field%>), LOWER(<%keyword%>), '')))/LENGTH(<%keyword%>) ";
+        $tpl = " 0.2*(LENGTH(<%field%>) - LENGTH(REPLACE(LOWER(<%field%>), LOWER(<%keyword%>), '')))/LENGTH(<%keyword%>) ";
         foreach($fields as $field){
             $ph['field']   = sql_real_escape_string($field);
             $ph['keyword'] = sql_quote_string($keyword);
