@@ -537,62 +537,63 @@ class BLOG {
         
         $search->set('fields','ititle,ibody,imore');
         
-        $highlight = $search->highlight;
+        $highlight = $search->remove_boolean_operators();
 
         // if querystring is empty, return empty string
-        if ($search->highlight == '')
+        if ($highlight == '')
             return '';
 
-
-        $where = $search->boolean_sql_where();
-        
         $score = $search->get_score();
-
-        // get list of blogs to search
-        $blogs   = $search->get_blogs();  // array containing blogs that always need to be included
-        if(!isset($blogs[$this->getID()])) {
-            $blogs[] = $this->getID();    // also search current blog (duh)
-        }
         
-        if (1 < count($blogs))
-            $selectblogs = sprintf(' AND i.iblog IN (%s)', join(',', $blogs));
-        else
-            $selectblogs = sprintf(' AND i.iblog=%s', $this->getID());
-
         if ($mode == '')
         {
-            $query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
+            $fields = array();
+            $fields[] = 'i.inumber as itemid, i.ititle as title, i.ibody as body, i.itime, i.imore as more, i.icat as catid, i.iclosed as closed';
+            $fields[] = 'c.cname as category';
+            $fields[] = 'm.mname as author, m.mrealname as authorname, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl';
             if ($score) {
-                $query .= ', '.$score. ' as score ';
+                $fields[] = $score. ' as score ';
             }
         }
         else {
-            $query = 'SELECT COUNT(*) as result ';
+            $fields = 'COUNT(*) as result ';
         }
 
-        $query .= parseQuery(' FROM <%prefix%>item as i, <%prefix%>member as m, <%prefix%>category as c')
-               . ' WHERE i.iauthor=m.mnumber'
-               . ' AND i.icat=c.catid'
-               . ' AND i.idraft=0'  // exclude drafts
-               . $selectblogs
+        $from = array();
+        $from[] = '<%prefix%>item i';
+        $from[] = 'LEFT JOIN <%prefix%>member m ON i.iauthor=m.mnumber';
+        $from[] = 'LEFT JOIN <%prefix%>category c ON i.icat=c.catid';
+        
+        $where = array();
+        $where[] = 'i.idraft=0';  // exclude drafts
+        $blogs   = $search->get_blogs(); // array containing blogs that always need to be included
+        if(!in_array($this->getID(), $blogs)) {
+            $blogs[] = $this->getID();   // also search current blog (duh)
+        }
+        if (1 < count($blogs))
+            $where[] = sprintf('AND i.iblog IN (%s)', join(',', $blogs));
+        else
+            $where[] = sprintf('AND i.iblog=%s', $this->getID());
                     // don't show future items
-               . ' AND i.itime<=' . mysqldate($this->getCorrectTime())
-               . ' AND '.$where;
+        $where[] = 'AND i.itime<=' . mysqldate($this->getCorrectTime());
+        $where[] = 'AND '. $search->get_where_phrase();
 
         // take into account amount of months to search
         if ($amountMonths > 0)
         {
             $localtime = getdate($this->getCorrectTime());
             $timestamp_start = mktime(0,0,0,$localtime['mon'] - $amountMonths,1,$localtime['year']);
-            $query .= ' and i.itime>' . mysqldate($timestamp_start);
+            $where[] = 'AND i.itime>' . mysqldate($timestamp_start);
         }
 
         if ($mode == '')
         {
-            if ($score) $query .= ' ORDER BY score DESC';
-            else        $query .= ' ORDER BY i.itime DESC ';
+            if ($score) $extra = ' ORDER BY score DESC';
+            else        $extra = ' ORDER BY i.itime DESC ';
         }
-        return $query;
+        else $extra = '';
+        
+        return selectQuery($from,$where,$fields,$extra);
     }
 
     /**
