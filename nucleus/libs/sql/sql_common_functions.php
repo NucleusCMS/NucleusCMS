@@ -178,6 +178,19 @@
         return _EXT_MYSQL_EMULATE ? is_object($res) : is_resource($res);
     }
     
+    function selectQuery($table_name, $where='', $fields='*', $extra=array()) {
+        
+        if(is_array($table_name)) $table_name = join(' ', $table_name);
+        $table_name = parseQuery($table_name);
+        if(is_array($fields))     $fields = _getFieldsStringFromArray($fields);
+        if(is_array($where))      $where = join(' ', $where);
+        if(is_array($extra))      $extra = join(' ', $extra);
+        
+        if(trim($where))          $where   = "WHERE {$where}";
+        
+        return "SELECT {$fields} FROM {$table_name} {$where} {$extra}";
+    }
+    
     function updateQuery($table_name, $values, $where='', $extra=array()) {
         
         $table = parseQuery($table);
