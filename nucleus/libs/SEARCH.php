@@ -25,17 +25,19 @@ class SEARCH {
 
     public $fields;
     public $keywords;
+    public $mode; // hybrid | likeonly | fulltext
 
     public function SEARCH($keywords) { $this->__construct($keywords); }
     
     public function __construct($keywords) {
-        $this->field    = 'ititle,ibody,imore';
-        $this->keywords = $this->_prepare($keywords);
+        $this->field = 'ititle,ibody,imore';
+        $this->mode  = 'hybrid';
+        $this->keywords = $this->forge_keywords($keywords);
     }
 
-    private function _prepare($keywords) {
+    public function forge_keywords($keywords) {
         
-        $chars = explode(' ', '+ * / ] [ < > = ? ! # ^ ( ) : ; \\ %');
+        $chars = explode(' ', '+ / ] [ < > = ? ! # ^ ( ) : ; \\ %');
         $keywords = str_replace ($chars, ' ', $keywords);
         
         $keywords = preg_replace('/(  +)/', ' ', trim($keywords));
@@ -49,20 +51,13 @@ class SEARCH {
         return trim($keywords, ', ');
     }
     
-    public function get_blogs() {
-        $res = sql_query( parseQuery('SELECT bnumber FROM <%prefix%>blog WHERE bincludesearch=1') );
-        $blogs = array();
-        while ($obj = sql_fetch_object($res)) {
-            $blogs[] = (int)$obj->bnumber;
-        }
-        return $blogs;
-    }
-    
     public function set($key, $value) {
         $this->$key = $value;
     }
     
-    public function  get_score($fields=''){
+    public function get_score($fields=''){
+        
+        if($this->mode==='likeonly') return false;
         
         if ($fields) $this->fields = $fields;
         
@@ -80,6 +75,7 @@ class SEARCH {
             $ph['field']    = $this->fields;
             $ph['keywords'] = sql_quote_string(ltrim(join(' ', $long_keywords),'+'));
             $ph['like_score'] = join(' + ',$score);
+            //exit(parseQuery('<%like_score%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph));
             return parseQuery('<%like_score%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph);
         }
     }
@@ -95,7 +91,7 @@ class SEARCH {
         else                            return '+'.$keyword;
     }
     
-    public function get_min_word_len() {
+    private function get_min_word_len() {
         
         $res = sql_query( parseQuery("SHOW TABLE STATUS LIKE '<%prefix%>item'") );
         if (!$res) return 4;
@@ -128,19 +124,20 @@ class SEARCH {
         
         if ($fields) $this->fields = $fields;
         
+        if($this->mode==='likeonly') return $this->get_where_phrase_ja($this->keywords);
+        
         $keywords = explode(' ',$this->keywords);
         $long_keywords  = array();
-        $short_keywords = array();
-        foreach($keywords as $keyword) {
+        foreach($keywords as $i=>$keyword) {
             if($this->is_long_word($keyword)) {
                 $long_keywords[] = $this->add_boolean($keyword);
+                unset($keywords[$i]);
             }
-            else  $short_keywords[] = $keyword;
         }
         $_ = array();
         if($long_keywords) $_[] = $this->get_ft_phrase(ltrim(join(' ', $long_keywords),'+'));
-        if($short_keywords) {
-            foreach($short_keywords as $keyword) {
+        if($keywords) {
+            foreach($keywords as $keyword) {
                 $c = substr($keyword,0,1);
                 $like_phrase = $this->get_like_phrase($keyword);
                 if(!$_)         $_[] = $like_phrase;
@@ -151,6 +148,21 @@ class SEARCH {
         return join(' ', $_);
     }
 
+    public function get_where_phrase_ja($keywords) {
+        
+        $keywords = explode(' ',$keywords);
+        
+        $_ = array();
+        foreach($keywords as $keyword) {
+            $c = substr($keyword,0,1);
+            $like_phrase = $this->get_like_phrase($keyword);
+            if(!$_)         $_[] = $like_phrase;
+            elseif($c=='|') $_[] = 'OR' .  $like_phrase;
+            else            $_[] = 'AND' . $like_phrase;
+        }
+        return join(' ', $_);
+    }
+    
     private function get_ft_phrase($long_keywords) {
         $ph['field']    = $this->fields;
         $ph['keywords'] = sql_quote_string($long_keywords);
@@ -158,15 +170,23 @@ class SEARCH {
     }
 
     private function get_like_phrase($keyword) {
+        
         $c = substr($keyword,0,1);
         
         $like = array();
         $fields = explode(',',$this->fields);
-        $ph['keyword'] = sql_real_escape_string(ltrim($keyword,'-+|'));
+        $keyword = sql_real_escape_string(ltrim($keyword,'-+|'));
+        $ph['keyword'] = $keyword;
         foreach($fields as $field){
             $ph['field'] = $field;
-            if($c==='-') $like[] = parseQuery(" <%field%> NOT LIKE '%<%keyword%>%' ", $ph);
-            else         $like[] = parseQuery(" <%field%> LIKE '%<%keyword%>%' ", $ph);
+            if(!preg_match('/[\x80-\xfe]/', $keyword)) {
+                if($c==='-') $like[] = parseQuery("<%field%> NOT LIKE '%<%keyword%>%'", $ph);
+                else         $like[] = parseQuery("<%field%> LIKE '%<%keyword%>%'", $ph);
+            }
+            else {
+                if($c==='-') $like[] = parseQuery("<%field%> NOT LIKE BINARY '%<%keyword%>%'", $ph);
+                else         $like[] = parseQuery("<%field%> LIKE BINARY '%<%keyword%>%'", $ph);
+            }
         }
         
         if($c==='-') $ph['likes'] = join(' AND ',$like);
@@ -174,7 +194,7 @@ class SEARCH {
         
         return parseQuery(' (<%likes%>) ', $ph);
     }
-
+    
     private function score_for_like_phrase($keyword) {
         
         $fields = explode(',',$this->fields);

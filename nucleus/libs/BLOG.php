@@ -529,13 +529,12 @@ class BLOG {
     {
         global $DIR_LIBS;
         
-        if (stripos(getLanguageName(),'japanese')!==false) {
-            include_once("{$DIR_LIBS}SEARCH_JA.php");
-            $search = new SEARCH_JA($keywords);
-        }
-        else $search = new SEARCH($keywords);
-        
+        $search = new SEARCH($keywords);
         $search->set('fields','ititle,ibody,imore');
+        
+        if (stripos(getLanguageName(),'japanese')!==false) {
+            $search->set('mode','likeonly');
+        }
         
         $highlight = $search->remove_boolean_operators();
 
@@ -566,7 +565,7 @@ class BLOG {
         
         $where = array();
         $where[] = 'i.idraft=0';  // exclude drafts
-        $blogs   = $search->get_blogs(); // array containing blogs that always need to be included
+        $blogs = $this->searchableBlogs(); // array containing blogs that always need to be included
         if(!in_array($this->getID(), $blogs)) {
             $blogs[] = $this->getID();   // also search current blog (duh)
         }
@@ -596,6 +595,15 @@ class BLOG {
         return selectQuery($from,$where,$fields,$extra);
     }
 
+    function searchableBlogs() {
+        $res = sql_query( parseQuery('SELECT bnumber FROM <%prefix%>blog WHERE bincludesearch=1') );
+        $blogs = array();
+        while ($obj = sql_fetch_object($res)) {
+            $blogs[] = (int)$obj->bnumber;
+        }
+        return $blogs;
+    }
+    
     /**
      * Returns the SQL query that's normally used to display the blog items on the index type skins
      *
