@@ -72,7 +72,7 @@ class SEARCH {
             if($this->is_long_word($keyword)) {
                 $long_keywords[] = $this->add_boolean($keyword);
             }
-            if(substr($keyword,0,1)!=='-') {
+            elseif(substr($keyword,0,1)!=='-') {
                 $score[] = sprintf(' %s ', $this->score_for_like_phrase($keyword));
             }
         }
