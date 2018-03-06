@@ -25,14 +25,12 @@ class SEARCH {
 
     public $fields;
     public $keywords;
-    public $min_word_len;
 
     public function SEARCH($keywords) { $this->__construct($keywords); }
     
     public function __construct($keywords) {
-        $this->field        = 'ititle,ibody,imore';
-        $this->min_word_len = $this->get_min_word_len();
-        $this->keywords     = $this->_prepare($keywords);
+        $this->field    = 'ititle,ibody,imore';
+        $this->keywords = $this->_prepare($keywords);
     }
 
     private function _prepare($keywords) {
@@ -80,14 +78,14 @@ class SEARCH {
         }
         if($long_keywords) {
             $ph['field']    = $this->fields;
-            $ph['keywords'] = sql_quote_string(join(' ', $long_keywords));
+            $ph['keywords'] = sql_quote_string(ltrim(join(' ', $long_keywords),'+'));
             $ph['like_score'] = join(' + ',$score);
             return parseQuery('<%like_score%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph);
         }
     }
 
     private function is_long_word($keyword) {
-        return ($this->min_word_len <= strlen(trim($keyword,'-+| ')));
+        return ($this->get_min_word_len() <= strlen(trim($keyword,'-+| ')));
     }
     
     private function add_boolean($keyword) {
@@ -135,12 +133,12 @@ class SEARCH {
         $short_keywords = array();
         foreach($keywords as $keyword) {
             if($this->is_long_word($keyword)) {
-                $long_keywords[] = $keyword;
+                $long_keywords[] = $this->add_boolean($keyword);
             }
             else  $short_keywords[] = $keyword;
         }
         $_ = array();
-        if($long_keywords) $_[] = $this->get_ft_phrase(join(' ', $long_keywords));
+        if($long_keywords) $_[] = $this->get_ft_phrase(ltrim(join(' ', $long_keywords),'+'));
         if($short_keywords) {
             foreach($short_keywords as $keyword) {
                 $c = substr($keyword,0,1);
