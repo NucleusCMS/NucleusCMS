@@ -185,7 +185,8 @@ class Utils
                      return FALSE; // Timeout
                 }
                 $str = fgets($c, 500);
-                $data.= $str;
+                if ($str !== FALSE)
+                    $data .= $str;
 
                 // Handling of "traditional" timeout
                 $info = stream_get_meta_data($c);
