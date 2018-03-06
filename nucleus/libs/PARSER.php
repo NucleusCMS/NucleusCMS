@@ -140,6 +140,14 @@ class PARSER {
             $doActionStack[$doActionCount] = "[$doActionCount] {$diff}s - {$hscAction}";
         } else {
             // redirect to plugin action if possible
+//            define(DISABLE_PARSE_NP_PLUGIN, TRUE);
+            if (!defined('DISABLE_PARSE_NP_PLUGIN') || !DISABLE_PARSE_NP_PLUGIN) {
+                if ((strncmp($actionlc, 'np_', 3)==0)
+                    && in_array('plugin', $this->actions)
+                    && ($manager->pluginInstalled($actionlc))) {
+                    $action = substr($action,3);
+                }
+            }
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled("NP_{$action}")) {
                 $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
             } else {
