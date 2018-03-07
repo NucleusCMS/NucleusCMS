@@ -92,15 +92,17 @@ class PARSER {
         if (!$action) return;
 
         // split into action name + arguments
-        if (strstr($action,'(')) {
-            $paramStartPos = strpos($action, '(');
-            $paramText = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
-            $action = substr($action, 0, $paramStartPos);
+        if (strpos($action,'(')!==false) {
+            list($action,$paramText) = explode('(', $action, 2);
+            if(substr($paramText,-1)===')') {
+                $paramText = substr($paramText,0,-1);
+            }
             $params = explode ($this->pdelim, $paramText);
-
             // trim parameters
-             foreach ($params as $key => $value)
-                 { $params[$key] = trim($value); }
+             foreach ($params as $value) {
+                $params[] = trim($value);
+             }
+             $paramText = join(',', $params);
         } else {
             // no parameters
             $params = array();
@@ -119,7 +121,7 @@ class PARSER {
         if ( in_array($actionlc, $this->actions) || $this->norestrictions )
         {
             call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
-        } else if ($action == '_') {
+        } elseif ($action == '_') {
             // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
             global $manager;
             $paramText = trim($paramText);
