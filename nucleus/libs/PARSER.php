@@ -58,7 +58,7 @@ class PARSER {
     /**
      * Parses the given contents and outputs it
      */
-    function parse(&$content) {
+    public function parse(&$content) {
         
         list($left,$right) = explode(',', $this->delim);
         
@@ -80,13 +80,12 @@ class PARSER {
         }
     }
 
-
     /**
       * Called from the parser to handle an action
       * 
       * @param $action name of the action (e.g. blog, image ...)
       */
-    function doAction($action) {
+    public function doAction($action) {
         global $manager, $CONF;
 
         if (!$action) return;
@@ -143,11 +142,11 @@ class PARSER {
             }
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
                 if (!HAS_CATCH_ERROR) {
-                    $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
+                    $this->doAction('plugin('.$action.$this->pdelim.join($this->pdelim,$params).')');
                 } else {
                     try
                     {
-                        $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
+                        $this->doAction('plugin('.$action.$this->pdelim.join($this->pdelim,$params).')');
                     }
                     catch (Error $e)
                     {
@@ -157,14 +156,9 @@ class PARSER {
                             $NP_Name = 'NP_'.$action;
                             $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
                                            $NP_Name, get_class($e), $e->getLine(), $e->getFile());
-                            // debug
-//							error_reporting(E_ALL);
-//							error_reporting(E_ERROR | E_WARNING | E_PARSE);
-//							ini_set('display_errors', 1);
                             if ($CONF['DebugVars'])
                                 var_dump($e->getMessage());
                             ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
-//							ini_set('display_errors','0');
                             if (get_class($e) != 'ArgumentCountError')
                                 throw $e;
                         }
@@ -176,7 +170,7 @@ class PARSER {
                 }
             } else {
                 if ($CONF['DebugVars']==true) {
-                    echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
+                    echo '&lt;%' , $action , '(', join($this->pdelim, $params), ')%&gt;';
                 }
             }
         }
@@ -203,6 +197,4 @@ class PARSER {
         global $manager;
         return $manager->getParserProperty($name);
     }
-
-
 }
