@@ -40,6 +40,7 @@ class SEARCH {
         $chars = explode(' ', '/ ] [ < > = ? ! # ^ ( ) : ; \\ %');
         $keywords = str_replace ($chars, ' ', $keywords);
         
+        $keywords = str_replace('|', ' |',      $keywords);
         $keywords = preg_replace('/(  +)/', ' ', trim($keywords));
         $keywords = str_ireplace(' not ', ' -', $keywords);
         $keywords = str_replace('- ', '-',      $keywords);
