@@ -8,11 +8,6 @@
 <meta name="name" content="<%if(skintype,error)%><%sitevar(name)%><%else%><%blogsetting(name)%><%endif%>" />
 <meta name="description" content="<%if(skintype,error)%><%sitevar(name)%><%else%><%blogsetting(desc)%><%endif%>" />
 
-<!-- prevent caching (can be removed) -->
-<meta http-equiv="Pragma" content="no-cache" />
-<meta http-equiv="Cache-Control" content="no-cache, must-revalidate" />
-<meta http-equiv="Expires" content="-1" />
-
 <!-- site stylesheet (site colors and layout definitions) -->
 <link rel="stylesheet" type="text/css" href="<%skinfile(default_right.css)%>" />
 
