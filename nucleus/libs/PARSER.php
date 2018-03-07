@@ -76,7 +76,7 @@ class PARSER {
             }
             list($action, $html) = explode($right, $piece, 2);
             $this->doAction($action);
-            echo $html;
+            echo preg_replace('@^\n@','',$html);
         }
     }
 
