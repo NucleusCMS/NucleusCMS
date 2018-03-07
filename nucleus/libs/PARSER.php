@@ -68,8 +68,6 @@ class PARSER {
             return;
         }
         
-        if(strpos($content,'<?php')!==false) $content = str_replace('<?php', 'Remove php', $content); // Remove php strings in content
-        
         $pieces = explode($left, $content);
         foreach($pieces as $piece) {
             if(strpos($piece,$right)===false) {
@@ -77,8 +75,7 @@ class PARSER {
                 continue;
             }
             list($action, $html) = explode($right, $piece, 2);
-            if(strpos($action,"'")!==false) $action = str_replace("'","\\'", $action);
-            eval(sprintf("\$this->doAction('%s');", $action));
+            $this->doAction($action);
             echo $html;
         }
     }
