@@ -30,7 +30,7 @@ class SEARCH {
     public function SEARCH($keywords) { $this->__construct($keywords); }
     
     public function __construct($keywords) {
-        $this->field = 'ititle,ibody,imore';
+        $this->fields = 'ititle,ibody,imore';
         $this->mode  = 'hybrid';
         $this->keywords = $this->forge_keywords($keywords);
     }
