@@ -66,17 +66,18 @@ class SEARCH {
         $long_keywords = array();
         foreach($keywords as $keyword) {
             if($this->is_long_word($keyword)) {
-                $long_keywords[] = $this->add_boolean($keyword);
+                $long_keywords[] = $keyword;
             }
             elseif(substr($keyword,0,1)!=='-') {
                 $score[] = sprintf(' %s ', $this->score_for_like_phrase($keyword));
             }
         }
         if($long_keywords) {
+            $long_keywords = $this->add_boolean($long_keywords);
             $ph['field']    = $this->fields;
-            $ph['keywords'] = sql_quote_string(ltrim(join(' ', $long_keywords),'+'));
+            $ph['keywords'] = sql_quote_string(join(' ', $long_keywords));
             $ph['like_score'] = join(' + ',$score);
-            //exit(parseQuery('<%like_score%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph));
+            
             return parseQuery('<%like_score%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph);
         }
     }
@@ -85,11 +86,24 @@ class SEARCH {
         return ($this->get_min_word_len() <= strlen(trim($keyword,'-+| ')));
     }
     
-    private function add_boolean($keyword) {
-        $c = substr($keyword,0,1);
-        if(in_array($c,array('+','-'))) return $keyword;
-        elseif($c==='|')                return ltrim($keyword,'|');
-        else                            return '+'.$keyword;
+    private function add_boolean($keys=array()) {
+        foreach($keys as $i=>$key) {
+            $c = substr($key,0,1);
+            $prev = $i-1;
+            if    ($c=='+') $keys[$i] = '#'.$key;
+            elseif($c=='-') $keys[$i] = '#'.$key;
+            elseif($c==='|') {
+                $keys[$i] = ltrim($key,'+-|');
+                if(0<$i) {
+                    $keys[$prev] = ltrim($keys[$prev],'+-|');
+                }
+            }
+            else $keys[$i] = '+'.$key;
+        }
+        foreach($keys as $i=>$key) {
+            $keys[$i] = ltrim($key,'#');
+        }
+        return $keys;
     }
     
     private function get_min_word_len() {
@@ -131,12 +145,15 @@ class SEARCH {
         $long_keywords  = array();
         foreach($keywords as $i=>$keyword) {
             if($this->is_long_word($keyword)) {
-                $long_keywords[] = $this->add_boolean($keyword);
+                $long_keywords[] = $keyword;
                 unset($keywords[$i]);
             }
         }
         $_ = array();
-        if($long_keywords) $_[] = $this->get_ft_phrase(ltrim(join(' ', $long_keywords),'+'));
+        if($long_keywords) {
+            $long_keywords = $this->add_boolean($long_keywords);
+            $_[] = $this->get_ft_phrase(join(' ', $long_keywords));
+        }
         if($keywords) {
             foreach($keywords as $keyword) {
                 $c = substr($keyword,0,1);
