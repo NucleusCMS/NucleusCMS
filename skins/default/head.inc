@@ -16,5 +16,9 @@
 <!-- ATOM support --> 
 <link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.php" /> 
 
+<!-- favorite icon -->
+<link rel="shortcut icon" href="/favicon.ico" />
+<link rel="icon" href="/favicon.ico" />
+
 <!-- navigation & page titles -->
 <%parsedinclude(navigation.inc)%>
