@@ -6452,40 +6452,13 @@ selector();
     <meta name="robots" content="noindex, nofollow, noarchive" />
     <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
-    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css"
-            href="<?php echo $baseUrl?>styles/addedit.css" />
-
-    <style>
-/*    #quickmenu ul { display: none;}
-    #quickmenu  .accordion { cursor: pointer;}*/
-    </style>
+    <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/addedit.css" />
     <script src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
     <script src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
-    <script src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
     <script src="<?php echo $baseUrl?>javascript/edit.js"></script>
     <script src="<?php echo $baseUrl?>javascript/admin.js"></script>
     <script src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
     <script src="<?php echo $baseUrl?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
-    <script>
-        jQuery(function () {
-            var qmenu_manage  = jQuery.cookie('qmenu_manage');
-            var qmenu_own     = jQuery.cookie('qmenu_own');
-            var qmenu_layuot  = jQuery.cookie('qmenu_layuot');
-            var qmenu_plugins = jQuery.cookie('qmenu_plugins');
-            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show();
-            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show();
-            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show();
-            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show();
-
-          jQuery('.accordion').click(function() {
-            var child = jQuery(this).next('ul');
-            jQuery(child).slideToggle('fast', function() {
-              jQuery.cookie(jQuery(child).attr('id'), jQuery(child).css('display'), { expires: 10 });
-            });
-          });
-        });
-    </script>
-
 <?php echo $extrahead; ?>
 </head>
 <body>
