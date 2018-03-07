@@ -21,9 +21,6 @@
 <!-- RSS 2.0 feed -->
 <link rel="alternate" type="application/rss+xml" title="RSS" href="xml-rss2.php" />
 
-<!-- RSD support -->
-<link rel="EditURI" type="application/rsd+xml" title="RSD" href="rsd.php" />
-
 <!-- favorite icon -->
 <link rel="shortcut icon" href="/favicon.ico" />
 <link rel="icon" href="/favicon.ico" />
