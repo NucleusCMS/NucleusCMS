@@ -37,7 +37,7 @@ class SEARCH {
 
     public function forge_keywords($keywords) {
         
-        $chars = explode(' ', '+ / ] [ < > = ? ! # ^ ( ) : ; \\ %');
+        $chars = explode(' ', '/ ] [ < > = ? ! # ^ ( ) : ; \\ %');
         $keywords = str_replace ($chars, ' ', $keywords);
         
         $keywords = preg_replace('/(  +)/', ' ', trim($keywords));
