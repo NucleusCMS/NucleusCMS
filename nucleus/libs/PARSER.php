@@ -47,7 +47,7 @@ class PARSER {
      * @param $delim optional delimiter
      * @param $paramdelim optional parameterdelimiter
      */
-    function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',') {
+    function __construct($allowedActions, &$handler, $delim = '<%,%>', $pdelim = ',') {
         $this->actions = $allowedActions;
         $this->handler =& $handler;
         $this->delim = $delim;
@@ -58,22 +58,28 @@ class PARSER {
     /**
      * Parses the given contents and outputs it
      */
-    function parse(&$contents) {
-        if(strpos($contents,'<%')===false)
+    function parse(&$content) {
+        
+        list($left,$right) = explode(',', $this->delim);
+        
+        if(strpos($content,$left)===false)
         {
-            echo $contents;
+            echo $content;
             return;
         }
-
-        $pieces = preg_split('/'.$this->delim.'/',$contents);
-
-        $maxidx = sizeof($pieces);
-        for ($idx = 0; $idx < $maxidx; $idx++) {
-            echo $pieces[$idx];
-            $idx++;
-            if ($idx < $maxidx) {
-                $this->doAction($pieces[$idx]);
+        
+        if(strpos($content,'<?php')!==false) $content = str_replace('<?php', 'Remove php', $content); // Remove php strings in content
+        
+        $pieces = explode($left, $content);
+        foreach($pieces as $piece) {
+            if(strpos($piece,$right)===false) {
+                echo $piece;
+                continue;
             }
+            list($action, $html) = explode($right, $piece, 2);
+            if(strpos($action,"'")!==false) $action = str_replace("'","\\'", $action);
+            eval(sprintf("\$this->doAction('%s');", $action));
+            echo $html;
         }
     }
 
