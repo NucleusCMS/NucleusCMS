@@ -11,10 +11,6 @@
 <!-- site stylesheet (site colors and layout definitions) -->
 <link rel="stylesheet" type="text/css" href="<%skinfile(default_right.css)%>" />
 
-<!-- tooltips & stylesheet (activated by title="" on links) -->
-<link rel="stylesheet" type="text/css" href="<%skinfile(nicetitle.css)%>" />
-<script type="text/javascript" src="<%skinfile(nicetitle.js)%>"></script>
-
 <!-- ATOM support --> 
 <link rel="alternate" type="application/atom+xml" title="ATOM" href="atom.php" /> 
 
