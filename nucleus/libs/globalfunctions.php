@@ -171,22 +171,17 @@ if ( !headers_sent() && (!defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || (
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
-global $DB_PHP_MODULE_NAME;
-if ($DB_PHP_MODULE_NAME != 'pdo')
-{
-    // deprecated method
-    // include core classes that are needed for login & plugin handling
-    if (!function_exists('mysql_query'))
-        include_once($DIR_LIBS . 'sql/mysql_emulate.php'); // For PHP 7
+global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+// deprecated method
+// include core classes that are needed for login & plugin handling
+if (($DB_DRIVER_NAME=='mysql') && !function_exists('mysql_query')) {
+    if ($DB_PHP_MODULE_NAME == 'pdo')
+        include_once($DIR_LIBS . 'sql/pdo_mysql_emulate.php'); // For PHP 7
     else
-    {
-        if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
-            define('_EXT_MYSQL_EMULATE' , 0);
-    }
+        include_once($DIR_LIBS . 'sql/mysql_emulate.php'); // For PHP 7
 }
 else
 {
-    // Todo: mysql wrapper for pdo? or deprecate mysql_* functions
     if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
         define('_EXT_MYSQL_EMULATE' , 0);
 }
