@@ -70,6 +70,8 @@
 		<li>[変更] プラグインロード中のエラー発生時に実行が中断されないようにtryエラー処理を追加しました(PHP7以降のみ)。</li>
 		<li>[変更] $CONF['DisableRSS'] が追加されました。グローバル設定: RSSの出力を有効にする ( xml-rss2.php , rsd.php , atom.php )。出力をしない場合は、関連ファイルの更新が必要です。</li>
 		<li>[変更] nucleus/forgotpassword.htmlが削除されました。</li>
+		<li>[変更] スキン/テンプレート変数に <%NP_PluginName(parameters)%> が追加されました。</li>
+		<li>[変更] プラグインクラスのgetEventList関数が不要になりました。プラグインのevent_*関数は親クラスの_getEventList関数により自動的に取得されます。</li>
 		</ul>
 	</li>
 	<li>

@@ -50,6 +50,8 @@
             <li>CHANGE: Added try error handling so that execution will not be interrupted when an error occurs during plugin loading (PHP 7 and later only).</li>
             <li>CHANGE: Add $CONF['DisableRSS'] , enable or disable rss ( xml-rss2.php , rsd.php , atom.php )</li>
             <li>CHANGE: Remove nucleus/forgotpassword.html</li>
+            <li>CHANGE: <%NP_PluginName(parameters)%> has been added to skin / template variable</li>
+            <li>CHANGE: The getEventList function of plug-in class is no longer required.The event_* function of the plugin is acquired automatically by the _getEventList function of the parent class.</li>
         </ul>
 
     </li>
