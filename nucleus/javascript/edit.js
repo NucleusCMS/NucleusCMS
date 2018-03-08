@@ -240,6 +240,10 @@ function storeCaret (textEl) {
 // inserts text at caret (overwriting selection)
 function insertAtCaret (text) {
 	var textEl = lastSelected;
+	var new_positon = -1;
+	if (textEl && (typeof textEl.selectionEnd == 'number')) {
+		new_positon = textEl.selectionEnd + text.length;
+	}
 	if (textEl && textEl.createTextRange && lastCaretPos) {
 		var caretPos = lastCaretPos;
 		caretPos.text = caretPos.text.charAt(caretPos.text.length - 1) == ' ' ? text + ' ' : text;
@@ -257,12 +261,31 @@ function insertAtCaret (text) {
 		}
 	}
 	updAllPreviews();
+	if (lastSelected) {
+		if (typeof lastSelected.focus == 'function') {
+			lastSelected.focus();
+		}
+		if (typeof lastSelected.selectionEnd == 'number') {
+			lastSelected.selectionStart = new_positon;
+			lastSelected.selectionEnd   = new_positon;
+		}
+	}
 }
 
 // inserts a tag around the selected text
 function insertAroundCaret (textpre, textpost) {
 	var textEl = lastSelected;
-
+	var start_positon = -1;
+	var end_positon = -1;
+	if (textEl && (typeof textEl.selectionEnd == 'number')) {
+		if (textEl.selectionStart == textEl.selectionEnd) {
+			end_positon = textEl.selectionEnd + textpre.length;
+			start_positon = end_positon;
+		} else {
+			start_positon = textEl.selectionStart;
+			end_positon = textEl.selectionEnd + textpre.length + textpost.length;
+		}
+	}
 	if (textEl && textEl.createTextRange && lastCaretPos) {
 		var caretPos = lastCaretPos;
 		caretPos.text = textpre + caretPos.text + textpost;
@@ -279,6 +302,15 @@ function insertAroundCaret (textpre, textpost) {
 	}
 
 	updAllPreviews();
+	if (lastSelected) {
+		if (typeof lastSelected.focus == 'function') {
+			lastSelected.focus();
+		}
+		if (typeof lastSelected.selectionEnd == 'number') {
+			lastSelected.selectionStart = start_positon;
+			lastSelected.selectionEnd   = end_positon;
+		}
+	}
 }
 
 /* some methods to get things working in Mozilla as well */

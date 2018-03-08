@@ -344,7 +344,7 @@ class NP_HelloWorld extends NucleusPlugin
     </tr>
     <tr>
         <td><code>getEventList()</code></td>
-        <td>プラグインはイベント登録が可能です。イベントはNucleusが何かアクションを起こすたびに生成されます。たとえば、<code>AddItem</code> イベントは、このイベントを登録しているすべてのプラグインを呼び出します。呼び出されるメソッドは <code>event_AddItem($params)</code>になります。 <code>$params</code> パラメータは、例えば <code>AddItem</code>     の <code>itemid</code> のような、情報フィールドを複数持つ連想配列です。デフォルトではどのイベントにも登録されていないことを示す空の配列を返します。<a href="#events">イベントに関する詳細情報はこちら</a></td>
+        <td>(-v3.71)プラグインはイベント登録が可能です。イベントはNucleusが何かアクションを起こすたびに生成されます。たとえば、<code>AddItem</code> イベントは、このイベントを登録しているすべてのプラグインを呼び出します。呼び出されるメソッドは <code>event_AddItem($params)</code>になります。 <code>$params</code> パラメータは、例えば <code>AddItem</code>     の <code>itemid</code> のような、情報フィールドを複数持つ連想配列です。デフォルトではどのイベントにも登録されていないことを示す空の配列を返します。<a href="#events">イベントに関する詳細情報はこちら</a></td>
     </tr>
     <tr>
         <td><code>getTableList()</code></td>
@@ -584,8 +584,8 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 <p>イベント登録に必要なステップは以下になります。</p>
 
 <ol>
-    <li><code>getEventList</code> メソッドから返る配列にイベント名を追加します。(v3.80で廃止、v3.80以降はevent_関数名は自動抽出されます)</li>
     <li><code>event_EventName($data)</code> という形でメソッドを生成し、この中でイベントを処理します。</li>
+    <li>(-v3.71) <code>getEventList</code> メソッドから返る配列にイベント名を追加します。(v3.80で廃止、v3.80以降はevent_関数名は自動抽出されます)</li>
 </ol>
 
 <p>複数のプラグインが同じイベントに登録できます。管理エリアのプラグインリストの順序に従ってプラグインに通知が行きます。リストの上にあるプラグインほど早く通知されます。</p>
