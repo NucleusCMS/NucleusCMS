@@ -2443,6 +2443,10 @@ function parseHtml($query='',$ph=array()) { // $ph is placeholders
 }
 
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
+
+    if(strpos($query,'<%')!==false) {
+        $query = str_replace(array('<%','%>'), array('[@','@]'), $query);
+    }
     
     if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
