@@ -6045,7 +6045,7 @@ selector();
 
 		sendContentType('text/html');
 
-        checkOutputCompression();
+        checkOutputCompression("text/html");
 
         $param = array(
             'extrahead'    => &$extrahead,
