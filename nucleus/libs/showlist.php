@@ -725,7 +725,7 @@ function listplug_table_skinlist($template, $type) {
 
 
             echo "<td>" , hsc($current->sddesc);
-			echo '<div style="height: auto; width: 100%; overflow-y: scroll; max-height: 250px;">';
+			echo '<div style="height: auto; width: 100%; overflow: auto; max-height: 250px;">';
                 // show list of defined parts
                 if ($DB_DRIVER_NAME == 'mysql')
                     $order = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
