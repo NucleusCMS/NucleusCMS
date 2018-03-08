@@ -96,7 +96,7 @@ class BaseActions {
         global $skinid;
         $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
-        if (!$skin->isValid && !file_exists($file))
+        if (!$skin->isValid && !is_file($file))
         {
             return;
         }

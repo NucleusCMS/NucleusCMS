@@ -449,7 +449,7 @@ class Backup
         $backup_file_tmpname = $uploadInfo['tmp_name'];
         $backup_file_type = $uploadInfo['type'];
     
-        if (!file_exists($backup_file_tmpname))
+        if (!is_file($backup_file_tmpname))
             return ( !$this->mode_en && defined('_BACKUP_RESTOR_UPLOAD_ERROR') ? _BACKUP_RESTOR_UPLOAD_ERROR : 'File Upload Error');
     
         if($backup_file_type==='application/download') $backup_file_type = 'application/octet-stream'; // For firefox

@@ -467,13 +467,13 @@ class SKINIMPORT {
         while ($filename = readdir($dirhandle)) {
             if (@is_dir($dir . $filename) && ($filename != '.') && ($filename != '..')) {
                 $xml_file = $dir . $filename . '/skinbackup.xml';
-                if (file_exists($xml_file) && is_readable($xml_file)) {
+                if (is_file($xml_file) && is_readable($xml_file)) {
                     $candidates[$filename] = $filename; //$xml_file;
                 }
 
                 // backwards compatibility
                 $xml_file = $dir . $filename . '/skindata.xml';
-                if (file_exists($xml_file) && is_readable($xml_file)) {
+                if (is_file($xml_file) && is_readable($xml_file)) {
                     $candidates[$filename] = $filename; //$xml_file;
                 }
             }

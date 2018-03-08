@@ -179,7 +179,7 @@ class MEDIA {
         // add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
         $mediadir .= '/';
 
-        if (file_exists($mediadir . $filename))
+        if (is_file($mediadir . $filename))
             return _ERROR_UPLOADDUPLICATE;
 
         // move file to directory
@@ -244,7 +244,7 @@ class MEDIA {
         // add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
         $mediadir .= '/';
 
-        if (file_exists($mediadir . $filename))
+        if (is_file($mediadir . $filename))
             return _ERROR_UPLOADDUPLICATE;
 
         // create file

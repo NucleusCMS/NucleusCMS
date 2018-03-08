@@ -4260,7 +4260,7 @@ selector();
             $skinFile = $DIR_SKINS . $skinFileRaw . '/skinbackup.xml';
 
             // backwards compatibilty (in v2.0, exports were saved as skindata.xml)
-            if (!file_exists($skinFile))
+            if (!is_file($skinFile))
                 $skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';
         } else {
             $skinFile = $skinFileRaw;
@@ -4341,7 +4341,7 @@ selector();
             $skinFile = $DIR_SKINS . $skinFileRaw . '/skinbackup.xml';
 
             // backwards compatibilty (in v2.0, exports were saved as skindata.xml)
-            if (!file_exists($skinFile))
+            if (!is_file($skinFile))
                 $skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';
 
         } else {
@@ -7301,7 +7301,7 @@ selector();
         elseif(is_file("{$cplugindir}help/index.html"))
             $helpFile = "{$cplugindir}help/index.html";
 
-        if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@file_exists($helpFile)))
+        if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@ is_file($helpFile)))
         {
             if(substr($helpFile,-4)==='.php')
                 include_once($helpFile);
@@ -7903,10 +7903,10 @@ selector();
             $aFound = array();
             foreach($aFiles as $fileName => $fileDesc)
             {
-                if (@file_exists($fileName))
+                if (@ is_file($fileName))
                     $aFound[] = $fileDesc;
             }
-            if (@is_writable('../config.php')) {
+            if (@ is_writable('../config.php')) {
                 $aFound[] = _ERRORS_CONFIGPHP;
             }
             if (count($aFound) > 0)

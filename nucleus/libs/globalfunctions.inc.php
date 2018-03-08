@@ -881,7 +881,7 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
     PARSER::setProperty('IncludeMode', $includeMode);
     PARSER::setProperty('IncludePrefix', $includePrefix);
 
-    if (!file_exists($filename) ) {
+    if (!is_file($filename) ) {
         if (defined('_GFUNCTIONS_PARSEFILE_FILEMISSING'))
             doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
         else
@@ -1011,7 +1011,7 @@ function LoadCoreLanguage()
     $language = remove_all_directory_separator(getLanguageName());
     $language = getValidLanguage($language);
     $filename = $DIR_LANG . $language . '.php';
-    if (file_exists($filename))
+    if (is_file($filename))
         include_once ($filename);
 
     if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
@@ -1081,7 +1081,7 @@ function checkLanguage($lang) {
     global $DIR_LANG;
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    return file_exists($DIR_LANG . remove_all_directory_separator($lang) . '.php');
+    return is_file($DIR_LANG . remove_all_directory_separator($lang) . '.php');
 }
 
 /**
@@ -1559,7 +1559,7 @@ function ticketForPlugin() {
     /* Check if using plugin's php file. */
     if ($p_translated = serverVar('PATH_TRANSLATED') )
     {
-        if (!file_exists($p_translated) )
+        if (!is_file($p_translated) )
         {
             $p_translated = '';
         }
@@ -1568,7 +1568,7 @@ function ticketForPlugin() {
     if (!$p_translated)
     {
         $p_translated = serverVar('SCRIPT_FILENAME');
-        if (!file_exists($p_translated) )
+        if (!is_file($p_translated) )
         {
             header("HTTP/1.0 404 Not Found");
             exit('');

@@ -697,11 +697,11 @@ function listplug_table_skinlist($template, $type) {
             if ($current->sdincpref) echo '<br />' , _LIST_SKINS_INCPREFIX , ' ', hsc($current->sdincpref);
 
             // add preview image when present
-            if ($current->sdincpref && @file_exists($DIR_SKINS . $current->sdincpref . 'preview.png'))
+            if ($current->sdincpref && @ is_file($DIR_SKINS . $current->sdincpref . 'preview.png'))
             {
                 echo '<br /><br />';
 
-                $hasEnlargement = @file_exists($DIR_SKINS . $current->sdincpref . 'preview-large.png');
+                $hasEnlargement = @ is_file($DIR_SKINS . $current->sdincpref . 'preview-large.png');
                 if ($hasEnlargement)
                     echo '<a href="',$CONF['SkinsURL'], hsc($current->sdincpref),'preview-large.png" title="' . _LIST_SKIN_PREVIEW_VIEWLARGER . '">';
 
@@ -711,7 +711,7 @@ function listplug_table_skinlist($template, $type) {
                 if ($hasEnlargement)
                     echo '</a>';
 
-                if (@file_exists($DIR_SKINS . $current->sdincpref . 'readme.html'))
+                if (@ is_file($DIR_SKINS . $current->sdincpref . 'readme.html'))
                 {
                     $url         = $CONF['SkinsURL'] . hsc($current->sdincpref) . 'readme.html';
                     $readmeTitle = sprintf(_LIST_SKIN_README, hsc($current->sdname));
