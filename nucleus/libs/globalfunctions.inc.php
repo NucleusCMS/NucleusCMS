@@ -670,7 +670,7 @@ function selector() {
     
     // parse the skin
 	$output = $skin->parse($type, $skin_options);
-    checkOutputCompression();
+    checkOutputCompression($skin->getContentType());
     echo $output;
 
     // check to see we should throw JustPosted event
@@ -710,7 +710,7 @@ function doError($msg, $skin = '') {
     $skinid = $skin->id;
     $errormessage = $msg;
     $output = $skin->parse('error');
-    checkOutputCompression();
+    checkOutputCompression($skin->getContentType());
     echo $output;
     exit;
 }
@@ -2491,7 +2491,7 @@ if (!function_exists('get_magic_quotes_runtime')) {
     function get_magic_quotes_runtime() { return FALSE; }
 }
 
-function checkOutputCompression() {
+function checkOutputCompression($content_type) {
     // supports Content-Encoding: gzip
     if (!extension_loaded('zlib') || headers_sent() || ob_get_level())
         return;
@@ -2500,6 +2500,17 @@ function checkOutputCompression() {
     if ($output_compression === FALSE || $output_compression === ''
         || $output_compression === '0')
     {
+        // check browser bug : see detail https://httpd.apache.org/docs/2.4/ja/mod/mod_deflate.html#enable
+        if (!empty($_SERVER['HTTP_USER_AGENT'])
+            && preg_match('@^Mozilla/4@i', $_SERVER['HTTP_USER_AGENT'])
+            && (stripos("MSIE", $_SERVER['HTTP_USER_AGENT'])===FALSE))
+        {
+            if (preg_match('@^Mozilla/4\.0[678]@i', $_SERVER['HTTP_USER_AGENT']))
+                return;
+            if (strcasecmp($content_type, "text/html") != 0)
+                return;
+        }
+        // start zlib compression
         ini_set('zlib.output_compression_level', -1);
         ob_start("ob_gzhandler");
     }
