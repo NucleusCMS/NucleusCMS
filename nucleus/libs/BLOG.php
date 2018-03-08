@@ -652,8 +652,8 @@ class BLOG {
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
         // workaround for <%_()%>
         foreach($template as $key => $value)
-        if ((strlen($value) > 0) && strpos($value, "<%_(")!==FALSE)
-          $template[$key] = preg_replace_callback ("#<%_\(([^)]*?)\)%>#", array($this, '_workaround_gettext_callback'), $value);
+        if ((strlen($value) > 0) && str_contain($value, '<%_('))
+          $template[$key] = preg_replace_callback ('#<%_\(([^)]*?)\)%>#', array($this, '_workaround_gettext_callback'), $value);
 //        var_dump($template);
         if (!isset($template['LOCALE']) || !$template['LOCALE'])
         {

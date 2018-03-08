@@ -787,7 +787,7 @@ function addBreaks($text) {
 }
 
 function removeBreaks($var) {
-    if(strpos($var,"\r")!==false) $var = str_replace("\r",'',$var);
+    if(str_contain($var,"\r")) $var = str_replace("\r",'',$var);
     return preg_replace("@<br[ /]*>\n@i", "\n", $var);
 }
 
