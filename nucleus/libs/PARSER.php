@@ -98,8 +98,8 @@ class PARSER {
             }
             $params = explode ($this->pdelim, $paramText);
             // trim parameters
-             foreach ($params as $value) {
-                $params[] = trim($value);
+             foreach ($params as $key=>$value) {
+                $params[$key] = trim($value);
              }
              $paramText = join(',', $params);
         } else {

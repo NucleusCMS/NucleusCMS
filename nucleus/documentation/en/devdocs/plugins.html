@@ -259,7 +259,7 @@ So, that wasn't so hard after all. Read on to find out more.
 	</tr>
 	<tr id="getEventList">
 		<td><code><a href="#getEventList">getEventList()</a></code></td>
-		<td>Plugins can subscribe to events. Events get generated whenever Nucleus performs a certain action. An <code>AddItem</code> event for example, will call all plugins that subscribed to this event. The called method will be <code>event_AddItem($params)</code>. The <code>$params</code>-parameter is an associative array containing several fields of information, like the itemid for <code>AddItem</code>. Returns an empty array by default, indicating that the plugin does not subscribe to any event at all. <a href="#events">More information about events.</a></td>
+		<td>(-v3.71)Plugins can subscribe to events. Events get generated whenever Nucleus performs a certain action. An <code>AddItem</code> event for example, will call all plugins that subscribed to this event. The called method will be <code>event_AddItem($params)</code>. The <code>$params</code>-parameter is an associative array containing several fields of information, like the itemid for <code>AddItem</code>. Returns an empty array by default, indicating that the plugin does not subscribe to any event at all. <a href="#events">More information about events.</a></td>
 	</tr>
 	<tr id="getTableList">
 		<td><code><a href="#getTableList">getTableList()</a></code></td>
@@ -468,7 +468,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 
 <pre class="example"><code>class NP_Acronyms extends NucleusPlugin {
   ...
-  function getEventList() { return array('PreAddComment'); }
+  function getEventList() { return array('PreAddComment'); } /* (-v3.71) */
   ...
   function event_PreAddComment(&amp;$data) {
 	// replace acronym HTML
@@ -487,8 +487,8 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 <p>Here's the steps you need to take to subscribe to an event:</p>
 
 <ol>
-	<li>Add the event name to the array returned by the <code>getEventList</code>-method</li>
 	<li>Create a method with signature <code>event_<em>EventName</em>($data)</code>, in which the handling of the event is done</li>
+	<li>(-v3.71)Add the event name to the array returned by the <code>getEventList</code>-method</li>
 </ol>
 
 <p>Multiple plugins can subscribe to the same event. The order in which these plugins are notified is the same order as the ordening in the plugin list of the admin area. Plugins higher in the list get notified earlier on.</p>

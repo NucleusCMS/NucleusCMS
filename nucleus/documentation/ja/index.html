@@ -400,6 +400,14 @@
 		</div>
 
 		<div class="faq">
+			<div class="question">転送量を削減したい。</div>
+			<div class="answer"><ul>
+				<li>PHPの設定: zlib拡張が有効になっているか確認してください。</li>
+				<li>apache設定: extra/htaccess/mod_deflate.htaccess の内容を参考にサイトルートフォルダの.htaccessを修正してみてください。</li>
+			</ul></div>
+		</div>
+
+		<div class="faq">
 			<div class="question">ある日突然、空白ページになったり、データベースのエラーが表示されるようになりました。</div>
 			<div class="answer">データベースのオーバーヘッドが増したり、インデックスが破損したりしている可能性がありますので、データベース管理ツールで、テーブルの「修復」および「最適化」を実行してください。</div>
 		</div>
