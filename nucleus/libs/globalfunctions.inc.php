@@ -2409,6 +2409,11 @@ function getValidLanguage($lang)
 }
 
 function parseText($tpl='',$ph=array()) { // $ph is placeholders
+    
+    if(!is_array($ph)) {
+        $ph = func_get_args();
+    }
+    
     foreach($ph as $k=>$v) {
         if(strpos($tpl,'<%')===false) break;
         $tpl = str_replace("<%{$k}%>", $v, $tpl);
@@ -2417,6 +2422,10 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
 }
 
 function parseHtml($query='',$ph=array()) { // $ph is placeholders
+    
+    if(!is_array($ph)) {
+        $ph = func_get_args();
+    }
     
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     
@@ -2446,6 +2455,10 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
 
     if(strpos($query,'<%')!==false) {
         $query = str_replace(array('<%','%>'), array('[@','@]'), $query);
+    }
+    
+    if(!is_array($ph)) {
+        $ph = func_get_args();
     }
     
     if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
