@@ -81,7 +81,7 @@ function getLatestVersion() {
         if (isset($CONF[$name])) continue;
         
         $ph['name'] = $name;
-        sql_query(parseQuery("INSERT INTO <%prefix%>config (name,value) VALUES ('<%name%>','')", $ph));
+        sql_query(parseQuery("INSERT INTO [@prefix@]config (name,value) VALUES ('[@name@]','')", $ph));
         $CONF[$name] = '';
     }
 
@@ -262,7 +262,7 @@ function isValidMailAddress($address) {
 function getBlogIDFromName($bshortname)
 {
     $ph['bshortname'] = sql_quote_string($bshortname);
-    $res = parseQuickQuery("SELECT bnumber as result FROM <%prefix%>blog WHERE bshortname=<%bshortname%>", $ph);
+    $res = parseQuickQuery("SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=<%bshortname%>", $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
@@ -271,13 +271,13 @@ function getBlogIDFromName($bshortname)
 function getBlogNameFromID($bnumber)
 {
     $ph['bnumber'] = (int)$bnumber;
-    return parseQuickQuery('SELECT bname as result FROM <%prefix%>blog WHERE bnumber=<%bnumber%>', $ph);
+    return parseQuickQuery('SELECT bname as result FROM [@prefix@]blog WHERE bnumber=<%bnumber%>', $ph);
 }
 
 function getBlogIDFromItemID($inumber)
 {
     $ph['inumber'] = (int)$inumber;
-    $res = parseQuickQuery('SELECT iblog as result FROM <%prefix%>item WHERE inumber=<%inumber%>', $ph);
+    $res = parseQuickQuery('SELECT iblog as result FROM [@prefix@]item WHERE inumber=<%inumber%>', $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
@@ -286,7 +286,7 @@ function getBlogIDFromItemID($inumber)
 function getBlogIDFromCommentID($cnumber)
 {
     $ph['cnumber'] = (int)$cnumber;
-    $res = parseQuickQuery('SELECT cblog as result FROM <%prefix%>comment WHERE cnumber=<%cnumber%>', $ph);
+    $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]comment WHERE cnumber=<%cnumber%>', $ph);
     if ($res !== false)
         $res = intval($res);
     return $res;
@@ -295,7 +295,7 @@ function getBlogIDFromCommentID($cnumber)
 function getBlogIDFromCatID($catid)
 {
     $ph['catid'] = (int)$catid;
-    $res = parseQuickQuery('SELECT cblog as result FROM <%prefix%>category WHERE catid=<%catid%>', $ph);
+    $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]category WHERE catid=<%catid%>', $ph);
     if ($res !== false)
         $res = intval ($res);
     return $res;
@@ -304,7 +304,7 @@ function getBlogIDFromCatID($catid)
 function getCatIDFromName($cname)
 {
     $ph['cname'] = sql_quote_string($cname);
-    $res = parseQuickQuery("SELECT catid as result FROM <%prefix%>category WHERE cname=<%cname%>", $ph);
+    $res = parseQuickQuery("SELECT catid as result FROM [@prefix@]category WHERE cname=<%cname%>", $ph);
 	if ($res !== false)
 		$res = intval ($res);
 	return $res;
@@ -325,7 +325,7 @@ function quickQuery($sqlText)
 
 function getPluginNameFromPid($pid) {
     $ph['pid'] = intval($pid);
-    $res = sql_query( parseQuery('SELECT pfile FROM `<%prefix%>plugin` WHERE pid=<%pid%>', $ph) );
+    $res = sql_query( parseQuery('SELECT pfile FROM `[@prefix@]plugin` WHERE pid=[@pid@]', $ph) );
     if ($res && ($obj = sql_fetch_object($res)))
         return $obj->pfile;
     return FALSE;
@@ -383,7 +383,7 @@ function selector() {
 
         // 1. get timestamp, blogid and catid for item
         $ph['inumber'] = (int)$itemid;
-        $res = sql_query( parseQuery("SELECT itime, iblog, icat FROM <%prefix%>item WHERE inumber='<%inumber%>'", $ph) );
+        $res = sql_query( parseQuery("SELECT itime, iblog, icat FROM [@prefix@]item WHERE inumber='[@inumber@]'", $ph) );
         $obj = sql_fetch_object($res);
 
         // if a different blog id has been set through the request or selectBlog(),
@@ -424,8 +424,8 @@ function selector() {
         $ph['itime'] = strtotime($obj->itime);
         $ph['blogid'] = $blogid;
         $ph['catextra'] = $catextra;
-        $query = 'SELECT inumber, ititle FROM <%prefix%>item'
-               . ' WHERE itime < <%itime%> AND idraft=0 AND iblog=<%blogid%> <%catextra%>'
+        $query = 'SELECT inumber, ititle FROM [@prefix@]item'
+               . ' WHERE itime < [@itime@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
                . ' ORDER BY itime DESC LIMIT 1';
         $res = sql_query(parseQuery($query, $ph));
 
@@ -437,8 +437,8 @@ function selector() {
         // get next itemid and title
         $ph['catextra'] = $catextra;
         $ph['now']      = mysqldate($b->getCorrectTime());
-        $query = 'SELECT inumber, ititle FROM <%prefix%>item'
-               . ' WHERE itime > <%itime%> AND itime <= <%now%> AND idraft=0 AND iblog=<%blogid%> <%catextra%>'
+        $query = 'SELECT inumber, ititle FROM [@prefix@]item'
+               . ' WHERE itime > [@itime@] AND itime <= [@now@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
                . ' ORDER BY itime ASC LIMIT 1';
         $res = sql_query(parseQuery($query, $ph));
 
@@ -457,7 +457,7 @@ function selector() {
         // sql queries for the timestamp of the first and the last published item
         $ph = array();
         $ph['iblog'] = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
-        $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM <%prefix%>item WHERE idraft=0 AND iblog='<%iblog%>'",$ph);
+        $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM [@prefix@]item WHERE idraft=0 AND iblog='[@iblog@]'",$ph);
         
         $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
         $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
@@ -718,7 +718,7 @@ function doError($msg, $skin = '') {
 function getConfig() {
     global $CONF;
 
-    $res = sql_query(parseQuery('SELECT * FROM `<%prefix%>config`'));
+    $res = sql_query(parseQuery('SELECT * FROM `[@prefix@]config`'));
 
     if ($res)
     while ($obj = sql_fetch_object($res) ) {
@@ -1609,7 +1609,7 @@ function ticketForPlugin() {
 
     /* Solve the plugin name. */
     $plugins = array();
-    $res = sql_query( parseQuery('SELECT `pfile` FROM <%prefix%>plugin') );
+    $res = sql_query( parseQuery('SELECT `pfile` FROM [@prefix@]plugin') );
 
     if ($res)
     {
@@ -2025,7 +2025,7 @@ function ifset(&$var)
  */
 function numberOfEventSubscriber($event) {
     $ph['event'] = $event;
-    $res = sql_query( parseQuery("SELECT COUNT(*) as count FROM `<%prefix%>plugin_event` WHERE event='<%event%>'", $ph) );
+    $res = sql_query( parseQuery("SELECT COUNT(*) as count FROM `[@prefix@]plugin_event` WHERE event='[@event@]'", $ph) );
     if ($res && ($obj = sql_fetch_object($res)))
         return $obj->count;
     return 0; // unknown error
