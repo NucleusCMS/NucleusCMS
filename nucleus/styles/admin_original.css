@@ -289,7 +289,7 @@ tr.highlighted td {
 	background-color: green;
 }
 
-table.navigation td, table.navigation th {
+table.navigation, table.navigation td, table.navigation th {
 	border: none;
 }
 
