@@ -758,7 +758,6 @@ function listplug_table_skinlist($template, $type) {
 							$parts[1][] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . htmlspecialchars($friendlyNames[$type]) . "</a></li>";
 						}
 					}
-					echo '<br />',_LIST_SKINS_DEFINED,'<br />';
 					if (count($parts[0]) > 0)
 					  echo _SKIN_PARTS_TITLE .   ' <ul>'.implode($parts[0]).'</ul>';
 					if (count($parts[1]) > 0)
