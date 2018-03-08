@@ -2448,23 +2448,23 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     foreach($ph as $k=>$v) {
         
-        if(strpos($query,'<%')===false) break;
+        if(strpos($query,'[@')===false) break;
         
-        if(strpos($v,'<%')!==false) {
-            $v = str_replace('<%',"<{$esc}%",$v);
+        if(strpos($v,'[@')!==false) {
+            $v = str_replace('[@',"[{$esc}@",$v);
         }
-        $query = str_replace("<%{$k}%>", $v, $query);
-        if(strpos($query,"<%{$k}:escape%>")!==false)
+        $query = str_replace("[@{$k}@]", $v, $query);
+        if(strpos($query,"[@{$k}:escape@]")!==false)
         {
-            $query = str_replace("<%{$k}:escape%>", sql_real_escape_string($v), $query);
+            $query = str_replace("[@{$k}:escape@]", sql_real_escape_string($v), $query);
         }
-        if(strpos($query,"<%{$k}:int%>")!==false)
+        if(strpos($query,"[@{$k}:int@]")!==false)
         {
-            $query = str_replace("<%{$k}:int%>", (int)$v, $query);
+            $query = str_replace("[@{$k}:int@]", (int)$v, $query);
         }
     }
-    if(strpos($query,"<{$esc}%")!==false) {
-        $query = str_replace("<{$esc}%",'<%',$query);
+    if(strpos($query,"[{$esc}@")!==false) {
+        $query = str_replace("<[$esc}@",'[@',$query);
     }
     return $query;
 }
