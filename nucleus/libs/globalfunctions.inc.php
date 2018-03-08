@@ -2494,3 +2494,9 @@ function checkOutputCompression($content_type) {
         ob_start("ob_gzhandler");
     }
 }
+
+function str_contain($haystack, $needle) {
+    $pos = strpos($haystack, $needle);
+    if($pos!==false) return true;
+    return false;
+}
