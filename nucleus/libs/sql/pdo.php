@@ -602,7 +602,7 @@ if (!function_exists('sql_fetch_assoc'))
         if (!$SQL_DBH) return array();
 
         $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
-        if(strpos($tablename,'<%prefix%>')!==false) {
+        if(strpos($tablename,'[@prefix@]')!==false) {
             $tablename = parseQuery($tablename);
         }
         if ($drivername == 'sqlite')
@@ -665,7 +665,7 @@ if (!function_exists('sql_fetch_assoc'))
         if (!$SQL_DBH) return FALSE;
 
         $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
-        if(strpos($tablename,'<%prefix%>')!==false) {
+        if(strpos($tablename,'[@prefix@]')!==false) {
             $tablename = parseQuery($tablename);
         }
         $input_parameters = array(':name' => $tablename);

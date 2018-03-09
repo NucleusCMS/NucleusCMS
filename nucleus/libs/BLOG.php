@@ -323,7 +323,7 @@ class BLOG {
         $ibody  = sql_quote_string($ibody);
         $imore  = sql_quote_string($imore);
 
-        $query = parseQuery("INSERT INTO <%prefix%>item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) "
+        $query = parseQuery("INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) "
                . "VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)");
         sql_query($query);
         $itemid = sql_insert_id();
@@ -411,7 +411,7 @@ class BLOG {
                 while ($res !== false)
                 {
                     $ph = array('cname'=>sql_quote_string($catName.$i),'cblog'=>(int)$this->getID());
-                    $sql = parseQuery('SELECT catid AS result FROM <%prefix%>category WHERE cname=<%cname%> and cblog=<%cblog%>', $ph);
+                    $sql = parseQuery('SELECT catid AS result FROM [@prefix@]category WHERE cname=[@cname@] and cblog=[@cblog@]', $ph);
                     $res = quickQuery($sql);
                     if (empty($res)) break;
                     $i++;
@@ -433,10 +433,10 @@ class BLOG {
             $ph['cdesc'] = sql_quote_string($catDescription);
             if(!is_null($corder)) {
                 $ph['corder'] = (int) $corder;
-                $query = 'INSERT INTO <%prefix%>category (cblog, cname, cdesc, corder) VALUES (<%cblog%>,<%cname%>,<%cdesc%>,<%corder%>)';
+                $query = 'INSERT INTO [@prefix@]category (cblog, cname, cdesc, corder) VALUES ([@cblog@],[@cname@],[@cdesc@],[@corder@])';
             }
             else {
-                $query = 'INSERT INTO <%prefix%>category (cblog, cname, cdesc) VALUES (<%cblog%>, <%cname%>, <%cdesc%>)';
+                $query = 'INSERT INTO [@prefix@]category (cblog, cname, cdesc) VALUES ([@cblog@], [@cname@], [@cdesc@])';
             }
             sql_query(parseQuery($query,$ph));
             $catid = sql_insert_id();
@@ -559,9 +559,9 @@ class BLOG {
         }
 
         $from = array();
-        $from[] = '<%prefix%>item i';
-        $from[] = 'LEFT JOIN <%prefix%>member m ON i.iauthor=m.mnumber';
-        $from[] = 'LEFT JOIN <%prefix%>category c ON i.icat=c.catid';
+        $from[] = '[@prefix@]item i';
+        $from[] = 'LEFT JOIN [@prefix@]member m ON i.iauthor=m.mnumber';
+        $from[] = 'LEFT JOIN [@prefix@]category c ON i.icat=c.catid';
         
         $where = array();
         $where[] = 'i.idraft=0';  // exclude drafts
@@ -596,7 +596,7 @@ class BLOG {
     }
 
     function searchableBlogs() {
-        $res = sql_query( parseQuery('SELECT bnumber FROM <%prefix%>blog WHERE bincludesearch=1') );
+        $res = sql_query( parseQuery('SELECT bnumber FROM [@prefix@]blog WHERE bincludesearch=1') );
         $blogs = array();
         while ($obj = sql_fetch_object($res)) {
             $blogs[] = (int)$obj->bnumber;
@@ -621,7 +621,7 @@ class BLOG {
         else
             $query = 'SELECT COUNT(*) as result ';
 
-        $query .= parseQuery(' FROM <%prefix%>item as i, <%prefix%>member as m, <%prefix%>category as c')
+        $query .= parseQuery(' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c')
                . ' WHERE i.iblog='.$this->blogid
                . ' and i.iauthor=m.mnumber'
                . ' and i.icat=c.catid'
@@ -698,8 +698,8 @@ class BLOG {
 
         $ph['iblog'] = $this->getID();
         $ph['itime'] = mysqldate($this->getCorrectTime()); // don't show future items!
-        $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM <%prefix%>item'
-        . ' WHERE iblog=<%iblog%> AND itime <=<%itime%> AND idraft=0';
+        $query = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM [@prefix@]item'
+        . ' WHERE iblog=[@iblog@] AND itime <=[@itime@] AND idraft=0';
 
         if ($catid)
             $query .= ' AND icat=' . intval($catid);
@@ -812,7 +812,7 @@ class BLOG {
                             ));
 
         $ph['cblog'] = $this->getID();
-        $query = 'SELECT catid, cname, cdesc FROM <%prefix%>category WHERE cblog=<%cblog%>';
+        $query = 'SELECT catid, cname, cdesc FROM [@prefix@]category WHERE cblog=[@cblog@]';
         if (intval($CONF['DatabaseVersion']) >= 371)
             $query .=  ' ORDER BY corder ASC,cname ASC';
         else
@@ -910,7 +910,7 @@ class BLOG {
         }
         $ph['direction'] = (strtolower($direction)=='desc') ? 'DESC' : 'ASC';
 
-        $query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM <%prefix%>blog ORDER BY <%orderby%> <%direction%>';
+        $query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM [@prefix@]blog ORDER BY [@orderby@] [@direction@]';
         $res = sql_query(parseQuery($query,$ph));
         if ($res) {
             $usePathInfo = ($CONF['URLMode'] == 'pathinfo');
@@ -954,7 +954,7 @@ class BLOG {
       */
     function readSettings() {
         $ph['bnumber'] = $this->blogid;
-        $query = parseQuery('SELECT * FROM <%prefix%>blog WHERE bnumber=<%bnumber%>', $ph);
+        $query = parseQuery('SELECT * FROM [@prefix@]blog WHERE bnumber=[@bnumber@]', $ph);
         $res = sql_query($query);
 
         $this->settings = ( $res ? sql_fetch_assoc($res) : array() );
@@ -991,12 +991,12 @@ class BLOG {
         $v['bdefskin']       = (int)$this->getDefaultSkin();
         $v['bincludesearch'] = (int)$this->getSearchable();
         $v['bnumber']        = (int)$this->getID();
-        if (sql_existTableColumnName('<%prefix%>blog', 'bauthorvisible')) {
+        if (sql_existTableColumnName('[@prefix@]blog', 'bauthorvisible')) {
             $v['bauthorvisible'] = (int)$this->getAuthorVisible();
         }
         
-        $where = parseQuery('bnumber=<%bnumber%>',$v);
-        updateQuery('<%prefix%>blog', $v, $where);
+        $where = parseQuery('bnumber=[@bnumber@]',$v);
+        updateQuery('[@prefix@]blog', $v, $where);
     }
 
     /**
@@ -1020,7 +1020,7 @@ class BLOG {
     function isValidCategory($catid) {
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
-        $query = parseQuery('SELECT count(*) FROM <%prefix%>category WHERE cblog=<%cblog%> AND catid=<%catid%> LIMIT 1', $ph);
+        $query = parseQuery('SELECT count(*) FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@] LIMIT 1', $ph);
         if ($res = sql_query($query))
             return ((int)sql_result($res) > 0);
         return FALSE;
@@ -1035,7 +1035,7 @@ class BLOG {
     function getCategoryName($catid) {
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
-        $query = parseQuery('SELECT cname FROM <%prefix%>category WHERE cblog=<%cblog%> AND catid=<%catid%>',$ph);
+        $query = parseQuery('SELECT cname FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',$ph);
         if (($res = sql_query($query)) && ($o = sql_fetch_object($res)))
             return $o->cname;
         return "";
@@ -1050,7 +1050,7 @@ class BLOG {
     function getCategoryDesc($catid) {
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
-        $query = parseQuery('SELECT cdesc FROM <%prefix%>category WHERE cblog=<%cblog%> AND catid=<%catid%>',$ph);
+        $query = parseQuery('SELECT cdesc FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',$ph);
         if (($res = sql_query($query)) && ($o = sql_fetch_object($res)))
             return $o->cdesc;
         return "";
@@ -1060,7 +1060,7 @@ class BLOG {
     {
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
-        $query = parseQuery('SELECT corder FROM <%prefix%>category WHERE cblog=<%cblog%> AND catid=<%catid%>',$ph);
+        $query = parseQuery('SELECT corder FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',$ph);
         if (($res = sql_query($query)) && ($o = sql_fetch_object($res)))
             return intval($o->corder);
         return 100; // default
@@ -1075,7 +1075,7 @@ class BLOG {
     function getCategoryIdFromName($name) {
         $ph['cblog'] = $this->getID();
         $ph['cname'] = sql_quote_string($name);
-        $query = parseQuery('SELECT catid FROM <%prefix%>category WHERE cblog=<%cblog%> AND cname=<%cname%>',$ph);
+        $query = parseQuery('SELECT catid FROM [@prefix@]category WHERE cblog=[@cblog@] AND cname=[@cname@]',$ph);
         $res = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
@@ -1348,7 +1348,7 @@ class BLOG {
         $ph['tmember'] = $tmember;
         $ph['tblog']   = $this->getID();
         $ph['tadmin']  = $tadmin ? 1 : 0;
-        $query = parseQuery('INSERT INTO <%prefix%>team (tmember, tblog, tadmin) VALUES(<%tmember%>, <%tblog%>, <%tadmin%>)', $ph);
+        $query = parseQuery('INSERT INTO [@prefix@]team (tmember, tblog, tadmin) VALUES([@tmember@], [@tblog@], [@tadmin@])', $ph);
         sql_query($query);
 
         $param = array(
@@ -1377,7 +1377,7 @@ class BLOG {
       */
     public static function exists($name) {
         $ph['bshortname'] = sql_quote_string($name);
-        $query = parseQuery('SELECT count(*) AS result FROM <%prefix%>blog WHERE bshortname=<%bshortname%> LIMIT 1', $ph);
+        $query = parseQuery('SELECT count(*) AS result FROM [@prefix@]blog WHERE bshortname=[@bshortname@] LIMIT 1', $ph);
         return intval(quickQuery($query)) > 0;
     }
 
@@ -1390,7 +1390,7 @@ class BLOG {
       */
     public static function existsID($bnumber) {
         $ph['bnumber'] = (int) $bnumber;
-        $query = parseQuery('SELECT count(*) AS result FROM <%prefix%>blog WHERE bnumber=<%bnumber%> LIMIT 1', $ph);
+        $query = parseQuery('SELECT count(*) AS result FROM [@prefix@]blog WHERE bnumber=[@bnumber@] LIMIT 1', $ph);
         return intval(quickQuery($query)) > 0;
     }
 
@@ -1400,7 +1400,7 @@ class BLOG {
     function setFuturePost($bfuturepost=1) {
         $ph['bnumber']     = $this->getID();
         $ph['bfuturepost'] = (int)$bfuturepost;
-        $query =  parseQuery('UPDATE <%prefix%>blog SET bfuturepost=<%bfuturepost%> WHERE bnumber=<%bnumber%>', $ph);
+        $query =  parseQuery('UPDATE [@prefix@]blog SET bfuturepost=[@bfuturepost@] WHERE bnumber=[@bnumber@]', $ph);
         sql_query($query);
     }
 
@@ -1420,7 +1420,7 @@ class BLOG {
         if ($this->settings['bfuturepost'] != 1) return;
         
         $ph['iblog'] = $this->getID();
-        $sql = parseQuery('SELECT count(*) AS result FROM <%prefix%>item WHERE iposted=0 AND iblog=<%iblog%> AND itime<NOW() LIMIT 1', $ph);
+        $sql = parseQuery('SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] AND itime<NOW() LIMIT 1', $ph);
         if (!(int)quickQuery($sql)) return;
         
         // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
@@ -1433,10 +1433,10 @@ class BLOG {
         $manager->notify('JustPosted', $param);
 
         // clear all expired future posts
-        sql_query(parseQuery('UPDATE <%prefix%>item SET iposted=1 WHERE iblog=<%iblog%> AND itime<NOW()',$ph));
+        sql_query(parseQuery('UPDATE [@prefix@]item SET iposted=1 WHERE iblog=[@iblog@] AND itime<NOW()',$ph));
 
         // check to see any pending future post, clear the flag is none
-        $sql = parseQuery('SELECT count(*) AS result FROM <%prefix%>item WHERE iposted=0 AND iblog=<%iblog%> LIMIT 1', $ph);
+        $sql = parseQuery('SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] LIMIT 1', $ph);
         if ((int)quickQuery($sql)) return;
         
         $this->clearFuturePost();
@@ -1513,7 +1513,7 @@ class BLOG {
                     .   ' i.icat as catid,'
                     .   ' i.iclosed as closed';
 
-            $query .= ' FROM <%prefix%>item as i, <%prefix%>member as m, <%prefix%>category as c'
+            $query .= ' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c'
                     . ' WHERE'
                     .    ' i.iblog='.$this->blogid
                    . ' and i.iauthor=m.mnumber'
@@ -1546,7 +1546,7 @@ class BLOG {
 
         if ( sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') ) return;
         
-        $query = parseQuery('ALTER TABLE `<%prefix%>blog` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default 1');
+        $query = parseQuery('ALTER TABLE `[@prefix@]blog` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default 1');
         $res = sql_query($query);
         return $res !== FALSE;
     }

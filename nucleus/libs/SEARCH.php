@@ -76,7 +76,7 @@ class SEARCH {
             $ph['keywords'] = sql_quote_string(join(' ', $long_keywords));
             $ph['like_score'] = join(' + ',$score);
             
-            return parseQuery('<%like_score%> + match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) ', $ph);
+            return parseQuery('[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ', $ph);
         }
     }
 
@@ -106,7 +106,7 @@ class SEARCH {
     
     private function get_min_word_len() {
         
-        $res = sql_query( parseQuery("SHOW TABLE STATUS LIKE '<%prefix%>item'") );
+        $res = sql_query( parseQuery("SHOW TABLE STATUS LIKE '[@prefix@]item'") );
         if (!$res) return 4;
         
         $row = sql_fetch_assoc($res);
@@ -180,7 +180,7 @@ class SEARCH {
     private function get_ft_phrase($long_keywords) {
         $ph['field']    = $this->fields;
         $ph['keywords'] = sql_quote_string($long_keywords);
-        return parseQuery(' match (<%field%>) against (<%keywords%> IN BOOLEAN MODE) > 0 ', $ph);
+        return parseQuery(' match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) > 0 ', $ph);
     }
 
     private function get_like_phrase($keyword) {
@@ -191,12 +191,12 @@ class SEARCH {
         $ph['keyword'] = $keyword;
         $ph['concat_field'] = $this->fields_concat();
         if(!preg_match('/[\x80-\xfe]/', $keyword)) {
-            if($c==='-') $like = parseQuery("<%concat_field%> NOT LIKE '%<%keyword%>%'", $ph);
-            else         $like = parseQuery("<%concat_field%> LIKE '%<%keyword%>%'", $ph);
+            if($c==='-') $like = parseQuery("[@concat_field@] NOT LIKE '%[@keyword@]%'", $ph);
+            else         $like = parseQuery("[@concat_field@] LIKE '%[@keyword@]%'", $ph);
         }
         else {
-            if($c==='-') $like = parseQuery("<%concat_field%> NOT LIKE BINARY '%<%keyword%>%'", $ph);
-            else         $like = parseQuery("<%concat_field%> LIKE BINARY '%<%keyword%>%'", $ph);
+            if($c==='-') $like = parseQuery("[@concat_field@] NOT LIKE BINARY '%[@keyword@]%'", $ph);
+            else         $like = parseQuery("[@concat_field@] LIKE BINARY '%[@keyword@]%'", $ph);
         }
         return $like;
     }
@@ -205,7 +205,7 @@ class SEARCH {
         
         $fields = explode(',',$this->fields);
         $score = array();
-        $tpl = " 0.2*(LENGTH(<%field%>) - LENGTH(REPLACE(LOWER(<%field%>), LOWER(<%keyword%>), '')))/LENGTH(<%keyword%>) ";
+        $tpl = " 0.2*(LENGTH([@field@]) - LENGTH(REPLACE(LOWER([@field@]), LOWER([@keyword@]), '')))/LENGTH([@keyword@]) ";
         $ph['keyword'] = sql_quote_string($keyword);
         foreach($fields as $field){
             $ph['field']   = $field;

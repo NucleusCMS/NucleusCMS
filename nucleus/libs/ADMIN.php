@@ -236,7 +236,7 @@ class ADMIN {
 
             // Todo display author
             $ph = array('iauthor'=>$member->getID());
-            $query =  parseQuery('SELECT bnumber, count(*), sum(iauthor=<%iauthor%>) FROM [@prefix@]item, [@prefix@]blog', $ph)
+            $query =  parseQuery('SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog', $ph)
                    . ' WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY bnumber ASC';
 
             $items = array();
@@ -1154,7 +1154,7 @@ class ADMIN {
         if ($search) {
             $ph = array();
             $ph['search'] = sql_quote_string('%'.$search.'%');
-            $query .= parseQuery(' and ((ititle LIKE <%search%>) or (ibody LIKE <%search%>) or (imore LIKE <%search%>))', $ph);
+            $query .= parseQuery(' and ((ititle LIKE [@search@]) or (ibody LIKE [@search@]) or (imore LIKE [@search@]))', $ph);
         }
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
@@ -1280,7 +1280,7 @@ class ADMIN {
 
 
         $ph['cmember'] = $member->getID();
-        $query = parseQuery(' FROM [@prefix@]comment LEFT OUTER JOIN [@prefix@]member ON mnumber=cmember WHERE cmember=<%cmember%>',$ph);
+        $query = parseQuery(' FROM [@prefix@]comment LEFT OUTER JOIN [@prefix@]member ON mnumber=cmember WHERE cmember=[@cmember@]',$ph);
 
         if ($search)
             $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
@@ -1686,7 +1686,7 @@ class ADMIN {
         $ph['dist']    = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
         $ph['src']     = "ititle,ibody,imore,iblog,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,icat,ikarmaneg,iposted";
         $ph['inumber'] = $itemid;
-        $query = parseQuery("INSERT INTO [@prefix@]item(<%dist%>) SELECT <%src%> FROM [@prefix@]item WHERE inumber=<%inumber%>", $ph);
+        $query = parseQuery("INSERT INTO [@prefix@]item([@dist@]) SELECT [@src@] FROM [@prefix@]item WHERE inumber=[@inumber@]", $ph);
         if (sql_query($query))
         {
 //            $new_itemid = sql_insert_id();
@@ -2656,7 +2656,7 @@ class ADMIN {
             // TODO: try to make it so only non-team-members are listed
             // From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
             $ph['tblog'] = $blogid;
-            $from_where = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=<%tblog%>)', $ph);
+            $from_where = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=[@tblog@])', $ph);
             $query = "SELECT mname as text, mnumber as value" . $from_where;
             $count_non_team_members = intval(quickQuery("SELECT count(*) AS result " . $from_where));
 
@@ -3223,12 +3223,12 @@ class ADMIN {
         $ph['cdesc'] = sql_quote_string($cdesc);
         $ph['cblog'] = (int)$blogid;
         $ph['catid'] = $catid;
-        $query = parseQuery('SELECT count(*) FROM [@prefix@]category WHERE cname=<%cname%> AND cblog=<%cblog%> AND catid!=<%catid%>', $ph);
+        $query = parseQuery('SELECT count(*) FROM [@prefix@]category WHERE cname=[@cname@] AND cblog=[@cblog@] AND catid!=[@catid@]', $ph);
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
-        $query =  parseQuery('UPDATE [@prefix@]category SET cname=<%cname%>, cdesc=<%cdesc%>', $ph);
+        $query =  parseQuery('UPDATE [@prefix@]category SET cname=[@cname@], cdesc=[@cdesc@]', $ph);
 
         if ( ! is_null( $corder) )
             $query .=  sprintf(' , corder=%d' , $corder );
