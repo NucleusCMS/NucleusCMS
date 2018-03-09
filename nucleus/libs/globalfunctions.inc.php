@@ -262,7 +262,7 @@ function isValidMailAddress($address) {
 function getBlogIDFromName($bshortname)
 {
     $ph['bshortname'] = sql_quote_string($bshortname);
-    $res = parseQuickQuery("SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=<%bshortname%>", $ph);
+    $res = parseQuickQuery("SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=[@bshortname@]", $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
@@ -271,13 +271,13 @@ function getBlogIDFromName($bshortname)
 function getBlogNameFromID($bnumber)
 {
     $ph['bnumber'] = (int)$bnumber;
-    return parseQuickQuery('SELECT bname as result FROM [@prefix@]blog WHERE bnumber=<%bnumber%>', $ph);
+    return parseQuickQuery('SELECT bname as result FROM [@prefix@]blog WHERE bnumber=[@bnumber@]', $ph);
 }
 
 function getBlogIDFromItemID($inumber)
 {
     $ph['inumber'] = (int)$inumber;
-    $res = parseQuickQuery('SELECT iblog as result FROM [@prefix@]item WHERE inumber=<%inumber%>', $ph);
+    $res = parseQuickQuery('SELECT iblog as result FROM [@prefix@]item WHERE inumber=[@inumber@]', $ph);
     if ($res !== false)
       $res = intval($res);
     return $res;
@@ -286,7 +286,7 @@ function getBlogIDFromItemID($inumber)
 function getBlogIDFromCommentID($cnumber)
 {
     $ph['cnumber'] = (int)$cnumber;
-    $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]comment WHERE cnumber=<%cnumber%>', $ph);
+    $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]comment WHERE cnumber=[@cnumber@]', $ph);
     if ($res !== false)
         $res = intval($res);
     return $res;
@@ -295,7 +295,7 @@ function getBlogIDFromCommentID($cnumber)
 function getBlogIDFromCatID($catid)
 {
     $ph['catid'] = (int)$catid;
-    $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]category WHERE catid=<%catid%>', $ph);
+    $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]category WHERE catid=[@catid@]', $ph);
     if ($res !== false)
         $res = intval ($res);
     return $res;
@@ -304,7 +304,7 @@ function getBlogIDFromCatID($catid)
 function getCatIDFromName($cname)
 {
     $ph['cname'] = sql_quote_string($cname);
-    $res = parseQuickQuery("SELECT catid as result FROM [@prefix@]category WHERE cname=<%cname%>", $ph);
+    $res = parseQuickQuery("SELECT catid as result FROM [@prefix@]category WHERE cname=[@cname@]", $ph);
 	if ($res !== false)
 		$res = intval ($res);
 	return $res;
