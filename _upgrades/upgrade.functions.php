@@ -418,3 +418,80 @@ function upgrade_check_action_php()
     $checked = true;
     upgrade_remove_RefNew($DIR_NUCLEUS . '../action.php');
 }
+
+function upgrade_find_file($dir, $file_regex_pattern, $subdir_search=TRUE, $limit=3)
+{
+    if ((int) $limit <= 0)
+        return array();
+    if (strlen($dir)>0 && substr($dir,-1,1)!='/')
+        $dir .= '/';
+    $limit--;
+    $list = array();
+    if (is_dir($dir))
+    {
+        if ($dh = opendir($dir)) {
+            while (($file = readdir($dh)) !== false)
+            if (!in_array($file, array('.','..')))
+            {
+                if (is_dir($dir . $file))
+                {
+                    $child = upgrade_find_file($dir . $file, $file_regex_pattern, $subdir_search, $limit);
+                    if (empty($child))
+                        continue;
+                    $list = array_merge($list, $child);
+                }
+                else if(@preg_match($file_regex_pattern, $file))
+                    $list[] = $dir . $file;
+            }
+            closedir($dh);
+        }
+    }
+    return $list;
+
+}
+
+function upgrade_check_plugin_syntax()
+{
+    global $DIR_PLUGINS;
+    if (!is_dir($DIR_PLUGINS))
+        return;
+    $php = 'php';
+    if (defined('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX')
+        && !empty(UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX))
+    {
+       $php = UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX;
+    }
+    exec("{$php} --version", $output, $retval);
+    if (($retval !== 0) || empty($output) || !preg_match('@^(PHP\s+[\d\.]+)@i', $output[0], $ver))
+        return;
+    $ver = $ver[1];
+    $files = upgrade_find_file($DIR_PLUGINS, '/\.php$/i');
+    sort($files);
+//    var_dump($output, $retval, $files);
+    $errors = array();
+    foreach($files as $file)
+    {
+        $output = '';
+        $arg = escapeshellarg($file);
+        exec("{$php} -l {$arg}", $output, $retval);
+        $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
+//        if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")!==FALSE) {
+//            upgrade_remove_RefNew($file);
+//            $output1 = $output;
+//            $output = '';
+//            exec("{$php} -l {$arg}", $output, $retval);
+//            $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
+//            if (strpos($output, 'No syntax errors detected')!==FALSE) {
+//                $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output1));
+//            }
+//        }
+        if (strpos($output, 'No syntax errors detected')!==FALSE) {
+            continue;
+        }
+        if (preg_match('/^[^:]+error:/', $output))
+            $errors[] = sprintf("<li>%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output));
+    }
+    if (!empty($errors))
+        return sprintf("<h2>%s</h2>{$ver}<ul>%s</ul>", _UPG_TEXT_WARN_PLUGIN_SYNTAX_ERROR, implode("\n", $errors));
+    return '';
+}
