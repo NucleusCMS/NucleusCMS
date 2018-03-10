@@ -17,6 +17,9 @@
 define('NUCLEUS_UPGRADE_VERSION' ,   "3.80");
 define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
 
+//define('UPGRADE_CHECK_PLUGIN_SYNTAX', 1); // plugin/*.php : php syntax check
+//define('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX', 'pathto/php');
+
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
 if (preg_match('#/_?upgrades$#', $path))
@@ -110,6 +113,15 @@ if (version_compare('5.0.0',phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSIO
         $messages[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
     }
 }
+
+// php syntax check
+if (defined('UPGRADE_CHECK_PLUGIN_SYNTAX') && UPGRADE_CHECK_PLUGIN_SYNTAX)
+{
+    $tmp_msg = upgrade_check_plugin_syntax();
+    if ($tmp_msg)
+        $messages[] = $tmp_msg;
+}
+
 $messages[] = sprintf("<p><a href=\"%s\">%s</a></p>", $CONF['AdminURL'], _UPG_TEXT_BACKHOME);
 
 upgrade_head();

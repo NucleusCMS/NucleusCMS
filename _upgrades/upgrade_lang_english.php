@@ -16,6 +16,7 @@ define('_UPG_TEXT_BACKHOME',  'Back to Nucleus management');
 define('_UPG_TEXT_UPGRADE_ABORTED',  'Aborted upgrade.');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP',      'It does not support upgrading from older than version 3 core.');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO', 'Please try again to upgrade to version 3.71 or earlier.');
+define('_UPG_TEXT_WARN_PLUGIN_SYNTAX_ERROR', 'Error was detected in the PHP file of the plugin folder.');
 
 define('_UPG_TEXT_ALREADY_INSTALLED', 'already installed');
 define('_UPG_TEXT_V035_WARN_PING',      'Note: There are new changes to NP_Ping in v3.50. If it is already installed, please go to Admin Panel uninstall and re-install the plugin');

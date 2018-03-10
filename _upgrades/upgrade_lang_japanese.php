@@ -16,6 +16,7 @@ define('_UPG_TEXT_BACKHOME',  '管理ホームに戻る');
 define('_UPG_TEXT_UPGRADE_ABORTED',  'アップグレードを中止しました。');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP',      'バージョン3より古いコアからのアップグレードはサポートされていません。');
 define('_UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO', 'バージョン3.71以前にアップグレードしてからやり直してください。');
+define('_UPG_TEXT_WARN_PLUGIN_SYNTAX_ERROR', 'プラグインフォルダのPHPファイルにエラーが検出されました。');
 
 define('_UPG_TEXT_ALREADY_INSTALLED', 'インストール済みです');
 define('_UPG_TEXT_V035_WARN_PING',      '注意: バージョン3.50よりNP_Pingに変更があるので、使用中の方は管理画面より再インストールしてください。');
