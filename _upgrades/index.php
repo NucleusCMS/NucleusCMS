@@ -19,6 +19,7 @@ define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
 
 //define('UPGRADE_CHECK_PLUGIN_SYNTAX', 1); // plugin/*.php : php syntax check
 //define('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX', 'pathto/php');
+//define('UPGRADE_AUTOFIX_PLUGIN', 1);
 
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
