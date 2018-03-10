@@ -475,19 +475,22 @@ function upgrade_check_plugin_syntax()
         $arg = escapeshellarg($file);
         exec("{$php} -l {$arg}", $output, $retval);
         $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
-//        if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")!==FALSE) {
-//            upgrade_remove_RefNew($file);
-//            $output1 = $output;
-//            $output = '';
-//            exec("{$php} -l {$arg}", $output, $retval);
-//            $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
-//            if (strpos($output, 'No syntax errors detected')!==FALSE) {
-//                $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output1));
-//            }
-//        }
-        if (strpos($output, 'No syntax errors detected')!==FALSE) {
-            continue;
+        if (defined('UPGRADE_AUTOFIX_PLUGIN') && UPGRADE_AUTOFIX_PLUGIN)
+        {
+            if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")!==FALSE)
+            {
+                upgrade_remove_RefNew($file);
+                $output1 = $output;
+                $output = '';
+                exec("{$php} -l {$arg}", $output, $retval);
+                $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
+                if (strpos($output, 'No syntax errors detected')!==FALSE) {
+                    $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output1));
+                }
+            }
         }
+        if (strpos($output, 'No syntax errors detected')!==FALSE)
+            continue;
         if (preg_match('/^[^:]+error:/', $output))
             $errors[] = sprintf("<li>%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output));
     }
