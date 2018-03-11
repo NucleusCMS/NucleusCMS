@@ -243,12 +243,6 @@ if (!function_exists('sql_fetch_assoc'))
         global $CONF, $SQLCount,$SQL_DBH;
         $SQLCount++;
         $debug = (!isset($CONF['debug']) || !$CONF['debug']);
-//echo '<hr />SQL_DBH: ';
-//print_r($SQL_DBH);
-//echo '<hr />DBH: ';
-//print_r($dbh);
-//echo '<hr />';
-//echo $query.'<hr />';
         $db = ( !is_null($dbh) ? $dbh : $SQL_DBH );
         if (is_object($db) && ($db instanceof PDO))
             $res = $db->query($query);
