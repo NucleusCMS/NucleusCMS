@@ -578,6 +578,7 @@ class MANAGER
       */
     function notify($eventName, &$data)
     {
+        global $member, $CONF;
         // load subscription list if needed
         if (!is_array($this->subscriptions))
             $this->_loadSubscriptions();
@@ -597,11 +598,36 @@ class MANAGER
                 $this->_loadPlugin($listener);
                 // do notify (if method exists)
                 $event_funcname = 'event_' . $eventName;
-                if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname))
-                    $this->plugins[$listener]->$event_funcname($data);
+                if (!HAS_CATCH_ERROR) {
+                    if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname))
+                        $this->plugins[$listener]->$event_funcname($data);
+                } else {
+                    try
+                    {
+                        if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname))
+                            $this->plugins[$listener]->{$event_funcname}($data);
+                       // can not catch : trigger_error('test error', E_USER_ERROR);
+                    }
+                    catch (Error $e) // TypeError ParseError AssertionError
+                    {
+                        if ($member && $member->isLoggedIn() && $member->isAdmin())
+                        {
+                            $msg = sprintf("php error in plugin %s::%s:",
+                                           $this->plugins[$listener]->getName(), $event_funcname)
+                                 . sprintf("[%s] Line:%d (%s) : ", get_class($e), $e->getLine(), $e->getFile());
+                            if (!empty($CONF['DebugVars']) && $CONF['DebugVars'])
+                            {
+                                var_dump($e->getMessage());
+                                // $e->getTraceAsString
+                            }
+                            ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+                        }
+                        if (!empty($CONF['debug']) && $CONF['debug'])
+                            throw $e; // return exception
+                    }
+                }
             }
         }
-
     }
 
     /**
