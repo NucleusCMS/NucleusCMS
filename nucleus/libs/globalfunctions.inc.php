@@ -2421,7 +2421,7 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
     return $tpl;
 }
 
-function parseHtml($query='',$ph=array()) { // $ph is placeholders
+function parseHtml($html='',$ph=array()) { // $ph is placeholders
     
     if(!is_array($ph)) {
         $ph = func_get_args();
@@ -2430,25 +2430,25 @@ function parseHtml($query='',$ph=array()) { // $ph is placeholders
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     
     foreach($ph as $k=>$v) {
-        if(strpos($query,'{%')===false) break;
+        if(strpos($html,'{%')===false) break;
         
         if(strpos($v,'{%')!==false) {
             $v = str_replace('{%',"[{$esc}%",$v);
         }
-        $query = str_replace("{%{$k}%}", $v, $query);
-        if(strpos($query,"{%{$k}:hsc%}")!==false)
+        $html = str_replace("{%{$k}%}", $v, $html);
+        if(strpos($html,"{%{$k}:hsc%}")!==false)
         {
-            $query = str_replace("{%{$k}:hsc%}", hsc($v), $query);
+            $html = str_replace("{%{$k}:hsc%}", hsc($v), $html);
         }
-        if(strpos($query,"{%{$k}:urlencode%}")!==false)
+        if(strpos($html,"{%{$k}:urlencode%}")!==false)
         {
-            $query = str_replace("{%{$k}:urlencode%}", urlencode($v), $query);
+            $html = str_replace("{%{$k}:urlencode%}", urlencode($v), $html);
         }
     }
-    if(strpos($query,'{'.$esc.'%')!==false) {
-        $query = str_replace('{'.$esc.'%','{%',$query);
+    if(strpos($html,'{'.$esc.'%')!==false) {
+        $html = str_replace('{'.$esc.'%','{%',$html);
     }
-    return $query;
+    return $html;
 }
 
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
