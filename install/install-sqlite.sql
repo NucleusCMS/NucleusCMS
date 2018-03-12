@@ -365,6 +365,20 @@ CREATE TABLE IF NOT EXISTS `nucleus_skin_desc` (
   UNIQUE (`sdname`)
 );
 
+CREATE TABLE `nucleus_systemlog` (
+  `logyear`        SMALLINT     NOT NULL,
+  `logid`          BIGINT       NOT NULL,
+  `logtype`        varchar(30)  NOT NULL,
+  `subtype`        varchar(30)  NOT NULL default '',
+  `mnumber`        varchar(30)  NOT NULL default '0',
+  `timestamp_utc`  datetime     NOT NULL,
+  `message`        MEDIUMTEXT   NOT NULL default '',
+  `message_hash`   varchar(64)  NOT NULL,
+   PRIMARY KEY  (`logyear`, `logid`)
+);
+
+CREATE INDEX IF NOT EXISTS `nucleus_systemlog_idx_logtype` on `nucleus_systemlog` (`logtype`);
+
 CREATE TABLE IF NOT EXISTS `nucleus_team` (
   `tmember` int(11)     NOT NULL default '0',
   `tblog`   int(11)     NOT NULL default '0',

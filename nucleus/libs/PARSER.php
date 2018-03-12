@@ -156,7 +156,7 @@ class PARSER {
                                            $NP_Name, get_class($e), $e->getLine(), $e->getFile());
                             if ($CONF['DebugVars'])
                                 var_dump($e->getMessage());
-                            ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+                            SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
                             if (get_class($e) != 'ArgumentCountError')
                                 throw $e;
                         }

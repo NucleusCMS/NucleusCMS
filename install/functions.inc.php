@@ -458,7 +458,8 @@ function doInstall() {
 		'nucleus_team',
 		'nucleus_activation',
 		'nucleus_tickets',
-		'nucleus_cached_data'
+		'nucleus_cached_data',
+		'nucleus_systemlog'
 		);
 
 	$aTableNamesPrefixed = array();

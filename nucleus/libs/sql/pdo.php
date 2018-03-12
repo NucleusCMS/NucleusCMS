@@ -262,10 +262,10 @@ if (!function_exists('sql_fetch_assoc'))
             printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
                   , hsc($msg_text), hsc($query));
         }
-//        if ($msg_text && class_exists( 'ACTIONLOG') && method_exists('ACTIONLOG', 'addUnique')) {
+//        if ($msg_text && class_exists('SYSTEMLOG')) {
 //            $obj = sql_get_db(); // check null
 //            if (($obj) && ($obj instanceof PDO))
-//                ACTIONLOG::addUnique(ERROR, sprintf('SQL error with query : %s : %s', $msg_text, $query));
+//                SYSTEMLOG::addUnique('error', 'Error', sprintf('SQL error with query : %s : %s', $msg_text, $query));
 //        }
 
         return $res;
