@@ -5995,6 +5995,24 @@ selector();
         $this->pagefoot();
     }
 
+    private function checkConfigTable() {
+        global $CONF, $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql')
+            return;
+        $tablename = sql_table('config');
+        $query = sprintf("SHOW COLUMNS FROM `{$tablename}` LIKE 'name'");
+        $res = sql_query($query);
+        if ($res && ($row = sql_fetch_assoc($res))
+            && !empty($row['Type']) && ($row['Type']=='varchar(20)')) {
+            // force upgrade config table
+            $query =<<<EOL
+                ALTER TABLE `{$tablename}`
+                MODIFY COLUMN `name` varchar(50)  NOT NULL default ''
+EOL;
+            sql_query($query);
+        }
+    }
+
     /**
      * @todo document this
      */
@@ -6007,6 +6025,7 @@ selector();
         if (!isValidMailAddress(postVar('AdminEmail')))
             $this->error(_ERROR_BADMAILADDRESS);
 
+        $this->checkConfigTable();
 
         // save settings
         $this->updateConfig('DefaultBlog',      postVar('DefaultBlog'));

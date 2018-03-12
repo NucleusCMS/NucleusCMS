@@ -275,7 +275,7 @@ CREATE TABLE `nucleus_skin_desc` (
 
 CREATE TABLE `nucleus_systemlog` (
   `logyear`        SMALLINT     NOT NULL,
-  `logid`          BIGINT       NOT NULL,
+  `logid`          BIGINT       NOT NULL AUTO_INCREMENT,
   `logtype`        varchar(30)  NOT NULL,
   `subtype`        varchar(30)  NOT NULL default '',
   `mnumber`        varchar(30)  NOT NULL default '0',
