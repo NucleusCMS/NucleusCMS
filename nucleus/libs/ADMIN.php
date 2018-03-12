@@ -5855,24 +5855,31 @@ selector();
                     // ENABLE_TIDY
                     $tidy_loaded = extension_loaded('tidy');
                     $s_disable = sprintf('[%s] ',_ADMIN_SYSTEMOVERVIEW_DISABLE);
-                    printf("<tr><td>%s</td><td>", ($tidy_loaded ? '' : $s_disable) . _SETTINGS_ENABLE_TIDY);
+                    printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
                     $enable_tidy = isset($CONF['ENABLE_TIDY']) && $CONF['ENABLE_TIDY'];
-                    $this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);
+                    if ($tidy_loaded)
+                        $this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);
+                    else
+                        echo $s_disable;
                     echo "</td></tr>\n";
-                    // ENABLE_TIDY_FORCE_HTML5
-                    $s_col0 = $tidy_loaded ? '' : $s_disable;
-                    if (!function_exists('tidy_get_release') || !(strtotime( str_replace(array('.'),'/',tidy_get_release())) >= strtotime('2015/06/30')))
-                        $s_col0 = $s_disable;
-                    printf("<tr><td>%s</td><td>", $s_col0 . _SETTINGS_ENABLE_TIDY_FORCE_HTML5);
-                    $enable_tidy_f_html5 = isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5'];
-                    $this->input_yesno('ENABLE_TIDY_FORCE_HTML5', $enable_tidy_f_html5, 10082);
-                    echo "</td></tr>\n";
-                    // ENABLE_TIDY_INDENT
-                    $s_col0 = $tidy_loaded ? '' : $s_disable;
-                    printf("<tr><td>%s</td><td>", $s_col0 . _SETTINGS_ENABLE_TIDY_INDENT);
-                    $enable_tidy_indent = (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']);
-                    $this->input_yesno('ENABLE_TIDY_INDENT', $enable_tidy_indent, 10083);
-                    echo "</td></tr>\n";
+                    if ($tidy_loaded)
+                    {
+                        $isTidy5 = (function_exists('tidy_get_release')
+                                    && (strtotime( str_replace(array('.'),'/',tidy_get_release())) >= strtotime('2015/06/30')));
+                        // ENABLE_TIDY_FORCE_HTML5
+                        if ($isTidy5)
+                        {
+                            $enable_tidy_f_html5 = isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5'];
+                            printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_FORCE_HTML5);
+                            $this->input_yesno('ENABLE_TIDY_FORCE_HTML5', $enable_tidy_f_html5, 10082);
+                            echo "</td></tr>\n";
+                        }
+                        // ENABLE_TIDY_INDENT
+                        $enable_tidy_indent = (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']);
+                        printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
+                        $this->input_yesno('ENABLE_TIDY_INDENT', $enable_tidy_indent, 10083);
+                        echo "</td></tr>\n";
+                    }
                 }
 ?>
         <tr>
@@ -6063,9 +6070,11 @@ EOL;
         $this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
         $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS',    (postVar('EnableRSS') ? '0' : '1'));
-        $this->updateOrInsertConfig('ENABLE_TIDY',    (postVar('ENABLE_TIDY') ? '1' : '0'));
-        $this->updateOrInsertConfig('ENABLE_TIDY_FORCE_HTML5', (postVar('ENABLE_TIDY_FORCE_HTML5') ? '1' : '0'));
-        $this->updateOrInsertConfig('ENABLE_TIDY_INDENT',      (postVar('ENABLE_TIDY_INDENT') ? '1' : '0'));
+        if (extension_loaded('tidy')) {
+            $this->updateOrInsertConfig('ENABLE_TIDY',    (postVar('ENABLE_TIDY') ? '1' : '0'));
+            $this->updateOrInsertConfig('ENABLE_TIDY_FORCE_HTML5', (postVar('ENABLE_TIDY_FORCE_HTML5') ? '1' : '0'));
+            $this->updateOrInsertConfig('ENABLE_TIDY_INDENT',      (postVar('ENABLE_TIDY_INDENT') ? '1' : '0'));
+        }
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
@@ -6811,10 +6820,17 @@ EOL;
 
         $url = $manager->addTicketToUrl('index.php?action=clearactionlog');
 
-        ?>
-            <h2><?php echo _ACTIONLOG_CLEAR_TITLE?></h2>
-            <p><a href="<?php echo hsc($url)?>"><?php echo _ACTIONLOG_CLEAR_TEXT?></a></p>
-        <?php
+        $ticket = $manager->getHtmlInputTicketHidden();
+        $title  = _ACTIONLOG_CLEAR_TEXT;
+        $form=<<<EOL
+<form action="index.php?action=clearactionlog" method="post">
+$ticket
+<input type="submit" value="$title">
+</form>
+EOL;
+        printf('<h2>%s</h2>', _ACTIONLOG_CLEAR_TITLE);
+        printf('<div>%s</div>', $form);
+
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
         $query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
@@ -6849,7 +6865,6 @@ $ticket
 <input type="submit" value="$title">
 </form>
 EOL;
-
         printf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
         printf('<div>%s</div>', $form);
 
@@ -7125,7 +7140,11 @@ EOL;
     function action_clearactionlog() {
         global $member;
 
-        $member->isAdmin() or $this->disallow();
+        if (!$member->isAdmin()
+            || empty($_SERVER['REQUEST_METHOD'])
+            || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post')!=0) ) {
+             $this->disallow();
+        }
 
         ACTIONLOG::clear();
 
@@ -7138,7 +7157,7 @@ EOL;
         if (!$member->isAdmin() || empty($_SERVER['REQUEST_METHOD'])
             || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post')!=0)
             || !class_exists('SYSTEMLOG')
-            || !SYSTEMLOG::checkWritable()) {
+            || !SYSTEMLOG::checkWritable() ) {
              $this->disallow();
         }
 
