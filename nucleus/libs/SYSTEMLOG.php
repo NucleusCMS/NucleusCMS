@@ -30,9 +30,6 @@ class SYSTEMLOG {
         if (is_string($message))
             $message = (string) $message;
 
-//        if ($member && $member->isLoggedIn())
-//            $message = sprintf('[%s] %s', $member->getDisplayName(), $message);
-
         $tablename = sql_table('systemlog');
         $query =<<< EOL
             INSERT INTO `$tablename`
@@ -59,7 +56,6 @@ EOL;
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
             $res = sql_prepare_execute($query ,$ph);
-//            var_dump(sql_error($res));
         } else {
             $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
             foreach(array_keys($ph) as $key) {
@@ -68,7 +64,13 @@ EOL;
                 unset($ph[$key]);
             }
             $query = parseQuery($query, $ph);
-            sql_query(parseQuery($query, $ph));
+            $res = sql_query($query);
+        }
+        if (!empty($CONF['debug']) && $CONF['debug'] && $member->isAdmin()) {
+            if (empty($res) || sql_affected_rows($res)==0) {
+                $msg = sprintf('SYSTEMLOG::add query error: %s : %s', hsc(sql_error()), hsc($query));
+                trigger_error($msg, E_USER_WARNING);
+            }
         }
         self::autoClean();
     }
@@ -163,7 +165,7 @@ EOL;
         $query = array();
         $tablename = sql_table('systemlog');
         $query['mysql'] =<<<EOL
-CREATE TABLE `$tablename` (
+CREATE TABLE `{$tablename}` (
   `logyear`        SMALLINT     NOT NULL,
   `logid`          BIGINT       NOT NULL AUTO_INCREMENT,
   `logtype`        varchar(30)  NOT NULL,
