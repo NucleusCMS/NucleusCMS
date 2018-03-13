@@ -2152,6 +2152,7 @@ class ADMIN {
         <tr>
             <td><?php echo _MEMBERS_PWD?>
             <br /><small><?php echo _MEMBERS_PASSWORD_INFO?></small>
+            <input type="password" name="dummy" autocomplete="off" style="display:none;" />
             </td>
             <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
         </tr>
