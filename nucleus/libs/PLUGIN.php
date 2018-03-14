@@ -262,12 +262,13 @@ class NucleusPlugin {
         global $DIR_PLUGINS;
         
         if ( ! $path ) {
-            $path = $DIR_PLUGINS . get_class($this) . '/';
+            $path = $DIR_PLUGINS . get_class($this);
         }
         
         if(str_contain($path, '\\')) $path = str_replace('\\','/',$path);
         
         if(is_dir($path)) $path = rtrim($path,'/').'/';
+        else              $path = $this->getDirectory();
         
         $this->plugin_admin_dir = $path;
         return $path;
