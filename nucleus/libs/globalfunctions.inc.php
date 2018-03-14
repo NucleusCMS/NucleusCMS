@@ -2538,3 +2538,12 @@ function str_contain($haystack, $needle) {
     if($pos!==false) return true;
     return false;
 }
+
+function getBaseUrl() {
+    $_ = dirname($_SERVER['SCRIPT_NAME']);
+    if ($_==='/install' || $_==='/nucleus' || $_==='/_upgrades')
+    {
+        return '/';
+    }
+    return substr($_, 0, strrpos($_,'/')+1);
+}
