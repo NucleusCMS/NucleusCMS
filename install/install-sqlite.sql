@@ -140,6 +140,8 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('IndexURL',          'http://localhost/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('BaseURL',           '/');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('Language',          'japanese-utf8');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('SessionCookie',     '');

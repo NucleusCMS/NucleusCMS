@@ -107,6 +107,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DefaultBlog',       '1'),
     ('AdminEmail',        'example@example.org'),
     ('IndexURL',          'http://localhost/'),
+    ('BaseURL',           '/'),
     ('Language',          'japanese-utf8'),
     ('SessionCookie',     ''),
     ('AllowMemberCreate', ''),

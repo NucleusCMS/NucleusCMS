@@ -507,6 +507,7 @@ function doInstall() {
         echo sprintf("Step6(%d)", __LINE__);
 	// 6. update global settings
 	updateConfig('IndexURL',   $config_indexurl);
+	updateConfig('BaseURL',    getBaseUrl());
 	updateConfig('AdminURL',   $config_adminurl);
 	updateConfig('MediaURL',   $config_mediaurl);
 	updateConfig('SkinsURL',   $config_skinsurl);
