@@ -138,7 +138,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('AdminEmail',        'example@example.org');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('IndexURL',          'http://localhost:8080/nucleus/');
+    ('IndexURL',          'http://localhost/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('Language',          'japanese-utf8');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
