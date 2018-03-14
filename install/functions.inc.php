@@ -514,6 +514,7 @@ function doInstall() {
 	updateConfig('ActionURL',  $config_actionurl);
 	updateConfig('AdminEmail', $config_adminemail);
 	updateConfig('SiteName',   $config_sitename);
+	updateConfig('CookiePath', getBaseUrl());
 
     $install_lang_defs = get_install_lang_defs();
     if (($install_db_charset == 'utf8') || ($install_db_charset == 'utf8mb4')) {
