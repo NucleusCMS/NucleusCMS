@@ -1,13 +1,9 @@
 /*
 	documentation style
-	
-	$Id$
 */
 
 body {
 	background-color:#ffffff;
-	background: linear-gradient(#f0f0f0, #ffffff);
-	background-repeat: no-repeat;
 	padding-top: 13px;
 	color: #555;
 	font-family: Meiryo, "Hiragino Kaku Gothic Pro", arial, helvetica, sans-serif;
@@ -91,10 +87,6 @@ pre, .note, .faq .answer {
 	margin-bottom: 0px;
 }
 
-.faq .answer {
-
-}
-
 .faq {
 	margin-bottom: 20px;
 }
@@ -126,7 +118,6 @@ input, select, option, textarea, td,th,tt, code, samp {
 	padding: 5px;
 	font-size: medium;
 }
-
 
 .warning {
 	color: red;
