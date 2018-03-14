@@ -248,12 +248,21 @@ class NucleusPlugin {
     {
         global $CONF, $manager;
 
-        if ($this->supportsFeature('pluginadmin'))
-//            return  $CONF['AdminURL']. 'index.php?plugid=' . $this->getID() . '&action=pluginadmin';
-          return $manager->addTicketToUrl('index.php?plugid=' . $this->getID() . '&action=pluginadmin');
-        if (isset($this->plugin_admin_url_prefix))
+        if ($this->supportsFeature('pluginadmin')) {
+            return $manager->addTicketToUrl('index.php?plugid=' . $this->getID() . '&action=pluginadmin');
+        }
+        
+        if (isset($this->plugin_admin_url_prefix)) {
             return $CONF['PluginURL'] . $this->plugin_admin_url_prefix . $this->getShortName() . '/';
-        return $CONF['PluginURL'] . $this->getShortName() . '/';
+        }
+        $path = $CONF['PluginURL'] . get_class($this);
+        if (is_dir($path))
+        {
+            return $path . '/';
+        }
+        else {
+            return $CONF['PluginURL'] . $this->getShortName() . '/';
+        }
     }
 
     function getAdminDir() { return $this->getDirectory(); }
@@ -264,8 +273,6 @@ class NucleusPlugin {
         if ( ! $path ) {
             $path = $DIR_PLUGINS . get_class($this);
         }
-        
-        if(str_contain($path, '\\')) $path = str_replace('\\','/',$path);
         
         if(is_dir($path)) $path = rtrim($path,'/').'/';
         else              $path = $this->getDirectory();
@@ -282,8 +289,22 @@ class NucleusPlugin {
       */
     function getDirectory() {
         global $DIR_PLUGINS;
-        if ( isset($this->plugin_admin_dir) )
-            { return $this->plugin_admin_dir; }
+        if ( isset($this->plugin_admin_dir) ) {
+            return $this->plugin_admin_dir;
+        }
+        
+        $path = $CONF['PluginURL'] . get_class($this);
+        if (is_dir($path))
+        {
+            return $path . '/';
+        }
+        
+        $path = $path . '/' . $this->getShortName();
+        if(is_dir($path))
+        {
+            return $path . '/';
+        }
+        
         return $DIR_PLUGINS . $this->getShortName() . '/';
     }
 
