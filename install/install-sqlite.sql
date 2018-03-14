@@ -43,26 +43,26 @@ CREATE TABLE IF NOT EXISTS `nucleus_blog` (
 );
 
 INSERT INTO `nucleus_blog` VALUES (
-    1,                                  /* bnumber */
-    'My Nucleus CMS',                   /* bname */
-    'mynucleuscms',                     /* bshortname */
-    '',                                 /* bdesc */
-    1,                                  /* bcomments */
-    0,                                  /* bmaxcomments */
-    0.0,                                /* btimeoffset */
-    '',                                 /* bnotify */
-    'http://localhost:8080/nucleus/',   /* burl */
-    '',                                 /* bupdate */
-    5,                                  /* bdefskin */
-    0,                                  /* bpublic */
-    1,                                  /* bconvertbreaks */
-    1,                                  /* bdefcat */
-    1,                                  /* bnotifytype */
-    1,                                  /* ballowpast */
-    0,                                  /* bincludesearch */
-    0,                                  /* breqemail */
-    0,                                  /* bfuturepost */
-    1                                   /* bauthorvisible */
+    1,                     /* bnumber */
+    'My Nucleus CMS',      /* bname */
+    'mynucleuscms',        /* bshortname */
+    '',                    /* bdesc */
+    1,                     /* bcomments */
+    0,                     /* bmaxcomments */
+    0.0,                   /* btimeoffset */
+    '',                    /* bnotify */
+    'http://localhost/',   /* burl */
+    '',                    /* bupdate */
+    5,                     /* bdefskin */
+    0,                     /* bpublic */
+    1,                     /* bconvertbreaks */
+    1,                     /* bdefcat */
+    1,                     /* bnotifytype */
+    1,                     /* ballowpast */
+    0,                     /* bincludesearch */
+    0,                     /* breqemail */
+    0,                     /* bfuturepost */
+    1                      /* bauthorvisible */
 );
 
 CREATE TABLE IF NOT EXISTS `nucleus_category` (
@@ -150,7 +150,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('SiteName',          'My Nucleus CMS');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('AdminURL',          'http://localhost:8080/nucleus/nucleus/');
+    ('AdminURL',          'http://localhost/nucleus/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('NewMemberCanLogon', '1');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
@@ -160,7 +160,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('LastVisit',         '');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('MediaURL',          'http://localhost:8080/nucleus/media/');
+    ('MediaURL',          'http://localhost/media/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('AllowedTypes',      'jpg,jpeg,gif,mpg,mpeg,avi,mov,mp3,swf,png');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
@@ -184,15 +184,15 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('NonmemberMail',     '');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('PluginURL',         'http://localhost:8080/nucleus/nucleus/plugins/');
+    ('PluginURL',         'http://localhost/nucleus/plugins/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('ProtectMemNames',   '1');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('BaseSkin',          '5');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('SkinsURL',          'http://localhost:8080/nucleus/skins/');
+    ('SkinsURL',          'http://localhost/skins/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('ActionURL',         'http://localhost:8080/nucleus/action.php');
+    ('ActionURL',         'http://localhost/action.php');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('URLMode',           'normal');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
@@ -293,7 +293,7 @@ INSERT INTO `nucleus_member` (
   VALUES (
     1, 'example', 'example',
     '1a79a4d60de6718e8e5b326e338ae533', /* mpassword */
-    'example@example.org', 'http://localhost:8080/nucleus/', '',
+    'example@example.org', 'http://localhost/', '',
     1, 1, 'd767aefc60415859570d64c649257f19'
 );
 
