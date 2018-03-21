@@ -918,7 +918,7 @@ class BLOG {
                . ' WHERE bnumber=' . $this->blogid;
         $res = sql_query($query);
 
-        $this->isValid = ($res && !empty( $this->settings = sql_fetch_assoc($res) ));
+        $this->isValid = ($res && ($this->settings = sql_fetch_assoc($res)) && !empty($this->settings));
         if (!$this->isValid)
             $this->settings = array();
     }
