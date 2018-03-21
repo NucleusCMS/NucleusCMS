@@ -390,7 +390,19 @@ ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
 if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
-    redirect($CONF['DisableSiteURL']);
+    $url = trim($CONF['DisableSiteURL']);
+    if (strlen($url)>0) {
+        redirect($url);
+    } else {
+        if (!headers_sent()) {
+            header("HTTP/1.0 503 Service Unavailable");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+        }
+        $title = 'Service Unavailable';
+        $msg = 'Service Unavailable.';
+        echo "<html><head><title>$title</title></head><body><h1>$title</h1>$msg</body></html>";
+    }
     exit;
 }
 
