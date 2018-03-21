@@ -888,17 +888,14 @@ class ADMIN {
             $bid = getBlogIDFromCatID($id);
             if ($member->blogAdminRights($bid))
               {
-                  unset($b , $o);
-                  $b = $manager->getBlog($bid);
-
                   $res = sql_query('SELECT * FROM ' . sql_table('category')
                                 . ' WHERE cblog=' . $bid . ' and catid=' . intval($id));
-                  $o = sql_fetch_object($res);
-                  if (isset($o) && is_object($o))
+                  if ($res && ($o = sql_fetch_object($res)) && is_object($o))
                     {
                         $s .= sprintf('<tr><td>%s</td><td>%s</td><td>%s</td></tr>'
                                     , hsc($o->corder), hsc($o->cname), hsc($o->cdesc)
                         );
+                        unset($o);
                         continue;
                     }
               }
@@ -1352,6 +1349,8 @@ class ADMIN {
         $member->canAlterItem($itemid) or $this->disallow();
 
         $item =& $manager->getItem($itemid,1,1);
+        if (empty($item))
+            $this->error(_ERROR_NOSUCHITEM);
         $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
         $param = array('item' => &$item);
@@ -5454,13 +5453,13 @@ selector();
         // save settings
         $this->updateConfig('DefaultBlog',      postVar('DefaultBlog'));
         $this->updateConfig('BaseSkin',         postVar('BaseSkin'));
-        $this->updateConfig('IndexURL',         postVar('IndexURL'));
-        $this->updateConfig('AdminURL',         postVar('AdminURL'));
-        $this->updateConfig('PluginURL',        postVar('PluginURL'));
-        $this->updateConfig('SkinsURL',         postVar('SkinsURL'));
-        $this->updateConfig('ActionURL',        postVar('ActionURL'));
+        $this->updateConfig('IndexURL',         rtrim(postVar('IndexURL'),'/').'/');
+        $this->updateConfig('AdminURL',         rtrim(postVar('AdminURL'),'/').'/');
+        $this->updateConfig('PluginURL',        trim(postVar('PluginURL')));
+        $this->updateConfig('SkinsURL',         trim(postVar('SkinsURL')));
+        $this->updateConfig('ActionURL',        trim(postVar('ActionURL')));
         $this->updateConfig('Language',         postVar('Language'));
-        $this->updateConfig('AdminEmail',       postVar('AdminEmail'));
+        $this->updateConfig('AdminEmail',       trim(postVar('AdminEmail')));
         $this->updateConfig('SessionCookie',    postVar('SessionCookie'));
         $this->updateConfig('AllowMemberCreate',postVar('AllowMemberCreate'));
         $this->updateConfig('AllowMemberMail',  postVar('AllowMemberMail'));
@@ -5469,23 +5468,23 @@ selector();
         $this->updateConfig('SiteName',         postVar('SiteName'));
         $this->updateConfig('NewMemberCanLogon',postVar('NewMemberCanLogon'));
         $this->updateConfig('DisableSite',      postVar('DisableSite'));
-        $this->updateConfig('DisableSiteURL',   postVar('DisableSiteURL'));
+        $this->updateConfig('DisableSiteURL',   trim(postVar('DisableSiteURL')));
         $this->updateConfig('LastVisit',        postVar('LastVisit'));
-        $this->updateConfig('MediaURL',         postVar('MediaURL'));
+        $this->updateConfig('MediaURL',         rtrim(postVar('MediaURL'),'/').'/');
         $this->updateConfig('AllowedTypes',     postVar('AllowedTypes'));
         $this->updateConfig('AllowUpload',      postVar('AllowUpload'));
         $this->updateConfig('MaxUploadSize',    postVar('MaxUploadSize'));
         $this->updateConfig('MediaPrefix',      postVar('MediaPrefix'));
         $this->updateConfig('AllowLoginEdit',   postVar('AllowLoginEdit'));
         $this->updateConfig('DisableJsTools',   postVar('DisableJsTools'));
-        $this->updateConfig('CookieDomain',     postVar('CookieDomain'));
-        $this->updateConfig('CookiePath',       postVar('CookiePath'));
+        $this->updateConfig('CookieDomain',     trim(postVar('CookieDomain')));
+        $this->updateConfig('CookiePath',       trim(postVar('CookiePath')));
         $this->updateConfig('CookieSecure',     postVar('CookieSecure'));
         $this->updateConfig('URLMode',          postVar('URLMode'));
-        $this->updateConfig('CookiePrefix',     postVar('CookiePrefix'));
+        $this->updateConfig('CookiePrefix',     trim(postVar('CookiePrefix')));
         $this->updateConfig('DebugVars',        postVar('DebugVars'));
         $this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
-        $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
+        $this->updateConfig('AdminCSS',         postVar('AdminCSS'));
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user

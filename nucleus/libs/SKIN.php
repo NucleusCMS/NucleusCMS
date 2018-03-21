@@ -225,9 +225,9 @@ class SKIN {
         $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));
         $res = sql_query($query);
 
-        if (!$res || (empty($r = sql_fetch_array($res))))
-            return '';
-        return $r[0];
+        if ($res && ($r = sql_fetch_array($res)) && !empty($r))
+            return $r[0];
+        return '';
     }
 
     /**
