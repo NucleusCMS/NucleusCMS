@@ -98,10 +98,8 @@ if (!function_exists('sql_fetch_assoc'))
                     if (is_numeric($portnum)) $port = ':'.intval($portnum);
                     else $port = '';
 
-                    if ( version_compare( PHP_VERSION , '5.2.0', '<' )) {
-                        // php5.1 : pdo_sqlite driver is sqlite2
-                        // HY000-1 unsupported file format
-                        $msg = 'Critical error: PHP 5.2 or higher is required.';
+                    if (version_compare(PHP_VERSION, '7.1.0', '<' )) {
+                        $msg = 'Critical error: PHP 7.1 or higher is required.';
                         startUpError($msg , 'Connect Error');
                     }
 
