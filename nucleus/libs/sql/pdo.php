@@ -41,12 +41,6 @@ if (!function_exists('sql_fetch_assoc'))
             exit('The php of server does not meet the execution minimum requirement.');
         }
 
-//        if (method_exists('PDO', 'getAvailableDrivers'))
-//            $AvailableDrivers = PDO::getAvailableDrivers();
-//        else
-//            $AvailableDrivers = array('mysql');
-//        var_dump($AvailableDrivers);
-
         try {
             if (strpos($db_host,':') === false) {
                 $host = $db_host;
