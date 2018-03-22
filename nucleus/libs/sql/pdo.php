@@ -143,6 +143,11 @@ if (!function_exists('sql_fetch_assoc'))
         // for mysql
             if ( $DBH && (stripos($DB_DRIVER_NAME, 'mysql') === 0) )
             {
+                if ($DBH && version_compare( '5.2.0', PHP_VERSION, '>' ))
+                {
+                    // HY000-2014 Cannot execute queries while other unbuffered queries are active.
+                    $DBH->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
+                }
                 if (defined('_CHARSET'))
                 {
                     $charset  = get_mysql_charset_from_php_charset(_CHARSET);
