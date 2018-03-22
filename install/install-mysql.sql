@@ -116,7 +116,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('AdminURL',          'http://localhost/nucleus/'),
     ('NewMemberCanLogon', '1'),
     ('DisableSite',       ''),
-    ('DisableSiteURL',    'http://www.this-page-intentionally-left-blank.org/'),
+    ('DisableSiteURL',    ''),
     ('LastVisit',         ''),
     ('MediaURL',          'http://localhost/media/'),
     ('AllowedTypes',      'jpg,jpeg,gif,mpg,mpeg,avi,mov,mp3,swf,png'),

@@ -1424,6 +1424,8 @@ class ADMIN {
         $member->canAlterItem($itemid) or $this->disallow();
 
         $item =& $manager->getItem($itemid,1,1);
+        if (empty($item))
+            $this->error(_ERROR_NOSUCHITEM);
         $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
         $param = array('item' => &$item);
@@ -1530,6 +1532,7 @@ class ADMIN {
         } else {
             // TODO: set start item correctly for itemlist
             $this->action_itemlist(getBlogIDFromItemID($itemid));
+//            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid);
 //            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);
 //            exit;
         }
@@ -6040,11 +6043,11 @@ EOL;
         $this->updateConfig('BaseSkin',         postVar('BaseSkin'));
         $this->updateConfig('IndexURL',         rtrim(postVar('IndexURL'),'/').'/');
         $this->updateConfig('AdminURL',         rtrim(postVar('AdminURL'),'/').'/');
-        $this->updateConfig('PluginURL',        postVar('PluginURL'));
-        $this->updateConfig('SkinsURL',         postVar('SkinsURL'));
-        $this->updateConfig('ActionURL',        postVar('ActionURL'));
+        $this->updateConfig('PluginURL',        trim(postVar('PluginURL')));
+        $this->updateConfig('SkinsURL',         trim(postVar('SkinsURL')));
+        $this->updateConfig('ActionURL',        trim(postVar('ActionURL')));
         $this->updateConfig('Language',         postVar('Language'));
-        $this->updateConfig('AdminEmail',       postVar('AdminEmail'));
+        $this->updateConfig('AdminEmail',       trim(postVar('AdminEmail')));
         $this->updateConfig('SessionCookie',    postVar('SessionCookie'));
         $this->updateConfig('AllowMemberCreate',postVar('AllowMemberCreate'));
         $this->updateConfig('AllowMemberMail',  postVar('AllowMemberMail'));
@@ -6053,7 +6056,7 @@ EOL;
         $this->updateConfig('SiteName',         postVar('SiteName'));
         $this->updateConfig('NewMemberCanLogon',postVar('NewMemberCanLogon'));
         $this->updateConfig('DisableSite',      postVar('DisableSite'));
-        $this->updateConfig('DisableSiteURL',   postVar('DisableSiteURL'));
+        $this->updateConfig('DisableSiteURL',   trim(postVar('DisableSiteURL')));
         $this->updateConfig('LastVisit',        postVar('LastVisit'));
         $this->updateConfig('MediaURL',         rtrim(postVar('MediaURL'),'/').'/');
         $this->updateConfig('AllowedTypes',     postVar('AllowedTypes'));
@@ -6062,11 +6065,11 @@ EOL;
         $this->updateConfig('MediaPrefix',      postVar('MediaPrefix'));
         $this->updateConfig('AllowLoginEdit',   postVar('AllowLoginEdit'));
         $this->updateConfig('DisableJsTools',   postVar('DisableJsTools'));
-        $this->updateConfig('CookieDomain',     postVar('CookieDomain'));
-        $this->updateConfig('CookiePath',       postVar('CookiePath'));
+        $this->updateConfig('CookieDomain',     trim(postVar('CookieDomain')));
+        $this->updateConfig('CookiePath',       trim(postVar('CookiePath')));
         $this->updateConfig('CookieSecure',     postVar('CookieSecure'));
         $this->updateConfig('URLMode',          postVar('URLMode'));
-        $this->updateConfig('CookiePrefix',     postVar('CookiePrefix'));
+        $this->updateConfig('CookiePrefix',     trim(postVar('CookiePrefix')));
         $this->updateConfig('DebugVars',        postVar('DebugVars'));
         $this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
         $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
@@ -7991,19 +7994,22 @@ EOL;
         if ($CONF['alertOnSecurityRisk'] == 1)
         {
             // check if files exist and generate an error if so
-            $aFiles = array(
-                '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized
-                '../install.php' => _ERRORS_INSTALLPHP,  // don't localized
-                '../install' => _ERRORS_INSTALLDIR,
-                '../_upgrades'   => _ERRORS_UPGRADESDIR,
-                'convert'    => _ERRORS_CONVERTDIR
+            $RiskFiles = array(
+                '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
+                '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
+            );
+            $RiskDirs = array(
+                'convert'        => _ERRORS_CONVERTDIR,  // don't localized, old version
+                '../install'     => _ERRORS_INSTALLDIR,  // current version
+                '../_upgrades'   => _ERRORS_UPGRADESDIR  // current version
             );
             $aFound = array();
-            foreach($aFiles as $fileName => $fileDesc)
-            {
+            foreach($RiskFiles as $fileName => $fileDesc)
                 if (@ is_file($fileName))
                     $aFound[] = $fileDesc;
-            }
+            foreach($RiskDirs as $fileName => $fileDesc)
+                if (@ is_dir($fileName))
+                    $aFound[] = $fileDesc;
             if (@ is_writable('../config.php')) {
                 $aFound[] = _ERRORS_CONFIGPHP;
             }

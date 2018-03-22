@@ -23,9 +23,19 @@ if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = micr
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
-//if (version_compare(phpversion(),'5.3.0','<')) {
-//    exit('The php of server module does not meet the execution minimum requirement. (-.-).');
-//}
+/*
+if (version_compare(phpversion(), '5.3.0', '<')) {
+    // PHP 5.6 and 7.0 : Security Support Until Dec 2018
+    if (!headers_sent()) {
+        header("HTTP/1.0 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+    }
+    $msg = 'The php of server module does not meet the execution minimum requirement.';
+    echo "<html><head><title>Error</title></head><body><h1>Error</h1>$msg</body></html>";
+    exit();
+}
+*/
 
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
@@ -390,7 +400,19 @@ ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
 if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
-    redirect($CONF['DisableSiteURL']);
+    $url = trim($CONF['DisableSiteURL']);
+    if (strlen($url)>0) {
+        redirect($url);
+    } else {
+        if (!headers_sent()) {
+            header("HTTP/1.0 503 Service Unavailable");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+        }
+        $title = 'Service Unavailable';
+        $msg = 'Service Unavailable.';
+        echo "<html><head><title>$title</title></head><body><h1>$title</h1>$msg</body></html>";
+    }
     exit;
 }
 
