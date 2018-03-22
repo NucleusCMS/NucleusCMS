@@ -457,10 +457,14 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
             else $_CHARSET = '';
             
-            if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
+            if(version_compare($mySqlVer, '5.0.7', '>='))
             {
-                sql_query("SET CHARACTER SET {$charset}");
-                $res = mysql_set_charset($charset);
+                // SET CHARACTER SET: MySQL 5.0
+                // mysql_set_charset : (PHP5.2.3-) + (MySQL 5.0.7-)
+                if (function_exists('mysql_set_charset'))
+                    $res = mysql_set_charset($charset);
+                else
+                    $res = sql_query("SET CHARACTER SET {$charset}");
             }
             elseif($charset==='utf8mb4')
                 $res = sql_query("SET NAMES 'utf8mb4'");
