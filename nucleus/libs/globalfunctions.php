@@ -384,6 +384,10 @@ include_once("{$DIR_LIBS}PAGEFACTORY.php");
 include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}entity.php");
 
+if (version_compare('5.1.0',PHP_VERSION,'<=')) {
+    // register autoload class function / PHP >= 5.1.0
+    spl_autoload_register('loadCoreClassFor_spl'.(version_compare('5.3.0',PHP_VERSION,'<=') ? '' : '_prephp53'));
+}
 
 // set lastVisit cookie (if allowed)
 if (!headers_sent() ) {
@@ -2406,4 +2410,15 @@ function nucleus_version_compare($version1, $version2, $operator = '')
         $args[$i] = implode('.', $ver);
     }
     return call_user_func_array('version_compare', $args);
+}
+
+function loadCoreClassFor_spl($classname) {
+    if (@is_file(__DIR__ . "/{$classname}.php"))
+        require_once __DIR__ . "/{$classname}.php";
+}
+
+function loadCoreClassFor_spl_prephp53($classname) { // for PHP 5.1.0 - 5.2
+    global $DIR_LIBS;
+    if (@is_file("{$DIR_LIBS}/{$classname}.php"))
+        require_once "{$DIR_LIBS}/{$classname}.php";
 }

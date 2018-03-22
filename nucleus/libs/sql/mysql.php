@@ -457,18 +457,33 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
             else $_CHARSET = '';
             
-            if(version_compare($mySqlVer, '5.0.7', '>=') && function_exists('mysql_set_charset'))
+            if(version_compare($mySqlVer, '5.0.7', '>='))
             {
-                sql_query("SET CHARACTER SET {$charset}");
-                $res = mysql_set_charset($charset);
+                // SET CHARACTER SET: MySQL 5.0
+                // mysql_set_charset : (PHP5.2.3-) + (MySQL 5.0.7-)
+                if (function_exists('mysql_set_charset'))
+                    $res = mysql_set_charset($charset);
+                else
+                    $res = sql_query("SET CHARACTER SET {$charset}");
             }
-            elseif($charset==='utf8mb4')
-                $res = sql_query("SET NAMES 'utf8mb4'");
             elseif($charset==='utf8' && $_CHARSET==='utf-8')
                 $res = sql_query("SET NAMES 'utf8'");
             elseif($charset==='ujis' && $_CHARSET==='euc-jp')
                 $res = sql_query("SET NAMES 'ujis'");
         }
+
+        // retry : workaround for Can't initialize character set utf8mb4
+        if (($res === FALSE) && $charset==='utf8mb4')
+        {  // utf8mb4 : mysql_version 5.5 or higher
+            foreach(array('utf8','utf8mb4') as $charset)
+                if (function_exists('mysql_set_charset'))
+                    $res = mysql_set_charset($charset);
+                else
+                    $res = sql_query("SET CHARACTER SET {$charset}");
+            if (!$res)
+                $res = sql_query("SET CHARACTER SET utf8mb4");
+        }
+
         return isset($res) ? $res : false;
     }
 
