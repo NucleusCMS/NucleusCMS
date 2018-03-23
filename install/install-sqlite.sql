@@ -158,7 +158,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DisableSite',       '');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('DisableSiteURL',    'http://www.this-page-intentionally-left-blank.org/');
+    ('DisableSiteURL',    '');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('LastVisit',         '');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
