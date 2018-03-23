@@ -7277,6 +7277,42 @@ EOL;
 
     }
 
+    private function force_rename_np_plugin_dir() {
+        global $DIR_PLUGINS;
+        $path = @realpath($DIR_PLUGINS); // Since $DIR_PLUGINS is a user input value, it converts it to an absolute path
+        if (empty($DIR_PLUGINS) || empty($path) || !is_dir($path))
+            return;
+        $path = str_replace('\\', '/', $path) . '/';
+        $dh = opendir($path);
+        if ($dh) {
+            while (($file = readdir($dh)) !== false) {
+                if (in_array($file, array('.','..'))) continue;
+                $old_dir_name = "{$path}{$file}";
+                if (is_dir($old_dir_name) && preg_match('@^np_[0-9a-z_]+$@i', $file)) {
+                    $np_lists = glob("{$old_dir_name}/NP_*.php", GLOB_NOSORT);
+                    if (empty($np_lists) || substr(basename($np_lists[0]), 0, 2)!='NP') // Native Windows case insensitive
+                        continue;
+                    $NP_Name = substr(basename($np_lists[0]), 0, -4);
+                    if ((strcmp($file, $NP_Name)==0) || (strcasecmp($file, $NP_Name)!=0))
+                        continue;
+                    $new_dir_name = "{$path}{$NP_Name}";
+                    $success = @rename($old_dir_name, $new_dir_name);
+                    if (class_exists('SYSTEMLOG')) {
+                        $msg = sprintf('Plugin folder name [%s] is invalid.',$file);
+                        if ($success) {
+                            $msg .= sprintf(' force rename to [%s]', $NP_Name);
+                            SYSTEMLOG::add('error', 'Error', $msg);
+                        } else {
+                            $msg .= sprintf(' Please change to [%s] manually', $NP_Name);
+                            SYSTEMLOG::addUnique('error', 'Error', $msg);
+                        }
+                    }
+                }
+            }
+            closedir($dh);
+        }
+    }
+
 /*
  * @todo document this
  */
@@ -7287,6 +7323,8 @@ EOL;
         $member->isAdmin() or $this->disallow();
 
         $this->pagehead();
+
+        $this->force_rename_np_plugin_dir();
 
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
