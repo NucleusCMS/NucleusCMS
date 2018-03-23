@@ -37,7 +37,6 @@ class PAGEFACTORY extends BaseActions {
     /**
      * creates a new PAGEFACTORY object
      */
-    public function PAGEFACTORY($blogid) { $this->__construct($blogid); }
     function __construct($blogid) {
         // call constructor of superclass first
         parent::__construct();
@@ -90,6 +89,8 @@ class PAGEFACTORY extends BaseActions {
         $this->allowedTypes = array('bookmarklet','admin');
     }
 
+    public function PAGEFACTORY($blogid) { $this->__construct($blogid); }
+    
     /**
      * creates a "add item" form for a given type of page
      *

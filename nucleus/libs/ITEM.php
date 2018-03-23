@@ -24,11 +24,12 @@ class ITEM {
       * 
       * @param integer $itemid id of the item
       */
-    public function ITEM($itemid) { $this->__construct($itemid); }
     function __construct($itemid) {
         $this->itemid = $itemid;
     }
 
+    public function ITEM($itemid) { $this->__construct($itemid); }
+    
     /**
       * Returns one item with the specific itemid
       * 
