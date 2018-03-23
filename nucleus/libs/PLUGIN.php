@@ -246,22 +246,19 @@ class NucleusPlugin {
       */
     function getAdminURL()
     {
-        global $CONF, $manager;
+        global $CONF, $manager, $DIR_PLUGINS;
 
         if ($this->supportsFeature('pluginadmin')) {
             return $manager->addTicketToUrl('index.php?plugid=' . $this->getID() . '&action=pluginadmin');
         }
-        
-        if (isset($this->plugin_admin_url_prefix)) {
-            return $CONF['PluginURL'] . $this->plugin_admin_url_prefix . $this->getShortName() . '/';
-        }
-        $path = $CONF['PluginURL'] . get_class($this);
+        $dirPrefix = isset($this->plugin_admin_url_prefix) ? $this->plugin_admin_url_prefix : '';
+        $path = $DIR_PLUGINS . $dirPrefix.get_class($this);
         if (is_dir($path))
         {
-            return $path . '/';
+            return $CONF['PluginURL'] . $dirPrefix.get_class($this) . '/';
         }
         else {
-            return $CONF['PluginURL'] . $this->getShortName() . '/';
+            return $CONF['PluginURL'] . $dirPrefix.$this->getShortName() . '/';
         }
     }
 
