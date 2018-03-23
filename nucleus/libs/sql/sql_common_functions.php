@@ -193,7 +193,7 @@
     
     function updateQuery($table_name, $values, $where='', $extra=array()) {
         
-        $table = parseQuery($table);
+        $table_name = parseQuery($table_name);
         
         if(is_array($where)) $where = join(' ', $where);
         
@@ -216,7 +216,7 @@
         
         if($where != '')    $where = "WHERE {$where}";
         
-        return sql_query("UPDATE {$table} SET {$pairs} {$where}");
+        return sql_query("UPDATE {$table_name} SET {$pairs} {$where}");
     }
     
     function _getFieldsStringFromArray($fields=array()) {
