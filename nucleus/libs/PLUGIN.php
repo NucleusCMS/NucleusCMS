@@ -403,8 +403,9 @@ class NucleusPlugin {
         if ($this->_existOptionDesc($context, $name))
             return FALSE;
 
-        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
-        if (strlen($name)>20 && ($DB_DRIVER_NAME!='sqlite')) {
+        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME, $CONF;
+        $name_max_len = (intval($CONF['DatabaseVersion']) >= 380 ? 50: 20);
+        if ((strlen($name)>$name_max_len) && ($DB_DRIVER_NAME!='sqlite')) {
             $msg = "Maximum number of characters exceeded : name : createOption[$context] $name ";
             SYSTEMLOG::addUnique('error', 'Error', $msg);
         }
