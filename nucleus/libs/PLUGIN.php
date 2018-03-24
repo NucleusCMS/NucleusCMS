@@ -957,13 +957,12 @@ class NucleusPlugin {
             // get latest
             $ver2 = $this->getRemoteVersion();
             if (empty($ver2))
-                $ver2 = '';
+                $ver2 = '-';
             // save db
-            if (!empty($ver2))
-                CoreCachedData::setDataEx($col_type, $col_sub_type, $col_sub_id, $col_name, $ver2);
+            CoreCachedData::setDataEx($col_type, $col_sub_type, $col_sub_id, $col_name, $ver2);
         }
 
-        if (empty($ver2))
+        if (empty($ver2) || in_array($ver2, array('-')))
             return $ret_val;
         // compare version
         $ver1 = $this->getVersion();

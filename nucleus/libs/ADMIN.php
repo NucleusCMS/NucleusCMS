@@ -8498,10 +8498,18 @@ EOD;
             return false;
 
         $s = Utils::httpGet($url , array('connecttimeout'=> 2, 'timeout'=>2));
-        $pattern = '/getVersion\s*\([^"\']+?return\s+["\']([^"\']+?)["\']/im';
+        $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
+        $pattern1 = "/getVersion{$pattern0}/im";
+        $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
 
-        if (preg_match($pattern , $s, $m))
+        if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<'))
+            return false;
+
+        if (preg_match($pattern1, $s, $m))
         {
+            // Check plugin's min nucleus version
+            if (preg_match($pattern2, $s, $m2) && (intval($m2[1]) > CORE_APPLICATION_VERSION_ID))
+                return false;
             if ($trim)
                return preg_replace('#[^0-9\.\-\_]+.+?$#', '' , $m[1]);
             return $m[1];
