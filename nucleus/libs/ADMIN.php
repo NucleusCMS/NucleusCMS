@@ -1531,10 +1531,10 @@ class ADMIN {
             );
         } else {
             // TODO: set start item correctly for itemlist
-            $this->action_itemlist(getBlogIDFromItemID($itemid));
-//            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid);
-//            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);
-//            exit;
+//            $this->action_itemlist(getBlogIDFromItemID($itemid));               // list : Filter by the same category as item
+//            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid); // list : non filter
+            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);   // back to itemedit
+            exit;
         }
     }
 
@@ -8483,11 +8483,14 @@ EOD;
             }
         }
 
+        $lc_np_name = strtolower($NP_Name);
         $url = false;
+        $retry_url = false;
+        $extra_pattern = false;
         $force_get = false; // debug
-        if (isset($cached['list']) && isset($cached['list'][strtolower($NP_Name)]))
+        if (isset($cached['list']) && isset($cached['list'][$lc_np_name]))
         {
-            $repo_name = $cached['list'][strtolower($NP_Name)];
+            $repo_name = $cached['list'][$lc_np_name];
             $url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
         }
 
@@ -8497,7 +8500,18 @@ EOD;
         if (empty($url))
             return false;
 
+        switch($lc_np_name)
+        { // Workaround for unusual repositories
+            case 'np_extraskinjp' :
+                $url       = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/plugins/${NP_Name}.php";
+                $retry_url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
+                break;
+        }
+
         $s = Utils::httpGet($url , array('connecttimeout'=> 2, 'timeout'=>2));
+        if (empty($s) && !empty($retry_url))
+            $s = Utils::httpGet($retry_url , array('connecttimeout'=> 2, 'timeout'=>2));
+
         $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
         $pattern1 = "/getVersion{$pattern0}/im";
         $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
@@ -8505,7 +8519,7 @@ EOD;
         if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<'))
             return false;
 
-        if (preg_match($pattern1, $s, $m))
+        if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern , $s, $m)))
         {
             // Check plugin's min nucleus version
             if (preg_match($pattern2, $s, $m2) && (intval($m2[1]) > CORE_APPLICATION_VERSION_ID))
