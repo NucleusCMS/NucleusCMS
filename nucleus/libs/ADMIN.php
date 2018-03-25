@@ -1531,10 +1531,10 @@ class ADMIN {
             );
         } else {
             // TODO: set start item correctly for itemlist
-            $this->action_itemlist(getBlogIDFromItemID($itemid));
-//            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid);
-//            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);
-//            exit;
+//            $this->action_itemlist(getBlogIDFromItemID($itemid));               // list : Filter by the same category as item
+//            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid); // list : non filter
+            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);   // back to itemedit
+            exit;
         }
     }
 
