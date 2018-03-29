@@ -969,7 +969,6 @@ class BLOG {
       */
     function writeSettings() {
     	
-        // (can't use floatval since not available prior to PHP 4.2)
         $btimeoffset = $this->getTimeOffset();
         
         $v = array();

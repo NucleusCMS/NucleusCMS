@@ -19,11 +19,13 @@
 global $DIR_NUCLEUS;
 //if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
 
-if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
+if(!isset($_SERVER['REQUEST_TIME'])) $_SERVER['REQUEST_TIME'] = $_SERVER['REQUEST_TIME_FLOAT']; // (PHP 5.1-) : $_SERVER['REQUEST_TIME']
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 /*
+// Set PHP of the minimum requirement of the target of the current release here.
 if (version_compare(phpversion(), '5.3.0', '<')) {
     // PHP 5.6 and 7.0 : Security Support Until Dec 2018
     if (!headers_sent()) {

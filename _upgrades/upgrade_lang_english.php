@@ -54,6 +54,7 @@ define('_UPG_TEXT_NOTE02',             'When upgrading from an older Nucleus ver
 
 define('_UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED', 'No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.');
 define('_UPG_TEXT_WARN_DEPRECATED_PHP4_STOP',    'Nucleus does not work with PHP4. It aborts the upgrade work, and whether we can use the PHP5 or more, check with your server administrator.');
+define('_UPG_TEXT_WARN_MINIMUM_PHP_STOP',        'Nucleus %s minimum requirement is PHP %s. It aborts the upgrade work, and whether we can use the PHP %s or more, check with your server administrator.');
 
 define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',        'Click here to upgrade the database to Nucleus v%s');
 

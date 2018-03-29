@@ -54,6 +54,7 @@ define('_UPG_TEXT_NOTE02',             'Nucleus CMSはバージョンアップ�
 
 define('_UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED', '自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。');
 define('_UPG_TEXT_WARN_DEPRECATED_PHP4_STOP',    'NucleusはPHP4では動作しません。アップグレード作業を中止して、PHP5以上が使えるかどうか、サーバ管理者に確認して下さい。');
+define('_UPG_TEXT_WARN_MINIMUM_PHP_STOP',        'Nucleus %s の動作にはPHP %s 以降が必要です。アップグレード作業を中止して、PHP %s 以降が使えるかどうか、サーバ管理者に確認して下さい。');
 
 define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',        'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
 
