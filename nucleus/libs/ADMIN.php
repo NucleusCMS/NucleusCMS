@@ -2235,16 +2235,14 @@ class ADMIN {
             // plugin options
             $this->_insertPluginOptions('member',$memberid);
         ?>
-        <tr>
-            <th colspan="2"><?php echo _MEMBERS_EDIT ?></th>
-        </tr>
-        <tr>
-            <td><?php echo _MEMBERS_EDIT?></td>
-            <td><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
-
-        </div></form>
-
+        </table>
+            <div><input type="submit" tabindex="90" value="<?php echo _MEMBERS_EDIT_BTN?>" onclick="return checkSubmit();" /></div>
+<div style="display:none;">
+<input type="password" name="dummy1" value="">
+<input type="password" name="dummy2" value="">
+</div>
+</div>
+            </form>
         <?php
             echo '<h3>',_PLUGINS_EXTRA,'</h3>';
 
@@ -2400,8 +2398,8 @@ class ADMIN {
             $member->logout();
             $this->action_login(_MSG_LOGINAGAIN, 0);
         } else {
-            $this->action_overview(_MSG_SETTINGSCHANGED);
-//            $this->action_editmembersettings($memberid,_MSG_SETTINGSCHANGED);
+//            $this->action_overview(_MSG_SETTINGSCHANGED);
+            $this->action_editmembersettings($memberid,_MSG_SETTINGSCHANGED);
         }
     }
 
@@ -2887,7 +2885,11 @@ class ADMIN {
 
 
         <p>
-        <a href="index.php?action=manageteam&amp;blogid=<?php echo $blogid?>"><?php echo _EBLOG_TEAM_TEXT?></a>
+        <form action="index.php" method="GET">
+            <input type="hidden" name="action" value="manageteam" />
+            <input type="hidden" name="blogid" value="<?php echo $blogid; ?>" />
+            <input type="submit" value="<?php echo _EBLOG_TEAM_TEXT; ?>" />
+        </form>
         </p>
 
         <h3><?php echo _EBLOG_SETTINGS_TITLE?></h3>
@@ -2917,7 +2919,8 @@ class ADMIN {
             </td>
             <td>
                 <?php
-                    $query =  'SELECT sdname as text, sdnumber as value FROM '.sql_table('skin_desc');
+                    $query =  'SELECT sdname as text, sdnumber as value'
+                           . ' FROM '.sql_table('skin_desc');
                     $template['name'] = 'defskin';
                     $template['selected'] = $blog->getDefaultSkin();
                     $template['tabindex'] = 50;
@@ -3018,14 +3021,8 @@ class ADMIN {
             // plugin options
             $this->_insertPluginOptions('blog',$blogid);
         ?>
-        <tr>
-            <th colspan="2"><?php echo _EBLOG_CHANGE?></th>
-        </tr>
-        <tr>
-            <td><?php echo _EBLOG_CHANGE?></td>
-            <td><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
-
+        </table>
+            <div><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN?>" onclick="return checkSubmit();" /></div>
         </div></form>
 
         <h3><?php echo _EBLOG_CAT_TITLE?></h3>
@@ -3563,8 +3560,8 @@ class ADMIN {
         $manager->notify('PostPluginOptionsUpdate', $param);
 
 
-        $this->action_overview(_MSG_SETTINGSCHANGED);
-//        $this->action_blogsettings(_MSG_SETTINGSCHANGED);
+//        $this->action_overview(_MSG_SETTINGSCHANGED);
+        $this->action_blogsettings(_MSG_SETTINGSCHANGED);
     }
 
     /**
@@ -5986,13 +5983,8 @@ selector();
 
 
         </tr>
-        <tr>
-            <th colspan="2"><?php echo _SETTINGS_UPDATE?></th>
-        </tr>
-        <tr>
-            <td><?php echo _SETTINGS_UPDATE?></td>
-            <td><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></td>
-        </tr></table>
+        </table>
+            <div><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN?>" onclick="return checkSubmit();" /></div>
 
         </div>
         </form>
@@ -6084,7 +6076,8 @@ EOL;
         // note that when changing cookie settings, this redirect might cause the user
         // to have to log in again.
         getConfig();
-        redirect($CONF['AdminURL'] . '?action=manage');
+        redirect($CONF['AdminURL'] . '?action=settingsedit');
+//        redirect($CONF['AdminURL'] . '?action=manage');
         exit;
 
     }
