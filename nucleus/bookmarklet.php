@@ -242,7 +242,7 @@ function bm_loginAndPassThrough() {
 
     ?>
 <!DOCTYPE html>
-<html <?php printf('lang="%s"', _HTML5_LANG); ?>>
+<html <?php printf('lang="%s"', _HTML_5_LANG_CODE); ?>>
 <head>
 <meta charset="<?php echo _CHARSET ?>" />
 <title>Nucleus</title>
@@ -350,7 +350,7 @@ function bm_doError($msg) {
 function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
     ?>
 <!DOCTYPE html>
-<html <?php printf('lang="%s"', _HTML5_LANG); ?>>
+<html <?php printf('lang="%s"', _HTML_5_LANG_CODE); ?>>
 <head>
 <meta charset="<?php echo _CHARSET ?>" />
 <title><?php echo $title ?></title>

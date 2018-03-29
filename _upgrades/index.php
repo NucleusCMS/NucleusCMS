@@ -14,9 +14,9 @@
  *
  */
 
-define('NUCLEUS_UPGRADE_VERSION' ,   "3.80");
-define('NUCLEUS_UPGRADE_VERSION_ID' , 380);
-define('NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION' , '5.0.5');
+define('NUCLEUS_UPGRADE_VERSION' ,   "3.80");  // (string) , format : dot separated
+define('NUCLEUS_UPGRADE_VERSION_ID' , 380);    // (int)
+define('NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION' , '5.0.5'); // (string) , format : dot separated
 
 //define('UPGRADE_CHECK_PLUGIN_SYNTAX', 1); // plugin/*.php : php syntax check
 //define('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX', 'pathto/php');
@@ -74,12 +74,17 @@ if ($current < 300) {
 
 $isUpgraded = FALSE;
 
-if (version_compare(phpversion(),NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,'<'))
+if (version_compare(phpversion(), '5.0.0', '<'))
     $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
 //elseif ($current > NUCLEUS_UPGRADE_VERSION_ID) {
 //    exit('your core is old.'); // error
 //}
-elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+elseif (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<')) {
+    $messages[] = '<p class="deprecated">'
+                 . sprintf(_UPG_TEXT_WARN_MINIMUM_PHP_STOP,
+                           NUCLEUS_UPGRADE_VERSION, NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION)
+                 .'</p>';
+} elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
     $isUpgraded = TRUE;
     $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
     $messages[] = "<br />";

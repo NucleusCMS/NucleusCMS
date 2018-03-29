@@ -54,27 +54,8 @@ function serverVar($name, $default=NULL) {
     return $_SERVER[$name];
 }
 
-// removes magic quotes if that option is enabled
-function undoMagic($data) {
-    if (!get_magic_quotes_gpc())
-        return $data;
-    if (ini_get('magic_quotes_sybase') != 1)
-        return stripslashes_array($data);
-    else
-        return undoSybaseQuotes_array($data);
-}
-
 function stripslashes_array($data) {
     return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
-}
-
-function undoSybaseQuotes_array($data) {
-    return is_array($data) ? array_map('undoSybaseQuotes', $data) : stripslashes($data);
-//jp    return is_array($data) ? array_map('undoSybaseQuotes_array', $data) : str_replace("''", "'", $data);
-}
-
-function undoSybaseQuotes($data) {
-    return str_replace("''", "'", $data);
 }
 
 // integer array from request
@@ -121,4 +102,30 @@ function postFileInfo($name, $default=NULL) {
 
 function setOldAction($value) {
     $_POST['oldaction'] = $value;
+}
+
+//
+// deprecate functions
+//
+
+// removes magic quotes if that option is enabled
+function undoMagic($data) {
+    trigger_error('Function '. __FUNCTION__ . '() is deperecated', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
+    if (!get_magic_quotes_gpc())
+        return $data;
+    if (ini_get('magic_quotes_sybase') != 1)
+        return stripslashes_array($data);
+    else
+        return undoSybaseQuotes_array($data);
+}
+
+function undoSybaseQuotes_array($data) {
+    trigger_error('Function '. __FUNCTION__ . '() is deperecated', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
+    return is_array($data) ? array_map('undoSybaseQuotes', $data) : stripslashes($data);
+//jp    return is_array($data) ? array_map('undoSybaseQuotes_array', $data) : str_replace("''", "'", $data);
+}
+
+function undoSybaseQuotes($data) {
+    trigger_error('Function '. __FUNCTION__ . '() is deperecated', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
+    return str_replace("''", "'", $data);
 }

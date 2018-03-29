@@ -315,9 +315,8 @@ class PAGEFACTORY extends BaseActions {
 
     // inserts some localized text
     function parse_text($which) {
-        // constant($which) only available from 4.0.4 :(
         if (defined($which)) {
-            eval("echo $which;");
+            echo strval(constant($which));
         } else {
             echo $which;    // this way we see where definitions are missing
         }

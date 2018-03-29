@@ -457,7 +457,7 @@ function upgrade_check_plugin_syntax()
         return;
     $php = 'php';
     if (defined('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX')
-        && !empty(UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX))
+        && constant('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX'))
     {
        $php = UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX;
     }

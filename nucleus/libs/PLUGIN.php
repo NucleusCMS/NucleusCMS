@@ -341,15 +341,16 @@ class NucleusPlugin {
     /**
      * Class constructor: Initializes some internal data
      */
-    function NucleusPlugin() {
-        $this->__construct();
-    }
     function __construct() {
         $this->_aOptionValues = array();    // oid_contextid => value
         $this->_aOptionToInfo = array();    // context_name => array('oid' => ..., 'default' => ...)
         $this->plugin_options = 0;
 
         $this->init_driver_flag();
+    }
+
+    function NucleusPlugin() {
+        $this->__construct();
     }
 
     /**
