@@ -345,7 +345,7 @@ function doInstall() {
 		  $mysql_usePrefix = 0;
 		  $MYSQL_CONN = @sql_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
           $SQL_DBH = $MYSQL_CONN;
-          $DB_PHP_MODULE_NAME == 'pdo';
+          $DB_PHP_MODULE_NAME = 'pdo';
 //            var_dump($MYSQL_CONN);
     }
 
