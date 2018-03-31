@@ -23,9 +23,15 @@
  * ==========================================================================================
  */
 	$DIR_LIBS = '';
- 	$strRel = '../../../';
-	if (!is_file($strRel . 'config.php'))
-		$strRel .= '../';
+	$p = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
+	while($p && array_pop($p) && !empty($p)) {
+		$strRel = implode(DIRECTORY_SEPARATOR, $p) . DIRECTORY_SEPARATOR;
+		if (@is_file($strRel . 'config.php')) {
+			break;
+		}
+	}
+	if (@!is_file($strRel . 'config.php'))
+		exit('Error: config file not found.');
 	require($strRel . 'config.php');
 	include_libs('PLUGINADMIN.php');
 
