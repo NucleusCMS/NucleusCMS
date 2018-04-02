@@ -6,19 +6,22 @@ Admin area for NP_SecurityEnforcer
 
 */
 
+if (!isset($member)) {
+	$p = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
+	while($p && array_pop($p) && !empty($p)) {
+		$strRel = implode(DIRECTORY_SEPARATOR, $p) . DIRECTORY_SEPARATOR;
+		if (@is_file($strRel . 'config.php')) {
+			break;
+		}
+	}
 	// if your 'plugin' directory is not in the default location,
 	// edit this variable to point to your site directory
 	// (where config.php is)
-	$strRel = '../../../';
-
-	if ( !is_file($strRel . 'config.php')
-		 && is_file($strRel.'../config.php'))
-	{
-		$strRel .= '../';
-	}
-
-if (!isset($member))
-    include($strRel . 'config.php');
+//	$strRel = '../../../';
+	if (@!is_file($strRel . 'config.php'))
+		exit('Error: config file not found.');
+	require($strRel . 'config.php');
+}
 
 if (!isset($member) || !$member->isAdmin())
     doError('Insufficient Permissions.');

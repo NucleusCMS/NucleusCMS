@@ -2173,9 +2173,15 @@ sqliteでは、SELECT文でのsql_num_rowsは未対応です。予期せぬ結�
     // if your 'plugin' directory is not in the default location,
     // edit this variable to point to your site directory
     // (where config.php is)
-    $strRel = '../../../';
-    if ( !is_file($strRel . 'config.php') && is_file($strRel.'../config.php'))
-        $strRel .= '../';
+    $p = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
+    while($p && array_pop($p) && !empty($p)) {
+        $strRel = implode(DIRECTORY_SEPARATOR, $p) . DIRECTORY_SEPARATOR;
+        if (@is_file($strRel . 'config.php')) {
+            break;
+        }
+    }
+    if (@!is_file($strRel . 'config.php'))
+        exit('Error: config file not found.');
 
     include($strRel . 'config.php');
     if (!$member-&gt;isLoggedIn())
@@ -2233,7 +2239,7 @@ sqliteでは、SELECT文でのsql_num_rowsは未対応です。予期せぬ結�
 
 <ul>
  <li>登録できるからといって安易にクイックメニューへ登録しないこと。クイックメニューにプラグインが100個並んだりしたらかなりウンザリするでしょう。ですので、クイックメニューに登録する場合でも、クイックメニュー登録を有効・無効化するプラグインオプションを（グローバルまたはメンバーオプションで）用意することを考えてください。</li>
- <li><code>プラグインディレクトリが nucleus/plugins/ ではない場合は、index.php内の $strRel</code> 変数は手動で書き換える必要があります。</li>
+ <li><code>プラグインディレクトリが nucleus/plugins/ ではない場合は、サンプルを参考に plugins/config-plugin.php を作ります。 また古いプラグインの場合index.php内の $strRel</code> 変数を手動で書き換える必要があります。サンプルではディレクトリをたどり最初に見つかったconfig.phpを読み込みます。</li>
  <li>管理エリアのアウトプットが<strong>正しいXHTML</strong>になっているか確認してください。正しくないと、MozillaなどのGeckoベースのブラウザでページ表示が崩れます。</li>
 </ul>
 
