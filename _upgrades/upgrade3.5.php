@@ -6,7 +6,7 @@ function upgrade_do350() {
         return _UPG_TEXT_ALREADY_INSTALLED;
     
     upgrade_do350_dropfield_bsendping();
-    upgrade_do350_modfield_mname()
+    upgrade_do350_modfield_mname();
     upgrade_do350_check_np_ping();
 
     // 3.4 -> 3.5
