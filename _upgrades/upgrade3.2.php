@@ -22,7 +22,7 @@ function upgrade_do320() {
         return _UPG_TEXT_ALREADY_INSTALLED;
 
     // create nucleus_activation table
-    if (!upgrade_checkIfTableExists('tickets')) {
+    if (!upgrade_checkIfTableExists('activation')) {
         $query = 'CREATE TABLE ' . sql_table('activation') . ' ('
                . ' vkey varchar(40) NOT NULL default \'\','
                . ' vtime datetime NOT NULL default \'0000-00-00 00:00:00\','
