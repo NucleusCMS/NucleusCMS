@@ -162,6 +162,8 @@
     function upgrade_query($friendly, $query) {
         global $upgrade_failures;
 
+        $friendly = parseQuery($friendly);
+        
         echo "<li>$friendly ... ";
         $res = sql_query($query);
         if (!$res) {
