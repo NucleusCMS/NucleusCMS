@@ -21,12 +21,12 @@ function upgrade_do320() {
 
     // create nucleus_activation table
     if (!upgrade_checkIfTableExists('activation')) {
-        $query = 'CREATE TABLE ' . sql_table('activation') . ' ('
-               . ' vkey varchar(40) NOT NULL default \'\','
-               . ' vtime datetime NOT NULL default \'0000-00-00 00:00:00\','
-               . ' vmember int(11) NOT NULL default \'0\','
-               . ' vtype varchar(15) NOT NULL default \'\','
-               . ' vextra varchar(128) NOT NULL default \'\','
+        $query = parseQuery('CREATE TABLE [@prefix@]activation (')
+               . " vkey varchar(40) NOT NULL default '',"
+               . " vtime datetime NOT NULL default '0000-00-00 00:00:00',"
+               . " vmember int(11) NOT NULL default '0',"
+               . " vtype varchar(15) NOT NULL default '',"
+               . " vextra varchar(128) NOT NULL default '',"
                . ' PRIMARY KEY  (vkey) '
                . ' )';
         upgrade_query('Creating account activation table', $query);    
@@ -40,10 +40,10 @@ function upgrade_do320() {
 
     // create nucleus_tickets table
     if (!upgrade_checkIfTableExists('tickets')) {
-        $query = 'CREATE TABLE ' . sql_table('tickets') . ' ('
-               . ' ticket varchar(40) NOT NULL default \'\','
-               . ' ctime datetime NOT NULL default \'0000-00-00 00:00:00\','
-               . ' member int(11) NOT NULL default \'0\', '
+        $query = parseQuery('CREATE TABLE [@prefix@]tickets (')
+               . " ticket varchar(40) NOT NULL default '',"
+               . " ctime datetime NOT NULL default '0000-00-00 00:00:00',"
+               . " member int(11) NOT NULL default '0', "
                . ' PRIMARY KEY  (ticket, member) '
                . ' )';
         upgrade_query('Creating ticket table', $query);    
@@ -55,5 +55,3 @@ function upgrade_do320() {
     
     // nothing!
 }
-
-?>
