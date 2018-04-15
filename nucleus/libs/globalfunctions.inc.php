@@ -1820,7 +1820,7 @@ function sanitizeArray(&$array)
         if (!in_array($key, $excludeListForSanitization)) {
 
             // check value
-            if (strpos($val, '\\')) {
+            if (str_contain($val, '\\')) {
                 list($val, $tmp) = explode('\\', $val);
             }
 
@@ -2415,7 +2415,7 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
     }
     
     foreach($ph as $k=>$v) {
-        if(strpos($tpl,'<%')===false) break;
+        if(!str_contain($tpl,'<%')) break;
         $tpl = str_replace("<%{$k}%>", $v, $tpl);
     }
     return $tpl;
@@ -2430,22 +2430,22 @@ function parseHtml($html='',$ph=array()) { // $ph is placeholders
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     
     foreach($ph as $k=>$v) {
-        if(strpos($html,'{%')===false) break;
+        if(!str_contain($html,'{%')) break;
         
-        if(strpos($v,'{%')!==false) {
+        if(str_contain($v,'{%')) {
             $v = str_replace('{%',"[{$esc}%",$v);
         }
         $html = str_replace("{%{$k}%}", $v, $html);
-        if(strpos($html,"{%{$k}:hsc%}")!==false)
+        if(str_contain($html,"{%{$k}:hsc%}"))
         {
             $html = str_replace("{%{$k}:hsc%}", hsc($v), $html);
         }
-        if(strpos($html,"{%{$k}:urlencode%}")!==false)
+        if(str_contain($html,"{%{$k}:urlencode%}"))
         {
             $html = str_replace("{%{$k}:urlencode%}", urlencode($v), $html);
         }
     }
-    if(strpos($html,'{'.$esc.'%')!==false) {
+    if(str_contain($html,'{'.$esc.'%')) {
         $html = str_replace('{'.$esc.'%','{%',$html);
     }
     return $html;
@@ -2453,7 +2453,7 @@ function parseHtml($html='',$ph=array()) { // $ph is placeholders
 
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
 
-    if(strpos($query,'<%')!==false) {
+    if(str_contain($query,'<%')) {
         $query = str_replace(array('<%','%>'), array('[@','@]'), $query);
     }
     
@@ -2465,22 +2465,22 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     foreach($ph as $k=>$v) {
         
-        if(strpos($query,'[@')===false) break;
+        if(!str_contain($query,'[@')) break;
         
-        if(strpos($v,'[@')!==false) {
+        if(str_contain($v,'[@')) {
             $v = str_replace('[@',"[{$esc}@",$v);
         }
         $query = str_replace("[@{$k}@]", $v, $query);
-        if(strpos($query,"[@{$k}:escape@]")!==false)
+        if(str_contain($query,"[@{$k}:escape@]"))
         {
             $query = str_replace("[@{$k}:escape@]", sql_real_escape_string($v), $query);
         }
-        if(strpos($query,"[@{$k}:int@]")!==false)
+        if(str_contain($query,"[@{$k}:int@]"))
         {
             $query = str_replace("[@{$k}:int@]", (int)$v, $query);
         }
     }
-    if(strpos($query,"[{$esc}@")!==false) {
+    if(str_contain($query,"[{$esc}@")) {
         $query = str_replace("<[$esc}@",'[@',$query);
     }
     return $query;

@@ -307,7 +307,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if (!$MYSQL_CONN) return array();
 
-        if(strpos($tablename,'[@prefix@]')!==false) {
+        if(str_contain($tablename,'[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
         $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
@@ -333,24 +333,17 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     /**
      * Returns the boolean value that column name of the table exist or not
      */
-    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=false)
     {
         $names = sql_getTableColumnNames($tablename);
 
-        if (count($names)>0)
-        {
-            if ($casesensitive)
-                return in_array( $ColumnName , $names );
-            else
-            {
-                foreach($names as $v)
-                    if ( strcasecmp( $ColumnName , $v ) == 0 )
-                    {
-                         return True;
-                    }
-            }
+        if (!count($names)) return false;
+        if ($casesensitive) return in_array( $ColumnName , $names );
+        
+        foreach($names as $v) {
+            if ( strcasecmp( $ColumnName , $v ) != 0 ) continue;
+            return true;
         }
-        return False;
     }
 
     /**
@@ -361,7 +354,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if (!$MYSQL_CONN) return FALSE;
 
-        if(strpos($tablename,'[@prefix@]')!==false) {
+        if(str_contain($tablename,'[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
         $sql = sprintf("SHOW TABLES LIKE '%s' ", mysql_real_escape_string($tablename));
