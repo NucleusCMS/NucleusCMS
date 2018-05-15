@@ -117,20 +117,9 @@ if (!function_exists('sql_fetch_assoc'))
                     $DBH = new PDO($DB_DRIVER_NAME.':'.$db_name, $db_user, $db_password);
                     if ($DBH)
                     {
-                        // standard: SUBSTR , non-standard: SUBSTRING
-                        // SQLite has no SUBSTRING. but has SUBSTR.
-                        // SUBSTRING , start index 1 or -1 , param 2 or 3
-                        $DBH->sqliteCreateFunction('SUBSTRING', create_function('', '  $st = intval(func_get_arg(1)); if ($st>0) $st--; return substr(func_get_arg(0) , $st , func_get_arg(2)); ') , 3);
-                        $DBH->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
-                        $DBH->sqliteCreateFunction('NOW', create_function('', 'return date("Y-m-d H:i:s", time());'), 0); // local time
-                        // SQL non-standard : REGEXP (mysql , sqlite) , src_exp ~ pattern_text (postgreSQL)
-                        //                    --- src_exp like pattern_text  ,  %  _
-                        // src_exp REGEXP pattern_text
-                        // 'P1' REGEXP 'P2' = P2 P1 ( return func_get_arg(0).' '.func_get_arg(1); )
-                        $DBH->sqliteCreateFunction('REGEXP', create_function('$pattern , $Text', 'return preg_match("/(".str_replace("/","\\/",(string) $pattern).")/im", (string) $Text)? 1:0;'), 2);
-                        $DBH->sqliteCreateFunction('CONCAT', create_function('', 'return implode ("",func_get_args() );'), -1);
-                        $DBH->sqliteCreateFunction('FIND_IN_SET', create_function('$k,$v', 'return in_array($k, explode($v)) ? 1:0;'), 2);
-                        $DBH->sqliteCreateFunction('md5', 'md5', 1);
+                        if (!class_exists('sqlite_functions'))
+                            require_once(__DIR__ . '/sqlite_functions.php'); // __DIR__ : (php5.3-)
+                        sqlite_functions::pdo_register_user_functions($DBH);
 //                      $DBH->beginTransaction();
                     }
                 break;
