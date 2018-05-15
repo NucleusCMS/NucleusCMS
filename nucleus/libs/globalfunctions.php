@@ -52,7 +52,7 @@ define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
-$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'dev' : '');
+$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'ja-dev' : 'ja');
 
 $default_user_agent = array('ie' => array());
 $default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
