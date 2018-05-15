@@ -23,12 +23,12 @@ class Backup
     /**
      * Constructor
      */
-    public function Backup() { $this->__construct(); }
     function __construct()
     {
         // do nothing
     }
     
+    public function Backup() { $this->__construct(); }
     
     /**
       * This function creates an sql dump of the database and sends it to

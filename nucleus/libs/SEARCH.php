@@ -28,7 +28,6 @@ class SEARCH {
     public $inclusive;
     public $blogs;
 
-    public function SEARCH($keywords) { $this->__construct($keywords); }
     function __construct($keywords) {
         global $blogid;
 //        $keywords = preg_replace ("/[<,>,=,?,!,#,^,(,),[,\],:,;,\\\,%]/","",$keywords);
@@ -58,6 +57,8 @@ class SEARCH {
             $this->blogs[] = intval($obj->bnumber);
         }
     }
+
+    public function SEARCH($keywords) { $this->__construct($keywords); }
 
     function boolean_sql_select($match){
         

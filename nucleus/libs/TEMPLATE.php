@@ -19,10 +19,11 @@ class TEMPLATE {
 
     public $id;
 
-    public function TEMPLATE($templateid) { $this->__construct($templateid); }
     function __construct($templateid) {
         $this->id = intval($templateid);
     }
+
+    public function TEMPLATE($templateid) { $this->__construct($templateid); }
 
     function getID() {
         return intval($this->id);

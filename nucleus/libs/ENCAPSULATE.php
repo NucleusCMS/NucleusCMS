@@ -53,9 +53,6 @@ class NAVLIST extends ENCAPSULATE {
 
     public $total = null;
 
-    function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
-        $this->__construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid);
-    }
     function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
         $this->action = $action;
         $this->start = $start;
@@ -65,6 +62,10 @@ class NAVLIST extends ENCAPSULATE {
         $this->blogid = $blogid;
         $this->search = $search;
         $this->itemid = $itemid;
+    }
+
+    function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid) {
+        $this->__construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid);
     }
 
     function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE)
