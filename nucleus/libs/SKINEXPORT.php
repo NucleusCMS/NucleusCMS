@@ -1,0 +1,218 @@
+<?php
+/*
+ * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+ * Copyright (C) The Nucleus Group
+ *
+ * This program is free software; you can redistribute it and/or
+ * modify it under the terms of the GNU General Public License
+ * as published by the Free Software Foundation; either version 2
+ * of the License, or (at your option) any later version.
+ * (see nucleus/documentation/index.html#license for more info)
+ *
+ *    This class contains two classes that can be used for importing and
+ *    exporting Nucleus skins: SKINIMPORT and SKINEXPORT
+ *
+ * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @copyright Copyright (C) The Nucleus Group
+ */
+
+class SKINEXPORT {
+
+    public $templates;
+    public $skins;
+    public $info;
+
+    /**
+     * Constructor initializes data structures
+     */
+    function __construct() {
+        // list of templateIDs to export
+        $this->templates = array();
+
+        // list of skinIDs to export
+        $this->skins = array();
+
+        // extra info to be in XML file
+        $this->info = '';
+    }
+
+    /**
+     * Adds a template to be exported
+     *
+     * @param id
+     *        template ID
+     * @result false when no such ID exists
+     */
+    function addTemplate($id) {
+        if (!TEMPLATE::existsID($id)) {
+            return 0;
+        }
+
+
+        $this->templates[$id] = TEMPLATE::getNameFromId($id);
+
+        return 1;
+    }
+
+    /**
+     * Adds a skin to be exported
+     *
+     * @param id
+     *        skin ID
+     * @result false when no such ID exists
+     */
+    function addSkin($id) {
+        if (!SKIN::existsID($id)) {
+            return 0;
+        }
+
+        $this->skins[$id] = SKIN::getNameFromId($id);
+
+        return 1;
+    }
+
+    /**
+     * Sets the extra info to be included in the exported file
+     */
+    function setInfo($info) {
+        $this->info = $info;
+    }
+
+
+    /**
+     * Outputs the XML contents of the export file
+     *
+     * @param $setHeaders
+     *        set to 0 if you don't want to send out headers
+     *        (optional, default 1)
+     */
+    function export($setHeaders = 1) {
+        if ($setHeaders) {
+            // make sure the mimetype is correct, and that the data does not show up
+            // in the browser, but gets saved into and XML file (popup download window)
+            header('Content-Type: text/xml');
+            header('Content-Disposition: attachment; filename="skinbackup.xml"');
+            header('Expires: 0');
+            header('Pragma: no-cache');
+        }
+
+        // sort by skinname , templatename
+        asort($this->skins);
+        asort($this->templates);
+
+        $has_mb_func = function_exists('mb_convert_encoding');
+
+        echo "<nucleusskin>\n";
+
+        // export as UTF-8 character set
+
+        // meta
+        echo "\t<meta>\n";
+            // skins
+            foreach ($this->skins as $skinId => $skinName) {
+                $skinName = hsc($skinName);
+                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                    $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<skin name="' . hsc($skinName) . '" />' . "\n";
+            }
+            // templates
+            foreach ($this->templates as $templateId => $templateName) {
+                $templateName = hsc($templateName);
+                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                    $templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<template name="' . hsc($templateName) . '" />' . "\n";
+            }
+            // extra info
+            if ($this->info) {
+                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                    $skin_info = mb_convert_encoding($this->info, 'UTF-8', _CHARSET);
+                } else {
+                    $skin_info = $this->info;
+                }
+                echo "\t\t<info><![CDATA[" . $skin_info . "]]></info>\n";
+            }
+        echo "\t</meta>\n\n\n";
+
+        // contents skins
+        foreach ($this->skins as $skinId => $skinName) {
+            $skinId   = intval($skinId);
+            $skinObj  = new SKIN($skinId);
+            $skinName = hsc($skinName);
+            $contentT = hsc($skinObj->getContentType());
+            $incMode  = hsc($skinObj->getIncludeMode());
+            $incPrefx = hsc($skinObj->getIncludePrefix());
+            $skinDesc = hsc($skinObj->getDescription());
+            if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
+                $contentT = mb_convert_encoding($contentT, 'UTF-8', _CHARSET);
+                $incMode  = mb_convert_encoding($incMode,  'UTF-8', _CHARSET);
+                $incPrefx = mb_convert_encoding($incPrefx, 'UTF-8', _CHARSET);
+                $skinDesc = mb_convert_encoding($skinDesc, 'UTF-8', _CHARSET);
+            }
+
+            echo "\t" . '<skin name="' . $skinName . '" type="' . $contentT . '" includeMode="' . $incMode . '" includePrefix="' . $incPrefx . '">' . "\n";
+
+            echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
+
+            $que = sprintf('SELECT stype, scontent FROM `%s` WHERE sdesc=%d', sql_table('skin'), $skinId);
+            $res = sql_query($que);
+            while ($partObj = sql_fetch_object($res)) {
+                $type  = hsc($partObj->stype);
+                $cdata = $this->escapeCDATA($partObj->scontent);
+                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+                    $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<part name="' . $type . '">';
+                echo '<![CDATA[' . $cdata . ']]>';
+                echo "</part>\n\n";
+            }
+
+            echo "\t</skin>\n\n\n";
+        }
+
+        // contents templates
+        foreach ($this->templates as $templateId => $templateName) {
+            $templateId   = intval($templateId);
+            $templateName = hsc($templateName);
+            $templateDesc = hsc(TEMPLATE::getDesc($templateId));
+            if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                $templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
+                $templateDesc = mb_convert_encoding($templateDesc, 'UTF-8', _CHARSET);
+            }
+
+            echo "\t" . '<template name="' . $templateName . '">' . "\n";
+
+            echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
+
+            $que = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d', sql_table('template'), $templateId);
+            $res = sql_query($que);
+            while ($partObj = sql_fetch_object($res)) {
+                $type  = hsc($partObj->tpartname);
+                $cdata = $this->escapeCDATA($partObj->tcontent);
+                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+                    $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
+                }
+                echo "\t\t" . '<part name="' . $type . '">';
+                echo '<![CDATA[' .  $cdata . ']]>';
+                echo '</part>' . "\n\n";
+            }
+
+            echo "\t</template>\n\n\n";
+        }
+
+        echo '</nucleusskin>';
+    }
+
+    /**
+     * Escapes CDATA content so it can be included in another CDATA section
+     */
+    function escapeCDATA($cdata)
+    {
+        return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
+
+    }
+}
