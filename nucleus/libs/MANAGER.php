@@ -286,7 +286,7 @@ class MANAGER
                     var_dump($e->getMessage());
                     // $e->getTraceAsString
                 }
-                ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+                SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
             }
         }
        return $success;
@@ -336,7 +336,7 @@ class MANAGER
             if (!defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
                 define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
             }
-            ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $NP_Name));
+            SYSTEMLOG::addUnique('error', 'Error', sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $NP_Name));
             return 0;
         }
 
@@ -349,7 +349,7 @@ class MANAGER
             if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
                 define('_MANAGER_PLUGINFILE_NOCLASS', "Plugin %s was not loaded (Class not found in file, possible parse error)");
             }
-            ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINFILE_NOCLASS, $NP_Name));
+            SYSTEMLOG::addUnique('error', 'Error', sprintf(_MANAGER_PLUGINFILE_NOCLASS, $NP_Name));
             return 0;
         }
 
@@ -431,7 +431,8 @@ class MANAGER
                 )
             {
                 unset($this->plugins[$NP_Name]);
-                ACTIONLOG::addUnique(WARNING, sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $NP_Name, $DB_DRIVER_NAME));
+                $msg = sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT, $NP_Name, $DB_DRIVER_NAME);
+                SYSTEMLOG::addUnique('error', 'Error', $msg);
                 return 0;
             }
         } // end : plugin uses DB query
@@ -620,7 +621,7 @@ class MANAGER
                                 var_dump($e->getMessage());
                                 // $e->getTraceAsString
                             }
-                            ACTIONLOG::addUnique(ERROR, $msg . $e->getMessage());
+                            SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
                         }
                         if (!empty($CONF['debug']) && $CONF['debug'])
                             throw $e; // return exception

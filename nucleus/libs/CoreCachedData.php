@@ -96,11 +96,11 @@ class CoreCachedData
         if ($CONF['debug'])
         {
             if ( strlen( $type ) > 50)
-                ACTIONLOG::addUnique(ERROR, sprintf('%s : $type is to long:%d : %s', __FUNCTION__ , strlen($type), $type));
+                SYSTEMLOG::addUnique('error', 'Error', sprintf('%s : $type is to long:%d : %s', __FUNCTION__ , strlen($type), $type));
             if ( strlen( $sub_type ) > 50)
-                ACTIONLOG::addUnique(ERROR, sprintf('%s : $sub_type is to long:%d : %s', __FUNCTION__ , strlen($sub_type), $sub_type));
+                SYSTEMLOG::addUnique('error', 'Error', sprintf('%s : $sub_type is to long:%d : %s', __FUNCTION__ , strlen($sub_type), $sub_type));
             if ( strlen( $name ) > 100)
-                ACTIONLOG::addUnique(ERROR, sprintf('%s : $name is to long:%d : %s', __FUNCTION__ , strlen($name), $name));
+                SYSTEMLOG::addUnique('error', 'Error', sprintf('%s : $name is to long:%d : %s', __FUNCTION__ , strlen($name), $name));
         }
 
         $datetime = sql_gmDateTime_from_utime($_SERVER['REQUEST_TIME']);
