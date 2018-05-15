@@ -111,20 +111,25 @@ class Utils
 
     public static function httpGet($url , $options = array('connecttimeout'=> 3))
     {
+        static $enable_curl = null;
+        if (is_null($enable_curl))
+            $enable_curl = (function_exists('curl_init'));
         $timeout = ((isset($options['timeout']) && $options['timeout']>0) ? $options['timeout'] : 0);
         $connecttimeout = ((isset($options['connecttimeout']) && $options['connecttimeout']>0) ? $options['connecttimeout'] : 0);
         $start = microtime(TRUE);
         $reply_response = (isset($options['reply_response']) && $options['reply_response']);
 
-        if (function_exists('curl_init'))
+        if ($enable_curl)
         {
+            $ret = FALSE;
             $crl = curl_init();
-            curl_setopt ($crl, CURLOPT_URL, $url);
-            curl_setopt ($crl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($crl, CURLOPT_URL, $url);
+            curl_setopt($crl, CURLOPT_RETURNTRANSFER, 1);
+            curl_setopt($crl, CURLOPT_HEADER, 1);
             if ($timeout > 0)
-                curl_setopt ($crl, CURLOPT_TIMEOUT, $timeout);
+                curl_setopt($crl, CURLOPT_TIMEOUT, $timeout);
             if ($connecttimeout > 0)
-                curl_setopt ($crl, CURLOPT_CONNECTTIMEOUT, $connecttimeout);
+                curl_setopt($crl, CURLOPT_CONNECTTIMEOUT, $connecttimeout);
             if (preg_match('#^https://#', $url))
                 curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
             if (isset($options['useragent']) && !empty($options['useragent']))
@@ -132,37 +137,36 @@ class Utils
             else
                 curl_setopt($crl, CURLOPT_USERAGENT, DEFAULT_USER_AGENT);
             // request
-            if ($reply_response)
+            $res = curl_exec($crl);
+            if ($res !== false)
             {
-                curl_setopt($crl, CURLOPT_HEADER, 1);
-                $ret = curl_exec($crl);
-                if ($ret !== false)
+                $info = curl_getinfo($crl);
+                if (!empty($info) && isset($info["header_size"]))
                 {
-                    $info = curl_getinfo($crl);
-                    $header = substr ($ret, 0, $info["header_size"]);
-                    $body   = substr ($ret, $info["header_size"]);
-                    $ret = array('header' => &$header, 'body'=> &$body);
-                    if (200 != curl_getinfo($crl, CURLINFO_RESPONSE_CODE))
-                        $ret = FALSE;
+                    if (isset($info["http_code"]) && $info["http_code"]==200)
+                    {
+                        $header = rtrim(substr($res, 0, $info["header_size"]));
+                        if (0 == max(0, strlen($res) - $info["header_size"]))
+                            $body = '';
+                        else
+                            $body = substr($res, $info["header_size"]);
+                        if ($reply_response)
+                            $ret = array('header' => &$header, 'body'=> &$body);
+                        else
+                            $ret =& $body;
+                    }
                 }
-                curl_close($crl);
             }
-            else
-            {
-                $ret = curl_exec($crl);
-                if (200 != curl_getinfo($crl, CURLINFO_RESPONSE_CODE))
-                    $ret = FALSE;
-                curl_close($crl);
-            }
+            curl_close($crl);
             return $ret;
-        }
+        } // end curl
 
         if ($connecttimeout>0 && version_compare(PHP_VERSION, '5.2.1', '>=')) {
             $opts = array('http'=>array('timeout'=> $connecttimeout)); // php-5.2.1 Added timeout.  default_socket_timeout
             $sc = stream_context_create($opts);
-            $c = fopen($url, "r", FALSE, $sc);
+            $c = @fopen($url, "r", FALSE, $sc);
         } else {
-            $c = fopen($url, "r");
+            $c = @fopen($url, "r");
         }
         if ($c)
         {

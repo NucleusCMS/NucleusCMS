@@ -231,9 +231,9 @@ class COMMENTS {
 
         $plugins = array_unique($plugins);
 
-        while ( list(, $plugin) = each($plugins) )
+        foreach ($plugins as $plugin_name)
         {
-            $p = $manager->getPlugin($plugin);
+            $p = $manager->getPlugin($plugin_name);
             $continue = $continue || $p->supportsFeature('handleSpam');
         }
 
@@ -348,9 +348,9 @@ class COMMENTS {
                     . ' WHERE '
                     . "     cmail   = '{$url}'"
                     . " AND cmember = '{$memberid}'"
-					. " AND cbody   = '{$body}'"
+                    . " AND cbody   = '{$body}'"
                     . " AND citem   = '{$itemid}'"
-					. " AND cblog   = '{$blogid}'";
+                    . " AND cblog   = '{$blogid}'";
         $result     = (integer) quickQuery($qSql);
 
         if ( $result > 0 )

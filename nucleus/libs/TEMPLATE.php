@@ -38,9 +38,9 @@ class TEMPLATE {
         $query =  sprintf("SELECT tdnumber FROM `%s` WHERE tdname='%s'",
                         sql_table('template_desc'),
                         sql_real_escape_string($name));
-        $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-        return $obj->tdnumber;
+        if (($res = sql_query($query)) && ($obj = sql_fetch_object($res)))
+            return $obj->tdnumber;
+        return 0;
     }
 
     /**

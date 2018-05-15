@@ -2000,12 +2000,17 @@ function cleanFileName($str) {
  * @param    Integer    $timestamp    Unix Timestamp formated integer
  * @return    String    Formatted timestamp
  */
+
+function escapeHTML($string,  $flags = ENT_QUOTES )
+{
+    return htmlspecialchars( $string , $flags , (defined('_CHARSET') ? _CHARSET : 'UTF-8') );
+}
+
 function strftimejp($format,$timestamp = ''){
     return Utils::strftime($format,$timestamp);
 }
 
-function hsc($string, $flags=ENT_QUOTES, $encoding='')
-{
+function hsc($string, $flags=ENT_QUOTES, $encoding='') {
 // *
 // if error occured , this function returns empty string.
 // wrong  encode  makes allow xss

@@ -121,8 +121,9 @@ class SKIN {
                         sql_table('skin_desc'),
                         sql_real_escape_string($name));
         $res = sql_query($query);
-        $obj = sql_fetch_object($res);
-        return $obj->sdnumber;
+		if ($res && ($obj = sql_fetch_object($res)))
+	        return $obj->sdnumber;
+        return 0;
     }
 
     /**
