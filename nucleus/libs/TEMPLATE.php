@@ -22,7 +22,7 @@ class TEMPLATE {
     function __construct($templateid) {
         $this->id = intval($templateid);
     }
-    
+
     public function TEMPLATE($templateid) { $this->__construct($templateid); }
 
     function getID() {
@@ -36,7 +36,7 @@ class TEMPLATE {
 
     // (static)
     public static function getIdFromName($name) {
-        $query =  sprintf("SELECT tdnumber FROM %s WHERE tdname='%s'",
+        $query =  sprintf("SELECT tdnumber FROM `%s` WHERE tdname='%s'",
                           sql_table('template_desc'),
                           sql_real_escape_string($name));
         if (($res = sql_query($query)) && ($obj = sql_fetch_object($res)))
@@ -128,10 +128,10 @@ class TEMPLATE {
 
         $template = array();
         $query = 'SELECT tpartname, tcontent'
-               . sprintf(" FROM %s, %s WHERE tdesc=tdnumber AND tdname='%s'",
-                           sql_table('template_desc'),
-                           sql_table('template'),
-                           sql_real_escape_string($name));
+               . sprintf(" FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
+                         sql_table('template_desc'),
+                         sql_table('template'),
+                         sql_real_escape_string($name));
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res))
             $template[$obj->tpartname] = $obj->tcontent;
