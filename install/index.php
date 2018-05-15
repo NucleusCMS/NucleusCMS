@@ -32,7 +32,8 @@ include_once('../nucleus/libs/vars4.1.0.php');
 define('NC_BASE_PATH', str_replace(array('\\','install'), array('/',''), dirname(__FILE__)));
 define('NC_SITE_URL', getSiteUrl());
 
-define('ENABLE_SQLITE_INSTALL', ( !extension_loaded('PDO_SQLITE') ? 0 : 1) ); // allow sqlite install , boolean
+$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0',PHP_VERSION, '<=');
+define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0) ); // allow sqlite install , boolean
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
