@@ -808,3 +808,24 @@ function listplug_table_banlist($template, $type) {
     }
 }
 
+function listplug_table_systemloglist($template, $type) {
+    $lines = array();
+    switch($type) {
+        case 'HEAD':
+            $lines[] = '<th>' . _LISTS_TIME . '</th>';
+//            $lines[] =  '<th>logyear<br />logid</th>';
+//            $lines[] =  '<th>logtype<br />subtype</th>';
+            $lines[] =  '<th>' . _LIST_ACTION_MSG . '</th>';
+            break;
+        case 'BODY':
+            $current = $template['current'];
+            $local_time = date('Y-m-d H:i:s', strtotime($current->timestamp_utc.' UTC'));
+            $lines[] = '<td>' . hsc($local_time). '</td>';
+//            $lines[] = sprintf('<td>%s<br />%s</td>', hsc($current->logyear), hsc($current->logid));
+//            $lines[] = sprintf('<td>%s<br />%s</td>', hsc($current->logtype), hsc($current->subtype));
+            $lines[] = sprintf('<td>%s</td>', hsc(substr($current->message,0,300)));
+
+            break;
+    }
+    echo implode("\n", $lines);
+}

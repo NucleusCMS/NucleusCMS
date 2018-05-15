@@ -113,7 +113,8 @@ class ADMIN {
             'activate',
             'lost_pwd',
             'systemoverview',
-            'optimizeoverview'
+            'optimizeoverview',
+            'systemlog'
         );
 /*
         // the rest of the actions needs to be checked
@@ -349,6 +350,7 @@ class ADMIN {
         echo '<li><a href="index.php?action=settingsedit">'._OVERVIEW_SETTINGS.'</a></li>';
         echo '<li><a href="index.php?action=usermanagement">'._OVERVIEW_MEMBERS.'</a></li>';
         echo '<li><a href="index.php?action=actionlog">'._OVERVIEW_VIEWLOG.'</a></li>';
+        echo '<li><a href="index.php?action=systemlog">'._SYSTEMLOG_TITLE.'</a></li>';
         echo '</ul>';
 
         echo '<h2>' . _MANAGE_SKINS . '</h2>';
@@ -6547,6 +6549,48 @@ EOL;
         $template['content'] = 'actionlist';
         $amount = showlist($query,'table',$template);
 
+        if (SYSTEMLOG::checkWritable()) {
+            echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
+            printf('<p><a href="index.php?action=systemlog">%s</a></p>', _SYSTEMLOG_TITLE);
+        }
+
+        $this->pagefoot();
+
+    }
+
+    function action_systemlog() {
+        global $member, $manager;
+
+        $member->isAdmin() or $this->disallow();
+        if (!SYSTEMLOG::checkWritable())
+            $this->disallow();
+
+        $this->pagehead();
+
+        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+
+        $ticket = $manager->getHtmlInputTicketHidden();
+        $title  = _SYSTEMLOG_CLEAR_TEXT;
+        $form=<<<EOL
+<form action="index.php?action=clearsystemlog" method="post">
+$ticket
+<input type="submit" value="$title">
+</form>
+EOL;
+
+        printf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
+        printf('<div>%s</div>', $form);
+
+        echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
+
+        $query = 'SELECT * FROM '.sql_table('systemlog').' ORDER BY timestamp_utc DESC';
+        // Todo: seek
+        // display first 20 entry. if want more info, make it plugin
+        $query .= ' LIMIT 20';
+
+        $template['content'] = 'systemloglist';
+        $amount = showlist($query,'table',$template);
+
         $this->pagefoot();
 
     }
@@ -6818,6 +6862,21 @@ EOL;
         ACTIONLOG::clear();
 
         $this->action_manage(_MSG_ACTIONLOGCLEARED);
+    }
+
+    function action_clearsystemlog() {
+        global $member;
+
+        if (!$member->isAdmin() || empty($_SERVER['REQUEST_METHOD'])
+            || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post')!=0)
+            || !class_exists('SYSTEMLOG')
+            || !SYSTEMLOG::checkWritable()) {
+             $this->disallow();
+        }
+
+        SYSTEMLOG::clearAll();
+
+        $this->action_manage(_MSG_SYSTEMLOGCLEARED);
     }
 
     /**

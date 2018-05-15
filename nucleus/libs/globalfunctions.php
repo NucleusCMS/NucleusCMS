@@ -217,6 +217,7 @@ include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
 include_once($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'SYSTEMLOG.php');
 include_once($DIR_LIBS . 'Utils.php');
 
 $manager =& MANAGER::instance();
