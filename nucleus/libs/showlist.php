@@ -702,6 +702,7 @@ function listplug_table_skinlist($template, $type) {
 
 
             echo '<td class="availableSkinTypes">' . hsc($current->sddesc);
+			echo '<div style="height: auto; width: 100%; overflow: auto; max-height: 250px;">';
                 // show list of defined parts
                 if ( 'mysql' == $DB_DRIVER_NAME )
                     $order = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
@@ -714,8 +715,14 @@ function listplug_table_skinlist($template, $type) {
                         $order .= sprintf(" WHEN '%s' THEN %d", $tmp_items[$i], $tmp_ct-$i); // DESC
                     $order = " ORDER BY CASE stype ${order} END , stype ASC";
                 }
-                $r = sql_query('SELECT stype FROM '.sql_table('skin').' WHERE sdesc='.$current->sdnumber . $order);
+                $has_spartstype = sql_existTableColumnName(sql_table('skin'), 'spartstype');
+				$sql = sprintf("SELECT stype FROM `%s` WHERE sdesc=%d ", sql_table('skin'), $current->sdnumber);
+                if ($has_spartstype)
+    				$sql .= " AND spartstype='parts' ";
+				$sql .= $order;
+				$r = sql_query($sql);
                 $types = array();
+				$parts = array();
                 while ($o = sql_fetch_object($r))
                     $types[] = $o->stype;
                 if (sizeof($types) > 0) {
@@ -732,6 +739,32 @@ function listplug_table_skinlist($template, $type) {
                     }
                     echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
                 }
+			// skin page
+			$sql = sprintf("SELECT stype FROM `%s` WHERE sdesc=%d AND spartstype='specialpage' ", sql_table('skin'), $current->sdnumber) . $order;
+			if ($has_spartstype)
+                $res = sql_query($sql);
+            else
+                $res = false;
+			$names = array();
+            if ($has_spartstype && $res)
+			while ($o = sql_fetch_object($res))
+				$names[] = $o->stype;
+			if (count($names)>0)
+			{
+				printf("<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s", _SKIN_PARTS_SPECIAL_PAGE);
+				echo "<ul>";
+					for ($i=0;$i<count($names);$i++)
+					{
+						// todo: edit link ?
+						$editurl = sprintf('index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s', $current->sdnumber, $names[$i]);
+						printf("<li>%s <a href='%s' tabindex='%d'>%s</a></li>", helpHtml('skinpartspecialpage'), $editurl, $template['tabindex'], escapeHTML($names[$i]));
+					}
+				echo "</ul>";
+				echo "</div>";
+			}
+
+
+			echo '</div>';
             echo "</td>";
             echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
 

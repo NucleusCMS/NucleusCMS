@@ -156,18 +156,26 @@ class SKINEXPORT {
 
             echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
 
-            $que = sprintf('SELECT stype, scontent FROM `%s` WHERE sdesc=%d', sql_table('skin'), $skinId);
-            $res = sql_query($que);
+            $suborder2 = "CASE WHEN spartstype = 'specialpage' THEN 1"
+                        . " WHEN stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') THEN 1"
+                        . " ELSE 0"
+                        . " END AS suborder2";
+
+            $sql = sprintf("SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
+                            $suborder2, sql_table('skin'), intval($skinId));
+            $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
+            $res = sql_query($sql);
             while ($partObj = sql_fetch_object($res)) {
                 $type  = hsc($partObj->stype);
                 $cdata = $this->escapeCDATA($partObj->scontent);
+                $tmptag = ($partObj->spartstype == 'specialpage' ? 'specialpage' : 'part');
                 if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
                     $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
                     $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
                 }
-                echo "\t\t" . '<part name="' . $type . '">';
+                printf("\t\t" . '<%s name="%s">', $tmptag, $type);
                 echo '<![CDATA[' . $cdata . ']]>';
-                echo "</part>\n\n";
+                echo "</${tmptag}>\n\n";
             }
 
             echo "\t</skin>\n\n\n";

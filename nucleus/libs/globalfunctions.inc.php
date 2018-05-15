@@ -642,8 +642,15 @@ function selector() {
         $skinid = $blog->getDefaultSkin();
     }
 
+	$skin_options = array('spartstype'=>'parts');
+
     //$special = requestVar('special'); //get at top of file as global
-    if (!empty($special) && isValidSkinPartsName($special)) {
+    if (!empty($special) && isValidSkinSpecialPageName($special)) {
+        if (!$skinid)
+            doError(_ERROR_SKIN);
+        if (!$skinid || !SKIN::existsSpecialPageName($skinid, $special))
+            doError(_ERROR_NOSUCHPAGE);
+        $skin_options['spartstype'] = 'specialpage';
         $type = strtolower($special);
     }
 
@@ -654,11 +661,12 @@ function selector() {
     }
     
     // set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
-    global $skinpart;
+	global $skinpart, $skin_sparts_type;
     $skinpart = $type;
+	$skin_sparts_type = $skin_options['spartstype']; // parts or specialpage
     
     // parse the skin
-    $output = $skin->parse($type);
+    $output = $skin->parse($type, $skin_options);
     checkOutputCompression($skin->getContentType());
     echo $output;
 
@@ -734,6 +742,12 @@ function isValidSkinPartsName($name)
 {
     return preg_match('#^[a-z0-9_\-]+$#i', $name);
 }
+
+function isValidSkinSpecialPageName($name)
+{
+	return preg_match('@^[^\?\/#]+$@i', $name);
+}
+
 
 // add and remove linebreaks
 function addBreaks($text) {

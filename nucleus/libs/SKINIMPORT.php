@@ -245,6 +245,15 @@ class SKINIMPORT {
             foreach ($data['parts'] as $partName => $partContent) {
                 $skinObj->update($partName, $partContent);
             }
+            // 3. add specialpage
+            //  spartstype = 'specialpage'
+            if (isset($data['specialpage']))
+            {
+                foreach ($data['specialpage'] as $pageName => $pageData) {
+                    $options = array('spartstype'=>'specialpage');
+                    $skinObj->update($pageName, (isset($pageData['content']) ? (string) $pageData['content'] : ''), $options);
+                }
+            }
         }
 
         if (is_array($this->templates))
@@ -354,6 +363,7 @@ class SKINIMPORT {
                 // no action needed
                 break;
             case 'part':
+            case 'specialpage':
                 $this->currentPartName = $attrs['name'];
                 break;
             default:
@@ -407,6 +417,11 @@ class SKINIMPORT {
                     $this->skins[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
                 } else {
                     $this->templates[$this->currentName]['parts'][$this->currentPartName] = $this->getCharacterData();
+                }
+                break;
+            case 'specialpage':
+                if ($this->inSkin) {
+                    $this->skins[$this->currentName]['specialpage'][$this->currentPartName]['content'] = $this->getCharacterData();
                 }
                 break;
             default:
@@ -587,6 +602,7 @@ class SKINIMPORT {
                   $description = $child->xpath('description');
                   $item['description'] = ($description ? $this->convValue((string ) $description[0]) : '');
 
+                // parts
                   $parts = $child->xpath('part');
                   foreach($parts as $part) {
                       $attr = array();
@@ -595,6 +611,21 @@ class SKINIMPORT {
                       $part_name = @$attr['name'];
                       $item['parts'][$part_name] = $this->convValue((string ) $part);
                   }
+                // specialpage
+                //  spartstype = 'specialpage'
+                $xml_pages = $child->xpath('specialpage');
+                foreach($xml_pages as $xml_page)
+                {
+                    $attr = array();
+                    foreach($xml_page->attributes() as $k => $v)
+                        $attr[$k] = (string ) $v;
+                    $part_name = @$attr['name'];
+                    $page_data = array_merge($attr);
+                    $page_data['content'] = $this->convValue((string ) $xml_page);
+                    $item['specialpage'][$part_name] = $page_data;
+                }
+
+                //
                   foreach(array('type','includeMode','includePrefix') as $a)
                      $item[$a] = isset($attributes[$a]) ? $attributes[$a] : '';
 
