@@ -2073,6 +2073,20 @@ class ADMIN {
         $this->action_editmembersettings(intRequestVar('memberid'));
     }
 
+    private function getDislpayLanguageText($language) {
+        global $DIR_LANG;
+        $file = $DIR_LANG . 'language.json';
+        if ((_CHARSET!='UTF-8') | @ !is_file($file) || !function_exists('json_decode'))
+            return $language;
+        $j = json_decode(file_get_contents($file));
+        if ($j && isset($j->$language) && (strlen((string) $j->$language)>0)) {
+            if (strncasecmp($language, getLanguageName(), strlen($language))==0)
+                return (string) $j->$language;
+            return sprintf('%s - %s', $language, (string) $j->$language);
+        }
+        return $language;
+    }
+
     /**
      * @todo document this
      */
@@ -2184,7 +2198,7 @@ class ADMIN {
                     {
                         $name = $matches[2];
                         $s_fullname = $matches[1];
-                        $s_displaytext = hsc($name);
+                        $s_displaytext = hsc($this->getDislpayLanguageText($name));
 //                        if (!check_abalable_language_name($name))
 //                          continue;
                         echo sprintf('<option value="%s"' , hsc($s_fullname));
@@ -5404,7 +5418,7 @@ selector();
                     {
                         $name = $matches[2];
                         $s_fullname = $matches[1];
-                        $s_displaytext = hsc($name);
+                        $s_displaytext = hsc($this->getDislpayLanguageText($name));
 //                        if (!check_abalable_language_name($name))
 //                          continue;
                         echo sprintf('<option value="%s"' , hsc($s_fullname));
