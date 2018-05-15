@@ -551,7 +551,7 @@ class SKIN {
             return false;
 
         // read skin name/description/content type
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);
+        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $id);
         $obj = sql_fetch_object($res);
         if (!is_object($obj))
             return false;
