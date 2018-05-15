@@ -371,9 +371,11 @@ class NucleusPlugin {
         if ($this->_existOptionDesc($context, $name))
             return FALSE;
 
-        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
-        if (strlen($name)>20 && ($DB_DRIVER_NAME!='sqlite')) {
-            ACTIONLOG::addUnique(ERROR, "Maximum number of characters exceeded : name : createOption[$context] $name ");
+        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME, $CONF;
+        $name_max_len = (intval($CONF['DatabaseVersion']) >= 380 ? 50: 20);
+        if ((strlen($name)>$name_max_len) && ($DB_DRIVER_NAME!='sqlite')) {
+            $msg = "Maximum number of characters exceeded : name : createOption[$context] $name ";
+            SYSTEMLOG::addUnique('error', 'Error', $msg);
         }
 
         // create in plugin_option_desc
@@ -938,13 +940,12 @@ class NucleusPlugin {
             // get latest
             $ver2 = $this->getRemoteVersion();
             if (empty($ver2))
-                $ver2 = '';
+                $ver2 = '-';
             // save db
-            if (!empty($ver2))
-                CoreCachedData::setDataEx($col_type, $col_sub_type, $col_sub_id, $col_name, $ver2);
+            CoreCachedData::setDataEx($col_type, $col_sub_type, $col_sub_id, $col_name, $ver2);
         }
 
-        if (empty($ver2))
+        if (empty($ver2) || in_array($ver2, array('-')))
             return $ret_val;
         // compare version
         $ver1 = $this->getVersion();

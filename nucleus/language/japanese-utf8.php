@@ -45,6 +45,19 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
  ********************************************/
 define('_SETTINGS_ENABLE_RSS',         'RSSの出力を有効にする');
 
+define('_ERROR_NOSUCHPAGE',            '指定されたページはありません');
+define('_SKIN_PARTS_SPECIAL_PAGE',     'スペシャルスキンページ');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE',  '本当にこのスペシャルスキンページを削除してもいいですか？');
+define('_CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE',  '本当にこのスキンパーツのタイプを変更していいですか？');
+define('_ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST',          'スペシャルスキンパーツはありません。');
+define('_ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST',     'スペシャルスキンページはありません。');
+define('_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE',       'スペシャルスキンパーツのタイプを変更できません');
+define('_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE',  'スペシャルスキンページのタイプを変更できません');
+define('_ADMIN_TEXT_CHANGE_CONFIRM',     '変更の確認をしてください');
+define('_ADMIN_TEXT_CHANGE',             '変更');
+define('_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PAGE',     'スペシャルスキンページに変更する');
+define('_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PARTS',    'スペシャルスキンパーツに変更する');
+
 define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'データベースのアップグレードが必要です');
 define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
 
@@ -131,6 +144,11 @@ define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "メールアドレス：");
 define('_SETTINGS_ENABLE_TIDY', "Tidyによるhtml自動整形を有効にする");
 define('_SETTINGS_ENABLE_TIDY_FORCE_HTML5', "Tidy: html5を強制する");
 define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: タグを字下げする(インデント)");
+
+define('_SYSTEMLOG_TITLE',       "システムログ");
+define('_SYSTEMLOG_CLEAR_TITLE', "システムログの消去");
+define('_SYSTEMLOG_CLEAR_TEXT',  "システムログを今すぐ消去");
+define('_MSG_SYSTEMLOGCLEARED',  "システムログが消去されました");
 
 /********************************************
  *        Start New for 3.71                *

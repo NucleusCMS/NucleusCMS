@@ -113,7 +113,9 @@ class ADMIN {
             'activate',
             'lost_pwd',
             'systemoverview',
-            'optimizeoverview'
+            'optimizeoverview',
+            'skinchangestype',
+            'systemlog'
         );
 /*
         // the rest of the actions needs to be checked
@@ -349,6 +351,7 @@ class ADMIN {
         echo '<li><a href="index.php?action=settingsedit">'._OVERVIEW_SETTINGS.'</a></li>';
         echo '<li><a href="index.php?action=usermanagement">'._OVERVIEW_MEMBERS.'</a></li>';
         echo '<li><a href="index.php?action=actionlog">'._OVERVIEW_VIEWLOG.'</a></li>';
+        echo '<li><a href="index.php?action=systemlog">'._SYSTEMLOG_TITLE.'</a></li>';
         echo '</ul>';
 
         echo '<h2>' . _MANAGE_SKINS . '</h2>';
@@ -2073,6 +2076,20 @@ class ADMIN {
         $this->action_editmembersettings(intRequestVar('memberid'));
     }
 
+    private function getDislpayLanguageText($language) {
+        global $DIR_LANG;
+        $file = $DIR_LANG . 'language.json';
+        if ((_CHARSET!='UTF-8') | @ !is_file($file) || !function_exists('json_decode'))
+            return $language;
+        $j = json_decode(file_get_contents($file));
+        if ($j && isset($j->$language) && (strlen((string) $j->$language)>0)) {
+            if (strncasecmp($language, getLanguageName(), strlen($language))==0)
+                return (string) $j->$language;
+            return sprintf('%s - %s', $language, (string) $j->$language);
+        }
+        return $language;
+    }
+
     /**
      * @todo document this
      */
@@ -2184,7 +2201,7 @@ class ADMIN {
                     {
                         $name = $matches[2];
                         $s_fullname = $matches[1];
-                        $s_displaytext = hsc($name);
+                        $s_displaytext = hsc($this->getDislpayLanguageText($name));
 //                        if (!check_abalable_language_name($name))
 //                          continue;
                         echo sprintf('<option value="%s"' , hsc($s_fullname));
@@ -4900,10 +4917,13 @@ selector();
 
         <?php
 
+        $has_spartstype = sql_existTableColumnName(sql_table('skin'), 'spartstype');
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = " . $skinid;
+		if ($has_spartstype)
+            $query .= " AND spartstype = 'parts'";
         $res = sql_query($query);
 
-        echo '<h3>' . _SKIN_PARTS_SPECIAL . '</h3>';
+        echo '<h3>' . _SKIN_PARTS_SPECIAL . ' ' . helpHtml('skinpartspecial') . '</h3>';
         echo '<form method="get" action="index.php">' . "\r\n";
         echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
         echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
@@ -4915,10 +4935,56 @@ selector();
             $tabstart = 75;
             $s = '';
             while ($row = sql_fetch_assoc($res)) {
-                $s .= '<li><a tabindex="' . ($tabstart++) . '" href="index.php?action=skinedittype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">' . hsc(ucfirst($row['stype'])) . '</a> (<a tabindex="' . ($tabstart++) . '" href="index.php?action=skinremovetype&amp;skinid=' . $skinid . '&amp;type=' . hsc(strtolower($row['stype'])) . '">'._LISTS_DELETE.'</a>)</li>';
+                $url_edit   = sprintf("index.php?action=skinedittype&amp;skinid=%d&amp;type=%s",
+                                      $skinid, hsc(strtolower($row['stype'])));
+                $url_delete = sprintf("index.php?action=skinremovetype&amp;skinid=%d&amp;type=%s",
+                                      $skinid, hsc(strtolower($row['stype'])));
+                $url_change = sprintf("index.php?action=skinchangestype&amp;skinid=%d&amp;type=%s",
+                                      $skinid, hsc(strtolower($row['stype'])));
+                $s .= '<li>'
+                    . sprintf('<a tabindex="%d" href="%s">%s</a>',  ($tabstart++), $url_edit,   escapeHTML($row['stype']))
+                    . sprintf(' <a tabindex="%d" href="%s">(%s)</a>', ($tabstart++), $url_delete, escapeHTML(_LISTS_DELETE))
+                    . sprintf(' <a tabindex="%d" href="%s">(%s)</a>', ($tabstart++), $url_change, escapeHTML(_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PAGE))
+                    . '</li>';
             }
             if ($s) echo '<ul>'.$s.'</ul>';
         }
+
+		echo '<h3>' . escapeHTML(_SKIN_PARTS_SPECIAL_PAGE) . ' ' . helpHtml('skinpartspecialpage') . '</h3>';
+		echo '<form method="get" action="index.php">' . "\r\n";
+		echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
+		echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
+		echo '<input type="hidden" name="partstype" value="specialpage" />' . "\r\n";
+		echo '<input name="type" tabindex="89" size="20" maxlength="20" />' . "\r\n";
+		echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
+		echo '</form>' . "\r\n";
+
+		$query = "SELECT stype FROM " . sql_table('skin') . " WHERE spartstype = 'specialpage' AND sdesc = " . $skinid;
+        if ($has_spartstype)
+    		$res = sql_query($query);
+		if ($has_spartstype && $res) {
+			$s = '';
+			while ($row = sql_fetch_assoc($res)) {
+				$s .= '<li>';
+				$s .= sprintf('<a tabindex="%d" href="index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s">%s</a>',
+							($tabstart++), $skinid,
+							htmlspecialchars(strtolower($row['stype'])),
+							htmlspecialchars($row['stype'])
+							);
+				$s .= sprintf(' (<a tabindex="%d" href="index.php?action=skinremovetype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s">%s</a>)',
+							($tabstart++), $skinid,
+							htmlspecialchars(strtolower($row['stype'])),
+							escapeHTML(_LISTS_DELETE)
+							);
+				$s .= sprintf(' (<a tabindex="%d" href="index.php?action=skinchangestype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s">%s</a>)',
+							($tabstart++), $skinid,
+							htmlspecialchars(strtolower($row['stype'])),
+							escapeHTML(_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PARTS)
+							);
+				$s .= '</li>';
+			}
+			if ($s) echo '<ul>'.$s.'</ul>';
+		}
 
         ?>
 
@@ -4999,54 +5065,99 @@ selector();
 
         $skinid = intRequestVar('skinid');
         $type = requestVar('type');
+		$spartstype = (requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
 
         $member->isAdmin() or $this->disallow();
 
         $type = trim($type);
         $type = strtolower($type);
 
-        if (!isValidShortName($type)) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
-        }
+		switch($spartstype)
+		{
+			case 'specialpage':
+				if (!isValidSkinSpecialPageName($type)) {
+					$this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
+				}
+				break;
+			default:
+			if (!isValidSkinPartsName($type)) {
+				$this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
+			}
+		}
 
         $skin = new SKIN($skinid);
 
         $friendlyNames = SKIN::getFriendlyNames();
 
         $this->pagehead();
-        ?>
-        <p>(<a href="index.php?action=skinoverview"><?php echo _SKIN_GOBACK?></a>)</p>
 
-        <h2><?php echo _SKIN_EDITPART_TITLE?> '<?php echo hsc($skin->getName()) ?>': <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?></h2>
+		printf('<p>(<a href="index.php?action=skinoverview">%s</a>)</p>', escapeHTML(_SKIN_GOBACK));
 
-        <?php           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
-        ?>
+		$skingetContentOptions = array('spartstype'=>'parts');
+		switch($spartstype)
+		{
+			case 'specialpage':
+				printf("<h2>%s %s : %s</h2>",
+						escapeHTML(_SKIN_EDITPART_TITLE),
+						escapeHTML(_SKIN_PARTS_SPECIAL_PAGE),
+						escapeHTML($skin->getName())
+					);
+				$skingetContentOptions['spartstype'] = 'specialpage';
+				break;
+			default:
+				printf("<h2>%s '%s': %s</h2>",
+						escapeHTML(_SKIN_EDITPART_TITLE),
+						escapeHTML($skin->getName()),
+						escapeHTML(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type)
+					);
+		}
 
-        <div style="width:100%;">
-        <form method="post" action="index.php">
-        <div>
+           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
 
-        <input type="hidden" name="action" value="skinupdate" />
-        <?php $manager->addTicketHidden() ?>
-        <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
-        <input type="hidden" name="type" value="<?php echo  $type ?>" />
+		$form = array();
+		$form[] = '<form method="post" action="index.php">';
+		$form[] = '<div style="text-align: left;">';
+		$form[] = '<input type="hidden" name="action" value="skinupdate" />';
+		$form[] = $manager->getHtmlInputTicketHidden();
+		$form[] = sprintf('<input type="hidden" name="skinid" value="%s" />', $skinid);
+		$form[] = sprintf('<input type="hidden" name="type" value="%s" />', $type);
+		$form[] = sprintf('<input type="submit" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
+		$form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
 
-        <input type="submit" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
-        <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
-        <?php if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-            help('skinpart' . $type);
-        } else {
-            help('skinpartspecial');
-        }?>
-        <br />
+		$subtitle = '';
+		switch($spartstype)
+		{
+			case 'specialpage':
+				$form[] = '<input type="hidden" name="partstype" value="specialpage" />';
+				$subtitle = sprintf('(skin type: specialpage : %s) %s', escapeHTML($type), helpHtml('skinpartspecialpage'));
+				break;
+			default:
+				$form[] = '<input type="hidden" name="partstype" value="parts" />';
+				$subtitle = sprintf('(skin type: %s)', htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type));
+				if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+					$subtitle .= helpHtml('skinpart' . $type);
+				} else {
+					$subtitle .= helpHtml('skinpartspecial');
+				}
+		}
+		$form[] = " $subtitle";
 
-        <textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content"><?php echo  hsc($skin->getContent($type)) ?></textarea>
+		$form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', htmlspecialchars($skin->getContent($type, $skingetContentOptions)));
 
-        <br />
-        <input type="submit" tabindex="20" value="<?php echo _SKIN_UPDATE_BTN?>" onclick="return checkSubmit();" />
-        <input type="reset" value="<?php echo _SKIN_RESET_BTN?>" />
-        (skin type: <?php echo hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : ucfirst($type)); ?>)
+		$form[] = '<br />';
+		$form[] = '<br />';
+		$form[] = sprintf('<input type="submit" tabindex="20" value="%s" onclick="return checkSubmit();" />', escapeHTML( _SKIN_UPDATE_BTN ));
+		$form[] = sprintf('<input type="reset" value="%s" />', escapeHTML( _SKIN_RESET_BTN ));
+		$form[] = " $subtitle";
+		$form[] = '';
+		$form[] = '';
+		$form[] = '</div>';
+
+		$form[] = '</form>';
+
+		?>
+		<div style="width:100%;">
+		<?php echo implode( "" , $form ); ?>
 
         <br /><br />
         <?php echo _SKIN_ALLOWEDVARS?>
@@ -5063,6 +5174,37 @@ selector();
                 echo helplink('skinvar-' . $current) . "$current</a>";
                 if (count($actions) != 0) echo ", ";
             }
+		// edit link
+		echo "<br /><br />\n";
+		$tmp = sprintf("<%%parsedinclude(%s)%%>", $type)
+              . '<%if(onteam)%><div  style="text-align:right">'."\n"
+			  . sprintf('<a href="<%%adminurl%%>index.php?action=skinedittype&skinid=%d&type=%s">%s</a>'
+						, $skinid
+						, htmlentities($type , ENT_COMPAT , _CHARSET)
+						, htmlspecialchars(_SKIN_EDITONE_TITLE  . '('.$type.')', ENT_QUOTES , _CHARSET) )
+			  . "</div>\n<%endif%>";
+		echo '<textarea rows="3" readonly onfocus="this.select()">'
+			 . htmlspecialchars($tmp , ENT_QUOTES , _CHARSET) .'</textarea>';
+		// end edit link
+        if ($spartstype == 'specialpage')
+        {
+            global $CONF;
+            if (!isset($CONF['SpecialskinKey']) || strval($CONF['SpecialskinKey']) === '')
+                $SpecialskinKey = 'special';
+            else
+                $SpecialskinKey = $CONF['SpecialskinKey'];
+            echo "<br /><br />\n";
+            $tmp = array();
+            $tmp[] = sprintf('<a href="<%%blogurl%%>index.php?%s=%s">%s</a>', $SpecialskinKey, $type, $type);
+            $tmp[] = sprintf('index.php?%s=%s', $SpecialskinKey, $type);
+            $tmp[] = sprintf('/%s/%s', $SpecialskinKey, $type);
+            foreach ( $tmp as $tmp_s )
+            {
+                echo '<textarea rows="1" readonly onfocus="this.select()">'
+                     . htmlspecialchars($tmp_s , ENT_QUOTES , _CHARSET) .'</textarea>';
+            }
+        }
+
         echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
         $query = 'SELECT bshortname, bname FROM '.sql_table('blog');
             showlist($query,'table',array('content'=>'shortblognames'));
@@ -5084,10 +5226,12 @@ selector();
         $content = trim(postVar('content'));
         $type = postVar('type');
 
+		$spartstype = (postVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
+
         $member->isAdmin() or $this->disallow();
 
         $skin = new SKIN($skinid);
-        $skin->update($type, $content);
+		$skin->update($type, $content, array('spartstype'=>$spartstype));
 
         $this->action_skinedittype(_SKIN_UPDATED);
     }
@@ -5178,15 +5322,27 @@ selector();
 
         $skinid = intRequestVar('skinid');
         $skintype = requestVar('type');
+		$spartstype = (requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
 
-        if (!isValidShortName($skintype)) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-        }
+		$confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL;
+		switch($spartstype)
+		{
+			case 'specialpage':
+				$confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
+				if (!isValidSkinSpecialPageName($skintype)) {
+					$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+				}
+				break;
+			default:
+			if (!isValidSkinPartsName($skintype)) {
+				$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+			}
+		}
 
         $member->isAdmin() or $this->disallow();
 
         // don't allow default skinparts to be deleted
-        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+		if (($spartstype=='parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
@@ -5200,14 +5356,18 @@ selector();
             <h2><?php echo _DELETE_CONFIRM?></h2>
 
             <p>
-                <?php echo _CONFIRMTXT_SKIN_PARTS_SPECIAL; ?> <b><?php echo hsc($skintype); ?> (<?php echo hsc($name); ?>)</b> (<?php echo  hsc($desc)?>)
-            </p>
+				<?php echo $confirm_title; ?>
+			</p>
+			<p>
+				<b><?php echo escapeHTML($skintype); ?> (<?php echo escapeHTML($name); ?>)</b> (<?php echo  escapeHTML($desc)?>)
+			</p>
 
             <form method="post" action="index.php"><div>
                 <input type="hidden" name="action" value="skinremovetypeconfirm" />
                 <?php $manager->addTicketHidden() ?>
                 <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-                <input type="hidden" name="type" value="<?php echo hsc($skintype); ?>" />
+				<input type="hidden" name="partstype" value="<?php echo $spartstype; ?>" />
+				<input type="hidden" name="type" value="<?php echo escapeHTML($skintype); ?>" />
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN?>" />
             </div></form>
         <?php
@@ -5222,32 +5382,156 @@ selector();
 
         $skinid = intRequestVar('skinid');
         $skintype = requestVar('type');
+		$spartstype = (requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
 
-        if (!isValidShortName($skintype)) {
-            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-        }
+		switch($spartstype)
+		{
+			case 'specialpage':
+				if (!isValidSkinSpecialPageName($skintype)) {
+					$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+				}
+				break;
+			default:
+			if (!isValidSkinPartsName($skintype)) {
+				$this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+			}
+		}
 
         $member->isAdmin() or $this->disallow();
 
         // don't allow default skinparts to be deleted
-        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+		if (($spartstype=='parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
-        $param = array(
+        $notify_data = array(
             'skinid'    => $skinid,
-            'skintype'    => $skintype
+							'skintype'  => $skintype,
+							'partstype' => $spartstype
         );
-        $manager->notify('PreDeleteSkinPart', $param);
+        $manager->notify('PreDeleteSkinPart', $notify_data);
 
         // delete part
         sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
 
-        $param = array(
-            'skinid'    => $skinid,
-            'skintype'    => $skintype
+        $notify_data = array(
+							'skinid'    => $skinid,
+							'skintype'  => $skintype,
+							'partstype' => $spartstype
         );
-        $manager->notify('PostDeleteSkinPart', $param);
+        $manager->notify('PostDeleteSkinPart', $notify_data);
+
+        $this->action_skinedit();
+    }
+
+    function action_skinchangestype() {
+        global $member, $manager, $CONF;
+
+        $member->isAdmin() or $this->disallow();
+
+        $skinid = intRequestVar('skinid');
+        $skintype = requestVar('type');  // parts name
+        $spartstype = (requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
+
+        // don't allow default skinparts
+        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
+
+        if (!SKIN::existsSpecialNameEx($skinid, $skintype, $spartstype)) {
+            $msg = ($spartstype == 'parts' ? _ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST : _ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST);
+            $this->error($msg . escapeHTML(' : ' . $skintype));
+        }
+
+        if (!isValidSkinSpecialPageName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE);
+        }
+        if (!isValidSkinPartsName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
+
+        if ($spartstype == 'specialpage')
+            $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
+        else
+            $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE;
+
+        $this->pagehead();
+
+        $from = $spartstype;
+        $to   = ($spartstype!='specialpage' ? 'specialpage' : 'parts');
+
+        $skin = new SKIN($skinid);
+        $name = $skin->getName();
+        $desc = $skin->getDescription();
+
+        ?>
+            <h2><?php echo _ADMIN_TEXT_CHANGE_CONFIRM; ?></h2>
+
+			<p>
+				<?php echo $confirm_title; ?>
+			</p>
+			<p>
+				<b><?php echo escapeHTML($skintype); ?> (<?php echo escapeHTML($name); ?>)</b> (<?php echo  escapeHTML($desc)?>)
+			</p>
+			<p>
+				from: <?php echo $from; ?>
+			</p>
+			<p>
+				to: <?php echo $to; ?>
+			</p>
+
+            <form method="post" action="index.php"><div>
+                <input type="hidden" name="action" value="skinchangestypeconfirm" />
+                <?php $manager->addTicketHidden() ?>
+                <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
+				<input type="hidden" name="partstype" value="<?php echo $spartstype; ?>" />
+				<input type="hidden" name="type" value="<?php echo escapeHTML($skintype); ?>" />
+				<input type="hidden" name="partstype_to" value="<?php echo escapeHTML($to); ?>" />
+                <input type="submit" tabindex="10" value="<?php echo _ADMIN_TEXT_CHANGE?>" />
+            </div></form>
+        <?php
+        $this->pagefoot();
+    }
+
+    function action_skinchangestypeconfirm() {
+        global $member, $CONF, $manager;
+        global $DB_PHP_MODULE_NAME;
+
+        $member->isAdmin() or $this->disallow();
+
+        $skinid = intRequestVar('skinid');
+        $skintype = requestVar('type'); // parts name
+        $spartstype = (requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
+        $partstype_to = (requestVar('partstype_to')=='specialpage' ? 'specialpage' : 'parts');
+
+        // don't allow default skinparts
+        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
+
+        if (!SKIN::existsSpecialNameEx($skinid, $skintype, $spartstype)) {
+            $msg = ($spartstype == 'parts' ? _ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST : _ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST);
+            $this->error($msg . escapeHTML(' : ' . $skintype));
+        }
+
+        if (!isValidSkinSpecialPageName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE);
+        }
+        if (!isValidSkinPartsName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
+
+        $sql = sprintf("UPDATE `%s` ", sql_table('skin'));
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
+            sql_prepare_execute($sql , array($partstype_to, $skinid, $skintype));
+        } else {
+            $sql .= sprintf("SET spartstype = %s WHERE sdesc=%d AND stype=%s",
+                            sql_quote_string($partstype_to),
+                            $skinid,
+                            sql_quote_string($skintype));
+            sql_query($sql);
+        }
 
         $this->action_skinedit();
     }
@@ -5404,7 +5688,7 @@ selector();
                     {
                         $name = $matches[2];
                         $s_fullname = $matches[1];
-                        $s_displaytext = hsc($name);
+                        $s_displaytext = hsc($this->getDislpayLanguageText($name));
 //                        if (!check_abalable_language_name($name))
 //                          continue;
                         echo sprintf('<option value="%s"' , hsc($s_fullname));
@@ -5865,6 +6149,19 @@ EOL;
                         _ADMIN_SYSTEMOVERVIEW_ENABLE :
                         _ADMIN_SYSTEMOVERVIEW_DISABLE;
             echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
+            echo "\t</tr>\n";
+            echo "</table>\n";
+
+            // PHP extensions
+            $extensions = get_loaded_extensions();
+            sort($extensions, SORT_FLAG_CASE | SORT_STRING);
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . 'PHP extensions' . "</th>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<td width="50%">'. 'Loaded extensions' .'</td>' . "\n";
+            printf("\t\t<td>%s</td>\n", implode(', ', $extensions));
             echo "\t</tr>\n";
             echo "</table>\n";
 
@@ -6520,6 +6817,48 @@ EOL;
         $template['content'] = 'actionlist';
         $amount = showlist($query,'table',$template);
 
+        if (SYSTEMLOG::checkWritable()) {
+            echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
+            printf('<p><a href="index.php?action=systemlog">%s</a></p>', _SYSTEMLOG_TITLE);
+        }
+
+        $this->pagefoot();
+
+    }
+
+    function action_systemlog() {
+        global $member, $manager;
+
+        $member->isAdmin() or $this->disallow();
+        if (!SYSTEMLOG::checkWritable())
+            $this->disallow();
+
+        $this->pagehead();
+
+        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+
+        $ticket = $manager->getHtmlInputTicketHidden();
+        $title  = _SYSTEMLOG_CLEAR_TEXT;
+        $form=<<<EOL
+<form action="index.php?action=clearsystemlog" method="post">
+$ticket
+<input type="submit" value="$title">
+</form>
+EOL;
+
+        printf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
+        printf('<div>%s</div>', $form);
+
+        echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
+
+        $query = 'SELECT * FROM '.sql_table('systemlog').' ORDER BY timestamp_utc DESC';
+        // Todo: seek
+        // display first 20 entry. if want more info, make it plugin
+        $query .= ' LIMIT 20';
+
+        $template['content'] = 'systemloglist';
+        $amount = showlist($query,'table',$template);
+
         $this->pagefoot();
 
     }
@@ -6791,6 +7130,21 @@ EOL;
         ACTIONLOG::clear();
 
         $this->action_manage(_MSG_ACTIONLOGCLEARED);
+    }
+
+    function action_clearsystemlog() {
+        global $member;
+
+        if (!$member->isAdmin() || empty($_SERVER['REQUEST_METHOD'])
+            || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post')!=0)
+            || !class_exists('SYSTEMLOG')
+            || !SYSTEMLOG::checkWritable()) {
+             $this->disallow();
+        }
+
+        SYSTEMLOG::clearAll();
+
+        $this->action_manage(_MSG_SYSTEMLOGCLEARED);
     }
 
     /**

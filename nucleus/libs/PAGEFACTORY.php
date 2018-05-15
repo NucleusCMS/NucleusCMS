@@ -37,7 +37,6 @@ class PAGEFACTORY extends BaseActions {
     /**
      * creates a new PAGEFACTORY object
      */
-    public function PAGEFACTORY($blogid) { $this->__construct($blogid); }
     function __construct($blogid) {
         // call constructor of superclass first
         parent::__construct();
@@ -90,6 +89,8 @@ class PAGEFACTORY extends BaseActions {
         $this->allowedTypes = array('bookmarklet','admin');
     }
 
+    public function PAGEFACTORY($blogid) { $this->__construct($blogid); }
+    
     /**
      * creates a "add item" form for a given type of page
      *
@@ -230,7 +231,7 @@ class PAGEFACTORY extends BaseActions {
     }
 
     function parse_blogname() {
-        echo $this->blog->getName();
+        echo hsc($this->blog->getName());
     }
 
     function parse_bloglink() {
@@ -314,9 +315,8 @@ class PAGEFACTORY extends BaseActions {
 
     // inserts some localized text
     function parse_text($which) {
-        // constant($which) only available from 4.0.4 :(
         if (defined($which)) {
-            eval("echo $which;");
+            echo strval(constant($which));
         } else {
             echo $which;    // this way we see where definitions are missing
         }

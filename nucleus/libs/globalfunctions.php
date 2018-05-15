@@ -19,13 +19,25 @@
 global $DIR_NUCLEUS;
 if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
 
-if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
+if(!isset($_SERVER['REQUEST_TIME'])) $_SERVER['REQUEST_TIME'] = $_SERVER['REQUEST_TIME_FLOAT']; // (PHP 5.1-) : $_SERVER['REQUEST_TIME']
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
-//if (version_compare(phpversion(),'5.3.0','<')) {
-//    exit('The php of server module does not meet the execution minimum requirement. (-.-).');
-//}
+/*
+// Set PHP of the minimum requirement of the target of the current release here.
+if (version_compare(phpversion(), '5.3.0', '<')) {
+    // PHP 5.6 and 7.0 : Security Support Until Dec 2018
+    if (!headers_sent()) {
+        header("HTTP/1.0 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+    }
+    $msg = 'The php of server module does not meet the execution minimum requirement.';
+    echo "<html><head><title>Error</title></head><body><h1>Error</h1>$msg</body></html>";
+    exit();
+}
+*/
 
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
@@ -40,7 +52,7 @@ define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
-$nucleus['codename'] = '';
+$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'ja-dev' : 'ja');
 
 $default_user_agent = array('ie' => array());
 $default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
@@ -83,6 +95,7 @@ if (function_exists('date_default_timezone_get')) {
         $timezone = 'UTC';
     }
 }
+
 if (function_exists('date_default_timezone_set')) {
      @date_default_timezone_set($timezone);
 }
@@ -204,6 +217,7 @@ include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
 include_once($DIR_LIBS . 'PLUGIN.php');
+include_once($DIR_LIBS . 'SYSTEMLOG.php');
 include_once($DIR_LIBS . 'Utils.php');
 
 $manager =& MANAGER::instance();
@@ -402,7 +416,19 @@ ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
 if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
-    redirect($CONF['DisableSiteURL']);
+    $url = trim($CONF['DisableSiteURL']);
+    if (strlen($url)>0) {
+        redirect($url);
+    } else {
+        if (!headers_sent()) {
+            header("HTTP/1.0 503 Service Unavailable");
+            header("Cache-Control: no-cache, must-revalidate");
+            header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+        }
+        $title = 'Service Unavailable';
+        $msg = 'Service Unavailable.';
+        echo "<html><head><title>$title</title></head><body><h1>$title</h1>$msg</body></html>";
+    }
     exit;
 }
 

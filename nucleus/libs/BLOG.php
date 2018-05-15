@@ -40,7 +40,6 @@ class BLOG {
      *
      * @param $id blogid
      */
-    public function BLOG($id) { $this->__construct($id); }
     function __construct($id) {
         $this->blogid = intval($id);
         $this->readSettings();
@@ -50,6 +49,8 @@ class BLOG {
         global $catid;
         $this->setSelectedCategory($catid);
     }
+
+    public function BLOG($id) { $this->__construct($id); }
 
     /**
      * Shows the given amount of items for this blog

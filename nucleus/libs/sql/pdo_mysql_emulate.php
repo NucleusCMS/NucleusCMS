@@ -12,11 +12,11 @@ function _mysql_add_admin_warnings($funcname)
 {
     static $names = array();
     global $SQL_DBH;
-    if ($SQL_DBH && is_object($SQL_DBH) && class_exists('ACTIONLOG') && !in_array($names, $funcname))
+    if ($SQL_DBH && is_object($SQL_DBH) && class_exists('SYSTEMLOG') && !in_array($names, $funcname))
     {
         $names[] = $funcname;
         $message = sprintf('%s : An incompatible function was called. Please change to %s .', $funcname, substr($funcname,2));
-        ACTIONLOG::addUnique(WARNING, $message);
+        SYSTEMLOG::addUnique('error', 'Warning', $message);
     }
 }
 

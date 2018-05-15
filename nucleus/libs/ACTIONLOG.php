@@ -29,7 +29,8 @@ class ACTIONLOG {
     public static function add($level, $message) {
         global $member, $CONF, $DB_PHP_MODULE_NAME;
 
-        if ($CONF['LogLevel'] < $level) return;
+        if ($CONF['LogLevel'] < $level)
+            return;
 
         if ($member && $member->isLoggedIn())
             $message = sprintf('[%s] %s', $member->getDisplayName(), $message);
@@ -39,8 +40,8 @@ class ACTIONLOG {
             $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES (?, ?)" , sql_table('actionlog'));
             sql_prepare_execute($query , array((string) $timestamp, (string) $message));
         } else {
-            $message = sql_real_escape_string($message);        // add slashes
-            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES ('%s', '%s')", sql_table('actionlog'), $timestamp, $message);
+            $message = sql_quote_string($message);        // add slashes
+            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)", sql_table('actionlog'), $timestamp, $message);
             sql_query($query);
         }
 
