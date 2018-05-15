@@ -446,7 +446,6 @@ class SKINIMPORT {
      * Returns the data collected so far
      */
     function getCharacterData() {
-//        echo $this->cdata;
         if ( (strtoupper(_CHARSET) == 'UTF-8')
             or (strtoupper(_CHARSET) == 'ISO-8859-1')
             or (!function_exists('mb_convert_encoding')) ) {
@@ -510,7 +509,7 @@ class SKINIMPORT {
         return (string) $text;
     }
 
-    function readFileWithSimpleXML($filename, $metaOnly = 0)
+    private function readFileWithSimpleXML($filename, $metaOnly = 0)
     {
         unset($this->skins, $this->templates);
         $this->skins = array();
@@ -635,8 +634,10 @@ class SKINIMPORT {
 
         if (!$metaOnly)
         {
-            $this->skins =& $data['skin'];
-            $this->templates =& $data['template'];
+            if (isset($data['skin']))
+                $this->skins =& $data['skin'];
+            if (isset($data['template']))
+                $this->templates =& $data['template'];
         }
         if (is_array($this->skins))
             ksort($this->skins);

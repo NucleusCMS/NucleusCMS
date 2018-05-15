@@ -37,8 +37,8 @@ class TEMPLATE {
     // (static)
     public static function getIdFromName($name) {
         $query =  sprintf("SELECT tdnumber FROM `%s` WHERE tdname='%s'",
-                        sql_table('template_desc'),
-                        sql_real_escape_string($name));
+                          sql_table('template_desc'),
+                          sql_real_escape_string($name));
         if (($res = sql_query($query)) && ($obj = sql_fetch_object($res)))
             return $obj->tdnumber;
         return 0;
@@ -127,10 +127,11 @@ class TEMPLATE {
         $manager->notify('PreTemplateRead', $param);
 
         $template = array();
-        $query = sprintf("SELECT tpartname, tcontent FROM `%s`,`%s` WHERE tdesc=tdnumber AND tdname='%s'",
-                        sql_table('template_desc'),
-                        sql_table('template'),
-                        sql_real_escape_string($name));
+        $query = 'SELECT tpartname, tcontent'
+               . sprintf(" FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
+                         sql_table('template_desc'),
+                         sql_table('template'),
+                         sql_real_escape_string($name));
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res))
             $template[$obj->tpartname] = $obj->tcontent;
