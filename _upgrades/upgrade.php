@@ -31,13 +31,13 @@ if (!$member->isAdmin()) {
 
 // [start] Reject a forked project database incompatible with Nucleus
 if (!empty($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
-	upgrade_error('It is an incompatible database.');
+    upgrade_error('It is an incompatible database.');
 }
 if ((intval($CONF['DatabaseVersion']) >= 380) || (intval($from)>=380)) {
-	$query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName' AND value='Nucleus'", sql_table('config'));
-	$res = quickQuery($query);
-	if (empty($res))
-		upgrade_error('It is an incompatible database.');
+    $query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName' AND value='Nucleus'", sql_table('config'));
+    $res = quickQuery($query);
+    if (empty($res))
+        upgrade_error('It is an incompatible database.');
 }
 // [end] Reject a forked project database incompatible with Nucleus
 

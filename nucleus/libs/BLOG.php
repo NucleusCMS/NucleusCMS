@@ -968,7 +968,7 @@ class BLOG {
       * Write the blog settings
       */
     function writeSettings() {
-    	
+        
         $btimeoffset = $this->getTimeOffset();
         
         $v = array();

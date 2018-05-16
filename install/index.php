@@ -17,11 +17,11 @@
  */
 
 /*
-	This part of the index.php code allows for customization of the install process.
-	When distributing plugins or skins together with a Nucleus installation, the
-	configuration below will instruct to install them
+    This part of the index.php code allows for customization of the install process.
+    When distributing plugins or skins together with a Nucleus installation, the
+    configuration below will instruct to install them
 
-	-- Start Of Configurable Part --
+    -- Start Of Configurable Part --
 */
 define('NC_MTN_MODE', 'install');
 
@@ -59,9 +59,9 @@ $install_lang_keys = get_install_lang_keys();
 
 global $lang;
 if (isset($_POST['lang']))
-	$lang = strtolower( $_POST['lang'] );
+    $lang = strtolower( $_POST['lang'] );
 else if (isset($_GET['lang']))
-	$lang = strtolower( $_GET['lang'] );
+    $lang = strtolower( $_GET['lang'] );
 
 if ($lang != '' && !in_array($lang, $install_lang_keys))
     $lang = 'en';
@@ -89,8 +89,8 @@ else
        $lang = 'en';
 }
 
-	define('INSTALL_LANG' , $lang);
-	include_once("./install_lang_${lang}.php");
+    define('INSTALL_LANG' , $lang);
+    include_once("./install_lang_${lang}.php");
 
     if ($lang != 'en')
     {
@@ -105,7 +105,7 @@ else
 // example:
 //     array('NP_CKEditor', 'NP_Text')
 $aConfPlugsToInstall = array(
-	'NP_SkinFiles',
+    'NP_SkinFiles',
 //        'NP_CustomURL',
 //        'NP_CKEditor',
 );
@@ -119,7 +119,7 @@ $aConfPlugsToInstall = array(
 $aConfSkinsToImport = array('atom','rss2.0','rsd','default');
 
 /*
-	-- End Of Configurable Part --
+    -- End Of Configurable Part --
 */
 
 // don't give warnings for uninitialized vars
@@ -139,8 +139,8 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
 if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
-	global $CONF;
-	$CONF['installscript'] = 1;
+    global $CONF;
+    $CONF['installscript'] = 1;
 }
 
 
@@ -159,17 +159,17 @@ if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME)==0) {
     $mode1 = INSTALL_PRIORITY_MYSQL_MODULE && (extension_loaded('mysql') || extension_loaded('mysqli'));
     if ($mode1) {
         $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
-	} else {
+    } else {
         $DB_PHP_MODULE_NAME = 'pdo';
         $DB_DRIVER_NAME = 'mysql';
-	}
+    }
 }
 include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
 if ($DB_PHP_MODULE_NAME == 'pdo') {
-	if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) doError(_ERROR1);
+    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) doError(_ERROR1);
 }
 elseif (!function_exists('mysql_query') ) _doError(_ERROR1);
 

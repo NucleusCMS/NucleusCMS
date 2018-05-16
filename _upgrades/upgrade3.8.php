@@ -12,9 +12,9 @@ function upgrade_do380() {
     upgrade_do380_modfield_ballowpast(); // ignore sqlite
     upgrade_do380_Skin_UpgardeAddColumnSpartstype();
 
-	//  -> 3.80
-	// update database version
-	update_version('380');
+    //  -> 3.80
+    // update database version
+    update_version('380');
 }
 
 function upgrade_do380_Skin_UpgardeAddColumnSpartstype()

@@ -30,6 +30,6 @@ $a = new ACTION();
 $errorInfo = $a->doAction($action);
 
 if ($errorInfo) {
-	doError($errorInfo['message'], new SKIN($errorInfo['skinid']) );
+    doError($errorInfo['message'], new SKIN($errorInfo['skinid']) );
 }
 
