@@ -6154,20 +6154,7 @@ EOL;
 
             // PHP extensions
             $extensions = get_loaded_extensions();
-            sort($extensions, SORT_FLAG_CASE | SORT_STRING);
-            echo "<table>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . 'PHP extensions' . "</th>\n";
-            echo "\t</tr>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<td width="50%">'. 'Loaded extensions' .'</td>' . "\n";
-            printf("\t\t<td>%s</td>\n", implode(', ', $extensions));
-            echo "\t</tr>\n";
-            echo "</table>\n";
-
-            // PHP extensions
-            $extensions = get_loaded_extensions();
-            sort($extensions, SORT_FLAG_CASE | SORT_STRING);
+            sort($extensions, SORT_STRING | (defined('SORT_FLAG_CASE')? SORT_FLAG_CASE : 0)); // SORT_FLAG_CASE : PHP5.4-
             echo "<table>\n";
             echo "\t<tr>";
             echo "\t\t" . '<th colspan="2">' . 'PHP extensions' . "</th>\n";
