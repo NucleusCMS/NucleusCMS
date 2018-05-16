@@ -18,12 +18,12 @@ function upgrade_do380() {
     if (upgrade_checkinstall(380))
         return 'already installed';
 
-	$query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName'", sql_table('config'));
-	$res = quickQuery($query);
-	if (empty($res)) {
-		$query = sprintf("INSERT INTO `%s` (name, value) VALUES('DatabaseName', 'Nucleus')", sql_table('config'));
-		upgrade_query('Updating ' . sql_table('config') . ' ', $query);
-	}
+    $query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName'", sql_table('config'));
+    $res = quickQuery($query);
+    if (empty($res)) {
+        $query = sprintf("INSERT INTO `%s` (name, value) VALUES('DatabaseName', 'Nucleus')", sql_table('config'));
+        upgrade_query('Updating ' . sql_table('config') . ' ', $query);
+    }
 
     if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
     {
@@ -72,7 +72,7 @@ function upgrade_do380() {
                      ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts';
                      ", sql_table( 'skin' ));
     upgrade_query('Altering ' . sql_table('skin') . ' table', $query);
-	//  -> 3.80
-	// update database version
-	update_version('380');
+    //  -> 3.80
+    // update database version
+    update_version('380');
 }

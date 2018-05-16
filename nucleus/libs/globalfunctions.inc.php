@@ -310,9 +310,9 @@ function getCatIDFromName($cname)
 {
     $ph['cname'] = sql_real_escape_string($cname);
     $res = parseQuickQuery("SELECT catid as result FROM <%prefix%>category WHERE cname='<%cname%>'", $ph);
-	if ($res !== false)
-		$res = intval ($res);
-	return $res;
+    if ($res !== false)
+        $res = intval ($res);
+    return $res;
 }
 
 function quickQuery($query) {
@@ -642,7 +642,7 @@ function selector() {
         $skinid = $blog->getDefaultSkin();
     }
 
-	$skin_options = array('spartstype'=>'parts');
+    $skin_options = array('spartstype'=>'parts');
 
     //$special = requestVar('special'); //get at top of file as global
     if (!empty($special) && isValidSkinSpecialPageName($special)) {
@@ -661,9 +661,9 @@ function selector() {
     }
     
     // set global skinpart variable so can determine quickly what is being parsed from any plugin or phpinclude
-	global $skinpart, $skin_sparts_type;
+    global $skinpart, $skin_sparts_type;
     $skinpart = $type;
-	$skin_sparts_type = $skin_options['spartstype']; // parts or specialpage
+    $skin_sparts_type = $skin_options['spartstype']; // parts or specialpage
     
     // parse the skin
     $output = $skin->parse($type, $skin_options);
@@ -745,7 +745,7 @@ function isValidSkinPartsName($name)
 
 function isValidSkinSpecialPageName($name)
 {
-	return preg_match('@^[^\?\/#]+$@i', $name);
+    return preg_match('@^[^\?\/#]+$@i', $name);
 }
 
 
@@ -1006,10 +1006,10 @@ function LoadCoreLanguage()
             }
         }
     }
-	if (isset($SQL_DBH) && $SQL_DBH)
-	    sql_set_charset_v2(_CHARSET);
-	else
-	    sql_set_charset(_CHARSET);
+    if (isset($SQL_DBH) && $SQL_DBH)
+        sql_set_charset_v2(_CHARSET);
+    else
+        sql_set_charset(_CHARSET);
 
     ini_set('default_charset', _CHARSET);
     if (_CHARSET != 'UTF-8' && function_exists('mb_http_output'))
@@ -1543,7 +1543,7 @@ function ticketForPlugin(){
     $phppath=preg_replace('#^/#','',$phppath);// Remove the first "/" if exists.
 
     // NP_Plugin.php , plugin/* , NP_Plugin/NP_Plugin.php
-//	var_dump(__FUNCTION__, $phppath);
+//  var_dump(__FUNCTION__, $phppath);
     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
     $path = $phppath;
     if ( preg_match('#^NP_([^/]+)(/|$)#', $path, $m) || preg_match('#^[^/]*/+NP_([^/]+)(/|$)#', $path, $m) )
@@ -1560,7 +1560,7 @@ function ticketForPlugin(){
         $unsecure_plugin_name = $unsecure_value;
         $unsecure_plugin_name_short = strtolower($unsecure_value);
     }
-//	var_dump(__FUNCTION__, $path);
+//  var_dump(__FUNCTION__, $path);
 
     /* Solve the plugin name. */
     $plugins = array();
@@ -1600,13 +1600,13 @@ function ticketForPlugin(){
     if ( !$member->isLoggedIn() )
     {
         LoadCoreLanguage();
-		if (!defined('_GFUNCTIONS_YOU_AERNT_LOGGEDIN'))
-			define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN', 'You aren\'t logged in.');
-		exit("<html><head><title>Error</title></head><body>"
-				. _GFUNCTIONS_YOU_AERNT_LOGGEDIN
-				. "<br><br>\n"
-				. '<a href="javascript: back();">back</a>'
-				. "</body></html>");
+        if (!defined('_GFUNCTIONS_YOU_AERNT_LOGGEDIN'))
+            define('_GFUNCTIONS_YOU_AERNT_LOGGEDIN', 'You aren\'t logged in.');
+        exit("<html><head><title>Error</title></head><body>"
+                . _GFUNCTIONS_YOU_AERNT_LOGGEDIN
+                . "<br><br>\n"
+                . '<a href="javascript: back();">back</a>'
+                . "</body></html>");
     }
     
     ini_set('display_errors', 1);

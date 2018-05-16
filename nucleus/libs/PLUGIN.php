@@ -788,7 +788,7 @@ class NucleusPlugin {
 
     private function _existOptionDesc($context, $name)
     {
-		return $this->_getOID($context, $name) ? TRUE : FALSE;
+        return $this->_getOID($context, $name) ? TRUE : FALSE;
         // check name in plugin_option_desc
 //        $sql = 'SELECT count(*) AS result FROM ' . sql_table('plugin_option_desc')
 //               . sprintf(' WHERE opid = %d AND ocontext = %s AND oname = %s LIMIT 1 ',
@@ -845,7 +845,7 @@ class NucleusPlugin {
             $params = array( $desc , $type , $defValue, $typeExtras
                            , intval($this->plugid) , $context , $name);
             $stmt = sql_prepare_execute($sql, $params);
-//		trigger_error( implode(' : ', $stmt->errorInfo) );
+//      trigger_error( implode(' : ', $stmt->errorInfo) );
         }
         else
         {

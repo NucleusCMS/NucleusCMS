@@ -193,7 +193,7 @@ if ( !headers_sent() && $CONF['expose_generator'] ) {
 // Avoid the ClickJacking attack
 if ( !headers_sent() && (!defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || (! _DISABLE_FEATURE_SECURITY_CLICKJACKING)) )
 {
-	header('X-Frame-Options: SAMEORIGIN');
+    header('X-Frame-Options: SAMEORIGIN');
 }
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
@@ -377,11 +377,11 @@ if ($action == 'login') {
         }
         else 
         {
-			loadCoreLanguage(false);
-			if ($member->isHalt())
-				$errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
-			else
-				$errormessage = 'Login failed for ' . $login;
+            loadCoreLanguage(false);
+            if ($member->isHalt())
+                $errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
+            else
+                $errormessage = 'Login failed for ' . $login;
         }
         $param = array('username' => $login);
         $manager->notify('LoginFailed', $param);

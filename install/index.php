@@ -17,11 +17,11 @@
  */
 
 /*
-	This part of the index.php code allows for customization of the install process.
-	When distributing plugins or skins together with a Nucleus installation, the
-	configuration below will instruct to install them
+    This part of the index.php code allows for customization of the install process.
+    When distributing plugins or skins together with a Nucleus installation, the
+    configuration below will instruct to install them
 
-	-- Start Of Configurable Part --
+    -- Start Of Configurable Part --
 */
 define('NC_MTN_MODE', 'install');
 
@@ -58,9 +58,9 @@ $install_lang_keys = get_install_lang_keys();
 
 global $lang;
 if (isset($_POST['lang']))
-	$lang = strtolower( $_POST['lang'] );
+    $lang = strtolower( $_POST['lang'] );
 else if (isset($_GET['lang']))
-	$lang = strtolower( $_GET['lang'] );
+    $lang = strtolower( $_GET['lang'] );
 
 if ($lang != '' && !in_array($lang, $install_lang_keys))
     $lang = 'en';
@@ -88,8 +88,8 @@ else
        $lang = 'en';
 }
 
-	define('INSTALL_LANG' , $lang);
-	include_once("./install_lang_${lang}.php");
+    define('INSTALL_LANG' , $lang);
+    include_once("./install_lang_${lang}.php");
 
     if ($lang != 'en')
     {
@@ -104,7 +104,7 @@ else
 // example:
 //     array('NP_CKEditor', 'NP_Text')
 $aConfPlugsToInstall = array(
-	'NP_SkinFiles',
+    'NP_SkinFiles',
 //        'NP_CustomURL',
 //        'NP_CKEditor',
 );
@@ -118,7 +118,7 @@ $aConfPlugsToInstall = array(
 $aConfSkinsToImport = array('atom','rss2.0','rsd','default');
 
 /*
-	-- End Of Configurable Part --
+    -- End Of Configurable Part --
 */
 
 // don't give warnings for uninitialized vars
@@ -137,8 +137,8 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
 if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
-	global $CONF;
-	$CONF['installscript'] = 1;
+    global $CONF;
+    $CONF['installscript'] = 1;
 }
 
 
@@ -157,17 +157,17 @@ if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME)==0) {
     $mode1 = INSTALL_PRIORITY_MYSQL_MODULE && (extension_loaded('mysql') || extension_loaded('mysqli'));
     if ($mode1) {
         $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
-	} else {
+    } else {
         $DB_PHP_MODULE_NAME = 'pdo';
         $DB_DRIVER_NAME = 'mysql';
-	}
+    }
 }
 include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
 if ($DB_PHP_MODULE_NAME == 'pdo') {
-	if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) doError(_ERROR1);
+    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) doError(_ERROR1);
 }
 elseif (!function_exists('mysql_query') ) _doError(_ERROR1);
 
@@ -190,28 +190,28 @@ exit;
  * 			error message
  */
 function _doError($msg) {
-	?>
+    ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="robots" content="noindex,nofollow,noarchive" />
-	<title><?php echo _TITLE; ?></title>
-	<style>@import url('../nucleus/styles/manual.css');</style>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title><?php echo _TITLE; ?></title>
+    <style>@import url('../nucleus/styles/manual.css');</style>
 </head>
 <body>
-	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
-	<h1><?php echo _ERROR27; ?></h1>
+    <div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+    <h1><?php echo _ERROR27; ?></h1>
 
     <p><?php echo _ERROR28; ?></p>
     <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
 
-	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
 <?php
-	exit;
+    exit;
 }
 
 /*
@@ -221,35 +221,35 @@ function _doError($msg) {
  * 			array with error messages
  */
 function showErrorMessages($errors) {
-	?>
+    ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-	<meta name="robots" content="noindex,nofollow,noarchive" />
-	<title><?php echo _TITLE; ?></title>
-	<link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <meta name="robots" content="noindex,nofollow,noarchive" />
+    <title><?php echo _TITLE; ?></title>
+    <link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css" />
 </head>
 <body>
-	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
-	<h1><?php echo _ERROR27; ?></h1>
+    <div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+    <h1><?php echo _ERROR27; ?></h1>
 
-	<p><?php echo _ERROR29; ?>:</p>
+    <p><?php echo _ERROR29; ?>:</p>
 
-	<ul>
+    <ul>
 
 <?php
-	while($msg = array_shift($errors) ) {
-		echo '<li>' . $msg . '</li>';
-	}
+    while($msg = array_shift($errors) ) {
+        echo '<li>' . $msg . '</li>';
+    }
 ?>
 
-	</ul>
+    </ul>
 
-	<p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
 </body>
 </html>
 
 <?php
-	exit;
+    exit;
 }
