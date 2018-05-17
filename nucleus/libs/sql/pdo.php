@@ -767,8 +767,8 @@ if (!function_exists('sql_fetch_assoc'))
      * refering to their conversation below,
      * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
      *
-     * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
-     * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
+     * NOTE:    shift_jis is only supported for output. Using shift_jis in DB is prohibited.
+     * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset, $dbh=NULL) {
         global $DB_DRIVER_NAME, $SQL_DBH;

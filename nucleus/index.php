@@ -22,8 +22,8 @@
     unset($preload_admin_custum_php);
 
 // we are using admin stuff:
-	$CONF = array();
-	$CONF['UsingAdminArea'] = 1;
+    $CONF = array();
+    $CONF['UsingAdminArea'] = 1;
 
     if (!@is_file('../config.php')) {
         if (@is_file('../install/index.php') && !headers_sent()) {
@@ -31,42 +31,42 @@
             exit;
         }
     }
-	// include the admin code
-	require_once('../config.php');
+    // include the admin code
+    require_once('../config.php');
 
-	$admin = new ADMIN();
+    $admin = new ADMIN();
 
-	$bNeedsLogin = false;
-	$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
+    $bNeedsLogin = false;
+    $bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
 
-	if ($action == 'logout')
-		$bNeedsLogin = true;
+    if ($action == 'logout')
+        $bNeedsLogin = true;
 
-	if ($member->isHalt())
-	{
-		$error       = '( '.$member->getDisplayName()  .  ' ) '._ERROR_LOGIN_DISALLOWED_BY_HALT;
-		$bNeedsLogin = true;
-	}
+    if ($member->isHalt())
+    {
+        $error       = '( '.$member->getDisplayName()  .  ' ) '._ERROR_LOGIN_DISALLOWED_BY_HALT;
+        $bNeedsLogin = true;
+    }
 
-	if (!$member->isLoggedIn() && !$bIsActivation)
-		$bNeedsLogin = true;
+    if (!$member->isLoggedIn() && !$bIsActivation)
+        $bNeedsLogin = true;
 
-	// show error if member cannot login to admin
-	if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
-		$error       = _ERROR_LOGINDISALLOWED;
-		$bNeedsLogin = true;
-	}
+    // show error if member cannot login to admin
+    if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
+        $error       = _ERROR_LOGINDISALLOWED;
+        $bNeedsLogin = true;
+    }
 
-	if ($action=='lost_pwd' && (strcasecmp($_SERVER['REQUEST_METHOD'],'GET')==0)) {
-		$bNeedsLogin = FALSE;
-	}
+    if ($action=='lost_pwd' && (strcasecmp($_SERVER['REQUEST_METHOD'],'GET')==0)) {
+        $bNeedsLogin = FALSE;
+    }
 
-	if ($bNeedsLogin)
-	{
-		setOldAction($action);	// see ADMIN::login() (sets old action in POST vars)
-		$action = 'showlogin';
-	}
+    if ($bNeedsLogin)
+    {
+        setOldAction($action);  // see ADMIN::login() (sets old action in POST vars)
+        $action = 'showlogin';
+    }
 
-	sendContentType('text/html', 'admin-' . $action);
+    sendContentType('text/html', 'admin-' . $action);
 
-	$admin->action($action);
+    $admin->action($action);

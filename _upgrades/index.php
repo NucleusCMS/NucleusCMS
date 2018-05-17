@@ -188,7 +188,7 @@ function upgrade_manual_340() {
 }
 
 function upgrade_manual_350() {
-	$s = <<<EOL
+    $s = <<<EOL
   <h2>Important Notices for Nucleus 3.5</h2>
   <p>
     Two new plugins have been included with version 3.5. You may want to consider installing them from the Plugins page of the admin area.
@@ -197,7 +197,7 @@ function upgrade_manual_350() {
     </ul>
   </p>
 EOL;
-	return $s;
+    return $s;
 }
 
 function upgrade_manual_366() {

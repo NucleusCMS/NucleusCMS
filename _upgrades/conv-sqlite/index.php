@@ -253,11 +253,11 @@ class ConvertInstaller
             echo "<p>" . $this->_('Download the config.php') . "</p>\n";
             echo "<p>Download <a href=\"./index.php?export_config=yes\" target=\"_blank\">config.php</a></p>\n";
 
-        	printf("<h1>%s</h1>", $this->_('Visit your web site'));
-        	echo "<p><ul>";
-        	printf('<li><a href="%s">%s</a></li>', $CONF['AdminURL'], $this->_('Login to the admin area'));
-        	printf('<li><a href="%s">%s</a></li>', $CONF['BlogURL'],  $this->_('Visit your site now'));
-        	echo "</ul></p>";
+            printf("<h1>%s</h1>", $this->_('Visit your web site'));
+            echo "<p><ul>";
+            printf('<li><a href="%s">%s</a></li>', $CONF['AdminURL'], $this->_('Login to the admin area'));
+            printf('<li><a href="%s">%s</a></li>', $CONF['BlogURL'],  $this->_('Visit your site now'));
+            echo "</ul></p>";
 //            echo "\n<h3>" . $this->_('Error failed') . "</h3>\n";
 //            echo "\n<p>" . $this->_('Error:') . "</p>\n";
 //            echo sprintf("<blockquote><div>%s</div></blockquote>", $this->_('Sorry') . ', ' . $this->_('not implemented yet'));
@@ -434,7 +434,7 @@ if (!isset(\$DIR_NUCLEUS) || !@is_file(\$DIR_LIBS . 'globalfunctions.php')) {
     header('Content-type: text/html; charset=utf-8');
     echo '<h1>Configuration error</h1>';
     echo '<p>please run the <a href="./install/index.php">install script</a> or modify config.php</p>';
-	exit;
+    exit;
 }
 
 // include libs
