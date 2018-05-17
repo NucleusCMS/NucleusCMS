@@ -324,7 +324,7 @@ class MANAGER
                     if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 11;
                     else                                    $plugin_dir_type = 12;
                 }
-                elseif($key==='NP_Name.php')                    $plugin_dir_type = 1;
+                elseif($key==='NP_Name.php')                $plugin_dir_type = 1;
                 else                                        $plugin_path = false;  // ?
                 
                 break;

@@ -311,21 +311,21 @@ class BLOG {
         $timestamp = date('Y-m-d H:i:s',$timestamp);
 
         $param = array(
-        'title'        => &$title,
-        'body'        => &$body,
-        'more'        => &$more,
-        'blog'        => &$this,
-        'authorid'    => &$authorid,
-        'timestamp'    => &$timestamp,
-        'closed'    => &$closed,
-        'draft'        => &$draft,
-        'catid'        => &$catid
+            'title'     => &$title,
+            'body'      => &$body,
+            'more'      => &$more,
+            'blog'      => &$this,
+            'authorid'  => &$authorid,
+            'timestamp' => &$timestamp,
+            'closed'    => &$closed,
+            'draft'     => &$draft,
+            'catid'     => &$catid
         );
         $manager->notify('PreAddItem', $param);
 
         $ititle = sql_real_escape_string($title);
-        $ibody = sql_real_escape_string($body);
-        $imore = sql_real_escape_string($more);
+        $ibody  = sql_real_escape_string($body);
+        $imore  = sql_real_escape_string($more);
 
         $query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
                . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
@@ -426,8 +426,8 @@ class BLOG {
             $param = array(
                 'blog'            => &$this,
                 'name'            => &$catName,
-                'description'     => $catDescription,
-                'order' => &$corder
+                'description'     =>  $catDescription,
+                'order'           => &$corder
             );
             $manager->notify('PreAddCategory', $param);
 
@@ -441,11 +441,11 @@ class BLOG {
             $catid = sql_insert_id();
 
             $param = array(
-                'blog'            => &$this,
-                'name'            =>  $catName,
-                'description'    =>  $catDescription,
-                'catid'            =>  $catid,
-                'order' => $corder
+                'blog'        => &$this,
+                'name'        =>  $catName,
+                'description' =>  $catDescription,
+                'catid'       =>  $catid,
+                'order'       =>  $corder
             );
             $manager->notify('PostAddCategory', $param);
 
@@ -1290,9 +1290,9 @@ class BLOG {
             return 0;
 
         $param = array(
-            'blog'        => &$this,
-            'member'    => &$tmem,
-            'admin'        => &$admin
+            'blog'   => &$this,
+            'member' => &$tmem,
+            'admin'  => &$admin
         );
         $manager->notify('PreAddTeamMember', $param);
 
@@ -1301,11 +1301,10 @@ class BLOG {
                . 'VALUES (' . $memberid .', '.$this->getID().', "'.$admin.'")';
         sql_query($query);
 
-        
         $param = array(
-            'blog'        => &$this,
-            'member'    => &$tmem,
-            'admin'        => $admin
+            'blog'   => &$this,
+            'member' => &$tmem,
+            'admin'  =>  $admin
         );
         $manager->notify('PostAddTeamMember', $param);
 
