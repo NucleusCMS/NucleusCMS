@@ -37,6 +37,7 @@ define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0) ); // allow sqlite insta
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
+define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION' , '5.0.5'); // (string) , format : dot separated
 
 define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
 
@@ -124,8 +125,9 @@ $aConfSkinsToImport = array('atom','rss2.0','rsd','default');
 // don't give warnings for uninitialized vars
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-if (version_compare(phpversion(), '5.0.5', '<')) {
-    $errors = array(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT);
+if (version_compare(phpversion(), NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
+    $msg = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
+    $errors = array($msg);
     showErrorMessages($errors); // exit to instalation
 }
 
