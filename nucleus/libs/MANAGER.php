@@ -354,8 +354,7 @@ class MANAGER
         }
 
         // add to plugin array
-        $code = sprintf('$this->plugins[$NP_Name] = new %s();', $NP_Name);
-        eval($code);
+        $this->plugins[$NP_Name] = new $NP_Name();
 
         // get plugid
         $this->plugins[$NP_Name]->plugid = $this->getPidFromName($NP_Name);
