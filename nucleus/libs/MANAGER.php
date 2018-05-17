@@ -793,4 +793,15 @@ class MANAGER
         return $this->currentRequestTicket;
     }
 
+// _getText
+// Note: This function will may be specification change
+// Note: use only core functions
+// Notice: Do not call this function from user plugin
+// return Converted text
+    public function _getText($type, $text)
+    {
+       // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+       return SKIN::_getText($text);
+    }
+
 }
