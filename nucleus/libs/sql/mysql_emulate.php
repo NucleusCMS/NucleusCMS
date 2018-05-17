@@ -48,9 +48,9 @@ function mysql_query($query, $dblink = NULL)
 
 function mysql_fetch_object($res)
 {
-	if(!is_object($res))
-		return false;
-	return mysqli_fetch_object($res);
+    if(!is_object($res))
+        return false;
+    return mysqli_fetch_object($res);
 }
 
 function mysql_fetch_array($res , $result_type = MYSQL_BOTH)
@@ -189,7 +189,7 @@ function mysql_set_charset($charset , $dblink = NULL ) {
 function convert_mysqlFieldDefObj_from_mysqliFieldDefObj($obj , $offset  = 0 )
 {
     $o = new stdClass();
-//		$o->mysqli_feild = $obj;
+//      $o->mysqli_feild = $obj;
     $o->name = $obj->name;
     $o->table = $obj->table;
     $o->def = $obj->def;
@@ -336,8 +336,8 @@ function convert_mysqlFieldFlags_from_mysqliFieldFlags($flags)
     if ($flags & MYSQLI_TIMESTAMP_FLAG)
         $a[] = "timestamp";
 
-/*		// not defined ext/mysql
-    //	unknown: MYSQLI_PART_KEY_FLAG MYSQLI_GROUP_FLAG MYSQLI_NUM_FLAG
+/*      // not defined ext/mysql
+    //  unknown: MYSQLI_PART_KEY_FLAG MYSQLI_GROUP_FLAG MYSQLI_NUM_FLAG
     if ($flags & MYSQLI_PART_KEY_FLAG)
         $a[] = "part_key";
 
@@ -350,13 +350,13 @@ function convert_mysqlFieldFlags_from_mysqliFieldFlags($flags)
 
 /*
     $known_flags = 4095;
-//		$known_flags = MYSQLI_NOT_NULL_FLAG | MYSQLI_PRI_KEY_FLAG | MYSQLI_UNIQUE_KEY_FLAG
-//				| MYSQLI_MULTIPLE_KEY_FLAG | MYSQLI_BLOB_FLAG | MYSQLI_UNSIGNED_FLAG
-//				| MYSQLI_ZEROFILL_FLAG | MYSQLI_BINARY_FLAG | MYSQLI_ENUM_FLAG
-//				| MYSQLI_SET_FLAG | MYSQLI_AUTO_INCREMENT_FLAG | MYSQLI_TIMESTAMP_FLAG;
-//		echo sprintf('$known_flags(%d)', $known_flags);
+//      $known_flags = MYSQLI_NOT_NULL_FLAG | MYSQLI_PRI_KEY_FLAG | MYSQLI_UNIQUE_KEY_FLAG
+//              | MYSQLI_MULTIPLE_KEY_FLAG | MYSQLI_BLOB_FLAG | MYSQLI_UNSIGNED_FLAG
+//              | MYSQLI_ZEROFILL_FLAG | MYSQLI_BINARY_FLAG | MYSQLI_ENUM_FLAG
+//              | MYSQLI_SET_FLAG | MYSQLI_AUTO_INCREMENT_FLAG | MYSQLI_TIMESTAMP_FLAG;
+//      echo sprintf('$known_flags(%d)', $known_flags);
 
-//		$known_flags = $known_flags | MYSQLI_PART_KEY_FLAG | MYSQLI_GROUP_FLAG | MYSQLI_NUM_FLAG;
+//      $known_flags = $known_flags | MYSQLI_PART_KEY_FLAG | MYSQLI_GROUP_FLAG | MYSQLI_NUM_FLAG;
 
     $unknown_flags = $flags & ~$known_flags;
     if ($unknown_flags)

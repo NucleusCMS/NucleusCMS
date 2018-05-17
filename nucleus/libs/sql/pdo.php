@@ -142,17 +142,17 @@ if (!function_exists('sql_fetch_assoc'))
                     // HY000-2014 Cannot execute queries while other unbuffered queries are active.
                     $DBH->setAttribute(PDO::MYSQL_ATTR_USE_BUFFERED_QUERY, true);
                 }
-				if (defined('_CHARSET')) {
-					$charset  = get_mysql_charset_from_php_charset(_CHARSET);
-				} else {
-					$query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
-					$res = sql_query($query, $DBH);
-					if(!$res) exit('Language name fetch error');
-					$obj = sql_fetch_object($res);
-					$Language = $obj->value;
-					$charset = get_charname_from_langname($Language);
-				}
-				sql_set_charset_v2($charset , $DBH);
+                if (defined('_CHARSET')) {
+                    $charset  = get_mysql_charset_from_php_charset(_CHARSET);
+                } else {
+                    $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
+                    $res = sql_query($query, $DBH);
+                    if(!$res) exit('Language name fetch error');
+                    $obj = sql_fetch_object($res);
+                    $Language = $obj->value;
+                    $charset = get_charname_from_langname($Language);
+                }
+                sql_set_charset_v2($charset , $DBH);
             }
 
         } catch (PDOException $e) {
@@ -231,10 +231,10 @@ if (!function_exists('sql_fetch_assoc'))
 //echo $query.'<hr />';
         $dbh = ( $dbh && is_object($dbh) ? $dbh : $SQL_DBH );
         if (!is_object($dbh)) {
-			if (!$CONF['debug'])
-				return false;
-			echo "SQL error : db handle is not allocated";
-		}
+            if (!$CONF['debug'])
+                return false;
+            echo "SQL error : db handle is not allocated";
+        }
         $res = $dbh->query($query);
         if (!$CONF['debug'])
             return $res;
@@ -759,8 +759,8 @@ if (!function_exists('sql_fetch_assoc'))
      * refering to their conversation below,
      * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
      *
-     * NOTE: 	shift_jis is only supported for output. Using shift_jis in DB is prohibited.
-     * NOTE:	iso-8859-x,windows-125x if _CHARSET is unset.
+     * NOTE:    shift_jis is only supported for output. Using shift_jis in DB is prohibited.
+     * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset, $dbh=NULL) {
         global $DB_DRIVER_NAME, $SQL_DBH;
@@ -771,9 +771,9 @@ if (!function_exists('sql_fetch_assoc'))
                 case 'utf8':
                     $charset = 'utf8';
                     break;
-				case 'utf8mb4':
-					$charset = 'utf8mb4';
-					break;
+                case 'utf8mb4':
+                    $charset = 'utf8mb4';
+                    break;
                 case 'euc-jp':  // Japanese EUC-JP
                 case 'ujis':
                     $charset = 'ujis';
@@ -817,18 +817,18 @@ if (!function_exists('sql_fetch_assoc'))
         return TRUE;
     }
 
-	function sql_set_charset_v2($charset, $dbh=NULL) {
-		global $DB_DRIVER_NAME, $SQL_DBH;
-		$dbh = ($dbh ? $dbh : sql_get_db());
-		if ( $DB_DRIVER_NAME == 'mysql' ) {
-			$charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$dbh);
-			if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
-				$charset = $charsetOfDB; // work around for utf8mb4_general_ci
-			return sql_set_charset($charset, $dbh);
-		} else {
-			return sql_set_charset($charset, $dbh);
-		}
-	}
+    function sql_set_charset_v2($charset, $dbh=NULL) {
+        global $DB_DRIVER_NAME, $SQL_DBH;
+        $dbh = ($dbh ? $dbh : sql_get_db());
+        if ( $DB_DRIVER_NAME == 'mysql' ) {
+            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$dbh);
+            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+                $charset = $charsetOfDB; // work around for utf8mb4_general_ci
+            return sql_set_charset($charset, $dbh);
+        } else {
+            return sql_set_charset($charset, $dbh);
+        }
+    }
 
     function sql_print_error($text)
     {

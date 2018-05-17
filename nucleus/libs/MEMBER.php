@@ -48,23 +48,23 @@ class MEMBER {
 
     public function MEMBER() { $this->__construct(); }
 
-	private function init_member()
-	{
-		$this->loggedin = 0;
-		unset($this->password); // not the actual password, but rather a MD5 hash
-		unset($this->cookiekey); // value that should also be in the client cookie to allow authentication
-		$this->id = -1;
-		unset($this->realname);
-		unset($this->displayname);
-		unset($this->email);
-		unset($this->url);
-		$this->language = '';		// name of the language file to use (e.g. 'english' -> english.php)
-		$this->admin = 0;			// (either 0 or 1)
-		$this->canlogin = 0;		// (either 0 or 1)
-		unset($this->notes);
-		$this->autosave = 1;		// if the member use the autosave draft function
-		$this->halt = 0;
-	}
+    private function init_member()
+    {
+        $this->loggedin = 0;
+        unset($this->password); // not the actual password, but rather a MD5 hash
+        unset($this->cookiekey); // value that should also be in the client cookie to allow authentication
+        $this->id = -1;
+        unset($this->realname);
+        unset($this->displayname);
+        unset($this->email);
+        unset($this->url);
+        $this->language = '';       // name of the language file to use (e.g. 'english' -> english.php)
+        $this->admin = 0;           // (either 0 or 1)
+        $this->canlogin = 0;        // (either 0 or 1)
+        unset($this->notes);
+        $this->autosave = 1;        // if the member use the autosave draft function
+        $this->halt = 0;
+    }
 
     /**
      * Create a member object for a given displayname
@@ -156,9 +156,9 @@ class MEMBER {
         return $this->loggedin;
     }
 
-	function isHalt() {
-		return $this->halt;
-	}
+    function isHalt() {
+        return $this->halt;
+    }
 
     /**
      * Read member information from the database
@@ -183,9 +183,9 @@ class MEMBER {
             $this->setLanguage($obj->deflang);
             $this->setAutosave($obj->mautosave);
 
-			$this->halt = @intval($obj->mhalt);
-			if ( $this->halt )
-				return 0;
+            $this->halt = @intval($obj->mhalt);
+            if ( $this->halt )
+                return 0;
 
             return 1;
         }
@@ -293,18 +293,18 @@ class MEMBER {
         return (intval(quickQuery($sql)) == 0);
     }
 
-	function getTotalPosts()
-	{
-		$res = sql_query('SELECT count(*) FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
-		return intval(sql_result($res,0,0));
-	}
+    function getTotalPosts()
+    {
+        $res = sql_query('SELECT count(*) FROM '.sql_table('item').' WHERE iauthor=' . $this->getID());
+        return intval(sql_result($res,0,0));
+    }
 
-	function getTotalComments()
-	{
-		$sql = 'SELECT count(*) FROM ' . sql_table('comment') . ' WHERE cmember=' . $this->getID();
-		$res = sql_query($sql);
-		return intval(sql_result($res,0,0));
-	}
+    function getTotalComments()
+    {
+        $sql = 'SELECT count(*) FROM ' . sql_table('comment') . ' WHERE cmember=' . $this->getID();
+        $res = sql_query($sql);
+        return intval(sql_result($res,0,0));
+    }
 
     /**
       * returns true if this member can move/update an item to a given category,
@@ -531,8 +531,8 @@ class MEMBER {
 
     function password_verify($formv_password, $hash)
     {
-		if ( isset($this->halt) && ($this->halt) )
-			return false;
+        if ( isset($this->halt) && ($this->halt) )
+            return false;
         global $CONF;
         
         if(strpos($hash, '$')!==false)
@@ -589,10 +589,10 @@ class MEMBER {
         $this->password = $this->hasher->HashPassword($pwd);
     }
 
-	function setHalt($halt)
-	{
-		$this->halt = $halt ? 1 : 0;
-	}
+    function setHalt($halt)
+    {
+        $this->halt = $halt ? 1 : 0;
+    }
 
     function getCookieKey() {
         return $this->cookiekey;
