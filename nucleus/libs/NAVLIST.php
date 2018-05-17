@@ -406,7 +406,7 @@ EOD;
 
         $s = sprintf('<select name="%s">' , htmlentities( $input_name, ENT_COMPAT , _CHARSET ) );
         $s .= "\n\t\t".'<option value="0"'
-              . ( $selected ? '' : 'selected' )
+              . ( $selected ? '' : ' selected' )
               .' >' . hsc(_LISTS_FORM_SELECT_ALL_CATEGORY)
               . sprintf('(%d)' , $total) . "</option>\n";
 
