@@ -165,3 +165,8 @@
     function is_sql_result($res) {
         return _EXT_MYSQL_EMULATE ? is_object($res) : is_resource($res);
     }
+
+    function sql_get_server_version($conn_or_dbh = NULL) {
+        $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+        return implode('.', array_map('intval', explode('.', sql_get_server_info($dbh))));
+    }

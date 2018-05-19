@@ -461,23 +461,21 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if(defined('NC_MTN_MODE') && NC_MTN_MODE==='install') $charset = 'utf8';
         elseif($charset!=='utf8mb4')                          $charset = treat_char_name($charset);
         
-        $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
-        if (version_compare($mySqlVer, '4.1.0', '>=')) {
-            if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
-            else $_CHARSET = '';
-            
-            if(version_compare($mySqlVer, '5.0.7', '>='))
-            {
-                if (function_exists('mysql_set_charset'))
-                    $res = mysql_set_charset($charset);
-                else
-                    $res = sql_query("SET CHARACTER SET {$charset}");
-            }
-            elseif($charset==='utf8' && $_CHARSET==='utf-8')
-                $res = sql_query("SET NAMES 'utf8'");
-            elseif($charset==='ujis' && $_CHARSET==='euc-jp')
-                $res = sql_query("SET NAMES 'ujis'");
+        $mySqlVer = sql_get_server_version();
+        if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
+        else $_CHARSET = '';
+
+        if(version_compare($mySqlVer, '5.0.7', '>='))
+        {
+            if (function_exists('mysql_set_charset'))
+                $res = mysql_set_charset($charset);
+            else
+                $res = sql_query("SET CHARACTER SET {$charset}");
         }
+        elseif($charset==='utf8' && $_CHARSET==='utf-8')
+            $res = sql_query("SET NAMES 'utf8'");
+        elseif($charset==='ujis' && $_CHARSET==='euc-jp')
+            $res = sql_query("SET NAMES 'ujis'");
 
         // retry : workaround for Can't initialize character set utf8mb4
         if (($res === FALSE) && $charset==='utf8mb4')

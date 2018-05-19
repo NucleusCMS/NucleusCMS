@@ -370,7 +370,7 @@ function doInstall() {
     // 3. try to create database (if needed)
     if ($is_install_mysql)
     {
-        $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+        $mySqlVer = sql_get_server_version();
         switch(strtolower($install_db_charset))
         {
             case 'ujis':
