@@ -170,3 +170,26 @@
         $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
         return implode('.', array_map('intval', explode('.', sql_get_server_info($dbh))));
     }
+
+    function sql_get_mysql_sqlmode($conn_or_dbh = NULL)
+    {
+        $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+        $q = sql_query("SELECT @@SESSION.sql_mode;", $dbh);
+        if (!$q)
+            return '';
+        $row = sql_fetch_array($q);
+        return (empty($row) ? '' : strtoupper($row[0]));
+    }
+
+    function fix_mysql_sqlmode($conn_or_dbh = NULL)
+    {
+        $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+        $sqlmode = sql_get_mysql_sqlmode($dbh);
+        if (empty($sqlmode)
+            || version_compare(sql_get_server_version($dbh), '5.6.0', '<'))
+           return;
+        $options = array_diff(explode(',',$sqlmode), array('NO_ZERO_DATE','NO_ZERO_IN_DATE'));
+        $new_sqlmode = implode(',', $options);
+        if (strcmp($sqlmode,$new_sqlmode)!=0)
+            sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);
+    }

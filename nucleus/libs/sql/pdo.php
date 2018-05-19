@@ -153,6 +153,7 @@ if (!function_exists('sql_fetch_assoc'))
                     $charset = get_charname_from_langname($Language);
                 }
                 sql_set_charset_v2($charset , $DBH);
+                fix_mysql_sqlmode($DBH);
             }
 
         } catch (PDOException $e) {
