@@ -152,6 +152,7 @@ if (!function_exists('sql_fetch_assoc'))
                         $charset = $charsetOfDB; // work around for utf8mb4_general_ci
                 }
                 sql_set_charset($charset , $DBH);
+                fix_mysql_sqlmode($DBH);
             }
 
         } catch (PDOException $e) {

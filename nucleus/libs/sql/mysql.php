@@ -79,7 +79,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             }
         }
         sql_set_charset($charset, $MYSQL_CONN);
-        
+        fix_mysql_sqlmode($MYSQL_CONN);
         return $MYSQL_CONN;
     }
 
