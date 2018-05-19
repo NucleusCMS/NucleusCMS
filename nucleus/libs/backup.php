@@ -30,7 +30,7 @@ class Backup
 
         ob_start();
         // get mysql version
-        $this->mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+        $this->mySqlVer = sql_get_server_version();
         // check utf8mb4 support
         $res = sql_query("SHOW COLLATION like 'utf8mb4_general_ci'");
         if ($res && ($row = sql_fetch_row($res ))) {

@@ -815,7 +815,6 @@ if (!function_exists('sql_fetch_assoc'))
                     break;
             }
 
-            $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info($db))));
             $res = $db->exec("SET CHARACTER SET " . $charset);
             return $res;
         }

@@ -236,4 +236,8 @@
         }
         return join(',', $_);
     }
-    
+
+    function sql_get_server_version($conn_or_dbh = NULL) {
+        $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+        return implode('.', array_map('intval', explode('.', sql_get_server_info($dbh))));
+    }
