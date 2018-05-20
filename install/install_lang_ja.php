@@ -186,3 +186,4 @@ define('_1ST_POST_TITLE',		'Nucleus CMS バージョン%sへようこそ');
 define('_1ST_POST',				'これは、最初のページです。そのまま内容を編集して使うことができます。');
 define('_1ST_POST2',			'');
 
+define('_CONFIRM_RETRY_SEND_FORM',		'フォームを再送信しますか？');

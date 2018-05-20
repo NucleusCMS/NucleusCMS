@@ -164,6 +164,7 @@ function showInstallForm() {
     $ph['_HEADER9'] = _HEADER9;
     $ph['_TEXT9'] = _TEXT9;
     $ph['_BUTTON1'] = _BUTTON1;
+    $ph['_CONFIRM_RETRY_SEND_FORM'] = _CONFIRM_RETRY_SEND_FORM;
     $tpl = file_get_contents('first.tpl');
     echo parseText($tpl,$ph);
 }

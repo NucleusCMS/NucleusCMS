@@ -185,3 +185,4 @@ define('_1ST_POST_TITLE',	'Welcome to Nucleus CMS Version %s');
 define('_1ST_POST',	'This is the first post on your Nucleus CMS. You can edit this page.');
 define('_1ST_POST2',	'');
 
+define('_CONFIRM_RETRY_SEND_FORM',		'Would you like to retry submitting the form?');
