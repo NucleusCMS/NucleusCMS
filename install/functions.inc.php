@@ -370,7 +370,7 @@ function doInstall() {
     // 3. try to create database (if needed)
     if ($is_install_mysql)
     {
-        $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+        $mySqlVer = sql_get_server_version();
         switch(strtolower($install_db_charset))
         {
             case 'ujis':
@@ -391,10 +391,7 @@ function doInstall() {
 
         if ($mysql_create == 1) {
             $sql = "CREATE DATABASE `{$mysql_database}`";
-
-        if (version_compare($mySqlVer, '4.1.0', '>='))
             $sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
-
             sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
         }
     }
@@ -437,8 +434,6 @@ function doInstall() {
     else
     { // mysql
         $queries = file_get_contents('install-mysql.sql');
-        if (version_compare($mySqlVer, '5.0.0', '<'))
-          $queries = str_replace ( 'ENGINE=MyISAM' , 'TYPE=MyISAM' , $queries );
         $queries = preg_split("#(;\n|;\r)#m", $queries);
     }
 

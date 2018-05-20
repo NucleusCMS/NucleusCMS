@@ -324,7 +324,7 @@ class MANAGER
                     if(is_dir(dirname($f)."/{$shortname}")) $plugin_dir_type = 11;
                     else                                    $plugin_dir_type = 12;
                 }
-                elseif($key==='NP_Name.php')                    $plugin_dir_type = 1;
+                elseif($key==='NP_Name.php')                $plugin_dir_type = 1;
                 else                                        $plugin_path = false;  // ?
                 
                 break;
@@ -354,8 +354,7 @@ class MANAGER
         }
 
         // add to plugin array
-        $code = sprintf('$this->plugins[$NP_Name] = new %s();', $NP_Name);
-        eval($code);
+        $this->plugins[$NP_Name] = new $NP_Name();
 
         // get plugid
         $this->plugins[$NP_Name]->plugid = $this->getPidFromName($NP_Name);
@@ -791,6 +790,17 @@ class MANAGER
             $this->currentRequestTicket = $ticket;
         }
         return $this->currentRequestTicket;
+    }
+
+// _getText
+// Note: This function will may be specification change
+// Note: use only core functions
+// Notice: Do not call this function from user plugin
+// return Converted text
+    public function _getText($type, $text)
+    {
+       // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
+       return SKIN::_getText($text);
     }
 
 }

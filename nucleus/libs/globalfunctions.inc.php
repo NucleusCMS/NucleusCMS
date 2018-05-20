@@ -2494,3 +2494,18 @@ function checkOutputCompression($content_type) {
         ob_start("ob_gzhandler");
     }
 }
+
+function str_contain($haystack, $needle) {
+    $pos = strpos($haystack, $needle);
+    if($pos!==false) return true;
+    return false;
+}
+
+function getBaseUrl() {
+    $_ = dirname($_SERVER['SCRIPT_NAME']);
+    if ($_==='/install' || $_==='/nucleus' || $_==='/_upgrades')
+    {
+        return '/';
+    }
+    return substr($_, 0, strrpos($_,'/')+1);
+}

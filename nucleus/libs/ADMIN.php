@@ -7241,6 +7241,42 @@ EOL;
 
     }
 
+    private function force_rename_np_plugin_dir() {
+        global $DIR_PLUGINS;
+        $path = @realpath($DIR_PLUGINS); // Since $DIR_PLUGINS is a user input value, it converts it to an absolute path
+        if (empty($DIR_PLUGINS) || empty($path) || !is_dir($path))
+            return;
+        $path = str_replace('\\', '/', $path) . '/';
+        $dh = opendir($path);
+        if ($dh) {
+            while (($file = readdir($dh)) !== false) {
+                if (in_array($file, array('.','..'))) continue;
+                $old_dir_name = "{$path}{$file}";
+                if (is_dir($old_dir_name) && preg_match('@^np_[0-9a-z_]+$@i', $file)) {
+                    $np_lists = glob("{$old_dir_name}/NP_*.php", GLOB_NOSORT);
+                    if (empty($np_lists) || substr(basename($np_lists[0]), 0, 2)!='NP') // Native Windows case insensitive
+                        continue;
+                    $NP_Name = substr(basename($np_lists[0]), 0, -4);
+                    if ((strcmp($file, $NP_Name)==0) || (strcasecmp($file, $NP_Name)!=0))
+                        continue;
+                    $new_dir_name = "{$path}{$NP_Name}";
+                    $success = @rename($old_dir_name, $new_dir_name);
+                    if (class_exists('SYSTEMLOG')) {
+                        $msg = sprintf('Plugin folder name [%s] is invalid.',$file);
+                        if ($success) {
+                            $msg .= sprintf(' force rename to [%s]', $NP_Name);
+                            SYSTEMLOG::add('error', 'Error', $msg);
+                        } else {
+                            $msg .= sprintf(' Please change to [%s] manually', $NP_Name);
+                            SYSTEMLOG::addUnique('error', 'Error', $msg);
+                        }
+                    }
+                }
+            }
+            closedir($dh);
+        }
+    }
+
 /*
  * @todo document this
  */
@@ -7251,6 +7287,8 @@ EOL;
         $member->isAdmin() or $this->disallow();
 
         $this->pagehead();
+
+        $this->force_rename_np_plugin_dir();
 
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
@@ -8355,6 +8393,10 @@ EOD;
                 $count++;
                 if (!is_array($s))
                     $s = array('body' => $s);
+                if (isset($s['header'])) {
+                    if (stripos($s['header'],"\nStatus: 200 OK")===false || stripos($s['header'],"\nContent-Type: application/json")===false)
+                        break;
+                }
                 if (!empty($s['body']) && (substr(ltrim($s['body']),0,1) == '['))
                 {
                     $obj = json_decode($s['body']);
@@ -8381,14 +8423,16 @@ EOD;
                     break;
                 $nexturl = $url . '?page=' . $nextpage;
             }
-            if (!empty($values))
+            if (empty($values))
             {
-                ksort($values);
-//                var_dump($values);
-                $cached['list'] =& $values;
-                $cached['value'] = implode(',', $values);
-                CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
+                $cached = false;
+                return false;
             }
+            ksort($values);
+//                var_dump($values);
+            $cached['list'] =& $values;
+            $cached['value'] = implode(',', $values);
+            CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
         }
 
         if (!empty($cached['value']) && !isset($cached['list']) )
@@ -8402,11 +8446,14 @@ EOD;
             }
         }
 
+        $lc_np_name = strtolower($NP_Name);
         $url = false;
+        $retry_url = false;
+        $extra_pattern = false;
         $force_get = false; // debug
-        if (isset($cached['list']) && isset($cached['list'][strtolower($NP_Name)]))
+        if (isset($cached['list']) && isset($cached['list'][$lc_np_name]))
         {
-            $repo_name = $cached['list'][strtolower($NP_Name)];
+            $repo_name = $cached['list'][$lc_np_name];
             $url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
         }
 
@@ -8416,11 +8463,30 @@ EOD;
         if (empty($url))
             return false;
 
-        $s = Utils::httpGet($url , array('connecttimeout'=> 2, 'timeout'=>2));
-        $pattern = '/getVersion\s*\([^"\']+?return\s+["\']([^"\']+?)["\']/im';
+        switch($lc_np_name)
+        { // Workaround for unusual repositories
+            case 'np_extraskinjp' :
+                $url       = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/plugins/${NP_Name}.php";
+                $retry_url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
+                break;
+        }
 
-        if (preg_match($pattern , $s, $m))
+        $s = Utils::httpGet($url , array('connecttimeout'=> 2, 'timeout'=>2));
+        if (empty($s) && !empty($retry_url))
+            $s = Utils::httpGet($retry_url , array('connecttimeout'=> 2, 'timeout'=>2));
+
+        $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
+        $pattern1 = "/getVersion{$pattern0}/im";
+        $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
+
+        if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<'))
+            return false;
+
+        if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern , $s, $m)))
         {
+            // Check plugin's min nucleus version
+            if (preg_match($pattern2, $s, $m2) && (intval($m2[1]) > CORE_APPLICATION_VERSION_ID))
+                return false;
             if ($trim)
                return preg_replace('#[^0-9\.\-\_]+.+?$#', '' , $m[1]);
             return $m[1];
