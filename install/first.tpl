@@ -249,6 +249,8 @@
 <!--
 db_change();
 var submitcount = 0;
+retryformtitle = "<%_CONFIRM_RETRY_SEND_FORM%>";
+
 //-->
 </script>
 </div>

@@ -51,7 +51,7 @@ class BLOG {
     }
 
     public function BLOG($id) { $this->__construct($id); }
-    
+
     /**
      * Shows the given amount of items for this blog
      *
@@ -414,7 +414,8 @@ class BLOG {
                     $ph = array('cname'=>sql_quote_string($catName.$i),'cblog'=>(int)$this->getID());
                     $sql = parseQuery('SELECT catid AS result FROM [@prefix@]category WHERE cname=[@cname@] and cblog=[@cblog@]', $ph);
                     $res = quickQuery($sql);
-                    if (empty($res)) break;
+                    if (empty($res))
+                        break;
                     $i++;
                 }
 
@@ -424,8 +425,8 @@ class BLOG {
             $param = array(
                 'blog'            => &$this,
                 'name'            => &$catName,
-                'description'     => $catDescription,
-                'order' => &$corder
+                'description'     =>  $catDescription,
+                'order'           => &$corder
             );
             $manager->notify('PreAddCategory', $param);
 
@@ -447,7 +448,7 @@ class BLOG {
                 'name'        =>  $catName,
                 'description' =>  $catDescription,
                 'catid'       =>  $catid,
-                'order' => $corder
+                'order'       =>  $corder
             );
             $manager->notify('PostAddCategory', $param);
 
@@ -604,7 +605,7 @@ class BLOG {
         }
         return $blogs;
     }
-    
+
     /**
      * Returns the SQL query that's normally used to display the blog items on the index type skins
      *
@@ -1354,7 +1355,7 @@ class BLOG {
         $param = array(
             'blog'   => &$this,
             'member' => &$tmem,
-            'admin'  => $tadmin
+            'admin'  =>  $tadmin
         );
         $manager->notify('PostAddTeamMember', $param);
 

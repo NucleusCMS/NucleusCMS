@@ -41,6 +41,6 @@ function checkSubmit() {
 		submitcount++;
 		return true;
 	} else {
-		return false;
+		return window.confirm(retryformtitle);
 	}
 }

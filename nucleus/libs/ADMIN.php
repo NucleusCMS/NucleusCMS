@@ -6507,11 +6507,36 @@ EOL;
     <title><?php echo hsc($CONF['SiteName'])?> - Admin</title>
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/admin_<?php echo $CONF["AdminCSS"]?>.css" />
     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl?>styles/addedit.css" />
+    <style>
+    #quickmenu ul { display: none;}
+    #quickmenu  .accordion { cursor: pointer;}
+    </style>
     <script src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
+    <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
     <script src="<?php echo $baseUrl?>javascript/edit.js"></script>
     <script src="<?php echo $baseUrl?>javascript/admin.js"></script>
     <script src="<?php echo $baseUrl?>javascript/compatibility.js"></script>
     <script src="<?php echo $baseUrl?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
+    <script>
+        jQuery(function () {
+            var qmenu_manage  = jQuery.cookie('qmenu_manage');
+            var qmenu_own     = jQuery.cookie('qmenu_own');
+            var qmenu_layuot  = jQuery.cookie('qmenu_layuot');
+            var qmenu_plugins = jQuery.cookie('qmenu_plugins');
+            if (qmenu_manage=='block'  || !qmenu_manage)  jQuery('#qmenu_manage').show();
+            if (qmenu_own=='block'     || !qmenu_own)     jQuery('#qmenu_own').show();
+            if (qmenu_layuot=='block'  || !qmenu_layuot)  jQuery('#qmenu_layuot').show();
+            if (qmenu_plugins=='block' || !qmenu_plugins) jQuery('#qmenu_plugins').show();
+
+          jQuery('.accordion').click(function() {
+            var child = jQuery(this).next('ul');
+            jQuery(child).slideToggle('fast', function() {
+              jQuery.cookie(jQuery(child).attr('id'), jQuery(child).css('display'), { expires: 10 });
+            });
+          });
+        });
+    </script>
 <?php echo $extrahead; ?>
 </head>
 <body>
@@ -6623,8 +6648,8 @@ EOL;
 
                     echo '</div></form>';
 
-                    echo '<h2>' . $member->getDisplayName(). '</h2>';
-                    echo '<ul>';
+                    echo '<h2 class="accordion">' . $member->getDisplayName(). '</h2>';
+                    echo '<ul id="qmenu_own">';
                     echo '<li><a href="index.php?action=editmembersettings">' . _QMENU_USER_SETTINGS . '</a></li>';
                     echo '<li><a href="index.php?action=browseownitems">' . _QMENU_USER_ITEMS . '</a></li>';
                     echo '<li><a href="index.php?action=browseowncomments">' . _QMENU_USER_COMMENTS . '</a></li>';
@@ -6636,9 +6661,9 @@ EOL;
                     // ---- general settings ----
                     if ($member->isAdmin()) {
 
-                        echo '<h2>',_QMENU_MANAGE,'</h2>';
+                        echo '<h2 class="accordion">',_QMENU_MANAGE,'</h2>';
 
-                        echo '<ul>';
+                        echo '<ul id="qmenu_manage">';
                         echo '<li><a href="index.php?action=actionlog">' . _QMENU_MANAGE_LOG . '</a></li>';
                         echo '<li><a href="index.php?action=settingsedit">' . _QMENU_MANAGE_SETTINGS . '</a></li>';
                         echo '<li><a href="index.php?action=systemoverview">' . _QMENU_MANAGE_SYSTEM . '</a></li>';
@@ -6650,8 +6675,8 @@ EOL;
                         echo '<li><a href="index.php?action=pluginlist">' . _QMENU_MANAGE_PLUGINS . '</a></li>';
                         echo '</ul>';
 
-                        echo '<h2>',_QMENU_LAYOUT,'</h2>';
-                        echo '<ul>';
+                        echo '<h2 class="accordion">',_QMENU_LAYOUT,'</h2>';
+                        echo '<ul id="qmenu_layuot">';
                         echo '<li><a href="index.php?action=skinoverview">' . _QMENU_LAYOUT_SKINS . '</a></li>';
                         echo '<li><a href="index.php?action=templateoverview">' . _QMENU_LAYOUT_TEMPL . '</a></li>';
                         echo '<li><a href="index.php?action=skinieoverview">' . _QMENU_LAYOUT_IEXPORT . '</a></li>';
@@ -6666,8 +6691,8 @@ EOL;
                     $manager->notify('QuickMenu', $param);
                     if (count($aPluginExtras) > 0)
                     {
-                        echo '<h2>', _QMENU_PLUGINS, '</h2>';
-                        echo '<ul>';
+                        echo '<h2 class="accordion">', _QMENU_PLUGINS, '</h2>';
+                        echo '<ul id="qmenu_plugins">';
                         foreach ($aPluginExtras as $aInfo)
                         {
                             echo '<li><a href="'.hsc($aInfo['url']).'" title="'.hsc($aInfo['tooltip']).'">'.hsc($aInfo['title']).'</a></li>';

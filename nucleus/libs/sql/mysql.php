@@ -79,7 +79,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             }
         }
         sql_set_charset($charset, $MYSQL_CONN);
-        
+        fix_mysql_sqlmode($MYSQL_CONN);
         return $MYSQL_CONN;
     }
 
@@ -461,7 +461,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     function sql_set_charset($charset, $conn=false) {
         $conn = ($conn ? $conn : sql_get_db());
         $charset = get_mysql_charset_from_php_charset($charset);
-        $mySqlVer = implode('.', array_map('intval', explode('.', sql_get_server_info())));
+        $mySqlVer = sql_get_server_version();
 
         if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
         else $_CHARSET = '';
