@@ -6512,6 +6512,7 @@ EOL;
     #quickmenu  .accordion { cursor: pointer;}
     </style>
     <script src="<?php echo $baseUrl?>javascript/jquery/jquery.min.js"></script>
+    <script src="<?php echo $baseUrl?>javascript/jquery/jquery-migrate.min.js"></script>
     <script type="text/javascript" src="<?php echo $baseUrl?>javascript/jquery/jquery.cookie.js"></script>
     <script src="<?php echo $baseUrl?>javascript/edit.js"></script>
     <script src="<?php echo $baseUrl?>javascript/admin.js"></script>
