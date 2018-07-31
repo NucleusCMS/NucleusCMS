@@ -60,6 +60,11 @@ class PARSER {
      */
     public function parse(&$content) {
         
+        if(!str_contain($this->delim,',')) {
+            $this->legacyParse($content);
+            return;
+        }
+        
         list($left,$right) = explode(',', $this->delim);
         
         if(strpos($content,$left)===false)
@@ -80,6 +85,16 @@ class PARSER {
         }
     }
 
+    function legacyParse(&$contents) {
+    
+        $pieces = preg_split('/'.$this->delim.'/',$contents);
+        foreach($pieces as $i=>$piece) {
+            if($i % 2==0) echo $piece;
+            $this->doAction($piece);
+        }
+        return;
+    }
+    
     /**
       * Called from the parser to handle an action
       * 
