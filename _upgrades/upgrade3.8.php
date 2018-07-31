@@ -128,7 +128,7 @@ function upgrade_do380_modfield_ballowpast()
     $query = parseQuery("ALTER TABLE `[@prefix@]config` MODIFY COLUMN `name` varchar(50)  NOT NULL default ''");
     upgrade_query('Altering [@prefx@]config table', $query);
 
-    $query = parseQuery("ALTER TABLE `[@preifx@]plugin_option_desc` MODIFY COLUMN `oname` varchar(50) NOT NULL default ''");
+    $query = parseQuery("ALTER TABLE `[@prefix@]plugin_option_desc` MODIFY COLUMN `oname` varchar(50) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]plugin_option_desc table', $query);
 }
 
