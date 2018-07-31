@@ -481,7 +481,8 @@ class MANAGER
                 continue;
             return $plugin;
         }
-        return FALSE;
+        $plugin = false;
+        return $plugin;
     }
 
     /**
