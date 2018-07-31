@@ -826,11 +826,8 @@ function mysqldate($timestamp) {
   */
 function selectBlog($shortname) {
     global $blogid, $archivelist;
-
-    $blogid = intval($blogid);
-    if (!($blogid > 0)) {
-        $blogid = getBlogIDFromName($shortname);
-    }
+    
+    $blogid = getBlogIDFromName($shortname);
 
     // also force archivelist variable, if it is set
     if ($archivelist) {
