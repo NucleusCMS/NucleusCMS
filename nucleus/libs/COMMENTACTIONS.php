@@ -217,9 +217,9 @@ class COMMENTACTIONS extends BaseActions {
      */
     function parse_commentword() {
         if ($this->commentsObj->commentcount == 1)
-            echo $this->template['COMMENTS_ONE'];
+            echo isset($this->template['COMMENTS_ONE']) ? $this->template['COMMENTS_ONE'] : '';
         else
-            echo $this->template['COMMENTS_MANY'];
+            echo isset($this->template['COMMENTS_MANY']) ? $this->template['COMMENTS_MANY'] : '';
     }
 
     /**
