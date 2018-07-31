@@ -8080,7 +8080,7 @@ EOL;
             foreach($RiskDirs as $fileName => $fileDesc)
                 if (@ is_dir($fileName))
                     $aFound[] = $fileDesc;
-            if (@ is_writable('../config.php')) {
+            if (strpos(str_replace('\\','/',getcwd()), '/plugins/')===false && @ is_writable('../config.php')) {
                 $aFound[] = _ERRORS_CONFIGPHP;
             }
             if (count($aFound) > 0)
