@@ -156,8 +156,7 @@ function mysql_insert_id($dblink = NULL)
 function mysql_affected_rows($dblink = NULL)
 {
     global $MYSQL_CONN;
-    $link = ($dblink ? $dblink : $MYSQL_CONN);
-    return mysqli_affected_rows($link);
+    return mysqli_affected_rows($MYSQL_CONN);
 }
 
 function mysql_real_escape_string($val, $dblink = NULL)
