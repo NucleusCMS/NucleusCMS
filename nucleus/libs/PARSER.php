@@ -86,13 +86,16 @@ class PARSER {
     }
 
     function legacyParse(&$contents) {
-    
+
         $pieces = preg_split('/'.$this->delim.'/',$contents);
-        foreach($pieces as $i=>$piece) {
-            if($i % 2==0) echo $piece;
-            $this->doAction($piece);
+        $maxidx = count($pieces);
+        for ($idx = 0; $idx < $maxidx; $idx++) {
+            echo $pieces[$idx];
+            $idx++;
+            if ($idx < $maxidx) {
+                $this->doAction($pieces[$idx]);
+            }
         }
-        return;
     }
     
     /**
