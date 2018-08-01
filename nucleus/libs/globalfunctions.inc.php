@@ -1804,10 +1804,10 @@ function sanitizeArray(&$array)
     foreach ($array as $k => $v) {
 
         // split to key and value
-        list($key, $val) = preg_split("/=/", $v, 2);
-        if (!isset($val)) {
+        if (strpos($v,'=')===false) {
             continue;
         }
+        list($key, $val) = explode('=', $v, 2);
 
         // note that we must use addslashes here because this function is called before the db connection is made
         // and sql_real_escape_string needs a db connection
