@@ -162,9 +162,8 @@ class NucleusPlugin {
         {
             $this->plugin_options = array();
             $sql = 'SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value '
-                    . ' FROM '
-                    . sql_table('plugin_option_desc').' d '
-                    . ' LEFT JOIN ' . sql_table('plugin_option').' o '
+                    . ' FROM [@prefix@]plugin_option_desc d '
+                    . ' LEFT JOIN [@prefix@]plugin_option o '
                     . '   ON d.oid=o.oid AND o.ocontextid=0 '
                     . ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
                     . ' group by d.oid'
@@ -371,8 +370,7 @@ class NucleusPlugin {
         $oid = $this->_getOID($context, $name);
 
         // retrieve the data and return
-        $q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
-        $query = sql_query($q);
+        $query = sql_query(parseQuery('SELECT otype, oextra FROM [@prefix@]plugin_option_desc WHERE oid = '.$oid));
 
         $o = sql_fetch_array($query);
 
@@ -499,8 +497,12 @@ class NucleusPlugin {
 
 
         // update plugin_option
-        sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid) . ' and ocontextid='. intval($contextid));
-        sql_query('INSERT INTO ' . sql_table('plugin_option') . ' (ovalue, oid, ocontextid) VALUES (\''.sql_real_escape_string($value).'\', '. intval($oid) . ', ' . intval($contextid) . ')');
+        $ph = array();
+        $ph['oid']        = intval($oid);
+        $ph['ocontextid'] = intval($contextid);
+        $ph['ovalue']     = sql_real_escape_string($value);
+        sql_query(parseQuery("DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]", $ph));
+        sql_query(parseQuery("INSERT INTO [@prefix@]plugin_option (ovalue, oid, ocontextid) VALUES ('[@ovalue@]', [@oid@], [@ocontextid@])", $ph));
 
         // update cache
         $this->_aOptionValues[$oid . '_' . $contextid] = $value;
@@ -526,23 +528,19 @@ class NucleusPlugin {
             return $this->_aOptionValues[$key];
 
         // get from DB
-        $res = sql_query('SELECT ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid));
-        $query_ovalue_exist =
-                'SELECT count(*) as result FROM ' . sql_table('plugin_option')
-              . ' WHERE oid='.intval($oid).' and ocontextid=' . intval($contextid)
-              . ' LIMIT 1';
-        $res_ovalue_exist = intval(quickQuery($query_ovalue_exist));
-        if (!$res || ($res_ovalue_exist == 0)) {
-            $defVal = $this->_getDefVal($context, $name);
-            $this->_aOptionValues[$key] = $defVal;
-
+        $ph = array();
+        $ph['oid']        = intval($oid);
+        $ph['ocontextid'] = intval($contextid);
+        $has_ovalue = sql_query(parseQuery('SELECT ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]', $ph));
+        $has_row = intval(parseQuickQuery('SELECT count(*) FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@] LIMIT 1', $ph));
+        if (!$has_ovalue || ($has_row == 0)) {
+            $this->_aOptionValues[$key] = $this->_getDefVal($context, $name);
             // fill DB with default value
-            $query = 'INSERT INTO ' . sql_table('plugin_option') . ' (oid,ocontextid,ovalue)'
-                   .' VALUES ('.intval($oid).', '.intval($contextid).', \''.sql_real_escape_string($defVal).'\')';
-            sql_query($query);
+            $ph['defVal'] = sql_real_escape_string($this->_aOptionValues[$key]);
+            sql_query(parseQuery("INSERT INTO [@prefix@]plugin_option  (oid,ocontextid,ovalue) VALUES ([@oid@], [@ocontextid@], '[@defVal@]')", $ph));
         }
         else {
-            $o = sql_fetch_object($res);
+            $o = sql_fetch_object($has_ovalue);
             $this->_aOptionValues[$key] = $o->ovalue;
         }
 
@@ -563,16 +561,16 @@ class NucleusPlugin {
         $aOptions = array();
         switch ($context) {
             case 'blog':
-                $r = sql_query('SELECT bnumber as contextid FROM ' . sql_table('blog'));
+                $r = sql_query(parseQuery('SELECT bnumber as contextid FROM [@prefix@]blog'));
                 break;
             case 'category':
-                $r = sql_query('SELECT catid as contextid FROM ' . sql_table('category'));
+                $r = sql_query(parseQuery('SELECT catid as contextid FROM [@prefix@]category'));
                 break;
             case 'member':
-                $r = sql_query('SELECT mnumber as contextid FROM ' . sql_table('member'));
+                $r = sql_query(parseQuery('SELECT mnumber as contextid FROM [@prefix@]member'));
                 break;
             case 'item':
-                $r = sql_query('SELECT inumber as contextid FROM ' . sql_table('item'));
+                $r = sql_query(parseQuery('SELECT inumber as contextid FROM [@prefix@]item'));
                 break;
         }
         if ($r) {
@@ -580,7 +578,8 @@ class NucleusPlugin {
                 $aOptions[$o->contextid] = $defVal;
         }
 
-        $res = sql_query('SELECT ocontextid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
+        $ph = array('oid'=>(int)$oid);
+        $res = sql_query(parseQuery('SELECT ocontextid, ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@]', $ph));
         while ($o = sql_fetch_object($res))
             $aOptions[$o->ocontextid] = $o->ovalue;
 
@@ -615,8 +614,8 @@ class NucleusPlugin {
 
         // load all OIDs for this plugin from the database
         $this->_aOptionToInfo = array();
-        $query = 'SELECT oid, oname, ocontext, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . intval($this->plugid);
-        $res = sql_query($query);
+        $ph = array('opid'=>intval($this->plugid));
+        $res = sql_query(parseQuery('SELECT oid, oname, ocontext, odef FROM [@prefix@]plugin_option_desc WHERE opid=[@opid@]', $ph));
         if ($res) {
             while ($o = sql_fetch_object($res)) {
                 $k = $o->ocontext . '_' . $o->oname;
@@ -649,15 +648,15 @@ class NucleusPlugin {
         // delete all associated plugin options
         $aOIDs = array();
             // find ids
-        $query = 'SELECT oid FROM '.sql_table('plugin_option_desc') . ' WHERE ocontext=\''.sql_real_escape_string($context).'\'';
-        $res = sql_query($query);
+        $ph = array('ocontext'=>sql_real_escape_string($context));
+        $res = sql_query(parseQuery("SELECT oid FROM [@prefix@]plugin_option_desc WHERE ocontext='[@ocontext@]'", $ph));
         while ($o = sql_fetch_object($res))
             $aOIDs[] = $o->oid;
         sql_free_result($res);
             // delete those options. go go go
         if (count($aOIDs) > 0) {
-            $query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).') and ocontextid=' . intval($contextid);
-            sql_query($query);
+            $ph = array('aOIDs'=>join(',',$aOIDs), 'ocontextid'=>intval($contextid));
+            sql_query(parseQuery('DELETE FROM [@prefix@]plugin_option WHERE oid in ([@aOIDs@]) AND ocontextid=[@ocontextid@]', $ph));
         }
     }
 
@@ -701,7 +700,8 @@ class NucleusPlugin {
      * @author TeRanEX
      */
     function subscribtionListIsUptodate() {
-        $res = sql_query('SELECT event FROM '.sql_table('plugin_event').' WHERE pid = '.$this->getID());
+    	$ph = array('pid'=>$this->getID());
+        $res = sql_query(parseQuery('SELECT event FROM [@prefix@]plugin_event WHERE pid = [@pid@]',$ph));
         $ev = array();
         while($a = sql_fetch_array($res)) {
             $ev[] = $a['event'];
@@ -733,8 +733,8 @@ class NucleusPlugin {
         foreach ($aOptions as $oid => $values) {
 
             // get option type info
-            $query = 'SELECT opid, oname, ocontext, otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
-            $res = sql_query($query);
+            $ph = array('oid'=>intval($oid));
+            $res = sql_query(parseQuery('SELECT opid, oname, ocontext, otype, oextra, odef FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',$ph));
             if ($o = sql_fetch_object($res))
             {
                 foreach ($values as $key => $value) {
@@ -779,8 +779,10 @@ class NucleusPlugin {
                         $manager->notify('PrePluginOptionsUpdate', $param);
 
                         // delete the old value for the option
-                        sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid='.intval($oid).' AND ocontextid='.intval($contextid));
-                        sql_query('INSERT INTO '.sql_table('plugin_option')." (oid, ocontextid, ovalue) VALUES (".intval($oid).",".intval($contextid).",'" . sql_real_escape_string($value) . "')");
+                        $ph['ocontextid'] = intval($contextid);
+                        $ph['value']      = sql_real_escape_string($value);
+                        sql_query(parseQuery('DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]', $ph));
+                        sql_query(parseQuery("INSERT INTO [@prefix@]plugin_option (oid, ocontextid, ovalue) VALUES ([@oid@],[@ocontextid@],'[@value@]')", $ph));
                     }
                 }
             }
