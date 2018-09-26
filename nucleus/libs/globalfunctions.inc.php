@@ -312,15 +312,27 @@ function getCatIDFromName($cname)
 
 function quickQuery($sqlText)
 {
+    static $rs = array();
+    
+    $key = md5($sqlText);
+    if(isset($rs[$key])) return $rs[$key];
+    
     $res = sql_query($sqlText);
+    
+    $rs[$key] = false;
+    
     if ($res && ($v = sql_fetch_array($res)))
     {
         if ( isset($v['result']) )
-          return $v['result'];
-        if ( isset($v[0]) )
-          return $v[0];
+        {
+            $rs[$key] = $v['result'];
+        }
+        elseif ( isset($v[0]) )
+        {
+            $rs[$key] = $v[0];
+        }
     }
-    return FALSE;
+    return $rs[$key];
 }
 
 function getPluginNameFromPid($pid) {
