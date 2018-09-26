@@ -156,6 +156,12 @@ class NucleusPlugin {
       */
     function getOption($name)
     {
+        static $rs = array();
+        
+        if(isset($rs[$name])) {
+            return $rs[$name];
+        }
+        
         // only request the options the very first time. On subsequent requests
         // the static collection is used to save SQL queries.
         if ($this->plugin_options == 0)
@@ -168,17 +174,20 @@ class NucleusPlugin {
                     . ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
                     . ' group by d.oid'
                     ;
-            $res = sql_query($sql);
-            if ($res)
+            $res = sql_query(parseQuery($sql));
+            if ($res) {
               while ( $row = sql_fetch_object($res) )
                 {
                     $this->plugin_options[strtolower($row->name)] = $row->value;
                 }
+            }
       }
         if (isset($this->plugin_options[strtolower($name)]))
-            return $this->plugin_options[strtolower($name)];
+            $rs[$name] = $this->plugin_options[strtolower($name)];
         else
-            return $this->_getOption('global', 0, $name);
+            $rs[$name] = $this->_getOption('global', 0, $name);
+        
+        return $rs[$name];
     }
 
     function getBlogOption($blogid, $name) {
@@ -363,6 +372,13 @@ class NucleusPlugin {
      * @access private
      */
     function _getOptionTop($context, $name, $amount = 10, $sort = 'desc') {
+        static $rs = array();
+        
+        $rkey = md5(print_r(func_get_args(),true));
+        if(isset($rs[$rkey])) {
+            return $rs[$rkey];
+        }
+        
         if (($sort != 'desc') && ($sort != 'asc')) {
             $sort= 'desc';
         }
@@ -390,6 +406,7 @@ class NucleusPlugin {
         }
 
         // return the array (duh!)
+        $rs[$rkey] = $top;
         return $top;
     }
 
@@ -518,6 +535,15 @@ class NucleusPlugin {
      * private
      */
     function _getOption($context, $contextid, $name) {
+        
+        static $rs = array();
+        
+        $rkey = md5(print_r(func_get_args(),true));
+        
+        if(isset($rs[$rkey])) {
+            return $rs[$rkey];
+        }
+        
         $oid = $this->_getOID($context, $name);
         if (!$oid) return '';
 
@@ -543,7 +569,9 @@ class NucleusPlugin {
             $o = sql_fetch_object($has_ovalue);
             $this->_aOptionValues[$key] = $o->ovalue;
         }
-
+        
+        $rs[$rkey] = $this->_aOptionValues[$key];
+        
         return $this->_aOptionValues[$key];
     }
 
