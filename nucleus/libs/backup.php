@@ -468,7 +468,8 @@ class Backup
         {
             if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0))
             {
-                if ($lines[$i][0] != "#")
+                // Notice: Uninitialized string offset: 0
+                if (!isset($lines[$i][0]) || $lines[$i][0] != "#")
                 {
                     $output .= $lines[$i] . "\n";
                 }
