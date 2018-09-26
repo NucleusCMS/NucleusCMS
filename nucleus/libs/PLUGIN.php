@@ -167,21 +167,20 @@ class NucleusPlugin {
         if ($this->plugin_options == 0)
         {
             $this->plugin_options = array();
+            $ph['opid'] = intval($this->getID());
             $sql = 'SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value '
                     . ' FROM [@prefix@]plugin_option_desc d '
-                    . ' LEFT JOIN [@prefix@]plugin_option o '
-                    . '   ON d.oid=o.oid AND o.ocontextid=0 '
-                    . ' WHERE d.opid='. intval($this->getID())." AND d.ocontext='global' AND o.ocontextid=0"
+                    . ' LEFT JOIN [@prefix@]plugin_option o ON d.oid=o.oid AND o.ocontextid=0 '
+                    . " WHERE d.opid=[@opid@] AND d.ocontext='global' AND o.ocontextid=0"
                     . ' group by d.oid'
                     ;
-            $res = sql_query(parseQuery($sql));
-            if ($res) {
-              while ( $row = sql_fetch_object($res) )
+            if ($res = sql_query(parseQuery($sql, $ph))) {
+                while ( $row = sql_fetch_object($res) )
                 {
                     $this->plugin_options[strtolower($row->name)] = $row->value;
                 }
             }
-      }
+        }
         if (isset($this->plugin_options[strtolower($name)]))
             $rs[$name] = $this->plugin_options[strtolower($name)];
         else
@@ -385,18 +384,21 @@ class NucleusPlugin {
 
         $oid = $this->_getOID($context, $name);
 
+        $ph = array('oid'=>$oid, 'amount'=>(int)$amount, 'sort'=>$sort);
+        
         // retrieve the data and return
-        $query = sql_query(parseQuery('SELECT otype, oextra FROM [@prefix@]plugin_option_desc WHERE oid = '.$oid));
+        $q = 'SELECT otype, oextra FROM '.sql_table('plugin_option_desc').' WHERE oid = '.$oid;
+        $query = sql_query(parseQuery('SELECT otype, oextra FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]', $ph));
 
         $o = sql_fetch_array($query);
 
         if (($this->optionCanBeNumeric($o['otype'])) && ($o['oextra'] == 'number' )) {
-            $orderby = 'CAST(ovalue AS SIGNED)';
+            $ph['orderby'] = 'CAST(ovalue AS SIGNED)';
         } else {
-            $orderby = 'ovalue';
+            $ph['orderby'] = 'ovalue';
         }
-        $q = 'SELECT ovalue value, ocontextid id FROM '.sql_table('plugin_option').' WHERE oid = '.$oid.' ORDER BY '.$orderby.' '.$sort.' LIMIT 0,'.intval($amount);
-        $query = sql_query($q);
+        $sql = 'SELECT ovalue value, ocontextid id FROM [@prefix@]plugin_option WHERE oid=[@oid@] ORDER BY [@orderby@] [@sort@] LIMIT 0,[@amount@]';
+        $query = sql_query(parseQuery($sql, $ph));
 
         // create the array
         $i = 0;
@@ -469,11 +471,12 @@ class NucleusPlugin {
         $oid = $this->_getOID($context, $name);
         if (!$oid) return 0; // no such option
 
+        $ph['oid'] = $oid;
         // delete all things from plugin_option
-        sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid=' . $oid);
+        sql_query(parseQuery('DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@]', $ph));
 
         // delete entry from plugin_option_desc
-        sql_query('DELETE FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . $oid);
+        sql_query(parseQuery('DELETE FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]', $ph));
 
         // clear from cache
         unset($this->_aOptionToInfo[$context . '_' . $name]);
@@ -872,10 +875,10 @@ class NucleusPlugin {
     
     function _updateOptionDesc($context, $name, $desc, $type, $defValue, $typeExtras = '')
     {
-        $context = (string) $context;
-        $name = (string) $name;
-        $desc = (string) $desc;
-        $type = (string) $type;
+        $context  = (string) $context;
+        $name     = (string) $name;
+        $desc     = (string) $desc;
+        $type     = (string) $type;
         $defValue = (string) $defValue;
         $typeExtras = (string) $typeExtras;
 
@@ -887,9 +890,8 @@ class NucleusPlugin {
         global $DB_PHP_MODULE_NAME;
         if ($DB_PHP_MODULE_NAME == 'pdo')
         {
-            $sql = 'UPDATE ' . sql_table('plugin_option_desc')
-                   . ' SET '
-                   . ' odesc=? , otype=? , odef=? , oextra=? '
+            $sql = parseQuery('UPDATE [@prefix@]plugin_option_desc')
+                   . ' SET  odesc=? , otype=? , odef=? , oextra=? '
                    . ' WHERE opid=? AND ocontext=? AND oname=? ' ;
             $params = array( $desc , $type , $defValue, $typeExtras
                            , intval($this->plugid) , $context , $name);
