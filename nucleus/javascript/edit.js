@@ -41,13 +41,13 @@ function preview(id, value) {
 
 function showedit() {
 	prevval = document.getElementById('edit').style.display;
-	if (prevval == "block")
+	if (prevval == "table-row")
 		newval = "none";
 	else
-		newval = "block";
+		newval = "table-row";
 	document.getElementById('edit').style.display = newval;
 
-	if (newval == "block")
+	if (newval == "table-row")
 		updAllPreviews();
 }
 
