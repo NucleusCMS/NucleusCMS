@@ -183,9 +183,9 @@ function doInstall() {
     global $lang;
 
     // 0. put all POST-vars into vars
-    $mysql_host        = postVar('install_db_host');
-    $mysql_user        = postVar('install_db_user');
-    $mysql_password    = postVar('install_db_password');
+    $mysql_host        = postVar('install_db_host','localhost');
+    $mysql_user        = postVar('install_db_user','root');
+    $mysql_password    = postVar('install_db_password','');
     $mysql_database    = postVar('install_db_database');
     $mysql_create      = postVar('install_db_create');
     $mysql_usePrefix   = postVar('install_db_usePrefix');
