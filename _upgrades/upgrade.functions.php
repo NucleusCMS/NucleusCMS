@@ -20,11 +20,6 @@
  *     NOTE: With upgrade to 3.6, need to set this to use sql_* API           *
  **************************************************************/
 
-    if (is_file('../config.php'))
-        include('../config.php');
-    else
-        include('../../config.php');
-
     function load_upgrade_lang() {
         $_ = getLanguageName();
         $langNames[] = stripos($_,'japan')!==false ? 'japanese' : $_;
@@ -61,47 +56,7 @@
         return $installed;
     }
 
-
-    function upgrade_showLogin($type) {
-        upgrade_head();
-    ?>
-        <h1><?php echo _UPG_TEXT_PLEASE_LOGIN;  ?></h1>
-        <p><?php echo _UPG_TEXT_ENTER_YOUR_DATA;  ?>:</p>
-
-        <form method="post" action="<?php echo $type?>">
-
-            <ul>
-                <li><?php echo _UPG_TEXT_NAME; ?>: <input name="login" /></li>
-                <li><?php echo _UPG_TEXT_PASSWORD; ?> <input name="password" type="password" /></li>
-            </ul>
-
-            <p>
-                <input name="action" value="login" type="hidden" />
-                <input type="submit" value="<?php echo _UPG_TEXT_LOGIN; ?>" />
-            </p>
-
-        </form>
-    <?php       upgrade_foot();
-        exit;
-    }
-
     function upgrade_head() {
-        if (_CHARSET != 'UTF-8') {
-//            ini_set('default_charset', 'UTF-8');
-            if ( !headers_sent() )
-                header ('Content-Type: text/html; charset=UTF-8');
-        }
-    ?>
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8" />
-    <meta name="robots" content="noindex,nofollow,noarchive" />
-    <title><?php echo _UPG_TEXT_NUCLEUS_UPGRADE; ?></title>
-    <link rel="stylesheet" href="../nucleus/styles/manual.css" type="text/css" />
-</head>
-<body>
-    <?php
     }
 
     function upgrade_foot() {
@@ -110,20 +65,6 @@
 </html>
     <?php
     }
-
-    function upgrade_error($msg) {
-        upgrade_head();
-
-        echo "\n<h1>" . _UPG_TEXT_ERROR_FAILED . "</h1>\n";
-        echo "\n<p>" . _UPG_TEXT_ERROR_WAS . ":</p>\n";
-        echo sprintf("<blockquote><div>%s</div></blockquote>" , $msg);
-
-        echo sprintf('<p><a href="index.php" onclick="history.back();">%s</a></p>' , _UPG_TEXT_BACK);
-
-        upgrade_foot();
-        exit;
-    }
-
 
     function upgrade_start() {
         global $upgrade_failures;
@@ -499,4 +440,78 @@ function upgrade_check_plugin_syntax()
     if (!empty($errors))
         return sprintf("<h2>%s</h2>{$ver}<ul>%s</ul>", _UPG_TEXT_WARN_PLUGIN_SYNTAX_ERROR, implode("\n", $errors));
     return '';
+}
+
+function upgrade_todo($ver) {
+    return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
+}
+
+function upgrade_manual_atom1_0() {
+    // atom 1.0
+    $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
+    $res = sql_query($query);
+    
+    $messages = array();
+    while ($o = sql_fetch_object($res)) {
+        if ($o->sddesc=='Atom 0.3 weblog syndication') {
+            $messages[] = '<h2>Atom 1.0</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
+        }
+    }
+
+    // default skin
+    $query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"',sql_table('template_desc'));
+    $res = sql_query($query);
+    $tdnumber = 0;
+    $o = sql_fetch_object($res);
+    $tdnumber = $o->tdnumber;
+    if (0<$tdnumber){
+        $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
+        $res = sql_query($query);
+        if (!sql_fetch_object($res)) {
+            $messages[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
+        }
+    }
+    return !empty($messages) ? join("\n",$messages) : '';
+}
+
+function upgrade_manual_340() {
+    $row = array();
+    $row[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
+    $row[] = '<p>';
+    $row[] = _UPG_TEXT_V340_02 . ':';
+    $row[] = '<ul>';
+    $row[] = '<li><a href="../../extra/media/readme.txt">extra/media/readme.txt</a></li>';
+    $row[] = '<li><a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a></li>';
+    $row[] = '</ul>';
+    $row[] = '</p>';
+    return join("\n", $row);
+}
+
+function upgrade_manual_350() {
+    $s = <<<EOL
+  <h2>Important Notices for Nucleus 3.5</h2>
+  <p>
+    Two new plugins have been included with version 3.5. You may want to consider installing them from the Plugins page of the admin area.
+    <ul>
+       <li><strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation.</li>
+    </ul>
+  </p>
+EOL;
+    return $s;
+}
+
+function upgrade_manual_366() {
+    $row = array();
+    $content = @file_get_contents('../../action.php');
+    if(strpos($content,'=&')===false) return '';
+    $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+    return join("\n", $row);
 }
