@@ -166,7 +166,7 @@ function showInstallForm() {
     $ph['_BUTTON1'] = _BUTTON1;
     $ph['_CONFIRM_RETRY_SEND_FORM'] = _CONFIRM_RETRY_SEND_FORM;
     $tpl = file_get_contents('first.tpl');
-    echo parseText($tpl,$ph);
+    echo parseHtml($tpl,$ph);
 }
 
 function treatPathStr($str) {
