@@ -41,12 +41,12 @@
         $installed = 0;
         global $DB_DRIVER_NAME;
 
-        if ($DB_DRIVER_NAME == 'sqlite' && $version<=380)  return TRUE;
+        if ($DB_DRIVER_NAME == 'sqlite' && $version<=380)  return true;
 
         switch($version) {
             case '300':
                 if (!sql_existTableName(sql_table('config'))) //  < 250
-                    return FALSE;
+                    return false;
             default:  // 250 - 380
                 $query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%d LIMIT 1", sql_table('config'), intval($version));
                 $minrows = 1;
@@ -295,7 +295,7 @@
     }
 
 if(!function_exists('sql_existTableColumnName')) {
-    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=false)
     {
         $names = sql_getTableColumnNames($tablename);
 
@@ -308,11 +308,11 @@ if(!function_exists('sql_existTableColumnName')) {
                 foreach($names as $v)
                     if ( strcasecmp( $ColumnName , $v ) == 0 )
                     {
-                         return True;
+                         return true;
                     }
             }
         }
-        return False;
+        return false;
     }
 
     if(!function_exists('sql_query')) {
@@ -421,7 +421,7 @@ function upgrade_check_action_php()
     upgrade_remove_RefNew($DIR_NUCLEUS . '../action.php');
 }
 
-function upgrade_find_file($dir, $file_regex_pattern, $subdir_search=TRUE, $limit=3)
+function upgrade_find_file($dir, $file_regex_pattern, $subdir_search=true, $limit=3)
 {
     if ((int) $limit <= 0)
         return array();
@@ -479,19 +479,19 @@ function upgrade_check_plugin_syntax()
         $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
         if (defined('UPGRADE_AUTOFIX_PLUGIN') && UPGRADE_AUTOFIX_PLUGIN)
         {
-            if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")!==FALSE)
+            if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")!==false)
             {
                 upgrade_remove_RefNew($file);
                 $output1 = $output;
                 $output = '';
                 exec("{$php} -l {$arg}", $output, $retval);
                 $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
-                if (strpos($output, 'No syntax errors detected')!==FALSE) {
+                if (strpos($output, 'No syntax errors detected')!==false) {
                     $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output1));
                 }
             }
         }
-        if (strpos($output, 'No syntax errors detected')!==FALSE)
+        if (strpos($output, 'No syntax errors detected')!==false)
             continue;
         if (preg_match('/^[^:]+error:/', $output))
             $errors[] = sprintf("<li>%s: <div>%s</div></li>", substr($file,strlen($DIR_PLUGINS)), hsc($output));
