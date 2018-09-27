@@ -500,3 +500,177 @@ function upgrade_check_plugin_syntax()
         return sprintf("<h2>%s</h2>{$ver}<ul>%s</ul>", _UPG_TEXT_WARN_PLUGIN_SYNTAX_ERROR, implode("\n", $errors));
     return '';
 }
+
+function upgrade_todo($ver) {
+    return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
+}
+
+function upgrade_manual_atom1_0() {
+    // atom 1.0
+    $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
+    $res = sql_query($query);
+    
+    $messages = array();
+    while ($o = sql_fetch_object($res)) {
+        if ($o->sddesc=='Atom 0.3 weblog syndication') {
+            $messages[] = '<h2>Atom 1.0</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
+        }
+    }
+
+    // default skin
+    $query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"',sql_table('template_desc'));
+    $res = sql_query($query);
+    $tdnumber = 0;
+    $o = sql_fetch_object($res);
+    $tdnumber = $o->tdnumber;
+    if (0<$tdnumber){
+        $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
+        $res = sql_query($query);
+        if (!sql_fetch_object($res)) {
+            $messages[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
+        }
+    }
+    return !empty($messages) ? join("\n",$messages) : '';
+}
+
+function upgrade_manual_340() {
+    $row = array();
+    $row[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
+    $row[] = '<p>';
+    $row[] = _UPG_TEXT_V340_02 . ':';
+    $row[] = '<ul>';
+    $row[] = '<li><a href="../../extra/media/readme.txt">extra/media/readme.txt</a></li>';
+    $row[] = '<li><a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a></li>';
+    $row[] = '</ul>';
+    $row[] = '</p>';
+    return join("\n", $row);
+}
+
+function upgrade_manual_350() {
+    $s = <<<EOL
+  <h2>Important Notices for Nucleus 3.5</h2>
+  <p>
+    Two new plugins have been included with version 3.5. You may want to consider installing them from the Plugins page of the admin area.
+    <ul>
+       <li><strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation.</li>
+    </ul>
+  </p>
+EOL;
+    return $s;
+}
+
+function upgrade_manual_366() {
+    $row = array();
+    $content = @file_get_contents('../../action.php');
+    if(strpos($content,'=&')===false) return '';
+    $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+    return join("\n", $row);
+}
+
+if(!function_exists('sql_existTableColumnName')) {
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=false)
+    {
+        $names = sql_getTableColumnNames($tablename);
+
+        if (count($names)>0)
+        {
+            if ($casesensitive)
+                return in_array( $ColumnName , $names );
+            else {
+                foreach($names as $v) {
+                    if ( strcasecmp( $ColumnName , $v ) == 0 ) {
+                         return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    if(!function_exists('sql_query')) {
+        function sql_query($query, $link_identifier =NULL) {
+            return mysql_query($query, $link_identifier);
+        }
+    }
+
+    if(!function_exists('sql_real_escape_string')) {
+        function sql_real_escape_string($val, $link_identifier = NULL)
+        {
+            if (empty($link_identifier))
+                return mysql_real_escape_string($val);
+            return mysql_real_escape_string($val, $link_identifier);
+        }
+    }
+
+    if(!function_exists('sql_fetch_array')) {
+        function sql_fetch_array($result, $result_type = MYSQL_BOTH) {
+            return mysql_fetch_array($result, $result_type);
+        }
+    }
+
+    if(!function_exists('sql_fetch_assoc')) {
+        function sql_fetch_assoc($result) {
+            return mysql_fetch_assoc($result);
+        }
+    }
+
+    if(!function_exists('sql_fetch_object')) {
+        function sql_fetch_object($result) {
+            return mysql_fetch_object($result);
+        }
+    }
+
+    if(!function_exists('sql_num_rows')) {
+        function sql_num_rows($result) {
+            return mysql_num_rows($result);
+        }
+    }
+
+    if(!function_exists('sql_error')) {
+        function sql_error($link_identifier = NULL) {
+            if (empty($link_identifier))
+                return mysql_error();
+            return mysql_error($link_identifier);
+        }
+    }
+
+    if(!function_exists('sql_existTableName')) {
+        function sql_existTableName($tablename, $link_identifier = NULL)
+        {
+            $query = sprintf("SHOW TABLES LIKE '%s' ", sql_real_escape_string($tablename));
+            $res = sql_query($query, $link_identifier);
+            return ($res && ($r = sql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
+        }
+    }
+
+    function sql_getTableColumnNames($tablename)
+    {
+        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $target = 'Field';
+
+        $items = array();
+        $res = sql_query($sql);
+        if (!$res)
+            return array();
+        while( $row = sql_fetch_array($res) )
+        {
+            if (isset($row[$target]))
+                $items[] = $row[$target];
+        }
+
+        if (count($items)>0)
+        {
+            sort($items);
+        }
+        return $items;
+    }
+}
+
