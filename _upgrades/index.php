@@ -22,11 +22,11 @@ define('NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION' , '5.0.5'); // (string) , format : 
 //define('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX', 'pathto/php');
 //define('UPGRADE_AUTOFIX_PLUGIN', 1);
 
-$path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
+$path = @preg_split('/[\?#]/', $_SERVER['REQUEST_URI']);
 $path = $path[0];
 if (preg_match('#/_?upgrades$#', $path))
 {
-    header("Location: " . $path . "/");
+    header('Location: ' . $path . '/');
     exit;
 }
 
@@ -51,7 +51,7 @@ $messages[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
 $messages[] = '</div>';
 
 // calculate current version
-    if (!upgrade_checkinstall(300)) $current = 250;
+    if     (!upgrade_checkinstall(300)) $current = 250;
     elseif (!upgrade_checkinstall(310)) $current = 300;
     elseif (!upgrade_checkinstall(320)) $current = 310;
     elseif (!upgrade_checkinstall(330)) $current = 320;
@@ -87,7 +87,7 @@ elseif (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<'))
 } elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
     $isUpgraded = TRUE;
     $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
-    $messages[] = "<br />";
+    $messages[] = '<br />';
     if (!defined('_ERRORS_UPGRADESDIR')) define('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
     $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET));
 } else {
@@ -102,7 +102,7 @@ $from = intGetVar('from');
 if (!$from) 
     $from = $current;
 
-if (version_compare(NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,phpversion(),'<=') && $from < NUCLEUS_UPGRADE_VERSION_ID)
+if (version_compare(phpversion(),NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,'>=') && $from < NUCLEUS_UPGRADE_VERSION_ID)
 {
     $sth = array();
 
@@ -124,12 +124,12 @@ if (version_compare(NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,phpversion(),'<=') && $f
 // php syntax check
 if (defined('UPGRADE_CHECK_PLUGIN_SYNTAX') && UPGRADE_CHECK_PLUGIN_SYNTAX)
 {
-    $tmp_msg = upgrade_check_plugin_syntax();
-    if ($tmp_msg)
+    if ($tmp_msg = upgrade_check_plugin_syntax()) {
         $messages[] = $tmp_msg;
+    }
 }
 
-$messages[] = sprintf("<p><a href=\"%s\">%s</a></p>", $CONF['AdminURL'], _UPG_TEXT_BACKHOME);
+$messages[] = sprintf('<p><a href="%s">%s</a></p>', $CONF['AdminURL'], _UPG_TEXT_BACKHOME);
 
 upgrade_head();
 echo join("\n",$messages);
