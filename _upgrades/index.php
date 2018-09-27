@@ -43,13 +43,6 @@ if (!$member->isAdmin()) {
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
-$messages = array();
-$messages[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
-$messages[] = '<div class="note"><b>Note:</b> ';
-$messages[] = _UPG_TEXT_NOTE01NEW;
-$messages[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
-$messages[] = '</div>';
-
 // calculate current version
     if     (!upgrade_checkinstall(300)) $current = 250;
     elseif (!upgrade_checkinstall(310)) $current = 300;
@@ -73,6 +66,13 @@ if ($current < 300) {
 }
 
 $isUpgraded = FALSE;
+
+$messages = array();
+$messages[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
+$messages[] = '<div class="note"><b>Note:</b> ';
+$messages[] = _UPG_TEXT_NOTE01NEW;
+$messages[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
+$messages[] = '</div>';
 
 if (version_compare(phpversion(), '5.0.0', '<'))
     $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
