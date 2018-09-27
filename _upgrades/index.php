@@ -30,47 +30,17 @@ if (preg_match('#/_?upgrades$#', $path))
     exit;
 }
 
-if (is_file('../config.php')) {
-    include('../config.php');
-} else {
-    include('../../config.php');
-}
-
 include('upgrade.functions.php');
-
-if (_CHARSET != 'UTF-8') {
-//            ini_set('default_charset', 'UTF-8');
-    if ( !headers_sent() )
-        header ('Content-Type: text/html; charset=UTF-8');
-}
 
 load_upgrade_lang();
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
-    $ph = array();
-    $ph['_UPG_TEXT_PLEASE_LOGIN']    = _UPG_TEXT_PLEASE_LOGIN;
-    $ph['_UPG_TEXT_ENTER_YOUR_DATA'] = _UPG_TEXT_ENTER_YOUR_DATA;
-    $ph['type']                      = '../index.php';
-    $ph['_UPG_TEXT_NAME']            = _UPG_TEXT_NAME;
-    $ph['_UPG_TEXT_PASSWORD']        = _UPG_TEXT_PASSWORD;
-    $ph['_UPG_TEXT_LOGIN']           = _UPG_TEXT_LOGIN;
-    $ph['_UPG_TEXT_NUCLEUS_UPGRADE'] = _UPG_TEXT_NUCLEUS_UPGRADE;
-    $ph['content'] = parseHtml(file_get_contents(__DIR__.'/tpl/content_show_login.tpl'), $ph);
-    echo parseHtml(file_get_contents(__DIR__.'/tpl/template.tpl'), $ph);
-    exit;
+    upgrade_showLogin('../index.php');
 }
 
 if (!$member->isAdmin()) {
-    $ph = array();
-    $ph['_UPG_TEXT_NUCLEUS_UPGRADE'] = _UPG_TEXT_NUCLEUS_UPGRADE;
-    $ph['_UPG_TEXT_ERROR_FAILED']    = _UPG_TEXT_ERROR_FAILED;
-    $ph['_UPG_TEXT_ERROR_WAS']       = _UPG_TEXT_ERROR_WAS;
-    $ph['_UPG_TEXT_BACK']            = _UPG_TEXT_BACK;
-    $ph['msg']                       = _UPG_TEXT_ONLY_SUPER_ADMIN;
-    $ph['content'] = parseHtml(file_get_contents(__DIR__.'/tpl/content_error.tpl'), $ph);
-    echo parseHtml(file_get_contents(__DIR__.'/tpl/template.tpl'), $ph);
-    exit;
+    upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
 $messages = array();
@@ -94,19 +64,11 @@ $messages[] = '</div>';
     else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
 
 if ($current < 300) {
-    $msg = array();
-    $msg[] = '<p class="warning">' . _UPG_TEXT_UPGRADE_ABORTED .'</p>';
-    $msg[] = '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>';
-    $msg[] = '<p class="note">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>';
-    $msg[] = '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
-    $ph = array();
-    $ph['_UPG_TEXT_NUCLEUS_UPGRADE'] = _UPG_TEXT_NUCLEUS_UPGRADE;
-    $ph['_UPG_TEXT_ERROR_FAILED']    = _UPG_TEXT_ERROR_FAILED;
-    $ph['_UPG_TEXT_ERROR_WAS']       = _UPG_TEXT_ERROR_WAS;
-    $ph['_UPG_TEXT_BACK']            = _UPG_TEXT_BACK;
-    $ph['msg']                       = join("\n", $msg);
-    $ph['content'] = parseHtml(file_get_contents(__DIR__.'/tpl/content_error.tpl'), $ph);
-    echo parseHtml(file_get_contents(__DIR__.'/tpl/template.tpl'), $ph);
+    $msg = '<p class="warning">' . _UPG_TEXT_UPGRADE_ABORTED .'</p>'
+         . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
+         . '<p class="note">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
+         . '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
+    upgrade_error($msg);
     exit;
 }
 
@@ -169,8 +131,81 @@ if (defined('UPGRADE_CHECK_PLUGIN_SYNTAX') && UPGRADE_CHECK_PLUGIN_SYNTAX)
 
 $messages[] = sprintf("<p><a href=\"%s\">%s</a></p>", $CONF['AdminURL'], _UPG_TEXT_BACKHOME);
 
+upgrade_head();
+echo join("\n",$messages);
+upgrade_foot();
 
-$ph = array();
-$ph['content'] = join("\n",$messages);
-$ph['_UPG_TEXT_NUCLEUS_UPGRADE'] = _UPG_TEXT_NUCLEUS_UPGRADE;
-echo parseHtml(file_get_contents(__DIR__.'/tpl/template.tpl'),$ph);
+function upgrade_todo($ver) {
+    return upgrade_checkinstall($ver) ? '(<span class="ok">'. _UPG_TEXT_60_INSTALLED .'</span>)' : "(<span class='warning'>". _UPG_TEXT_60_NOT_INSTALLED ."</span>)";
+}
+
+function upgrade_manual_atom1_0() {
+    // atom 1.0
+    $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
+    $res = sql_query($query);
+    
+    $messages = array();
+    while ($o = sql_fetch_object($res)) {
+        if ($o->sddesc=='Atom 0.3 weblog syndication') {
+            $messages[] = '<h2>Atom 1.0</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_03 . '</p>';
+        }
+    }
+
+    // default skin
+    $query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"',sql_table('template_desc'));
+    $res = sql_query($query);
+    $tdnumber = 0;
+    $o = sql_fetch_object($res);
+    $tdnumber = $o->tdnumber;
+    if (0<$tdnumber){
+        $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'",sql_table('template'),$tdnumber);
+        $res = sql_query($query);
+        if (!sql_fetch_object($res)) {
+            $messages[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
+            $messages[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
+        }
+    }
+    return !empty($messages) ? join("\n",$messages) : '';
+}
+
+function upgrade_manual_340() {
+    $row = array();
+    $row[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS , '3.4') . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
+    $row[] = '<p>';
+    $row[] = _UPG_TEXT_V340_02 . ':';
+    $row[] = '<ul>';
+    $row[] = '<li><a href="../../extra/media/readme.txt">extra/media/readme.txt</a></li>';
+    $row[] = '<li><a href="../../extra/skins/readme.txt">extra/skins/readme.txt</a></li>';
+    $row[] = '</ul>';
+    $row[] = '</p>';
+    return join("\n", $row);
+}
+
+function upgrade_manual_350() {
+    $s = <<<EOL
+  <h2>Important Notices for Nucleus 3.5</h2>
+  <p>
+    Two new plugins have been included with version 3.5. You may want to consider installing them from the Plugins page of the admin area.
+    <ul>
+       <li><strong>NP_SecurityEnforcer</strong>: Enforces some security properties like password complexity and maximum failed login attempts. Note that it is disabled by default and must be enabled after installation.</li>
+    </ul>
+  </p>
+EOL;
+    return $s;
+}
+
+function upgrade_manual_366() {
+    $row = array();
+    $content = @file_get_contents('../../action.php');
+    if(strpos($content,'=&')===false) return '';
+    $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
+    $row[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
+    return join("\n", $row);
+}
+
