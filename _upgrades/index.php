@@ -23,17 +23,30 @@ if (preg_match('#/_?upgrades$#', $path))
 }
 
 include('config.php');
+
+if (is_file('../config.php'))
+    include('../config.php');
+else
+    include('../../config.php');
+
 include('upgrade.functions.php');
+include('sql.functions.php');
 
 load_upgrade_lang();
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
+    upgrade_head();
     upgrade_showLogin('../index.php');
+    upgrade_foot();
+    exit;
 }
 
 if (!$member->isAdmin()) {
+    upgrade_head();
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
+    upgrade_foot();
+    exit;
 }
 
 // calculate current version
@@ -54,7 +67,9 @@ if ($current < 300) {
          . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
          . '<p class="note">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
          . '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
+    upgrade_head();
     upgrade_error($msg);
+    upgrade_foot();
     exit;
 }
 

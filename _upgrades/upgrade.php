@@ -52,6 +52,7 @@ if ($from < 300 && isset($_GET['from'])) {
     exit;
 }
 
+upgrade_head();
 upgrade_start();
 
 switch($from) {
@@ -84,7 +85,7 @@ switch($from) {
         upgrade_do380();
         break;
     default:
-        echo "<li>" . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . "</li>";
+        echo '<li>' . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . '</li>';
         break;
 }
 
@@ -94,5 +95,6 @@ if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures))
     upgrade_check_action_php();
 }
 
-
 upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );
+upgrade_foot();
+exit;
