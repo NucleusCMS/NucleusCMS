@@ -95,3 +95,48 @@ if(!function_exists('sql_existTableName')) {
         return ($res && ($r = sql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
     }
 }
+
+if(!function_exists('parseQuery')) {
+    function parseQuery($query='',$ph=array()) { // $ph is placeholders
+
+        if(str_contain($query,'<%')) {
+            $query = str_replace(array('<%','%>'), array('[@','@]'), $query);
+        }
+        
+        if(!is_array($ph)) {
+            $ph = func_get_args();
+        }
+        
+        if(!isset($ph['prefix'])) $ph['prefix'] = sql_table();
+        $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
+        foreach($ph as $k=>$v) {
+            
+            if(!str_contain($query,'[@')) break;
+            
+            if(str_contain($v,'[@')) {
+                $v = str_replace('[@',"[{$esc}@",$v);
+            }
+            $query = str_replace("[@{$k}@]", $v, $query);
+            if(str_contain($query,"[@{$k}:escape@]"))
+            {
+                $query = str_replace("[@{$k}:escape@]", sql_real_escape_string($v), $query);
+            }
+            if(str_contain($query,"[@{$k}:int@]"))
+            {
+                $query = str_replace("[@{$k}:int@]", (int)$v, $query);
+            }
+        }
+        if(str_contain($query,"[{$esc}@")) {
+            $query = str_replace("<[$esc}@",'[@',$query);
+        }
+        return $query;
+    }
+}
+
+if(!function_exists('parseQuery')) {
+    function str_contain($haystack, $needle) {
+        $pos = strpos($haystack, $needle);
+        if($pos!==false) return true;
+        return false;
+    }
+}
