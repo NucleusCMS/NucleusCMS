@@ -22,15 +22,17 @@ if (preg_match('#/_?upgrades$#', $path))
     exit;
 }
 
-include('config.php');
+include_once('config.php');
 
 if (is_file('../config.php'))
-    include('../config.php');
+    include_once('../config.php');
+elseif(is_file('../../config.php'))
+    include_once('../../config.php');
 else
-    include('../../config.php');
+    exit('config not found');
 
-include('upgrade.functions.php');
-include('sql.functions.php');
+include_once('upgrade.functions.php');
+include_once('sql.functions.php');
 
 load_upgrade_lang();
 

@@ -16,7 +16,14 @@
 
 global $CONF;
 
-include('upgrade.functions.php');
+if (is_file('../config.php'))
+    include_once('../config.php');
+elseif(is_file('../../config.php'))
+    include_once('../../config.php');
+else
+    exit('config not found');
+
+include_once('upgrade.functions.php');
 
 load_upgrade_lang();
 
