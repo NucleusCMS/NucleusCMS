@@ -14,55 +14,36 @@
  *
  */
 
-$path = @preg_split('/[\?#]/', $_SERVER['REQUEST_URI']);
-$path = $path[0];
-if (preg_match('#/_?upgrades$#', $path))
-{
-    header('Location: ' . $path . '/');
-    exit;
+global $CONF;
+
+include_once('define.php');
+
+if (is_file('../config.php')) {
+    include_once('../config.php');
+}
+else {
+    exit('config not found');
 }
 
-include('config.php');
-
-if (is_file('../config.php'))
-    include('../config.php');
-else
-    include('../../config.php');
-
-include('upgrade.functions.php');
-include('sql.functions.php');
+include_once('upgrade.functions.php');
+include_once('sql.functions.php');
 
 load_upgrade_lang();
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
     upgrade_head();
-    upgrade_showLogin('../index.php');
+    upgrade_showLogin('./');
     upgrade_foot();
     exit;
 }
-
-if (!$member->isAdmin()) {
+elseif (!$member->isAdmin()) {
     upgrade_head();
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
     upgrade_foot();
     exit;
 }
-
-// calculate current version
-    if     (!upgrade_checkinstall(300)) $current = 250;
-    elseif (!upgrade_checkinstall(310)) $current = 300;
-    elseif (!upgrade_checkinstall(320)) $current = 310;
-    elseif (!upgrade_checkinstall(330)) $current = 320;
-    elseif (!upgrade_checkinstall(340)) $current = 330;
-    elseif (!upgrade_checkinstall(350)) $current = 340;
-    elseif (!upgrade_checkinstall(360)) $current = 350;
-    elseif (!upgrade_checkinstall(370)) $current = 360;
-    elseif (!upgrade_checkinstall(371)) $current = 370;
-    elseif (!upgrade_checkinstall(380)) $current = 371;
-    else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
-
-if ($current < 300) {
+elseif (!upgrade_checkinstall(300)) {
     $msg = '<p class="warning">' . _UPG_TEXT_UPGRADE_ABORTED .'</p>'
          . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
          . '<p class="note">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
@@ -73,27 +54,38 @@ if ($current < 300) {
     exit;
 }
 
-$isUpgraded = FALSE;
+// calculate current version
+    if     (!upgrade_checkinstall(310)) $current = 300;
+    elseif (!upgrade_checkinstall(320)) $current = 310;
+    elseif (!upgrade_checkinstall(330)) $current = 320;
+    elseif (!upgrade_checkinstall(340)) $current = 330;
+    elseif (!upgrade_checkinstall(350)) $current = 340;
+    elseif (!upgrade_checkinstall(360)) $current = 350;
+    elseif (!upgrade_checkinstall(370)) $current = 360;
+    elseif (!upgrade_checkinstall(371)) $current = 370;
+    elseif (!upgrade_checkinstall(380)) $current = 371;
+    else                                $current = NUCLEUS_UPGRADE_VERSION_ID;
+
+
+$isUpgraded = false;
 
 $messages = array();
-$messages[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
+$messages[] = '<h1>' . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
 $messages[] = '<div class="note"><b>Note:</b> ';
 $messages[] = _UPG_TEXT_NOTE01NEW;
 $messages[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
 $messages[] = '</div>';
 
-if (version_compare(phpversion(), '5.0.0', '<'))
+if (version_compare(phpversion(), '5.0.0', '<')) {
     $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
-//elseif ($current > NUCLEUS_UPGRADE_VERSION_ID) {
-//    exit('your core is old.'); // error
-//}
+}
 elseif (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<')) {
     $messages[] = '<p class="deprecated">'
                  . sprintf(_UPG_TEXT_WARN_MINIMUM_PHP_STOP,
                            NUCLEUS_UPGRADE_VERSION, NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION)
                  .'</p>';
 } elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
-    $isUpgraded = TRUE;
+    $isUpgraded = true;
     $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
     $messages[] = '<br />';
     if (!defined('_ERRORS_UPGRADESDIR')) define('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
@@ -107,8 +99,9 @@ elseif (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<'))
 }
 
 $from = intGetVar('from');
-if (!$from) 
+if (!$from) {
     $from = $current;
+}
 
 if (version_compare(phpversion(),NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,'>=') && $from < NUCLEUS_UPGRADE_VERSION_ID)
 {
@@ -121,10 +114,10 @@ if (version_compare(phpversion(),NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,'>=') && $f
     
     $messages[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
     $sth = trim(join('',$sth));
-    if (!empty($sth)) {
+    if ($sth) {
         $messages[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
         $messages[] = $sth;
-    } else if ($isUpgraded) {
+    } elseif ($isUpgraded) {
         $messages[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
     }
 }

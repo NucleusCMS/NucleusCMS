@@ -21,7 +21,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 {
     global $DB_DRIVER_NAME;
 
-    if ( sql_existTableColumnName('[@prefix@]skin', 'spartstype' ))
+    if ( sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype' ))
         return;
 
     $upgrade_msg = parseQuery("Altering TABLE `[@prefix@]skin` ");
@@ -85,7 +85,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 
 function upgrade_do380_addfield_bauthorvisible()
 {
-    if ( sql_existTableColumnName('[@prefix@]blog', 'bauthorvisible') ) return;
+    if ( sql_existTableColumnName(parseQuery('[@prefix@]blog'), 'bauthorvisible') ) return;
     
     $query = parseQuery("ALTER TABLE `[@prefix@]blog` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1'");
     upgrade_query('Altering [@prefix@]blog table', $query);
@@ -93,7 +93,7 @@ function upgrade_do380_addfield_bauthorvisible()
 
 function upgrade_do380_addfield_mhalt()
 {
-    if ( sql_existTableColumnName('[@prefix@]member', 'mhalt') ) return;
+    if ( sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mhalt') ) return;
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mhalt` tinyint(2) NOT NULL default '0'");
     upgrade_query('Altering [@prefix@]member table', $query);
@@ -101,7 +101,7 @@ function upgrade_do380_addfield_mhalt()
 
 function upgrade_do380_addfield_mhalt_reason()
 {
-    if ( sql_existTableColumnName('[@prefix@]member', 'mhalt_reason') ) return;
+    if ( sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mhalt_reason') ) return;
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mhalt_reason` varchar(100) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]member table', $query);
@@ -114,7 +114,7 @@ function upgrade_do380_modfield_ballowpast()
     if ($DB_DRIVER_NAME === 'sqlite') return;
     
     // mysql only. because sqlite not support MODIFY COLUMN
-    $mode = (sql_existTableColumnName('[@prefix@]blog', 'ballowpast') ? 'MODIFY' : 'ADD');
+    $mode = (sql_existTableColumnName(parseQuery('[@prefix@]blog'), 'ballowpast') ? 'MODIFY' : 'ADD');
     $query = parseQuery("ALTER TABLE `[@prefix@]blog` [@mode@] COLUMN `ballowpast` tinyint(2)   NOT NULL default '1'", array('mode'=>$mode));
     upgrade_query('Altering [@prefix@]blog table', $query);
 
@@ -126,7 +126,7 @@ function upgrade_do380_modfield_ballowpast()
     upgrade_query('Altering [@prefix@]item table', $query);
 
     $query = parseQuery("ALTER TABLE `[@prefix@]config` MODIFY COLUMN `name` varchar(50)  NOT NULL default ''");
-    upgrade_query('Altering [@prefx@]config table', $query);
+    upgrade_query('Altering [@prefix@]config table', $query);
 
     $query = parseQuery("ALTER TABLE `[@prefix@]plugin_option_desc` MODIFY COLUMN `oname` varchar(50) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]plugin_option_desc table', $query);

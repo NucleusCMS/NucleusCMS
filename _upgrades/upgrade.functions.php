@@ -19,17 +19,24 @@
 /*************************************************************
  *     NOTE: With upgrade to 3.6, need to set this to use sql_* API           *
  **************************************************************/
-
 function load_upgrade_lang() {
-    $_ = getLanguageName();
-    $langNames[] = stripos($_,'japan')!==false ? 'japanese' : $_;
-    $langNames[] = 'english';
-    foreach($langNames as $langName) {
-        $lang_path = dirname(__FILE__) . "/upgrade_lang_{$langName}.php";
-        if(is_file($lang_path)) break;
-        else $lang_path = false;
+    $lang_path = sprintf('%s/langs/%s.php', __DIR__, upgrade_checkBrowserLang());
+    include_once($lang_path);
+}
+
+function upgrade_checkBrowserLang() {
+    $langs = explode(',', strtolower(serverVar('HTTP_ACCEPT_LANGUAGE')));
+    
+    if(!$langs) return 'en';
+    
+    foreach($langs as $lang) {
+        $lang = substr($lang,0,2);
+        if(is_file(__DIR__.'/langs/'.$lang.'.php')) {
+            return $lang;
+        }
     }
-    if($lang_path) include_once($lang_path);
+    
+    return 'en';
 }
 
 function upgrade_checkinstall($version) {
@@ -144,8 +151,9 @@ function upgrade_end($msg = "") {
 function upgrade_query($friendly, $query) {
     global $upgrade_failures;
 
+    $friendly = parseQuery($friendly);
     echo "<li>$friendly ... ";
-    $res = sql_query($query);
+    $res = sql_query(parseQuery($query));
     if (!$res) {
         echo '<span style="color:red">' . _UPG_TEXT_FAILURE . "</span>\n";
         echo "<blockquote>" . _UPG_TEXT_REASON_FOR_FAILURE . ": " . sql_error() . " </blockquote>";
@@ -387,8 +395,7 @@ function upgrade_todo($ver) {
 
 function upgrade_manual_atom1_0() {
     // atom 1.0
-    $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"',sql_table('skin_desc'));
-    $res = sql_query($query);
+    $res = sql_query(parseQuery('SELECT sddesc FROM [@prefix@]skin_desc WHERE sdname="feeds/atom"'));
     
     $messages = array();
     while ($o = sql_fetch_object($res)) {
@@ -401,8 +408,7 @@ function upgrade_manual_atom1_0() {
     }
 
     // default skin
-    $query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"',sql_table('template_desc'));
-    $res = sql_query($query);
+    $res = sql_query(parseQuery('SELECT tdnumber FROM [@prefix@]template_desc WHERE tdname="default/index"'));
     $tdnumber = 0;
     $o = sql_fetch_object($res);
     $tdnumber = $o->tdnumber;
@@ -453,4 +459,17 @@ function upgrade_manual_366() {
     $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
     $row[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
     return join("\n", $row);
+}
+
+if(!function_exists('parseQuery')) {
+    function parseQuery($query='',$ph=array()) { // $ph is placeholders
+        $ph['prefix'] = sql_table();
+        foreach($ph as $k=>$v) {
+            
+            if(strpos($query,'[@')===false) break;
+            $k = '[@'.$k.'@]';
+            $query = str_replace($k, $v, $query);
+        }
+        return $query;
+    }
 }

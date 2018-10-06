@@ -16,46 +16,67 @@
 
 global $CONF;
 
-include('upgrade.functions.php');
+include_once('define.php');
+
+if (is_file('../config.php'))
+    include_once('../config.php');
+else
+    exit('config not found');
+
+include_once('upgrade.functions.php');
+include_once('sql.functions.php');
 
 load_upgrade_lang();
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
+    upgrade_head();
     upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
+    upgrade_foot();
+    exit;
 }
 
 if (!$member->isAdmin()) {
+    upgrade_head();
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
+    upgrade_foot();
+    exit;
 }
 
 // [start] Reject a forked project database incompatible with Nucleus
-if (!empty($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
+if (isset($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
+    upgrade_head();
     upgrade_error('It is an incompatible database.');
+    upgrade_foot();
+    exit;
 }
-if ((intval($CONF['DatabaseVersion']) >= 380) || (intval($from)>=380)) {
-    $query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName' AND value='Nucleus'", sql_table('config'));
-    $res = quickQuery($query);
-    if (empty($res))
+if ((intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID) || (intGetVar('from')>=NUCLEUS_UPGRADE_VERSION_ID)) {
+    $query = "SELECT count(*) as result FROM `[@prefix@]config` WHERE name='DatabaseName' AND value='Nucleus'";
+    if (!quickQuery(parseQuery($query))) {
+        upgrade_head();
         upgrade_error('It is an incompatible database.');
+        upgrade_foot();
+        exit;
+    }
 }
+
 // [end] Reject a forked project database incompatible with Nucleus
 
-$from = intGetVar('from');
-
-if ($from < 300 && isset($_GET['from'])) {
+if (intGetVar('from') && intGetVar('from')<300) {
     $msg = '<p class="warning">'    . _UPG_TEXT_UPGRADE_ABORTED .'</p>'
          . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
          . '<p class="note">'       . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
          . '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
+    upgrade_head();
     upgrade_error($msg);
+    upgrade_foot();
     exit;
 }
 
 upgrade_head();
 upgrade_start();
 
-switch($from) {
+switch(intGetVar('from')) {
     case 300:
         include_once('upgrade3.1.php');
         upgrade_do310();
@@ -86,11 +107,10 @@ switch($from) {
         break;
     default:
         echo '<li>' . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . '</li>';
-        break;
 }
 
 global $upgrade_failures;
-if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures))
+if (isset($_GET['from']) && (intGetVar('from')>0) && empty($upgrade_failures))
 {
     upgrade_check_action_php();
 }
@@ -98,3 +118,7 @@ if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures))
 upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );
 upgrade_foot();
 exit;
+if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures))
+{
+    upgrade_check_action_php();
+}

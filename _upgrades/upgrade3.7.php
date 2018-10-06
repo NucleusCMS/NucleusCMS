@@ -28,12 +28,11 @@ function upgrade_do370() {
     if (upgrade_checkinstall(370))
         return _UPG_TEXT_ALREADY_INSTALLED;
     
-    // changing the blog table to lengthen bnotify field 
     $query = parseQuery("ALTER TABLE `[@prefix@]item`
                     MODIFY COLUMN `ibody` mediumtext default NULL,
                     MODIFY COLUMN `imore` mediumtext default NULL;");
     
-    upgrade_query('Altering [@prefix@]item table', $query);
+    upgrade_query(parseQuery('Altering [@prefix@]item table'), $query);
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''");
     upgrade_query('Altering [@prefix@]member table', $query);
