@@ -2490,7 +2490,7 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
         }
     }
     if(str_contain($query,"[{$esc}@")) {
-        $query = str_replace("<[$esc}@",'[@',$query);
+        $query = str_replace("[{$esc}@",'[@',$query);
     }
     return $query;
 }
