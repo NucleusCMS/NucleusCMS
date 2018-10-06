@@ -1,7 +1,7 @@
 <?php
 if(!function_exists('sql_existTableColumnName')) {
     function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=false) {
-        $names = sql_getTableColumnNames($tablename);
+        $names = sql_getTableColumnNames(parseQuery($tablename));
 
         if (count($names)>0)
         {
@@ -21,7 +21,7 @@ if(!function_exists('sql_existTableColumnName')) {
 
 if(!function_exists('sql_getTableColumnNames')) {
     function sql_getTableColumnNames($tablename) {
-        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $sql = sprintf('SHOW COLUMNS FROM `%s` ', parseQuery($tablename));
         $target = 'Field';
 
         $items = array();
@@ -90,7 +90,7 @@ if(!function_exists('sql_error')) {
 
 if(!function_exists('sql_existTableName')) {
     function sql_existTableName($tablename, $link_identifier = null) {
-        $query = sprintf("SHOW TABLES LIKE '%s' ", sql_real_escape_string($tablename));
+        $query = sprintf("SHOW TABLES LIKE '%s' ", sql_real_escape_string(parseQuery($tablename)));
         $res = sql_query($query, $link_identifier);
         return ($res && ($r = sql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
     }
