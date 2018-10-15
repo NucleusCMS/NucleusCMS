@@ -11,6 +11,7 @@ function upgrade_do380() {
     upgrade_do380_addfield_mhalt_reason();
     upgrade_do380_modfield_ballowpast(); // ignore sqlite
     upgrade_do380_Skin_UpgardeAddColumnSpartstype();
+    fix_do380_Skin_ColumnSpartstype();
 
     //  -> 3.80
     // update database version
@@ -81,6 +82,26 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     }
     $dbh->rollBack();
     upgrade_query($upgrade_msg, 'Failure');
+}
+
+function fix_do380_Skin_ColumnSpartstype() 
+{
+    if ( !sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype' )) {
+        return;
+    }
+    
+    $sql  = "SELECT * FROM `[@prefix@]skin`";
+    $sql .= " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
+    $sql .= " AND spartstype='parts'";
+    
+    if(!quickQuery(parseQuery($sql))) {
+        return;
+    }
+    
+    $sql  = "UPDATE [@prefix@]skin set spartstype='specialpage'";
+    $sql .= "WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
+    sql_query(parseQuery($sql));
+    return;
 }
 
 function upgrade_do380_addfield_bauthorvisible()
