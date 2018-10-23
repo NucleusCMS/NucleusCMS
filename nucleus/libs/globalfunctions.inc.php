@@ -2035,17 +2035,7 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
         if(defined('_CHARSET')) $encoding = _CHARSET;
         else                    $encoding = 'utf-8';
     }
-    if(version_compare(PHP_VERSION, '5.2.3', '>='))
-        return htmlspecialchars($string, $flags, $encoding, false);
-    else
-    {
-        if(function_exists('htmlspecialchars_decode'))
-            $string = htmlspecialchars_decode($string, $flags);
-        else
-            $string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS,ENT_QUOTES)));
-        
-        return htmlspecialchars($string, $flags, $encoding);
-    }
+    return htmlspecialchars($string, $flags, $encoding, false);
 }
 
 function coreSkinVar($key='')
