@@ -2035,7 +2035,7 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
         if(defined('_CHARSET')) $encoding = _CHARSET;
         else                    $encoding = 'utf-8';
     }
-    return htmlspecialchars($string, $flags, $encoding, false);
+    return htmlspecialchars($string, $flags, $encoding);
 }
 
 function coreSkinVar($key='')
