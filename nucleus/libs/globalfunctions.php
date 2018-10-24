@@ -405,10 +405,7 @@ include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}entity.php");
 include_once("{$DIR_LIBS}CoreCachedData.php");
 
-if (version_compare('5.1.0',PHP_VERSION,'<=')) {
-    // register autoload class function / PHP >= 5.1.0
-    spl_autoload_register('loadCoreClassFor_spl'.(version_compare('5.3.0',PHP_VERSION,'<=') ? '' : '_prephp53'));
-}
+spl_autoload_register('loadCoreClassFor_spl'.(version_compare('5.3.0',PHP_VERSION,'<=') ? '' : '_prephp53'));
 
 // set lastVisit cookie (if allowed)
 if (!headers_sent() ) {
