@@ -238,7 +238,7 @@ if ($orgRequestURI!==serverVar('REQUEST_URI')) {
         addToLog(WARNING, $msg);
     }
     if (!$bSanitizeAndContinue) {
-        die("");
+        exit;
     }
 }
 
@@ -249,8 +249,9 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
-if (!isset($CONF['Self']))
+if (!isset($CONF['Self'])) {
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/'); // strip trailing
+}
 
 if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
