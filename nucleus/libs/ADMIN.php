@@ -8056,44 +8056,43 @@ EOL;
     function checkSecurityRisk() {
         global $CONF;
 
-        if ($CONF['alertOnSecurityRisk'] == 1)
-        {
-            // check if files exist and generate an error if so
-            $RiskFiles = array(
-                '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
-                '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
-            );
-            $RiskDirs = array(
-                'convert'        => _ERRORS_CONVERTDIR,  // don't localized, old version
-                '../install'     => _ERRORS_INSTALLDIR,  // current version
-                '../_upgrades'   => _ERRORS_UPGRADESDIR  // current version
-            );
-            $aFound = array();
-            foreach($RiskFiles as $fileName => $fileDesc)
-                if (@ is_file($fileName))
-                    $aFound[] = $fileDesc;
-            foreach($RiskDirs as $fileName => $fileDesc)
-                if (@ is_dir($fileName))
-                    $aFound[] = $fileDesc;
-            if (strpos(str_replace('\\','/',getcwd()), '/plugins/')===false && @ is_writable('../config.php')) {
-                $aFound[] = _ERRORS_CONFIGPHP;
-            }
-            if (count($aFound) > 0)
-            {
-                $title = _ERRORS_STARTUPERROR3;
-                $msg = _ERRORS_STARTUPERROR1 . implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2;
-                // check core upgrade
-                if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
-                {
-                    $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
-                    $msg = sprintf('<h2>%s</h2>' , hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
-                    sprintf('<div><a style="color:red" href="%s">%s</a>(Current database %d)',
-                            $CONF['IndexURL'] . '_upgrades/' , hsc($link_title), $CONF['DatabaseVersion'])
-                    . '</div><br /><hr />' . $msg;
-                }
-                startUpError($msg, $title);
-            }
+        if (!$CONF['alertOnSecurityRisk']) return;
+        
+        // check if files exist and generate an error if so
+        $RiskFiles = array(
+            '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
+            '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
+        );
+        $RiskDirs = array(
+            'convert'        => _ERRORS_CONVERTDIR,  // don't localized, old version
+            '../install'     => _ERRORS_INSTALLDIR,  // current version
+            '../_upgrades'   => _ERRORS_UPGRADESDIR  // current version
+        );
+        $aFound = array();
+        foreach($RiskFiles as $fileName => $fileDesc)
+            if (@ is_file($fileName))
+                $aFound[] = $fileDesc;
+        foreach($RiskDirs as $fileName => $fileDesc)
+            if (@ is_dir($fileName))
+                $aFound[] = $fileDesc;
+        if (strpos(str_replace('\\','/',getcwd()), '/plugins/')===false && @ is_writable('../config.php')) {
+            $aFound[] = _ERRORS_CONFIGPHP;
         }
+        
+        if (count($aFound) <= 0) return;
+        
+        $title = _ERRORS_STARTUPERROR3;
+        $msg = _ERRORS_STARTUPERROR1 . join($aFound, '</li><li>')._ERRORS_STARTUPERROR2;
+        // check core upgrade
+        if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
+        {
+            $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
+            $msg = sprintf('<h2>%s</h2>' , hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
+            sprintf('<div><a style="color:red" href="%s">%s</a>(Current database %d)',
+                    $CONF['IndexURL'] . '_upgrades/' , hsc($link_title), $CONF['DatabaseVersion'])
+            . '</div><br /><hr />' . $msg;
+        }
+        startUpError($msg, $title);
     }
 
     /**
