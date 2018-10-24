@@ -6293,7 +6293,6 @@ EOL;
                 echo "\t\t" . "<td${style}>" . hsc($item[1]) . "</td>\n";
                 echo "\t</tr>\n";
             }
-//            echo "</table>\n";
 
             // Other settings of the installation
             ksort($CONF);
@@ -6301,10 +6300,6 @@ EOL;
                            'AdminEmail');
             $items_warn_false = array('alertOnSecurityRisk');
             $items_warn_true  = array();
-//            echo "<table>\n";
-//            echo "\t<tr>";
-//            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORESETTINGS_OTHER . "</th>\n";
-//            echo "\t</tr>\n";
             foreach($CONF as $k=>$v)
             if (!in_array( $k , $items ))
             {
