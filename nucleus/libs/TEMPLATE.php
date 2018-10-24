@@ -120,12 +120,17 @@ class TEMPLATE {
      */
     public static function read($name) {
         global $manager;
+        static $rs = null;
         
         $param = array(
             'template' => &$name
         );
         $manager->notify('PreTemplateRead', $param);
 
+        if(isset($rs[$name])) {
+            return $rs[$name];
+        }
+        
         $template = array();
         $query = 'SELECT tpartname, tcontent'
                . sprintf(" FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
@@ -142,6 +147,8 @@ class TEMPLATE {
         else
             setlocale(LC_TIME,'');
 
+        $rs[$name] = $template;
+        
         return $template;
     }
 
