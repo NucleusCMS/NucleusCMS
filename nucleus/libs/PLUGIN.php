@@ -585,8 +585,18 @@ class NucleusPlugin {
      * private
      */
     function _getAllOptions($context, $name) {
+        static $rs = null;
+        
+        $key = md5(print_r(func_get_args(),true));
+        if(isset($rs[$key])) {
+            return $rs[$key];
+        }
+        
         $oid = $this->_getOID($context, $name);
-        if (!$oid) return array();
+        if (!$oid) {
+            $rs[$key] = array();
+            return array();
+        }
         $defVal = $this->_getDefVal($context, $name);
 
         $aOptions = array();
@@ -613,7 +623,8 @@ class NucleusPlugin {
         $res = sql_query(parseQuery('SELECT ocontextid, ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@]', $ph));
         while ($o = sql_fetch_object($res))
             $aOptions[$o->ocontextid] = $o->ovalue;
-
+        
+        $rs[$key] = $aOptions;
         return $aOptions;
     }
 
