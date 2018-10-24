@@ -31,6 +31,12 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 include_once($DIR_LIBS. 'version.php');
 include_once($DIR_LIBS. 'globalfunctions.inc.php');
 
+if (version_compare(phpversion(),'5.4.0','<')) {
+    if(ini_get('register_globals')) exit('Should be change off register_globals.');
+    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
+    if(ini_get('magic_quotes_sybase')) exit('Should be remove magic_quotes_sybase in php.ini');
+}
+
 define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
@@ -47,12 +53,6 @@ $default_user_agent['default'] = &$default_user_agent['ie']['11'];
 if ( ! defined('DEFAULT_USER_AGENT') )
   define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
 ini_set( 'user_agent' , DEFAULT_USER_AGENT );
-
-if (version_compare(phpversion(),'5.4.0','<')) {
-    if(ini_get('register_globals')) exit('Should be change off register_globals.');
-    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
-    if(ini_get('magic_quotes_sybase')) exit('Should be remove magic_quotes_sybase in php.ini');
-}
 
 if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
