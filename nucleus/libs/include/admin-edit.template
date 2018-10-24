@@ -60,9 +60,9 @@
 </tr>
 <tr id="edit" style="display:none;">
 	<td><%text(_ADD_PREVIEW)%></td>
-	<td><b><span id="prevtitle">&#160;</span></b><br />
-		<span id="prevbody">&#160;</span><br />
-		<span id="prevmore">&#160;</span><br />
+	<td><div><b><span id="prevtitle">&#160;</span></b></div>
+		<div id="prevbody">&#160;</div>
+		<div id="prevmore">&#160;</div>
 	</td>
 </tr>
 
