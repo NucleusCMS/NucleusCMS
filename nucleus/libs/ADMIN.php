@@ -6323,15 +6323,13 @@ EOL;
 
             // Link to the online version test at the core system official website
             echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
-            if ($nucleus['codename'] != '') {
-                $codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
-            } else {
-                $codenamestring = '';
-            }
             echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
             echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
-            echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION) . hsc($codenamestring);
+            echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
+            if ($nucleus['codename']) {
+            hsc(sprintf(' "%s"',$nucleus['codename']));
+            }
             echo '</a>';
         //echo '<br />';
         }
@@ -6562,9 +6560,10 @@ EOL;
 
         echo '<br />(';
 
-        $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
-
-        $versionstring = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION , hsc($codenamestring));
+        $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME) , CORE_APPLICATION_VERSION);
+        if($nucleus['codename']) {
+            $versionstring .= hsc(sprintf(' "%s"',$nucleus['codename']));
+        }
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
             printf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
