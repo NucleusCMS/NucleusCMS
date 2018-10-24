@@ -1075,8 +1075,8 @@ class BLOG {
       */
     function getCategoryIdFromName($name) {
         $ph['cblog'] = $this->getID();
-        $ph['cname'] = sql_quote_string($name);
-        $query = parseQuery('SELECT catid FROM [@prefix@]category WHERE cblog=[@cblog@] AND cname=[@cname@]',$ph);
+        $ph['cname'] = sql_real_escape_string($name);
+        $query = parseQuery("SELECT catid FROM [@prefix@]category WHERE cblog=[@cblog@] AND cname='[@cname@]'",$ph);
         $res = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
