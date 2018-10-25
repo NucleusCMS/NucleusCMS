@@ -151,17 +151,16 @@ function upgrade_end($msg = "") {
 function upgrade_query($friendly, $query) {
     global $upgrade_failures;
 
-    $friendly = parseQuery($friendly);
-    echo "<li>$friendly ... ";
+    echo sprintf('<li>%s ... ', parseQuery($friendly));
     $res = sql_query(parseQuery($query));
-    if (!$res) {
-        echo '<span style="color:red">' . _UPG_TEXT_FAILURE . "</span>\n";
-        echo "<blockquote>" . _UPG_TEXT_REASON_FOR_FAILURE . ": " . sql_error() . " </blockquote>";
-        $upgrade_failures++;
-    } else {
+    if ($res) {
         echo '<span style="color:green">' . _UPG_TEXT_SUCCESS . "</span><br />\n";
+    } else {
+        echo '<span style="color:red">' . _UPG_TEXT_FAILURE . "</span>\n";
+        echo sprintf('<blockquote>%s: %s </blockquote>', _UPG_TEXT_REASON_FOR_FAILURE, sql_error());
+        $upgrade_failures++;
     }
-    echo "</li>";
+    echo '</li>';
     return $res;
 }
 
@@ -173,7 +172,7 @@ function upgrade_query($friendly, $query) {
   */
 function update_version($version) {
     global $upgrade_failures;
-    $message = "Updating DatabaseVersion in config table to ${version}";
+    $message = "Updating DatabaseVersion in config table to $version";
     if(0==$upgrade_failures){
         $query = sprintf("UPDATE %s set value='%s' where name='DatabaseVersion'", sql_table('config'), $version);
         upgrade_query($message, $query);
@@ -272,7 +271,7 @@ function upgrade_db_optimize_mysql()
     if (count($tables)>0)
     {
         foreach(array('REPAIR', 'OPTIMIZE') as $cmd) {
-            $sql = $cmd . " TABLE `" . implode("`, `", $tables) . "`";
+            $sql = $cmd . " TABLE `" . join("`, `", $tables) . "`";
             $res = upgrade_query($cmd . ' TABLE', $sql);
             while($res && ($row = sql_fetch_assoc($res)))
             {  }
