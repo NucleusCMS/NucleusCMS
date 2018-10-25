@@ -55,7 +55,10 @@ elseif (!upgrade_checkinstall(300)) {
 }
 
 // calculate current version
-    if     (!upgrade_checkinstall(310)) $current = 300;
+    if (preg_match('@^3[0-9][0-9]$@',intGetVar('current'))) {
+        $current = intGetVar('current');
+    }
+    elseif (!upgrade_checkinstall(310)) $current = 300;
     elseif (!upgrade_checkinstall(320)) $current = 310;
     elseif (!upgrade_checkinstall(330)) $current = 320;
     elseif (!upgrade_checkinstall(340)) $current = 330;
