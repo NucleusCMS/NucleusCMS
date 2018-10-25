@@ -174,10 +174,10 @@ function update_version($version) {
     global $upgrade_failures;
     $message = "Updating DatabaseVersion in config table to $version";
     if(0==$upgrade_failures){
-        $query = sprintf("UPDATE %s set value='%s' where name='DatabaseVersion'", sql_table('config'), $version);
-        upgrade_query($message, $query);
+        $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
+        upgrade_query($message, parseQuery($query, array('version'=>$version)));
     }else
-        echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>';
+        echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span><blockquote>Errors occurred during upgrade process.</blockquote>';
 }
 
 /**
