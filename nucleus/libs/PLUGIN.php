@@ -597,35 +597,59 @@ class NucleusPlugin {
             $rs[$key] = array();
             return array();
         }
-        $defVal = $this->_getDefVal($context, $name);
 
         $aOptions = array();
-        switch ($context) {
-            case 'blog':
-                $r = sql_query(parseQuery('SELECT bnumber as contextid FROM [@prefix@]blog'));
-                break;
-            case 'category':
-                $r = sql_query(parseQuery('SELECT catid as contextid FROM [@prefix@]category'));
-                break;
-            case 'member':
-                $r = sql_query(parseQuery('SELECT mnumber as contextid FROM [@prefix@]member'));
-                break;
-            case 'item':
-                $r = sql_query(parseQuery('SELECT inumber as contextid FROM [@prefix@]item'));
-                break;
-        }
-        if ($r) {
-            while ($o = sql_fetch_object($r))
-                $aOptions[$o->contextid] = $defVal;
+        $defVal = $this->_getDefVal($context, $name);
+        $ids = $this->getCtxIdAsArray($context);
+        if ($ids) {
+            foreach($ids as $ctxid) {
+                $aOptions[$ctxid] = $defVal;
+            }
         }
 
         $ph = array('oid'=>(int)$oid);
         $res = sql_query(parseQuery('SELECT ocontextid, ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@]', $ph));
-        while ($o = sql_fetch_object($res))
+        while ($o = sql_fetch_object($res)) {
             $aOptions[$o->ocontextid] = $o->ovalue;
+        }
         
         $rs[$key] = $aOptions;
         return $aOptions;
+    }
+
+    private function getCtxIdAsArray($context) {
+        static $ids = array();
+        
+        if(isset($ids[$context])) {
+            return $ids[$context];
+        }
+        
+        $ids[$context] = array();
+        
+        switch ($context) {
+            case 'blog':
+                $rs = sql_query(parseQuery('SELECT bnumber as contextid FROM [@prefix@]blog'));
+                break;
+            case 'category':
+                $rs = sql_query(parseQuery('SELECT catid as contextid FROM [@prefix@]category'));
+                break;
+            case 'member':
+                $rs = sql_query(parseQuery('SELECT mnumber as contextid FROM [@prefix@]member'));
+                break;
+            case 'item':
+                $rs = sql_query(parseQuery('SELECT inumber as contextid FROM [@prefix@]item'));
+                break;
+        }
+        
+        if (!$rs) {
+            return false;
+        }
+        
+        while ($o = sql_fetch_object($rs)) {
+            $ids[$context][] = $o->contextid;
+        }
+        
+        return $ids[$context];
     }
 
     final public function _getEventList() {
@@ -651,7 +675,9 @@ class NucleusPlugin {
         $key = $context . '_' . $name;
         if (array_key_exists($key, $this->_aOptionToInfo)) {
             $info = $this->_aOptionToInfo[$key];
-            if (is_array($info)) return $info['oid'];
+            if (is_array($info)) {
+                return $info['oid'];
+            }
         }
 
         // load all OIDs for this plugin from the database
