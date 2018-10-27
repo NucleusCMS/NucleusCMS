@@ -39,12 +39,6 @@ class ConvertInstaller
         $this->basepath = $basepath;
         $this->target_db_filename = $basepath . 'settings' . DIRECTORY_SEPARATOR . 'db_nucleus.sqlite';
 
-//        if (version_compare(PHP_VERSION, '5.3.0'))
-//        {
-//            $this->error( $this->_('php 5.3.0 or higher'));
-//            exit;
-//        }
-
         if (!isset($member) || !$member->isLoggedIn())
         {
             $this->showLogin('index.php');

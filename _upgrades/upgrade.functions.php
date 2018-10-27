@@ -65,32 +65,24 @@ function upgrade_checkinstall($version) {
 
 
 function upgrade_showLogin($type) {
-?>
-    <h1><?php echo _UPG_TEXT_PLEASE_LOGIN;  ?></h1>
-    <p><?php echo _UPG_TEXT_ENTER_YOUR_DATA;  ?>:</p>
-
-    <form method="post" action="<?php echo $type?>">
-
-        <ul>
-            <li><?php echo _UPG_TEXT_NAME; ?>: <input name="login" /></li>
-            <li><?php echo _UPG_TEXT_PASSWORD; ?> <input name="password" type="password" /></li>
-        </ul>
-
-        <p>
-            <input name="action" value="login" type="hidden" />
-            <input type="submit" value="<?php echo _UPG_TEXT_LOGIN; ?>" />
-        </p>
-
-    </form>
-<?php
+    $tpl = file_get_contents('tpl/content_show_login.tpl');
+    $ph = array();
+    $ph['type']                      = $type;
+    $ph['_UPG_TEXT_PLEASE_LOGIN']    = _UPG_TEXT_PLEASE_LOGIN;
+    $ph['_UPG_TEXT_ENTER_YOUR_DATA'] = _UPG_TEXT_ENTER_YOUR_DATA;
+    $ph['_UPG_TEXT_NAME']            = _UPG_TEXT_NAME;
+    $ph['_UPG_TEXT_PASSWORD']        = _UPG_TEXT_PASSWORD;
+    $ph['_UPG_TEXT_LOGIN']           = _UPG_TEXT_LOGIN;
+    return parseHtml($tpl,$ph);
 }
 
-function upgrade_head() {
-    if (_CHARSET != 'UTF-8') {
-//            ini_set('default_charset', 'UTF-8');
-        if ( !headers_sent() )
-            header ('Content-Type: text/html; charset=UTF-8');
+function send_header() {
+    if (_CHARSET != 'UTF-8' && !headers_sent()) {
+        header ('Content-Type: text/html; charset=UTF-8');
     }
+}
+function upgrade_head() {
+    send_header();
 ?>
 <!DOCTYPE html>
 <html>
@@ -113,23 +105,24 @@ function upgrade_head() {
 
 function upgrade_error($msg) {
 
-    echo "\n<h1>" . _UPG_TEXT_ERROR_FAILED . "</h1>\n";
-    echo "\n<p>" . _UPG_TEXT_ERROR_WAS . ":</p>\n";
-    echo sprintf("<blockquote><div>%s</div></blockquote>" , $msg);
-    echo sprintf('<p><a href="index.php" onclick="history.back();">%s</a></p>' , _UPG_TEXT_BACK);
+    $str = array();
+    $str[] = "\n<h1>" . _UPG_TEXT_ERROR_FAILED . '</h1>';
+    $str[] =  '<p>' . _UPG_TEXT_ERROR_WAS . ':</p>';
+    $str[] =  sprintf('<blockquote><div>%s</div></blockquote>' , $msg);
+    $str[] =  sprintf('<p><a href="index.php" onclick="history.back();">%s</a></p>' , _UPG_TEXT_BACK);
+    return join("\n", $str);
 }
 
 function upgrade_start() {
     global $upgrade_failures;
     $upgrade_failures = 0;
 
-    echo "<h1>" . _UPG_TEXT_EXECUTING_UPGRADES . "</h1>\n<ul>\n";
-
-    if (intGetVar('db_optimize') > 0)
+    if (intGetVar('db_optimize')) {
         upgrade_db_optimize();
+    }
 }
 
-function upgrade_end($msg = "") {
+function upgrade_end($msg = '') {
     global $upgrade_failures;
     $from = intGetVar('from');
     if ($upgrade_failures > 0)
@@ -137,7 +130,7 @@ function upgrade_end($msg = "") {
 
     echo "</ul>\n";
     echo "<h1>" . _UPG_TEXT_UPGRADE_COMPLETED_TITLE . "</h1>\n";
-    echo "<p>" . $msg . "</p>\n";
+    if($msg) echo "<p>" . $msg . "</p>\n";
 
     echo sprintf("<p>" . _UPG_TEXT_BACK_TO_OVERVIEW . "</p>\n", "index.php" . ($from>0 ? '?from='.$from : ''));
 }
@@ -460,15 +453,58 @@ function upgrade_manual_366() {
     return join("\n", $row);
 }
 
+function get_current_version() {
+    
+    if (preg_match('@^3[0-9][0-9]$@',intGetVar('current'))) {
+        return intGetVar('current');
+    }
+    
+    if (!upgrade_checkinstall(310)) return 300;
+    if (!upgrade_checkinstall(320)) return 310;
+    if (!upgrade_checkinstall(330)) return 320;
+    if (!upgrade_checkinstall(340)) return 330;
+    if (!upgrade_checkinstall(350)) return 340;
+    if (!upgrade_checkinstall(360)) return 350;
+    if (!upgrade_checkinstall(370)) return 360;
+    if (!upgrade_checkinstall(371)) return 370;
+    if (!upgrade_checkinstall(380)) return 371;
+    
+    return NUCLEUS_UPGRADE_VERSION_ID;
+}
+
 if(!function_exists('parseQuery')) {
     function parseQuery($query='',$ph=array()) { // $ph is placeholders
         $ph['prefix'] = sql_table();
         foreach($ph as $k=>$v) {
-            
             if(strpos($query,'[@')===false) break;
             $k = '[@'.$k.'@]';
             $query = str_replace($k, $v, $query);
         }
         return $query;
+    }
+}
+
+if(!function_exists('parseHtml')) {
+    function parseHtml($tpl='',$ph=array()) { // $ph is placeholders
+        foreach($ph as $k=>$v) {
+            if(strpos($tpl,'{%')===false) break;
+            $k = '{%'.$k.'%}';
+            $tpl = str_replace($k, $v, $tpl);
+        }
+        return $tpl;
+    }
+}
+function renderPage($content='') {
+    $tpl = file_get_contents('tpl/template.tpl');
+    $ph;
+    $ph['title']   = _UPG_TEXT_NUCLEUS_UPGRADE;
+    $ph['content'] = $content;
+    send_header();
+    return parseHtml($tpl,$ph);
+}
+
+if(!function_exists('hsc')) {
+    function hsc($str) {
+        return htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET);
     }
 }

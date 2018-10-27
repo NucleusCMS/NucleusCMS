@@ -1,7 +1,6 @@
 <?php
 
 function upgrade_do380() {
-    
     if (upgrade_checkinstall(380)) return _UPG_TEXT_ALREADY_INSTALLED;
 
     upgrade_do380_addconfig();
@@ -11,6 +10,7 @@ function upgrade_do380() {
     upgrade_do380_addfield_mhalt_reason();
     upgrade_do380_modfield_ballowpast(); // ignore sqlite
     upgrade_do380_Skin_UpgardeAddColumnSpartstype();
+    upgrade_do380_addfield_mimage();
     fix_do380_Skin_ColumnSpartstype();
 
     //  -> 3.80
@@ -161,3 +161,12 @@ function upgrade_do380_addconfig()
     $query = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES('DatabaseName', 'Nucleus')");
     upgrade_query('Updating [@prefix@]config ', $query);
 }
+
+function upgrade_do380_addfield_mimage()
+{
+    if ( sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mimage') ) return;
+    
+    $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mimage` varchar(500) NOT NULL default ''");
+    upgrade_query('Altering [@prefix@]member table', $query);
+}
+

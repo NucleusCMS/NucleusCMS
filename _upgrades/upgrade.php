@@ -30,32 +30,28 @@ load_upgrade_lang();
 
 // check if logged in etc
 if (!$member->isLoggedIn()) {
-    upgrade_head();
-    upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
-    upgrade_foot();
+    $content = upgrade_showLogin('upgrade.php?from=' . intGetVar('from'));
+    echo renderPage($content);
     exit;
 }
 
 if (!$member->isAdmin()) {
-    upgrade_head();
-    upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
-    upgrade_foot();
+    $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
+    echo renderPage($content);
     exit;
 }
 
 // [start] Reject a forked project database incompatible with Nucleus
 if (isset($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
-    upgrade_head();
-    upgrade_error('It is an incompatible database.');
-    upgrade_foot();
+    $content = upgrade_error('It is an incompatible database.');
+    echo renderPage($content);
     exit;
 }
-if ((intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID) || (intGetVar('from')>=NUCLEUS_UPGRADE_VERSION_ID)) {
+if (intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID || intGetVar('from')>=NUCLEUS_UPGRADE_VERSION_ID) {
     $query = "SELECT count(*) as result FROM `[@prefix@]config` WHERE name='DatabaseName' AND value='Nucleus'";
     if (!quickQuery(parseQuery($query))) {
-        upgrade_head();
-        upgrade_error('It is an incompatible database.');
-        upgrade_foot();
+        $content = upgrade_error('It is an incompatible database.');
+        echo renderPage($content);
         exit;
     }
 }
@@ -67,13 +63,18 @@ if (intGetVar('from') && intGetVar('from')<300) {
          . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
          . '<p class="note">'       . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'
          . '<a href="http://nucleuscms.org/" target="_blank">nucleuscms.org</a>';
-    upgrade_head();
-    upgrade_error($msg);
-    upgrade_foot();
+    $content = upgrade_error($msg);
+    echo renderPage($content);
     exit;
 }
 
-upgrade_head();
+if(preg_match('@^3[0-9][0-9]$@',intGetVar('from'))) {
+    $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
+    sql_query(parseQuery($query, array('version'=>intGetVar('from'))));
+}
+
+ob_start();
+echo '<h1>' . _UPG_TEXT_EXECUTING_UPGRADES . "</h1>\n<ul>\n";
 upgrade_start();
 
 switch(intGetVar('from')) {
@@ -110,15 +111,13 @@ switch(intGetVar('from')) {
 }
 
 global $upgrade_failures;
-if (isset($_GET['from']) && (intGetVar('from')>0) && empty($upgrade_failures))
+if (isset($_GET['from']) && intGetVar('from')>0 && empty($upgrade_failures))
 {
     upgrade_check_action_php();
 }
 
 upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );
-upgrade_foot();
+
+$content = ob_get_clean();
+echo renderPage($content);
 exit;
-if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures))
-{
-    upgrade_check_action_php();
-}
