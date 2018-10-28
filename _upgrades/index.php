@@ -49,13 +49,13 @@ elseif (!upgrade_checkinstall(300)) {
     $content = upgrade_error(parseHtml($tpl,$ph));
 }
 else {
+    $tpl = file_get_contents('tpl/content_default.tpl');
     $ph = array();
     $ph['UPGRADE_SCRIPTS'] = _UPG_TEXT_UPGRADE_SCRIPTS;
     $ph['NOTE01NEW']       = _UPG_TEXT_NOTE01NEW;
     $ph['NOTE02']          = _UPG_TEXT_NOTE02;
     $ph['AdminURL']        = $CONF['AdminURL'];
     $ph['BACKHOME']        = _UPG_TEXT_BACKHOME;
-    $tpl = file_get_contents('tpl/content_default.tpl');
     $content = parseHtml(parseHtml($tpl,$ph), array('content'=>get_default_content()));
 }
 
