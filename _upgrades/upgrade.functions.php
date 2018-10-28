@@ -103,14 +103,14 @@ function upgrade_head() {
     <?php
     }
 
-function upgrade_error($msg) {
-
-    $str = array();
-    $str[] = "\n<h1>" . _UPG_TEXT_ERROR_FAILED . '</h1>';
-    $str[] =  '<p>' . _UPG_TEXT_ERROR_WAS . ':</p>';
-    $str[] =  sprintf('<blockquote><div>%s</div></blockquote>' , $msg);
-    $str[] =  sprintf('<p><a href="index.php" onclick="history.back();">%s</a></p>' , _UPG_TEXT_BACK);
-    return join("\n", $str);
+function upgrade_error($content) {
+    $ph = array();
+    $ph['ERROR_FAILED'] = _UPG_TEXT_ERROR_FAILED;
+    $ph['ERROR_WAS']    = _UPG_TEXT_ERROR_WAS;
+    $ph['content']      = $content;
+    $ph['BACK']         =  _UPG_TEXT_BACK;
+    $tpl = file_get_contents('tpl/content_error.tpl');
+    return parseHtml($tpl,$ph);
 }
 
 function upgrade_start() {
@@ -455,8 +455,8 @@ function upgrade_manual_366() {
 
 function get_current_version() {
     
-    if (preg_match('@^3[0-9][0-9]$@',intGetVar('current'))) {
-        return intGetVar('current');
+    if (preg_match('@^3[0-9][0-9]$@',intGetVar('setvar'))) {
+        return intGetVar('setvar');
     }
     
     if (!upgrade_checkinstall(310)) return 300;
@@ -507,4 +507,120 @@ if(!function_exists('hsc')) {
     function hsc($str) {
         return htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET);
     }
+}
+
+function get_default_content() {
+    
+    $current = get_current_version();
+    $messages = array();
+    
+    if (version_compare(phpversion(), '5.0.0', '<')) {
+        $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
+    }
+    elseif (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<')) {
+        $messages[] = '<p class="deprecated">'
+                     . sprintf(_UPG_TEXT_WARN_MINIMUM_PHP_STOP,
+                               NUCLEUS_UPGRADE_VERSION, NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION)
+                     .'</p>';
+    } elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+        $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
+        $messages[] = '<br />';
+        if (!defined('_ERRORS_UPGRADESDIR')) {
+            define('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
+        }
+        $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, hsc(dirname(__FILE__)));
+    } else {
+        $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_UPGRADE_VERSION);
+        $messages[] = sprintf('<p class="warning"><a href="?mode=exec&from=%s&db_optimize=1">%s</a></p>', $current , $tmp_title);
+        $messages[] = '<div class="note">';
+        $messages[] = sprintf('<b>%s:</b> %s' , _UPG_TEXT_NOTE50_WARNING , _UPG_TEXT_NOTE50_MAKE_BACKUP);
+        $messages[] = '</div>';
+    }
+    
+    $from = intGetVar('from');
+    if (!$from) {
+        $from = $current;
+    }
+    
+    if (version_compare(phpversion(),NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION,'>=') && $from < NUCLEUS_UPGRADE_VERSION_ID)
+    {
+        $sth = array();
+        if($from < 330) $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
+        if($from < 340) $sth[] = upgrade_manual_340();     // Need to be told of recommended .htaccess files for the media and skins folders.
+        if($from < 350) $sth[] = upgrade_manual_350();
+        if($from < 366) $sth[] = upgrade_manual_366();
+        
+        $messages[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
+        $sth = trim(join('',$sth));
+        if ($sth) {
+            $messages[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
+            $messages[] = $sth;
+        } elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+            $messages[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
+        }
+    }
+    
+    // php syntax check
+    if (defined('UPGRADE_CHECK_PLUGIN_SYNTAX') && UPGRADE_CHECK_PLUGIN_SYNTAX)
+    {
+        if ($tmp_msg = upgrade_check_plugin_syntax()) {
+            $messages[] = $tmp_msg;
+        }
+    }
+    return join("\n", $messages);
+}
+
+function do_upgrade() {
+    
+    if(preg_match('@^3[0-9][0-9]$@',intGetVar('from'))) {
+        $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
+        sql_query(parseQuery($query, array('version'=>intGetVar('from'))));
+    }
+    
+    ob_start();
+    echo '<h1>' . _UPG_TEXT_EXECUTING_UPGRADES . "</h1>\n<ul>\n";
+    upgrade_start();
+    
+    switch(intGetVar('from')) {
+        case 300:
+            include_once('scripts/upgrade3.1.php');
+            upgrade_do310();
+        case 310:
+            include_once('scripts/upgrade3.2.php');
+            upgrade_do320();
+        case 320:
+            include_once('scripts/upgrade3.3.php');
+            upgrade_do330();
+        case 330:
+            include_once('scripts/upgrade3.4.php');
+            upgrade_do340();
+        case 340:
+            include_once('scripts/upgrade3.5.php');
+            upgrade_do350();
+        case 350:
+            include_once('scripts/upgrade3.6.php');
+            upgrade_do360();
+        case 360:
+            include_once('scripts/upgrade3.7.php');
+            upgrade_do370();
+        case 370:
+            include_once('scripts/upgrade3.7.php');
+            upgrade_do371();
+        case 371:
+            include_once('scripts/upgrade3.8.php');
+            upgrade_do380();
+            break;
+        default:
+            echo '<li>' . _UPG_TEXT_ERROR_NO_UPDATES_TO_EXECUTE . '</li>';
+    }
+    
+    global $upgrade_failures;
+    if (intGetVar('from') && empty($upgrade_failures))
+    {
+        upgrade_check_action_php();
+    }
+    
+    upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );
+    
+    return ob_get_clean();
 }

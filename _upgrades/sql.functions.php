@@ -3,15 +3,16 @@ if(!function_exists('sql_existTableColumnName')) {
     function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=false) {
         $names = sql_getTableColumnNames(parseQuery($tablename));
 
-        if (count($names)>0)
-        {
-            if ($casesensitive)
-                return in_array( $ColumnName , $names );
-            else {
-                foreach($names as $v) {
-                    if ( strcasecmp( $ColumnName , $v ) == 0 ) {
-                         return true;
-                    }
+        if (!$names) {
+            return false;
+        }
+        if ($casesensitive) {
+            return in_array( $ColumnName , $names );
+        }
+        else {
+            foreach($names as $v) {
+                if ( strcasecmp( $ColumnName , $v ) == 0 ) {
+                     return true;
                 }
             }
         }
@@ -26,12 +27,14 @@ if(!function_exists('sql_getTableColumnNames')) {
 
         $items = array();
         $res = sql_query($sql);
-        if (!$res)
+        if (!$res) {
             return array();
+        }
         while( $row = sql_fetch_array($res) )
         {
-            if (isset($row[$target]))
+            if (isset($row[$target])) {
                 $items[] = $row[$target];
+            }
         }
 
         if (count($items)>0)
