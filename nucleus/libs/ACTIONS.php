@@ -939,9 +939,32 @@ class ACTIONS extends BaseActions {
      * Parse skinvar member
      * (includes a member info thingie)
      */
-    function parse_member($what) {
+    function parse_member($what, $id=0) {
         global $memberinfo, $member, $CONF;
 
+        if ($id) {
+            switch($what) {
+                case 'name':
+                    echo hsc($memberinfo->getDisplayName());
+                    break;
+                case 'realname':
+                    echo hsc($memberinfo->getRealName());
+                    break;
+                case 'notes':
+                    echo hsc($memberinfo->getNotes());
+                    break;
+                case 'url':
+                    echo hsc($memberinfo->getURL());
+                    break;
+                case 'email':
+                    echo hsc($memberinfo->getEmail());
+                    break;
+                case 'id':
+                    echo hsc($memberinfo->getID());
+                    break;
+            }
+            return;
+        }
         // 1. only allow the member-details-page specific variables on member pages
         if ($this->skintype == 'member') {
 
@@ -965,6 +988,7 @@ class ACTIONS extends BaseActions {
                     echo hsc($memberinfo->getID());
                     break;
             }
+            return;
         }
 
         // 2. the next bunch of options is available everywhere, as long as the user is logged in
@@ -996,6 +1020,7 @@ class ACTIONS extends BaseActions {
                         echo $CONF['IndexURL'] . createMemberLink($member->getID());
                     break;
             }
+            return;
         }
     }
 
