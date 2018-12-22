@@ -413,7 +413,7 @@ if (!isset($member))
 
 		$b = new BLOG($blogid);
 
-		$categorystruct = array();
+		$structarray = array();
 
 		$query =  "SELECT cname, cdesc, catid"
 				. ' FROM '.sql_table('category')
