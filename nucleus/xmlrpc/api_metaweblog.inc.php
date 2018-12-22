@@ -422,18 +422,18 @@ if (!isset($member))
 		$r = sql_query($query);
 
 		while ($obj = sql_fetch_object($r)) {
-
-			$categorystruct[$obj->cname] = new xmlrpcval(
+			array_push($structarray, new xmlrpcval(
 				array(
+					"title" => new xmlrpcval($obj->cname,"string"),
+					"categoryId" => new xmlrpcval($obj->catid,"string"),
 					"description" => new xmlrpcval($obj->cdesc,"string"),
 					"htmlUrl" => new xmlrpcval($b->getURL() . "?catid=" . $obj->catid ,"string"),
 					"rssUrl" => new xmlrpcval("","string")
 				)
-			,'struct');
+			,'struct'));
 		}
 
-
-		return new xmlrpcresp(new xmlrpcval( $categorystruct , "struct"));
+		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
 
 	}
 
