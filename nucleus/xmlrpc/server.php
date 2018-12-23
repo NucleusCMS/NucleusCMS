@@ -153,7 +153,7 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 /**
   * Updates an item. Username and password are required to login
   */
-function _edititem($itemid, $username, $password, $catid, $title, $body, $more, $wasdraft, $publish, $closed) {
+function _edititem($itemid, $username, $password, $catid, $title, $body, $more, $wasdraft, $publish, $closed, $timestamp=0) {
 	global $manager;
 
 	// 1. login
@@ -174,7 +174,7 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
 	}
 
 	// 3. update item
-	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, 0);
+	ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
 
 	return new xmlrpcresp(new xmlrpcval(1,"boolean"));
 }
