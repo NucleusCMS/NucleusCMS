@@ -6595,8 +6595,12 @@ EOL;
         );
         $manager->notify('AdminPrePageFoot', $param);
 
-        echo "\t\t". sprintf('<div class="foot"><a href="%s">%s</a> &copy; 2002-%s</div>',
-                            _ADMINPAGEFOOT_OFFICIALURL, hsc(CORE_APPLICATION_NAME) , date('Y') . ' ' . _ADMINPAGEFOOT_COPYRIGHT) . "\n";
+        $ph = array();
+        $ph['url']      = _ADMINPAGEFOOT_OFFICIALURL;
+        $ph['app_name'] = hsc(CORE_APPLICATION_NAME);
+        $ph['year']     = date('Y');
+        $ph['copy']     = _ADMINPAGEFOOT_COPYRIGHT;
+        echo "\t\t". parseHtml('<div class="foot"><a href="{%url%}">{%app_name%}</a> &copy; 2002-{%year%} {%copy%}</div>', $ph) . "\n";
 
         ?>
             </div><!-- content -->
