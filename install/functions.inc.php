@@ -29,9 +29,9 @@ function get_install_lang_keys()
 
 function add_last_directory_separator($dirname)
 {
-  if (($dirname !== '') && (! preg_match('#[\\/]$#', $dirname)))
-    return $dirname . '/';
-  return $dirname;
+    if (($dirname !== '') && (! preg_match('#[\\/]$#', $dirname)))
+        return $dirname . '/';
+    return $dirname;
 }
 
 function getSiteUrl() {
@@ -213,7 +213,7 @@ function doInstall() {
     $install_db_type = postVar('install_db_type');
     
     if ($install_db_type != 'sqlite' || !ENABLE_SQLITE_INSTALL)
-      $install_db_type = 'mysql';
+        $install_db_type = 'mysql';
     $is_install_mysql  = ($install_db_type == 'mysql');
     $is_install_sqlite = ($install_db_type == 'sqlite');
     if (!$is_install_mysql)
@@ -235,7 +235,7 @@ function doInstall() {
  * Jan.28, 2011. Japanese Package Release Team
  */ 
     if (function_exists('date_default_timezone_set')){
-         @date_default_timezone_set((function_exists('date_default_timezone_get')) ? @date_default_timezone_get() : 'UTC');
+        @date_default_timezone_set((function_exists('date_default_timezone_get')) ? @date_default_timezone_get() : 'UTC');
     }
 
     // 1. check all the data
@@ -245,7 +245,7 @@ function doInstall() {
     if (($mysql_usePrefix == 1) && (strlen($mysql_prefix) == 0) ) array_push($errors, _ERROR3);
 
     if (($mysql_usePrefix == 1) && (!preg_match('#^[a-zA-Z0-9_]+$#', $mysql_prefix) ) )
-                                                                  array_push($errors, _ERROR4);
+        array_push($errors, _ERROR4);
 
     if (!function_exists('mb_convert_encoding') && $charset != 'latin1')
         $charset = 'utf8';
@@ -310,30 +310,30 @@ function doInstall() {
     // this will need to be changed if we ever allow
     if ($is_install_sqlite)
     {
-          global $DB_DRIVER_NAME;
-          $DB_DRIVER_NAME = 'sqlite';
-          $sqlite_db_dir = @realpath(dirname(__FILE__) . '/../settings');
-          $sqlite_db_name = $sqlite_db_dir . '/db_nucleus.sqlite';
-          $mysql_database = $sqlite_db_name;
+        global $DB_DRIVER_NAME;
+        $DB_DRIVER_NAME = 'sqlite';
+        $sqlite_db_dir = @realpath(dirname(__FILE__) . '/../settings');
+        $sqlite_db_name = $sqlite_db_dir . '/db_nucleus.sqlite';
+        $mysql_database = $sqlite_db_name;
 
-          if ((!$sqlite_db_dir) || !is_dir( $sqlite_db_dir ))
+        if ((!$sqlite_db_dir) || !is_dir( $sqlite_db_dir ))
             {
                 $msg = sprintf("<p>not found: %s</p><p>%s</p>" , _INSTALL_TEXT_SETTINGS_NOEXSIT,  htmlspecialchars($sqlite_db_dir,NULL,_CHARSET) );
                 _doError ( $msg );
                 exit;
             }
 
-          if (@is_file( $sqlite_db_name ))
+        if (@is_file( $sqlite_db_name ))
             {
                 $fsize = @filesize( $sqlite_db_name );
                 if ($fsize)
-                  {
-                      $msg = sprintf("<p>%s: %s</p>", _INSTALL_TEXT_DATABASE_EXSIT , htmlspecialchars($sqlite_db_name,NULL,_CHARSET) );
-                      _doError ( $msg );
-                      exit;
-                  }
+                {
+                    $msg = sprintf("<p>%s: %s</p>", _INSTALL_TEXT_DATABASE_EXSIT , htmlspecialchars($sqlite_db_name,NULL,_CHARSET) );
+                    _doError ( $msg );
+                    exit;
+                }
             }
-          $db_name = $sqlite_db_name;
+        $db_name = $sqlite_db_name;
 
 //			if (is_file('../config.php') || is_file('../config-custum.php'))
 //			{
@@ -350,8 +350,9 @@ function doInstall() {
 //            var_dump($MYSQL_CONN);
     }
 
-    if ($is_install_mysql)
+    if ($is_install_mysql) {
         $MYSQL_CONN = @sql_connect_args($db_host, $mysql_user, $mysql_password);
+    }
 
     if ($MYSQL_CONN == false) {
         _doError(_ERROR15 . ': ' . sql_error() );
@@ -363,7 +364,7 @@ function doInstall() {
         $SQL_DBH = $MYSQL_CONN;
         $MYSQL_CONN = 0;
     }
-//var_dump($SQL_DBH, $DB_HANDLE);
+    
     if ($is_install_sqlite)
         $DB_HANDLE->beginTransaction(); // sql_query("begin");
 
@@ -415,22 +416,22 @@ function doInstall() {
     {
         $queries = file_get_contents('install-sqlite.sql');
         if (0)
-          {
+        {
             $queries = array($queries);
-          }
-          else
-          {
-              $queries = preg_replace("#/\*.*?\*/#ims", '', $queries);
-              $queries = preg_split("#(;\n|;\r)#m", $queries);
-              for($i = 0; $i<count($queries); $i++)
-              {
-                 if (strtoupper(trim($queries[$i])) == 'END')
-                 {
+        }
+        else
+        {
+            $queries = preg_replace("#/\*.*?\*/#ims", '', $queries);
+            $queries = preg_split("#(;\n|;\r)#m", $queries);
+            for($i = 0; $i<count($queries); $i++)
+            {
+                if (strtoupper(trim($queries[$i])) == 'END')
+                {
                     $queries[$i-1] .= ';' .$queries[$i];
                     $queries[$i] = '';
-                 }
-              }
-          }
+                }
+            }
+        }
     }
     else
     { // mysql
@@ -459,8 +460,9 @@ function doInstall() {
         );
 
     $aTableNamesPrefixed = array();
-    foreach ($aTableNames as $v)
-      $aTableNamesPrefixed[] = $mysql_prefix . $v;
+    foreach ($aTableNames as $v) {
+        $aTableNamesPrefixed[] = $mysql_prefix . $v;
+    }
 
     $count = count($queries);
 
@@ -487,16 +489,16 @@ function doInstall() {
     $itm_more  = _1ST_POST2;
 
     $newpost = "INSERT INTO "
-             . tableName('nucleus_item')
-              . ' (`inumber`, `ititle`, `ibody`, `imore`,'
-              . '`iblog`, `iauthor`, `itime`,'
-              . '`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`)'
-             . " VALUES ("
-             . "1, "
-             . sql_quote_string($itm_title) . ","
-             . sql_quote_string($itm_body) . ","
-             . sql_quote_string($itm_more) . ","
-             . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+        . tableName('nucleus_item')
+        . ' (`inumber`, `ititle`, `ibody`, `imore`,'
+        . '`iblog`, `iauthor`, `itime`,'
+        . '`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`)'
+        . " VALUES ("
+        . "1, "
+        . sql_quote_string($itm_title) . ","
+        . sql_quote_string($itm_body) . ","
+        . sql_quote_string($itm_more) . ","
+        . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
     sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '): ' . sql_error() );
 
     if (DEBUG_INSTALL_STEPS)
@@ -558,10 +560,10 @@ function doInstall() {
         $cat_name = sql_real_escape_string( defined('_GENERALCAT_NAME') ? _GENERALCAT_NAME : 'general' );
         $cat_desc = sql_real_escape_string( defined('_GENERALCAT_DESC') ? _GENERALCAT_DESC : '' );
     $query = 'UPDATE ' . tableName('nucleus_category')
-           . " SET cname  = '" . $cat_name . "',"
-           . " cdesc	  = '" . $cat_desc . "'"
-           . " WHERE"
-           . " catid	  = 1";
+        . " SET cname  = '" . $cat_name . "',"
+        . " cdesc	  = '" . $cat_desc . "'"
+        . " WHERE"
+        . " catid	  = 1";
 //     . " SET cname = '${cat_name}', cdesc = '${cat_desc}' WHERE catid = 1");
 
     sql_query($query) or _doError(_ERROR20 . ': ' . sql_error() );
@@ -855,7 +857,7 @@ function doCheckFiles() {
     $count = count($files);
 
     for ($i = 0; $i < $count; $i++)
-   {
+    {
         if (!is_readable($files[$i]) )
         {
             array_push($missingfiles, _ERROR25_1 . $files[$i] . _ERROR25_2);
@@ -878,9 +880,9 @@ function doCheckFiles() {
  */
 function updateConfig($name, $val) {
     $query = sprintf("UPDATE %s SET value='%s' WHERE name='%s'",
-                    tableName('nucleus_config'),
-                    sql_real_escape_string(trim($val)),
-                    sql_real_escape_string($name));
+        tableName('nucleus_config'),
+        sql_real_escape_string(trim($val)),
+        sql_real_escape_string($name));
 
     sql_query($query) or _doError(_ERROR26 . ': ' . sql_error() );
     return sql_insert_id();

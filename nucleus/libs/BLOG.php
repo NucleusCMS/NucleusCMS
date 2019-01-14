@@ -92,7 +92,7 @@ class BLOG {
             $timestamp_end = mktime(0,0,0,$month,$day+1,$year);
         }
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
-                     . ' and i.itime<' . mysqldate($timestamp_end);
+                    . ' and i.itime<' . mysqldate($timestamp_end);
 
 
         $this->readLogAmount($templatename,0,$extra_query,'',1,1);
@@ -146,9 +146,9 @@ class BLOG {
         $query = $this->getSqlBlog($extraQuery);
 
         if ($amountEntries > 0) {
-                // $offset zou moeten worden:
-                // (($startpos / $amountentries) + 1) * $offset ... later testen ...
-               $query .= ' LIMIT ' . intval($startpos + $offset).',' . intval($amountEntries);
+            // $offset zou moeten worden:
+            // (($startpos / $amountentries) + 1) * $offset ... later testen ...
+            $query .= ' LIMIT ' . intval($startpos + $offset).',' . intval($amountEntries);
         }
         return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
     }
@@ -325,7 +325,7 @@ class BLOG {
         $imore  = sql_quote_string($imore);
 
         $query = parseQuery("INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) "
-               . "VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)");
+            . "VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)");
         sql_query($query);
         $itemid = sql_insert_id();
 
@@ -624,12 +624,12 @@ class BLOG {
             $query = 'SELECT COUNT(*) as result ';
 
         $query .= parseQuery(' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c')
-               . ' WHERE i.iblog='.$this->blogid
-               . ' and i.iauthor=m.mnumber'
-               . ' and i.icat=c.catid'
-               . ' and i.idraft=0'  // exclude drafts
-                    // don't show future items
-               . ' and i.itime<=' . mysqldate($this->getCorrectTime());
+            . ' WHERE i.iblog='.$this->blogid
+            . ' and i.iauthor=m.mnumber'
+            . ' and i.icat=c.catid'
+            . ' and i.idraft=0'  // exclude drafts
+            // don't show future items
+            . ' and i.itime<=' . mysqldate($this->getCorrectTime());
 
         if ($this->getSelectedCategory())
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
@@ -756,8 +756,7 @@ class BLOG {
 
         sql_free_result($res);
 
-        $tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER']
-                                                       : '';
+        $tplt = isset($template['ARCHIVELIST_FOOTER']) ? $template['ARCHIVELIST_FOOTER'] : '';
         echo TEMPLATE::fill($tplt, $archdata);
     }
 
@@ -1004,11 +1003,11 @@ class BLOG {
       * Update the update file if requested
       */    
     function updateUpdatefile() {
-         if ($this->getUpdateFile()) {
+        if ($this->getUpdateFile()) {
             $f_update = fopen($this->getUpdateFile(),'w');
             fputs($f_update,$this->getCorrectTime());
             fclose($f_update);
-         }
+        }
 
     }
 
@@ -1515,10 +1514,10 @@ class BLOG {
                     .   ' i.iclosed as closed';
 
             $query .= ' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c'
-                    . ' WHERE'
-                    .    ' i.iblog='.$this->blogid
-                   . ' and i.iauthor=m.mnumber'
-                   . ' and i.icat=c.catid';
+                . ' WHERE'
+                .    ' i.iblog='.$this->blogid
+                . ' and i.iauthor=m.mnumber'
+                . ' and i.icat=c.catid';
             
             if (!$showDrafts) $query .= ' and i.idraft=0';    // exclude drafts
             if (!$showFuture) $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime()); // don't show future items
