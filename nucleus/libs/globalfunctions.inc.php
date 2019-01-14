@@ -2532,10 +2532,14 @@ function checkOutputCompression($content_type) {
     }
 }
 
-function str_contain($haystack, $needle) {
+function str_contains($haystack, $needle) {
     $pos = strpos($haystack, $needle);
     if($pos!==false) return true;
     return false;
+}
+
+function str_contain($haystack, $needle) {
+    return str_contains($haystack, $needle);
 }
 
 function getBaseUrl() {
