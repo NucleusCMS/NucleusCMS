@@ -307,7 +307,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if (!$MYSQL_CONN) return array();
 
-        if(str_contain($tablename,'[@prefix@]')) {
+        if(str_contains($tablename,'[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
         $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
@@ -354,7 +354,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if (!$MYSQL_CONN) return FALSE;
 
-        if(str_contain($tablename,'[@prefix@]')) {
+        if(str_contains($tablename,'[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
         $sql = sprintf("SHOW TABLES LIKE '%s' ", mysql_real_escape_string($tablename));

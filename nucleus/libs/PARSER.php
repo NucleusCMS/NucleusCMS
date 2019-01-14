@@ -60,7 +60,7 @@ class PARSER {
      */
     public function parse(&$content) {
         
-        if(!str_contain($this->delim,',')) {
+        if(!str_contains($this->delim,',')) {
             $this->legacyParse($content);
             return;
         }

@@ -115,7 +115,7 @@ class BaseActions {
         }
         $this->level = $this->level + 1;
         // parse file contents
-        if(str_contain($contents,'<%'))
+        if(str_contains($contents,'<%'))
             $this->parser->parse($contents);
         else
             echo $contents;

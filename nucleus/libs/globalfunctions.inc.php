@@ -799,7 +799,7 @@ function addBreaks($text) {
 }
 
 function removeBreaks($var) {
-    if(str_contain($var,"\r")) $var = str_replace("\r",'',$var);
+    if(str_contains($var,"\r")) $var = str_replace("\r",'',$var);
     return preg_replace("@<br[ /]*>\n@i", "\n", $var);
 }
 
@@ -1829,7 +1829,7 @@ function sanitizeArray(&$array)
         if (!in_array($key, $excludeListForSanitization)) {
 
             // check value
-            if (str_contain($val, '\\')) {
+            if (str_contains($val, '\\')) {
                 list($val, $tmp) = explode('\\', $val);
             }
 
@@ -2414,7 +2414,7 @@ function parseText($tpl='',$ph=array()) { // $ph is placeholders
     }
     
     foreach($ph as $k=>$v) {
-        if(!str_contain($tpl,'<%')) break;
+        if(!str_contains($tpl,'<%')) break;
         $tpl = str_replace("<%{$k}%>", $v, $tpl);
     }
     return $tpl;
@@ -2429,22 +2429,22 @@ function parseHtml($html='',$ph=array()) { // $ph is placeholders
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     
     foreach($ph as $k=>$v) {
-        if(!str_contain($html,'{%')) break;
+        if(!str_contains($html,'{%')) break;
         
-        if(str_contain($v,'{%')) {
+        if(str_contains($v,'{%')) {
             $v = str_replace('{%',"[{$esc}%",$v);
         }
         $html = str_replace("{%{$k}%}", $v, $html);
-        if(str_contain($html,"{%{$k}:hsc%}"))
+        if(str_contains($html,"{%{$k}:hsc%}"))
         {
             $html = str_replace("{%{$k}:hsc%}", hsc($v), $html);
         }
-        if(str_contain($html,"{%{$k}:urlencode%}"))
+        if(str_contains($html,"{%{$k}:urlencode%}"))
         {
             $html = str_replace("{%{$k}:urlencode%}", urlencode($v), $html);
         }
     }
-    if(str_contain($html,'{'.$esc.'%')) {
+    if(str_contains($html,'{'.$esc.'%')) {
         $html = str_replace('{'.$esc.'%','{%',$html);
     }
     return $html;
@@ -2452,7 +2452,7 @@ function parseHtml($html='',$ph=array()) { // $ph is placeholders
 
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
 
-    if(str_contain($query,'<%')) {
+    if(str_contains($query,'<%')) {
         $query = str_replace(array('<%','%>'), array('[@','@]'), $query);
     }
     
@@ -2464,22 +2464,22 @@ function parseQuery($query='',$ph=array()) { // $ph is placeholders
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'].mt_rand());
     foreach($ph as $k=>$v) {
         
-        if(!str_contain($query,'[@')) break;
+        if(!str_contains($query,'[@')) break;
         
-        if(str_contain($v,'[@')) {
+        if(str_contains($v,'[@')) {
             $v = str_replace('[@',"[{$esc}@",$v);
         }
         $query = str_replace("[@{$k}@]", $v, $query);
-        if(str_contain($query,"[@{$k}:escape@]"))
+        if(str_contains($query,"[@{$k}:escape@]"))
         {
             $query = str_replace("[@{$k}:escape@]", sql_real_escape_string($v), $query);
         }
-        if(str_contain($query,"[@{$k}:int@]"))
+        if(str_contains($query,"[@{$k}:int@]"))
         {
             $query = str_replace("[@{$k}:int@]", (int)$v, $query);
         }
     }
-    if(str_contain($query,"[{$esc}@")) {
+    if(str_contains($query,"[{$esc}@")) {
         $query = str_replace("[{$esc}@",'[@',$query);
     }
     return $query;

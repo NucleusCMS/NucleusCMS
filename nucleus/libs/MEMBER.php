@@ -551,7 +551,7 @@ class MEMBER {
             return false;
         global $CONF;
         
-        if(str_contain($hash, '$'))
+        if(str_contains($hash, '$'))
             $rs = $this->hasher->CheckPassword($formv_password, $hash);
         else
         {
