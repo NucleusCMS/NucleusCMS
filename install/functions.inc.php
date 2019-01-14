@@ -335,19 +335,11 @@ function doInstall() {
             }
         $db_name = $sqlite_db_name;
 
-//			if (is_file('../config.php') || is_file('../config-custum.php'))
-//			{
-//				$msg = sprintf("<p>%s</p><p>%s</p>", _INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1 , _INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2 );
-//				KaguyaInstaller::doError ( $msg );
-//				exit;
-//			}
-
-          $mysql_create = 0;
-          $mysql_usePrefix = 0;
-          $MYSQL_CONN = @sql_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
-          $SQL_DBH = $MYSQL_CONN;
-          $DB_PHP_MODULE_NAME = 'pdo';
-//            var_dump($MYSQL_CONN);
+        $mysql_create = 0;
+        $mysql_usePrefix = 0;
+        $MYSQL_CONN = @sql_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
+        $SQL_DBH = $MYSQL_CONN;
+        $DB_PHP_MODULE_NAME = 'pdo';
     }
 
     if ($is_install_mysql) {
