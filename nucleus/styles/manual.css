@@ -144,3 +144,11 @@ acronym, abbr {
 label {
 	cursor: hand;
 }
+
+:placeholder-shown {
+    color: #aaa; }
+
+/* Google Chrome, Safari, Opera 15+, Android, iOS */
+::-webkit-input-placeholder {
+    color: #aaa; }
+
