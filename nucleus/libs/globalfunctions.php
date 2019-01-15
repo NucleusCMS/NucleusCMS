@@ -16,7 +16,17 @@
 
  */
 
-global $DIR_NUCLEUS;
+global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
+// needed if we include globalfunctions from install.php
+global $nucleus, $CONF, $manager, $member;
+
+define('NC_CORE_PATH',    $DIR_NUCLEUS);
+define('NC_LIBS_PATH',    $DIR_LIBS);
+define('NC_MEDIA_PATH',   $DIR_MEDIA);
+define('NC_SKINS_PATH',   $DIR_SKINS);
+define('NC_PLUGINS_PATH', $DIR_PLUGINS);
+define('NC_LOCALE_PATH',  $DIR_LANG);
+
 //if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
 
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
@@ -25,8 +35,6 @@ $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
-// needed if we include globalfunctions from install.php
-global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 include_once($DIR_LIBS. 'version.php');
 include_once($DIR_LIBS. 'globalfunctions.inc.php');
