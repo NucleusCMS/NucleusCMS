@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html <?php echo $lang; ?>>
-    <head><meta charset="<?php echo _CHARSET; ?>" />
-    <title><?php echo hsc($title)?></title></head>
+<html lang="{%lang_code%}">
+    <head><meta charset="{%CHARSET%}" />
+    <title>{%title%}</title></head>
     <body>
-        <h1><?php echo hsc($title)?></h1>
-        <?php echo $msg?>
+        <h1>{%title%}</h1>
+        {%msg%}
     </body>
 </html>

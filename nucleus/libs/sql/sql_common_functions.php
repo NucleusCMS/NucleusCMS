@@ -21,19 +21,14 @@
         if (!defined('_CHARSET')) {
             define('_CHARSET', 'UTF-8');
         }
-        $lang = sprintf('lang="%s"', (defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en'));
+        $tpl = file_get_contents(NC_LIBS_PATH.'include/startup_error.template');
+        $ph = array();
+        $ph['lang_code'] = defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en';
+        $ph['CHARSET']   = _CHARSET;
+        $ph['title']     = hsc($title);
+        $ph['msg']       = $msg;
         sendContentType('text/html','',_CHARSET);
-        ?>
-<!DOCTYPE html>
-<html <?php echo $lang; ?>>
-    <head><meta charset="<?php echo _CHARSET; ?>" />
-    <title><?php echo hsc($title)?></title></head>
-    <body>
-        <h1><?php echo hsc($title)?></h1>
-        <?php echo $msg?>
-    </body>
-</html>
-<?php
+        echo parseHtml($tpl, $ph);
         exit;
     }
 
