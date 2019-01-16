@@ -249,11 +249,15 @@
 
     function fix_mysql_sqlmode($conn_or_dbh = NULL)
     {
+        if (version_compare(sql_get_server_version($dbh), '5.6.0', '<')) {
+            return;
+        }
         $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
         $sqlmode = sql_get_mysql_sqlmode($dbh);
-        if (empty($sqlmode)
-            || version_compare(sql_get_server_version($dbh), '5.6.0', '<'))
-           return;
+        if (empty($sqlmode)) {
+            return;
+        }
+
         $options = array_diff(explode(',',$sqlmode), array('NO_ZERO_DATE','NO_ZERO_IN_DATE'));
         $new_sqlmode = implode(',', $options);
         if (strcmp($sqlmode,$new_sqlmode)!=0)

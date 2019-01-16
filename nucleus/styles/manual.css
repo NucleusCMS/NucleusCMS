@@ -146,9 +146,11 @@ label {
 }
 
 :placeholder-shown {
-    color: #aaa; }
+    color: #aaa;
+}
 
 /* Google Chrome, Safari, Opera 15+, Android, iOS */
 ::-webkit-input-placeholder {
-    color: #aaa; }
+    color: #aaa;
+}
 

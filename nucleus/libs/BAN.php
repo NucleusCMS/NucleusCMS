@@ -52,7 +52,7 @@ class BAN {
         $manager->notify('PreAddBan', $param);
 
         $query = 'INSERT INTO '.sql_table('ban')." (blogid, iprange, reason) VALUES "
-               . "($blogid,'".sql_real_escape_string($iprange)."','".sql_real_escape_string($reason)."')";
+            . "($blogid,'".sql_real_escape_string($iprange)."','".sql_real_escape_string($reason)."')";
         $res = sql_query($query);
 
         $param = array(

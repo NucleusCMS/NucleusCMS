@@ -1484,8 +1484,10 @@ class ACTIONS extends BaseActions {
         $itemid = intval($itemid);
         // if item is closed, show message and do nothing
         $item =& $manager->getItem($itemid,0,0);
-        if ($item['closed'] || !$blog->commentsEnabled())
-          { return TRUE; } else { return FALSE; }
+        if ($item['closed'] || !$blog->commentsEnabled()) {
+            return TRUE;
+        }
+        return FALSE;
     }
 
     function parse_hascomment()
@@ -1498,5 +1500,4 @@ class ACTIONS extends BaseActions {
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }
-
 }

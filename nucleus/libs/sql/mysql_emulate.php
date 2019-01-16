@@ -14,11 +14,11 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
  */
- 
+
 /*
  * if no mysql_* functions exist, define wrappers
  */
- 
+
 $MYSQL_CONN = 0;
 
 if (!function_exists('mysqli_query') && function_exists('startUpError'))

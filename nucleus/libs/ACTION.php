@@ -167,9 +167,9 @@ class ACTION
         $tomem->readFromId(postVar('memberid') );
 
         $message  = _MMAIL_MSG . ' ' . $fromName . "\n"
-              . '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
-              . _MMAIL_MAIL . " \n\n"
-              . postVar('message');
+            . '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
+            . _MMAIL_MAIL . " \n\n"
+            . postVar('message');
         $message .= getMailFooter();
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
@@ -571,5 +571,3 @@ class ACTION
     }
 
 }
-
-?>

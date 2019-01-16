@@ -264,7 +264,7 @@ function getBlogIDFromName($bshortname)
     $ph['bshortname'] = sql_quote_string($bshortname);
     $res = parseQuickQuery("SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=[@bshortname@]", $ph);
     if ($res !== false)
-      $res = intval($res);
+        $res = intval($res);
     return $res;
 }
 
@@ -279,7 +279,7 @@ function getBlogIDFromItemID($inumber)
     $ph['inumber'] = (int)$inumber;
     $res = parseQuickQuery('SELECT iblog as result FROM [@prefix@]item WHERE inumber=[@inumber@]', $ph);
     if ($res !== false)
-      $res = intval($res);
+        $res = intval($res);
     return $res;
 }
 
@@ -437,8 +437,8 @@ function selector() {
         $ph['blogid'] = $blogid;
         $ph['catextra'] = $catextra;
         $query = 'SELECT inumber, ititle FROM [@prefix@]item'
-               . ' WHERE itime < [@itime@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
-               . ' ORDER BY itime DESC LIMIT 1';
+                . ' WHERE itime < [@itime@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
+                . ' ORDER BY itime DESC LIMIT 1';
         $res = sql_query(parseQuery($query, $ph));
 
         if ($res && ($obj = sql_fetch_object($res))) {
@@ -450,8 +450,8 @@ function selector() {
         $ph['catextra'] = $catextra;
         $ph['now']      = mysqldate($b->getCorrectTime());
         $query = 'SELECT inumber, ititle FROM [@prefix@]item'
-               . ' WHERE itime > [@itime@] AND itime <= [@now@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
-               . ' ORDER BY itime ASC LIMIT 1';
+                . ' WHERE itime > [@itime@] AND itime <= [@now@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
+                . ' ORDER BY itime ASC LIMIT 1';
         $res = sql_query(parseQuery($query, $ph));
 
         if ($res && ($obj = sql_fetch_object($res))) {
@@ -1024,7 +1024,7 @@ function LoadCoreLanguage()
         include_once ($filename);
 
     if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
-         && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
+        && (defined('_CHARSET') && (strtoupper(_CHARSET) == 'UTF-8')))
     {
         // load undefined constant
         if ((stripos($language, 'english')===false) && (stripos($language, 'japan')===false))
@@ -1413,95 +1413,6 @@ function checkVars($aVars) {
         }
     }
 }
-
-//function checkVars()
-//{
-//    $variables = array('nucleus', 'CONF', 'DIR_LIBS',
-//        'MYSQL_HOST', 'MYSQL_USER', 'MYSQL_PASSWORD', 'MYSQL_DATABASE',
-//        'DIR_LOCALES', 'DIR_PLUGINS',
-//        'GLOBALS', 'argv', 'argc', '_GET', '_POST', '_COOKIE', '_ENV', '_SESSION', '_SERVER', '_FILES');
-//
-//    foreach ( $variables as $variable )
-//    {
-//        if ( isset($_GET[$variable])
-//          || isset($_POST[$variable])
-//          || isset($_COOKIE[$variable])
-//          || isset($_ENV[$variable])
-//          || (isset($_SESSION[$variable]) && session_id()!=='')
-//          || isset($_FILES[$variable]) )
-//        {
-//            die('Sorry. An error occurred.');
-//        }
-//    }
-//    return;
-//}
-
-//function encoding_check($val, $key, $encoding=false, $exclude=false) {
-//    /*
-//      When 3rd argument is set, return if checked already.
-//      When 4th argument is set, set the excluded key(s).
-//    */
-//    static $search=false, $checked=array(), $excludes=array();
-//    if ($exclude!==false) {
-//        if (is_array($exclude)) {
-//            foreach($exclude as $v) $excludes[$v]=true;
-//        } else $excludes[$exclude]=true;
-//        return;
-//    }
-//    if ($encoding!==false) {
-//        switch($encoding=strtolower($encoding)){
-//            case 'utf-8':
-//                $search='/([\x00-\x7F]+'.
-//                    '|[\xC2-\xDF][\x80-\xBF]'.
-//                    '|[\xE0-\xEF][\x80-\xBF][\x80-\xBF]'.
-//                    '|[\xF0-\xF7][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
-//                    '|[\xF8-\xFB][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF]'.
-//                    '|[\xFC-\xFD][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF][\x80-\xBF])/';
-//                    break;
-//            case 'euc-jp':
-//                $search='/([\x00-\x7F]+'.
-//                    '|[\x8E][\xA0-\xDF]'.
-//                    '|[\x8F]?[\xA1-\xFE][\xA1-\xFE])/';
-//                break;
-//            case 'gb2312':
-//                $search='/([\x00-\x7F]+'.
-//                    '|[\xA1-\xF7][\xA1-\xFE])/';
-//                break;
-//            case 'shift_jis':
-//                // Note that shift_jis is only supported for output.
-//                // Using shift_jis in DB is prohibited.
-//                $search='/([\x00-\x7F\xA1-\xDF]+'.
-//                    '|[\x81-\x9F\xE0-\xFC][\x40-\xFC])/';
-//                break;
-//            default:
-//                $search=false;
-//                if (preg_match('/^iso\-8859\-[0-9]{1,2}$/',$encoding)) break;
-//                if (preg_match('/^windows\-125[0-8]$/',$encoding)) break;
-//                startUpError('<p>Unknown or non-supported encoding.</p>', 'Encoding Error');
-//                exit;
-//        }
-//        if (isset($checked[$encoding])) return true; // Already checked.
-//        $checked[$encoding]=true;
-//    }
-//    if ($key===false) return false; // Not yet checked.
-//    if ($search===false) return true; // non-multibyte encoding
-//    if (isset($excludes[$key])) return true; // This key isn't checked.
-//    if (is_array($val)) {
-//        array_walk($val, 'encoding_check');
-//    } else {
-//        $result=preg_replace($search,'',$val);
-//        if (strlen($result)!=0) {
-//            startUpError('<p>Invalid input.</p>', 'Input Error');
-//            exit;
-//        }
-//    }
-//    $result=preg_replace($search,'',$key);
-//    if (strlen($result)!=0) {
-//        startUpError('<p>Invalid input.</p>', 'Input Error');
-//        exit;
-//    }
-//    return true;
-//}
 
 /**
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
@@ -1950,25 +1861,25 @@ function toAscii($html) {
 }
 
 function _links_init() {
-   global $tmp_links;
-   $tmp_links = array();
+    global $tmp_links;
+    $tmp_links = array();
 }
 
 function _links_add($match) {
-   global $tmp_links;
-   $tmp_links[] = $match[1];
-   return $match[2] . ' [' . sizeof($tmp_links) .']';
+    global $tmp_links;
+    $tmp_links[] = $match[1];
+    return $match[2] . ' [' . sizeof($tmp_links) .']';
 }
 
 function _links_list() {
-   global $tmp_links;
-   $output = '';
-   $i = 1;
-   foreach ($tmp_links as $current) {
-      $output .= "[$i] $current\n";
-      $i++;
-   }
-   return $output;
+    global $tmp_links;
+    $output = '';
+    $i = 1;
+    foreach ($tmp_links as $current) {
+        $output .= "[$i] $current\n";
+        $i++;
+    }
+    return $output;
 }
 // END: functions from the end of file BLOG.php
 
@@ -2145,7 +2056,7 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
         $SearchDir .= '/';
 
     if ( $clearcache && isset($lists[$SearchDir]) )
-         unset($lists[$SearchDir]);
+        unset($lists[$SearchDir]);
     if ( isset($lists[$SearchDir]) )
     {
         $status = array('result'=>TRUE, 'is_cache'=>TRUE);
@@ -2318,9 +2229,9 @@ function init_nucleus_compatibility_mysql_handler()
         if ( isset($MYSQL_HANDLER) )
         {
             if (
-                  ( is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER == 'mysql') )
-                  ||
-                  ( is_array($MYSQL_HANDLER) && (strtolower($MYSQL_HANDLER[0]) == 'mysql') )
+                ( is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER == 'mysql') )
+                ||
+                ( is_array($MYSQL_HANDLER) && (strtolower($MYSQL_HANDLER[0]) == 'mysql') )
                 )
             {
 //                trigger_error("Critical Error : not allow mysql_ function. ", E_USER_ERROR);
@@ -2331,8 +2242,8 @@ function init_nucleus_compatibility_mysql_handler()
             if ( !isset($DB_DRIVER_NAME) )
             {
                 if ( is_array($MYSQL_HANDLER)
-                  && (strtolower($MYSQL_HANDLER[0])=='pdo')
-                  && isset($MYSQL_HANDLER[1])
+                && (strtolower($MYSQL_HANDLER[0])=='pdo')
+                && isset($MYSQL_HANDLER[1])
                 )
                     $DB_DRIVER_NAME = $MYSQL_HANDLER[1];
                 else
@@ -2544,7 +2455,7 @@ function str_contain($haystack, $needle) {
 
 function getBaseUrl() {
     $_ = dirname($_SERVER['SCRIPT_NAME']);
-    if ($_==='/install' || $_==='/nucleus' || $_==='/_upgrades')
+    if (in_array($_, array('/install','/nucleus','/_upgrades')))
     {
         return '/';
     }

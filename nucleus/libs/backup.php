@@ -139,7 +139,7 @@ class Backup
                         sql_table('category'),
                         sql_table('activation'),
                         sql_table('tickets'),
-                  );
+                );
         if ( sql_existTableName( sql_table('cached_data') ))
             $tables[] = sql_table('cached_data');
         if ( sql_existTableName( sql_table('systemlog') ))
@@ -190,7 +190,7 @@ class Backup
         if ( !$this->mode_en && defined('_BACKUP_BACKUPFILE_BACKUPDATE'))
             echo "# " . _BACKUP_BACKUPFILE_BACKUPDATE .  gmdate("d-m-Y H:i:s", time()) . " GMT\n";
         else
-           echo "# backup-date: " .  gmdate("d-m-Y H:i:s", time()) . " GMT\n";
+            echo "# backup-date: " .  gmdate("d-m-Y H:i:s", time()) . " GMT\n";
 
         if ( !$this->mode_en && defined('_BACKUP_BACKUPFILE_NUCLEUSVERSION'))
             echo "# " . _BACKUP_BACKUPFILE_NUCLEUSVERSION . CORE_APPLICATION_VERSION . "\n";
@@ -579,6 +579,5 @@ class Backup
     //        debug($total_quotes . "-" . $escaped_quotes . "-" . $unescaped_quotes);
             return (($unescaped_quotes % 2) == 0);
     }
-
 }
 

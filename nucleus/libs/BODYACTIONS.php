@@ -444,13 +444,16 @@ class BODYACTIONS extends BaseActions {
     {
         // if item is closed, show message and do nothing
         if ($this->currentItem->closed || !$this->blog->commentsEnabled())
-          { return TRUE; } else { return FALSE; }
+        {
+            return TRUE;
+        }
+        return FALSE;
     }
 
     function parse_hascomment()
     {
         $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-                           sql_table('comment'), intval($this->currentItem->itemid));
+                        sql_table('comment'), intval($this->currentItem->itemid));
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }

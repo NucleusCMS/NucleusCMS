@@ -59,7 +59,7 @@ $default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident
 $default_user_agent['default'] = &$default_user_agent['ie']['11'];
 // http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
 if ( ! defined('DEFAULT_USER_AGENT') )
-  define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
+    define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
 ini_set( 'user_agent' , DEFAULT_USER_AGENT );
 
 if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
@@ -151,7 +151,7 @@ $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!isset($CONF['expose_generator']))
-  $CONF['expose_generator'] = false;
+    $CONF['expose_generator'] = false;
 
 if ( !headers_sent() && $CONF['expose_generator'] ) {
     header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));

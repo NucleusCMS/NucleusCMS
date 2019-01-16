@@ -441,8 +441,8 @@ class COMMENTACTIONS extends BaseActions {
      */
     function parse_userwebsitelink() {
         if ( isset($this->currentComment['userlinkraw'])
-          && ( preg_match('@^https?://[^/]+@', $this->currentComment['userlinkraw']) )
-           ) {
+            && ( preg_match('@^https?://[^/]+@', $this->currentComment['userlinkraw']) )
+            ) {
             echo '<a href="'.hsc($this->currentComment['userlinkraw']).'" rel="nofollow">'.hsc($this->currentComment['user']).'</a>';
         } else {
             echo hsc($this->currentComment['user']);
@@ -721,13 +721,13 @@ class COMMENTACTIONS extends BaseActions {
 //        return $this->commentsObj->itemActions->parse_commentclosed();
         // if item is closed, show message and do nothing
         if ($this->currentItem->closed || !$this->blog->commentsEnabled())
-          { return TRUE; } else { return FALSE; }
+        { return TRUE; } else { return FALSE; }
     }
 
     function parse_hascomment()
     {
         $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-                           sql_table('comment'), intval($this->currentItem->itemid));
+                        sql_table('comment'), intval($this->currentItem->itemid));
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }

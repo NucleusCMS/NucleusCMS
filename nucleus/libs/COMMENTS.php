@@ -78,13 +78,13 @@ class COMMENTS {
             $this->commentcount = $this->amountComments();
         } else {
             $query =  'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cemail as email, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
-                   . ' FROM '.sql_table('comment').' as c'
-                   . ' WHERE c.citem=' . $this->itemid
-                   . ' ORDER BY c.ctime';
+                . ' FROM '.sql_table('comment').' as c'
+                . ' WHERE c.citem=' . $this->itemid
+                . ' ORDER BY c.ctime';
             $query_ct =  'SELECT count(*) AS result'
-                   . ' FROM '.sql_table('comment').' as c'
-                   . ' WHERE c.citem=' . $this->itemid
-                   . ' ORDER BY c.ctime';
+                . ' FROM '.sql_table('comment').' as c'
+                . ' WHERE c.citem=' . $this->itemid
+                . ' ORDER BY c.ctime';
 
             $comments = sql_query($query);
             $this->commentcount = intval(quickQuery($query_ct));
@@ -128,8 +128,8 @@ class COMMENTS {
      */
     function amountComments() {
         $query =  'SELECT COUNT(*)'
-               . ' FROM '.sql_table('comment').' as c'
-               . ' WHERE c.citem='. $this->itemid;
+            . ' FROM '.sql_table('comment').' as c'
+            . ' WHERE c.citem='. $this->itemid;
         $res = sql_query($query);
         $arr = sql_fetch_row($res);
 
@@ -359,7 +359,7 @@ class COMMENTS {
         }
 
         $query = 'INSERT INTO '.sql_table('comment').' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
-               . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
+            . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
 
         sql_query($query);
 
@@ -446,5 +446,3 @@ class COMMENTS {
     }
 
 }
-
-?>

@@ -186,7 +186,7 @@ if (!function_exists('sql_fetch_assoc'))
             $title = 'Connect Error';
             $msg = '<p>Error : Database Connection</p>';
             $msg .= sprintf('<br><p><a href="%s">%s</a></p>'
-                           ,  $_SERVER['REQUEST_URI'] , 'URL');
+                        ,  $_SERVER['REQUEST_URI'] , 'URL');
 
             startUpError($msg, $title);
             exit;
@@ -241,7 +241,7 @@ if (!function_exists('sql_fetch_assoc'))
             $errors = $res->errorInfo();
             $msg_text = $errors[0].'-'.$errors[1].' '.$errors[2];
             printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
-                  , hsc($msg_text), hsc($query));
+                , hsc($msg_text), hsc($query));
         }
 //        if ($msg_text && class_exists('SYSTEMLOG')) {
 //            $obj = sql_get_db(); // check null
@@ -271,7 +271,7 @@ if (!function_exists('sql_fetch_assoc'))
             if ($_SERVER['REQUEST_TIME_FLOAT'])
             {
                 $s = sprintf('tick time : %.2f , query No %d' ,
-                         (float)microtime(true) - (float) $_SERVER['REQUEST_TIME_FLOAT']
+                        (float)microtime(true) - (float) $_SERVER['REQUEST_TIME_FLOAT']
                         ,$SQLCount);
                 fwrite ($handle , $s."\r\n");
             }
@@ -598,11 +598,11 @@ if (!function_exists('sql_fetch_assoc'))
         if ( $stmt && $stmt->execute() )
             $res = $stmt->fetchAll();
 
-        foreach($res as $row)
-          if (isset($row[$target]))
-              $items[] = $row[$target];
-        if (count($items)>0)
-        {
+        foreach($res as $row) {
+            if (isset($row[$target]))
+                $items[] = $row[$target];
+        }
+        if (count($items)>0) {
             sort($items);
         }
         return $items;
@@ -615,17 +615,17 @@ if (!function_exists('sql_fetch_assoc'))
     {
         $names = sql_getTableColumnNames($tablename);
 
-        if (count($names)>0)
-        {
-            if ($casesensitive)
-                return in_array( $ColumnName , $names );
-            else
-            {
-                foreach($names as $v)
-                    if ( strcasecmp( $ColumnName , $v ) == 0 )
-                    {
-                         return True;
-                    }
+        if (!$names) {
+            return false;
+        }
+
+        if ($casesensitive) {
+            return in_array( $ColumnName , $names );
+        }
+
+        foreach($names as $v) {
+            if ( strcasecmp( $ColumnName , $v ) == 0 ) {
+                return True;
             }
         }
         return False;
