@@ -1,7 +1,9 @@
 <!DOCTYPE html>
 <html lang="{%lang_code%}">
     <head><meta charset="{%CHARSET%}" />
-    <title>{%title%}</title></head>
+    <title>{%title%}</title>
+    <link rel="stylesheet" type="text/css" href="styles/manual.css" media="screen">
+    </head>
     <body>
         <h1>{%title%}</h1>
         {%msg%}
