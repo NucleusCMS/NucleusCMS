@@ -3862,7 +3862,8 @@ class ADMIN {
 //      $manager->notify('PreStopMember', array('member' => &$mem));
 
         /* stop member for memberid */
-        $query = 'UPDATE ' . sql_table('member') . ' SET mhalt=1 /*, mcanlogin=0*/ WHERE mnumber='.$memberid;
+        $ph['mnumber'] = $memberid;
+        $query = 'UPDATE [@prefix@]member SET mhalt=1 WHERE mnumber=[@mnumber@]';
         ob_start();
         sql_query(parseQuery($query));
         $s = ob_get_clean();

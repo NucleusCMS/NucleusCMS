@@ -1495,9 +1495,9 @@ class ACTIONS extends BaseActions {
         global $itemid;
 
         $itemid = intval($itemid);
-        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-                           sql_table('comment'), intval($itemid));
-        $res = intval(quickQuery($sqlText));
+        $ph['citem'] = (int) $itemid;
+        $sql = parseQuery('SELECT COUNT(*) as result FROM [@prefix@]comment WHERE citem=[@citem@] LIMIT 1', $ph);
+        $res = intval(quickQuery($sql));
         return ($res > 0);
     }
 }

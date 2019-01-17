@@ -16,9 +16,13 @@
 
  */
 
+if (version_compare(phpversion(),'5.4.0','<')) {
+    if(ini_get('register_globals')) exit('Should be change off register_globals.');
+    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
+    if(ini_get('magic_quotes_sybase')) exit('Should be remove magic_quotes_sybase in php.ini');
+}
+
 global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
-// needed if we include globalfunctions from install.php
-global $nucleus, $CONF, $manager, $member;
 
 define('NC_CORE_PATH',    $DIR_NUCLEUS);
 define('NC_LIBS_PATH',    $DIR_LIBS);
@@ -26,6 +30,9 @@ define('NC_MEDIA_PATH',   $DIR_MEDIA);
 define('NC_SKINS_PATH',   $DIR_SKINS);
 define('NC_PLUGINS_PATH', $DIR_PLUGINS);
 define('NC_LOCALE_PATH',  $DIR_LANG);
+
+// needed if we include globalfunctions from install.php
+global $nucleus, $CONF, $manager, $member;
 
 //if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
 
@@ -38,12 +45,6 @@ define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
 include_once($DIR_LIBS. 'version.php');
 include_once($DIR_LIBS. 'globalfunctions.inc.php');
-
-if (version_compare(phpversion(),'5.4.0','<')) {
-    if(ini_get('register_globals')) exit('Should be change off register_globals.');
-    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
-    if(ini_get('magic_quotes_sybase')) exit('Should be remove magic_quotes_sybase in php.ini');
-}
 
 define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
