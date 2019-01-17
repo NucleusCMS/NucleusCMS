@@ -17,7 +17,7 @@
     // preload-admin-custum.php : You can write freely the settings such as allow ip address or spam tools.
     $preload_admin_custum_php = dirname(dirname(__FILE__)) . '/settings/preload-admin-custum.php';
     if (@is_file($preload_admin_custum_php))
-      include_once $preload_admin_custum_php;
+        include_once $preload_admin_custum_php;
     define( "LOADED_PRELOAD_ADMIN_CUSTUM_PHP" , in_array(realpath($preload_admin_custum_php) , get_included_files()) );
     unset($preload_admin_custum_php);
 
