@@ -51,10 +51,6 @@ a:hover {
 	font-weight: normal;
 }
 
-p:first-letter {
-	font-size: large;
-}
-
 h1 {
 	border-bottom: 1px dotted gray;
 	font-size: x-large;
