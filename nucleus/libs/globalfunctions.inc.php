@@ -2461,3 +2461,126 @@ function getBaseUrl() {
     }
     return substr($_, 0, strrpos($_,'/')+1);
 }
+
+
+function _checkEnv() {
+    if(ini_get('register_globals')) {
+        exit('Should be change off register_globals.');
+    }
+    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {
+        exit('Should be change php.ini: magic_quotes_gpc=0');
+    }
+    if(ini_get('magic_quotes_sybase')) {
+        exit('Should be remove magic_quotes_sybase in php.ini');
+    }
+}
+
+function _setDefaultUa() {
+    $default_user_agent = array('ie' => array());
+    $default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+    $default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
+    $default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
+    $default_user_agent['default'] = &$default_user_agent['ie']['11'];
+    // http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
+    if ( ! defined('DEFAULT_USER_AGENT') )
+        define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
+    ini_set( 'user_agent' , DEFAULT_USER_AGENT );
+}
+
+function _setErrorReporting() {
+    global $CONF;
+    if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
+        error_reporting(E_ALL); // report all errors!
+        ini_set('display_errors', 1);
+    } else {
+        if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
+            ini_set('display_errors','0');
+        if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
+        error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+    }
+}
+
+function _setTimezone() {
+    $timezone = @date_default_timezone_get();
+    if (!$timezone) {
+        $timezone = 'UTC';
+    }
+    @date_default_timezone_set($timezone);
+}
+
+function setDefaultConf() {
+    global $CONF;
+    /*
+        Indicates when Nucleus should display startup errors. Set to 1 if you want
+        the error enabled (default), false otherwise
+
+        alertOnHeadersSent
+            Displays an error when visiting a public Nucleus page and headers have
+            been sent out to early. This usually indicates an error in either a
+            configuration file or a language file, and could cause Nucleus to
+            malfunction
+        alertOnSecurityRisk
+            Displays an error only when visiting the admin area, and when one or
+            more of the installation files (install.php, install.sql, _upgrades/
+            directory) are still on the server.
+    */
+
+    if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
+    {
+        $CONF['alertOnHeadersSent']  = 1;
+    }
+    if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
+
+    /*
+        Set these to 1 to allow viewing of future items or draft items
+        Should really never do this, but can be useful for some plugins that might need to
+        Could cause some other issues if you use future posts otr drafts
+        So use with care
+    */
+    $CONF['allowDrafts'] = 0;
+    $CONF['allowFuture'] = 0;
+
+    // Avoid notices
+    if (!isset($CONF['installscript'])) {
+        $CONF['installscript'] = 0;
+    }
+
+    if (!isset($CONF['expose_generator'])) {
+        $CONF['expose_generator'] = false;
+    }
+
+    // Avoid notices
+    if (!isset($CONF['UsingAdminArea'])) {
+        $CONF['UsingAdminArea'] = 0;
+    }
+    if ($CONF['URLMode'] == 'pathinfo') {
+        // initialize keywords if this hasn't been done before
+        if (!isset($CONF['ItemKey']) || $CONF['ItemKey'] == '') {
+            $CONF['ItemKey'] = 'item';
+        }
+
+        if (!isset($CONF['ArchiveKey']) || $CONF['ArchiveKey'] == '') {
+            $CONF['ArchiveKey'] = 'archive';
+        }
+
+        if (!isset($CONF['ArchivesKey']) || $CONF['ArchivesKey'] == '') {
+            $CONF['ArchivesKey'] = 'archives';
+        }
+
+        if (!isset($CONF['MemberKey']) || $CONF['MemberKey'] == '') {
+            $CONF['MemberKey'] = 'member';
+        }
+
+        if (!isset($CONF['BlogKey']) || $CONF['BlogKey'] == '') {
+            $CONF['BlogKey'] = 'blog';
+        }
+
+        if (!isset($CONF['CategoryKey']) || $CONF['CategoryKey'] == '') {
+            $CONF['CategoryKey'] = 'category';
+        }
+
+        if (!isset($CONF['SpecialskinKey']) || $CONF['SpecialskinKey'] == '') {
+            $CONF['SpecialskinKey'] = 'special';
+        }
+    }
+}

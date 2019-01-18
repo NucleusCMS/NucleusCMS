@@ -16,13 +16,13 @@
 
  */
 
-if (version_compare(phpversion(),'5.4.0','<')) {
-    if(ini_get('register_globals')) exit('Should be change off register_globals.');
-    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
-    if(ini_get('magic_quotes_sybase')) exit('Should be remove magic_quotes_sybase in php.ini');
+if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+    $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
 }
+global $StartTime;
+$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
-global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
+global $DIR_NUCLEUS, $DIR_LIBS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG;
 
 define('NC_CORE_PATH',    $DIR_NUCLEUS);
 define('NC_LIBS_PATH',    $DIR_LIBS);
@@ -36,15 +36,15 @@ global $nucleus, $CONF, $manager, $member;
 
 //if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
 
-if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
-global $StartTime;
-$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
-
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
 
 include_once($DIR_LIBS. 'version.php');
 include_once($DIR_LIBS. 'globalfunctions.inc.php');
+
+if (version_compare(phpversion(),'5.4.0','<')) {
+    _checkEnv();
+}
 
 define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
@@ -53,69 +53,14 @@ define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'dev' : '');
 
-$default_user_agent = array('ie' => array());
-$default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
-$default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
-$default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
-$default_user_agent['default'] = &$default_user_agent['ie']['11'];
-// http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
-if ( ! defined('DEFAULT_USER_AGENT') )
-    define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
-ini_set( 'user_agent' , DEFAULT_USER_AGENT );
+_setDefaultUa();
+_setErrorReporting();
+_setTimezone();
 
-if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
-    error_reporting(E_ALL); // report all errors!
-    ini_set('display_errors', 1);
-} else {
-    if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
-        ini_set('display_errors','0');
-    if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
-    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
-}
-
-$timezone = @date_default_timezone_get();
-if (!$timezone) {
-	$timezone = 'UTC';
-}
-@date_default_timezone_set($timezone);
-
-/*
-    Indicates when Nucleus should display startup errors. Set to 1 if you want
-    the error enabled (default), false otherwise
-
-    alertOnHeadersSent
-        Displays an error when visiting a public Nucleus page and headers have
-        been sent out to early. This usually indicates an error in either a
-        configuration file or a language file, and could cause Nucleus to
-        malfunction
-    alertOnSecurityRisk
-        Displays an error only when visiting the admin area, and when one or
-        more of the installation files (install.php, install.sql, _upgrades/
-        directory) are still on the server.
-*/
-
-if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
-{
-    $CONF['alertOnHeadersSent']  = 1;
-}
-if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
-
-/*
-    Set these to 1 to allow viewing of future items or draft items
-    Should really never do this, but can be useful for some plugins that might need to
-    Could cause some other issues if you use future posts otr drafts
-    So use with care
-*/
-$CONF['allowDrafts'] = 0;
-$CONF['allowFuture'] = 0;
+setDefaultConf();
 
 if (getNucleusPatchLevel() > 0) {
     $nucleus['version'] .= '/' . getNucleusPatchLevel();
-}
-
-// Avoid notices
-if (!isset($CONF['installscript'])) {
-    $CONF['installscript'] = 0;
 }
 
 // we will use postVar, getVar, ... methods instead of _GET
@@ -151,15 +96,17 @@ $error        = '';
 $special      = requestVar('special');
 $virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
-if (!isset($CONF['expose_generator']))
-    $CONF['expose_generator'] = false;
-
 if ( !headers_sent() && $CONF['expose_generator'] ) {
     header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
 }
 
 // Avoid the ClickJacking attack
-if ( !headers_sent() && (!defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || (! _DISABLE_FEATURE_SECURITY_CLICKJACKING)) )
+if ( !headers_sent()
+    &&
+    (
+        !defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || !constant('_DISABLE_FEATURE_SECURITY_CLICKJACKING')
+    )
+)
 {
     header('X-Frame-Options: SAMEORIGIN');
 }
@@ -190,11 +137,6 @@ include_once($DIR_LIBS . 'SYSTEMLOG.php');
 include_once($DIR_LIBS . 'Utils.php');
 
 $manager =& MANAGER::instance();
-
-// Avoid notices
-if (!isset($CONF['UsingAdminArea'])) {
-    $CONF['UsingAdminArea'] = 0;
-}
 
 // only needed when updating logs
 if ($CONF['UsingAdminArea']) {
@@ -242,7 +184,13 @@ $CONF['CategoryURL']    = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
+if (
+    !isset($CONF['URLMode'])
+    ||
+    (
+        ($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php')
+    )
+) {
     $CONF['URLMode'] = 'normal';
 }
 
@@ -274,7 +222,7 @@ default:
 }
 
 // login/logout when required or renew cookies
-if ($action == 'login') {
+if (requestVar('action') == 'login') {
     if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         header("HTTP/1.0 404 Not Found");
         exit;
@@ -446,35 +394,6 @@ if (!defined('_ARCHIVETYPE_MONTH') )
 
 // decode path_info
 if ($CONF['URLMode'] == 'pathinfo') {
-    // initialize keywords if this hasn't been done before
-    if (!isset($CONF['ItemKey']) || $CONF['ItemKey'] == '') {
-        $CONF['ItemKey'] = 'item';
-    }
-
-    if (!isset($CONF['ArchiveKey']) || $CONF['ArchiveKey'] == '') {
-        $CONF['ArchiveKey'] = 'archive';
-    }
-
-    if (!isset($CONF['ArchivesKey']) || $CONF['ArchivesKey'] == '') {
-        $CONF['ArchivesKey'] = 'archives';
-    }
-
-    if (!isset($CONF['MemberKey']) || $CONF['MemberKey'] == '') {
-        $CONF['MemberKey'] = 'member';
-    }
-
-    if (!isset($CONF['BlogKey']) || $CONF['BlogKey'] == '') {
-        $CONF['BlogKey'] = 'blog';
-    }
-
-    if (!isset($CONF['CategoryKey']) || $CONF['CategoryKey'] == '') {
-        $CONF['CategoryKey'] = 'category';
-    }
-
-    if (!isset($CONF['SpecialskinKey']) || $CONF['SpecialskinKey'] == '') {
-        $CONF['SpecialskinKey'] = 'special';
-    }
-
     $parsed = false;
     $param = array(
         'type'        =>  basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
@@ -485,13 +404,14 @@ if ($CONF['URLMode'] == 'pathinfo') {
 
     if (!$parsed) {
         // default implementation
-        $data = explode("/", $virtualpath );
-        for ($i = 0; $i < sizeof($data); $i++) {
+        $data = explode('/', $virtualpath );
+        $total = count($data);
+        for ($i = 0; $i < $total; $i++) {
             switch ($data[$i]) {
                 case $CONF['ItemKey']: // item/1 (blogid)
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $itemid = intval($data[$i]);
                     }
                     break;
@@ -499,19 +419,19 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['ArchivesKey']: // archives/1 (blogid)
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $archivelist = intval($data[$i]);
                     }
                     break;
 
                 case $CONF['ArchiveKey']: // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-                    if ((($i + 1) < sizeof($data) ) && (!strstr($data[$i + 1], '-') ) ) {
+                    if ((($i + 1) < $total ) && (!strstr($data[$i + 1], '-') ) ) {
                         $blogid = intval($data[++$i]);
                     }
 
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $archive = $data[$i];
                     }
                     break;
@@ -520,7 +440,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['BlogKey']: // blog/1
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $blogid = intval($data[$i]);
                     }
                     break;
@@ -529,7 +449,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case 'catid':
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $catid = intval($data[$i]);
                     }
                     break;
@@ -537,7 +457,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['MemberKey']:
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $memberid = intval($data[$i]);
                     }
                     break;
@@ -545,7 +465,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['SpecialskinKey']:
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < $total ) {
                         $special = $data[$i];
                         $_REQUEST['special'] = $special;
                     }
@@ -568,4 +488,3 @@ $param = array(
     'info' => $virtualpath
 );
 $manager->notify('PostParseURL', $param);
-
