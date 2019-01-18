@@ -34,13 +34,12 @@ define('NC_LOCALE_PATH',  $DIR_LANG);
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $manager, $member;
 
-//if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
+//if(is_file(NC_CORE_PATH.'autoload.php')) include_once(NC_CORE_PATH.'autoload.php');
 
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
-
-include_once($DIR_LIBS. 'version.php');
-include_once($DIR_LIBS. 'globalfunctions.inc.php');
+include_once(NC_LIBS_PATH. 'version.php');
+include_once(NC_LIBS_PATH. 'globalfunctions.inc.php');
 
 if (version_compare(phpversion(),'5.4.0','<')) {
     _checkEnv();
@@ -65,7 +64,7 @@ if (getNucleusPatchLevel() > 0) {
 
 // we will use postVar, getVar, ... methods instead of _GET
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
-    include_once($DIR_LIBS . 'vars4.1.0.php');
+    include_once(NC_LIBS_PATH . 'vars4.1.0.php');
 }
 
 // sanitize option
@@ -118,9 +117,9 @@ global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 // include core classes that are needed for login & plugin handling
 if (($DB_DRIVER_NAME=='mysql') && !function_exists('mysql_query')) {
     if ($DB_PHP_MODULE_NAME == 'pdo')
-        include_once($DIR_LIBS . 'sql/pdo_mysql_emulate.php'); // For PHP 7
+        include_once(NC_LIBS_PATH . 'sql/pdo_mysql_emulate.php'); // For PHP 7
     else
-        include_once($DIR_LIBS . 'sql/mysql_emulate.php'); // For PHP 7
+        include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php'); // For PHP 7
 }
 else
 {
@@ -128,20 +127,20 @@ else
         define('_EXT_MYSQL_EMULATE' , 0);
 }
 
-include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
-include_once($DIR_LIBS . 'MEMBER.php');
-include_once($DIR_LIBS . 'ACTIONLOG.php');
-include_once($DIR_LIBS . 'MANAGER.php');
-include_once($DIR_LIBS . 'PLUGIN.php');
-include_once($DIR_LIBS . 'SYSTEMLOG.php');
-include_once($DIR_LIBS . 'Utils.php');
+include_once(NC_LIBS_PATH . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
+include_once(NC_LIBS_PATH . 'MEMBER.php');
+include_once(NC_LIBS_PATH . 'ACTIONLOG.php');
+include_once(NC_LIBS_PATH . 'MANAGER.php');
+include_once(NC_LIBS_PATH . 'PLUGIN.php');
+include_once(NC_LIBS_PATH . 'SYSTEMLOG.php');
+include_once(NC_LIBS_PATH . 'Utils.php');
 
 $manager =& MANAGER::instance();
 
 // only needed when updating logs
 if ($CONF['UsingAdminArea']) {
-    include_once($DIR_LIBS . 'xmlrpc.inc.php');  // XML-RPC client classes
-    include_once($DIR_LIBS . 'ADMIN.php');
+    include_once(NC_LIBS_PATH . 'xmlrpc.inc.php');  // XML-RPC client classes
+    include_once(NC_LIBS_PATH . 'ADMIN.php');
 }
 
 // connect to database
@@ -347,20 +346,20 @@ $param = array();
 $manager->notify('PreLoadMainLibs', $param);
 
 // load other classes
-include_once("{$DIR_LIBS}PARSER.php");
-include_once("{$DIR_LIBS}SKIN.php");
-include_once("{$DIR_LIBS}TEMPLATE.php");
-include_once("{$DIR_LIBS}BLOG.php");
-include_once("{$DIR_LIBS}BODYACTIONS.php");
-include_once("{$DIR_LIBS}COMMENTS.php");
-include_once("{$DIR_LIBS}COMMENT.php");
-include_once("{$DIR_LIBS}ITEM.php");
-include_once("{$DIR_LIBS}NOTIFICATION.php");
-include_once("{$DIR_LIBS}BAN.php");
-include_once("{$DIR_LIBS}PAGEFACTORY.php");
-include_once("{$DIR_LIBS}SEARCH.php");
-include_once("{$DIR_LIBS}entity.php");
-include_once("{$DIR_LIBS}CoreCachedData.php");
+include_once(NC_LIBS_PATH.'PARSER.php');
+include_once(NC_LIBS_PATH.'SKIN.php');
+include_once(NC_LIBS_PATH.'TEMPLATE.php');
+include_once(NC_LIBS_PATH.'BLOG.php');
+include_once(NC_LIBS_PATH.'BODYACTIONS.php');
+include_once(NC_LIBS_PATH.'COMMENTS.php');
+include_once(NC_LIBS_PATH.'COMMENT.php');
+include_once(NC_LIBS_PATH.'ITEM.php');
+include_once(NC_LIBS_PATH.'NOTIFICATION.php');
+include_once(NC_LIBS_PATH.'BAN.php');
+include_once(NC_LIBS_PATH.'PAGEFACTORY.php');
+include_once(NC_LIBS_PATH.'SEARCH.php');
+include_once(NC_LIBS_PATH.'entity.php');
+include_once(NC_LIBS_PATH.'CoreCachedData.php');
 
 spl_autoload_register('loadCoreClassFor_spl'.(version_compare('5.3.0',PHP_VERSION,'<=') ? '' : '_prephp53'));
 
