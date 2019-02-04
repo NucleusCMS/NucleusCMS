@@ -150,6 +150,9 @@ class ACTIONS extends BaseActions {
             case 'cookievar':
                 $condition = (cookieVar($name)==$value);
                 break;
+            case 'servervar':
+                $condition = (serverVar(strtoupper($name))==$value);
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
