@@ -98,7 +98,7 @@ class ACTIONS extends BaseActions {
         global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
         $condition = 0;
-        switch($field) {
+        switch(strtolower($field)) {
             case 'category':
                 $condition = ($blog && $this->_ifCategory($name,$value));
                 break;
