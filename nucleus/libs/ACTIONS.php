@@ -141,6 +141,9 @@ class ACTIONS extends BaseActions {
             case 'authorvisible':
                 $condition = ($blog && $blog->getAuthorVisible());
                 break;
+            case 'getvar':
+                $condition = (getVar($name)==$value);
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
