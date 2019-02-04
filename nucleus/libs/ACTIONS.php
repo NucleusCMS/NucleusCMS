@@ -144,6 +144,9 @@ class ACTIONS extends BaseActions {
             case 'getvar':
                 $condition = (getVar($name)==$value);
                 break;
+            case 'postvar':
+                $condition = (postVar($name)==$value);
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
