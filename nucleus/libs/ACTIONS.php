@@ -97,67 +97,46 @@ class ACTIONS extends BaseActions {
     function checkCondition($field, $name='', $value = '') {
         global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
-        $condition = 0;
         switch(strtolower($field)) {
             case 'category':
-                $condition = ($blog && $this->_ifCategory($name,$value));
-                break;
+                return ($blog && $this->_ifCategory($name,$value));
             case 'blogsetting':
-                $condition = ($blog && ($blog->getSetting($name) == $value));
-                break;
+                return ($blog && ($blog->getSetting($name) == $value));
             case 'loggedin':
-                $condition = $member->isLoggedIn();
-                break;
+                return $member->isLoggedIn();
             case 'onteam':
-                $condition = $member->isLoggedIn() && $this->_ifOnTeam($name);
-                break;
+                return $member->isLoggedIn() && $this->_ifOnTeam($name);
             case 'admin':
-                $condition = $member->isLoggedIn() && $this->_ifAdmin($name);
-                break;
+                return $member->isLoggedIn() && $this->_ifAdmin($name);
             case 'nextitem':
-                $condition = ($itemidnext != '');
-                break;
+                return ($itemidnext != '');
             case 'previtem':
-                $condition = ($itemidprev != '');
-                break;
+                return ($itemidprev != '');
             case 'archiveprevexists':
-                $condition = ($archiveprevexists == true);
-                break;
+                return ($archiveprevexists == true);
             case 'archivenextexists':
-                $condition = ($archivenextexists == true);
-                break;
+                return ($archivenextexists == true);
             case 'skintype':
-                $condition = ($name == $this->skintype);
-                break;
+                return ($name == $this->skintype);
             case 'hasplugin':
-                $condition = $this->_ifHasPlugin($name, $value);
-                break;
+                return $this->_ifHasPlugin($name, $value);
             case 'commentclosed':
-                $condition = $this->parse_commentclosed();
-                break;
+                return $this->parse_commentclosed();
             case 'hascomment':
-                $condition = $this->parse_hascomment();
-                break;
+                return $this->parse_hascomment();
             case 'authorvisible':
-                $condition = ($blog && $blog->getAuthorVisible());
-                break;
+                return ($blog && $blog->getAuthorVisible());
             case 'getvar':
-                $condition = (getVar($name)==$value);
-                break;
+                return (getVar($name)==$value);
             case 'postvar':
-                $condition = (postVar($name)==$value);
-                break;
+                return (postVar($name)==$value);
             case 'cookievar':
-                $condition = (cookieVar($name)==$value);
-                break;
+                return (cookieVar($name)==$value);
             case 'servervar':
-                $condition = (serverVar(strtoupper($name))==$value);
-                break;
+                return (serverVar(strtoupper($name))==$value);
             default:
-                $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
-                break;
+                return $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
         }
-        return $condition;
     }
 
     /**
