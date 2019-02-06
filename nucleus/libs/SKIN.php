@@ -155,12 +155,12 @@ class SKIN {
      */
     public static function getIdFromName($name)
     {
-        $query =  'SELECT sdnumber'
-               . ' FROM '.sql_table('skin_desc')
-               . " WHERE sdname='".sql_real_escape_string($name)."'";
-        $res = sql_query($query);
-        if ($res && ($obj = sql_fetch_object($res)))
+        $ph['sdname'] = sql_real_escape_string($name);
+        $query = "SELECT sdnumber FROM [@prefix@]skin_desc WHERE sdname='[@sdname@]'";
+        $res = sql_query(parseQuery($query,$ph));
+        if ($res && $obj = sql_fetch_object($res)) {
             return $obj->sdnumber;
+        }
         return 0;
     }
 
@@ -171,7 +171,8 @@ class SKIN {
      * @static
      */
     public static function getNameFromId($id) {
-        return quickQuery('SELECT sdname as result FROM '.sql_table('skin_desc').' WHERE sdnumber=' . intval($id));
+        $ph['sdnumber'] = intval($id);
+        return quickQuery(parseQuery('SELECT sdname as result FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]',$ph));
     }
 
     /**
@@ -183,24 +184,30 @@ class SKIN {
         global $manager;
 
         $param = array(
-            'name'            => &$name,
+            'name'           => &$name,
             'description'    => &$desc,
-            'type'            => &$type,
+            'type'           => &$type,
             'includeMode'    => &$includeMode,
-            'includePrefix'    => &$includePrefix
+            'includePrefix'  => &$includePrefix
         );
         $manager->notify('PreAddSkin', $param);
 
-        sql_query('INSERT INTO '.sql_table('skin_desc')." (sdname, sddesc, sdtype, sdincmode, sdincpref) VALUES ('" . sql_real_escape_string($name) . "','" . sql_real_escape_string($desc) . "','".sql_real_escape_string($type)."','".sql_real_escape_string($includeMode)."','".sql_real_escape_string($includePrefix)."')");
+        $ph['sdname'] = sql_real_escape_string($name);
+        $ph['sddesc'] = sql_real_escape_string($desc);
+        $ph['sdtype'] = sql_real_escape_string($type);
+        $ph['sdincmode'] = sql_real_escape_string($includeMode);
+        $ph['sdincpref'] = sql_real_escape_string($includePrefix);
+        $query = "INSERT INTO [@prefix@]skin_desc (sdname,sddesc,sdtype,sdincmode,sdincpref) VALUES ('[@sdname@]','[@sddesc@]','[@sdtype@]','[@sdincmode@]','sdincpref')";
+        sql_query(parseQuery($query,$ph));
         $newid = sql_insert_id();
 
         $param = array(
             'skinid'        => $newid,
-            'name'            => $name,
-            'description'    => $desc,
-            'type'            => $type,
-            'includeMode'    => $includeMode,
-            'includePrefix'    => $includePrefix
+            'name'          => $name,
+            'description'   => $desc,
+            'type'          => $type,
+            'includeMode'   => $includeMode,
+            'includePrefix' => $includePrefix
         );
         $manager->notify('PostAddSkin', $param);
 
@@ -255,9 +262,9 @@ class SKIN {
         $actions = $this->getAllowedActionsForType($type);
         
         $param = array(
-            'skin'        => &$this,
-            'type'        =>  $type,
-            'contents'    => &$contents,
+            'skin'      => &$this,
+            'type'      =>  $type,
+            'contents'  => &$contents,
             'partstype' => $spartstype
         );
         $manager->notify('PreSkinParse', $param);
@@ -306,25 +313,24 @@ class SKIN {
     {
         global $DB_DRIVER_NAME, $CONF;
         if(strpos($type, '/')!==false) return '';
-        if ( 'mysql' == $DB_DRIVER_NAME )
-            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'",
-                             sql_table('skin'),
-                             $this->id,
-                             sql_real_escape_string($type));
-        else
-            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'",
-                             sql_table('skin'),
-                             $this->id,
-                             sql_real_escape_string(strtolower($type)));
-
-        $spartstype = 'parts';
-        if ($options && isset($options['spartstype']) && (strlen($options['spartstype'])>0)
-            && (intval($CONF['DatabaseVersion']) >= 380) ) {
-            $spartstype = (string) $options['spartstype'];
-            $query .= " AND spartstype = " . sql_quote_string($spartstype);
+        $ph['sdesc'] = $this->id;
+        $query = array();
+        if ( 'mysql' == $DB_DRIVER_NAME ) {
+            $ph['stype'] = sql_real_escape_string($type);
+            $query[] = "SELECT scontent FROM [@prefix@]skin WHERE sdesc=[@sdesc@] and stype='[@stype@]'";
+        } else {
+            $ph['stype'] = sql_real_escape_string(strtolower($type));
+            $query[] = "SELECT scontent FROM [@prefix@]skin WHERE sdesc=[@sdesc@] and lower(stype)='[@stype@]'";
         }
 
-        $res = sql_query($query);
+        // $spartstype = 'parts';
+        if ($options && isset($options['spartstype']) && (strlen($options['spartstype'])>0)
+            && (intval($CONF['DatabaseVersion']) >= 380) ) {
+            $ph['spartstype'] = sql_real_escape_string($options['spartstype']);
+            $query[] = "AND spartstype = '[@spartstype@]'";
+        }
+
+        $res = sql_query(parseQuery($query,$ph));
 
         if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
             return '';
