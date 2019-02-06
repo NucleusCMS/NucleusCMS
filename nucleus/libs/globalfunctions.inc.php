@@ -2363,6 +2363,10 @@ function parseHtml($html='',$ph=array()) { // $ph is placeholders
 
 function parseQuery($query='',$ph=array()) { // $ph is placeholders
 
+    if(is_array($query)) {
+        $query = join("\n", $query);
+    }
+    
     if(str_contains($query,'<%')) {
         $query = str_replace(array('<%','%>'), array('[@','@]'), $query);
     }
