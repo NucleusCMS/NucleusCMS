@@ -231,20 +231,20 @@ class Backup
      * ($tablename is filled in by array_walk)
      * @param $table_name
      */
-    private function _backup_dump_table($tablename, $key) {
+    private function _backup_dump_table($table_name) {
     
         echo "#\n";
         if ( !$this->mode_en && defined('_BACKUP_BACKUPFILE_TABLE_NAME'))
-            echo "# " . _BACKUP_BACKUPFILE_TABLE_NAME . $tablename . "\n";
+            echo "# " . _BACKUP_BACKUPFILE_TABLE_NAME . $table_name . "\n";
         else
-            echo "# TABLE: " . $tablename . "\n";
+            echo "# TABLE: " . $table_name . "\n";
         echo "#\n";
     
         // dump table structure
-        $this->_backup_dump_structure($tablename);
+        $this->_backup_dump_structure($table_name);
     
         // dump table contents
-        $this->_backup_dump_contents($tablename);
+        $this->_backup_dump_contents($table_name);
     }
 
     /**
@@ -302,20 +302,20 @@ class Backup
      * Creates a dump of the table content for one table
      * @param $table_name
      */
-    private function _backup_dump_contents($tablename) {
+    private function _backup_dump_contents($table_name) {
         //
         // Grab the data from the table.
         //
-        $row_count = intval(quickQuery("SELECT count(*) AS result FROM ${tablename}"));
-        $result = sql_query("SELECT * FROM $tablename");
+        $row_count = intval(quickQuery("SELECT count(*) AS result FROM $table_name"));
+        $result = sql_query("SELECT * FROM $table_name");
         if (!$result) return;
     
         if($row_count > 0)
         {
             if ( !$this->mode_en && defined('_BACKUP_BACKUPFILE_TABLEDATAFOR'))
-                echo "\n#\n# " . sprintf(_BACKUP_BACKUPFILE_TABLEDATAFOR, $tablename) . "\n#\n";
+                echo "\n#\n# " . sprintf(_BACKUP_BACKUPFILE_TABLEDATAFOR, $table_name) . "\n#\n";
             else
-                echo "\n#\n# Table Data for $tablename\n#\n";
+                echo "\n#\n# Table Data for $table_name\n#\n";
         }
 
         $num_fields = sql_num_fields($result);
@@ -332,7 +332,7 @@ class Backup
         {
             // Start building the SQL statement.
     
-            echo "INSERT INTO `".$tablename."` $tablename_list VALUES(";
+            echo "INSERT INTO `".$table_name."` $tablename_list VALUES(";
     
             // Loop through the rows and fill in data for each column
             for ($j = 0; $j < $num_fields; $j++) {
@@ -368,6 +368,7 @@ class Backup
      */
     private static function gzip_PrintFourChars($Val)
     {
+        $return = '';
         for ($i = 0; $i < 4; $i ++)
         {
             $return .= chr($Val % 256);
@@ -435,6 +436,7 @@ class Backup
 
         // time to execute the query
         $this->_execute_queries($sql_query);
+        return '';
     }
 
     /**
@@ -475,9 +477,6 @@ class Backup
     {
         $lines = explode("\n", $sql);
     
-        // try to keep mem. use down
-        $sql = "";
-    
         $linecount = count($lines);
         $output = "";
     
@@ -516,13 +515,7 @@ class Backup
     {
         // Split up our string into "possible" SQL statements.
         $tokens = explode( ";", $sql);
-    
-        // try to save mem.
-        $sql = "";
         $output = array();
-    
-        // we don't actually care about the matches preg gives us.
-        $matches = array();
     
         // this is faster than calling count($tokens) every time thru the loop.
         $token_count = count($tokens);
