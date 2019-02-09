@@ -227,9 +227,10 @@ class Backup
 
 
     /**
-      * Creates a dump for a single table
-      * ($tablename and $key are filled in by array_walk)
-      */
+     * Creates a dump for a single table
+     * ($tablename is filled in by array_walk)
+     * @param $table_name
+     */
     private function _backup_dump_table($tablename, $key) {
     
         echo "#\n";
@@ -247,9 +248,10 @@ class Backup
     }
 
     /**
-      * Creates a dump of the table structure for one table
-      */
-    function _backup_dump_structure($tablename) {
+     * Creates a dump of the table structure for one table
+     * @param $tablename
+     */
+    private function _backup_dump_structure($tablename) {
 
         $charset   = $this->export_db_charset;
         $collation = $this->export_db_collation;
@@ -272,6 +274,9 @@ class Backup
      * following format:
      *
      * (column1, column2, ..., columnn)
+     * @param $result
+     * @param $num_fields
+     * @return string
      */
     private function _backup_get_field_names($result, $num_fields) {
     
@@ -294,8 +299,9 @@ class Backup
     }
 
     /**
-      * Creates a dump of the table content for one table      
-      */
+     * Creates a dump of the table content for one table
+     * @param $table_name
+     */
     private function _backup_dump_contents($tablename) {
         //
         // Grab the data from the table.
@@ -357,7 +363,9 @@ class Backup
 
     /**
      * copied from phpBB
-     */         
+     * @param $Val
+     * @return string
+     */
     private function gzip_PrintFourChars($Val)
     {
         for ($i = 0; $i < 4; $i ++)
@@ -431,7 +439,8 @@ class Backup
 
     /**
      * Executes a SQL query
-     */    
+     * @param $sql_query
+     */
     private function _execute_queries($sql_query) {
         if (!$sql_query) return;
     
@@ -459,7 +468,9 @@ class Backup
     /**
      * remove_remarks will strip the sql comment lines
      * out of an uploaded sql file
-     */    
+     * @param $sql
+     * @return string
+     */
     private function remove_remarks($sql)
     {
         $lines = explode("\n", $sql);
@@ -495,10 +506,12 @@ class Backup
     /**
      * split_sql_file will split an uploaded sql file
      * into single sql statements.
-     *      
-     * Note: expects trim() to have already been run on $sql.     
+     *
+     * Note: expects trim() to have already been run on $sql.
      * taken from phpBB
-     */     
+     * @param $sql
+     * @return array
+     */
     private function split_sql_file($sql)
     {
         // Split up our string into "possible" SQL statements.
@@ -573,6 +586,8 @@ class Backup
      * sub function of split_sql_file
      *
      * taken from phpBB
+     * @param $text
+     * @return bool
      */
     private function _evenNumberOfQuotes($text) {
             // This is the total number of single quotes in the token.
