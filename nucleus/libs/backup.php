@@ -218,7 +218,7 @@ class Backup
             $Crc = crc32(ob_get_contents());
             $contents = gzcompress(ob_get_contents());
             ob_end_clean();
-            echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, strlen($contents) - 4).$this->gzip_PrintFourChars($Crc).$this->gzip_PrintFourChars($Size);
+            echo "\x1f\x8b\x08\x00\x00\x00\x00\x00".substr($contents, 0, strlen($contents) - 4). Backup::gzip_PrintFourChars($Crc) . Backup::gzip_PrintFourChars($Size);
         }
         
         exit;
@@ -278,7 +278,7 @@ class Backup
      * @param $num_fields
      * @return string
      */
-    private function _backup_get_field_names($result, $num_fields) {
+    private static function _backup_get_field_names($result, $num_fields) {
     
     /*    if (function_exists('mysqli_fetch_fields') ) {
             
@@ -323,7 +323,7 @@ class Backup
         //
         // Compose fieldname list
         //
-        $tablename_list = $this->_backup_get_field_names($result, $num_fields);
+        $tablename_list = Backup::_backup_get_field_names($result, $num_fields);
             
         //
         // Loop through the resulting rows and build the sql statement.
@@ -366,7 +366,7 @@ class Backup
      * @param $Val
      * @return string
      */
-    private function gzip_PrintFourChars($Val)
+    private static function gzip_PrintFourChars($Val)
     {
         for ($i = 0; $i < 4; $i ++)
         {
@@ -445,7 +445,7 @@ class Backup
         if (!$sql_query) return;
     
         // Strip out sql comments...
-        $sql_query = $this->remove_remarks($sql_query);
+        $sql_query = Backup::remove_remarks($sql_query);
         $pieces = $this->split_sql_file($sql_query);
     
         $sql_count = count($pieces);
@@ -471,7 +471,7 @@ class Backup
      * @param $sql
      * @return string
      */
-    private function remove_remarks($sql)
+    private static function remove_remarks($sql)
     {
         $lines = explode("\n", $sql);
     
