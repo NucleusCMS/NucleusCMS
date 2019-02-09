@@ -2414,13 +2414,11 @@ xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'], $cha
                                         $cookiename = $tag;
                                         $GLOBALS['_xh']['cookies'][$tag] = array();
                                         $GLOBALS['_xh']['cookies'][$cookiename]['value'] = urldecode($val);
+                                        continue;
                                     }
-                                    else
+                                    if ($tag != 'value')
                                     {
-                                        if ($tag != 'value')
-                                        {
-                                          $GLOBALS['_xh']['cookies'][$cookiename][$tag] = $val;
-                                        }
+                                      $GLOBALS['_xh']['cookies'][$cookiename][$tag] = $val;
                                     }
                                 }
                             }
