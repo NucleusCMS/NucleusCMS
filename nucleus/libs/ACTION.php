@@ -358,7 +358,8 @@ class ACTION
      */
     function doKarma($type)
     {
-        return doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
+        $this->doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
+        return;
     }
 
     /**
