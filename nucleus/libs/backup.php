@@ -20,6 +20,13 @@
 class Backup
 { 
 
+    private $is_support_utf8mb4;
+    private $charsetOfDB;
+    private $collationOfDB;
+    private $export_db_charset;
+    private $mode_en;
+    private $export_db_collation;
+    public $mySqlVer;
     /**
      * Constructor
      */
