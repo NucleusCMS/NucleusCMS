@@ -649,7 +649,7 @@ function selector() {
     }
 
     // decide which skin should be used
-    if ($skinid != '' && ($skinid == 0) ) {
+    if ($skinid != '' && $skinid == 0) {
         selectSkin($skinid);
     }
 

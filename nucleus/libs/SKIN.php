@@ -51,21 +51,21 @@ class SKIN {
         if (!$this->isValid)
             return;
 
-        $this->name = $obj->sdname;
-        $this->description = $obj->sddesc;
-        $this->contentType = $obj->sdtype;
-        $this->includeMode = $obj->sdincmode;
+        $this->name          = $obj->sdname;
+        $this->description   = $obj->sddesc;
+        $this->contentType   = $obj->sdtype;
+        $this->includeMode   = $obj->sdincmode;
         $this->includePrefix = $obj->sdincpref;
-
     }
+    
     public function SKIN($id) { $this->__construct($id); }
 
-    function getID() {                return $this->id; }
-    function getName() {             return $this->name; }
-    function getDescription() {     return $this->description; }
-    function getContentType() {     return $this->contentType; }
-    function getIncludeMode() {     return $this->includeMode; }
-    function getIncludePrefix() {     return $this->includePrefix; }
+    public function getID()            { return $this->id; }
+    public function getName()          { return $this->name; }
+    public function getDescription()   { return $this->description; }
+    public function getContentType()   { return $this->contentType; }
+    public function getIncludeMode()   { return $this->includeMode; }
+    public function getIncludePrefix() { return $this->includePrefix; }
 
     /**
      * Checks if a skin with a given shortname exists
@@ -252,7 +252,6 @@ class SKIN {
             // use base skin if this skin does not have contents
             $defskin = new SKIN($CONF['BaseSkin']);
             $contents = $defskin->getContent($type, $getcontents_options);
-//          if (!$contents) $contents = $this->getContent('index');
             if (!$contents) {
                 echo _ERROR_SKIN;
                 return;
