@@ -292,7 +292,7 @@ class NucleusPlugin {
       * public
       */
     function getDirectory() {
-        global $DIR_PLUGINS;
+        global $DIR_PLUGINS, $CONF;
         if ( isset($this->plugin_admin_dir) ) {
             return $this->plugin_admin_dir;
         }
