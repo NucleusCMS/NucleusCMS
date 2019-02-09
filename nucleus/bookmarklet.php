@@ -410,6 +410,7 @@ function uniDecode($str,$charcode){
     return mb_convert_encoding($text, $charcode, 'UTF-8');
 }
 function toUtf8($ar){
+    $c = '';
     foreach($ar as $val){
         $val = intval(substr($val,2),16);
         if($val < 0x7F){        // 0000-007F

@@ -41,13 +41,13 @@ function preview(id, value) {
 
 function showedit() {
 	prevval = document.getElementById('edit').style.display;
-	if (prevval == "table-row")
+	if (prevval === "table-row")
 		newval = "none";
 	else
 		newval = "table-row";
 	document.getElementById('edit').style.display = newval;
 
-	if (newval == "table-row")
+	if (newval === "table-row")
 		updAllPreviews();
 }
 
@@ -61,7 +61,7 @@ function isEditVisible() {
 	var editform = document.getElementById('edit');
 	if (!editform) return true;
 	var prevval = editform.style.display;
-	return (prevval == "none") ? false : true;
+	return (prevval != "none");
 }
 
 function updPreview(id) {

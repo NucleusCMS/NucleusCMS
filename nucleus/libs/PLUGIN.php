@@ -1048,4 +1048,3 @@ class NucleusPlugin {
     }
 
 } // end class
-
