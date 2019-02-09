@@ -108,17 +108,16 @@ class Backup
         ob_end_clean();
 //        exit(sprintf("_CHARSET(%s) , export_db_charset(%s) , mode_en(%s)", _CHARSET, $this->export_db_charset, $this->mode_en ? 'true' : 'false'));
     }
-    
-    
+
+
     /**
-      * This function creates an sql dump of the database and sends it to
-      * the user as a file (can be gzipped if they want)
-      *
-      * @requires
-      *        no output may have preceded (new headers are sent)
-      * @param gzip
-      *        1 = compress backup file, 0 = no compression (default)
-      */
+     * This function creates an sql dump of the database and sends it to
+     * the user as a file (can be gzipped if they want)
+     *
+     * @requires
+     *        no output may have preceded (new headers are sent)
+     * @param int $gzip
+     */
     function do_backup($gzip = 0) {
         global $manager;
 
@@ -225,8 +224,8 @@ class Backup
         exit;
     
     }
-    
-    
+
+
     /**
       * Creates a dump for a single table
       * ($tablename and $key are filled in by array_walk)
@@ -269,7 +268,7 @@ class Backup
     }
 
     /**
-     * Returns the field named for the given table in the 
+     * Returns the field named for the given table in the
      * following format:
      *
      * (column1, column2, ..., columnn)
@@ -422,8 +421,9 @@ class Backup
         }
     
         // remove utf-8 bom
-        if (substr($sql_query, 0, 3) == "\xEF\xBB\xBF")
+        if (substr($sql_query, 0, 3) == "\xEF\xBB\xBF") {
             $sql_query = (strlen($sql_query)>3 ? substr($sql_query, 3) : '');
+        }
 
         // time to execute the query
         $this->_execute_queries($sql_query);
@@ -446,9 +446,8 @@ class Backup
     
             if(!empty($sql) and $sql[0] != "#")
             {
-                // DEBUG
-    //            debug("Executing: " . hsc($sql) . "\n");
-    
+//                DEBUG
+//                debug("Executing: " . hsc($sql) . "\n");
                 $result = sql_query($sql);
                 if (!$result) debug(_BACKUP_RESTOR_SQL_ERROR . sql_error());
     
@@ -572,9 +571,9 @@ class Backup
 
     /**
      * sub function of split_sql_file
-     *      
+     *
      * taken from phpBB
-     */     
+     */
     function _evenNumberOfQuotes($text) {
             // This is the total number of single quotes in the token.
             $total_quotes = preg_match_all("/'/", $text, $matches);
