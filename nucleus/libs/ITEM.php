@@ -318,7 +318,8 @@ class ITEM {
         $itemid = intval($itemid);
         $new_catid = intval($new_catid);
 
-       $query = sprintf("SELECT iblog,icat FROM %s WHERE inumber=%d", $tbl_item, $itemid);
+        $query = sprintf("SELECT iblog,icat FROM %s WHERE inumber=%d", $tbl_item, $itemid);
+        $res = sql_query($query);
         if ($res = sql_query($query) && ($obj = sql_fetch_object($res)))
         {
             $src_blogid = intval($obj->iblog);
@@ -570,4 +571,3 @@ class ITEM {
     }
 
 }
-
