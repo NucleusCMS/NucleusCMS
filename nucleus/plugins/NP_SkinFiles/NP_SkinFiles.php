@@ -84,7 +84,7 @@ class NP_SkinFiles extends NucleusPlugin {
 	public function init() {
 		$language = str_replace(array('\\','/'), '', getLanguageName());
 		$lang_dir = $this->getDirectory(). 'language/';
-		if (file_exists($lang_dir.$language.'.php')) {
+		if (is_file($lang_dir.$language.'.php')) {
 			include_once($lang_dir.$language.'.php');
 		} else {
 			include_once($lang_dir.'english.php');
