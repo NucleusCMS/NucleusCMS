@@ -242,7 +242,7 @@ class SKIN {
         $getcontents_options = array('spartstype' => $spartstype);
         $contents = $this->getContent($type, $getcontents_options);
         
-        if (!$contents) {
+        if ($contents===false) {
             if ($spartstype == 'specialpage')
             {
                 doError(_ERROR_NOSUCHPAGE);
@@ -332,7 +332,7 @@ class SKIN {
         $res = sql_query(parseQuery($query,$ph));
 
         if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
-            return '';
+            return false;
         return $r[0];
     }
 
