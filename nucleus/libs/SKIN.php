@@ -41,8 +41,7 @@ class SKIN {
         $this->id = intval($id);
 
         // read skin name/description/content type
-        $query = sprintf('SELECT * FROM %s WHERE sdnumber=%d',
-                         sql_table('skin_desc'), $this->id);
+        $query = parseQuery('SELECT * FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]', array('sdnumber'=>$this->id));
         $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res)))
             $this->isValid = is_object($obj);
@@ -74,9 +73,8 @@ class SKIN {
      * @static
      */
     public static function exists($name) {
-        $query = sprintf("SELECT count(*) AS result FROM %s WHERE sdname='%s'",
-                         sql_table('skin_desc'),
-                         sql_real_escape_string($name));
+        $ph = array('sdname'=>sql_real_escape_string($name));
+        $query = parseQuery("SELECT count(*) AS result FROM [@prefix@]skin_desc WHERE sdname='[@sdname@]'", $ph);
         return intval(quickQuery($query)) > 0;
     }
 
@@ -87,7 +85,9 @@ class SKIN {
      * @static
      */
     public static function existsID($id) {
-        return intval(quickQuery('select COUNT(*) as result FROM '.sql_table('skin_desc').' WHERE sdnumber='.intval($id))) > 0;
+        $ph = array('sdnumber'=>intval($id));
+        $query = parseQuery('select COUNT(*) as result FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]', $ph);
+        return intval(quickQuery($query)) > 0;
     }
 
     public function existsSpecialName($name)
@@ -614,7 +614,8 @@ class SKIN {
             return false;
 
         // read skin name/description/content type
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $id);
+        $ph = array('sdnumber'=>$id);
+        $res = sql_query(parseQuery('SELECT * FROM [@prefix@]skin_desc WHERE sdnumber=', $ph));
         $obj = sql_fetch_object($res);
         if (!is_object($obj))
             return false;
