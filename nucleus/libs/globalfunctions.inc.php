@@ -342,15 +342,9 @@ function getPluginNameFromPid($pid) {
     return false;
 }
 
-function selector() {
-    global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
-    global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
-    global $imagepopup, $catid, $special;
-    global $manager;
-
-    $actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
+function _execOtherAction() {
     $action = requestVar('action');
-
+    $actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
     if (in_array($action, $actionNames) ) {
         global $errormessage;
         include_once(NC_LIBS_PATH . 'ACTION.php');
@@ -361,18 +355,237 @@ function selector() {
             $errormessage = $errorInfo['message'];
         }
     }
+}
 
+function _alertOnHeadersSent() {
+    headers_sent($hsFile, $hsLine);
+    $extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
+
+    startUpError(
+        sprintf(_GFUNCTIONS_HEADERSALREADYSENT_TXT,$extraInfo),
+        _GFUNCTIONS_HEADERSALREADYSENT_TITLE
+    );
+    exit;
+}
+
+function _decideItemSkin($itemid) {
+    global $blogid, $query, $blog, $CONF, $catid, $manager;
+    // itemid given -> only show that item
+    
+    if (!$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts'])) ) {
+        doError(_ERROR_NOSUCHITEM);
+    }
+
+    global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
+
+    // 1. get timestamp, blogid and catid for item
+    $ph['inumber'] = (int)$itemid;
+    $res = sql_query( parseQuery("SELECT itime, iblog, icat FROM [@prefix@]item WHERE inumber='[@inumber@]'", $ph) );
+    $obj = sql_fetch_object($res);
+
+    // if a different blog id has been set through the request or selectBlog(),
+    // deny access
+    
+    if ($blogid && (intval($blogid) != $obj->iblog) ) {
+        if (!headers_sent()) {
+            $b =& $manager->getBlog($obj->iblog);
+            $CONF['ItemURL'] = $b->getURL();
+            if ($CONF['URLMode'] == 'pathinfo' and substr($CONF['ItemURL'],-1) == '/')
+                $CONF['ItemURL'] = substr($CONF['ItemURL'], 0, -1);
+            $correctURL = createItemLink($itemid, '');
+            redirect($correctURL);
+            exit;
+        }
+        doError(_ERROR_NOSUCHITEM);
+    }
+
+    // if a category has been selected which doesn't match the item, ignore the
+    // category. #85
+    if (($catid != 0) && ($catid != $obj->icat) ) {
+        $catid = 0;
+    }
+
+    $blogid = $obj->iblog;
+    $timestamp = strtotime($obj->itime);
+
+    $b =& $manager->getBlog($blogid);
+
+    if ($b->isValidCategory($catid) ) {
+        $catextra = ' AND icat=' . $catid;
+    } else {
+        $catextra = '';
+    }
+
+    // get previous itemid and title
+    $ph = array();
+    $ph['itime'] = strtotime($obj->itime);
+    $ph['blogid'] = $blogid;
+    $ph['catextra'] = $catextra;
+    $query = 'SELECT inumber, ititle FROM [@prefix@]item'
+            . ' WHERE itime < [@itime@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
+            . ' ORDER BY itime DESC LIMIT 1';
+    $res = sql_query(parseQuery($query, $ph));
+
+    if ($res && ($obj = sql_fetch_object($res))) {
+        $itemidprev = $obj->inumber;
+        $itemtitleprev = $obj->ititle;
+    }
+
+    // get next itemid and title
+    $ph['catextra'] = $catextra;
+    $ph['now']      = mysqldate($b->getCorrectTime());
+    $query = 'SELECT inumber, ititle FROM [@prefix@]item'
+            . ' WHERE itime > [@itime@] AND itime <= [@now@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
+            . ' ORDER BY itime ASC LIMIT 1';
+    $res = sql_query(parseQuery($query, $ph));
+
+    if ($res && ($obj = sql_fetch_object($res))) {
+        $itemidnext = $obj->inumber;
+        $itemtitlenext = $obj->ititle;
+    }
+    return 'item';
+}
+
+function _decideArchivelistSkin($archivelist) {
+    global $CONF, $blogid;
+    
+    if(!$blogid) {
+        if (preg_match('@^[1-9][0-9]*$@', $archivelist)) {
+            $blogid = $archivelist;
+        } elseif($archivelist==0) {
+            $blogid = $CONF['DefaultBlog'];
+        } else {
+            $blogid = getBlogIDFromName($archivelist);
+        }
+    }
+
+    if (!$blogid) {
+        doError(_ERROR_NOSUCHBLOG);
+    }
+    
+    return 'archivelist';
+}
+
+function _decideArchiveSkin($archive) {
+    global $CONF, $blogid, $query;
+    // get next and prev month links ...
+    global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
+
+    // sql queries for the timestamp of the first and the last published item
+    $ph = array();
+    $ph['iblog'] = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
+    $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM [@prefix@]item WHERE idraft=0 AND iblog='[@iblog@]'",$ph);
+    
+    $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
+    $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
+
+    $y = $m = $d = '';
+    sscanf($archive, '%d-%d-%d', $y, $m, $d);
+
+    if ($d != 0) {
+        $archivetype = _ARCHIVETYPE_DAY;
+        $t = mktime(0, 0, 0, $m, $d, $y);
+        // one day has 24 * 60 * 60 = 86400 seconds
+        $archiveprev = strftime('%Y-%m-%d', $t - 86400 );
+        // check for published items
+        if ($t > $first_timestamp) {
+            $archiveprevexists = true;
+        }
+        else {
+            $archiveprevexists = false;
+        }
+
+        // one day later
+        $t += 86400;
+        $archivenext = strftime('%Y-%m-%d', $t);
+        if ($t < $last_timestamp) {
+            $archivenextexists = true;
+        }
+        else {
+            $archivenextexists = false;
+        }
+
+    } elseif ($m == 0) {
+        $archivetype = _ARCHIVETYPE_YEAR;
+        $t = mktime(0, 0, 0, 12, 31, $y - 1);
+        // one day before is in the previous year
+        $archiveprev = strftime('%Y', $t);
+        if ($t > $first_timestamp) {
+            $archiveprevexists = true;
+        }
+        else {
+            $archiveprevexists = false;
+        }
+
+        // timestamp for the next year
+        $t = mktime(0, 0, 0, 1, 1, $y + 1);
+        $archivenext = strftime('%Y', $t);
+        if ($t < $last_timestamp) {
+            $archivenextexists = true;
+        }
+        else {
+            $archivenextexists = false;
+        }
+    } else {
+        $archivetype = _ARCHIVETYPE_MONTH;
+        $t = mktime(0, 0, 0, $m, 1, $y);
+        // one day before is in the previous month
+        $archiveprev = strftime('%Y-%m', $t - 86400);
+        if ($t > $first_timestamp) {
+            $archiveprevexists = true;
+        }
+        else {
+            $archiveprevexists = false;
+        }
+
+        // timestamp for the next month
+        $t = mktime(0, 0, 0, $m+1, 1, $y);
+        $archivenext = strftime('%Y-%m', $t);
+        if ($t < $last_timestamp) {
+            $archivenextexists = true;
+        }
+        else {
+            $archivenextexists = false;
+        }
+    }
+    return 'archive';
+}
+
+function _fix_mb_string($query) {
+    if (preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)) {
+        $type = 'index';
+    }
+    switch(strtolower(_CHARSET)) {
+        case 'utf-8':
+            $order = 'ASCII, UTF-8, EUC-JP, JIS, SJIS, EUC-CN, ISO-8859-1';
+            break;
+        case 'gb2312':
+            $order = 'ASCII, EUC-CN, EUC-JP, UTF-8, JIS, SJIS, ISO-8859-1';
+            break;
+        case 'shift_jis':
+            // Note that shift_jis is only supported for output.
+            // Using shift_jis in DB is prohibited.
+            $order = 'ASCII, SJIS, EUC-JP, UTF-8, JIS, EUC-CN, ISO-8859-1';
+            break;
+        default:
+            // euc-jp,iso-8859-x,windows-125x
+            $order = 'ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1';
+            break;
+    }
+    return mb_convert_encoding($query, _CHARSET, $order);
+}
+
+function selector() {
+    global $itemid, $blogid, $memberid, $query, $amount, $archivelist, $maxresults;
+    global $archive, $skinid, $blog, $memberinfo, $CONF, $member;
+    global $imagepopup, $catid, $special;
+    global $manager;
+
+    _execOtherAction();
+    
     // show error when headers already sent out
     if (headers_sent() && $CONF['alertOnHeadersSent']) {
-
-        headers_sent($hsFile, $hsLine);
-        $extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE,$hsFile,$hsLine);
-
-        startUpError(
-            sprintf(_GFUNCTIONS_HEADERSALREADYSENT_TXT,$extraInfo),
-            _GFUNCTIONS_HEADERSALREADYSENT_TITLE
-        );
-        exit;
+        _alertOnHeadersSent();
     }
 
     // make is so ?archivelist without blogname or blogid shows the archivelist
@@ -383,208 +596,19 @@ function selector() {
 
     // now decide which type of skin we need
     if ($itemid) {
-        // itemid given -> only show that item
-        $type = 'item';
-
-        if (!$manager->existsItem($itemid,intval($CONF['allowFuture']),intval($CONF['allowDrafts'])) ) {
-            doError(_ERROR_NOSUCHITEM);
-        }
-
-        global $itemidprev, $itemidnext, $catid, $itemtitlenext, $itemtitleprev;
-
-        // 1. get timestamp, blogid and catid for item
-        $ph['inumber'] = (int)$itemid;
-        $res = sql_query( parseQuery("SELECT itime, iblog, icat FROM [@prefix@]item WHERE inumber='[@inumber@]'", $ph) );
-        $obj = sql_fetch_object($res);
-
-        // if a different blog id has been set through the request or selectBlog(),
-        // deny access
-        
-        if ($blogid && (intval($blogid) != $obj->iblog) ) {
-            if (!headers_sent()) {
-                $b =& $manager->getBlog($obj->iblog);
-                $CONF['ItemURL'] = $b->getURL();
-                if ($CONF['URLMode'] == 'pathinfo' and substr($CONF['ItemURL'],-1) == '/')
-                    $CONF['ItemURL'] = substr($CONF['ItemURL'], 0, -1);
-                $correctURL = createItemLink($itemid, '');
-                redirect($correctURL);
-                exit;
-            }
-            doError(_ERROR_NOSUCHITEM);
-        }
-
-        // if a category has been selected which doesn't match the item, ignore the
-        // category. #85
-        if (($catid != 0) && ($catid != $obj->icat) ) {
-            $catid = 0;
-        }
-
-        $blogid = $obj->iblog;
-        $timestamp = strtotime($obj->itime);
-
-        $b =& $manager->getBlog($blogid);
-
-        if ($b->isValidCategory($catid) ) {
-            $catextra = ' AND icat=' . $catid;
-        } else {
-            $catextra = '';
-        }
-
-        // get previous itemid and title
-        $ph = array();
-        $ph['itime'] = strtotime($obj->itime);
-        $ph['blogid'] = $blogid;
-        $ph['catextra'] = $catextra;
-        $query = 'SELECT inumber, ititle FROM [@prefix@]item'
-                . ' WHERE itime < [@itime@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
-                . ' ORDER BY itime DESC LIMIT 1';
-        $res = sql_query(parseQuery($query, $ph));
-
-        if ($res && ($obj = sql_fetch_object($res))) {
-            $itemidprev = $obj->inumber;
-            $itemtitleprev = $obj->ititle;
-        }
-
-        // get next itemid and title
-        $ph['catextra'] = $catextra;
-        $ph['now']      = mysqldate($b->getCorrectTime());
-        $query = 'SELECT inumber, ititle FROM [@prefix@]item'
-                . ' WHERE itime > [@itime@] AND itime <= [@now@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
-                . ' ORDER BY itime ASC LIMIT 1';
-        $res = sql_query(parseQuery($query, $ph));
-
-        if ($res && ($obj = sql_fetch_object($res))) {
-            $itemidnext = $obj->inumber;
-            $itemtitlenext = $obj->ititle;
-        }
-
+        $type = _decideItemSkin($itemid);
     } elseif ($archive) {
-        // show archive
-        $type = 'archive';
-
-        // get next and prev month links ...
-        global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
-
-        // sql queries for the timestamp of the first and the last published item
-        $ph = array();
-        $ph['iblog'] = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
-        $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM [@prefix@]item WHERE idraft=0 AND iblog='[@iblog@]'",$ph);
-        
-        $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
-        $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
-
-        $y = $m = $d = '';
-        sscanf($archive, '%d-%d-%d', $y, $m, $d);
-
-        if ($d != 0) {
-            $archivetype = _ARCHIVETYPE_DAY;
-            $t = mktime(0, 0, 0, $m, $d, $y);
-            // one day has 24 * 60 * 60 = 86400 seconds
-            $archiveprev = strftime('%Y-%m-%d', $t - 86400 );
-            // check for published items
-            if ($t > $first_timestamp) {
-                $archiveprevexists = true;
-            }
-            else {
-                $archiveprevexists = false;
-            }
-
-            // one day later
-            $t += 86400;
-            $archivenext = strftime('%Y-%m-%d', $t);
-            if ($t < $last_timestamp) {
-                $archivenextexists = true;
-            }
-            else {
-                $archivenextexists = false;
-            }
-
-        } elseif ($m == 0) {
-            $archivetype = _ARCHIVETYPE_YEAR;
-            $t = mktime(0, 0, 0, 12, 31, $y - 1);
-            // one day before is in the previous year
-            $archiveprev = strftime('%Y', $t);
-            if ($t > $first_timestamp) {
-                $archiveprevexists = true;
-            }
-            else {
-                $archiveprevexists = false;
-            }
-
-            // timestamp for the next year
-            $t = mktime(0, 0, 0, 1, 1, $y + 1);
-            $archivenext = strftime('%Y', $t);
-            if ($t < $last_timestamp) {
-                $archivenextexists = true;
-            }
-            else {
-                $archivenextexists = false;
-            }
-        } else {
-            $archivetype = _ARCHIVETYPE_MONTH;
-            $t = mktime(0, 0, 0, $m, 1, $y);
-            // one day before is in the previous month
-            $archiveprev = strftime('%Y-%m', $t - 86400);
-            if ($t > $first_timestamp) {
-                $archiveprevexists = true;
-            }
-            else {
-                $archiveprevexists = false;
-            }
-
-            // timestamp for the next month
-            $t = mktime(0, 0, 0, $m+1, 1, $y);
-            $archivenext = strftime('%Y-%m', $t);
-            if ($t < $last_timestamp) {
-                $archivenextexists = true;
-            }
-            else {
-                $archivenextexists = false;
-            }
-        }
-
+        $type = _decideArchiveSkin($archive);
     } elseif ($archivelist) {
-        $type = 'archivelist';
-
-        if (is_numeric($archivelist)) {
-            $blogid = intVal($archivelist);
-        } else {
-            $blogid = getBlogIDFromName($archivelist);
-        }
-
-        if (!$blogid) {
-            doError(_ERROR_NOSUCHBLOG);
-        }
-
-    } elseif ($GLOBALS['query']) {
+        $type = _decideArchivelistSkin($itemid);
+    } elseif ($keyword = getVar('query',$GLOBALS['query'])) {
+        // $type = _decideSearchSkin($keyword);
         global $startpos;
         $type = 'search';
         $query = stripslashes($GLOBALS['query']);
 
-        if (function_exists('mb_convert_encoding'))
-        {
-            if (preg_match("/^(\xA1{2}|\xe3\x80{2}|\x20)+$/", $query)) {
-                $type = 'index';
-            }
-    //      $query = mb_convert_encoding($query, _CHARSET, $order . ' JIS, SJIS, ASCII');
-            switch(strtolower(_CHARSET)) {
-                case 'utf-8':
-                    $order = 'ASCII, UTF-8, EUC-JP, JIS, SJIS, EUC-CN, ISO-8859-1';
-                    break;
-                case 'gb2312':
-                    $order = 'ASCII, EUC-CN, EUC-JP, UTF-8, JIS, SJIS, ISO-8859-1';
-                    break;
-                case 'shift_jis':
-                    // Note that shift_jis is only supported for output.
-                    // Using shift_jis in DB is prohibited.
-                    $order = 'ASCII, SJIS, EUC-JP, UTF-8, JIS, EUC-CN, ISO-8859-1';
-                    break;
-                default:
-                    // euc-jp,iso-8859-x,windows-125x
-                    $order = 'ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1';
-                    break;
-            }
-            $query = mb_convert_encoding($query, _CHARSET, $order);
+        if (function_exists('mb_convert_encoding')) {
+            $query = _fix_mb_string($query);
         }
 
         if (is_numeric($blogid)) {
