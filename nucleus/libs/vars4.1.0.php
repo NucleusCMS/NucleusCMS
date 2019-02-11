@@ -47,6 +47,7 @@ function requestVar($name, $default=NULL) {
 }
 
 function serverVar($name, $default=NULL) {
+    $name = strtoupper($name);
     if (!isset($_SERVER[$name])) {
         return $default;
     }
