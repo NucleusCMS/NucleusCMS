@@ -340,7 +340,7 @@ function getPluginNameFromPid($pid) {
     $res = sql_query( parseQuery('SELECT pfile FROM `[@prefix@]plugin` WHERE pid=[@pid@]', $ph) );
     if ($res && ($obj = sql_fetch_object($res)))
         return $obj->pfile;
-    return FALSE;
+    return false;
 }
 
 function selector() {
@@ -940,13 +940,13 @@ function helpHtml($id) {
 function helplink($id) {
     global $CONF;
 
-    $ph['help_dir'] = get_help_root_url(TRUE);
+    $ph['help_dir'] = get_help_root_url(true);
     $ph['id'] = $id;
 
     return parseHtml('<a href="{%help_dir%}help.html#{%id%}" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">', $ph);
 }
 
-function get_help_root_url($subdir_search = FALSE) {
+function get_help_root_url($subdir_search = false) {
     global $CONF, $DIR_NUCLEUS;
 
     static $doc_root = array();
@@ -1010,10 +1010,10 @@ function getLanguageName() {
 
 function LoadCoreLanguage()
 {
-    static $loaded = FALSE;
+    static $loaded = false;
     if ($loaded)
         return;
-    $loaded = TRUE;
+    $loaded = true;
 
 //    global $DIR_LANG, $SQL_DBH;
     global $DIR_LANG;
@@ -1108,9 +1108,9 @@ function checkPlugin($plug) {
     foreach(array($fname, "{$shortname}/{$fname}", "{$pl_name}/{$fname}") as $f)
     if (is_file($DIR_PLUGINS . $f))
     {
-        return TRUE;
+        return true;
     }
-    return FALSE;
+    return false;
 }
 
 function remove_all_directory_separator($text)
@@ -1235,7 +1235,7 @@ function createLink($type, $params) {
 function createBlogLink($url, $params) {
     global $CONF;
     if ($CONF['URLMode'] == 'normal') {
-        if (strpos($url, '?') === FALSE && is_array($params)) {
+        if (strpos($url, '?') === false && is_array($params)) {
             $fParam = reset($params);
             $fKey   = key($params);
             array_shift($params);
@@ -1474,7 +1474,7 @@ function ticketForPlugin() {
 
     /* initialize */
     $ticketforplugin = array();
-    $ticketforplugin['ticket'] = FALSE;
+    $ticketforplugin['ticket'] = false;
     
     /* Check if using plugin's php file. */
     if ($p_translated = serverVar('PATH_TRANSLATED') )
@@ -2046,11 +2046,11 @@ function nucleus_version_compare($version1, $version2, $operator = '')
 // Notice: Do not call this function from user plugin
 // return Plugin Lists on SearchDir
 // mode  1 , 2 : all $lists
-function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
+function getPluginListsFromDirName($SearchDir , &$status, $clearcache = false)
 {
     static $lists = array();
 
-    $status = array('result'=>FALSE);
+    $status = array('result'=>false);
     $SearchDir = str_replace("\\", '/', $SearchDir);
     if ( strlen($SearchDir)>0 && substr($SearchDir, -1, 1)!='/' )
         $SearchDir .= '/';
@@ -2059,21 +2059,21 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
         unset($lists[$SearchDir]);
     if ( isset($lists[$SearchDir]) )
     {
-        $status = array('result'=>TRUE, 'is_cache'=>TRUE);
+        $status = array('result'=>true, 'is_cache'=>true);
         return $lists[$SearchDir];
     }
     if ( !is_dir($SearchDir) )
-        return FALSE;
+        return false;
 
     $lists[$SearchDir] = array();
     $items = &$lists[$SearchDir];
 
     $dirhandle = opendir($SearchDir);
-    if ($dirhandle === FALSE)
-        return FALSE;
+    if ($dirhandle === false)
+        return false;
 
-    $status['is_cache'] = FALSE;
-    $status['result']   = TRUE;
+    $status['is_cache'] = false;
+    $status['result']   = true;
 
     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
     while ( false !== ($filename = readdir($dirhandle)) )
@@ -2134,7 +2134,7 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = FALSE)
                 }
                 $files = glob($current_file . '/' . 'NP_' . $pat . '.php', GLOB_NOSORT);
 
-                if ($files === FALSE || count($files)==0)
+                if ($files === false || count($files)==0)
                     continue;
 
                 $sub_file = basename($files[0]);
@@ -2280,7 +2280,7 @@ function checkBrowserLang($locale)
         return (in_array(strtolower($locale), $http_lang));
 
     $items = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-    if ($items === FALSE)
+    if ($items === false)
         $items = array();
     $http_lang = array_map('substr', $items, array(0, 2));
 //var_dump(__FUNCTION__,__LINE__, $items, $http_lang, $locale);
@@ -2416,10 +2416,10 @@ function loadCoreClassFor_spl_prephp53($classname) { // for PHP 5.1.0 - 5.2
 }
 
 if (!function_exists('get_magic_quotes_gpc')) {
-    function get_magic_quotes_gpc() { return FALSE; }
+    function get_magic_quotes_gpc() { return false; }
 }
 if (!function_exists('get_magic_quotes_runtime')) {
-    function get_magic_quotes_runtime() { return FALSE; }
+    function get_magic_quotes_runtime() { return false; }
 }
 
 function checkOutputCompression($content_type) {
@@ -2428,13 +2428,13 @@ function checkOutputCompression($content_type) {
         return;
     $output_compression = ini_get('zlib.output_compression');
     // check false or '' or '0'
-    if ($output_compression === FALSE || $output_compression === ''
+    if ($output_compression === false || $output_compression === ''
         || $output_compression === '0')
     {
         // check browser bug : see detail https://httpd.apache.org/docs/2.4/ja/mod/mod_deflate.html#enable
         if (!empty($_SERVER['HTTP_USER_AGENT'])
             && preg_match('@^Mozilla/4@i', $_SERVER['HTTP_USER_AGENT'])
-            && (stripos("MSIE", $_SERVER['HTTP_USER_AGENT'])===FALSE))
+            && (stripos("MSIE", $_SERVER['HTTP_USER_AGENT'])===false))
         {
             if (preg_match('@^Mozilla/4\.0[678]@i', $_SERVER['HTTP_USER_AGENT']))
                 return;
