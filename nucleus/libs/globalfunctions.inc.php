@@ -17,12 +17,11 @@
  */
 
 function include_libs($file,$once=true,$require=true){
-    global $DIR_LIBS;
-    if (!is_dir($DIR_LIBS)) exit;
-    if ($once && $require) require_once($DIR_LIBS.$file);
-    elseif ($once && !$require) include_once($DIR_LIBS.$file);
-    elseif ($require) require($DIR_LIBS.$file);
-    else include($DIR_LIBS.$file);
+    if (!is_dir(NC_LIBS_PATH)) exit;
+    if ($once && $require) require_once(NC_LIBS_PATH.$file);
+    elseif ($once && !$require) include_once(NC_LIBS_PATH.$file);
+    elseif ($require) require(NC_LIBS_PATH.$file);
+    else include(NC_LIBS_PATH.$file);
 }
 
 function include_plugins($file,$once=true,$require=true){
@@ -353,8 +352,8 @@ function selector() {
     $action = requestVar('action');
 
     if (in_array($action, $actionNames) ) {
-        global $DIR_LIBS, $errormessage;
-        include_once($DIR_LIBS . 'ACTION.php');
+        global $errormessage;
+        include_once(NC_LIBS_PATH . 'ACTION.php');
         $a = new ACTION();
         $errorInfo = $a->doAction($action);
 
@@ -1574,7 +1573,7 @@ function ticketForPlugin() {
                 . "</body></html>");
     }
 
-    global $manager,$DIR_LIBS,$DIR_LANG;
+    global $manager,$DIR_LANG;
 
     /* Check if this feature is needed (ie, if "$manager->checkTicket()" is not included in the script). */
     if (!($p_translated=serverVar('PATH_TRANSLATED')))
@@ -1602,7 +1601,7 @@ function ticketForPlugin() {
         if (!class_exists('PluginAdmin'))
         {
             LoadCoreLanguage();
-            include_once($DIR_LIBS . 'PLUGINADMIN.php');
+            include_once(NC_LIBS_PATH . 'PLUGINADMIN.php');
         }
         
         $oPluginAdmin = new PluginAdmin($plugin_name);
@@ -2410,9 +2409,8 @@ function loadCoreClassFor_spl($classname) {
 }
 
 function loadCoreClassFor_spl_prephp53($classname) { // for PHP 5.1.0 - 5.2
-    global $DIR_LIBS;
-    if (@is_file("{$DIR_LIBS}/{$classname}.php"))
-        require_once "{$DIR_LIBS}/{$classname}.php";
+    if (@is_file(NC_LIBS_PATH."{$classname}.php"))
+        require_once (NC_LIBS_PATH."{$classname}.php");
 }
 
 if (!function_exists('get_magic_quotes_gpc')) {
