@@ -40,8 +40,8 @@ function cookieVar($name, $default=NULL) {
 
 function requestVar($name, $default=NULL) {
     if(array_key_exists($name,$_REQUEST)) return $_REQUEST[$name];
-    if( array_key_exists($name,$_GET))    return $_GET[$name];
-    if( array_key_exists($name,$_POST))   return $_POST[$name];
+    if(array_key_exists($name,$_GET))     return $_GET[$name];
+    if(array_key_exists($name,$_POST))    return $_POST[$name];
     
     return $default;
 }
@@ -81,14 +81,14 @@ function requestArray($name) {
 // @see globalfunctions.php#passVar
 function passRequestVars() {
     foreach ($_REQUEST as $key => $value) {
-        if (($key == 'action') && ($value != requestVar('nextaction')))
+        if (($key === 'action') && ($value != requestVar('nextaction')))
             $key = 'nextaction';
 
         // a nextaction of 'showlogin' makes no sense
-        if (($key == 'nextaction') && ($value == 'showlogin'))
+        if (($key === 'nextaction') && ($value === 'showlogin'))
             continue;
 
-        if (($key != 'login') && ($key != 'password'))
+        if (($key !== 'login') && ($key !== 'password'))
             passVar($key, $value);
     }
 }

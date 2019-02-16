@@ -149,7 +149,7 @@ class ADMIN {
         global $member;
 
         if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
-            header("HTTP/1.0 404 Not Found");
+            header('HTTP/1.0 404 Not Found');
             exit;
         }
 
@@ -161,8 +161,10 @@ class ADMIN {
 
         $this->pagehead();
 
-        echo '<h2>'. _LOGIN .'</h2>';
-        if ($msg) echo _MESSAGE , ': ', hsc($msg);
+        echo sprintf('<h2>%s</h2>',_LOGIN);
+        if ($msg) {
+            echo sprintf('%s: %s', _MESSAGE, hsc($msg));
+        }
         ?>
 
         <form action="index.php" method="post"><p>
@@ -175,13 +177,13 @@ class ADMIN {
         <input type="submit" value="<?php echo _LOGIN;?>" tabindex="30" />
         <br />
         <small>
-            <input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED?></label>
+            <input type="checkbox" value="1" name="shared" tabindex="40" id="shared" /><label for="shared"><?php echo _LOGIN_SHARED; ?></label>
             <br /><a href="index.php?action=lost_pwd"><?php echo _LOGIN_FORGOT?></a>
         </small>
         <?php           // pass through vars
 
             $oldaction = postVar('oldaction');
-            if (  ($oldaction != 'logout')  && ($oldaction != 'login')  && $passvars ) {
+            if ( $oldaction != 'logout'  && $oldaction != 'login'  && $passvars ) {
                 passRequestVars();
             }
 
@@ -202,7 +204,7 @@ class ADMIN {
         $this->pagehead();
 
         if ($msg)
-            echo _MESSAGE , ': ', $msg;
+            echo sprintf('%s: %s',_MESSAGE,$msg);
 
         /* ---- add items ---- */
         echo '<h2>' . _OVERVIEW_YRBLOGS . '</h2>';
@@ -210,35 +212,38 @@ class ADMIN {
         $ph = array();
         if (requestVar('showall') == 'yes' && $member->isAdmin()) {
             // Super-Admins have access to all blogs! (no add item support though)
-            $query =  'SELECT bnumber, bname, 1 as tadmin, burl, bshortname FROM [@prefix@]blog ORDER BY bname';
+            $query = 'SELECT bnumber, bname, 1 as tadmin, burl, bshortname';
+            $query .= ' FROM [@prefix@]blog ORDER BY bname';
         } else {
-            $query =  'SELECT bnumber, bname, tadmin, burl, bshortname FROM [@prefix@]blog, [@prefix@]team'
-                . ' WHERE tblog=bnumber and tmember=<%tmember%> ORDER BY bname';
+            $query = 'SELECT bnumber, bname, tadmin, burl, bshortname';
+            $query .= ' FROM [@prefix@]blog, [@prefix@]team';
+            $query .= ' WHERE tblog=bnumber and tmember=[@tmember@] ORDER BY bname';
             $ph['tmember'] = $member->getID();
         }
         $query = parseQuery($query, $ph);
         $template['content'] = 'bloglist';
         $template['superadmin'] = $member->isAdmin();
         echo '<div>';
-        $amount = showlist_by_query($query,'table',$template);
+        $amount = showlist_by_query($query, 'table', $template);
         echo '</div>';
 
         if (requestVar('showall') != 'yes' && $member->isAdmin()) {
             $total = quickQuery( parseQuery('SELECT COUNT(*) as result FROM [@prefix@]blog') );
             if ($total > $amount)
-                echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
+                echo sprintf('<p><a href="index.php?action=overview&amp;showall=yes">%s</a></p>',_OVERVIEW_SHOWALL);
         }
 
         if ($amount == 0)
             echo _OVERVIEW_NOBLOGS;
 
         if ($amount != 0) {
-            echo '<h2>' . _OVERVIEW_YRDRAFTS . '</h2>';
+            echo sprintf('<h2>%s</h2>', _OVERVIEW_YRDRAFTS);
 
             // Todo display author
-            $ph = array('iauthor'=>$member->getID());
-            $query =  parseQuery('SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog', $ph)
-                . ' WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY bnumber ASC';
+            $query =  parseQuery(
+                'SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY bnumber ASC'
+                    , array('iauthor'=>$member->getID())
+            );
 
             $items = array();
             $rs = sql_query($query);
@@ -283,9 +288,9 @@ class ADMIN {
                 $query .= ' WHERE';
                 if($showall) {
                     $ph['iauthor'] = $member->getID();
-                    $query .= ' iauthor=<%iauthor%> AND';
+                    $query .= ' iauthor=[@iauthor@] AND';
                 }
-                $query .= ' iblog=bnumber AND iblog=<%iblog%> AND idraft=1 ORDER BY inumber DESC';
+                $query .= ' iblog=bnumber AND iblog=[@iblog@] AND idraft=1 ORDER BY inumber DESC';
                 $query = parseQuery($query,$ph);
                 $template['content'] = 'draftlist';
                 $amountdrafts += showlist_by_query($query, 'table', $template);
@@ -303,16 +308,16 @@ class ADMIN {
         /* ---- user settings ---- */
         echo '<h2>' . _OVERVIEW_YRSETTINGS . '</h2>';
         echo '<ul>';
-        echo '<li><a href="index.php?action=editmembersettings">' . _OVERVIEW_EDITSETTINGS. '</a></li>';
-        echo '<li><a href="index.php?action=browseownitems">' . _OVERVIEW_BROWSEITEMS.'</a></li>';
-        echo '<li><a href="index.php?action=browseowncomments">'._OVERVIEW_BROWSECOMM.'</a></li>';
+        echo sprintf('<li><a href="index.php?action=editmembersettings">%s</a></li>',_OVERVIEW_EDITSETTINGS);
+        echo sprintf('<li><a href="index.php?action=browseownitems">%s</a></li>',_OVERVIEW_BROWSEITEMS);
+        echo sprintf('<li><a href="index.php?action=browseowncomments">%s</a></li>',_OVERVIEW_BROWSECOMM);
         echo '</ul>';
 
         /* ---- general settings ---- */
         if ($member->isAdmin()) {
-            echo '<h2>' . _OVERVIEW_MANAGEMENT. '</h2>';
+            echo sprintf('<h2>%s</h2>',_OVERVIEW_MANAGEMENT);
             echo '<ul>';
-            echo '<li><a href="index.php?action=manage">',_OVERVIEW_MANAGE,'</a></li>';
+            echo sprintf('<li><a href="index.php?action=manage">%s</a></li>',_OVERVIEW_MANAGE);
             echo '</ul>';
         }
 
@@ -324,7 +329,7 @@ class ADMIN {
      * @param object BLOG
      */
     function bloglink(&$blog) {
-        return '<a href="'.hsc($blog->getRealURL()).'" title="'._BLOGLIST_TT_VISIT.'">'. hsc( $blog->getName() ) .'</a>';
+        return sprintf('<a href="%s" title="%s">%s</a>',hsc($blog->getRealURL()),_BLOGLIST_TT_VISIT,hsc( $blog->getName() ));
     }
 
     /**
@@ -337,7 +342,7 @@ class ADMIN {
 
         $this->pagehead();
 
-        echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
+        echo sprintf('<p><a href="index.php?action=overview">(%s)</a></p>',_BACKHOME);
 
         if ($msg)
             echo '<p>' , _MESSAGE , ': ', $msg , '</p>';
@@ -346,18 +351,18 @@ class ADMIN {
         echo '<h2>' . _MANAGE_GENERAL. '</h2>';
 
         echo '<ul>';
-        echo '<li><a href="index.php?action=createnewlog">'._OVERVIEW_NEWLOG.'</a></li>';
-        echo '<li><a href="index.php?action=settingsedit">'._OVERVIEW_SETTINGS.'</a></li>';
-        echo '<li><a href="index.php?action=usermanagement">'._OVERVIEW_MEMBERS.'</a></li>';
-        echo '<li><a href="index.php?action=actionlog">'._OVERVIEW_VIEWLOG.'</a></li>';
-        echo '<li><a href="index.php?action=systemlog">'._SYSTEMLOG_TITLE.'</a></li>';
+        echo sprintf('<li><a href="index.php?action=createnewlog">%s</a></li>',_OVERVIEW_NEWLOG);
+        echo sprintf('<li><a href="index.php?action=settingsedit">%s</a></li>',_OVERVIEW_SETTINGS);
+        echo sprintf('<li><a href="index.php?action=usermanagement">%s</a></li>',_OVERVIEW_MEMBERS);
+        echo sprintf('<li><a href="index.php?action=actionlog">%s</a></li>',_OVERVIEW_VIEWLOG);
+        echo sprintf('<li><a href="index.php?action=systemlog">%s</a></li>',_SYSTEMLOG_TITLE);
         echo '</ul>';
 
         echo '<h2>' . _MANAGE_SKINS . '</h2>';
         echo '<ul>';
-        echo '<li><a href="index.php?action=skinoverview">'._OVERVIEW_SKINS.'</a></li>';
-        echo '<li><a href="index.php?action=templateoverview">'._OVERVIEW_TEMPLATES.'</a></li>';
-        echo '<li><a href="index.php?action=skinieoverview">'._OVERVIEW_SKINIMPORT.'</a></li>';
+        echo sprintf('<li><a href="index.php?action=skinoverview">%s</a></li>',_OVERVIEW_SKINS);
+        echo sprintf('<li><a href="index.php?action=templateoverview">%s</a></li>',_OVERVIEW_TEMPLATES);
+        echo sprintf('<li><a href="index.php?action=skinieoverview">%s</a></li>',_OVERVIEW_SKINIMPORT);
         echo '</ul>';
 
         echo '<h2>' . _MANAGE_EXTRA . '</h2>';
@@ -391,7 +396,7 @@ class ADMIN {
         $blog =& $manager->getBlog($blogid);
 
         echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
-        echo '<h2>' . _ITEMLIST_BLOG . ' ' . $this->bloglink($blog) . '</h2>';
+        echo sprintf('<h2>%s %s</h2>',_ITEMLIST_BLOG,$this->bloglink($blog));
 
         // start index
         if (postVar('start'))
@@ -400,7 +405,7 @@ class ADMIN {
             $start = 0;
 
         if ($start == 0)
-            echo '<p><a href="index.php?action=createitem&amp;blogid='.$blogid.'">',_ITEMLIST_ADDNEW,'</a></p>';
+            echo sprintf('<p><a href="index.php?action=createitem&amp;blogid=%s">',$blogid),_ITEMLIST_ADDNEW,'</a></p>';
 
         // amount of items to show
         if (postVar('amount'))
@@ -623,12 +628,12 @@ class ADMIN {
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one super-admin
-                    $sql = 'SELECT count(*) as result FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1';
+                    $sql = sprintf('SELECT count(*) as result FROM %s WHERE madmin=1 and mcanlogin=1',sql_table('member'));
                     if (intval(quickQuery($sql)) < 2)
                         $error = _ERROR_ATLEASTONEADMIN;
                     else
                     {
-                        sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
+                        sql_query(sprintf("UPDATE %s SET madmin=0 WHERE mnumber=%s",sql_table('member'),$memberid));
                         $error = '';
                     }
                     break;
@@ -696,7 +701,7 @@ class ADMIN {
                     break;
                 case 'unsetadmin':
                     // there should always remain at least one admin
-                    $sql = 'SELECT count(*) as result FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid;
+                    $sql = sprintf("SELECT count(*) as result FROM %s WHERE tadmin=1 and tblog=%s",sql_table('team'),$blogid);
                     if (intval(quickQuery($sql)) < 2)
                         $error = _ERROR_ATLEASTONEBLOGADMIN;
                     else
@@ -912,8 +917,7 @@ class ADMIN {
             {
                 $b = $manager->getBlog($bid);
 
-                $res = sql_query('SELECT * FROM ' . sql_table('category')
-                            . ' WHERE cblog=' . $bid . ' and catid=' . intval($id));
+                $res = sql_query(sprintf("SELECT * FROM %s WHERE cblog=%s and catid=%s",sql_table('category'),$bid,intval($id)));
                 $o = sql_fetch_object($res);
                 if (isset($o) && is_object($o))
                 {
@@ -1049,9 +1053,9 @@ class ADMIN {
             $aBlogIds[] = intval($iForcedBlogInclude);
 
         if (($member->isAdmin()) && (array_key_exists('ShowAllBlogs', $CONF) && $CONF['ShowAllBlogs']))
-            $queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').' ORDER BY bname';
+            $queryBlogs =  sprintf("SELECT bnumber FROM %s ORDER BY bname",sql_table('blog'));
         else
-            $queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();
+            $queryBlogs =  sprintf("SELECT bnumber FROM %s, %s WHERE tblog=bnumber and tmember=%s",sql_table('blog'),sql_table('team'),$member->getID());
         $rblogids = sql_query($queryBlogs);
         while ($o = sql_fetch_object($rblogids))
             if ($o->bnumber != $iForcedBlogInclude)
@@ -1064,9 +1068,9 @@ class ADMIN {
 
         // 1. select blogs (we'll create optiongroups)
         // (only select those blogs that have the user on the team)
-        $queryBlogs = sql_table('blog').' WHERE bnumber in ('.implode(',',$aBlogIds).') ORDER BY bname';
-        $queryBlogs_count = 'SELECT count(*) as result FROM '.$queryBlogs;
-        $queryBlogs = 'SELECT bnumber, bname FROM '.$queryBlogs;
+        $queryBlogs = sprintf("%s WHERE bnumber in (%s) ORDER BY bname",sql_table('blog'),implode(',',$aBlogIds));
+        $queryBlogs_count = sprintf("SELECT count(*) as result FROM %s",$queryBlogs);
+        $queryBlogs = sprintf("SELECT bnumber, bname FROM %s",$queryBlogs);
         $blogs = sql_query($queryBlogs);
         if ($mode == 'category') {
             $multipleBlogs = intval(quickQuery($queryBlogs_count)) > 1;
@@ -1083,7 +1087,7 @@ class ADMIN {
                 }
 
                 // 2. for each category in that blog
-                $categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY corder ASC, cname ASC');
+                $categories = sql_query(sprintf("SELECT cname, catid FROM %s WHERE cblog=%s ORDER BY corder ASC, cname ASC",sql_table('category'),$oBlog->bnumber));
                 while ($oCat = sql_fetch_object($categories)) {
                     if ($oCat->catid == $selected)
                         $selectText = ' selected="selected" ';
@@ -1139,7 +1143,7 @@ class ADMIN {
         $query_view = 'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime';
         $ph['iauthor'] = $member->getID();
         $query = parseQuery(' FROM [@prefix@]item, [@prefix@]blog, [@prefix@]member, [@prefix@]category'
-            . ' WHERE iauthor=<%iauthor%> and iauthor=mnumber and iblog=bnumber and icat=catid', $ph);
+            . ' WHERE iauthor=[@iauthor@] and iauthor=mnumber and iblog=bnumber and icat=catid', $ph);
 
         if (postVar('view_item_options')) {
             $v = strval(postVar('view_item_options'));
@@ -1233,7 +1237,7 @@ class ADMIN {
         echo '<h2>',_COMMENTS,'</h2>';
 
         $query_view = 'SELECT cbody, cuser, cmail, cemail, mname, ctime, chost, cnumber, cip, citem';
-        $query = ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
+        $query = sprintf(" FROM %s LEFT OUTER JOIN %s ON mnumber = cmember WHERE citem = %d",sql_table('comment'),sql_table('member'),$itemid);
 
         if ($search)
             $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
@@ -1346,16 +1350,12 @@ class ADMIN {
         if ($member->isAdmin() || $member->isBlogAdmin($blogid))
         {
             $query_view =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem';
-            $query =  ' FROM '.sql_table('comment').' LEFT OUTER JOIN '.sql_table('member').' ON mnumber=cmember';
+            $query =  sprintf(" FROM %s LEFT OUTER JOIN %s ON mnumber=cmember",sql_table('comment'),sql_table('member'));
         }
         else
         {
             $query_view =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem, cmember, iauthor, 0 as is_badmin';
-            $query =  ' FROM '.sql_table('comment').
-                    ' LEFT OUTER JOIN '.sql_table('member').
-                    '  ON mnumber=cmember'.
-                    ' LEFT OUTER JOIN '.sql_table('item').
-                    '  ON citem=inumber ';
+            $query =  sprintf(" FROM %s LEFT OUTER JOIN %s ON mnumber=cmember LEFT OUTER JOIN %s  ON citem=inumber ",sql_table('comment'),sql_table('member'),sql_table('item'));
         }
         $query .= ' WHERE cblog=' . intval($blogid);
 
@@ -1629,8 +1629,7 @@ class ADMIN {
         $blog =& $manager->getBlog($blogid);
         $currenttime = $blog->getCorrectTime(time());
 
-        $result = sql_query("SELECT count(*) FROM ".sql_table('item').
-            " WHERE iblog='".$blogid."' AND iposted=0 AND itime>".mysqldate($currenttime).' limit 1')
+        $result = sql_query(sprintf("SELECT count(*) FROM %s WHERE iblog='%d' AND iposted=0 AND itime>%s limit 1",sql_table('item'),$blogid,mysqldate($currenttime)))
             ;
         if ($result && (intval(sql_result($result)) > 0)) {
                 $blog->setFuturePost();
@@ -1808,7 +1807,7 @@ class ADMIN {
         // change <br /> to \n
         $comment['body'] = str_replace('<br />', '', $comment['body']);
 
-        $comment['body'] = preg_replace("#<a href=['\"]([^'\"]+)['\"]( rel=\"nofollow\")?>[^<]*</a>#i", "\\1", $comment['body']);
+        $comment['body'] = preg_replace('#<a href=[\'"]([^\'"]+)[\'"]( rel="nofollow")?>[^<]*</a>#i', "\\1", $comment['body']);
 
         $this->pagehead();
 
@@ -1907,7 +1906,7 @@ class ADMIN {
         sql_query($query);
 
         // get itemid
-        $res = sql_query('SELECT citem FROM '.sql_table('comment').' WHERE cnumber=' . $commentid);
+        $res = sql_query(sprintf("SELECT citem FROM %s WHERE cnumber=%s",sql_table('comment'),$commentid));
         $o = sql_fetch_object($res);
         $itemid = $o->citem;
 
@@ -1970,7 +1969,7 @@ class ADMIN {
         $commentid = intRequestVar('commentid');
 
         // get item id first
-        $res = sql_query('SELECT citem FROM '.sql_table('comment') .' WHERE cnumber=' . $commentid);
+        $res = sql_query(sprintf("SELECT citem FROM %s WHERE cnumber=%s",sql_table('comment'),$commentid));
         $o = sql_fetch_object($res);
         $itemid = $o->citem;
 
@@ -2040,9 +2039,9 @@ class ADMIN {
 
         echo '<h3>' . _MEMBERS_NEW .'</h3>';
         ?>
-            <form method="post" action="index.php" name="memberedit"><div>
+            <form action="index.php" method="post" name="memberedit"><div>
 
-            <input type="hidden" name="action" value="memberadd" />
+            <input name="action" type="hidden" value="memberadd"/>
             <?php $manager->addTicketHidden() ?>
 
             <table>
@@ -2342,7 +2341,7 @@ class ADMIN {
                 || ($mhalt && $mem->isAdmin() && $mem->canLogin() && (!$mem->isHalt()) )
             )
         {
-            $r = sql_query('SELECT count(*) FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
+            $r = sql_query(sprintf("SELECT count(*) FROM %s WHERE madmin=1 and mcanlogin=1",sql_table('member')));
             if (intval(sql_result($r)) <= 1)
                 $this->error(_ERROR_ATLEASTONEADMIN);
         }
@@ -2656,9 +2655,7 @@ class ADMIN {
 
 
 
-        $query =  'SELECT tblog, tmember, mname, mrealname, memail, tadmin'
-                . ' FROM '.sql_table('member').', '.sql_table('team')
-                . ' WHERE tmember=mnumber and tblog=' . $blogid;
+        $query =  sprintf("SELECT tblog, tmember, mname, mrealname, memail, tadmin FROM %s, %s WHERE tmember=mnumber and tblog=%s",sql_table('member'),sql_table('team'),$blogid);
 
         $template['content'] = 'teamlist';
         $template['tabindex'] = 10;
@@ -2807,7 +2804,7 @@ class ADMIN {
         if ($tmem->isBlogAdmin($blogid)) {
             // check if there are more blog members left and at least one admin
             // (check for at least two admins before deletion)
-            $query = 'SELECT count(*) FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
+            $query = sprintf("SELECT count(*) FROM %s WHERE tblog=%s and tadmin=1",sql_table('team'),$blogid);
             $r = sql_query($query);
             if ($r && intval(sql_result($r)) < 2)
                 return _ERROR_ATLEASTONEBLOGADMIN;
@@ -2841,7 +2838,7 @@ class ADMIN {
 
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
-            $r = sql_query('SELECT count(*) FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
+            $r = sql_query(sprintf("SELECT count(*) FROM %s WHERE tblog=$blogid and tadmin=1",sql_table('team')));
             if (intval(sql_result($r)) == 1)
                 $this->error(_ERROR_ATLEASTONEBLOGADMIN);
         }
@@ -2886,7 +2883,7 @@ class ADMIN {
 
         <p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
         <?php
-            $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
+            $res = sql_query(sprintf("SELECT mname, mrealname FROM %s,%s WHERE mnumber=tmember AND tblog=%s",sql_table('member'),sql_table('team'),intval($blogid)));
             $aMemberNames = array();
             if ($res)
             while ($o = sql_fetch_object($res))
@@ -2932,8 +2929,7 @@ class ADMIN {
             </td>
             <td>
                 <?php
-                    $query =  'SELECT sdname as text, sdnumber as value'
-                        . ' FROM '.sql_table('skin_desc');
+                    $query =  sprintf("SELECT sdname as text, sdnumber as value FROM %s",sql_table('skin_desc'));
                     $template['name'] = 'defskin';
                     $template['selected'] = $blog->getDefaultSkin();
                     $template['tabindex'] = 50;
@@ -3010,10 +3006,7 @@ class ADMIN {
             <td><?php echo _EBLOG_DEFCAT?></td>
             <td>
                 <?php
-                    $query =  'SELECT cname as text, catid as value'
-                        . ' FROM '.sql_table('category')
-                        . ' WHERE cblog=' . $blog->getID()
-                        . ' ORDER BY corder ASC , cname ASC ';
+                    $query =  sprintf("SELECT cname as text, catid as value FROM %s WHERE cblog=%s ORDER BY corder ASC , cname ASC ",sql_table('category'),$blog->getID());
                     $template['name'] = 'defcat';
                     $template['selected'] = $blog->getDefaultCategory();
                     $template['tabindex'] = 110;
@@ -3042,13 +3035,7 @@ class ADMIN {
 
 
         <?php
-        $query =  'SELECT c.* , count(i.icat) as icount '
-            . ' FROM ' . sql_table('category') . ' c '
-            . '  LEFT JOIN ' . sql_table('item') . ' i '
-            . '   ON c . catid = i . icat '
-            . ' WHERE cblog=' . $blog->getID()
-            . ' GROUP BY c . catid '
-            . ' ORDER BY c.corder ASC , c.cname ASC ';
+        $query =  sprintf("SELECT c.* , count(i.icat) as icount  FROM %s c   LEFT JOIN %s i    ON c . catid = i . icat  WHERE cblog=%s GROUP BY c . catid  ORDER BY c.corder ASC , c.cname ASC ",sql_table('category'),sql_table('item'),$blog->getID());
 
         $template['content'] = 'categorylist';
         $template['tabindex'] = 200;
@@ -3127,8 +3114,7 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = 'SELECT count(*) FROM '.sql_table('category')
-            . ' WHERE cname=' . sql_quote_string($cname).' and cblog=' . intval($blogid);
+        $query = sprintf("SELECT count(*) FROM %s WHERE cname=%s and cblog=%s",sql_table('category'),sql_quote_string($cname),intval($blogid));
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
@@ -3156,7 +3142,7 @@ class ADMIN {
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $res = sql_query('SELECT * FROM '.sql_table('category')." WHERE cblog=$blogid AND catid=$catid");
+        $res = sql_query(sprintf("SELECT * FROM %s WHERE cblog=%s AND catid=%s",sql_table('category'),$blogid,$catid));
         $obj = sql_fetch_object($res);
 
         $cname = $obj->cname;
@@ -3291,7 +3277,7 @@ class ADMIN {
             $this->error(_ERROR_DELETEDEFCATEGORY);
 
         // check if catid is the only category left for blogid
-        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+        $query = sprintf("SELECT count(*) FROM %s WHERE cblog=%s",sql_table('category'),$blogid);
         $res = sql_query($query);
         if (intval(sql_result($res)) == 1)
             $this->error(_ERROR_DELETELASTCATEGORY);
@@ -3361,7 +3347,7 @@ class ADMIN {
             return _ERROR_DELETEDEFCATEGORY;
 
         // check if catid is the only category left for blogid
-        $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
+        $query = sprintf("SELECT count(*) FROM %s WHERE cblog=%s",sql_table('category'),$blogid);
         $res = sql_query($query);
         if (intval(sql_result($res)) == 1)
             return _ERROR_DELETELASTCATEGORY;
@@ -3426,7 +3412,7 @@ class ADMIN {
         $manager->notify('PreMoveCategory', $param);
 
         // update comments table (cblog)
-        $query = 'SELECT inumber FROM '.sql_table('item').' WHERE icat='.$catid;
+        $query = sprintf("SELECT inumber FROM %s WHERE icat=%s",sql_table('item'),$catid);
         $items = sql_query($query);
         while ($oItem = sql_fetch_object($items)) {
             sql_query('UPDATE '.sql_table('comment').' SET cblog='.$destblogid.' WHERE citem='.$oItem->inumber);
@@ -3933,8 +3919,7 @@ class ADMIN {
             </td>
             <td>
                 <?php
-                    $query =  'SELECT sdname as text, sdnumber as value'
-                        . ' FROM '.sql_table('skin_desc');
+                    $query =  sprintf("SELECT sdname as text, sdnumber as value FROM %s",sql_table('skin_desc'));
                     $template['name'] = 'defskin';
                     $template['tabindex'] = 50;
                     $template['selected'] = $CONF['BaseSkin'];  // set default selected skin to be globally defined base skin
@@ -4218,7 +4203,7 @@ selector();
                 <th colspan="2"><?php echo _SKINIE_EXPORT_SKINS?></th>
             </tr><tr>
     <?php       // show list of skins
-        $res = sql_query('SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname');
+        $res = sql_query(sprintf("SELECT * FROM %s ORDER BY sdname",sql_table('skin_desc')));
         while ($skinObj = sql_fetch_object($res)) {
             $id = 'skinexp' . $skinObj->sdnumber;
             echo '<td><input type="checkbox" name="skin[',$skinObj->sdnumber,']"  id="',$id,'" />';
@@ -4230,7 +4215,7 @@ selector();
         echo '<th colspan="2">',_SKINIE_EXPORT_TEMPLATES,'</th></tr><tr>';
 
         // show list of templates
-        $res = sql_query('SELECT * FROM '.sql_table('template_desc').' ORDER BY tdname');
+        $res = sql_query(sprintf("SELECT * FROM %s ORDER BY tdname",sql_table('template_desc')));
         while ($templateObj = sql_fetch_object($res)) {
             $id = 'templateexp' . $templateObj->tdnumber;
             echo '<td><input type="checkbox" name="template[',$templateObj->tdnumber,']" id="',$id,'" />';
@@ -4442,7 +4427,7 @@ selector();
         echo '<h2>' . _TEMPLATE_TITLE . '</h2>';
         echo '<h3>' . _TEMPLATE_AVAILABLE_TITLE . '</h3>';
 
-        $query = 'SELECT * FROM '.sql_table('template_desc').' ORDER BY tdname';
+        $query = sprintf("SELECT * FROM %s ORDER BY tdname",sql_table('template_desc'));
         $template['content'] = 'templatelist';
         $template['tabindex'] = 10;
         showlist_by_query($query,'table',$template);
@@ -4482,7 +4467,7 @@ selector();
         $member->isAdmin() or $this->disallow();
 
         $extrahead = '<script type="text/javascript" src="javascript/templateEdit.js"></script>';
-        $extrahead .= '<script type="text/javascript">setTemplateEditText("'.sql_real_escape_string(_EDITTEMPLATE_EMPTY).'");</script>';
+        $extrahead .= sprintf('<script type="text/javascript">setTemplateEditText("%s");</script>',sql_real_escape_string(_EDITTEMPLATE_EMPTY));
 
         $this->pagehead($extrahead);
 
@@ -4497,7 +4482,8 @@ selector();
 
         <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  hsc($templatename); ?>'</h2>
 
-        <?php                   if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
+        <?php
+            if ($msg) echo sprintf('<p>%s: %s</p>', _MESSAGE, $msg);
         ?>
 
         <p><?php echo _TEMPLATE_EDIT_MSG?></p>
@@ -4660,21 +4646,28 @@ selector();
         if (!isValidTemplateName($name))
             $this->error(_ERROR_BADTEMPLATENAME);
 
-        if ((TEMPLATE::getNameFromId($templateid) != $name) && TEMPLATE::exists($name))
+        if (TEMPLATE::getNameFromId($templateid) != $name && TEMPLATE::exists($name))
             $this->error(_ERROR_DUPTEMPLATENAME);
 
         // 0. clear SqlCache
         $manager->clearCachedInfo('sql_fetch_object');
 
         // 1. Remove all template parts
-        $query = 'DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid;
+        $query = parseQuery(
+                'DELETE FROM [@prefix@]template WHERE tdesc=[@templateid@]',
+                    array('templateid'=>$templateid)
+                );
         sql_query($query);
 
         // 2. Update description
-        $query =  'UPDATE '.sql_table('template_desc').' SET'
-            . ' tdname=' . sql_quote_string($name) . ','
-            . ' tddesc=' . sql_quote_string($desc)
-            . " WHERE tdnumber=" . $templateid;
+        $query = parseQuery(
+                "UPDATE [@prefix@]template_desc SET tdname='%s', tddesc='%s' WHERE tdnumber=%s"
+                , array(
+                        'tdname'    => sql_real_escape_string($name)
+                        ,'tddesc'   => sql_real_escape_string($desc)
+                        ,'tdnumber' => $templateid
+                        )
+                    );
         sql_query($query);
 
         // 3. Add non-empty template parts
@@ -4739,8 +4732,13 @@ selector();
         $partname = sql_quote_string($partname);
         $content = sql_quote_string($content);
 
-        $query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
-            . "VALUES ($id, $partname, $content)";
+        $query = sprintf(
+                'INSERT INTO %s (tdesc, tpartname, tcontent) VALUES (%s,%s,%s)'
+                ,sql_table('template')
+                ,$id
+                ,$partname
+                ,$content
+                );
         sql_query($query) or exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
         return sql_insert_id();
     }
@@ -4792,10 +4790,18 @@ selector();
         $manager->notify('PreDeleteTemplate', $param);
 
         // 1. delete description
-        sql_query('DELETE FROM '.sql_table('template_desc').' WHERE tdnumber=' . $templateid);
+        sql_query(sprintf(
+                'DELETE FROM %s WHERE tdnumber=%s'
+                ,sql_table('template_desc')
+                ,$templateid
+                ));
 
         // 2. delete parts
-        sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
+        sql_query(sprintf(
+                'DELETE FROM %s WHERE tdesc=%s'
+                ,sql_table('template')
+                ,$templateid
+                ));
 
         $param = array('templateid' => $templateid);
         $manager->notify('PostDeleteTemplate', $param);
@@ -4854,7 +4860,11 @@ selector();
 
         // 3. create clone
         // go through parts of old template and add them to the new one
-        $res = sql_query('SELECT tpartname, tcontent FROM '.sql_table('template').' WHERE tdesc=' . $templateid);
+        $res = sql_query(sprintf(
+                'SELECT tpartname, tcontent FROM %s WHERE tdesc=%s'
+                ,sql_table('template')
+                ,$templateid
+                ));
         while ($o = sql_fetch_object($res)) {
             $this->addToTemplate($newid, $o->tpartname, $o->tcontent);
         }
@@ -4872,13 +4882,13 @@ selector();
 
         $this->pagehead();
 
-        echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
+        echo sprintf('<p><a href="index.php?action=manage">(%s)</a></p>',_BACKTOMANAGE);
 
-        echo '<h2>' . _SKIN_EDIT_TITLE . '</h2>';
+        echo sprintf('<h2>%s</h2>',_SKIN_EDIT_TITLE);
 
-        echo '<h3>' . _SKIN_AVAILABLE_TITLE . '</h3>';
+        echo sprintf('<h3>%s</h3>',_SKIN_AVAILABLE_TITLE);
 
-        $query = 'SELECT * FROM '.sql_table('skin_desc').' ORDER BY sdname';
+        $query = sprintf("SELECT * FROM %s ORDER BY sdname",sql_table('skin_desc'));
         $template['content'] = 'skinlist';
         $template['tabindex'] = 10;
         showlist_by_query($query,'table',$template);
@@ -4966,7 +4976,7 @@ selector();
         <?php
 
         $has_spartstype = sql_existTableColumnName(sql_table('skin'), 'spartstype');
-        $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = " . $skinid;
+        $query = sprintf("SELECT stype FROM %s WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = %s",sql_table('skin'),$skinid);
         if ($has_spartstype)
             $query .= " AND spartstype = 'parts'";
         $res = sql_query($query);
@@ -5007,7 +5017,7 @@ selector();
         echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
         echo '</form>' . "\r\n";
 
-        $query = "SELECT stype FROM " . sql_table('skin') . " WHERE spartstype = 'specialpage' AND sdesc = " . $skinid;
+        $query = sprintf("SELECT stype FROM %s WHERE spartstype = 'specialpage' AND sdesc = %s",sql_table('skin'),$skinid);
         if ($has_spartstype)
             $res = sql_query($query);
         if ($has_spartstype && $res) {
@@ -5181,8 +5191,12 @@ selector();
                 break;
             default:
                 $form[] = '<input type="hidden" name="partstype" value="parts" />';
-                $subtitle = sprintf('(skin type: %s)', htmlspecialchars(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type));
-                if (in_array($type, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+                $subtitle = sprintf(
+                        '(skin type: %s)'
+                        , hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type)
+                        );
+                $types = array('index','item','archivelist','archive','search','error','member', 'imagepopup');
+                if (in_array($type, $types)) {
                     $subtitle .= helpHtml('skinpart' . $type);
                 } else {
                     $subtitle .= helpHtml('skinpartspecial');
@@ -5254,10 +5268,10 @@ selector();
         }
 
         echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
-        $query = 'SELECT bshortname, bname FROM '.sql_table('blog');
+        $query = sprintf("SELECT bshortname, bname FROM %s",sql_table('blog'));
             showlist_by_query($query,'table',array('content'=>'shortblognames'));
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
-        $query = 'SELECT tdname as name, tddesc as description FROM '.sql_table('template_desc');
+        $query = sprintf("SELECT tdname as name, tddesc as description FROM %s",sql_table('template_desc'));
             showlist_by_query($query,'table',array('content'=>'shortnames'));
         echo '</div>';
         $this->pagefoot();
@@ -5298,7 +5312,7 @@ selector();
             $this->error(_ERROR_DEFAULTSKIN);
 
         // don't allow deletion of default skins for blogs
-        $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
+        $query = sprintf("SELECT bname FROM %s WHERE bdefskin=%s",sql_table('blog'),$skinid);
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
             $this->error(_ERROR_SKINDEFDELETE . hsc($o->bname));
@@ -5341,7 +5355,7 @@ selector();
             $this->error(_ERROR_DEFAULTSKIN);
 
         // don't allow deletion of default skins for blogs
-        $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
+        $query = sprintf("SELECT bname FROM %s WHERE bdefskin=%s",sql_table('blog'),$skinid);
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
             $this->error(_ERROR_SKINDEFDELETE .$o->bname);
@@ -5628,7 +5642,7 @@ selector();
         $this->skinclonetype($skin, $newid, 'imagepopup');
         */
 
-        $query = "SELECT stype FROM " . sql_table('skin') . " WHERE sdesc = " . $skinid;
+        $query = sprintf("SELECT stype FROM %s WHERE sdesc = %s",sql_table('skin'),$skinid);
         $res = sql_query($query);
         while ($row = sql_fetch_assoc($res)) {
             $this->skinclonetype($skin, $newid, $row['stype']);
@@ -5678,8 +5692,7 @@ selector();
             <td><?php echo _SETTINGS_DEFBLOG?> <?php help('defaultblog'); ?></td>
             <td>
                 <?php
-                    $query =  'SELECT bname as text, bnumber as value'
-                        . ' FROM '.sql_table('blog');
+                    $query =  sprintf("SELECT bname as text, bnumber as value FROM %s",sql_table('blog'));
                     $template['name'] = 'DefaultBlog';
                     $template['selected'] = $CONF['DefaultBlog'];
                     $template['tabindex'] = 10;
@@ -5690,8 +5703,7 @@ selector();
             <td><?php echo _SETTINGS_BASESKIN?> <?php help('baseskin'); ?></td>
             <td>
                 <?php
-                    $query =  'SELECT sdname as text, sdnumber as value'
-                        . ' FROM '.sql_table('skin_desc');
+                    $query =  sprintf("SELECT sdname as text, sdnumber as value FROM %s",sql_table('skin_desc'));
                     $template['name'] = 'BaseSkin';
                     $template['selected'] = $CONF['BaseSkin'];
                     $template['tabindex'] = 1;
@@ -6381,33 +6393,40 @@ EOL;
      * @todo document this
      */
     static function updateConfig($name, $val) {
-        $query = 'UPDATE '.sql_table('config')
-            . ' SET value=' . sql_quote_string(trim($val))
-            . ' WHERE name=' . sql_quote_string($name);
-
-        sql_query($query) or die((defined('_ADMIN_SQLDIE_QUERYERROR')?_ADMIN_SQLDIE_QUERYERROR:"Query error: ") . sql_error());
+        $query = parseQuery(
+                    "UPDATE [@prefix@]config SET value='[@value:escape@]' WHERE name='[@name:escape@]'"
+                    , array('value' => trim($val), 'name' => $name)
+                );
+        if(!sql_query($query)) {
+            if (!defined('_ADMIN_SQLDIE_QUERYERROR')) {
+                define('_ADMIN_SQLDIE_QUERYERROR', 'Query error: ');
+            }
+            die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+        }
         return sql_insert_id();
     }
 
     static function updateOrInsertConfig($name, $value) {
         global $DB_PHP_MODULE_NAME;
 
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql = sprintf("SELECT COUNT(*) AS result FROM `%s` WHERE name = ?", sql_table('config'));
+        if ($DB_PHP_MODULE_NAME == 'pdo'){
+            $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
             $res = sql_prepare_execute($sql, array((string) $name));
-            if ($res && ($row = sql_fetch_row($res)) && ($row[0] > 0))
+            if ($res && $row = sql_fetch_row($res) && $row[0] > 0) {
                 return self::updateConfig($name, $value);
+            }
         } else {
-            $sql = sprintf('SELECT COUNT(*) AS result FROM `%s` WHERE name=%s',
-                        sql_table('config'),
-                        sql_quote_string( $name )
-                        );
-            if (intval(quickQuery($sql) != 0))
+            $rs = parseQuickQuery(
+                    "SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name='[@name@]'"
+                    , array('name'=>$name)
+                    );
+            if ($rs) {
                 return self::updateConfig($name, $value);
+            }
         }
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql = sprintf("INSERT INTO `%s` (name, value) VALUES(?, ?)", sql_table('config'));
+            $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
             $res = sql_prepare_execute($sql, array((string) $name, trim((string) $value)));
         } else {
             $sql = sprintf('INSERT INTO `%s` (name, value) VALUES(%s, %s)',
@@ -6623,14 +6642,9 @@ EOL;
                         $showAll = requestVar('showall');
                         if (($member->isAdmin()) && ($showAll == 'yes')) {
                             // Super-Admins have access to all blogs! (no add item support though)
-                            $query =  'SELECT bnumber as value, bname as text'
-                                . ' FROM ' . sql_table('blog')
-                                . ' ORDER BY bname';
+                            $query =  sprintf("SELECT bnumber as value, bname as text FROM %s ORDER BY bname",sql_table('blog'));
                         } else {
-                            $query =  'SELECT bnumber as value, bname as text'
-                                . ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
-                                . ' WHERE tblog=bnumber and tmember=' . $member->getID()
-                                . ' ORDER BY bname';
+                            $query =  sprintf("SELECT bnumber as value, bname as text FROM %s, %s WHERE tblog=bnumber and tmember=%s ORDER BY bname",sql_table('blog'),sql_table('team'),$member->getID());
                         }
                         $template['name'] = 'blogid';
                         $template['tabindex'] = 15000;
@@ -6864,7 +6878,7 @@ EOL;
 
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
-        $query =  'SELECT * FROM '.sql_table('actionlog').' ORDER BY timestamp DESC';
+        $query =  sprintf("SELECT * FROM %s ORDER BY timestamp DESC",sql_table('actionlog'));
         $template['content'] = 'actionlist';
         $amount = showlist_by_query($query,'table',$template);
 
@@ -6901,7 +6915,7 @@ EOL;
 
         echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
 
-        $query = 'SELECT * FROM '.sql_table('systemlog').' ORDER BY timestamp_utc DESC';
+        $query = sprintf("SELECT * FROM %s ORDER BY timestamp_utc DESC",sql_table('systemlog'));
         // Todo: seek
         // display first 20 entry. if want more info, make it plugin
         $query .= ' LIMIT 20';
@@ -6931,7 +6945,7 @@ EOL;
 
         echo '<h2>' . _BAN_TITLE . " '". $this->bloglink($blog) ."'</h2>";
 
-        $query =  'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid.' ORDER BY iprange';
+        $query =  sprintf("SELECT * FROM %s WHERE blogid=%s ORDER BY iprange",sql_table('ban'),$blogid);
         $template['content'] = 'banlist';
         $amount = showlist_by_query($query,'table',$template);
 
@@ -7360,7 +7374,7 @@ EOL;
         echo '<h3>' , _PLUGS_TITLE_INSTALLED , ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
 
-        $query =  'SELECT * FROM '.sql_table('plugin').' ORDER BY porder ASC';
+        $query =  sprintf("SELECT * FROM %s ORDER BY porder ASC",sql_table('plugin'));
 
         $template['content'] = 'pluginlist';
         $template['tabindex'] = 10;
@@ -7381,7 +7395,7 @@ EOL;
 
 <?php
         $list_installed_PluginName = array();
-        $sql = 'SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC';
+        $sql = sprintf("SELECT pfile FROM %s ORDER BY pfile ASC",sql_table('plugin'));
         if ($res = sql_query($sql))
         {
             while ( $v = sql_fetch_array($res) )
@@ -7501,7 +7515,7 @@ EOL;
             $this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');
 
         // get number of currently installed plugins
-        $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
+        $res = sql_query(sprintf("SELECT count(*) FROM %s",sql_table('plugin')));
         $numCurrent = intval(sql_result($res));
 
         // plugin will be added as last one in the list
@@ -7557,7 +7571,7 @@ EOL;
         foreach ($pluginList as $pluginName)
         {
 
-            $res = sql_query('SELECT count(*) FROM '.sql_table('plugin') . " WHERE pfile='" . $pluginName . "'");
+            $res = sql_query(sprintf("SELECT count(*) FROM %s WHERE pfile='%s'",sql_table('plugin'),$pluginName));
             $ct = intval(sql_result($res));
             if ($ct == 0)
             {
@@ -7590,10 +7604,10 @@ EOL;
         $member->isAdmin() or $this->disallow();
 
         // delete everything from plugin_events
-        sql_query('DELETE FROM '.sql_table('plugin_event'));
+        sql_query(sprintf("DELETE FROM %s",sql_table('plugin_event')));
 
         // loop over all installed plugins
-        $res = sql_query('SELECT pid, pfile FROM '.sql_table('plugin'));
+        $res = sql_query(sprintf("SELECT pid, pfile FROM %s",sql_table('plugin')));
         while($o = sql_fetch_object($res)) {
             $pid = $o->pid;
             $plug =& $manager->getPlugin($o->pfile);
@@ -7601,7 +7615,7 @@ EOL;
             {
                 $eventList = $plug->_getEventList();
                 foreach ($eventList as $eventName)
-                    sql_query('INSERT INTO '.sql_table('plugin_event').' (pid, event) VALUES ('.$pid.', '.sql_quote_string($eventName).')');
+                    sql_query(sprintf("INSERT INTO %s (pid, event) VALUES (%s, %s)",sql_table('plugin_event'),$pid,sql_quote_string($eventName)));
             }
         }
         $manager->_loadSubscriptions();
@@ -7673,7 +7687,7 @@ EOL;
         if (!$manager->pidInstalled($pid))
             return _ERROR_NOSUCHPLUGIN;
 
-        $name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
+        $name = quickQuery(sprintf("SELECT pfile as result FROM %s WHERE pid=%s",sql_table('plugin'),$pid));
 
 /*        // call the unInstall method of the plugin
         if ($callUninstall) {
@@ -7682,7 +7696,7 @@ EOL;
         }*/
 
         // check dependency before delete
-        $res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
+        $res = sql_query(sprintf("SELECT pfile FROM %s",sql_table('plugin')));
         while($o = sql_fetch_object($res)) {
             $plug =& $manager->getPlugin($o->pfile);
             if ($plug)
@@ -7712,7 +7726,7 @@ EOL;
 
         // delete all options
         // get OIDs from plugin_option_desc
-        $res = sql_query('SELECT oid FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
+        $res = sql_query(sprintf("SELECT oid FROM %s WHERE opid=%s",sql_table('plugin_option_desc'),$pid));
         $aOIDs = array();
         while ($o = sql_fetch_object($res)) {
             $aOIDs[] = $o->oid;
@@ -7724,7 +7738,7 @@ EOL;
             sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');
 
         // update order numbers
-        $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
+        $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s",sql_table('plugin'),$pid));
         $o = sql_fetch_object($res);
         sql_query('UPDATE '.sql_table('plugin').' SET porder=(porder - 1) WHERE porder>'.$o->porder);
 
@@ -7758,7 +7772,7 @@ EOL;
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         // 1. get old order number
-        $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
+        $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s",sql_table('plugin'),$plugid));
         $o = sql_fetch_object($res);
         $oldOrder = $o->porder;
 
@@ -7788,11 +7802,11 @@ EOL;
             $this->error(_ERROR_NOSUCHPLUGIN);
 
         // 1. get old order number
-        $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
+        $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s",sql_table('plugin'),$plugid));
         $o = sql_fetch_object($res);
         $oldOrder = $o->porder;
 
-        $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
+        $res = sql_query(sprintf("SELECT count(*) FROM %s",sql_table('plugin')));
         $maxOrder = intval(sql_result($res));
 
         // 2. calculate new order number
@@ -7884,7 +7898,7 @@ EOL;
 
         $aOptions = array();
         $aOIDs = array();
-        $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ' WHERE ocontext=\'global\' and opid=' . $pid . ' ORDER BY oid ASC';
+        $query = sprintf("SELECT * FROM %s WHERE ocontext='global' and opid=%s ORDER BY oid ASC",sql_table('plugin_option_desc'),$pid);
         $r = sql_query($query);
         while ($o = sql_fetch_object($r)) {
             $aOIDs[] = $o->oid;
@@ -7900,7 +7914,7 @@ EOL;
         }
         // fill out actual values
         if (count($aOIDs) > 0) {
-            $r = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).')');
+            $r = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE oid in (%s)",sql_table('plugin_option'),implode(',',$aOIDs)));
             while ($o = sql_fetch_object($r))
                 $aOptions[$o->oid]['value'] = $o->ovalue;
         }
@@ -7960,14 +7974,13 @@ EOL;
         // get all current values for this contextid
         // (note: this might contain doubles for overlapping contextids)
         $aIdToValue = array();
-        $res = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE ocontextid=' . intval($contextid));
+        $res = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE ocontextid=%s",sql_table('plugin_option'),intval($contextid)));
         while ($o = sql_fetch_object($res)) {
             $aIdToValue[$o->oid] = $o->ovalue;
         }
 
         // get list of oids per pid
-        $query = 'SELECT * FROM ' . sql_table('plugin_option_desc') . ',' . sql_table('plugin')
-            . ' WHERE opid=pid and ocontext='.sql_quote_string($context).' ORDER BY porder, oid ASC';
+        $query = sprintf("SELECT * FROM %s,%s WHERE opid=pid and ocontext=%s ORDER BY porder, oid ASC",sql_table('plugin_option_desc'),sql_table('plugin'),sql_quote_string($context));
         $res = sql_query($query);
         $aOptions = array();
         while ($o = sql_fetch_object($res)) {
@@ -8375,10 +8388,10 @@ EOD;
                     }
                 } else {
                     global $member, $manager;
-                    $sql = sprintf('SELECT tblog as result FROM `%s` WHERE tmember=%d LIMIT 1', sql_table('team'), $member->getID());
+                    $sql = 'SELECT tblog as result FROM `' . sql_table('team') . '` WHERE tmember=' . $member->getID() . ' LIMIT 1';
                     $res = intval(quickQuery($sql));
                     if (!$res)
-                        $sql = sprintf('SELECT bnumber as result FROM `%s` LIMIT 1', sql_table('blog'));
+                        $sql = 'SELECT bnumber as result FROM `' . sql_table('blog') . '` LIMIT 1';
                     if ($res>0) {
                         $o = $manager->getBlog($res);
                         if ($o)

@@ -59,20 +59,20 @@ class PARSER {
      * Parses the given contents and outputs it
      */
     public function parse(&$content) {
-        
+
         if(!str_contains($this->delim,',')) {
             $this->legacyParse($content);
             return;
         }
-        
+
         list($left,$right) = explode(',', $this->delim);
-        
+
         if(strpos($content,$left)===false)
         {
             echo $content;
             return;
         }
-        
+
         $pieces = explode($left, $content);
         foreach($pieces as $piece) {
             if(strpos($piece,$right)===false) {
@@ -97,40 +97,39 @@ class PARSER {
             }
         }
     }
-    
+
     /**
-      * Called from the parser to handle an action
-      * 
-      * @param $action name of the action (e.g. blog, image ...)
-      */
+     * Called from the parser to handle an action
+     *
+     * @param $action name of the action (e.g. blog, image ...)
+     */
     public function doAction($action) {
         global $manager, $CONF;
 
         if (!$action) return;
 
         // split into action name + arguments
-        if (strpos($action,'(')!==false) {
+        if (str_contains($action,'(')) {
             list($action,$paramText) = explode('(', $action, 2);
             if(substr($paramText,-1)===')') {
                 $paramText = substr($paramText,0,-1);
             }
             $params = explode ($this->pdelim, $paramText);
             // trim parameters
-             foreach ($params as $key=>$value) {
+            foreach ($params as $key=>$value) {
                 $params[$key] = trim($value);
-             }
-             $paramText = join(',', $params);
+            }
+            $paramText = join(',', $params);
         } else {
             // no parameters
             $params = array();
             $paramText = '';
         }
-
         $actionlc = strtolower($action);
 
         // skip execution of skinvars while inside an if condition which hides this part of the page
         if (!$this->handler->if_currentlevel
-            && !in_array($actionlc,array('else','elseif','endif','ifnot','elseifnot')) && substr($actionlc,0,2) != 'if')
+            && !in_array($actionlc,array('else','elseif','endif','ifnot','elseifnot')) && substr($actionlc,0,2) !== 'if')
             return;
 
         if ( in_array($actionlc, $this->actions) || $this->norestrictions )
@@ -143,7 +142,7 @@ class PARSER {
             if (strlen($paramText)>0)
             {
 //               echo $this->handler->skin->_getText($paramText);
-               echo $manager->_getText('skin',$paramText);
+                echo $manager->_getText('skin',$paramText);
             }
             return ;
         } else {
@@ -171,11 +170,11 @@ class PARSER {
                         {
                             $NP_Name = 'NP_'.$action;
                             $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                                           $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                                $NP_Name, get_class($e), $e->getLine(), $e->getFile());
                             if ($CONF['DebugVars'])
                                 var_dump($e->getMessage());
                             SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
-                            if (get_class($e) != 'ArgumentCountError')
+                            if (get_class($e) !== 'ArgumentCountError')
                                 throw $e;
                         }
                         else
@@ -195,7 +194,7 @@ class PARSER {
 
     /**
      * Set a property of the parser in the manager
-     * 
+     *
      * @param $property additional parser property (e.g. include prefix of the skin)
      * @param $value new value
      */
@@ -206,7 +205,7 @@ class PARSER {
 
     /**
      * Get a property of the parser from the manager
-     * 
+     *
      * @param $name name of the property
      */
     public static function getProperty($name) {

@@ -1335,8 +1335,8 @@ function alterQueryStr($querystr, $param, $value) {
     $vars = explode('&', $querystr);
     $set  = false;
 
-    for ($i = 0, $iMax = count($vars); $i < $iMax; $i++) {
-        $v = explode('=', $vars[$i]);
+    foreach ($vars as $i => $iValue) {
+        $v = explode('=', $iValue);
 
         if ($v[0] == $param) {
             $v[1] = $value;
@@ -1358,8 +1358,8 @@ function alterQueryStr($querystr, $param, $value) {
 function passVar($key, $value) {
     // array ?
     if (is_array($value) ) {
-        for ($i = 0, $iMax = count($value); $i < $iMax; $i++) {
-            passVar($key . '[' . $i . ']', $value[$i]);
+        foreach ($value as $i => $iValue) {
+            passVar(sprintf('%s[%d]', $key, $i), $iValue);
         }
 
         return;
