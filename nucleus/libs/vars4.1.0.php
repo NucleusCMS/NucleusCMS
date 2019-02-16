@@ -55,6 +55,15 @@ function serverVar($name, $default=NULL) {
     return $_SERVER[$name];
 }
 
+function confVar($name, $default=NULL) {
+    global $CONF;
+    if (!isset($CONF[$name])) {
+        return $default;
+    }
+
+    return $CONF[$name];
+}
+
 function stripslashes_array($data) {
     return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
