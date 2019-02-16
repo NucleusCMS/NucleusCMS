@@ -145,8 +145,8 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 CREATE TABLE `nucleus_item` (
   `inumber`   int(11)      NOT NULL auto_increment,
   `ititle`    varchar(160) NOT NULL default '',
-  `ibody`     mediumtext   NOT NULL default '',
-  `imore`     mediumtext   NOT NULL default '',
+  `ibody`     mediumtext   NOT NULL,
+  `imore`     mediumtext   NOT NULL,
   `iblog`     int(11)      NOT NULL default '0',
   `iauthor`   int(11)      NOT NULL default '0',
   `itime`     datetime     NOT NULL default '00-01-01 00:00:00',
@@ -281,7 +281,7 @@ CREATE TABLE `nucleus_systemlog` (
   `subtype`        varchar(30)  NOT NULL default '',
   `mnumber`        varchar(30)  NOT NULL default '0',
   `timestamp_utc`  datetime     NOT NULL,
-  `message`        MEDIUMTEXT   NOT NULL default '',
+  `message`        MEDIUMTEXT   NOT NULL,
   `message_hash`   varchar(64)  NOT NULL,
    PRIMARY KEY  (`logyear`, `logid`),
    INDEX `logtype` (`logtype`)
