@@ -149,6 +149,7 @@ class PARSER {
                 array(
                     'getvar',
                     'postvar',
+                    'cookievar',
                     'confvar')) && isset($params[0])) {
             $default = isset($params[1]) ? $params[1] : '';
             echo hsc($actionlc($params[0], $default));
