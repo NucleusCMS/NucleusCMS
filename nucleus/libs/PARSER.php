@@ -145,6 +145,11 @@ class PARSER {
                 echo $manager->_getText('skin',$paramText);
             }
             return ;
+        } elseif (in_array($actionlc,
+                array(
+                    'confvar')) && isset($params[0])) {
+            $default = isset($params[1]) ? $params[1] : '';
+            echo hsc($actionlc($params[0], $default));
         } else {
             // redirect to plugin action if possible
 //            define(DISABLE_PARSE_NP_PLUGIN, TRUE);
