@@ -1997,23 +1997,27 @@ function hsc($string, $flags=ENT_QUOTES, $encoding='') {
 
 function coreSkinVar($key='')
 {
-    if($key==='<%BenchMark%>')
-    {
+    if (strtolower($key)==='<%benchmark%>') {
         global $SQLCount;
-        $EndTime = microtime(true);
-        $loadtime = $EndTime - $_SERVER['REQUEST_TIME_FLOAT'];
-        $rs = sprintf("%.3f sec / %d queries", $loadtime, $SQLCount);
+        return sprintf(
+                    '%.3f sec / %d queries'
+                    , (microtime(true) - $_SERVER['REQUEST_TIME_FLOAT'])
+                    , $SQLCount
+                );
     }
-    elseif($key==='<%DebugInfo%>')
-    {
+
+    if(strtolower($key)==='<%debuginfo%>') {
         global $SQLStack, $doActionStack;
-        $rs  = sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$SQLStack));
-        $rs .= sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>', join("<br />\n",$doActionStack));
-        
+        $tpl = '<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>';
+        return sprintf(
+                    $tpl.$tpl
+                    , join("<br />\n", $SQLStack)
+                    , join("<br />\n", $doActionStack)
+                );
+
     }
-    else $rs = '';
-    
-    return $rs;
+
+    return '';
 }
 
 function nucleus_version_compare($version1, $version2, $operator = '')
@@ -2075,7 +2079,7 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = false)
     $status['result']   = true;
 
     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
-    while ( false !== ($filename = readdir($dirhandle)) )
+    while ( $filename = readdir($dirhandle) !== false)
     {
         $current_file = $SearchDir . $filename;
         $pattern_php = '#^NP_(.*)\.php$#';
@@ -2088,7 +2092,6 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = false)
             // type 1 , old_admin_area
             if (!preg_match($pattern_php, $filename, $matches))
                 continue;
-            $saved_type = 1;
             $name = $matches[1];
             $saved_type = 1;
             $item['dir'] = $SearchDir;
@@ -2097,8 +2100,9 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = false)
         }
         else
         {  // directory
-            if ($filename === '.' || $filename === '..')
+            if (in_array($filename, array('.','..'))) {
                 continue;
+            }
             if ( preg_match($pattern, $filename, $matches) )
             {
                 // type 4 or 5
@@ -2137,8 +2141,9 @@ function getPluginListsFromDirName($SearchDir , &$status, $clearcache = false)
                     continue;
 
                 $sub_file = basename($files[0]);
-                if ( !preg_match($pattern_php, $sub_file, $matches))
+                if ( !preg_match($pattern_php, $sub_file, $matches)) {
                     continue;
+                }
                 // type: 2 , old_admin_area
                 $name = $matches[1];
                 $shortname = strtolower($name);
@@ -2182,31 +2187,40 @@ function init_nucleus_compatibility_mysql_handler()
 {
     // added for 3.5 sql_* wrapper
     global $MYSQL_HANDLER;
-    if (!isset($MYSQL_HANDLER))
+    if (!isset($MYSQL_HANDLER)) {
         $MYSQL_HANDLER = array('mysql','');
-    if ($MYSQL_HANDLER[0] == '')
-        $MYSQL_HANDLER[0] = 'mysql';
-    // end new for 3.5 sql_* wrapper
+    }
+    elseif ($MYSQL_HANDLER[0] == '') {
+        $MYSQL_HANDLER[0] = 'mysql'; // end new for 3.5 sql_* wrapper
+    }
 
     global $DB_PREFIX , $MYSQL_PREFIX;
     if ( !isset($DB_PREFIX) || !is_string($DB_PREFIX) )
-        $DB_PREFIX = (isset($MYSQL_PREFIX) && !empty($MYSQL_PREFIX) ? $MYSQL_PREFIX : '');
+        if (isset($MYSQL_PREFIX) && $MYSQL_PREFIX) {
+            $DB_PREFIX = $MYSQL_PREFIX;
+        } else {
+            $DB_PREFIX = '';
+        }
 
     global $DB_HOST , $MYSQL_HOST;
-    if ( !isset($DB_HOST) || !is_string($DB_HOST) )
-        $DB_HOST = !empty($MYSQL_HOST) ? $MYSQL_HOST : '';
+    if ( !isset($DB_HOST) || !is_string($DB_HOST) ) {
+        $DB_HOST = $MYSQL_HOST ?: '';
+    }
 
     global $DB_USER , $MYSQL_USER;
-    if ( !isset($DB_USER) || !is_string($DB_USER) )
-        $DB_USER = !empty($MYSQL_USER) ? $MYSQL_USER : '';
+    if ( !isset($DB_USER) || !is_string($DB_USER) ) {
+        $DB_USER = $MYSQL_USER ?: '';
+    }
 
     global $DB_PASSWORD , $MYSQL_PASSWORD;
-    if ( !isset($DB_PASSWORD) || !is_string($DB_PASSWORD) )
-        $DB_PASSWORD = !empty($MYSQL_PASSWORD) ? $MYSQL_PASSWORD : '';
+    if ( !isset($DB_PASSWORD) || !is_string($DB_PASSWORD) ) {
+        $DB_PASSWORD = $MYSQL_PASSWORD ?: '';
+    }
 
     global $DB_DATABASE , $MYSQL_DATABASE;
-    if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) )
-        $DB_DATABASE = !empty($MYSQL_DATABASE) ? $MYSQL_DATABASE : '';
+    if ( !isset($DB_DATABASE) || !is_string($DB_DATABASE) ) {
+        $DB_DATABASE = $MYSQL_DATABASE ?: '';
+    }
 
     $MYSQL_PREFIX   = @$DB_PREFIX;
     $MYSQL_HOST     = @$DB_HOST;
@@ -2215,23 +2229,23 @@ function init_nucleus_compatibility_mysql_handler()
     $MYSQL_DATABASE = @$DB_DATABASE;
 
     global $DB_PHP_MODULE_NAME;
-    if (!isset($DB_PHP_MODULE_NAME))
-    $DB_PHP_MODULE_NAME = 'pdo';
-    $DB_PHP_MODULE_NAME = strtolower($DB_PHP_MODULE_NAME);
+    if (!isset($DB_PHP_MODULE_NAME)) {
+        $DB_PHP_MODULE_NAME = 'pdo';
+        $DB_PHP_MODULE_NAME = strtolower($DB_PHP_MODULE_NAME);
+    }
 
     global $MYSQL_HANDLER , $DB_DRIVER_NAME;
     if (!isset($DB_DRIVER_NAME))
     {
 //        if ($MYSQL_HANDLER[0] == 'mysql')
 //            trigger_error("Deprecated : use sql_ instead of mysql_ . ", E_USER_DEPRECATED);
-
         if ( isset($MYSQL_HANDLER) )
         {
             if (
                 ( is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER === 'mysql') )
                 ||
                 ( is_array($MYSQL_HANDLER) && (strtolower($MYSQL_HANDLER[0]) === 'mysql') )
-                )
+            )
             {
 //                trigger_error("Critical Error : not allow mysql_ function. ", E_USER_ERROR);
                 $DB_PHP_MODULE_NAME = 'mysql';
@@ -2258,8 +2272,9 @@ function init_nucleus_compatibility_mysql_handler()
 //        echo "Error::config , Not implemented yet. Invalid db driver name.";
 //        exit;
     }
-    if (!in_array($DB_PHP_MODULE_NAME, array('pdo', 'mysql')))
+    if (!in_array($DB_PHP_MODULE_NAME, array('pdo', 'mysql'))) {
         $DB_PHP_MODULE_NAME = 'pdo';
+    }
     if (!in_array($DB_DRIVER_NAME, array('mysql', 'sqlite')))
     {
 //        $DB_DRIVER_NAME = 'mysql';
@@ -2274,27 +2289,38 @@ function init_nucleus_compatibility_mysql_handler()
 
 function checkBrowserLang($locale)
 {
-    static $http_lang = null;
-    if (is_array($http_lang))
-        return (in_array(strtolower($locale), $http_lang));
+    if(!serverVar('HTTP_ACCEPT_LANGUAGE')) {
+        return false;
+    }
 
-    $items = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-    if ($items === false)
-        $items = array();
+    static $check = array();
+
+    if (isset($check[$locale])) {
+        return $check[$locale];
+    }
+
+    $check[$locale] = false;
+
+    $items = explode(',', strtolower(serverVar('HTTP_ACCEPT_LANGUAGE')));
+
     $http_lang = array_map('substr', $items, array(0, 2));
-//var_dump(__FUNCTION__,__LINE__, $items, $http_lang, $locale);
-    return (in_array(strtolower($locale), $http_lang));
+    $check[$locale] = in_array(strtolower($locale), $http_lang);
+    return $check[$locale];
 }
 
 function getValidLanguage($lang)
 {
     global $DB_DRIVER_NAME;
-    $pattern_replace = '#-[^\-]*$#i';
-    if ( $DB_DRIVER_NAME !== 'mysql' || (defined('_CHARSET') && constant('_CHARSET') === 'UTF-8') )
-        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
 
-    if ( preg_match('#-utf8$#i', $lang) )
-    {
+    $pattern_replace = '#-[^\-]*$#i';
+    if ( $DB_DRIVER_NAME !== 'mysql'
+        ||
+        (defined('_CHARSET') && constant('_CHARSET') === 'UTF-8')
+    ) {
+        $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
+    }
+
+    if ( preg_match('#-utf8$#i', $lang) ) {
         if ( checkLanguage($lang) )
             return $lang;
         if (checkBrowserLang('ja') && checkLanguage('japanese-utf8'))
@@ -2304,9 +2330,9 @@ function getValidLanguage($lang)
             return $lang;
         return 'english-utf8';
     }
+
     // non utf-8
-    if (checkBrowserLang('ja'))
-    {
+    if (checkBrowserLang('ja')) {
         if (stripos($lang, 'japanese') === 0 && checkLanguage($lang))
             return $lang;
         $lang = preg_replace($pattern_replace, '', $lang) . '-utf8';
