@@ -50,11 +50,7 @@ class SKINIMPORT {
     /**
      * constructor initializes data structures
      */
-    function __construct() {
-        // disable magic_quotes_runtime if it's turned on
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            set_magic_quotes_runtime(0);
-        }
+    public function __construct() {
 
         // debugging mode?
         $this->debug = 0;
@@ -63,7 +59,7 @@ class SKINIMPORT {
 
     }
 
-    function reset() {
+    public function reset() {
         if ($this->parser)
             xml_parser_free($this->parser);
 
@@ -99,26 +95,28 @@ class SKINIMPORT {
 
     }
 
-/**
- * Reads an XML file into memory
- *
- * @param $filename
- *     Which file to read
- * @param $metaOnly
- *     Set to 1 when only the metadata needs to be read (optional, default 0)
- * [2016/05/11]    Modified by piyoyo
- *                     xml_parse : parce error occured from PHP 7.0.3(to 7.0.6) and later
- *                     add readFileWithSimpleXML function
- */
-    function readFile($filename, $metaOnly = 0) {
+    /**
+     * Reads an XML file into memory
+     *
+     * @param $filename
+     *     Which file to read
+     * @param $metaOnly
+     *     Set to 1 when only the metadata needs to be read (optional, default 0)
+     * [2016/05/11]    Modified by piyoyo
+     *                     xml_parse : parce error occured from PHP 7.0.3(to 7.0.6) and later
+     *                     add readFileWithSimpleXML function
+     * @return string
+     */
+    public function readFile($filename, $metaOnly = 0) {
         // php bug (windows) : php 7.0.3 and later : xml_parse will be parce error
         if (version_compare(PHP_VERSION, '7.0.3', '>=')) {
-            return $this->readFileWithSimpleXML($filename, $metaOnly);
+            $this->readFileWithSimpleXML($filename, $metaOnly);
+            return '';
         }
 
         // open file
         $tempbuffer = @file_get_contents($filename);
-        if ($tempbuffer === FALSE) {
+        if ($tempbuffer === false) {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
         // here we go!
@@ -143,7 +141,7 @@ class SKINIMPORT {
 */
         $has_mb_func = function_exists('mb_convert_encoding');
 
-        if ($has_mb_func && (strtoupper(_CHARSET) != 'ISO-8859-1')) {
+        if ($has_mb_func && (strtoupper(_CHARSET) !== 'ISO-8859-1')) {
             mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
             $temp_encode = mb_detect_encoding($tempbuffer);
         } else {
@@ -155,7 +153,7 @@ class SKINIMPORT {
         rewind($temp);
 
         while ( ($buffer = fread($temp, 4096) ) && (!$metaOnly || ($metaOnly && !$this->metaDataRead))) {
-            if ($temp_encode && $temp_encode!='UTF-8' && $has_mb_func) {
+            if ($temp_encode && $temp_encode !== 'UTF-8' && $has_mb_func) {
                 $buffer = mb_convert_encoding($buffer, 'UTF-8', $temp_encode);
             }
             $err = xml_parse( $this->parser, $buffer, feof($temp) );
@@ -167,26 +165,27 @@ class SKINIMPORT {
         // all done
         $this->inXml = 0;
         fclose($temp);
+        return '';
     }
 
     /**
      * Returns the list of skin names
      */
-    function getSkinNames() {
+    public function getSkinNames() {
         return array_keys($this->skins);
     }
 
     /**
      * Returns the list of template names
      */
-    function getTemplateNames() {
+    public function getTemplateNames() {
         return array_keys($this->templates);
     }
 
     /**
      * Returns the extra information included in the XML file
      */
-    function getInfo() {
+    public function getInfo() {
         return $this->info;
     }
 
@@ -314,11 +313,11 @@ class SKINIMPORT {
      */
     function startElement($parser, $name, $attrs) {
         foreach($attrs as $key=>$value) {
-            $attrs[$key] = hsc($value, ENT_QUOTES);
+            $attrs[$key] = hsc($value);
         }
 
         if ($this->debug) {
-            printf('START: %s<br />', hsc($name, ENT_QUOTES));
+            printf('START: %s<br />', hsc($name));
         }
 
         switch ($name) {
@@ -441,13 +440,13 @@ class SKINIMPORT {
      * Returns the data collected so far
      */
     function getCharacterData() {
-        if ( (strtoupper(_CHARSET) == 'UTF-8')
-            or (strtoupper(_CHARSET) == 'ISO-8859-1')
+        if ( (strtoupper(_CHARSET) === 'UTF-8')
+            or (strtoupper(_CHARSET) === 'ISO-8859-1')
             or (!function_exists('mb_convert_encoding')) ) {
             return $this->cdata;
-        } else {
-            return mb_convert_encoding($this->cdata, _CHARSET ,'UTF-8');
         }
+
+        return mb_convert_encoding($this->cdata, _CHARSET ,'UTF-8');
     }
 
     /**
@@ -491,8 +490,8 @@ class SKINIMPORT {
             return (string) $text;
         if ($flag == -1)
         {
-            if ( (strtoupper(_CHARSET) == 'UTF-8')
-                or (strtoupper(_CHARSET) == 'ISO-8859-1')
+            if ( (strtoupper(_CHARSET) === 'UTF-8')
+                or (strtoupper(_CHARSET) === 'ISO-8859-1')
                 or (!function_exists('mb_convert_encoding')) ) {
                 $flag = 0;
             } else {
@@ -515,7 +514,7 @@ class SKINIMPORT {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
 
-        if (function_exists('mb_convert_encoding') && (strtoupper(_CHARSET) != 'ISO-8859-1')) {
+        if (function_exists('mb_convert_encoding') && (strtoupper(_CHARSET) !== 'ISO-8859-1')) {
             mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
             $temp_encode = mb_detect_encoding($src_text);
         } else {
@@ -523,8 +522,8 @@ class SKINIMPORT {
         }
 
         if ( empty($temp_encode)
-            or (strtoupper($temp_encode) == 'UTF-8')
-            or (strtoupper($temp_encode) == 'ISO-8859-1')
+            or (strtoupper($temp_encode) === 'UTF-8')
+            or (strtoupper($temp_encode) === 'ISO-8859-1')
             or (!function_exists('mb_convert_encoding')) ) {
             $xml = simplexml_load_string($src_text);
         } else {
@@ -544,7 +543,7 @@ class SKINIMPORT {
         $data = array();
         foreach($parents as $parent)
         {
-          if ('meta' == $parent)
+          if ('meta' === $parent)
           {
               if (isset($data[$parent])) continue;
               $data[$parent] = array();
@@ -553,7 +552,7 @@ class SKINIMPORT {
               if ($meta)
               foreach($meta[0] as $child) {
                   $name = $child->getName();
-                  if ('info' == $name)
+                  if ('info' === $name)
                   {
                       $data[$parent][$name] = $this->convValue((string ) $child);
                       $this->info =& $data[$parent][$name];
@@ -562,7 +561,7 @@ class SKINIMPORT {
                   { // skin template
                       foreach($child->attributes() as $k => $v)
                       {
-                          if ('name' == $k)
+                          if ('name' === $k)
                               $data[$parent][$name][] = (string ) $v;
                      }
                   }
@@ -634,9 +633,11 @@ class SKINIMPORT {
             if (isset($data['template']))
                 $this->templates =& $data['template'];
         }
-        if (is_array($this->skins))
+        if (is_array($this->skins)) {
             ksort($this->skins);
-        if (is_array($this->templates))
+        }
+        if (is_array($this->templates)) {
             ksort($this->templates);
+        }
     }
 }

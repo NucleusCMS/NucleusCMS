@@ -406,7 +406,6 @@ function _decideItemSkin($itemid) {
     }
 
     $blogid = $obj->iblog;
-    $timestamp = strtotime($obj->itime);
 
     $b =& $manager->getBlog($blogid);
 

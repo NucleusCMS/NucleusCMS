@@ -83,7 +83,12 @@ function showInstallForm() {
     $options = array();
     foreach($install_lang_defs as $k=>$v) {
         $selected = ($k===INSTALL_LANG) ? 'selected' : '';
-        $options[] = sprintf('<option value="%s" %s>%s</option>', $k, $selected, hsc($v['title']));
+        $options[] = sprintf(
+                '<option value="%s" %s>%s</option>'
+                , $k
+                , $selected
+                , hsc($v['title'])
+        );
     }
     $ph['dispINSTALL_LANG'] = htmlspecialchars($install_lang_defs[INSTALL_LANG]['title']);
     $ph['lang_options'] = join("\n", $options);
@@ -415,7 +420,7 @@ function doInstall() {
         {
             $queries = preg_replace("#/\*.*?\*/#ims", '', $queries);
             $queries = preg_split("#(;\n|;\r)#m", $queries);
-            for($i = 0; $i<count($queries); $i++)
+            for($i = 0, $iMax = count($queries); $i< $iMax; $i++)
             {
                 if (strtoupper(trim($queries[$i])) == 'END')
                 {
@@ -480,17 +485,13 @@ function doInstall() {
     $itm_body  = _1ST_POST;
     $itm_more  = _1ST_POST2;
 
-    $newpost = "INSERT INTO "
-        . tableName('nucleus_item')
-        . ' (`inumber`, `ititle`, `ibody`, `imore`,'
-        . '`iblog`, `iauthor`, `itime`,'
-        . '`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`)'
-        . " VALUES ("
-        . "1, "
-        . sql_quote_string($itm_title) . ","
-        . sql_quote_string($itm_body) . ","
-        . sql_quote_string($itm_more) . ","
-        . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
+    $newpost = sprintf(
+            "INSERT INTO %s (`inumber`, `ititle`, `ibody`, `imore`,`iblog`, `iauthor`, `itime`,`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`) VALUES (1, %s,%s,%s, 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1)"
+            , tableName('nucleus_item')
+            , sql_quote_string($itm_title)
+            , sql_quote_string($itm_body)
+            , sql_quote_string($itm_more)
+    );
     sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '): ' . sql_error() );
 
     if (DEBUG_INSTALL_STEPS)
@@ -606,11 +607,17 @@ function doInstall() {
             echo sprintf("Step11(%d)", __LINE__);
         // 11. install custom skins
         $aSkinErrors = installCustomSkins($manager);
-        $defskinQue  = 'SELECT `sdnumber` as result FROM ' . sql_table('skin_desc') . ' WHERE `sdname` = "default"';
+        $defskinQue  = sprintf(
+                "SELECT `sdnumber` as result FROM %s WHERE `sdname` = 'default'"
+                , sql_table('skin_desc')
+        );
         $defSkinID   = quickQuery($defskinQue);
-        $updateQuery = 'UPDATE ' . sql_table('blog') . ' SET `bdefskin` = ' . intval($defSkinID) . ' WHERE `bnumber` = 1';
+        $updateQuery = sprintf(
+                "UPDATE %s SET `bdefskin` = %d WHERE `bnumber` = 1"
+                , sql_table('blog')
+                , (int)$defSkinID);
         sql_query($updateQuery);
-        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . intval($defSkinID). ' WHERE `name` = "BaseSkin"';
+        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . (int)$defSkinID . ' WHERE `name` = "BaseSkin"';
         sql_query($updateQuery);
 
         if (DEBUG_INSTALL_STEPS)
@@ -724,7 +731,12 @@ function installCustomPlugs(&$manager) {
 
     foreach ($aConfPlugsToInstall as $plugName) {
         // do this before calling getPlugin (in case the plugin id is used there)
-        $query = 'INSERT INTO ' . sql_table('plugin') . ' (porder, pfile) VALUES (' . (++$numCurrent) . ', "' . sql_real_escape_string($plugName) . '")';
+        $query = sprintf(
+                "INSERT INTO %s (porder, pfile) VALUES (%s, '%s')"
+                , sql_table('plugin')
+                , ++$numCurrent
+                , sql_real_escape_string($plugName)
+        );
         sql_query($query);
 
         // get and install the plugin
@@ -788,13 +800,13 @@ function installCustomSkins(&$manager) {
 
     foreach ($aConfSkinsToImport as $skinName) {
         $importer->reset();
-        $skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
+        $skinFile = sprintf('%s%s/skinbackup.xml', $DIR_SKINS, $skinName);
 //      Todo: localize skin file
 //		$skinFile_2 = $DIR_SKINS . $skinName . sprintf("/skinbackup-%s.xml", INSTALL_LANG);
 //		if ((INSTALL_LANG != 'en') && is_file($skinFile_2))
 //			$skinFile = $skinFile_2;
 
-        if (!@file_exists($skinFile) ) {
+        if (!@is_file($skinFile) ) {
             array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
             continue;
         }

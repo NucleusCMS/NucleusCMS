@@ -283,8 +283,8 @@ CREATE TABLE `nucleus_systemlog` (
   `timestamp_utc`  datetime     NOT NULL,
   `message`        MEDIUMTEXT   NOT NULL,
   `message_hash`   varchar(64)  NOT NULL,
-   PRIMARY KEY  (`logyear`, `logid`),
-   INDEX `logtype` (`logtype`)
+  PRIMARY KEY  (`logyear`, `logid`),
+  INDEX `logtype` (`logtype`)
 ) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_team` (
