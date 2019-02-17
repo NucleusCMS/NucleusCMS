@@ -369,19 +369,26 @@ function _alertOnHeadersSent() {
 }
 
 function _decideItemSkin($itemid) {
-    global $blogid, $query, $CONF, $catid, $manager;
+    global $blogid, $CONF, $catid, $manager;
     // itemid given -> only show that item
     
-    if (!$manager->existsItem($itemid, (int)$CONF['allowFuture'], (int)$CONF['allowDrafts']) ) {
+    if (!$manager->existsItem(
+            $itemid
+            , (int)$CONF['allowFuture']
+            , (int)$CONF['allowDrafts'] ) ) {
         doError(_ERROR_NOSUCHITEM);
     }
 
     global $itemidprev, $itemidnext, $itemtitlenext, $itemtitleprev;
 
     // 1. get timestamp, blogid and catid for item
-    $ph['inumber'] = (int)$itemid;
-    $res = sql_query( parseQuery("SELECT itime, iblog, icat FROM [@prefix@]item WHERE inumber='[@inumber@]'", $ph) );
-    $obj = sql_fetch_object($res);
+    $obj = sql_fetch_object(
+            sql_query(parseQuery(
+                    "SELECT itime, iblog, icat FROM [@prefix@]item WHERE inumber='[@inumber@]'"
+                    , array('inumber' => (int)$itemid)
+                )
+            )
+    );
 
     // if a different blog id has been set through the request or selectBlog(),
     // deny access
@@ -390,7 +397,7 @@ function _decideItemSkin($itemid) {
         if (!headers_sent()) {
             $b =& $manager->getBlog($obj->iblog);
             $CONF['ItemURL'] = $b->getURL();
-            if ($CONF['URLMode'] == 'pathinfo' and substr($CONF['ItemURL'],-1) == '/')
+            if ($CONF['URLMode'] === 'pathinfo' && substr($CONF['ItemURL'],-1) === '/')
                 $CONF['ItemURL'] = substr($CONF['ItemURL'], 0, -1);
             $correctURL = createItemLink($itemid, '');
             redirect($correctURL);
@@ -417,29 +424,26 @@ function _decideItemSkin($itemid) {
 
     // get previous itemid and title
     $ph = array();
-    $ph['itime'] = strtotime($obj->itime);
+    $ph['itime'] = $obj->itime;
     $ph['blogid'] = $blogid;
     $ph['catextra'] = $catextra;
-    $query = 'SELECT inumber, ititle FROM [@prefix@]item'
-            . ' WHERE itime < [@itime@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
-            . ' ORDER BY itime DESC LIMIT 1';
-    $res = sql_query(parseQuery($query, $ph));
+    $ph['now'] = date('Y-m-d H:i:s', $b->getCorrectTime());
+    $res = sql_query(parseQuery(
+        "SELECT inumber, ititle FROM [@prefix@]item WHERE itime<'[@itime@]' AND idraft=0 AND iblog=[@blogid@] [@catextra@] ORDER BY itime DESC LIMIT 1"
+        , $ph));
 
     if ($res && ($obj = sql_fetch_object($res))) {
-        $itemidprev = $obj->inumber;
+        $itemidprev    = $obj->inumber;
         $itemtitleprev = $obj->ititle;
     }
 
     // get next itemid and title
-    $ph['catextra'] = $catextra;
-    $ph['now']      = mysqldate($b->getCorrectTime());
-    $query = 'SELECT inumber, ititle FROM [@prefix@]item'
-            . ' WHERE itime > [@itime@] AND itime <= [@now@] AND idraft=0 AND iblog=[@blogid@] [@catextra@]'
-            . ' ORDER BY itime ASC LIMIT 1';
-    $res = sql_query(parseQuery($query, $ph));
+    $res = sql_query(parseQuery(
+        "SELECT inumber, ititle FROM [@prefix@]item WHERE itime>'[@itime@]' AND itime<='[@now@]' AND idraft=0 AND iblog=[@blogid@] [@catextra@] ORDER BY itime ASC LIMIT 1"
+        , $ph));
 
-    if ($res && ($obj = sql_fetch_object($res))) {
-        $itemidnext = $obj->inumber;
+    if ($res && $obj = sql_fetch_object($res)) {
+        $itemidnext    = $obj->inumber;
         $itemtitlenext = $obj->ititle;
     }
     return 'item';
@@ -853,7 +857,7 @@ function shorten($text, $maxlength, $toadd) {
   * quotes around it.
   */
 function mysqldate($timestamp) {
-    return "'" . date('Y-m-d H:i:s', $timestamp) . "'";
+    return sprintf("'%s'", date('Y-m-d H:i:s', $timestamp));
 }
 
 /**
