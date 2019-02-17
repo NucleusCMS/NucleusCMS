@@ -92,8 +92,10 @@ class SKIN {
      * @static
      */
     public static function existsID($id) {
-        $ph = array('sdnumber'=>intval($id));
-        $query = parseQuery('select COUNT(*) as result FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]', $ph);
+        $query = parseQuery(
+            'select COUNT(*) as result FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]'
+            , array('sdnumber'=> (int)$id)
+        );
         return (int)quickQuery($query) > 0;
     }
 
@@ -118,10 +120,16 @@ class SKIN {
 
         $exp = '';
         if ($spartstype !== '')
-            $exp = sprintf(" AND spartstype = '%s'", ($spartstype == 'specialpage' ? 'specialpage' : 'parts' ));
+            $exp = sprintf(
+                " AND spartstype = '%s'"
+                , ($spartstype === 'specialpage' ? 'specialpage' : 'parts' )
+            );
 
-        $sql = sprintf("SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d ",
-                        sql_table('skin'), intval($skinid)) . $exp;
+        $sql = sprintf(
+            "SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d "
+            , sql_table('skin')
+            , (int)$skinid
+            ) . $exp;
 
         if ($DB_PHP_MODULE_NAME === 'pdo') {
             if (stripos('sqlite' , $DB_DRIVER_NAME ) !== false)
@@ -271,7 +279,7 @@ class SKIN {
             }
         }
         
-        $actions = $this->getAllowedActionsForType($type);
+        $actions = self::getAllowedActionsForType($type);
         
         $param = array(
             'skin'      => &$this,
@@ -401,20 +409,31 @@ class SKIN {
      * Deletes all skin parts from the database
      */
     function deleteAllParts() {
-        sql_query('DELETE FROM '.sql_table('skin').' WHERE sdesc='.$this->getID());
+        sql_query(sprintf(
+            "DELETE FROM %s WHERE sdesc=%d"
+            , sql_table('skin')
+            , $this->getID()));
     }
 
     /**
      * Updates the general information about the skin
      */
-    function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
-        $query =  'UPDATE '.sql_table('skin_desc').' SET'
-               . " sdname='" . sql_real_escape_string($name) . "',"
-               . " sddesc='" . sql_real_escape_string($desc) . "',"
-               . " sdtype='" . sql_real_escape_string($type) . "',"
-               . " sdincmode='" . sql_real_escape_string($includeMode) . "',"
-               . " sdincpref='" . sql_real_escape_string($includePrefix) . "'"
-               . " WHERE sdnumber=" . $this->getID();
+    function updateGeneralInfo(
+        $name
+        , $desc
+        , $type = 'text/html'
+        , $includeMode = 'normal'
+        , $includePrefix = '') {
+        $query = sprintf(
+            "UPDATE %s SET sdname='%s',sddesc='%s',sdtype='%s',sdincmode='%s',sdincpref='%s' WHERE sdnumber=%d"
+            , sql_table('skin_desc')
+            , sql_real_escape_string($name)
+            , sql_real_escape_string($desc)
+            , sql_real_escape_string($type)
+            , sql_real_escape_string($includeMode)
+            , sql_real_escape_string($includePrefix)
+            , $this->getID()
+        );
         sql_query($query);
 
         global $resultCache, $manager;
@@ -622,7 +641,7 @@ class SKIN {
     }
 
     public function changeSkinByName($name) {
-      $id = $this->getIdFromName($name);
+      $id = self::getIdFromName($name);
       return $this->changeSkinById($id);
     }
 
@@ -636,8 +655,10 @@ class SKIN {
             return false;
 
         // read skin name/description/content type
-        $ph = array('sdnumber'=>$id);
-        $res = sql_query(parseQuery('SELECT * FROM [@prefix@]skin_desc WHERE sdnumber=', $ph));
+        $res = sql_query(parseQuery(
+            'SELECT * FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]'
+            , array('sdnumber'=>$id)
+        ));
         $obj = sql_fetch_object($res);
         if (!is_object($obj))
             return false;

@@ -1143,7 +1143,7 @@ class BLOG {
     }
 
     function getCorrectTime($t=0) {
-        if ($t == 0) $t = $_SERVER['REQUEST_TIME'];
+        if ($t == 0) $t = serverVar('request_time');
         return ($t + 3600 * $this->getTimeOffset());
     }
 

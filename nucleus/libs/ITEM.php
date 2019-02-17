@@ -41,16 +41,15 @@ class ITEM {
     public static function getitem($itemid, $allowdraft, $allowfuture) {
         global $manager;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
 
-        $query =  'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
-               . ' i.ititle as title, i.ibody as body, m.mname as author, '
-               . ' i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos, '
-               . ' i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid '
-               . ' FROM '.sql_table('item').' as i, '.sql_table('member').' as m, ' . sql_table('blog') . ' as b '
-               . ' WHERE i.inumber=' . $itemid
-               . ' and i.iauthor=m.mnumber '
-               . ' and i.iblog=b.bnumber';
+        $query = sprintf(
+            'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author,  i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos,  i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid FROM %s as i, %s as m, %s as b  WHERE i.inumber=%d and i.iauthor=m.mnumber and i.iblog=b.bnumber'
+            , sql_table('item')
+            , sql_table('member')
+            , sql_table('blog')
+            , $itemid
+        );
 
         if (!$allowdraft)
             $query .= ' and i.idraft=0';
@@ -68,9 +67,9 @@ class ITEM {
         {
             $aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
             return $aItemInfo;
-        } else {
-            return 0;
         }
+
+        return 0;
 
     }
 
@@ -86,21 +85,19 @@ class ITEM {
     public static function createFromRequest() {
          global $member, $manager;
 
-         $i_author =         $member->getID();
-         $i_body =             postVar('body');
-         $i_title =            postVar('title');
-         $i_more =             postVar('more');
-         $i_actiontype =     postVar('actiontype');
-         $i_closed =         intPostVar('closed');
-         $i_hour =             intPostVar('hour');
-         $i_minutes =         intPostVar('minutes');
-         $i_month =         intPostVar('month');
-         $i_day =             intPostVar('day');
-         $i_year =             intPostVar('year');
-
-         $i_catid =         postVar('catid');
-
-         $i_draftid =         intPostVar('draftid');
+         $i_author     = $member->getID();
+         $i_body       = postVar('body');
+         $i_title      = postVar('title');
+         $i_more       = postVar('more');
+         $i_actiontype = postVar('actiontype');
+         $i_closed     =intPostVar('closed');
+         $i_hour       = intPostVar('hour');
+         $i_minutes    = intPostVar('minutes');
+         $i_month      = intPostVar('month');
+         $i_day        = intPostVar('day');
+         $i_year       = intPostVar('year');
+         $i_catid      = postVar('catid');
+         $i_draftid    = intPostVar('draftid');
 
          if (!$member->canAddItem($i_catid))
             return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
@@ -121,7 +118,7 @@ class ITEM {
             return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
 
         // create new category if needed
-        if (strstr($i_catid,'newcat')) {
+        if (strpos($i_catid, 'newcat') !== false) {
             // get blogid
             list($i_blogid) = sscanf($i_catid,"newcat-%d");
 
@@ -138,7 +135,7 @@ class ITEM {
             $blog =& $manager->getBlog($i_blogid);
         }
 
-        if ($i_actiontype == 'addfuture') {
+        if ($i_actiontype === 'addfuture') {
             $posttime = mktime($i_hour, $i_minutes, 0, $i_month, $i_day, $i_year);
 
             // make sure the date is in the future, unless we allow past dates
@@ -163,14 +160,14 @@ class ITEM {
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
         $param = array(
-        'context'    => 'item',
-        'itemid'    => $itemid,
-        'item'        => array(
-            'title'        => $i_title,
-            'body'        => $i_body,
-            'more'        => $i_more,
-            'closed'    => $i_closed,
-            'catid'        => $i_catid)
+        'context' => 'item',
+        'itemid'  => $itemid,
+        'item'    => array(
+            'title'  => $i_title,
+            'body'   => $i_body,
+            'more'   => $i_more,
+            'closed' => $i_closed,
+            'catid'  => $i_catid)
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
 
@@ -195,7 +192,7 @@ class ITEM {
     public static function update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp = 0) {
         global $manager;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
 
         // make sure value is 1 or 0
         if ($closed != 1) $closed = 0;
@@ -216,24 +213,26 @@ class ITEM {
 
         // call plugins
         $param = array(
-            'itemid'    =>  $itemid,
-            'title'        => &$title,
-            'body'        => &$body,
-            'more'        => &$more,
-            'blog'        => &$blog,
-            'closed'    => &$closed,
-            'catid'        => &$catid
+            'itemid' =>  $itemid,
+            'title'  => &$title,
+            'body'   => &$body,
+            'more'   => &$more,
+            'blog'   => &$blog,
+            'closed' => &$closed,
+            'catid'  => &$catid
         );
         $manager->notify('PreUpdateItem', $param);
 
         // update item itsself
-        $query =  'UPDATE '.sql_table('item')
-               . ' SET'
-               . " ibody='". sql_real_escape_string($body) ."',"
-               . " ititle='" . sql_real_escape_string($title) . "',"
-               . " imore='" . sql_real_escape_string($more) . "',"
-               . " iclosed=" . intval($closed) . ","
-               . " icat=" . intval($catid);
+        $query = sprintf(
+            "UPDATE %s SET ibody='%s', ititle='%s', imore='%s', iclosed=%d, icat=%d"
+            , sql_table('item')
+            , sql_real_escape_string($body)
+            , sql_real_escape_string($title)
+            , sql_real_escape_string($more)
+            , (int)$closed
+            , (int)$catid
+        );
 
         // if we received an updated timestamp in the past, but past posting is not allowed,
         // reject that date change (timestamp = 0 will make sure the current date is kept)
@@ -291,14 +290,14 @@ class ITEM {
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
         $param = array(
-            'context'    => 'item',
-            'itemid'    => $itemid,
-            'item'        => array(
-                'title'        => $title,
-                'body'        => $body,
-                'more'        => $more,
-                'closed'    => $closed,
-                'catid'        => $catid
+            'context' => 'item',
+            'itemid'  => $itemid,
+            'item'    => array(
+                'title'  => $title,
+                'body'   => $body,
+                'more'   => $more,
+                'closed' => $closed,
+                'catid'  => $catid
             )
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
@@ -312,18 +311,18 @@ class ITEM {
      *      * @static
      */
     public static function cloneItem($itemid, $new_catid = 0) {
-        global $manager, $member;
+        $itemid = (int)$itemid;
+        $new_catid = (int)$new_catid;
 
-        $tbl_item = sql_table('item');
-        $itemid = intval($itemid);
-        $new_catid = intval($new_catid);
-
-        $query = sprintf("SELECT iblog,icat FROM %s WHERE inumber=%d", $tbl_item, $itemid);
+        $query = sprintf(
+            'SELECT iblog,icat FROM %s WHERE inumber=%d'
+            , sql_table('item')
+            , $itemid);
         $res = sql_query($query);
-        if ($res = sql_query($query) && ($obj = sql_fetch_object($res)))
+        if ($res = (sql_query($query) && ($obj = sql_fetch_object($res))))
         {
-            $src_blogid = intval($obj->iblog);
-            $src_catid  = intval($obj->icat);
+            $src_blogid = (int)$obj->iblog;
+            $src_catid  = (int)$obj->icat;
         }
         else
         {
@@ -346,46 +345,50 @@ class ITEM {
             $new_blogid = $src_blogid;
         }
 
-//        if (!$member->canCloneItem($itemid) || !!$member->canAddItem($new_catid)) {
-//            return ;
-//        }
-
-        // Todo: event_PreCloneItem, event_PostCloneItem
-        // event_PreCloneItem
-        $param = array(
-//            'itemid'        => $itemid,
-//            'blogid'        => $new_blogid,
-//            'catid'         => $new_catid,
-            'src_itemid'    => $itemid,
-            'src_blogid'    => $src_blogid,
-            'src_catid'     => $src_catid,
-            'dest_blogid'   => $new_blogid,
-            'dest_catid'    => $new_catid,
-            'is_same_category' => $is_same_cat
-        );
+//         Todo: event_PreCloneItem, event_PostCloneItem
+//         event_PreCloneItem
+//        $param = array(
+//            'src_itemid'    => $itemid,
+//            'src_blogid'    => $src_blogid,
+//            'src_catid'     => $src_catid,
+//            'dest_blogid'   => $new_blogid,
+//            'dest_catid'    => $new_catid,
+//            'is_same_category' => $is_same_cat
+//        );
 //        $manager->notify('PreCloneItem', $param); // not implemented yet
 
         $new_iblog = $is_same_cat ? 'iblog' : sprintf('%d as iblog', $new_blogid);
         $new_icat  = $is_same_cat ? 'icat'  : sprintf('%d as icat' , $new_catid);
         $dist = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
-        $src  = "ititle,ibody,imore,${new_iblog},iauthor,itime,iclosed,'1' AS idraft,ikarmapos,${new_icat},ikarmaneg,iposted";
-        $query = sprintf("INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s", $tbl_item, $dist, $src, $tbl_item, $itemid);
+        $src = sprintf(
+            "ititle,ibody,imore,%s,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,%s,ikarmaneg,iposted"
+            , $new_iblog
+            , $new_icat);
+        $query = sprintf(
+            "INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s"
+            , sql_table('item')
+            , $dist
+            , $src
+            , sql_table('item')
+            , $itemid
+        );
+
         if (sql_query($query))
         {
             $new_itemid = sql_insert_id();
 
             // event_PostCloneItem
-            $param = array(
-                'itemid'        => $new_itemid,
-//                'blogid'        => $new_blogid,
-//                'catid'         => $new_catid,
-                'src_itemid'    => $itemid,
-                'src_blogid'    => $src_blogid,
-                'src_catid'     => $src_catid,
-                'dest_blogid'   => $new_blogid,
-                'dest_catid'    => $new_catid,
-                'is_same_category' => ($src_catid == $new_catid)
-            );
+//            $param = array(
+//                'itemid'        => $new_itemid,
+////                'blogid'        => $new_blogid,
+////                'catid'         => $new_catid,
+//                'src_itemid'    => $itemid,
+//                'src_blogid'    => $src_blogid,
+//                'src_catid'     => $src_catid,
+//                'dest_blogid'   => $new_blogid,
+//                'dest_catid'    => $new_catid,
+//                'is_same_category' => ($src_catid == $new_catid)
+//            );
 //            $manager->notify('PostCloneItem', $param); // not implemented yet
         }
     }
@@ -398,31 +401,44 @@ class ITEM {
     public static function move($itemid, $new_catid) {
         global $manager;
 
-        $itemid = intval($itemid);
-        $new_catid = intval($new_catid);
+        $itemid = (int)$itemid;
+        $new_catid = (int)$new_catid;
 
         $new_blogid = getBlogIDFromCatID($new_catid);
 
         $param = array(
-            'itemid'        => $itemid,
-            'destblogid'    => $new_blogid,
-            'destcatid'        => $new_catid
+            'itemid'     => $itemid,
+            'destblogid' => $new_blogid,
+            'destcatid'  => $new_catid
         );
         $manager->notify('PreMoveItem', $param);
 
 
         // update item table
-        $query = 'UPDATE '.sql_table('item')." SET iblog=$new_blogid, icat=$new_catid WHERE inumber=$itemid";
-        sql_query($query);
+        sql_query(
+            sprintf(
+                'UPDATE %s SET iblog=%s, icat=%d WHERE inumber=%d'
+                , sql_table('item')
+                , $new_blogid
+                , $new_catid
+                , $itemid
+            )
+        );
 
         // update comments
-        $query = 'UPDATE '.sql_table('comment')." SET cblog=" . $new_blogid." WHERE citem=" . $itemid;
-        sql_query($query);
+        sql_query(
+            sprintf(
+                'UPDATE %s SET cblog=%s WHERE citem=%d'
+                , sql_table('comment')
+                , $new_blogid
+                , $itemid
+            )
+        );
 
         $param = array(
-            'itemid'        => $itemid,
-            'destblogid'    => $new_blogid,
-            'destcatid'        => $new_catid
+            'itemid'     => $itemid,
+            'destblogid' => $new_blogid,
+            'destcatid'  => $new_catid
         );
         $manager->notify('PostMoveItem', $param);
     }
@@ -433,7 +449,7 @@ class ITEM {
     public static function delete($itemid) {
         global $manager, $member;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
 
         // check to ensure only those allow to alter the item can
         // proceed
@@ -445,12 +461,22 @@ class ITEM {
         $manager->notify('PreDeleteItem', $param);
 
         // delete item
-        $query = 'DELETE FROM '.sql_table('item').' WHERE inumber=' . $itemid;
-        sql_query($query);
+        sql_query(
+            sprintf(
+                'DELETE FROM %s WHERE inumber=%d'
+                , sql_table('item')
+                , $itemid
+            )
+        );
 
         // delete the comments associated with the item
-        $query = 'DELETE FROM '.sql_table('comment').' WHERE citem=' . $itemid;
-        sql_query($query);
+        sql_query(
+            sprintf(
+                'DELETE FROM %s WHERE citem=%d'
+                , sql_table('comment')
+                , $itemid
+            )
+        );
 
         // delete all associated plugin options
         NucleusPlugin::_deleteOptionValues('item', $itemid);
@@ -469,7 +495,7 @@ class ITEM {
     public static function exists($id,$future,$draft) {
         global $manager;
 
-        $id = intval($id);
+        $id = (int)$id;
 
         $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE inumber='.$id;
         if (!$future) {
@@ -483,7 +509,7 @@ class ITEM {
         }
         $sql .= ' LIMIT 1';
 
-        return (intval(quickQuery($sql)) > 0);
+        return ((int)quickQuery($sql) > 0);
     }
 
     /**

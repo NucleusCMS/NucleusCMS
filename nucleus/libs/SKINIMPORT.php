@@ -464,14 +464,14 @@ class SKINIMPORT {
 
         $dirhandle = opendir($dir);
         while ($filename = readdir($dirhandle)) {
-            if (@is_dir($dir . $filename) && ($filename != '.') && ($filename != '..')) {
-                $xml_file = $dir . $filename . '/skinbackup.xml';
+            if (is_dir($dir . $filename) && !in_array($filename,array('.','..'))) {
+                $xml_file = sprintf('%s%s/skinbackup.xml', $dir, $filename);
                 if (is_file($xml_file) && is_readable($xml_file)) {
                     $candidates[$filename] = $filename; //$xml_file;
                 }
 
                 // backwards compatibility
-                $xml_file = $dir . $filename . '/skindata.xml';
+                $xml_file = sprintf('%s%s/skindata.xml', $dir, $filename);
                 if (is_file($xml_file) && is_readable($xml_file)) {
                     $candidates[$filename] = $filename; //$xml_file;
                 }

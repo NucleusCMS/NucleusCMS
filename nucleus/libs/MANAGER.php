@@ -134,7 +134,7 @@ class MANAGER
       */
     function existsCategory($id)
     {
-        return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='.intval($id)) > 0);
+        return (quickQuery('SELECT COUNT(*) as result FROM '.sql_table('category').' WHERE catid='. (int)$id) > 0);
     }
 
     /**
@@ -588,8 +588,9 @@ class MANAGER
     {
         global $member, $CONF;
         // load subscription list if needed
-        if (!is_array($this->subscriptions))
+        if (!is_array($this->subscriptions)) {
             $this->_loadSubscriptions();
+        }
 
         // get listening objects
         $listeners = false;
@@ -598,41 +599,54 @@ class MANAGER
         }
 
         // notify all of them
-        if (is_array($listeners))
+        if (!is_array($listeners))
         {
-            foreach($listeners as $listener)
+            return;
+        }
+
+        foreach($listeners as $listener)
+        {
+            // load class if needed
+            $this->_loadPlugin($listener);
+            // do notify (if method exists)
+            $event_funcname = 'event_' . $eventName;
+            $has_plugin = (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname));
+            if (!HAS_CATCH_ERROR) {
+                if ($has_plugin) {
+                    $this->plugins[$listener]->$event_funcname($data);
+                }
+                continue;
+            }
+
+            try
             {
-                // load class if needed
-                $this->_loadPlugin($listener);
-                // do notify (if method exists)
-                $event_funcname = 'event_' . $eventName;
-                if (!HAS_CATCH_ERROR) {
-                    if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname))
-                        $this->plugins[$listener]->$event_funcname($data);
-                } else {
-                    try
+                if ($has_plugin) {
+                    $this->plugins[$listener]->{$event_funcname}($data);
+                }
+               // can not catch : trigger_error('test error', E_USER_ERROR);
+            }
+            catch (Error $e) // TypeError ParseError AssertionError
+            {
+                if ($member && $member->isLoggedIn() && $member->isAdmin())
+                {
+                    if (!empty($CONF['DebugVars']) && $CONF['DebugVars'])
                     {
-                        if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener], $event_funcname))
-                            $this->plugins[$listener]->{$event_funcname}($data);
-                       // can not catch : trigger_error('test error', E_USER_ERROR);
+                        var_dump($e->getMessage());
+                        // $e->getTraceAsString
                     }
-                    catch (Error $e) // TypeError ParseError AssertionError
-                    {
-                        if ($member && $member->isLoggedIn() && $member->isAdmin())
-                        {
-                            $msg = sprintf("php error in plugin %s::%s:",
-                                           $this->plugins[$listener]->getName(), $event_funcname)
-                                 . sprintf("[%s] Line:%d (%s) : ", get_class($e), $e->getLine(), $e->getFile());
-                            if (!empty($CONF['DebugVars']) && $CONF['DebugVars'])
-                            {
-                                var_dump($e->getMessage());
-                                // $e->getTraceAsString
-                            }
-                            SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
-                        }
-                        if (!empty($CONF['debug']) && $CONF['debug'])
-                            throw $e; // return exception
-                    }
+                    $msg = sprintf(
+                        'php error in plugin %s::%s:[%s] Line:%d (%s) : %s'
+                        , $this->plugins[$listener]->getName()
+                        , $event_funcname
+                        , get_class($e)
+                        , $e->getLine()
+                        , $e->getFile()
+                        , $e->getMessage()
+                    );
+                    SYSTEMLOG::addUnique('error', 'Error', $msg);
+                }
+                if (!empty($CONF['debug']) && $CONF['debug']) {
+                    throw $e; // return exception
                 }
             }
         }
@@ -646,9 +660,16 @@ class MANAGER
         // initialize as array
         $this->subscriptions = array();
 
-        $res = sql_query('SELECT p.pfile as pfile, e.event as event FROM '.sql_table('plugin_event').' as e, '.sql_table('plugin').' as p'
-                       . ' WHERE e.pid=p.pid ORDER BY p.porder ASC');
-        if ($res)
+        $res = sql_query(
+            sprintf(
+                'SELECT p.pfile as pfile, e.event as event FROM %s as e, %s as p WHERE e.pid=p.pid ORDER BY p.porder ASC'
+                , sql_table('plugin_event')
+                , sql_table('plugin')
+            )
+        );
+        if (!$res) {
+            return;
+        }
         while ($o = sql_fetch_object($res)) {
             $pluginName = $o->pfile;
             $eventName = $o->event;
@@ -669,10 +690,8 @@ class MANAGER
     function addTicketToUrl($url)
     {
         $ticketCode = 'ticket=' . $this->_generateTicket();
-        if (strstr($url, '?'))
-            return $url . '&' . $ticketCode;
-        else
-            return $url . '?' . $ticketCode;
+        $join = (strpos($url, '?') !== false) ? '&' : '?';
+        return $url . $join . $ticketCode;
     }
 
     /**
@@ -686,7 +705,7 @@ class MANAGER
     function getHtmlInputTicketHidden()
     {
         $ticket = $this->_generateTicket();
-        return '<input type="hidden" name="ticket" value="' . htmlspecialchars($ticket) . '" />';
+        return sprintf('<input type="hidden" name="ticket" value="%s" />', hsc($ticket));
     }
 
     /**
@@ -723,23 +742,14 @@ class MANAGER
             $memberId = $member->getID();
 
         // check if ticket is a valid one
-        $query = sprintf("SELECT COUNT(*) as result FROM %s WHERE member=%d AND ticket='%s'",
-                         sql_table('tickets'),
-                         intval($memberId),
-                         sql_real_escape_string($ticket));
-        if (quickQuery($query) == 1)
-        {
-            // [in the original implementation, the checked ticket was deleted. This would lead to invalid
-            //  tickets when using the browsers back button and clicking another link/form
-            //  leaving the keys in the database is not a real problem, since they're member-specific and
-            //  only valid for a period of one hour
-            // ]
-            // sql_query('DELETE FROM '.sql_table('tickets').' WHERE member=' . intval($memberId). ' and ticket=\''.addslashes($ticket).'\'');
-            return true;
-        } else {
-            // not a valid ticket
-            return false;
-        }
+        $query = sprintf(
+            "SELECT COUNT(*) as result FROM %s WHERE member=%d AND ticket='%s'"
+            , sql_table('tickets')
+            , (int)$memberId
+            , sql_real_escape_string($ticket)
+        );
+
+        return quickQuery($query) == 1;
 
     }
 
@@ -750,9 +760,10 @@ class MANAGER
     {
         // remove tickets older than 1 hour
         $oldTime = time() - 60 * 60;
-        $query = sprintf("DELETE FROM %s WHERE ctime < '%s'",
-                         sql_table('tickets'),
-                         date('Y-m-d H:i:s',$oldTime));
+        $query = sprintf(
+            "DELETE FROM %s WHERE ctime < '%s'",
+             sql_table('tickets'),
+             date('Y-m-d H:i:s', $oldTime));
         sql_query($query);
     }
 
@@ -781,14 +792,14 @@ class MANAGER
 
                 // add in database as non-active
                 if ($DB_PHP_MODULE_NAME == 'pdo') {
-                    $input_parameters = array((string) $ticket, intval($memberId), date('Y-m-d H:i:s',time()));
+                    $input_parameters = array((string) $ticket, (int)$memberId, date('Y-m-d H:i:s',time()));
                     $query = sprintf('INSERT INTO `%s` (ticket, member, ctime) VALUES (?, ?, ?)' , sql_table('tickets'));
                     if (sql_prepare_execute($query, $input_parameters))
                         break;
                 } else {  // mysql driver
                     $params = array(sql_table('tickets'),
                                     sql_real_escape_string($ticket),
-                                    intval($memberId),
+                        (int)$memberId,
                                     date('Y-m-d H:i:s',time())
                               );
                     $query = vsprintf("INSERT INTO `%s` (ticket, member, ctime) VALUES ('%s', '%s', '%s')", $params);
