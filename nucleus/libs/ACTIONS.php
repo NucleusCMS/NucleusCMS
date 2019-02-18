@@ -282,7 +282,7 @@ class ACTIONS extends BaseActions {
     function _searchlink($maxresults, $startpos, $direction, $linktext = '', $recount = '') {
         global $CONF, $blog, $query, $amount;
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
-        $startpos    = intval($startpos);        // will be 0 when empty.
+        $startpos    = (int)$startpos;        // will be 0 when empty.
         $parsed      = parse_url(serverVar('REQUEST_URI'));
         $path        = (isset($parsed['path']) ? $parsed['path'] : '');
         $parsed      = $parsed['query'];
@@ -290,8 +290,8 @@ class ACTIONS extends BaseActions {
 
         switch ($direction) {
             case 'prev':
-                if ( intval($startpos) - intval($maxresults) >= 0) {
-                    $startpos     = intval($startpos) - intval($maxresults);
+                if ( (int)$startpos - (int)$maxresults >= 0) {
+                    $startpos     = (int)$startpos - (int)$maxresults;
                     //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                     switch ($this->skintype)
                     {
@@ -314,8 +314,8 @@ class ACTIONS extends BaseActions {
                 else
                     $iAmountOnPage = $this->amountfound;
 
-                if (intval($navigationItems) > 0) {
-                    $iAmountOnPage = intval($navigationItems) - intval($startpos);
+                if ((int)$navigationItems > 0) {
+                    $iAmountOnPage = (int)$navigationItems - (int)$startpos;
                 }
                 elseif ($iAmountOnPage == 0)
                 {
@@ -334,10 +334,10 @@ class ACTIONS extends BaseActions {
                             break;
                     }
                     if ($sqlquery)
-                        $iAmountOnPage = intval(quickQuery($sqlquery)) - intval($startpos);
+                        $iAmountOnPage = (int)quickQuery($sqlquery) - (int)$startpos;
                 }
-                if (intval($iAmountOnPage) >= intval($maxresults)) {
-                    $startpos     = intval($startpos) + intval($maxresults);
+                if ((int)$iAmountOnPage >= (int)$maxresults) {
+                    $startpos     = (int)$startpos + (int)$maxresults;
                     //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
                     $url        .= '?'.alterQueryStr($parsed,'startpos',$startpos);
                 }
@@ -1297,9 +1297,9 @@ class ACTIONS extends BaseActions {
     function parse_prevlink($linktext = '', $amount = 10) {
         global $itemidprev, $archiveprev, $startpos;
 
-        if ($this->skintype == 'item')
+        if ($this->skintype === 'item')
             $this->_itemlink($itemidprev, $linktext);
-        else if ($this->skintype == 'search' || $this->skintype == 'index')
+        else if ($this->skintype === 'search' || $this->skintype === 'index')
             $this->_searchlink($amount, $startpos, 'prev', $linktext);
         else
             $this->_archivelink($archiveprev, $linktext);
@@ -1400,7 +1400,7 @@ class ACTIONS extends BaseActions {
      */
     function parse_text($which) {
         if (defined($which)) {
-            echo strval(constant($which));
+            echo (string)constant($which);
         }
     }
 
@@ -1429,7 +1429,7 @@ class ACTIONS extends BaseActions {
         global $blog, $CONF;
         if ($blog)
             echo $this->_link(createBlogidLink($blog->getID(),$this->linkparams), $linktext);
-        else if (isset($CONF['SiteUrl']) && strlen($CONF['SiteUrl'])>0)
+        elseif (isset($CONF['SiteUrl']) && strlen($CONF['SiteUrl'])>0)
             echo $this->_link($CONF['SiteUrl'], $linktext);
         else
             echo hsc($linktext);
@@ -1459,7 +1459,7 @@ class ACTIONS extends BaseActions {
     function parse_sticky($itemnumber = 0, $template = '') {
         global $manager;
 
-        $itemnumber = intval($itemnumber);
+        $itemnumber = (int)$itemnumber;
         $itemarray = array($itemnumber);
 
         $b =& $manager->getBlog(getBlogIDFromItemID($itemnumber));
@@ -1472,23 +1472,23 @@ class ACTIONS extends BaseActions {
     {
         global $blog, $itemid, $manager;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
         // if item is closed, show message and do nothing
         $item =& $manager->getItem($itemid,0,0);
         if ($item['closed'] || !$blog->commentsEnabled()) {
-            return TRUE;
+            return true;
         }
-        return FALSE;
+        return false;
     }
 
     function parse_hascomment()
     {
         global $itemid;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
         $ph['citem'] = (int) $itemid;
         $sql = parseQuery('SELECT COUNT(*) as result FROM [@prefix@]comment WHERE citem=[@citem@] LIMIT 1', $ph);
-        $res = intval(quickQuery($sql));
+        $res = (int)quickQuery($sql);
         return ($res > 0);
     }
 }

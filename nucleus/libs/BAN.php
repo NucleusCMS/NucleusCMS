@@ -24,14 +24,15 @@ class BAN {
       * message and other information of the ban
       */
     public static function isBanned($blogid, $ip) {
-        $blogid = intval($blogid);
+        $blogid = (int)$blogid;
         $query = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
-            if (!($found === false))
+            if (!($found === false)) {
                 // found a match!
-                    return new BANINFO($obj->iprange, $obj->reason);
+                return new BANINFO($obj->iprange, $obj->reason);
+            }
         }
         return 0;
     }
@@ -42,7 +43,7 @@ class BAN {
     public static function addBan($blogid, $iprange, $reason) {
         global $manager;
 
-        $blogid = intval($blogid);
+        $blogid = (int)$blogid;
 
         $param = array(
             'blogid'    =>  $blogid,
@@ -56,9 +57,9 @@ class BAN {
         $res = sql_query($query);
 
         $param = array(
-            'blogid'    => $blogid,
-            'iprange'    => $iprange,
-            'reason'    => $reason
+            'blogid'  => $blogid,
+            'iprange' => $iprange,
+            'reason'  => $reason
         );
         $manager->notify('PostAddBan', $param);
 
@@ -71,7 +72,7 @@ class BAN {
       */
     public static function removeBan($blogid, $iprange) {
         global $manager;
-        $blogid = intval($blogid);
+        $blogid = (int)$blogid;
 
         $param = array(
             'blogid'    => $blogid,
@@ -85,8 +86,8 @@ class BAN {
         $result = (sql_affected_rows() > 0);
 
         $param = array(
-            'blogid'    => $blogid,
-            'range'        => $iprange
+            'blogid' => $blogid,
+            'range'  => $iprange
         );
         $manager->notify('PostDeleteBan', $param);
 

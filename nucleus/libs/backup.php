@@ -494,7 +494,7 @@ class Backup
                     $output .= "\n";
                 }
                 // Trading a bit of speed for lower mem. use here.
-                $lines[$i] = "";
+                $lines[$i] = '';
             }
         }
     
@@ -514,7 +514,7 @@ class Backup
     private function split_sql_file($sql)
     {
         // Split up our string into "possible" SQL statements.
-        $tokens = explode( ";", $sql);
+        $tokens = explode( ';', $sql);
         $output = array();
     
         // this is faster than calling count($tokens) every time thru the loop.
@@ -550,8 +550,8 @@ class Backup
                             $output[] = $temp . $tokens[$j];
     
                             // save memory.
-                            $tokens[$j] = "";
-                            $temp = "";
+                            $tokens[$j] = '';
+                            $temp = '';
     
                             // exit the loop.
                             $complete_stmt = true;
@@ -562,16 +562,16 @@ class Backup
                         {
                             // even number of unescaped quotes. We still don't have a complete statement.
                             // (1 odd and 1 even always make an odd)
-                            $temp .= $tokens[$j] .  ";";
+                            $temp .= $tokens[$j] . ';';
                             // save memory.
-                            $tokens[$j] = "";
+                            $tokens[$j] = '';
                         }
     
                     } // for..
                 } // else
             }
         }
-    
+
         return $output;
     }
 

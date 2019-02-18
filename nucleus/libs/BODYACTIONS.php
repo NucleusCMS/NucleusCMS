@@ -103,7 +103,7 @@ class BODYACTIONS extends BaseActions {
         global $CONF;
 
         // select private collection when no collection given
-        if (!strstr($filename,'/')) {
+        if (strpos($filename, '/') === false) {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
@@ -140,13 +140,13 @@ class BODYACTIONS extends BaseActions {
         global $CONF;
 
         // select private collection when no collection given
-        if (!strstr($filename,'/')) {
+        if (strpos($filename, '/') === false) {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
-        $vars['link']            = hsc($CONF['MediaURL'] . $filename );
-        $vars['text']            = hsc($text );
-        $vars['media']             = '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
+        $vars['link']  = hsc($CONF['MediaURL'] . $filename );
+        $vars['text']  = hsc($text );
+        $vars['media'] = '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
         echo TEMPLATE::fill($this->template['MEDIA_CODE'],$vars);;
     }
@@ -169,7 +169,7 @@ class BODYACTIONS extends BaseActions {
         global $CONF;
 
         // select private collection when no collection given
-        if (!strstr($filename,'/')) {
+        if (strpos($filename, '/') === false) {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
@@ -270,18 +270,18 @@ class BODYACTIONS extends BaseActions {
         global $blog, $catid;
 
         // when no parameter is defined, just check if a category is selected
-        if (($name != 'catname' && $name != 'catid') || ($value == ''))
+        if (($name !== 'catname' && $name !== 'catid') || ($value == ''))
             return $blog->isValidCategory($catid);
 
         // check category name
-        if ($name == 'catname') {
+        if ($name === 'catname') {
             $value = $blog->getCategoryIdFromName($value);
             if ($value == $catid)
                 return $blog->isValidCategory($catid);
         }
 
         // check category id
-        if (($name == 'catid') && ($value == $catid))
+        if (($name === 'catid') && ($value == $catid))
             return $blog->isValidCategory($catid);
 
         return false;
@@ -297,21 +297,21 @@ class BODYACTIONS extends BaseActions {
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
-        if (($name != 'isadmin' && $name != 'name') || ($name == 'name' && $value == '')) {
-            return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem->authorid));
+        if (($name !== 'isadmin' && $name !== 'name') || ($name === 'name' && $value == '')) {
+            return ((int)$member->getID() > 0 && (int)$member->getID() == (int)$this->currentItem->authorid);
         }
 
         // check author name
-        if ($name == 'name') {
+        if ($name === 'name') {
             $value = strtolower($value);
             if ($value == strtolower($this->currentItem->author))
                 return true;
         }
 
         // check if author is admin
-        if (($name == 'isadmin')) {            
-            $aid = intval($this->currentItem->authorid);
-            $blogid = intval($b->getID());            
+        if (($name === 'isadmin')) {
+            $aid = (int)$this->currentItem->authorid;
+            $blogid = (int)$b->getID();
             $amember =& $manager->getMember($aid);
             if ($amember->isAdmin())
                 return true;
@@ -331,21 +331,21 @@ class BODYACTIONS extends BaseActions {
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
-        if (($name != 'catname' && $name != 'catid') || ($value == ''))
+        if (($name !== 'catname' && $name !== 'catid') || ($value == ''))
             return $b->isValidCategory($catid);
             
         $icatid = $this->currentItem->catid;
         //$icategory = $this->currentItem->category;
 
         // check category name
-        if ($name == 'catname') {
+        if ($name === 'catname') {
             $value = $b->getCategoryIdFromName($value);
             if ($value == $icatid)
                 return $b->isValidCategory($icatid);
         }
 
         // check category id
-        if (($name == 'catid') && ($value == $icatid))
+        if (($name === 'catid') && ($value == $icatid))
             return $b->isValidCategory($icatid);
 
         return false;
@@ -432,8 +432,10 @@ class BODYACTIONS extends BaseActions {
         global $manager;
         
         $plugin =& $manager->getPlugin('NP_' . $name);
-        if (!$plugin) return;
-        
+        if (!$plugin) {
+            return false;
+        }
+
         $params = func_get_args();
         array_shift($params);
         

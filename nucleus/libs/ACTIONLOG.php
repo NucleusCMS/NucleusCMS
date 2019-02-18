@@ -79,12 +79,10 @@ class ACTIONLOG {
     public static function clear() {
         global $manager;
 
-        $query = 'DELETE FROM ' . sql_table('actionlog');
-        
         $param = array();
         $manager->notify('ActionLogCleared', $param);
 
-        return sql_query($query);
+        return sql_query(sprintf('DELETE FROM %s', sql_table('actionlog')));
     }
 
     /**
@@ -108,7 +106,5 @@ class ACTIONLOG {
             $tsChop = quickQuery('SELECT timestamp as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT '.$iDropSize.',1');
             sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE timestamp < \'' . $tsChop . '\'');
         }
-
     }
-
 }

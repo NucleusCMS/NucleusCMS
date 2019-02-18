@@ -134,19 +134,19 @@ class BaseActions {
     function getIncludeFileName($filename) {
         // leave absolute filenames and http urls as they are
         if (
-                (substr($filename,0,1) == '/')
-            ||    (substr($filename,0,7) == 'http://')
-            ||    (substr($filename,0,6) == 'ftp://')
+                (substr($filename,0,1) === '/')
+            ||    (substr($filename,0,7) === 'http://')
+            ||    (substr($filename,0,6) === 'ftp://')
             )
             return $filename;
 
         $filename = PARSER::getProperty('IncludePrefix') . $filename;
-        if (PARSER::getProperty('IncludeMode') == 'skindir') {
+        if (PARSER::getProperty('IncludeMode') === 'skindir') {
             global $DIR_SKINS;
             return $DIR_SKINS . $filename;
-        } else {
-            return $filename;
         }
+
+        return $filename;
     }
 
     /**
@@ -183,7 +183,7 @@ class BaseActions {
      * Helper function: update the Top of the If Conditions Array
      */
     function _updateTopIfCondition() {
-        if (sizeof($this->if_conditions) == 0)
+        if (count($this->if_conditions) == 0)
             $this->if_currentlevel = 1;
         else
             $this->if_currentlevel = $this->if_conditions[sizeof($this->if_conditions) - 1];
@@ -201,7 +201,7 @@ class BaseActions {
      * @param string condition to be fullfilled
      */
     function _updateIfExecute($condition) {
-        $index = sizeof($this->if_execute) - 1;
+        $index = count($this->if_execute) - 1;
         if (!isset($this->if_execute[$index]))
             $this->if_execute[$index] = 0;
         $this->if_execute[$index] = $this->if_execute[$index] || $condition;
@@ -256,7 +256,7 @@ class BaseActions {
      * Parses <%else%> statements
      */
     function parse_else() {
-        if (sizeof($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
             @ob_end_flush();
@@ -275,7 +275,7 @@ class BaseActions {
      * Parses <%elseif%> statements
      */
     function parse_elseif() {
-        if (sizeof($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
             @ob_end_flush();
@@ -307,7 +307,7 @@ class BaseActions {
      * Parses <%elseifnot%> statements
      */
     function parse_elseifnot() {
-        if (sizeof($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) return;
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
             @ob_end_flush();
@@ -330,7 +330,7 @@ class BaseActions {
      */
     function parse_endif() {
         // we can only close what has been opened
-        if (sizeof($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) return;
 
         if ($this->if_currentlevel) {
             @ob_end_flush();

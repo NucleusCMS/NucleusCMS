@@ -94,11 +94,11 @@ class BATCH extends ENCAPSULATE {
                 $manager->addTicketHidden();
 
                 // add hidden fields for 'team' and 'comment' batchlists
-                if ($this->type == 'team')
+                if ($this->type === 'team')
                 {
                     echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
                 }
-                if ($this->type == 'comment')
+                if ($this->type === 'comment')
                 {
                     echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
                 }

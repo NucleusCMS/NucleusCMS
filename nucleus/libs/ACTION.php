@@ -61,7 +61,7 @@ class ACTION
 
             case 'votenegative':
             case 'votepositive':
-                return $this->doVote($action == 'votepositive' ? '+' : '-');
+                return $this->doVote($action === 'votepositive' ? '+' : '-');
             break;
 
             case 'plugin':
@@ -82,12 +82,12 @@ class ACTION
     {
         global $CONF, $errormessage, $manager;
 
-        $post['itemid']        = intPostVar('itemid');
-        $post['user']        = postVar('user');
-        $post['userid']        = postVar('userid');
-        $post['email']        = postVar('email');
-        $post['body']        = postVar('body');
-        $post['remember']    = intPostVar('remember');
+        $post['itemid']   = intPostVar('itemid');
+        $post['user']     = postVar('user');
+        $post['userid']   = postVar('userid');
+        $post['email']    = postVar('email');
+        $post['body']     = postVar('body');
+        $post['remember'] = intPostVar('remember');
 
         // set cookies when required
         #$remember = intPostVar('remember');
@@ -184,7 +184,7 @@ class ACTION
         {
             $CONF['MemberURL'] = $CONF['IndexURL'];
 
-            if ( $CONF['URLMode'] == 'pathinfo' )
+            if ( $CONF['URLMode'] === 'pathinfo' )
             {
                 $url = createLink('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
             }
@@ -358,7 +358,7 @@ class ACTION
      */
     function doKarma($type)
     {
-        $this->doVote( ($type == 'pos' || $type == '+') ? '+' : '-' );
+        $this->doVote( ($type === 'pos' || $type === '+') ? '+' : '-' );
         return;
     }
 
@@ -456,7 +456,6 @@ class ACTION
         }
         else
         {
-//            $url = $CONF['IndexURL'] . 'index.php?itemid=' . $itemid;
             $url = $itemLink;
         }
 
@@ -538,7 +537,7 @@ class ACTION
             echo _ERROR . ':' . _ERROR_BADTICKET;
         }
 
-        return FALSE;
+        return false;
     }
 
 
@@ -568,7 +567,6 @@ class ACTION
             echo _ERROR . ':' . _ERROR_BADTICKET;
         }
 
-        return FALSE;
+        return false;
     }
-
 }
