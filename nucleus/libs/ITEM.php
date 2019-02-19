@@ -531,7 +531,7 @@ class ITEM {
         $i_title = postVar('title');
         $i_more = postVar('more');
 
-        if((strtoupper(_CHARSET) != 'UTF-8')
+        if((strtoupper(_CHARSET) !== 'UTF-8')
            && ( ($mb = function_exists('mb_convert_encoding')) || function_exists('iconv') )
           ) {
             if ($mb) {
@@ -554,7 +554,7 @@ class ITEM {
         $i_catid = postVar('catid');
         $i_draft = 1;
         $type = postVar('type');
-        if ($type == 'edit') {
+        if ($type === 'edit') {
             $i_blogid = getBlogIDFromItemID(intPostVar('itemid'));
         }
         else {
@@ -571,7 +571,7 @@ class ITEM {
         }
 
         // create new category if needed
-        if (strstr($i_catid, 'newcat')) {
+        if (str_contains($i_catid, 'newcat')) {
             // Set in default category
             $blog =& $manager->getBlog($i_blogid);
             $i_catid = $blog->getDefaultCategory();
@@ -595,5 +595,4 @@ class ITEM {
         // success
         return array('status' => 'added', 'draftid' => $itemid);
     }
-
 }

@@ -1287,7 +1287,7 @@ class BLOG {
         // 1. replace , by . (common mistake)
         $val = str_replace(',','.',$val);
         // 2. cast to float or int
-        if (is_numeric($val) && strstr($val,'.5')) {
+        if (is_numeric($val) && str_contains($val, '.5')) {
             $val = (float) $val;
         } else {
             $val = (int)$val;

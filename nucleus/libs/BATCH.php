@@ -17,8 +17,11 @@
 
 /**
  * A class used to encapsulate a list of some sort in a batch selection
+ * @property  type
  */
 class BATCH extends ENCAPSULATE {
+
+    public $type;
 
     function __construct($type) {
         $this->type = $type;

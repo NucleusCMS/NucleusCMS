@@ -20,13 +20,13 @@ class TEMPLATE {
     public $id;
 
     function __construct($templateid) {
-        $this->id = intval($templateid);
+        $this->id = (int)$templateid;
     }
 
     public function TEMPLATE($templateid) { $this->__construct($templateid); }
 
     function getID() {
-        return intval($this->id);
+        return (int)$this->id;
     }
 
     // (static)
@@ -71,7 +71,7 @@ class TEMPLATE {
             if (!$SQL_DBH) // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
                 sql_query( $sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content), sql_real_escape_string($type), intval($id)) );
             else
-                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, intval($id)));
+                sql_prepare_execute($sql . '(?, ?, ?)' , array($content, $type, (int)$id));
         }
     }
 
@@ -101,9 +101,9 @@ class TEMPLATE {
         $newId = sql_insert_id();
 
         $param = array(
-            'templateid'    => $newId,
-            'name'            => $name,
-            'description'    => $desc
+            'templateid'  => $newId,
+            'name'        => $name,
+            'description' => $desc
         );
         $manager->notify('PostAddTemplate', $param);
 
@@ -163,7 +163,7 @@ class TEMPLATE {
       */
     public static function fill($template, $values) {
 
-        if (sizeof($values) != 0) {
+        if (count($values) != 0) {
             // go through all the values
             for(reset($values); $key = key($values); next($values)) {
                 $template = str_replace("<%$key%>",$values[$key],$template);
@@ -208,5 +208,3 @@ class TEMPLATE {
 
 
 }
-
-?>

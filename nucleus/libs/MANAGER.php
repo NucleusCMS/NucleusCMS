@@ -823,5 +823,4 @@ class MANAGER
        // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
        return SKIN::_getText($text);
     }
-
 }

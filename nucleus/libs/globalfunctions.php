@@ -115,8 +115,8 @@ init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler glob
 global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 // deprecated method
 // include core classes that are needed for login & plugin handling
-if (($DB_DRIVER_NAME=='mysql') && !function_exists('mysql_query')) {
-    if ($DB_PHP_MODULE_NAME == 'pdo')
+if (($DB_DRIVER_NAME === 'mysql') && !function_exists('mysql_query')) {
+    if ($DB_PHP_MODULE_NAME === 'pdo')
         include_once(NC_LIBS_PATH . 'sql/pdo_mysql_emulate.php'); // For PHP 7
     else
         include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php'); // For PHP 7
@@ -187,14 +187,14 @@ if (
     !isset($CONF['URLMode'])
     ||
     (
-        ($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php')
+        ($CONF['URLMode'] === 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) === '.php')
     )
 ) {
     $CONF['URLMode'] = 'normal';
 }
 
 // automatically use simpler toolbar for mozilla
-if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') ) {
+if ($CONF['DisableJsTools'] == 0 && str_contains(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
 
@@ -221,7 +221,7 @@ default:
 }
 
 // login/logout when required or renew cookies
-if (requestVar('action') == 'login') {
+if (requestVar('action') === 'login') {
     if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         header("HTTP/1.0 404 Not Found");
         exit;
@@ -297,7 +297,7 @@ if (requestVar('action') == 'login') {
         $manager->notify('LoginFailed', $param);
         ACTIONLOG::add(INFO, $errormessage);
     }
-} elseif (($action == 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
+} elseif (($action === 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
     // remove cookies on logout
     setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
     setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
@@ -392,7 +392,7 @@ if (!defined('_ARCHIVETYPE_MONTH') )
 }
 
 // decode path_info
-if ($CONF['URLMode'] == 'pathinfo') {
+if ($CONF['URLMode'] === 'pathinfo') {
     $parsed = false;
     $param = array(
         'type'        =>  basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
@@ -405,13 +405,13 @@ if ($CONF['URLMode'] == 'pathinfo') {
         // default implementation
         $data = explode('/', $virtualpath );
         $total = count($data);
-        for ($i = 0; $i < $total; $i++) {
+        foreach ($data as $i => $iValue) {
             switch ($data[$i]) {
                 case $CONF['ItemKey']: // item/1 (blogid)
                     $i++;
 
                     if ($i < $total ) {
-                        $itemid = intval($data[$i]);
+                        $itemid = (int)$iValue;
                     }
                     break;
 
@@ -419,19 +419,19 @@ if ($CONF['URLMode'] == 'pathinfo') {
                     $i++;
 
                     if ($i < $total ) {
-                        $archivelist = intval($data[$i]);
+                        $archivelist = (int)$iValue;
                     }
                     break;
 
                 case $CONF['ArchiveKey']: // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-                    if ((($i + 1) < $total ) && (!strstr($data[$i + 1], '-') ) ) {
-                        $blogid = intval($data[++$i]);
+                    if ((($i + 1) < $total ) && (strpos($data[$i + 1], '-') === false) ) {
+                        $blogid = (int)$data[++$i];
                     }
 
                     $i++;
 
                     if ($i < $total ) {
-                        $archive = $data[$i];
+                        $archive = $iValue;
                     }
                     break;
 
@@ -440,7 +440,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                     $i++;
 
                     if ($i < $total ) {
-                        $blogid = intval($data[$i]);
+                        $blogid = (int)$iValue;
                     }
                     break;
 
@@ -449,7 +449,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                     $i++;
 
                     if ($i < $total ) {
-                        $catid = intval($data[$i]);
+                        $catid = (int)$iValue;
                     }
                     break;
 
@@ -457,7 +457,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                     $i++;
 
                     if ($i < $total ) {
-                        $memberid = intval($data[$i]);
+                        $memberid = (int)$iValue;
                     }
                     break;
 
@@ -465,7 +465,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                     $i++;
 
                     if ($i < $total ) {
-                        $special = $data[$i];
+                        $special = $iValue;
                         $_REQUEST['special'] = $special;
                     }
                     break;
