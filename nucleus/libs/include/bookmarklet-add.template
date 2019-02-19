@@ -6,51 +6,29 @@
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.all.css" />
-		<meta http-equiv="Content-Script-Type" content="text/javascript" />
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
-		<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+<%ifautosave()%>
+		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
+<%endif%>
 		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
 		<%init%>
 		<%extrahead%>
-		<script type="text/javascript">
-		//<![CDATA[
-			$(document).ready(function() {
-				$(function(){
-//					var IE = '\v'=='v';
-					updAllPreviews();
-//					$("table tr td:first-child").css("width", "14%");
-//					if (!IE)
-//						$("#body textarea, #more textarea").resizable({ containment: 'parent' });
-					$("#tabs").tabs(); /* jquery-ui */
-					$(".addFuture").change(function() {
-						$("#act_future").attr('checked', 'checked');
-					});
-					$("#showPreview").click(function() {updAllPreviews();});
-					$("#goSubmit").click(function() {checkSubmit();document.addform.submit();});
-					$("#canselButton").click(function() {window.close();});
-					$("#saveDraft").click(function() {
-						$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
-						autoSaveDraft();
-					});
-//					$("#options tr td:nth-child(2)").css("width", "80% !important");
-//					$("#options tr th").css({
-//						width: "25%",
-//						whiteSpace: "normal"
-//					});
-				});
-			});
-		//]]>
-		</script>
 	</head>
 	<body>
 		<h1><%text(_ADD_ADDTO)%> '<%bloglink%>'</h1>
 		<div id="submitbuttons">
 			<input id="goSubmit" type="button" value="<%text(_BMLET_EDIT)%>" tabindex="200" />
-			<%ifautosave()%><input id="saveDraft" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="400" /><%endif%>
+<%ifautosave()%>
+			<input id="saveDraft"
+				type="button" name="autosavenow"
+				value="<%text(_AUTOSAVEDRAFT_NOW)%>"
+				tabindex="400"
+			/>
+<%endif%>
 			<input id="canselButton" type="button" value="<%text(_BMLET_CANCEL)%>" tabindex="410" />
 		</div>
 		<form id="addform" name="addform" method="post" action="bookmarklet.php" >
@@ -97,13 +75,15 @@
 				</div>
 				<div id="tab_options" class="contentblock">
 					<table summary="item options">
-						<%ifblogsetting(bcomments)%><tr>
+<%ifblogsetting(bcomments)%>
+						<tr>
 							<td style="width:20%"><%text(_ADD_DISABLE_COMMENTS)%></td>
 							<td>
 								<input type='radio' name='closed' value='1' id="closed_yes" tabindex="50" /><label for="closed_yes"><%text(_YES)%></label>
 								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" tabindex="50" /><label for="closed_no"><%text(_NO)%></label>
 							</td>
-						</tr><%endif%>
+						</tr>
+<%endif%>
 						<tr>
 							<td style="width:20%"><%text(_ADD_DRAFTNFUTURE)%></td>
 							<td>
@@ -114,7 +94,9 @@
 										<div class="indent">
 											<%text(_ADD_PLACE_ON)%>
 											<%date_time_picker%>
-											<%ifblogsetting(ballowpast,0)%><br /><%text(_ADD_NOPASTDATES)%><%endif%>
+<%ifblogsetting(ballowpast,0)%>
+											<br /><%text(_ADD_NOPASTDATES)%>
+<%endif%>
 										</div>
 									</li>
 									<li>
@@ -141,10 +123,14 @@
 				</div>
 			</div>
 			<div class="submitbuttons">
-				<%ifautosave()%><span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span><%endif%>
+<%ifautosave()%>
+				<span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span></span>
+<%endif%>
 			</div>
+			<input id="save" type="submit" style="display:none;" >
 		</form>
-		<%ifautosave()%><script type="text/javascript">
+		<script>
+/* <%ifautosave()%> */
 			var xmlhttprequest = new Array();
 			xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 			xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -155,16 +141,33 @@
 			var goalurl = '../action.php'; // The PHP file where the content must be posted to
 			var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
 			var formtype = 'add'; // Add or edit form
-		</script><%endif%>
-		
-		<script type="text/javascript">
-		// datetime reset functions
-		function date_currenttime_reset( )
-		{
-			edit_form_change_date_ByValue( new Array(
-				 "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
-				 "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
-		}
+/* <%endif%> */
+			// datetime reset functions
+			function date_currenttime_reset( )
+			{
+				edit_form_change_date_ByValue( new Array(
+					"<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
+					"<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
+			}
+			updAllPreviews();
+			$("#tabs").tabs(); /* jquery-ui */
+			$(".addFuture").change(function() {
+				$("#act_future").attr('checked', 'checked');
+			});
+			$("#showPreview").click(function() {
+				updAllPreviews();
+			});
+			$("#goSubmit").click(function() {
+				checkSubmit();
+				$('#save').click();
+			});
+			$("#canselButton").click(function() {
+				window.close();
+			});
+			$("#saveDraft").click(function() {
+				$(".autosavestatus").text('(' + lastsavedtext + ' ' + formattedDate() + ')');
+				autoSaveDraft();
+			});
 		</script>
 	</body>
 </html>
