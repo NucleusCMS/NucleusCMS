@@ -21,6 +21,7 @@ class BODYACTIONS extends BaseActions {
     public $currentItem;
 
     public $template;
+    public $blog;
 
     function __construct() {
         parent::__construct();
