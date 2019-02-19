@@ -809,7 +809,7 @@ class BLOG {
                             ));
 
         $ph['cblog'] = $this->getID();
-        $query = 'SELECT catid, cname, cdesc FROM [@prefix@]category WHERE cblog=[@cblog@]';
+        $query = 'SELECT * FROM [@prefix@]category WHERE cblog=[@cblog@]';
         if ((int)$CONF['DatabaseVersion'] >= 371)
             $query .=  ' ORDER BY corder ASC,cname ASC';
         else
@@ -819,6 +819,7 @@ class BLOG {
         while ($catdata = sql_fetch_assoc($res)) {
             $catdata['catname'] = $catdata['cname'];
             $catdata['catdesc'] = $catdata['cdesc'];
+            $catdata['catorder'] = $catdata['corder'];
             $catdata['blogid'] = $this->getID();
             $catdata['blogurl'] = $blogurl;
             $catdata['catlink'] = createLink(
