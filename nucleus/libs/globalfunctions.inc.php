@@ -309,11 +309,16 @@ function getCatIDFromName($cname)
     return $res;
 }
 
-function quickQuery($sqlText)
+function quickQuery($sqlText, $cacheClear=false)
 {
     static $rs = array();
     
     $key = md5($sqlText);
+    
+    if($cacheClear && isset($rs[$key])) {
+        unset($rs[$key]);
+    }
+
     if(isset($rs[$key])) return $rs[$key];
     
     $res = sql_query($sqlText);
