@@ -661,7 +661,7 @@ class ITEMACTIONS extends BaseActions {
 
         // when no parameter is defined, just check if author is current visitor
         if (($name != 'isadmin' && $name != 'name') || ($name == 'name' && $value == '')) {
-            return (intval($member->getID()) > 0 && intval($member->getID()) == intval($this->currentItem->authorid));
+            return ((int)$member->getID() > 0 && (int)$member->getID() == (int)$this->currentItem->authorid);
         }
 
         // check author name
@@ -673,8 +673,8 @@ class ITEMACTIONS extends BaseActions {
 
         // check if author is admin
         if (($name == 'isadmin')) {
-            $aid = intval($this->currentItem->authorid);
-            $blogid = intval($b->getID());
+            $aid = (int)$this->currentItem->authorid;
+            $blogid = (int)$b->getID();
             $amember =& $manager->getMember($aid);
             if ($amember->isAdmin())
                 return true;
@@ -813,8 +813,8 @@ class ITEMACTIONS extends BaseActions {
     function parse_hascomment()
     {
         $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-                           sql_table('comment'), intval($this->currentItem->itemid));
-        $res = intval(quickQuery($sqlText));
+                           sql_table('comment'), (int)$this->currentItem->itemid);
+        $res = (int)quickQuery($sqlText);
         return ($res > 0);
     }
 

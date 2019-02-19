@@ -389,6 +389,7 @@ class SKINIMPORT {
                 break;
             case 'info':
                 $this->info = $this->getCharacterData();
+                break;
             case 'skin':
                 if (!$this->inMeta) {
                     $this->inSkin = 0;

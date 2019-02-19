@@ -176,15 +176,35 @@ class BODYACTIONS extends BaseActions {
         $windowwidth = $width;
         $windowheight = $height;
 
-        $vars['rawpopuplink']     = $CONF['Self'] . "?imagepopup=" . hsc($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(hsc($text));
-        $vars['popupcode']         = "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
-        $vars['popuptext']         = hsc($text);
-        $vars['popuplink']         = '<a href="' . $vars['rawpopuplink']. '" onclick="'. $vars['popupcode'].'" >' . $vars['popuptext'] . '</a>';
-        $vars['width']             = $width;
-        $vars['height']            = $height;
-        $vars['text']            = $text;
-        $vars['link']            = hsc($CONF['MediaURL'] . $filename );
-        $vars['media']             = '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
+        $vars['rawpopuplink'] = sprintf(
+            "%s?imagepopup=%s&amp;width=%s&amp;height=%s&amp;imagetext=%s"
+            , $CONF['Self']
+            , hsc($filename)
+            , $width
+            , $height
+            , urlencode(hsc($text))
+        );
+        $vars['popupcode'] = sprintf(
+            "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=%s,height=%s');return false;"
+            , $windowwidth
+            , $windowheight
+        );
+        $vars['popuptext'] = hsc($text);
+        $vars['popuplink'] = sprintf(
+            '<a href="%s" onclick="%s">%s</a>'
+            , $vars['rawpopuplink']
+            , $vars['popupcode']
+            , $vars['popuptext']
+        );
+        $vars['width'] = $width;
+        $vars['height'] = $height;
+        $vars['text'] = $text;
+        $vars['link'] = hsc($CONF['MediaURL'] . $filename );
+        $vars['media'] = sprintf(
+            '<a href="%s">%s</a>'
+            , $vars['link']
+            , $vars['popuptext']
+        );
 
         echo TEMPLATE::fill($this->template['POPUP_CODE'],$vars);
     }

@@ -843,7 +843,14 @@ class ACTIONS extends BaseActions {
                 break;
             case 'imgtag':
             default:
-                echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" title=\"$imagetext\" />";
+                echo sprintf(
+                    '<img src="%s" width="%s" height="%s" alt="%s" title="%s" />'
+                    , $fullurl
+                    , $width
+                    , $height
+                    , $imagetext
+                    , $imagetext
+                );
                 break;
         }
     }

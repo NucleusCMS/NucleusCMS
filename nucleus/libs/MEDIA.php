@@ -44,9 +44,9 @@ class MEDIA {
         while ($dirname = readdir($dirhandle)) {
             // only add non-numeric (numeric=private) dirs
             if (@is_dir($DIR_MEDIA . $dirname) &&
-                ($dirname != '.') &&
-                ($dirname != '..') &&
-                ($dirname != 'CVS') &&
+                ($dirname !== '.') &&
+                ($dirname !== '..') &&
+                ($dirname !== 'CVS') &&
                 (!is_numeric($dirname)))  {
                 if (@is_writable($DIR_MEDIA . $dirname))
                     $collections[$dirname] = $dirname;
@@ -98,7 +98,7 @@ class MEDIA {
         if ($strFilter == '')
             return 1;
         else
-            return is_integer(strpos(strtolower($strText), strtolower($strFilter)));
+            return is_int(strpos(strtolower($strText), strtolower($strFilter)));
     }
 
     /**
@@ -147,9 +147,9 @@ class MEDIA {
             return _ERROR_BADFILETYPE;
         
         $param = array(
-            'collection'    => &$collection,
-            'uploadfile'    =>  $uploadfile,
-            'filename'        => &$filename
+            'collection' => &$collection,
+            'uploadfile' =>  $uploadfile,
+            'filename'   => &$filename
         );
         $manager->notify('PreMediaUpload', $param);
         
@@ -164,7 +164,7 @@ class MEDIA {
         // try to create new private media directories if needed
         if (!@is_dir($mediadir) && is_numeric($collection)) {
             $oldumask = umask(0000);
-            if (!@mkdir($mediadir, 0777))
+            if (!mkdir($mediadir, 0777) && !is_dir($mediadir))
                 return _ERROR_BADPERMISSIONS;
             umask($oldumask);
         }
@@ -173,7 +173,7 @@ class MEDIA {
         if (!@is_dir($mediadir))
             return _ERROR_DISALLOWED;
 
-        if (!is_writeable($mediadir))
+        if (!is_writable($mediadir))
             return _ERROR_BADPERMISSIONS;
 
         // add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
@@ -229,7 +229,7 @@ class MEDIA {
         // try to create new private media directories if needed
         if (!@is_dir($mediadir) && is_numeric($collection)) {
             $oldumask = umask(0000);
-            if (!@mkdir($mediadir, 0777))
+            if (!mkdir($mediadir, 0777) && !is_dir($mediadir))
                 return _ERROR_BADPERMISSIONS;
             umask($oldumask);
         }
@@ -238,7 +238,7 @@ class MEDIA {
         if (!@is_dir($mediadir))
             return _ERROR_DISALLOWED;
 
-        if (!is_writeable($mediadir))
+        if (!is_writable($mediadir))
             return _ERROR_BADPERMISSIONS;
 
         // add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
