@@ -72,6 +72,7 @@ class ACTION
                 doError(_ERROR_BADACTION);
             break;
         }
+        return '';
     }
 
 
@@ -191,7 +192,13 @@ class ACTION
 
             if ( $CONF['URLMode'] === 'pathinfo' )
             {
-                $url = createLink('member', array('memberid' => $tomem->getID(), 'name' => $tomem->getDisplayName() ) );
+                $url = createLink(
+                    'member'
+                    , array(
+                        'memberid' => $tomem->getID()
+                        , 'name' => $tomem->getDisplayName()
+                    )
+                );
             }
             else
             {
@@ -223,7 +230,7 @@ class ACTION
             return _ERROR_DISALLOWED;
         }
 
-        if ( !$member->isLoggedIn() && (!isValidMailAddress(postVar('frommail') ) ) )
+        if ( !$member->isLoggedIn() && !isValidMailAddress(postVar('frommail')) )
         {
             return _ERROR_BADMAILADDRESS;
         }
@@ -232,8 +239,8 @@ class ACTION
         // can change 'error' to something other than '')
         $result = '';
         $param = array(
-            'type'    => 'membermail',
-            'error'    => &$result
+            'type'  => 'membermail',
+            'error' => &$result
         );
         $manager->notify('ValidateForm', $param);
 
@@ -273,7 +280,17 @@ class ACTION
 
         // create member (non admin/can not login/no notes/random string as password)
         $name = shorten(postVar('name'), 32, '');
-        $r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+        $r = MEMBER::create(
+            $name
+            , postVar('realname')
+            , $initialPwd
+            , postVar('email')
+            , postVar('url')
+            ,
+            0
+            , 0
+            , ''
+        );
 
         if ( $r != 1 )
         {
@@ -429,8 +446,12 @@ class ACTION
         if ( $blog->getNotifyAddress() && $blog->notifyOnVote() )
         {
 
-            $mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-            $itemLink = createItemLink(intval($itemid) );
+            $mailto_msg = sprintf(
+                "%s %s\n"
+                , _NOTIFY_KV_MSG
+                , $itemid
+            );
+            $itemLink = createItemLink((int)$itemid);
             $temp = parse_url($itemLink);
 
             if ( !$temp['scheme'] )
@@ -442,7 +463,12 @@ class ACTION
 
             if ( $member->isLoggedIn() )
             {
-                $mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
+                $mailto_msg .= sprintf(
+                    "%s %s (ID=%s)\n"
+                    , _NOTIFY_MEMBER
+                    , $member->getDisplayName()
+                    , $member->getID()
+                );
             }
 
             $mailto_msg .= sprintf(
@@ -462,17 +488,16 @@ class ACTION
             );
             $mailto_msg .= getMailFooter();
 
-            $mailto_title = sprintf(
-                '%s %s (%s)'
-                , _NOTIFY_KV_TITLE
-                , strip_tags($item['title'])
-                , $itemid
-            );
-
-            $frommail = $member->getNotifyFromMailAddress();
-
             $notify = new NOTIFICATION($blog->getNotifyAddress() );
-            $notify->notify($mailto_title, $mailto_msg, $frommail);
+            $notify->notify(
+                sprintf(
+                    '%s %s (%s)'
+                    , _NOTIFY_KV_TITLE
+                    , strip_tags($item['title'])
+                    , $itemid
+                )
+                , $mailto_msg
+                , $member->getNotifyFromMailAddress());
         }
 
         $refererUrl = serverVar('HTTP_REFERER');
@@ -499,7 +524,6 @@ class ACTION
         global $manager;
 
         $pluginName = 'NP_' . requestVar('name');
-        $actionType = requestVar('type');
 
         // 1: check if plugin is installed
         if ( !$manager->pluginInstalled($pluginName) )
@@ -512,7 +536,7 @@ class ACTION
 
         if ( $pluginObject )
         {
-            $error = $pluginObject->doAction($actionType);
+            $error = $pluginObject->doAction(requestVar('type'));
         }
         else
         {
@@ -542,7 +566,14 @@ class ACTION
 
         if ( $ban != 0 )
         {
-            doError(_ERROR_BANNED1 . $ban->iprange . _ERROR_BANNED2 . $ban->message . _ERROR_BANNED3);
+            doError(sprintf(
+                '%s%s%s%s%s'
+                , _ERROR_BANNED1
+                , $ban->iprange
+                , _ERROR_BANNED2
+                , $ban->message
+                , _ERROR_BANNED3
+            ));
         }
 
     }

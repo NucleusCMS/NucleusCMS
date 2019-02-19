@@ -1304,7 +1304,7 @@ class BLOG {
         if (isset($this->settings[$key])) {
             return $this->settings[$key];
         }
-        return;
+        return '';
     }
 
     function getSettingDefault($key, $dafalutvalue) {
