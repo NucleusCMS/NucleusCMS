@@ -409,7 +409,7 @@ class MANAGER
 
     private function checkIfOk_supportsFeature_db($NP_Name)
     {
-        global $DB_PREFIX, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
         $tablelist = $this->plugins[$NP_Name]->getTableList();
         if (empty($tablelist))

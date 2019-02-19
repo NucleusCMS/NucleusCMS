@@ -459,7 +459,7 @@ class COMMENTACTIONS extends BaseActions {
      * @param string $value value of property
      */
     function checkCondition($field, $name='', $value = '') {
-        global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
+        global $blog, $member, $manager;
 
         $condition = 0;
         switch($field) {
@@ -599,7 +599,7 @@ class COMMENTACTIONS extends BaseActions {
      *  Different checks for a category
      */
     function _ifItemCategory($name = '', $value='') {
-        global $catid, $manager;
+        global $manager;
 
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
         $citem =& $manager->getItem($this->currentComment['itemid'],1,1);
@@ -628,7 +628,7 @@ class COMMENTACTIONS extends BaseActions {
      *  Checks if a member is on the team of a blog and return his rights
      */
     function _ifOnTeam($blogName = '') {
-        global $blog, $member, $manager;
+        global $member, $manager;
 
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
@@ -651,7 +651,7 @@ class COMMENTACTIONS extends BaseActions {
      *  Checks if a member is admin of a blog
      */
     function _ifAdmin($blogName = '') {
-        global $blog, $member, $manager;
+        global $member, $manager;
 
         $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 

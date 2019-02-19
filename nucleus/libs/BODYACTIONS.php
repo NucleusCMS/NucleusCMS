@@ -220,7 +220,7 @@ class BODYACTIONS extends BaseActions {
      * @param string $value value of property
      */
     function checkCondition($field, $name='', $value = '') {
-        global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
+        global $blog, $member, $manager;
 
         $condition = 0;
         switch($field) {

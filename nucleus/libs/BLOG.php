@@ -480,7 +480,7 @@ class BLOG {
      *      amount of hits found
      */
     function search($keywords, $template, $amountMonths, $maxresults, $startpos) {
-        global $CONF, $manager;
+        global $manager;
 
         $highlight  = '';
         $sqlquery   = $this->getSqlSearch($keywords, $amountMonths, $highlight);
@@ -1539,8 +1539,6 @@ class BLOG {
 
     static function UpgardeAddColumnAuthorVisible()
     {
-        global $CONF;
-
         if ( sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') ) {
             return;
         }

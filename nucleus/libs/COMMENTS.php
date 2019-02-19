@@ -66,7 +66,7 @@ class COMMENTS {
      *        Highlight to use (if any)
      */
     function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '') {
-        global $CONF, $manager;
+        global $manager;
 
         // create parser object & action handler
         $actions = new COMMENTACTIONS($this);
