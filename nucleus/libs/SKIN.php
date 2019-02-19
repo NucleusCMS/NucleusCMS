@@ -706,7 +706,7 @@ class SKIN {
             $filename = $DIR_SKINS.'default/skintext.xml';
             if (!is_file($filename))
                 return $text;
-            $xml = simplexml_load_file($filename);
+            $xml = simplexml_load_string(file_get_contents($filename));
 
             if (!$xml || !method_exists( $xml , 'children' ))
                 return $text;
