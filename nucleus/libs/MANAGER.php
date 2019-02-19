@@ -792,17 +792,22 @@ class MANAGER
 
                 // add in database as non-active
                 if ($DB_PHP_MODULE_NAME == 'pdo') {
+                    $query = sprintf(
+                        'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)'
+                        , sql_table('tickets')
+                    );
                     $input_parameters = array((string) $ticket, (int)$memberId, date('Y-m-d H:i:s',time()));
-                    $query = sprintf('INSERT INTO `%s` (ticket, member, ctime) VALUES (?, ?, ?)' , sql_table('tickets'));
-                    if (sql_prepare_execute($query, $input_parameters))
+                    if (sql_prepare_execute($query, $input_parameters)) {
                         break;
+                    }
                 } else {  // mysql driver
-                    $params = array(sql_table('tickets'),
-                                    sql_real_escape_string($ticket),
-                        (int)$memberId,
-                                    date('Y-m-d H:i:s',time())
-                              );
-                    $query = vsprintf("INSERT INTO `%s` (ticket, member, ctime) VALUES ('%s', '%s', '%s')", $params);
+                    $query = sprintf(
+                        "INSERT INTO `%s` (ticket,member,ctime) VALUES ('%s','%s','%s')"
+                        , sql_table('tickets')
+                        , sql_real_escape_string($ticket)
+                        , (int)$memberId
+                        , date('Y-m-d H:i:s',time())
+                    );
                     if (sql_query($query))
                         break;
                 }

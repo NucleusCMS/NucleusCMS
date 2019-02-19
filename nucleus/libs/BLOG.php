@@ -91,8 +91,11 @@ class BLOG {
             $timestamp_start = mktime(0,0,0,$month,$day,$year);
             $timestamp_end = mktime(0,0,0,$month,$day+1,$year);
         }
-        $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
-                    . ' and i.itime<' . mysqldate($timestamp_end);
+        $extra_query = sprintf(
+                ' and i.itime>=%s and i.itime<%s'
+                , mysqldate($timestamp_start)
+                , mysqldate($timestamp_end)
+        );
 
 
         $this->readLogAmount($templatename,0,$extra_query,'',1,1);
@@ -324,8 +327,8 @@ class BLOG {
         $ibody  = sql_quote_string($ibody);
         $imore  = sql_quote_string($imore);
 
-        $query = parseQuery("INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) "
-            . "VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)");
+        $query = parseQuery(
+                "INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)");
         sql_query($query);
         $itemid = sql_insert_id();
 
@@ -623,13 +626,8 @@ class BLOG {
         else
             $query = 'SELECT COUNT(*) as result ';
 
-        $query .= parseQuery(' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c')
-            . ' WHERE i.iblog='.$this->blogid
-            . ' and i.iauthor=m.mnumber'
-            . ' and i.icat=c.catid'
-            . ' and i.idraft=0'  // exclude drafts
-            // don't show future items
-            . ' and i.itime<=' . mysqldate($this->getCorrectTime());
+        $query .= parseQuery(' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c');
+        $query .= sprintf(" WHERE i.iblog=%d and i.iauthor=m.mnumber and i.icat=c.catid and i.idraft=0 and i.itime<=%s", $this->blogid, mysqldate($this->getCorrectTime()));
 
         if ($this->getSelectedCategory())
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';

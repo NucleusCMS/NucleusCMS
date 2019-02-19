@@ -157,7 +157,14 @@ class Backup
         $res = sql_query('SELECT pfile FROM '.sql_table('plugin'));
         while ($plugName = sql_fetch_object($res)) {
             $plug =& $manager->getPlugin($plugName->pfile);
-            if ($plug) $tables = array_merge($tables, (array) $plug->getTableList());
+            if ($plug) {
+                $plugTableList = $plug->getTableList();
+                if($plugTableList) {
+                    foreach ($plugTableList as $plug_table_name) {
+                        $tables[] = $plug_table_name;
+                    }
+                }
+            }
         }
         ob_end_clean();
         
@@ -519,29 +526,28 @@ class Backup
     
         // this is faster than calling count($tokens) every time thru the loop.
         $token_count = count($tokens);
-        for ($i = 0; $i < $token_count; $i++)
-        {
+        foreach ($tokens as $i => $iValue) {
             // Don't wanna add an empty string as the last thing in the array.
-            if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0)))
+            if (($i != ($token_count - 1)) || ($iValue != ''))
             {
     
                 // even number of quotes means a complete SQL statement
-                if ($this->_evenNumberOfQuotes($tokens[$i]))
+                if ($this->_evenNumberOfQuotes($iValue))
                 {
-                    $output[] = $tokens[$i];
-                    $tokens[$i] = "";     // save memory.
+                    $output[] = $iValue;
+                    $tokens[$i] = '';     // save memory.
                 }
                 else
                 {
                     // incomplete sql statement. keep adding tokens until we have a complete one.
                     // $temp will hold what we have so far.
-                    $temp = $tokens[$i] .  ";";
-                    $tokens[$i] = "";    // save memory..
+                    $temp = $iValue . ';';
+                    $tokens[$i] = '';    // save memory..
     
                     // Do we have a complete statement yet?
                     $complete_stmt = false;
     
-                    for ($j = $i + 1; (!$complete_stmt && ($j < $token_count)); $j++)
+                    for ($j = $i + 1; !$complete_stmt && ($j < $token_count); $j++)
                     {
                         // odd number of quotes means a completed statement
                         // (in combination with the odd number we had already)

@@ -497,7 +497,11 @@ class ITEM {
 
         $id = (int)$id;
 
-        $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE inumber='.$id;
+        $sql = sprintf(
+            'SELECT count(*) AS result FROM %s WHERE inumber=%d'
+            , sql_table('item')
+            , $id
+        );
         if (!$future) {
             $bid = getBlogIDFromItemID($id);
             if (!$bid) return 0;

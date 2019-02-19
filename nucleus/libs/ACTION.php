@@ -166,10 +166,15 @@ class ACTION
         $tomem = new MEMBER();
         $tomem->readFromId(postVar('memberid') );
 
-        $message  = _MMAIL_MSG . ' ' . $fromName . "\n"
-            . '(' . _MMAIL_FROMNUC. ' ' . $CONF['IndexURL'] .") \n\n"
-            . _MMAIL_MAIL . " \n\n"
-            . postVar('message');
+        $message  = sprintf(
+            "%s %s\n(%s %s) \n\n%s \n\n%s"
+            , _MMAIL_MSG
+            , $fromName
+            , _MMAIL_FROMNUC
+            , $CONF['IndexURL']
+            , _MMAIL_MAIL
+            , postVar('message')
+        );
         $message .= getMailFooter();
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
@@ -261,45 +266,46 @@ class ACTION
         {
             return $result;
         }
-        else
+
+// even though the member can not log in, set some random initial password. One never knows.
+        mt_srand( (double) microtime() * 1000000);
+        $initialPwd = md5(uniqid(mt_rand(), TRUE) );
+
+        // create member (non admin/can not login/no notes/random string as password)
+        $name = shorten(postVar('name'), 32, '');
+        $r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+
+        if ( $r != 1 )
         {
+            return $r;
+        }
 
-            // even though the member can not log in, set some random initial password. One never knows.
-            srand( (double) microtime() * 1000000);
-            $initialPwd = md5(uniqid(mt_rand(), TRUE) );
+        // send message containing password.
+        $newmem = new MEMBER();
+        $newmem->readFromName($name);
+        $newmem->sendActivationLink('register');
 
-            // create member (non admin/can not login/no notes/random string as password)
-            $name = shorten(postVar('name'), 32, '');
-            $r = MEMBER::create($name, postVar('realname'), $initialPwd, postVar('email'), postVar('url'), 0, 0, '');
+        $param = array('member' => &$newmem);
+        $manager->notify('PostRegister', $param);
 
-            if ( $r != 1 )
-            {
-                return $r;
-            }
-
-            // send message containing password.
-            $newmem = new MEMBER();
-            $newmem->readFromName($name);
-            $newmem->sendActivationLink('register');
-            
-            $param = array('member' => &$newmem);
-            $manager->notify('PostRegister', $param);
-
-            if ( postVar('desturl') )
-            {
-                redirect(postVar('desturl') );
-            }
-            else
-            {
-                if (!headers_sent())
-                    sendContentType('text/html', '', _CHARSET);
-                echo _MSG_ACTIVATION_SENT;
-                echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
-                echo "\n</body>\n</html>";
-            }
-
+        if ( postVar('desturl') )
+        {
+            redirect(postVar('desturl') );
             exit;
         }
+
+        if (!headers_sent())
+            sendContentType('text/html', '', _CHARSET);
+        echo _MSG_ACTIVATION_SENT;
+        echo sprintf(
+            '<br /><br />Return to <a href="%s" title="%s">%s</a>'
+            , $CONF['IndexURL']
+            , $CONF['SiteName']
+            , $CONF['SiteName']
+        );
+        echo "\n</body>\n</html>";
+
+        exit;
 
     }
 
@@ -341,14 +347,18 @@ class ACTION
         if ( postVar('url') )
         {
             redirect(postVar('url') );
+            exit;
         }
-        else
-        {
-            global $CONF;
-            sendContentType('text/html', '', _CHARSET);
-            echo _MSG_ACTIVATION_SENT;
-            echo '<br /><br />Return to <a href="'.$CONF['IndexURL'].'" title="'.$CONF['SiteName'].'">'.$CONF['SiteName'].'</a>';
-        }
+
+        global $CONF;
+        sendContentType('text/html', '', _CHARSET);
+        echo sprintf(
+            '%s<br /><br />Return to <a href="%s" title="%s">%s</a>'
+            , _MSG_ACTIVATION_SENT
+            , $CONF['IndexURL']
+            , $CONF['SiteName']
+            , $CONF['SiteName']
+        );
 
         exit;
     }
@@ -435,12 +445,29 @@ class ACTION
                 $mailto_msg .= _NOTIFY_MEMBER . ' ' . $member->getDisplayName() . ' (ID=' . $member->getID() . ")\n";
             }
 
-            $mailto_msg .= _NOTIFY_IP . ' ' . serverVar('REMOTE_ADDR') . "\n";
-            $mailto_msg .= _NOTIFY_HOST . ' ' .  gethostbyaddr(serverVar('REMOTE_ADDR'))  . "\n";
-            $mailto_msg .= _NOTIFY_VOTE . "\n " . $type . "\n";
+            $mailto_msg .= sprintf(
+                "%s %s\n"
+                , _NOTIFY_IP
+                , serverVar('REMOTE_ADDR')
+            );
+            $mailto_msg .= sprintf(
+                "%s %s\n"
+                , _NOTIFY_HOST
+                , gethostbyaddr(serverVar('REMOTE_ADDR'))
+            );
+            $mailto_msg .= sprintf(
+                "%s\n %s\n"
+                , _NOTIFY_VOTE
+                , $type
+            );
             $mailto_msg .= getMailFooter();
 
-            $mailto_title = _NOTIFY_KV_TITLE . ' ' . strip_tags($item['title']) . ' (' . $itemid . ')';
+            $mailto_title = sprintf(
+                '%s %s (%s)'
+                , _NOTIFY_KV_TITLE
+                , strip_tags($item['title'])
+                , $itemid
+            );
 
             $frommail = $member->getNotifyFromMailAddress();
 

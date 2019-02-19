@@ -60,7 +60,7 @@ class entity {
     }
 
     public static function specialchars ($string, $type = 'xml') {
-        $apos = $type == 'xml' ? '&apos;' : '&#39;';
+        $apos = $type === 'xml' ? '&apos;' : '&#39;';
         $specialchars = array (
             '&quot;'    => '&quot;',        '&amp;'       => '&amp;',          
             '&apos;'      => $apos,            '&lt;'      => '&lt;',        
@@ -99,7 +99,7 @@ class entity {
     public static function _named($entity, $extra) {
         global $_entities;
         
-        if ($extra == '=') return $entity . '=';
+        if ($extra === '=') return $entity . '=';
         
         $length = strlen($entity);
 
@@ -109,7 +109,7 @@ class entity {
             $length--;
         }
         
-        return $entity . ($extra == ';' ? ';' : '');
+        return $entity . ($extra === ';' ? ';' : '');
     }
 }
 
