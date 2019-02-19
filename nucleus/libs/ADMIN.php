@@ -4661,7 +4661,7 @@ selector();
 
         // 2. Update description
         $query = parseQuery(
-                "UPDATE [@prefix@]template_desc SET tdname='%s', tddesc='%s' WHERE tdnumber=%s"
+                "UPDATE [@prefix@]template_desc SET tdname='[@tdname@]', tddesc='[@tddesc@]' WHERE tdnumber=[@tdnumber@]"
                 , array(
                         'tdname'    => sql_real_escape_string($name)
                         ,'tddesc'   => sql_real_escape_string($desc)
