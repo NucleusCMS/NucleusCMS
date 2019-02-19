@@ -532,8 +532,6 @@ class BLOG {
      */
     function getSqlSearch($keywords, $amountMonths = 0, &$highlight, $mode = '')
     {
-        global $DIR_LIBS;
-        
         $search = new SEARCH($keywords);
         $search->set('fields','ititle,ibody,imore');
         
@@ -675,7 +673,7 @@ class BLOG {
       * Shows the archivelist using the given template
       */
     function showArchiveList($template, $mode = 'month', $limit = 0) {
-        global $CONF, $catid, $manager;
+        global $catid, $manager;
 
         $linkparams = array();
         if ($catid) {

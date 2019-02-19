@@ -95,7 +95,7 @@ class ACTIONS extends BaseActions {
      * @param string $value value of property
      */
     function checkCondition($field, $name='', $value = '') {
-        global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
+        global $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
         switch(strtolower($field)) {
             case 'category':
@@ -355,7 +355,6 @@ class ACTIONS extends BaseActions {
      *  Creates an item link and if no id is given a todaylink
      */
     function _itemlink($id, $linktext = '') {
-        global $CONF;
         if ($id)
             echo $this->_link(createItemLink($id, $this->linkparams), $linktext);
         else
@@ -366,7 +365,7 @@ class ACTIONS extends BaseActions {
      *  Creates an archive link and if no id is given a todaylink
      */
     function _archivelink($id, $linktext = '') {
-        global $CONF, $blog;
+        global $blog;
         if ($id)
             echo $this->_link(createArchiveLink($blog->getID(), $id, $this->linkparams), $linktext);
         else
@@ -539,7 +538,7 @@ class ACTIONS extends BaseActions {
      *    A link to the archives for the current blog (or for default blog)
      */
     function parse_archivelink($linktext = '') {
-        global $blog, $CONF;
+        global $blog;
         if ($blog)
             echo $this->_link(createArchiveListLink($blog->getID(),$this->linkparams), $linktext);
         else
@@ -684,7 +683,7 @@ class ACTIONS extends BaseActions {
      * Parse skinvar commentform
      */
     function parse_commentform($destinationurl = '') {
-        global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
+        global $blog, $itemid, $member, $CONF, $manager;
 
         // warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
         if (stristr($destinationurl, 'action.php')) {
@@ -913,7 +912,7 @@ class ACTIONS extends BaseActions {
      * Parse skinvar loginform
      */
     function parse_loginform() {
-        global $member, $CONF;
+        global $member;
         if (!$member->isLoggedIn()) {
             $filename = 'loginform-notloggedin';
             $this->formdata = array();
@@ -1246,7 +1245,7 @@ class ACTIONS extends BaseActions {
      * Parse skinvar preview
      */
     function parse_preview($template) {
-        global $blog, $CONF, $manager;
+        global $blog, $manager;
 
         $template =& $manager->getTemplate($template);
         $row['body'] = '<span id="prevbody"></span>';
@@ -1325,7 +1324,7 @@ class ACTIONS extends BaseActions {
      * Parse skinvar searchform
      */
     function parse_searchform($blogname = '') {
-        global $CONF, $manager, $maxresults;
+        global $CONF, $manager;
         if ($blogname) {
             $blog =& $manager->getBlog(getBlogIDFromName($blogname));
         } else {
@@ -1449,7 +1448,6 @@ class ACTIONS extends BaseActions {
      * (include nucleus versionnumber)
      */
     function parse_version() {
-        global $nucleus;
         echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
     }
 
