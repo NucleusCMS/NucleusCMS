@@ -5149,7 +5149,7 @@ selector();
 
         $this->pagehead();
 
-        printf('<p>(<a href="index.php?action=skinoverview">%s</a>)</p>', escapeHTML(_SKIN_GOBACK));
+        printf('<p>(<a href="index.php?action=skinedit&skinid=%s">%s</a>)</p>', $skinid, escapeHTML(_SKIN_GOBACK));
 
         $skingetContentOptions = array('spartstype'=>'parts');
         switch($spartstype)
