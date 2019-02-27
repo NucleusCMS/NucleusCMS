@@ -375,7 +375,7 @@ class ITEM {
 
         if (sql_query($query))
         {
-            $new_itemid = sql_insert_id();
+            return sql_insert_id();
 
             // event_PostCloneItem
 //            $param = array(
