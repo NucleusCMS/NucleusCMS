@@ -143,6 +143,7 @@ class PAGEFACTORY extends BaseActions {
 
         // use the PARSER engine to parse that template
         $parser = new PARSER($this->actions, $this);
+        $parser->delim = '{%,%}';
         $parser->parse($template);
     }
 

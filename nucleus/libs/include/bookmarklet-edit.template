@@ -1,8 +1,9 @@
 <!DOCTYPE html>
-<html lang="<%text(_LANG_CODE)%>">
+<html lang="{%text(_LANG_CODE)%}">
 	<head>
-		<meta charset="<%text(_CHARSET)%>" />
-		<title><%text(_EDIT_ITEM)%></title>
+		<meta charset="{%text(_CHARSET)%}" />
+		<title>{%text(_EDIT_ITEM)%}</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1">
 		<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
 		<link rel="stylesheet" type="text/css" href="styles/addedit.css" />
 		<link rel="stylesheet" type="text/css" href="styles/jquery-ui/ui.all.css" />
@@ -10,61 +11,61 @@
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/edit_date.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
-<%ifautosave()%>
+{%ifautosave()%}
 		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
-<%endif%>
+{%endif%}
 		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
 		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
-<%init%>
-<%extrahead%>
+{%init%}
+{%extrahead%}
 	</head>
 	<body>
-		<h1><%text(_EDIT_ITEM)%> (<%contents(itemid)%>)</h1>
+		<h1>test{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h1>
 		<div id="submitbuttons">
-			<input id="goSubmit" type="button" value="<%text(_BMLET_EDIT)%>" tabindex="200" />
-<%ifautosave()%>
+			<input id="goSubmit" type="button" value="{%text(_BMLET_EDIT)%}" tabindex="200" />
+{%ifautosave()%}
 			<input id="saveDraft" type="button"
 				name="autosavenow"
-				value="<%text(_AUTOSAVEDRAFT_NOW)%>" tabindex="400"
+				value="{%text(_AUTOSAVEDRAFT_NOW)%}" tabindex="400"
 			/>
-<%endif%>
-			<input id="canselButton" type="button" value="<%text(_BMLET_CANCEL)%>" tabindex="410" />
+{%endif%}
+			<input id="canselButton" type="button" value="{%text(_BMLET_CANCEL)%}" tabindex="410" />
 		</div>
 		<form id="editform" name="editform" method="post" action="bookmarklet.php" >
 			<div id="tabs">
 				<ul>
-					<li><a href="#body" tabindex="300"><%text(_BMLET_BODY)%></a></li>
-					<li><a href="#more" tabindex="310"><%text(_BMLET_MORE)%></a></li>
-					<li><a href="#tab_options" tabindex="320"><%text(_BMLET_OPTIONS)%></a></li>
-					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330"><%text(_BMLET_PREVIEW)%></a></li>
+					<li><a href="#body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
+					<li><a href="#more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
+					<li><a href="#tab_options" tabindex="320">{%text(_BMLET_OPTIONS)%}</a></li>
+					<li><a href="#preview" id="showPreview" name="showPreview" tabindex="330">{%text(_BMLET_PREVIEW)%}</a></li>
 				</ul>
 				<input name="action" type="hidden" value="edititem" />
-				<input name="itemid" type="hidden" value="<%contents(itemid)%>" />
+				<input name="itemid" type="hidden" value="{%contents(itemid)%}" />
 				<input type="hidden" name="draftid" value="0" />
-				<%ticket%>
+				{%ticket%}
 				<div id="body" class="contentblock">
 					<table summary="item body">
 						<tr>
-							<td style="width:20%"><%text(_ADD_TITLE)%></td>
+							<td style="width:20%">{%text(_ADD_TITLE)%}</td>
 							<td>
-								<input <%jsinput(title)%> type="text" size="60"
+								<input {%jsinput(title)%} type="text" size="60"
 									maxlength="160" 
-									value="<%contents(title)%>"
+									value="{%contents(title)%}"
 									tabindex="10"
 								/>
 							</td>
 						</tr>
 						<tr>
-							<td><%text(_ADD_CATEGORY)%></td>
-							<td><%categories(30)%></td>
+							<td>{%text(_ADD_CATEGORY)%}</td>
+							<td>{%categories(30)%}</td>
 						</tr>
 						<tr>
-							<td><%text(_ADD_BODY)%> <%helplink(additem)%></td>
+							<td>{%text(_ADD_BODY)%} {%helplink(additem)%}</td>
 							<td>
-								<%jsbuttonbar(media)%>
-								<textarea <%jsinput(body)%> cols="60" rows="20"
+								{%jsbuttonbar(media)%}
+								<textarea {%jsinput(body)%} cols="60" rows="20"
 									tabindex="20"
-								><%contents(body)%></textarea>
+								>{%contents(body)%}</textarea>
 							</td>
 						</tr>
 					</table>
@@ -72,70 +73,70 @@
 				<div id="more" class="contentblock">
 					<table summary="item more">
 						<tr>
-							<td style="width:20%"><%text(_ADD_MORE)%> <%helplink(extended)%></td>
+							<td style="width:20%">{%text(_ADD_MORE)%} {%helplink(extended)%}</td>
 							<td>
-								<%jsbuttonbar(media)%>
-								<textarea <%jsinput(more)%> cols="60" rows="22" tabindex="40"
-									><%contents(more)%></textarea>
+								{%jsbuttonbar(media)%}
+								<textarea {%jsinput(more)%} cols="60" rows="22" tabindex="40"
+									>{%contents(more)%}</textarea>
 							</td>
 						</tr>
 					</table>
 				</div>
 				<div id="tab_options" class="contentblock">
 					<table summary="item options">
-<%ifblogsetting(bcomments)%>
+{%ifblogsetting(bcomments)%}
 						<tr>
-							<td style="width:20%"><%text(_ADD_DISABLE_COMMENTS)%></td>
+							<td style="width:20%">{%text(_ADD_DISABLE_COMMENTS)%}</td>
 							<td>
 							    <input type="radio"
 									name="closed" value="1"
-									id="closed_yes" <%checkedonval(1,closed)%>
+									id="closed_yes" {%checkedonval(1,closed)%}
 									tabindex="50"
 								/>
-								<label for="closed_yes"><%text(_YES)%></label>
+								<label for="closed_yes">{%text(_YES)%}</label>
 							    <input type="radio" name="closed" value="0"
-									id="closed_no" <%checkedonval(0,closed)%>
+									id="closed_no" {%checkedonval(0,closed)%}
 									tabindex="50"
-								/><label for="closed_no"><%text(_NO)%></label>
+								/><label for="closed_no">{%text(_NO)%}</label>
 							</td>
 						</tr>
-<%endif%>
+{%endif%}
 						<!-- The only actiontypes are 'edit', 'changedate' (no draft items can be edited) and 'delete' -->
 						<tr>
-							<td style="width:20%"><%text(_EDIT_SUBMIT)%></td>
+							<td style="width:20%">{%text(_EDIT_SUBMIT)%}</td>
 							<td>
 								<ul class="nobullets">
 									<li>
-										<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60" /><label for="act_edit"><%text(_BMLET_EDIT)%></label>
+										<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60" /><label for="act_edit">{%text(_BMLET_EDIT)%}</label>
 									</li>
 									<li>
-										<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
+										<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
 										</li>
-<%ifblogsetting(ballowpast)%>
+{%ifblogsetting(ballowpast)%}
 									<li>
-										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60" /><label for="act_changedate"><%text(_BMLET_CHANGEDATE)%></label> <%helplink(changedate)%>
+										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60" /><label for="act_changedate">{%text(_BMLET_CHANGEDATE)%}</label> {%helplink(changedate)%}
 										<div class="indent">
-											<%text(_ADD_PLACE_ON)%>
-											<%date_time_picker(itemtime)%>
+											{%text(_ADD_PLACE_ON)%}
+											{%date_time_picker(itemtime)%}
 										</div>
 									</li>
-<%endif%>
+{%endif%}
 									<li>
-										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
+										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
 									</li>
-									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" tabindex="120" /><label for="dosendping"><%text(_UPDATEDPING_GOSENDPING)%></label></li -->
+									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" tabindex="120" /><label for="dosendping">{%text(_UPDATEDPING_GOSENDPING)%}</label></li -->
 								</ul>
 							</td>
 						</tr>
 						<tr>
-							<td><%settabindex(100)%><%text(_ADD_PLUGIN_EXTRAS)%></td>
-							<td><%pluginextras%></td>
+							<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
+							<td>{%pluginextras%}</td>
 						</tr>
-						<%itemoptions%>
+						{%itemoptions%}
 					</table>
 				</div>
 				<div id="preview" class="contentblock">
-					<!-- h2><%text(_ADD_PREVIEW)%></h2 -->
+					<!-- h2>{%text(_ADD_PREVIEW)%}</h2 -->
 					<strong><span id="prevtitle">&#160;</span></strong>
 					<br />
 					<span id="prevbody">&#160;</span>
@@ -144,15 +145,15 @@
 				</div>
 			</div>
 			<div class="submitbuttons">
-<!-- <%ifautosave()%> -->
-				<span class="autosavestatus">(<%text(_AUTOSAVEDRAFT)%>&nbsp;:&nbsp;</span>
-				<span class="lastsavedtime"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%>)</span>
-<!-- <%endif%> -->
+<!-- {%ifautosave()%} -->
+				<span class="autosavestatus">({%text(_AUTOSAVEDRAFT)%}&nbsp;:&nbsp;</span>
+				<span class="lastsavedtime">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%})</span>
+<!-- {%endif%} -->
 			</div>
 			<input id="save" type="submit" style="display:none;" >
 		</form>
 		<script>
-/* <%ifautosave()%> */
+/* {%ifautosave()%} */
 			var xmlhttprequest = new Array();
 			xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 			xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler
@@ -161,14 +162,14 @@
 			var addform = document.getElementById('editform'); // The form id
 			var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
 			var goalurl = '../action.php'; // The PHP file where the content must be posted to
-			var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+			var lastsavedtext = '{%text(_AUTOSAVEDRAFT_LASTSAVED)%}'; // The language variable for 'Last saved'
 			var formtype = 'edit'; // Add or edit form
-/* <%endif%> */
+/* {%endif%} */
 			function date_itemtime_reset( )
 			{
 				edit_form_change_date_ByValue( new Array(
-					"<%itemtime(year)%>", "<%itemtime(mon)%>", "<%itemtime(mday)%>",
-					"<%itemtime(hours)%>", "<%itemtime(minutes)%>" ) );
+					"{%itemtime(year)%}", "{%itemtime(mon)%}", "{%itemtime(mday)%}",
+					"{%itemtime(hours)%}", "{%itemtime(minutes)%}" ) );
 			}
 			updAllPreviews();
 			$("#tabs").tabs(); /* jquery-ui */
