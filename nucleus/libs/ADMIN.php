@@ -3669,17 +3669,17 @@ class ADMIN {
         $s = "<h2>"._ADMIN_MEMBER_HALT_CONFIRM_TITLE."</h2>\n";
         $s .= "<p>".($mem->isHalt() ? _ERROR_ADMIN_MEMBER_ALREADY_HALTED : _ADMIN_MEMBER_HALT_CONFIRM_TEXT)."<br /><br />\n";
 
-        $s .= sprintf("member number : <b>%s</b><br />\n" , htmlspecialchars($mem->getID()) );
-        $s .= sprintf("%s <b>%s</b><br />\n" , _LOGIN_NAME , htmlspecialchars($mem->getDisplayName()) );
+        $s .= sprintf("member number : <b>%s</b><br />\n" , hsc($mem->getID()) );
+        $s .= sprintf("%s <b>%s</b><br />\n" , _LOGIN_NAME , hsc($mem->getDisplayName()) );
         $s .= "<br />\n";
-        $s .= sprintf("%s <b>%s</b><br />\n" , _MEMBERS_REALNAME , htmlspecialchars($mem->getRealName()) );
+        $s .= sprintf("%s <b>%s</b><br />\n" , _MEMBERS_REALNAME , hsc($mem->getRealName()) );
         $s .= sprintf("%s : <b>%s</b><br />\n"
                 , _ADMIN_MEMBER_SUPERADMIN
-                , htmlspecialchars($mem->isAdmin() ? _YES : _NO , null, _CHARSET) );
+                , hsc($mem->isAdmin() ? _YES : _NO , null) );
 
         $s .= sprintf("%s : <b>%s</b><br />\n"
                 , _MEMBERS_CANLOGIN
-                , htmlspecialchars($mem->canLogin() ? _YES : _NO , null, _CHARSET) );
+                , hsc($mem->canLogin() ? _YES : _NO , null) );
 
 
         $s .=  "</b></p>";
@@ -5023,17 +5023,17 @@ selector();
                 $s .= '<li>';
                 $s .= sprintf('<a tabindex="%d" href="index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s">%s</a>',
                             ($tabstart++), $skinid,
-                            htmlspecialchars(strtolower($row['stype'])),
-                            htmlspecialchars($row['stype'])
+                            hsc(strtolower($row['stype'])),
+                            hsc($row['stype'])
                             );
                 $s .= sprintf(' (<a tabindex="%d" href="index.php?action=skinremovetype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s">%s</a>)',
                             ($tabstart++), $skinid,
-                            htmlspecialchars(strtolower($row['stype'])),
+                            hsc(strtolower($row['stype'])),
                             escapeHTML(_LISTS_DELETE)
                             );
                 $s .= sprintf(' (<a tabindex="%d" href="index.php?action=skinchangestype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s">%s</a>)',
                             ($tabstart++), $skinid,
-                            htmlspecialchars(strtolower($row['stype'])),
+                            hsc(strtolower($row['stype'])),
                             escapeHTML(_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PARTS)
                             );
                 $s .= '</li>';
@@ -5239,10 +5239,10 @@ selector();
             . sprintf('<a href="<%%adminurl%%>index.php?action=skinedittype&skinid=%d&type=%s">%s</a>'
                         , $skinid
                         , htmlentities($type , ENT_COMPAT , _CHARSET)
-                        , htmlspecialchars(_SKIN_EDITONE_TITLE  . '('.$type.')', ENT_QUOTES , _CHARSET) )
+                        , hsc(_SKIN_EDITONE_TITLE  . '('.$type.')') )
             . "</div>\n<%endif%>";
         echo '<textarea rows="3" readonly onfocus="this.select()">'
-            . htmlspecialchars($tmp , ENT_QUOTES , _CHARSET) .'</textarea>';
+            . hsc($tmp) .'</textarea>';
         // end edit link
         if ($spartstype == 'specialpage')
         {
@@ -5259,7 +5259,7 @@ selector();
             foreach ( $tmp as $tmp_s )
             {
                 echo '<textarea rows="1" readonly onfocus="this.select()">'
-                    . htmlspecialchars($tmp_s , ENT_QUOTES , _CHARSET) .'</textarea>';
+                    . hsc($tmp_s) .'</textarea>';
             }
         }
 
