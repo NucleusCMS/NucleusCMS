@@ -17,7 +17,7 @@
  */
 
 if ( !function_exists('requestVar') ) exit;
-require_once dirname(__FILE__) . '/showlist.php';
+require_once __DIR__ . '/showlist.php';
 
 /**
  * Builds the admin area and executes admin actions
@@ -42,7 +42,7 @@ class ADMIN {
      * @param string $action action to be performed
      */
     function action($action) {
-        global $CONF, $manager;
+        global $manager;
 
         // list of action aliases
         $alias = array(
@@ -257,16 +257,15 @@ class ADMIN {
             }
 
             $has_hidden_items = 0;
-            $TeamBlogs = $member->getTeamBlogs(0);
             $amountdrafts = 0;
             $showall = (requestVar('showall') == 'yes' && $member->isAdmin());
 
             foreach($items as $item)
             {
                 // blogid  sum(item)  sum(item which belong to current user)
-                $current_bid          = intval($item[0]);
-                $count_blog_items     = intval($item[1]);
-                $count_current_author = intval($item[2]);
+                $current_bid          = (int) $item[0];
+                $count_blog_items     = (int) $item[1];
+                $count_current_author = (int) $item[2];
 
                 if ($member->isAdmin() && ($count_blog_items!=$count_current_author)) {
                     $has_hidden_items++;
@@ -411,7 +410,7 @@ class ADMIN {
         if (postVar('amount'))
             $amount = intPostVar('amount');
         else {
-            $amount = intval($CONF['DefaultListSize']);
+            $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1)
                 $amount = 10;
         }
@@ -423,7 +422,7 @@ class ADMIN {
         $query = parseQuery(' FROM [@prefix@]item, [@prefix@]blog, [@prefix@]member, [@prefix@]category'
             . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=[@iblog@]', $ph);
 
-        $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+        $request_catid = isset($_POST['catid']) ? max(0,(int) $_POST['catid']) : 0;
         if ($request_catid > 0)
         {
             //  @todo NP_MultipleCategories
@@ -431,8 +430,8 @@ class ADMIN {
         }
 
         if (postVar('view_item_options')) {
-            $v = strval(postVar('view_item_options'));
-            $query .= $this->getQueryFilterForItemlist01(intval($blogid), $v);
+            $v = (string) postVar('view_item_options');
+            $query .= $this->getQueryFilterForItemlist01((int) $blogid, $v);
         }
 
         if ($search) {
@@ -444,7 +443,7 @@ class ADMIN {
         if (!$member->blogAdminRights($blogid))
             $query .= ' and iauthor=' . $member->getID();
 
-        $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+        $total = (int) quickQuery( 'SELECT COUNT(*) as result ' . $query );
 
         $query .= ' ORDER BY idraft ASC, itime DESC, inumber DESC'
                 . " LIMIT $start,$amount";
@@ -500,7 +499,7 @@ class ADMIN {
 
         // walk over all itemids and perform action
         foreach ($selected as $itemid) {
-            $itemid = intval($itemid);
+            $itemid = (int) $itemid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
 
             // perform action, display errors if needed
@@ -559,7 +558,7 @@ class ADMIN {
 
         // walk over all itemids and perform action
         foreach ($selected as $commentid) {
-            $commentid = intval($commentid);
+            $commentid = (int) $commentid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
 
             // perform action, display errors if needed
@@ -613,7 +612,7 @@ class ADMIN {
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
-            $memberid = intval($memberid);
+            $memberid = (int) $memberid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
@@ -629,7 +628,7 @@ class ADMIN {
                 case 'unsetadmin':
                     // there should always remain at least one super-admin
                     $sql = sprintf('SELECT count(*) as result FROM %s WHERE madmin=1 and mcanlogin=1',sql_table('member'));
-                    if (intval(quickQuery($sql)) < 2)
+                    if ((int) quickQuery($sql) < 2)
                         $error = _ERROR_ATLEASTONEADMIN;
                     else
                     {
@@ -686,7 +685,7 @@ class ADMIN {
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
-            $memberid = intval($memberid);
+            $memberid = (int) $memberid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
@@ -702,7 +701,7 @@ class ADMIN {
                 case 'unsetadmin':
                     // there should always remain at least one admin
                     $sql = sprintf("SELECT count(*) as result FROM %s WHERE tadmin=1 and tblog=%s",sql_table('team'),$blogid);
-                    if (intval(quickQuery($sql)) < 2)
+                    if ((int) quickQuery($sql) < 2)
                         $error = _ERROR_ATLEASTONEBLOGADMIN;
                     else
                         sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
@@ -766,7 +765,7 @@ class ADMIN {
 
         // walk over all itemids and perform action
         foreach ($selected as $catid) {
-            $catid = intval($catid);
+            $catid = (int) $catid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
 
             // perform action, display errors if needed
@@ -814,7 +813,7 @@ class ADMIN {
                 // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    echo '<input type="hidden" name="batch[',($idx++),']" value="',(int) $id,'" />';
 
                 // show blog/category selection list
                 $this->selectBlogCategory('destcatid');
@@ -847,7 +846,7 @@ class ADMIN {
                 // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    echo '<input type="hidden" name="batch[',($idx++),']" value="',(int) $id,'" />';
 
                 // show blog/category selection list
                 $this->selectBlog('destblogid');
@@ -885,12 +884,12 @@ class ADMIN {
                 // insert selected Category numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    echo '<input type="hidden" name="batch[',($idx++),']" value="',(int) $id,'" />';
 
                 $def_oder = 100;
-                if ( isset($ids[0]) && ( intval($ids[0]) > 0 ) )
+                if ( isset($ids[0]) && ( (int) $ids[0] > 0 ) )
                 {
-                    $ids[0] = intval($ids[0]);
+                    $ids[0] = (int) $ids[0];
                     // $manager->existsCategory
                     $bid = getBlogIDFromCatID($ids[0]);
                     if ($member->blogAdminRights($bid))
@@ -917,7 +916,7 @@ class ADMIN {
             {
                 $b = $manager->getBlog($bid);
 
-                $res = sql_query(sprintf("SELECT * FROM %s WHERE cblog=%s and catid=%s",sql_table('category'),$bid,intval($id)));
+                $res = sql_query(sprintf("SELECT * FROM %s WHERE cblog=%s and catid=%s",sql_table('category'),$bid,(int) $id));
                 $o = sql_fetch_object($res);
                 if (isset($o) && is_object($o))
                 {
@@ -967,7 +966,7 @@ class ADMIN {
             <?php               // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    echo '<input type="hidden" name="batch[',($idx++),']" value="',(int) $id,'" />';
 
                 // add hidden vars for team & comment
                 if ($type == 'team')
@@ -1004,7 +1003,7 @@ class ADMIN {
             <?php              // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    echo '<input type="hidden" name="batch[',($idx++),']" value="',(int) $id,'" />';
 
                 // add hidden vars for team & comment
                 if ($type == 'team')
@@ -1050,7 +1049,7 @@ class ADMIN {
         // 0. get IDs of blogs to which member can post items (+ forced blog)
         $aBlogIds = array();
         if ($iForcedBlogInclude != -1)
-            $aBlogIds[] = intval($iForcedBlogInclude);
+            $aBlogIds[] = (int) $iForcedBlogInclude;
 
         if (($member->isAdmin()) && (array_key_exists('ShowAllBlogs', $CONF) && $CONF['ShowAllBlogs']))
             $queryBlogs =  sprintf("SELECT bnumber FROM %s ORDER BY bname",sql_table('blog'));
@@ -1059,7 +1058,7 @@ class ADMIN {
         $rblogids = sql_query($queryBlogs);
         while ($o = sql_fetch_object($rblogids))
             if ($o->bnumber != $iForcedBlogInclude)
-                $aBlogIds[] = intval($o->bnumber);
+                $aBlogIds[] = (int) $o->bnumber;
 
         if (count($aBlogIds) == 0)
             return;
@@ -1073,7 +1072,7 @@ class ADMIN {
         $queryBlogs = sprintf("SELECT bnumber, bname FROM %s",$queryBlogs);
         $blogs = sql_query($queryBlogs);
         if ($mode == 'category') {
-            $multipleBlogs = intval(quickQuery($queryBlogs_count)) > 1;
+            $multipleBlogs = (int) quickQuery($queryBlogs_count) > 1;
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)
@@ -1133,7 +1132,7 @@ class ADMIN {
         if (postVar('amount'))
             $amount = intPostVar('amount');
         else {
-            $amount = intval($CONF['DefaultListSize']);
+            $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1)
                 $amount = 10;
         }
@@ -1146,11 +1145,11 @@ class ADMIN {
             . ' WHERE iauthor=[@iauthor@] and iauthor=mnumber and iblog=bnumber and icat=catid', $ph);
 
         if (postVar('view_item_options')) {
-            $v = strval(postVar('view_item_options'));
+            $v = (string) postVar('view_item_options');
             $query .= $this->getQueryFilterForItemlist01(0, $v);
         }
 
-        $request_catid = isset($_POST['catid']) ? max(0,intval($_POST['catid'])) : 0;
+        $request_catid = isset($_POST['catid']) ? max(0,(int) $_POST['catid']) : 0;
         if ($request_catid > 0)
         {
             $query .= ' and icat= '.$request_catid;
@@ -1162,7 +1161,7 @@ class ADMIN {
             $query .= parseQuery(' and ((ititle LIKE [@search@]) or (ibody LIKE [@search@]) or (imore LIKE [@search@]))', $ph);
         }
 
-        $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+        $total = (int) quickQuery( 'SELECT COUNT(*) as result ' . $query );
 
         $query .= ' ORDER BY idraft ASC, itime DESC, inumber DESC'
                 . " LIMIT $start,$amount";
@@ -1208,7 +1207,7 @@ class ADMIN {
         if (postVar('amount'))
             $amount = intPostVar('amount');
         else {
-            $amount = intval($CONF['DefaultListSize']);
+            $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1)
                 $amount = 10;
         }
@@ -1242,7 +1241,7 @@ class ADMIN {
         if ($search)
             $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
 
-        $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+        $total = (int) quickQuery( 'SELECT COUNT(*) as result ' . $query );
 
         $query .= ' ORDER BY ctime ASC'
                 . " LIMIT $start,$amount";
@@ -1276,7 +1275,7 @@ class ADMIN {
         if (postVar('amount'))
             $amount = intPostVar('amount');
         else {
-            $amount = intval($CONF['DefaultListSize']);
+            $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1)
                 $amount = 10;
         }
@@ -1290,7 +1289,7 @@ class ADMIN {
         if ($search)
             $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
 
-        $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+        $total = (int) quickQuery( 'SELECT COUNT(*) as result ' . $query );
 
         $query .= ' ORDER BY ctime DESC'
                 . " LIMIT $start,$amount";
@@ -1325,7 +1324,7 @@ class ADMIN {
         if ($blogid == '')
             $blogid = intRequestVar('blogid');
         else
-            $blogid = intval($blogid);
+            $blogid = (int) $blogid;
 
         $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
 
@@ -1339,7 +1338,7 @@ class ADMIN {
         if (postVar('amount'))
             $amount = intPostVar('amount');
         else {
-            $amount = intval($CONF['DefaultListSize']);
+            $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1)
                 $amount = 10;
         }
@@ -1357,12 +1356,12 @@ class ADMIN {
             $query_view =  'SELECT cbody, cuser, cemail, cmail, mname, ctime, chost, cnumber, cip, citem, cmember, iauthor, 0 as is_badmin';
             $query =  sprintf(" FROM %s LEFT OUTER JOIN %s ON mnumber=cmember LEFT OUTER JOIN %s  ON citem=inumber ",sql_table('comment'),sql_table('member'),sql_table('item'));
         }
-        $query .= ' WHERE cblog=' . intval($blogid);
+        $query .= ' WHERE cblog=' . (int) $blogid;
 
         if ($search != '')
             $query .= ' and cbody LIKE ' . sql_quote_string('%'.$search.'%');
 
-        $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
+        $total = (int) quickQuery( 'SELECT COUNT(*) as result ' . $query );
 
         $query .= ' ORDER BY ctime DESC'
                 . " LIMIT $start,$amount";
@@ -1631,7 +1630,7 @@ class ADMIN {
 
         $result = sql_query(sprintf("SELECT count(*) FROM %s WHERE iblog='%d' AND iposted=0 AND itime>%s limit 1",sql_table('item'),$blogid,mysqldate($currenttime)))
             ;
-        if ($result && (intval(sql_result($result)) > 0)) {
+        if ($result && ((int) sql_result($result) > 0)) {
                 $blog->setFuturePost();
         }
         else {
@@ -1675,7 +1674,7 @@ class ADMIN {
      * @todo document this
      */
     function action_itemclone() {
-        global $member, $manager;
+        global $member;
 
         $itemid = intRequestVar('itemid');
         $tbl_item = sql_table('item');
@@ -1778,10 +1777,10 @@ class ADMIN {
         $blogid = getBlogIDFromItemID($result['itemid']);
         $blog =& $manager->getBlog($blogid);
         $btimestamp = $blog->getCorrectTime();
-        $item       = $manager->getItem(intval($result['itemid']), 1, 1);
+        $item       = $manager->getItem((int) $result['itemid'], 1, 1);
 
         if ($result['status'] == 'newcategory') {
-            $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemList&blogid=' . intval($blogid));
+            $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemList&blogid=' . (int) $blogid);
             $this->action_categoryedit($result['catid'], $blogid, $distURI);
         } else {
             $methodName = 'action_itemList';
@@ -1989,7 +1988,7 @@ class ADMIN {
     function deleteOneComment($commentid) {
         global $member, $manager;
 
-        $commentid = intval($commentid);
+        $commentid = (int) $commentid;
 
         if (!$member->canAlterComment($commentid))
             return _ERROR_DISALLOWED;
@@ -2342,7 +2341,7 @@ class ADMIN {
             )
         {
             $r = sql_query(sprintf("SELECT count(*) FROM %s WHERE madmin=1 and mcanlogin=1",sql_table('member')));
-            if (intval(sql_result($r)) <= 1)
+            if ((int) sql_result($r) <= 1)
                 $this->error(_ERROR_ATLEASTONEADMIN);
         }
 
@@ -2672,7 +2671,7 @@ class ADMIN {
             $ph['tblog'] = $blogid;
             $from_where = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=[@tblog@])', $ph);
             $query = "SELECT mname as text, mnumber as value" . $from_where;
-            $count_non_team_members = intval(quickQuery("SELECT count(*) AS result " . $from_where));
+            $count_non_team_members = (int) quickQuery("SELECT count(*) AS result " . $from_where);
 
             if ($count_non_team_members == 0)
                 echo _TEAM_NO_SELECTABLE_MEMBERS;
@@ -2765,8 +2764,6 @@ class ADMIN {
      * @todo document this
      */
     function action_teamdeleteconfirm() {
-        global $member;
-
         $memberid = intRequestVar('memberid');
         $blogid = intRequestVar('blogid');
 
@@ -2784,8 +2781,8 @@ class ADMIN {
     function deleteOneTeamMember($blogid, $memberid) {
         global $member, $manager;
 
-        $blogid = intval($blogid);
-        $memberid = intval($memberid);
+        $blogid = (int) $blogid;
+        $memberid = (int) $memberid;
 
         // check if allowed
         if (!$member->blogAdminRights($blogid))
@@ -2806,7 +2803,7 @@ class ADMIN {
             // (check for at least two admins before deletion)
             $query = sprintf("SELECT count(*) FROM %s WHERE tblog=%s and tadmin=1",sql_table('team'),$blogid);
             $r = sql_query($query);
-            if ($r && intval(sql_result($r)) < 2)
+            if ($r && (int) sql_result($r) < 2)
                 return _ERROR_ATLEASTONEBLOGADMIN;
         }
 
@@ -2839,7 +2836,7 @@ class ADMIN {
         // don't allow when there is only one admin at this moment
         if ($mem->isBlogAdmin($blogid)) {
             $r = sql_query(sprintf("SELECT count(*) FROM %s WHERE tblog=$blogid and tadmin=1",sql_table('team')));
-            if (intval(sql_result($r)) == 1)
+            if ((int) sql_result($r) == 1)
                 $this->error(_ERROR_ATLEASTONEBLOGADMIN);
         }
 
@@ -2883,7 +2880,7 @@ class ADMIN {
 
         <p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
         <?php
-            $res = sql_query(sprintf("SELECT mname, mrealname FROM %s,%s WHERE mnumber=tmember AND tblog=%s",sql_table('member'),sql_table('team'),intval($blogid)));
+            $res = sql_query(sprintf("SELECT mname, mrealname FROM %s,%s WHERE mnumber=tmember AND tblog=%s",sql_table('member'),sql_table('team'),(int) $blogid));
             $aMemberNames = array();
             if ($res)
             while ($o = sql_fetch_object($res))
@@ -3106,7 +3103,7 @@ class ADMIN {
             if ( (!is_null($corder))
             && (is_numeric($corder))
                 )
-            $corder = intval($corder);
+            $corder = (int) $corder;
             else
             $corder = null;
         }
@@ -3114,9 +3111,9 @@ class ADMIN {
         if (!isValidCategoryName($cname))
             $this->error(_ERROR_BADCATEGORYNAME);
 
-        $query = sprintf("SELECT count(*) FROM %s WHERE cname=%s and cblog=%s",sql_table('category'),sql_quote_string($cname),intval($blogid));
+        $query = sprintf("SELECT count(*) FROM %s WHERE cname=%s and cblog=%s",sql_table('category'),sql_quote_string($cname),(int) $blogid);
         $res = sql_query($query);
-        if (intval(sql_result($res)) > 0)
+        if ((int) sql_result($res) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $blog       =& $manager->getBlog($blogid);
@@ -3134,11 +3131,11 @@ class ADMIN {
         if ($blogid == '')
             $blogid = intGetVar('blogid');
         else
-            $blogid = intval($blogid);
+            $blogid = (int) $blogid;
         if ($catid == '')
             $catid = intGetVar('catid');
         else
-            $catid = intval($catid);
+            $catid = (int) $catid;
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
@@ -3210,7 +3207,7 @@ class ADMIN {
             $corder =& $_POST['corder'];
 
             if ( !is_null($corder) && is_numeric($corder) )
-                $corder = intval($corder);
+                $corder = (int) $corder;
             else
                 $corder = null;
         }
@@ -3226,7 +3223,7 @@ class ADMIN {
         $ph['catid'] = $catid;
         $query = parseQuery('SELECT count(*) FROM [@prefix@]category WHERE cname=[@cname@] AND cblog=[@cblog@] AND catid!=[@catid@]', $ph);
         $res = sql_query($query);
-        if (intval(sql_result($res)) > 0)
+        if ((int) sql_result($res) > 0)
             $this->error(_ERROR_DUPCATEGORYNAME);
 
         $query =  parseQuery('UPDATE [@prefix@]category SET cname=[@cname@], cdesc=[@cdesc@]', $ph);
@@ -3279,7 +3276,7 @@ class ADMIN {
         // check if catid is the only category left for blogid
         $query = sprintf("SELECT count(*) FROM %s WHERE cblog=%s",sql_table('category'),$blogid);
         $res = sql_query($query);
-        if (intval(sql_result($res)) == 1)
+        if ((int) sql_result($res) == 1)
             $this->error(_ERROR_DELETELASTCATEGORY);
 
 
@@ -3306,7 +3303,7 @@ class ADMIN {
      * @todo document this
      */
     function action_categorydeleteconfirm() {
-        global $member, $manager;
+        global $member;
 
         $blogid = intRequestVar('blogid');
         $catid = intRequestVar('catid');
@@ -3326,7 +3323,7 @@ class ADMIN {
     function deleteOneCategory($catid) {
         global $manager, $member;
 
-        $catid = intval($catid);
+        $catid = (int) $catid;
 
         $blogid = getBlogIDFromCatID($catid);
 
@@ -3349,7 +3346,7 @@ class ADMIN {
         // check if catid is the only category left for blogid
         $query = sprintf("SELECT count(*) FROM %s WHERE cblog=%s",sql_table('category'),$blogid);
         $res = sql_query($query);
-        if (intval(sql_result($res)) == 1)
+        if ((int) sql_result($res) == 1)
             return _ERROR_DELETELASTCATEGORY;
 
         $param = array('catid' => $catid);
@@ -3377,8 +3374,8 @@ class ADMIN {
     function moveOneCategory($catid, $destblogid) {
         global $manager, $member;
 
-        $catid = intval($catid);
-        $destblogid = intval($destblogid);
+        $catid = (int) $catid;
+        $destblogid = (int) $destblogid;
 
         $blogid = getBlogIDFromCatID($catid);
 
@@ -3440,10 +3437,10 @@ class ADMIN {
     {
         global $manager, $member;
 
-        $catid = intval($catid);
-        $new_corder = intval($new_corder);
+        $catid = (int) $catid;
+        $new_corder = (int) $new_corder;
 
-        $blogid = intval(getBlogIDFromCatID($catid));
+        $blogid = (int) getBlogIDFromCatID($catid);
 
         // mover should have admin rights on both blogs
         if ( !$blogid || !$member->blogAdminRights($blogid) )
@@ -3467,7 +3464,7 @@ class ADMIN {
 
         // update category corder
         $query = 'UPDATE '.sql_table('category')
-            .  ' SET corder=' . intval($new_corder)
+            .  ' SET corder=' . (int) $new_corder
             . ' WHERE cblog='.$blogid.' AND catid='.$catid;
         sql_query($query);
 
@@ -3793,7 +3790,7 @@ class ADMIN {
     public static function deleteOneMember($memberid) {
         global $manager;
 
-        $memberid = intval($memberid);
+        $memberid = (int) $memberid;
         $mem = MEMBER::createFromID($memberid);
 
         if (!$mem->canBeDeleted())
@@ -3831,9 +3828,9 @@ class ADMIN {
 
     static function haltOneMember($memberid)
     {
-        global $manager , $member;
+        global $member;
 
-        $memberid = intval($memberid);
+        $memberid = (int) $memberid;
         if (!$memberid)
         return '';
 
@@ -4086,7 +4083,7 @@ selector();
         <form action="index.php" method="post"><div>
             <input type="hidden" name="action" value="addnewlog2" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />
+            <input type="hidden" name="blogid" value="<?php echo (int) $blogid?>" />
             <table><tr>
                 <td><?php echo _EBLOG_URL?></td>
                 <td><input name="url" maxlength="100" size="40" value="<?php echo hsc($CONF['IndexURL'].$bshortname.'.php')?>" /></td>
@@ -4103,7 +4100,7 @@ selector();
         <form action="index.php" method="post"><div>
             <input type="hidden" name="action" value="addnewlog2" />
             <?php $manager->addTicketHidden() ?>
-            <input type="hidden" name="blogid" value="<?php echo intval($blogid)?>" />
+            <input type="hidden" name="blogid" value="<?php echo (int) $blogid?>" />
             <table><tr>
                 <td><?php echo _EBLOG_URL?></td>
                 <td><input name="url" maxlength="100" size="40" /></td>
@@ -4724,7 +4721,7 @@ selector();
      * @todo document this
      */
     function addToTemplate($id, $partname, $content) {
-        $id = intval($id);
+        $id = (int) $id;
 
         // don't add empty parts:
         if (!trim($content)) return -1;
@@ -5250,7 +5247,7 @@ selector();
         if ($spartstype == 'specialpage')
         {
             global $CONF;
-            if (!isset($CONF['SpecialskinKey']) || strval($CONF['SpecialskinKey']) === '')
+            if (!isset($CONF['SpecialskinKey']) || (string) $CONF['SpecialskinKey'] === '')
                 $SpecialskinKey = 'special';
             else
                 $SpecialskinKey = $CONF['SpecialskinKey'];
@@ -5378,7 +5375,7 @@ selector();
      * @todo document this
      */
     function action_skinremovetype() {
-        global $member, $manager, $CONF;
+        global $member, $manager;
 
         $skinid = intRequestVar('skinid');
         $skintype = requestVar('type');
@@ -5438,7 +5435,7 @@ selector();
      * @todo document this
      */
     function action_skinremovetypeconfirm() {
-        global $member, $CONF, $manager;
+        global $member, $manager;
 
         $skinid = intRequestVar('skinid');
         $skintype = requestVar('type');
@@ -5485,7 +5482,7 @@ selector();
     }
 
     function action_skinchangestype() {
-        global $member, $manager, $CONF;
+        global $member, $manager;
 
         $member->isAdmin() or $this->disallow();
 
@@ -5554,7 +5551,7 @@ selector();
     }
 
     function action_skinchangestypeconfirm() {
-        global $member, $CONF, $manager;
+        global $member;
         global $DB_PHP_MODULE_NAME;
 
         $member->isAdmin() or $this->disallow();
@@ -5655,7 +5652,7 @@ selector();
      * @todo document this
      */
     function skinclonetype($skin, $newid, $type) {
-        $newid = intval($newid);
+        $newid = (int) $newid;
         $content = $skin->getContent($type);
         if ($content) {
             $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ($newid,". sql_quote_string($content).', '. sql_quote_string($type).')';
@@ -5845,7 +5842,7 @@ selector();
                     $CONF['DefaultListSize'] = 10;
                 }
             ?>
-                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc((intval($CONF['DefaultListSize']) < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+                <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc(((int) $CONF['DefaultListSize'] < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
             </td>
         </tr><tr>
             <td><?php echo _SETTINGS_ADMINCSS?>
@@ -6024,7 +6021,7 @@ selector();
     }
 
     private function checkConfigTable() {
-        global $CONF, $DB_DRIVER_NAME;
+        global $DB_DRIVER_NAME;
         if ($DB_DRIVER_NAME != 'mysql')
             return;
         $tablename = sql_table('config');
@@ -6411,8 +6408,11 @@ EOL;
         if ($DB_PHP_MODULE_NAME == 'pdo'){
             $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
             $res = sql_prepare_execute($sql, array((string) $name));
-            if ($res && $row = sql_fetch_row($res) && $row[0] > 0) {
-                return self::updateConfig($name, $value);
+            if ($res) {
+                $row = sql_fetch_row($res);
+                if($row[0] > 0) {
+                    return self::updateConfig($name, $value);
+                }
             }
         } else {
             $rs = parseQuickQuery(
@@ -6587,7 +6587,7 @@ EOL;
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
             }
 
-            if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
+            if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID)
             {
                 printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
                         $CONF['IndexURL'] . '_upgrades/' , $CONF['DatabaseVersion']);
@@ -6759,7 +6759,7 @@ EOL;
         $lines[] = "Windows Registry Editor Version 5.00";
         $lines[] = "";
         $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
-        $url = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".intval($blogid);
+        $url = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=".(int) $blogid;
         $lines[] = sprintf('@="%s"', $url);
         $lines[] = '"contexts"=hex:31';      // https://msdn.microsoft.com/ja-jp/library/aa753589(v=vs.85).aspx
 
@@ -6813,7 +6813,7 @@ EOL;
         <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
         <p>
             <?php
-                $url = 'index.php?action=regfile&blogid=' . intval($blogid);
+                $url = 'index.php?action=regfile&blogid=' . (int) $blogid;
                 $url = $manager->addTicketToUrl($url);
             ?><?php
         if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932')
@@ -7275,7 +7275,7 @@ EOL;
         $member->isAdmin() or $this->disallow();
 
         // use compression ?
-        $useGzip = intval(postVar('gzip'));
+        $useGzip = (int) postVar('gzip');
 
         include($DIR_LIBS . 'backup.php');
 
@@ -7451,7 +7451,7 @@ EOL;
      * @todo document this
      */
     function action_pluginhelp() {
-        global $member, $manager, $DIR_PLUGINS, $CONF;
+        global $member, $manager;
 
         // check if allowed
         $member->isAdmin() or $this->disallow();
@@ -7501,7 +7501,7 @@ EOL;
      * @todo document this
      */
     function action_pluginadd() {
-        global $member, $manager, $DIR_PLUGINS;
+        global $member, $manager;
 
         // check if allowed
         $member->isAdmin() or $this->disallow();
@@ -7515,7 +7515,7 @@ EOL;
 
         // get number of currently installed plugins
         $res = sql_query(sprintf("SELECT count(*) FROM %s",sql_table('plugin')));
-        $numCurrent = intval(sql_result($res));
+        $numCurrent = (int) sql_result($res);
 
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
@@ -7541,7 +7541,7 @@ EOL;
         // check if it got loaded (could have failed)
         if (!$plugin)
         {
-            sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. intval($iPid));
+            sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid='. (int) $iPid);
             $manager->clearCachedInfo('installedPlugins');
             $this->error(_ERROR_PLUGIN_LOAD);
         }
@@ -7571,7 +7571,7 @@ EOL;
         {
 
             $res = sql_query(sprintf("SELECT count(*) FROM %s WHERE pfile='%s'",sql_table('plugin'),$pluginName));
-            $ct = intval(sql_result($res));
+            $ct = (int) sql_result($res);
             if ($ct == 0)
             {
                 // uninstall plugin again...
@@ -7659,7 +7659,7 @@ EOL;
      * @todo document this
      */
     function action_plugindeleteconfirm() {
-        global $member, $manager, $CONF;
+        global $member, $CONF;
 
         // check if allowed
         $member->isAdmin() or $this->disallow();
@@ -7681,7 +7681,7 @@ EOL;
     function deleteOnePlugin($pid, $callUninstall = 0) {
         global $manager;
 
-        $pid = intval($pid);
+        $pid = (int) $pid;
 
         if (!$manager->pidInstalled($pid))
             return _ERROR_NOSUCHPLUGIN;
@@ -7806,7 +7806,7 @@ EOL;
         $oldOrder = $o->porder;
 
         $res = sql_query(sprintf("SELECT count(*) FROM %s",sql_table('plugin')));
-        $maxOrder = intval(sql_result($res));
+        $maxOrder = (int) sql_result($res);
 
         // 2. calculate new order number
         $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
@@ -7973,7 +7973,7 @@ EOL;
         // get all current values for this contextid
         // (note: this might contain doubles for overlapping contextids)
         $aIdToValue = array();
-        $res = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE ocontextid=%s",sql_table('plugin_option'),intval($contextid)));
+        $res = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE ocontextid=%s",sql_table('plugin_option'),(int) $contextid));
         while ($o = sql_fetch_object($res)) {
             $aIdToValue[$o->oid] = $o->ovalue;
         }
@@ -8096,7 +8096,7 @@ EOL;
         $title = _ERRORS_STARTUPERROR3;
         $msg = _ERRORS_STARTUPERROR1 . join($aFound, '</li><li>')._ERRORS_STARTUPERROR2;
         // check core upgrade
-        if (intval($CONF['DatabaseVersion']) < CORE_APPLICATION_DATABASE_VERSION_ID)
+        if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID)
         {
             $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
             $msg = sprintf('<h2>%s</h2>' , hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
@@ -8111,7 +8111,7 @@ EOL;
      * @todo document this
      */
     function action_optimizeoverview() {
-        global $member, $manager, $DB_DRIVER_NAME;
+        global $member, $DB_DRIVER_NAME;
 
         $member->isAdmin() or $this->disallow();
 
@@ -8167,9 +8167,9 @@ EOD;
                         $tables[$row['Name']] = $row;
                         if ($row['Engine'] != 'InnoDB')
                         {
-                            if (intval($row['Data_free'])>0)
+                            if ((int) $row['Data_free']>0)
                                 $confirmOptimize = TRUE;
-                            if (intval($row['Data_free']) > $warn_size) // 10*pow(10,6)
+                            if ((int) $row['Data_free'] > $warn_size) // 10*pow(10,6)
                                 $has_big = TRUE;
                         }
                     }
@@ -8302,7 +8302,7 @@ EOD;
         $inotables = array();
         $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
         while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
-            if (intval($row['Data_free'])>0)
+            if ((int) $row['Data_free']>0)
             {
                 if ($row['Engine'] == 'InnoDB')
                     $inotables[] = $row['Name'];
@@ -8336,7 +8336,7 @@ EOD;
             //  x : ALTER TABLE tablename ENGINE='InnoDB';
 //            foreach($inotables as $tablename)
 //                sql_query(sprintf("ALTER TABLE %s ENGINE='InnoDB'", $tablename));
-            echo sprintf('<p>InnoDB can not optimize manually</p>', hsc($sql));
+            echo sprintf('<p>InnoDB can not optimize manually</p>');
             echo '<ul>';
             foreach($inotables as $tablename)
                 echo sprintf('<li>%s</li>', hsc($tablename));
@@ -8348,7 +8348,7 @@ EOD;
     private function db_optimize_sqlite()
     {
         global $DB_DRIVER_NAME;
-        if ($DB_DRIVER_NAME != 'sqlite')
+        if ($DB_DRIVER_NAME !== 'sqlite')
             return FALSE;
         sql_query('vacuum;');
     }
@@ -8356,7 +8356,7 @@ EOD;
     private function get_db_sqliteFileSizeText()
     {
         global $DB_DRIVER_NAME, $DB_DATABASE;
-        if ($DB_DRIVER_NAME != 'sqlite')
+        if ($DB_DRIVER_NAME !== 'sqlite')
             return FALSE;
         clearstatcache();
         $size = filesize($DB_DATABASE);
@@ -8368,7 +8368,7 @@ EOD;
 
     static public function getQueryFilterForItemlist01($bid, $mode='all') {
         // $bid = 0 : all blog
-        $v = strval($mode);
+        $v = (string) $mode;
         $where = '';
         $t = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
         switch ($v) {
@@ -8388,7 +8388,7 @@ EOD;
                 } else {
                     global $member, $manager;
                     $sql = 'SELECT tblog as result FROM `' . sql_table('team') . '` WHERE tmember=' . $member->getID() . ' LIMIT 1';
-                    $res = intval(quickQuery($sql));
+                    $res = (int) quickQuery($sql);
                     if (!$res)
                         $sql = 'SELECT bnumber as result FROM `' . sql_table('blog') . '` LIMIT 1';
                     if ($res>0) {
@@ -8497,7 +8497,7 @@ EOD;
                 $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
                 if (!preg_match( $pattern , $s['header'], $m ))
                     break;
-                $nextpage = intval($m[1]);
+                $nextpage = (int) $m[1];
                 if (($count+1) != $nextpage)
                     break;
                 $nexturl = $url . '?page=' . $nextpage;
@@ -8564,7 +8564,8 @@ EOD;
         if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern , $s, $m)))
         {
             // Check plugin's min nucleus version
-            if (preg_match($pattern2, $s, $m2) && (intval($m2[1]) > CORE_APPLICATION_VERSION_ID))
+            /** @var TYPE_NAME $m2 */
+if (preg_match($pattern2, $s, $m2) && ((int) $m2[1] > CORE_APPLICATION_VERSION_ID))
                 return false;
             if ($trim)
                 return preg_replace('#[^0-9\.\-\_]+.+?$#', '' , $m[1]);
