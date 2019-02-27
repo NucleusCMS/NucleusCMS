@@ -16,7 +16,7 @@
  */
 
 if ( !function_exists('requestVar') ) exit;
-require_once dirname(__FILE__) . '/ACTIONS.php';
+require_once __DIR__ . '/ACTIONS.php';
 
 class SKIN {
 

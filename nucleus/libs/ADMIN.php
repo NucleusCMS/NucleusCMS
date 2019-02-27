@@ -260,18 +260,18 @@ class ADMIN {
             $TeamBlogs = $member->getTeamBlogs(0);
             $amountdrafts = 0;
             $showall = (requestVar('showall') == 'yes' && $member->isAdmin());
-            
+
             foreach($items as $item)
             {
                 // blogid  sum(item)  sum(item which belong to current user)
                 $current_bid          = intval($item[0]);
                 $count_blog_items     = intval($item[1]);
                 $count_current_author = intval($item[2]);
-                
+
                 if ($member->isAdmin() && ($count_blog_items!=$count_current_author)) {
                     $has_hidden_items++;
                 }
-                
+
                 // Check user have a item
                 if (!$showall && $count_current_author==0)
                     continue;
@@ -296,10 +296,10 @@ class ADMIN {
                 $amountdrafts += showlist_by_query($query, 'table', $template);
 
                 if ($div_out) echo '</div>';
-                    
+
             }
             if ($amountdrafts == 0) echo _OVERVIEW_NODRAFTS;
-                    
+
             if ($has_hidden_items && requestVar('showall')!='yes' && $member->isAdmin()) {
                 echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
             }
@@ -2029,7 +2029,7 @@ class ADMIN {
 
 
         $manager->loadClass('ENCAPSULATE');
-        
+
         // show list of members with actions
         $batch = new BATCH('member');
         $query =  parseQuery('SELECT * FROM [@prefix@]member');
@@ -2894,13 +2894,13 @@ class ADMIN {
 
 
 
-        <p>
+        <div>
         <form action="index.php" method="GET">
             <input type="hidden" name="action" value="manageteam" />
             <input type="hidden" name="blogid" value="<?php echo $blogid; ?>" />
             <input type="submit" value="<?php echo _EBLOG_TEAM_TEXT; ?>" />
         </form>
-        </p>
+        </div>
 
         <h3><?php echo _EBLOG_SETTINGS_TITLE?></h3>
 
@@ -4154,7 +4154,7 @@ selector();
     ?>
         <h2><?php echo _SKINIE_TITLE_IMPORT?></h2>
 
-                <p><label for="skinie_import_local"><?php echo _SKINIE_LOCAL?></label>
+                <div><label for="skinie_import_local"><?php echo _SKINIE_LOCAL?></label>
                 <?php                   global $DIR_SKINS;
 
                     $candidates = SKINIMPORT::searchForCandidates($DIR_SKINS);
@@ -4178,7 +4178,7 @@ selector();
                         echo _SKINIE_NOCANDIDATES;
                     }
                 ?>
-                </p>
+                </div>
 
                 <p><em><?php echo _OR?></em></p>
 
@@ -5182,7 +5182,6 @@ selector();
         $form[] = sprintf('<input type="submit" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
         $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
 
-        $subtitle = '';
         switch($spartstype)
         {
             case 'specialpage':
@@ -5204,7 +5203,7 @@ selector();
         }
         $form[] = " $subtitle";
 
-        $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', htmlspecialchars($skin->getContent($type, $skingetContentOptions)));
+        $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent($type, $skingetContentOptions)));
 
         $form[] = '<br />';
         $form[] = '<br />';
@@ -8070,7 +8069,7 @@ EOL;
         global $CONF;
 
         if (!$CONF['alertOnSecurityRisk']) return;
-        
+
         // check if files exist and generate an error if so
         $RiskFiles = array(
             '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
@@ -8091,9 +8090,9 @@ EOL;
         if (strpos(str_replace('\\','/',getcwd()), '/plugins/')===false && @ is_writable('../config.php')) {
             $aFound[] = _ERRORS_CONFIGPHP;
         }
-        
+
         if (count($aFound) <= 0) return;
-        
+
         $title = _ERRORS_STARTUPERROR3;
         $msg = _ERRORS_STARTUPERROR1 . join($aFound, '</li><li>')._ERRORS_STARTUPERROR2;
         // check core upgrade

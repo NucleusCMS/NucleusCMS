@@ -95,14 +95,14 @@ function mysql_free_result($res)
 {
     if(!is_object($res))
         return false;
-    return mysqli_free_result($res);
+    mysqli_free_result($res);
 }
 
 function mysql_result($res, $row, $col=0)
 {
     if (!$res)
         return false;
-    $row = intval($row);
+    $row = (int)$row;
     if (($row < 0) || ($col < 0)) {
         return false;
     }
@@ -120,7 +120,10 @@ function mysql_result($res, $row, $col=0)
 
 function mysql_connect($host, $username, $pwd)
 {
-    return mysqli_connect($host, $username, $pwd);
+    global $MYSQL_CONN;
+
+    $MYSQL_CONN = mysqli_connect($host, $username, $pwd);
+    return $MYSQL_CONN;
 }
 
 function mysql_error($dblink = NULL)
@@ -156,7 +159,8 @@ function mysql_insert_id($dblink = NULL)
 function mysql_affected_rows($dblink = NULL)
 {
     global $MYSQL_CONN;
-    return mysqli_affected_rows($MYSQL_CONN);
+    $link = ($dblink ? $dblink : $MYSQL_CONN);
+    return mysqli_affected_rows($link);
 }
 
 function mysql_real_escape_string($val, $dblink = NULL)
@@ -215,7 +219,7 @@ function mysql_fetch_field($res , $offset  = 0 )
 {
     if ($res)
     {
-        $offset = intval($offset);
+        $offset = (int)$offset;
         if (func_num_args()==1)
                 $finfo = mysqli_fetch_field($res);
             else
@@ -225,7 +229,9 @@ function mysql_fetch_field($res , $offset  = 0 )
                 return convert_mysqlFieldDefObj_from_mysqliFieldDefObj($finfo[$offset]);
             }
             return false;
-        } else if (is_object($finfo))
+        }
+
+        if (is_object($finfo))
                 return convert_mysqlFieldDefObj_from_mysqliFieldDefObj($finfo);
     }
     return false;

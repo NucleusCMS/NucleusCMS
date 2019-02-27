@@ -54,7 +54,7 @@
             case 'windows-1250' : $charset='cp1250'; break; // cp1250_general_ci
             default :
                 global $DB_DRIVER_NAME;
-                if ($DB_DRIVER_NAME == 'mysql' && preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
+                if ($DB_DRIVER_NAME === 'mysql' && preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
                 {
                     $db = sql_get_db();
                     if ($db)
@@ -195,7 +195,7 @@
         if (!is_array($values)) $pairs = $values;
         else {
             foreach ($values as $key => $value) {
-                if(is_null($value) || strtolower($value) === 'null') {
+                if($value === null || strtolower($value) === 'null') {
                     $value = 'NULL';
                 }
                 elseif(strpos($key,':expr')!==false) {

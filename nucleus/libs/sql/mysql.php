@@ -24,7 +24,7 @@ $MYSQL_CONN = 0;
 
 if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
 {
-    include(dirname(__FILE__) . '/sql_common_functions.php');
+    include __DIR__ . '/sql_common_functions.php';
 
     /**
       * Connects to mysql server with arguments
@@ -42,15 +42,19 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
       */
     function sql_connect() {
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
-        global $MYSQL_CONN;
+        global $MYSQL_CONN, $MYSQL_HOST;
 
         if($MYSQL_CONN) return $MYSQL_CONN;
 
         if(!$DB_HOST || !$DB_USER) exit('sql_connect error. Empty connect information.');
 
-        if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost')
+        if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost') {
             $MYSQL_HOST = '127.0.0.1';
-        $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
+        }
+        $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD);
+        if(!$MYSQL_CONN) {
+            startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
+        }
 
         if (!sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
@@ -67,12 +71,14 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         }else{
             $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
             $res = sql_query($query);
-            if(!$res) exit('Language name fetch error');
+            if(!$res) {
+                exit('Language name fetch error');
+            }
             $obj = sql_fetch_object($res);
             $Language = $obj->value;
             $charset = get_charname_from_langname($Language);
             $charsetOfDB = getCharSetFromDB(sql_table('config'),'name', $MYSQL_CONN);
-            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+            if ((stripos($charset, 'utf')!==false) && (stripos($charsetOfDB, 'utf8')!==false))
                 $charset = $charsetOfDB; // work around for utf8mb4_general_ci
             else if($charset !== $charsetOfDB) {
                 global $CONF;
@@ -91,9 +97,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         global $MYSQL_CONN;
         if ($conn) {
             @mysql_close($conn);
-        } else if ($MYSQL_CONN) {
+        } elseif ($MYSQL_CONN) {
             @mysql_close($MYSQL_CONN);
-            $MYSQL_CONN = NULL;
+            $MYSQL_CONN = null;
         }
     }
     
@@ -103,7 +109,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             @mysql_close($conn);
         } else if ($MYSQL_CONN) {
             @mysql_close($MYSQL_CONN);
-            $MYSQL_CONN = NULL;
+            $MYSQL_CONN = null;
         }
     }
 
@@ -341,9 +347,12 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         if ($casesensitive) return in_array( $ColumnName , $names );
         
         foreach($names as $v) {
-            if ( strcasecmp( $ColumnName , $v ) != 0 ) continue;
+            if ( strcasecmp( $ColumnName , $v ) != 0 ) {
+                continue;
+            }
             return true;
         }
+        return false;
     }
 
     /**
@@ -352,7 +361,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     function sql_existTableName($tablename)
     {
         global $MYSQL_CONN;
-        if (!$MYSQL_CONN) return FALSE;
+        if (!$MYSQL_CONN) return false;
 
         if(str_contains($tablename,'[@prefix@]')) {
             $tablename = parseQuery($tablename);
@@ -387,7 +396,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     }
     
     /**
-      * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
+      * Returns a string describing the type of SQL connection in use for the connection or false on failure
       */
     function sql_get_host_info($conn=false)
     {
@@ -397,7 +406,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     }
     
     /**
-      * Returns the SQL protocol on success, or FALSE on failure. 
+      * Returns the SQL protocol on success, or false on failure.
       */
     function sql_get_proto_info($conn=false)
     {
@@ -481,7 +490,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             $res = sql_query("SET NAMES 'ujis'",$conn);
 
         // retry : workaround for Can't initialize character set utf8mb4
-        if (($res === FALSE) && $charset==='utf8mb4')
+        if (($res === false) && $charset==='utf8mb4')
         {  // utf8mb4 : mysql_version 5.5 or higher
             $res = sql_set_charset('utf8', $conn);
             if ($res) {
@@ -502,11 +511,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         $conn = ($conn ? $conn : sql_get_db());
         if ( $DB_DRIVER_NAME == 'mysql' ) {
             $charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$conn);
-            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
+            if ((stripos($charset, 'utf')!==false) && (stripos($charsetOfDB, 'utf8')!==false))
                 $charset = $charsetOfDB; // work around for utf8mb4_general_ci
             return sql_set_charset($charset, $conn);
-        } else {
-            return sql_set_charset($charset, $conn);
         }
+
+        return sql_set_charset($charset, $conn);
     }
 }

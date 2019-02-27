@@ -177,8 +177,8 @@ if (!function_exists('sql_fetch_assoc'))
  * Connects to mysql server
  */
     function sql_connect() {
-        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE, $DB_DRIVER_NAME;
-        global $CONF, $MYSQL_CONN, $SQL_DBH;
+        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
+        global $MYSQL_CONN, $SQL_DBH;
 
         $SQL_DBH = sql_connect_args($DB_HOST , $DB_USER , $DB_PASSWORD , $DB_DATABASE);
         if ( !$SQL_DBH )
@@ -193,7 +193,7 @@ if (!function_exists('sql_fetch_assoc'))
         }
 //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        $MYSQL_CONN =& $SQL_DBH;
+        $MYSQL_CONN = clone $SQL_DBH;
         return $SQL_DBH;
     }
 
@@ -202,13 +202,13 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_disconnect(&$dbh=NULL) {
         global $SQL_DBH;
-        if (is_null($dbh)) $SQL_DBH = NULL;
+        if ($dbh === null) $SQL_DBH = NULL;
         else $dbh = NULL;
     }
 
     function sql_close(&$dbh=NULL) {
         global $SQL_DBH;
-        if (is_null($dbh)) $SQL_DBH = NULL;
+        if ($dbh === null) $SQL_DBH = NULL;
         else $dbh = NULL;
     }
 
@@ -224,7 +224,7 @@ if (!function_exists('sql_fetch_assoc'))
         global $CONF, $SQLCount,$SQL_DBH;
         $SQLCount++;
         $debug = (!isset($CONF['debug']) || !$CONF['debug']);
-        $db = ( !is_null($dbh) ? $dbh : $SQL_DBH );
+        $db = ( $dbh !== null ? $dbh : $SQL_DBH );
         if (is_object($db) && ($db instanceof PDO))
             $res = $db->query($query);
         else
@@ -233,22 +233,24 @@ if (!function_exists('sql_fetch_assoc'))
             return $res;
 
         $style = 'height:100px; overflow:auto; background:#C0DCC0';
-        $msg_text = '';
         if ($res === false) {
             $msg_text = ((is_object($db) && ($db instanceof PDO)) ? sql_error($dbh) : 'Handle is null or not pdo object.');
-            printf("SQL error with query <div style=\"${style}\">%s</div>: <p />", hsc($msg_text) . '<br />' . hsc($query));
+            echo sprintf(
+                'SQL error with query <div style="%s">%s<br />%s</div>: <p />'
+                , $style
+                , hsc($msg_text)
+                , hsc($query)
+            );
         } else if ($res->errorCode() != '00000') {
             $errors = $res->errorInfo();
             $msg_text = $errors[0].'-'.$errors[1].' '.$errors[2];
-            printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
-                , hsc($msg_text), hsc($query));
+            echo sprintf(
+                'SQL error with query <div style="%s">%s</div>: %s<p />'
+                , $style
+                , hsc($msg_text)
+                , hsc($query)
+            );
         }
-//        if ($msg_text && class_exists('SYSTEMLOG')) {
-//            $obj = sql_get_db(); // check null
-//            if (($obj) && ($obj instanceof PDO))
-//                SYSTEMLOG::addUnique('error', 'Error', sprintf('SQL error with query : %s : %s', $msg_text, $query));
-//        }
-
         return $res;
     }
 
@@ -285,7 +287,7 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_error($dbh=NULL)
     {
         global $SQL_DBH;
-        $db = (!is_null($dbh) ? $dbh : $SQL_DBH);
+        $db = ($dbh !== null ? $dbh : $SQL_DBH);
         if ( is_object($db) )
             $error = $db->errorInfo();
         else
@@ -400,7 +402,7 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_quote_string($val,$dbh=NULL) {
         global $SQL_DBH;
-        if (is_null($dbh))
+        if ($dbh === null)
             return $SQL_DBH->quote($val);
         else
             return $dbh->quote($val);
@@ -412,7 +414,7 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_insert_id($dbh=NULL)
     {
         global $SQL_DBH;
-        if (is_null($dbh))
+        if ($dbh === null)
             return $SQL_DBH->lastInsertId();
         else
             return $dbh->lastInsertId();
@@ -423,18 +425,16 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_result($res, $row = 0, $col = 0)
     {
-        $results = array();
-        if (intval($row) < 1) {
+        if ((int)$row < 1) {
             $results = $res->fetch(PDO::FETCH_BOTH);
             return $results[$col];
         }
-        else {
-            for ($i = 0; $i < intval($row); $i++) {
-                $results = $res->fetch(PDO::FETCH_BOTH);
-            }
-            $results = $res->fetch(PDO::FETCH_BOTH);
-            return $results[$col];
+
+        for ($i = 0, $iMax = (int)$row; $i < $iMax; $i++) {
+            $res->fetch(PDO::FETCH_BOTH);
         }
+        $results = $res->fetch(PDO::FETCH_BOTH);
+        return $results[$col];
     }
 
 /**
@@ -503,7 +503,7 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_fetch_object($res)
     {
-        $results = NULL;
+        $results = null;
         if ( $res && is_object( $res ) )
             $results = $res->fetchObject();
         return $results;
@@ -533,7 +533,6 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_fetch_field($res,$offset = 0)
     {
-        $results = array();
         $obj = NULL;
         $results = $res->getColumnMeta($offset);
         foreach($results as $key=>$value) {
@@ -548,7 +547,6 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_stat($dbh=NULL)
     {
         //not implemented
-        global $SQL_DBH;
         if (is_null($dbh))
             return '';
         else
@@ -561,7 +559,6 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_client_encoding($dbh=NULL)
     {
         //not implemented
-        global $SQL_DBH;
         if (is_null($dbh))
             return '';
         else
@@ -644,7 +641,7 @@ if (!function_exists('sql_fetch_assoc'))
             $tablename = parseQuery($tablename);
         }
         $input_parameters = array(':name' => $tablename);
-        if ($drivername == 'sqlite')
+        if ($drivername === 'sqlite')
         {
             $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name = :name";
         }
@@ -707,7 +704,6 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_get_proto_info($dbh=NULL)
     {
         //not implemented
-        global $SQL_DBH;
         if (is_null($dbh))
             return false;
         else
@@ -772,8 +768,8 @@ if (!function_exists('sql_fetch_assoc'))
      * NOTE:    iso-8859-x,windows-125x if _CHARSET is unset.
      */
     function sql_set_charset($charset, $dbh=NULL) {
-        global $DB_DRIVER_NAME, $SQL_DBH;
-        if ( $DB_DRIVER_NAME == 'mysql' ) {
+        global $DB_DRIVER_NAME;
+        if ( $DB_DRIVER_NAME === 'mysql' ) {
             $db = ($dbh ? $dbh : sql_get_db());
             switch(strtolower($charset)){
                 case 'utf-8':
@@ -823,7 +819,7 @@ if (!function_exists('sql_fetch_assoc'))
     }
 
     function sql_set_charset_v2($charset, $dbh=NULL) {
-        global $DB_DRIVER_NAME, $SQL_DBH;
+        global $DB_DRIVER_NAME;
         $dbh = ($dbh ? $dbh : sql_get_db());
         if ( $DB_DRIVER_NAME == 'mysql' ) {
             $charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$dbh);

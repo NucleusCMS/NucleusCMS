@@ -326,7 +326,7 @@ class ITEM {
         }
         else
         {
-            return FALSE; // unkown error,  invalid inumber ?
+            return false; // unkown error,  invalid inumber ?
         }
 
         // 
@@ -338,7 +338,7 @@ class ITEM {
         {
             $new_blogid = getBlogIDFromCatID($new_catid);
             if (!$new_blogid)
-                return FALSE; // unkown error,  invalid catid ?
+                return false; // unkown error,  invalid catid ?
         }
         else
         {

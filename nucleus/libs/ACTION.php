@@ -56,16 +56,16 @@ class ACTION
             break;
 
             case 'forgotpassword':
-                return $this->forgotPassword();
+                $this->forgotPassword();
             break;
 
             case 'votenegative':
             case 'votepositive':
-                return $this->doVote($action === 'votepositive' ? '+' : '-');
+                $this->doVote($action === 'votepositive' ? '+' : '-');
             break;
 
             case 'plugin':
-                return $this->callPlugin();
+                $this->callPlugin();
             break;
 
             default:
@@ -97,9 +97,30 @@ class ACTION
         if ( $post['remember'] == 1 )
         {
             $lifetime = time() + 2592000;
-            setcookie($CONF['CookiePrefix'] . 'comment_user', $post['user'], $lifetime, '/', '', 0);
-            setcookie($CONF['CookiePrefix'] . 'comment_userid', $post['userid'], $lifetime, '/', '', 0);
-            setcookie($CONF['CookiePrefix'] . 'comment_email', $post['email'], $lifetime, '/', '', 0);
+            setcookie(
+                $CONF['CookiePrefix'] . 'comment_user'
+                , $post['user']
+                , $lifetime
+                , '/'
+                , ''
+                , 0
+            );
+            setcookie(
+                $CONF['CookiePrefix'] . 'comment_userid'
+                , $post['userid']
+                , $lifetime
+                , '/'
+                , ''
+                , 0
+            );
+            setcookie(
+                $CONF['CookiePrefix'] . 'comment_email'
+                , $post['email']
+                , $lifetime
+                , '/'
+                , ''
+                , 0
+            );
         } // end if
 
         $comments = new COMMENTS($post['itemid']);
@@ -264,8 +285,8 @@ class ACTION
         // evaluate content from FormExtra
         $result = 1;
         $param = array(
-            'type'    => 'membermail',
-            'error'    => &$result
+            'type'  => 'membermail',
+            'error' => &$result
         );
         $manager->notify('ValidateForm', $param);
         
