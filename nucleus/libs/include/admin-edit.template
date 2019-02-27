@@ -1,65 +1,65 @@
-<h2><%text(_EDIT_ITEM)%></h2>
+<h2>{%text(_EDIT_ITEM)%}</h2>
 
-<%init%>
+{%init%}
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
 <script type="text/javascript" src="javascript/edit_date.js"></script>
-<%ifautosave()%><script type="text/javascript" src="javascript/xmlhttprequest.js"></script><%endif%>
+{%ifautosave()%}<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>{%endif%}
 
 <form id="editform" method="post" action="index.php">
 <div>
 
 <input type="hidden" name="action" value="itemupdate" />
-<input name="itemid" value="<%contents(itemid)%>" type="hidden" />
+<input name="itemid" value="{%contents(itemid)%}" type="hidden" />
 <input type="hidden" name="draftid" value="0" />
-<%ticket%>
+{%ticket%}
 
 <table><tr>
-	<th colspan="2"><%text(_EDIT_ITEM)%></th>
+	<th colspan="2">{%text(_EDIT_ITEM)%}</th>
 </tr>
 <tr>
-	<td><%text(_EDIT_ORIG_AUTHOR)%></td>
-	<td><%contents(author)%></td>
+	<td>{%text(_EDIT_ORIG_AUTHOR)%}</td>
+	<td>{%contents(author)%}</td>
 </tr><tr>
-	<td><%text(_ADD_TITLE)%></td>
+	<td>{%text(_ADD_TITLE)%}</td>
 	<td><input 
-			<%jsinput(title)%>
+			{%jsinput(title)%}
 			tabindex="10" 
 			size="50" 
 			maxlength="160" 
-			value="<%contents(title)%>"
+			value="{%contents(title)%}"
 			/>
 	</td>
 </tr><tr class="body">
 	<td>
-		<%text(_ADD_BODY)%> <%helplink(additem)%>
+		{%text(_ADD_BODY)%} {%helplink(additem)%}
 	</td>
 	<td>
-		<%jsbuttonbar(media+preview)%>	
+		{%jsbuttonbar(media+preview)%}	
 		<textarea 
-			<%jsinput(body)%>
+			{%jsinput(body)%}
 			tabindex="20"
 			cols="60"
-			rows="15"><%contents(body)%></textarea>
+			rows="15">{%contents(body)%}</textarea>
 	</td>
 </tr>
 <tr class="more">
-	<td><%text(_ADD_MORE)%> <%helplink(extended)%>
+	<td>{%text(_ADD_MORE)%} {%helplink(extended)%}
 	</td>
 	<td>
 		<div id="moreforms">
-		<%jsbuttonbar(media+preview)%>
+		{%jsbuttonbar(media+preview)%}
 		<textarea 
-			<%jsinput(more)%>
+			{%jsinput(more)%}
 			tabindex="90" 
 			cols="60" 
 				rows="15"
-				><%contents(more)%></textarea>
+				>{%contents(more)%}</textarea>
 		</div>
-		<a href="#" id="openmore" onclick="return false;"><%text(_EDITTEMPLATE_EMPTY)%></a>
+		<a href="#" id="openmore" onclick="return false;">{%text(_EDITTEMPLATE_EMPTY)%}</a>
 	</td>
 </tr>
 <tr id="edit" style="display:none;">
-	<td><%text(_ADD_PREVIEW)%></td>
+	<td>{%text(_ADD_PREVIEW)%}</td>
 	<td><div><b><span id="prevtitle">&#160;</span></b></div>
 		<div id="prevbody">&#160;</div>
 		<div id="prevmore">&#160;</div>
@@ -67,85 +67,85 @@
 </tr>
 
 <tr>
-	<td><%text(_ADD_CATEGORY)%></td>
-	<td><%categories(40)%></td>
+	<td>{%text(_ADD_CATEGORY)%}</td>
+	<td>{%categories(40)%}</td>
 </tr>
 <tr>
-	<td><%text(_EDIT_SUBMIT)%></td>
+	<td>{%text(_EDIT_SUBMIT)%}</td>
 	<td>
-<%copytabindex(,1)%>
-<%ifitemproperty(draft)%><%settabindex(70)%><%copytabindex()%><%inctabindex()%>
-		<input name="actiontype" value="addnow" type="radio" id="act_now" /><label for="act_now" tabindex="<%tabindex(0,0)%>"><%text(_ADD_ADDNOW)%></label>
+{%copytabindex(,1)%}
+{%ifitemproperty(draft)%}{%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
+		<input name="actiontype" value="addnow" type="radio" id="act_now" /><label for="act_now" tabindex="{%tabindex(0,0)%}">{%text(_ADD_ADDNOW)%}</label>
 		<br />
-		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="<%tabindex(0,0)%>" /><label for="act_future"><%text(_ADD_ADDLATER)%></label> <%helplink(future)%>
+		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="{%tabindex(0,0)%}" /><label for="act_future">{%text(_ADD_ADDLATER)%}</label> {%helplink(future)%}
 		<div class="indent">
-			<%text(_ADD_PLACE_ON)%>
-			<%date_time_picker(currenttime)%>
-			<%ifblogsetting(ballowpast,0)%>
+			{%text(_ADD_PLACE_ON)%}
+			{%date_time_picker(currenttime)%}
+			{%ifblogsetting(ballowpast,0)%}
 				<br />
-				<%text(_ADD_NOPASTDATES)%>
-			<%endif%>
+				{%text(_ADD_NOPASTDATES)%}
+			{%endif%}
 		</div>
-		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="<%tabindex(0,0)%>" /><label for="act_draft"><%text(_EDIT_BACKTODRAFTS)%></label> <%helplink(draft)%>
+		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="{%tabindex(0,0)%}" /><label for="act_draft">{%text(_EDIT_BACKTODRAFTS)%}</label> {%helplink(draft)%}
 		<br />
-		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="<%tabindex(0,0)%>" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
-<%endif%>
+		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="{%tabindex(0,0)%}" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
+{%endif%}
 
-<%ifitemproperty(draft,0)%>
-	<%settabindex(70)%><%copytabindex()%><%inctabindex()%>
-	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="<%tabindex(0,0)%>" /><label for="act_edit"><%text(_BMLET_EDIT)%></label>
-	<%ifblogsetting(ballowpast)%>
+{%ifitemproperty(draft,0)%}
+	{%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
+	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="{%tabindex(0,0)%}" /><label for="act_edit">{%text(_BMLET_EDIT)%}</label>
+	{%ifblogsetting(ballowpast)%}
 		<br />
-		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="<%tabindex()%>" /><label for="act_changedate"><%text(_ADD_CHANGEDATE)%></label> <%helplink(changedate)%>
+		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="{%tabindex()%}" /><label for="act_changedate">{%text(_ADD_CHANGEDATE)%}</label> {%helplink(changedate)%}
 			<div class="indent">
-				<%text(_ADD_PLACE_ON)%>
-				<%date_time_picker(itemtime)%>
+				{%text(_ADD_PLACE_ON)%}
+				{%date_time_picker(itemtime)%}
 			</div>
-	<%endif%>	
-	<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts"><%text(_BMLET_BACKTODRAFTS)%></label> <%helplink(draft)%>
+	{%endif%}	
+	<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
 	<br />
-	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete"><%text(_BMLET_DELETE)%></label>
-<%endif%>
+	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
+{%endif%}
 
 	</td>
 </tr>
-<%ifautosave()%>
+{%ifautosave()%}
 <tr>
-	<td><%text(_AUTOSAVEDRAFT)%></td>
-	<td><span id="info"><%text(_AUTOSAVEDRAFT_NOTYETSAVED)%></span></td>
-</tr><%endif%>
-<%ifblogsetting(bcomments)%>
+	<td>{%text(_AUTOSAVEDRAFT)%}</td>
+	<td><span id="info">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span></td>
+</tr>{%endif%}
+{%ifblogsetting(bcomments)%}
 <tr>
 		<td>
-			<%text(_ADD_DISABLE_COMMENTS)%>
+			{%text(_ADD_DISABLE_COMMENTS)%}
 		</td>
 		<td> 
-			<input type="radio" name="closed" value="1" <%checkedonval(1,closed)%> tabindex="30" id="closed_yes" /><label for="closed_yes"><%text(_YES)%></label>
-			<input type="radio" name="closed" value="0" <%checkedonval(0,closed)%> tabindex="30" id="closed_no" /><label for="closed_no"><%text(_NO)%></label> <small><%text(_EDIT_COMMENTSNOTE)%></small>
+			<input type="radio" name="closed" value="1" {%checkedonval(1,closed)%} tabindex="30" id="closed_yes" /><label for="closed_yes">{%text(_YES)%}</label>
+			<input type="radio" name="closed" value="0" {%checkedonval(0,closed)%} tabindex="30" id="closed_no" /><label for="closed_no">{%text(_NO)%}</label> <small>{%text(_EDIT_COMMENTSNOTE)%}</small>
 		</td>
 	</tr>
-<%endif%>
+{%endif%}
 <tr>
-	<td><%settabindex(100)%><%text(_ADD_PLUGIN_EXTRAS)%></td>
+	<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
 	<td>
-		<%pluginextras%>
+		{%pluginextras%}
 	</td>	
 </tr>
-			<%itemoptions%>	
+			{%itemoptions%}	
 <tr>
-		<td><%text(_SUBMIT)%></td>
+		<td>{%text(_SUBMIT)%}</td>
 		<td>
-			<input tabindex="<%tabindex(1,1)%>" type="submit" value="<%text(_EDIT_SUBMIT)%>" 
+			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}" 
 				onclick="return checkSubmit();" />
-			<%ifautosave()%><input tabindex="<%tabindex(1,1)%>" type="button" name="autosavenow" value="<%text(_AUTOSAVEDRAFT_NOW)%>"
-				onclick="autoSaveDraft();" /><%endif%>
+			{%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+				onclick="autoSaveDraft();" />{%endif%}
 		</td>
 	
 </tr></table>
 
 </div>
 </form>
-<%ifautosave()%>
+{%ifautosave()%}
 <script type="text/javascript">
 	var xmlhttprequest = new Array();
 	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
@@ -155,23 +155,23 @@
 	var addform = document.getElementById('editform'); // The form id
 	var goal = document.getElementById('info'); // The html div id where 'Last saved: date time' must come
 	var goalurl = '../action.php'; // The PHP file where the content must be posted to
-	var lastsavedtext = '<%text(_AUTOSAVEDRAFT_LASTSAVED)%>'; // The language variable for 'Last saved'
+	var lastsavedtext = '{%text(_AUTOSAVEDRAFT_LASTSAVED)%}'; // The language variable for 'Last saved'
 	var formtype = 'edit'; // Add or edit form
-</script><%endif%>
+</script>{%endif%}
 
 <script type="text/javascript">
 // datetime reset functions
 function date_currenttime_reset( )
 {
     edit_form_change_date_ByValue( new Array(
-         "<%currenttime(year)%>", "<%currenttime(mon)%>", "<%currenttime(mday)%>",
-         "<%currenttime(hours)%>", "<%currenttime(minutes)%>" ) );
+         "{%currenttime(year)%}", "{%currenttime(mon)%}", "{%currenttime(mday)%}",
+         "{%currenttime(hours)%}", "{%currenttime(minutes)%}" ) );
 }
 function date_itemtime_reset( )
 {
     edit_form_change_date_ByValue( new Array(
-         "<%itemtime(year)%>", "<%itemtime(mon)%>", "<%itemtime(mday)%>",
-         "<%itemtime(hours)%>", "<%itemtime(minutes)%>" ) );
+         "{%itemtime(year)%}", "{%itemtime(mon)%}", "{%itemtime(mday)%}",
+         "{%itemtime(hours)%}", "{%itemtime(minutes)%}" ) );
 }
 if(!jQuery('#inputmore').val()) {
 	jQuery('div#moreforms').hide();
