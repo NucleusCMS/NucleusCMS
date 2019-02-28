@@ -1212,7 +1212,7 @@ class ADMIN {
                 $amount = 10;
         }
 
-        printf('<p>(<a href="index.php?action=itemlist&amp;blogid=%s">%s</a> | '.
+        echo sprintf('<p>(<a href="index.php?action=itemlist&amp;blogid=%s">%s</a> | '.
                 '<a href="index.php?action=blogcommentlist&amp;blogid=%s">%s</a>)</p>',
                 $blogid , hsc(_BACKTOOVERVIEW) ,
                 $blogid , hsc(sprintf(_LIST_BACK_TO , _LIST_COMMENT_LIST_FOR_BLOG))
@@ -1223,12 +1223,12 @@ class ADMIN {
         $item =& $manager->getItem($itemid, true, true);
         echo "<div>";
         echo _LIST_ITEM_CONTENT . ' : ';
-        printf("<a href='%s#c' title='%s'><img src='images/globe.gif' width='13' height='13' style='vertical-align:middle;' /></a> %s</div>",
+        echo sprintf("<a href='%s#c' title='%s'><img src='images/globe.gif' width='13' height='13' style='vertical-align:middle;' /></a> %s</div>",
                     createItemLink($itemid) ,
                     htmlentities(_LIST_COMMENT_VIEW_ITEM, ENT_COMPAT, _CHARSET) ,
                     hsc(shorten($item["title"], 100, '...'))
                 );
-        printf("<div style=' margin-left: 20px; padding: 5px'>%s</div>",
+        echo sprintf("<div style=' margin-left: 20px; padding: 5px'>%s</div>",
                     hsc(shorten(strip_tags($item["body"]), 100, '...')) . '<br />');
 
         $search = postVar('search');
@@ -5118,14 +5118,13 @@ selector();
     function action_skinedittype($msg = '') {
         global $member, $manager;
 
+        if (!$member->isAdmin()) {
+            $this->disallow();
+        }
+
         $skinid = intRequestVar('skinid');
-        $type = requestVar('type');
-        $spartstype = (requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
-
-        $member->isAdmin() or $this->disallow();
-
-        $type = trim($type);
-        $type = strtolower($type);
+        $type = strtolower(trim(requestVar('type')));
+        $spartstype = requestVar('partstype')=='specialpage' ? 'specialpage' : 'parts';
 
         switch($spartstype)
         {
@@ -5135,9 +5134,9 @@ selector();
                 }
                 break;
             default:
-            if (!isValidSkinPartsName($type)) {
-                $this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
-            }
+                if (!isValidSkinPartsName($type)) {
+                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_FORMAT);
+                }
         }
 
         $skin = new SKIN($skinid);
@@ -5146,21 +5145,23 @@ selector();
 
         $this->pagehead();
 
-        printf('<p>(<a href="index.php?action=skinedit&skinid=%s">%s</a>)</p>', $skinid, escapeHTML(_SKIN_GOBACK));
+        echo sprintf(
+                '<p>(<a href="index.php?action=skinedit&skinid=%s">%s</a>)</p>'
+                , $skinid
+                , escapeHTML(_SKIN_GOBACK)
+                );
 
-        $skingetContentOptions = array('spartstype'=>'parts');
         switch($spartstype)
         {
             case 'specialpage':
-                printf("<h2>%s %s : %s</h2>",
+                echo sprintf("<h2>%s %s : %s</h2>",
                         escapeHTML(_SKIN_EDITPART_TITLE),
                         escapeHTML(_SKIN_PARTS_SPECIAL_PAGE),
                         escapeHTML($skin->getName())
                     );
-                $skingetContentOptions['spartstype'] = 'specialpage';
                 break;
             default:
-                printf("<h2>%s '%s': %s</h2>",
+                echo sprintf("<h2>%s '%s': %s</h2>",
                         escapeHTML(_SKIN_EDITPART_TITLE),
                         escapeHTML($skin->getName()),
                         escapeHTML(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type)
@@ -5200,7 +5201,10 @@ selector();
         }
         $form[] = " $subtitle";
 
-        $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent($type, $skingetContentOptions)));
+        $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent(
+                $type
+                , array('spartstype'=>$spartstype)
+                )));
 
         $form[] = '<br />';
         $form[] = '<br />';
@@ -5225,9 +5229,9 @@ selector();
 
             while ($current = array_shift($actions)) {
                 // skip deprecated vars
-                if ($current == 'ifcat') continue;
-                if ($current == 'imagetext') continue;
-                if ($current == 'vars') continue;
+                if ($current === 'ifcat') continue;
+                if ($current === 'imagetext') continue;
+                if ($current === 'vars') continue;
 
                 echo helplink('skinvar-' . $current) . "$current</a>";
                 if (count($actions) != 0) echo ", ";
@@ -5244,7 +5248,7 @@ selector();
         echo '<textarea rows="3" readonly onfocus="this.select()">'
             . hsc($tmp) .'</textarea>';
         // end edit link
-        if ($spartstype == 'specialpage')
+        if ($spartstype === 'specialpage')
         {
             global $CONF;
             if (!isset($CONF['SpecialskinKey']) || (string) $CONF['SpecialskinKey'] === '')
@@ -5283,7 +5287,7 @@ selector();
         $content = trim(postVar('content'));
         $type = postVar('type');
 
-        $spartstype = (postVar('partstype')=='specialpage' ? 'specialpage' : 'parts');
+        $spartstype = (postVar('partstype')==='specialpage' ? 'specialpage' : 'parts');
 
         $member->isAdmin() or $this->disallow();
 
@@ -5878,7 +5882,7 @@ selector();
                     // ENABLE_TIDY
                     $tidy_loaded = extension_loaded('tidy');
                     $s_disable = sprintf('[%s] ',_ADMIN_SYSTEMOVERVIEW_DISABLE);
-                    printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
+                    echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
                     $enable_tidy = isset($CONF['ENABLE_TIDY']) && $CONF['ENABLE_TIDY'];
                     if ($tidy_loaded)
                         $this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);
@@ -5893,13 +5897,13 @@ selector();
                         if ($isTidy5)
                         {
                             $enable_tidy_f_html5 = isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5'];
-                            printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_FORCE_HTML5);
+                            echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_FORCE_HTML5);
                             $this->input_yesno('ENABLE_TIDY_FORCE_HTML5', $enable_tidy_f_html5, 10082);
                             echo "</td></tr>\n";
                         }
                         // ENABLE_TIDY_INDENT
                         $enable_tidy_indent = (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']);
-                        printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
+                        echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
                         $this->input_yesno('ENABLE_TIDY_INDENT', $enable_tidy_indent, 10083);
                         echo "</td></tr>\n";
                     }
@@ -6229,7 +6233,7 @@ EOL;
             echo "\t</tr>\n";
             echo "\t<tr>";
             echo "\t\t" . '<td width="50%">'. 'Loaded extensions' .'</td>' . "\n";
-            printf("\t\t<td>%s</td>\n", implode(', ', $extensions));
+            echo sprintf("\t\t<td>%s</td>\n", implode(', ', $extensions));
             echo "\t</tr>\n";
             echo "</table>\n";
 
@@ -6240,7 +6244,7 @@ EOL;
             echo "\t</tr>\n";
             echo "\t<tr>";
             echo "\t\t" . '<td width="50%">Tidy</td>' . "\n";
-            printf("\t\t<td>%s</td>\n",
+            echo sprintf("\t\t<td>%s</td>\n",
                 extension_loaded('tidy') ?
                         _ADMIN_SYSTEMOVERVIEW_ENABLE :
                         _ADMIN_SYSTEMOVERVIEW_DISABLE);
@@ -6248,10 +6252,10 @@ EOL;
             if (function_exists('tidy_get_release')) {
                 $tidy_ver = preg_match('/Tidy Version.+?>\s*([0-9\.]+)\s*</ims', $im, $m) ? $m[1] : '';
                 if ($tidy_ver)
-                    printf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
-                printf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
+                    echo sprintf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
+                echo sprintf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
                 $tidy_support_HTML5 = strtotime( str_replace(array('.'),'/',tidy_get_release())) >= strtotime('2015/06/30');
-                printf("\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
+                echo sprintf("\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
                         $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE);
                 ;
             }
@@ -6581,7 +6585,7 @@ EOL;
         }
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-            printf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
+            echo sprintf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
             $newestVersion = getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
@@ -6589,7 +6593,7 @@ EOL;
 
             if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID)
             {
-                printf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
+                echo sprintf(')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
                         $CONF['IndexURL'] . '_upgrades/' , $CONF['DatabaseVersion']);
             }
         } else {
@@ -6872,8 +6876,8 @@ $ticket
 <input type="submit" value="$title">
 </form>
 EOL;
-        printf('<h2>%s</h2>', _ACTIONLOG_CLEAR_TITLE);
-        printf('<div>%s</div>', $form);
+        echo sprintf('<h2>%s</h2>', _ACTIONLOG_CLEAR_TITLE);
+        echo sprintf('<div>%s</div>', $form);
 
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
@@ -6883,7 +6887,7 @@ EOL;
 
         if (SYSTEMLOG::checkWritable()) {
             echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
-            printf('<p><a href="index.php?action=systemlog">%s</a></p>', _SYSTEMLOG_TITLE);
+            echo sprintf('<p><a href="index.php?action=systemlog">%s</a></p>', _SYSTEMLOG_TITLE);
         }
 
         $this->pagefoot();
@@ -6909,8 +6913,8 @@ $ticket
 <input type="submit" value="$title">
 </form>
 EOL;
-        printf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
-        printf('<div>%s</div>', $form);
+        echo sprintf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
+        echo sprintf('<div>%s</div>', $form);
 
         echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
 
@@ -7435,7 +7439,7 @@ EOL;
             echo "  <input type='hidden' name='action' value='pluginadd' />\n";
             echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
             echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
-            printf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+            echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
             echo "</div></form>\n";
         }
         else
@@ -8117,7 +8121,7 @@ EOL;
 
         $this->pagehead();
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
-        printf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
+        echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
 
         if (isset($_POST['mode']) && isset($_POST['step']))
         {
@@ -8135,7 +8139,7 @@ EOL;
 
         if (in_array($DB_DRIVER_NAME, array('mysql', 'sqlite')))
         {
-            printf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
+            echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
 
             if ($DB_DRIVER_NAME == 'sqlite')
             {
@@ -8154,7 +8158,7 @@ EOD;
             else
             {
                 if (!$this->db_mysql_checktables(TRUE))
-                    printf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
+                    echo sprintf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
                 else
                 {
                     $tables = array();
@@ -8180,13 +8184,13 @@ EOD;
                         {
                             echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
                             if ($this->db_optimize_mysql())
-                                printf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
+                                echo sprintf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
                             $this->pagefoot();
                             return;
                         }
                         if ($has_big)
-                            printf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
-                        printf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
+                            echo sprintf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
+                        echo sprintf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
                         $btn_title = hsc(_ADMIN_BTN_TITLE_OPTIMIZE);
                 $s = <<<EOD
         <form method="post" action="index.php"><p>
@@ -8213,7 +8217,7 @@ EOD;
 
         if (in_array($DB_DRIVER_NAME, array('mysql')))
         {
-            printf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
+            echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
             $this->db_mysql_checktables();
         }
 
