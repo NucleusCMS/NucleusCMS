@@ -2620,3 +2620,14 @@ function setDefaultConf() {
         }
     }
 }
+
+function un_clickjacking() {
+    if (headers_sent()) {
+        return;
+    }
+    if (defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') && constant('_DISABLE_FEATURE_SECURITY_CLICKJACKING')
+    ) {
+        return;
+    }
+    header('X-Frame-Options: SAMEORIGIN');
+}

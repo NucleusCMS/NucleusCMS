@@ -64,7 +64,7 @@ if (getNucleusPatchLevel() > 0) {
 
 // we will use postVar, getVar, ... methods instead of _GET
 if ($CONF['installscript'] != 1) { // vars were already included in install.php
-    include_once(NC_LIBS_PATH . 'vars4.1.0.php');
+    include_once(NC_LIBS_PATH . 'helpers.php');
 }
 
 // sanitize option
@@ -100,26 +100,19 @@ if ( !headers_sent() && $CONF['expose_generator'] ) {
 }
 
 // Avoid the ClickJacking attack
-if ( !headers_sent()
-    &&
-    (
-        !defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || !constant('_DISABLE_FEATURE_SECURITY_CLICKJACKING')
-    )
-)
-{
-    header('X-Frame-Options: SAMEORIGIN');
-}
-
+un_clickjacking();
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
 global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 // deprecated method
 // include core classes that are needed for login & plugin handling
 if (($DB_DRIVER_NAME === 'mysql') && !function_exists('mysql_query')) {
-    if ($DB_PHP_MODULE_NAME === 'pdo')
-        include_once(NC_LIBS_PATH . 'sql/pdo_mysql_emulate.php'); // For PHP 7
-    else
-        include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php'); // For PHP 7
+    // For PHP 7
+    if ($DB_PHP_MODULE_NAME === 'pdo') {
+        include_once(NC_LIBS_PATH . 'sql/pdo_mysql_emulate.php');
+    } else {
+        include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php');
+    }
 }
 else
 {
@@ -194,7 +187,7 @@ if (
 }
 
 // automatically use simpler toolbar for mozilla
-if ($CONF['DisableJsTools'] == 0 && str_contains(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
+if (!$CONF['DisableJsTools'] && str_contains(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
 
@@ -234,10 +227,8 @@ if (requestVar('action') === 'login') {
     $pw=substr($pw,0,40); // avoid md5 collision by using a long key
 
     if ($member->login($login, $pw) ) {
-
         $member->newCookieKey();
         $member->setCookies($shared);
-
         if ($CONF['secureCookieKey']!=='none') {
             // secure cookie key
             $member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
@@ -259,14 +250,12 @@ if (requestVar('action') === 'login') {
 
         $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
         $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
-        if ($remote_ip !=='')
-        {
+        if ($remote_ip !=='') {
             $log_message .= sprintf(" %s", $remote_ip);
             if ($remote_host!==FALSE && $remote_host!=$remote_ip)
                 $log_message .= sprintf("(%s)", $remote_host);
         }
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-        {
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
             $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"]);
             $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);

@@ -27,7 +27,7 @@ define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
-include_once('../nucleus/libs/vars4.1.0.php');
+include_once('../nucleus/libs/helpers.php');
 
 define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
