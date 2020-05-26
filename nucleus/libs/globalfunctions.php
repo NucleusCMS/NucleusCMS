@@ -377,12 +377,14 @@ LoadCoreLanguage();
 $language = getLanguageName();
 
 // check if valid charset
-if (function_exists('encoding_check'))
-if (!encoding_check(false, false, _CHARSET)) {
-    foreach(array($_GET, $_POST) as $input) {
-        array_walk($input, 'encoding_check');
+if (function_exists('encoding_check')) {
+    if (!encoding_check(false, false, _CHARSET)) {
+        foreach(array($_GET, $_POST) as $input) {
+            array_walk($input, 'encoding_check');
+        }
     }
 }
+
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
 if (!defined('_ARCHIVETYPE_MONTH') )
 {
