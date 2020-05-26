@@ -1063,7 +1063,7 @@ function LoadCoreLanguage()
             {
                 // load default lang
                 ob_start();
-                @include_once($DIR_LANG . 'english-utf8' . '.php');
+                @include($DIR_LANG . 'english-utf8' . '.php');
                 ob_end_clean();
             }
         }
