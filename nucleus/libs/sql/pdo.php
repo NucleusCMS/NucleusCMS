@@ -24,9 +24,8 @@ $MYSQL_CONN = 0;
 global $SQL_DBH;
 $SQL_DBH = NULL;
 
-if (!function_exists('sql_fetch_assoc'))
-{
-    include(dirname(__FILE__) . '/sql_common_functions.php');
+if (!function_exists('sql_fetch_assoc')) {
+    include(__DIR__ . '/sql_common_functions.php');
 
 /**
  * Connects to mysql server
@@ -244,14 +243,20 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_disconnect(&$dbh=NULL) {
         global $SQL_DBH;
-        if ($dbh === null) $SQL_DBH = NULL;
-        else $dbh = NULL;
+        if ($dbh === null) {
+            $SQL_DBH = NULL;
+        } else {
+            $dbh = NULL;
+        }
     }
 
     function sql_close(&$dbh=NULL) {
         global $SQL_DBH;
-        if ($dbh === null) $SQL_DBH = NULL;
-        else $dbh = NULL;
+        if ($dbh === null) {
+            $SQL_DBH = NULL;
+        } else {
+            $dbh = NULL;
+        }
     }
 
     function sql_connected() {
@@ -267,12 +272,17 @@ if (!function_exists('sql_fetch_assoc'))
         $SQLCount++;
         $debug = (!isset($CONF['debug']) || !$CONF['debug']);
         $db = ( $dbh !== null ? $dbh : $SQL_DBH );
-        if (is_object($db) && ($db instanceof PDO))
+        if(is_array($query)) {
+            $query = implode("\n", $query);
+        }
+        if (is_object($db) && ($db instanceof PDO)) {
             $res = $db->query($query);
-        else
+        } else {
             $res = false;
-        if (!$debug)
+        }
+        if (!$debug) {
             return $res;
+        }
 
         $style = 'height:100px; overflow:auto; background:#C0DCC0';
         if ($res === false) {
@@ -283,7 +293,7 @@ if (!function_exists('sql_fetch_assoc'))
                 , hsc($msg_text)
                 , hsc($query)
             );
-        } else if ($res->errorCode() != '00000') {
+        } elseif ($res->errorCode() != '00000') {
             $errors = $res->errorInfo();
             $msg_text = $errors[0].'-'.$errors[1].' '.$errors[2];
             echo sprintf(
@@ -296,48 +306,45 @@ if (!function_exists('sql_fetch_assoc'))
         return $res;
     }
 
-    function sql_query_log(&$query, $override = false)
+    function sql_query_log(&$query, $override = false, $log=false)
     {
         global $SQLCount;
 
-        if (!isset($SQLCount) || ($SQLCount == 0) )
-        {
+        if (!isset($SQLCount) || ($SQLCount == 0) ) {
             $SQLCount = 0;
             $override = true;
         }
         $SQLCount ++;
-        return ; //
+        if(!$log) {
+            return;
+        } //
 
-        $filename = dirname(__FILE__).DIRECTORY_SEPARATOR.'query_log.txt';
-        $handle = fopen($filename, ($override ? "w": "a") );
-        if ($handle)
-        {
-            if ($_SERVER['REQUEST_TIME_FLOAT'])
-            {
-                $s = sprintf('tick time : %.2f , query No %d' ,
-                        (float)microtime(true) - (float) $_SERVER['REQUEST_TIME_FLOAT']
-                        ,$SQLCount);
-                fwrite ($handle , $s."\r\n");
-            }
-            fwrite ($handle , "\t".preg_replace("/(\r\n|\n\r|\r|\n)/","\r\n", $query."\n") );
-            fclose($handle);
-        }
+        file_put_contents (
+            __DIR__ .'/query_log.txt'
+            , sprintf(
+                "tick time : %.2f , query No %d\r\n\t%s"
+                , (float)microtime(true) - (float) serverVar('REQUEST_TIME_FLOAT')
+                , $SQLCount
+                , preg_replace("/(\r\n|\n\r|\r|\n)/","\r\n", $query."\n")
+            )
+            , $override ? null : FILE_APPEND
+        );
     }
 /**
  * executes an SQL error
  */
-    function sql_error($dbh=NULL)
-    {
+    function sql_error($dbh=NULL) {
         global $SQL_DBH;
         $db = ($dbh !== null ? $dbh : $SQL_DBH);
-        if ( is_object($db) )
+        if ( is_object($db) ) {
             $error = $db->errorInfo();
-        else
-            $error = array('Handle is not object','','');
+        } else {
+            $error = array('Handle is not object', '', '');
+        }
         if ($error[0] != '00000') {
             return $error[0].'-'.$error[1].' '.$error[2];
         }
-        else return '';
+        return '';
     }
 
 /**
@@ -482,7 +489,7 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_real_escape_string($val,$dbh=NULL)
     {
         $s = sql_quote_string($val, $dbh);
-        return (string) substr($s, 1, strlen($s) -2 );
+        return (string) substr($s, 1, -1);
 //        return addslashes($val);
     }
 
@@ -491,10 +498,12 @@ if (!function_exists('sql_fetch_assoc'))
  */
     function sql_quote_string($val,$dbh=NULL) {
         global $SQL_DBH;
-        if ($dbh === null)
+
+        if ($dbh === null) {
             return $SQL_DBH->quote($val);
-        else
-            return $dbh->quote($val);
+        }
+
+        return $dbh->quote($val);
     }
 
 /**
@@ -503,17 +512,18 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_insert_id($dbh=NULL)
     {
         global $SQL_DBH;
-        if ($dbh === null)
+
+        if ($dbh === null) {
             return $SQL_DBH->lastInsertId();
-        else
-            return $dbh->lastInsertId();
+        }
+
+        return $dbh->lastInsertId();
     }
 
 /**
  * executes an SQL result request
  */
-    function sql_result($res, $row = 0, $col = 0)
-    {
+    function sql_result($res, $row = 0, $col = 0) {
         if ((int)$row < 1) {
             $results = $res->fetch(PDO::FETCH_BOTH);
             return $results[$col];
@@ -529,10 +539,10 @@ if (!function_exists('sql_fetch_assoc'))
 /**
  * frees sql result resources
  */
-    function sql_free_result($res)
-    {
-        if (is_object($res) && ($res instanceof PDOStatement))
+    function sql_free_result($res) {
+        if (is_object($res) && ($res instanceof PDOStatement)) {
             return $res->closeCursor();
+        }
         trigger_error('argument is not instanceof PDOStatement', E_USER_NOTICE);
         return false;
     }
@@ -540,8 +550,7 @@ if (!function_exists('sql_fetch_assoc'))
 /**
  * returns number of rows in SQL result
  */
-    function sql_num_rows($res)
-    {
+    function sql_num_rows($res) {
         // DELETE, INSERT, UPDATE
         // do not use : SELECT
         if (is_object($res))
@@ -552,76 +561,71 @@ if (!function_exists('sql_fetch_assoc'))
 /**
  * returns number of rows affected by SQL query
  */
-    function sql_affected_rows($res)
-    {
+    function sql_affected_rows($res) {
         return $res->rowCount();
     }
 
 /**
  * Get number of fields in result
  */
-    function sql_num_fields($res)
-    {
+    function sql_num_fields($res) {
         return $res->columnCount();
     }
 
 /**
  * fetches next row of SQL result as an associative array
  */
-    function sql_fetch_assoc($res)
-    {
-        $results = array();
-        if ($res)
-            $results = $res->fetch(PDO::FETCH_ASSOC);
-        return $results;
+    function sql_fetch_assoc($res) {
+        if (!$res) {
+            return array();
+        }
+        return $res->fetch(PDO::FETCH_ASSOC);
     }
 
 /**
  * Fetch a result row as an associative array, a numeric array, or both
  */
-    function sql_fetch_array($res)
-    {
-        $results = array();
-        if ($res)
-            $results = $res->fetch(PDO::FETCH_BOTH);
-        return $results;
+    function sql_fetch_array($res) {
+        if (!$res) {
+            return array();
+        }
+        return $res->fetch(PDO::FETCH_BOTH);
     }
 
 /**
  * fetches next row of SQL result as an object
  */
-    function sql_fetch_object($res)
-    {
-        $results = null;
-        if ( $res && is_object( $res ) )
-            $results = $res->fetchObject();
-        return $results;
+    function sql_fetch_object($res) {
+        if (!$res || !is_object($res)) {
+            return null;
+        }
+        return $res->fetchObject();
+
     }
 
 /**
  * Get a result row as an enumerated array
  */
-    function sql_fetch_row($res)
-    {
-        $results = array();
-        if ($res)
-            $results = $res->fetch(PDO::FETCH_NUM);
-        return $results;
+    function sql_fetch_row($res) {
+        if (!$res) {
+            return array();
+        }
+        return $res->fetch(PDO::FETCH_NUM);
     }
 
     function sql_fetch_column($res , $column_number = 0)
     {
-        if ($res)
-            return $res->fetchColumn ($column_number);
-        return false;
+        if (!$res) {
+            return false;
+        }
+        return $res->fetchColumn($column_number);
     }
 
 
 /**
  * Get column information from a result and return as an object
  */
-    function sql_fetch_field($res,$offset = 0)
-    {
+    function sql_fetch_field($res,$offset = 0) {
         $obj = NULL;
         $results = $res->getColumnMeta($offset);
         foreach($results as $key=>$value) {
@@ -636,10 +640,10 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_stat($dbh=NULL)
     {
         //not implemented
-        if (is_null($dbh))
+        if (is_null($dbh)) {
             return '';
-        else
-            return '';
+        }
+        return '';
     }
 
 /**
@@ -648,10 +652,10 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_client_encoding($dbh=NULL)
     {
         //not implemented
-        if (is_null($dbh))
+        if (is_null($dbh)) {
             return '';
-        else
-            return '';
+        }
+        return '';
     }
 
 /**
@@ -660,19 +664,18 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_getTableColumnNames($tablename)
     {
         global $SQL_DBH;
-        if (!$SQL_DBH) return array();
+        if (!$SQL_DBH) {
+            return array();
+        }
 
         $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
         if(strpos($tablename,'[@prefix@]')!==false) {
             $tablename = parseQuery($tablename);
         }
-        if ($drivername == 'sqlite')
-        {
+        if ($drivername === 'sqlite') {
             $sql = sprintf('PRAGMA TABLE_INFO(`%s`)', $tablename);
             $target = 'name';
-        }
-        else
-        {
+        } else {
             // mysql
             $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
             $target = 'Field';
@@ -681,12 +684,14 @@ if (!function_exists('sql_fetch_assoc'))
         $items = array();
         $res = array();
         $stmt = $SQL_DBH->prepare($sql);
-        if ( $stmt && $stmt->execute() )
+        if ( $stmt && $stmt->execute() ) {
             $res = $stmt->fetchAll();
+        }
 
         foreach($res as $row) {
-            if (isset($row[$target]))
+            if (isset($row[$target])) {
                 $items[] = $row[$target];
+            }
         }
         if (count($items)>0) {
             sort($items);
@@ -697,8 +702,7 @@ if (!function_exists('sql_fetch_assoc'))
 /**
  * Returns the boolean value that column name of the table exist or not
  */
-    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
-    {
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False) {
         $names = sql_getTableColumnNames($tablename);
 
         if (!$names) {
@@ -720,45 +724,37 @@ if (!function_exists('sql_fetch_assoc'))
 /**
  * Returns the boolean value that column name of the table exist or not
  */
-    function sql_existTableName($tablename)
-    {
+    function sql_existTableName($tablename) {
         global $SQL_DBH;
-        if (!$SQL_DBH) return FALSE;
+        if (!$SQL_DBH) {
+            return FALSE;
+        }
 
-        $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
         if(strpos($tablename,'[@prefix@]')!==false) {
             $tablename = parseQuery($tablename);
         }
-        $input_parameters = array(':name' => $tablename);
-        if ($drivername === 'sqlite')
-        {
-            $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name = :name";
-        }
-        else
-        {
-            // mysql
-            $sql = 'SHOW TABLES LIKE :name ';
+
+        if ($SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME) === 'sqlite') {
+            $stmt = $SQL_DBH->prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = :name");
+        } else { // mysql
+            $stmt = $SQL_DBH->prepare('SHOW TABLES LIKE :name ');
         }
         $res = array();
-        $stmt = $SQL_DBH->prepare($sql);
-        if ( $stmt && $stmt->execute($input_parameters) )
+        if ( $stmt && $stmt->execute(array(':name' => $tablename)) ) {
             $res = $stmt->fetch();
-        if ($res && count($res)>0)
-            return TRUE;
-        return FALSE;
+        }
+        return $res && count($res) > 0;
     }
 
 /**
  * Get SQL client version
  */
-    function sql_get_client_info()
-    {
+    function sql_get_client_info() {
         global $SQL_DBH;
         return $SQL_DBH->getAttribute(constant("PDO::ATTR_CLIENT_VERSION"));
     }
 
-    function  sql_get_db()
-    {
+    function  sql_get_db() {
         global $SQL_DBH;
         return $SQL_DBH;
     }
@@ -766,25 +762,23 @@ if (!function_exists('sql_fetch_assoc'))
 /**
  * Get SQL server version
  */
-    function sql_get_server_info($dbh=NULL)
-    {
+    function sql_get_server_info($dbh=NULL) {
         global $SQL_DBH;
-        if (is_null($dbh))
+        if (is_null($dbh)) {
             return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
-        else
-            return $dbh->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
+        }
+        return $dbh->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
     }
 
 /**
  * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
  */
-    function sql_get_host_info($dbh=NULL)
-    {
+    function sql_get_host_info($dbh=NULL) {
         global $SQL_DBH;
-        if (is_null($dbh))
+        if (is_null($dbh)) {
             return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
-        else
-            return $dbh->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
+        }
+        return $dbh->getAttribute(constant("PDO::ATTR_SERVER_INFO"));
     }
 
 /**
@@ -793,10 +787,10 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_get_proto_info($dbh=NULL)
     {
         //not implemented
-        if (is_null($dbh))
+        if (is_null($dbh)) {
             return false;
-        else
-            return false;
+        }
+        return false;
     }
 
 /**
@@ -896,43 +890,36 @@ if (!function_exists('sql_fetch_assoc'))
     function sql_set_charset_v2($charset, $dbh=NULL) {
         global $DB_DRIVER_NAME;
         $dbh = ($dbh ? $dbh : sql_get_db());
-        if ( $DB_DRIVER_NAME == 'mysql' ) {
+        if ( $DB_DRIVER_NAME === 'mysql' ) {
             $charsetOfDB = getCharSetFromDB(sql_table('config'),'name',$dbh);
             if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
                 $charset = $charsetOfDB; // work around for utf8mb4_general_ci
             return sql_set_charset($charset, $dbh);
-        } else {
-            return sql_set_charset($charset, $dbh);
         }
+        return sql_set_charset($charset, $dbh);
     }
 
-    function sql_print_error($text)
-    {
+    function sql_print_error($text) {
         global $CONF;
-        if ( ! function_exists('addToLog') )
-            return ;
-
-        if (!isset($CONF['debug']) || (!$CONF['debug']))
-        {
-            addToLog(ERROR, $text);
+        if ( ! function_exists('addToLog') ) {
+            return;
         }
-        else
-        {
+
+        if (!isset($CONF['debug']) || (!$CONF['debug'])) {
+            addToLog(ERROR, $text);
+        } else {
             addToLog(ERROR, $text);
             print htmlspecialchars($text, ENT_QUOTES, defined('_CHARSET') ? _CHARSET : 'UTF-8');
         }
     }
 
-    function sql_quote_identifier($text)
-    {
+    function sql_quote_identifier($text) {
         global $DB_DRIVER_NAME;
-        switch ($DB_DRIVER_NAME)
-        {
-            case 'sqlite':
-                return '`'. str_replace("`","``",$text) . '`';
-            default :  // mysql
-                return '`'. sql_real_escape_string($text) . '`';
+        if ($DB_DRIVER_NAME === 'sqlite') {
+            return '`' . str_replace("`", "``", $text) . '`';
         }
+        // mysql
+        return '`' . sql_real_escape_string($text) . '`';
     }
 
     function sql_prepare($sql)
@@ -940,27 +927,29 @@ if (!function_exists('sql_fetch_assoc'))
         global $SQL_DBH, $CONF;
         sql_query_log($sql);
 
-        if (!$SQL_DBH) return false;
+        if (!$SQL_DBH) {
+            return false;
+        }
 
         $res = $SQL_DBH->prepare($sql);
-        if (!$res && $CONF['debug'])
+        if (!$res && $CONF['debug']) {
             sql_print_error(sql_error($SQL_DBH));
+        }
         return $res;
     }
 
     function sql_execute($stmt , $input_parameters = array())
     {
-        if (!$stmt)
+        if (!$stmt) {
             return false;
+        }
 
-        if (!($stmt instanceof PDOStatement))
-        {
+        if (!($stmt instanceof PDOStatement)) {
             sql_print_error("error: param1 is not PDOStatement.");
             return false;
         }
 
-        if (!is_array($input_parameters))
-        {
+        if (!is_array($input_parameters)) {
             sql_print_error("error: param2 is not array.");
             return false;
         }
@@ -968,31 +957,31 @@ if (!function_exists('sql_fetch_assoc'))
         return $stmt->execute($input_parameters);
     }
 
-    function sql_prepare_execute($sql , $input_parameters = array())
-    {
+    function sql_prepare_execute($sql , $input_parameters = array()) {
         global $SQL_DBH;
         sql_query_log($sql);
 
-        if (!$SQL_DBH) return false;
+        if (!$SQL_DBH) {
+            return false;
+        }
         $stmt = $SQL_DBH->prepare($sql);
-        if ( $stmt && $stmt->execute($input_parameters) )
+        if ( $stmt && $stmt->execute($input_parameters) ) {
             return $stmt;
+        }
         return false;
     }
 
     function sql_direct_getValue_AsInt($sql , $input_parameters = array())
     {
-        if (!is_string($sql))
-        {
+        if (!is_string($sql)) {
             sql_print_error("error: param1 is not string.");
             return 0;
         }
         $stmt = sql_prepare_execute($sql , $input_parameters);
-        if ($stmt)
-            $res = sql_fetch_column($stmt);
-        else
-            $res = 0;
-        return intval($res);
-    }
+        if (!$stmt) {
+            return 0;
+        }
 
+        return (int)sql_fetch_column($stmt);
+    }
 }
