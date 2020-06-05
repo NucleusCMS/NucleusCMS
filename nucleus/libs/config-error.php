@@ -1,8 +1,9 @@
 <?php
 
 
-if (!headers_sent())
+if ( ! headers_sent()) {
     header('Content-type: text/html; charset=utf-8');
+}
 
 $http_accept_language_list = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 if (in_array('ja', $http_accept_language_list)) { // japanese

@@ -64,10 +64,10 @@ class BaseActions {
 
     /**
      * include file (no parsing of php)
-     * 
+     *
      * ToDo: function returns nothing and refering to the cross reference it
-     *       isn't called from anywhere   
-     * 
+     *       isn't called from anywhere
+     *
      * @param $filename
      */
     function parse_include($filename) {
@@ -76,49 +76,47 @@ class BaseActions {
 
     /**
      * php-include file
-     * 
+     *
      * @param $filename
      */
     function parse_phpinclude($filename) {
         includephp($this->getIncludeFileName($filename));
     }
 
-    
+
     /**
      * parsed include
-     * 
+     *
      * @param $filename
      */
     function parse_parsedinclude($filename) {
         // check current level
-        if ($this->level > 3)
-            return;    // max. depth reached (avoid endless loop)
+        if ($this->level > 3) {
+            return;
+        }    // max. depth reached (avoid endless loop)
         global $skinid;
         $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
-        if (!$skin->isValid && !is_file($file))
-        {
+        if ( ! $skin->isValid && ! is_file($file)) {
             return;
         }
-        $contents = (strpos($filename,'/')===false ? $skin->getContent($filename) : false);
-        if (!$contents)
-        {
-            if (!is_file($file))
-            {
+        $contents = (strpos($filename, '/') === false ? $skin->getContent($filename) : false);
+        if ( ! $contents) {
+            if ( ! is_file($file)) {
                 return;
             }
             $contents = file_get_contents($file);
-            if (empty($contents))
-            {
+            if (empty($contents)) {
                 return;
             }
         }
         $this->level = $this->level + 1;
         // parse file contents
-        if(str_contains($contents,'<%'))
+        if (str_contains($contents, '<%')) {
             $this->parser->parse($contents);
-        else
+        } else {
             echo $contents;
+        }
 
         $this->level = $this->level - 1;
     }
@@ -128,17 +126,18 @@ class BaseActions {
      * parser properties
      *
      * IF IncludeMode = 'skindir' => use skindir
-     * 
+     *
      * @param $filename
      */
     function getIncludeFileName($filename) {
         // leave absolute filenames and http urls as they are
         if (
-                (substr($filename,0,1) === '/')
-            ||    (substr($filename,0,7) === 'http://')
-            ||    (substr($filename,0,6) === 'ftp://')
-            )
+            (substr($filename, 0, 1) === '/')
+            || (substr($filename, 0, 7) === 'http://')
+            || (substr($filename, 0, 6) === 'ftp://')
+        ) {
             return $filename;
+        }
 
         $filename = PARSER::getProperty('IncludePrefix') . $filename;
         if (PARSER::getProperty('IncludeMode') === 'skindir') {
@@ -171,7 +170,6 @@ class BaseActions {
      * Helper function: add if condition
      */
     function _addIfCondition($condition) {
-
         $this->if_conditions[] = $condition;
 
         $this->_updateTopIfCondition();
@@ -183,10 +181,11 @@ class BaseActions {
      * Helper function: update the Top of the If Conditions Array
      */
     function _updateTopIfCondition() {
-        if (count($this->if_conditions) == 0)
+        if (count($this->if_conditions) == 0) {
             $this->if_currentlevel = 1;
-        else
+        } else {
             $this->if_currentlevel = $this->if_conditions[sizeof($this->if_conditions) - 1];
+        }
     }
 
     /**
@@ -202,8 +201,9 @@ class BaseActions {
      */
     function _updateIfExecute($condition) {
         $index = count($this->if_execute) - 1;
-        if (!isset($this->if_execute[$index]))
+        if ( ! isset($this->if_execute[$index])) {
             $this->if_execute[$index] = 0;
+        }
         $this->if_execute[$index] = $this->if_execute[$index] || $condition;
     }
 
@@ -235,10 +235,11 @@ class BaseActions {
      * @see setHighlight
      */
     function highlight(&$data) {
-        if ($this->aHighlight)
-            return highlight($data,$this->aHighlight,$this->template['SEARCH_HIGHLIGHT']);
-        else
+        if ($this->aHighlight) {
+            return highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
+        } else {
             return $data;
+        }
     }
 
     /**
@@ -256,7 +257,9 @@ class BaseActions {
      * Parses <%else%> statements
      */
     function parse_else() {
-        if (count($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) {
+            return;
+        }
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
             @ob_end_flush();
@@ -275,7 +278,9 @@ class BaseActions {
      * Parses <%elseif%> statements
      */
     function parse_elseif() {
-        if (count($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) {
+            return;
+        }
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
             @ob_end_flush();
@@ -300,14 +305,16 @@ class BaseActions {
 
         $args = func_get_args();
         $condition = call_user_func_array(array($this, 'checkCondition'), $args);
-        $this->_addIfCondition(!$condition);
+        $this->_addIfCondition(! $condition);
     }
 
     /**
      * Parses <%elseifnot%> statements
      */
     function parse_elseifnot() {
-        if (count($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) {
+            return;
+        }
         array_pop($this->if_conditions);
         if ($this->if_currentlevel) {
             @ob_end_flush();
@@ -320,7 +327,7 @@ class BaseActions {
             ob_end_clean();
             $args = func_get_args();
             $condition = call_user_func_array(array($this, 'checkCondition'), $args);
-            $this->_addIfCondition(!$condition);
+            $this->_addIfCondition(! $condition);
         }
     }
 
@@ -330,7 +337,9 @@ class BaseActions {
      */
     function parse_endif() {
         // we can only close what has been opened
-        if (count($this->if_conditions) == 0) return;
+        if (count($this->if_conditions) == 0) {
+            return;
+        }
 
         if ($this->if_currentlevel) {
             @ob_end_flush();

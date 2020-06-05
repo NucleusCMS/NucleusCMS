@@ -44,7 +44,7 @@ class SKINEXPORT {
      * @result false when no such ID exists
      */
     function addTemplate($id) {
-        if (!TEMPLATE::existsID($id)) {
+        if ( ! TEMPLATE::existsID($id)) {
             return 0;
         }
 
@@ -62,7 +62,7 @@ class SKINEXPORT {
      * @result false when no such ID exists
      */
     function addSkin($id) {
-        if (!SKIN::existsID($id)) {
+        if ( ! SKIN::existsID($id)) {
             return 0;
         }
 
@@ -108,31 +108,31 @@ class SKINEXPORT {
 
         // meta
         echo "\t<meta>\n";
-            // skins
-            foreach ($this->skins as $skinId => $skinName) {
-                $skinName = hsc($skinName, ENT_QUOTES);
-                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
-                }
-                echo "\t\t" . '<skin name="' . hsc($skinName, ENT_QUOTES) . '" />' . "\n";
+        // skins
+        foreach ($this->skins as $skinId => $skinName) {
+            $skinName = hsc($skinName, ENT_QUOTES);
+            if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
             }
-            // templates
-            foreach ($this->templates as $templateId => $templateName) {
-                $templateName = hsc($templateName, ENT_QUOTES);
-                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
-                }
-                echo "\t\t" . '<template name="' . hsc($templateName, ENT_QUOTES) . '" />' . "\n";
+            echo "\t\t" . '<skin name="' . hsc($skinName, ENT_QUOTES) . '" />' . "\n";
+        }
+        // templates
+        foreach ($this->templates as $templateId => $templateName) {
+            $templateName = hsc($templateName, ENT_QUOTES);
+            if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                $templateName = mb_convert_encoding($templateName, 'UTF-8', _CHARSET);
             }
-            // extra info
-            if ($this->info) {
-                if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $skin_info = mb_convert_encoding($this->info, 'UTF-8', _CHARSET);
-                } else {
-                    $skin_info = $this->info;
-                }
-                echo "\t\t<info><![CDATA[" . $skin_info . "]]></info>\n";
+            echo "\t\t" . '<template name="' . hsc($templateName, ENT_QUOTES) . '" />' . "\n";
+        }
+        // extra info
+        if ($this->info) {
+            if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
+                $skin_info = mb_convert_encoding($this->info, 'UTF-8', _CHARSET);
+            } else {
+                $skin_info = $this->info;
             }
+            echo "\t\t<info><![CDATA[" . $skin_info . "]]></info>\n";
+        }
         echo "\t</meta>\n\n\n";
 
         // contents skins
@@ -141,13 +141,13 @@ class SKINEXPORT {
             $skinObj = new SKIN($skinId);
             $skinName = hsc($skinName, ENT_QUOTES);
             $contentT = hsc($skinObj->getContentType(), ENT_QUOTES);
-            $incMode  = hsc($skinObj->getIncludeMode(), ENT_QUOTES);
+            $incMode = hsc($skinObj->getIncludeMode(), ENT_QUOTES);
             $incPrefx = hsc($skinObj->getIncludePrefix(), ENT_QUOTES);
             $skinDesc = hsc($skinObj->getDescription(), ENT_QUOTES);
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
                 $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
                 $contentT = mb_convert_encoding($contentT, 'UTF-8', _CHARSET);
-                $incMode  = mb_convert_encoding($incMode,  'UTF-8', _CHARSET);
+                $incMode = mb_convert_encoding($incMode, 'UTF-8', _CHARSET);
                 $incPrefx = mb_convert_encoding($incPrefx, 'UTF-8', _CHARSET);
                 $skinDesc = mb_convert_encoding($skinDesc, 'UTF-8', _CHARSET);
             }
@@ -157,20 +157,20 @@ class SKINEXPORT {
             echo "\t\t" . '<description>' . $skinDesc . '</description>' . "\n";
 
             $suborder2 = "CASE WHEN spartstype = 'specialpage' THEN 1"
-                        . " WHEN stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') THEN 1"
-                        . " ELSE 0"
-                        . " END AS suborder2";
+                . " WHEN stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') THEN 1"
+                . " ELSE 0"
+                . " END AS suborder2";
 
             $sql = sprintf("SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
-                            $suborder2, sql_table('skin'), intval($skinId));
+                $suborder2, sql_table('skin'), intval($skinId));
             $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
             $res = sql_query($sql);
             while ($partObj = sql_fetch_object($res)) {
-                $type  = escapeHTML($partObj->stype, ENT_QUOTES);
+                $type = escapeHTML($partObj->stype, ENT_QUOTES);
                 $cdata = $this->escapeCDATA($partObj->scontent);
                 $tmptag = ($partObj->spartstype == 'specialpage' ? 'specialpage' : 'part');
                 if (strtoupper(_CHARSET) != 'UTF-8') {
-                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+                    $type = mb_convert_encoding($type, 'UTF-8', _CHARSET);
                     $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
                 }
                 printf("\t\t" . '<%s name="%s">', $tmptag, $type);
@@ -196,17 +196,17 @@ class SKINEXPORT {
             echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
 
             $que = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d',
-                            sql_table('template'), $templateId);
+                sql_table('template'), $templateId);
             $res = sql_query($que);
             while ($partObj = sql_fetch_object($res)) {
-                $type  = hsc($partObj->tpartname, ENT_QUOTES);
+                $type = hsc($partObj->tpartname, ENT_QUOTES);
                 $cdata = $this->escapeCDATA($partObj->tcontent);
                 if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $type  = mb_convert_encoding($type,  'UTF-8', _CHARSET);
+                    $type = mb_convert_encoding($type, 'UTF-8', _CHARSET);
                     $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
                 }
                 echo "\t\t" . '<part name="' . $type . '">';
-                echo '<![CDATA[' .  $cdata . ']]>';
+                echo '<![CDATA[' . $cdata . ']]>';
                 echo '</part>' . "\n\n";
             }
 
@@ -219,9 +219,7 @@ class SKINEXPORT {
     /**
      * Escapes CDATA content so it can be included in another CDATA section
      */
-    function escapeCDATA($cdata)
-    {
+    function escapeCDATA($cdata) {
         return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
-
     }
 }

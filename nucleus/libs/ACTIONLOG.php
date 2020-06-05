@@ -15,34 +15,38 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-define('ERROR',1);        // only errors
-define('WARNING',2);    // errors and warnings
-define('INFO',3);        // info, errors and warnings
-define('DEBUG',4);        // everything
+define('ERROR', 1);        // only errors
+define('WARNING', 2);    // errors and warnings
+define('INFO', 3);        // info, errors and warnings
+define('DEBUG', 4);        // everything
 $CONF['LogLevel'] = INFO;
 
 class ACTIONLOG {
 
     /**
-      * (Static) Method to add a message to the action log
-      */
+     * (Static) Method to add a message to the action log
+     */
     public static function add($level, $message) {
         global $member, $CONF, $DB_PHP_MODULE_NAME;
 
-        if ($CONF['LogLevel'] < $level)
+        if ($CONF['LogLevel'] < $level) {
             return;
+        }
 
-        if ($member && $member->isLoggedIn())
+        if ($member && $member->isLoggedIn()) {
             $message = sprintf('[%s] %s', $member->getDisplayName(), $message);
+        }
 
-        $timestamp = date('Y-m-d H:i:s',$_SERVER['REQUEST_TIME']);    // format timestamp
+        $timestamp = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);    // format timestamp
         if ($DB_PHP_MODULE_NAME === 'pdo') {
             sql_prepare_execute(sprintf(
                 'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)'
                 , sql_table('actionlog')
-            ) , array(
-                (string) $timestamp
-                , (string) $message)
+            ), array(
+                    (string)$timestamp
+                ,
+                    (string)$message
+                )
             );
         } else {
             $message = sql_quote_string($message);        // add slashes
@@ -59,25 +63,27 @@ class ACTIONLOG {
     }
 
     /**
-      * (Static) Method to add a message to the action log
-      * If the same message, the old one will be erased.
-      */
+     * (Static) Method to add a message to the action log
+     * If the same message, the old one will be erased.
+     */
     public static function addUnique($level, $message) {
         global $member, $CONF, $DB_PHP_MODULE_NAME;
 
-        if ($CONF['LogLevel'] < $level)
+        if ($CONF['LogLevel'] < $level) {
             return;
+        }
 
         $msg = $message;
-        if ($member && $member->isLoggedIn())
+        if ($member && $member->isLoggedIn()) {
             $msg = "[" . $member->getDisplayName() . "] " . $msg;
+        }
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
             $query = sprintf(
                 "DELETE FROM `%s` WHERE message=?"
                 , sql_table('actionlog')
             );
-            sql_prepare_execute($query , array((string) $msg));
+            sql_prepare_execute($query, array((string)$msg));
         } else {
             $query = sprintf(
                 "DELETE FROM `%s` WHERE message=%s"
@@ -91,8 +97,8 @@ class ACTIONLOG {
     }
 
     /**
-      * (Static) Method to clear the whole action log
-      */
+     * (Static) Method to clear the whole action log
+     */
     public static function clear() {
         global $manager;
 
@@ -103,13 +109,15 @@ class ACTIONLOG {
     }
 
     /**
-      * (Static) Method to trim the action log (from over 500 back to 250 entries)
-      */
+     * (Static) Method to trim the action log (from over 500 back to 250 entries)
+     */
     public static function trimLog() {
         static $checked = 0;
 
         // only check once per run
-        if ($checked) return;
+        if ($checked) {
+            return;
+        }
 
         // trim
         $checked = 1;
@@ -124,9 +132,9 @@ class ACTIONLOG {
         $iDropSize = 250;
         if ($iTotal > $iMaxSize) {
             $tsChop = quickQuery(sprintf(
-                'SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d,1'
-                , sql_table('actionlog')
-                , $iDropSize)
+                    'SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d,1'
+                    , sql_table('actionlog')
+                    , $iDropSize)
             );
             sql_query(sprintf(
                 "DELETE FROM %s WHERE timestamp < '%s'"

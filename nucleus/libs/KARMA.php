@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) The Nucleus Group
@@ -14,6 +15,7 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
+
 class KARMA {
 
     // id of item about which this object contains information
@@ -39,25 +41,37 @@ class KARMA {
     }
 
     function getNbPosVotes() {
-        if (!$this->inforead) $this->readFromDatabase();
+        if ( ! $this->inforead) {
+            $this->readFromDatabase();
+        }
         return $this->karmapos;
     }
+
     function getNbNegVotes() {
-        if (!$this->inforead) $this->readFromDatabase();
+        if ( ! $this->inforead) {
+            $this->readFromDatabase();
+        }
         return $this->karmaneg;
     }
+
     function getNbOfVotes() {
-        if (!$this->inforead) $this->readFromDatabase();
+        if ( ! $this->inforead) {
+            $this->readFromDatabase();
+        }
         return ($this->karmapos + $this->karmaneg);
     }
+
     function getTotalScore() {
-        if (!$this->inforead) $this->readFromDatabase();
+        if ( ! $this->inforead) {
+            $this->readFromDatabase();
+        }
         return ($this->karmapos - $this->karmaneg);
     }
 
     function setNbPosVotes($val) {
         $this->karmapos = intval($val);
     }
+
     function setNbNegVotes($val) {
         $this->karmaneg = intval($val);
     }
@@ -80,10 +94,9 @@ class KARMA {
     }
 
 
-
     // these methods shouldn't be called directly
     function readFromDatabase() {
-        $query = 'SELECT ikarmapos, ikarmaneg FROM '.sql_table('item').' WHERE inumber=' . $this->itemid;
+        $query = 'SELECT ikarmapos, ikarmaneg FROM ' . sql_table('item') . ' WHERE inumber=' . $this->itemid;
         $res = sql_query($query);
         $obj = sql_fetch_object($res);
 
@@ -94,20 +107,20 @@ class KARMA {
 
 
     function writeToDatabase() {
-        $query = 'UPDATE '.sql_table('item').' SET ikarmapos=' . $this->karmapos . ', ikarmaneg='.$this->karmaneg.' WHERE inumber=' . $this->itemid;
+        $query = 'UPDATE ' . sql_table('item') . ' SET ikarmapos=' . $this->karmapos . ', ikarmaneg=' . $this->karmaneg . ' WHERE inumber=' . $this->itemid;
         sql_query($query);
     }
 
     // checks if a vote is still allowed for an IP
     function isVoteAllowed($ip) {
         $sql = 'SELECT count(*) AS result FROM ' . sql_table('karma')
-             . sprintf(" WHERE itemid=%d AND ip='%s' LIMIT 1", $this->itemid, sql_real_escape_string($ip));
-        return ( intval(quickQuery($sql)) == 0 );
+            . sprintf(" WHERE itemid=%d AND ip='%s' LIMIT 1", $this->itemid, sql_real_escape_string($ip));
+        return (intval(quickQuery($sql)) == 0);
     }
 
     // save IP in database so no multiple votes are possible
     function saveIP() {
-        $query = 'INSERT INTO '.sql_table('karma').' (itemid, ip) VALUES ('.$this->itemid.",'".sql_real_escape_string(serverVar('REMOTE_ADDR'))."')";
+        $query = 'INSERT INTO ' . sql_table('karma') . ' (itemid, ip) VALUES (' . $this->itemid . ",'" . sql_real_escape_string(serverVar('REMOTE_ADDR')) . "')";
         sql_query($query);
     }
 }

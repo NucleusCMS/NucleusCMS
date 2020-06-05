@@ -16,14 +16,12 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class ACTION
-{
+class ACTION {
 
     /**
      *  Constructor for an new ACTION object
      */
-    function __construct()
-    {
+    function __construct() {
         // do nothing
     }
 
@@ -31,46 +29,44 @@ class ACTION
     /**
      *  Calls functions that handle an action called from action.php
      */
-    function doAction($action)
-    {
-        switch($action)
-        {
+    function doAction($action) {
+        switch ($action) {
             case 'autodraft':
                 return $this->autoDraft();
-            break;
-        
+                break;
+
             case 'updateticket':
                 return $this->updateTicket();
-            break;
+                break;
 
             case 'addcomment':
                 return $this->addComment();
-            break;
+                break;
 
             case 'sendmessage':
                 return $this->sendMessage();
-            break;
+                break;
 
             case 'createaccount':
                 return $this->createAccount();
-            break;
+                break;
 
             case 'forgotpassword':
                 $this->forgotPassword();
-            break;
+                break;
 
             case 'votenegative':
             case 'votepositive':
                 $this->doVote($action === 'votepositive' ? '+' : '-');
-            break;
+                break;
 
             case 'plugin':
                 $this->callPlugin();
-            break;
+                break;
 
             default:
                 doError(_ERROR_BADACTION);
-            break;
+                break;
         }
         return '';
     }
@@ -79,23 +75,21 @@ class ACTION
     /**
      *  Adds a new comment to an item (if IP isn't banned)
      */
-    function addComment()
-    {
+    function addComment() {
         global $CONF, $errormessage, $manager;
 
-        $post['itemid']   = intPostVar('itemid');
-        $post['user']     = postVar('user');
-        $post['userid']   = postVar('userid');
-        $post['email']    = postVar('email');
-        $post['body']     = postVar('body');
+        $post['itemid'] = intPostVar('itemid');
+        $post['user'] = postVar('user');
+        $post['userid'] = postVar('userid');
+        $post['email'] = postVar('email');
+        $post['body'] = postVar('body');
         $post['remember'] = intPostVar('remember');
 
         // set cookies when required
         #$remember = intPostVar('remember');
 
         // begin if: "Remember Me" box checked
-        if ( $post['remember'] == 1 )
-        {
+        if ($post['remember'] == 1) {
             $lifetime = time() + 2592000;
             setcookie(
                 $CONF['CookiePrefix'] . 'comment_user'
@@ -133,26 +127,20 @@ class ACTION
         $errormessage = $comments->addComment($blog->getCorrectTime(), $post);
 
         // begin if:
-        if ( $errormessage == '1' )
-        {
+        if ($errormessage == '1') {
             // redirect when adding comments succeeded
-            if ( postVar('url') )
-            {
-                redirect(postVar('url') );
-            }
-            else
-            {
+            if (postVar('url')) {
+                redirect(postVar('url'));
+            } else {
                 $url = createItemLink($post['itemid']);
                 redirect($url);
             } // end if
 
-        }
-        // else, show error message using default skin for blog
-        else
-        {
+        } // else, show error message using default skin for blog
+        else {
             return array(
-                'message'    => $errormessage,
-                'skinid'    => $blog->getDefaultSkin()
+                'message' => $errormessage,
+                'skinid' => $blog->getDefaultSkin()
             );
         } // end if
 
@@ -163,32 +151,27 @@ class ACTION
     /**
      *  Sends a message from the current member to the member given as argument
      */
-    function sendMessage()
-    {
+    function sendMessage() {
         global $CONF, $member;
 
         $error = $this->validateMessage();
 
-        if ( $error != '' )
-        {
+        if ($error != '') {
             return array('message' => $error);
         }
 
-        if ( !$member->isLoggedIn() )
-        {
+        if ( ! $member->isLoggedIn()) {
             $fromMail = postVar('frommail');
             $fromName = _MMAIL_FROMANON;
-        }
-        else
-        {
+        } else {
             $fromMail = $member->getEmail();
             $fromName = $member->getDisplayName();
         }
 
         $tomem = new MEMBER();
-        $tomem->readFromId(postVar('memberid') );
+        $tomem->readFromId(postVar('memberid'));
 
-        $message  = sprintf(
+        $message = sprintf(
             "%s %s\n(%s %s) \n\n%s \n\n%s"
             , _MMAIL_MSG
             , $fromName
@@ -201,28 +184,23 @@ class ACTION
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
 
-        @Utils::mail($tomem->getEmail(), $title, $message, 'From: '. $fromMail);
+        @Utils::mail($tomem->getEmail(), $title, $message, 'From: ' . $fromMail);
 
-        if ( postVar('url') )
-        {
-            redirect(postVar('url') );
-        }
-        else
-        {
+        if (postVar('url')) {
+            redirect(postVar('url'));
+        } else {
             $CONF['MemberURL'] = $CONF['IndexURL'];
 
-            if ( $CONF['URLMode'] === 'pathinfo' )
-            {
+            if ($CONF['URLMode'] === 'pathinfo') {
                 $url = createLink(
                     'member'
                     , array(
                         'memberid' => $tomem->getID()
-                        , 'name' => $tomem->getDisplayName()
+                    ,
+                        'name' => $tomem->getDisplayName()
                     )
                 );
-            }
-            else
-            {
+            } else {
                 $url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
             }
 
@@ -237,22 +215,18 @@ class ACTION
      *  Checks if a mail to a member is allowed
      *  Returns a string with the error message if the mail is disallowed
      */
-    function validateMessage()
-    {
+    function validateMessage() {
         global $CONF, $member, $manager;
 
-        if ( !$CONF['AllowMemberMail'] )
-        {
+        if ( ! $CONF['AllowMemberMail']) {
             return _ERROR_MEMBERMAILDISABLED;
         }
 
-        if ( !$member->isLoggedIn() && !$CONF['NonmemberMail'] )
-        {
+        if ( ! $member->isLoggedIn() && ! $CONF['NonmemberMail']) {
             return _ERROR_DISALLOWED;
         }
 
-        if ( !$member->isLoggedIn() && !isValidMailAddress(postVar('frommail')) )
-        {
+        if ( ! $member->isLoggedIn() && ! isValidMailAddress(postVar('frommail'))) {
             return _ERROR_BADMAILADDRESS;
         }
 
@@ -260,44 +234,40 @@ class ACTION
         // can change 'error' to something other than '')
         $result = '';
         $param = array(
-            'type'  => 'membermail',
+            'type' => 'membermail',
             'error' => &$result
         );
         $manager->notify('ValidateForm', $param);
 
         return $result;
-
     }
 
 
     /**
      *  Creates a new user account
      */
-    function createAccount()
-    {
+    function createAccount() {
         global $CONF, $manager;
 
-        if ( !$CONF['AllowMemberCreate'] )
-        {
+        if ( ! $CONF['AllowMemberCreate']) {
             doError(_ERROR_MEMBERCREATEDISABLED);
         }
 
         // evaluate content from FormExtra
         $result = 1;
         $param = array(
-            'type'  => 'membermail',
+            'type' => 'membermail',
             'error' => &$result
         );
         $manager->notify('ValidateForm', $param);
-        
-        if ( $result != 1 )
-        {
+
+        if ($result != 1) {
             return $result;
         }
 
 // even though the member can not log in, set some random initial password. One never knows.
-        mt_srand( (double) microtime() * 1000000);
-        $initialPwd = md5(uniqid(mt_rand(), TRUE) );
+        mt_srand((double)microtime() * 1000000);
+        $initialPwd = md5(uniqid(mt_rand(), true));
 
         // create member (non admin/can not login/no notes/random string as password)
         $name = shorten(postVar('name'), 32, '');
@@ -313,8 +283,7 @@ class ACTION
             , ''
         );
 
-        if ( $r != 1 )
-        {
+        if ($r != 1) {
             return $r;
         }
 
@@ -326,14 +295,14 @@ class ACTION
         $param = array('member' => &$newmem);
         $manager->notify('PostRegister', $param);
 
-        if ( postVar('desturl') )
-        {
-            redirect(postVar('desturl') );
+        if (postVar('desturl')) {
+            redirect(postVar('desturl'));
             exit;
         }
 
-        if (!headers_sent())
+        if ( ! headers_sent()) {
             sendContentType('text/html', '', _CHARSET);
+        }
         echo _MSG_ACTIVATION_SENT;
         echo sprintf(
             '<br /><br />Return to <a href="%s" title="%s">%s</a>'
@@ -344,19 +313,16 @@ class ACTION
         echo "\n</body>\n</html>";
 
         exit;
-
     }
 
 
     /**
      *  Sends a new password
      */
-    function forgotPassword()
-    {
-        $membername = trim(postVar('name') );
+    function forgotPassword() {
+        $membername = trim(postVar('name'));
 
-        if ( !MEMBER::exists($membername) )
-        {
+        if ( ! MEMBER::exists($membername)) {
             doError(_ERROR_NOSUCHMEMBER);
         }
 
@@ -368,23 +334,20 @@ class ACTION
             doError(_ERROR_NOLOGON_NOACTIVATE);*/
 
         // check if user halt or invalid
-        if ( $mem->isHalt() )
-        {
+        if ($mem->isHalt()) {
             doError(_ERROR_LOGIN_MEMBER_HALT_OR_INVALID);
         }
 
         // check if e-mail address is correct
-        if ( !($mem->getEmail() == postVar('email') ) )
-        {
+        if ( ! ($mem->getEmail() == postVar('email'))) {
             doError(_ERROR_INCORRECTEMAIL);
         }
 
         // send activation link
         $mem->sendActivationLink('forgot');
 
-        if ( postVar('url') )
-        {
-            redirect(postVar('url') );
+        if (postVar('url')) {
+            redirect(postVar('url'));
             exit;
         }
 
@@ -404,22 +367,19 @@ class ACTION
     /**
      *  Handle karma votes
      */
-    function doKarma($type)
-    {
-        $this->doVote( ($type === 'pos' || $type === '+') ? '+' : '-' );
+    function doKarma($type) {
+        $this->doVote(($type === 'pos' || $type === '+') ? '+' : '-');
         return;
     }
 
     /**
      *  Handle votes
      */
-    function doVote($type)
-    {
+    function doVote($type) {
         global $itemid, $member, $CONF, $manager;
 
         // check if itemid exists
-        if ( !$manager->existsItem($itemid, 0, 0) )
-        {
+        if ( ! $manager->existsItem($itemid, 0, 0)) {
             doError(_ERROR_NOSUCHITEM);
         }
 
@@ -427,46 +387,41 @@ class ACTION
         $this->checkban($blogid);
 
         $karma =& $manager->getKarma($itemid);
-        $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR') );
+        $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR'));
 
-        $params = array('done'=> false, 'type'=>$type, 'allow'=> &$isVoteAllowed );
+        $params = array('done' => false, 'type' => $type, 'allow' => &$isVoteAllowed);
         $manager->notify('PreVote', $params);
 
         // check if not already voted
-        if ( !$isVoteAllowed )
-        {
+        if ( ! $isVoteAllowed) {
             doError(_ERROR_VOTEDBEFORE);
         }
 
         // check if item does allow voting
         $item =& $manager->getItem($itemid, 0, 0);
 
-        if ( $item['closed'] )
-        {
+        if ($item['closed']) {
             doError(_ERROR_ITEMCLOSED);
         }
 
-        switch ( $type )
-        {
+        switch ($type) {
             case '+':
                 $karma->votePositive();
-            break;
+                break;
 
             case '-':
                 $karma->voteNegative();
-            break;
+                break;
         }
 
-        $params = array('done'=> false, 'type'=>$type);
+        $params = array('done' => false, 'type' => $type);
         $manager->notify('PostVote', $params);
 
 //        $blogid = getBlogIDFromItemID($itemid);
         $blog =& $manager->getBlog($blogid);
 
         // send email to notification address, if any
-        if ( $blog->getNotifyAddress() && $blog->notifyOnVote() )
-        {
-
+        if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
             $mailto_msg = sprintf(
                 "%s %s\n"
                 , _NOTIFY_KV_MSG
@@ -475,15 +430,13 @@ class ACTION
             $itemLink = createItemLink((int)$itemid);
             $temp = parse_url($itemLink);
 
-            if ( !$temp['scheme'] )
-            {
+            if ( ! $temp['scheme']) {
                 $itemLink = $CONF['IndexURL'] . $itemLink;
             }
 
             $mailto_msg .= $itemLink . "\n\n";
 
-            if ( $member->isLoggedIn() )
-            {
+            if ($member->isLoggedIn()) {
                 $mailto_msg .= sprintf(
                     "%s %s (ID=%s)\n"
                     , _NOTIFY_MEMBER
@@ -509,7 +462,7 @@ class ACTION
             );
             $mailto_msg .= getMailFooter();
 
-            $notify = new NOTIFICATION($blog->getNotifyAddress() );
+            $notify = new NOTIFICATION($blog->getNotifyAddress());
             $notify->notify(
                 sprintf(
                     '%s %s (%s)'
@@ -523,12 +476,9 @@ class ACTION
 
         $refererUrl = serverVar('HTTP_REFERER');
 
-        if ( $refererUrl )
-        {
+        if ($refererUrl) {
             $url = $refererUrl;
-        }
-        else
-        {
+        } else {
             $url = $itemLink;
         }
 
@@ -538,55 +488,46 @@ class ACTION
 
 
     /**
-      * Calls a plugin action
-      */
-    function callPlugin()
-    {
+     * Calls a plugin action
+     */
+    function callPlugin() {
         global $manager;
 
         $pluginName = 'NP_' . requestVar('name');
 
         // 1: check if plugin is installed
-        if ( !$manager->pluginInstalled($pluginName) )
-        {
+        if ( ! $manager->pluginInstalled($pluginName)) {
             doError(_ERROR_NOSUCHPLUGIN);
         }
 
         // 2: call plugin
         $pluginObject =& $manager->getPlugin($pluginName);
 
-        if ( $pluginObject )
-        {
+        if ($pluginObject) {
             $error = $pluginObject->doAction(requestVar('type'));
-        }
-        else
-        {
+        } else {
             $error = 'Could not load plugin (see actionlog)';
         }
 
         // doAction returns error when:
         // - an error occurred (duh)
         // - no actions are allowed (doAction is not implemented)
-        if ( $error )
-        {
+        if ($error) {
             doError($error);
         }
 
         exit;
-
     }
 
 
     /**
      *  Checks if an IP or IP range is banned
      */
-    function checkban($blogid)
-    {
+    function checkban($blogid) {
         // check if banned
-        $ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR') );
+        $ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
 
-        if ( $ban != 0 )
-        {
+        if ($ban != 0) {
             doError(sprintf(
                 '%s%s%s%s%s'
                 , _ERROR_BANNED1
@@ -596,23 +537,18 @@ class ACTION
                 , _ERROR_BANNED3
             ));
         }
-
     }
 
 
     /**
      * Gets a new ticket
      */
-    function updateTicket()
-    {
+    function updateTicket() {
         global $manager;
 
-        if ( $manager->checkTicket() )
-        {
+        if ($manager->checkTicket()) {
             echo $manager->getNewTicket();
-        }
-        else
-        {
+        } else {
             echo _ERROR . ':' . _ERROR_BADTICKET;
         }
 
@@ -623,26 +559,19 @@ class ACTION
     /**
      * Handles AutoSaveDraft
      */
-    function autoDraft()
-    {
+    function autoDraft() {
         global $manager;
 
-        if ( $manager->checkTicket() )
-        {
+        if ($manager->checkTicket()) {
             $manager->loadClass('ITEM');
             $info = ITEM::createDraftFromRequest();
 
-            if ( $info['status'] == 'error' )
-            {
+            if ($info['status'] == 'error') {
                 echo $info['message'];
-            }
-            else
-            {
+            } else {
                 echo $info['draftid'];
             }
-        }
-        else
-        {
+        } else {
             echo _ERROR . ':' . _ERROR_BADTICKET;
         }
 

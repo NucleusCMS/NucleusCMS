@@ -17,13 +17,13 @@
 
 class ENCAPSULATE {
     /**
-      * Uses $call to call a function using parameters $params
-      * This function should return the amount of entries shown.
-      * When entries are show, batch operation handlers are shown too.
-      * When no entries were shown, $errormsg is used to display an error
-      *
-      * Passes on the amount of results found (for further encapsulation)
-      */
+     * Uses $call to call a function using parameters $params
+     * This function should return the amount of entries shown.
+     * When entries are show, batch operation handlers are shown too.
+     * When no entries were shown, $errormsg is used to display an error
+     *
+     * Passes on the amount of results found (for further encapsulation)
+     */
     function doEncapsulate(&$call, &$params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
         // start output buffering
         ob_start();

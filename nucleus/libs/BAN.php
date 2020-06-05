@@ -18,11 +18,11 @@
 class BAN {
 
     /**
-      * Checks if a given IP is banned from commenting/voting
-      *
-      * Returns 0 when not banned, or a BANINFO object containing the
-      * message and other information of the ban
-      */
+     * Checks if a given IP is banned from commenting/voting
+     *
+     * Returns 0 when not banned, or a BANINFO object containing the
+     * message and other information of the ban
+     */
     public static function isBanned($blogid, $ip) {
         $blogid = (int)$blogid;
         $query = sprintf(
@@ -33,7 +33,7 @@ class BAN {
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
-            if (!($found === false)) {
+            if ( ! ($found === false)) {
                 // found a match!
                 return new BANINFO($obj->iprange, $obj->reason);
             }
@@ -42,17 +42,17 @@ class BAN {
     }
 
     /**
-      * Adds a new ban to the banlist. Returns 1 on success, 0 on error
-      */
+     * Adds a new ban to the banlist. Returns 1 on success, 0 on error
+     */
     public static function addBan($blogid, $iprange, $reason) {
         global $manager;
 
         $blogid = (int)$blogid;
 
         $param = array(
-            'blogid'    =>  $blogid,
-            'iprange'    => &$iprange,
-            'reason'    => &$reason
+            'blogid' => $blogid,
+            'iprange' => &$iprange,
+            'reason' => &$reason
         );
         $manager->notify('PreAddBan', $param);
 
@@ -65,9 +65,9 @@ class BAN {
         ));
 
         $param = array(
-            'blogid'  => $blogid,
+            'blogid' => $blogid,
             'iprange' => $iprange,
-            'reason'  => $reason
+            'reason' => $reason
         );
         $manager->notify('PostAddBan', $param);
 
@@ -75,16 +75,16 @@ class BAN {
     }
 
     /**
-      * Removes a ban from the banlist (correct iprange is needed as argument)
-      * Returns 1 on success, 0 on error
-      */
+     * Removes a ban from the banlist (correct iprange is needed as argument)
+     * Returns 1 on success, 0 on error
+     */
     public static function removeBan($blogid, $iprange) {
         global $manager;
         $blogid = (int)$blogid;
 
         $param = array(
-            'blogid'    => $blogid,
-            'range'        => $iprange
+            'blogid' => $blogid,
+            'range' => $iprange
         );
         $manager->notify('PreDeleteBan', $param);
 
@@ -98,7 +98,7 @@ class BAN {
 
         $param = array(
             'blogid' => $blogid,
-            'range'  => $iprange
+            'range' => $iprange
         );
         $manager->notify('PostDeleteBan', $param);
 
