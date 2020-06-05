@@ -127,6 +127,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
             $conn = $MYSQL_CONN;
         }
         $SQLCount++;
+        if(is_array($query)) {
+            $query = implode("\n", $query);
+        }
         $res = mysql_query($query,$conn);
         if (!$res && $CONF['debug']) {
             echo sprintf("mySQL error with query <b>%s</b> : %s<p />", $query, mysql_error($conn));
