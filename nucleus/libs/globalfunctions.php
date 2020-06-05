@@ -44,7 +44,8 @@ if (version_compare(phpversion(),'5.4.0','<')) {
     _checkEnv();
 }
 
-define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
+// if you forked product, you can easy to change cms name.
+define('CORE_APPLICATION_NAME',                'Nucleus CMS');
 define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
@@ -86,8 +87,6 @@ $action       = requestVar('action');
 $nextaction   = requestVar('nextaction');
 $maxresults   = requestVar('maxresults');
 $startpos     = intRequestVar('startpos');
-$errormessage = '';
-$error        = '';
 $special      = requestVar('special');
 $virtualpath  = (getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO');
 
@@ -110,8 +109,10 @@ if (($DB_DRIVER_NAME === 'mysql') && !function_exists('mysql_query')) {
         include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php');
     }
 } else {
-    if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
-        define('_EXT_MYSQL_EMULATE' , 0);
+    // installer define this value.
+    if (!defined('_EXT_MYSQL_EMULATE')) {
+        define('_EXT_MYSQL_EMULATE', 0);
+    }
 }
 
 include_once(NC_LIBS_PATH . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
@@ -172,10 +173,10 @@ $CONF['CategoryURL']    = confVar('Self');
 // switch URLMode back to normal when confVar('Self') ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
 if (
-    !isset($CONF['URLMode'])
+    confVar('URLMode')===null
     ||
     (
-        ($CONF['URLMode'] === 'pathinfo') && (substr(confVar('Self'), strlen(confVar('Self')) - 4) === '.php')
+        (confVar('URLMode') === 'pathinfo') && (substr(confVar('Self'), strlen(confVar('Self')) - 4) === '.php')
     )
 ) {
     $CONF['URLMode'] = 'normal';
@@ -190,43 +191,42 @@ if (!confVar('DisableJsTools') && str_contains(serverVar('HTTP_USER_AGENT'), 'Mo
 $member = new MEMBER();
 
 // secure cookie key settings (either 'none', 0, 8, 16, 24, or 32)
-if (!isset($CONF['secureCookieKey'])) $CONF['secureCookieKey']=24;
-switch($CONF['secureCookieKey']){
-case 8:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 16:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 24:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 32:
-    $CONF['secureCookieKeyIP']=serverVar('REMOTE_ADDR');
-    break;
-default:
-    $CONF['secureCookieKeyIP']='';
+if (!isset($CONF['secureCookieKey'])) {
+    $CONF['secureCookieKey'] = 24;
+}
+switch($CONF['secureCookieKey']) {
+    case 8:
+        $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+        break;
+    case 16:
+        $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+        break;
+    case 24:
+        $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
+        break;
+    case 32:
+        $CONF['secureCookieKeyIP']=serverVar('REMOTE_ADDR');
+        break;
+    default:
+        $CONF['secureCookieKeyIP']='';
 }
 
 // login/logout when required or renew cookies
 if (requestVar('action') === 'login') {
-    if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    if(!serverVar('HTTP_ACCEPT_LANGUAGE')) {
         header("HTTP/1.0 404 Not Found");
         exit;
     }
     // Form Authentication
-    $login = postVar('login');
-    $pw = postVar('password');
-    $shared = intPostVar('shared'); // shared computer or not
-
-    $pw=substr($pw,0,40); // avoid md5 collision by using a long key
-
-    if ($member->login($login, $pw) ) {
+    // avoid md5 collision by using a long key
+    if ($member->login(postVar('login'), substr(postVar('password'),0,40)) ) {
         $member->newCookieKey();
-        $member->setCookies($shared);
-        if ($CONF['secureCookieKey']!=='none') {
+        $member->setCookies(intPostVar('shared'));
+        if (confVar('secureCookieKey')!=='none') {
             // secure cookie key
-            $member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
+            $member->setCookieKey(
+                md5($member->getCookieKey().confVar('secureCookieKeyIP'))
+            );
             $member->writeCookieKey();
         }
 
@@ -237,68 +237,83 @@ if (requestVar('action') === 'login') {
 
         $param = array(
             'member'    => &$member,
-            'username'    =>  $login
+            'username'    =>  postVar('login')
         );
         $manager->notify('LoginSuccess', $param);
-        $errormessage = '';
-        $log_message = sprintf("Login successful for %s (sharedpc=%s)", $login, $shared);
+        $log_message = sprintf("Login successful for %s (sharedpc=%s)", postVar('login'), intPostVar('shared'));
 
-        $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
-        $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
+        $remote_ip = serverVar('REMOTE_ADDR', '');
+        $remote_host = serverVar('REMOTE_HOST', gethostbyaddr($remote_ip));
         if ($remote_ip !=='') {
             $log_message .= sprintf(" %s", $remote_ip);
-            if ($remote_host!==false && $remote_host!=$remote_ip)
+            if ($remote_host!==false && $remote_host!=$remote_ip) {
                 $log_message .= sprintf("(%s)", $remote_host);
+            }
         }
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"]);
+        if (serverVar('HTTP_X_FORWARDED_FOR')) {
+            $remote_proxy_ip = explode(',' , serverVar('HTTP_X_FORWARDED_FOR'));
             $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
             $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
-            if ($remote_proxy_host !==false && $remote_proxy_host!=$remote_proxy_ip)
-                $log_message .= sprintf("(%s)", $remote_proxy_host);
+            if ($remote_proxy_host !==false && $remote_proxy_host!=$remote_proxy_ip) {
+                $log_message .= sprintf('(%s)', $remote_proxy_host);
+            }
             unset($remote_proxy_ip, $remote_proxy_host);
         }
         ACTIONLOG::add(INFO, $log_message);
         unset($log_message);
         unset($remote_ip, $remote_host);
     } else {
-        // errormessage for [%errordiv%]
-        $trimlogin = trim($login);
-        if (empty($trimlogin))
-        {
-            $errormessage = "Please enter a username.";
-        }
-        else 
-        {
-            loadCoreLanguage(false);
-            if ($member->isHalt())
-                $errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
-            else
-                $errormessage = 'Login failed for ' . $login;
-        }
-        $param = array('username' => $login);
+        $param = array('username' => postVar('login'));
         $manager->notify('LoginFailed', $param);
-        ACTIONLOG::add(INFO, $errormessage);
+        if (!trim(postVar('login'))) {
+            ACTIONLOG::add(INFO, 'Please enter a username.');
+        } else {
+            loadCoreLanguage();
+            if ($member->isHalt()) {
+                ACTIONLOG::add(
+                    INFO
+                    , sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, postVar('login'))
+                );
+            } else {
+                ACTIONLOG::add(INFO, 'Login failed for ' . postVar('login'));
+            }
+        }
     }
-} elseif (($action === 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
+} elseif ($action === 'logout' && !headers_sent() && cookieVar(confVar('CookiePrefix') . 'user')) {
     // remove cookies on logout
-    setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    $param = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
+    setcookie(
+        confVar('CookiePrefix') . 'user'
+        , ''
+        , time() - 2592000
+        , confVar('CookiePath')
+        , confVar('CookieDomain')
+        , confVar('CookieSecure')
+    );
+    setcookie(
+        confVar('CookiePrefix') . 'loginkey'
+        , ''
+        , time() - 2592000
+        , confVar('CookiePath')
+        , confVar('CookieDomain')
+        , confVar('CookieSecure')
+    );
+    $param = array('username' => cookieVar(confVar('CookiePrefix') . 'user'));
     $manager->notify('Logout', $param);
-} elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
+} elseif (cookieVar(confVar('CookiePrefix') . 'user') ) {
     // Cookie Authentication
-    $ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
+    $ck=cookieVar(confVar('CookiePrefix') . 'loginkey');
     // secure cookie key
     $ck=substr($ck,0,32); // avoid md5 collision by using a long key
-    if ($CONF['secureCookieKey']!=='none') $ck=md5($ck.$CONF['secureCookieKeyIP']);
-    $res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
+    if (confVar('secureCookieKey')!=='none') {
+        $ck = md5($ck . confVar('secureCookieKeyIP'));
+    }
+    $res = $member->cookielogin(cookieVar(confVar('CookiePrefix') . 'user'), $ck );
     unset($ck);
 
     // renew cookies when not on a shared computer
-    if ($res && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) && (!headers_sent() ) ) {
-        $member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
+    if ($res && (cookieVar(confVar('CookiePrefix') . 'sharedpc') != 1) && (!headers_sent() ) ) {
+        $member->setCookieKey(cookieVar(confVar('CookiePrefix') . 'loginkey'));
         $member->setCookies();
     }
 }
@@ -309,8 +324,8 @@ $manager->notify('PostAuthentication', $param);
 ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
-if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
-    $url = trim($CONF['DisableSiteURL']);
+if (confVar('DisableSite') && !$member->isAdmin() && !confVar('UsingAdminArea')) {
+    $url = trim(confVar('DisableSiteURL'));
     if (strlen($url)>0) {
         redirect($url);
     } else {
@@ -349,10 +364,24 @@ spl_autoload_register('loadCoreClassFor_spl'.(version_compare('5.3.0',PHP_VERSIO
 
 // set lastVisit cookie (if allowed)
 if (!headers_sent() ) {
-    if ($CONF['LastVisit']) {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+    if (confVar('LastVisit')) {
+        setcookie(
+            confVar('CookiePrefix') . 'lastVisit'
+            , time()
+            , time() + 2592000
+            , confVar('CookiePath')
+            , confVar('CookieDomain')
+            , confVar('CookieSecure')
+        );
     } else {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+        setcookie(
+            confVar('CookiePrefix') . 'lastVisit'
+            , ''
+            , time() - 2592000
+            , confVar('CookiePath')
+            , confVar('CookieDomain')
+            , confVar('CookieSecure')
+        );
     }
 }
 
@@ -370,15 +399,14 @@ if (function_exists('encoding_check')) {
 }
 
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
-if (!defined('_ARCHIVETYPE_MONTH') )
-{
+if (!defined('_ARCHIVETYPE_MONTH') ) {
     define('_ARCHIVETYPE_DAY', 'day');
     define('_ARCHIVETYPE_MONTH', 'month');
     define('_ARCHIVETYPE_YEAR', 'year');
 }
 
 // decode path_info
-if ($CONF['URLMode'] === 'pathinfo') {
+if (confVar('URLMode') === 'pathinfo') {
     $parsed = false;
     $param = array(
         'type'        =>  basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
@@ -393,63 +421,56 @@ if ($CONF['URLMode'] === 'pathinfo') {
         $total = count($data);
         foreach ($data as $i => $iValue) {
             switch ($data[$i]) {
-                case $CONF['ItemKey']: // item/1 (blogid)
+                case confVar('ItemKey'): // item/1 (blogid)
                     $i++;
-
                     if ($i < $total ) {
                         $itemid = (int)$iValue;
                     }
                     break;
 
-                case $CONF['ArchivesKey']: // archives/1 (blogid)
+                case confVar('ArchivesKey'): // archives/1 (blogid)
                     $i++;
-
                     if ($i < $total ) {
                         $archivelist = (int)$iValue;
                     }
                     break;
 
-                case $CONF['ArchiveKey']: // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-                    if ((($i + 1) < $total ) && (strpos($data[$i + 1], '-') === false) ) {
+                // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
+                case confVar('ArchiveKey'):
+                    if (($i + 1) < $total && strpos($data[$i + 1], '-') === false) {
                         $blogid = (int)$data[++$i];
                     }
-
                     $i++;
-
                     if ($i < $total ) {
                         $archive = $iValue;
                     }
                     break;
 
                 case 'blogid': // blogid/1
-                case $CONF['BlogKey']: // blog/1
+                case confVar('BlogKey'): // blog/1
                     $i++;
-
                     if ($i < $total ) {
                         $blogid = (int)$iValue;
                     }
                     break;
 
-                case $CONF['CategoryKey']: // category/1 (catid)
+                case confVar('CategoryKey'): // category/1 (catid)
                 case 'catid':
                     $i++;
-
                     if ($i < $total ) {
                         $catid = (int)$iValue;
                     }
                     break;
 
-                case $CONF['MemberKey']:
+                case confVar('MemberKey'):
                     $i++;
-
                     if ($i < $total ) {
                         $memberid = (int)$iValue;
                     }
                     break;
 
-                case $CONF['SpecialskinKey']:
+                case confVar('SpecialskinKey'):
                     $i++;
-
                     if ($i < $total ) {
                         $special = $iValue;
                         $_REQUEST['special'] = $special;

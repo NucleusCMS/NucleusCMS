@@ -75,10 +75,10 @@ function getLatestVersion() {
     global $CONF;
 
     // response version text ,  last request time
-    foreach(array('LatestVerText','LatestVerReqTime') as $name)
-    {
-        if (isset($CONF[$name])) continue;
-        
+    foreach(array('LatestVerText','LatestVerReqTime') as $name) {
+        if (isset($CONF[$name])) {
+            continue;
+        }
         $ph['name'] = $name;
         sql_query(parseQuery("INSERT INTO [@prefix@]config (name,value) VALUES ('[@name@]','')", $ph));
         $CONF[$name] = '';
@@ -88,16 +88,16 @@ function getLatestVersion() {
     $l_ver = (!empty($CONF['LatestVerText']) ? $CONF['LatestVerText']:'');
     $elapsed_time = time()-$t;
     // cache 180 minutes ,
-    if ($t>0 && ($elapsed_time > -60) && ($elapsed_time<60*180))
-    {
+    if ($t>0 && ($elapsed_time > -60) && ($elapsed_time<60*180)) {
         return $l_ver;
     }
 
     $options = array('timeout'=> 5, 'connecttimeout'=> 3);
     $ret = @Utils::httpGet('http://nucleuscms.org/version_check.php', $options);
 
-    if (empty($ret) || !preg_match('@^[0-9\./]+$@ms', $ret))
+    if (empty($ret) || !preg_match('@^[0-9\./]+$@ms', $ret)) {
         $ret = '';
+    }
 
     ADMIN::updateConfig('LatestVerText', $ret);
     ADMIN::updateConfig('LatestVerReqTime', strval(time()) );
@@ -113,46 +113,50 @@ function sql_table($name='') {
 
     if (strlen($DB_PREFIX) > 0) {
         return $DB_PREFIX . 'nucleus_' . $name;
-    } else {
-        return 'nucleus_' . $name;
     }
+    return 'nucleus_' . $name;
 }
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
     global $manager;
 
-    if (!headers_sent() ) {
-        if (
-                ($contenttype == 'application/xhtml+xml')
-            &&  (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
-            ) {
-            $contenttype = 'text/html';
+    if (headers_sent()) {
+        return;
+    }
+
+    if (
+        ($contenttype === 'application/xhtml+xml')
+        && (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml'))
+    ) {
+        $contenttype = 'text/html';
+    }
+    $param = array(
+        'contentType' => &$contenttype,
+        'charset' => &$charset,
+        'pageType' => $pagetype
+    );
+
+    if (!function_exists('sql_connected') || sql_connected()) {
+        $manager->notify('PreSendContentType', $param);
+    }
+
+    // strip strange characters
+    $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
+    $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
+
+    if ($charset != '') {
+        header('Content-Type: ' . $contenttype . '; charset=' . $charset);
+    } else {
+        header('Content-Type: ' . $contenttype);
+    }
+
+    if (function_exists('encoding_check')) {
+        // check if valid charset
+        if (encoding_check(false, false, $charset)) {
+            return;
         }
-        $param = array(
-            'contentType'    => &$contenttype,
-            'charset'        => &$charset,
-            'pageType'        =>  $pagetype
-        );
-
-        if (!function_exists('sql_connected') || sql_connected())
-            $manager->notify('PreSendContentType', $param);
-
-        // strip strange characters
-        $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
-        $charset = preg_replace('|[^a-z0-9-_]|i', '', $charset);
-
-        if ($charset != '') {
-            header('Content-Type: ' . $contenttype . '; charset=' . $charset);
-        } else {
-            header('Content-Type: ' . $contenttype);
-        }
-
-        if (function_exists('encoding_check')) {
-            // check if valid charset
-            if (!encoding_check(false,false,$charset)) {
-                foreach(array($_GET, $_POST) as $input)
-                    array_walk($input, 'encoding_check');
-            }
+        foreach (array($_GET, $_POST) as $input) {
+            array_walk($input, 'encoding_check');
         }
     }
 }
@@ -165,13 +169,11 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET) {
  * @return string
  **/
 function highlight($text, $expression, $highlight) {
-    if (!$highlight || !$expression)
-    {
+    if (!$highlight || !$expression) {
         return $text;
     }
     
-    if (is_array($expression) && (count($expression) == 0) )
-    {
+    if (is_array($expression) && (count($expression) == 0) ) {
         return $text;
     }
     
@@ -189,29 +191,21 @@ function highlight($text, $expression, $highlight) {
     $result = '';
     $count_matches = count($matches[2]);
     for ($i = 0; $i < $count_matches; $i++) {
-        if ($i != 0)
-        {
+        if ($i != 0) {
             $result .= $matches[1][$i];
         }
         
-        if (is_array($expression) )
-        {
-            foreach ($expression as $regex)
-            {
-                if ($regex)
-                {
+        if (is_array($expression) ) {
+            foreach ($expression as $regex) {
+                if ($regex) {
                     $matches[2][$i] = @preg_replace("#".$regex."#i", $highlight, $matches[2][$i]);
                 }
             }
-            
             $result .= $matches[2][$i];
-        }
-        else
-        {
+        } else {
             $result .= @preg_replace("#".$expression."#i", $highlight, $matches[2][$i]);
         }
     }
-    
     return $result;
 }
 
@@ -230,19 +224,14 @@ function parseHighlight($query) {
 
     $aHighlight = explode(' ', $query);
 
-    for ($i = 0, $iMax = count($aHighlight); $i < $iMax; $i++) {
-        $aHighlight[$i] = trim($aHighlight[$i]);
-
-//        if (strlen($aHighlight[$i]) < 3) {
-//            unset($aHighlight[$i]);
-//        }
+    foreach ($aHighlight as $i => $iValue) {
+        $aHighlight[$i] = trim($iValue);
     }
 
     if (count($aHighlight) == 1) {
         return $aHighlight[0];
-    } else {
-        return $aHighlight;
     }
+    return $aHighlight;
 }
 
 /**
@@ -252,9 +241,8 @@ function isValidMailAddress($address) {
     // enhancement made in 3.6x based on code by Quandary.
     if (preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/', $address)) {
         return 1;
-    } else {
-        return 0;
     }
+    return 0;
 }
 
 // some helper functions
@@ -262,9 +250,11 @@ function getBlogIDFromName($bshortname)
 {
     $ph['bshortname'] = sql_quote_string($bshortname);
     $res = parseQuickQuery("SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=[@bshortname@]", $ph);
-    if ($res !== false)
-        $res = (int)$res;
-    return $res;
+    if ($res===false) {
+        return false;
+    }
+    return (int)$res;
+
 }
 
 function getBlogNameFromID($bnumber)
@@ -277,62 +267,58 @@ function getBlogIDFromItemID($inumber)
 {
     $ph['inumber'] = (int)$inumber;
     $res = parseQuickQuery('SELECT iblog as result FROM [@prefix@]item WHERE inumber=[@inumber@]', $ph);
-    if ($res !== false)
-        $res = (int)$res;
-    return $res;
+    if ($res === false) {
+        return false;
+    }
+    return (int)$res;
 }
 
 function getBlogIDFromCommentID($cnumber)
 {
     $ph['cnumber'] = (int)$cnumber;
     $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]comment WHERE cnumber=[@cnumber@]', $ph);
-    if ($res !== false)
-        $res = (int)$res;
-    return $res;
+    if ($res === false) {
+        return false;
+    }
+    return (int)$res;
 }
 
 function getBlogIDFromCatID($catid)
 {
     $ph['catid'] = (int)$catid;
     $res = parseQuickQuery('SELECT cblog as result FROM [@prefix@]category WHERE catid=[@catid@]', $ph);
-    if ($res !== false)
-        $res = (int)$res;
-    return $res;
+    if ($res === false) {
+        return false;
+    }
+    return (int)$res;
 }
 
 function getCatIDFromName($cname)
 {
     $ph['cname'] = sql_quote_string($cname);
     $res = parseQuickQuery("SELECT catid as result FROM [@prefix@]category WHERE cname=[@cname@]", $ph);
-    if ($res !== false)
-        $res = (int)$res;
-    return $res;
+    if ($res === false) {
+        return false;
+    }
+    return (int)$res;
 }
 
 function quickQuery($sqlText, $cacheClear=false)
 {
     static $rs = array();
-    
     $key = md5($sqlText);
-    
     if($cacheClear && isset($rs[$key])) {
         unset($rs[$key]);
     }
-
-    if(isset($rs[$key])) return $rs[$key];
-    
+    if(isset($rs[$key])) {
+        return $rs[$key];
+    }
     $res = sql_query($sqlText);
-    
     $rs[$key] = false;
-    
-    if ($res && ($v = sql_fetch_array($res)))
-    {
-        if ( isset($v['result']) )
-        {
+    if ($res && ($v = sql_fetch_array($res))) {
+        if ( isset($v['result']) ) {
             $rs[$key] = $v['result'];
-        }
-        elseif ( isset($v[0]) )
-        {
+        } elseif ( isset($v[0]) ) {
             $rs[$key] = $v[0];
         }
     }
@@ -342,23 +328,23 @@ function quickQuery($sqlText, $cacheClear=false)
 function getPluginNameFromPid($pid) {
     $ph['pid'] = (int)$pid;
     $res = sql_query( parseQuery('SELECT pfile FROM `[@prefix@]plugin` WHERE pid=[@pid@]', $ph) );
-    if ($res && ($obj = sql_fetch_object($res)))
-        return $obj->pfile;
-    return false;
+    if (!$res || !($obj = sql_fetch_object($res))) {
+        return false;
+    }
+    return $obj->pfile;
 }
 
 function _execOtherAction() {
     $action = requestVar('action');
-    $actionNames = array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin');
-    if (in_array($action, $actionNames) ) {
-        global $errormessage;
-        include_once(NC_LIBS_PATH . 'ACTION.php');
-        $a = new ACTION();
-        $errorInfo = $a->doAction($action);
-
-        if ($errorInfo) {
-            $errormessage = $errorInfo['message'];
-        }
+    if (!in_array($action, array('addcomment', 'sendmessage', 'createaccount', 'forgotpassword', 'votepositive', 'votenegative', 'plugin'))) {
+        return;
+    }
+    global $errormessage;
+    include_once(NC_LIBS_PATH . 'ACTION.php');
+    $a = new ACTION();
+    $errorInfo = $a->doAction($action);
+    if ($errorInfo) {
+        $errormessage = $errorInfo['message'];
     }
 }
 
@@ -402,8 +388,9 @@ function _decideItemSkin($itemid) {
         if (!headers_sent()) {
             $b =& $manager->getBlog($obj->iblog);
             $CONF['ItemURL'] = $b->getURL();
-            if ($CONF['URLMode'] === 'pathinfo' && substr($CONF['ItemURL'],-1) === '/')
+            if ($CONF['URLMode'] === 'pathinfo' && substr($CONF['ItemURL'],-1) === '/') {
                 $CONF['ItemURL'] = substr($CONF['ItemURL'], 0, -1);
+            }
             $correctURL = createItemLink($itemid, '');
             redirect($correctURL);
             exit;
@@ -470,7 +457,6 @@ function _decideArchivelistSkin($archivelist) {
     if (!$blogid) {
         doError(_ERROR_NOSUCHBLOG);
     }
-    
     return 'archivelist';
 }
 
@@ -482,8 +468,11 @@ function _decideArchiveSkin($archive) {
     // sql queries for the timestamp of the first and the last published item
     $ph = array();
     $ph['iblog'] = (int)($blogid>0 ? $blogid : $CONF['DefaultBlog']);
-    $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM [@prefix@]item WHERE idraft=0 AND iblog='[@iblog@]'",$ph);
-    
+    $query = parseQuery(
+        "SELECT UNIX_TIMESTAMP(itime) as result FROM [@prefix@]item WHERE idraft=0 AND iblog='[@iblog@]'"
+        , $ph
+    );
+
     $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
     $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
 
@@ -508,8 +497,7 @@ function _decideArchiveSkin($archive) {
         $archivenext = strftime('%Y-%m-%d', $t);
         if ($t < $last_timestamp) {
             $archivenextexists = true;
-        }
-        else {
+        } else {
             $archivenextexists = false;
         }
 
@@ -520,8 +508,7 @@ function _decideArchiveSkin($archive) {
         $archiveprev = strftime('%Y', $t);
         if ($t > $first_timestamp) {
             $archiveprevexists = true;
-        }
-        else {
+        } else {
             $archiveprevexists = false;
         }
 
@@ -530,8 +517,7 @@ function _decideArchiveSkin($archive) {
         $archivenext = strftime('%Y', $t);
         if ($t < $last_timestamp) {
             $archivenextexists = true;
-        }
-        else {
+        } else {
             $archivenextexists = false;
         }
     } else {
@@ -541,8 +527,7 @@ function _decideArchiveSkin($archive) {
         $archiveprev = strftime('%Y-%m', $t - 86400);
         if ($t > $first_timestamp) {
             $archiveprevexists = true;
-        }
-        else {
+        } else {
             $archiveprevexists = false;
         }
 
@@ -551,8 +536,7 @@ function _decideArchiveSkin($archive) {
         $archivenext = strftime('%Y-%m', $t);
         if ($t < $last_timestamp) {
             $archivenextexists = true;
-        }
-        else {
+        } else {
             $archivenextexists = false;
         }
     }
@@ -693,10 +677,12 @@ function selector() {
 
     //$special = requestVar('special'); //get at top of file as global
     if ($special && isValidSkinSpecialPageName($special)) {
-        if (!$skinid)
+        if (!$skinid) {
             doError(_ERROR_SKIN);
-        if (!$skinid || !SKIN::existsSpecialPageName($skinid, $special))
+        }
+        if (!$skinid || !SKIN::existsSpecialPageName($skinid, $special)) {
             doError(_ERROR_NOSUCHPAGE);
+        }
         $skin_options['spartstype'] = 'specialpage';
         $type = strtolower($special);
     }
@@ -728,7 +714,6 @@ function doError($msg, $skin = '') {
     global $errormessage, $CONF, $skinid, $blogid, $manager;
 
     if ($skin == '') {
-
         if (SKIN::existsID($skinid) ) {
             $skin = new SKIN($skinid);
         } elseif ($manager->existsBlogID($blogid) ) {
@@ -744,8 +729,7 @@ function doError($msg, $skin = '') {
 
     }
 
-    if ($manager->existsBlogID($blogid) )
-    {
+    if ($manager->existsBlogID($blogid) ) {
         $blog =& $manager->getBlog($blogid);
         $CONF['SiteName'] = $blog->getName();
         $CONF['IndexURL'] = $blog->getURL();
@@ -764,10 +748,14 @@ function getConfig() {
 
     $res = sql_query(parseQuery('SELECT * FROM `[@prefix@]config`'));
 
-    if ($res)
-    while ($obj = sql_fetch_object($res) ) {
-        if(!isset($CONF[$obj->name]))
+    if (!$res) {
+        return;
+    }
+
+    while ($obj = sql_fetch_object($res)) {
+        if (!isset($CONF[$obj->name])) {
             $CONF[$obj->name] = $obj->value;
+        }
     }
 }
 
@@ -816,22 +804,25 @@ function addBreaks($text) {
     $blockElms = explode(',', $blockElms);
     $lines = explode("\n",$text);
     $c = count($lines);
-    foreach($lines as $i=>$line)
-    {
+    foreach($lines as $i=>$line) {
         $line = rtrim($line);
-        if($i===$c-1) break;
-        foreach($blockElms as $block)
-        {
-            if(preg_match("@</?{$block}" . '[^>]*>$@',$line))
+        if($i===$c-1) {
+            break;
+        }
+        foreach($blockElms as $block) {
+            if(preg_match("@</?{$block}" . '[^>]*>$@',$line)) {
                 continue 2;
+            }
         }
         $lines[$i] = "{$line}<br />";
     }
-    return join("\n", $lines);
+    return implode("\n", $lines);
 }
 
 function removeBreaks($var) {
-    if(str_contains($var,"\r")) $var = str_replace("\r",'',$var);
+    if(str_contains($var,"\r")) {
+        $var = str_replace("\r", '', $var);
+    }
     return preg_replace("@<br[ /]*>\n@i", "\n", $var);
 }
 
@@ -847,13 +838,13 @@ function shorten($text, $maxlength, $toadd) {
 
     // 2. the actual shortening
     if (strlen($text) > $maxlength) {
-        if (function_exists('mb_strimwidth'))
+        if (function_exists('mb_strimwidth')) {
             $text = mb_strimwidth($text, 0, $maxlength, $toadd, _CHARSET);
-        else
-            $text = substr($text, 0, $maxlength - strlen($toadd) ) . $toadd;
+        } else {
+            $text = substr($text, 0, $maxlength - strlen($toadd)) . $toadd;
+        }
 
     }
-
     return $text;
 }
 
@@ -909,7 +900,7 @@ function selectLanguage($language) {
 
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
-    include_once(sprintf("%s%s.php", $DIR_LANG, str_replace(array('\\', '/'), '', $language)));
+    include_once(sprintf('%s%s.php', $DIR_LANG, str_replace(array('\\', '/'), '', $language)));
 
 }
 
@@ -923,10 +914,11 @@ function parseFile($filename, $includeMode = 'normal', $includePrefix = '') {
     PARSER::setProperty('IncludePrefix', $includePrefix);
 
     if (!is_file($filename) ) {
-        if (defined('_GFUNCTIONS_PARSEFILE_FILEMISSING'))
+        if (defined('_GFUNCTIONS_PARSEFILE_FILEMISSING')) {
             doError(_GFUNCTIONS_PARSEFILE_FILEMISSING);
-        else
+        } else {
             doError('A file is missing');
+        }
     }
 
     $fsize = filesize($filename);
@@ -973,7 +965,10 @@ function helplink($id) {
     $ph['help_dir'] = get_help_root_url(true);
     $ph['id'] = $id;
 
-    return parseHtml('<a href="{%help_dir%}help.html#{%id%}" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">', $ph);
+    return parseHtml(
+        '<a href="{%help_dir%}help.html#{%id%}" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">'
+        , $ph
+    );
 }
 
 function get_help_root_url($subdir_search = false) {
@@ -985,14 +980,11 @@ function get_help_root_url($subdir_search = false) {
     if (isset($doc_root[$key])) return $doc_root[$key];
     
     $doc_root[$key] = $CONF['AdminURL'] . 'documentation/';
-    if ($subdir_search)
-    {
+    if ($subdir_search) {
         $lang = getLanguageName();
         $items = array('japan'=>'ja', 'english'=>'en');
-        foreach($items as $k => $v)
-        {
-            if (@stripos($lang , $k)===false || !is_dir($DIR_NUCLEUS . 'documentation/' . $v))
-            {
+        foreach($items as $k => $v) {
+            if (@stripos($lang , $k)===false || !is_dir($DIR_NUCLEUS . 'documentation/' . $v)) {
                 continue;
             }
             $doc_root[$key] .= $v . '/';
@@ -1038,11 +1030,11 @@ function getLanguageName() {
     return 'english';
 }
 
-function LoadCoreLanguage()
-{
+function LoadCoreLanguage(){
     static $loaded = false;
-    if ($loaded)
+    if ($loaded) {
         return;
+    }
     $loaded = true;
 
 //    global $DIR_LANG, $SQL_DBH;
@@ -1050,8 +1042,9 @@ function LoadCoreLanguage()
     $language = remove_all_directory_separator(getLanguageName());
     $language = getValidLanguage($language);
     $filename = $DIR_LANG . $language . '.php';
-    if (is_file($filename))
-        include_once ($filename);
+    if (is_file($filename)) {
+        include_once($filename);
+    }
 
     if ((!defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
         && (defined('_CHARSET') && (strtoupper(_CHARSET) === 'UTF-8')))
@@ -1075,11 +1068,6 @@ function LoadCoreLanguage()
 //      sql_set_charset(_CHARSET);
 
     ini_set('default_charset', _CHARSET);
-    if (_CHARSET !== 'UTF-8' && function_exists('mb_http_output'))
-    {
-//        ini_set('default_charset', ''); // To suppress the content type of http header
-//        mb_internal_encoding(_CHARSET);
-    }
 }
 
 /**
@@ -1135,16 +1123,15 @@ function checkPlugin($plug) {
     $pl_name = remove_all_directory_separator($plug);
     $shortname = strtolower(preg_replace('#^NP_#', '', $plug));
     $fname = $pl_name . '.php';
-    foreach(array($fname, "{$shortname}/{$fname}", "{$pl_name}/{$fname}") as $f)
-    if (is_file($DIR_PLUGINS . $f))
-    {
-        return true;
+    foreach(array($fname, "{$shortname}/{$fname}", "{$pl_name}/{$fname}") as $f) {
+        if (is_file($DIR_PLUGINS . $f)) {
+            return true;
+        }
     }
     return false;
 }
 
-function remove_all_directory_separator($text)
-{
+function remove_all_directory_separator($text) {
     return str_replace( array("\\" ,'/' , DIRECTORY_SEPARATOR ) , '' , $text);
 }
 
@@ -1204,25 +1191,25 @@ function createLink($type, $params) {
     switch ($type) {
         case 'item':
             if ($usePathInfo) {
-                $url = $CONF['ItemURL'] . '/' . $CONF['ItemKey'] . '/' . $params['itemid'];
+                $url = sprintf('%s/%s/%s', $CONF['ItemURL'], $CONF['ItemKey'], $params['itemid']);
             } else {
-                $url = $CONF['ItemURL'] . '?itemid=' . $params['itemid'];
+                $url = sprintf('%s?itemid=%s', $CONF['ItemURL'], $params['itemid']);
             }
             break;
 
         case 'member':
             if ($usePathInfo) {
-                $url = $CONF['MemberURL'] . '/' . $CONF['MemberKey'] . '/' . $params['memberid'];
+                $url = sprintf('%s/%s/%s', $CONF['MemberURL'], $CONF['MemberKey'], $params['memberid']);
             } else {
-                $url = $CONF['MemberURL'] . '?memberid=' . $params['memberid'];
+                $url = sprintf('%s?memberid=%s', $CONF['MemberURL'], $params['memberid']);
             }
             break;
 
         case 'category':
             if ($usePathInfo) {
-                $url = $CONF['CategoryURL'] . '/' . $CONF['CategoryKey'] . '/' . $params['catid'];
+                $url = sprintf('%s/%s/%s', $CONF['CategoryURL'], $CONF['CategoryKey'], $params['catid']);
             } else {
-                $url = $CONF['CategoryURL'] . '?catid=' . $params['catid'];
+                $url = sprintf('%s?catid=%s', $CONF['CategoryURL'], $params['catid']);
             }
             break;
 
@@ -1232,100 +1219,94 @@ function createLink($type, $params) {
             }
 
             if ($usePathInfo) {
-                $url = $CONF['ArchiveListURL'] . '/' . $CONF['ArchivesKey'] . '/' . $params['blogid'];
+                $url = sprintf('%s/%s/%s', $CONF['ArchiveListURL'], $CONF['ArchivesKey'], $params['blogid']);
             } else {
-                $url = $CONF['ArchiveListURL'] . '?archivelist=' . $params['blogid'];
+                $url = sprintf('%s?archivelist=%s', $CONF['ArchiveListURL'], $params['blogid']);
             }
             break;
 
         case 'archive':
             if ($usePathInfo) {
-                $url = $CONF['ArchiveURL'] . '/' . $CONF['ArchiveKey'] . '/'.$params['blogid'].'/' . $params['archive'];
+                $url = sprintf('%s/%s/%s/%s', $CONF['ArchiveURL'], $CONF['ArchiveKey'], $params['blogid'], $params['archive']);
             } else {
-                $url = $CONF['ArchiveURL'] . '?blogid='.$params['blogid'].'&amp;archive=' . $params['archive'];
+                $url = sprintf('%s?blogid=%s&amp;archive=%s', $CONF['ArchiveURL'], $params['blogid'], $params['archive']);
             }
             break;
 
         case 'blog':
             if ($usePathInfo) {
-                $url = $CONF['BlogURL'] . '/' . $CONF['BlogKey'] . '/' . $params['blogid'];
+                $url = sprintf('%s/%s/%s', $CONF['BlogURL'], $CONF['BlogKey'], $params['blogid']);
             } else {
                 global $blogid;
-                if ($blogid == $params['blogid'] && ($CONF['BlogURL'] !== 'index.php'))
-                    $url = $CONF['BlogURL']  . '?blogid=' . $params['blogid'];
-                else
-                    $url = $CONF['IndexURL'] . '?blogid=' . $params['blogid'];
+                if ($blogid == $params['blogid'] && ($CONF['BlogURL'] !== 'index.php')) {
+                    $url = sprintf('%s?blogid=%s', $CONF['BlogURL'], $params['blogid']);
+                } else {
+                    $url = sprintf('%s?blogid=%s', $CONF['IndexURL'], $params['blogid']);
+                }
             }
             break;
     }
-
-    return addLinkParams($url, (isset($params['extra'])? $params['extra'] : null));
+    return addLinkParams(
+        $url
+        , isset($params['extra']) ? $params['extra'] : null
+    );
 }
 
 function createBlogLink($url, $params) {
-    global $CONF;
-    if ($CONF['URLMode'] === 'normal') {
+    if (confVar('URLMode') === 'normal') {
         if (strpos($url, '?') === FALSE && is_array($params)) {
             $fParam = reset($params);
             $fKey   = key($params);
             array_shift($params);
-            $url .= '?' . $fKey . '=' . $fParam;
+            return addLinkParams(
+                sprintf('%s?%s=%s', $url, $fKey, $fParam)
+                , $params
+            );
         }
-    } elseif ($CONF['URLMode'] === 'pathinfo' && substr($url, -1) === '/') {
-        $url = substr($url, 0, -1);
+    }
+    if (confVar('URLMode') === 'pathinfo' && substr($url, -1) === '/') {
+        return addLinkParams(
+            substr($url, 0, -1)
+            , $params
+        );
     }
     return addLinkParams($url, $params);
 }
 
 function addLinkParams($link, $params) {
-    global $CONF;
-
-    if ( is_array($params) && (count($params) > 0) )
-    {
-
-        if ($CONF['URLMode'] === 'pathinfo') {
-            foreach ($params as $param => $value) {
-                // change in 3.63 to fix problem where URL generated with extra params mike look like category/4/blogid/1
-                // but they should use the URL keys like this: category/4/blog/1
-                // if user wants old urls back, set $CONF['NoURLKeysInExtraParams'] = 1; in config.php
-                if (isset($CONF['NoURLKeysInExtraParams']) && $CONF['NoURLKeysInExtraParams'] == 1) 
-                {
-                    $link .= '/' . $param . '/' . urlencode($value);
-                } else {
-                    switch ($param) {
-                        case 'itemid':
-                            $link .= sprintf('/%s/%s', $CONF['ItemKey'], urlencode($value));
-                        break;
-                        case 'memberid':
-                            $link .= sprintf('/%s/%s', $CONF['MemberKey'], urlencode($value));
-                        break;
-                        case 'catid':
-                            $link .= sprintf('/%s/%s', $CONF['CategoryKey'], urlencode($value));
-                        break;
-                        case 'archivelist':
-                            $link .= sprintf('/%s/%s', $CONF['ArchivesKey'], urlencode($value));
-                        break;
-                        case 'archive':
-                            $link .= sprintf('/%s/%s', $CONF['ArchiveKey'], urlencode($value));
-                        break;
-                        case 'blogid':
-                            $link .= sprintf('/%s/%s', $CONF['BlogKey'], urlencode($value));
-                        break;
-                        default:
-                            $link .= sprintf('/%d/%s', $param, urlencode($value));
-                        break;
-                    }
-                }
-            }
-        } else {
-
-            foreach ($params as $param => $value) {
-                $link .= sprintf('&amp;%d=%s', $param, urlencode($value));
-            }
-
-        }
+    if (!is_array($params) || !$params) {
+        return $link;
     }
 
+    if (confVar('URLMode') !== 'pathinfo') {
+        foreach ($params as $param => $value) {
+            $link .= sprintf('&amp;%s=%s', $param, urlencode($value));
+        }
+        return $link;
+    }
+    // change in 3.63 to fix problem where URL generated with extra params mike look like category/4/blogid/1
+    // but they should use the URL keys like this: category/4/blog/1
+    // if user wants old urls back, set $CONF['NoURLKeysInExtraParams'] = 1; in config.php
+    foreach ($params as $param => $value) {
+        if (confVar('NoURLKeysInExtraParams') == 1) {
+            return sprintf('%s/%s/%s', $link, $param, urlencode($value));
+        }
+        if ($param === 'itemid') {
+            $link .= sprintf('/%s/%s', confVar('ItemKey'), urlencode($value));
+        } elseif ($param === 'memberid') {
+            $link .= sprintf('/%s/%s', confVar('MemberKey'), urlencode($value));
+        } elseif ($param === 'catid') {
+            $link .= sprintf('/%s/%s', confVar('CategoryKey'), urlencode($value));
+        } elseif ($param === 'archivelist') {
+            $link .= sprintf('/%s/%s', confVar('ArchivesKey'), urlencode($value));
+        } elseif ($param === 'archive') {
+            $link .= sprintf('/%s/%s', confVar('ArchiveKey'), urlencode($value));
+        } elseif ($param === 'blogid') {
+            $link .= sprintf('/%s/%s', confVar('BlogKey'), urlencode($value));
+        } else {
+            $link .= sprintf('/%s/%s', $param, urlencode($value));
+        }
+    }
     return $link;
 }
 
@@ -1345,19 +1326,18 @@ function alterQueryStr($querystr, $param, $value) {
 
     foreach ($vars as $i => $iValue) {
         $v = explode('=', $iValue);
-
-        if ($v[0] == $param) {
-            $v[1] = $value;
-            $vars[$i] = implode('=', $v);
-            $set = true;
-            break;
+        if ($v[0] != $param) {
+            continue;
         }
+        $v[1] = $value;
+        $vars[$i] = implode('=', $v);
+        $set = true;
+        break;
     }
 
     if (!$set) {
         $vars[] = $param . '=' . $value;
     }
-
     return ltrim(implode('&', $vars), '&');
 }
 
@@ -1369,7 +1349,6 @@ function passVar($key, $value) {
         foreach ($value as $i => $iValue) {
             passVar(sprintf('%s[%d]', $key, $i), $iValue);
         }
-
         return;
     }
 
@@ -1448,8 +1427,7 @@ function checkVars($aVars) {
  * Sanitize parameters such as $_GET and $_SERVER['REQUEST_URI'] etc.
  * to avoid XSS
  */
-function sanitizeParams()
-{
+function sanitizeParams() {
     $array = array();
     $str = '';
     $frontParam = '';
@@ -1510,10 +1488,10 @@ function ticketForPlugin() {
     
     $p_translated = str_replace('\\', '/', $p_translated);
     $d_plugins = str_replace('\\', '/', $DIR_PLUGINS);
-    
-    if (strpos($p_translated, $d_plugins) !== 0)
-    {
-        return;// This isn't plugin php file.
+
+    // This isn't plugin php file.
+    if (strpos($p_translated, $d_plugins) !== 0) {
+        return;
     }
     
     /* Solve the plugin php file or admin directory */
@@ -1524,14 +1502,10 @@ function ticketForPlugin() {
 //  var_dump(__FUNCTION__, $phppath);
     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
     $path = $phppath;
-    if ( preg_match('#^NP_([^/]+)(/|$)#', $path, $m) || preg_match('#^[^/]*/+NP_([^/]+)(/|$)#', $path, $m) )
-    {
-        // Remove the first "NP_" and the last ".php" if exists.
-        $unsecure_value = preg_replace('#\.php$#', '', $m[1]);
-        $unsecure_plugin_name_short = strtolower($unsecure_value);
-    }
-    else
-    {
+    // Remove the first "NP_" and the last ".php" if exists.
+    if ( preg_match('#^NP_([^/]+)(/|$)#', $path, $m) || preg_match('#^[^/]*/+NP_([^/]+)(/|$)#', $path, $m) ) {
+        $unsecure_plugin_name_short = strtolower(preg_replace('#\.php$#', '', $m[1]));
+    } else {
         $unsecure_value = preg_replace('#(?:^|.+/)NP_([^/]*)\.php$#', '$1', $path); // Remove the first "NP_" and the last ".php" if exists.
         $unsecure_value = preg_replace('#^([^/]*)/(.*)$#', '$1', $unsecure_value); // Remove the "/" and beyond.
         $unsecure_plugin_name_short = strtolower($unsecure_value);
