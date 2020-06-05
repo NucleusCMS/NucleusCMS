@@ -17,10 +17,8 @@
  */
 
 if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) {
-    $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
+    $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 }
-global $StartTime;
-$StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
 global $DIR_NUCLEUS, $DIR_LIBS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG;
 
@@ -38,8 +36,9 @@ global $nucleus, $CONF, $manager, $member;
 
 define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
 
-include_once(NC_LIBS_PATH. 'version.php');
-include_once(NC_LIBS_PATH. 'globalfunctions.inc.php');
+include_once(NC_LIBS_PATH . 'version.php');
+include_once(NC_LIBS_PATH . 'helpers.php');
+include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
 
 if (version_compare(phpversion(),'5.4.0','<')) {
     _checkEnv();
@@ -50,7 +49,7 @@ define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
-$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'dev' : '');
+$nucleus['codename'] = defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'dev' : '';
 
 _setDefaultUa();
 _setErrorReporting();
@@ -63,9 +62,6 @@ if (getNucleusPatchLevel() > 0) {
 }
 
 // we will use postVar, getVar, ... methods instead of _GET
-if ($CONF['installscript'] != 1) { // vars were already included in install.php
-    include_once(NC_LIBS_PATH . 'helpers.php');
-}
 
 // sanitize option
 $bLoggingSanitizedResult=0;
@@ -93,9 +89,9 @@ $startpos     = intRequestVar('startpos');
 $errormessage = '';
 $error        = '';
 $special      = requestVar('special');
-$virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+$virtualpath  = (getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO');
 
-if ( !headers_sent() && $CONF['expose_generator'] ) {
+if ( !headers_sent() && confVar('expose_generator') ) {
     header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
 }
 
@@ -113,9 +109,7 @@ if (($DB_DRIVER_NAME === 'mysql') && !function_exists('mysql_query')) {
     } else {
         include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php');
     }
-}
-else
-{
+} else {
     if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
         define('_EXT_MYSQL_EMULATE' , 0);
 }
@@ -131,7 +125,7 @@ include_once(NC_LIBS_PATH . 'Utils.php');
 $manager =& MANAGER::instance();
 
 // only needed when updating logs
-if ($CONF['UsingAdminArea']) {
+if (confVar('UsingAdminArea')) {
     include_once(NC_LIBS_PATH . 'xmlrpc.inc.php');  // XML-RPC client classes
     include_once(NC_LIBS_PATH . 'ADMIN.php');
 }
@@ -160,34 +154,35 @@ getConfig();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
 if (!isset($CONF['Self'])) {
-    $CONF['Self'] = rtrim($CONF['IndexURL'], '/'); // strip trailing
+    $CONF['Self'] = rtrim(confVar('IndexURL'), '/'); // strip trailing
 }
 
-if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
-    $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
+if(confVar('URLMode')==='pathinfo' && substr(confVar('Self'),-4)==='.php') {
+    $CONF['Self'] = rtrim(confVar('IndexURL'), '/');
+}
 
-$CONF['ItemURL']        = $CONF['Self'];
-$CONF['ArchiveURL']     = $CONF['Self'];
-$CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL']      = $CONF['Self'];
-$CONF['SearchURL']      = $CONF['Self'];
-$CONF['BlogURL']        = $CONF['Self'];
-$CONF['CategoryURL']    = $CONF['Self'];
+$CONF['ItemURL']        = confVar('Self');
+$CONF['ArchiveURL']     = confVar('Self');
+$CONF['ArchiveListURL'] = confVar('Self');
+$CONF['MemberURL']      = confVar('Self');
+$CONF['SearchURL']      = confVar('Self');
+$CONF['BlogURL']        = confVar('Self');
+$CONF['CategoryURL']    = confVar('Self');
 
-// switch URLMode back to normal when $CONF['Self'] ends in .php
+// switch URLMode back to normal when confVar('Self') ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
 if (
     !isset($CONF['URLMode'])
     ||
     (
-        ($CONF['URLMode'] === 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) === '.php')
+        ($CONF['URLMode'] === 'pathinfo') && (substr(confVar('Self'), strlen(confVar('Self')) - 4) === '.php')
     )
 ) {
     $CONF['URLMode'] = 'normal';
 }
 
 // automatically use simpler toolbar for mozilla
-if (!$CONF['DisableJsTools'] && str_contains(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
+if (!confVar('DisableJsTools') && str_contains(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
 
@@ -252,7 +247,7 @@ if (requestVar('action') === 'login') {
         $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
         if ($remote_ip !=='') {
             $log_message .= sprintf(" %s", $remote_ip);
-            if ($remote_host!==FALSE && $remote_host!=$remote_ip)
+            if ($remote_host!==false && $remote_host!=$remote_ip)
                 $log_message .= sprintf("(%s)", $remote_host);
         }
         if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
@@ -260,7 +255,7 @@ if (requestVar('action') === 'login') {
             $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
             $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
-            if ($remote_proxy_host !==FALSE && $remote_proxy_host!=$remote_proxy_ip)
+            if ($remote_proxy_host !==false && $remote_proxy_host!=$remote_proxy_ip)
                 $log_message .= sprintf("(%s)", $remote_proxy_host);
             unset($remote_proxy_ip, $remote_proxy_host);
         }
