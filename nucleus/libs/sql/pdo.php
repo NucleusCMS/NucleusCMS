@@ -860,45 +860,31 @@ if (!function_exists('sql_fetch_assoc'))
         global $DB_DRIVER_NAME;
         if ( $DB_DRIVER_NAME === 'mysql' ) {
             $db = ($dbh ? $dbh : sql_get_db());
-            switch(strtolower($charset)){
-                case 'utf-8':
-                case 'utf8':
-                    $charset = 'utf8';
-                    break;
-                case 'utf8mb4':
-                    $charset = 'utf8mb4';
-                    break;
-                case 'euc-jp':  // Japanese EUC-JP
-                case 'ujis':
-                    $charset = 'ujis';
-                    break;
-                case 'gb2312':
-                    $charset = 'gb2312';
-                    break;
-                /*
-                case 'shift_jis':  // Japanese Shift_JIS
-                case 'sjis':
-                    $charset = 'sjis';
-                    break;
-                */
-                case 'iso-8859-1':
-                    $charset='latin1';
-                    break;
-                default:
-                    $converted = FALSE;
-                    if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m))
-                    {
-                        // ISO 8859-  2 8 7 9 13
-                        $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
-                        if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset']) )
-                        {
-                            $charset = $items['Charset'];
-                            $converted = TRUE;
-                        }
+            $i = strtolower($charset);
+            if ($i === 'utf-8' || $i === 'utf8') {
+                $charset = 'utf8';
+            } elseif ($i === 'utf8mb4') {
+                $charset = 'utf8mb4';
+            } elseif ($i === 'euc-jp' || $i === 'ujis') {  // Japanese EUC-JP
+
+                $charset = 'ujis';
+            } elseif ($i === 'gb2312') {
+                $charset = 'gb2312';
+            } elseif ($i === 'iso-8859-1') {
+                $charset = 'latin1';
+            } else {
+                $converted = FALSE;
+                if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
+                    // ISO 8859-  2 8 7 9 13
+                    $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
+                    if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset'])) {
+                        $charset = $items['Charset'];
+                        $converted = TRUE;
                     }
-                    if (!$converted)
-                        $charset = 'utf8';
-                    break;
+                }
+                if (!$converted) {
+                    $charset = 'utf8';
+                }
             }
 
             $res = $db->exec("SET CHARACTER SET " . $charset);
