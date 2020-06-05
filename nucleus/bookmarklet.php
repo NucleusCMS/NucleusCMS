@@ -25,7 +25,7 @@ include('../config.php');
 
 $action = requestVar('action');
 
-if ($action == 'contextmenucode') {
+if ($action === 'contextmenucode') {
     bm_doContextMenuCode();
     exit;
 }
@@ -36,7 +36,7 @@ if (!$member->isLoggedIn() ) {
 }
 
 // on successfull login
-if ( ($action == 'login') && ($member->isLoggedIn() ) ) {
+if ( ($action === 'login') && ($member->isLoggedIn() ) ) {
     $action = requestVar('nextaction');
 }
 
@@ -64,74 +64,57 @@ if (!in_array($action, $aActionsNotToCheck) ) {
 }
 
 // find out what to do
-switch ($action) {
-    // adds the item for real
-    case 'additem':
-        bm_doAddItem();
-        break;
-
-    // shows the edit item form
-    case 'edit':
-        bm_doEditForm();
-        break;
-
-    // edits the item for real
-    case 'edititem':
-        bm_doEditItem();
-        break;
-
-    case 'delete' :
-         bm_doDeleteItem();
-        break;
-
-    case 'itemdeleteconfirm' :
-        bm_doDeleteItemComplete();
-        break;
-
-    // on login, 'action' gets changed to 'nextaction'
-    case 'login':
-        bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
-        break;
-
-    // shows the fill in form
-    case 'add':
-    default:
-        bm_doShowForm();
-        break;
+if ($action === 'additem') {
+    bm_doAddItem();
+} elseif ($action === 'edit') {
+    bm_doEditForm();
+} elseif ($action === 'edititem') {
+    bm_doEditItem();
+} elseif ($action === 'delete') {
+    bm_doDeleteItem();
+} elseif ($action === 'itemdeleteconfirm') {
+    bm_doDeleteItemComplete();
+} elseif ($action === 'login') {
+    bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
+} else {
+    bm_doShowForm();
 }
 
 function bm_doAddItem() {
-    global $member, $manager, $CONF;
+    global $manager;
 
     $manager->loadClass('ITEM');
     $result = ITEM::createFromRequest();
 
-    if ($result['status'] == 'error') {
+    if ($result['status'] === 'error') {
         bm_doError($result['message']);
     }
 
     $blogid = getBlogIDFromItemID($result['itemid']);
     $blog =& $manager->getBlog($blogid);
 
-    if ($result['status'] == 'newcategory') {
-        $href      = 'index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'];
-        $onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
-        $title     = _BOOKMARKLET_NEW_WINDOW;
-        $aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
-        $message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
-        $extrahead = '';
-    } else {
-        $message = _ITEM_ADDED;
-        $extrahead = '';
+    if ($result['status'] !== 'newcategory') {
+        bm_message(_ITEM_ADDED, _ITEM_ADDED, _ITEM_ADDED, '');
+        return;
     }
 
-    bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
+    $message = sprintf(
+        '%s <a href="%s" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="%s">%s</a>'
+        , _BOOKMARKLET_NEW_CATEGORY
+        , sprintf(
+            'index.php?action=categoryedit&amp;blogid=%s&amp;catid=%s'
+            , $blogid
+            , $result['catid']
+        )
+        , _BOOKMARKLET_NEW_WINDOW
+        , _BOOKMARKLET_NEW_CATEGORY_EDIT
+    );
+    bm_message(_ITEM_ADDED, _ITEM_ADDED, $message, '');
 }
 
-function bm_doDeleteItem()
-{
+function bm_doDeleteItem() {
     global $manager;
-        $msg = <<< EOT
+    $msg = <<< EOT
 <p><%_CONFIRMTXT_ITEM%></p>
 <p><%itemtitle%></p>
 <form method="post" action="bookmarklet.php"><div>
@@ -141,12 +124,26 @@ function bm_doDeleteItem()
 <input type="submit" value="<%_DELETE_CONFIRM_BTN%>"  tabindex="10" />
 </div></form>
 EOT;
-        $ticket = $manager->getNewTicket();
-        $itemid = intRequestVar('itemid');
-        $title = postVar('title');
-        $msg = str_replace(array('<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>','<%ticket%>','<%itemid%>','<%itemtitle%>'), array(_CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,$ticket,$itemid,$title), $msg);
-        bm_message(_DELETE_CONFIRM_BTN, _DELETE_CONFIRM, $msg, '', 0);
-        exit;
+    $ticket = $manager->getNewTicket();
+    $itemid = intRequestVar('itemid');
+    $title = postVar('title');
+    $msg = str_replace(
+        array(
+            '<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>',
+            '<%ticket%>',
+            '<%itemid%>',
+            '<%itemtitle%>'
+        )
+        , array(
+            _CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,
+            $ticket,
+            $itemid,
+            $title
+        )
+        , $msg
+    );
+    bm_message(_DELETE_CONFIRM_BTN, _DELETE_CONFIRM, $msg, '', 0);
+    exit;
 }
 
 function bm_doDeleteItemComplete()
@@ -160,7 +157,7 @@ function bm_doDeleteItemComplete()
 }
 
 function bm_doEditItem() {
-    global $member, $manager, $CONF;
+    global $member, $manager;
 
     $itemid = intRequestVar('itemid');
     $catid = postVar('catid');
@@ -178,7 +175,7 @@ function bm_doEditItem() {
     $draftid = intPostVar('draftid');
 
     // create new category if needed (only on edit/changedate)
-    if (strstr($catid,'newcat') ) {
+    if (strpos($catid, 'newcat') !== false) {
         // get blogid
         list($blogid) = sscanf($catid, "newcat-%d");
 
@@ -221,16 +218,19 @@ function bm_doEditItem() {
     }
 
     // show success message
-    if ($catid != intPostVar('catid') ) {
-        $href      = 'index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid;
-        $onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
-        $title     = _BOOKMARKLET_NEW_WINDOW;
-        $aTag      = ' <a href="' . $href . '" onclick="' . $onclick . '" title="' . $title . '">';
-        $message   = _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>';
-        bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _BOOKMARKLET_NEW_CATEGORY . $aTag . _BOOKMARKLET_NEW_CATEGORY_EDIT . '</a>', '');
-    } else {
-        bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
+    if ($catid == intPostVar('catid')) {
+        bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED);
+        return;
     }
+    $message = sprintf(
+        '%s <a href="%s" onclick="%s" title="%s">%s</a>'
+        , _BOOKMARKLET_NEW_CATEGORY
+        , sprintf('index.php?action=categoryedit&amp;blogid=%s&amp;catid=%s', $blog->getID(), $catid)
+        , 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;'
+        , _BOOKMARKLET_NEW_WINDOW
+        , _BOOKMARKLET_NEW_CATEGORY_EDIT
+    );
+    bm_message(_ITEM_UPDATED, _ITEM_UPDATED, $message);
 }
 
 function bm_loginAndPassThrough() {
