@@ -5,16 +5,16 @@
 */
 
 body {
-	font-size: medium;
-	background: #fff;
-	color: #000;
-    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif
-}		
+    font-size: medium;
+    background: #fff;
+    color: #000;
+    font-family: "Trebuchet MS", Trebuchet, "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif
+}
 
 h1 {
-	border-bottom: 1px dotted gray;
-	font-size: medium;
-	color: #596d9d;
+    border-bottom: 1px dotted gray;
+    font-size: medium;
+    color: #596d9d;
 }
 
 /* 
@@ -22,54 +22,56 @@ h1 {
 	the browser supports DOM
 */
 #switchbuttons {
-	display: none;
+    display: none;
 }
+
 /*
 	Hide preview also when no DOM is supported
 */
 #preview {
-	display: none;
+    display: none;
 }
 
 .buttonbar {
-   margin-bottom: 5px;
-   background: rgb(187, 187, 204);
-   padding: 3px;
+    margin-bottom: 5px;
+    background: rgb(187, 187, 204);
+    padding: 3px;
 }
 
 .buttonbar input {
-   background: #C5C5D3;
+    background: #C5C5D3;
     border: 1px solid #CACAD7;
     border-right: 2px solid #8E8EAB;
     border-bottom: 2px solid #8E8EAB;
     color: #000000;
-    font-family: "Trebuchet MS",Trebuchet,"Bitstream Vera Sans",verdana,lucida,arial,helvetica,sans-serif;
+    font-family: "Trebuchet MS", Trebuchet, "Bitstream Vera Sans", verdana, lucida, arial, helvetica, sans-serif;
     font-weight: bold;
-    cursor:pointer;cursor:hand;
+    cursor: pointer;
+    cursor: hand;
 }
 
 .contentblock {
-	/*background: #ddd;*/
-/*	height: 400px;*/
-	overflow: auto; /* temporary removed, to make the select box work in Mozilla */
-	padding: 1px;
+    /*background: #ddd;*/
+    /*	height: 400px;*/
+    overflow: auto; /* temporary removed, to make the select box work in Mozilla */
+    padding: 1px;
     margin: 0px;
-	vertical-align: top;
+    vertical-align: top;
 }
 
 .shortcuts {
-	float: right; 
-	text-align: right;
-	/*font-size: x-small;*/
+    float: right;
+    text-align: right;
+    /*font-size: x-small;*/
 }
 
 #tab_options h2 {
-   margin:15px 0 0 0;
+    margin: 15px 0 0 0;
 }
 
 h2 {
-   font-size: 1.5em;
-   color: gray;
+    font-size: 1.5em;
+    color: gray;
     margin-top: 0px;
     padding-top: 0px;
     padding-bottom: 0px;
@@ -77,76 +79,79 @@ h2 {
 }
 
 a:link, a:visited {
-	color: #1D3565; 
-	font-weight: bold;
-	text-decoration: none;
+    color: #1D3565;
+    font-weight: bold;
+    text-decoration: none;
 }
 
 a:hover {
-	text-decoration: underline;
-}			
+    text-decoration: underline;
+}
 
-img { 
-	border: none;
+img {
+    border: none;
 }
 
 .indent {
-	margin-left: 40px;
+    margin-left: 40px;
 }
 
-label		{ cursor: pointer; }
+label {
+    cursor: pointer;
+}
 
 table {
-	border: none;
-	width: 95%;
-	border-collapse: collapse;
-	margin-bottom: 10px;
-	margin-top: 10px;	
+    border: none;
+    width: 95%;
+    border-collapse: collapse;
+    margin-bottom: 10px;
+    margin-top: 10px;
 }
 
 th {
-	background: #bbc;
-	color: #000;
-	font-size: medium;
+    background: #bbc;
+    color: #000;
+    font-size: medium;
 }
 
 th, td {
-	padding: 4px;
-	empty-cells: show;	
+    padding: 4px;
+    empty-cells: show;
 }
 
 td {
-	background: #fff;
-	border: 1px solid #ddd;
-	font-size: medium;
-	vertical-align: top;
-	text-align: left;
+    background: #fff;
+    border: 1px solid #ddd;
+    font-size: medium;
+    vertical-align: top;
+    text-align: left;
 }
 
-td a:link, td a:visited { 
-	text-decoration: underline;
-	color: black;
-	font-weight: normal;
+td a:link, td a:visited {
+    text-decoration: underline;
+    color: black;
+    font-weight: normal;
 }
+
 td a:hover {
-	color: #1D3565;
-	text-decoration: underline;
+    color: #1D3565;
+    text-decoration: underline;
 }
 
 td.draft, td.future {
-	background: #ffe;
+    background: #ffe;
 }
 
 tr.highlighted td {
-	background: green;
+    background: green;
 }
 
 ul.nobullets {
-	list-style-type: none;
-	padding: 0;
-	margin: 0;
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
 }
 
-input,textarea,select {
-	font:inherit;
+input, textarea, select {
+    font: inherit;
 }

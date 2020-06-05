@@ -10,15 +10,47 @@
 
 /* Component containers
 ----------------------------------*/
-.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button { font-size: 1em; }
-.ui-widget-header { color: #494949; }
-.ui-widget-header a { color: #494949; }
-.ui-widget-content a { color: #494949; }
+.ui-widget input, .ui-widget select, .ui-widget textarea, .ui-widget button {
+    font-size: 1em;
+}
+
+.ui-widget-header {
+    color: #494949;
+}
+
+.ui-widget-header a {
+    color: #494949;
+}
+
+.ui-widget-content a {
+    color: #494949;
+}
 
 /* Interaction states
 ----------------------------------*/
-.ui-state-default a { color: #919191; text-decoration: none; outline: none; }
-.ui-state-hover a { color: #c77405; text-decoration: none; outline: none; }
-.ui-state-active, .ui-widget-content .ui-state-active { border: 1px solid #ddd; border-top:1px solid #FFCC72; background-color: #ffffff; color: #494949; outline: none; }
-.ui-state-active a { color: #494949; outline: none; text-decoration: none; }
+.ui-state-default a {
+    color: #919191;
+    text-decoration: none;
+    outline: none;
+}
+
+.ui-state-hover a {
+    color: #c77405;
+    text-decoration: none;
+    outline: none;
+}
+
+.ui-state-active, .ui-widget-content .ui-state-active {
+    border: 1px solid #ddd;
+    border-top: 1px solid #FFCC72;
+    background-color: #ffffff;
+    color: #494949;
+    outline: none;
+}
+
+.ui-state-active a {
+    color: #494949;
+    outline: none;
+    text-decoration: none;
+}
 

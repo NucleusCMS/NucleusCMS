@@ -6,34 +6,36 @@
 */
 
 .leftbox, .rightbox {
-	margin: 3px;
-	padding: 3px;
-	font-size: larger;
-	width: 20%;
+    margin: 3px;
+    padding: 3px;
+    font-size: larger;
+    width: 20%;
 }
+
 .leftbox {
-	float: left;
-	border-right: 2px solid #888;	
+    float: left;
+    border-right: 2px solid #888;
 }
+
 .rightbox {
-	float: right;
-	border-left: 2px solid #888;	
+    float: right;
+    border-left: 2px solid #888;
 }
 
 /* markup buttons */
 .jsbutton {
-	text-align: center; 
+    text-align: center;
 
-	padding: 3px;
-	border: 1px solid #dddddd;
+    padding: 3px;
+    border: 1px solid #dddddd;
 }
 
 .jsbuttonspacer {
-	padding-right: 10px;
+    padding-right: 10px;
 }
 
 .jsbuttonbar {
-	padding: 3px;
-	cursor: default;
+    padding: 3px;
+    cursor: default;
 }
 
