@@ -152,3 +152,8 @@ function undoSybaseQuotes($data) {
     );
     return str_replace("''", "'", $data);
 }
+
+function manager() {
+    global $manager;
+    return $manager;
+}
