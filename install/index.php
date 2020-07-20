@@ -178,7 +178,9 @@ function _doError($msg) {
     <h1><?php echo _ERROR27; ?></h1>
     <p><?php echo _ERROR28; ?></p>
     <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
-    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
+    <p>
+        <a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a>
+    </p>
     </body>
 </html>
 
@@ -199,23 +201,23 @@ function showErrorMessages($errors) {
         <title><?php echo _TITLE; ?></title>
         <link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css" />
     </head>
-<body>
-    <div style="text-align:center">
-        <img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" />
-    </div> 
-    <h1><?php echo _ERROR27; ?></h1>
-    <p><?php echo _ERROR29; ?>:</p>
-    <ul>
+    <body>
+        <div style="text-align:center">
+            <img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" />
+        </div> 
+        <h1><?php echo _ERROR27; ?></h1>
+        <p><?php echo _ERROR29; ?>:</p>
+        <ul>
 <?php
     while($msg = array_shift($errors) ) {
         echo '<li>' . $msg . '</li>';
     }
 ?>
-
-    </ul>
-
-    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
-</body>
+        </ul>
+        <p>
+            <a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a>
+        </p>
+    </body>
 </html>
 
 <?php
