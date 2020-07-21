@@ -176,10 +176,16 @@ function _doError($msg) {
         <img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" />
     </div>
     <h1><?php echo _ERROR27; ?></h1>
-    <p><?php echo _ERROR28; ?></p>
-    <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
     <p>
-        <a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a>
+        <?php echo _ERROR28; ?>
+    </p>
+    <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted ">
+        <?php echo $msg; ?>
+    </div>
+    <p>
+        <a href="index.php" onclick="history.back();return false;">
+            <?php echo _TEXT17; ?>
+        </a>
     </p>
     </body>
 </html>
@@ -190,7 +196,7 @@ function _doError($msg) {
 
 function showErrorMessages($errors) {
     global $lang;
-    ?>
+?>
 <!DOCTYPE html>
 <html lang="<?php echo $lang; ?>" prefix="og: http://ogp.me/ns#">
     <head>
@@ -206,10 +212,12 @@ function showErrorMessages($errors) {
             <img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" />
         </div> 
         <h1><?php echo _ERROR27; ?></h1>
-        <p><?php echo _ERROR29; ?>:</p>
+        <p>
+            <?php echo _ERROR29; ?>:
+        </p>
         <ul>
 <?php
-    while($msg = array_shift($errors) ) {
+    while($msg = array_shift($errors)) {
         echo '<li>' . $msg . '</li>';
     }
 ?>
