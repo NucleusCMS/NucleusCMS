@@ -12,7 +12,7 @@
  */
 
 /**
- * @license http://nucleuscms.org/license.txt GNU General Public License
+ * @license   http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
 
@@ -49,8 +49,9 @@ define('CORE_APPLICATION_NAME', 'Nucleus CMS');
 define('CORE_APPLICATION_VERSION', NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
-$nucleus['version'] = 'v' . NUCLEUS_VERSION;
-$nucleus['codename'] = defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ? 'dev' : '';
+$nucleus['version']  = 'v' . NUCLEUS_VERSION;
+$nucleus['codename'] = defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP')
+    ? 'dev' : '';
 
 _setDefaultUa();
 _setErrorReporting();
@@ -66,29 +67,30 @@ if (getNucleusPatchLevel() > 0) {
 
 // sanitize option
 $bLoggingSanitizedResult = 0;
-$bSanitizeAndContinue = 0;
+$bSanitizeAndContinue    = 0;
 
 $orgRequestURI = serverVar('REQUEST_URI');
 sanitizeParams();
 
 // get all variables that can come from the request and put them in the global scope
-$blogid = requestVar('blogid');
-$itemid = intRequestVar('itemid');
-$catid = intRequestVar('catid');
-$skinid = requestVar('skinid');
-$memberid = requestVar('memberid');
+$blogid      = requestVar('blogid');
+$itemid      = intRequestVar('itemid');
+$catid       = intRequestVar('catid');
+$skinid      = requestVar('skinid');
+$memberid    = requestVar('memberid');
 $archivelist = requestVar('archivelist');
-$imagepopup = requestVar('imagepopup');
-$archive = requestVar('archive');
-$query = requestVar('query');
-$highlight = requestVar('highlight');
-$amount = requestVar('amount');
-$action = requestVar('action');
-$nextaction = requestVar('nextaction');
-$maxresults = requestVar('maxresults');
-$startpos = intRequestVar('startpos');
-$special = requestVar('special');
-$virtualpath = (getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO');
+$imagepopup  = requestVar('imagepopup');
+$archive     = requestVar('archive');
+$query       = requestVar('query');
+$highlight   = requestVar('highlight');
+$amount      = requestVar('amount');
+$action      = requestVar('action');
+$nextaction  = requestVar('nextaction');
+$maxresults  = requestVar('maxresults');
+$startpos    = intRequestVar('startpos');
+$special     = requestVar('special');
+$virtualpath = (getVar('virtualpath') != null) ? getVar('virtualpath')
+    : serverVar('PATH_INFO');
 
 if ( ! headers_sent() && confVar('expose_generator')) {
     header(sprintf('Generator: %s', CORE_APPLICATION_NAME));
@@ -158,33 +160,36 @@ if ( ! isset($CONF['Self'])) {
     $CONF['Self'] = rtrim(confVar('IndexURL'), '/'); // strip trailing
 }
 
-if (confVar('URLMode') === 'pathinfo' && substr(confVar('Self'), -4) === '.php') {
+if (confVar('URLMode') === 'pathinfo'
+    && substr(confVar('Self'), -4) === '.php') {
     $CONF['Self'] = rtrim(confVar('IndexURL'), '/');
 }
 
-$CONF['ItemURL'] = confVar('Self');
-$CONF['ArchiveURL'] = confVar('Self');
+$CONF['ItemURL']        = confVar('Self');
+$CONF['ArchiveURL']     = confVar('Self');
 $CONF['ArchiveListURL'] = confVar('Self');
-$CONF['MemberURL'] = confVar('Self');
-$CONF['SearchURL'] = confVar('Self');
-$CONF['BlogURL'] = confVar('Self');
-$CONF['CategoryURL'] = confVar('Self');
+$CONF['MemberURL']      = confVar('Self');
+$CONF['SearchURL']      = confVar('Self');
+$CONF['BlogURL']        = confVar('Self');
+$CONF['CategoryURL']    = confVar('Self');
 
 // switch URLMode back to normal when confVar('Self') ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
 if (
     confVar('URLMode') === null
-    ||
-    (
-        (confVar('URLMode') === 'pathinfo') && (substr(confVar('Self'), strlen(confVar('Self')) - 4) === '.php')
+    || (
+        (confVar('URLMode') === 'pathinfo')
+        && (substr(confVar('Self'), strlen(confVar('Self')) - 4) === '.php')
     )
 ) {
     $CONF['URLMode'] = 'normal';
 }
 
 // automatically use simpler toolbar for mozilla
-if ( ! confVar('DisableJsTools') && str_contains(serverVar('HTTP_USER_AGENT'),
-        'Mozilla/5.0') && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
+if ( ! confVar('DisableJsTools')
+     && str_contains(serverVar('HTTP_USER_AGENT'),
+        'Mozilla/5.0')
+     && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
 
@@ -197,13 +202,16 @@ if ( ! isset($CONF['secureCookieKey'])) {
 }
 switch ($CONF['secureCookieKey']) {
     case 8:
-        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/',
+            '', serverVar('REMOTE_ADDR'));
         break;
     case 16:
-        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/', '',
+            serverVar('REMOTE_ADDR'));
         break;
     case 24:
-        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/', '',
+            serverVar('REMOTE_ADDR'));
         break;
     case 32:
         $CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
@@ -237,13 +245,14 @@ if (requestVar('action') === 'login') {
         }
 
         $param = array(
-            'member' => &$member,
-            'username' => postVar('login')
+            'member'   => &$member,
+            'username' => postVar('login'),
         );
         $manager->notify('LoginSuccess', $param);
-        $log_message = sprintf("Login successful for %s (sharedpc=%s)", postVar('login'), intPostVar('shared'));
+        $log_message = sprintf("Login successful for %s (sharedpc=%s)",
+            postVar('login'), intPostVar('shared'));
 
-        $remote_ip = serverVar('REMOTE_ADDR', '');
+        $remote_ip   = serverVar('REMOTE_ADDR', '');
         $remote_host = serverVar('REMOTE_HOST', gethostbyaddr($remote_ip));
         if ($remote_ip !== '') {
             $log_message .= sprintf(" %s", $remote_ip);
@@ -252,11 +261,14 @@ if (requestVar('action') === 'login') {
             }
         }
         if (serverVar('HTTP_X_FORWARDED_FOR')) {
-            $remote_proxy_ip = explode(',', serverVar('HTTP_X_FORWARDED_FOR'));
-            $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
+            $remote_proxy_ip   = explode(',',
+                serverVar('HTTP_X_FORWARDED_FOR'));
+            $remote_proxy_ip
+                               = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
-            $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
-            if ($remote_proxy_host !== false && $remote_proxy_host != $remote_proxy_ip) {
+            $log_message       .= sprintf(" , proxy %s", $remote_proxy_ip);
+            if ($remote_proxy_host !== false
+                && $remote_proxy_host != $remote_proxy_ip) {
                 $log_message .= sprintf('(%s)', $remote_proxy_host);
             }
             unset($remote_proxy_ip, $remote_proxy_host);
@@ -274,14 +286,16 @@ if (requestVar('action') === 'login') {
             if ($member->isHalt()) {
                 ACTIONLOG::add(
                     INFO
-                    , sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, postVar('login'))
+                    ,
+                    sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, postVar('login'))
                 );
             } else {
                 ACTIONLOG::add(INFO, 'Login failed for ' . postVar('login'));
             }
         }
     }
-} elseif ($action === 'logout' && ! headers_sent() && cookieVar(confVar('CookiePrefix') . 'user')) {
+} elseif ($action === 'logout' && ! headers_sent()
+          && cookieVar(confVar('CookiePrefix') . 'user')) {
     // remove cookies on logout
     setcookie(
         confVar('CookiePrefix') . 'user'
@@ -309,11 +323,13 @@ if (requestVar('action') === 'login') {
     if (confVar('secureCookieKey') !== 'none') {
         $ck = md5($ck . confVar('secureCookieKeyIP'));
     }
-    $res = $member->cookielogin(cookieVar(confVar('CookiePrefix') . 'user'), $ck);
+    $res = $member->cookielogin(cookieVar(confVar('CookiePrefix') . 'user'),
+        $ck);
     unset($ck);
 
     // renew cookies when not on a shared computer
-    if ($res && (cookieVar(confVar('CookiePrefix') . 'sharedpc') != 1) && ( ! headers_sent())) {
+    if ($res && (cookieVar(confVar('CookiePrefix') . 'sharedpc') != 1)
+        && ( ! headers_sent())) {
         $member->setCookieKey(cookieVar(confVar('CookiePrefix') . 'loginkey'));
         $member->setCookies();
     }
@@ -325,7 +341,8 @@ $manager->notify('PostAuthentication', $param);
 ticketForPlugin();
 
 // first, let's see if the site is disabled or not. always allow admin area access.
-if (confVar('DisableSite') && ! $member->isAdmin() && ! confVar('UsingAdminArea')) {
+if (confVar('DisableSite') && ! $member->isAdmin()
+    && ! confVar('UsingAdminArea')) {
     $url = trim(confVar('DisableSiteURL'));
     if (strlen($url) > 0) {
         redirect($url);
@@ -336,7 +353,7 @@ if (confVar('DisableSite') && ! $member->isAdmin() && ! confVar('UsingAdminArea'
             header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
         }
         $title = 'Service Unavailable';
-        $msg = 'Service Unavailable.';
+        $msg   = 'Service Unavailable.';
         echo "<html><head><title>$title</title></head><body><h1>$title</h1>$msg</body></html>";
     }
     exit;
@@ -361,7 +378,8 @@ include_once(NC_LIBS_PATH . 'SEARCH.php');
 include_once(NC_LIBS_PATH . 'entity.php');
 include_once(NC_LIBS_PATH . 'CoreCachedData.php');
 
-spl_autoload_register('loadCoreClassFor_spl' . (version_compare('5.3.0', PHP_VERSION, '<=') ? '' : '_prephp53'));
+spl_autoload_register('loadCoreClassFor_spl' . (version_compare('5.3.0',
+        PHP_VERSION, '<=') ? '' : '_prephp53'));
 
 // set lastVisit cookie (if allowed)
 if ( ! headers_sent()) {
@@ -409,16 +427,17 @@ if ( ! defined('_ARCHIVETYPE_MONTH')) {
 // decode path_info
 if (confVar('URLMode') === 'pathinfo') {
     $parsed = false;
-    $param = array(
-        'type' => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
-        'info' => $virtualpath,
-        'complete' => &$parsed
+    $param  = array(
+        'type'     => basename(serverVar('SCRIPT_NAME')),
+        // e.g. item, blog, ...
+        'info'     => $virtualpath,
+        'complete' => &$parsed,
     );
     $manager->notify('ParseURL', $param);
 
     if ( ! $parsed) {
         // default implementation
-        $data = explode('/', $virtualpath);
+        $data  = explode('/', $virtualpath);
         $total = count($data);
         foreach ($data as $i => $iValue) {
             switch ($data[$i]) {
@@ -438,7 +457,8 @@ if (confVar('URLMode') === 'pathinfo') {
 
                 // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
                 case confVar('ArchiveKey'):
-                    if (($i + 1) < $total && strpos($data[$i + 1], '-') === false) {
+                    if (($i + 1) < $total
+                        && strpos($data[$i + 1], '-') === false) {
                         $blogid = (int)$data[++$i];
                     }
                     $i++;
@@ -473,7 +493,7 @@ if (confVar('URLMode') === 'pathinfo') {
                 case confVar('SpecialskinKey'):
                     $i++;
                     if ($i < $total) {
-                        $special = $iValue;
+                        $special             = $iValue;
                         $_REQUEST['special'] = $special;
                     }
                     break;
@@ -492,6 +512,6 @@ if (confVar('URLMode') === 'pathinfo') {
 */
 $param = array(
     'type' => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
-    'info' => $virtualpath
+    'info' => $virtualpath,
 );
 $manager->notify('PostParseURL', $param);
