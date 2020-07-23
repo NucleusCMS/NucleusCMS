@@ -13,7 +13,7 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
- 
+
 /*
  * complete sql_* wrappers for mysql functions
  *
@@ -22,60 +22,75 @@
 
 $MYSQL_CONN = 0;
 
-if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
-{
+if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
     include(dirname(__FILE__) . '/sql_common_functions.php');
 
     /**
-      * Connects to mysql server with arguments
-      */
-    function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '') {
-        
+     * Connects to mysql server with arguments
+     */
+    function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '')
+    {
+
         $CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
-        if ($mysql_database) sql_select_db($mysql_database,$CONN);
+        if ($mysql_database) {
+            sql_select_db($mysql_database, $CONN);
+        }
 
         return $CONN;
     }
-    
+
     /**
-      * Connects to mysql server
-      */
-    function sql_connect() {
+     * Connects to mysql server
+     */
+    function sql_connect()
+    {
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
         global $MYSQL_CONN;
 
-        if($MYSQL_CONN) return $MYSQL_CONN;
+        if ($MYSQL_CONN) {
+            return $MYSQL_CONN;
+        }
 
-        if(!$DB_HOST || !$DB_USER) exit('sql_connect error. Empty connect information.');
+        if (!$DB_HOST || !$DB_USER) {
+            exit('sql_connect error. Empty connect information.');
+        }
 
-        if(substr(PHP_OS,0,3)==='WIN' && $DB_HOST==='localhost')
+        if (substr(PHP_OS, 0, 3) === 'WIN' && $DB_HOST === 'localhost') {
             $MYSQL_HOST = '127.0.0.1';
-        $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
+        }
+        $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER,
+            $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
         if (!sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
-            $MYSQL_CONN = NULL;
+            $MYSQL_CONN = null;
             $msg = '';
             $pattern = '/(Access denied for user|Unknown database|db handler is null)/i';
-            if (preg_match($pattern, mysql_error(), $m))
-                $msg .=  $m[1];
+            if (preg_match($pattern, mysql_error(), $m)) {
+                $msg .= $m[1];
+            }
             startUpError('<p>Could not select database: ' . $msg . '</p>', 'Connect Error');
         }
 
-        if (defined('_CHARSET')){
-            $charset  = get_mysql_charset_from_php_charset(_CHARSET);
-        }else{
+        if (defined('_CHARSET')) {
+            $charset = get_mysql_charset_from_php_charset(_CHARSET);
+        } else {
             $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
             $res = sql_query($query);
-            if(!$res) exit('Language name fetch error');
+            if (!$res) {
+                exit('Language name fetch error');
+            }
             $obj = sql_fetch_object($res);
             $Language = $obj->value;
             $charset = get_charname_from_langname($Language);
-            $charsetOfDB = getCharSetFromDB(sql_table('config'),'name', $MYSQL_CONN);
-            if ((stripos($charset, 'utf')!==FALSE) && (stripos($charsetOfDB, 'utf8')!==FALSE))
-                $charset = $charsetOfDB; // work around for utf8mb4_general_ci
-            else if($charset !== $charsetOfDB) {
-                global $CONF;
-                $CONF['adminAlert'] = '_MISSING_DB_ENCODING';
+            $charsetOfDB = getCharSetFromDB(sql_table('config'), 'name', $MYSQL_CONN);
+            if ((stripos($charset, 'utf') !== false) && (stripos($charsetOfDB, 'utf8') !== false)) {
+                $charset = $charsetOfDB;
+            } // work around for utf8mb4_general_ci
+            else {
+                if ($charset !== $charsetOfDB) {
+                    global $CONF;
+                    $CONF['adminAlert'] = '_MISSING_DB_ENCODING';
+                }
             }
         }
         sql_set_charset($charset, $MYSQL_CONN);
@@ -84,242 +99,293 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     }
 
     /**
-      * disconnects from SQL server
-      */
-    function sql_disconnect($conn = false) {
+     * disconnects from SQL server
+     */
+    function sql_disconnect($conn = false)
+    {
         global $MYSQL_CONN;
         if ($conn) {
             @mysql_close($conn);
-        } else if ($MYSQL_CONN) {
-            @mysql_close($MYSQL_CONN);
-            $MYSQL_CONN = NULL;
-        }
-    }
-    
-    function sql_close($conn = false) {
-        global $MYSQL_CONN;
-        if ($conn) {
-            @mysql_close($conn);
-        } else if ($MYSQL_CONN) {
-            @mysql_close($MYSQL_CONN);
-            $MYSQL_CONN = NULL;
+        } else {
+            if ($MYSQL_CONN) {
+                @mysql_close($MYSQL_CONN);
+                $MYSQL_CONN = null;
+            }
         }
     }
 
-    function sql_connected() {
+    function sql_close($conn = false)
+    {
+        global $MYSQL_CONN;
+        if ($conn) {
+            @mysql_close($conn);
+        } else {
+            if ($MYSQL_CONN) {
+                @mysql_close($MYSQL_CONN);
+                $MYSQL_CONN = null;
+            }
+        }
+    }
+
+    function sql_connected()
+    {
         global $MYSQL_CONN;
         return $MYSQL_CONN ? true : false;
     }
 
     /**
-      * executes an SQL query
-      */
-    function sql_query($query,$conn = false) {
+     * executes an SQL query
+     */
+    function sql_query($query, $conn = false)
+    {
         global $SQLCount, $MYSQL_CONN, $CONF, $SQLStack;
         if (!$conn) {
-            if($MYSQL_CONN) $conn = $MYSQL_CONN;
-            else            sql_connect();
+            if ($MYSQL_CONN) {
+                $conn = $MYSQL_CONN;
+            } else {
+                sql_connect();
+            }
         }
 
         $bt = microtime(true);
-        $res = mysql_query($query,$conn);
+        $res = mysql_query($query, $conn);
         if (!$res) {
             $uri = hsc(serverVar('REQUEST_URI'));
             $str = sprintf("[SQL error] %s : %s (%s)", sql_error($conn), $query, $uri);
-            if (class_exists('ACTIONLOG'))
+            if (class_exists('ACTIONLOG')) {
                 ACTIONLOG::add(WARNING, $str);
+            }
             echo 'error';
-            if($CONF['debug']) print_r(debug_backtrace());
+            if ($CONF['debug']) {
+                print_r(debug_backtrace());
+            }
         }
         $SQLCount++;
         $et = microtime(true) - $bt;
         $SQLStack[$SQLCount] = "[$SQLCount] {$et}s - {$query}";
         return $res;
     }
-    
+
     /**
-      * executes an SQL error
-      */
+     * executes an SQL error
+     */
     function sql_error($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_error($conn);
     }
-    
+
     /**
-      * executes an SQL db select
-      */
-    function sql_select_db($db,$conn = false)
+     * executes an SQL db select
+     */
+    function sql_select_db($db, $conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
-        return mysql_select_db($db,$conn);
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
+        return mysql_select_db($db, $conn);
     }
-    
+
     /**
-      * executes an SQL real escape 
-      */
-    function sql_real_escape_string($val,$conn = false)
+     * executes an SQL real escape
+     */
+    function sql_real_escape_string($val, $conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
-        return mysql_real_escape_string($val,$conn);
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
+        return mysql_real_escape_string($val, $conn);
     }
-    
+
     /**
-      * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed 
-      */
-    function sql_quote_string($val,$conn = false) {
+     * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed
+     */
+    function sql_quote_string($val, $conn = false)
+    {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
-        return "'".mysql_real_escape_string($val,$conn)."'";
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
+        return "'" . mysql_real_escape_string($val, $conn) . "'";
     }
-    
+
     /**
-      * executes an SQL insert id
-      */
+     * executes an SQL insert id
+     */
     function sql_insert_id($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_insert_id($conn);
     }
-    
+
     /**
-      * executes an SQL result request
-      */
+     * executes an SQL result request
+     */
     function sql_result($res, $row = 0, $col = 0)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_result($res, $row, $col);
     }
-    
+
     /**
-      * frees sql result resources
-      */
+     * frees sql result resources
+     */
     function sql_free_result($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_free_result($res);
     }
-    
+
     /**
      * returns number of rows in SQL result
      */
     function sql_num_rows($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_num_rows($res);
     }
-    
+
     /**
      * returns number of rows affected by SQL query
      */
     function sql_affected_rows($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_affected_rows($conn);
     }
-    
+
     /**
-      * Get number of fields in result
-      */
+     * Get number of fields in result
+     */
     function sql_num_fields($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_num_fields($res);
     }
-    
+
     /**
-      * fetches next row of SQL result as an associative array
-      */
+     * fetches next row of SQL result as an associative array
+     */
     function sql_fetch_assoc($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_fetch_assoc($res);
     }
-    
+
     /**
-      * Fetch a result row as an associative array, a numeric array, or both
-      */
+     * Fetch a result row as an associative array, a numeric array, or both
+     */
     function sql_fetch_array($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_fetch_array($res);
     }
-    
+
     /**
-      * fetches next row of SQL result as an object
-      */
+     * fetches next row of SQL result as an object
+     */
     function sql_fetch_object($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_fetch_object($res);
     }
-    
+
     /**
-      * Get a result row as an enumerated array
-      */
+     * Get a result row as an enumerated array
+     */
     function sql_fetch_row($res)
     {
-        if(!is_sql_result($res)) return false;
+        if (!is_sql_result($res)) {
+            return false;
+        }
         return mysql_fetch_row($res);
     }
-    
+
     /**
-      * Get column information from a result and return as an object
-      */
-    function sql_fetch_field($res,$offset = 0)
+     * Get column information from a result and return as an object
+     */
+    function sql_fetch_field($res, $offset = 0)
     {
-        if(!is_sql_result($res)) return false;
-        return mysql_fetch_field($res,$offset);
+        if (!is_sql_result($res)) {
+            return false;
+        }
+        return mysql_fetch_field($res, $offset);
     }
-    
+
     /**
-      * Get current system status (returns string)
-      */
-    function sql_stat($conn=false)
+     * Get current system status (returns string)
+     */
+    function sql_stat($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_stat($conn);
     }
-    
+
     /**
-      * Returns the name of the character set
-      */
-    function sql_client_encoding($conn=false)
+     * Returns the name of the character set
+     */
+    function sql_client_encoding($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_client_encoding($conn);
     }
-    
+
     /**
      * Returns the array that column names of the table
      */
     function sql_getTableColumnNames($tablename)
     {
         global $MYSQL_CONN;
-        if (!$MYSQL_CONN) return array();
+        if (!$MYSQL_CONN) {
+            return array();
+        }
 
         $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
         $target = 'Field';
 
         $items = array();
         $res = mysql_query($sql);
-        if (!$res)
+        if (!$res) {
             return array();
-        while( $row = mysql_fetch_array($res) )
-        {
-            if (isset($row[$target]))
+        }
+        while ($row = mysql_fetch_array($res)) {
+            if (isset($row[$target])) {
                 $items[] = $row[$target];
+            }
         }
 
-        if (count($items)>0)
-        {
+        if (count($items) > 0) {
             sort($items);
         }
         return $items;
@@ -328,24 +394,22 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     /**
      * Returns the boolean value that column name of the table exist or not
      */
-    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive=False)
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive = false)
     {
         $names = sql_getTableColumnNames($tablename);
 
-        if (count($names)>0)
-        {
-            if ($casesensitive)
-                return in_array( $ColumnName , $names );
-            else
-            {
-                foreach($names as $v)
-                    if ( strcasecmp( $ColumnName , $v ) == 0 )
-                    {
-                         return True;
+        if (count($names) > 0) {
+            if ($casesensitive) {
+                return in_array($ColumnName, $names);
+            } else {
+                foreach ($names as $v) {
+                    if (strcasecmp($ColumnName, $v) == 0) {
+                        return true;
                     }
+                }
             }
         }
-        return False;
+        return false;
     }
 
     /**
@@ -354,7 +418,9 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     function sql_existTableName($tablename)
     {
         global $MYSQL_CONN;
-        if (!$MYSQL_CONN) return FALSE;
+        if (!$MYSQL_CONN) {
+            return false;
+        }
 
         $sql = sprintf("SHOW TABLES LIKE '%s' ", mysql_real_escape_string($tablename));
         $res = mysql_query($sql);
@@ -362,46 +428,52 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
     }
 
     /**
-      * Get SQL client version
-      */
+     * Get SQL client version
+     */
     function sql_get_client_info()
     {
         return mysql_get_client_info();
     }
-    
-    function  sql_get_db()
+
+    function sql_get_db()
     {
         global $MYSQL_CONN;
         return $MYSQL_CONN;
     }
 
     /**
-      * Get SQL server version
-      */
-    function sql_get_server_info($conn=false)
+     * Get SQL server version
+     */
+    function sql_get_server_info($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_get_server_info($conn);
     }
-    
+
     /**
-      * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
-      */
-    function sql_get_host_info($conn=false)
+     * Returns a string describing the type of SQL connection in use for the connection or FALSE on failure
+     */
+    function sql_get_host_info($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_get_host_info($conn);
     }
-    
+
     /**
-      * Returns the SQL protocol on success, or FALSE on failure. 
-      */
-    function sql_get_proto_info($conn=false)
+     * Returns the SQL protocol on success, or FALSE on failure.
+     */
+    function sql_get_proto_info($conn = false)
     {
         global $MYSQL_CONN;
-        if (!$conn) $conn = $MYSQL_CONN;
+        if (!$conn) {
+            $conn = $MYSQL_CONN;
+        }
         return mysql_get_proto_info($conn);
     }
 
@@ -413,39 +485,38 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
         return mysql_field_name($res, $offset);
     }
 
-/**************************************************************************
-    Unimplemented mysql_* functions
-    
-# mysql_ data_ seek (maybe useful)
-# mysql_ errno (maybe useful)
-# mysql_ fetch_ lengths (maybe useful)
-# mysql_ field_ flags (maybe useful)
-# mysql_ field_ len (maybe useful)
-# mysql_ field_ seek (maybe useful)
-# mysql_ field_ table (maybe useful)
-# mysql_ field_ type (maybe useful)
-# mysql_ info (maybe useful)
-# mysql_ list_ processes (maybe useful)
-# mysql_ ping (maybe useful)
-# mysql_ set_ charset (maybe useful, requires php >=5.2.3 and mysql >=5.0.7)
-# mysql_ thread_ id (maybe useful)
-
-# mysql_ db_ name (useful only if working on multiple dbs which we do not do)
-# mysql_ list_ dbs (useful only if working on multiple dbs which we do not do)
-
-# mysql_ pconnect (probably not useful and could cause some unintended performance issues)
-# mysql_ unbuffered_ query (possibly useful, but complicated and not supported by all database drivers (pdo))
-
-# mysql_ change_ user (deprecated)
-# mysql_ create_ db (deprecated)
-# mysql_ db_ query (deprecated)
-# mysql_ drop_ db (deprecated)
-# mysql_ escape_ string (deprecated)
-# mysql_ list_ fields (deprecated)
-# mysql_ list_ tables (deprecated)
-# mysql_ tablename (deprecated)
-
-*******************************************************************/
+    /**************************************************************************
+     * Unimplemented mysql_* functions
+     *
+     * # mysql_ data_ seek (maybe useful)
+     * # mysql_ errno (maybe useful)
+     * # mysql_ fetch_ lengths (maybe useful)
+     * # mysql_ field_ flags (maybe useful)
+     * # mysql_ field_ len (maybe useful)
+     * # mysql_ field_ seek (maybe useful)
+     * # mysql_ field_ table (maybe useful)
+     * # mysql_ field_ type (maybe useful)
+     * # mysql_ info (maybe useful)
+     * # mysql_ list_ processes (maybe useful)
+     * # mysql_ ping (maybe useful)
+     * # mysql_ set_ charset (maybe useful, requires php >=5.2.3 and mysql >=5.0.7)
+     * # mysql_ thread_ id (maybe useful)
+     *
+     * # mysql_ db_ name (useful only if working on multiple dbs which we do not do)
+     * # mysql_ list_ dbs (useful only if working on multiple dbs which we do not do)
+     *
+     * # mysql_ pconnect (probably not useful and could cause some unintended performance issues)
+     * # mysql_ unbuffered_ query (possibly useful, but complicated and not supported by all database drivers (pdo))
+     *
+     * # mysql_ change_ user (deprecated)
+     * # mysql_ create_ db (deprecated)
+     * # mysql_ db_ query (deprecated)
+     * # mysql_ drop_ db (deprecated)
+     * # mysql_ escape_ string (deprecated)
+     * # mysql_ list_ fields (deprecated)
+     * # mysql_ list_ tables (deprecated)
+     * # mysql_ tablename (deprecated)
+     *******************************************************************/
 
     /*
      * for preventing I/O strings from auto-detecting the charactor encodings by MySQL
@@ -457,36 +528,45 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc'))
      * NOTE: shift_jis is only supported for output. Using shift_jis in DB is prohibited.
      * NOTE: iso-8859-x,windows-125x if _CHARSET is unset.
      */
-    function sql_set_charset($charset) {
-        if(defined('NC_MTN_MODE') && NC_MTN_MODE==='install') $charset = 'utf8';
-        elseif($charset!=='utf8mb4')                          $charset = treat_char_name($charset);
-        
-        $mySqlVer = sql_get_server_version();
-        if(defined('_CHARSET')) $_CHARSET = strtolower(_CHARSET);
-        else $_CHARSET = '';
-
-        if(version_compare($mySqlVer, '5.0.7', '>='))
-        {
-            if (function_exists('mysql_set_charset'))
-                $res = mysql_set_charset($charset);
-            else
-                $res = sql_query("SET CHARACTER SET {$charset}");
+    function sql_set_charset($charset)
+    {
+        if (defined('NC_MTN_MODE') && NC_MTN_MODE === 'install') {
+            $charset = 'utf8';
+        } elseif ($charset !== 'utf8mb4') {
+            $charset = treat_char_name($charset);
         }
-        elseif($charset==='utf8' && $_CHARSET==='utf-8')
+
+        $mySqlVer = sql_get_server_version();
+        if (defined('_CHARSET')) {
+            $_CHARSET = strtolower(_CHARSET);
+        } else {
+            $_CHARSET = '';
+        }
+
+        if (version_compare($mySqlVer, '5.0.7', '>=')) {
+            if (function_exists('mysql_set_charset')) {
+                $res = mysql_set_charset($charset);
+            } else {
+                $res = sql_query("SET CHARACTER SET {$charset}");
+            }
+        } elseif ($charset === 'utf8' && $_CHARSET === 'utf-8') {
             $res = sql_query("SET NAMES 'utf8'");
-        elseif($charset==='ujis' && $_CHARSET==='euc-jp')
+        } elseif ($charset === 'ujis' && $_CHARSET === 'euc-jp') {
             $res = sql_query("SET NAMES 'ujis'");
+        }
 
         // retry : workaround for Can't initialize character set utf8mb4
-        if (($res === FALSE) && $charset==='utf8mb4')
-        {  // utf8mb4 : mysql_version 5.5 or higher
-            foreach(array('utf8','utf8mb4') as $charset)
-                if (function_exists('mysql_set_charset'))
+        if (($res === false) && $charset === 'utf8mb4') {  // utf8mb4 : mysql_version 5.5 or higher
+            foreach (array('utf8', 'utf8mb4') as $charset) {
+                if (function_exists('mysql_set_charset')) {
                     $res = mysql_set_charset($charset);
-                else
+                } else {
                     $res = sql_query("SET CHARACTER SET {$charset}");
-            if (!$res)
+                }
+            }
+            if (!$res) {
                 $res = sql_query("SET CHARACTER SET utf8mb4");
+            }
         }
 
         return isset($res) ? $res : false;

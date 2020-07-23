@@ -14,14 +14,17 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if ( !function_exists('requestVar') ) exit;
+if (!function_exists('requestVar')) {
+    exit;
+}
 require_once dirname(__FILE__) . '/BaseActions.php';
 
 /**
  * This is the parser class of Nucleus. It is used for various things (skin parsing,
  * form generation, ...)
  */
-class PARSER {
+class PARSER
+{
 
     // array with the names of all allowed actions
     public $actions;
@@ -47,7 +50,8 @@ class PARSER {
      * @param $delim optional delimiter
      * @param $paramdelim optional parameterdelimiter
      */
-    function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',') {
+    function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',')
+    {
         $this->actions = $allowedActions;
         $this->handler =& $handler;
         $this->delim = $delim;
@@ -58,27 +62,27 @@ class PARSER {
     /**
      * Parses the given contents and outputs it
      */
-    function parse(&$contents) {
+    function parse(&$contents)
+    {
         global $manager;
-        if(strpos($contents,'<%')===false)
-        {
+        if (strpos($contents, '<%') === false) {
             echo $contents;
             return;
         }
         $hashedTagBM = md5('<%BenchMark%>');
-        if(strpos($contents,'<%BenchMark%>')!==false)
-        {
-            if(!$manager->pluginInstalled('NP_BenchMark'))
+        if (strpos($contents, '<%BenchMark%>') !== false) {
+            if (!$manager->pluginInstalled('NP_BenchMark')) {
                 $contents = str_replace('<%BenchMark%>', $hashedTagBM, $contents);
+            }
         }
         $hashedTagDI = md5('<%DebugInfo%>');
-        if(strpos($contents,'<%DebugInfo%>')!==false)
-        {
-            if(!$manager->pluginInstalled('NP_DebugInfo'))
+        if (strpos($contents, '<%DebugInfo%>') !== false) {
+            if (!$manager->pluginInstalled('NP_DebugInfo')) {
                 $contents = str_replace('<%DebugInfo%>', $hashedTagDI, $contents);
+            }
         }
-        
-        $pieces = preg_split('/'.$this->delim.'/',$contents);
+
+        $pieces = preg_split('/' . $this->delim . '/', $contents);
 
         $maxidx = sizeof($pieces);
         for ($idx = 0; $idx < $maxidx; $idx++) {
@@ -92,23 +96,28 @@ class PARSER {
 
 
     /**
-      * Called from the parser to handle an action
-      * 
-      * @param $action name of the action (e.g. blog, image ...)
-      */
-    function doAction($action) {
+     * Called from the parser to handle an action
+     *
+     * @param $action name of the action (e.g. blog, image ...)
+     */
+    function doAction($action)
+    {
         global $manager, $CONF, $doActionStack, $doActionCount;
 
-        if (!$action) return;
+        if (!$action) {
+            return;
+        }
         $raw_action = $action;
         // split into action name + arguments
-        if (strstr($action,'(')) {
+        if (strstr($action, '(')) {
             $paramStartPos = strpos($action, '(');
             $params = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
             $action = substr($action, 0, $paramStartPos);
-            $params = explode ($this->pdelim, $params);
+            $params = explode($this->pdelim, $params);
 
-             foreach ($params as $key => $value) { $params[$key] = trim($value); }
+            foreach ($params as $key => $value) {
+                $params[$key] = trim($value);
+            }
         } else {
             // no parameters
             $params = array();
@@ -123,11 +132,11 @@ class PARSER {
             && ($actionlc !== 'endif')
             && ($actionlc !== 'ifnot')
             && ($actionlc !== 'elseifnot')
-            && (substr($actionlc,0,2) !== 'if'))
+            && (substr($actionlc, 0, 2) !== 'if')) {
             return;
+        }
 
-        if ( in_array($actionlc, $this->actions) || $this->norestrictions )
-        {
+        if (in_array($actionlc, $this->actions) || $this->norestrictions) {
             // when using PHP versions lower than 4.0.5, uncomment the line before
             // and comment the call_user_func_array call
             //$this->call_using_array($action, $this->handler, $params);
@@ -142,55 +151,53 @@ class PARSER {
             // redirect to plugin action if possible
 //            define(DISABLE_PARSE_NP_PLUGIN, TRUE);
             if (!defined('DISABLE_PARSE_NP_PLUGIN') || !DISABLE_PARSE_NP_PLUGIN) {
-                if ((strncmp($actionlc, 'np_', 3)==0)
+                if ((strncmp($actionlc, 'np_', 3) == 0)
                     && in_array('plugin', $this->actions)
                     && ($manager->pluginInstalled($actionlc))) {
-                    $action = substr($action,3);
+                    $action = substr($action, 3);
                 }
             }
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled("NP_{$action}")) {
                 if (!HAS_CATCH_ERROR) {
-                    $this->doAction('plugin('.$action.$this->pdelim.join($this->pdelim,$params).')');
+                    $this->doAction('plugin(' . $action . $this->pdelim . join($this->pdelim, $params) . ')');
                 } else {
-                    try
-                    {
-                        $this->doAction('plugin('.$action.$this->pdelim.join($this->pdelim,$params).')');
-                    }
-                    catch (Error $e)
-                    {
+                    try {
+                        $this->doAction('plugin(' . $action . $this->pdelim . join($this->pdelim, $params) . ')');
+                    } catch (Error $e) {
                         global $member, $CONF;
-                        if ($member && $member->isLoggedIn() && $member->isAdmin())
-                        {
-                            $NP_Name = 'NP_'.$action;
+                        if ($member && $member->isLoggedIn() && $member->isAdmin()) {
+                            $NP_Name = 'NP_' . $action;
                             $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                                           $NP_Name, get_class($e), $e->getLine(), $e->getFile());
-                            if ($CONF['DebugVars'])
+                                $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                            if ($CONF['DebugVars']) {
                                 var_dump($e->getMessage());
+                            }
                             SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
-                            if (get_class($e) != 'ArgumentCountError')
+                            if (get_class($e) != 'ArgumentCountError') {
                                 throw $e;
-                        }
-                        else
-                        {
+                            }
+                        } else {
                             throw $e;
                         }
                     }
                 }
             } else {
-                if ($CONF['DebugVars']==true) {
-                    echo hsc('<%' . sprintf('%s(%s)',$action,implode($this->pdelim, $params)) . '%>');
+                if ($CONF['DebugVars'] == true) {
+                    echo hsc('<%' . sprintf('%s(%s)', $action, implode($this->pdelim, $params)) . '%>');
+                } elseif ($action === '_GET' && isset($params[0])) {
+                    echo hsc($_GET[$params[0]]);
                 }
-                elseif($action==='_GET' && isset($params[0])) echo hsc($_GET[$params[0]]);
             }
 
         }
     }
 
     /**
-      * Calls a method using an array of parameters (for use with PHP versions lower than 4.0.5)
-      * ( = call_user_func_array() function )
-      */
-    function call_using_array($methodname, &$handler, $paramarray) {
+     * Calls a method using an array of parameters (for use with PHP versions lower than 4.0.5)
+     * ( = call_user_func_array() function )
+     */
+    function call_using_array($methodname, &$handler, $paramarray)
+    {
 
         $methodname = 'parse_' . $methodname;
 
@@ -199,29 +206,32 @@ class PARSER {
         }
 
         $command = 'call_user_func(array($handler,$methodname)';
-        for ($i = 0; $i<count($paramarray); $i++)
+        for ($i = 0; $i < count($paramarray); $i++) {
             $command .= ',$paramarray[' . $i . ']';
+        }
         $command .= ');';
         eval($command);    // execute the correct method
     }
 
     /**
      * Set a property of the parser in the manager
-     * 
+     *
      * @param $property additional parser property (e.g. include prefix of the skin)
      * @param $value new value
      */
-    public static function setProperty($property, $value) {
+    public static function setProperty($property, $value)
+    {
         global $manager;
         $manager->setParserProperty($property, $value);
     }
 
     /**
      * Get a property of the parser from the manager
-     * 
+     *
      * @param $name name of the property
      */
-    public static function getProperty($name) {
+    public static function getProperty($name)
+    {
         global $manager;
         return $manager->getParserProperty($name);
     }

@@ -16,7 +16,7 @@
 
  */
 
-if ( !function_exists('requestVar') ) exit;
+if ( !function_exists('requestVar') ) {exit;}
 require_once dirname(__FILE__) . '/showlist.php';
 
 /**
@@ -51,7 +51,7 @@ class ADMIN {
         );
 
         if (isset($alias[$action]))
-            $action = $alias[$action];
+            {$action = $alias[$action];}
 
         $methodName = 'action_' . $action;
 
@@ -124,13 +124,13 @@ class ADMIN {
         if (!in_array($this->action, $aActionsNotToCheck))
         {
             if (!$manager->checkTicket())
-                $this->error(_ERROR_BADTICKET);
+                {$this->error(_ERROR_BADTICKET);}
         }
 
         if (method_exists($this, $methodName))
-            call_user_func(array($this, $methodName));
+            {call_user_func(array($this, $methodName));}
         else
-            $this->error(_BADACTION . hsc(" ($action)"));
+            {$this->error(_BADACTION . hsc(" ($action)"));}
 
     }
 
@@ -162,7 +162,7 @@ class ADMIN {
         $this->pagehead();
 
         echo '<h2>'. _LOGIN .'</h2>';
-        if ($msg) echo _MESSAGE , ': ', hsc($msg);
+        if ($msg) {echo _MESSAGE , ': ', hsc($msg);}
         ?>
 
         <form action="index.php" method="post"><p>
@@ -202,7 +202,7 @@ class ADMIN {
         $this->pagehead();
 
         if ($msg)
-            echo _MESSAGE , ': ', $msg;
+            {echo _MESSAGE , ': ', $msg;}
 
         /* ---- add items ---- */
         echo '<h2>' . _OVERVIEW_YRBLOGS . '</h2>';
@@ -229,11 +229,11 @@ class ADMIN {
         if (($showAll != 'yes') && ($member->isAdmin())) {
             $total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
             if ($total > $amount)
-                echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
+                {echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';}
         }
 
         if ($amount == 0)
-            echo _OVERVIEW_NOBLOGS;
+            {echo _OVERVIEW_NOBLOGS;}
 
         if ($amount != 0) {
             echo '<h2>' . _OVERVIEW_YRDRAFTS . '</h2>';
@@ -271,16 +271,16 @@ class ADMIN {
                 $count_current_author = intval($item[2]);
                 $current_bid = intval($item[0]);
                 if ($member->isAdmin() && ($count_blog_items!=$count_current_author))
-                    $has_hidden_items++;
+                    {$has_hidden_items++;}
                 // Check user have a item
                 if (!$sw && $count_current_author==0)
-                    continue;
+                    {continue;}
 
                 // Todo: showall : Display whether the item belongs to
                 $ct = ($sw ? $count_blog_items : $count_current_author);
                 $div_out = ($ct>5);
                 if ($div_out)
-                    echo '<div style="width: 100%; height: 150px; overflow: auto;">';
+                    {echo '<div style="width: 100%; height: 150px; overflow: auto;">';}
 
             $query =  'SELECT ititle, inumber, bshortname'
                    . ' FROM ' . sql_table('item'). ', ' . sql_table('blog')
@@ -292,12 +292,12 @@ class ADMIN {
             $amountdrafts += showlist($query, 'table', $template);
 
                 if ($div_out)
-                    echo '</div>';
+                    {echo '</div>';}
             }
                 if ($amountdrafts == 0)
-                    echo _OVERVIEW_NODRAFTS;
+                    {echo _OVERVIEW_NODRAFTS;}
         if (($showAll != 'yes') && ($member->isAdmin()) && $has_hidden_items)
-            echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
+            {echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';}
         }
 
         /* ---- user settings ---- */
@@ -341,7 +341,7 @@ class ADMIN {
         echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
 
         if ($msg)
-            echo '<p>' , _MESSAGE , ': ', $msg , '</p>';
+            {echo '<p>' , _MESSAGE , ': ', $msg , '</p>';}
 
 
         echo '<h2>' . _MANAGE_GENERAL. '</h2>';
@@ -381,7 +381,7 @@ class ADMIN {
         global $member, $manager, $CONF;
 
         if ($blogid == '')
-            $blogid = intRequestVar('blogid');
+            {$blogid = intRequestVar('blogid');}
 
         $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
 
@@ -393,9 +393,9 @@ class ADMIN {
 
         // start index
         if (postVar('start'))
-            $start = intPostVar('start');
+            {$start = intPostVar('start');}
         else
-            $start = 0;
+            {$start = 0;}
 
         if ($start == 0)
         {
@@ -408,11 +408,11 @@ class ADMIN {
 
         // amount of items to show
         if (postVar('amount'))
-            $amount = intPostVar('amount');
+            {$amount = intPostVar('amount');}
         else {
             $amount = intval($CONF['DefaultListSize']);
             if ($amount < 1)
-                $amount = 10;
+                {$amount = 10;}
         }
 
         $search = postVar('search');    // search through items
@@ -440,7 +440,7 @@ class ADMIN {
 
         // non-blog-admins can only edit/delete their own items
         if (!$member->blogAdminRights($blogid))
-            $query .= ' and iauthor=' . $member->getID();
+            {$query .= ' and iauthor=' . $member->getID();}
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -477,16 +477,16 @@ class ADMIN {
 
         // Show error when no items were selected
         if (!is_array($selected) || sizeof($selected) == 0)
-            $this->error(_BATCH_NOSELECTION);
+            {$this->error(_BATCH_NOSELECTION);}
 
         // On move: when no destination blog/category chosen, show choice now
         $destCatid = intRequestVar('destcatid');
         if (($action == 'move') && (!$manager->existsCategory($destCatid)))
-            $this->batchMoveSelectDestination('item',$selected);
+            {$this->batchMoveSelectDestination('item',$selected);}
 
         // On delete: check if confirmation has been given
         if (($action == 'delete') && (requestVar('confirmation') != 'yes'))
-            $this->batchAskDeleteConfirmation('item',$selected);
+            {$this->batchAskDeleteConfirmation('item',$selected);}
 
         $this->pagehead();
 
@@ -542,11 +542,11 @@ class ADMIN {
 
         // Show error when no items were selected
         if (!is_array($selected) || sizeof($selected) == 0)
-            $this->error(_BATCH_NOSELECTION);
+            {$this->error(_BATCH_NOSELECTION);}
 
         // On delete: check if confirmation has been given
         if (($action == 'delete') && (requestVar('confirmation') != 'yes'))
-            $this->batchAskDeleteConfirmation('comment',$selected);
+            {$this->batchAskDeleteConfirmation('comment',$selected);}
 
         $this->pagehead();
 
@@ -596,11 +596,11 @@ class ADMIN {
 
         // Show error when no members selected
         if (!is_array($selected) || sizeof($selected) == 0)
-            $this->error(_BATCH_NOSELECTION);
+            {$this->error(_BATCH_NOSELECTION);}
 
         // On delete: check if confirmation has been given
         if (($action == 'delete') && (requestVar('confirmation') != 'yes'))
-            $this->batchAskDeleteConfirmation('member',$selected);
+            {$this->batchAskDeleteConfirmation('member',$selected);}
 
         $this->pagehead();
 
@@ -628,7 +628,7 @@ class ADMIN {
                     // there should always remain at least one super-admin
                     $sql = 'SELECT count(*) as result FROM '.sql_table('member'). ' WHERE madmin=1 and mcanlogin=1';
                     if (intval(quickQuery($sql)) < 2)
-                        $error = _ERROR_ATLEASTONEADMIN;
+                        {$error = _ERROR_ATLEASTONEADMIN;}
                     else
                     {
                         sql_query('UPDATE ' . sql_table('member') .' SET madmin=0 WHERE mnumber='.$memberid);
@@ -668,11 +668,11 @@ class ADMIN {
 
         // Show error when no members selected
         if (!is_array($selected) || sizeof($selected) == 0)
-            $this->error(_BATCH_NOSELECTION);
+            {$this->error(_BATCH_NOSELECTION);}
 
         // On delete: check if confirmation has been given
         if (($action == 'delete') && (requestVar('confirmation') != 'yes'))
-            $this->batchAskDeleteConfirmation('team',$selected);
+            {$this->batchAskDeleteConfirmation('team',$selected);}
 
         $this->pagehead();
 
@@ -701,9 +701,9 @@ class ADMIN {
                     // there should always remain at least one admin
                     $sql = 'SELECT count(*) as result FROM '.sql_table('team').' WHERE tadmin=1 and tblog='.$blogid;
                     if (intval(quickQuery($sql)) < 2)
-                        $error = _ERROR_ATLEASTONEBLOGADMIN;
+                        {$error = _ERROR_ATLEASTONEBLOGADMIN;}
                     else
-                        sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);
+                        {sql_query('UPDATE '.sql_table('team').' SET tadmin=0 WHERE tblog='.$blogid.' and tmember='.$memberid);}
                     break;
                 default:
                     $error = _BATCH_UNKNOWN . hsc($action);
@@ -738,22 +738,22 @@ class ADMIN {
 
         // Show error when no items were selected
         if (!is_array($selected) || sizeof($selected) == 0)
-            $this->error(_BATCH_NOSELECTION);
+            {$this->error(_BATCH_NOSELECTION);}
 
         // On move: when no destination blog chosen, show choice now
         $destBlogId = intRequestVar('destblogid');
         if (($action == 'move') && (!$manager->existsBlogID($destBlogId)))
-            $this->batchMoveCategorySelectDestination('category',$selected);
+            {$this->batchMoveCategorySelectDestination('category',$selected);}
 
         // On delete: check if confirmation has been given
         if (($action == 'delete') && (requestVar('confirmation') != 'yes'))
-            $this->batchAskDeleteConfirmation('category',$selected);
+            {$this->batchAskDeleteConfirmation('category',$selected);}
 
         if ($action == 'change_corder')
           {
             if ( (!isset($_POST['new_corder']))
                  || (!is_numeric($_POST['new_corder'])) )
-              $this->batchChangeCategorySelectOrder('category' , $selected );
+              {$this->batchChangeCategorySelectOrder('category' , $selected );}
           }
 
         $this->pagehead();
@@ -813,7 +813,7 @@ class ADMIN {
                 // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    {echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';}
 
                 // show blog/category selection list
                 $this->selectBlogCategory('destcatid');
@@ -846,7 +846,7 @@ class ADMIN {
                 // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    {echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';}
 
                 // show blog/category selection list
                 $this->selectBlog('destblogid');
@@ -884,7 +884,7 @@ class ADMIN {
                 // insert selected Category numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    {echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';}
 
                 $def_oder = 100;
                 if ( isset($ids[0]) && ( intval($ids[0]) > 0 ) )
@@ -908,7 +908,7 @@ class ADMIN {
         $s = '';
 
         if (isset($b))
-            unset($b);
+            {unset($b);}
         foreach ($ids as $id)
         {
             $bid = getBlogIDFromCatID($id);
@@ -967,7 +967,7 @@ class ADMIN {
             <?php               // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    {echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';}
 
                 // add hidden vars for team & comment
                 if ($type == 'team')
@@ -1004,7 +1004,7 @@ class ADMIN {
             <?php              // insert selected item numbers
                 $idx = 0;
                 foreach ($ids as $id)
-                    echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';
+                    {echo '<input type="hidden" name="batch[',($idx++),']" value="',intval($id),'" />';}
 
                 // add hidden vars for team & comment
                 if ($type == 'team')
@@ -1050,19 +1050,19 @@ class ADMIN {
         // 0. get IDs of blogs to which member can post items (+ forced blog)
         $aBlogIds = array();
         if ($iForcedBlogInclude != -1)
-            $aBlogIds[] = intval($iForcedBlogInclude);
+            {$aBlogIds[] = intval($iForcedBlogInclude);}
 
         if (($member->isAdmin()) && (array_key_exists('ShowAllBlogs', $CONF) && $CONF['ShowAllBlogs']))
-            $queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').' ORDER BY bname';
+            {$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').' ORDER BY bname';}
         else
-            $queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();
+            {$queryBlogs =  'SELECT bnumber FROM '.sql_table('blog').', '.sql_table('team').' WHERE tblog=bnumber and tmember=' . $member->getID();}
         $rblogids = sql_query($queryBlogs);
         while ($o = sql_fetch_object($rblogids))
-            if ($o->bnumber != $iForcedBlogInclude)
-                $aBlogIds[] = intval($o->bnumber);
+            {if ($o->bnumber != $iForcedBlogInclude)
+                {$aBlogIds[] = intval($o->bnumber);}}
 
         if (count($aBlogIds) == 0)
-            return;
+            {return;}
 
         echo '<select name="',$name,'" tabindex="',$tabindex,'">';
 
@@ -1077,34 +1077,34 @@ class ADMIN {
 
             while ($oBlog = sql_fetch_object($blogs)) {
                 if ($multipleBlogs)
-                    echo '<optgroup label="',hsc($oBlog->bname),'">';
+                    {echo '<optgroup label="',hsc($oBlog->bname),'">';}
 
                 // show selection to create new category when allowed/wanted
                 if ($showNewCat) {
                     // check if allowed to do so
                     if ($member->blogAdminRights($oBlog->bnumber))
-                        echo '<option value="newcat-',$oBlog->bnumber,'">',_ADD_NEWCAT,'</option>';
+                        {echo '<option value="newcat-',$oBlog->bnumber,'">',_ADD_NEWCAT,'</option>';}
                 }
 
                 // 2. for each category in that blog
                 $categories = sql_query('SELECT cname, catid FROM '.sql_table('category').' WHERE cblog=' . $oBlog->bnumber . ' ORDER BY corder ASC, cname ASC');
                 while ($oCat = sql_fetch_object($categories)) {
                     if ($oCat->catid == $selected)
-                        $selectText = ' selected="selected" ';
+                        {$selectText = ' selected="selected" ';}
                     else
-                        $selectText = '';
+                        {$selectText = '';}
                     echo '<option value="',$oCat->catid,'" ', $selectText,'>',hsc($oCat->cname),'</option>';
                 }
 
                 if ($multipleBlogs)
-                    echo '</optgroup>';
+                    {echo '</optgroup>';}
             }
         } else {
             // blog mode
             while ($oBlog = sql_fetch_object($blogs)) {
                 echo '<option value="',$oBlog->bnumber,'"';
                 if ($oBlog->bnumber == $selected)
-                    echo ' selected="selected"';
+                    {echo ' selected="selected"';}
                 echo'>',hsc($oBlog->bname),'</option>';
             }
         }
@@ -1125,17 +1125,17 @@ class ADMIN {
 
         // start index
         if (postVar('start'))
-            $start = intPostVar('start');
+            {$start = intPostVar('start');}
         else
-            $start = 0;
+            {$start = 0;}
 
         // amount of items to show
         if (postVar('amount'))
-            $amount = intPostVar('amount');
+            {$amount = intPostVar('amount');}
         else {
             $amount = intval($CONF['DefaultListSize']);
             if ($amount < 1)
-                $amount = 10;
+                {$amount = 10;}
         }
 
         $search = postVar('search');    // search through items
@@ -1156,7 +1156,7 @@ class ADMIN {
           }
 
         if ($search)
-            $query .= ' and ((ititle LIKE \'%' . sql_real_escape_string($search) . '%\') or (ibody LIKE \'%' . sql_real_escape_string($search) . '%\') or (imore LIKE \'%' . sql_real_escape_string($search) . '%\'))';
+            {$query .= ' and ((ititle LIKE \'%' . sql_real_escape_string($search) . '%\') or (ibody LIKE \'%' . sql_real_escape_string($search) . '%\') or (imore LIKE \'%' . sql_real_escape_string($search) . '%\'))';}
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1185,7 +1185,7 @@ class ADMIN {
         global $member, $manager, $CONF;
 
         if ($itemid == '')
-            $itemid = intRequestVar('itemid');
+            {$itemid = intRequestVar('itemid');}
 
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
@@ -1196,17 +1196,17 @@ class ADMIN {
 
         // start index
         if (postVar('start'))
-            $start = intPostVar('start');
+            {$start = intPostVar('start');}
         else
-            $start = 0;
+            {$start = 0;}
 
         // amount of items to show
         if (postVar('amount'))
-            $amount = intPostVar('amount');
+            {$amount = intPostVar('amount');}
         else {
             $amount = intval($CONF['DefaultListSize']);
             if ($amount < 1)
-                $amount = 10;
+                {$amount = 10;}
         }
 
         printf('<p>(<a href="index.php?action=itemlist&amp;blogid=%s">%s</a> | '.
@@ -1236,7 +1236,7 @@ class ADMIN {
         $query = ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON mnumber = cmember WHERE citem = ' . $itemid;
 
         if ($search)
-            $query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";
+            {$query .= " and cbody LIKE '%" . sql_real_escape_string($search) . "%'";}
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1264,17 +1264,17 @@ class ADMIN {
 
         // start index
         if (postVar('start'))
-            $start = intPostVar('start');
+            {$start = intPostVar('start');}
         else
-            $start = 0;
+            {$start = 0;}
 
         // amount of items to show
         if (postVar('amount'))
-            $amount = intPostVar('amount');
+            {$amount = intPostVar('amount');}
         else {
             $amount = intval($CONF['DefaultListSize']);
             if ($amount < 1)
-                $amount = 10;
+                {$amount = 10;}
         }
 
         $search = postVar('search');
@@ -1284,7 +1284,7 @@ class ADMIN {
                          sql_table('comment'),sql_table('member'),$member->getID());
 
         if ($search)
-            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
+            {$query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';}
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1319,25 +1319,25 @@ class ADMIN {
         global $member, $manager, $CONF;
 
         if ($blogid == '')
-            $blogid = intRequestVar('blogid');
+            {$blogid = intRequestVar('blogid');}
         else
-            $blogid = intval($blogid);
+            {$blogid = intval($blogid);}
 
         $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
 
         // start index
         if (postVar('start'))
-            $start = intPostVar('start');
+            {$start = intPostVar('start');}
         else
-            $start = 0;
+            {$start = 0;}
 
         // amount of items to show
         if (postVar('amount'))
-            $amount = intPostVar('amount');
+            {$amount = intPostVar('amount');}
         else {
             $amount = intval($CONF['DefaultListSize']);
             if ($amount < 1)
-                $amount = 10;
+                {$amount = 10;}
         }
 
         $search = postVar('search');        // search through comments
@@ -1360,7 +1360,7 @@ class ADMIN {
         $query .= ' WHERE cblog=' . intval($blogid);
 
         if ($search != '')
-            $query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';
+            {$query .= ' and cbody LIKE \'%' . sql_real_escape_string($search) . '%\'';}
 
         $total = intval(quickQuery( 'SELECT COUNT(*) as result ' . $query ));
 
@@ -1468,7 +1468,7 @@ class ADMIN {
 
         // default action = add now
         if (!$actiontype)
-            $actiontype='addnow';
+            {$actiontype='addnow';}
 
         // create new category if needed
         if (strstr($catid,'newcat')) {
@@ -1481,7 +1481,7 @@ class ADMIN {
 
             // show error when sth goes wrong
             if (!$catid)
-                $this->doError(_ERROR_CATCREATEFAIL);
+                {$this->doError(_ERROR_CATCREATEFAIL);}
         }
 
         /*
@@ -1545,7 +1545,7 @@ class ADMIN {
         $member->canAlterItem($itemid) or $this->disallow();
 
         if (!$manager->existsItem($itemid,1,1))
-            $this->error(_ERROR_NOSUCHITEM);
+            {$this->error(_ERROR_NOSUCHITEM);}
 
         $item =& $manager->getItem($itemid,1,1);
         $title = hsc(strip_tags($item['title']));
@@ -1603,7 +1603,7 @@ class ADMIN {
 
         // only allow if user is allowed to alter item (also checks if itemid exists)
         if (!$member->canAlterItem($itemid))
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
 
         // need to get blogid before the item is deleted
         $blogid = getBlogIDFromItemId($itemid);
@@ -1706,7 +1706,7 @@ class ADMIN {
 
             // show error when sth goes wrong
             if (!$catid)
-                $this->doError(_ERROR_CATCREATEFAIL);
+                {$this->doError(_ERROR_CATCREATEFAIL);}
         }
 
         // only allow if user is allowed to alter item
@@ -1723,9 +1723,9 @@ class ADMIN {
         $this->updateFuturePosted($old_blogid);
 
         if ($catid != intRequestVar('catid'))
-            $this->action_categoryedit($catid, $blog->getID());
+            {$this->action_categoryedit($catid, $blog->getID());}
         else
-            $this->action_itemlist(getBlogIDFromCatID($catid));
+            {$this->action_itemlist(getBlogIDFromCatID($catid));}
     }
 
     /**
@@ -1739,7 +1739,7 @@ class ADMIN {
 
         // only allow if user is allowed to move item
         if (!$member->canUpdateItem($itemid, $destCatid))
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
 
         ITEM::move($itemid, $destCatid);
     }
@@ -1755,7 +1755,7 @@ class ADMIN {
         $result = ITEM::createFromRequest();
 
         if ($result['status'] == 'error')
-            $this->error($result['message']);
+            {$this->error($result['message']);}
 
         $blogid = getBlogIDFromItemID($result['itemid']);
         $blog =& $manager->getBlog($blogid);
@@ -1807,9 +1807,9 @@ class ADMIN {
             <td><?php echo _EDITC_WHO?></td>
             <td>
             <?php               if ($comment['member'])
-                    echo $comment['member'] . " (" . _EDITC_MEMBER . ")";
+                    {echo $comment['member'] . " (" . _EDITC_MEMBER . ")";}
                 else
-                    echo $comment['user'] . " (" . _EDITC_NONMEMBER . ")";
+                    {echo $comment['user'] . " (" . _EDITC_NONMEMBER . ")";}
             ?>
             </td>
         </tr><tr>
@@ -1859,7 +1859,7 @@ class ADMIN {
         $body = postVar('body');
 
         // intercept words that are too long
-        if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != FALSE)
+        if (preg_match('#[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}#', $body) != false)
         {
             $this->error(_ERROR_COMMENT_LONGWORD);
         }
@@ -1892,9 +1892,9 @@ class ADMIN {
         $itemid = $o->citem;
 
         if ($member->canAlterItem($itemid))
-            $this->action_itemcommentlist($itemid);
+            {$this->action_itemcommentlist($itemid);}
         else
-            $this->action_browseowncomments();
+            {$this->action_browseowncomments();}
 
     }
 
@@ -1914,9 +1914,9 @@ class ADMIN {
         $body = hsc(shorten($body, 300, '...'));
 
         if ($comment['member'])
-            $author = $comment['member'];
+            {$author = $comment['member'];}
         else
-            $author = $comment['user'];
+            {$author = $comment['user'];}
 
         $this->pagehead();
         ?>
@@ -1956,12 +1956,12 @@ class ADMIN {
 
         $error = $this->deleteOneComment($commentid);
         if ($error)
-            $this->doError($error);
+            {$this->doError($error);}
 
         if ($member->canAlterItem($itemid))
-            $this->action_itemcommentlist($itemid);
+            {$this->action_itemcommentlist($itemid);}
         else
-            $this->action_browseowncomments();
+            {$this->action_browseowncomments();}
     }
 
     /**
@@ -1973,7 +1973,7 @@ class ADMIN {
         $commentid = intval($commentid);
 
         if (!$member->canAlterComment($commentid))
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
 
         $param =array('commentid' => $commentid);
         $manager->notify('PreDeleteComment', $param);
@@ -2000,7 +2000,7 @@ class ADMIN {
         $this->pagehead();
 
         if ($msg)
-            echo _MESSAGE , ': ', $msg;
+            {echo _MESSAGE , ': ', $msg;}
 
         echo '<p><a href="index.php?action=manage">(',_BACKTOMANAGE,')</a></p>';
 
@@ -2080,11 +2080,11 @@ class ADMIN {
         global $DIR_LANG;
         $file = $DIR_LANG . 'language.json';
         if ((_CHARSET!='UTF-8') | @ !is_file($file) || !function_exists('json_decode'))
-            return $language;
+            {return $language;}
         $j = json_decode(file_get_contents($file));
         if ($j && isset($j->$language) && (strlen((string) $j->$language)>0)) {
             if (strncasecmp($language, getLanguageName(), strlen($language))==0)
-                return (string) $j->$language;
+                {return (string) $j->$language;}
             return sprintf('%s - %s', $language, (string) $j->$language);
         }
         return $language;
@@ -2097,7 +2097,7 @@ class ADMIN {
         global $member, $manager, $CONF;
 
         if ($memberid == '')
-            $memberid = $member->getID();
+            {$memberid = $member->getID();}
 
         // check if allowed
         ($member->getID() == $memberid) or $member->isAdmin() or $this->disallow();
@@ -2105,13 +2105,13 @@ class ADMIN {
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
         $this->pagehead($extrahead);
         if ($msg)
-            echo _MESSAGE , ': ', $msg;
+            {echo _MESSAGE , ': ', $msg;}
 
         // show message to go back to member overview (only for admins)
         if ($member->isAdmin())
-            echo '<a href="index.php?action=usermanagement">(' ._MEMBERS_BACKTOOVERVIEW. ')</a>';
+            {echo '<a href="index.php?action=usermanagement">(' ._MEMBERS_BACKTOOVERVIEW. ')</a>';}
         else
-            echo '<a href="index.php?action=overview">(' ._BACKHOME. ')</a>';
+            {echo '<a href="index.php?action=overview">(' ._BACKHOME. ')</a>';}
 
         echo '<h2>' . _MEMBERS_EDIT . '</h2>';
 
@@ -2177,7 +2177,7 @@ class ADMIN {
                 <td><?php $this->input_yesno('canlogin',$mem->canLogin(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
             </tr><tr>
                 <td><?php echo _ADMIN_MEMBER_HALT_TITLE?> <?php help('halt'); ?></td>
-                <td><?php if ($member->id != $mem->id) $this->input_yesno('halt',$mem->isHalt(),70,1,0,_YES,_NO,$mem->isAdmin()); ?></td>
+                <td><?php if ($member->id != $mem->id) {$this->input_yesno('halt',$mem->isHalt(),70,1,0,_YES,_NO,$mem->isAdmin());} ?></td>
         <?php } ?>
         </tr>
         <tr>
@@ -2278,16 +2278,16 @@ class ADMIN {
         if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
 
             if (!isValidDisplayName($name))
-                $this->error(_ERROR_BADNAME);
+                {$this->error(_ERROR_BADNAME);}
 
             if (($name != $mem->getDisplayName()) && MEMBER::exists($name))
-                $this->error(_ERROR_NICKNAMEINUSE);
+                {$this->error(_ERROR_NICKNAMEINUSE);}
 
             if ($password != $repeatpassword)
-                $this->error(_ERROR_PASSWORDMISMATCH);
+                {$this->error(_ERROR_PASSWORDMISMATCH);}
 
             if ($password && (strlen($password) < 6))
-                $this->error(_ERROR_PASSWORDTOOSHORT);
+                {$this->error(_ERROR_PASSWORDTOOSHORT);}
 
             if ($password) {
                 $pwdvalid = true;
@@ -2305,14 +2305,14 @@ class ADMIN {
         }
 
         if (!isValidMailAddress($email))
-            $this->error(_ERROR_BADMAILADDRESS);
+            {$this->error(_ERROR_BADMAILADDRESS);}
 
 
         if (!$realname)
-            $this->error(_ERROR_REALNAMEMISSING);
+            {$this->error(_ERROR_REALNAMEMISSING);}
 
         if (($deflang != '') && (!checkLanguage($deflang)))
-            $this->error(_ERROR_NOSUCHLANGUAGE . sprintf(' : <b>%s</b>' , hsc($deflang)) );
+            {$this->error(_ERROR_NOSUCHLANGUAGE . sprintf(' : <b>%s</b>' , hsc($deflang)) );}
 
         // check if there will remain at least one site member with both the logon and admin rights
         // (check occurs when taking away one of these rights from such a member)
@@ -2323,7 +2323,7 @@ class ADMIN {
         {
             $r = sql_query('SELECT count(*) FROM '.sql_table('member').' WHERE madmin=1 and mcanlogin=1');
             if (intval(sql_result($r)) <= 1)
-                $this->error(_ERROR_ATLEASTONEADMIN);
+                {$this->error(_ERROR_ATLEASTONEADMIN);}
         }
 
         if ($CONF['AllowLoginEdit'] || $member->isAdmin())
@@ -2331,7 +2331,7 @@ class ADMIN {
             $mem->setDisplayName($name);
         }
         if ($password)
-            $mem->setPassword($password);
+            {$mem->setPassword($password);}
 
         $oldEmail = $mem->getEmail();
 
@@ -2348,7 +2348,7 @@ class ADMIN {
             $mem->setAdmin($admin);
             $mem->setCanLogin($canlogin);
             if ($mem->id != $member->id)
-                $mem->setHalt( $mhalt ? 1 : 0 );
+                {$mem->setHalt( $mhalt ? 1 : 0 );}
         }
 
         $autosave = postVar ('autosave');
@@ -2377,7 +2377,7 @@ class ADMIN {
 
             // only log out if the member being edited is the current member.
             if ($member->getID() == $memberid)
-                $member->logout();
+                {$member->logout();}
             $this->action_login(_MSG_ACTIVATION_SENT, 0);
             return;
         }
@@ -2404,13 +2404,13 @@ class ADMIN {
         $member->isAdmin() or $this->disallow();
 
         if (postVar('password') != postVar('repeatpassword'))
-            $this->error(_ERROR_PASSWORDMISMATCH);
+            {$this->error(_ERROR_PASSWORDMISMATCH);}
         if (strlen(postVar('password')) < 6)
-            $this->error(_ERROR_PASSWORDTOOSHORT);
+            {$this->error(_ERROR_PASSWORDTOOSHORT);}
 
         $res = $member->create(postVar('name'), postVar('realname'), postVar('password'), postVar('email'), postVar('url'), postVar('admin'), postVar('canlogin'), postVar('notes'));
         if ($res != 1)
-            $this->error($res);
+            {$this->error($res);}
 
         // fire PostRegister event
         $newmem = new MEMBER();
@@ -2446,12 +2446,12 @@ class ADMIN {
         $info = MEMBER::getActivationInfo($key);
 
         if (!$info)
-            $this->error(_ERROR_ACTIVATE);
+            {$this->error(_ERROR_ACTIVATE);}
 
         $mem = MEMBER::createFromId($info->vmember);
 
         if (!$mem || $mem->isHalt())
-            $this->error(_ERROR_ACTIVATE);
+            {$this->error(_ERROR_ACTIVATE);}
 
         $text = '';
         $title = '';
@@ -2550,12 +2550,12 @@ class ADMIN {
         $info = MEMBER::getActivationInfo($key);
 
         if (!$info || ($info->vtype == 'addresschange'))
-            return $this->_showActivationPage($key, _ERROR_ACTIVATE);
+            {return $this->_showActivationPage($key, _ERROR_ACTIVATE);}
 
         $mem = MEMBER::createFromId($info->vmember);
 
         if (!$mem || $mem->isHalt())
-            return $this->_showActivationPage($key, _ERROR_ACTIVATE);
+            {return $this->_showActivationPage($key, _ERROR_ACTIVATE);}
 
         $password       = postVar('password');
         $repeatpassword = postVar('repeatpassword');
@@ -2597,7 +2597,7 @@ class ADMIN {
         );
         $manager->notify('ValidateForm', $param);
         if ($error != '')
-            return $this->_showActivationPage($key, $error);
+            {return $this->_showActivationPage($key, $error);}
 
 
         // set password
@@ -2656,7 +2656,7 @@ class ADMIN {
             $count_non_team_members = intval(quickQuery("SELECT count(*) AS result " . $from_where));
 
             if ($count_non_team_members == 0)
-              echo _TEAM_NO_SELECTABLE_MEMBERS;
+              {echo _TEAM_NO_SELECTABLE_MEMBERS;}
             else {
 ?>
             <form method='post' action='index.php'><div>
@@ -2701,8 +2701,8 @@ class ADMIN {
 
         $blog =& $manager->getBlog($blogid);
         if ($member->existsID($memberid))
-        if (!$blog->addTeamMember($memberid, $admin))
-            $this->error(_ERROR_ALREADYONTEAM);
+        {if (!$blog->addTeamMember($memberid, $admin))
+            {$this->error(_ERROR_ALREADYONTEAM);}}
 
         $this->action_manageteam();
 
@@ -2753,7 +2753,7 @@ class ADMIN {
 
         $error = $this->deleteOneTeamMember($blogid, $memberid);
         if ($error)
-            $this->error($error);
+            {$this->error($error);}
 
 
         $this->action_manageteam();
@@ -2770,7 +2770,7 @@ class ADMIN {
 
         // check if allowed
         if (!$member->blogAdminRights($blogid))
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
 
         // check if: - there remains at least one blog admin
         //           - (there remains at least one team member)
@@ -2788,7 +2788,7 @@ class ADMIN {
             $query = 'SELECT count(*) FROM '.sql_table('team') . ' WHERE tblog='.$blogid.' and tadmin=1';
             $r = sql_query($query);
             if ($r && intval(sql_result($r)) < 2)
-                return _ERROR_ATLEASTONEBLOGADMIN;
+                {return _ERROR_ATLEASTONEBLOGADMIN;}
         }
 
         $query = 'DELETE FROM '.sql_table('team')." WHERE tblog=$blogid and tmember=$memberid";
@@ -2821,22 +2821,22 @@ class ADMIN {
         if ($mem->isBlogAdmin($blogid)) {
             $r = sql_query('SELECT count(*) FROM '.sql_table('team') . " WHERE tblog=$blogid and tadmin=1");
             if (intval(sql_result($r)) == 1)
-                $this->error(_ERROR_ATLEASTONEBLOGADMIN);
+                {$this->error(_ERROR_ATLEASTONEBLOGADMIN);}
         }
 
         if ($mem->isBlogAdmin($blogid))
-            $newval = 0;
+            {$newval = 0;}
         else
-            $newval = 1;
+            {$newval = 1;}
 
         $query = 'UPDATE '.sql_table('team') ." SET tadmin=$newval WHERE tblog=$blogid and tmember=$memberid";
         sql_query($query);
 
         // only show manageteam if member did not change its own admin privileges
         if ($member->isBlogAdmin($blogid))
-            $this->action_manageteam();
+            {$this->action_manageteam();}
         else
-            $this->action_overview(_MSG_ADMINCHANGED);
+            {$this->action_overview(_MSG_ADMINCHANGED);}
     }
 
     /**
@@ -2858,7 +2858,7 @@ class ADMIN {
         echo '<p><a href="index.php?action=overview">(',_BACKHOME,')</a></p>';
         ?>
         <h2><?php echo _EBLOG_TITLE?>: '<?php echo $this->bloglink($blog)?>'</h2>
-        <?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
+        <?php if  ($message) {echo sprintf('<div class="ok">%s</div>',$message);}?>
 
         <h3><?php echo _EBLOG_TEAM_TITLE?></h3>
 
@@ -2867,8 +2867,8 @@ class ADMIN {
             $res = sql_query('SELECT mname, mrealname FROM ' . sql_table('member') . ',' . sql_table('team') . ' WHERE mnumber=tmember AND tblog=' . intval($blogid));
             $aMemberNames = array();
             if ($res)
-            while ($o = sql_fetch_object($res))
-                $aMemberNames[] = hsc($o->mname) . ' (' . hsc($o->mrealname). ')';
+            {while ($o = sql_fetch_object($res))
+                {$aMemberNames[] = hsc($o->mname) . ' (' . hsc($o->mrealname). ')';}}
             echo implode(',', $aMemberNames);
         ?>
         </p>
@@ -2937,7 +2937,7 @@ class ADMIN {
                     $this->input_yesno('authorvisible', $blog->getAuthorVisible(), 53);
                 }
                 else
-                    echo "Needs to upgrade column name `authorvisible`. please reload.";
+                    {echo "Needs to upgrade column name `authorvisible`. please reload.";}
             ?></td>
         </tr>
         <tr>
@@ -3097,19 +3097,19 @@ class ADMIN {
               if ( (!is_null($corder))
                 && (is_numeric($corder))
                  )
-                $corder = intval($corder);
+                {$corder = intval($corder);}
               else
-                $corder = null;
+                {$corder = null;}
           }
 
         if (!isValidCategoryName($cname))
-            $this->error(_ERROR_BADCATEGORYNAME);
+            {$this->error(_ERROR_BADCATEGORYNAME);}
 
         $query = 'SELECT count(*) FROM '.sql_table('category')
                . ' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid);
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
-            $this->error(_ERROR_DUPCATEGORYNAME);
+            {$this->error(_ERROR_DUPCATEGORYNAME);}
 
         $blog       =& $manager->getBlog($blogid);
         $newCatID   =  $blog->createNewCategory($cname, $cdesc, $corder);
@@ -3124,13 +3124,13 @@ class ADMIN {
         global $member, $manager;
 
         if ($blogid == '')
-            $blogid = intGetVar('blogid');
+            {$blogid = intGetVar('blogid');}
         else
-            $blogid = intval($blogid);
+            {$blogid = intval($blogid);}
         if ($catid == '')
-            $catid = intGetVar('catid');
+            {$catid = intGetVar('catid');}
         else
-            $catid = intval($catid);
+            {$catid = intval($catid);}
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
@@ -3203,27 +3203,27 @@ class ADMIN {
               if ( (!is_null($corder))
                 && (is_numeric($corder))
                  )
-                $corder = intval($corder);
+                {$corder = intval($corder);}
               else
-                $corder = null;
+                {$corder = null;}
           }
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
         if (!isValidCategoryName($cname))
-            $this->error(_ERROR_BADCATEGORYNAME);
+            {$this->error(_ERROR_BADCATEGORYNAME);}
 
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cname=\'' . sql_real_escape_string($cname).'\' and cblog=' . intval($blogid) . " and not(catid=$catid)";
         $res = sql_query($query);
         if (intval(sql_result($res)) > 0)
-            $this->error(_ERROR_DUPCATEGORYNAME);
+            {$this->error(_ERROR_DUPCATEGORYNAME);}
 
         $query =  'UPDATE '.sql_table('category').' SET'
                . " cname='" . sql_real_escape_string($cname) . "',"
                . " cdesc='" . sql_real_escape_string($cdesc) . "'";
 
         if ( ! is_null( $corder) )
-            $query .=  sprintf(' , corder=%d' , $corder );
+            {$query .=  sprintf(' , corder=%d' , $corder );}
 
         $query .= " WHERE catid=" . $catid;
         sql_query($query);
@@ -3261,17 +3261,17 @@ class ADMIN {
 
         // check if the category is valid
         if (!$blog->isValidCategory($catid))
-            $this->error(_ERROR_NOSUCHCATEGORY);
+            {$this->error(_ERROR_NOSUCHCATEGORY);}
 
         // don't allow deletion of default category
         if ($blog->getDefaultCategory() == $catid)
-            $this->error(_ERROR_DELETEDEFCATEGORY);
+            {$this->error(_ERROR_DELETEDEFCATEGORY);}
 
         // check if catid is the only category left for blogid
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
         if (intval(sql_result($res)) == 1)
-            $this->error(_ERROR_DELETELASTCATEGORY);
+            {$this->error(_ERROR_DELETELASTCATEGORY);}
 
 
         $this->pagehead();
@@ -3306,7 +3306,7 @@ class ADMIN {
 
         $error = $this->deleteOneCategory($catid);
         if ($error)
-            $this->error($error);
+            {$this->error($error);}
 
         $this->action_blogsettings();
     }
@@ -3322,26 +3322,26 @@ class ADMIN {
         $blogid = getBlogIDFromCatID($catid);
 
         if (!$member->blogAdminRights($blogid))
-            return ERROR_DISALLOWED;
+            {return ERROR_DISALLOWED;}
 
         // get blog
         $blog =& $manager->getBlog($blogid);
 
         // check if the category is valid
         if (!$blog || !$blog->isValidCategory($catid))
-            return _ERROR_NOSUCHCATEGORY;
+            {return _ERROR_NOSUCHCATEGORY;}
 
         $destcatid = $blog->getDefaultCategory();
 
         // don't allow deletion of default category
         if ($blog->getDefaultCategory() == $catid)
-            return _ERROR_DELETEDEFCATEGORY;
+            {return _ERROR_DELETEDEFCATEGORY;}
 
         // check if catid is the only category left for blogid
         $query = 'SELECT count(*) FROM '.sql_table('category').' WHERE cblog=' . $blogid;
         $res = sql_query($query);
         if (intval(sql_result($res)) == 1)
-            return _ERROR_DELETELASTCATEGORY;
+            {return _ERROR_DELETELASTCATEGORY;}
 
         $param = array('catid' => $catid);
         $manager->notify('PreDeleteCategory', $param);
@@ -3375,13 +3375,13 @@ class ADMIN {
 
         // mover should have admin rights on both blogs
         if (!$member->blogAdminRights($blogid))
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
         if (!$member->blogAdminRights($destblogid))
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
 
         // cannot move to self
         if ($blogid == $destblogid)
-            return _ERROR_MOVETOSELF;
+            {return _ERROR_MOVETOSELF;}
 
         // get blogs
         $blog =& $manager->getBlog($blogid);
@@ -3389,11 +3389,11 @@ class ADMIN {
 
         // check if the category is valid
         if (!$blog || !$blog->isValidCategory($catid))
-            return _ERROR_NOSUCHCATEGORY;
+            {return _ERROR_NOSUCHCATEGORY;}
 
         // don't allow default category to be moved
         if ($blog->getDefaultCategory() == $catid)
-            return _ERROR_MOVEDEFCATEGORY;
+            {return _ERROR_MOVEDEFCATEGORY;}
 
         $param = array(
             'catid'            => &$catid,
@@ -3438,14 +3438,14 @@ class ADMIN {
 
         // mover should have admin rights on both blogs
         if ( !$blogid || !$member->blogAdminRights($blogid) )
-            return _ERROR_DISALLOWED;
+            {return _ERROR_DISALLOWED;}
 
         // get blogs
         $blog =& $manager->getBlog($blogid);
 
         // check if the category is valid
         if (!$blog || !$blog->isValidCategory($catid))
-            return _ERROR_NOSUCHCATEGORY;
+            {return _ERROR_NOSUCHCATEGORY;}
 
         $old_corder = $blog->getCategoryOrder($catid);
         $param = array(
@@ -3493,9 +3493,9 @@ class ADMIN {
         $notifyVote     = intPostVar('notifyVote');
         $notifyNewItem  = intPostVar('notifyNewItem');
 
-        if ($notifyComment == 0)    $notifyComment = 1;
-        if ($notifyVote == 0)       $notifyVote = 1;
-        if ($notifyNewItem == 0)    $notifyNewItem = 1;
+        if ($notifyComment == 0)    {$notifyComment = 1;}
+        if ($notifyVote == 0)       {$notifyVote = 1;}
+        if ($notifyNewItem == 0)    {$notifyNewItem = 1;}
 
         $notifyType = $notifyComment * $notifyVote * $notifyNewItem;
 
@@ -3503,19 +3503,19 @@ class ADMIN {
         if ($notify) {
             $not = new NOTIFICATION($notify);
             if (!$not->validAddresses())
-                $this->error(_ERROR_BADNOTIFY);
+                {$this->error(_ERROR_BADNOTIFY);}
 
         }
 
         if (!isValidShortName($shortname))
-            $this->error(_ERROR_BADSHORTBLOGNAME);
+            {$this->error(_ERROR_BADSHORTBLOGNAME);}
 
         if (($blog->getShortName() != $shortname) && $manager->existsBlog($shortname))
-            $this->error(_ERROR_DUPSHORTBLOGNAME);
+            {$this->error(_ERROR_DUPSHORTBLOGNAME);}
 
         // check if update file is writable
         if ($updatefile && !is_writeable($updatefile))
-            $this->error(_ERROR_UPDATEFILE);
+            {$this->error(_ERROR_UPDATEFILE);}
 
         $blog->setName(trim(postVar('name')));
         $blog->setShortName($shortname);
@@ -3564,7 +3564,7 @@ class ADMIN {
 
         // check if blog is default blog
         if ($CONF['DefaultBlog'] == $blogid)
-            $this->error(_ERROR_DELDEFBLOG);
+            {$this->error(_ERROR_DELDEFBLOG);}
 
         $blog =& $manager->getBlog($blogid);
 
@@ -3604,7 +3604,7 @@ class ADMIN {
 
         // check if blog is default blog
         if ($CONF['DefaultBlog'] == $blogid)
-            $this->error(_ERROR_DELDEFBLOG);
+            {$this->error(_ERROR_DELDEFBLOG);}
 
         // delete all comments
         $query = 'DELETE FROM '.sql_table('comment').' WHERE cblog='.$blogid;
@@ -3709,12 +3709,12 @@ class ADMIN {
 
         $error = $this->haltOneMember($memberid);
         if ($error)
-            $this->error($error);
+            {$this->error($error);}
 
         if ($member->isAdmin())
-          $this->action_usermanagement();
+          {$this->action_usermanagement();}
          else
-          $this->action_overview(_ADMIN_MEMBER_HALT_DONE);
+          {$this->action_overview(_ADMIN_MEMBER_HALT_DONE);}
     }
 
     function action_memberdelete() {
@@ -3742,7 +3742,7 @@ class ADMIN {
 
         echo "<p>" . _WARNINGTXT_NOTDELMEDIAFILES . "</p>";
         if (!$canBeDeleted)
-            echo "<p>" . _ERROR_DELETEMEMBER . "</p>";
+            {echo "<p>" . _ERROR_DELETEMEMBER . "</p>";}
         else {
         ?>
             <form method="post" action="index.php"><div>
@@ -3768,12 +3768,12 @@ class ADMIN {
 
         $error = $this->deleteOneMember($memberid);
         if ($error)
-            $this->error($error);
+            {$this->error($error);}
 
         if ($member->isAdmin())
-            $this->action_usermanagement();
+            {$this->action_usermanagement();}
         else
-            $this->action_overview(_DELETED_MEMBER);
+            {$this->action_overview(_DELETED_MEMBER);}
     }
 
     /**
@@ -3787,7 +3787,7 @@ class ADMIN {
         $mem = MEMBER::createFromID($memberid);
 
         if (!$mem->canBeDeleted())
-            return _ERROR_DELETEMEMBER;
+            {return _ERROR_DELETEMEMBER;}
 
         $param = array('member' => &$mem);
         $manager->notify('PreDeleteMember', $param);
@@ -3825,15 +3825,15 @@ class ADMIN {
 
         $memberid = intval($memberid);
         if (!$memberid)
-        return '';
+        {return '';}
 
         $mem = MEMBER::createFromID($memberid);
 
         if ($mem->isHalt())
-            return _ERROR_ADMIN_MEMBER_ALREADY_HALTED;
+            {return _ERROR_ADMIN_MEMBER_ALREADY_HALTED;}
 
         if ($member->id == $mem->id)
-            return _ERROR_ADMIN_MEMBER_HALT_SELF;
+            {return _ERROR_ADMIN_MEMBER_HALT_SELF;}
 
 //      $manager->notify('PreStopMember', array('member' => &$mem));
 
@@ -3847,7 +3847,7 @@ class ADMIN {
 //      $manager->notify('PostStopMember', array('member' => &$mem));
 
         if ($s)
-          return $s;
+          {return $s;}
 
         return '';
     }
@@ -3952,10 +3952,10 @@ class ADMIN {
         $bdefskin       = postVar('defskin');
 
         if (!isValidShortName($bshortname))
-            $this->error(_ERROR_BADSHORTBLOGNAME);
+            {$this->error(_ERROR_BADSHORTBLOGNAME);}
 
         if ($manager->existsBlog($bshortname))
-            $this->error(_ERROR_DUPSHORTBLOGNAME);
+            {$this->error(_ERROR_DUPSHORTBLOGNAME);}
 
         $param = array(
             'name'            => &$bname,
@@ -4226,7 +4226,7 @@ selector();
 
             // backwards compatibilty (in v2.0, exports were saved as skindata.xml)
             if (!file_exists($skinFile))
-                $skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';
+                {$skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';}
         } else {
             $skinFile = $skinFileRaw;
         }
@@ -4239,7 +4239,7 @@ selector();
         $templateNameClashes = $importer->checkTemplateNameClashes();
         $hasNameClashes = (count($skinNameClashes) > 0) || (count($templateNameClashes) > 0);
 
-        if ($error) $this->error($error);
+        if ($error) {$this->error($error);}
 
         $this->pagehead();
 
@@ -4307,7 +4307,7 @@ selector();
 
             // backwards compatibilty (in v2.0, exports were saved as skindata.xml)
             if (!file_exists($skinFile))
-                $skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';
+                {$skinFile = $DIR_SKINS . $skinFileRaw . '/skindata.xml';}
 
         } else {
             $skinFile = $skinFileRaw;
@@ -4318,12 +4318,12 @@ selector();
         $error = $importer->readFile($skinFile);
 
         if ($error)
-            $this->error($error);
+            {$this->error($error);}
 
         $error = $importer->writeToDatabase($allowOverwrite);
 
         if ($error)
-            $this->error($error);
+            {$this->error($error);}
 
         $this->pagehead();
 
@@ -4355,8 +4355,8 @@ selector();
         $aSkins = requestIntArray('skin');
         $aTemplates = requestIntArray('template');
 
-        if (!is_array($aTemplates)) $aTemplates = array();
-        if (!is_array($aSkins)) $aSkins = array();
+        if (!is_array($aTemplates)) {$aTemplates = array();}
+        if (!is_array($aSkins)) {$aSkins = array();}
 
         $skinList = array_keys($aSkins);
         $templateList = array_keys($aTemplates);
@@ -4445,7 +4445,7 @@ selector();
 
         <h2><?php echo _TEMPLATE_EDIT_TITLE?> '<?php echo  hsc($templatename); ?>'</h2>
 
-        <?php                   if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
+        <?php                   if ($msg) {echo "<p>"._MESSAGE.": $msg</p>";}
         ?>
 
         <p><?php echo _TEMPLATE_EDIT_MSG?></p>
@@ -4584,10 +4584,10 @@ selector();
      */
     function _templateEditRow(&$template, $description, $name, $help = '', $tabindex = 0, $big = 0) {
         static $count = 1;
-        if (!isset($template[$name])) $template[$name] = '';
+        if (!isset($template[$name])) {$template[$name] = '';}
     ?>
         </tr><tr>
-            <td><?php echo $description?> <?php if ($help) help('template'.$help); ?></td>
+            <td><?php echo $description?> <?php if ($help) {help('template'.$help);} ?></td>
             <td id="td<?php echo $count?>"><textarea class="templateedit" name="<?php echo $name?>" tabindex="<?php echo $tabindex?>" cols="50" rows="<?php echo $big?10:5?>" id="textarea<?php echo $count?>"><?php echo  hsc($template[$name]); ?></textarea></td>
     <?php       $count++;
     }
@@ -4606,10 +4606,10 @@ selector();
         $desc = postVar('tdesc');
 
         if (!isValidTemplateName($name))
-            $this->error(_ERROR_BADTEMPLATENAME);
+            {$this->error(_ERROR_BADTEMPLATENAME);}
 
         if ((TEMPLATE::getNameFromId($templateid) != $name) && TEMPLATE::exists($name))
-            $this->error(_ERROR_DUPTEMPLATENAME);
+            {$this->error(_ERROR_DUPTEMPLATENAME);}
 
 
         $name = sql_real_escape_string($name);
@@ -4689,7 +4689,7 @@ selector();
         $id = intval($id);
 
         // don't add empty parts:
-        if (!trim($content)) return -1;
+        if (!trim($content)) {return -1;}
 
         $query = 'INSERT INTO '.sql_table('template')." (tdesc, tpartname, tcontent) "
                . "VALUES ($id, '$partname', '$content')";
@@ -4767,10 +4767,10 @@ selector();
         $desc = postVar('desc');
 
         if (!isValidTemplateName($name))
-            $this->error(_ERROR_BADTEMPLATENAME);
+            {$this->error(_ERROR_BADTEMPLATENAME);}
 
         if (TEMPLATE::exists($name))
-            $this->error(_ERROR_DUPTEMPLATENAME);
+            {$this->error(_ERROR_DUPTEMPLATENAME);}
 
         $newTemplateId = TEMPLATE::createNew($name, $desc);
 
@@ -4798,7 +4798,7 @@ selector();
         if (TEMPLATE::exists($name)) {
             $i = 1;
             while (TEMPLATE::exists($name . $i))
-                $i++;
+                {$i++;}
             $name .= $i;
         }
 
@@ -4873,10 +4873,10 @@ selector();
         $desc = trim(postVar('desc'));
 
         if (!isValidSkinName($name))
-            $this->error(_ERROR_BADSKINNAME);
+            {$this->error(_ERROR_BADSKINNAME);}
 
         if (SKIN::exists($name))
-            $this->error(_ERROR_DUPSKINNAME);
+            {$this->error(_ERROR_DUPSKINNAME);}
 
         $newId = SKIN::createNew($name, $desc);
 
@@ -4920,7 +4920,7 @@ selector();
         $has_spartstype = sql_existTableColumnName(sql_table('skin'), 'spartstype');
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member') and sdesc = " . $skinid;
         if ($has_spartstype)
-            $query .= " AND spartstype = 'parts'";
+            {$query .= " AND spartstype = 'parts'";}
         $res = sql_query($query);
 
         echo '<h3>' . _SKIN_PARTS_SPECIAL . ' ' . helpHtml('skinpartspecial') . '</h3>';
@@ -4947,7 +4947,7 @@ selector();
                     . sprintf(' <a tabindex="%d" href="%s">(%s)</a>', ($tabstart++), $url_change, escapeHTML(_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PAGE))
                     . '</li>';
             }
-            if ($s) echo '<ul>'.$s.'</ul>';
+            if ($s) {echo '<ul>'.$s.'</ul>';}
         }
 
         echo '<h3>' . escapeHTML(_SKIN_PARTS_SPECIAL_PAGE) . ' ' . helpHtml('skinpartspecialpage') . '</h3>';
@@ -4961,7 +4961,7 @@ selector();
 
         $query = "SELECT stype FROM " . sql_table('skin') . " WHERE spartstype = 'specialpage' AND sdesc = " . $skinid;
         if ($has_spartstype)
-            $res = sql_query($query);
+            {$res = sql_query($query);}
         if ($has_spartstype && $res) {
             $s = '';
             while ($row = sql_fetch_assoc($res)) {
@@ -4983,7 +4983,7 @@ selector();
                             );
                 $s .= '</li>';
             }
-            if ($s) echo '<ul>'.$s.'</ul>';
+            if ($s) {echo '<ul>'.$s.'</ul>';}
         }
 
         ?>
@@ -5042,13 +5042,13 @@ selector();
 
         // 1. Some checks
         if (!isValidSkinName($name))
-            $this->error(_ERROR_BADSKINNAME);
+            {$this->error(_ERROR_BADSKINNAME);}
 
         if (($skin->getName() != $name) && SKIN::exists($name))
-            $this->error(_ERROR_DUPSKINNAME);
+            {$this->error(_ERROR_DUPSKINNAME);}
 
-        if (!$type) $type = 'text/html';
-        if (!$inc_mode) $inc_mode = 'normal';
+        if (!$type) {$type = 'text/html';}
+        if (!$inc_mode) {$inc_mode = 'normal';}
 
         // 2. Update description
         $skin->updateGeneralInfo($name, $desc, $type, $inc_mode, $inc_prefix);
@@ -5112,7 +5112,7 @@ selector();
                     );
         }
 
-           if ($msg) echo "<p>"._MESSAGE.": $msg</p>";
+           if ($msg) {echo "<p>"._MESSAGE.": $msg</p>";}
 
         $form = array();
         $form[] = '<form method="post" action="index.php">';
@@ -5167,12 +5167,12 @@ selector();
 
             while ($current = array_shift($actions)) {
                 // skip deprecated vars
-                if ($current == 'ifcat') continue;
-                if ($current == 'imagetext') continue;
-                if ($current == 'vars') continue;
+                if ($current == 'ifcat') {continue;}
+                if ($current == 'imagetext') {continue;}
+                if ($current == 'vars') {continue;}
 
                 echo helplink('skinvar-' . $current) . "$current</a>";
-                if (count($actions) != 0) echo ", ";
+                if (count($actions) != 0) {echo ", ";}
             }
         // edit link
         echo "<br /><br />\n";
@@ -5190,9 +5190,9 @@ selector();
         {
             global $CONF;
             if (!isset($CONF['SpecialskinKey']) || strval($CONF['SpecialskinKey']) === '')
-                $SpecialskinKey = 'special';
+                {$SpecialskinKey = 'special';}
             else
-                $SpecialskinKey = $CONF['SpecialskinKey'];
+                {$SpecialskinKey = $CONF['SpecialskinKey'];}
             echo "<br /><br />\n";
             $tmp = array();
             $tmp[] = sprintf('<a href="<%%blogurl%%>index.php?%s=%s">%s</a>', $SpecialskinKey, $type, $type);
@@ -5248,13 +5248,13 @@ selector();
 
         // don't allow default skin to be deleted
         if ($skinid == $CONF['BaseSkin'])
-            $this->error(_ERROR_DEFAULTSKIN);
+            {$this->error(_ERROR_DEFAULTSKIN);}
 
         // don't allow deletion of default skins for blogs
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE . hsc($o->bname));
+            {$this->error(_ERROR_SKINDEFDELETE . hsc($o->bname));}
 
         $this->pagehead();
 
@@ -5291,13 +5291,13 @@ selector();
 
         // don't allow default skin to be deleted
         if ($skinid == $CONF['BaseSkin'])
-            $this->error(_ERROR_DEFAULTSKIN);
+            {$this->error(_ERROR_DEFAULTSKIN);}
 
         // don't allow deletion of default skins for blogs
         $query = 'SELECT bname FROM '.sql_table('blog').' WHERE bdefskin=' . $skinid;
         $r = sql_query($query);
         if ($o = sql_fetch_object($r))
-            $this->error(_ERROR_SKINDEFDELETE .$o->bname);
+            {$this->error(_ERROR_SKINDEFDELETE .$o->bname);}
 
         $param = array('skinid' => $skinid);
         $manager->notify('PreDeleteSkin', $param);
@@ -5451,9 +5451,9 @@ selector();
         }
 
         if ($spartstype == 'specialpage')
-            $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
+            {$confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;}
         else
-            $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE;
+            {$confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE;}
 
         $this->pagehead();
 
@@ -5555,7 +5555,7 @@ selector();
         if (SKIN::exists($name)) {
             $i = 1;
             while (SKIN::exists($name . $i))
-                $i++;
+                {$i++;}
             $name .= $i;
         }
 
@@ -5617,7 +5617,7 @@ selector();
         ?>
 
         <h2><?php echo _SETTINGS_TITLE?></h2>
-        <?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
+        <?php if  ($message) {echo sprintf('<div class="ok">%s</div>',$message);}?>
 
         <form action="index.php" method="post">
         <div>
@@ -5826,9 +5826,9 @@ selector();
                     printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
                     $enable_tidy = isset($CONF['ENABLE_TIDY']) && $CONF['ENABLE_TIDY'];
                     if ($tidy_loaded)
-                        $this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);
+                        {$this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);}
                     else
-                        echo $s_disable;
+                        {echo $s_disable;}
                     echo "</td></tr>\n";
                     if ($tidy_loaded)
                     {
@@ -5857,11 +5857,11 @@ selector();
             <td><?php echo  hsc($DIR_MEDIA) ?>
                 <i><?php echo _SETTINGS_SEECONFIGPHP?></i>
                 <?php                   if (!is_dir($DIR_MEDIA))
-                        echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
+                        {echo "<br /><b>" . _WARNING_NOTADIR . "</b>";}
                     if (!is_readable($DIR_MEDIA))
-                        echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";
+                        {echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";}
                     if (!is_writeable($DIR_MEDIA))
-                        echo "<br /><b>" . _WARNING_NOTWRITABLE . "</b>";
+                        {echo "<br /><b>" . _WARNING_NOTWRITABLE . "</b>";}
                 ?>
             </td>
         </tr><tr>
@@ -5968,7 +5968,7 @@ selector();
     private function checkConfigTable() {
         global $CONF, $DB_DRIVER_NAME;
         if ($DB_DRIVER_NAME != 'mysql')
-            return;
+            {return;}
         $tablename = sql_table('config');
         $query = sprintf("SHOW COLUMNS FROM `{$tablename}` LIKE 'name'");
         $res = sql_query($query);
@@ -5993,7 +5993,7 @@ EOL;
 
         // check if email address for admin is valid
         if (!isValidMailAddress(postVar('AdminEmail')))
-            $this->error(_ERROR_BADMAILADDRESS);
+            {$this->error(_ERROR_BADMAILADDRESS);}
 
         $this->checkConfigTable();
 
@@ -6073,9 +6073,9 @@ EOL;
             echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_DBANDVERSION . "</td>\n";
             echo "\t\t" . '<td>';
                 if (($MYSQL_HANDLER[0] != 'pdo') ||  ($MYSQL_HANDLER[1] == 'mysql'))
-                    echo 'MySQL';
+                    {echo 'MySQL';}
                 else
-                    echo hsc($MYSQL_HANDLER[1]);
+                    {echo hsc($MYSQL_HANDLER[1]);}
             echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
             echo "\t</tr>";
             // Databese Driver
@@ -6083,9 +6083,9 @@ EOL;
             echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
             echo "\t\t" . '<td>';
                     if ($MYSQL_HANDLER[0] == 'pdo')
-                        echo 'pdo';
+                        {echo 'pdo';}
                     else
-                        echo hsc($MYSQL_HANDLER[0]).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');
+                        {echo hsc($MYSQL_HANDLER[0]).( _EXT_MYSQL_EMULATE ? ' / emulated mysql driver' :'');}
             echo "</td>\n";
             echo "\t</tr>";
             echo "</table>\n";
@@ -6180,13 +6180,12 @@ EOL;
             if (function_exists('tidy_get_release')) {
                 $tidy_ver = preg_match('/Tidy Version.+?>\s*([0-9\.]+)\s*</ims', $im, $m) ? $m[1] : '';
                 if ($tidy_ver)
-                    printf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
+                    {printf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));}
                 printf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
                 $tidy_support_HTML5 = strtotime( str_replace(array('.'),'/',tidy_get_release())) >= strtotime('2015/06/30');
                 printf("\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
                         $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE);
-                ;
-            }
+                }
             echo "</table>\n";
 
             // Information about the used core system
@@ -6252,7 +6251,7 @@ EOL;
 
     private function getMysqlEmulateInfo() {
         if (!defined('_EXT_MYSQL_EMULATE') || (!_EXT_MYSQL_EMULATE))
-            return '';
+            {return '';}
 
         $r = array('','','');
         $lists = array(
@@ -6274,13 +6273,13 @@ EOL;
             $m = 'mysql_' . $i;
             $s = 'sql_'   . $i;
             if (function_exists($m))
-                $r[0] .= $m ." , ";
+                {$r[0] .= $m ." , ";}
             else
             {
                 if (!function_exists($s))
-                    $r[1] .= $m ." , ";
+                    {$r[1] .= $m ." , ";}
                 else
-                    $r[1] .= "<b>$m</b> , ";
+                    {$r[1] .= "<b>$m</b> , ";}
             }
         }
 
@@ -6312,14 +6311,14 @@ EOL;
             $sql = sprintf("SELECT COUNT(*) AS result FROM `%s` WHERE name = ?", sql_table('config'));
             $res = sql_prepare_execute($sql, array((string) $name));
             if ($res && ($row = sql_fetch_row($res)) && ($row[0] > 0))
-                return self::updateConfig($name, $value);
+                {return self::updateConfig($name, $value);}
         } else {
             $sql = sprintf("SELECT COUNT(*) AS result FROM `%s` WHERE name = '%s'",
                            sql_table('config'),
                            sql_real_escape_string( $name )
                           );
             if (intval(quickQuery($sql) != 0))
-                return self::updateConfig($name, $value);
+                {return self::updateConfig($name, $value);}
         }
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
@@ -6384,7 +6383,7 @@ EOL;
             if (@is_file($fname))
             {
                 if ($CONF['AdminCSS'] != $name)
-                    $CONF['AdminCSS'] = $name;
+                    {$CONF['AdminCSS'] = $name;}
                 break;
             }
         }
@@ -6456,7 +6455,7 @@ EOL;
         $ph['action']     = $action;
         $ph['SiteName']   = hsc($CONF['SiteName']);
         $adminAlert       = isset($CONF['adminAlert'])&&!empty($CONF['adminAlert']) ? $CONF['adminAlert'] : '';
-        if(defined($adminAlert)) $adminAlert = constant($adminAlert);
+        if(defined($adminAlert)) {$adminAlert = constant($adminAlert);}
         $ph['adminAlert'] = $adminAlert ? $adminAlert = sprintf('<script>alert("%s");</script>',$adminAlert) : '';
         $ph['loginname']  = $this->loginname();
         echo parseText($tpl,$ph);
@@ -6469,10 +6468,10 @@ EOL;
 <div class="loginname">
 <?php
         if ($member->isLoggedIn())
-            echo '<%_LOGGEDINAS%> <%displayName%> - <a href="index.php?action=logout"><%_LOGOUT%></a><br />'
-                . '<a href="index.php?action=overview"><%_ADMINHOME%></a> | ';
+            {echo '<%_LOGGEDINAS%> <%displayName%> - <a href="index.php?action=logout"><%_LOGOUT%></a><br />'
+                . '<a href="index.php?action=overview"><%_ADMINHOME%></a> | ';}
         else
-            echo '<a href="index.php?action=showlogin" title="Log in"><%_NOTLOGGEDIN%></a><br />';
+            {echo '<a href="index.php?action=showlogin" title="Log in"><%_NOTLOGGEDIN%></a><br />';}
 
         echo '<a href="<%help_link%>"><%_HELP_TT%></a> | <a href="<%IndexURL%>"><%_YOURSITE%></a>';
         echo '<br />(';
@@ -6497,7 +6496,7 @@ EOL;
         $ph = $CONF;
         $ph['_LOGGEDINAS'] = _LOGGEDINAS;
         if($member->isLoggedIn())
-            $ph['displayName'] = $member->getDisplayName();
+            {$ph['displayName'] = $member->getDisplayName();}
         $ph['_LOGOUT'] = _LOGOUT;
         $ph['_ADMINHOME'] = _ADMINHOME;
         $ph['_NOTLOGGEDIN'] = _NOTLOGGEDIN;
@@ -6642,13 +6641,13 @@ EOL;
 
                     }
 
-                } else if (($action == 'activate') || ($action == 'activatesetpwd')) {
+                } else {if (($action == 'activate') || ($action == 'activatesetpwd')) {
 
                     echo '<h2>', _QMENU_ACTIVATE, '</h2>', _QMENU_ACTIVATE_TEXT;
                 } else {
                     // introduction text on login screen
                     echo '<h2>', _QMENU_INTRO, '</h2>', _QMENU_INTRO_TEXT;
-                }
+                }}
                 ?>
             </div>
             <!-- content / quickmenu container -->
@@ -6667,14 +6666,14 @@ EOL;
         $member->teamRights($blogid) or $this->disallow();
 
         if (!function_exists('mb_convert_encoding'))
-            $this->disallow();
+            {$this->disallow();}
 
         if (!BLOG::existsID($blogid))
-            $this->disallow();
+            {$this->disallow();}
 
         $utf8BlogName = getBlogNameFromID($blogid);
-        if ( stripos(_CHARSET, 'UTF-8') === FALSE )
-            $utf8BlogName = mb_convert_encoding($utf8BlogName, 'UTF-8', _CHARSET);
+        if ( stripos(_CHARSET, 'UTF-8') === false )
+            {$utf8BlogName = mb_convert_encoding($utf8BlogName, 'UTF-8', _CHARSET);}
         $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
         $utf8BlogName = str_replace(array("\r","\n"), '', $utf8BlogName); // remove cr lf
         $format = (_CHARSET=='UTF-8' ?  _WINREGFILE_TEXT : mb_convert_encoding(_WINREGFILE_TEXT, 'UTF-8', _CHARSET));
@@ -6818,7 +6817,7 @@ EOL;
 
         $member->isAdmin() or $this->disallow();
         if (!SYSTEMLOG::checkWritable())
-            $this->disallow();
+            {$this->disallow();}
 
         $this->pagehead();
 
@@ -6873,7 +6872,7 @@ EOL;
         $amount = showlist($query,'table',$template);
 
         if ($amount == 0)
-            echo _BAN_NONE;
+            {echo _BAN_NONE;}
 
         echo '<h2>'._BAN_NEW_TITLE.'</h2>';
         echo "<p><a href='index.php?action=banlistnew&amp;blogid=$blogid'>"._BAN_NEW_TEXT."</a></p>";
@@ -6949,18 +6948,18 @@ EOL;
 
         if (!$allblogs) {
             if (BAN::removeBan($blogid, $iprange))
-                $deleted[] = $blogid;
+                {$deleted[] = $blogid;}
         } else {
             // get blogs fot which member has admin rights
             $adminblogs = $member->getAdminBlogs();
             foreach ($adminblogs as $blogje) {
                 if (BAN::removeBan($blogje, $iprange))
-                    $deleted[] = $blogje;
+                    {$deleted[] = $blogje;}
             }
         }
 
         if (sizeof($deleted) == 0)
-            $this->error(_ERROR_DELETEBAN);
+            {$this->error(_ERROR_DELETEBAN);}
 
         $this->pagehead();
 
@@ -6993,7 +6992,7 @@ EOL;
         global $member, $manager;
 
         if ($blogid == '')
-            $blogid = intRequestVar('blogid');
+            {$blogid = intRequestVar('blogid');}
 
         $ip = requestVar('ip');
 
@@ -7076,7 +7075,7 @@ EOL;
         $allblogs =     postVar('allblogs');
         $iprange =      postVar('iprange');
         if ($iprange == "custom")
-            $iprange = postVar('customiprange');
+            {$iprange = postVar('customiprange');}
         $reason =       postVar('reason');
 
         $member->blogAdminRights($blogid) or $this->disallow();
@@ -7085,17 +7084,17 @@ EOL;
 
         if (!$allblogs) {
             if (!BAN::addBan($blogid, $iprange, $reason))
-                $this->error(_ERROR_ADDBAN);
+                {$this->error(_ERROR_ADDBAN);}
         } else {
             // get blogs fot which member has admin rights
             $adminblogs = $member->getAdminBlogs();
             $failed = 0;
             foreach ($adminblogs as $blogje) {
                 if (!BAN::addBan($blogje, $iprange, $reason))
-                    $failed = 1;
+                    {$failed = 1;}
             }
             if ($failed)
-                $this->error(_ERROR_ADDBAN);
+                {$this->error(_ERROR_ADDBAN);}
         }
 
         $this->action_banlist();
@@ -7221,7 +7220,7 @@ EOL;
         $member->isAdmin() or $this->disallow();
 
         if (intPostVar('letsgo') != 1)
-            $this->error(_ERROR_BACKUP_NOTSURE);
+            {$this->error(_ERROR_BACKUP_NOTSURE);}
 
         include($DIR_LIBS . 'backup.php');
 
@@ -7232,7 +7231,7 @@ EOL;
         $bu = new Backup();
         $message = $bu->do_restore();
         if ($message != '')
-            $this->error($message);
+            {$this->error($message);}
 
         $this->pagehead();
         ?>
@@ -7245,20 +7244,20 @@ EOL;
         global $DIR_PLUGINS;
         $path = @realpath($DIR_PLUGINS); // Since $DIR_PLUGINS is a user input value, it converts it to an absolute path
         if (empty($DIR_PLUGINS) || empty($path) || !is_dir($path))
-            return;
+            {return;}
         $path = str_replace('\\', '/', $path) . '/';
         $dh = opendir($path);
         if ($dh) {
             while (($file = readdir($dh)) !== false) {
-                if (in_array($file, array('.','..'))) continue;
+                if (in_array($file, array('.','..'))) {continue;}
                 $old_dir_name = "{$path}{$file}";
                 if (is_dir($old_dir_name) && preg_match('@^np_[0-9a-z_]+$@i', $file)) {
                     $np_lists = glob("{$old_dir_name}/NP_*.php", GLOB_NOSORT);
                     if (empty($np_lists) || substr(basename($np_lists[0]), 0, 2)!='NP') // Native Windows case insensitive
-                        continue;
+                        {continue;}
                     $NP_Name = substr(basename($np_lists[0]), 0, -4);
                     if ((strcmp($file, $NP_Name)==0) || (strcasecmp($file, $NP_Name)!=0))
-                        continue;
+                        {continue;}
                     $new_dir_name = "{$path}{$NP_Name}";
                     $success = @rename($old_dir_name, $new_dir_name);
                     if (class_exists('SYSTEMLOG')) {
@@ -7332,10 +7331,10 @@ EOL;
         global $DIR_PLUGINS;
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
-        $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, TRUE);
+        $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, true);
 //        var_dump(__FUNCTION__, $status, $plugins);
         if ( $status['result'] && count($plugins)>0 )
-            foreach ($plugins as $key => $value)
+            {foreach ($plugins as $key => $value)
         {
                 $name = $value['name'];
                 // only show in list when not yet installed
@@ -7343,7 +7342,7 @@ EOL;
                 {
                     $candidates[] = $name;
                 }
-            }
+            }}
 
         if (sizeof($candidates) > 0)
         {
@@ -7384,7 +7383,7 @@ EOL;
         $plugid = intGetVar('plugid');
 
         if (!$manager->pidInstalled($plugid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
         $plugName = getPluginNameFromPid($plugid);
 
@@ -7397,17 +7396,17 @@ EOL;
         $plug =& $manager->getPlugin($plugName);
         $cplugindir = $plug->getDirectory();
         if(is_file("{$cplugindir}help.php"))
-            $helpFile = "{$cplugindir}help.php";
+            {$helpFile = "{$cplugindir}help.php";}
         elseif(is_file("{$cplugindir}help.html"))
-            $helpFile = "{$cplugindir}help.html";
+            {$helpFile = "{$cplugindir}help.html";}
         elseif(is_file("{$cplugindir}help/index.php"))
-            $helpFile = "{$cplugindir}help/index.php";
+            {$helpFile = "{$cplugindir}help/index.php";}
         elseif(is_file("{$cplugindir}help/index.html"))
-            $helpFile = "{$cplugindir}help/index.html";
+            {$helpFile = "{$cplugindir}help/index.html";}
 
         if ($plug->supportsFeature('HelpPage') > 0 && isset($helpFile)) {
-            if(substr($helpFile,-4)==='.php') include_once($helpFile);
-            else                              @readfile($helpFile);
+            if(substr($helpFile,-4)==='.php') {include_once($helpFile);}
+            else                              {@readfile($helpFile);}
         } else {
             echo '<p>' . _ERROR .': ', _ERROR_PLUGNOHELPFILE,'</p>';
             echo '<p><a href="index.php?action=pluginlist">(',_BACK,')</a></p>';
@@ -7429,9 +7428,9 @@ EOL;
         $name = postVar('filename');
 
         if ($manager->pluginInstalled($name))
-            $this->error(_ERROR_DUPPLUGIN);
+            {$this->error(_ERROR_DUPPLUGIN);}
         if (!checkPlugin($name))
-            $this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');
+            {$this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');}
 
         // get number of currently installed plugins
         $res = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
@@ -7565,7 +7564,7 @@ EOL;
         $pid = intGetVar('plugid');
 
         if (!$manager->pidInstalled($pid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
         $this->pagehead();
         ?>
@@ -7612,7 +7611,7 @@ EOL;
         $pid = intval($pid);
 
         if (!$manager->pidInstalled($pid))
-            return _ERROR_NOSUCHPLUGIN;
+            {return _ERROR_NOSUCHPLUGIN;}
 
         $name = quickQuery('SELECT pfile as result FROM '.sql_table('plugin').' WHERE pid='.$pid);
 
@@ -7645,7 +7644,7 @@ EOL;
         // call the unInstall method of the plugin
         if ($callUninstall) {
             $plugin =& $manager->getPlugin($name);
-            if ($plugin) $plugin->unInstall();
+            if ($plugin) {$plugin->unInstall();}
         }
 
         // delete all subscriptions
@@ -7662,7 +7661,7 @@ EOL;
         // delete from plugin_option and plugin_option_desc
         sql_query('DELETE FROM '.sql_table('plugin_option_desc').' WHERE opid=' . $pid);
         if (count($aOIDs) > 0)
-            sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');
+            {sql_query('DELETE FROM '.sql_table('plugin_option').' WHERE oid in ('.implode(',',$aOIDs).')');}
 
         // update order numbers
         $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid=' . $pid);
@@ -7674,8 +7673,8 @@ EOL;
 
         // delete cached_data
         if (CoreCachedData::existTable())
-            sql_query(sprintf("DELETE FROM `%s` WHERE `cd_type` = 'plugin_remote_latest_version' AND `cd_sub_id` = %d",
-                              sql_table('cached_data'), $pid));
+            {sql_query(sprintf("DELETE FROM `%s` WHERE `cd_type` = 'plugin_remote_latest_version' AND `cd_sub_id` = %d",
+                              sql_table('cached_data'), $pid));}
 
         $manager->clearCachedInfo('installedPlugins');
         $param = array('plugid' => $pid);
@@ -7696,7 +7695,7 @@ EOL;
         $plugid = intGetVar('plugid');
 
         if (!$manager->pidInstalled($plugid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
         // 1. get old order number
         $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
@@ -7726,7 +7725,7 @@ EOL;
 
         $plugid = intGetVar('plugid');
         if (!$manager->pidInstalled($plugid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
         // 1. get old order number
         $res = sql_query('SELECT porder FROM '.sql_table('plugin').' WHERE pid='.$plugid);
@@ -7760,20 +7759,20 @@ EOL;
 
         $pid = intRequestVar('plugid');
         if (!$manager->pidInstalled($pid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
 //        $o_plugin = $manager->pidLoaded($pid);
         $o_plugin = $manager->getPluginFromPid($pid);
         if (!$o_plugin || !is_object( $o_plugin ))
-            $this->error(_ERROR_PLUGFILEERROR . $o_plugin);
+            {$this->error(_ERROR_PLUGFILEERROR . $o_plugin);}
 //
         $plugin_admin_php_file = $o_plugin->getDirectory() . 'index.php';
         if (!is_file($plugin_admin_php_file))
-            $this->error(_ERROR_PLUGFILEERROR);
+            {$this->error(_ERROR_PLUGFILEERROR);}
 
         $url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
         if (!defined('ENABLE_PLUGIN_ADMIN_V2'))
-            define('ENABLE_PLUGIN_ADMIN_V2', TRUE);
+            {define('ENABLE_PLUGIN_ADMIN_V2', true);}
         if (ENABLE_PLUGIN_ADMIN_V2)
         {
             define('PLUGIN_ADMIN_BASE_URL', $url);
@@ -7801,7 +7800,7 @@ EOL;
 
         $pid = intRequestVar('plugid');
         if (!$manager->pidInstalled($pid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
         $pluginName = hsc(getPluginNameFromPid($pid));
@@ -7812,7 +7811,7 @@ EOL;
 
             <h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
 
-            <?php if  ($message) echo sprintf('<div class="ok">%s</div>',$message);?>
+            <?php if  ($message) {echo sprintf('<div class="ok">%s</div>',$message);}?>
 
             <form action="index.php" method="post">
             <div>
@@ -7843,7 +7842,7 @@ EOL;
         if (count($aOIDs) > 0) {
             $r = sql_query('SELECT oid, ovalue FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',',$aOIDs).')');
             while ($o = sql_fetch_object($r))
-                $aOptions[$o->oid]['value'] = $o->ovalue;
+                {$aOptions[$o->oid]['value'] = $o->ovalue;}
         }
 
         // call plugins
@@ -7857,7 +7856,7 @@ EOL;
         $template['content'] = 'plugoptionlist';
         $amount = showlist($aOptions,'table',$template);
         if ($amount == 0)
-            echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';
+            {echo '<p>',_ERROR_NOPLUGOPTIONS,'</p>';}
 
         ?>
             </div>
@@ -7879,7 +7878,7 @@ EOL;
 
         $pid = intRequestVar('plugid');
         if (!$manager->pidInstalled($pid))
-            $this->error(_ERROR_NOSUCHPLUGIN);
+            {$this->error(_ERROR_NOSUCHPLUGIN);}
 
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
@@ -7913,9 +7912,9 @@ EOL;
         $aOptions = array();
         while ($o = sql_fetch_object($res)) {
             if (in_array($o->oid, array_keys($aIdToValue)))
-                $value = $aIdToValue[$o->oid];
+                {$value = $aIdToValue[$o->oid];}
             else
-                $value = $o->odef;
+                {$value = $o->odef;}
 
             $aOptions[] = array(
                 'pid' => $o->pid,
@@ -7979,7 +7978,7 @@ EOL;
         }
 
             if ($checkedval == $value1)
-                echo "tabindex='$tabindex' checked='checked'";
+                {echo "tabindex='$tabindex' checked='checked'";}
             echo ' id="'.$id1.'" /><label for="'.$id1.'">' . $yesval . '</label>';
         echo ' ';
         if ($name=="admin") {
@@ -7988,9 +7987,9 @@ EOL;
             echo '<input type="radio" name="', hsc($name),'" value="', hsc($value2),'" ';
         }
             if ($checkedval != $value1)
-                echo "tabindex='$tabindex' checked='checked'";
+                {echo "tabindex='$tabindex' checked='checked'";}
             if ($isAdmin && $name=="canlogin")
-                echo ' disabled="disabled"';
+                {echo ' disabled="disabled"';}
             echo ' id="'.$id2.'" /><label for="'.$id2.'">' . $noval . '</label>';
     }
 
@@ -8009,7 +8008,7 @@ EOL;
             foreach($aFiles as $fileName => $fileDesc)
             {
                 if (@is_dir($fileName))
-                    $aFound[] = $fileDesc;
+                    {$aFound[] = $fileDesc;}
             }
             if (@is_writable('../config.php')) {
                 $aFound[] = _ERRORS_CONFIGPHP;
@@ -8070,13 +8069,13 @@ EOD;
             }
             else
             {
-                if (!$this->db_mysql_checktables(TRUE))
-                    printf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
+                if (!$this->db_mysql_checktables(true))
+                    {printf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));}
                 else
                 {
                     $tables = array();
-                    $confirmOptimize = FALSE;
-                    $has_big = FALSE;
+                    $confirmOptimize = false;
+                    $has_big = false;
                     $warn_size = 10*pow(10,6); // 10 Mega Byte
                     $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
                     while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
@@ -8085,9 +8084,9 @@ EOD;
                         if ($row['Engine'] != 'InnoDB')
                         {
                             if (intval($row['Data_free'])>0)
-                                $confirmOptimize = TRUE;
+                                {$confirmOptimize = true;}
                             if (intval($row['Data_free']) > $warn_size) // 10*pow(10,6)
-                               $has_big = TRUE;
+                               {$has_big = true;}
                         }
                     }
                     if ($confirmOptimize)
@@ -8097,12 +8096,12 @@ EOD;
                         {
                             echo '<p><a href="index.php?action=optimizeoverview">'._BACKTOOVERVIEW.'</a></p>';
                             if ($this->db_optimize_mysql())
-                                printf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
+                                {printf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));}
                             $this->pagefoot();
                             return;
                         }
                         if ($has_big)
-                            printf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
+                            {printf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));}
                         printf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
                         $btn_title = hsc(_ADMIN_BTN_TITLE_OPTIMIZE);
                 $s = <<<EOD
@@ -8137,15 +8136,15 @@ EOD;
         $this->pagefoot();
     }
 
-    private function db_mysql_checktables($checkonly = FALSE)
+    private function db_mysql_checktables($checkonly = false)
     {
         global $DB_DRIVER_NAME;
         if ($DB_DRIVER_NAME != 'mysql')
-            return array();
+            {return array();}
         $tables = array();
         $res = sql_query(sprintf("SHOW TABLES LIKE '%s%%'", sql_table('')));
         while ($res && ($row = sql_fetch_array($res)) && !empty($row))
-            $tables[] = $row[0];
+            {$tables[] = $row[0];}
 
         $items = array();
         if (count($tables))
@@ -8153,13 +8152,13 @@ EOD;
             $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
             $res = sql_query($sql);
             while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
-              if ($row['Msg_type'] == 'status')
-                if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date')
-                    $items[$row['Table']] = $row;
+              {if ($row['Msg_type'] == 'status')
+                {if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date')
+                    {$items[$row['Table']] = $row;}}}
         }
 
         if ($checkonly)
-            return count($items)==0;
+            {return count($items)==0;}
 
         if (count($items)>0)
         {
@@ -8174,7 +8173,7 @@ EOD;
                 $res = sql_query($sql);
                 $items = array();
                 while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
-                        $items[$row['Table']] = $row;
+                        {$items[$row['Table']] = $row;}
             }
             else
             {
@@ -8200,28 +8199,28 @@ EOD;
             echo "</table>";
         }
         else
-            echo hsc(_NO_PROBLEMS_FOUND);
+            {echo hsc(_NO_PROBLEMS_FOUND);}
     }
 
     private function db_optimize_mysql()
     {
         global $DB_DRIVER_NAME;
         if ($DB_DRIVER_NAME != 'mysql')
-            return FALSE;
+            {return false;}
 
-        $success = FALSE;
+        $success = false;
 
         $tables = array();
         $inotables = array();
         $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
         while ($res && ($row = sql_fetch_assoc($res)) && !empty($row))
-            if (intval($row['Data_free'])>0)
+            {if (intval($row['Data_free'])>0)
             {
                 if ($row['Engine'] == 'InnoDB')
-                    $inotables[] = $row['Name'];
+                    {$inotables[] = $row['Name'];}
                 else
-                    $tables[] = $row['Name'];
-            }
+                    {$tables[] = $row['Name'];}
+            }}
 
         if (count($tables)>0)
         {
@@ -8237,8 +8236,8 @@ EOD;
             }
             echo "</table>";
             if ($res)
-                sql_free_result($res);
-            $success = TRUE;
+                {sql_free_result($res);}
+            $success = true;
 //            echo sprintf('<div>%s</div>', hsc($sql));
         }
         if (count($inotables)>0)
@@ -8252,7 +8251,7 @@ EOD;
             echo sprintf('<p>InnoDB can not optimize manually</p>', hsc($sql));
             echo '<ul>';
             foreach($inotables as $tablename)
-                echo sprintf('<li>%s</li>', hsc($tablename));
+                {echo sprintf('<li>%s</li>', hsc($tablename));}
             echo '</ul>';
         }
         return $success;
@@ -8262,7 +8261,7 @@ EOD;
     {
         global $DB_DRIVER_NAME;
         if ($DB_DRIVER_NAME != 'sqlite')
-            return FALSE;
+            {return false;}
         sql_query('vacuum;');
     }
 
@@ -8270,7 +8269,7 @@ EOD;
     {
         global $DB_DRIVER_NAME, $DB_DATABASE;
         if ($DB_DRIVER_NAME != 'sqlite')
-            return FALSE;
+            {return false;}
         clearstatcache();
         $size = filesize($DB_DATABASE);
         $t = array('', 'K', 'M', 'G', 'T');
@@ -8296,18 +8295,18 @@ EOD;
                         global $manager;
                         $o = $manager->getBlog($bid);
                         if ($o)
-                            $t = $o->getCorrectTime();
+                            {$t = $o->getCorrectTime();}
                     }
                 } else {
                     global $member, $manager;
                     $sql = sprintf('SELECT tblog as result FROM `%s` WHERE tmember=%d LIMIT 1', sql_table('team'), $member->getID());
                     $res = intval(quickQuery($sql));
                     if (!$res)
-                        $sql = sprintf('SELECT bnumber as result FROM `%s` LIMIT 1', sql_table('blog'));
+                        {$sql = sprintf('SELECT bnumber as result FROM `%s` LIMIT 1', sql_table('blog'));}
                     if ($res>0) {
                         $o = $manager->getBlog($res);
                         if ($o)
-                            $t = $o->getCorrectTime();
+                            {$t = $o->getCorrectTime();}
                     }
                 }
                 break;
@@ -8340,7 +8339,7 @@ EOD;
         }
 
         if (empty($where))
-            return '';
+            {return '';}
         return sprintf(' AND( %s ) ', $where);
     }
 
@@ -8349,15 +8348,15 @@ EOD;
         static $cached = null;
         static $forbidden = null;
         
-        if($forbidden) return;
+        if($forbidden) {return;}
         
         if (!function_exists('json_decode')) // PHP 5 >= 5.2.0
-            return false;
+            {return false;}
 
         $expired_time = time() - 60*60*6; // cache expired time 6 hour
 
         if ($cached === false)
-            return false;
+            {return false;}
 
         $col_type      = 'plugin_remote_list';
         $col_sub_type  = 'comma';
@@ -8378,7 +8377,7 @@ EOD;
         {
             $http_raw_options = array_merge($http_options, array('reply_response'=> 1));
             if (!is_array($cached))
-                $cached = array('value' => '');
+                {$cached = array('value' => '');}
             $url = "https://api.github.com/users/NucleusCMS/repos";
             ini_set( 'user_agent' , DEFAULT_USER_AGENT );
             $count = 0;
@@ -8392,10 +8391,10 @@ EOD;
                 }
                 $count++;
                 if (!is_array($s))
-                    $s = array('body' => $s);
+                    {$s = array('body' => $s);}
                 if (isset($s['header'])) {
                     if (stripos($s['header'],"\nStatus: 200 OK")===false || stripos($s['header'],"\nContent-Type: application/json")===false)
-                        break;
+                        {break;}
                 }
                 if (!empty($s['body']) && (substr(ltrim($s['body']),0,1) == '['))
                 {
@@ -8412,15 +8411,15 @@ EOD;
                     }
                 }
                 if (!isset($s['header']) || empty($s['header']))
-                    break;
+                    {break;}
 //                var_dump($s['header']);
                 // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
                 $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
                 if (!preg_match( $pattern , $s['header'], $m ))
-                    break;
+                    {break;}
                 $nextpage = intval($m[1]);
                 if (($count+1) != $nextpage)
-                    break;
+                    {break;}
                 $nexturl = $url . '?page=' . $nextpage;
             }
             if (empty($values))
@@ -8442,7 +8441,7 @@ EOD;
             {
                 $item = trim($item);
                 if (!empty($item))
-                    $cached['list'][strtolower($item)] = (string) $item;
+                    {$cached['list'][strtolower($item)] = (string) $item;}
             }
         }
 
@@ -8458,10 +8457,10 @@ EOD;
         }
 
         if (empty($url) && empty($cached['list']) && $force_get)
-            $url = "https://raw.githubusercontent.com/NucleusCMS/${NP_Name}/master/${NP_Name}.php"; // debug
+            {$url = "https://raw.githubusercontent.com/NucleusCMS/${NP_Name}/master/${NP_Name}.php";} // debug
 
         if (empty($url))
-            return false;
+            {return false;}
 
         switch($lc_np_name)
         { // Workaround for unusual repositories
@@ -8473,22 +8472,22 @@ EOD;
 
         $s = Utils::httpGet($url , array('connecttimeout'=> 2, 'timeout'=>2));
         if (empty($s) && !empty($retry_url))
-            $s = Utils::httpGet($retry_url , array('connecttimeout'=> 2, 'timeout'=>2));
+            {$s = Utils::httpGet($retry_url , array('connecttimeout'=> 2, 'timeout'=>2));}
 
         $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
         $pattern1 = "/getVersion{$pattern0}/im";
         $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
 
         if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<'))
-            return false;
+            {return false;}
 
         if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern , $s, $m)))
         {
             // Check plugin's min nucleus version
             if (preg_match($pattern2, $s, $m2) && (intval($m2[1]) > CORE_APPLICATION_VERSION_ID))
-                return false;
+                {return false;}
             if ($trim)
-               return preg_replace('#[^0-9\.\-\_]+.+?$#', '' , $m[1]);
+               {return preg_replace('#[^0-9\.\-\_]+.+?$#', '' , $m[1]);}
             return $m[1];
         }
         return false;

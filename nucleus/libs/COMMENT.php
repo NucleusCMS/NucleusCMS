@@ -15,17 +15,20 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) 2002-2007 The Nucleus Group
  */
-class COMMENT {
+
+class COMMENT
+{
 
     /**
-      * Returns the requested comment
-      *
-      * @static
-      */
-    public static function getComment($commentid) {
+     * Returns the requested comment
+     *
+     * @static
+     */
+    public static function getComment($commentid)
+    {
         $query = 'SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid'
-                    . ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
-                    . ' WHERE `cnumber` = ' . intval($commentid);
+            . ' FROM ' . sql_table('comment') . ' LEFT OUTER JOIN ' . sql_table('member') . ' ON `cmember` = `mnumber`'
+            . ' WHERE `cnumber` = ' . intval($commentid);
         $comments = sql_query($query);
 
         $aCommentInfo = sql_fetch_assoc($comments);
@@ -38,10 +41,10 @@ class COMMENT {
     }
 
     /**
-      * Prepares a comment to be saved
-      *
-      * @static
-      */
+     * Prepares a comment to be saved
+     *
+     * @static
+     */
     public static function prepare($comment)
     {
         $comment['user'] = strip_tags($comment['user']);
@@ -49,13 +52,13 @@ class COMMENT {
         $comment['email'] = strip_tags($comment['email']);
 
         // remove newlines from user; remove quotes and newlines from userid and email; trim whitespace from beginning and end
-        $comment['user'] = trim(strtr($comment['user'], "\n", ' ') );
-        $comment['userid'] = trim(strtr($comment['userid'], "\'\"\n", '-- ') );
-        $comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- ') );
+        $comment['user'] = trim(strtr($comment['user'], "\n", ' '));
+        $comment['userid'] = trim(strtr($comment['userid'], "\'\"\n", '-- '));
+        $comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- '));
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-        if ( !empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0) )
-        {
+        if (!empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'],
+                    'https://') !== 0)) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 
@@ -69,7 +72,8 @@ class COMMENT {
      *
      * @ static
      */
-    public static function prepareBody($body) {
+    public static function prepareBody($body)
+    {
 
         // convert Windows and Mac style 'returns' to *nix newlines
         $body = preg_replace("/\r\n/", "\n", $body);
@@ -103,13 +107,13 @@ class COMMENT {
     }
 
 
-
     /**
      * Creates a link code for unlinked URLs with different protocols
      *
      * @ static
      */
-    public static function createLinkCode($pre, $url, $protocol = 'http') {
+    public static function createLinkCode($pre, $url, $protocol = 'http')
+    {
         $post = '';
 
         // it's possible that $url ends contains entities we don't want,
@@ -128,9 +132,9 @@ class COMMENT {
         }
 
         // remove entities at end (&&&&)
-        if (preg_match('/(&\w+;)+$/i', $url, $matches) ) {
+        if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
             $post = $matches[0] . $post;    // found entities (1 or more)
-            $url = substr($url, 0, strlen($url) - strlen($post) );
+            $url = substr($url, 0, strlen($url) - strlen($post));
         }
 
         // move ending comma from url to 'post' part
@@ -139,12 +143,9 @@ class COMMENT {
             $post = ',' . $post;
         }
 
-        if (!preg_match('#^' . $protocol . '://#', $url) )
-        {
-            $linkedUrl = $protocol . ( ($protocol == 'mailto') ? ':' : '://') . $url;
-        }
-        else
-        {
+        if (!preg_match('#^' . $protocol . '://#', $url)) {
+            $linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://') . $url;
+        } else {
             $linkedUrl = $url;
         }
 
@@ -154,7 +155,8 @@ class COMMENT {
             $displayedUrl = $url;
         }
 
-        return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl,30,'...') . '</a>' . $post;
+        return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl, 30,
+                '...') . '</a>' . $post;
     }
 
 
@@ -165,30 +167,29 @@ class COMMENT {
      */
     public static function prepareBody_cb($match)
     {
-        if ( !preg_match('/^[a-z]+/i', $match[2], $protocol) )
-        {
+        if (!preg_match('/^[a-z]+/i', $match[2], $protocol)) {
             return $match[0];
         }
 
-        switch( strtolower($protocol[0]) )
-        {
+        switch (strtolower($protocol[0])) {
             case 'https':
                 return self::createLinkCode($match[1], $match[2], 'https');
-            break;
+                break;
 
             case 'ftp':
                 return self::createLinkCode($match[1], $match[2], 'ftp');
-            break;
+                break;
 
             case 'mailto':
                 return self::createLinkCode($match[1], $match[3], 'mailto');
-            break;
+                break;
 
             default:
                 return self::createLinkCode($match[1], $match[2], 'http');
-            break;
+                break;
         }
     }
 
 }
+
 ?>
