@@ -18,98 +18,105 @@
 /**
  * A class used to encapsulate a list of some sort in a batch selection
  */
-class BATCH extends ENCAPSULATE {
+class BATCH extends ENCAPSULATE
+{
 
-    function __construct($type) {
+    function __construct($type)
+    {
         $this->type = $type;
     }
 
-    function BATCH($type) {
+    function BATCH($type)
+    {
         $this->__construct($type);
     }
 
-    function showHead() {
+    function showHead()
+    {
         ?>
-            <form method="post" action="index.php">
+        <form method="post" action="index.php">
         <?php
 // TODO: get a list op operations above the list too
 // (be careful not to use the same names for the select...)
 //        $this->showOperationList();
     }
 
-    function showFoot() {
+    function showFoot()
+    {
         $this->showOperationList();
         ?>
-            </form>
-        <?php    }
+        </form>
+    <?php }
 
-    function showOperationList() {
+    function showOperationList()
+    {
         global $manager;
         ?>
         <div class="batchoperations">
             <?php echo _BATCH_WITH_SEL ?>
             <select name="batchaction">
-            <?php                $options = array();
-                switch($this->type) {
+                <?php $options = array();
+                switch ($this->type) {
                     case 'item':
                         $options = array(
-                            'delete'    => _BATCH_ITEM_DELETE,
-                            'move'        => _BATCH_ITEM_MOVE
+                            'delete' => _BATCH_ITEM_DELETE,
+                            'move' => _BATCH_ITEM_MOVE
                         );
                         break;
                     case 'member':
                         $options = array(
-                            'delete'    => _BATCH_MEMBER_DELETE,
-                            'setadmin'    => _BATCH_MEMBER_SET_ADM,
+                            'delete' => _BATCH_MEMBER_DELETE,
+                            'setadmin' => _BATCH_MEMBER_SET_ADM,
                             'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
                         );
                         break;
                     case 'team':
                         $options = array(
-                            'delete'     => _BATCH_TEAM_DELETE,
-                            'setadmin'    => _BATCH_TEAM_SET_ADM,
+                            'delete' => _BATCH_TEAM_DELETE,
+                            'setadmin' => _BATCH_TEAM_SET_ADM,
                             'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
                         );
                         break;
                     case 'category':
                         $options = array(
-                            'change_corder' => _BATCH_CAT_CAHANGE_ORDER ,
-                            'delete'    => _BATCH_CAT_DELETE,
-                            'move'        => _BATCH_CAT_MOVE,
+                            'change_corder' => _BATCH_CAT_CAHANGE_ORDER,
+                            'delete' => _BATCH_CAT_DELETE,
+                            'move' => _BATCH_CAT_MOVE,
                         );
                         break;
                     case 'comment':
                         $options = array(
-                            'delete'    => _BATCH_COMMENT_DELETE,
+                            'delete' => _BATCH_COMMENT_DELETE,
                         );
-                    break;
+                        break;
                 }
                 foreach ($options as $option => $label) {
-                    echo '<option value="',$option,'">',$label,'</option>';
+                    echo '<option value="', $option, '">', $label, '</option>';
                 }
-            ?>
+                ?>
             </select>
-            <input type="hidden" name="action" value="batch<?php echo $this->type?>" />
+            <input type="hidden" name="action" value="batch<?php echo $this->type ?>"/>
             <?php
-                $manager->addTicketHidden();
+            $manager->addTicketHidden();
 
-                // add hidden fields for 'team' and 'comment' batchlists
-                if ($this->type == 'team')
-                {
-                    echo '<input type="hidden" name="blogid" value="',intRequestVar('blogid'),'" />';
-                }
-                if ($this->type == 'comment')
-                {
-                    echo '<input type="hidden" name="itemid" value="',intRequestVar('itemid'),'" />';
-                }
+            // add hidden fields for 'team' and 'comment' batchlists
+            if ($this->type == 'team') {
+                echo '<input type="hidden" name="blogid" value="', intRequestVar('blogid'), '" />';
+            }
+            if ($this->type == 'comment') {
+                echo '<input type="hidden" name="itemid" value="', intRequestVar('itemid'), '" />';
+            }
 
-                echo '<input type="submit" value="',_BATCH_EXEC,'" />';
+            echo '<input type="submit" value="', _BATCH_EXEC, '" />';
             ?>(
-             <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL?></a> -
-             <a href="" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL?></a>
+            <a href=""
+               onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(1); "><?php echo _BATCH_SELECTALL ?></a>
+            -
+            <a href=""
+               onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL ?></a>
             )
         </div>
-        <?php    }
+    <?php }
 
     // shortcut :)
     function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
