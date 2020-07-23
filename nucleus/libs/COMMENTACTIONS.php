@@ -15,7 +15,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class COMMENTACTIONS extends BaseActions {
+class COMMENTACTIONS extends BaseActions
+{
 
     // ref to COMMENTS object which is using this object to handle
     // its templatevars
@@ -27,7 +28,8 @@ class COMMENTACTIONS extends BaseActions {
     // comment currenlty being handled (mysql result assoc array; see COMMENTS::showComments())
     public $currentComment;
 
-    function __construct(&$comments) {
+    function __construct(&$comments)
+    {
         // call constructor of superclass first
         parent::__construct();
 
@@ -35,7 +37,8 @@ class COMMENTACTIONS extends BaseActions {
         $this->setCommentsObj($comments);
     }
 
-    function getDefinedActions() {
+    function getDefinedActions()
+    {
         return array(
             'blogurl',
             'commentcount',
@@ -74,32 +77,37 @@ class COMMENTACTIONS extends BaseActions {
             'endif',
             'elseif',
             'ifnot',
-            'elseifnot'
+            'elseifnot',
         );
     }
 
-    function setParser(&$parser) {
+    function setParser(&$parser)
+    {
         unset($this->parser);
         $this->parser =& $parser;
     }
 
-    function setCommentsObj(&$commentsObj) {
+    function setCommentsObj(&$commentsObj)
+    {
         unset($this->commentsObj);
         $this->commentsObj =& $commentsObj;
     }
 
-    function setTemplate($template) {
+    function setTemplate($template)
+    {
         $this->template =& $template;
     }
 
-    function setCurrentComment(&$comment) {
+    function setCurrentComment(&$comment)
+    {
         global $manager;
 
         // begin if: member comment
         if ($comment['memberid'] != 0) {
-            $comment['authtext'] = (isset($this->template['COMMENTS_AUTH']) ? $this->template['COMMENTS_AUTH'] : '');
+            $comment['authtext'] = (isset($this->template['COMMENTS_AUTH'])
+                ? $this->template['COMMENTS_AUTH'] : '');
 
-            $mem =& $manager->getMember($comment['memberid']);
+            $mem             =& $manager->getMember($comment['memberid']);
             $comment['user'] = $mem->getDisplayName();
 
             // begin if: member URL exists, set it as the userid
@@ -114,8 +122,8 @@ class COMMENTACTIONS extends BaseActions {
                 'member',
                 array(
                     'memberid' => $comment['memberid'],
-                    'name' => $mem->getDisplayName(),
-                    'extra' => $this->commentsObj->itemActions->linkparams
+                    'name'     => $mem->getDisplayName(),
+                    'extra'    => $this->commentsObj->itemActions->linkparams,
                 )
             );
         } // else: non-member comment
@@ -125,7 +133,8 @@ class COMMENTACTIONS extends BaseActions {
             // begin if: comment userid is not empty
             if ( ! empty($comment['userid'])) {
                 // begin if: comment userid has either "http://" or "https://" at the beginning
-                if ((strpos($comment['userid'], 'http://') === 0) || (strpos($comment['userid'], 'https://') === 0)) {
+                if ((strpos($comment['userid'], 'http://') === 0)
+                    || (strpos($comment['userid'], 'https://') === 0)) {
                     $comment['userlinkraw'] = $comment['userid'];
                 } // else: prepend the "http://" (backwards compatibility before rev 1471)
                 else {
@@ -139,7 +148,8 @@ class COMMENTACTIONS extends BaseActions {
                 } // else if: comment userid is a valid email
                 else {
                     if (isValidMailAddress($comment['userid'])) {
-                        $comment['userlinkraw'] = 'mailto:' . $comment['userid'];
+                        $comment['userlinkraw'] = 'mailto:'
+                                                  . $comment['userid'];
                     }
                 }
             } // end if
@@ -148,14 +158,15 @@ class COMMENTACTIONS extends BaseActions {
 
         $this->currentComment =& $comment;
         global $currentcommentid, $currentcommentarray;
-        $currentcommentid = $comment['commentid'];
+        $currentcommentid    = $comment['commentid'];
         $currentcommentarray = $comment;
     }
 
     /**
      * Parse templatevar authtext
      */
-    function parse_authtext() {
+    function parse_authtext()
+    {
         if ($this->currentComment['memberid'] != 0) {
             $this->parser->parse($this->template['COMMENTS_AUTH']);
         }
@@ -164,64 +175,75 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar blogid
      */
-    function parse_blogid() {
+    function parse_blogid()
+    {
         echo $this->currentComment['blogid'];
     }
 
     /**
      * Parse templatevar blogurl
      */
-    function parse_blogurl() {
+    function parse_blogurl()
+    {
         global $manager;
         $blogid = getBlogIDFromItemID($this->commentsObj->itemid);
-        $blog =& $manager->getBlog($blogid);
+        $blog   =& $manager->getBlog($blogid);
         echo $blog->getRealURL();
     }
 
     /**
      * Parse templatevar body
      */
-    function parse_body() {
+    function parse_body()
+    {
         echo $this->highlight($this->currentComment['body']);
     }
 
     /**
      * Parse templatevar commentcount
      */
-    function parse_commentcount() {
+    function parse_commentcount()
+    {
         echo $this->commentsObj->commentcount;
     }
 
     /**
      * Parse templatevar commentid
      */
-    function parse_commentid() {
+    function parse_commentid()
+    {
         echo $this->currentComment['commentid'];
     }
 
     /**
      * Parse templatevar commentword
      */
-    function parse_commentword() {
+    function parse_commentword()
+    {
         if ($this->commentsObj->commentcount == 1) {
-            echo isset($this->template['COMMENTS_ONE']) ? $this->template['COMMENTS_ONE'] : '';
+            echo isset($this->template['COMMENTS_ONE'])
+                ? $this->template['COMMENTS_ONE'] : '';
         } else {
-            echo isset($this->template['COMMENTS_MANY']) ? $this->template['COMMENTS_MANY'] : '';
+            echo isset($this->template['COMMENTS_MANY'])
+                ? $this->template['COMMENTS_MANY'] : '';
         }
     }
 
     /**
      * Parse templatevar date
      */
-    function parse_date($format = '') {
-        echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'],
+    function parse_date($format = '')
+    {
+        echo formatDate($format, $this->currentComment['timestamp'],
+            $this->template['FORMAT_DATE'],
             $this->commentsObj->itemActions->blog);
     }
 
     /**
      * Parse templatevar email
      */
-    function parse_email() {
+    function parse_email()
+    {
         $email = $this->currentComment['email'];
         $email = str_replace('@', ' (at) ', $email);
         $email = str_replace('.', ' (dot) ', $email);
@@ -231,42 +253,47 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar excerpt
      */
-    function parse_excerpt() {
+    function parse_excerpt()
+    {
         echo stringToXML(shorten($this->currentComment['body'], 60, '...'));
     }
 
     /**
      * Parse templatevar host
      */
-    function parse_host() {
+    function parse_host()
+    {
         echo $this->currentComment['host'];
     }
 
     /**
      * Parse templatevar ip
      */
-    function parse_ip() {
+    function parse_ip()
+    {
         echo $this->currentComment['ip'];
     }
 
     /**
      * Parse templatevar itemid
      */
-    function parse_itemid() {
+    function parse_itemid()
+    {
         echo $this->commentsObj->itemid;
     }
 
     /**
      * Parse templatevar itemlink
      */
-    function parse_itemlink() {
+    function parse_itemlink()
+    {
         echo createLink(
             'item',
             array(
-                'itemid' => $this->commentsObj->itemid,
+                'itemid'    => $this->commentsObj->itemid,
                 'timestamp' => $this->commentsObj->itemActions->currentItem->timestamp,
-                'title' => $this->commentsObj->itemActions->currentItem->title,
-                'extra' => $this->commentsObj->itemActions->linkparams
+                'title'     => $this->commentsObj->itemActions->currentItem->title,
+                'extra'     => $this->commentsObj->itemActions->linkparams,
             )
         );
     }
@@ -274,7 +301,8 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar itemtitle
      */
-    function parse_itemtitle($maxLength = 0) {
+    function parse_itemtitle($maxLength = 0)
+    {
         if ( ! is_numeric($maxLength) || intval($maxLength) == 0) {
             echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         } else {
@@ -285,14 +313,16 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar memberid
      */
-    function parse_memberid() {
+    function parse_memberid()
+    {
         echo $this->currentComment['memberid'];
     }
 
     /**
      * Parse templatevar short
      */
-    function parse_short() {
+    function parse_short()
+    {
         $tmp = strtok($this->currentComment['body'], "\n");
         $tmp = str_replace('<br />', '', $tmp);
         echo $tmp;
@@ -304,7 +334,8 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar time
      */
-    function parse_time($format = '') {
+    function parse_time($format = '')
+    {
         echo Utils::strftime(
             ($format == '') ? $this->template['FORMAT_TIME'] : $format,
             $this->currentComment['timestamp']
@@ -314,18 +345,20 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar timestamp
      */
-    function parse_timestamp() {
+    function parse_timestamp()
+    {
         echo $this->currentComment['timestamp'];
     }
 
     /**
      * Executes a plugin templatevar
      *
-     * @param pluginName name of plugin (without the NP_)
+     * @param   pluginName name of plugin (without the NP_)
      *
      * extra parameters can be added
      */
-    function parse_plugin($pluginName) {
+    function parse_plugin($pluginName)
+    {
         global $manager;
 
         // only continue when the plugin is really installed
@@ -346,16 +379,20 @@ class COMMENTACTIONS extends BaseActions {
 
         // pass info on current item and current comment as well
         $params = array_merge(array(&$this->currentComment), $params);
-        $params = array_merge(array(&$this->commentsObj->itemActions->currentItem), $params);
+        $params
+                = array_merge(array(&$this->commentsObj->itemActions->currentItem),
+            $params);
 
         call_user_func_array(array($plugin, 'doTemplateCommentsVar'), $params);
     }
 
     /**
      * Parse templatevar user
-     * @param string $mode
+     *
+     * @param   string  $mode
      */
-    function parse_user($mode = '') {
+    function parse_user($mode = '')
+    {
         global $manager;
 
         if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
@@ -369,7 +406,8 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar useremail
      */
-    function parse_useremail() {
+    function parse_useremail()
+    {
         global $manager;
         if ($this->currentComment['memberid'] > 0) {
             $member =& $manager->getMember($this->currentComment['memberid']);
@@ -383,15 +421,16 @@ class COMMENTACTIONS extends BaseActions {
             } elseif (isValidMailAddress($this->currentComment['userid'])) {
                 echo hsc($this->currentComment['userid']);
             }
-//            if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
-//                echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
+            //            if (!(strpos($this->currentComment['userlinkraw'], 'mailto:') === false))
+            //                echo str_replace('mailto:', '', $this->currentComment['userlinkraw']);
         }
     }
 
     /**
      * Parse templatevar userid
      */
-    function parse_userid() {
+    function parse_userid()
+    {
         echo $this->currentComment['userid'];
     }
 
@@ -399,9 +438,11 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar userlink
      */
-    function parse_userlink() {
+    function parse_userlink()
+    {
         if ($this->currentComment['userlinkraw']) {
-            echo '<a href="' . $this->currentComment['userlinkraw'] . '" rel="nofollow">' . $this->currentComment['user'] . '</a>';
+            echo '<a href="' . $this->currentComment['userlinkraw']
+                 . '" rel="nofollow">' . $this->currentComment['user'] . '</a>';
         } else {
             echo $this->currentComment['user'];
         }
@@ -410,7 +451,8 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar userlinkraw
      */
-    function parse_userlinkraw() {
+    function parse_userlinkraw()
+    {
         if (isset($this->currentComment['userlinkraw'])) {
             echo $this->currentComment['userlinkraw'];
         }
@@ -419,11 +461,13 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar userwebsite
      */
-    function parse_userwebsite() {
+    function parse_userwebsite()
+    {
         if ( ! isset($this->currentComment['userlinkraw'])) {
             return;
         }
-        if (preg_match('@^https?://[^/]+@', $this->currentComment['userlinkraw'])) {
+        if (preg_match('@^https?://[^/]+@',
+            $this->currentComment['userlinkraw'])) {
             echo $this->currentComment['userlinkraw'];
         }
     }
@@ -431,11 +475,15 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Parse templatevar userwebsitelink
      */
-    function parse_userwebsitelink() {
+    function parse_userwebsitelink()
+    {
         if (isset($this->currentComment['userlinkraw'])
-            && (preg_match('@^https?://[^/]+@', $this->currentComment['userlinkraw']))
+            && (preg_match('@^https?://[^/]+@',
+                $this->currentComment['userlinkraw']))
         ) {
-            echo '<a href="' . hsc($this->currentComment['userlinkraw']) . '" rel="nofollow">' . hsc($this->currentComment['user']) . '</a>';
+            echo '<a href="' . hsc($this->currentComment['userlinkraw'])
+                 . '" rel="nofollow">' . hsc($this->currentComment['user'])
+                 . '</a>';
         } else {
             echo hsc($this->currentComment['user']);
         }
@@ -446,11 +494,12 @@ class COMMENTACTIONS extends BaseActions {
     /**
      * Checks conditions for if statements
      *
-     * @param string $field type of <%if%>
-     * @param string $name property of field
-     * @param string $value value of property
+     * @param   string  $field  type of <%if%>
+     * @param   string  $name   property of field
+     * @param   string  $value  value of property
      */
-    function checkCondition($field, $name = '', $value = '') {
+    function checkCondition($field, $name = '', $value = '')
+    {
         global $blog, $member, $manager;
 
         $condition = 0;
@@ -465,7 +514,8 @@ class COMMENTACTIONS extends BaseActions {
                 $condition = ($blog && ($blog->getSetting($name) == $value));
                 break;
             case 'itemblogsetting':
-                $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+                $b
+                           =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
                 $condition = ($b && ($b->getSetting($name) == $value));
                 break;
             case 'loggedin':
@@ -508,16 +558,19 @@ class COMMENTACTIONS extends BaseActions {
                 $condition = ($blog && $blog->getAuthorVisible());
                 break;
             default:
-                $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
+                $condition = $manager->pluginInstalled('NP_' . $field)
+                             && $this->_ifPlugin($field, $name, $value);
                 break;
         }
+
         return $condition;
     }
 
     /**
      *  Different checks for a category
      */
-    function _ifCategory($name = '', $value = '') {
+    function _ifCategory($name = '', $value = '')
+    {
         global $blog, $catid;
 
         // when no parameter is defined, just check if a category is selected
@@ -545,20 +598,24 @@ class COMMENTACTIONS extends BaseActions {
     /**
      *  Different checks for an author
      */
-    function _ifAuthor($name = '', $value = '') {
+    function _ifAuthor($name = '', $value = '')
+    {
         global $member, $manager;
 
         if ($this->currentComment['memberid'] == 0) {
             return false;
         }
 
-        $mem =& $manager->getMember($this->currentComment['memberid']);
-        $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+        $mem   =& $manager->getMember($this->currentComment['memberid']);
+        $b
+               =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
         $citem =& $manager->getItem($this->currentComment['itemid'], 1, 1);
 
         // when no parameter is defined, just check if item author is current visitor
-        if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor' && $name != 'isonteam')) {
-            return (intval($member->getID()) > 0 && intval($member->getID()) == intval($citem['authorid']));
+        if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor'
+             && $name != 'isonteam')) {
+            return (intval($member->getID()) > 0
+                    && intval($member->getID()) == intval($citem['authorid']));
         }
 
         // check comment author name
@@ -584,7 +641,8 @@ class COMMENTACTIONS extends BaseActions {
 
         // check if comment author is item author
         if ($name == 'isauthor') {
-            return (intval($citem['authorid']) == intval($this->currentComment['memberid']));
+            return (intval($citem['authorid'])
+                    == intval($this->currentComment['memberid']));
         }
 
         // check if comment author is on team
@@ -598,11 +656,13 @@ class COMMENTACTIONS extends BaseActions {
     /**
      *  Different checks for a category
      */
-    function _ifItemCategory($name = '', $value = '') {
+    function _ifItemCategory($name = '', $value = '')
+    {
         global $manager;
 
-        $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-        $citem =& $manager->getItem($this->currentComment['itemid'], 1, 1);
+        $b
+                =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+        $citem  =& $manager->getItem($this->currentComment['itemid'], 1, 1);
         $icatid = $citem['catid'];
 
         // when no parameter is defined, just check if a category is selected
@@ -630,10 +690,12 @@ class COMMENTACTIONS extends BaseActions {
     /**
      *  Checks if a member is on the team of a blog and return his rights
      */
-    function _ifOnTeam($blogName = '') {
+    function _ifOnTeam($blogName = '')
+    {
         global $member, $manager;
 
-        $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+        $b
+            =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
         // when no blog found
         if (($blogName == '') && ( ! is_object($b))) {
@@ -645,7 +707,8 @@ class COMMENTACTIONS extends BaseActions {
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || ! $manager->existsBlogID($blogid)) // use current blog
+        if (($blogName == '')
+            || ! $manager->existsBlogID($blogid)) // use current blog
         {
             $blogid = $b->getID();
         }
@@ -656,10 +719,12 @@ class COMMENTACTIONS extends BaseActions {
     /**
      *  Checks if a member is admin of a blog
      */
-    function _ifAdmin($blogName = '') {
+    function _ifAdmin($blogName = '')
+    {
         global $member, $manager;
 
-        $b =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+        $b
+            =& $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
         // when no blog found
         if (($blogName == '') && ( ! is_object($b))) {
@@ -671,7 +736,8 @@ class COMMENTACTIONS extends BaseActions {
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || ! $manager->existsBlogID($blogid)) // use current blog
+        if (($blogName == '')
+            || ! $manager->existsBlogID($blogid)) // use current blog
         {
             $blogid = $b->getID();
         }
@@ -684,11 +750,13 @@ class COMMENTACTIONS extends BaseActions {
      *    hasplugin,PlugName
      *       -> checks if plugin exists
      *    hasplugin,PlugName,OptionName
-     *       -> checks if the option OptionName from plugin PlugName is not set to 'no'
-     *    hasplugin,PlugName,OptionName=value
-     *       -> checks if the option OptionName from plugin PlugName is set to value
+     *       -> checks if the option OptionName from plugin PlugName is not set
+     *       to 'no' hasplugin,PlugName,OptionName=value
+     *       -> checks if the option OptionName from plugin PlugName is set to
+     *       value
      */
-    function _ifHasPlugin($name, $value) {
+    function _ifHasPlugin($name, $value)
+    {
         global $manager;
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
@@ -709,13 +777,15 @@ class COMMENTACTIONS extends BaseActions {
                 }
             }
         }
+
         return $condition;
     }
 
     /**
      * Checks if a plugin exists and call its doIf function
      */
-    function _ifPlugin($name, $key = '', $value = '') {
+    function _ifPlugin($name, $key = '', $value = '')
+    {
         global $manager;
 
         $plugin =& $manager->getPlugin('NP_' . $name);
@@ -729,8 +799,9 @@ class COMMENTACTIONS extends BaseActions {
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 
-    function parse_commentclosed() {
-//        return $this->commentsObj->itemActions->parse_commentclosed();
+    function parse_commentclosed()
+    {
+        //        return $this->commentsObj->itemActions->parse_commentclosed();
         // if item is closed, show message and do nothing
         if ($this->currentItem->closed || ! $this->blog->commentsEnabled()) {
             return true;
@@ -739,10 +810,13 @@ class COMMENTACTIONS extends BaseActions {
         }
     }
 
-    function parse_hascomment() {
-        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+    function parse_hascomment()
+    {
+        $sqlText
+             = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
             sql_table('comment'), intval($this->currentItem->itemid));
         $res = intval(quickQuery($sqlText));
+
         return ($res > 0);
     }
 

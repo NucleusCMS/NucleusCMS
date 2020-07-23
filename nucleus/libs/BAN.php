@@ -15,7 +15,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class BAN {
+class BAN
+{
 
     /**
      * Checks if a given IP is banned from commenting/voting
@@ -23,14 +24,15 @@ class BAN {
      * Returns 0 when not banned, or a BANINFO object containing the
      * message and other information of the ban
      */
-    public static function isBanned($blogid, $ip) {
+    public static function isBanned($blogid, $ip)
+    {
         $blogid = (int)$blogid;
-        $query = sprintf(
+        $query  = sprintf(
             'SELECT * FROM %s WHERE blogid=%d'
             , sql_table('ban')
             , $blogid
         );
-        $res = sql_query($query);
+        $res    = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
             if ( ! ($found === false)) {
@@ -38,21 +40,23 @@ class BAN {
                 return new BANINFO($obj->iprange, $obj->reason);
             }
         }
+
         return 0;
     }
 
     /**
      * Adds a new ban to the banlist. Returns 1 on success, 0 on error
      */
-    public static function addBan($blogid, $iprange, $reason) {
+    public static function addBan($blogid, $iprange, $reason)
+    {
         global $manager;
 
         $blogid = (int)$blogid;
 
         $param = array(
-            'blogid' => $blogid,
+            'blogid'  => $blogid,
             'iprange' => &$iprange,
-            'reason' => &$reason
+            'reason'  => &$reason,
         );
         $manager->notify('PreAddBan', $param);
 
@@ -65,9 +69,9 @@ class BAN {
         ));
 
         $param = array(
-            'blogid' => $blogid,
+            'blogid'  => $blogid,
             'iprange' => $iprange,
-            'reason' => $reason
+            'reason'  => $reason,
         );
         $manager->notify('PostAddBan', $param);
 
@@ -78,13 +82,14 @@ class BAN {
      * Removes a ban from the banlist (correct iprange is needed as argument)
      * Returns 1 on success, 0 on error
      */
-    public static function removeBan($blogid, $iprange) {
+    public static function removeBan($blogid, $iprange)
+    {
         global $manager;
         $blogid = (int)$blogid;
 
         $param = array(
             'blogid' => $blogid,
-            'range' => $iprange
+            'range'  => $iprange,
         );
         $manager->notify('PreDeleteBan', $param);
 
@@ -98,20 +103,25 @@ class BAN {
 
         $param = array(
             'blogid' => $blogid,
-            'range' => $iprange
+            'range'  => $iprange,
         );
         $manager->notify('PostDeleteBan', $param);
 
         return $result;
     }
+
 }
 
-class BANINFO {
+class BANINFO
+{
+
     public $iprange;
     public $message;
 
-    function __construct($iprange, $message) {
+    function __construct($iprange, $message)
+    {
         $this->iprange = $iprange;
         $this->message = $message;
     }
+
 }

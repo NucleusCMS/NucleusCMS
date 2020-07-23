@@ -1,9 +1,13 @@
 <?php
 
-class sqlite_functions {
-    public static function pdo_register_user_functions($dbh) {
+class sqlite_functions
+{
+
+    public static function pdo_register_user_functions($dbh)
+    {
         if (empty($dbh) || ! ($dbh instanceof PDO)) {
             trigger_error('handler is not PDO object.', E_USER_WARNING);
+
             return;
         }
         // standard: SUBSTR , non-standard: SUBSTRING
@@ -15,6 +19,7 @@ class sqlite_functions {
                 if ($st > 0) {
                     $st--;
                 }
+
                 return substr(func_get_arg(0), $st, func_get_arg(2));
             }
             , 3);
@@ -28,7 +33,8 @@ class sqlite_functions {
         // 'P1' REGEXP 'P2' = P2 P1 ( return func_get_arg(0).' '.func_get_arg(1); )
         $dbh->sqliteCreateFunction('REGEXP',
             function ($pattern, $Text) {
-                return preg_match("/(" . str_replace("/", "\\/", (string)$pattern) . ")/im", (string)$Text) ? 1 : 0;
+                return preg_match("/(" . str_replace("/", "\\/",
+                        (string)$pattern) . ")/im", (string)$Text) ? 1 : 0;
             }
             , 2);
         $dbh->sqliteCreateFunction('CONCAT', function () {
@@ -39,4 +45,5 @@ class sqlite_functions {
         }, 2);
         $dbh->sqliteCreateFunction('md5', 'md5', 1);
     }
+
 }

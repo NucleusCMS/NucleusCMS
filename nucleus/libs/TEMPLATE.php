@@ -16,42 +16,50 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class TEMPLATE {
+class TEMPLATE
+{
 
     public $id;
 
-    function __construct($templateid) {
+    function __construct($templateid)
+    {
         $this->id = (int)$templateid;
     }
 
-    public function TEMPLATE($templateid) {
+    public function TEMPLATE($templateid)
+    {
         $this->__construct($templateid);
     }
 
-    function getID() {
+    function getID()
+    {
         return (int)$this->id;
     }
 
     // (static)
-    public static function createFromName($name) {
+    public static function createFromName($name)
+    {
         return new TEMPLATE(TEMPLATE::getIdFromName($name));
     }
 
     // (static)
-    public static function getIdFromName($name) {
+    public static function getIdFromName($name)
+    {
         $query = sprintf("SELECT tdnumber FROM `%s` WHERE tdname='%s'",
             sql_table('template_desc'),
             sql_real_escape_string($name));
         if (($res = sql_query($query)) && ($obj = sql_fetch_object($res))) {
             return $obj->tdnumber;
         }
+
         return 0;
     }
 
     /**
      * Updates the general information about the template
      */
-    function updateGeneralInfo($name, $desc) {
+    function updateGeneralInfo($name, $desc)
+    {
         sql_query(sprintf(
             "UPDATE %s SET tdname='%s', tddesc='%s' WHERE tdnumber=%d"
             , sql_table('template_desc')
@@ -64,7 +72,8 @@ class TEMPLATE {
     /**
      * Updates the contents of one part of the template
      */
-    function update($type, $content) {
+    function update($type, $content)
+    {
         $id = $this->getID();
 
         // delete old thingie
@@ -84,10 +93,12 @@ class TEMPLATE {
             );
             if ( ! $SQL_DBH) // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
             {
-                sql_query($sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content),
+                sql_query($sql . sprintf("('%s', '%s', %d)",
+                        sql_real_escape_string($content),
                         sql_real_escape_string($type), (int)$id));
             } else {
-                sql_prepare_execute($sql . '(?, ?, ?)', array($content, $type, (int)$id));
+                sql_prepare_execute($sql . '(?, ?, ?)',
+                    array($content, $type, (int)$id));
             }
         }
     }
@@ -96,7 +107,8 @@ class TEMPLATE {
     /**
      * Deletes all template parts from the database
      */
-    function deleteAllParts() {
+    function deleteAllParts()
+    {
         sql_query(
             sprintf(
                 "DELETE FROM %s WHERE tdesc=%d"
@@ -110,12 +122,13 @@ class TEMPLATE {
      *
      * (static)
      */
-    public static function createNew($name, $desc) {
+    public static function createNew($name, $desc)
+    {
         global $manager;
 
         $param = array(
-            'name' => &$name,
-            'description' => &$desc
+            'name'        => &$name,
+            'description' => &$desc,
         );
         $manager->notify('PreAddTemplate', $param);
 
@@ -128,9 +141,9 @@ class TEMPLATE {
         $newId = sql_insert_id();
 
         $param = array(
-            'templateid' => $newId,
-            'name' => $name,
-            'description' => $desc
+            'templateid'  => $newId,
+            'name'        => $name,
+            'description' => $desc,
         );
         $manager->notify('PostAddTemplate', $param);
 
@@ -144,12 +157,13 @@ class TEMPLATE {
      *
      * @param $name name of the template file
      */
-    public static function read($name) {
+    public static function read($name)
+    {
         global $manager;
         static $rs = null;
 
         $param = array(
-            'template' => &$name
+            'template' => &$name,
         );
         $manager->notify('PreTemplateRead', $param);
 
@@ -158,7 +172,7 @@ class TEMPLATE {
         }
 
         $template = array();
-        $res = sql_query(sprintf(
+        $res      = sql_query(sprintf(
             "SELECT tpartname, tcontent FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'"
             , sql_table('template_desc')
             , sql_table('template')
@@ -189,7 +203,8 @@ class TEMPLATE {
      * @param $values
      *        Array of all the values
      */
-    public static function fill($template, $values) {
+    public static function fill($template, $values)
+    {
         if (count($values) != 0) {
             // go through all the values
             for (reset($values); $key = key($values); next($values)) {
@@ -203,28 +218,33 @@ class TEMPLATE {
 
     // returns true if there is a template with the given shortname
     // (static)
-    public static function exists($name) {
+    public static function exists($name)
+    {
         $res = quickQuery(sprintf(
             "select count(*) as result FROM %s WHERE tdname='%s' limit 1"
             , sql_table('template_desc')
             , sql_real_escape_string($name)
         ));
+
         return ((int)$res > 0);
     }
 
     // returns true if there is a template with the given ID
     // (static)
-    public static function existsID($id) {
+    public static function existsID($id)
+    {
         $res = quickQuery(sprintf(
             'select count(*) as result FROM %s WHERE tdnumber=%d limit 1'
             , sql_table('template_desc')
             , (int)$id
         ));
+
         return ((int)$res > 0);
     }
 
     // (static)
-    public static function getNameFromId($id) {
+    public static function getNameFromId($id)
+    {
         return quickQuery(sprintf(
                 'SELECT tdname as result FROM %s WHERE tdnumber=%d'
                 , sql_table('template_desc')
@@ -235,13 +255,15 @@ class TEMPLATE {
     }
 
     // (static)
-    public static function getDesc($id) {
+    public static function getDesc($id)
+    {
         $res = sql_query(sprintf(
             'SELECT tddesc FROM %s WHERE tdnumber=%d'
             , sql_table('template_desc')
             , (int)$id
         ));
         $obj = sql_fetch_object($res);
+
         return $obj->tddesc;
     }
 

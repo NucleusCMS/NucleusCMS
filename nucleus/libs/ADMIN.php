@@ -25,7 +25,8 @@ require_once __DIR__ . '/showlist.php';
 class ADMIN {
 
     /**
-     * @var string $action action currently being executed ($action=xxxx -> action_xxxx method)
+     * @var string $action action currently being executed ($action=xxxx ->
+     *      action_xxxx method)
      */
     public $action;
 
@@ -47,7 +48,7 @@ class ADMIN {
         // list of action aliases
         $alias = array(
             'login' => 'overview',
-            '' => 'overview'
+            '' => 'overview',
         );
 
         if (isset($alias[$action]))
@@ -115,7 +116,7 @@ class ADMIN {
             'systemoverview',
             'optimizeoverview',
             'skinchangestype',
-            'systemlog'
+            'systemlog',
         );
 /*
         // the rest of the actions needs to be checked
@@ -196,6 +197,7 @@ class ADMIN {
 
     /**
      * provides a screen with the overview of the actions available
+     *
      * @todo document parameter
      */
     function action_overview($msg = '') {
@@ -325,6 +327,7 @@ class ADMIN {
 
     /**
      * Returns a link to a weblog
+     *
      * @param object BLOG
      */
     function bloglink(&$blog) {
@@ -1025,8 +1028,9 @@ class ADMIN {
     }
 
     /**
-     * Inserts a HTML select element with choices for all categories to which the current
-     * member has access
+     * Inserts a HTML select element with choices for all categories to which
+     * the current member has access
+     *
      * @see function selectBlog
      */
     public static function selectBlogCategory($name, $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
@@ -1034,13 +1038,14 @@ class ADMIN {
     }
 
     /**
-     * Inserts a HTML select element with choices for all blogs to which the user has access
-     *      mode = 'blog' => shows blognames and values are blogids
-     *      mode = 'category' => show category names and values are catids
+     * Inserts a HTML select element with choices for all blogs to which the
+     * user has access mode = 'blog' => shows blognames and values are blogids
+     * mode = 'category' => show category names and values are catids
      *
      * @param $iForcedBlogInclude
-     *      ID of a blog that always needs to be included, without checking if the
-     *      member is on the blog team (-1 = none)
+     *      ID of a blog that always needs to be included, without checking if
+     *      the member is on the blog team (-1 = none)
+     *
      * @todo document parameters
      */
     public static function selectBlog($name, $mode='blog', $selected = 0, $tabindex = 0, $showNewCat = 0, $iForcedBlogInclude = -1) {
@@ -1182,6 +1187,7 @@ class ADMIN {
 
     /**
      * Show all the comments for a given item
+     *
      * @param int $itemid
      */
     function action_itemcommentlist($itemid = '') {
@@ -1315,6 +1321,7 @@ class ADMIN {
 
     /**
      * Browse all comments for a weblog
+     *
      * @param int $blogid
      */
     function action_blogcommentlist($blogid = '')
@@ -1599,6 +1606,7 @@ class ADMIN {
 
     /**
      * Deletes one item and returns error if something goes wrong
+     *
      * @param int $itemid
      */
     function deleteOneItem($itemid) {
@@ -1620,6 +1628,7 @@ class ADMIN {
 
     /**
      * Update a blog's future posted flag
+     *
      * @param int $blogid
      */
     function updateFuturePosted($blogid) {
@@ -1746,8 +1755,9 @@ class ADMIN {
     }
 
     /**
-     * Moves one item to a given category (category existance should be checked by caller)
-     * errors are returned
+     * Moves one item to a given category (category existance should be checked
+     * by caller) errors are returned
+     *
      * @param int $itemid
      * @param int $destCatid category ID to which the item will be moved
      */
@@ -2314,7 +2324,7 @@ class ADMIN {
                 $param = array(
                     'password'        =>  $password,
                     'errormessage'    => &$pwderror,
-                    'valid'            => &$pwdvalid
+                    'valid'            => &$pwdvalid,
                 );
                 $manager->notify('PrePasswordSet', $param);
                 if (!$pwdvalid) {
@@ -2381,7 +2391,7 @@ class ADMIN {
         $param = array(
             'context'    =>  'member',
             'memberid'    =>  $memberid,
-            'member'    => &$mem
+            'member'    => &$mem,
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
 
@@ -2496,7 +2506,7 @@ class ADMIN {
         }
 
         $aVars = array(
-            'memberName' => hsc($mem->getDisplayName())
+            'memberName' => hsc($mem->getDisplayName()),
         );
         $title = TEMPLATE::fill($title, $aVars);
         $text = TEMPLATE::fill($text, $aVars);
@@ -2533,7 +2543,7 @@ class ADMIN {
                             global $manager;
                             $param = array(
                                 'type'        => 'activation',
-                                'member'    => $mem
+                                'member'    => $mem,
                             );
                             $manager->notify('FormExtra', $param);
 
@@ -2600,7 +2610,7 @@ class ADMIN {
             $param = array(
                 'password'        =>  $password,
                 'errormessage'    =>  &$pwderror,
-                'valid'            => &$pwdvalid
+                'valid'            => &$pwdvalid,
             );
             $manager->notify('PrePasswordSet', $param);
 
@@ -2613,7 +2623,7 @@ class ADMIN {
         $param = array(
             'type'        =>  'activation',
             'member'    =>  $mem,
-            'error'        => &$error
+            'error'        => &$error,
         );
         $manager->notify('ValidateForm', $param);
         if ($error != '')
@@ -2794,7 +2804,7 @@ class ADMIN {
 
         $param = array(
             'member' => &$tmem,
-            'blogid' =>  $blogid
+            'blogid' =>  $blogid,
         );
         $manager->notify('PreDeleteTeamMember', $param);
 
@@ -2812,7 +2822,7 @@ class ADMIN {
 
         $param = array(
             'member' => &$tmem,
-            'blogid' =>  $blogid
+            'blogid' =>  $blogid,
         );
         $manager->notify('PostDeleteTeamMember', $param);
 
@@ -3239,7 +3249,7 @@ class ADMIN {
         NucleusPlugin::_applyPluginOptions($aOptions);
         $param = array(
             'context'    => 'category',
-            'catid'        => $catid
+            'catid'        => $catid,
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
 
@@ -3404,7 +3414,7 @@ class ADMIN {
         $param = array(
             'catid'            => &$catid,
             'sourceblog'    => &$blog,
-            'destblog'        => &$destblog
+            'destblog'        => &$destblog,
         );
         $manager->notify('PreMoveCategory', $param);
 
@@ -3426,7 +3436,7 @@ class ADMIN {
         $param = array(
             'catid'            => &$catid,
             'sourceblog'    => &$blog,
-            'destblog'        =>  $destblog
+            'destblog'        =>  $destblog,
         );
         $manager->notify('PostMoveCategory', $param);
 
@@ -3458,7 +3468,7 @@ class ADMIN {
                 'catid' => $catid,
                 'blog' => $blog ,
                 'old_corder' => $old_corder ,
-                'new_corder' => &$new_corder
+                'new_corder' => &$new_corder,
         );
         $manager->notify('PreChangeCategoryOrder', $param);
 
@@ -3472,7 +3482,7 @@ class ADMIN {
                 'catid' => $catid ,
                 'blog' => $blog ,
                 'old_corder' => $old_corder ,
-                'new_corder' => $new_corder
+                'new_corder' => $new_corder,
         );
         $manager->notify('PostChangeCategoryOrder', $param);
 
@@ -3550,7 +3560,7 @@ class ADMIN {
         $param = array(
             'context'    =>  'blog',
             'blogid'    =>  $blogid,
-            'blog'        => &$blog
+            'blog'        => &$blog,
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
 
@@ -3989,7 +3999,7 @@ class ADMIN {
             'shortname'        => &$bshortname,
             'timeoffset'    => &$btimeoffset,
             'description'    => &$bdesc,
-            'defaultskin'    => &$bdefskin
+            'defaultskin'    => &$bdefskin,
         );
         $manager->notify('PreAddBlog', $param);
 
@@ -4039,7 +4049,7 @@ class ADMIN {
         }
 
         $param = array(
-            'blog' => &$blog
+            'blog' => &$blog,
         );
         $manager->notify('PostAddBlog', $param);
 
@@ -4047,7 +4057,7 @@ class ADMIN {
             'blog'            => &$blog,
             'name'            =>  _EBLOGDEFAULTCATEGORY_NAME,
             'description'    =>  _EBLOGDEFAULTCATEGORY_DESC,
-            'catid'            =>  $catid
+            'catid'            =>  $catid,
         );
         $manager->notify('PostAddCategory', $param);
 
@@ -4662,7 +4672,7 @@ selector();
                 , array(
                         'tdname'    => sql_real_escape_string($name)
                         ,'tddesc'   => sql_real_escape_string($desc)
-                        ,'tdnumber' => $templateid
+                        ,'tdnumber' => $templateid,
                         )
                     );
         sql_query($query);
@@ -5468,7 +5478,7 @@ selector();
         $notify_data = array(
             'skinid'    => $skinid,
                             'skintype'  => $skintype,
-                            'partstype' => $spartstype
+                            'partstype' => $spartstype,
         );
         $manager->notify('PreDeleteSkinPart', $notify_data);
 
@@ -5478,7 +5488,7 @@ selector();
         $notify_data = array(
                             'skinid'    => $skinid,
                             'skintype'  => $skintype,
-                            'partstype' => $spartstype
+                            'partstype' => $spartstype,
         );
         $manager->notify('PostDeleteSkinPart', $notify_data);
 
@@ -6367,7 +6377,7 @@ EOL;
             'get_proto_info', 'get_server_info', 'info', 'set_charset', 'fieldname',
             'fieldtable', 'fieldlen', 'fieldtype', 'fieldflags', 'selectdb',
             'freeresult', 'numfields', 'numrows', 'listdbs', 'listtables',
-            'listfields', 'db_name', 'dbname', 'tablename', 'table_name'
+            'listfields', 'db_name', 'dbname', 'tablename', 'table_name',
             );
 
         foreach ($lists as $i) {
@@ -6446,6 +6456,7 @@ EOL;
 
     /**
      * Error message
+     *
      * @param string $msg message that will be shown
      */
     function error($msg) {
@@ -6483,7 +6494,7 @@ EOL;
 
         $param = array(
             'extrahead'    => &$extrahead,
-            'action'    =>  $this->action
+            'action'    =>  $this->action,
         );
         $manager->notify('AdminPrePageHead', $param);
 
@@ -6609,7 +6620,7 @@ EOL;
         global $manager;
 
         $param = array(
-            'action' => $this->action
+            'action' => $this->action,
         );
         $manager->notify('AdminPrePageFoot', $param);
 
@@ -6697,7 +6708,7 @@ EOL;
 
                     $aPluginExtras = array();
                     $param = array(
-                        'options' => &$aPluginExtras
+                        'options' => &$aPluginExtras,
                     );
                     $manager->notify('QuickMenu', $param);
                     if (count($aPluginExtras) > 0)
@@ -7524,7 +7535,7 @@ EOL;
         $newOrder = $numCurrent + 1;
 
         $param = array(
-            'file' => &$name
+            'file' => &$name,
         );
         $manager->notify('PreAddPlugin', $param);
 
@@ -7588,7 +7599,7 @@ EOL;
         $plugin->install();
 
         $param = array(
-            'plugin' => &$plugin
+            'plugin' => &$plugin,
         );
         $manager->notify('PostAddPlugin', $param);
 
@@ -7911,7 +7922,7 @@ EOL;
                         'description' => $o->odesc,
                         'type' => $o->otype,
                         'typeinfo' => $o->oextra,
-                        'contextid' => 0
+                        'contextid' => 0,
             );
         }
         // fill out actual values
@@ -7925,7 +7936,7 @@ EOL;
         $param = array(
             'context'    =>  'global',
             'plugid'    =>  $pid,
-            'options'    => &$aOptions
+            'options'    => &$aOptions,
         );
         $manager->notify('PrePluginOptionsEdit', $param);
 
@@ -7961,7 +7972,7 @@ EOL;
 
         $param = array(
             'context'    => 'global',
-            'plugid'    => $pid
+            'plugid'    => $pid,
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
 
@@ -8001,7 +8012,7 @@ EOL;
                 'type' => $o->otype,
                 'typeinfo' => $o->oextra,
                 'contextid' => $contextid,
-                'extra' => ''
+                'extra' => '',
             );
         }
 
@@ -8009,7 +8020,7 @@ EOL;
         $param = array(
             'context'    =>  $context,
             'contextid'    =>  $contextid,
-            'options'    => &$aOptions
+            'options'    => &$aOptions,
         );
         $manager->notify('PrePluginOptionsEdit', $param);
 
@@ -8037,6 +8048,7 @@ EOL;
 
     /**
      * Helper functions to create option forms etc.
+     *
      * @todo document parameters
      */
     public static function input_yesno($name, $checkedval,$tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0) {

@@ -17,7 +17,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class NOTIFICATION {
+class NOTIFICATION
+{
 
     // array of addresses that need to get a notification
     public $addresses = array();
@@ -27,26 +28,30 @@ class NOTIFICATION {
      * separated by semicolons
      * eg: site@demuynck.org;nucleus@demuynck.org;foo@bar.com
      */
-    function __construct($addresses) {
+    function __construct($addresses)
+    {
         $this->addresses = explode(';', $addresses);
     }
 
     /**
      * returns true if all addresses are valid
      */
-    function validAddresses() {
+    function validAddresses()
+    {
         foreach ($this->addresses as $address) {
             if ( ! isValidMailAddress(trim($address))) {
                 return 0;
             }
         }
+
         return 1;
     }
 
     /**
      * Sends email messages to all the email addresses
      */
-    function notify($title, $message, $from) {
+    function notify($title, $message, $from)
+    {
         global $member;
 
         foreach ($this->addresses as $address) {
@@ -64,4 +69,5 @@ class NOTIFICATION {
             @Utils::mail($address, $title, $message, "From: " . $from);
         }
     }
+
 }

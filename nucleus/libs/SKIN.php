@@ -20,7 +20,8 @@ if ( ! function_exists('requestVar')) {
 }
 require_once __DIR__ . '/ACTIONS.php';
 
-class SKIN {
+class SKIN
+{
 
     // after creating a SKIN object, evaluates to true when the skin exists
     public $isValid;
@@ -39,7 +40,8 @@ class SKIN {
      * @param $id
      *             id of the skin
      */
-    public function __construct($id) {
+    public function __construct($id)
+    {
         $this->id = (int)$id;
 
         // read skin name/description/content type
@@ -47,7 +49,7 @@ class SKIN {
             'SELECT * FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]'
             , array('sdnumber' => $this->id)
         );
-        $res = sql_query($query);
+        $res   = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
             $this->isValid = is_object($obj);
         } else {
@@ -57,82 +59,104 @@ class SKIN {
             return;
         }
 
-        $this->name = $obj->sdname;
-        $this->description = $obj->sddesc;
-        $this->contentType = $obj->sdtype;
-        $this->includeMode = $obj->sdincmode;
+        $this->name          = $obj->sdname;
+        $this->description   = $obj->sddesc;
+        $this->contentType   = $obj->sdtype;
+        $this->includeMode   = $obj->sdincmode;
         $this->includePrefix = $obj->sdincpref;
     }
 
-    public function SKIN($id) {
+    public function SKIN($id)
+    {
         $this->__construct($id);
     }
 
-    public function getID() {
+    public function getID()
+    {
         return $this->id;
     }
 
-    public function getName() {
+    public function getName()
+    {
         return $this->name;
     }
 
-    public function getDescription() {
+    public function getDescription()
+    {
         return $this->description;
     }
 
-    public function getContentType() {
+    public function getContentType()
+    {
         return $this->contentType;
     }
 
-    public function getIncludeMode() {
+    public function getIncludeMode()
+    {
         return $this->includeMode;
     }
 
-    public function getIncludePrefix() {
+    public function getIncludePrefix()
+    {
         return $this->includePrefix;
     }
 
     /**
      * Checks if a skin with a given shortname exists
-     * @param string $name Skin short name
+     *
+     * @param   string  $name  Skin short name
+     *
      * @return int number of skins with the given ID
      * @static
      */
-    public static function exists($name) {
+    public static function exists($name)
+    {
         $query = parseQuery(
             "SELECT count(*) AS result FROM [@prefix@]skin_desc WHERE sdname='[@sdname@]'"
             , array('sdname' => sql_real_escape_string($name))
         );
+
         return (int)quickQuery($query) > 0;
     }
 
     /**
      * Checks if a skin with a given ID exists
-     * @param string $id Skin ID
+     *
+     * @param   string  $id  Skin ID
+     *
      * @return int number of skins with the given ID
      * @static
      */
-    public static function existsID($id) {
+    public static function existsID($id)
+    {
         $query = parseQuery(
             'select COUNT(*) as result FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]'
             , array('sdnumber' => (int)$id)
         );
+
         return (int)quickQuery($query) > 0;
     }
 
-    public function existsSpecialName($name) {
+    public function existsSpecialName($name)
+    {
         return self::existsSpecialPageName($this->id, $name);
     }
 
-    public static function existsSpecialPartsName($skinid, $name) {
+    public static function existsSpecialPartsName($skinid, $name)
+    {
         return self::existsSpecialNameEx($skinid, $name, 'parts');
     }
 
-    public static function existsSpecialPageName($skinid, $name) {
+    public static function existsSpecialPageName($skinid, $name)
+    {
         return self::existsSpecialNameEx($skinid, $name, 'specialpage');
     }
 
-    public static function existsSpecialNameEx($skinid, $name, $spartstype = 'specialpage') {
+    public static function existsSpecialNameEx(
+        $skinid,
+        $name,
+        $spartstype = 'specialpage'
+    ) {
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
         $exp = '';
@@ -144,10 +168,10 @@ class SKIN {
         }
 
         $sql = sprintf(
-                "SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d "
-                , sql_table('skin')
-                , (int)$skinid
-            ) . $exp;
+                   "SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d "
+                   , sql_table('skin')
+                   , (int)$skinid
+               ) . $exp;
 
         if ($DB_PHP_MODULE_NAME === 'pdo') {
             if (stripos('sqlite', $DB_DRIVER_NAME) !== false) {
@@ -170,26 +194,33 @@ class SKIN {
         if ($res && ($o = sql_fetch_object($res))) {
             return ((int)$o->result > 0);
         }
+
         return false;
     }
 
     /**
      * Returns a skin given its shortname
-     * @param string $name Skin shortname
+     *
+     * @param   string  $name  Skin shortname
+     *
      * @return object SKIN
      * @static
      */
-    public static function createFromName($name) {
+    public static function createFromName($name)
+    {
         return new SKIN(SKIN::getIdFromName($name));
     }
 
     /**
      * Returns a skin ID given its shortname
-     * @param string $name Skin shortname
+     *
+     * @param   string  $name  Skin shortname
+     *
      * @return int Skin ID
      * @static
      */
-    public static function getIdFromName($name) {
+    public static function getIdFromName($name)
+    {
         $res = sql_query(parseQuery(
             "SELECT sdnumber FROM [@prefix@]skin_desc WHERE sdname='[@sdname@]'"
             , array('sdname' => sql_real_escape_string($name))
@@ -197,16 +228,20 @@ class SKIN {
         if ($res && $obj = sql_fetch_object($res)) {
             return $obj->sdnumber;
         }
+
         return 0;
     }
 
     /**
      * Returns a skin shortname given its ID
-     * @param string $name
+     *
+     * @param   string  $name
+     *
      * @return string Skin short name
      * @static
      */
-    public static function getNameFromId($id) {
+    public static function getNameFromId($id)
+    {
         return quickQuery(parseQuery(
             'SELECT sdname as result FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]'
             , array('sdnumber' => (int)$id)
@@ -218,41 +253,47 @@ class SKIN {
      *
      * @static
      */
-    public static function createNew($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '') {
+    public static function createNew(
+        $name,
+        $desc,
+        $type = 'text/html',
+        $includeMode = 'normal',
+        $includePrefix = ''
+    ) {
         global $manager;
 
         $param = array(
-            'name' => &$name,
-            'description' => &$desc,
-            'type' => &$type,
-            'includeMode' => &$includeMode,
-            'includePrefix' => &$includePrefix
+            'name'          => &$name,
+            'description'   => &$desc,
+            'type'          => &$type,
+            'includeMode'   => &$includeMode,
+            'includePrefix' => &$includePrefix,
         );
         $manager->notify('PreAddSkin', $param);
 
         sql_query(parseQuery(
             "INSERT INTO [@prefix@]skin_desc (sdname,sddesc,sdtype,sdincmode,sdincpref) VALUES ('[@sdname@]','[@sddesc@]','[@sdtype@]','[@sdincmode@]','[@sdincpref@]')"
             , array(
-                'sdname' => sql_real_escape_string($name)
+                'sdname'    => sql_real_escape_string($name)
             ,
-                'sddesc' => sql_real_escape_string($desc)
+                'sddesc'    => sql_real_escape_string($desc)
             ,
-                'sdtype' => sql_real_escape_string($type)
+                'sdtype'    => sql_real_escape_string($type)
             ,
                 'sdincmode' => sql_real_escape_string($includeMode)
             ,
-                'sdincpref' => sql_real_escape_string($includePrefix)
+                'sdincpref' => sql_real_escape_string($includePrefix),
             )
         ));
         $newid = sql_insert_id();
 
         $param = array(
-            'skinid' => $newid,
-            'name' => $name,
-            'description' => $desc,
-            'type' => $type,
-            'includeMode' => $includeMode,
-            'includePrefix' => $includePrefix
+            'skinid'        => $newid,
+            'name'          => $name,
+            'description'   => $desc,
+            'type'          => $type,
+            'includeMode'   => $includeMode,
+            'includePrefix' => $includePrefix,
         );
         $manager->notify('PostAddSkin', $param);
 
@@ -262,17 +303,19 @@ class SKIN {
     /**
      * Parse a SKIN
      *
-     * @param string $type
+     * @param   string  $type
      */
-    function parse($type, $options = array()) {
+    function parse($type, $options = array())
+    {
         global $manager, $CONF, $skinid;
 
-        $spartstype = (isset($options['spartstype']) ? $options['spartstype'] : 'parts');
+        $spartstype = (isset($options['spartstype']) ? $options['spartstype']
+            : 'parts');
 
         $notify_data = array(
-            'skin' => &$this,
-            'type' => $type,
-            'partstype' => $spartstype
+            'skin'      => &$this,
+            'type'      => $type,
+            'partstype' => $spartstype,
         );
         $manager->notify('InitSkinParse', $notify_data);
         $skinid = $this->id;
@@ -285,19 +328,21 @@ class SKIN {
         $currentSkinName = $this->getName();
 
         $getcontents_options = array('spartstype' => $spartstype);
-        $contents = $this->getContent($type, $getcontents_options);
+        $contents            = $this->getContent($type, $getcontents_options);
 
         if ($contents === false) {
             if ($spartstype === 'specialpage') {
                 doError(_ERROR_NOSUCHPAGE);
                 echo _ERROR_NOSUCHPAGE;
+
                 return;
             }
             // use base skin if this skin does not have contents
-            $defskin = new SKIN($CONF['BaseSkin']);
+            $defskin  = new SKIN($CONF['BaseSkin']);
             $contents = $defskin->getContent($type, $getcontents_options);
             if ( ! $contents) {
                 echo _ERROR_SKIN;
+
                 return;
             }
         }
@@ -305,10 +350,10 @@ class SKIN {
         $actions = self::getAllowedActionsForType($type);
 
         $param = array(
-            'skin' => &$this,
-            'type' => $type,
-            'contents' => &$contents,
-            'partstype' => $spartstype
+            'skin'      => &$this,
+            'type'      => $type,
+            'contents'  => &$contents,
+            'partstype' => $spartstype,
         );
         $manager->notify('PreSkinParse', $param);
         $skinid = $this->id;
@@ -318,7 +363,7 @@ class SKIN {
         PARSER::setProperty('IncludePrefix', $this->getIncludePrefix());
 
         $handler = new ACTIONS($type, $this);
-        $parser = new PARSER($actions, $handler);
+        $parser  = new PARSER($actions, $handler);
         $handler->setParser($parser);
         $handler->setSkin($this);
 
@@ -327,9 +372,9 @@ class SKIN {
         $output = ob_get_contents();
         @ob_clean();
         $param = array(
-            'skin' => &$this,
-            'type' => $type,
-            'output' => &$output
+            'skin'   => &$this,
+            'type'   => $type,
+            'output' => &$output,
         );
         $manager->notify('PostSkinParse', $param);
 
@@ -344,6 +389,7 @@ class SKIN {
 
         $skinid = $this->id;
         $this->doTidy($output);
+
         return $output;
     }
 
@@ -352,48 +398,56 @@ class SKIN {
      *
      * @param $type type of the skin (e.g. index, item, search ...)
      */
-    function getContent($type, $options = array()) {
+    function getContent($type, $options = array())
+    {
         global $DB_DRIVER_NAME, $CONF;
         if (strpos($type, '/') !== false) {
             return '';
         }
         $ph['sdesc'] = $this->id;
-        $query = array();
+        $query       = array();
         if ('mysql' === $DB_DRIVER_NAME) {
             $ph['stype'] = sql_real_escape_string($type);
-            $query[] = "SELECT scontent FROM [@prefix@]skin WHERE sdesc=[@sdesc@] and stype='[@stype@]'";
+            $query[]
+                         = "SELECT scontent FROM [@prefix@]skin WHERE sdesc=[@sdesc@] and stype='[@stype@]'";
         } else {
             $ph['stype'] = sql_real_escape_string(strtolower($type));
-            $query[] = "SELECT scontent FROM [@prefix@]skin WHERE sdesc=[@sdesc@] and lower(stype)='[@stype@]'";
+            $query[]
+                         = "SELECT scontent FROM [@prefix@]skin WHERE sdesc=[@sdesc@] and lower(stype)='[@stype@]'";
         }
 
         // $spartstype = 'parts';
-        if ($options && isset($options['spartstype']) && (strlen($options['spartstype']) > 0)
+        if ($options && isset($options['spartstype'])
+            && (strlen($options['spartstype']) > 0)
             && ((int)$CONF['DatabaseVersion'] >= 380)) {
             $ph['spartstype'] = sql_real_escape_string($options['spartstype']);
-            $query[] = "AND spartstype = '[@spartstype@]'";
+            $query[]          = "AND spartstype = '[@spartstype@]'";
         }
 
         $res = sql_query(parseQuery($query, $ph));
 
-        if ( ! $res || ! ($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
+        if ( ! $res || ! ($r = sql_fetch_array($res))
+             || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
         {
             return false;
         }
+
         return $r[0];
     }
 
     /**
      * Updates the contents for one part of the skin in the database
      *
-     * @param $type type of the skin part (e.g. index, item, search ...)
+     * @param $type    type of the skin part (e.g. index, item, search ...)
      * @param $content new content for this skin part
      */
-    function update($type, $content, $options = array()) {
+    function update($type, $content, $options = array())
+    {
         $skinid = $this->id;
 
         $spartstype = 'parts';
-        if ($options && isset($options['spartstype']) && (strlen($options['spartstype']) > 0)) {
+        if ($options && isset($options['spartstype'])
+            && (strlen($options['spartstype']) > 0)) {
             $spartstype = (string)$options['spartstype'];
         }
 
@@ -423,7 +477,8 @@ class SKIN {
                 );
                 sql_query($sql);
             } else {
-                sql_prepare_execute($sql . '(?, ?, ?, ?)', array($content, $type, (int)$skinid, (string)$spartstype));
+                sql_prepare_execute($sql . '(?, ?, ?, ?)',
+                    array($content, $type, (int)$skinid, (string)$spartstype));
             }
         }
 
@@ -435,7 +490,8 @@ class SKIN {
     /**
      * Deletes all skin parts from the database
      */
-    function deleteAllParts() {
+    function deleteAllParts()
+    {
         sql_query(sprintf(
             "DELETE FROM %s WHERE sdesc=%d"
             , sql_table('skin')
@@ -479,23 +535,24 @@ class SKIN {
      *
      * static: returns an array of friendly names
      */
-    public static function getFriendlyNames() {
+    public static function getFriendlyNames()
+    {
         $skintypes = array(
-            'index' => _SKIN_PART_MAIN,
-            'item' => _SKIN_PART_ITEM,
+            'index'       => _SKIN_PART_MAIN,
+            'item'        => _SKIN_PART_ITEM,
             'archivelist' => _SKIN_PART_ALIST,
-            'archive' => _SKIN_PART_ARCHIVE,
-            'search' => _SKIN_PART_SEARCH,
-            'error' => _SKIN_PART_ERROR,
-            'member' => _SKIN_PART_MEMBER,
-            'imagepopup' => _SKIN_PART_POPUP
+            'archive'     => _SKIN_PART_ARCHIVE,
+            'search'      => _SKIN_PART_SEARCH,
+            'error'       => _SKIN_PART_ERROR,
+            'member'      => _SKIN_PART_MEMBER,
+            'imagepopup'  => _SKIN_PART_POPUP,
         );
 
         $query = sprintf(
             "SELECT stype FROM %s WHERE stype NOT IN ('index','item','error','search','archive','archivelist','imagepopup','member') AND spartstype='parts'"
             , sql_table('skin')
         );
-        $res = sql_query($query);
+        $res   = sql_query($query);
         while ($row = sql_fetch_array($res)) {
             $skintypes[strtolower($row['stype'])] = $row['stype'];
         }
@@ -509,7 +566,8 @@ class SKIN {
      *
      * @param $type type of the skin (e.g. index, item, search ...)
      */
-    public static function getAllowedActionsForType($type) {
+    public static function getAllowedActionsForType($type)
+    {
         global $blogid;
 
         // some actions that can be performed at any time, from anywhere
@@ -548,7 +606,7 @@ class SKIN {
             'bloglist',
             'addlink',
             'addpopupcode',
-            'sticky'
+            'sticky',
         );
 
         // extra actions specific for a certain skin type
@@ -566,7 +624,7 @@ class SKIN {
                     'archivedaylist',
                     'archiveyearlist',
                     'nextlink',
-                    'prevlink'
+                    'prevlink',
                 );
                 break;
             case 'archive':
@@ -584,7 +642,7 @@ class SKIN {
                     'prevarchive',
                     'nextlink',
                     'prevlink',
-                    'archivetype'
+                    'archivetype',
                 );
                 break;
             case 'archivelist':
@@ -609,7 +667,7 @@ class SKIN {
                     'blogsetting',
                     'query',
                     'nextlink',
-                    'prevlink'
+                    'prevlink',
                 );
                 break;
             case 'imagepopup':
@@ -623,7 +681,7 @@ class SKIN {
                     'membermailform',
                     'blogsetting',
                     'nucleusbutton',
-                    'categorylist'
+                    'categorylist',
                 );
                 break;
             case 'item':
@@ -652,7 +710,7 @@ class SKIN {
             case 'error':
                 $extraActions = array(
                     'errormessage',
-                    'categorylist'
+                    'categorylist',
                 );
                 break;
             default:
@@ -670,7 +728,7 @@ class SKIN {
                         'prevlink',
                         'membermailform',
                         'nucleusbutton',
-                        'categorylist'
+                        'categorylist',
                     );
                 }
                 break;
@@ -679,12 +737,15 @@ class SKIN {
         return array_merge($defaultActions, $extraActions);
     }
 
-    public function changeSkinByName($name) {
+    public function changeSkinByName($name)
+    {
         $id = self::getIdFromName($name);
+
         return $this->changeSkinById($id);
     }
 
-    public function changeSkinById($id) {
+    public function changeSkinById($id)
+    {
         $id = (int)$id;
 
         if ($id > 0 && $this->id == $id) {
@@ -705,32 +766,38 @@ class SKIN {
             return false;
         }
 
-        $this->isValid = true;
-        $this->id = $id;
-        $this->name = $obj->sdname;
-        $this->description = $obj->sddesc;
-        $this->contentType = $obj->sdtype;
-        $this->includeMode = $obj->sdincmode;
+        $this->isValid       = true;
+        $this->id            = $id;
+        $this->name          = $obj->sdname;
+        $this->description   = $obj->sddesc;
+        $this->contentType   = $obj->sdtype;
+        $this->includeMode   = $obj->sdincmode;
         $this->includePrefix = $obj->sdincpref;
+
         return true;
     }
 
-    static public function getRootURL() {
+    static public function getRootURL()
+    {
         global $CONF;
+
         return $CONF['SkinsURL'];
     }
 
-    public function getURL() {
+    public function getURL()
+    {
         global $CONF;
+
         return $CONF['SkinsURL'] . $this->includePrefix;
     }
 
-// _getText
-// Note: This function will may be specification change
-// Note: use only core functions
-// Notice: Do not call this function from user plugin
-// return Converted text
-    static public function _getText($text) {
+    // _getText
+    // Note: This function will may be specification change
+    // Note: use only core functions
+    // Notice: Do not call this function from user plugin
+    // return Converted text
+    static public function _getText($text)
+    {
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
         global $DIR_SKINS;
         static $cached_array = null;
@@ -738,6 +805,7 @@ class SKIN {
             $cached_array = array();
             if ( ! extension_loaded('SimpleXML')) {
                 addToLog(DEBUG, 'Error: SimpleXML not loaded');
+
                 return $text;
             }
             // skin for default
@@ -751,7 +819,8 @@ class SKIN {
                 return $text;
             }
             foreach ($xml->children() as $text_node) {
-                if ( ! is_object($text_node) || ! method_exists($text_node, 'getName')) {
+                if ( ! is_object($text_node)
+                     || ! method_exists($text_node, 'getName')) {
                     return $text;
                 }
 
@@ -759,9 +828,9 @@ class SKIN {
                     continue;
                 }
                 $keyname = '';
-                $items = array();
+                $items   = array();
                 foreach ($text_node->children() as $node) {
-                    $key = $node->getName();
+                    $key   = $node->getName();
                     $value = (string)$node;
                     if ($key === 'key') {
                         $keyname = $value;
@@ -772,13 +841,15 @@ class SKIN {
                 if ( ! isset($items['default'])) {
                     $items['default'] = $keyname;
                 }
-                $keyname = (function_exists('mb_strtolower') ? mb_strtolower($keyname, 'UTF-8') : strtolower($keyname));
+                $keyname                = (function_exists('mb_strtolower')
+                    ? mb_strtolower($keyname, 'UTF-8') : strtolower($keyname));
                 $cached_array[$keyname] = $items;
-//                var_dump($keyname, $items);
+                //                var_dump($keyname, $items);
             }
         }
         $key = strtolower($text);
-        if (array_key_exists($key, $cached_array) && isset($cached_array[$key][_LOCALE])) {
+        if (array_key_exists($key, $cached_array)
+            && isset($cached_array[$key][_LOCALE])) {
             $subkey = _LOCALE;
             if ( ! isset($cached_array[$key][$subkey])) {
                 if ( ! isset($cached_array[$key]['default'])) {
@@ -793,32 +864,40 @@ class SKIN {
             if ( ! function_exists('mb_convert_encoding')) {
                 return $text;
             }
-            return mb_convert_encoding($cached_array[$key][$subkey], _CHARSET, 'UTF-8');
+
+            return mb_convert_encoding($cached_array[$key][$subkey], _CHARSET,
+                'UTF-8');
         }
+
         return $text; // not found
     }
 
-    private function doTidy(&$data) {
+    private function doTidy(&$data)
+    {
         global $CONF;
 
         if ( ! isset($CONF['ENABLE_TIDY']) || ! $CONF['ENABLE_TIDY']) {
             return;
         }
         if ( ! extension_loaded('tidy') || (_CHARSET !== 'UTF-8')
-            || ($this->getContentType() !== 'text/html')
-            || ! is_string($data) || (strlen($data) == 0)) {
+             || ($this->getContentType() !== 'text/html')
+             || ! is_string($data)
+             || (strlen($data) == 0)) {
             return;
         }
 
-        $force_html5 = (isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5']);
+        $force_html5 = (isset($CONF['ENABLE_TIDY_FORCE_HTML5'])
+                        && $CONF['ENABLE_TIDY_FORCE_HTML5']);
 
-//      tidy ver5 : 2015.06.30
-        $is_tidy_html5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
+        //      tidy ver5 : 2015.06.30
+        $is_tidy_html5 = strtotime(str_replace(array('.'), '/',
+                tidy_get_release())) >= strtotime('2015/06/30');
         if ($force_html5 && ! $is_tidy_html5) {
             return;
         } // tidy lib is too old.
         // <!DOCTYPE html>
-        if ( ! $is_tidy_html5 && preg_match('/^\s*<!DOCTYPE\s+html\s*>/ms', $data)) {
+        if ( ! $is_tidy_html5
+             && preg_match('/^\s*<!DOCTYPE\s+html\s*>/ms', $data)) {
             return;
         } // tidy lib is too old. The source is probably html5.
 
@@ -834,31 +913,36 @@ class SKIN {
         $data = (string)$tidy;
     }
 
-    private function getTidyConfig() {
+    private function getTidyConfig()
+    {
         // http://tidy.sourceforge.net/docs/quickref.html
         global $CONF, $member;
-        $debug = (isset($CONF['debug']) && $CONF['debug']);
-        $release = ! $debug;
-        $is_admin = $member->isAdmin();
+        $debug       = (isset($CONF['debug']) && $CONF['debug']);
+        $release     = ! $debug;
+        $is_admin    = $member->isAdmin();
         $tidy_config = array(
-            'doctype' => 'auto', // html5, omit, auto, strict, transitional, user
-            'output-xhtml' => false,
+            'doctype'       => 'auto',
+            // html5, omit, auto, strict, transitional, user
+            'output-xhtml'  => false,
             'char-encoding' => 'utf8',
-            'indent' => (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']),
+            'indent'        => (isset($CONF['ENABLE_TIDY_INDENT'])
+                                && $CONF['ENABLE_TIDY_INDENT']),
             'indent-spaces' => 2,
-            'fix-uri' => false,
+            'fix-uri'       => false,
             'hide-comments' => ! $is_admin,
-            'tidy-mark' => $is_admin,
-            'wrap' => false, // 200
+            'tidy-mark'     => $is_admin,
+            'wrap'          => false,
+            // 200
         );
 
         if (_CHARSET !== 'UTF-8') {
             $tidy_config['char-encoding'] = 'raw';
         }
         if ($release) {
-//            $tidy_config['language'] = 'ja';
+            //            $tidy_config['language'] = 'ja';
         }
 
         return $tidy_config;
     }
+
 }

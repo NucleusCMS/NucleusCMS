@@ -10,12 +10,16 @@ if ( ! defined('_HAS_MBSTRING')) {
     define('_HAS_MBSTRING', extension_loaded('mbstring'));
 }
 
-class Utils {
-    function __construct() {
+class Utils
+{
+
+    function __construct()
+    {
     }
 
     //  bool mail ( string $to , string $subject , string $message [, string $additional_headers [, string $additional_parameters ]] )
-    public static function mail($to, $subject, $message) {
+    public static function mail($to, $subject, $message)
+    {
         $args = func_get_args();
 
         // bool mb_send_mail ( string $to , string $subject , string $message [, string $additional_headers = NULL [, string $additional_parameter = NULL ]] )
@@ -23,7 +27,8 @@ class Utils {
 
         if ( ! _HAS_MBSTRING || ('iso-8859-1' == strtolower(_CHARSET))) {
             if ('utf-8' == strtolower(_CHARSET)
-                && ( ! isset($args[3]) || (false === stripos($args[3], 'utf-8')))) {
+                && ( ! isset($args[3])
+                     || (false === stripos($args[3], 'utf-8')))) {
                 $additional_headers = 'Content-Type: text/plain; charset=utf-8';
                 if (isset($args[3])) {
                     $args[3] = rtrim($args[3]) . "\n" . $additional_headers;
@@ -31,32 +36,37 @@ class Utils {
                     $args[3] = $additional_headers;
                 }
             }
+
             return call_user_func_array('mail', $args);
         } else {
             $mb_lang = 'uni';
             if ('utf-8' != strtolower(_CHARSET)) {
-                $lang = strtolower(str_replace(array('\\', '/'), '', getLanguageName()));
+                $lang = strtolower(str_replace(array('\\', '/'), '',
+                    getLanguageName()));
                 if (stripos('japanese', $lang) !== false) {
                     $mb_lang = 'ja';
                 }
-//                else if ('iso-8859-1' == strtolower(_CHARSET))
-//                   $mb_lang = 'en';
+                //                else if ('iso-8859-1' == strtolower(_CHARSET))
+                //                   $mb_lang = 'en';
             }
             mb_language($mb_lang); // Valid languages are "Japanese", "ja","English","en" , "uni"
             mb_internal_encoding(_CHARSET);
+
             return call_user_func_array('mb_send_mail', $args);
         }
     }
 
-    public static function strftime($format, $timestamp = '') {
+    public static function strftime($format, $timestamp = '')
+    {
         if ( ! is_string($format) || (strlen($format) == 0)) {
             return '';
         }
         if ( ! _HAS_MBSTRING) {
             return strftime($format, $timestamp);
         }
-        $old_locale = setlocale(LC_CTYPE, '0'); // backup locale : maintained per process, not thread
-        $locale = setlocale(LC_CTYPE, '');
+        $old_locale = setlocale(LC_CTYPE,
+            '0'); // backup locale : maintained per process, not thread
+        $locale     = setlocale(LC_CTYPE, '');
         try {
             if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
                 $locale_mbcahrset = false;
@@ -65,7 +75,8 @@ class Utils {
                 // 850|866|932|936|949|950|1251|1252  //|50220|50221|50222|51932|
                 // Codepage: https://msdn.microsoft.com/ja-jp/library/windows/desktop/dd317756(v=vs.85).aspx
                 // The locale name form : https://msdn.microsoft.com/en-us/library/hzz3tw78.aspx
-                if (preg_match('/\.(850|866|932|936|949|950|1251|1252)$/', $locale, $m)) {
+                if (preg_match('/\.(850|866|932|936|949|950|1251|1252)$/',
+                    $locale, $m)) {
                     $codepage = intval($m[1]);
                     if (in_array($codepage, array(1251, 1252))) {
                         $locale_mbcahrset = "windows-{$m[1]}";
@@ -79,13 +90,16 @@ class Utils {
                 }
                 if ($locale_mbcahrset) {
                     // Workaround for %e format
-                    $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
+                    $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d',
+                        $format);
                     // Workaround for Multibyte and ANSI character sets.
-                    $res = mb_convert_encoding(strftime(mb_convert_encoding($format, $locale_mbcahrset, _CHARSET),
+                    $res
+                        = mb_convert_encoding(strftime(mb_convert_encoding($format,
+                        $locale_mbcahrset, _CHARSET),
                         $timestamp), _CHARSET, $locale_mbcahrset);
-//                    if ($old_locale != $locale)
-//                        setlocale(LC_CTYPE, $old_locale); // restore locale
-//    var_dump(basename(__FILE__).':'. __LINE__, $old_locale, $locale, $format, $timestamp, $res); // debug
+                    //                    if ($old_locale != $locale)
+                    //                        setlocale(LC_CTYPE, $old_locale); // restore locale
+                    //    var_dump(basename(__FILE__).':'. __LINE__, $old_locale, $locale, $format, $timestamp, $res); // debug
                     return $res;
                 }
             }
@@ -96,7 +110,7 @@ class Utils {
             if ($old_locale != $locale) {
                 setlocale(LC_CTYPE, $old_locale);
             } // restore locale
-//    var_dump(basename(__FILE__).':'. __LINE__ ,$locale, $format, $timestamp, $res); // debug
+            //    var_dump(basename(__FILE__).':'. __LINE__ ,$locale, $format, $timestamp, $res); // debug
             return $res;
         } catch (Exception $e) {
             if ($old_locale != $locale) {
@@ -105,22 +119,32 @@ class Utils {
         }
     }
 
-    public static function strlen($string) {
+    public static function strlen($string)
+    {
         if (_HAS_MBSTRING) {
             return mb_strlen($string, _CHARSET);
         }
+
         return strlen($string);
     }
 
-    public static function httpGet($url, $options = array('connecttimeout' => 3)) {
+    public static function httpGet(
+        $url,
+        $options = array('connecttimeout' => 3)
+    ) {
         static $enable_curl = null;
         if (is_null($enable_curl)) {
             $enable_curl = (function_exists('curl_init'));
         }
-        $timeout = ((isset($options['timeout']) && $options['timeout'] > 0) ? $options['timeout'] : 0);
-        $connecttimeout = ((isset($options['connecttimeout']) && $options['connecttimeout'] > 0) ? $options['connecttimeout'] : 0);
-        $start = microtime(true);
-        $reply_response = (isset($options['reply_response']) && $options['reply_response']);
+        $timeout        = ((isset($options['timeout'])
+                            && $options['timeout'] > 0) ? $options['timeout']
+            : 0);
+        $connecttimeout = ((isset($options['connecttimeout'])
+                            && $options['connecttimeout'] > 0)
+            ? $options['connecttimeout'] : 0);
+        $start          = microtime(true);
+        $reply_response = (isset($options['reply_response'])
+                           && $options['reply_response']);
 
         if ($enable_curl) {
             $ret = false;
@@ -137,7 +161,8 @@ class Utils {
             if (preg_match('#^https://#', $url)) {
                 curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
             }
-            if (isset($options['useragent']) && ! empty($options['useragent'])) {
+            if (isset($options['useragent'])
+                && ! empty($options['useragent'])) {
                 curl_setopt($crl, CURLOPT_USERAGENT, $options['useragent']);
             } else {
                 curl_setopt($crl, CURLOPT_USERAGENT, DEFAULT_USER_AGENT);
@@ -147,7 +172,8 @@ class Utils {
             if ($res !== false) {
                 $info = curl_getinfo($crl);
                 if ( ! empty($info) && isset($info["header_size"])) {
-                    if (isset($info["http_code"]) && $info["http_code"] == 200) {
+                    if (isset($info["http_code"])
+                        && $info["http_code"] == 200) {
                         $header = rtrim(substr($res, 0, $info["header_size"]));
                         if (0 == max(0, strlen($res) - $info["header_size"])) {
                             $body = '';
@@ -155,7 +181,10 @@ class Utils {
                             $body = substr($res, $info["header_size"]);
                         }
                         if ($reply_response) {
-                            $ret = array('header' => &$header, 'body' => &$body);
+                            $ret = array(
+                                'header' => &$header,
+                                'body'   => &$body,
+                            );
                         } else {
                             $ret =& $body;
                         }
@@ -163,13 +192,16 @@ class Utils {
                 }
             }
             curl_close($crl);
+
             return $ret;
         } // end curl
 
-        if ($connecttimeout > 0 && version_compare(PHP_VERSION, '5.2.1', '>=')) {
-            $opts = array('http' => array('timeout' => $connecttimeout)); // php-5.2.1 Added timeout.  default_socket_timeout
+        if ($connecttimeout > 0
+            && version_compare(PHP_VERSION, '5.2.1', '>=')) {
+            $opts
+                = array('http' => array('timeout' => $connecttimeout)); // php-5.2.1 Added timeout.  default_socket_timeout
             $sc = stream_context_create($opts);
-            $c = @fopen($url, "r", false, $sc);
+            $c  = @fopen($url, "r", false, $sc);
         } else {
             $c = @fopen($url, "r");
         }
@@ -180,18 +212,22 @@ class Utils {
             }
             if ($timeout > 0 && (microtime(true) - $start > $timeout)) {
                 fclose($c);
+
                 return false; // Timeout
             }
             if ($timeout > 0) {
                 stream_set_timeout($c, $timeout);
             }
             $data = '';
-            $stR = array($c);
-            $stW = null;
+            $stR  = array($c);
+            $stW  = null;
             while (is_resource($c) && ! feof($c)) {
-                $tv_sec = max(1, $timeout > 0 ? $timeout - ceil(microtime(true) - $start) : 1);
+                $tv_sec = max(1,
+                    $timeout > 0 ? $timeout - ceil(microtime(true) - $start)
+                        : 1);
                 if ( ! stream_select($stR, $stW, $stW, $tv_sec)) {
                     fclose($c);
+
                     return false; // Timeout
                 }
                 $str = fgets($c, 500);
@@ -203,19 +239,26 @@ class Utils {
                 $info = stream_get_meta_data($c);
                 if ($info['timed_out']) {
                     fclose($c);
+
                     return false; // Timeout
                 }
                 if ($timeout > 0 && (microtime(true) - $start > $timeout)) {
                     fclose($c);
+
                     return false; // Timeout
                 }
             }
             fclose($c);
             if ( ! empty($meta) && isset($meta['wrapper_data'])) {
-                return array('header' => (string)implode("\n", $meta['wrapper_data']), 'body' => &$data);
+                return array(
+                    'header' => (string)implode("\n", $meta['wrapper_data']),
+                    'body'   => &$data,
+                );
             }
+
             return $data;
         }
+
         return false;
     }
 

@@ -14,28 +14,35 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-function getVar($name, $default = null) {
+function getVar($name, $default = null)
+{
     if ( ! isset($_GET[$name])) {
         return $default;
     }
+
     return $_GET[$name];
 }
 
-function postVar($name, $default = null) {
+function postVar($name, $default = null)
+{
     if ( ! isset($_POST[$name])) {
         return $default;
     }
+
     return $_POST[$name];
 }
 
-function cookieVar($name, $default = null) {
+function cookieVar($name, $default = null)
+{
     if ( ! isset($_COOKIE[$name])) {
         return $default;
     }
+
     return $_COOKIE[$name];
 }
 
-function requestVar($name, $default = null) {
+function requestVar($name, $default = null)
+{
     if (array_key_exists($name, $_REQUEST)) {
         return $_REQUEST[$name];
     }
@@ -45,51 +52,63 @@ function requestVar($name, $default = null) {
     if (array_key_exists($name, $_POST)) {
         return $_POST[$name];
     }
+
     return $default;
 }
 
-function serverVar($name, $default = null) {
+function serverVar($name, $default = null)
+{
     $name = strtoupper($name);
     if ( ! isset($_SERVER[$name])) {
         return $default;
     }
+
     return $_SERVER[$name];
 }
 
-function confVar($name, $default = null) {
+function confVar($name, $default = null)
+{
     global $CONF;
     if ( ! isset($CONF[$name])) {
         return $default;
     }
+
     return $CONF[$name];
 }
 
-function stripslashes_array($data) {
+function stripslashes_array($data)
+{
     if (is_array($data)) {
         return array_map('stripslashes_array', $data);
     }
+
     return stripslashes($data);
 }
 
 // integer array from request
-function requestIntArray($name, $default = null) {
+function requestIntArray($name, $default = null)
+{
     if ( ! isset($_REQUEST[$name])) {
         return $default;
     }
+
     return $_REQUEST[$name];
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
-function requestArray($name, $default = null) {
+function requestArray($name, $default = null)
+{
     if ( ! isset($_REQUEST[$name])) {
         return $default;
     }
+
     return $_REQUEST[$name];
 }
 
 // add all the variables from the request as hidden input field
 // @see globalfunctions.php#passVar
-function passRequestVars() {
+function passRequestVars()
+{
     foreach ($_REQUEST as $key => $value) {
         if ($key === 'action' && ($value != requestVar('nextaction'))) {
             $key = 'nextaction';
@@ -106,14 +125,17 @@ function passRequestVars() {
     }
 }
 
-function postFileInfo($name, $default = null) {
+function postFileInfo($name, $default = null)
+{
     if ( ! isset($_FILES[$name])) {
         return $default;
     }
+
     return $_FILES[$name];
 }
 
-function setOldAction($value) {
+function setOldAction($value)
+{
     $_POST['oldaction'] = $value;
 }
 
@@ -122,7 +144,8 @@ function setOldAction($value) {
 //
 
 // removes magic quotes if that option is enabled
-function undoMagic($data) {
+function undoMagic($data)
+{
     trigger_error('Function ' . __FUNCTION__ . '() is deperecated',
         defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
     if ( ! get_magic_quotes_gpc()) {
@@ -131,10 +154,12 @@ function undoMagic($data) {
     if (ini_get('magic_quotes_sybase') != 1) {
         return stripslashes_array($data);
     }
+
     return undoSybaseQuotes_array($data);
 }
 
-function undoSybaseQuotes_array($data) {
+function undoSybaseQuotes_array($data)
+{
     trigger_error(
         'Function undoSybaseQuotes_array() is deperecated'
         , defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
@@ -142,19 +167,24 @@ function undoSybaseQuotes_array($data) {
     if (is_array($data)) {
         return array_map('undoSybaseQuotes', $data);
     }
+
     return stripslashes($data);
-//jp    return is_array($data) ? array_map('undoSybaseQuotes_array', $data) : str_replace("''", "'", $data);
+    //jp    return is_array($data) ? array_map('undoSybaseQuotes_array', $data) : str_replace("''", "'", $data);
 }
 
-function undoSybaseQuotes($data) {
+function undoSybaseQuotes($data)
+{
     trigger_error(
         'Function undoSybaseQuotes() is deperecated'
         , defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
+
     return str_replace("''", "'", $data);
 }
 
-function manager() {
+function manager()
+{
     global $manager;
+
     return $manager;
 }

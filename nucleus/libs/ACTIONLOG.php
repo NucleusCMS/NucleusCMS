@@ -21,12 +21,14 @@ define('INFO', 3);        // info, errors and warnings
 define('DEBUG', 4);        // everything
 $CONF['LogLevel'] = INFO;
 
-class ACTIONLOG {
+class ACTIONLOG
+{
 
     /**
      * (Static) Method to add a message to the action log
      */
-    public static function add($level, $message) {
+    public static function add($level, $message)
+    {
         global $member, $CONF, $DB_PHP_MODULE_NAME;
 
         if ($CONF['LogLevel'] < $level) {
@@ -37,7 +39,8 @@ class ACTIONLOG {
             $message = sprintf('[%s] %s', $member->getDisplayName(), $message);
         }
 
-        $timestamp = date('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);    // format timestamp
+        $timestamp = date('Y-m-d H:i:s',
+            $_SERVER['REQUEST_TIME']);    // format timestamp
         if ($DB_PHP_MODULE_NAME === 'pdo') {
             sql_prepare_execute(sprintf(
                 'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)'
@@ -45,12 +48,12 @@ class ACTIONLOG {
             ), array(
                     (string)$timestamp
                 ,
-                    (string)$message
+                    (string)$message,
                 )
             );
         } else {
             $message = sql_quote_string($message);        // add slashes
-            $query = sprintf(
+            $query   = sprintf(
                 "INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)"
                 , sql_table('actionlog')
                 , $timestamp
@@ -66,7 +69,8 @@ class ACTIONLOG {
      * (Static) Method to add a message to the action log
      * If the same message, the old one will be erased.
      */
-    public static function addUnique($level, $message) {
+    public static function addUnique($level, $message)
+    {
         global $member, $CONF, $DB_PHP_MODULE_NAME;
 
         if ($CONF['LogLevel'] < $level) {
@@ -78,7 +82,7 @@ class ACTIONLOG {
             $msg = "[" . $member->getDisplayName() . "] " . $msg;
         }
 
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
+        if ($DB_PHP_MODULE_NAME === 'pdo') {
             $query = sprintf(
                 "DELETE FROM `%s` WHERE message=?"
                 , sql_table('actionlog')
@@ -99,7 +103,8 @@ class ACTIONLOG {
     /**
      * (Static) Method to clear the whole action log
      */
-    public static function clear() {
+    public static function clear()
+    {
         global $manager;
 
         $param = array();
@@ -109,9 +114,11 @@ class ACTIONLOG {
     }
 
     /**
-     * (Static) Method to trim the action log (from over 500 back to 250 entries)
+     * (Static) Method to trim the action log (from over 500 back to 250
+     * entries)
      */
-    public static function trimLog() {
+    public static function trimLog()
+    {
         static $checked = 0;
 
         // only check once per run
@@ -128,7 +135,7 @@ class ACTIONLOG {
         ));
 
         // if size > 500, drop back to about 250
-        $iMaxSize = 500;
+        $iMaxSize  = 500;
         $iDropSize = 250;
         if ($iTotal > $iMaxSize) {
             $tsChop = quickQuery(sprintf(
@@ -143,4 +150,5 @@ class ACTIONLOG {
             ));
         }
     }
+
 }

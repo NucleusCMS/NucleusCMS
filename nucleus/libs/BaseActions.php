@@ -18,7 +18,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class BaseActions {
+class BaseActions
+{
 
     // depth level for includes (max. level is 3)
     public $level;
@@ -48,17 +49,21 @@ class BaseActions {
     /**
      *  Constructor for a new BaseAction object
      */
-    function __construct() {
+    function __construct()
+    {
         $this->level = 0;
 
         // if nesting level
-        $this->if_conditions = array(); // array on which condition values are pushed/popped
-        $this->if_execute = array();     // array on which condition values are pushed/popped
-        $this->if_currentlevel = 1;        // 1 = current level is displayed; 0 = current level not displayed
+        $this->if_conditions
+            = array(); // array on which condition values are pushed/popped
+        $this->if_execute
+            = array();     // array on which condition values are pushed/popped
+        $this->if_currentlevel
+            = 1;        // 1 = current level is displayed; 0 = current level not displayed
 
         // highlights
         $this->strHighlight = '';            // full highlight
-        $this->aHighlight = array();        // parsed highlight
+        $this->aHighlight   = array();        // parsed highlight
 
     }
 
@@ -70,7 +75,8 @@ class BaseActions {
      *
      * @param $filename
      */
-    function parse_include($filename) {
+    function parse_include($filename)
+    {
         @readfile($this->getIncludeFileName($filename));
     }
 
@@ -79,7 +85,8 @@ class BaseActions {
      *
      * @param $filename
      */
-    function parse_phpinclude($filename) {
+    function parse_phpinclude($filename)
+    {
         includephp($this->getIncludeFileName($filename));
     }
 
@@ -89,7 +96,8 @@ class BaseActions {
      *
      * @param $filename
      */
-    function parse_parsedinclude($filename) {
+    function parse_parsedinclude($filename)
+    {
         // check current level
         if ($this->level > 3) {
             return;
@@ -100,7 +108,8 @@ class BaseActions {
         if ( ! $skin->isValid && ! is_file($file)) {
             return;
         }
-        $contents = (strpos($filename, '/') === false ? $skin->getContent($filename) : false);
+        $contents = (strpos($filename, '/') === false
+            ? $skin->getContent($filename) : false);
         if ( ! $contents) {
             if ( ! is_file($file)) {
                 return;
@@ -129,7 +138,8 @@ class BaseActions {
      *
      * @param $filename
      */
-    function getIncludeFileName($filename) {
+    function getIncludeFileName($filename)
+    {
         // leave absolute filenames and http urls as they are
         if (
             (substr($filename, 0, 1) === '/')
@@ -142,6 +152,7 @@ class BaseActions {
         $filename = PARSER::getProperty('IncludePrefix') . $filename;
         if (PARSER::getProperty('IncludeMode') === 'skindir') {
             global $DIR_SKINS;
+
             return $DIR_SKINS . $filename;
         }
 
@@ -153,23 +164,27 @@ class BaseActions {
      *
      * e.g. <skinfile(default/myfile.sth)>
      */
-    function parse_skinfile($filename) {
+    function parse_skinfile($filename)
+    {
         global $CONF;
 
-        echo $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $filename;
+        echo $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix')
+             . $filename;
     }
 
     /**
      * Sets a property for the parser
      */
-    function parse_set($property, $value) {
+    function parse_set($property, $value)
+    {
         PARSER::setProperty($property, $value);
     }
 
     /**
      * Helper function: add if condition
      */
-    function _addIfCondition($condition) {
+    function _addIfCondition($condition)
+    {
         $this->if_conditions[] = $condition;
 
         $this->_updateTopIfCondition();
@@ -180,26 +195,31 @@ class BaseActions {
     /**
      * Helper function: update the Top of the If Conditions Array
      */
-    function _updateTopIfCondition() {
+    function _updateTopIfCondition()
+    {
         if (count($this->if_conditions) == 0) {
             $this->if_currentlevel = 1;
         } else {
-            $this->if_currentlevel = $this->if_conditions[sizeof($this->if_conditions) - 1];
+            $this->if_currentlevel
+                = $this->if_conditions[sizeof($this->if_conditions) - 1];
         }
     }
 
     /**
      * Helper function for elseif / elseifnot
      */
-    function _addIfExecute() {
+    function _addIfExecute()
+    {
         $this->if_execute[] = 0;
     }
 
     /**
      * Helper function for elseif / elseifnot
-     * @param string condition to be fullfilled
+     *
+     * @param   string condition to be fullfilled
      */
-    function _updateIfExecute($condition) {
+    function _updateIfExecute($condition)
+    {
         $index = count($this->if_execute) - 1;
         if ( ! isset($this->if_execute[$index])) {
             $this->if_execute[$index] = 0;
@@ -210,7 +230,8 @@ class BaseActions {
     /**
      * returns the currently top if condition
      */
-    function _getTopIfCondition() {
+    function _getTopIfCondition()
+    {
         return $this->if_currentlevel;
     }
 
@@ -220,7 +241,8 @@ class BaseActions {
      * @param $highlight
      *        A series of search terms
      */
-    function setHighlight($highlight) {
+    function setHighlight($highlight)
+    {
         $this->strHighlight = $highlight;
         if ($highlight) {
             $this->aHighlight = parseHighlight($highlight);
@@ -232,11 +254,14 @@ class BaseActions {
      *
      * @param &$data
      *        Data that needs to be highlighted
+     *
      * @see setHighlight
      */
-    function highlight(&$data) {
+    function highlight(&$data)
+    {
         if ($this->aHighlight) {
-            return highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
+            return highlight($data, $this->aHighlight,
+                $this->template['SEARCH_HIGHLIGHT']);
         } else {
             return $data;
         }
@@ -245,18 +270,21 @@ class BaseActions {
     /**
      * Parses <%if%> statements
      */
-    function parse_if() {
+    function parse_if()
+    {
         $this->_addIfExecute();
 
-        $args = func_get_args();
-        $condition = call_user_func_array(array($this, 'checkCondition'), $args);
+        $args      = func_get_args();
+        $condition = call_user_func_array(array($this, 'checkCondition'),
+            $args);
         $this->_addIfCondition($condition);
     }
 
     /**
      * Parses <%else%> statements
      */
-    function parse_else() {
+    function parse_else()
+    {
         if (count($this->if_conditions) == 0) {
             return;
         }
@@ -277,7 +305,8 @@ class BaseActions {
     /**
      * Parses <%elseif%> statements
      */
-    function parse_elseif() {
+    function parse_elseif()
+    {
         if (count($this->if_conditions) == 0) {
             return;
         }
@@ -291,8 +320,9 @@ class BaseActions {
             $this->_addIfCondition(0);
         } else {
             ob_end_clean();
-            $args = func_get_args();
-            $condition = call_user_func_array(array($this, 'checkCondition'), $args);
+            $args      = func_get_args();
+            $condition = call_user_func_array(array($this, 'checkCondition'),
+                $args);
             $this->_addIfCondition($condition);
         }
     }
@@ -300,18 +330,21 @@ class BaseActions {
     /**
      * Parses <%ifnot%> statements
      */
-    function parse_ifnot() {
+    function parse_ifnot()
+    {
         $this->_addIfExecute();
 
-        $args = func_get_args();
-        $condition = call_user_func_array(array($this, 'checkCondition'), $args);
+        $args      = func_get_args();
+        $condition = call_user_func_array(array($this, 'checkCondition'),
+            $args);
         $this->_addIfCondition(! $condition);
     }
 
     /**
      * Parses <%elseifnot%> statements
      */
-    function parse_elseifnot() {
+    function parse_elseifnot()
+    {
         if (count($this->if_conditions) == 0) {
             return;
         }
@@ -325,8 +358,9 @@ class BaseActions {
             $this->_addIfCondition(0);
         } else {
             ob_end_clean();
-            $args = func_get_args();
-            $condition = call_user_func_array(array($this, 'checkCondition'), $args);
+            $args      = func_get_args();
+            $condition = call_user_func_array(array($this, 'checkCondition'),
+                $args);
             $this->_addIfCondition(! $condition);
         }
     }
@@ -335,7 +369,8 @@ class BaseActions {
      * Ends a conditional if-block
      * see e.g. ifcat (BLOG), ifblogsetting (PAGEFACTORY)
      */
-    function parse_endif() {
+    function parse_endif()
+    {
         // we can only close what has been opened
         if (count($this->if_conditions) == 0) {
             return;
@@ -351,4 +386,5 @@ class BaseActions {
 
         $this->_updateTopIfCondition();
     }
+
 }

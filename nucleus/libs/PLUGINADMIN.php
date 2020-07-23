@@ -16,14 +16,16 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class PluginAdmin {
+class PluginAdmin
+{
 
     public $strFullName;        // NP_SomeThing
     public $plugin;            // ref. to plugin object
     public $bValid;            // evaluates to true when object is considered valid
     public $admin;                // ref to an admin object
 
-    function __construct($pluginName) {
+    function __construct($pluginName)
+    {
         global $manager, $DIR_LIBS;
         include_once($DIR_LIBS . 'ADMIN.php');
 
@@ -41,19 +43,21 @@ class PluginAdmin {
             doError(_ERROR_INVALID_PLUGIN);
         }
 
-        $this->admin = new ADMIN();
+        $this->admin         = new ADMIN();
         $this->admin->action = 'plugin_' . $pluginName;
     }
 
-    function start($extraHead = '') {
+    function start($extraHead = '')
+    {
         global $CONF;
         $strBaseHref = '<base href="' . hsc($CONF['AdminURL']) . '" />';
-        $extraHead .= $strBaseHref;
+        $extraHead   .= $strBaseHref;
 
         $this->admin->pagehead($extraHead);
     }
 
-    function end() {
+    function end()
+    {
         $this->_AddTicketByJS();
         $this->admin->pagefoot();
     }
@@ -62,7 +66,8 @@ class PluginAdmin {
      * Add ticket when not used in plugin's admin page
      * to avoid CSRF.
      */
-    function _AddTicketByJS() {
+    function _AddTicketByJS()
+    {
         global $CONF, $ticketforplugin;
         if ( ! ($ticket = $ticketforplugin['ticket'])) {
             //echo "\n<!--TicketForPlugin skipped-->\n";
@@ -127,4 +132,5 @@ class PluginAdmin {
             /*]]>*/
         </script><?php
     }
+
 }

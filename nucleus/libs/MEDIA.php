@@ -21,7 +21,8 @@ define('READ_ONLY_MEDIA_FOLDER', '(Read Only)');
 /**
  * Represents the media objects for a certain member
  */
-class MEDIA {
+class MEDIA
+{
 
     /**
      * Gets the list of collections available to the currently logged
@@ -29,7 +30,8 @@ class MEDIA {
      *
      * @returns array of dirname => display name
      */
-    public static function getCollectionList($exceptReadOnly = false) {
+    public static function getCollectionList($exceptReadOnly = false)
+    {
         global $member, $DIR_MEDIA;
 
         $collections = array();
@@ -45,16 +47,16 @@ class MEDIA {
         $dirhandle = opendir($DIR_MEDIA);
         while ($dirname = readdir($dirhandle)) {
             // only add non-numeric (numeric=private) dirs
-            if (@is_dir($DIR_MEDIA . $dirname) &&
-                ($dirname !== '.') &&
-                ($dirname !== '..') &&
-                ($dirname !== 'CVS') &&
-                ( ! is_numeric($dirname))) {
+            if (@is_dir($DIR_MEDIA . $dirname) && ($dirname !== '.')
+                && ($dirname !== '..')
+                && ($dirname !== 'CVS')
+                && ( ! is_numeric($dirname))) {
                 if (@is_writable($DIR_MEDIA . $dirname)) {
                     $collections[$dirname] = $dirname;
                 } else {
                     if ($exceptReadOnly == false) {
-                        $collections[$dirname] = $dirname . ' ' . READ_ONLY_MEDIA_FOLDER;
+                        $collections[$dirname] = $dirname . ' '
+                                                 . READ_ONLY_MEDIA_FOLDER;
                     }
                 }
             }
@@ -72,7 +74,8 @@ class MEDIA {
      * @param $filter
      *        filter on filename (defaults to none)
      */
-    public static function getMediaListByCollection($collection, $filter = '') {
+    public static function getMediaListByCollection($collection, $filter = '')
+    {
         global $DIR_MEDIA;
 
         $filelist = array();
@@ -89,8 +92,10 @@ class MEDIA {
         $dirhandle = opendir($mediadir);
         while ($filename = readdir($dirhandle)) {
             // only add files that match the filter
-            if ( ! @is_dir($filename) && MEDIA::checkFilter($filename, $filter)) {
-                $filelist[] = new MEDIAOBJECT($collection, $filename, filemtime($mediadir . $filename));
+            if ( ! @is_dir($filename)
+                 && MEDIA::checkFilter($filename, $filter)) {
+                $filelist[] = new MEDIAOBJECT($collection, $filename,
+                    filemtime($mediadir . $filename));
             }
         }
         closedir($dirhandle);
@@ -101,7 +106,8 @@ class MEDIA {
         return $filelist;
     }
 
-    public static function checkFilter($strText, $strFilter) {
+    public static function checkFilter($strText, $strFilter)
+    {
         if ($strFilter == '') {
             return 1;
         } else {
@@ -113,7 +119,10 @@ class MEDIA {
      * checks if a collection exists with the given name, and if it's
      * allowed for the currently logged in member to upload files to it
      */
-    public static function isValidCollection($collectionName, $exceptReadOnly = false) {
+    public static function isValidCollection(
+        $collectionName,
+        $exceptReadOnly = false
+    ) {
         global $member, $DIR_MEDIA;
 
         // allow creating new private directory
@@ -122,7 +131,7 @@ class MEDIA {
         }
 
         $collections = MEDIA::getCollectionList($exceptReadOnly);
-        $dirname = $collections[$collectionName];
+        $dirname     = $collections[$collectionName];
         if ($dirname == null || $dirname === PRIVATE_COLLECTION) {
             return false;
         }
@@ -140,15 +149,16 @@ class MEDIA {
     /**
      * Adds an uploaded file to the media archive
      *
-     * @param collection
+     * @param   collection
      *        collection
-     * @param uploadfile
+     * @param   uploadfile
      *        the postFileInfo(..) array
-     * @param filename
+     * @param   filename
      *        the filename that should be used to save the file as
      *        (date prefix should be already added here)
      */
-    public static function addMediaObject($collection, $uploadfile, $filename) {
+    public static function addMediaObject($collection, $uploadfile, $filename)
+    {
         global $DIR_MEDIA, $manager;
 
         // clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
@@ -161,7 +171,7 @@ class MEDIA {
         $param = array(
             'collection' => &$collection,
             'uploadfile' => $uploadfile,
-            'filename' => &$filename
+            'filename'   => &$filename,
         );
         $manager->notify('PreMediaUpload', $param);
 
@@ -217,8 +227,8 @@ class MEDIA {
 
         $param = array(
             'collection' => $collection,
-            'mediadir' => $mediadir,
-            'filename' => $filename
+            'mediadir'   => $mediadir,
+            'filename'   => $filename,
         );
         $manager->notify('PostMediaUpload', $param);
 
@@ -238,7 +248,8 @@ class MEDIA {
      *
      * NOTE: does not check if $collection is valid.
      */
-    public static function addMediaObjectRaw($collection, $filename, &$data) {
+    public static function addMediaObjectRaw($collection, $filename, &$data)
+    {
         global $DIR_MEDIA;
 
         // check dir permissions (try to create dir if it does not exist)
@@ -296,21 +307,24 @@ class MEDIA {
  * Description of properties:
  *  - filename: filename, without paths
  *  - timestamp: last modification (unix timestamp)
- *  - collection: collection to which the file belongs (can also be a owner ID, for private collections)
+ *  - collection: collection to which the file belongs (can also be a owner ID,
+ *  for private collections)
  *  - private: true if the media belongs to a private member collection
  */
-class MEDIAOBJECT {
+class MEDIAOBJECT
+{
 
     public $private;
     public $collection;
     public $filename;
     public $timestamp;
 
-    function __construct($collection, $filename, $timestamp) {
-        $this->private = is_numeric($collection);
+    function __construct($collection, $filename, $timestamp)
+    {
+        $this->private    = is_numeric($collection);
         $this->collection = $collection;
-        $this->filename = $filename;
-        $this->timestamp = $timestamp;
+        $this->filename   = $filename;
+        $this->timestamp  = $timestamp;
     }
 
 }
@@ -318,9 +332,11 @@ class MEDIAOBJECT {
 /**
  * User-defined sort method to sort an array of MEDIAOBJECTS
  */
-function sort_media($a, $b) {
+function sort_media($a, $b)
+{
     if ($a->timestamp == $b->timestamp) {
         return 0;
     }
+
     return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }

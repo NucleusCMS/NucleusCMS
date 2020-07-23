@@ -15,7 +15,9 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class ENCAPSULATE {
+class ENCAPSULATE
+{
+
     /**
      * Uses $call to call a function using parameters $params
      * This function should return the amount of entries shown.
@@ -24,7 +26,11 @@ class ENCAPSULATE {
      *
      * Passes on the amount of results found (for further encapsulation)
      */
-    function doEncapsulate(&$call, &$params, $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY) {
+    function doEncapsulate(
+        &$call,
+        &$params,
+        $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY
+    ) {
         // start output buffering
         ob_start();
 
@@ -45,6 +51,7 @@ class ENCAPSULATE {
 
         return $nbOfRows;
     }
+
 }
 
 include_libs('BATCH.php');

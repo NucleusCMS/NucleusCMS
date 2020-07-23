@@ -17,37 +17,44 @@
 
 /**
  * A class used to encapsulate a list of some sort in a batch selection
+ *
  * @property  type
  */
-class BATCH extends ENCAPSULATE {
+class BATCH extends ENCAPSULATE
+{
 
     public $type;
 
-    function __construct($type) {
+    function __construct($type)
+    {
         $this->type = $type;
     }
 
-    function BATCH($type) {
+    function BATCH($type)
+    {
         $this->__construct($type);
     }
 
-    function showHead() {
+    function showHead()
+    {
         ?>
         <form method="post" action="index.php">
         <?php
-// TODO: get a list op operations above the list too
-// (be careful not to use the same names for the select...)
-//        $this->showOperationList();
+        // TODO: get a list op operations above the list too
+        // (be careful not to use the same names for the select...)
+        //        $this->showOperationList();
     }
 
-    function showFoot() {
+    function showFoot()
+    {
         $this->showOperationList();
         ?>
         </form>
-    <?php
+        <?php
     }
 
-    function showOperationList() {
+    function showOperationList()
+    {
         global $manager;
         ?>
         <div class="batchoperations">
@@ -60,28 +67,28 @@ class BATCH extends ENCAPSULATE {
                     case 'item':
                         $options = array(
                             'delete' => _BATCH_ITEM_DELETE,
-                            'move' => _BATCH_ITEM_MOVE
+                            'move'   => _BATCH_ITEM_MOVE,
                         );
                         break;
                     case 'member':
                         $options = array(
-                            'delete' => _BATCH_MEMBER_DELETE,
-                            'setadmin' => _BATCH_MEMBER_SET_ADM,
-                            'unsetadmin' => _BATCH_MEMBER_UNSET_ADM
+                            'delete'     => _BATCH_MEMBER_DELETE,
+                            'setadmin'   => _BATCH_MEMBER_SET_ADM,
+                            'unsetadmin' => _BATCH_MEMBER_UNSET_ADM,
                         );
                         break;
                     case 'team':
                         $options = array(
-                            'delete' => _BATCH_TEAM_DELETE,
-                            'setadmin' => _BATCH_TEAM_SET_ADM,
+                            'delete'     => _BATCH_TEAM_DELETE,
+                            'setadmin'   => _BATCH_TEAM_SET_ADM,
                             'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
                         );
                         break;
                     case 'category':
                         $options = array(
                             'change_corder' => _BATCH_CAT_CAHANGE_ORDER,
-                            'delete' => _BATCH_CAT_DELETE,
-                            'move' => _BATCH_CAT_MOVE,
+                            'delete'        => _BATCH_CAT_DELETE,
+                            'move'          => _BATCH_CAT_MOVE,
                         );
                         break;
                     case 'comment':
@@ -118,14 +125,17 @@ class BATCH extends ENCAPSULATE {
                 echo _BATCH_DESELECTALL ?></a>
             )
         </div>
-    <?php
+        <?php
     }
 
     // shortcut :)
-    function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE) {
-        $call = 'showlist';
+    function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
+    {
+        $call   = 'showlist';
         $params = array($query, $type, $template);
+
         return $this->doEncapsulate($call, $params, $errorMessage);
     }
+
 }
 
