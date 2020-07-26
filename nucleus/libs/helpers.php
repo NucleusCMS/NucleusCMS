@@ -66,6 +66,15 @@ function serverVar($name, $default = null)
     return $_SERVER[$name];
 }
 
+function globalVar($name, $default = null)
+{
+    if ( ! isset($GLOBALS[$name])) {
+        return $default;
+    }
+
+    return $GLOBALS[$name];
+}
+
 function confVar($name, $default = null)
 {
     global $CONF;
