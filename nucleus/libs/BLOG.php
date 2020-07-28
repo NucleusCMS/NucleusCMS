@@ -102,7 +102,6 @@ class BLOG
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
             . ' and i.itime<' . mysqldate($timestamp_end);
 
-
         $this->readLogAmount($templatename, 0, $extra_query, '', 1, 1);
     }
 

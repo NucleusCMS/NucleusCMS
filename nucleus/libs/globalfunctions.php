@@ -13,14 +13,19 @@
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
-
  */
 
 global $DIR_NUCLEUS;
-if(is_file($DIR_NUCLEUS.'autoload.php')) include_once($DIR_NUCLEUS.'autoload.php');
+if (is_file($DIR_NUCLEUS . 'autoload.php')) {
+    include_once($DIR_NUCLEUS . 'autoload.php');
+}
 
-if(!isset($_SERVER['REQUEST_TIME_FLOAT'])) $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
-if(!isset($_SERVER['REQUEST_TIME'])) $_SERVER['REQUEST_TIME'] = $_SERVER['REQUEST_TIME_FLOAT']; // (PHP 5.1-) : $_SERVER['REQUEST_TIME']
+if (!isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+    $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
+}    // (PHP 5.4-) : $_SERVER['REQUEST_TIME_FLOAT']
+if (!isset($_SERVER['REQUEST_TIME'])) {
+    $_SERVER['REQUEST_TIME'] = $_SERVER['REQUEST_TIME_FLOAT'];
+} // (PHP 5.1-) : $_SERVER['REQUEST_TIME']
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
@@ -39,48 +44,57 @@ if (version_compare(phpversion(), '5.3.0', '<')) {
 }
 */
 
-define('HAS_CATCH_ERROR', version_compare('7.0.0',PHP_VERSION,'<='));
+define('HAS_CATCH_ERROR', version_compare('7.0.0', PHP_VERSION, '<='));
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
-include_once($DIR_LIBS. 'version.php');
-include_once($DIR_LIBS. 'globalfunctions.inc.php');
+include_once($DIR_LIBS . 'version.php');
+include_once($DIR_LIBS . 'globalfunctions.inc.php');
 
-define('CORE_APPLICATION_NAME',                'Nucleus CMS'); // if you forked product, you can easy to change cms name.
-define('CORE_APPLICATION_VERSION',             NUCLEUS_VERSION);
-define('CORE_APPLICATION_VERSION_ID',          NUCLEUS_VERSION_ID);
+define('CORE_APPLICATION_NAME', 'Nucleus CMS'); // if you forked product, you can easy to change cms name.
+define('CORE_APPLICATION_VERSION', NUCLEUS_VERSION);
+define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
-$nucleus['version'] = 'v'.NUCLEUS_VERSION;
-$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ?  'ja-dev' : 'ja');
+$nucleus['version'] = 'v' . NUCLEUS_VERSION;
+$nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ? 'ja-dev' : 'ja');
 
 $default_user_agent = array('ie' => array());
-$default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['ie']['7'] = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
 $default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
-$default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['ie']['11'] = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
 $default_user_agent['default'] = &$default_user_agent['ie']['11'];
 // http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
-if ( ! defined('DEFAULT_USER_AGENT') )
-  define('DEFAULT_USER_AGENT' , $default_user_agent['default']);
-ini_set( 'user_agent' , DEFAULT_USER_AGENT );
+if (!defined('DEFAULT_USER_AGENT')) {
+    define('DEFAULT_USER_AGENT', $default_user_agent['default']);
+}
+ini_set('user_agent', DEFAULT_USER_AGENT);
 
-if (version_compare(phpversion(),'5.4.0','<')) {
-    if(ini_get('register_globals')) exit('Should be change off register_globals.');
-    if(get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) exit('Should be change php.ini: magic_quotes_gpc=0');
-    if(ini_get('magic_quotes_sybase')) exit('Should be remove magic_quotes_sybase in php.ini');
+if (version_compare(phpversion(), '5.4.0', '<')) {
+    if (ini_get('register_globals')) {
+        exit('Should be change off register_globals.');
+    }
+    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {
+        exit('Should be change php.ini: magic_quotes_gpc=0');
+    }
+    if (ini_get('magic_quotes_sybase')) {
+        exit('Should be remove magic_quotes_sybase in php.ini');
+    }
 }
 
-if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
+if (isset($CONF['debug']) && !empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
     ini_set('display_errors', 1);
 } else {
-    if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
-        ini_set('display_errors',0);
-    else {
+    if (!isset($CONF['UsingAdminArea']) || empty($CONF['UsingAdminArea'])) {
+        ini_set('display_errors', 0);
+    } else {
         ini_set('display_errors', 1);
         error_reporting(E_ALL & ~E_NOTICE);
     }
-    if (!defined('E_DEPRECATED')) define('E_DEPRECATED', 8192);
+    if (!defined('E_DEPRECATED')) {
+        define('E_DEPRECATED', 8192);
+    }
     error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 }
 
@@ -91,13 +105,13 @@ if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
  */
 
 if (function_exists('date_default_timezone_get')) {
-    if (FALSE == ($timezone = @date_default_timezone_get())) {
+    if (false == ($timezone = @date_default_timezone_get())) {
         $timezone = 'UTC';
     }
 }
 
 if (function_exists('date_default_timezone_set')) {
-     @date_default_timezone_set($timezone);
+    @date_default_timezone_set($timezone);
 }
 
 /*
@@ -115,11 +129,12 @@ if (function_exists('date_default_timezone_set')) {
         directory) are still on the server.
 */
 
-if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent']))
-{
-    $CONF['alertOnHeadersSent']  = 1;
+if (!isset($CONF['alertOnHeadersSent']) || empty($CONF['alertOnHeadersSent'])) {
+    $CONF['alertOnHeadersSent'] = 1;
 }
-if(!isset($CONF['alertOnSecurityRisk'])) $CONF['alertOnSecurityRisk'] = 1;
+if (!isset($CONF['alertOnSecurityRisk'])) {
+    $CONF['alertOnSecurityRisk'] = 1;
+}
 
 /*
     Set these to 1 to allow viewing of future items or draft items
@@ -143,11 +158,13 @@ if (!isset($CONF['installscript'])) {
  * Include multibyte function if some functions related to  mbstring are not loaded.
  * By Japanese Packaging Team, Jan.31, 2011
  */
-if (!function_exists('mb_convert_encoding')){
+if (!function_exists('mb_convert_encoding')) {
     global $mbemu_internals;
-    if(is_file("{$DIR_LIBS}mb_emulator/mb-emulator.php"))
-        include_libs('mb_emulator/mb-emulator.php',true,false);
-    else exit('Need mb-emulator.php');
+    if (is_file("{$DIR_LIBS}mb_emulator/mb-emulator.php")) {
+        include_libs('mb_emulator/mb-emulator.php', true, false);
+    } else {
+        exit('Need mb-emulator.php');
+    }
 }
 
 // we will use postVar, getVar, ... methods instead of HTTP_GET_VARS or _GET
@@ -156,63 +173,65 @@ if ($CONF['installscript'] != 1) { // vars were already included in install.php
 }
 
 // sanitize option
-$bLoggingSanitizedResult=0;
-$bSanitizeAndContinue=0;
+$bLoggingSanitizedResult = 0;
+$bSanitizeAndContinue = 0;
 
 $orgRequestURI = serverVar('REQUEST_URI');
 sanitizeParams();
 
 // get all variables that can come from the request and put them in the global scope
-$blogid       = requestVar('blogid');
-$itemid       = intRequestVar('itemid');
-$catid        = intRequestVar('catid');
-$skinid       = requestVar('skinid');
-$memberid     = requestVar('memberid');
-$archivelist  = requestVar('archivelist');
-$imagepopup   = requestVar('imagepopup');
-$archive      = requestVar('archive');
-$query        = requestVar('query');
-$highlight    = requestVar('highlight');
-$amount       = requestVar('amount');
-$action       = requestVar('action');
-$nextaction   = requestVar('nextaction');
-$maxresults   = requestVar('maxresults');
-$startpos     = intRequestVar('startpos');
+$blogid = requestVar('blogid');
+$itemid = intRequestVar('itemid');
+$catid = intRequestVar('catid');
+$skinid = requestVar('skinid');
+$memberid = requestVar('memberid');
+$archivelist = requestVar('archivelist');
+$imagepopup = requestVar('imagepopup');
+$archive = requestVar('archive');
+$query = requestVar('query');
+$highlight = requestVar('highlight');
+$amount = requestVar('amount');
+$action = requestVar('action');
+$nextaction = requestVar('nextaction');
+$maxresults = requestVar('maxresults');
+$startpos = intRequestVar('startpos');
 $errormessage = '';
-$error        = '';
-$special      = requestVar('special');
-$virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+$error = '';
+$special = requestVar('special');
+$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
-if (!isset($CONF['expose_generator']))
-  $CONF['expose_generator'] = false;
+if (!isset($CONF['expose_generator'])) {
+    $CONF['expose_generator'] = false;
+}
 
-if ( !headers_sent() && $CONF['expose_generator'] ) {
-    header(sprintf('Generator: %s' , CORE_APPLICATION_NAME));
+if (!headers_sent() && $CONF['expose_generator']) {
+    header(sprintf('Generator: %s', CORE_APPLICATION_NAME));
 }
 
 // Avoid the ClickJacking attack
-if ( !headers_sent() && (!defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || (! _DISABLE_FEATURE_SECURITY_CLICKJACKING)) )
-{
+if (!headers_sent() && (!defined('_DISABLE_FEATURE_SECURITY_CLICKJACKING') || (!_DISABLE_FEATURE_SECURITY_CLICKJACKING))) {
     header('X-Frame-Options: SAMEORIGIN');
 }
 
 init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler global $MYSQL_*
 
 global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
-if (($DB_DRIVER_NAME=='mysql') && !function_exists('mysql_query')) {
+if (($DB_DRIVER_NAME == 'mysql') && !function_exists('mysql_query')) {
     // include core classes that are needed for login & plugin handling
-    if ($DB_PHP_MODULE_NAME == 'pdo')
-        include_once($DIR_LIBS . 'sql/pdo_mysql_emulate.php'); // For PHP 7
-    else
-        include_once($DIR_LIBS . 'sql/mysql_emulate.php'); // For PHP 7
-}
-else
-{
+    if ($DB_PHP_MODULE_NAME == 'pdo') {
+        include_once($DIR_LIBS . 'sql/pdo_mysql_emulate.php');
+    } // For PHP 7
+    else {
+        include_once($DIR_LIBS . 'sql/mysql_emulate.php');
+    } // For PHP 7
+} else {
     if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
-        define('_EXT_MYSQL_EMULATE' , 0);
+    {
+        define('_EXT_MYSQL_EMULATE', 0);
+    }
 }
 
-include_once($DIR_LIBS . 'sql/'.$DB_PHP_MODULE_NAME.'.php');
+include_once($DIR_LIBS . 'sql/' . $DB_PHP_MODULE_NAME . '.php');
 include_once($DIR_LIBS . 'MEMBER.php');
 include_once($DIR_LIBS . 'ACTIONLOG.php');
 include_once($DIR_LIBS . 'MANAGER.php');
@@ -245,7 +264,7 @@ sql_connect();
 $SQLCount = 0;
 
 // logs sanitized result if need
-if ($orgRequestURI!==serverVar('REQUEST_URI')) {
+if ($orgRequestURI !== serverVar('REQUEST_URI')) {
     $msg = "Sanitized [" . serverVar('REMOTE_ADDR') . "] ";
     $msg .= $orgRequestURI . " -> " . serverVar('REQUEST_URI');
     if ($bLoggingSanitizedResult) {
@@ -263,28 +282,32 @@ register_shutdown_function('sql_disconnect');
 getConfig();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
-if (!isset($CONF['Self']))
-    $CONF['Self'] = rtrim($CONF['IndexURL'], '/'); // strip trailing
-
-if($CONF['URLMode']==='pathinfo' && substr($CONF['Self'],-4)==='.php')
+if (!isset($CONF['Self'])) {
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
+} // strip trailing
 
-$CONF['ItemURL']        = $CONF['Self'];
-$CONF['ArchiveURL']     = $CONF['Self'];
+if ($CONF['URLMode'] === 'pathinfo' && substr($CONF['Self'], -4) === '.php') {
+    $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
+}
+
+$CONF['ItemURL'] = $CONF['Self'];
+$CONF['ArchiveURL'] = $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL']      = $CONF['Self'];
-$CONF['SearchURL']      = $CONF['Self'];
-$CONF['BlogURL']        = $CONF['Self'];
-$CONF['CategoryURL']    = $CONF['Self'];
+$CONF['MemberURL'] = $CONF['Self'];
+$CONF['SearchURL'] = $CONF['Self'];
+$CONF['BlogURL'] = $CONF['Self'];
+$CONF['CategoryURL'] = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'], strlen($CONF['Self']) - 4) == '.php'))) {
+if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'],
+                strlen($CONF['Self']) - 4) == '.php'))) {
     $CONF['URLMode'] = 'normal';
 }
 
 // automatically use simpler toolbar for mozilla
-if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko') ) {
+if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),
+        'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
 
@@ -292,27 +315,29 @@ if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'), 'Mozi
 $member = new MEMBER();
 
 // secure cookie key settings (either 'none', 0, 8, 16, 24, or 32)
-if (!isset($CONF['secureCookieKey'])) $CONF['secureCookieKey']=24;
-switch($CONF['secureCookieKey']){
-case 8:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 16:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 24:
-    $CONF['secureCookieKeyIP']=preg_replace('/\.[0-9]+$/','',serverVar('REMOTE_ADDR'));
-    break;
-case 32:
-    $CONF['secureCookieKeyIP']=serverVar('REMOTE_ADDR');
-    break;
-default:
-    $CONF['secureCookieKeyIP']='';
+if (!isset($CONF['secureCookieKey'])) {
+    $CONF['secureCookieKey'] = 24;
+}
+switch ($CONF['secureCookieKey']) {
+    case 8:
+        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+        break;
+    case 16:
+        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+        break;
+    case 24:
+        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/', '', serverVar('REMOTE_ADDR'));
+        break;
+    case 32:
+        $CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
+        break;
+    default:
+        $CONF['secureCookieKeyIP'] = '';
 }
 
 // login/logout when required or renew cookies
 if ($action == 'login') {
-    if(!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
+    if (!isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
         header("HTTP/1.0 404 Not Found");
         exit;
     }
@@ -321,16 +346,16 @@ if ($action == 'login') {
     $pw = postVar('password');
     $shared = intPostVar('shared'); // shared computer or not
 
-    $pw=substr($pw,0,40); // avoid md5 collision by using a long key
+    $pw = substr($pw, 0, 40); // avoid md5 collision by using a long key
 
-    if ($member->login($login, $pw) ) {
+    if ($member->login($login, $pw)) {
 
         $member->newCookieKey();
         $member->setCookies($shared);
 
-        if ($CONF['secureCookieKey']!=='none') {
+        if ($CONF['secureCookieKey'] !== 'none') {
             // secure cookie key
-            $member->setCookieKey(md5($member->getCookieKey().$CONF['secureCookieKeyIP']));
+            $member->setCookieKey(md5($member->getCookieKey() . $CONF['secureCookieKeyIP']));
             $member->writeCookieKey();
         }
 
@@ -340,8 +365,8 @@ if ($action == 'login') {
         }
 
         $param = array(
-            'member'    => &$member,
-            'username'    =>  $login
+            'member' => &$member,
+            'username' => $login
         );
         $manager->notify('LoginSuccess', $param);
         $errormessage = '';
@@ -349,20 +374,20 @@ if ($action == 'login') {
 
         $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
         $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
-        if ($remote_ip !=='')
-        {
+        if ($remote_ip !== '') {
             $log_message .= sprintf(" %s", $remote_ip);
-            if ($remote_host!==FALSE && $remote_host!=$remote_ip)
+            if ($remote_host !== false && $remote_host != $remote_ip) {
                 $log_message .= sprintf("(%s)", $remote_host);
+            }
         }
-        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
-        {
-            $remote_proxy_ip = explode(',' , $_SERVER["HTTP_X_FORWARDED_FOR"]);
+        if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
+            $remote_proxy_ip = explode(',', $_SERVER["HTTP_X_FORWARDED_FOR"]);
             $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
             $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
-            if ($remote_proxy_host !==FALSE && $remote_proxy_host!=$remote_proxy_ip)
+            if ($remote_proxy_host !== false && $remote_proxy_host != $remote_proxy_ip) {
                 $log_message .= sprintf("(%s)", $remote_proxy_host);
+            }
             unset($remote_proxy_ip, $remote_proxy_host);
         }
         ACTIONLOG::add(INFO, $log_message);
@@ -371,39 +396,41 @@ if ($action == 'login') {
     } else {
         // errormessage for [%errordiv%]
         $trimlogin = trim($login);
-        if (empty($trimlogin))
-        {
+        if (empty($trimlogin)) {
             $errormessage = "Please enter a username.";
-        }
-        else 
-        {
+        } else {
             loadCoreLanguage(false);
-            if ($member->isHalt())
-                $errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT , $login);
-            else
+            if ($member->isHalt()) {
+                $errormessage = sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, $login);
+            } else {
                 $errormessage = 'Login failed for ' . $login;
+            }
         }
         $param = array('username' => $login);
         $manager->notify('LoginFailed', $param);
         ACTIONLOG::add(INFO, $errormessage);
     }
-} elseif (($action == 'logout') && (!headers_sent() ) && cookieVar($CONF['CookiePrefix'] . 'user') ) {
+} elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')) {
     // remove cookies on logout
-    setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
-    setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+    setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'],
+        $CONF['CookieSecure']);
+    setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'],
+        $CONF['CookieSecure']);
     $param = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
     $manager->notify('Logout', $param);
-} elseif (cookieVar($CONF['CookiePrefix'] . 'user') ) {
+} elseif (cookieVar($CONF['CookiePrefix'] . 'user')) {
     // Cookie Authentication
-    $ck=cookieVar($CONF['CookiePrefix'] . 'loginkey');
+    $ck = cookieVar($CONF['CookiePrefix'] . 'loginkey');
     // secure cookie key
-    $ck=substr($ck,0,32); // avoid md5 collision by using a long key
-    if ($CONF['secureCookieKey']!=='none') $ck=md5($ck.$CONF['secureCookieKeyIP']);
-    $res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck );
+    $ck = substr($ck, 0, 32); // avoid md5 collision by using a long key
+    if ($CONF['secureCookieKey'] !== 'none') {
+        $ck = md5($ck . $CONF['secureCookieKeyIP']);
+    }
+    $res = $member->cookielogin(cookieVar($CONF['CookiePrefix'] . 'user'), $ck);
     unset($ck);
 
     // renew cookies when not on a shared computer
-    if ($res && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) && (!headers_sent() ) ) {
+    if ($res && (cookieVar($CONF['CookiePrefix'] . 'sharedpc') != 1) && (!headers_sent())) {
         $member->setCookieKey(cookieVar($CONF['CookiePrefix'] . 'loginkey'));
         $member->setCookies();
     }
@@ -417,7 +444,7 @@ ticketForPlugin();
 // first, let's see if the site is disabled or not. always allow admin area access.
 if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
     $url = trim($CONF['DisableSiteURL']);
-    if (strlen($url)>0) {
+    if (strlen($url) > 0) {
         redirect($url);
     } else {
         if (!headers_sent()) {
@@ -451,17 +478,19 @@ include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}entity.php");
 include_once("{$DIR_LIBS}CoreCachedData.php");
 
-if (version_compare('5.1.0',PHP_VERSION,'<=')) {
+if (version_compare('5.1.0', PHP_VERSION, '<=')) {
     // register autoload class function / PHP >= 5.1.0
-    spl_autoload_register('loadCoreClassFor_spl'.(version_compare('5.3.0',PHP_VERSION,'<=') ? '' : '_prephp53'));
+    spl_autoload_register('loadCoreClassFor_spl' . (version_compare('5.3.0', PHP_VERSION, '<=') ? '' : '_prephp53'));
 }
 
 // set lastVisit cookie (if allowed)
-if (!headers_sent() ) {
+if (!headers_sent()) {
     if ($CONF['LastVisit']) {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+        setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'],
+            $CONF['CookieDomain'], $CONF['CookieSecure']);
     } else {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'], $CONF['CookieSecure']);
+        setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'],
+            $CONF['CookieDomain'], $CONF['CookieSecure']);
     }
 }
 
@@ -471,7 +500,7 @@ $language = getLanguageName();
 
 // check if valid charset
 if (!encoding_check(false, false, _CHARSET)) {
-    foreach(array($_GET, $_POST) as $input) {
+    foreach (array($_GET, $_POST) as $input) {
         array_walk($input, 'encoding_check');
     }
 }
@@ -492,8 +521,7 @@ if (!defined('_MEMBERS_BYPASS'))
 */
 
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
-if (!defined('_ARCHIVETYPE_MONTH') )
-{
+if (!defined('_ARCHIVETYPE_MONTH')) {
     define('_ARCHIVETYPE_DAY', 'day');
     define('_ARCHIVETYPE_MONTH', 'month');
     define('_ARCHIVETYPE_YEAR', 'year');
@@ -532,21 +560,21 @@ if ($CONF['URLMode'] == 'pathinfo') {
 
     $parsed = false;
     $param = array(
-        'type'        =>  basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
-        'info'        =>  $virtualpath,
-        'complete'    => &$parsed
+        'type' => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
+        'info' => $virtualpath,
+        'complete' => &$parsed
     );
     $manager->notify('ParseURL', $param);
 
     if (!$parsed) {
         // default implementation
-        $data = explode("/", $virtualpath );
+        $data = explode("/", $virtualpath);
         for ($i = 0; $i < sizeof($data); $i++) {
             switch ($data[$i]) {
                 case $CONF['ItemKey']: // item/1 (blogid)
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $itemid = intval($data[$i]);
                     }
                     break;
@@ -554,19 +582,19 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['ArchivesKey']: // archives/1 (blogid)
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $archivelist = intval($data[$i]);
                     }
                     break;
 
                 case $CONF['ArchiveKey']: // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-                    if ((($i + 1) < sizeof($data) ) && (!strstr($data[$i + 1], '-') ) ) {
+                    if ((($i + 1) < sizeof($data)) && (!strstr($data[$i + 1], '-'))) {
                         $blogid = intval($data[++$i]);
                     }
 
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $archive = $data[$i];
                     }
                     break;
@@ -575,7 +603,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['BlogKey']: // blog/1
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $blogid = intval($data[$i]);
                     }
                     break;
@@ -584,7 +612,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case 'catid':
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $catid = intval($data[$i]);
                     }
                     break;
@@ -592,7 +620,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['MemberKey']:
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $memberid = intval($data[$i]);
                     }
                     break;
@@ -600,7 +628,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['SpecialskinKey']:
                     $i++;
 
-                    if ($i < sizeof($data) ) {
+                    if ($i < sizeof($data)) {
                         $special = $data[$i];
                         $_REQUEST['special'] = $special;
                     }
@@ -619,7 +647,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
     New in 3.60
 */
 $param = array(
-    'type' => basename(serverVar('SCRIPT_NAME') ), // e.g. item, blog, ...
+    'type' => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
     'info' => $virtualpath
 );
 $manager->notify('PostParseURL', $param);

@@ -14,7 +14,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-function getVar($name, $default=NULL) {
+function getVar($name, $default = null)
+{
     if (!isset($_GET[$name])) {
         return $default;
     }
@@ -22,7 +23,8 @@ function getVar($name, $default=NULL) {
     return $_GET[$name];
 }
 
-function postVar($name, $default=NULL) {
+function postVar($name, $default = null)
+{
     if (!isset($_POST[$name])) {
         return $default;
     }
@@ -30,7 +32,8 @@ function postVar($name, $default=NULL) {
     return $_POST[$name];
 }
 
-function cookieVar($name, $default=NULL) {
+function cookieVar($name, $default = null)
+{
     if (!isset($_COOKIE[$name])) {
         return $default;
     }
@@ -38,15 +41,23 @@ function cookieVar($name, $default=NULL) {
     return $_COOKIE[$name];
 }
 
-function requestVar($name, $default=NULL) {
-    if(array_key_exists($name,$_REQUEST)) return $_REQUEST[$name];
-    if( array_key_exists($name,$_GET))    return $_GET[$name];
-    if( array_key_exists($name,$_POST))   return $_POST[$name];
-    
+function requestVar($name, $default = null)
+{
+    if (array_key_exists($name, $_REQUEST)) {
+        return $_REQUEST[$name];
+    }
+    if (array_key_exists($name, $_GET)) {
+        return $_GET[$name];
+    }
+    if (array_key_exists($name, $_POST)) {
+        return $_POST[$name];
+    }
+
     return $default;
 }
 
-function serverVar($name, $default=NULL) {
+function serverVar($name, $default = null)
+{
     if (!isset($_SERVER[$name])) {
         return $default;
     }
@@ -54,12 +65,14 @@ function serverVar($name, $default=NULL) {
     return $_SERVER[$name];
 }
 
-function stripslashes_array($data) {
+function stripslashes_array($data)
+{
     return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
 // integer array from request
-function requestIntArray($name) {
+function requestIntArray($name)
+{
     if (!isset($_REQUEST[$name])) {
         return;
     }
@@ -68,7 +81,8 @@ function requestIntArray($name) {
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
-function requestArray($name) {
+function requestArray($name)
+{
     if (!isset($_REQUEST[$name])) {
         return;
     }
@@ -78,21 +92,26 @@ function requestArray($name) {
 
 // add all the variables from the request as hidden input field
 // @see globalfunctions.php#passVar
-function passRequestVars() {
+function passRequestVars()
+{
     foreach ($_REQUEST as $key => $value) {
-        if (($key == 'action') && ($value != requestVar('nextaction')))
+        if ($key === 'action' && $value != requestVar('nextaction')) {
             $key = 'nextaction';
+        }
 
         // a nextaction of 'showlogin' makes no sense
-        if (($key == 'nextaction') && ($value == 'showlogin'))
+        if ($key === 'nextaction' && $value === 'showlogin') {
             continue;
+        }
 
-        if (($key != 'login') && ($key != 'password'))
+        if ($key !== 'login' && $key !== 'password') {
             passVar($key, $value);
+        }
     }
 }
 
-function postFileInfo($name, $default=NULL) {
+function postFileInfo($name, $default = null)
+{
     if (!isset($_FILES[$name])) {
         return $default;
     }
@@ -100,7 +119,8 @@ function postFileInfo($name, $default=NULL) {
     return $_FILES[$name];
 }
 
-function setOldAction($value) {
+function setOldAction($value)
+{
     $_POST['oldaction'] = $value;
 }
 
@@ -109,22 +129,46 @@ function setOldAction($value) {
 //
 
 // removes magic quotes if that option is enabled
-function undoMagic($data) {
-    trigger_error('Function '. __FUNCTION__ . '() is deperecated', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
-    if (!get_magic_quotes_gpc())
+function undoMagic($data)
+{
+    trigger_error(
+        sprintf(
+            'Function %s() is deperecated'
+            , __FUNCTION__
+        ), defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+    );
+    if (!get_magic_quotes_gpc()) {
         return $data;
-    if (ini_get('magic_quotes_sybase') != 1)
-        return stripslashes_array($data);
-    else
+    }
+    if (ini_get('magic_quotes_sybase') == 1) {
         return undoSybaseQuotes_array($data);
+    }
+
+    return stripslashes_array($data);
 }
 
-function undoSybaseQuotes_array($data) {
-    trigger_error('Function '. __FUNCTION__ . '() is deperecated', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
-    return is_array($data) ? array_map('undoSybaseQuotes_array', $data) : str_replace("''", "'", $data);
+function undoSybaseQuotes_array($data)
+{
+    trigger_error(
+        sprintf(
+            'Function %s() is deperecated'
+            , __FUNCTION__
+        )
+        , defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+    );
+    if (is_array($data)) {
+        return array_map('undoSybaseQuotes_array', $data);
+    }
+    return str_replace("''", "'", $data);
 }
 
-function undoSybaseQuotes($data) {
-    trigger_error('Function '. __FUNCTION__ . '() is deperecated', defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
+function undoSybaseQuotes($data)
+{
+    trigger_error(
+        sprintf(
+            'Function %s() is deperecated'
+            , __FUNCTION__
+        ), defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+    );
     return str_replace("''", "'", $data);
 }

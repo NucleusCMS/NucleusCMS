@@ -1,7 +1,9 @@
 <?php
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
- * Copyright (C) 2002-2016 The Nucleus Group
+ * Copyright (C) 2002-2020 The Nucleus Group
+ *
+ * lastedit: yotaca at 20200720
  *
  * This program is free software; you can redistribute it and/or
  * modify it under the terms of the GNU General Public License
@@ -29,28 +31,29 @@ include_once('functions.inc.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
 include_once('../nucleus/libs/vars4.1.0.php');
 
-define('NC_BASE_PATH', str_replace(array('\\','install'), array('/',''), dirname(__FILE__)));
+define('NC_BASE_PATH', str_replace(array('\\', 'install'), array('/', ''), __DIR__));
 define('NC_SITE_URL', getSiteUrl());
 
-$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0',PHP_VERSION, '<=');
-define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0) ); // allow sqlite install , boolean
+$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0', PHP_VERSION, '<=');
+define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0)); // allow sqlite install , boolean
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
-define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION' , '5.0.5'); // (string) , format : dot separated
+define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '5.0.5'); // (string) , format : dot separated
 
 define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
 
-$path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
+$path = @preg_split('/[?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
-if (preg_match('#/install$#', $path))
-{
+if (preg_match('#/install$#', $path)) {
     header("Location: " . $path . "/");
     exit;
 }
 
-if (DEBUG_INSTALL_QUERY)
-    { global $CONF; $CONF=array('debug'=>1); }
+if (DEBUG_INSTALL_QUERY) {
+    global $CONF;
+    $CONF = array('debug' => 1);
+}
 
 include_once('../nucleus/libs/version.php');
 
@@ -58,104 +61,67 @@ $install_lang_defs = get_install_lang_defs();
 $install_lang_keys = get_install_lang_keys();
 
 global $lang;
-if (isset($_POST['lang']))
-    $lang = strtolower( $_POST['lang'] );
-else if (isset($_GET['lang']))
-    $lang = strtolower( $_GET['lang'] );
-
-if ($lang != '' && !in_array($lang, $install_lang_keys))
-    $lang = 'en';
-else if ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_${lang}.php"))
-{
-   // do nothing
+if (isset($_REQUEST['lang'])) {
+    $lang = strtolower($_REQUEST['lang']);
 }
-else
-{
+
+if (!$lang) {
     $v = '';
-    $http_lang = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-    foreach($http_lang as $key)
-    {
-        if (!isset($install_lang_defs[$key]))
-        {
+    $http_lang = explode('-', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+
+    foreach ($http_lang as $key) {
+        if (!isset($install_lang_defs[$key])) {
             $key = substr($key, 2);
-            if (!isset($install_lang_defs[$key]))
+            if (!isset($install_lang_defs[$key])) {
                 continue;
+            }
         }
-        if ($key != 'en' && in_array($key, $install_lang_keys)
-                         && is_file("./install_lang_${key}.php") )
-           {  $v = $lang = $key; break; }
+        if ($key !== 'en' && in_array($key, $install_lang_keys) && is_file("./install_lang_${key}.php")) {
+            $v = $lang = $key;
+            break;
+        }
     }
-    if (!$v)
-       $lang = 'en';
+    if (!$v) {
+        $lang = 'en';
+    }
 }
 
-    define('INSTALL_LANG' , $lang);
-    include_once("./install_lang_${lang}.php");
+define('INSTALL_LANG', $lang);
+include_once(sprintf('./install_lang_%s.php', $lang));
 
-    if ($lang != 'en')
-    {
-        ob_start();
-        include_once("./install_lang_en.php");
-        ob_end_clean();
-    }
-
-// array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
-// directory.
-//
-// example:
-//     array('NP_CKEditor', 'NP_Text')
 $aConfPlugsToInstall = array(
     'NP_SkinFiles',
-//        'NP_CustomURL',
-//        'NP_CKEditor',
 );
 
+$aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default');
 
-// array with skins to install. skins must be present under the skins/ directory with
-// a subdirectory having the same name that contains a skinbackup.xml file
-//
-// example:
-//     array('base','rsd')
-$aConfSkinsToImport = array('atom','rss2.0','rsd','default');
-
-/*
-    -- End Of Configurable Part --
-*/
-
-// don't give warnings for uninitialized vars
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
-if (version_compare(phpversion(), NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
+if (version_compare(PHP_VERSION, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
     $msg = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
     $errors = array($msg);
     showErrorMessages($errors); // exit to instalation
 }
 
-// make sure there's no unnecessary escaping:
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    set_magic_quotes_runtime(0);
-}
-
-// if there are some plugins or skins to import, do not include vars
-// in globalfunctions.php again... so set a flag
-if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
+if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
     global $CONF;
     $CONF['installscript'] = 1;
 }
 
-
-// include core classes that are needed for login & plugin handling
-if (!function_exists('mysql_query')) include_once('../nucleus/libs/sql/mysql_emulate.php');
-else                                 define('_EXT_MYSQL_EMULATE' , 0);
+if (!function_exists('mysql_query')) {
+    include_once('../nucleus/libs/sql/mysql_emulate.php');
+} else {
+    define('_EXT_MYSQL_EMULATE', 0);
+}
 
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
-if ( ENABLE_SQLITE_INSTALL && (postVar('install_db_type') == 'sqlite')) {
+if (ENABLE_SQLITE_INSTALL && (postVar('install_db_type') === 'sqlite')) {
     $DB_DRIVER_NAME = 'sqlite';
     $DB_PHP_MODULE_NAME = 'pdo';
 }
 
 //set the handler if different from mysql (or mysqli)
-if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME)==0) {
+if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME) === 0) {
     $mode1 = INSTALL_PRIORITY_MYSQL_MODULE && (extension_loaded('mysql') || extension_loaded('mysqli'));
     if ($mode1) {
         $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
@@ -164,94 +130,102 @@ if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME)==0) {
         $DB_DRIVER_NAME = 'mysql';
     }
 }
-include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');
+include_once(sprintf('../nucleus/libs/sql/%s.php', $DB_PHP_MODULE_NAME));
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
-if ($DB_PHP_MODULE_NAME == 'pdo') {
-    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) doError(_ERROR1);
+if ($DB_PHP_MODULE_NAME === 'pdo') {
+    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) {
+        doError(_ERROR1);
+    }
+} elseif (!function_exists('mysql_query')) {
+    _doError(_ERROR1);
 }
-elseif (!function_exists('mysql_query') ) _doError(_ERROR1);
 
 // check config.php, v3.80-
 if (@is_file('../config.php')) {
     _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
 }
 
-if (postVar('action') == 'go') doInstall();
-else                           showInstallForm();
-
+if (postVar('action') === 'go') {
+    doInstall();
+} else {
+    showInstallForm();
+}
 exit;
 
-
-
-/*
- * Shows error message
- * 
- * @param	$msg
- * 			error message
- */
-function _doError($msg) {
+function _doError($msg)
+{
+    global $lang;
     ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="robots" content="noindex,nofollow,noarchive" />
-    <title><?php echo _TITLE; ?></title>
-    <style>@import url('../nucleus/styles/manual.css');</style>
-</head>
-<body>
-    <div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+    <!DOCTYPE html>
+    <html lang="<?php echo $lang; ?>" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex,nofollow,noarchive">
+        <title><?php echo _TITLE; ?></title>
+        <link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css"/>
+    </head>
+    <body>
+    <div style="text-align:center">
+        <img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>"/>
+    </div>
     <h1><?php echo _ERROR27; ?></h1>
+    <p>
+        <?php echo _ERROR28; ?>
+    </p>
+    <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted ">
+        <?php echo $msg; ?>
+    </div>
+    <p>
+        <a href="index.php" onclick="history.back();return false;">
+            <?php echo _TEXT17; ?>
+        </a>
+    </p>
+    </body>
+    </html>
 
-    <p><?php echo _ERROR28; ?></p>
-    <div style="color: #ff0000; border-color: #c0dcc0; border-style:dotted "><?php echo $msg; ?></div>
-
-    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
-</body>
-</html>
-
-<?php
+    <?php
     exit;
 }
 
-/*
- * Shows error messages
- * 
- * @param	$errors
- * 			array with error messages
- */
-function showErrorMessages($errors) {
+function showErrorMessages($errors)
+{
+    global $lang;
     ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml">
-<head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <meta name="robots" content="noindex,nofollow,noarchive" />
-    <title><?php echo _TITLE; ?></title>
-    <link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css" />
-</head>
-<body>
-    <div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+    <!DOCTYPE html>
+    <html lang="<?php echo $lang; ?>" prefix="og: http://ogp.me/ns#">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="robots" content="noindex,nofollow,noarchive">
+        <title><?php echo _TITLE; ?></title>
+        <link rel="stylesheet" type="text/css" href="../nucleus/styles/manual.css"/>
+    </head>
+    <body>
+    <div style="text-align:center">
+        <img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>"/>
+    </div>
     <h1><?php echo _ERROR27; ?></h1>
-
-    <p><?php echo _ERROR29; ?>:</p>
-
+    <p>
+        <?php echo _ERROR29; ?>:
+    </p>
     <ul>
-
-<?php
-    while($msg = array_shift($errors) ) {
-        echo '<li>' . $msg . '</li>';
-    }
-?>
-
+        <?php
+        while ($msg = array_shift($errors)) {
+            echo '<li>' . $msg . '</li>';
+        }
+        ?>
     </ul>
+    <p>
+        <a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a>
+    </p>
+    </body>
+    </html>
 
-    <p><a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a></p>
-</body>
-</html>
-
-<?php
+    <?php
     exit;
 }
