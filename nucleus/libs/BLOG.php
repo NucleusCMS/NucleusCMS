@@ -810,12 +810,14 @@ class BLOG
 
             $data['blogid'] = $this->getID();
             $data['blogurl'] = $blogurl;
+
             $param = array(
                 'catid' => $data['catid'],
                 'name' => $data['catname'],
                 'extra' => $linkparams
             );
             $data['catlink'] = createLink( 'category', $param);
+            
             $data['self'] = $CONF['Self'];
 
             //catiscurrent
