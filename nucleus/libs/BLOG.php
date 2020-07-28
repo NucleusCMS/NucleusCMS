@@ -24,7 +24,6 @@ require_once dirname(__FILE__) . '/ITEMACTIONS.php';
 
 class BLOG
 {
-
     // blog id
     public $blogid;
 
@@ -103,9 +102,7 @@ class BLOG
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
             . ' and i.itime<' . mysqldate($timestamp_end);
 
-
         $this->readLogAmount($templatename, 0, $extra_query, '', 1, 1);
-
     }
 
     /**
@@ -304,7 +301,6 @@ class BLOG
         return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0, 0);
     }
 
-
     /**
      * Adds an item to this blog
      */
@@ -398,7 +394,6 @@ class BLOG
         $ascii = toAscii($body);
 
         $mailto_msg = _NOTIFY_NI_MSG . " \n";
-//        $mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $itemid . "\n\n";
         $temp = parse_url($CONF['Self']);
         if ($temp['scheme']) {
             $mailto_msg .= createItemLink($itemid) . "\n\n";
@@ -421,7 +416,6 @@ class BLOG
         $notify = new NOTIFICATION($this->getNotifyAddress());
         $notify->notify($mailto_title, $mailto_msg, $frommail);
     }
-
 
     /**
      * Creates a new category for this blog
@@ -489,9 +483,7 @@ class BLOG
         } else {
             return 0;
         }
-
     }
-
 
     /**
      * Searches all months of this blog for the given query
@@ -747,17 +739,15 @@ class BLOG
         echo TEMPLATE::fill($tplt, $data);
     }
 
-
     /**
      * Shows the list of categories using a given template
      */
     function showCategoryList($template)
     {
-        global $CONF, $manager;
-
-        // determine arguments next to catids
-        // I guess this can be done in a better way, but it works
-        global $archive, $archivelist;
+        global $CONF;
+        global $manager;
+        global $archive;
+        global $archivelist;
 
         $linkparams = array();
         if ($archive) {
@@ -774,29 +764,31 @@ class BLOG
             }
         }
 
-        //$blogurl = $this->getURL() . $qargs;
-        //$blogurl = createBlogLink($this->getURL(), $linkparams);
-
         $template =& $manager->getTemplate($template);
 
-        //: Change: Set nocatselected variable
         if ($this->getSelectedCategory()) {
             $nocatselected = 'no';
         } else {
             $nocatselected = 'yes';
         }
 
-        echo TEMPLATE::fill((isset($template['CATLIST_HEADER']) ? $template['CATLIST_HEADER'] : null),
-            array(
-                'blogid' => $this->getID(),
-                'blogurl' => $blogurl,
-                'self' => $CONF['Self'],
-                //: Change: Set catiscurrent template variable for header
-                'catiscurrent' => $nocatselected,
-                'currentcat' => $nocatselected
-            ));
+        // if文の書式変更
+        $template_catlist_header = null;
+        if(isset($template['CATLIST_HEADER'])){
+            $template_catlist_header = $template['CATLIST_HEADER'];
+        }
+        $template_catlist_header_param = array(
+            'blogid' => $this->getID(),
+            'blogurl' => $blogurl,
+            'self' => $CONF['Self'],
+            'catiscurrent' => $nocatselected,
+            'currentcat' => $nocatselected
+        );
+        echo TEMPLATE::fill( $template_catlist_header, $template_catlist_header_param );
 
-        $query = 'SELECT catid, cdesc as catdesc, cname as catname FROM ' . sql_table('category') . ' WHERE cblog=' . $this->getID();
+        //オーダー番号追加 (yotaca: 2020/07/22)
+        $query = 'SELECT catid, cdesc, cname, corder FROM '.sql_table('category').' WHERE cblog=' . $this->getID();
+
         if (intval($CONF['DatabaseVersion']) >= 371) {
             $query .= ' ORDER BY corder ASC,cname ASC';
         } else {
@@ -804,18 +796,27 @@ class BLOG
         }
         $res = sql_query($query);
 
-
         while ($data = sql_fetch_assoc($res)) {
+            $data['catname'] = $data['cname']; //カテゴリーネーム設定 (yotaca: 2020/07/23)
+            $data['catdesc'] = $data['cdesc']; //カテゴリー詳細 (yotaca: 2020/07/23)
+
+            $data['catorder'] = $data['corder']; //オーダー番号追加:start (yotaca: 2020/07/23)
+            $c = $this->hnmCategoryType($data['corder']);
+            $data['cattype'] = $c['type'];
+            $data['catparent'] = $c['parnt'];
+            $data['catchild'] = $c['child'];
+            $data['catclass'] = $c['cls']; //オーダー番号追加:end (yotaca: 2020/07/23)
+
             $data['blogid'] = $this->getID();
             $data['blogurl'] = $blogurl;
-            $data['catlink'] = createLink(
-                'category',
-                array(
-                    'catid' => $data['catid'],
-                    'name' => $data['catname'],
-                    'extra' => $linkparams
-                )
+
+            $param = array(
+                'catid' => $data['catid'],
+                'name' => $data['catname'],
+                'extra' => $linkparams
             );
+            $data['catlink'] = createLink( 'category', $param);
+            
             $data['self'] = $CONF['Self'];
 
             //catiscurrent
@@ -827,10 +828,6 @@ class BLOG
                     $data['catiscurrent'] = 'yes';
                     $data['currentcat'] = 'yes';
                 }
-                /*else {
-                    $data['catiscurrent'] = 'no';
-                    $data['currentcat'] = 'no';
-                }*/
             } else {
                 global $itemid;
                 if (intval($itemid) && $manager->existsItem(intval($itemid), 0, 0)) {
@@ -840,30 +837,32 @@ class BLOG
                         $data['catiscurrent'] = 'yes';
                         $data['currentcat'] = 'yes';
                     }
-                    /*else {
-                        $data['catiscurrent'] = 'no';
-                        $data['currentcat'] = 'no';
-                    }*/
                 }
             }
 
             $param = array('listitem' => &$data);
-            $manager->notify('PreCategoryListItem', $param);
+            $manager->notify('PreCategoryListItem', $param );
 
-            echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
-            //$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $data);
-            //echo strftime($temp, $current->itime);
-
+            // if文の書式変更
+            $template_catlist_listitem = null;
+            if(isset($template['CATLIST_LISTITEM'])){
+                $template_catlist_listitem = $template['CATLIST_LISTITEM'];
+            }
+            echo TEMPLATE::fill( $template_catlist_listitem, $data );
         }
-
         sql_free_result($res);
 
-        echo TEMPLATE::fill((isset($template['CATLIST_FOOTER']) ? $template['CATLIST_FOOTER'] : null),
-            array(
-                'blogid' => $this->getID(),
-                'blogurl' => $blogurl,
-                'self' => $CONF['Self']
-            ));
+        // if文の書式変更
+        $template_catlist_footer = null;
+        if(isset($template['CATLIST_FOOTER'])){
+            $template_catlist_footer = $template['CATLIST_FOOTER'];
+        }
+        $template_catlist_footer_param = array(
+            'blogid' => $this->getID(),
+            'blogurl' => $blogurl,
+            'self' => $CONF['Self']
+        );
+        echo TEMPLATE::fill( $template_catlist_footer, $template_catlist_footer_param );
     }
 
     /**
@@ -921,7 +920,6 @@ class BLOG
 
             $list = array();
 
-//            $list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
             $list['bloglink'] = createBlogidLink($data['bnumber']);
 
             $list['blogdesc'] = $data['bdesc'];
@@ -948,7 +946,6 @@ class BLOG
                 'sitename' => $CONF['SiteName'],
                 'siteurl' => $CONF['IndexURL']
             ));
-
     }
 
     /**
@@ -1006,7 +1003,6 @@ class BLOG
             . "     bincludesearch=" . intval($this->getSearchable())
             . " WHERE bnumber=" . intval($this->getID());
         sql_query($query);
-
     }
 
     /**
@@ -1019,7 +1015,6 @@ class BLOG
             fputs($f_update, $this->getCorrectTime());
             fclose($f_update);
         }
-
     }
 
     /**
@@ -1214,7 +1209,6 @@ class BLOG
     {
         $this->setSetting('bnotifytype', $val);
     }
-
 
     function getTimeOffset()
     {
@@ -1648,4 +1642,75 @@ class BLOG
         }
     }
 
+    //オーダー番号追加 (yotaca: 2018/5/19) 
+    function hnmCategoryType($val)
+    {
+        $r = array('type'=>'', 'parnt'=>0, 'child'=>0, 'cls'=>'', 'sts'=>'');
+        $p = "parent_cat";
+        $c = "child_cat";
+
+        if(!$val){
+            $r["type"] = $p;
+
+        }else{
+            $val = strval(intval($val));
+            $len = strlen($val);
+
+            if($len <= 2){
+                $r["type"] = $p;
+                $r["parnt"] = $val;
+
+            }elseif($len >= 3){
+                $r["parnt"] = substr($val, 0, -2);
+                $r["child"] = substr($val, -2);
+
+                if($r["child"]=="00"){
+                    $r["type"] = $p;
+                }else{
+                    $r["type"] = $c;
+                }
+            }
+        }
+
+        $r["sts"] = $this->hnmGetCategoryid(); // カレント追加(yotaca: 2018/7/1)
+        if($r["sts"] == $r["parnt"]){
+            $r["sts"] = "current ";
+        }else{
+             $r["sts"] = "";
+        }
+
+        $r["cls"] = $r["sts"].$r["type"]." p_".$r["parnt"]." c_".$r["child"]; // カレント追加(yotaca: 2018/7/1)
+        return $r;
+    }
+
+    //カレントカテゴリのオーダー番号を抽出します。 (yotaca: 2018/7/1)
+    function hnmGetCategoryid()
+    { 
+        global $catid,$itemid;
+
+        if($itemid){
+            $cid = intval($this->hnmGetItemCatid($itemid));
+        }elseif($catid){
+            $cid = $catid;
+        }else{
+            return null;
+        }
+
+        $r = $this->getCategoryOrder($cid);
+        $r = strval($r);
+
+        if(strlen($r) >= 3){ $r = substr($r, 0, -2); }
+        else{ return null; }
+        return $r;
+    }
+
+    //アイテムからカテゴリIDを抽出します。 (yotaca: 2018/7/1)
+    function hnmGetItemCatid($itemid)
+    {
+        $itemid = intval($itemid);
+        $query =  'SELECT i.icat as catid FROM '.sql_table('item').' as i WHERE i.inumber=' . $itemid.' LIMIT 1';
+        $r = sql_query($query);
+        $r = sql_fetch_assoc($r);
+        return $r['catid'];
+    }
 }
