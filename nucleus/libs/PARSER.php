@@ -18,7 +18,7 @@
 if ( ! function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/BaseActions.php';
+require_once __DIR__ . '/BaseActions.php';
 
 /**
  * This is the parser class of Nucleus. It is used for various things (skin
@@ -26,7 +26,6 @@ require_once dirname(__FILE__) . '/BaseActions.php';
  */
 class PARSER
 {
-
     // array with the names of all allowed actions
     public $actions;
 
@@ -101,11 +100,11 @@ class PARSER
     {
         $pieces = preg_split('/' . $this->delim . '/', $contents);
         $maxidx = count($pieces);
-        for ($idx = 0; $idx < $maxidx; $idx++) {
-            echo $pieces[$idx];
+        foreach ($pieces as $idx => $idxValue) {
+            echo $idxValue;
             $idx++;
             if ($idx < $maxidx) {
-                $this->doAction($pieces[$idx]);
+                $this->doAction($idxValue);
             }
         }
     }
@@ -117,7 +116,7 @@ class PARSER
      */
     public function doAction($action)
     {
-        global $manager, $CONF;
+        global $manager;
 
         if ( ! $action) {
             return;
@@ -144,22 +143,22 @@ class PARSER
 
         // skip execution of skinvars while inside an if condition which hides this part of the page
         if ( ! $this->handler->if_currentlevel
-             && ! in_array($actionlc,
-                array('else', 'elseif', 'endif', 'ifnot', 'elseifnot'))
-             && substr($actionlc, 0,
-                2) !== 'if') {
+             &&
+             ! in_array($actionlc, array('else', 'elseif', 'endif', 'ifnot', 'elseifnot'))
+             &&
+             strpos($actionlc, 'if') !== 0) {
             return;
         }
 
         if (in_array($actionlc, $this->actions) || $this->norestrictions) {
             call_user_func_array(array($this->handler, 'parse_' . $actionlc),
                 $params);
-        } elseif ($action == '_') {
+        } elseif ($action === '_') {
             // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
             global $manager;
             $paramText = trim($paramText);
             if (strlen($paramText) > 0) {
-                //               echo $this->handler->skin->_getText($paramText);
+                // echo $this->handler->skin->_getText($paramText);
                 echo $manager->_getText('skin', $paramText);
             }
 
@@ -190,22 +189,32 @@ class PARSER
             if (in_array('plugin', $this->actions)
                 && $manager->pluginInstalled('NP_' . $action)) {
                 if ( ! HAS_CATCH_ERROR) {
-                    $this->doAction('plugin(' . $action . $this->pdelim
-                                    . join($this->pdelim, $params) . ')');
+                    $this->doAction(sprintf(
+                        'plugin(%s%s%s)'
+                        , $action
+                        , $this->pdelim
+                        , implode($this->pdelim, $params)
+                    ));
                 } else {
                     try {
-                        $this->doAction('plugin(' . $action . $this->pdelim
-                                        . join($this->pdelim, $params) . ')');
+                        $this->doAction(sprintf(
+                            'plugin(%s%s%s)'
+                            , $action
+                            , $this->pdelim
+                            , implode($this->pdelim, $params)
+                        ));
                     } catch (Error $e) {
-                        global $member, $CONF;
+                        global $member;
                         if ($member && $member->isLoggedIn()
                             && $member->isAdmin()) {
-                            $NP_Name = 'NP_' . $action;
-                            $msg
-                                     = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                                $NP_Name, get_class($e), $e->getLine(),
-                                $e->getFile());
-                            if ($CONF['DebugVars']) {
+                            $msg = sprintf(
+                                'php critical error in plugin(%s):[%s] Line:%d (%s) : '
+                                , 'NP_' . $action
+                                , get_class($e)
+                                , $e->getLine()
+                                , $e->getFile()
+                            );
+                            if (confVar('DebugVars')) {
                                 var_dump($e->getMessage());
                             }
                             SYSTEMLOG::addUnique('error', 'Error',
@@ -218,11 +227,9 @@ class PARSER
                         }
                     }
                 }
-            } else {
-                if ($CONF['DebugVars'] == true) {
-                    echo '&lt;%', $action, '(', join($this->pdelim,
-                        $params), ')%&gt;';
-                }
+            } elseif (confVar('DebugVars')) {
+                echo '&lt;%', $action, '(', join($this->pdelim,
+                    $params), ')%&gt;';
             }
         }
     }
@@ -232,7 +239,6 @@ class PARSER
      *
      * @param $property additional parser property (e.g. include prefix of the
      *                  skin)
-     * @param $value    new value
      */
     public static function setProperty($property, $value)
     {
@@ -243,7 +249,7 @@ class PARSER
     /**
      * Get a property of the parser from the manager
      *
-     * @param $name name of the property
+     * @param $name string of the property
      */
     public static function getProperty($name)
     {
@@ -251,5 +257,4 @@ class PARSER
 
         return $manager->getParserProperty($name);
     }
-
 }

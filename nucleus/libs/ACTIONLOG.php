@@ -39,25 +39,28 @@ class ACTIONLOG
             $message = sprintf('[%s] %s', $member->getDisplayName(), $message);
         }
 
-        $timestamp = date('Y-m-d H:i:s',
-            $_SERVER['REQUEST_TIME']);    // format timestamp
+        $timestamp = date(
+            'Y-m-d H:i:s',
+            $_SERVER['REQUEST_TIME']
+        );    // format timestamp
         if ($DB_PHP_MODULE_NAME === 'pdo') {
-            sql_prepare_execute(sprintf(
-                'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)'
-                , sql_table('actionlog')
-            ), array(
-                    (string)$timestamp
-                ,
+            sql_prepare_execute(
+                sprintf(
+                    'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)',
+                    sql_table('actionlog')
+                ),
+                array(
+                    (string)$timestamp,
                     (string)$message,
                 )
             );
         } else {
             $message = sql_quote_string($message);        // add slashes
             $query   = sprintf(
-                "INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)"
-                , sql_table('actionlog')
-                , $timestamp
-                , $message
+                "INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)",
+                sql_table('actionlog'),
+                $timestamp,
+                $message
             );
             sql_query($query);
         }
@@ -84,15 +87,15 @@ class ACTIONLOG
 
         if ($DB_PHP_MODULE_NAME === 'pdo') {
             $query = sprintf(
-                "DELETE FROM `%s` WHERE message=?"
-                , sql_table('actionlog')
+                "DELETE FROM `%s` WHERE message=?",
+                sql_table('actionlog')
             );
             sql_prepare_execute($query, array((string)$msg));
         } else {
             $query = sprintf(
-                "DELETE FROM `%s` WHERE message=%s"
-                , sql_table('actionlog')
-                , sql_quote_string($msg)
+                "DELETE FROM `%s` WHERE message=%s",
+                sql_table('actionlog'),
+                sql_quote_string($msg)
             );
             sql_query($query);
         }
@@ -130,25 +133,26 @@ class ACTIONLOG
         $checked = 1;
 
         $iTotal = quickQuery(sprintf(
-            'SELECT COUNT(*) AS result FROM %s'
-            , sql_table('actionlog')
+            'SELECT COUNT(*) AS result FROM %s',
+            sql_table('actionlog')
         ));
 
         // if size > 500, drop back to about 250
         $iMaxSize  = 500;
         $iDropSize = 250;
         if ($iTotal > $iMaxSize) {
-            $tsChop = quickQuery(sprintf(
-                    'SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d,1'
-                    , sql_table('actionlog')
-                    , $iDropSize)
+            $tsChop = quickQuery(
+                sprintf(
+                    'SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d,1',
+                    sql_table('actionlog'),
+                    $iDropSize
+                )
             );
             sql_query(sprintf(
-                "DELETE FROM %s WHERE timestamp < '%s'"
-                , sql_table('actionlog')
-                , $tsChop
+                "DELETE FROM %s WHERE timestamp < '%s'",
+                sql_table('actionlog'),
+                $tsChop
             ));
         }
     }
-
 }

@@ -105,13 +105,12 @@ class BaseActions
         global $skinid;
         $skin = new SKIN($skinid);
         $file = $this->getIncludeFileName($filename);
-        if ( ! $skin->isValid && ! is_file($file)) {
+        if (!$skin->isValid && !is_file($file)) {
             return;
         }
-        $contents = (strpos($filename, '/') === false
-            ? $skin->getContent($filename) : false);
-        if ( ! $contents) {
-            if ( ! is_file($file)) {
+        $contents = strpos($filename, '/') === false ? $skin->getContent($filename) : false;
+        if (!$contents) {
+            if (!is_file($file)) {
                 return;
             }
             $contents = file_get_contents($file);
@@ -168,8 +167,7 @@ class BaseActions
     {
         global $CONF;
 
-        echo $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix')
-             . $filename;
+        echo $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $filename;
     }
 
     /**
@@ -186,9 +184,7 @@ class BaseActions
     function _addIfCondition($condition)
     {
         $this->if_conditions[] = $condition;
-
         $this->_updateTopIfCondition();
-
         ob_start();
     }
 
@@ -221,7 +217,7 @@ class BaseActions
     function _updateIfExecute($condition)
     {
         $index = count($this->if_execute) - 1;
-        if ( ! isset($this->if_execute[$index])) {
+        if (!isset($this->if_execute[$index])) {
             $this->if_execute[$index] = 0;
         }
         $this->if_execute[$index] = $this->if_execute[$index] || $condition;
@@ -259,12 +255,11 @@ class BaseActions
      */
     function highlight(&$data)
     {
-        if ($this->aHighlight) {
-            return highlight($data, $this->aHighlight,
-                $this->template['SEARCH_HIGHLIGHT']);
-        } else {
+        if (!$this->aHighlight) {
             return $data;
         }
+
+        return highlight($data, $this->aHighlight, $this->template['SEARCH_HIGHLIGHT']);
     }
 
     /**
@@ -273,10 +268,7 @@ class BaseActions
     function parse_if()
     {
         $this->_addIfExecute();
-
-        $args      = func_get_args();
-        $condition = call_user_func_array(array($this, 'checkCondition'),
-            $args);
+        $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
         $this->_addIfCondition($condition);
     }
 
@@ -320,9 +312,7 @@ class BaseActions
             $this->_addIfCondition(0);
         } else {
             ob_end_clean();
-            $args      = func_get_args();
-            $condition = call_user_func_array(array($this, 'checkCondition'),
-                $args);
+            $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
             $this->_addIfCondition($condition);
         }
     }
@@ -333,11 +323,8 @@ class BaseActions
     function parse_ifnot()
     {
         $this->_addIfExecute();
-
-        $args      = func_get_args();
-        $condition = call_user_func_array(array($this, 'checkCondition'),
-            $args);
-        $this->_addIfCondition(! $condition);
+        $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
+        $this->_addIfCondition(!$condition);
     }
 
     /**
@@ -358,10 +345,8 @@ class BaseActions
             $this->_addIfCondition(0);
         } else {
             ob_end_clean();
-            $args      = func_get_args();
-            $condition = call_user_func_array(array($this, 'checkCondition'),
-                $args);
-            $this->_addIfCondition(! $condition);
+            $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
+            $this->_addIfCondition(!$condition);
         }
     }
 
@@ -386,5 +371,4 @@ class BaseActions
 
         $this->_updateTopIfCondition();
     }
-
 }

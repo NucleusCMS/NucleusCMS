@@ -1536,7 +1536,7 @@ echo hsc($value); ?>" /><?php
 /*
     Date format functions (to be used from [%date(..)%] skinvars
 */
-function formatDate($format, $timestamp, $defaultFormat, &$blog)
+function formatDate($format, $timestamp, $defaultFormat, $blog=null)
 {
     // apply blog offset (#42)
     $boffset = $blog ? $blog->getTimeOffset() * 3600 : 0;
