@@ -110,9 +110,8 @@ class MEDIA
     {
         if ($strFilter == '') {
             return 1;
-        } else {
-            return is_int(strpos(strtolower($strText), strtolower($strFilter)));
         }
+        return is_int(strpos(strtolower($strText), strtolower($strFilter)));
     }
 
     /**
