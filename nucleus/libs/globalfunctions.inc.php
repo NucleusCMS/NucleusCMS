@@ -2607,10 +2607,6 @@ function parseQuery($query = '', $ph = array())
         $query = join("\n", $query);
     }
 
-    if (str_contains($query, '<%')) {
-        $query = str_replace(array('<%', '%>'), array('[@', '@]'), $query);
-    }
-
     if ( ! is_array($ph)) {
         $ph = func_get_args();
     }
