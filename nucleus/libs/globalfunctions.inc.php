@@ -1334,45 +1334,37 @@ function createLink($type, $params)
     switch ($type) {
         case 'item':
             if ($usePathInfo) {
-                $url = sprintf('%s/%s/%s', $CONF['ItemURL'], $CONF['ItemKey'],
-                    $params['itemid']);
+                $url = sprintf('%s/%s/%s', $CONF['ItemURL'], $CONF['ItemKey'], $params['itemid']);
             } else {
-                $url = sprintf('%s?itemid=%s', $CONF['ItemURL'],
-                    $params['itemid']);
+                $url = sprintf('%s?itemid=%s', $CONF['ItemURL'], $params['itemid']);
             }
             break;
 
         case 'member':
             if ($usePathInfo) {
-                $url = sprintf('%s/%s/%s', $CONF['MemberURL'],
-                    $CONF['MemberKey'], $params['memberid']);
+                $url = sprintf('%s/%s/%s', $CONF['MemberURL'], $CONF['MemberKey'], $params['memberid']);
             } else {
-                $url = sprintf('%s?memberid=%s', $CONF['MemberURL'],
-                    $params['memberid']);
+                $url = sprintf('%s?memberid=%s', $CONF['MemberURL'], $params['memberid']);
             }
             break;
 
         case 'category':
             if ($usePathInfo) {
-                $url = sprintf('%s/%s/%s', $CONF['CategoryURL'],
-                    $CONF['CategoryKey'], $params['catid']);
+                $url = sprintf('%s/%s/%s', $CONF['CategoryURL'], $CONF['CategoryKey'], $params['catid']);
             } else {
-                $url = sprintf('%s?catid=%s', $CONF['CategoryURL'],
-                    $params['catid']);
+                $url = sprintf('%s?catid=%s', $CONF['CategoryURL'], $params['catid']);
             }
             break;
 
         case 'archivelist':
-            if ( ! $params['blogid']) {
+            if (!$params['blogid']) {
                 $params['blogid'] = $CONF['DefaultBlog'];
             }
 
             if ($usePathInfo) {
-                $url = sprintf('%s/%s/%s', $CONF['ArchiveListURL'],
-                    $CONF['ArchivesKey'], $params['blogid']);
+                $url = sprintf('%s/%s/%s', $CONF['ArchiveListURL'], $CONF['ArchivesKey'], $params['blogid']);
             } else {
-                $url = sprintf('%s?archivelist=%s', $CONF['ArchiveListURL'],
-                    $params['blogid']);
+                $url = sprintf('%s?archivelist=%s', $CONF['ArchiveListURL'], $params['blogid']);
             }
             break;
 
@@ -2284,12 +2276,11 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
     $status['result']   = true;
 
     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+    $pattern_php  = '#^NP_(.*)\.php$#';
+    $pattern      = '#^NP_(.*)$#';
     foreach ($files as $path) {
+        $item = [];
         $filename = ltrim(strrchr($path, '/'), '/');
-        $pattern_php  = '#^NP_(.*)\.php$#';
-        $pattern      = '#^NP_(.*)$#';
-        $item         = array();
-
         $saved_type = 0;
         if (is_file($path)) {  // NP_*.php
             // type 1 , old_admin_area
@@ -2308,6 +2299,7 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
             if (preg_match($pattern, $filename, $matches)) {
                 // type 4 or 5
                 $name              = $matches[1];
+                $shortname         = strtolower($name);
                 $pl_own_dir        = $path . '/';
                 $pl_own_dir_plfile = sprintf('%s%s.php', $pl_own_dir,
                     $filename);
@@ -2316,10 +2308,13 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
                 }
                 $item['dir'] = $pl_own_dir;
                 $item['php'] = $pl_own_dir_plfile;
-                if (is_dir($pl_own_dir . strtolower($name))) {
+                if (is_dir($pl_own_dir . $shortname)) {
                     $saved_type        = 4;
-                    $item['dir_admin'] = sprintf('%s%s/', $pl_own_dir,
-                        strtolower($name));
+                    $item['dir_admin'] = sprintf(
+                        '%s%s/',
+                        $pl_own_dir,
+                        $shortname
+                    );
                 } else {
                     $saved_type        = 5;
                     $item['dir_admin'] = $pl_own_dir;
@@ -2335,8 +2330,10 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
                         $pat .= $value;
                     }
                 }
-                $files = glob(sprintf('%s/NP_%s.php', $path, $pat),
-                    GLOB_NOSORT);
+                $files = glob(
+                    sprintf('%s/NP_%s.php', $path, $pat),
+                    GLOB_NOSORT
+                );
 
                 if ($files === false || count($files) == 0) {
                     continue;
@@ -2346,40 +2343,44 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
                 if ( ! preg_match($pattern_php, $sub_file, $matches)) {
                     continue;
                 }
+                
                 // type: 2 , old_admin_area
                 $name              = $matches[1];
                 $shortname         = strtolower($name);
                 $saved_type        = 2;
                 $item['dir']       = $SearchDir;
-                $item['php']       = sprintf('%s%s/%s', $SearchDir, $filename,
-                    $sub_file);
+                $item['php'] = sprintf(
+                    '%s%s/%s',
+                    $SearchDir,
+                    $filename,
+                    $sub_file
+                );
                 $item['dir_admin'] = sprintf('%s%s/', $SearchDir, $filename);
-                if (is_dir(sprintf('%s%s/%s', $SearchDir, $filename,
-                    $shortname))) {
+                if (is_dir(sprintf('%s%s/%s', $SearchDir, $filename, $shortname))) {
                     $saved_type        = 3;
-                    $item['dir_admin'] = sprintf('%s%s/%s/', $SearchDir,
-                        $filename, $shortname);
+                    $item['dir_admin'] = sprintf(
+                        '%s%s/%s/',
+                        $SearchDir,
+                        $filename,
+                        $shortname
+                    );
                 }
             }
         }
 
-        if ($saved_type) {
-            $shortname          = strtolower($name);
-            $item['name']       = $name;
-            $item['shortname']  = $shortname;
-            $item['class_name'] = 'NP_' . $name;
-            $item['feature_dir_type']
-                                = $saved_type; // type of Plugin Folder , 0: unkown, 1: normal, 2: has own dir
-            if (isset($items[$shortname])) {
-                // Note: duplication : show error or add log ?
-                if ($saved_type >= $items[$shortname]['feature_dir_type']) {
-                    continue;
-                }
+        $item['name']       = $name;
+        $item['shortname']  = $shortname;
+        $item['class_name'] = 'NP_' . $name;
+        $item['feature_dir_type'] = $saved_type; // type of Plugin Folder , 0: unkown, 1: normal, 2: has own dir
+        if (isset($items[$shortname]['feature_dir_type'])) {
+            // Note: duplication : show error or add log ?
+            if ($saved_type >= $items[$shortname]['feature_dir_type']) {
+                continue;
             }
-            unset($items[$shortname]);
-            $items[$shortname] = &$item;
-            unset($item);
         }
+        unset($items[$shortname]);
+        $items[$shortname] = &$item;
+        unset($item);
     }
 
     ksort($items);
