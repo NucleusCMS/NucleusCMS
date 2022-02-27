@@ -154,6 +154,7 @@ register_shutdown_function('sql_disconnect');
 
 // read config
 getConfig();
+setUrlKeys();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
 if ( ! isset($CONF['Self'])) {

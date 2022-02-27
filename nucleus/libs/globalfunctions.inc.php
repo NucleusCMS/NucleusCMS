@@ -2840,6 +2840,11 @@ function setDefaultConf()
     if ( ! isset($CONF['UsingAdminArea'])) {
         $CONF['UsingAdminArea'] = 0;
     }
+}
+
+function setUrlKeys() {
+    global $CONF;
+    
     if ($CONF['URLMode'] === 'pathinfo') {
         // initialize keywords if this hasn't been done before
         if ( ! isset($CONF['ItemKey']) || $CONF['ItemKey'] == '') {
