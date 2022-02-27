@@ -2261,19 +2261,16 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
     static $lists = array();
 
     $status    = array('result' => false);
-    $SearchDir = str_replace("\\", '/', $SearchDir);
-    if (strlen($SearchDir) > 0 && substr($SearchDir, -1, 1) !== '/') {
-        $SearchDir .= '/';
-    }
+    $SearchDir = rtrim(str_replace("\\", '/', $SearchDir), '/') . '/';
 
     if ($clearcache && isset($lists[$SearchDir])) {
         unset($lists[$SearchDir]);
     }
     if (isset($lists[$SearchDir])) {
         $status = array('result' => true, 'is_cache' => true);
-
         return $lists[$SearchDir];
     }
+    
     if ( ! is_dir($SearchDir)) {
         return false;
     }
@@ -2281,23 +2278,20 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
     $lists[$SearchDir] = array();
     $items             = &$lists[$SearchDir];
 
-    $dirhandle = opendir($SearchDir);
-    if ($dirhandle === false) {
-        return false;
-    }
+    $files = glob($SearchDir . 'NP_*');
 
     $status['is_cache'] = false;
     $status['result']   = true;
 
     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
-    while ($filename = readdir($dirhandle) !== false) {
-        $current_file = $SearchDir . $filename;
+    foreach ($files as $path) {
+        $filename = ltrim(strrchr($path, '/'), '/');
         $pattern_php  = '#^NP_(.*)\.php$#';
         $pattern      = '#^NP_(.*)$#';
         $item         = array();
 
         $saved_type = 0;
-        if (is_file($current_file)) {  // NP_*.php
+        if (is_file($path)) {  // NP_*.php
             // type 1 , old_admin_area
             if ( ! preg_match($pattern_php, $filename, $matches)) {
                 continue;
@@ -2314,7 +2308,7 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
             if (preg_match($pattern, $filename, $matches)) {
                 // type 4 or 5
                 $name              = $matches[1];
-                $pl_own_dir        = $current_file . '/';
+                $pl_own_dir        = $path . '/';
                 $pl_own_dir_plfile = sprintf('%s%s.php', $pl_own_dir,
                     $filename);
                 if ( ! (is_dir($pl_own_dir) && (is_file($pl_own_dir_plfile)))) {
@@ -2341,7 +2335,7 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
                         $pat .= $value;
                     }
                 }
-                $files = glob(sprintf('%s/NP_%s.php', $current_file, $pat),
+                $files = glob(sprintf('%s/NP_%s.php', $path, $pat),
                     GLOB_NOSORT);
 
                 if ($files === false || count($files) == 0) {
@@ -2387,7 +2381,6 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
             unset($item);
         }
     }
-    closedir($dirhandle);
 
     ksort($items);
 
