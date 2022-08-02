@@ -84,6 +84,8 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
 
 if (isset($CONF['debug']) && !empty($CONF['debug'])) {
     error_reporting(E_ALL); // report all errors!
+    if (defined('DEBUG_MODE_ERROR'))
+        error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
     ini_set('display_errors', 1);
 } else {
     if (!isset($CONF['UsingAdminArea']) || empty($CONF['UsingAdminArea'])) {
