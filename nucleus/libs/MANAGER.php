@@ -474,7 +474,7 @@ class MANAGER
     {
         $plugin = false;
         reset($this->plugins);
-        while (list($name) = each($this->plugins)) {
+        foreach ($this->plugins as $name => $obj) {
             if ($pid != $this->plugins[$name]->getId()) {
                 continue;
             }

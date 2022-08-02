@@ -197,7 +197,7 @@ if (!isset($member))
 		);
 		$manager->notify('RetrieveTrackback', $param);
 				
-		while (list(,$v) = each ($trackbacks)) {
+		foreach($trackbacks as $v) {
 			$tbstruct[] = new xmlrpcval(
 				array(
 					"pingTitle" => new xmlrpcval($v['title'], "string"),
