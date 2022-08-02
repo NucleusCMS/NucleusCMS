@@ -8016,7 +8016,7 @@ EOL;
             if (count($aFound) > 0)
             {
                 startUpError(
-                    _ERRORS_STARTUPERROR1. implode($aFound, '</li><li>')._ERRORS_STARTUPERROR2,
+                    _ERRORS_STARTUPERROR1. implode('</li><li>', $aFound)._ERRORS_STARTUPERROR2,
                     _ERRORS_STARTUPERROR3
                 );
             }
