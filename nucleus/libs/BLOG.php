@@ -552,7 +552,7 @@ class BLOG
      * @note
      *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
-    function getSqlSearch($query, $amountMonths = 0, &$highlight, $mode = '')
+    function getSqlSearch($query, $amountMonths = 0, &$highlight = null, $mode = '')
     {
         $searchclass = new SEARCH($query);
 

@@ -497,7 +497,7 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_daylink()
     {
-        echo createArchiveLink($this->blog->getID(), strftime('%Y-%m-%d', $this->currentItem->timestamp),
+        echo createArchiveLink($this->blog->getID(), date('Y-m-d', $this->currentItem->timestamp),
             $this->linkparams);
     }
 

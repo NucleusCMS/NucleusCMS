@@ -65,6 +65,9 @@ class PARSER
     function parse(&$contents)
     {
         global $manager;
+        if (is_null($contents)) {
+            return;
+        }
         if (strpos($contents, '<%') === false) {
             echo $contents;
             return;
