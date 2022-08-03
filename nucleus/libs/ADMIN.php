@@ -8716,7 +8716,7 @@ EOL;
                                     }
 
                                     $title = _ERRORS_STARTUPERROR3;
-                                    $msg = _ERRORS_STARTUPERROR1 . join($aFound, '</li><li>') . _ERRORS_STARTUPERROR2;
+                                    $msg = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
                                     // check core upgrade
                                     if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
                                         $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);

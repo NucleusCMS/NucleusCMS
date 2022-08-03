@@ -247,7 +247,17 @@ if ( ! function_exists('sql_fetch_assoc')) {
         }
         //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        $MYSQL_CONN = clone $SQL_DBH;
+        global $DB_DRIVER_NAME;
+        switch (strtolower($DB_DRIVER_NAME))
+        {
+            case 'sqlite':
+                $MYSQL_CONN = $SQL_DBH;
+                // Fatal error: Uncaught Error: Trying to clone an uncloneable object of class PDO
+                break;
+            default:
+                $MYSQL_CONN = clone $SQL_DBH;
+                break;
+        }
 
         return $SQL_DBH;
     }

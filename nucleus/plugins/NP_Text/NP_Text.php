@@ -125,11 +125,16 @@ class NP_Text extends NucleusPlugin {
 		}
 	}
 	
-	public function skin_incmodepref() {
-		global $currentSkinName;
-		$sql = sprintf("SELECT * FROM %s WHERE sdname = %s", sql_table("skin_desc"), sql_quote_string($currentSkinName));
-		$result = sql_query($sql);
-		$row = sql_fetch_assoc($result);
-		return array($row['sdincmode'], $row['sdincpref']);
-	}
+        public function skin_incmodepref() {
+            global $currentSkinName;
+            $sql = sprintf("SELECT * FROM %s WHERE sdname = %s", sql_table("skin_desc"), sql_quote_string($currentSkinName));
+            $result = sql_query($sql);
+            if ($result) {
+                $row = sql_fetch_assoc($result);
+                if (!empty($row) && is_array($row)) {
+                    return array($row['sdincmode'], $row['sdincpref']);
+                }
+            }
+            return array();
+        }
 }

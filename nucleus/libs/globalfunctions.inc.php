@@ -2796,7 +2796,10 @@ function _setDefaultUa()
 function _setErrorReporting()
 {
     global $CONF;
-    if (isset($CONF['debug']) && ! empty($CONF['debug'])) {
+    if (!isset($CONF['debug'])) {
+        $CONF['debug'] = 0;
+    }
+    if (!empty($CONF['debug'])) {
         error_reporting(E_ALL); // report all errors!
         ini_set('display_errors', 1);
     } else {
