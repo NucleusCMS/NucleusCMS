@@ -113,7 +113,7 @@ class BODYACTIONS extends BaseActions
     {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
-        $args = explode('|', implode($args, ', '));
+        $args = explode('|', implode(', ', $args));
         call_user_func_array(array($this, 'createImageCode'), $args);
     }
 
@@ -154,7 +154,7 @@ class BODYACTIONS extends BaseActions
     {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
-        $args = explode('|', implode($args, ', '));
+        $args = explode('|', implode(', ', $args));
         call_user_func_array(array($this, 'createMediaCode'), $args);
     }
 
@@ -186,7 +186,7 @@ class BODYACTIONS extends BaseActions
     {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
-        $args = explode('|', implode($args, ', '));
+        $args = explode('|', implode(', ', $args));
         call_user_func_array(array($this, 'createPopupCode'), $args);
     }
 

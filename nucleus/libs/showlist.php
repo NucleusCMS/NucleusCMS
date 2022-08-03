@@ -295,16 +295,16 @@ function listplug_table_pluginlist($template, $type)
                 echo hsc($plug->getDescription());
                 $pl_event_list = $plug->_getEventList();
                 if (count($pl_event_list) > 0) {
-                    echo '<br /><br />', _LIST_PLUGS_SUBS, '<br />', hsc(implode($pl_event_list,
-                        ', '));
+                    echo '<br /><br />', _LIST_PLUGS_SUBS, '<br />', hsc(implode(', ',
+                        $pl_event_list));
                     // check the database to see if it is up-to-date and notice the user if not
                 }
                 if ( ! $plug->subscribtionListIsUptodate()) {
                     echo '<br /><br /><strong>', _LIST_PLUG_SUBS_NEEDUPDATE, '</strong>';
                 }
                 if (count($plug->getPluginDep()) > 0) {
-                    echo '<br /><br />', _LIST_PLUGS_DEP, '<br />', hsc(implode($plug->getPluginDep(),
-                        ', '));
+                    echo '<br /><br />', _LIST_PLUGS_DEP, '<br />', hsc(implode(', ',
+                        $plug->getPluginDep()));
                 }
                 // <add by shizuki>
                 // check dependency require
