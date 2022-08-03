@@ -474,7 +474,7 @@ class MANAGER
     {
         $plugin = false;
         reset($this->plugins);
-        while (list($name) = each($this->plugins)) {
+        foreach ($this->plugins as $name => $obj) {
             if ($pid != $this->plugins[$name]->getId()) {
                 continue;
             }
@@ -768,7 +768,7 @@ class MANAGER
             $ok = false;
             while (!$ok) {
                 // generate a random token
-                srand((double)microtime() * 1000000);
+                srand((int) ((double)microtime() * 1000000));
                 $ticket = md5(uniqid(mt_rand(), true));
 
                 // add in database as non-active

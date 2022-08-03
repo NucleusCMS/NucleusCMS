@@ -175,7 +175,9 @@ class TEMPLATE
      */
     public static function fill($template, $values)
     {
-
+        if (is_null($template)) {
+            return '';
+        }
         if (sizeof($values) != 0) {
             // go through all the values
             for (reset($values); $key = key($values); next($values)) {

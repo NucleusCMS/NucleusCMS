@@ -512,7 +512,7 @@ function selector()
             $archivetype = _ARCHIVETYPE_DAY;
             $t = mktime(0, 0, 0, $m, $d, $y);
             // one day has 24 * 60 * 60 = 86400 seconds
-            $archiveprev = strftime('%Y-%m-%d', $t - 86400);
+            $archiveprev = date('Y-m-d', $t - 86400);
             // check for published items
             if ($t > $first_timestamp) {
                 $archiveprevexists = true;
@@ -522,7 +522,7 @@ function selector()
 
             // one day later
             $t += 86400;
-            $archivenext = strftime('%Y-%m-%d', $t);
+            $archivenext = date('Y-m-d', $t);
             if ($t < $last_timestamp) {
                 $archivenextexists = true;
             } else {
@@ -533,7 +533,7 @@ function selector()
             $archivetype = _ARCHIVETYPE_YEAR;
             $t = mktime(0, 0, 0, 12, 31, $y - 1);
             // one day before is in the previous year
-            $archiveprev = strftime('%Y', $t);
+            $archiveprev = date('Y', $t);
             if ($t > $first_timestamp) {
                 $archiveprevexists = true;
             } else {
@@ -542,7 +542,7 @@ function selector()
 
             // timestamp for the next year
             $t = mktime(0, 0, 0, 1, 1, $y + 1);
-            $archivenext = strftime('%Y', $t);
+            $archivenext = date('Y', $t);
             if ($t < $last_timestamp) {
                 $archivenextexists = true;
             } else {
@@ -552,7 +552,7 @@ function selector()
             $archivetype = _ARCHIVETYPE_MONTH;
             $t = mktime(0, 0, 0, $m, 1, $y);
             // one day before is in the previous month
-            $archiveprev = strftime('%Y-%m', $t - 86400);
+            $archiveprev = date('Y-m', $t - 86400);
             if ($t > $first_timestamp) {
                 $archiveprevexists = true;
             } else {
@@ -561,7 +561,7 @@ function selector()
 
             // timestamp for the next month
             $t = mktime(0, 0, 0, $m + 1, 1, $y);
-            $archivenext = strftime('%Y-%m', $t);
+            $archivenext = date('Y-m', $t);
             if ($t < $last_timestamp) {
                 $archivenextexists = true;
             } else {
@@ -1818,6 +1818,9 @@ function serverStringToArray($str, &$array, &$frontParam)
     $array = array();
     $fronParam = "";
 
+    if (is_null($str)) {
+        $str = '';
+    }
     // split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
     if (strstr($str, "?")) {
         list($frontParam, $args) = preg_split("/\?/", $str, 2);
@@ -1841,6 +1844,9 @@ function serverStringToArray($str, &$array, &$frontParam)
  */
 function arrayToServerString($array, $frontParam, &$str)
 {
+    if (is_null($str)) {
+        $str = '';
+    }
     if (strstr($str, "?")) {
         $str = $frontParam . "?";
     } else {
@@ -2149,6 +2155,9 @@ function hsc($string, $flags = ENT_QUOTES, $encoding = '')
 // wrong  encode  makes allow xss
 // do not use ENT_IGNORE:ENT_IGNORE flag makes allow xss 
 // *
+    if (is_null($string) || strlen($string)===0) {
+        return '';
+    }
     if ($encoding === '') {
         if (defined('_CHARSET')) {
             $encoding = _CHARSET;
@@ -2499,7 +2508,7 @@ function parseText($tpl = '', $ph = array())
         if (strpos($tpl, '<%') === false) {
             break;
         }
-        $tpl = str_replace("<%{$k}%>", $v, $tpl);
+        $tpl = str_replace("<%{$k}%>",(string) $v, $tpl);
     }
     return $tpl;
 }
@@ -2640,6 +2649,49 @@ function str_contain($haystack, $needle)
         return true;
     }
     return false;
+}
+
+if (!function_exists('str_contains')) {
+    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
+    // Note: This function returns true if the needle string is empty.
+    function str_contains(string $haystack, string $needle) {
+        return strpos($haystack, $needle) !== false; // don't localize
+        // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
+        // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
+        // result = bool(false) : php -nr "var_dump(str_contains('','0'));"
+        // result = bool(true)  : php -nr "$haystack='';$needle='';var_dump(strpos($haystack, $needle) !== false);"
+        // result = bool(true)  : php -nr "$haystack='0';$needle='';var_dump(strpos($haystack, $needle) !== false);"
+        // result = bool(false) : php -nr "$haystack='';$needle='0';var_dump(strpos($haystack, $needle) !== false);"
+    }
+}
+
+if (!function_exists('str_starts_with')) {
+    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with 
+    // Note: This function returns true if the needle string is empty.
+    function str_starts_with(string $haystack, string $needle) {
+        return strncmp($haystack, $needle, strlen($needle)) === 0; // don't localize
+        // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
+        // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
+        // result = bool(false) : php -nr "var_dump(str_starts_with('','0'));"
+        // result = bool(true)  : php -nr "var_dump(strncmp('','', 0) === 0);"
+        // result = bool(true)  : php -nr "var_dump(strncmp('0','', 0) === 0);"
+        // result = bool(false) : php -nr "var_dump(strncmp('','0', 1) === 0);"
+    }
+}
+
+if (!function_exists('str_ends_with')) {
+    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
+    // Note: This function returns true if the needle string is empty.
+    function str_ends_with(string $haystack, string $needle) {
+        if (strlen($needle) > strlen($haystack)) {
+            return false; // don't localize
+        }
+        return strlen($needle) === 0 || substr($haystack, -strlen($needle)) === $needle;
+        // result = bool(true)  : php -nr "var_dump(str_ends_with('',''));"
+        // result = bool(true)  : php -nr "var_dump(str_ends_with('0',''));"
+        // result = bool(true)  : php -nr "var_dump(str_ends_with('1',''));"
+        // result = bool(false) : php -nr "var_dump(str_ends_with('','0'));"
+    }
 }
 
 function getBaseUrl()
