@@ -37,6 +37,7 @@ class MEMBER
     public $notes;
     public $autosave = 1;        // if the member use the autosave draft function
 
+    private $hasher;
     private $halt = 0;
 
     /**

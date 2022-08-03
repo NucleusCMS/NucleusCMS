@@ -20,7 +20,14 @@
  */
 class NAVLIST extends ENCAPSULATE
 {
-
+    public $action;
+    public $start;
+    public $amount;
+    public $minamount;
+    public $maxamount;
+    public $blogid;
+    public $search;
+    public $itemid;
     public $total = null;
 
     function __construct(

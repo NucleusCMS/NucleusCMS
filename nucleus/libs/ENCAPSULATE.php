@@ -17,7 +17,7 @@
 
 class ENCAPSULATE
 {
-
+    protected $isFootNavigation;
     /**
      * Uses $call to call a function using parameters $params
      * This function should return the amount of entries shown.

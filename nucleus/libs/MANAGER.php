@@ -40,6 +40,7 @@ class MANAGER
     public $karma;
     public $templates;
     public $members;
+    protected $parserPrefs;
 
     /**
      * cachedInfo to avoid repeated SQL queries (see
