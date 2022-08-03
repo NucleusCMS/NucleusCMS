@@ -294,11 +294,11 @@ class Backup
         $create      = sql_fetch_assoc($result);
         $CreateTable = $create['Create Table'];
         $CreateTable = preg_replace('@\s+COLLATE\s+([0-9a-zA-Z_]+)@',
-            " COLLATE ${collation}", $CreateTable);
+            " COLLATE {$collation}", $CreateTable);
         $CreateTable = preg_replace('@CHARSET=([0-9a-zA-Z_]+)@',
-            "CHARSET=${charset}", $CreateTable);
+            "CHARSET={$charset}", $CreateTable);
         $CreateTable = preg_replace('@COLLATE=([0-9a-zA-Z_]+)@',
-            "COLLATE=${collation}", $CreateTable);
+            "COLLATE={$collation}", $CreateTable);
 
         echo $CreateTable;
         echo ";\n\n";

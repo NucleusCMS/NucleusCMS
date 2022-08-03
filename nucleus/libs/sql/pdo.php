@@ -941,7 +941,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
                 if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                     // ISO 8859-  2 8 7 9 13
                     $res
-                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'",
+                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
                         $db);
                     if ($res && ($items = sql_fetch_assoc($res))
                         && ! empty($items['Charset'])) {

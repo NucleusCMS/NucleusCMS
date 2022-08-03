@@ -191,7 +191,7 @@ class SKINEXPORT
                 }
                 printf("\t\t" . '<%s name="%s">', $tmptag, $type);
                 echo '<![CDATA[' . $cdata . ']]>';
-                echo "</${tmptag}>\n\n";
+                echo "</{$tmptag}>\n\n";
             }
 
             echo "\t</skin>\n\n\n";

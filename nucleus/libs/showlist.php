@@ -903,7 +903,7 @@ function listplug_table_skinlist($template, $type)
                     $order .= sprintf(" WHEN '%s' THEN %d", $tmp_items[$i],
                         $tmp_ct - $i);
                 } // DESC
-                $order = " ORDER BY CASE stype ${order} END , stype ASC";
+                $order = " ORDER BY CASE stype {$order} END , stype ASC";
             }
             $has_spartstype = sql_existTableColumnName(sql_table('skin'),
                 'spartstype');

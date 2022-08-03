@@ -28,9 +28,9 @@ if (php_sapi_name() != 'cli')
 ob_start();
 $config_php = 'config.php';
 foreach(array('','../','../../../') as $dir)
-    if (is_file("${dir}config.php"))
+    if (is_file("{$dir}config.php"))
     {
-        $config_php = "${dir}config.php";
+        $config_php = "{$dir}config.php";
         break;
     }
 include_once($config_php);
@@ -39,7 +39,7 @@ ob_end_clean();
 
 //global $CONF;
 //if ($errors && strlen($errors)>0 && $CONF['debug'])
-//    fputs(STDERR, "${errors}\n");
+//    fputs(STDERR, "{$errors}\n");
 
 ini_set('display_errors','0');
 //ini_set('display_errors', 'stderr'); // 0, 1, stderr, stdout

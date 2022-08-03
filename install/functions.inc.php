@@ -14,7 +14,7 @@ function get_install_lang_defs()
 //        'zh_tw' => array('name' => 'traditional_chinese' , 'title' => '中文 - Chinese traditional'),
     );
     foreach (array_keys($val) as $key)
-        if (!is_file("./install_lang_${key}.php")) unset($val[$key]);
+        if (!is_file("./install_lang_{$key}.php")) unset($val[$key]);
     ksort($val);
     return $val;
 }
@@ -557,7 +557,7 @@ function doInstall() {
         . " cdesc	  = '" . $cat_desc . "'"
         . " WHERE"
         . " catid	  = 1";
-//     . " SET cname = '${cat_name}', cdesc = '${cat_desc}' WHERE catid = 1");
+//     . " SET cname = '{$cat_name}', cdesc = '{$cat_desc}' WHERE catid = 1");
 
     sql_query($query) or _doError(_ERROR20 . ': ' . sql_error() );
 
