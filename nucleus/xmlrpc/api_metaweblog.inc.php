@@ -560,7 +560,7 @@ function _newMediaObject($blogid, $username, $password, $info) {
     // prefix filename with current date (YYYY-MM-DD-)
     // this to avoid nameclashes
     if ($CONF['MediaPrefix']) {
-        $filename = strftime("%Y%m%d-", time()) . $filename;
+        $filename = date("Ymd-", time()) . $filename;
     }
 
     $res = MEDIA::addMediaObjectRaw($collection, $filename, $data);

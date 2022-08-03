@@ -3215,8 +3215,8 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_OFFSET ?> <?php help('blogtimeoffset'); ?>
-                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  strftime("%H:%M", time()); ?></b>
-                            <br /><?php echo _EBLOG_BTIME ?> <b><?php echo  strftime("%H:%M", $blog->getCorrectTime()); ?></b>
+                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  date("H:i", time()); ?></b>
+                            <br /><?php echo _EBLOG_BTIME ?> <b><?php echo  date("H:i", $blog->getCorrectTime()); ?></b>
                         </td>
                         <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  hsc($blog->getTimeOffset()); ?>" /></td>
                     </tr>
@@ -4212,7 +4212,7 @@ class ADMIN
                     <tr>
                         <td><?php echo _EBLOG_OFFSET ?>
                             <?php help('blogtimeoffset'); ?>
-                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  strftime("%H:%M", time()); ?></b>
+                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  date("H:i", time()); ?></b>
                         </td>
                         <td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
                     </tr>

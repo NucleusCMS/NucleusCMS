@@ -565,7 +565,7 @@ function _decideArchiveSkin($archive)
         $archivetype = _ARCHIVETYPE_DAY;
         $t           = mktime(0, 0, 0, $m, $d, $y);
         // one day has 24 * 60 * 60 = 86400 seconds
-        $archiveprev = strftime('%Y-%m-%d', $t - 86400);
+        $archiveprev = date('Y-m-d', $t - 86400);
         // check for published items
         if ($t > $first_timestamp) {
             $archiveprevexists = true;
@@ -575,7 +575,7 @@ function _decideArchiveSkin($archive)
 
         // one day later
         $t           += 86400;
-        $archivenext = strftime('%Y-%m-%d', $t);
+        $archivenext = date('Y-m-d', $t);
         if ($t < $last_timestamp) {
             $archivenextexists = true;
         } else {
@@ -585,7 +585,7 @@ function _decideArchiveSkin($archive)
         $archivetype = _ARCHIVETYPE_YEAR;
         $t           = mktime(0, 0, 0, 12, 31, $y - 1);
         // one day before is in the previous year
-        $archiveprev = strftime('%Y', $t);
+        $archiveprev = date('Y', $t);
         if ($t > $first_timestamp) {
             $archiveprevexists = true;
         } else {
@@ -594,7 +594,7 @@ function _decideArchiveSkin($archive)
 
         // timestamp for the next year
         $t           = mktime(0, 0, 0, 1, 1, $y + 1);
-        $archivenext = strftime('%Y', $t);
+        $archivenext = date('Y', $t);
         if ($t < $last_timestamp) {
             $archivenextexists = true;
         } else {
@@ -604,7 +604,7 @@ function _decideArchiveSkin($archive)
         $archivetype = _ARCHIVETYPE_MONTH;
         $t           = mktime(0, 0, 0, $m, 1, $y);
         // one day before is in the previous month
-        $archiveprev = strftime('%Y-%m', $t - 86400);
+        $archiveprev = date('Y-m', $t - 86400);
         if ($t > $first_timestamp) {
             $archiveprevexists = true;
         } else {
@@ -613,7 +613,7 @@ function _decideArchiveSkin($archive)
 
         // timestamp for the next month
         $t           = mktime(0, 0, 0, $m + 1, 1, $y);
-        $archivenext = strftime('%Y-%m', $t);
+        $archivenext = date('Y-m', $t);
         if ($t < $last_timestamp) {
             $archivenextexists = true;
         } else {
@@ -2181,6 +2181,9 @@ function strftimejp($format, $timestamp = '')
 
 function hsc($string, $flags = ENT_QUOTES, $encoding = '')
 {
+    if (is_null($string)) {
+       return '';
+    }
     if ($encoding === '') {
         if (defined('_CHARSET')) {
             $encoding = _CHARSET;
@@ -2581,7 +2584,9 @@ function parseHtml($html = '', $ph = array())
         if ( ! str_contains($html, '{%')) {
             break;
         }
-
+        if (is_null($v)) {
+            $v = '';
+        }
         if (str_contains($v, '{%')) {
             $v = str_replace('{%', "[{$esc}%", $v);
         }

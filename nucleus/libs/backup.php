@@ -195,10 +195,10 @@ class Backup
             @ob_implicit_flush(0);
 
             // set filename
-            $filename = 'nucleus_db_backup_' . strftime("%Y-%m-%d-%H-%M-%S",
+            $filename = 'nucleus_db_backup_' . date("Y-m-d-H-i-s",
                     time()) . ".sql.gz";
         } else {
-            $filename = 'nucleus_db_backup_' . strftime("%Y-%m-%d-%H-%M-%S",
+            $filename = 'nucleus_db_backup_' . date("Y-m-d-H-i-s",
                     time()) . ".sql";
         }
 

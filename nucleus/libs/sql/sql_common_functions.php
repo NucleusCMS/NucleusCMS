@@ -315,10 +315,10 @@ function sql_get_mysql_sqlmode($conn_or_dbh = null)
 
 function fix_mysql_sqlmode($conn_or_dbh = null)
 {
+    $dbh     = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     if (version_compare(sql_get_server_version($dbh), '5.6.0', '<')) {
         return;
     }
-    $dbh     = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     $sqlmode = sql_get_mysql_sqlmode($dbh);
     if (empty($sqlmode)) {
         return;
