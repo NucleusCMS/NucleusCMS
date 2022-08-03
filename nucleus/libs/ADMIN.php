@@ -3215,8 +3215,8 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_OFFSET ?> <?php help('blogtimeoffset'); ?>
-                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  strftime("%H:%M", time()); ?></b>
-                            <br /><?php echo _EBLOG_BTIME ?> <b><?php echo  strftime("%H:%M", $blog->getCorrectTime()); ?></b>
+                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  date("H:i", time()); ?></b>
+                            <br /><?php echo _EBLOG_BTIME ?> <b><?php echo  date("H:i", $blog->getCorrectTime()); ?></b>
                         </td>
                         <td><input name="timeoffset" tabindex="120" size="3" value="<?php echo  hsc($blog->getTimeOffset()); ?>" /></td>
                     </tr>
@@ -4212,7 +4212,7 @@ class ADMIN
                     <tr>
                         <td><?php echo _EBLOG_OFFSET ?>
                             <?php help('blogtimeoffset'); ?>
-                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  strftime("%H:%M", time()); ?></b>
+                            <br /><?php echo _EBLOG_STIME ?> <b><?php echo  date("H:i", time()); ?></b>
                         </td>
                         <td><input name="timeoffset" tabindex="110" size="3" value="0" /></td>
                     </tr>
@@ -6826,8 +6826,8 @@ EOL;
                     foreach ($items as $item) {
                         echo "\t<tr>\n";
                         echo "\t\t" . '<td width="50%">' . $item[0] . "</td>\n";
-                        $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='${item[2]}'" : '';
-                        echo "\t\t" . "<td${style}>" . hsc($item[1]) . "</td>\n";
+                        $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='{$item[2]}'" : '';
+                        echo "\t\t" . "<td{$style}>" . hsc($item[1]) . "</td>\n";
                         echo "\t</tr>\n";
                     }
 
@@ -6847,7 +6847,7 @@ EOL;
                             }
                             echo "\t<tr>\n";
                             echo "\t\t" . '<td width="50%">' . $k . "</td>\n";
-                            echo "\t\t" . "<td${style}>" . hsc($v) . "</td>\n";
+                            echo "\t\t" . "<td{$style}>" . hsc($v) . "</td>\n";
                             echo "\t</tr>\n";
                         }
                     }
@@ -8716,7 +8716,7 @@ EOL;
                                     }
 
                                     $title = _ERRORS_STARTUPERROR3;
-                                    $msg = _ERRORS_STARTUPERROR1 . join($aFound, '</li><li>') . _ERRORS_STARTUPERROR2;
+                                    $msg = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
                                     // check core upgrade
                                     if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
                                         $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
@@ -8768,7 +8768,7 @@ EOL;
         <input type="hidden" name="action" value="optimizeoverview" />
         <input type="hidden" name="mode"   value="optimize" />
         <input type="hidden" name="step"   value="start" />
-        <input type="submit" value="${btn_title}" tabindex="20" />
+        <input type="submit" value="{$btn_title}" tabindex="20" />
         </p></form>
 EOD;
                                             echo $s;
@@ -8815,7 +8815,7 @@ EOD;
         <input type="hidden" name="action" value="optimizeoverview" />
         <input type="hidden" name="mode"   value="optimize" />
         <input type="hidden" name="step"   value="start" />
-        <input type="submit" value="${btn_title}" tabindex="20" />
+        <input type="submit" value="{$btn_title}" tabindex="20" />
         </p></form>
 EOD;
                                                     echo $s;
@@ -8903,7 +8903,7 @@ EOD;
         <input type="hidden" name="action" value="optimizeoverview" />
         <input type="hidden" name="mode"   value="repaire" />
         <input type="hidden" name="step"   value="start" />
-        <input type="submit" value="${btn_title}" tabindex="20" />
+        <input type="submit" value="{$btn_title}" tabindex="20" />
         </p></form>
 EOD;
                                             echo $s;
@@ -9170,11 +9170,11 @@ EOD;
                                     $force_get = false; // debug
                                     if (isset($cached['list']) && isset($cached['list'][$lc_np_name])) {
                                         $repo_name = $cached['list'][$lc_np_name];
-                                        $url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
+                                        $url = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/{$NP_Name}.php";
                                     }
 
                                     if (empty($url) && empty($cached['list']) && $force_get) {
-                                        $url = "https://raw.githubusercontent.com/NucleusCMS/${NP_Name}/master/${NP_Name}.php";
+                                        $url = "https://raw.githubusercontent.com/NucleusCMS/{$NP_Name}/master/{$NP_Name}.php";
                                     } // debug
 
                                     if (empty($url)) {
@@ -9183,8 +9183,8 @@ EOD;
 
                                     switch ($lc_np_name) { // Workaround for unusual repositories
                                         case 'np_extraskinjp':
-                                            $url       = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/plugins/${NP_Name}.php";
-                                            $retry_url = "https://raw.githubusercontent.com/NucleusCMS/${repo_name}/master/${NP_Name}.php";
+                                            $url       = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/plugins/{$NP_Name}.php";
+                                            $retry_url = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/{$NP_Name}.php";
                                             break;
                                     }
 

@@ -65,7 +65,7 @@ else if (isset($_GET['lang']))
 
 if ($lang != '' && !in_array($lang, $install_lang_keys))
     $lang = 'en';
-else if ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_${lang}.php"))
+else if ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php"))
 {
    // do nothing
 }
@@ -82,7 +82,7 @@ else
                 continue;
         }
         if ($key != 'en' && in_array($key, $install_lang_keys)
-                         && is_file("./install_lang_${key}.php") )
+                         && is_file("./install_lang_{$key}.php") )
            {  $v = $lang = $key; break; }
     }
     if (!$v)
@@ -90,7 +90,7 @@ else
 }
 
     define('INSTALL_LANG' , $lang);
-    include_once("./install_lang_${lang}.php");
+    include_once("./install_lang_{$lang}.php");
 
     if ($lang != 'en')
     {

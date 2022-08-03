@@ -266,7 +266,7 @@ class ConvertInstaller
                     $s = <<<EOD
             <form method="post" action="index.php"><p>
             <input type="hidden" name="action" value="startconvert" />
-            <input type="submit" value="${btn_title}" tabindex="20" />
+            <input type="submit" value="{$btn_title}" tabindex="20" />
             </p></form>
 EOD;
                     echo $s;
@@ -353,7 +353,7 @@ EOD;
             if (!isset($DIR_BASE) || strlen($DIR_BASE)==0)
                 continue;
             if ($DIR_BASE. $value .'/' == $$key)
-                $newDir[$key] = "\$DIR_BASE . '${value}/'";
+                $newDir[$key] = "\$DIR_BASE . '{$value}/'";
             else if (0 === strpos($$key, $DIR_BASE))
                 $newDir[$key] = sprintf("\$DIR_BASE . '%s'", substr($$key, strlen($DIR_BASE)));
         }
@@ -361,7 +361,7 @@ EOD;
         foreach(array('DIR_PLUGINS'=>'plugins', 'DIR_LANG'=>'language', 'DIR_LIBS'=>'libs') as $key => $value)
         {
             if ($DIR_NUCLEUS. $value .'/' == $$key)
-                $newDir[$key] = "\$DIR_NUCLEUS . '${value}/'";
+                $newDir[$key] = "\$DIR_NUCLEUS . '{$value}/'";
             else if (0 === strpos($$key, $DIR_NUCLEUS))
                 $newDir[$key] = sprintf("\$DIR_NUCLEUS . '%s'", substr($$key, strlen($DIR_NUCLEUS)));
             else

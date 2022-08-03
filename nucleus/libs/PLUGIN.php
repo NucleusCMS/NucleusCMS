@@ -24,6 +24,9 @@ class NucleusPlugin
 
     public $is_db_sqlite = false;
     public $is_db_mysql = false;
+    public $plugin_dir_type;
+    public $plugin_admin_dir;
+    public $plugin_admin_url_prefix;
 
     // these functions _have_ to be redefined in your plugin
 

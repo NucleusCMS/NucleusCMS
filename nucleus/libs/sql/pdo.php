@@ -247,7 +247,17 @@ if ( ! function_exists('sql_fetch_assoc')) {
         }
         //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        $MYSQL_CONN = clone $SQL_DBH;
+        global $DB_DRIVER_NAME;
+        switch (strtolower($DB_DRIVER_NAME))
+        {
+            case 'sqlite':
+                $MYSQL_CONN = $SQL_DBH;
+                // Fatal error: Uncaught Error: Trying to clone an uncloneable object of class PDO
+                break;
+            default:
+                $MYSQL_CONN = clone $SQL_DBH;
+                break;
+        }
 
         return $SQL_DBH;
     }
@@ -941,7 +951,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
                 if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                     // ISO 8859-  2 8 7 9 13
                     $res
-                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'",
+                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
                         $db);
                     if ($res && ($items = sql_fetch_assoc($res))
                         && ! empty($items['Charset'])) {

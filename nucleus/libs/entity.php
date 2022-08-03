@@ -7,7 +7,7 @@ class entity
     {
         $string
             = preg_replace_callback('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            array('self', 'named_to_numeric_callback'), $string);
+            self::class . '::named_to_numeric_callback', $string);
 
         return $string;
     }
@@ -21,11 +21,11 @@ class entity
     {
         global $_entities;
         $string = preg_replace_callback('/&#([0-9]+)(;)?/',
-            array('self', 'normalize_numeric_callback1'), $string);
+            self::class . '::normalize_numeric_callback1', $string);
 
         $string
             = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            array('self', 'normalize_numeric_callback2'), $string);
+            self::class . '::normalize_numeric_callback2', $string);
 
         $string = strtr($string, $_entities['cp1251']);
 
@@ -45,14 +45,14 @@ class entity
     public static function numeric_to_utf8($string)
     {
         $string = preg_replace_callback('/&#([0-9]+)(;)?/',
-            array('self', 'numeric_to_utf8_callback1'), $string);
+            self::class . '::numeric_to_utf8_callback1', $string);
 
         $string
             = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            array('self', 'numeric_to_utf8_callback2'), $string);
+            self::class . '::numeric_to_utf8_callback2', $string);
 
         $string = preg_replace_callback('/&#x([0-9A-Fa-f]+);/',
-            array('self', 'numeric_to_utf8_callback3'), $string);
+            self::class . '::numeric_to_utf8_callback3', $string);
 
         return $string;
     }
@@ -76,7 +76,7 @@ class entity
     {
         global $_entities;
         $string = preg_replace_callback('/&#[Xx]([0-9A-Fa-f]+)/',
-            array('self', 'numeric_to_named_callback'), $string);
+            self::class . '::numeric_to_named_callback', $string);
         $string = strtr($string, array_flip($_entities['named']));
 
         return $string;

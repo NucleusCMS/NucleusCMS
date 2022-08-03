@@ -608,7 +608,7 @@ class BLOG
      *      No LIMIT clause is added. (caller should add this if multiple pages
      *      are requested)
      */
-    function getSqlSearch($keywords, $amountMonths = 0, &$highlight, $mode = '')
+    function getSqlSearch($keywords, $amountMonths = 0, &$highlight = null, $mode = '')
     {
         $search = new SEARCH($keywords);
         $search->set('fields', 'ititle,ibody,imore');

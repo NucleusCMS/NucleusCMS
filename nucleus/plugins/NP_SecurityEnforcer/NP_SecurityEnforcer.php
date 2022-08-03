@@ -12,7 +12,13 @@
  */
 
 class NP_SecurityEnforcer extends NucleusPlugin {
-	public function getName()			{ return 'SecurityEnforcer'; }
+     public $enable_security;
+     public $login_lockout;
+     public $max_failed_login;
+     public $pwd_min_length;
+     public $pwd_complexity;
+
+     public function getName()			{ return 'SecurityEnforcer'; }
 	public function getAuthor()		{ return 'Misc authors';	} // Frank Truscott + Cacher
 	public function getURL()			{ return '';	} // https://github.com/NucleusCMS/NP_SecurityEnforcer
 	public function getVersion()		{ return '1.03'; }

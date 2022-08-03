@@ -58,11 +58,12 @@ class Utils
 
     public static function strftime($format, $timestamp = '')
     {
+        // [PHP8.1] Deprecated: Function strftime()
         if ( ! is_string($format) || (strlen($format) == 0)) {
             return '';
         }
         if ( ! _HAS_MBSTRING) {
-            return strftime($format, $timestamp);
+            return @strftime($format, $timestamp);
         }
         $old_locale = setlocale(LC_CTYPE,
             '0'); // backup locale : maintained per process, not thread
@@ -94,7 +95,7 @@ class Utils
                         $format);
                     // Workaround for Multibyte and ANSI character sets.
                     $res
-                        = mb_convert_encoding(strftime(mb_convert_encoding($format,
+                        = mb_convert_encoding(@strftime(mb_convert_encoding($format,
                         $locale_mbcahrset, _CHARSET),
                         $timestamp), _CHARSET, $locale_mbcahrset);
                     //                    if ($old_locale != $locale)
@@ -106,7 +107,7 @@ class Utils
             if (PHP_OS == 'CYGWIN') {
                 setlocale(LC_TIME, sprintf('%s.%s', _LOCALE, _CHARSET));
             }
-            $res = strftime($format, $timestamp);
+            $res = @strftime($format, $timestamp);
             if ($old_locale != $locale) {
                 setlocale(LC_CTYPE, $old_locale);
             } // restore locale

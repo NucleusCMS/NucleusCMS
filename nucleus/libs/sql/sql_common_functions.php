@@ -71,7 +71,7 @@ function get_mysql_charset_from_php_charset($charset = 'utf-8')
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
                     $res
-                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'",
+                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
                         $db);
                     if ($res && ($items = sql_fetch_assoc($res))
                         && ! empty($items['Charset'])) {
@@ -172,7 +172,7 @@ function treat_char_name($charset = 'utf8mb4')
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
                     $res
-                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'",
+                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
                         $db);
                     if ($res && ($items = sql_fetch_assoc($res))
                         && ! empty($items['Charset'])) {
@@ -315,10 +315,10 @@ function sql_get_mysql_sqlmode($conn_or_dbh = null)
 
 function fix_mysql_sqlmode($conn_or_dbh = null)
 {
+    $dbh     = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     if (version_compare(sql_get_server_version($dbh), '5.6.0', '<')) {
         return;
     }
-    $dbh     = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     $sqlmode = sql_get_mysql_sqlmode($dbh);
     if (empty($sqlmode)) {
         return;

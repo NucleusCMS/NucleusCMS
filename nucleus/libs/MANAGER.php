@@ -40,6 +40,7 @@ class MANAGER
     public $karma;
     public $templates;
     public $members;
+    protected $parserPrefs;
 
     /**
      * cachedInfo to avoid repeated SQL queries (see
@@ -843,7 +844,7 @@ class MANAGER
             $ok = false;
             while ( ! $ok) {
                 // generate a random token
-                srand((double)microtime() * 1000000);
+                srand((int) ((double)microtime() * 1000000));
                 $ticket = md5(uniqid(mt_rand(), true));
 
                 // add in database as non-active
