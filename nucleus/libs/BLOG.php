@@ -746,7 +746,7 @@ class BLOG
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
         // workaround for <%_()%>
         foreach ($template as $key => $value) {
-            if ((strlen($value) > 0) && str_contains($value, '<%_(')) {
+            if (!is_null($value) && (strlen($value) > 0) && str_contains($value, '<%_(')) {
                 $template[$key] = preg_replace_callback('#<%_\(([^)]*?)\)%>#',
                     array($this, '_workaround_gettext_callback'), $value);
             }

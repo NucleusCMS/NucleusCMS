@@ -104,9 +104,7 @@ class COMMENT
             '/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
             '/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/i',
         );
-
-        $body = preg_replace_callback($replace_from,
-            array('self', 'prepareBody_cb'), $body);
+        $body = preg_replace_callback($replace_from, self::class . '::prepareBody_cb', $body);
 
         return $body;
     }

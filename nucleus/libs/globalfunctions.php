@@ -40,6 +40,10 @@ include_once(NC_LIBS_PATH . 'version.php');
 include_once(NC_LIBS_PATH . 'helpers.php');
 include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
 
+if (version_compare(phpversion(), '5.5.0', '<')) {
+    exit('Current PHP version does not meet minimum requirements.');
+}
+
 if (version_compare(phpversion(), '5.4.0', '<')) {
     _checkEnv();
 }

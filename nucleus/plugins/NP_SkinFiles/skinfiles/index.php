@@ -291,7 +291,7 @@
 		
 		$directory = $default != '' ? 
 			$default : 
-			sfExpandDirectory(trim(requestVar('dir')));
+			sfExpandDirectory(trim(strval(requestVar('dir'))));
 		
 		if (!sfValidPath($directory) || !is_dir($directory)) {
 			$directory = $rootDirectory;
