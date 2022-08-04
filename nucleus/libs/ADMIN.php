@@ -6510,7 +6510,7 @@ EOL;
         $ph['_OFFICIALURL'] = _ADMINPAGEFOOT_OFFICIALURL;
         $ph['_LATESTVERSION_TITLE'] = _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE;
         $ph['_LATESTVERSION_TEXT'] = _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT;
-        $ph['latestVersion'] = $newestVersion;
+        $ph['latestVersion'] = isset($newestVersion) ? $newestVersion : '';
         return parseText($tpl,$ph);
     }
 

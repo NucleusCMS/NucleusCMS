@@ -2654,7 +2654,7 @@ function str_contain($haystack, $needle)
 if (!function_exists('str_contains')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
     // Note: This function returns true if the needle string is empty.
-    function str_contains(string $haystack, string $needle) {
+    function str_contains($haystack, $needle) {
         return strpos($haystack, $needle) !== false; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
         // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
@@ -2668,7 +2668,7 @@ if (!function_exists('str_contains')) {
 if (!function_exists('str_starts_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with 
     // Note: This function returns true if the needle string is empty.
-    function str_starts_with(string $haystack, string $needle) {
+    function str_starts_with($haystack, $needle) {
         return strncmp($haystack, $needle, strlen($needle)) === 0; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
         // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
@@ -2682,7 +2682,7 @@ if (!function_exists('str_starts_with')) {
 if (!function_exists('str_ends_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
     // Note: This function returns true if the needle string is empty.
-    function str_ends_with(string $haystack, string $needle) {
+    function str_ends_with($haystack, $needle) {
         if (strlen($needle) > strlen($haystack)) {
             return false; // don't localize
         }
