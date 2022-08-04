@@ -44,10 +44,6 @@ if (version_compare(phpversion(), '5.5.0', '<')) {
     exit('Current PHP version does not meet minimum requirements.');
 }
 
-if (version_compare(phpversion(), '5.4.0', '<')) {
-    _checkEnv();
-}
-
 // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_NAME', 'Nucleus CMS');
 define('CORE_APPLICATION_VERSION', NUCLEUS_VERSION);
@@ -383,8 +379,7 @@ include_once(NC_LIBS_PATH . 'SEARCH.php');
 include_once(NC_LIBS_PATH . 'entity.php');
 include_once(NC_LIBS_PATH . 'CoreCachedData.php');
 
-spl_autoload_register('loadCoreClassFor_spl' . (version_compare('5.3.0',
-        PHP_VERSION, '<=') ? '' : '_prephp53'));
+spl_autoload_register('loadCoreClassFor_spl');
 
 // set lastVisit cookie (if allowed)
 if ( ! headers_sent()) {

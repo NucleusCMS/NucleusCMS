@@ -2656,13 +2656,6 @@ function loadCoreClassFor_spl($classname)
     }
 }
 
-function loadCoreClassFor_spl_prephp53($classname)
-{ // for PHP 5.1.0 - 5.2
-    if (@is_file(NC_LIBS_PATH . "{$classname}.php")) {
-        require_once(NC_LIBS_PATH . "{$classname}.php");
-    }
-}
-
 if ( ! function_exists('get_magic_quotes_gpc')) {
     function get_magic_quotes_gpc()
     {
@@ -2760,20 +2753,6 @@ function getBaseUrl()
     }
 
     return substr($_, 0, strrpos($_, '/') + 1);
-}
-
-
-function _checkEnv()
-{
-    if (ini_get('register_globals')) {
-        exit('Should be change off register_globals.');
-    }
-    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {
-        exit('Should be change php.ini: magic_quotes_gpc=0');
-    }
-    if (ini_get('magic_quotes_sybase')) {
-        exit('Should be remove magic_quotes_sybase in php.ini');
-    }
 }
 
 function _setDefaultUa()
