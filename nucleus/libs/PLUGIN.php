@@ -734,11 +734,26 @@ class NucleusPlugin
 
     final public function _getEventList()
     {
-        static $res = null;
-        if (!is_null($res)) {
-            return $res;
+        /// PHP_VERSION_ID : PHP[5.2.7-]
+        if (defined('PHP_VERSION_ID') && (80100 <= PHP_VERSION_ID)) {
+            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
+            $index = get_class($this);
+            if (!isset($_shared_data[$index])) {
+                $_shared_data[$index] = array();
+            }
+            $res = &$_shared_data[$index];
+            if (!empty($res)) {
+                return $res;
+            }
+        } else {
+            // PHP[5.x - 8.0.x]
+            static $res = null;
+            if (!is_null($res)) {
+                return $res;
+            }
+            $res = array();
         }
-        $res = array();
+
         $list = get_class_methods($this);
         if (!empty($list)) {
             foreach ($list as $name) {
@@ -1100,7 +1115,19 @@ class NucleusPlugin
 
     public function checkRemoteUpdate()
     {
-        static $enable_db = null;
+        /// PHP_VERSION_ID : PHP[5.2.7-]
+        if (defined('PHP_VERSION_ID') && (80100 <= PHP_VERSION_ID)) {
+            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
+            $index = get_class($this);
+            if (!isset($_shared_data[$index])) {
+                $_shared_data[$index] = null;
+            }
+            $enable_db = &$_shared_data[$index];
+        } else {
+            // PHP[5.x - 8.0.x]
+            static $enable_db = null;
+        }
+
         $ret_val = array('result' => false, 'version' => '', 'download' => '');
 //        if (!function_exists('get_called_class'))
 //            return $ret_val;
