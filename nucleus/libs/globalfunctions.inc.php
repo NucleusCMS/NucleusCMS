@@ -505,10 +505,10 @@ function selector()
         $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
         $last_timestamp = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
 
-        $y = $m = $d = '';
+        $y = $m = $d = 0;
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
-        if ($d != 0) {
+        if (preg_match('|^\d+-\d+-|', $archive)) {
             $archivetype = _ARCHIVETYPE_DAY;
             $t = mktime(0, 0, 0, $m, $d, $y);
             // one day has 24 * 60 * 60 = 86400 seconds
