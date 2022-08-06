@@ -172,7 +172,15 @@ function mysql_select_db($db, $dblink = null)
     global $MYSQL_CONN;
     $link = ($dblink ? $dblink : $MYSQL_CONN);
 
-    return mysqli_select_db($link, $db);
+    try {
+        return mysqli_select_db($link, $db);
+    } catch (Throwable $t) {
+        // Executed only in PHP 7, will not match in PHP 5.x
+        return false;
+    } catch (Exception $e) {
+        // Executed only in PHP 5.x, will not be reached in PHP 7
+        return false;
+    }
 }
 
 function mysql_close($dblink = null)
@@ -204,6 +212,9 @@ function mysql_real_escape_string($val, $dblink = null)
     global $MYSQL_CONN;
     $link = ($dblink ? $dblink : $MYSQL_CONN);
 
+    if (is_null($val)) {
+        return '';
+    }
     return mysqli_real_escape_string($link, $val);
 }
 

@@ -37,7 +37,7 @@ define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0) ); // allow sqlite insta
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
-define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION' , '5.0.5'); // (string) , format : dot separated
+define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION' , '5.5.0'); // (string) , format : dot separated
 
 define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
 

@@ -2282,7 +2282,7 @@ function getPluginListsFromDirName($SearchDir, &$status, $clearcache = false)
     $pattern_php  = '#^NP_(.*)\.php$#';
     $pattern      = '#^NP_(.*)$#';
     foreach ($files as $path) {
-        $item = [];
+        $item = array();
         $filename = ltrim(strrchr($path, '/'), '/');
         $saved_type = 0;
         if (is_file($path)) {  // NP_*.php
@@ -2656,13 +2656,6 @@ function loadCoreClassFor_spl($classname)
     }
 }
 
-function loadCoreClassFor_spl_prephp53($classname)
-{ // for PHP 5.1.0 - 5.2
-    if (@is_file(NC_LIBS_PATH . "{$classname}.php")) {
-        require_once(NC_LIBS_PATH . "{$classname}.php");
-    }
-}
-
 if ( ! function_exists('get_magic_quotes_gpc')) {
     function get_magic_quotes_gpc()
     {
@@ -2712,7 +2705,7 @@ function str_contain($haystack, $needle)
 if (!function_exists('str_contains')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
     // Note: This function returns true if the needle string is empty.
-    function str_contains(string $haystack, string $needle) {
+    function str_contains($haystack, $needle) {
         return strpos($haystack, $needle) !== false; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
         // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
@@ -2726,7 +2719,7 @@ if (!function_exists('str_contains')) {
 if (!function_exists('str_starts_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with 
     // Note: This function returns true if the needle string is empty.
-    function str_starts_with(string $haystack, string $needle) {
+    function str_starts_with($haystack, $needle) {
         return strncmp($haystack, $needle, strlen($needle)) === 0; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
         // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
@@ -2740,7 +2733,7 @@ if (!function_exists('str_starts_with')) {
 if (!function_exists('str_ends_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
     // Note: This function returns true if the needle string is empty.
-    function str_ends_with(string $haystack, string $needle) {
+    function str_ends_with($haystack, $needle) {
         if (strlen($needle) > strlen($haystack)) {
             return false; // don't localize
         }
@@ -2760,20 +2753,6 @@ function getBaseUrl()
     }
 
     return substr($_, 0, strrpos($_, '/') + 1);
-}
-
-
-function _checkEnv()
-{
-    if (ini_get('register_globals')) {
-        exit('Should be change off register_globals.');
-    }
-    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {
-        exit('Should be change php.ini: magic_quotes_gpc=0');
-    }
-    if (ini_get('magic_quotes_sybase')) {
-        exit('Should be remove magic_quotes_sybase in php.ini');
-    }
 }
 
 function _setDefaultUa()

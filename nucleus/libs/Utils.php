@@ -122,6 +122,9 @@ class Utils
 
     public static function strlen($string)
     {
+        if (is_null($string)) {
+            return 0;
+        }
         if (_HAS_MBSTRING) {
             return mb_strlen($string, _CHARSET);
         }
