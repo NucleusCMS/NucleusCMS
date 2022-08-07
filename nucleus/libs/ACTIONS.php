@@ -515,6 +515,7 @@ class ACTIONS extends BaseActions
     function parse_archive($template, $category = '')
     {
         global $blog, $archive;
+        $y = $m = $d = 0;
         // can be used with either yyyy-mm or yyyy-mm-dd
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
         $this->_setBlogCategory($blog, $category);
@@ -558,6 +559,7 @@ class ACTIONS extends BaseActions
         }
 
         // get archive date
+        $y = $m = $d = 0;
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
         // format can be spread over multiple parameters
@@ -1216,6 +1218,7 @@ class ACTIONS extends BaseActions
     function parse_otherarchive($blogname, $template, $category = '')
     {
         global $archive, $manager;
+        $y = $m = $d = 0;
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
         $b =& $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);

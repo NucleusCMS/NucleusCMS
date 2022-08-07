@@ -505,10 +505,10 @@ function selector()
         $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
         $last_timestamp = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
 
-        $y = $m = $d = '';
+        $y = $m = $d = 0;
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
-        if ($d != 0) {
+        if (preg_match('|^\d+-\d+-|', $archive)) {
             $archivetype = _ARCHIVETYPE_DAY;
             $t = mktime(0, 0, 0, $m, $d, $y);
             // one day has 24 * 60 * 60 = 86400 seconds
@@ -2654,7 +2654,7 @@ function str_contain($haystack, $needle)
 if (!function_exists('str_contains')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
     // Note: This function returns true if the needle string is empty.
-    function str_contains(string $haystack, string $needle) {
+    function str_contains($haystack, $needle) {
         return strpos($haystack, $needle) !== false; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
         // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
@@ -2668,7 +2668,7 @@ if (!function_exists('str_contains')) {
 if (!function_exists('str_starts_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with 
     // Note: This function returns true if the needle string is empty.
-    function str_starts_with(string $haystack, string $needle) {
+    function str_starts_with($haystack, $needle) {
         return strncmp($haystack, $needle, strlen($needle)) === 0; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
         // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
@@ -2682,7 +2682,7 @@ if (!function_exists('str_starts_with')) {
 if (!function_exists('str_ends_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
     // Note: This function returns true if the needle string is empty.
-    function str_ends_with(string $haystack, string $needle) {
+    function str_ends_with($haystack, $needle) {
         if (strlen($needle) > strlen($haystack)) {
             return false; // don't localize
         }

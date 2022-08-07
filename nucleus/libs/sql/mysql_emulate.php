@@ -185,6 +185,9 @@ function mysql_real_escape_string($val, $dblink = null)
 {
     global $MYSQL_CONN;
     $link = ($dblink ? $dblink : $MYSQL_CONN);
+    if (is_null($val)) {
+        return '';
+    }
     return mysqli_real_escape_string($link, $val);
 }
 
