@@ -131,7 +131,6 @@ class PluginAdmin
             }
             /*]]>*/
         </script><?php
-
     }
 }
 

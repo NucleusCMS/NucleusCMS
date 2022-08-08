@@ -153,10 +153,11 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET)
             }
         */
         // v3.2x code
-        if (
-            ($contenttype == 'application/xhtml+xml')
-            && (($CONF['UsingAdminArea'] && !$CONF['debug']) || !stristr(serverVar('HTTP_ACCEPT'),
-                    'application/xhtml+xml'))
+        if (($contenttype == 'application/xhtml+xml')
+            && (($CONF['UsingAdminArea'] && !$CONF['debug']) || !stristr(
+                serverVar('HTTP_ACCEPT'),
+                'application/xhtml+xml'
+            ))
         ) {
             $contenttype = 'text/html';
         }
@@ -278,8 +279,10 @@ function parseHighlight($query)
 function isValidMailAddress($address)
 {
     // enhancement made in 3.6x based on code by Quandary.
-    if (preg_match('/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/',
-        $address)) {
+    if (preg_match(
+        '/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/',
+        $address
+    )) {
         return 1;
     } else {
         return 0;
@@ -393,7 +396,6 @@ function selector()
 
     // show error when headers already sent out
     if (headers_sent() && $CONF['alertOnHeadersSent']) {
-
         headers_sent($hsFile, $hsLine);
         $extraInfo = sprintf(_GFUNCTIONS_HEADERSALREADYSENT_FILE, $hsFile, $hsLine);
 
@@ -488,7 +490,6 @@ function selector()
             $itemidnext = $obj->inumber;
             $itemtitlenext = $obj->ititle;
         }
-
     } elseif ($archive) {
         // show archive
         $type = 'archive';
@@ -499,8 +500,10 @@ function selector()
         // sql queries for the timestamp of the first and the last published item
         $ph = array();
         $ph['iblog'] = (int)($blogid > 0 ? $blogid : $CONF['DefaultBlog']);
-        $query = parseQuery("SELECT UNIX_TIMESTAMP(itime) as result FROM <%prefix%>item WHERE idraft=0 AND iblog='<%iblog%>'",
-            $ph);
+        $query = parseQuery(
+            "SELECT UNIX_TIMESTAMP(itime) as result FROM <%prefix%>item WHERE idraft=0 AND iblog='<%iblog%>'",
+            $ph
+        );
 
         $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
         $last_timestamp = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
@@ -528,7 +531,6 @@ function selector()
             } else {
                 $archivenextexists = false;
             }
-
         } elseif ($m == 0) {
             $archivetype = _ARCHIVETYPE_YEAR;
             $t = mktime(0, 0, 0, 12, 31, $y - 1);
@@ -568,7 +570,6 @@ function selector()
                 $archivenextexists = false;
             }
         }
-
     } elseif ($archivelist) {
         $type = 'archivelist';
 
@@ -581,7 +582,6 @@ function selector()
         if (!$blogid) {
             doError(_ERROR_NOSUCHBLOG);
         }
-
     } elseif ($GLOBALS['query']) {
         global $startpos;
         $type = 'search';
@@ -620,7 +620,6 @@ function selector()
         if (!$blogid) {
             doError(_ERROR_NOSUCHBLOG);
         }
-
     } elseif ($memberid) {
         $type = 'member';
 
@@ -629,7 +628,6 @@ function selector()
         }
 
         $memberinfo = $manager->getMember($memberid);
-
     } elseif ($imagepopup) {
         // media object (images etc.)
         $type = 'imagepopup';
@@ -720,7 +718,6 @@ function doError($msg, $skin = '')
     global $errormessage, $CONF, $skinid, $blogid, $manager;
 
     if ($skin == '') {
-
         if (SKIN::existsID($skinid)) {
             $skin = new SKIN($skinid);
         } elseif ($manager->existsBlogID($blogid)) {
@@ -733,7 +730,6 @@ function doError($msg, $skin = '')
             // this statement should actually never be executed
             $skin = new SKIN($CONF['BaseSkin']);
         }
-
     }
 
     $skinid = $skin->id;
@@ -916,7 +912,6 @@ function selectLanguage($language)
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     include_once($DIR_LANG . str_replace(array('\\', '/'), '', $language) . '.php');
-
 }
 
 function parseFile($filename, $includeMode = 'normal', $includePrefix = '')
@@ -978,8 +973,10 @@ function helpHtml($id)
     $ph['help_link'] = helplink($id);
     $ph['AdminURL'] = $CONF['AdminURL'];
     $ph['alt_text'] = _HELP_TT;
-    return parseText('<%help_link%><img src="<%AdminURL%>documentation/icon-help.gif" width="15" height="15" alt="<%alt_text%>" /></a>',
-        $ph);
+    return parseText(
+        '<%help_link%><img src="<%AdminURL%>documentation/icon-help.gif" width="15" height="15" alt="<%alt_text%>" /></a>',
+        $ph
+    );
 }
 
 function helplink($id)
@@ -989,8 +986,10 @@ function helplink($id)
     $ph['help_dir'] = get_help_root_url(true);
     $ph['id'] = $id;
 
-    return parseText('<a href="<%help_dir%>help.html#<%id%>" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">',
-        $ph);
+    return parseText(
+        '<a href="<%help_dir%>help.html#<%id%>" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return help(this.href);">',
+        $ph
+    );
 }
 
 function get_help_root_url()
@@ -1006,7 +1005,6 @@ function get_help_root_url()
                 $doc_root .= 'en/';
             }
         }
-
     }
     return $doc_root;
 }
@@ -1129,7 +1127,6 @@ function checkLanguage($lang)
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     return is_file($DIR_LANG . str_replace(array('\\', '/'), '', $lang) . '.php');
-
 }
 
 /**
@@ -1301,7 +1298,6 @@ function addLinkParams($link, $params)
     global $CONF;
 
     if (is_array($params)) {
-
         if ($CONF['URLMode'] == 'pathinfo') {
             foreach ($params as $param => $value) {
                 // change in 3.63 to fix problem where URL generated with extra params mike look like category/4/blogid/1
@@ -1336,11 +1332,9 @@ function addLinkParams($link, $params)
                 }
             }
         } else {
-
             foreach ($params as $param => $value) {
                 $link .= '&amp;' . $param . '=' . urlencode($value);
             }
-
         }
     }
 
@@ -1480,7 +1474,7 @@ function formatDate($format, $timestamp, $defaultFormat, &$blog = false)
             $tz .= sprintf("%02d:%02d", floor($offset / 3600), round(($offset % 3600) / 60));
             return date('Y-m-d\TH:i:s', $timestamp) . $tz;
 
-        default :
+        default:
             return Utils::strftime($format ? $format : $defaultFormat, $timestamp);
     }
 }
@@ -1666,8 +1660,11 @@ function ticketForPlugin()
         $unsecure_plugin_name = $unsecure_value;
         $unsecure_plugin_name_short = strtolower($unsecure_value);
     } else {
-        $unsecure_value = preg_replace('#(?:^|.+/)NP_([^/]*)\.php$#', '$1',
-            $path); // Remove the first "NP_" and the last ".php" if exists.
+        $unsecure_value = preg_replace(
+            '#(?:^|.+/)NP_([^/]*)\.php$#',
+            '$1',
+            $path
+        ); // Remove the first "NP_" and the last ".php" if exists.
         $unsecure_value = preg_replace('#^([^/]*)/(.*)$#', '$1', $unsecure_value); // Remove the "/" and beyond.
         $unsecure_plugin_name = $unsecure_value;
         $unsecure_plugin_name_short = strtolower($unsecure_value);
@@ -1869,7 +1866,6 @@ function sanitizeArray(&$array)
 //    $excludeListForSanitization = array();
 
     foreach ($array as $k => $v) {
-
         // split to key and value
         list($key, $val) = preg_split("/=/", $v, 2);
         if (!isset($val)) {
@@ -1882,7 +1878,6 @@ function sanitizeArray(&$array)
 
         // if $key is included in exclude list, skip this param
         if (!in_array($key, $excludeListForSanitization)) {
-
             // check value
             if (strpos($val, '\\')) {
                 list($val, $tmp) = explode('\\', $val);
@@ -2153,7 +2148,7 @@ function hsc($string, $flags = ENT_QUOTES, $encoding = '')
 // *
 // if error occured , this function returns empty string.
 // wrong  encode  makes allow xss
-// do not use ENT_IGNORE:ENT_IGNORE flag makes allow xss 
+// do not use ENT_IGNORE:ENT_IGNORE flag makes allow xss
 // *
     if (is_null($string) || strlen($string)===0) {
         return '';
@@ -2177,11 +2172,14 @@ function coreSkinVar($key = '')
         $rs = sprintf("%.3f sec / %d queries", $loadtime, $SQLCount);
     } elseif ($key === '<%DebugInfo%>') {
         global $SQLStack, $doActionStack;
-        $rs = sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>',
-            join("<br />\n", $SQLStack));
-        $rs .= sprintf('<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>',
-            join("<br />\n", $doActionStack));
-
+        $rs = sprintf(
+            '<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>',
+            join("<br />\n", $SQLStack)
+        );
+        $rs .= sprintf(
+            '<div style="background-color:#fff;padding:1em;font-family:monospace;">%s</div>',
+            join("<br />\n", $doActionStack)
+        );
     } else {
         $rs = '';
     }
@@ -2402,8 +2400,7 @@ function init_nucleus_compatibility_mysql_handler()
 //            trigger_error("Deprecated : use sql_ instead of mysql_ . ", E_USER_DEPRECATED);
 
         if (isset($MYSQL_HANDLER)) {
-            if (
-                (is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER == 'mysql'))
+            if ((is_string($MYSQL_HANDLER) && ($MYSQL_HANDLER == 'mysql'))
                 ||
                 (is_array($MYSQL_HANDLER) && (strtolower($MYSQL_HANDLER[0]) == 'mysql'))
             ) {
@@ -2498,7 +2495,8 @@ function getValidLanguage($lang)
 }
 
 function parseText($tpl = '', $ph = array())
-{ // $ph is placeholders
+{
+ // $ph is placeholders
 
     if (!is_array($ph)) {
         $ph = func_get_args();
@@ -2508,13 +2506,14 @@ function parseText($tpl = '', $ph = array())
         if (strpos($tpl, '<%') === false) {
             break;
         }
-        $tpl = str_replace("<%{$k}%>",(string) $v, $tpl);
+        $tpl = str_replace("<%{$k}%>", (string) $v, $tpl);
     }
     return $tpl;
 }
 
 function parseHtml($query = '', $ph = array())
-{ // $ph is placeholders
+{
+ // $ph is placeholders
 
     if (!is_array($ph)) {
         $ph = func_get_args();
@@ -2545,7 +2544,8 @@ function parseHtml($query = '', $ph = array())
 }
 
 function parseQuery($query = '', $ph = array())
-{ // $ph is placeholders
+{
+ // $ph is placeholders
 
     if (strpos($query, '<%') !== false) {
         $query = str_replace(array('<%', '%>'), array('[@', '@]'), $query);
@@ -2560,7 +2560,6 @@ function parseQuery($query = '', $ph = array())
     }
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'] . mt_rand());
     foreach ($ph as $k => $v) {
-
         if (strpos($query, '[@') === false) {
             break;
         }
@@ -2595,7 +2594,8 @@ function loadCoreClassFor_spl($classname)
 }
 
 function loadCoreClassFor_spl_prephp53($classname)
-{ // for PHP 5.1.0 - 5.2
+{
+ // for PHP 5.1.0 - 5.2
     global $DIR_LIBS;
     if (@is_file("{$DIR_LIBS}/{$classname}.php")) {
         require_once "{$DIR_LIBS}/{$classname}.php";
@@ -2654,7 +2654,8 @@ function str_contain($haystack, $needle)
 if (!function_exists('str_contains')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
     // Note: This function returns true if the needle string is empty.
-    function str_contains($haystack, $needle) {
+    function str_contains($haystack, $needle)
+    {
         return strpos($haystack, $needle) !== false; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
         // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
@@ -2666,9 +2667,10 @@ if (!function_exists('str_contains')) {
 }
 
 if (!function_exists('str_starts_with')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with 
+    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with
     // Note: This function returns true if the needle string is empty.
-    function str_starts_with($haystack, $needle) {
+    function str_starts_with($haystack, $needle)
+    {
         return strncmp($haystack, $needle, strlen($needle)) === 0; // don't localize
         // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
         // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
@@ -2682,7 +2684,8 @@ if (!function_exists('str_starts_with')) {
 if (!function_exists('str_ends_with')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
     // Note: This function returns true if the needle string is empty.
-    function str_ends_with($haystack, $needle) {
+    function str_ends_with($haystack, $needle)
+    {
         if (strlen($needle) > strlen($haystack)) {
             return false; // don't localize
         }

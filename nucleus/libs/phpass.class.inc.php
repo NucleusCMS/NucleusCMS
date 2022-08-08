@@ -234,8 +234,10 @@ class PasswordHash
             $random = $this->get_random_bytes(6);
         }
         $hash =
-            $this->crypt_private($password,
-                $this->gensalt_private($random));
+            $this->crypt_private(
+                $password,
+                $this->gensalt_private($random)
+            );
         if (strlen($hash) == 34) {
             return $hash;
         }

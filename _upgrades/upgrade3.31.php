@@ -12,19 +12,21 @@
 
 upgrade_do331();
 
-function upgrade_do331() {
+function upgrade_do331()
+{
 
-    if (upgrade_checkinstall(331))
+    if (upgrade_checkinstall(331)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
 
-    if (!upgrade_checkIfColumnExists('item','iposted')) {
+    if (!upgrade_checkIfColumnExists('item', 'iposted')) {
         $query = "  ALTER TABLE `" . sql_table('item') . "`
                                 ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL ;";
 
         upgrade_query('Altering ' . sql_table('item') . ' table', $query);
     }
 
-    if (!upgrade_checkIfColumnExists('blog','bfuturepost')) {
+    if (!upgrade_checkIfColumnExists('blog', 'bfuturepost')) {
         $query = "  ALTER TABLE `" . sql_table('blog') . "`
                                 ADD `bfuturepost` TINYINT(2) DEFAULT 0 NOT NULL ;";
 
@@ -36,12 +38,9 @@ function upgrade_do331() {
     update_version('331');
 
     // check to see if user turn on Weblogs.com ping, if so, suggest to install the plugin
-    $query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'"; 
+    $query = "SELECT bsendping FROM " . sql_table('blog') . " WHERE bsendping='1'";
     $res = sql_query($query);
-    if ($res && !($r = sql_fetch_array($res)) && !empty($r))  // Fix for PHP(-5.4) Parse error: empty($var = "") or empty(function())
-    {
+    if ($res && !($r = sql_fetch_array($res)) && !empty($r)) {  // Fix for PHP(-5.4) Parse error: empty($var = "") or empty(function())
         echo "<li>" . _UPG_TEXT_NOTE_PING01 . "</li>";
     }
 }
-
-?>

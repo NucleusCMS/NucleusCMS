@@ -170,8 +170,13 @@ class PARSER
                         global $member, $CONF;
                         if ($member && $member->isLoggedIn() && $member->isAdmin()) {
                             $NP_Name = 'NP_' . $action;
-                            $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                                $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                            $msg = sprintf(
+                                "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                                $NP_Name,
+                                get_class($e),
+                                $e->getLine(),
+                                $e->getFile()
+                            );
                             if ($CONF['DebugVars']) {
                                 var_dump($e->getMessage());
                             }
@@ -191,7 +196,6 @@ class PARSER
                     echo hsc($_GET[$params[0]]);
                 }
             }
-
         }
     }
 
@@ -238,6 +242,4 @@ class PARSER
         global $manager;
         return $manager->getParserProperty($name);
     }
-
-
 }

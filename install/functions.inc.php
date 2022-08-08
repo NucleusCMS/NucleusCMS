@@ -50,7 +50,7 @@ function getSiteUrl()
 
 /*
  * Add a table prefix if it is used
- * 
+ *
  * @param 	$unPrefixed
  * 			table name with prefix
  */
@@ -80,8 +80,11 @@ function showInstallForm()
 
     $ph = array();
     $ph['_TITLE'] = _TITLE;
-    $ph['_INSTALL_TEXT_VERSION'] = sprintf('%s %s', htmlspecialchars(_INSTALL_TEXT_VERSION, ENT_QUOTES, 'UTF-8'),
-        NUCLEUS_VERSION);
+    $ph['_INSTALL_TEXT_VERSION'] = sprintf(
+        '%s %s',
+        htmlspecialchars(_INSTALL_TEXT_VERSION, ENT_QUOTES, 'UTF-8'),
+        NUCLEUS_VERSION
+    );
     $ph['_HEADER1'] = sprintf('%s', hsc(_HEADER1));
     $ph['_TEXT1'] = _TEXT1;
     if (!@is_writable('../')) {
@@ -296,7 +299,7 @@ function doInstall()
                 define('_CHARSET_INSTALL', 'UTF-8');
             }
             break;
-        default :
+        default:
             $charset = 'utf8';
             define('_CHARSET_INSTALL', 'UTF-8');
     }
@@ -347,8 +350,11 @@ function doInstall()
         $mysql_database = $sqlite_db_name;
 
         if ((!$sqlite_db_dir) || !is_dir($sqlite_db_dir)) {
-            $msg = sprintf("<p>not found: %s</p><p>%s</p>", _INSTALL_TEXT_SETTINGS_NOEXSIT,
-                htmlspecialchars($sqlite_db_dir, null, _CHARSET));
+            $msg = sprintf(
+                "<p>not found: %s</p><p>%s</p>",
+                _INSTALL_TEXT_SETTINGS_NOEXSIT,
+                htmlspecialchars($sqlite_db_dir, null, _CHARSET)
+            );
             _doError($msg);
             exit;
         }
@@ -356,20 +362,23 @@ function doInstall()
         if (@is_file($sqlite_db_name)) {
             $fsize = @filesize($sqlite_db_name);
             if ($fsize) {
-                $msg = sprintf("<p>%s: %s</p>", _INSTALL_TEXT_DATABASE_EXSIT,
-                    htmlspecialchars($sqlite_db_name, null, _CHARSET));
+                $msg = sprintf(
+                    "<p>%s: %s</p>",
+                    _INSTALL_TEXT_DATABASE_EXSIT,
+                    htmlspecialchars($sqlite_db_name, null, _CHARSET)
+                );
                 _doError($msg);
                 exit;
             }
         }
         $db_name = $sqlite_db_name;
 
-//			if (is_file('../config.php') || is_file('../config-custum.php'))
-//			{
-//				$msg = sprintf("<p>%s</p><p>%s</p>", _INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1 , _INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2 );
-//				KaguyaInstaller::doError ( $msg );
-//				exit;
-//			}
+//          if (is_file('../config.php') || is_file('../config-custum.php'))
+//          {
+//              $msg = sprintf("<p>%s</p><p>%s</p>", _INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_1 , _INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2 );
+//              KaguyaInstaller::doError ( $msg );
+//              exit;
+//          }
 
         $mysql_create = 0;
         $mysql_usePrefix = 0;
@@ -411,8 +420,11 @@ function doInstall()
             case 'utf8':
             default:
                 $collation = 'utf8_general_ci';
-                if (version_compare('5.5.0', $mySqlVer,
-                        '<=') && ($res = sql_query("SHOW CHARACTER SET LIKE 'utf8mb4'"))) {
+                if (version_compare(
+                    '5.5.0',
+                    $mySqlVer,
+                    '<='
+                ) && ($res = sql_query("SHOW CHARACTER SET LIKE 'utf8mb4'"))) {
                     $install_db_charset = 'utf8mb4';
                     $collation = 'utf8mb4_general_ci';
                 }
@@ -488,7 +500,7 @@ function doInstall()
     foreach ($queries as $query) {
         $query = trim($query);
         if ($query) {
-//		 echo "QUERY = \n" . htmlspecialchars($query) . "\n<p>";
+//       echo "QUERY = \n" . htmlspecialchars($query) . "\n<p>";
 
             if ($mysql_usePrefix == 1) {
                 $query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
@@ -498,8 +510,11 @@ function doInstall()
                 $query .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
             }
 
-            sql_query($query) or _doError(_ERROR30 . ' (' . htmlspecialchars($query, ENT_QUOTES,
-                    _CHARSET) . '): ' . sql_error());
+            sql_query($query) or _doError(_ERROR30 . ' (' . htmlspecialchars(
+                $query,
+                ENT_QUOTES,
+                _CHARSET
+            ) . '): ' . sql_error());
         }
     }
 
@@ -520,8 +535,11 @@ function doInstall()
         . sql_quote_string($itm_body) . ","
         . sql_quote_string($itm_more) . ","
         . " 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1);";
-    sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost, ENT_QUOTES,
-            _CHARSET) . '): ' . sql_error());
+    sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars(
+        $newpost,
+        ENT_QUOTES,
+        _CHARSET
+    ) . '): ' . sql_error());
 
     if (DEBUG_INSTALL_STEPS) {
         echo sprintf("Step6(%d)", __LINE__);
@@ -838,9 +856,9 @@ function installCustomSkins(&$manager)
         $importer->reset();
         $skinFile = $DIR_SKINS . $skinName . '/skinbackup.xml';
 //      Todo: localize skin file
-//		$skinFile_2 = $DIR_SKINS . $skinName . sprintf("/skinbackup-%s.xml", INSTALL_LANG);
-//		if ((INSTALL_LANG != 'en') && is_file($skinFile_2))
-//			$skinFile = $skinFile_2;
+//      $skinFile_2 = $DIR_SKINS . $skinName . sprintf("/skinbackup-%s.xml", INSTALL_LANG);
+//      if ((INSTALL_LANG != 'en') && is_file($skinFile_2))
+//          $skinFile = $skinFile_2;
 
         if (!@file_exists($skinFile)) {
             array_push($aErrors, _ERROR23_1 . $skinFile . ' : ' . _ERROR23_2);
@@ -874,7 +892,7 @@ function doCheckFiles()
     $missingfiles = array();
     $files = array(
         'install-mysql.sql',
-//		'install-sqlite.sql',
+//      'install-sqlite.sql',
         '../index.php',
         '../action.php',
         '../nucleus/index.php',
@@ -919,10 +937,12 @@ function doCheckFiles()
  */
 function updateConfig($name, $val)
 {
-    $query = sprintf("UPDATE %s SET value='%s' WHERE name='%s'",
+    $query = sprintf(
+        "UPDATE %s SET value='%s' WHERE name='%s'",
         tableName('nucleus_config'),
         sql_real_escape_string(trim($val)),
-        sql_real_escape_string($name));
+        sql_real_escape_string($name)
+    );
 
     sql_query($query) or _doError(_ERROR26 . ': ' . sql_error());
     return sql_insert_id();
@@ -962,9 +982,9 @@ function _isValidMailAddress($address)
  * Check if short blog names and nicknames are allowed
  * Returns true if the given string is a valid shortname
  * logic: only letters and numbers are allowed, no spaces allowed
- * 
+ *
  * @param	$name
- * 			name which should be tested	
+ *          name which should be tested
  */
 function _isValidShortName($name)
 {
@@ -978,9 +998,9 @@ function _isValidShortName($name)
 /*
  * Check if a display name is allowed
  * Returns true if the given string is a valid display name
- * 
+ *
  * @param	$name
- * 			name which should be tested	
+ *          name which should be tested
  */
 function _isValidDisplayName($name)
 {

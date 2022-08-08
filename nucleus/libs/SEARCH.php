@@ -123,7 +123,8 @@ class SEARCH
         $keywords = preg_replace(
             "#\-\(([A-Za-z0-9]|$this->two|$this->three){1,}([A-Za-z0-9\-\.\_\,]|$this->two|$this->three){0,}\)#",
             '',
-            $keywords);
+            $keywords
+        );
 
         $keywords = str_replace('(', ' ', $keywords);
         $keywords = str_replace(')', ' ', $keywords);
@@ -234,4 +235,3 @@ class SEARCH
         return $like;
     }
 }
-

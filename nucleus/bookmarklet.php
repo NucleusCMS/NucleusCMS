@@ -30,13 +30,13 @@ if ($action == 'contextmenucode') {
     exit;
 }
 
-if (!$member->isLoggedIn() ) {
+if (!$member->isLoggedIn()) {
     bm_loginAndPassThrough();
     exit;
 }
 
 // on successfull login
-if ( ($action == 'login') && ($member->isLoggedIn() ) ) {
+if (($action == 'login') && ($member->isLoggedIn() )) {
     $action = requestVar('nextaction');
 }
 
@@ -45,8 +45,9 @@ if ($action == '') {
 }
 
 $actiontype = postVar('actiontype');
-if($actiontype==='delete'||$actiontype==='itemdeleteconfirm')
+if ($actiontype==='delete'||$actiontype==='itemdeleteconfirm') {
     $action = $actiontype;
+}
 
 sendContentType('text/html', 'bookmarklet-' . $action);
 
@@ -55,27 +56,41 @@ $action = strtolower($action);
 
 $aActionsNotToCheck = array('login', 'add', 'edit');
 
-if (!in_array($action, $aActionsNotToCheck) ) {
-
-    if (!$manager->checkTicket() ) {
+if (!in_array($action, $aActionsNotToCheck)) {
+    if (!$manager->checkTicket()) {
         bm_doError(_ERROR_BADTICKET);
     }
-
 }
 
 // find out what to do
 switch ($action) {
-    case 'additem'           : bm_doAddItem();    break; // adds the item for real
-    case 'edit'              : bm_doEditForm();   break; // shows the edit item form
-    case 'edititem'          : bm_doEditItem();   break; // edits the item for real
-    case 'delete'            : bm_doDeleteItem(); break;
-    case 'itemdeleteconfirm' : bm_doDeleteItemComplete(); break;
-    case 'login'             : bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG); break; // on login, 'action' gets changed to 'nextaction'
+    case 'additem':
+        bm_doAddItem();
+        break; // adds the item for real
+    case 'edit':
+        bm_doEditForm();
+        break; // shows the edit item form
+    case 'edititem':
+        bm_doEditItem();
+        break; // edits the item for real
+    case 'delete':
+        bm_doDeleteItem();
+        break;
+    case 'itemdeleteconfirm':
+        bm_doDeleteItemComplete();
+        break;
+    case 'login':
+        bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
+        break; // on login, 'action' gets changed to 'nextaction'
         // shows the fill in form
-    case 'add': default      : bm_doShowForm();   break;
+    case 'add':
+    default:
+        bm_doShowForm();
+        break;
 }
 
-function bm_doAddItem() {
+function bm_doAddItem()
+{
     global $member, $manager, $CONF;
 
     $manager->loadClass('ITEM');
@@ -100,7 +115,7 @@ function bm_doAddItem() {
         $extrahead = '';
     }
 
-    bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
+    bm_message(_ITEM_ADDED, _ITEM_ADDED, $message, $extrahead);
 }
 
 function bm_doDeleteItem()
@@ -134,14 +149,15 @@ function bm_doDeleteItemComplete()
     exit;
 }
 
-function bm_doEditItem() {
+function bm_doEditItem()
+{
     global $member, $manager, $CONF;
 
     $itemid = intRequestVar('itemid');
     $catid = postVar('catid');
 
     // only allow if user is allowed to alter item
-    if (!$member->canUpdateItem($itemid, $catid) ) {
+    if (!$member->canUpdateItem($itemid, $catid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
@@ -153,7 +169,7 @@ function bm_doEditItem() {
     $draftid = intPostVar('draftid');
 
     // create new category if needed (only on edit/changedate)
-    if (strstr($catid,'newcat') ) {
+    if (strstr($catid, 'newcat')) {
         // get blogid
         list($blogid) = sscanf($catid, "newcat-%d");
 
@@ -172,7 +188,7 @@ function bm_doEditItem() {
         case 'changedate':
             $publish = 1;
             $wasdraft = 0;
-            $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year') );
+            $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
             break;
         case 'edit':
             $publish = 1;
@@ -196,7 +212,7 @@ function bm_doEditItem() {
     }
 
     // show success message
-    if ($catid != intPostVar('catid') ) {
+    if ($catid != intPostVar('catid')) {
         $href      = 'index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid;
         $onclick   = 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;';
         $title     = _BOOKMARKLET_NEW_WINDOW;
@@ -208,7 +224,8 @@ function bm_doEditItem() {
     }
 }
 
-function bm_loginAndPassThrough() {
+function bm_loginAndPassThrough()
+{
 
     $blogid = intRequestVar('blogid');
     $log_text = requestVar('logtext');
@@ -247,22 +264,23 @@ function bm_loginAndPassThrough() {
     <?php
 }
 
-function bm_doShowForm() {
+function bm_doShowForm()
+{
     global $member;
 
     $blogid = intRequestVar('blogid');
     $log_text = trim(strval(requestVar('logtext')));
-    $log_link = strval (requestVar('loglink'));
+    $log_link = strval(requestVar('loglink'));
     $log_linktitle = strval(requestVar('loglinktitle'));
 
-    $log_text = uniDecode($log_text,_CHARSET);
-    $log_linktitle = uniDecode($log_linktitle,_CHARSET);
+    $log_text = uniDecode($log_text, _CHARSET);
+    $log_linktitle = uniDecode($log_linktitle, _CHARSET);
 
-    if (!BLOG::existsID($blogid) ) {
+    if (!BLOG::existsID($blogid)) {
         bm_doError(_ERROR_NOSUCHBLOG);
     }
 
-    if (!$member->isTeamMember($blogid) ) {
+    if (!$member->isTeamMember($blogid)) {
         bm_doError(_ERROR_NOTONTEAM);
     }
 
@@ -287,40 +305,43 @@ function bm_doShowForm() {
     $factory->createAddForm('bookmarklet', $item);
 }
 
-function bm_doEditForm() {
+function bm_doEditForm()
+{
     global $member, $manager;
 
     $itemid = intRequestVar('itemid');
 
-    if (!$manager->existsItem($itemid, 0, 0) ) {
+    if (!$manager->existsItem($itemid, 0, 0)) {
         bm_doError(_ERROR_NOSUCHITEM);
     }
 
-    if (!$member->canAlterItem($itemid) ) {
+    if (!$member->canAlterItem($itemid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
     $item =& $manager->getItem($itemid, 1, 1);
-    $blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
+    $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
     $param = array('item' => &$item);
     $manager->notify('PrepareItemForEdit', $param);
 
-    if ($blog->convertBreaks() ) {
+    if ($blog->convertBreaks()) {
         $item['body'] = removeBreaks($item['body']);
         $item['more'] = removeBreaks($item['more']);
     }
 
-    $formfactory = new PAGEFACTORY($blog->getID() );
+    $formfactory = new PAGEFACTORY($blog->getID());
     $formfactory->createEditForm('bookmarklet', $item);
 }
 
-function bm_doError($msg) {
+function bm_doError($msg)
+{
     bm_message(_ERROR, _ERRORMSG, $msg);
     die;
 }
 
-function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
+function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1)
+{
     ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html <?php echo _HTML_XML_NAME_SPACE_AND_LANG_CODE; ?>>
@@ -333,21 +354,23 @@ function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
 <body>
 <h1><?php echo $head; ?></h1>
 <p><?php echo $msg; ?></p>
-<?php if($showClose):?>
+    <?php if ($showClose) :?>
 <p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
-<?php endif; ?>
+    <?php endif; ?>
 </body>
 </html>
 
     <?php
 }
 
-function bm_style() {
+function bm_style()
+{
     echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';
     echo '<link rel="stylesheet" type="text/css" href="styles/addedit.css" />';
 }
 
-function bm_doContextMenuCode() {
+function bm_doContextMenuCode()
+{
     global $CONF;
     // https://msdn.microsoft.com/ja-jp/library/ms534165(v=vs.85).aspx
 
@@ -357,13 +380,13 @@ function bm_doContextMenuCode() {
 var oWindow   = window.external.menuArguments;
 var oDocument = oWindow.document;
 var lt;
-<?php
+    <?php
 // debug
 //    echo "alert(typeof oWindow.getSelection);";
 //    // can not access href , ie xss filter
 //    echo "alert(typeof oWindow.location.href);";
 //    echo "if (typeof oWindow.location.href == 'unknown') { for (var name in oWindow.location) { alert(name); } }";
-?>
+    ?>
 if (typeof oWindow.getSelection == "function") {
     lt = escape(oWindow.getSelection().getRangeAt(0).toString());
 } else {
@@ -379,19 +402,21 @@ if (wingm) {
     <?php
 }
 
-function uniDecode($str,$charcode){
+function uniDecode($str, $charcode)
+{
     $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/", 'toUtf8', $str);
     return mb_convert_encoding($text, $charcode, 'UTF-8');
 }
-function toUtf8($ar){
-    foreach($ar as $val){
-        $val = intval(substr($val,2),16);
-        if($val < 0x7F){        // 0000-007F
+function toUtf8($ar)
+{
+    foreach ($ar as $val) {
+        $val = intval(substr($val, 2), 16);
+        if ($val < 0x7F) {        // 0000-007F
             $c .= chr($val);
-        }elseif($val < 0x800) { // 0080-0800
+        } elseif ($val < 0x800) { // 0080-0800
             $c .= chr(0xC0 | ($val / 64));
             $c .= chr(0x80 | ($val % 64));
-        }else{                // 0800-FFFF
+        } else {                // 0800-FFFF
             $c .= chr(0xE0 | (($val / 64) / 64));
             $c .= chr(0x80 | (($val / 64) % 64));
             $c .= chr(0x80 | ($val % 64));

@@ -71,8 +71,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name, $db_user,
-                        $db_password);
+                    $DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name,
+                        $db_user,
+                        $db_password
+                    );
                     break;
                 case 'mssql':
                     if (is_numeric($portnum)) {
@@ -80,8 +83,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name, $db_user,
-                        $db_password);
+                    $DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name,
+                        $db_user,
+                        $db_password
+                    );
                     break;
                 case 'oci':
                     if (is_numeric($portnum)) {
@@ -89,8 +95,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $DBH = new PDO($DB_DRIVER_NAME . ':dbname=//' . $host . $port . '/' . $db_name, $db_user,
-                        $db_password);
+                    $DBH = new PDO(
+                        $DB_DRIVER_NAME . ':dbname=//' . $host . $port . '/' . $db_name,
+                        $db_user,
+                        $db_password
+                    );
                     break;
                 case 'odbc':
                     if (is_numeric($portnum)) {
@@ -107,8 +116,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name, $db_user,
-                        $db_password);
+                    $DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name,
+                        $db_user,
+                        $db_password
+                    );
                     break;
                 case 'sqlite':  // sqlite3
                     ini_set('default_charset', "UTF-8");
@@ -151,8 +163,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     break;
                 default:
                     //mysql
-                    $DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name, $db_user,
-                        $db_password);
+                    $DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db_name,
+                        $db_user,
+                        $db_password
+                    );
                     break;
             }
 
@@ -177,7 +192,6 @@ if (!function_exists('sql_fetch_assoc')) {
                 sql_set_charset_v2($charset, $DBH);
                 fix_mysql_sqlmode($DBH);
             }
-
         } catch (PDOException $e) {
             $DBH = null;
             if ($CONF['debug']) {
@@ -208,8 +222,11 @@ if (!function_exists('sql_fetch_assoc')) {
         if (!$SQL_DBH) {
             $title = 'Connect Error';
             $msg = '<p>Error : Database Connection</p>';
-            $msg .= sprintf('<br><p><a href="%s">%s</a></p>'
-                , $_SERVER['REQUEST_URI'], 'URL');
+            $msg .= sprintf(
+                '<br><p><a href="%s">%s</a></p>',
+                $_SERVER['REQUEST_URI'],
+                'URL'
+            );
 
             startUpError($msg, $title);
             exit;
@@ -276,14 +293,19 @@ if (!function_exists('sql_fetch_assoc')) {
 
         $style = 'height:100px; overflow:auto; background:#C0DCC0';
         if ($res === false) {
-            printf("SQL error with query <div style=\"${style}\">%s</div>: <p />",
-                hsc(sql_error($dbh)) . '<br />' . hsc($query));
+            printf(
+                "SQL error with query <div style=\"${style}\">%s</div>: <p />",
+                hsc(sql_error($dbh)) . '<br />' . hsc($query)
+            );
         } else {
             if ($res->errorCode() != '00000') {
                 $errors = $res->errorInfo();
                 $msg_text = $errors[0] . '-' . $errors[1] . ' ' . $errors[2];
-                printf("SQL error with query <div style=\"${style}\">%s</div>: %s<p />"
-                    , hsc($msg_text), hsc($query));
+                printf(
+                    "SQL error with query <div style=\"${style}\">%s</div>: %s<p />",
+                    hsc($msg_text),
+                    hsc($query)
+                );
             }
         }
 
@@ -305,9 +327,11 @@ if (!function_exists('sql_fetch_assoc')) {
         $handle = fopen($filename, ($override ? "w" : "a"));
         if ($handle) {
             if ($_SERVER['REQUEST_TIME_FLOAT']) {
-                $s = sprintf('tick time : %.2f , query No %d',
-                    (float)microtime(true) - (float)$_SERVER['REQUEST_TIME_FLOAT']
-                    , $SQLCount);
+                $s = sprintf(
+                    'tick time : %.2f , query No %d',
+                    (float)microtime(true) - (float)$_SERVER['REQUEST_TIME_FLOAT'],
+                    $SQLCount
+                );
                 fwrite($handle, $s . "\r\n");
             }
             fwrite($handle, "\t" . preg_replace("/(\r\n|\n\r|\r|\n)/", "\r\n", $query . "\n"));
@@ -369,8 +393,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $SQL_DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db, $DB_USER,
-                        $DB_PASSWORD);
+                    $SQL_DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db,
+                        $DB_USER,
+                        $DB_PASSWORD
+                    );
                     break;
                 case 'mssql':
                     if (is_numeric($portnum)) {
@@ -378,8 +405,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $SQL_DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db, $DB_USER,
-                        $DB_PASSWORD);
+                    $SQL_DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db,
+                        $DB_USER,
+                        $DB_PASSWORD
+                    );
                     break;
                 case 'oci':
                     if (is_numeric($portnum)) {
@@ -387,8 +417,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $SQL_DBH = new PDO($DB_DRIVER_NAME . ':dbname=//' . $host . $port . '/' . $db, $DB_USER,
-                        $DB_PASSWORD);
+                    $SQL_DBH = new PDO(
+                        $DB_DRIVER_NAME . ':dbname=//' . $host . $port . '/' . $db,
+                        $DB_USER,
+                        $DB_PASSWORD
+                    );
                     break;
                 case 'odbc':
                     if (is_numeric($portnum)) {
@@ -404,8 +437,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     } else {
                         $port = '';
                     }
-                    $SQL_DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db, $DB_USER,
-                        $DB_PASSWORD);
+                    $SQL_DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db,
+                        $DB_USER,
+                        $DB_PASSWORD
+                    );
                     break;
                 case 'sqlite':
                     if (is_numeric($portnum)) {
@@ -420,8 +456,11 @@ if (!function_exists('sql_fetch_assoc')) {
                     break;
                 default:
                     //mysql
-                    $SQL_DBH = new PDO($DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db, $DB_USER,
-                        $DB_PASSWORD);
+                    $SQL_DBH = new PDO(
+                        $DB_DRIVER_NAME . ':host=' . $host . $port . ';dbname=' . $db,
+                        $DB_USER,
+                        $DB_PASSWORD
+                    );
                     break;
             }
             return 1;
@@ -921,7 +960,7 @@ if (!function_exists('sql_fetch_assoc')) {
         switch ($DB_DRIVER_NAME) {
             case 'sqlite':
                 return '`' . str_replace("`", "``", $text) . '`';
-            default :  // mysql
+            default:  // mysql
                 return '`' . sql_real_escape_string($text) . '`';
         }
     }

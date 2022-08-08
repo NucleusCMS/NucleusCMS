@@ -220,8 +220,12 @@ class MEMBER
      */
     function isBlogAdmin($blogid)
     {
-        $query = sprintf('SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d',
-                sql_table('team'), intval($blogid), $this->getID())
+        $query = sprintf(
+            'SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d',
+            sql_table('team'),
+            intval($blogid),
+            $this->getID()
+        )
             . ' LIMIT 1';
         return intval(quickQuery($query)) > 0;
     }
@@ -415,7 +419,6 @@ class MEMBER
 
         // all other cases: NOK
         return 0;
-
     }
 
     /**
@@ -435,15 +438,33 @@ class MEMBER
             $lifetime = (time() + 2592000);
         }
 
-        setcookie($CONF['CookiePrefix'] . 'user', $this->getDisplayName(), $lifetime, $CONF['CookiePath'],
-            $CONF['CookieDomain'], $CONF['CookieSecure']);
-        setcookie($CONF['CookiePrefix'] . 'loginkey', $this->getCookieKey(), $lifetime, $CONF['CookiePath'],
-            $CONF['CookieDomain'], $CONF['CookieSecure']);
+        setcookie(
+            $CONF['CookiePrefix'] . 'user',
+            $this->getDisplayName(),
+            $lifetime,
+            $CONF['CookiePath'],
+            $CONF['CookieDomain'],
+            $CONF['CookieSecure']
+        );
+        setcookie(
+            $CONF['CookiePrefix'] . 'loginkey',
+            $this->getCookieKey(),
+            $lifetime,
+            $CONF['CookiePath'],
+            $CONF['CookieDomain'],
+            $CONF['CookieSecure']
+        );
 
         // make sure cookies on shared pcs don't get renewed
         if ($shared) {
-            setcookie($CONF['CookiePrefix'] . 'sharedpc', '1', $lifetime, $CONF['CookiePath'], $CONF['CookieDomain'],
-                $CONF['CookieSecure']);
+            setcookie(
+                $CONF['CookiePrefix'] . 'sharedpc',
+                '1',
+                $lifetime,
+                $CONF['CookiePath'],
+                $CONF['CookieDomain'],
+                $CONF['CookieSecure']
+            );
         }
     }
 
@@ -494,8 +515,6 @@ class MEMBER
         @Utils::mail($this->getEmail(), $title, $message, 'From: ' . $CONF['AdminEmail']);
 
         ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
-
-
     }
 
     /**
@@ -779,8 +798,11 @@ class MEMBER
      */
     public static function exists($name)
     {
-        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE mname='%s' LIMIT 1",
-            sql_table('member'), sql_real_escape_string($name));
+        $sql = sprintf(
+            "SELECT count(*) AS result FROM %s WHERE mname='%s' LIMIT 1",
+            sql_table('member'),
+            sql_real_escape_string($name)
+        );
         return (intval(quickQuery($sql)) > 0);
     }
 
@@ -920,8 +942,10 @@ class MEMBER
             // attempt to add entry in database
             // add in database as non-active
             $query = 'INSERT INTO ' . sql_table('activation') . ' (vkey, vtime, vmember, vtype, vextra) ';
-            $query .= 'VALUES (\'' . sql_real_escape_string($key) . '\', \'' . date('Y-m-d H:i:s',
-                    time()) . '\', \'' . intval($this->getID()) . '\', \'' . sql_real_escape_string($type) . '\', \'' . sql_real_escape_string($extra) . '\')';
+            $query .= 'VALUES (\'' . sql_real_escape_string($key) . '\', \'' . date(
+                'Y-m-d H:i:s',
+                time()
+            ) . '\', \'' . intval($this->getID()) . '\', \'' . sql_real_escape_string($type) . '\', \'' . sql_real_escape_string($extra) . '\')';
             if (sql_query($query)) {
                 $ok = true;
             }
@@ -994,8 +1018,10 @@ class MEMBER
         $boundary = time() - (60 * 60 * 24 * $actdays);
 
         // 1. walk over all entries, and see if special actions need to be performed
-        $res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',
-                $boundary) . '\'');
+        $res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date(
+            'Y-m-d H:i:s',
+            $boundary
+        ) . '\'');
 
         if ($res) {
             while ($o = sql_fetch_object($res)) {
@@ -1020,8 +1046,9 @@ class MEMBER
         }
 
         // 2. delete activation entries for real
-        sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',
-                $boundary) . '\'');
+        sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date(
+            'Y-m-d H:i:s',
+            $boundary
+        ) . '\'');
     }
-
 }

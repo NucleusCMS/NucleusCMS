@@ -167,8 +167,12 @@ class SKINEXPORT
                 . " ELSE 0"
                 . " END AS suborder2";
 
-            $sql = sprintf("SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
-                $suborder2, sql_table('skin'), intval($skinId));
+            $sql = sprintf(
+                "SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
+                $suborder2,
+                sql_table('skin'),
+                intval($skinId)
+            );
             $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
             $res = sql_query($sql);
             while ($partObj = sql_fetch_object($res)) {
@@ -227,6 +231,5 @@ class SKINEXPORT
     function escapeCDATA($cdata)
     {
         return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
-
     }
 }

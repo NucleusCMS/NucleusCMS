@@ -38,7 +38,6 @@ function showlist($query, $type, $template)
         call_user_func('listplug_' . $type, $template, 'FOOT');
 
         return sizeof($query);
-
     } else {
         $res = sql_query($query);
 
@@ -228,8 +227,11 @@ function listplug_table_pluginlist($template, $type)
                     echo "<strong style='color: red'>" . hsc(_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE) . "</strong><br />";
                     echo "Latest version: " . hsc($update_info['version']) . "<br />";
                     if (!empty($update_info['download'])) {
-                        printf('Get URL : <a href="%s" target="_blank">%s</a><br />', hsc($update_info['download']),
-                            hsc($update_info['download']));
+                        printf(
+                            'Get URL : <a href="%s" target="_blank">%s</a><br />',
+                            hsc($update_info['download']),
+                            hsc($update_info['download'])
+                        );
                     }
                     echo "<br />";
                 }
@@ -320,7 +322,8 @@ function listplug_table_plugoptionlist($template, $type)
                 <td><?php echo _PLUGS_SAVE ?></td>
                 <td><input type="submit" value="<?php echo _PLUGS_SAVE ?>"/></td>
             </tr>
-            <?php break;
+            <?php
+            break;
     }
 }
 
@@ -549,8 +552,11 @@ function listplug_table_commentlist($template, $type)
                     echo '<td style=" word-break: break-all">';
                     $s = sprintf('(%d) %s', $amountComments[$current->citem], _LIST_COMMENT_LIST_FOR_ITEM);
                     $s = sprintf(_LIST_BACK_TO, $s);
-                    printf('<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>'
-                        , $current->citem, $s);
+                    printf(
+                        '<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>',
+                        $current->citem,
+                        $s
+                    );
                     echo '</td>';
                 } else {
                     echo '<td>&nbsp;</td>';
@@ -724,8 +730,6 @@ function listplug_table_skinlist($template, $type)
                     $readmeTitle = sprintf(_LIST_SKIN_README, hsc($current->sdname, ENT_QUOTES));
                     echo '<br /><a href="' . $url . '" title="' . $readmeTitle . '">' . _LIST_SKIN_README_TXT . '</a>';
                 }
-
-
             }
 
             echo "</td>";
@@ -790,8 +794,11 @@ function listplug_table_skinlist($template, $type)
                 echo '<br /><br />', _LIST_SKINS_DEFINED, ' <ul>', implode('', $types), '</ul>';
             }
             // skin page
-            $sql = sprintf("SELECT stype FROM `%s` WHERE sdesc=%d AND spartstype='specialpage' ", sql_table('skin'),
-                    $current->sdnumber) . $order;
+            $sql = sprintf(
+                "SELECT stype FROM `%s` WHERE sdesc=%d AND spartstype='specialpage' ",
+                sql_table('skin'),
+                $current->sdnumber
+            ) . $order;
             if ($has_spartstype) {
                 $res = sql_query($sql);
             } else {
@@ -804,15 +811,25 @@ function listplug_table_skinlist($template, $type)
                 }
             }
             if (count($names) > 0) {
-                printf("<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s",
-                    _SKIN_PARTS_SPECIAL_PAGE);
+                printf(
+                    "<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s",
+                    _SKIN_PARTS_SPECIAL_PAGE
+                );
                 echo "<ul>";
                 for ($i = 0; $i < count($names); $i++) {
                     // todo: edit link ?
-                    $editurl = sprintf('index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s',
-                        $current->sdnumber, $names[$i]);
-                    printf("<li>%s <a href='%s' tabindex='%d'>%s</a></li>", helpHtml('skinpartspecialpage'), $editurl,
-                        $template['tabindex'], escapeHTML($names[$i]));
+                    $editurl = sprintf(
+                        'index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s',
+                        $current->sdnumber,
+                        $names[$i]
+                    );
+                    printf(
+                        "<li>%s <a href='%s' tabindex='%d'>%s</a></li>",
+                        helpHtml('skinpartspecialpage'),
+                        $editurl,
+                        $template['tabindex'],
+                        escapeHTML($names[$i])
+                    );
                 }
                 echo "</ul>";
                 echo "</div>";

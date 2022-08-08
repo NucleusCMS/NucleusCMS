@@ -12,11 +12,13 @@
 
 upgrade_do380();
 
-function upgrade_do380() {
+function upgrade_do380()
+{
     global $DB_DRIVER_NAME;
 
-    if (upgrade_checkinstall(380))
+    if (upgrade_checkinstall(380)) {
         return 'already installed';
+    }
 
     $query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName'", sql_table('config'));
     $res = quickQuery($query);
@@ -25,29 +27,26 @@ function upgrade_do380() {
         upgrade_query('Updating ' . sql_table('config') . ' ', $query);
     }
 
-    if ( !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') )
-    {
+    if (!sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')) {
         $query = sprintf("ALTER TABLE `%s`
                          ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';
-                         ", sql_table( 'blog' ));
+                         ", sql_table('blog'));
 
         upgrade_query('Altering ' . sql_table('blog') . ' table', $query);
     }
 
-    if ( !sql_existTableColumnName(sql_table('member'), 'mhalt') )
-    {
+    if (!sql_existTableColumnName(sql_table('member'), 'mhalt')) {
         $query = sprintf("ALTER TABLE `%s`
                          ADD COLUMN `mhalt` tinyint(2) NOT NULL default '0';
-                         ", sql_table( 'member' ));
+                         ", sql_table('member'));
 
         upgrade_query('Altering ' . sql_table('member') . ' table', $query);
     }
 
-    if ( !sql_existTableColumnName(sql_table('member'), 'mhalt_reason') )
-    {
+    if (!sql_existTableColumnName(sql_table('member'), 'mhalt_reason')) {
         $query = sprintf("ALTER TABLE `%s`
                          ADD COLUMN `mhalt_reason` varchar(100) NOT NULL default '';
-                         ", sql_table( 'member' ));
+                         ", sql_table('member'));
 
         upgrade_query('Altering ' . sql_table('member') . ' table', $query);
     }
@@ -60,17 +59,17 @@ function upgrade_do380() {
 
     $query = sprintf("ALTER TABLE `%s`
                      MODIFY COLUMN `name` varchar(50)  NOT NULL default '';
-                     ", sql_table( 'config' ));
+                     ", sql_table('config'));
     upgrade_query('Altering ' . sql_table('config') . ' table', $query);
 
     $query = sprintf("ALTER TABLE `%s`
                      MODIFY COLUMN `oname` varchar(50) NOT NULL default '';
-                     ", sql_table( 'plugin_option_desc' ));
+                     ", sql_table('plugin_option_desc'));
     upgrade_query('Altering ' . sql_table('plugin_option_desc') . ' table', $query);
 
     $query = sprintf("ALTER TABLE `%s`
                      ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts';
-                     ", sql_table( 'skin' ));
+                     ", sql_table('skin'));
     upgrade_query('Altering ' . sql_table('skin') . ' table', $query);
     //  -> 3.80
     // update database version

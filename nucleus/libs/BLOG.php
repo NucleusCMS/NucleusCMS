@@ -225,8 +225,10 @@ class BLOG
                             'timestamp' => $oldTS
                         );
                         $manager->notify('PreDateFoot', $param);
-                        $tmp_footer = Utils::strftime(isset($template['DATE_FOOTER']) ? $template['DATE_FOOTER'] : '',
-                            $oldTS);
+                        $tmp_footer = Utils::strftime(
+                            isset($template['DATE_FOOTER']) ? $template['DATE_FOOTER'] : '',
+                            $oldTS
+                        );
                         $parser->parse($tmp_footer);
                         $param = array(
                             'blog' => &$this,
@@ -241,8 +243,10 @@ class BLOG
                     $manager->notify('PreDateHead', $param);
                     // note, to use templatvars in the dateheader, the %-characters need to be doubled in
                     // order to be preserved by strftime
-                    $tmp_header = Utils::strftime((isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null),
-                        $timestamp);
+                    $tmp_header = Utils::strftime(
+                        (isset($template['DATE_HEADER']) ? $template['DATE_HEADER'] : null),
+                        $timestamp
+                    );
                     $parser->parse($tmp_header);
                     $param = array(
                         'blog' => &$this,
@@ -267,7 +271,6 @@ class BLOG
             );
             $manager->notify('PostItem', $param);
             $parser->parse($template['ITEM_FOOTER']);
-
         }
 
         // add another date footer if there was at least one item
@@ -288,7 +291,6 @@ class BLOG
         sql_free_result($items);    // free memory
 
         return $numrows;
-
     }
 
     /**
@@ -513,7 +515,6 @@ class BLOG
             $extraquery = '';
             $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $query, 1, 1);
         } else {
-
             // add LIMIT to query (to split search results into pages)
             if (intval($maxresults > 0)) {
                 $sqlquery .= ' LIMIT ' . intval($startpos) . ',' . intval($maxresults);
@@ -729,7 +730,6 @@ class BLOG
 
             $temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'], $data);
             echo Utils::strftime($temp, $current->itime);
-
         }
 
         sql_free_result($res);
@@ -774,7 +774,7 @@ class BLOG
 
         // if文の書式変更
         $template_catlist_header = null;
-        if(isset($template['CATLIST_HEADER'])){
+        if (isset($template['CATLIST_HEADER'])) {
             $template_catlist_header = $template['CATLIST_HEADER'];
         }
         $template_catlist_header_param = array(
@@ -784,7 +784,7 @@ class BLOG
             'catiscurrent' => $nocatselected,
             'currentcat' => $nocatselected
         );
-        echo TEMPLATE::fill( $template_catlist_header, $template_catlist_header_param );
+        echo TEMPLATE::fill($template_catlist_header, $template_catlist_header_param);
 
         //オーダー番号追加 (yotaca: 2020/07/22)
         $query = 'SELECT catid, cdesc, cname, corder FROM '.sql_table('category').' WHERE cblog=' . $this->getID();
@@ -815,7 +815,7 @@ class BLOG
                 'name' => $data['catname'],
                 'extra' => $linkparams
             );
-            $data['catlink'] = createLink( 'category', $param);
+            $data['catlink'] = createLink('category', $param);
             
             $data['self'] = $CONF['Self'];
 
@@ -841,20 +841,20 @@ class BLOG
             }
 
             $param = array('listitem' => &$data);
-            $manager->notify('PreCategoryListItem', $param );
+            $manager->notify('PreCategoryListItem', $param);
 
             // if文の書式変更
             $template_catlist_listitem = null;
-            if(isset($template['CATLIST_LISTITEM'])){
+            if (isset($template['CATLIST_LISTITEM'])) {
                 $template_catlist_listitem = $template['CATLIST_LISTITEM'];
             }
-            echo TEMPLATE::fill( $template_catlist_listitem, $data );
+            echo TEMPLATE::fill($template_catlist_listitem, $data);
         }
         sql_free_result($res);
 
         // if文の書式変更
         $template_catlist_footer = null;
-        if(isset($template['CATLIST_FOOTER'])){
+        if (isset($template['CATLIST_FOOTER'])) {
             $template_catlist_footer = $template['CATLIST_FOOTER'];
         }
         $template_catlist_footer_param = array(
@@ -862,7 +862,7 @@ class BLOG
             'blogurl' => $blogurl,
             'self' => $CONF['Self']
         );
-        echo TEMPLATE::fill( $template_catlist_footer, $template_catlist_footer_param );
+        echo TEMPLATE::fill($template_catlist_footer, $template_catlist_footer_param);
     }
 
     /**
@@ -907,17 +907,18 @@ class BLOG
 
         $template =& $manager->getTemplate($template);
 
-        echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
+        echo TEMPLATE::fill(
+            (isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
             array(
                 'sitename' => $CONF['SiteName'],
                 'siteurl' => $CONF['IndexURL']
-            ));
+            )
+        );
 
         $query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM ' . sql_table('blog') . ' ORDER BY ' . $orderby . ' ' . $direction;
         $res = sql_query($query);
 
         while ($data = sql_fetch_assoc($res)) {
-
             $list = array();
 
             $list['bloglink'] = createBlogidLink($data['bnumber']);
@@ -936,16 +937,17 @@ class BLOG
             $manager->notify('PreBlogListItem', $param);
 
             echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM']) ? $template['BLOGLIST_LISTITEM'] : null), $list);
-
         }
 
         sql_free_result($res);
 
-        echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
+        echo TEMPLATE::fill(
+            (isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
             array(
                 'sitename' => $CONF['SiteName'],
                 'siteurl' => $CONF['IndexURL']
-            ));
+            )
+        );
     }
 
     /**
@@ -1080,8 +1082,12 @@ class BLOG
      */
     function getCategoryIdFromName($name)
     {
-        $query = sprintf("SELECT catid FROM `%s` WHERE cblog=%d AND cname='%s'",
-            sql_table('category'), $this->getID(), sql_real_escape_string($name));
+        $query = sprintf(
+            "SELECT catid FROM `%s` WHERE cblog=%d AND cname='%s'",
+            sql_table('category'),
+            $this->getID(),
+            sql_real_escape_string($name)
+        );
         $res = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
@@ -1432,8 +1438,11 @@ class BLOG
      */
     public static function exists($name)
     {
-        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
-            sql_table('blog'), sql_real_escape_string($name));
+        $sql = sprintf(
+            "SELECT count(*) AS result FROM %s WHERE bshortname='%s' LIMIT 1",
+            sql_table('blog'),
+            sql_real_escape_string($name)
+        );
         return intval(quickQuery($sql)) > 0;
     }
 
@@ -1446,8 +1455,11 @@ class BLOG
      */
     public static function existsID($id)
     {
-        $sql = sprintf("SELECT count(*) AS result FROM %s WHERE bnumber=%d LIMIT 1",
-            sql_table('blog'), intval($id));
+        $sql = sprintf(
+            "SELECT count(*) AS result FROM %s WHERE bnumber=%d LIMIT 1",
+            sql_table('blog'),
+            intval($id)
+        );
         return intval(quickQuery($sql)) > 0;
     }
 
@@ -1635,47 +1647,47 @@ class BLOG
         global $CONF;
 
         if (!sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')) {
-            $sql = sprintf("ALTER TABLE `%s` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';",
-                sql_table('blog'));
+            $sql = sprintf(
+                "ALTER TABLE `%s` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1';",
+                sql_table('blog')
+            );
             $res = sql_query($sql);
             return $res !== false;
         }
     }
 
-    //オーダー番号追加 (yotaca: 2018/5/19) 
+    //オーダー番号追加 (yotaca: 2018/5/19)
     function hnmCategoryType($val)
     {
         $r = array('type'=>'', 'parnt'=>0, 'child'=>0, 'cls'=>'', 'sts'=>'');
         $p = "parent_cat";
         $c = "child_cat";
 
-        if(!$val){
+        if (!$val) {
             $r["type"] = $p;
-
-        }else{
+        } else {
             $val = strval(intval($val));
             $len = strlen($val);
 
-            if($len <= 2){
+            if ($len <= 2) {
                 $r["type"] = $p;
                 $r["parnt"] = $val;
-
-            }elseif($len >= 3){
+            } elseif ($len >= 3) {
                 $r["parnt"] = substr($val, 0, -2);
                 $r["child"] = substr($val, -2);
 
-                if($r["child"]=="00"){
+                if ($r["child"]=="00") {
                     $r["type"] = $p;
-                }else{
+                } else {
                     $r["type"] = $c;
                 }
             }
         }
 
         $r["sts"] = $this->hnmGetCategoryid(); // カレント追加(yotaca: 2018/7/1)
-        if($r["sts"] == $r["parnt"]){
+        if ($r["sts"] == $r["parnt"]) {
             $r["sts"] = "current ";
-        }else{
+        } else {
              $r["sts"] = "";
         }
 
@@ -1685,22 +1697,25 @@ class BLOG
 
     //カレントカテゴリのオーダー番号を抽出します。 (yotaca: 2018/7/1)
     function hnmGetCategoryid()
-    { 
+    {
         global $catid,$itemid;
 
-        if($itemid){
+        if ($itemid) {
             $cid = intval($this->hnmGetItemCatid($itemid));
-        }elseif($catid){
+        } elseif ($catid) {
             $cid = $catid;
-        }else{
+        } else {
             return null;
         }
 
         $r = $this->getCategoryOrder($cid);
         $r = strval($r);
 
-        if(strlen($r) >= 3){ $r = substr($r, 0, -2); }
-        else{ return null; }
+        if (strlen($r) >= 3) {
+            $r = substr($r, 0, -2);
+        } else {
+            return null;
+        }
         return $r;
     }
 

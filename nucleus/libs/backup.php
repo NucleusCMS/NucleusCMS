@@ -136,12 +136,14 @@ class Backup
             $Crc = crc32(ob_get_contents());
             $contents = gzcompress(ob_get_contents());
             ob_end_clean();
-            echo "\x1f\x8b\x08\x00\x00\x00\x00\x00" . substr($contents, 0,
-                    strlen($contents) - 4) . $this->gzip_PrintFourChars($Crc) . $this->gzip_PrintFourChars($Size);
+            echo "\x1f\x8b\x08\x00\x00\x00\x00\x00" . substr(
+                $contents,
+                0,
+                strlen($contents) - 4
+            ) . $this->gzip_PrintFourChars($Crc) . $this->gzip_PrintFourChars($Size);
         }
 
         exit;
-
     }
 
 
@@ -265,12 +267,10 @@ class Backup
             }
 
             echo ");\n";
-
         }
 
 
         echo "\n";
-
     }
 
     /**
@@ -312,8 +312,10 @@ class Backup
         if ($backup_file_type === 'application/download') {
             $backup_file_type = 'application/octet-stream';
         } // For firefox
-        if (!preg_match('@^(text/[a-zA-Z]+)|(application/(x\-)?gzip(\-compressed)?)|(application/octet-stream)$@is',
-            $backup_file_type)) {
+        if (!preg_match(
+            '@^(text/[a-zA-Z]+)|(application/(x\-)?gzip(\-compressed)?)|(application/octet-stream)$@is',
+            $backup_file_type
+        )) {
             return _BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE . "({$backup_file_type})";
         }
 
@@ -380,10 +382,8 @@ class Backup
                 if (!$result) {
                     debug(_BACKUP_RESTOR_SQL_ERROR . sql_error());
                 }
-
             }
         }
-
     }
 
     /**
@@ -413,7 +413,6 @@ class Backup
         }
 
         return $output;
-
     }
 
     /**
@@ -440,7 +439,6 @@ class Backup
         for ($i = 0; $i < $token_count; $i++) {
             // Don't wanna add an empty string as the last thing in the array.
             if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0))) {
-
                 // even number of quotes means a complete SQL statement
                 if ($this->_evenNumberOfQuotes($tokens[$i])) {
                     $output[] = $tokens[$i];
@@ -475,7 +473,6 @@ class Backup
                             // save memory.
                             $tokens[$j] = "";
                         }
-
                     } // for..
                 } // else
             }
@@ -501,6 +498,4 @@ class Backup
         //        debug($total_quotes . "-" . $escaped_quotes . "-" . $unescaped_quotes);
         return (($unescaped_quotes % 2) == 0);
     }
-
 }
-

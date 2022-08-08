@@ -10,8 +10,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- * 
- * This script will install the Nucleus tables in your SQL-database, 
+ *
+ * This script will install the Nucleus tables in your SQL-database,
  * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.

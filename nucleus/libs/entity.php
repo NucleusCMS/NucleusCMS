@@ -5,8 +5,11 @@ class entity
 
     public static function named_to_numeric($string)
     {
-        $string = preg_replace_callback('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            array('self', 'named_to_numeric_callback'), $string);
+        $string = preg_replace_callback(
+            '/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/',
+            array('self', 'named_to_numeric_callback'),
+            $string
+        );
         return $string;
     }
 
@@ -20,8 +23,11 @@ class entity
         global $_entities;
         $string = preg_replace_callback('/&#([0-9]+)(;)?/', array('self', 'normalize_numeric_callback1'), $string);
 
-        $string = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            array('self', 'normalize_numeric_callback2'), $string);
+        $string = preg_replace_callback(
+            '/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
+            array('self', 'normalize_numeric_callback2'),
+            $string
+        );
 
         $string = strtr($string, $_entities['cp1251']);
         return $string;
@@ -41,8 +47,11 @@ class entity
     {
         $string = preg_replace_callback('/&#([0-9]+)(;)?/', array('self', 'numeric_to_utf8_callback1'), $string);
 
-        $string = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            array('self', 'numeric_to_utf8_callback2'), $string);
+        $string = preg_replace_callback(
+            '/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
+            array('self', 'numeric_to_utf8_callback2'),
+            $string
+        );
 
         $string = preg_replace_callback('/&#x([0-9A-Fa-f]+);/', array('self', 'numeric_to_utf8_callback3'), $string);
 
@@ -426,6 +435,3 @@ $_entities['named'] = array(
     '&hearts' => '&#9829',
     '&diams' => '&#9830',
 );
-
-
-?>

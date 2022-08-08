@@ -31,8 +31,7 @@ class BAN
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = !strncmp($ip, $obj->iprange, strlen($obj->iprange));
-            if (!($found === false)) // found a match!
-            {
+            if (!($found === false)) { // found a match!
                 return new BANINFO($obj->iprange, $obj->reason);
             }
         }
@@ -110,6 +109,3 @@ class BANINFO
         $this->message = $message;
     }
 }
-
-
-?>

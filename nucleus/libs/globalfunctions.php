@@ -92,7 +92,7 @@ if (isset($CONF['debug']) && !empty($CONF['debug'])) {
         error_reporting(E_ALL); // report all errors!
     }
     if (defined('DEBUG_MODE_ERROR')) {
-        error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR );
+        error_reporting(E_ERROR | E_CORE_ERROR | E_COMPILE_ERROR | E_USER_ERROR | E_RECOVERABLE_ERROR);
     }
     ini_set('display_errors', 1);
 } else {
@@ -235,8 +235,7 @@ if (($DB_DRIVER_NAME == 'mysql') && !function_exists('mysql_query')) {
         include_once($DIR_LIBS . 'sql/mysql_emulate.php');
     } // For PHP 7
 } else {
-    if (!defined('_EXT_MYSQL_EMULATE')) // installer define this value.
-    {
+    if (!defined('_EXT_MYSQL_EMULATE')) { // installer define this value.
         define('_EXT_MYSQL_EMULATE', 0);
     }
 }
@@ -310,14 +309,18 @@ $CONF['CategoryURL'] = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr($CONF['Self'],
-                strlen($CONF['Self']) - 4) == '.php'))) {
+if (!isset($CONF['URLMode']) || (($CONF['URLMode'] == 'pathinfo') && (substr(
+    $CONF['Self'],
+    strlen($CONF['Self']) - 4
+) == '.php'))) {
     $CONF['URLMode'] = 'normal';
 }
 
 // automatically use simpler toolbar for mozilla
-if (($CONF['DisableJsTools'] == 0) && strstr(serverVar('HTTP_USER_AGENT'),
-        'Mozilla/5.0') && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
+if (($CONF['DisableJsTools'] == 0) && strstr(
+    serverVar('HTTP_USER_AGENT'),
+    'Mozilla/5.0'
+) && strstr(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
 
@@ -359,7 +362,6 @@ if ($action == 'login') {
     $pw = substr($pw, 0, 40); // avoid md5 collision by using a long key
 
     if ($member->login($login, $pw)) {
-
         $member->newCookieKey();
         $member->setCookies($shared);
 
@@ -422,10 +424,22 @@ if ($action == 'login') {
     }
 } elseif (($action == 'logout') && (!headers_sent()) && cookieVar($CONF['CookiePrefix'] . 'user')) {
     // remove cookies on logout
-    setcookie($CONF['CookiePrefix'] . 'user', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'],
-        $CONF['CookieSecure']);
-    setcookie($CONF['CookiePrefix'] . 'loginkey', '', (time() - 2592000), $CONF['CookiePath'], $CONF['CookieDomain'],
-        $CONF['CookieSecure']);
+    setcookie(
+        $CONF['CookiePrefix'] . 'user',
+        '',
+        (time() - 2592000),
+        $CONF['CookiePath'],
+        $CONF['CookieDomain'],
+        $CONF['CookieSecure']
+    );
+    setcookie(
+        $CONF['CookiePrefix'] . 'loginkey',
+        '',
+        (time() - 2592000),
+        $CONF['CookiePath'],
+        $CONF['CookieDomain'],
+        $CONF['CookieSecure']
+    );
     $param = array('username' => cookieVar($CONF['CookiePrefix'] . 'user'));
     $manager->notify('Logout', $param);
 } elseif (cookieVar($CONF['CookiePrefix'] . 'user')) {
@@ -496,11 +510,23 @@ if (version_compare('5.1.0', PHP_VERSION, '<=')) {
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {
     if ($CONF['LastVisit']) {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', time(), time() + 2592000, $CONF['CookiePath'],
-            $CONF['CookieDomain'], $CONF['CookieSecure']);
+        setcookie(
+            $CONF['CookiePrefix'] . 'lastVisit',
+            time(),
+            time() + 2592000,
+            $CONF['CookiePath'],
+            $CONF['CookieDomain'],
+            $CONF['CookieSecure']
+        );
     } else {
-        setcookie($CONF['CookiePrefix'] . 'lastVisit', '', (time() - 2592000), $CONF['CookiePath'],
-            $CONF['CookieDomain'], $CONF['CookieSecure']);
+        setcookie(
+            $CONF['CookiePrefix'] . 'lastVisit',
+            '',
+            (time() - 2592000),
+            $CONF['CookiePath'],
+            $CONF['CookieDomain'],
+            $CONF['CookieSecure']
+        );
     }
 }
 
@@ -661,4 +687,3 @@ $param = array(
     'info' => $virtualpath
 );
 $manager->notify('PostParseURL', $param);
-

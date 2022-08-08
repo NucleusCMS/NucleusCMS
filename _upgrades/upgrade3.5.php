@@ -16,10 +16,12 @@
 
 upgrade_do350();
 
-function upgrade_do350() {
+function upgrade_do350()
+{
 
-    if (upgrade_checkinstall(350))
+    if (upgrade_checkinstall(350)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
     
     $prefix = sql_table('');
     // changing the member table to lengthen display name (mname)
@@ -40,12 +42,12 @@ function upgrade_do350() {
     // update database version
     update_version('350');
 
-    // Remind user to re-install NP_Ping 
+    // Remind user to re-install NP_Ping
     
     $query = "SELECT COUNT(*) as count FROM `{$prefix}plugin` WHERE pfile='NP_Ping'";
     $rs = sql_query($query);
     $row = sql_fetch_assoc($rs);
-    if($row['count']==1)
+    if ($row['count']==1) {
         echo '<p>' . _UPG_TEXT_V035_WARN_PING . '</p>';
-
+    }
 }

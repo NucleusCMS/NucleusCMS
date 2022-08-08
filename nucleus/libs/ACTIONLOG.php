@@ -45,8 +45,12 @@ class ACTIONLOG
             sql_prepare_execute($query, array((string)$timestamp, (string)$message));
         } else {
             $message = sql_quote_string($message);        // add slashes
-            $query = sprintf("INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)", sql_table('actionlog'),
-                $timestamp, $message);
+            $query = sprintf(
+                "INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)",
+                sql_table('actionlog'),
+                $timestamp,
+                $message
+            );
             sql_query($query);
         }
 
@@ -120,9 +124,5 @@ class ACTIONLOG
             $tsChop = quickQuery('SELECT timestamp as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT ' . $iDropSize . ',1');
             sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE timestamp < \'' . $tsChop . '\'');
         }
-
     }
-
 }
-
-?>

@@ -173,8 +173,11 @@ class PAGEFACTORY extends BaseActions
 
         $contents = file_get_contents($filename);
 
-        if (($contents !== false) && preg_match("#^(admin|bookmarklet)$#", $this->type) && preg_match("#^(add|edit)$#",
-                $this->method, $m2)) {
+        if (($contents !== false) && preg_match("#^(admin|bookmarklet)$#", $this->type) && preg_match(
+            "#^(add|edit)$#",
+            $this->method,
+            $m2
+        )) {
             $this->replace_date_time_picker($contents);
         }
 
@@ -189,13 +192,13 @@ class PAGEFACTORY extends BaseActions
             $s = array();
             foreach (explode(',', _EDIT_DATE_FORMAT) as $key => $value) {
                 switch ($value) {
-                    case 'year' :
+                    case 'year':
                         $s[] = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%' . $stime . '(year)%>" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
-                    case 'month' :
+                    case 'month':
                         $s[] = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%' . $stime . '(mon)%>" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
-                    case 'day' :
+                    case 'day':
                         $s[] = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%' . $stime . '(mday)%>" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
                 }
@@ -355,7 +358,6 @@ class PAGEFACTORY extends BaseActions
         } else {
             echo $which;    // this way we see where definitions are missing
         }
-
     }
 
     function parse_contents($which)
@@ -418,7 +420,6 @@ class PAGEFACTORY extends BaseActions
     {
         global $CONF;
         switch ($CONF['DisableJsTools']) {
-
             case "0":
                 echo '<div class="jsbuttonbar">';
 
@@ -610,6 +611,5 @@ class PAGEFACTORY extends BaseActions
     {
         echo '<span class="jsbuttonspacer">&nbsp;</span>';
     }
-
 }
 

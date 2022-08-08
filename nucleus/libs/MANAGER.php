@@ -274,8 +274,13 @@ class MANAGER
         } catch (Error $e) {
             global $member, $CONF;
             if ($member && $member->isLoggedIn() && $member->isAdmin()) {
-                $msg = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                    $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                $msg = sprintf(
+                    "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                    $NP_Name,
+                    get_class($e),
+                    $e->getLine(),
+                    $e->getFile()
+                );
                 if ($CONF['DebugVars']) {
                     var_dump($e->getMessage());
                     // $e->getTraceAsString
@@ -347,8 +352,10 @@ class MANAGER
         // check if class exists (avoid errors in eval'd code)
         if (!class_exists($NP_Name)) {
             if (!defined('_MANAGER_PLUGINFILE_NOCLASS')) {
-                define('_MANAGER_PLUGINFILE_NOCLASS',
-                    "Plugin %s was not loaded (Class not found in file, possible parse error)");
+                define(
+                    '_MANAGER_PLUGINFILE_NOCLASS',
+                    "Plugin %s was not loaded (Class not found in file, possible parse error)"
+                );
             }
             SYSTEMLOG::addUnique('error', 'Error', sprintf(_MANAGER_PLUGINFILE_NOCLASS, $NP_Name));
             return 0;
@@ -444,7 +451,7 @@ class MANAGER
     {
         // retrieve the name of the plugin in the right capitalisation
         $name = $this->getUpperCaseName($name);
-        // get the plugin   
+        // get the plugin
         $plugin =& $this->plugins[$name];
 
         if (!$plugin) {
@@ -604,22 +611,26 @@ class MANAGER
                     }
                 } else {
                     try {
-                        if (isset($this->plugins[$listener]) && method_exists($this->plugins[$listener],
-                                $event_funcname)) {
+                        if (isset($this->plugins[$listener]) && method_exists(
+                            $this->plugins[$listener],
+                            $event_funcname
+                        )) {
                             $this->plugins[$listener]->{$event_funcname}($data);
                         }
                         // can not catch : trigger_error('test error', E_USER_ERROR);
-                    } catch (Error $e) // TypeError ParseError AssertionError
-                    {
+                    } catch (Error $e) { // TypeError ParseError AssertionError
                         if ($member && $member->isLoggedIn() && $member->isAdmin()) {
-                            $msg = sprintf("php error in plugin %s::%s:",
-                                    $this->plugins[$listener]->getName(), $event_funcname)
+                            $msg = sprintf(
+                                "php error in plugin %s::%s:",
+                                $this->plugins[$listener]->getName(),
+                                $event_funcname
+                            )
                                 . sprintf("[%s] Line:%d (%s) : ", get_class($e), $e->getLine(), $e->getFile());
                             if (!empty($CONF['DebugVars']) && $CONF['DebugVars']) {
                                 var_dump($e->getMessage());
                                 // $e->getTraceAsString
                             }
-                            SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
+                                SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
                         }
                         if (!empty($CONF['debug']) && $CONF['debug']) {
                             throw $e;
@@ -733,7 +744,6 @@ class MANAGER
             // not a valid ticket
             return false;
         }
-
     }
 
     /**
@@ -743,9 +753,11 @@ class MANAGER
     {
         // remove tickets older than 1 hour
         $oldTime = time() - 60 * 60;
-        $query = sprintf("DELETE FROM %s WHERE ctime < '%s'",
+        $query = sprintf(
+            "DELETE FROM %s WHERE ctime < '%s'",
             sql_table('tickets'),
-            date('Y-m-d H:i:s', $oldTime));
+            date('Y-m-d H:i:s', $oldTime)
+        );
         sql_query($query);
     }
 
@@ -807,5 +819,4 @@ class MANAGER
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
         return SKIN::_getText($text);
     }
-
 }

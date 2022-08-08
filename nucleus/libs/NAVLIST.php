@@ -127,15 +127,20 @@ class NAVLIST extends ENCAPSULATE
         $page_last_start = min(max(0, ($total_pages - 1) * $amount), $maxamount);
 
         if ($amount < $this->total) {
-            $page_navigation = sprintf('<span style="margin-left:1em;">page %d / %d (%d - %d / %d)</span>'
-                , $current_page, $total_pages
-                , $start + 1
-                , (is_null($this->total) ? $start + $amount : min($start + $amount, $this->total))
-                , $this->total);
+            $page_navigation = sprintf(
+                '<span style="margin-left:1em;">page %d / %d (%d - %d / %d)</span>',
+                $current_page,
+                $total_pages,
+                $start + 1,
+                (is_null($this->total) ? $start + $amount : min($start + $amount, $this->total)),
+                $this->total
+            );
 
             $btn_title_change = _LISTS_CHANGE;
-            $input_catid = ($enable_cat_select ? "\n\t\t" . sprintf('<input type="hidden" name="catid" value="%d" />',
-                    $catid) : '');
+            $input_catid = ($enable_cat_select ? "\n\t\t" . sprintf(
+                '<input type="hidden" name="catid" value="%d" />',
+                $catid
+            ) : '');
             $page_navigation .= <<<EOD
     <form method="post" action="index.php">
         <input type="number" id="page_select" value="{$current_page}" style="width:50px;" min=1 max={$total_pages} onchange="jQuery('#page_select_start').val(Math.min(Math.max(0, (this.value-1) * {$amount}),{$page_last_start}))" />
@@ -163,7 +168,7 @@ EOD;
         <table class="navigation">
             <tr>
                 <td style="text-align: left;">
-                    <?php if ($start != 0): ?>
+                    <?php if ($start != 0) : ?>
                         <form id="prev" method="post" action="index.php">
                             <a href="#"
                                onclick="jQuery('#prev').submit();return false;">&lt;&lt; <?php echo _LISTS_PREV; ?></a>
@@ -178,11 +183,11 @@ EOD;
                             <input type="hidden" name="search" value="<?php echo $search; ?>"/>
                             <input type="hidden" name="start" value="<?php echo $prev; ?>"/>
                         </form>
-                    <?php else: ?>
+                    <?php else : ?>
                         &lt;&lt; <?php echo _LISTS_PREV; ?>
                     <?php endif; ?>
                     |
-                    <?php if ($current_page < $total_pages): ?>
+                    <?php if ($current_page < $total_pages) : ?>
                         <form id="next" method="post" action="index.php">
                             <a href="#" onclick="jQuery('#next').submit();return false;"><?php echo _LISTS_NEXT; ?> &gt;&gt;</a>
                             <input type="hidden" name="search" value="<?php echo $search; ?>"/>
@@ -196,7 +201,7 @@ EOD;
                             <input type="hidden" name="amount" value="<?php echo $amount; ?>"/>
                             <input type="hidden" name="start" value="<?php echo $next; ?>"/>
                         </form>
-                    <?php else: ?>
+                    <?php else : ?>
                         <?php echo _LISTS_NEXT; ?> &gt;&gt;
                     <?php endif; ?>
                     <?php echo $page_navigation; ?>
@@ -239,8 +244,11 @@ EOD;
                         <?php
                         $s = '_LISTS_FORM_SELECT_ITEM_OPTION_' . strtoupper($view_item_options);
                         $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
-                        printf('<div style="%s"><span class="filter">%s</span>', $style1,
-                            hsc(defined($s) ? constant($s) : $s));
+                        printf(
+                            '<div style="%s"><span class="filter">%s</span>',
+                            $style1,
+                            hsc(defined($s) ? constant($s) : $s)
+                        );
                         echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
                         ?>
                         <div style="display: inline-block">
@@ -253,8 +261,12 @@ EOD;
                                 <input type="hidden" name="amount" value="<?php echo $amount; ?>"/>
                                 <input type="hidden" name="search" value="<?php echo $search; ?>"/>
                                 <input type="hidden" name="start" value="0"/>
-                                <?php echo $this->getFormSelectViewItemOptions($action, $blogid, $catid,
-                                    $view_item_options); ?>
+                                <?php echo $this->getFormSelectViewItemOptions(
+                                    $action,
+                                    $blogid,
+                                    $catid,
+                                    $view_item_options
+                                ); ?>
                             </form>
                         </div>
                         </div>
@@ -332,8 +344,10 @@ EOD;
             }
         }
 
-        $s = sprintf('<select name="%s" onChange="this.form.submit()">',
-            htmlentities($input_name, ENT_COMPAT, _CHARSET));
+        $s = sprintf(
+            '<select name="%s" onChange="this.form.submit()">',
+            htmlentities($input_name, ENT_COMPAT, _CHARSET)
+        );
         foreach ($list as $key) {
             if ($key != 'all' && isset($count_cached[$cachekey][$key]) && ($count_cached[$cachekey][$key] == 0)) {
                 continue;
@@ -342,8 +356,12 @@ EOD;
             $title = '_LISTS_FORM_SELECT_ITEM_OPTION_' . strtoupper($key);
             $title = hsc(defined($title) ? constant($title) : $key);
             $title .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key]) ? $count_cached[$cachekey][$key] : 0));
-            $s .= "\n\t\t" . sprintf('<option value="%s" %s>%s</option>',
-                    $key, $selected, $title) . "\n";
+            $s .= "\n\t\t" . sprintf(
+                '<option value="%s" %s>%s</option>',
+                $key,
+                $selected,
+                $title
+            ) . "\n";
         }
         $s .= "\t\t</select>\n";
         return $s;
@@ -389,8 +407,11 @@ EOD;
         $res = sql_query($sql);
         if ($res) {
             while ($row = sql_fetch_assoc($res)) {
-                $lists[] = sprintf('<option value="%d" %s>', intval($row['catid'])
-                        , (intval($row['catid']) == $selected_catid ? 'selected' : ''))
+                $lists[] = sprintf(
+                    '<option value="%d" %s>',
+                    intval($row['catid']),
+                    (intval($row['catid']) == $selected_catid ? 'selected' : '')
+                )
                     . hsc($row['cname'])
                     . sprintf('(%d)', $row['count']) . '</option>';
                 $total += $row['count'];
@@ -449,8 +470,11 @@ EOD;
                     $lists[$b_id] = array();
                 }
 
-                $lists[$b_id][] = sprintf('<option value="%d" %s>', intval($row['catid'])
-                        , (intval($row['catid']) == $selected_catid ? 'selected' : ''))
+                $lists[$b_id][] = sprintf(
+                    '<option value="%d" %s>',
+                    intval($row['catid']),
+                    (intval($row['catid']) == $selected_catid ? 'selected' : '')
+                )
                     . hsc($row['cname'])
                     . sprintf('(%d)', $row['count']) . '</option>';
                 $total += $row['count'];
@@ -470,7 +494,8 @@ EOD;
 
         // group
         foreach ($blog_titles as $b_id => $title) {
-            $s .= sprintf("\t<optgroup label='%s'>%s\n\t</optgroup>\n",
+            $s .= sprintf(
+                "\t<optgroup label='%s'>%s\n\t</optgroup>\n",
                 htmlentities($title, ENT_COMPAT, _CHARSET),
                 "\n\t\t" . implode("\n\t\t", $lists[$b_id])
             );

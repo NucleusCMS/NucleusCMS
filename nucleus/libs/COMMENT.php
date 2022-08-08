@@ -57,8 +57,10 @@ class COMMENT
         $comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- '));
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-        if (!empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'],
-                    'https://') !== 0)) {
+        if (!empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos(
+            $comment['userid'],
+            'https://'
+        ) !== 0)) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 
@@ -121,14 +123,12 @@ class COMMENT
         // move the part of URL, starting from the disallowed entity to the 'post' link part
         $aBadEntities = array('&quot;', '&gt;', '&lt;');
         foreach ($aBadEntities as $entity) {
-
             $pos = strpos($url, $entity);
 
             if ($pos) {
                 $post = substr($url, $pos) . $post;
                 $url = substr($url, 0, $pos);
             }
-
         }
 
         // remove entities at end (&&&&)
@@ -155,8 +155,11 @@ class COMMENT
             $displayedUrl = $url;
         }
 
-        return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten($displayedUrl, 30,
-                '...') . '</a>' . $post;
+        return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">' . shorten(
+            $displayedUrl,
+            30,
+            '...'
+        ) . '</a>' . $post;
     }
 
 
@@ -189,7 +192,4 @@ class COMMENT
                 break;
         }
     }
-
 }
-
-?>

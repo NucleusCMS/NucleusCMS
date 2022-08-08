@@ -129,7 +129,6 @@ class BODYACTIONS extends BaseActions
 
 
         echo TEMPLATE::fill($this->template['IMAGE_CODE'], $vars);
-
     }
 
     /**
@@ -395,8 +394,7 @@ class BODYACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -420,8 +418,7 @@ class BODYACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -492,11 +489,12 @@ class BODYACTIONS extends BaseActions
 
     function parse_hascomment()
     {
-        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-            sql_table('comment'), intval($this->currentItem->itemid));
+        $sqlText = sprintf(
+            "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+            sql_table('comment'),
+            intval($this->currentItem->itemid)
+        );
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }
-
 }
-

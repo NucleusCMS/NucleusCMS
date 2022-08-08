@@ -267,7 +267,6 @@ class COMMENTS
 
         // begin if: send email to notification address
         if ($settings->getNotifyAddress() && $settings->notifyOnComment()) {
-
             $mailto_msg = _NOTIFY_NC_MSG . ' ' . $this->itemid . "\n";
 //            $mailto_msg .= $CONF['IndexURL'] . 'index.php?itemid=' . $this->itemid . "\n\n";
             $temp = parse_url($CONF['Self']);
@@ -392,11 +391,9 @@ class COMMENTS
 
         // only check username if no member logged in
         if (!$member->isLoggedIn()) {
-
             if (strlen($comment['user']) < 2) {
                 return _ERROR_COMMENT_NOUSERNAME;
             }
-
         }
 
         if ((strlen($comment['email']) != 0) && !(isValidMailAddress(trim($comment['email'])))) {
@@ -416,7 +413,4 @@ class COMMENTS
 
         return $result;
     }
-
 }
-
-?>

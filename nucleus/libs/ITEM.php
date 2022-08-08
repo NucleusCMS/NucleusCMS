@@ -78,7 +78,6 @@ class ITEM
         } else {
             return 0;
         }
-
     }
 
     /**
@@ -170,8 +169,18 @@ class ITEM
             $posted = 1;
         }
 
-        $itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed,
-            $i_draft, $posted);
+        $itemid = $blog->additem(
+            $i_catid,
+            $i_title,
+            $i_body,
+            $i_more,
+            $i_blogid,
+            $i_author,
+            $posttime,
+            $i_closed,
+            $i_draft,
+            $posted
+        );
 
         //Setting the itemOptions
         $aOptions = requestArray('plugoption');
@@ -284,7 +293,7 @@ class ITEM
             }
         }
 
-        // save back to drafts        
+        // save back to drafts
         if (!$wasdraft && !$publish) {
             $query .= ', idraft=1';
             // set timestamp back to zero for a draft
@@ -325,7 +334,6 @@ class ITEM
             )
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
-
     }
 
     /**
@@ -350,7 +358,7 @@ class ITEM
             return false; // unkown error,  invalid inumber ?
         }
 
-        // 
+        //
         if ($new_catid <= 0) {
             $new_catid = $src_catid;
         }
@@ -388,8 +396,14 @@ class ITEM
         $new_icat = $is_same_cat ? 'icat' : sprintf('%d as icat', $new_catid);
         $dist = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
         $src = "ititle,ibody,imore,${new_iblog},iauthor,itime,iclosed,'1' AS idraft,ikarmapos,${new_icat},ikarmaneg,iposted";
-        $query = sprintf("INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s", $tbl_item, $dist, $src, $tbl_item,
-            $itemid);
+        $query = sprintf(
+            "INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s",
+            $tbl_item,
+            $dist,
+            $src,
+            $tbl_item,
+            $itemid
+        );
         if (sql_query($query)) {
             $new_itemid = sql_insert_id();
 
@@ -585,13 +599,20 @@ class ITEM
             ITEM::update($i_draftid, $i_catid, $i_title, $i_body, $i_more, $i_closed, 1, 0, 0);
             $itemid = $i_draftid;
         } else {
-            $itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed,
-                $i_draft);
+            $itemid = $blog->additem(
+                $i_catid,
+                $i_title,
+                $i_body,
+                $i_more,
+                $i_blogid,
+                $i_author,
+                $posttime,
+                $i_closed,
+                $i_draft
+            );
         }
 
         // success
         return array('status' => 'added', 'draftid' => $itemid);
     }
-
 }
-
