@@ -1,14 +1,19 @@
 <?php
-if(is_file('../config.php'))  include_once('../config.php');
-elseif(is_file('config.php')) include_once('config.php');
-else exit('config.phpが見つかりません。');
+if (is_file('../config.php')) {
+    include_once('../config.php');
+} elseif (is_file('config.php')) {
+    include_once('config.php');
+} else {
+    exit('config.phpが見つかりません。');
+}
 
 $conv = new convert();
 $conv->run();
 
 exit;
 
-class convert {
+class convert
+{
     
     var $current_collation;
     var $current_charset;
@@ -16,25 +21,32 @@ class convert {
     var $new_charset;
     var $collations;
 
-    function __construct() {
-        $this->current_charset   = getCharSetFromDB(sql_table('config'),'name');
-        $this->current_collation = getCollationFromDB(sql_table('config'),'name');
+    function __construct()
+    {
+        $this->current_charset   = getCharSetFromDB(sql_table('config'), 'name');
+        $this->current_collation = getCollationFromDB(sql_table('config'), 'name');
         $this->collations = explode(',', 'utf8mb4_general_ci,utf8mb4_unicode_ci,utf8_general_ci,utf8_unicode_ci');
     }
     
-    function run() {
+    function run()
+    {
         $tpl = $this->getTemplate();
         $ph['content'] = $this->getContent();
         header('Content-Type: text/html; charset=UTF-8');
-        echo parseText($tpl,$ph);
+        echo parseText($tpl, $ph);
         exit;
     }
     
-    function getContent() {
-        if    (isset($_GET['convertto'])) $mode = 'convert';
-        elseif(isset($_GET['complete']))  $mode = 'complete';
-        else                              $mode = 'default';
-        switch($mode) {
+    function getContent()
+    {
+        if (isset($_GET['convertto'])) {
+            $mode = 'convert';
+        } elseif (isset($_GET['complete'])) {
+            $mode = 'complete';
+        } else {
+            $mode = 'default';
+        }
+        switch ($mode) {
             case 'convert':
                 $new_collation = trim($_GET['convertto']);
                 return $this->convert($new_collation);
@@ -46,15 +58,18 @@ class convert {
                 $tpl = $this->getMainContent();
                 $ph['current_collation'] = $this->current_collation;
                 $ph['options']           = $this->getOptions($this->current_collation);
-                return parseText($tpl,$ph);
+                return parseText($tpl, $ph);
         }
     }
     
-    function convert($new_collation) {
+    function convert($new_collation)
+    {
         
-        if($this->current_collation===$new_collation) return '同じコレーションのため変換の必要はありません';
+        if ($this->current_collation===$new_collation) {
+            return '同じコレーションのため変換の必要はありません';
+        }
         
-        $new_charset   = substr($new_collation,0,strpos($new_collation,'_'));
+        $new_charset   = substr($new_collation, 0, strpos($new_collation, '_'));
         
         $currentPrefix = sql_table('');
         $tmpPrefix = 'temp_'.'nucleus_';
@@ -63,15 +78,17 @@ class convert {
         @set_time_limit(0);
         
         $rs = sql_query("SHOW TABLES LIKE '{$currentPrefix}%'");
-        if(!$rs) exit('Nucleusのtableがありません。何もせずに終了します。');
+        if (!$rs) {
+            exit('Nucleusのtableがありません。何もせずに終了します。');
+        }
         
         $srcTableNames=array();
-        while($row=sql_fetch_array($rs)){
+        while ($row=sql_fetch_array($rs)) {
             $srcTableNames[] = $row[0];
         }
         
-        foreach($srcTableNames as $srcTableName) {
-            $tmpTableName = str_replace($currentPrefix,$tmpPrefix,$srcTableName);
+        foreach ($srcTableNames as $srcTableName) {
+            $tmpTableName = str_replace($currentPrefix, $tmpPrefix, $srcTableName);
             
             sql_query("SET NAMES {$this->current_charset}");
             sql_query("CREATE TABLE `{$tmpTableName}` LIKE `{$srcTableName}`");
@@ -81,11 +98,11 @@ class convert {
             
             sql_query("SET NAMES {$new_charset}");
             $rs = sql_query("SELECT * FROM `{$srcTableName}`");
-            if(0<sql_num_rows($rs)) {
-                while($row = sql_fetch_object($rs)) {
+            if (0<sql_num_rows($rs)) {
+                while ($row = sql_fetch_object($rs)) {
                     $fields = array();
                     $values = array();
-                    foreach($row as $fieldName=>$value) {
+                    foreach ($row as $fieldName => $value) {
                         $v = sql_real_escape_string($value);
                         $fields[] = "`{$fieldName}`";
                         $values[] = "'{$v}'";
@@ -96,32 +113,42 @@ class convert {
                 }
             }
             $bkTableName = $bkPrefix.$srcTableName;
-            sql_query(sprintf("ALTER TABLE `%s` RENAME TO `%s`",$srcTableName,$bkTableName));
-            sql_query(sprintf("ALTER TABLE `%s` RENAME TO `%s`",$tmpTableName,$srcTableName));
+            sql_query(sprintf("ALTER TABLE `%s` RENAME TO `%s`", $srcTableName, $bkTableName));
+            sql_query(sprintf("ALTER TABLE `%s` RENAME TO `%s`", $tmpTableName, $srcTableName));
             $output[] = sprintf('%s のデータを%sに変換しました。<br />', $srcTableName, $new_charset);
         }
         
-        if($this->current_charset==='ujis')
+        if ($this->current_charset==='ujis') {
             sql_query(sprintf("UPDATE %s SET `value`='japanese-utf8' WHERE `name`='Language'", sql_table('config')));
-        return join("\n",$output) . '<p>変換を完了しました。 <a href="convert.php">戻る</a></p>';
+        }
+        return join("\n", $output) . '<p>変換を完了しました。 <a href="convert.php">戻る</a></p>';
         //sleep(3);
         //header('Location:convert.php?complete');
     }
     
-    function getBkPrefix() {
+    function getBkPrefix()
+    {
         $i = 0;
-        while($i<5) {
+        while ($i<5) {
             $i++;
-            if($i==1) $bkPrefix = 'bak_';
-            else      $bkPrefix = sprintf('bak%s_', $i);
+            if ($i==1) {
+                $bkPrefix = 'bak_';
+            } else {
+                $bkPrefix = sprintf('bak%s_', $i);
+            }
             $rs = sql_query("SHOW TABLES LIKE '{$bkPrefix}%'");
-            if(!sql_num_rows($rs)) break;
-            if($i==5) exit('バックアップを作成できません。終了します。');
+            if (!sql_num_rows($rs)) {
+                break;
+            }
+            if ($i==5) {
+                exit('バックアップを作成できません。終了します。');
+            }
         }
         return $bkPrefix;
     }
     
-    function getMainContent() {
+    function getMainContent()
+    {
         $tpl = '
     <h1>コレーションコンバータ</h1>
     <p>各テーブルのコレーション(照合順序)を変更します。旧テーブルは別名をつけてバックアップします。</p>
@@ -140,7 +167,8 @@ class convert {
         return $tpl;
     }
     
-    function getTemplate() {
+    function getTemplate()
+    {
         $tpl = '
 <html>
 <head>
@@ -166,14 +194,16 @@ class convert {
         return $tpl;
     }
     
-    function getOptions() {
+    function getOptions()
+    {
         $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
         $_ = array();
-        foreach($this->collations as $collation) {
-            if($collation===$this->current_collation) continue;
-            $_[] = parseText($tpl,array('collation'=>$collation));
+        foreach ($this->collations as $collation) {
+            if ($collation===$this->current_collation) {
+                continue;
+            }
+            $_[] = parseText($tpl, array('collation'=>$collation));
         }
         return join("\n", $_);
     }
-    
 }

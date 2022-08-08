@@ -17,7 +17,7 @@
  */
 
 // prevent direct access
-if ( ! isset($member)) {
+if (! isset($member)) {
     exit;
 }
 
@@ -40,88 +40,98 @@ if ( ! isset($member)) {
  *    success : 'basic'|'extended'|'mixed'|'basic utc'|'extended utc'|'mixed utc'|'basic tz'|'extended tz'
  *    fail : false
  */
-function validateIso8601($date) {
+function validateIso8601($date)
+{
     $r = false;
     if (preg_match(
-            '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4])[0-5][0-9][0-5][0-9]'
             . '$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Basic style datetime without utc symbol, time zone offset
         $r = 'basic';
     } elseif (preg_match(
-            '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Extended style datetime without utc symbol, time zone offset
         $r = 'extended';
     } elseif (preg_match(
-            '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Mixed style datetime without utc symbol, time zone offset
         //(it violates ISO 8601 standard but Windows Live Writer sends createdDate with this style.)
         $r = 'mixed';
     } elseif (preg_match(
-            '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4])[0-5][0-9][0-5][0-9]'
             . 'Z$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Basic style datetime with utc symbol
         $r = 'basic utc';
     } elseif (preg_match(
-            '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . 'Z$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Extended style datetime with utc symbol
         $r = 'extended utc';
     } elseif (preg_match(
-            '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . 'Z$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Extended style datetime with utc symbol
         $r = 'mixed utc';
     } elseif (preg_match(
-            '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4])[0-5][0-9][0-5][0-9]'
             . '((\+|-)([01][0-9]|2[0-4])([0-5][0-9])?)$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Basic style datetime with time zone offset
         $r = 'basic tz';
     } elseif (preg_match(
-            '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '((\+|-)([01][0-9]|2[0-4]):?([0-5][0-9])?)$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Extended style datetime with time zone offset
         $r = 'extended tz';
     } elseif (preg_match(
-            '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
+        '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '((\+|-)([01][0-9]|2[0-4]):?([0-5][0-9])?)$/',
-            $date, $matches
-        ) === 1) {
+        $date,
+        $matches
+    ) === 1) {
         // Mixed style datetime with extended style time zone offset
         //(it violates ISO 8601 standard but Windows Live Writer sends createdDate with this style.)
         $r = 'mixed tz';
@@ -149,7 +159,8 @@ $f_metaWeblog_newPost_sig = array(
     )
 );
 $f_metaWeblog_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
-function f_metaWeblog_newPost($m) {
+function f_metaWeblog_newPost($m)
+{
     global $manager;
 
     $blogid = _getScalar($m, 0);
@@ -198,8 +209,19 @@ function f_metaWeblog_newPost($m) {
         }
         //Convert ISO 8601 string to unix time(time zone offset is counted.)
         $timestamp = strtotime($dateCreated);
-        $res = _addDatedItem($blogid, $username, $password, $title, $content, $more, $publish, $closed, $timestamp, 1,
-            $category);
+        $res = _addDatedItem(
+            $blogid,
+            $username,
+            $password,
+            $title,
+            $content,
+            $more,
+            $publish,
+            $closed,
+            $timestamp,
+            1,
+            $category
+        );
     } else {
         $res = _addItem($blogid, $username, $password, $title, $content, $more, $publish, $closed, $category);
     }
@@ -237,7 +259,8 @@ $f_metaWeblog_getCategories_sig = array(
     )
 );
 $f_metaWeblog_getCategories_doc = "Returns the categories for a given blog";
-function f_metaWeblog_getCategories($m) {
+function f_metaWeblog_getCategories($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -260,7 +283,8 @@ $f_metaWeblog_getPost_sig = array(
     )
 );
 $f_metaWeblog_getPost_doc = "Retrieves a post";
-function f_metaWeblog_getPost($m) {
+function f_metaWeblog_getPost($m)
+{
     $itemid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -285,7 +309,8 @@ $f_metaWeblog_editPost_sig = array(
     )
 );
 $f_metaWeblog_editPost_doc = "Edits an item";
-function f_metaWeblog_editPost($m) {
+function f_metaWeblog_editPost($m)
+{
     global $manager;
 
     $itemid = _getScalar($m, 0);
@@ -307,7 +332,7 @@ function f_metaWeblog_editPost($m) {
 
 
     // get old title and extended part
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
     $blogid = getBlogIDFromItemID($itemid);
@@ -362,8 +387,19 @@ function f_metaWeblog_editPost($m) {
         }
         //ISO 8601 to unix time(time zone offset is counted.)
         $timestamp = strtotime($dateCreated);
-        $res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $closed,
-            $timestamp);
+        $res = _edititem(
+            $itemid,
+            $username,
+            $password,
+            $catid,
+            $title,
+            $content,
+            $more,
+            $wasdraft,
+            $publish,
+            $closed,
+            $timestamp
+        );
     } else {
         $res = _edititem($itemid, $username, $password, $catid, $title, $content, $more, $wasdraft, $publish, $closed);
     }
@@ -400,7 +436,8 @@ $f_metaWeblog_newMediaObject_sig = array(
     )
 );
 $f_metaWeblog_newMediaObject_doc = 'Uploads a file to to the media library of the user';
-function f_metaWeblog_newMediaObject($m) {
+function f_metaWeblog_newMediaObject($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -427,7 +464,8 @@ $f_metaWeblog_getRecentPosts_sig = array(
     )
 );
 $f_metaWeblog_getRecentPosts_doc = 'Returns recent weblog items.';
-function f_metaWeblog_getRecentPosts($m) {
+function f_metaWeblog_getRecentPosts($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -436,21 +474,22 @@ function f_metaWeblog_getRecentPosts($m) {
     return _getRecentItemsMetaWeblog($blogid, $username, $password, $amount);
 }
 
-function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount) {
+function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount)
+{
     $blogid = intval($blogid);
     $amount = intval($amount);
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
     $amount = intval($amount);
@@ -489,8 +528,9 @@ function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount) {
             "categories" => new xmlrpcval(
                 array(
                     new xmlrpcval($row['category'], "string")
-                )
-                , "array"),
+                ),
+                "array"
+            ),
 
 
             "mt_text_more" => new xmlrpcval($row['imore'], "string"),
@@ -508,20 +548,21 @@ function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount) {
     return new xmlrpcresp(new xmlrpcval($structarray, "array"));
 }
 
-function _newMediaObject($blogid, $username, $password, $info) {
+function _newMediaObject($blogid, $username, $password, $info)
+{
     global $CONF, $DIR_MEDIA, $DIR_LIBS;
 
     // - login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, 'Could not log in');
     }
 
     // - check if team member
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, 'Not a team member');
     }
 
@@ -546,12 +587,12 @@ function _newMediaObject($blogid, $username, $password, $info) {
             $ok = 1;
         }
     }
-    if ( ! $ok) {
+    if (! $ok) {
         _error(8, 'Filetype is not allowed');
     }
 
     // - add file to media library
-    //include_once($DIR_LIBS . 'MEDIA.php');	// media classes
+    //include_once($DIR_LIBS . 'MEDIA.php');    // media classes
     include_libs('MEDIA.php', true, false);
 
     // always use private media library of member
@@ -576,18 +617,19 @@ function _newMediaObject($blogid, $username, $password, $info) {
     return new xmlrpcresp($urlstruct);
 }
 
-function _categoryList($blogid, $username, $password) {
+function _categoryList($blogid, $username, $password)
+{
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if on team and blog exists
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -609,29 +651,31 @@ function _categoryList($blogid, $username, $password) {
                 "description" => new xmlrpcval($obj->cdesc, "string"),
                 "htmlUrl" => new xmlrpcval($b->getURL() . "?catid=" . $obj->catid, "string"),
                 "rssUrl" => new xmlrpcval("", "string")
-            )
-            , 'struct'));
+            ),
+            'struct'
+        ));
     }
 
     return new xmlrpcresp(new xmlrpcval($structarray, "array"));
 }
 
 
-function _mw_getPost($itemid, $username, $password) {
+function _mw_getPost($itemid, $username, $password)
+{
     global $manager;
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
     $blogid = getBlogIDFromItemID($itemid);
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -656,8 +700,9 @@ function _mw_getPost($itemid, $username, $password) {
         "categories" => new xmlrpcval(
             array(
                 new xmlrpcval($categoryname, "string")
-            )
-            , "array"),
+            ),
+            "array"
+        ),
 
         "mt_text_more" => new xmlrpcval($item['more'], "string"),
         "mt_allow_comments" => new xmlrpcval($item['closed'] ? 0 : 1, "int"),
@@ -670,7 +715,8 @@ function _mw_getPost($itemid, $username, $password) {
     return new xmlrpcresp($newstruct);
 }
 
-$functionDefs = array_merge($functionDefs,
+$functionDefs = array_merge(
+    $functionDefs,
     array(
         "metaWeblog.newPost" =>
             array(
@@ -716,4 +762,3 @@ $functionDefs = array_merge($functionDefs,
 
     )
 );
-?>

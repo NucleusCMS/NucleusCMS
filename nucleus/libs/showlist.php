@@ -53,7 +53,7 @@ function showlist_by_query($query, $type, $template)
 {
     $res = sql_query($query);
 
-    if ( ! $res) {
+    if (! $res) {
         return 0;
     }
 
@@ -89,12 +89,16 @@ function listplug_select($template, $type)
         $ph['javascript'] = ifset($template['javascript']);
         $ph['extra']      = ifset($template['extra']);
         $ph['extraval']   = ifset($template['extraval']);
-        echo parseHtml('<select name="{%name%}" tabindex="{%tabindex%}" {%javascript%}>',
-            $ph);
+        echo parseHtml(
+            '<select name="{%name%}" tabindex="{%tabindex%}" {%javascript%}>',
+            $ph
+        );
 
         if ($ph['extra']) {
-            echo parseHtml('<option value="{%extraval%}">{%extra%}</option>',
-                $ph);
+            echo parseHtml(
+                '<option value="{%extraval%}">{%extra%}</option>',
+                $ph
+            );
         }
     } elseif ($type == 'BODY') {
         $current        = $template['current'];
@@ -104,15 +108,20 @@ function listplug_select($template, $type)
                            && $template['selected'] == $current->value)
             ? 'selected' : '';
         if (isset($template['shorten']) && $template['shorten'] > 0) {
-            $ph['text']  = shorten($current->text, $template['shorten'],
-                $template['shortenel']);
+            $ph['text']  = shorten(
+                $current->text,
+                $template['shorten'],
+                $template['shortenel']
+            );
             $ph['title'] = $current->value;
         } else {
             $ph['text']  = $current->text;
             $ph['title'] = '';
         }
-        echo parseHtml('<option value="{%value:hsc%}" {%selected%} title="{%title:hsc%}">{%text:hsc%}</option>',
-            $ph);
+        echo parseHtml(
+            '<option value="{%value:hsc%}" {%selected%} title="{%title:hsc%}">{%text:hsc%}</option>',
+            $ph
+        );
     } elseif ($type == 'FOOT') {
         echo '</select>';
     }
@@ -125,8 +134,11 @@ function listplug_table($template, $type)
             echo "<table>";
             echo "<thead><tr>";
             // print head
-            $rs = call_user_func("listplug_table_" . $template['content'],
-                $template, 'HEAD');
+            $rs = call_user_func(
+                "listplug_table_" . $template['content'],
+                $template,
+                'HEAD'
+            );
             if ($rs) {
                 echo $rs;
             }
@@ -135,16 +147,22 @@ function listplug_table($template, $type)
         case 'BODY':
             // print tabletype specific thingies
             echo '<tr onmouseover="focusRow(this);" onmouseout="blurRow(this);">';
-            $rs = call_user_func("listplug_table_" . $template['content'],
-                $template, 'BODY');
+            $rs = call_user_func(
+                "listplug_table_" . $template['content'],
+                $template,
+                'BODY'
+            );
             if ($rs) {
                 echo $rs;
             }
             echo "</tr>";
             break;
         case 'FOOT':
-            call_user_func("listplug_table_" . $template['content'], $template,
-                'FOOT');
+            call_user_func(
+                "listplug_table_" . $template['content'],
+                $template,
+                'FOOT'
+            );
             echo "</tbody></table>";
             break;
     }
@@ -284,10 +302,12 @@ function listplug_table_pluginlist($template, $type)
                          . "</strong><br />";
                     echo "Latest version: " . hsc($update_info['version'])
                          . "<br />";
-                    if ( ! empty($update_info['download'])) {
-                        printf('Get URL : <a href="%s" target="_blank">%s</a><br />',
+                    if (! empty($update_info['download'])) {
+                        printf(
+                            'Get URL : <a href="%s" target="_blank">%s</a><br />',
                             hsc($update_info['download']),
-                            hsc($update_info['download']));
+                            hsc($update_info['download'])
+                        );
                     }
                     echo "<br />";
                 }
@@ -295,16 +315,20 @@ function listplug_table_pluginlist($template, $type)
                 echo hsc($plug->getDescription());
                 $pl_event_list = $plug->_getEventList();
                 if (count($pl_event_list) > 0) {
-                    echo '<br /><br />', _LIST_PLUGS_SUBS, '<br />', hsc(implode(', ',
-                        $pl_event_list));
+                    echo '<br /><br />', _LIST_PLUGS_SUBS, '<br />', hsc(implode(
+                        ', ',
+                        $pl_event_list
+                    ));
                     // check the database to see if it is up-to-date and notice the user if not
                 }
-                if ( ! $plug->subscribtionListIsUptodate()) {
+                if (! $plug->subscribtionListIsUptodate()) {
                     echo '<br /><br /><strong>', _LIST_PLUG_SUBS_NEEDUPDATE, '</strong>';
                 }
                 if (count($plug->getPluginDep()) > 0) {
-                    echo '<br /><br />', _LIST_PLUGS_DEP, '<br />', hsc(implode(', ',
-                        $plug->getPluginDep()));
+                    echo '<br /><br />', _LIST_PLUGS_DEP, '<br />', hsc(implode(
+                        ', ',
+                        $plug->getPluginDep()
+                    ));
                 }
                 // <add by shizuki>
                 // check dependency require
@@ -331,8 +355,10 @@ function listplug_table_pluginlist($template, $type)
                 // </add by shizuki>
                 echo '</td>';
             } else {
-                echo '<td colspan="2">' . sprintf(_PLUGINFILE_COULDNT_BELOADED,
-                        hsc($current->pfile)) . '</td>';
+                echo '<td colspan="2">' . sprintf(
+                    _PLUGINFILE_COULDNT_BELOADED,
+                    hsc($current->pfile)
+                ) . '</td>';
             }
             echo '<td style="white-space:nowrap;">';
 
@@ -349,8 +375,12 @@ function listplug_table_pluginlist($template, $type)
             if ($plug && ($plug->hasAdminArea() > 0)) {
                 if ($plug->supportsFeature('pluginadmin')) {
                     $url = $manager->addTicketToUrl($baseUrl . 'pluginadmin');
-                    printf("<br /><a href='%s' tabindex='%s'>%s</a>", $url,
-                        $template['tabindex'], _LIST_PLUGS_ADMIN);
+                    printf(
+                        "<br /><a href='%s' tabindex='%s'>%s</a>",
+                        $url,
+                        $template['tabindex'],
+                        _LIST_PLUGS_ADMIN
+                    );
                 } else {
                     echo "<br /><a href='" . hsc($plug->getAdminURL())
                          . "'  tabindex='" . $template['tabindex']
@@ -410,7 +440,7 @@ function listplug_plugOptionRow($current)
     $meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
     // only if it is not a hidden option write the controls to the page
-    if ( ! array_key_exists('access', $meta) || $meta['access'] != 'hidden') {
+    if (! array_key_exists('access', $meta) || $meta['access'] != 'hidden') {
         echo '<td>', hsc($current['description'] ? $current['description']
             : $current['name']), '</td>';
         echo '<td>';
@@ -507,8 +537,10 @@ function listplug_table_itemlist($template, $type)
                 echo _LIST_ITEM_AUTHOR . ' ' . hsc($current->mname) . '<br />';
             }
             if ($current->itime) {
-                echo date('Y-m-d', $current->itime) . ' ' . date('H:i',
-                        $current->itime);
+                echo date('Y-m-d', $current->itime) . ' ' . date(
+                    'H:i',
+                    $current->itime
+                );
             } else {
                 echo '0000-00-00 00:00';
             }
@@ -541,14 +573,19 @@ function listplug_table_itemlist($template, $type)
             echo " / <a href='{$cloneUrl}'>" . _LISTS_CLONE . "</a>";
             echo " / <a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>"
                  . _LISTS_DELETE . "</a><br />";
-            printf(" <a href='%s' target=\"_blank\">%s</a><br />",
-                createItemLink($current->inumber), _LISTS_VIEW);
+            printf(
+                " <a href='%s' target=\"_blank\">%s</a><br />",
+                createItemLink($current->inumber),
+                _LISTS_VIEW
+            );
             // evaluate amount of comments for the item
             $camount = $COMMENTS->amountComments();
             if ($camount > 0) {
                 echo "<a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
-                echo "( " . sprintf(_LIST_ITEM_COMMENTS,
-                        $COMMENTS->amountComments()) . " )</a>";
+                echo "( " . sprintf(
+                    _LIST_ITEM_COMMENTS,
+                    $COMMENTS->amountComments()
+                ) . " )</a>";
             } else {
                 echo _LIST_ITEM_NOCONTENT;
             }
@@ -586,7 +623,7 @@ function listplug_table_commentlist($template, $type)
             $current = $template['current'];
             $current->ctime
                      = strtotime($current->ctime);    // string -> unix timestamp
-            if ( ! isset($current->is_badmin) || $current->is_badmin) {
+            if (! isset($current->is_badmin) || $current->is_badmin) {
                 $show_action_link                 = 1;
                 $show_action_link_itemcommentlist = ($action
                                                      == 'blogcommentlist');
@@ -652,17 +689,23 @@ function listplug_table_commentlist($template, $type)
             // add link
             if ($action == 'blogcommentlist') {
                 if ($show_action_link_itemcommentlist) {
-                    if ( ! isset($amountComments[$current->citem])) {
+                    if (! isset($amountComments[$current->citem])) {
                         $COMMENTS = new COMMENTS($current->citem);
                         $amountComments[$current->citem]
                                   = $COMMENTS->amountComments();
                     }
                     echo '<td style=" word-break: break-all">';
-                    $s = sprintf('(%d) %s', $amountComments[$current->citem],
-                        _LIST_COMMENT_LIST_FOR_ITEM);
+                    $s = sprintf(
+                        '(%d) %s',
+                        $amountComments[$current->citem],
+                        _LIST_COMMENT_LIST_FOR_ITEM
+                    );
                     $s = sprintf(_LIST_BACK_TO, $s);
-                    printf('<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>'
-                        , $current->citem, $s);
+                    printf(
+                        '<a href="index.php?action=itemcommentlist&itemid=%d">%s</a></td>',
+                        $current->citem,
+                        $s
+                    );
                     echo '</td>';
                 } else {
                     echo '<td>&nbsp;</td>';
@@ -870,8 +913,10 @@ function listplug_table_skinlist($template, $type)
                               . 'readme.html')) {
                     $url         = $CONF['SkinsURL'] . hsc($current->sdincpref)
                                    . 'readme.html';
-                    $readmeTitle = sprintf(_LIST_SKIN_README,
-                        hsc($current->sdname));
+                    $readmeTitle = sprintf(
+                        _LIST_SKIN_README,
+                        hsc($current->sdname)
+                    );
                     echo '<br /><a href="' . $url . '" title="' . $readmeTitle
                          . '">' . _LIST_SKIN_README_TXT . '</a>';
                 }
@@ -900,15 +945,23 @@ function listplug_table_skinlist($template, $type)
                 $tmp_ct    = count($tmp_items);
                 $order     = "";
                 for ($i = 0; $i < $tmp_ct; $i++) {
-                    $order .= sprintf(" WHEN '%s' THEN %d", $tmp_items[$i],
-                        $tmp_ct - $i);
+                    $order .= sprintf(
+                        " WHEN '%s' THEN %d",
+                        $tmp_items[$i],
+                        $tmp_ct - $i
+                    );
                 } // DESC
                 $order = " ORDER BY CASE stype {$order} END , stype ASC";
             }
-            $has_spartstype = sql_existTableColumnName(sql_table('skin'),
-                'spartstype');
-            $sql            = sprintf("SELECT stype FROM `%s` WHERE sdesc=%d ",
-                sql_table('skin'), $current->sdnumber);
+            $has_spartstype = sql_existTableColumnName(
+                sql_table('skin'),
+                'spartstype'
+            );
+            $sql            = sprintf(
+                "SELECT stype FROM `%s` WHERE sdesc=%d ",
+                sql_table('skin'),
+                $current->sdnumber
+            );
             if ($has_spartstype) {
                 $sql .= " AND spartstype='parts' ";
             }
@@ -923,7 +976,8 @@ function listplug_table_skinlist($template, $type)
                 $friendlyNames = SKIN::getFriendlyNames();
                 for ($i = 0; $i < count($types); $i++) {
                     $type = $types[$i];
-                    if (in_array($type,
+                    if (in_array(
+                        $type,
                         array(
                             'index',
                             'item',
@@ -933,7 +987,8 @@ function listplug_table_skinlist($template, $type)
                             'error',
                             'member',
                             'imagepopup',
-                        ))) {
+                        )
+                    )) {
                         $parts[0][] = '<li>' . helpHtml('skinpart' . $type)
                                       . ' <a href="index.php?action=skinedittype&amp;skinid='
                                       . $current->sdnumber . '&amp;type='
@@ -956,18 +1011,21 @@ function listplug_table_skinlist($template, $type)
                          . '</ul>';
                 }
                 if (count($parts[1])
-                    > 0) //                    echo _SKIN_PARTS_SPECIAL . ' <ul>'.implode($parts[1]).'</ul>';
-                {
-                    printf("<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s</div>",
+                    > 0) { //                    echo _SKIN_PARTS_SPECIAL . ' <ul>'.implode($parts[1]).'</ul>';
+                    printf(
+                        "<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s</div>",
                         _SKIN_PARTS_SPECIAL . ' <ul>' . implode($parts[1])
-                        . '</ul>');
+                        . '</ul>'
+                    );
                 }
             }
             // skin page
             $sql
-                = sprintf("SELECT stype FROM `%s` WHERE sdesc=%d AND spartstype='specialpage' ",
+                = sprintf(
+                    "SELECT stype FROM `%s` WHERE sdesc=%d AND spartstype='specialpage' ",
                     sql_table('skin'),
-                    $current->sdnumber) . $order;
+                    $current->sdnumber
+                ) . $order;
             if ($has_spartstype) {
                 $res = sql_query($sql);
             } else {
@@ -980,17 +1038,26 @@ function listplug_table_skinlist($template, $type)
                 }
             }
             if (count($names) > 0) {
-                printf("<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s",
-                    _SKIN_PARTS_SPECIAL_PAGE);
+                printf(
+                    "<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s",
+                    _SKIN_PARTS_SPECIAL_PAGE
+                );
                 echo "<ul>";
                 for ($i = 0; $i < count($names); $i++) {
                     // todo: edit link ?
                     $editurl
-                        = sprintf('index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s',
-                        $current->sdnumber, $names[$i]);
-                    printf("<li>%s <a href='%s' tabindex='%d'>%s</a></li>",
-                        helpHtml('skinpartspecialpage'), $editurl,
-                        $template['tabindex'], escapeHTML($names[$i]));
+                        = sprintf(
+                            'index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s',
+                            $current->sdnumber,
+                            $names[$i]
+                        );
+                    printf(
+                        "<li>%s <a href='%s' tabindex='%d'>%s</a></li>",
+                        helpHtml('skinpartspecialpage'),
+                        $editurl,
+                        $template['tabindex'],
+                        escapeHTML($names[$i])
+                    );
                 }
                 echo "</ul>";
                 echo "</div>";
@@ -1106,13 +1173,17 @@ function listplug_table_systemloglist($template, $type)
             break;
         case 'BODY':
             $current    = $template['current'];
-            $local_time = date('Y-m-d H:i:s',
-                strtotime($current->timestamp_utc . ' UTC'));
+            $local_time = date(
+                'Y-m-d H:i:s',
+                strtotime($current->timestamp_utc . ' UTC')
+            );
             $lines[]    = '<td>' . hsc($local_time) . '</td>';
             //            $lines[] = sprintf('<td>%s<br />%s</td>', hsc($current->logyear), hsc($current->logid));
             //            $lines[] = sprintf('<td>%s<br />%s</td>', hsc($current->logtype), hsc($current->subtype));
-            $lines[] = sprintf('<td>%s</td>',
-                hsc(substr($current->message, 0, 300)));
+            $lines[] = sprintf(
+                '<td>%s</td>',
+                hsc(substr($current->message, 0, 300))
+            );
 
             break;
     }

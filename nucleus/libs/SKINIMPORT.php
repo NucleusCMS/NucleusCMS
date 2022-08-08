@@ -164,9 +164,11 @@ class SKINIMPORT
                 $buffer = mb_convert_encoding($buffer, 'UTF-8', $temp_encode);
             }
             $err = xml_parse($this->parser, $buffer, feof($temp));
-            if ( ! $err && $this->debug) {
-                printf('ERROR: %s<br />',
-                    xml_error_string(xml_get_error_code($this->parser)));
+            if (! $err && $this->debug) {
+                printf(
+                    'ERROR: %s<br />',
+                    xml_error_string(xml_get_error_code($this->parser))
+                );
             }
         }
 
@@ -215,7 +217,7 @@ class SKINIMPORT
         $existingTemplates = $this->checkTemplateNameClashes();
 
         // if not allowed to overwrite, check if any nameclashes exists
-        if ( ! $allowOverwrite) {
+        if (! $allowOverwrite) {
             if ((sizeof($existingSkins) > 0)
                 || (sizeof($existingTemplates) > 0)) {
                 return _SKINIE_NAME_CLASHES_DETECTED;
@@ -259,9 +261,12 @@ class SKINIMPORT
             if (isset($data['specialpage'])) {
                 foreach ($data['specialpage'] as $pageName => $pageData) {
                     $options = array('spartstype' => 'specialpage');
-                    $skinObj->update($pageName, (isset($pageData['content'])
+                    $skinObj->update(
+                        $pageName,
+                        (isset($pageData['content'])
                         ? (string)$pageData['content'] : ''),
-                        $options);
+                        $options
+                    );
                 }
             }
         }
@@ -277,11 +282,15 @@ class SKINIMPORT
                     $templateObj->deleteAllParts();
 
                     // update general info
-                    $templateObj->updateGeneralInfo($templateName,
-                        $data['description']);
+                    $templateObj->updateGeneralInfo(
+                        $templateName,
+                        $data['description']
+                    );
                 } else {
-                    $templateid  = TEMPLATE::createNew($templateName,
-                        $data['description']);
+                    $templateid  = TEMPLATE::createNew(
+                        $templateName,
+                        $data['description']
+                    );
                     $templateObj = new TEMPLATE($templateid);
                 }
 
@@ -353,7 +362,7 @@ class SKINIMPORT
                 // no action needed
                 break;
             case 'skin':
-                if ( ! $this->inMeta) {
+                if (! $this->inMeta) {
                     $this->inSkin                             = 1;
                     $this->currentName
                                                               = $attrs['name'];
@@ -370,7 +379,7 @@ class SKINIMPORT
                 }
                 break;
             case 'template':
-                if ( ! $this->inMeta) {
+                if (! $this->inMeta) {
                     $this->inTemplate                             = 1;
                     $this->currentName
                                                                   = $attrs['name'];
@@ -419,12 +428,12 @@ class SKINIMPORT
                 $this->info = $this->getCharacterData();
                 break;
             case 'skin':
-                if ( ! $this->inMeta) {
+                if (! $this->inMeta) {
                     $this->inSkin = 0;
                 }
                 break;
             case 'template':
-                if ( ! $this->inMeta) {
+                if (! $this->inMeta) {
                     $this->inTemplate = 0;
                 }
                 break;
@@ -569,8 +578,11 @@ class SKINIMPORT
             or ( ! function_exists('mb_convert_encoding'))) {
             $xml = simplexml_load_string($src_text);
         } else {
-            $xml = simplexml_load_string(mb_convert_encoding($src_text, 'UTF-8',
-                $temp_encode));
+            $xml = simplexml_load_string(mb_convert_encoding(
+                $src_text,
+                'UTF-8',
+                $temp_encode
+            ));
         }
         unset($src_text);
 
@@ -625,7 +637,7 @@ class SKINIMPORT
             }
             // skin template
             $xml_first = $xml->xpath('/nucleusskin/' . $parent);
-            if ( ! $xml_first) {
+            if (! $xml_first) {
                 continue;
             }
             foreach ($xml_first as $child) {
@@ -676,7 +688,7 @@ class SKINIMPORT
             }
         }
 
-        if ( ! $metaOnly) {
+        if (! $metaOnly) {
             if (isset($data['skin'])) {
                 $this->skins =& $data['skin'];
             }
@@ -691,5 +703,4 @@ class SKINIMPORT
             ksort($this->templates);
         }
     }
-
 }

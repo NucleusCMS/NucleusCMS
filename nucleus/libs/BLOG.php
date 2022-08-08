@@ -17,7 +17,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if ( ! function_exists('requestVar')) {
+if (! function_exists('requestVar')) {
     exit;
 }
 require_once __DIR__ . '/ITEMACTIONS.php';
@@ -75,8 +75,16 @@ class BLOG
      */
     function readLog($template, $amountEntries, $offset = 0, $startpos = 0)
     {
-        return $this->readLogAmount($template, $amountEntries, '', '', 1, 1,
-            $offset, $startpos);
+        return $this->readLogAmount(
+            $template,
+            $amountEntries,
+            '',
+            '',
+            1,
+            1,
+            $offset,
+            $startpos
+        );
     }
 
     /**
@@ -94,20 +102,32 @@ class BLOG
         // create extra where clause for select query
         if ($day == 0 && $month != 0) {
             $timestamp_start = mktime(0, 0, 0, $month, 1, $year);
-            $timestamp_end   = mktime(0, 0, 0, $month + 1, 1,
-                $year);  // also works when $month==12
+            $timestamp_end   = mktime(
+                0,
+                0,
+                0,
+                $month + 1,
+                1,
+                $year
+            );  // also works when $month==12
         } elseif ($month == 0) {
             $timestamp_start = mktime(0, 0, 0, 1, 1, $year);
-            $timestamp_end   = mktime(0, 0, 0, 12, 31,
-                $year);  // also works when $month==12
+            $timestamp_end   = mktime(
+                0,
+                0,
+                0,
+                12,
+                31,
+                $year
+            );  // also works when $month==12
         } else {
             $timestamp_start = mktime(0, 0, 0, $month, $day, $year);
             $timestamp_end   = mktime(0, 0, 0, $month, $day + 1, $year);
         }
         $extra_query = sprintf(
-            ' and i.itime>=%s and i.itime<%s'
-            , mysqldate($timestamp_start)
-            , mysqldate($timestamp_end)
+            ' and i.itime>=%s and i.itime<%s',
+            mysqldate($timestamp_start),
+            mysqldate($timestamp_end)
         );
 
 
@@ -180,8 +200,13 @@ class BLOG
                       . (int)$amountEntries;
         }
 
-        return $this->showUsingQuery($template, $query, $highlight, $comments,
-            $dateheads);
+        return $this->showUsingQuery(
+            $template,
+            $query,
+            $highlight,
+            $comments,
+            $dateheads
+        );
     }
 
     /**
@@ -244,9 +269,11 @@ class BLOG
                         );
                         $manager->notify('PreDateFoot', $param);
                         $tmp_footer
-                            = Utils::strftime(isset($template['DATE_FOOTER'])
-                            ? $template['DATE_FOOTER'] : '',
-                            $oldTS);
+                            = Utils::strftime(
+                                isset($template['DATE_FOOTER'])
+                                ? $template['DATE_FOOTER'] : '',
+                                $oldTS
+                            );
                         $parser->parse($tmp_footer);
                         $param = array(
                             'blog'      => &$this,
@@ -262,9 +289,11 @@ class BLOG
                     // note, to use templatvars in the dateheader, the %-characters need to be doubled in
                     // order to be preserved by strftime
                     $tmp_header
-                        = Utils::strftime((isset($template['DATE_HEADER'])
-                        ? $template['DATE_HEADER'] : null),
-                        $timestamp);
+                        = Utils::strftime(
+                            (isset($template['DATE_HEADER'])
+                            ? $template['DATE_HEADER'] : null),
+                            $timestamp
+                        );
                     $parser->parse($tmp_header);
                     $param = array(
                         'blog'      => &$this,
@@ -318,8 +347,14 @@ class BLOG
     {
         $extraQuery = ' and inumber=' . (int)$itemid;
 
-        return $this->readLogAmount($template, 1, $extraQuery, $highlight, 0,
-            0);
+        return $this->readLogAmount(
+            $template,
+            1,
+            $extraQuery,
+            $highlight,
+            0,
+            0
+        );
     }
 
 
@@ -358,7 +393,7 @@ class BLOG
             $idraft = '1';
         }
 
-        if ( ! $this->isValidCategory($icat)) {
+        if (! $this->isValidCategory($icat)) {
             $icat = $this->getDefaultCategory();
         }
 
@@ -386,19 +421,20 @@ class BLOG
         $imore  = sql_quote_string($imore);
 
         $query = parseQuery(
-            "INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)");
+            "INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) VALUES ($ititle, $ibody, $imore, $iblog, $iauthor, '$itime', $iclosed, $idraft, $icat, $iposted)"
+        );
         sql_query($query);
         $itemid = sql_insert_id();
 
         $param = array('itemid' => $itemid);
         $manager->notify('PostAddItem', $param);
 
-        if ( ! $idraft) {
+        if (! $idraft) {
             $this->updateUpdateFile();
         }
 
         // send notification mail
-        if ( ! $idraft && ! $isFuture && $this->getNotifyAddress()
+        if (! $idraft && ! $isFuture && $this->getNotifyAddress()
              && $this->notifyOnNewItem()) {
             $this->sendNewItemNotification($itemid, $ititle, $ibody);
         }
@@ -485,8 +521,10 @@ class BLOG
                         'cblog' => (int)$this->getID(),
                     );
                     $sql
-                         = parseQuery('SELECT catid AS result FROM [@prefix@]category WHERE cname=[@cname@] and cblog=[@cblog@]',
-                        $ph);
+                         = parseQuery(
+                             'SELECT catid AS result FROM [@prefix@]category WHERE cname=[@cname@] and cblog=[@cblog@]',
+                             $ph
+                         );
                     $res = quickQuery($sql);
                     if (empty($res)) {
                         break;
@@ -508,7 +546,7 @@ class BLOG
             $ph['cblog'] = $this->getID();
             $ph['cname'] = sql_quote_string($catName);
             $ph['cdesc'] = sql_quote_string($catDescription);
-            if ( ! is_null($corder)) {
+            if (! is_null($corder)) {
                 $ph['corder'] = (int)$corder;
                 $query
                               = 'INSERT INTO [@prefix@]category (cblog, cname, cdesc, corder) VALUES ([@cblog@],[@cname@],[@cdesc@],[@corder@])';
@@ -562,8 +600,14 @@ class BLOG
         if ($sqlquery == '') {
             // no query -> show everything
             $extraquery  = '';
-            $amountfound = $this->readLogAmount($template, $maxresults,
-                $extraquery, $keywords, 1, 1);
+            $amountfound = $this->readLogAmount(
+                $template,
+                $maxresults,
+                $extraquery,
+                $keywords,
+                1,
+                1
+            );
         } else {
             // add LIMIT to query (to split search results into pages)
             if ((int)($maxresults > 0)) {
@@ -572,8 +616,13 @@ class BLOG
             }
 
             // show results
-            $amountfound = $this->showUsingQuery($template, $sqlquery,
-                $highlight, 1, 1);
+            $amountfound = $this->showUsingQuery(
+                $template,
+                $sqlquery,
+                $highlight,
+                1,
+                1
+            );
 
             // when no results were found, show a message
             if ($amountfound == 0) {
@@ -649,7 +698,7 @@ class BLOG
         $where[] = 'i.idraft=0';  // exclude drafts
         $blogs
                  = $this->searchableBlogs(); // array containing blogs that always need to be included
-        if ( ! in_array($this->getID(), $blogs)) {
+        if (! in_array($this->getID(), $blogs)) {
             $blogs[] = $this->getID();   // also search current blog (duh)
         }
         if (1 < count($blogs)) {
@@ -664,8 +713,14 @@ class BLOG
         // take into account amount of months to search
         if ($amountMonths > 0) {
             $localtime       = getdate($this->getCorrectTime());
-            $timestamp_start = mktime(0, 0, 0,
-                $localtime['mon'] - $amountMonths, 1, $localtime['year']);
+            $timestamp_start = mktime(
+                0,
+                0,
+                0,
+                $localtime['mon'] - $amountMonths,
+                1,
+                $localtime['year']
+            );
             $where[]         = 'AND i.itime>' . mysqldate($timestamp_start);
         }
 
@@ -718,8 +773,11 @@ class BLOG
         }
 
         $query .= parseQuery(' FROM [@prefix@]item as i, [@prefix@]member as m, [@prefix@]category as c');
-        $query .= sprintf(" WHERE i.iblog=%d and i.iauthor=m.mnumber and i.icat=c.catid and i.idraft=0 and i.itime<=%s",
-            $this->blogid, mysqldate($this->getCorrectTime()));
+        $query .= sprintf(
+            " WHERE i.iblog=%d and i.iauthor=m.mnumber and i.icat=c.catid and i.idraft=0 and i.itime<=%s",
+            $this->blogid,
+            mysqldate($this->getCorrectTime())
+        );
 
         if ($this->getSelectedCategory()) {
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
@@ -747,12 +805,15 @@ class BLOG
         // workaround for <%_()%>
         foreach ($template as $key => $value) {
             if (!is_null($value) && (strlen($value) > 0) && str_contains($value, '<%_(')) {
-                $template[$key] = preg_replace_callback('#<%_\(([^)]*?)\)%>#',
-                    array($this, '_workaround_gettext_callback'), $value);
+                $template[$key] = preg_replace_callback(
+                    '#<%_\(([^)]*?)\)%>#',
+                    array($this, '_workaround_gettext_callback'),
+                    $value
+                );
             }
         }
         //        var_dump($template);
-        if ( ! isset($template['LOCALE']) || ! $template['LOCALE']) {
+        if (! isset($template['LOCALE']) || ! $template['LOCALE']) {
             if (PHP_OS === 'WINNT' && defined('_LOCALE_NAME_WINDOWS')) {
                 $template['LOCALE'] = _LOCALE_NAME_WINDOWS;
             } else {
@@ -848,14 +909,19 @@ class BLOG
 
             $archdata['year']        = date('Y', $current->itime);
             $archive['year']         = $archdata['year'];
-            $archdata['archivelink'] = createArchiveLink($this->getID(),
-                $archivedate, $linkparams);
+            $archdata['archivelink'] = createArchiveLink(
+                $this->getID(),
+                $archivedate,
+                $linkparams
+            );
 
             $param = array('listitem' => &$archdata);
             $manager->notify('PreArchiveListItem', $param);
 
-            $temp = TEMPLATE::fill($template['ARCHIVELIST_LISTITEM'],
-                $archdata);
+            $temp = TEMPLATE::fill(
+                $template['ARCHIVELIST_LISTITEM'],
+                $archdata
+            );
             echo Utils::strftime($temp, $current->itime);
         }
 
@@ -880,14 +946,19 @@ class BLOG
 
         $linkparams = array();
         if ($archive) {
-            $blogurl               = createArchiveLink($this->getID(), $archive,
-                '');
+            $blogurl               = createArchiveLink(
+                $this->getID(),
+                $archive,
+                ''
+            );
             $linkparams['blogid']  = $this->getID();
             $linkparams['archive'] = $archive;
         } else {
             if ($archivelist) {
-                $blogurl                   = createArchiveListLink($this->getID(),
-                    '');
+                $blogurl                   = createArchiveListLink(
+                    $this->getID(),
+                    ''
+                );
                 $linkparams['archivelist'] = $archivelist;
             } else {
                 $blogurl              = createBlogidLink($this->getID(), '');
@@ -912,7 +983,8 @@ class BLOG
             $nocatselected = 'yes';
         }
 
-        echo TEMPLATE::fill((isset($template['CATLIST_HEADER'])
+        echo TEMPLATE::fill(
+            (isset($template['CATLIST_HEADER'])
             ? $template['CATLIST_HEADER'] : null),
             array(
                 'blogid'       => $this->getID(),
@@ -921,7 +993,8 @@ class BLOG
                 //: Change: Set catiscurrent template variable for header
                 'catiscurrent' => $nocatselected,
                 'currentcat'   => $nocatselected,
-            ));
+            )
+        );
 
         $ph['cblog'] = $this->getID();
         $query       = 'SELECT * FROM [@prefix@]category WHERE cblog=[@cblog@]';
@@ -980,17 +1053,19 @@ class BLOG
             $param = array('listitem' => &$catdata);
             $manager->notify('PreCategoryListItem', $param);
 
-            echo TEMPLATE::fill((isset($template['CATLIST_LISTITEM'])
+            echo TEMPLATE::fill(
+                (isset($template['CATLIST_LISTITEM'])
                 ? $template['CATLIST_LISTITEM'] : null),
-                $catdata);
+                $catdata
+            );
             //$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $catdata);
             //echo strftime($temp, $current->itime);
-
         }
 
         sql_free_result($res);
 
-        echo TEMPLATE::fill((isset($template['CATLIST_FOOTER'])
+        echo TEMPLATE::fill(
+            (isset($template['CATLIST_FOOTER'])
             ? $template['CATLIST_FOOTER'] : null),
             array(
                 'blogid'       => $this->getID(),
@@ -999,7 +1074,8 @@ class BLOG
                 //: Change: Set catiscurrent template variable for footer
                 'catiscurrent' => $nocatselected,
                 'currentcat'   => $nocatselected,
-            ));
+            )
+        );
     }
 
     /**
@@ -1017,24 +1093,26 @@ class BLOG
 
         $template =& $manager->getTemplate($template);
 
-        echo TEMPLATE::fill((isset($template['BLOGLIST_HEADER'])
+        echo TEMPLATE::fill(
+            (isset($template['BLOGLIST_HEADER'])
             ? $template['BLOGLIST_HEADER'] : null),
             array(
                 'sitename' => $CONF['SiteName'],
                 'siteurl'  => $CONF['IndexURL'],
-            ));
+            )
+        );
 
         switch (strtolower($orderby)) {
-            case 'name'       :
+            case 'name':
                 $ph['orderby'] = 'bname';
                 break;
-            case 'shortname'  :
+            case 'shortname':
                 $ph['orderby'] = 'bshortname';
                 break;
             case 'description':
                 $ph['orderby'] = 'bdesc';
                 break;
-            default           :
+            default:
                 $ph['orderby'] = 'bnumber';
         }
         $ph['direction'] = (strtolower($direction) === 'desc') ? 'DESC' : 'ASC';
@@ -1067,19 +1145,23 @@ class BLOG
                 $param = array('listitem' => &$list);
                 $manager->notify('PreBlogListItem', $param);
 
-                echo TEMPLATE::fill((isset($template['BLOGLIST_LISTITEM'])
+                echo TEMPLATE::fill(
+                    (isset($template['BLOGLIST_LISTITEM'])
                     ? $template['BLOGLIST_LISTITEM'] : null),
-                    $list);
+                    $list
+                );
             }
             sql_free_result($res);
         }
 
-        echo TEMPLATE::fill((isset($template['BLOGLIST_FOOTER'])
+        echo TEMPLATE::fill(
+            (isset($template['BLOGLIST_FOOTER'])
             ? $template['BLOGLIST_FOOTER'] : null),
             array(
                 'sitename' => $CONF['SiteName'],
                 'siteurl'  => $CONF['IndexURL'],
-            ));
+            )
+        );
     }
 
     /**
@@ -1089,13 +1171,15 @@ class BLOG
     {
         $ph['bnumber'] = $this->blogid;
         $query
-                       = parseQuery('SELECT * FROM [@prefix@]blog WHERE bnumber=[@bnumber@]',
-            $ph);
+                       = parseQuery(
+                           'SELECT * FROM [@prefix@]blog WHERE bnumber=[@bnumber@]',
+                           $ph
+                       );
         $res           = sql_query($query);
 
         $this->settings = ($res ? sql_fetch_assoc($res) : array());
         $this->isValid  = ! empty($this->settings);
-        if ( ! $this->isValid) {
+        if (! $this->isValid) {
             $this->settings = array();
         }
     }
@@ -1159,8 +1243,10 @@ class BLOG
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
         $query
-                     = parseQuery('SELECT count(*) FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@] LIMIT 1',
-            $ph);
+                     = parseQuery(
+                         'SELECT count(*) FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@] LIMIT 1',
+                         $ph
+                     );
         if ($res = sql_query($query)) {
             return ((int)sql_result($res) > 0);
         }
@@ -1179,8 +1265,10 @@ class BLOG
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
         $query
-                     = parseQuery('SELECT cname FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',
-            $ph);
+                     = parseQuery(
+                         'SELECT cname FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',
+                         $ph
+                     );
         if (($res = sql_query($query)) && ($o = sql_fetch_object($res))) {
             return $o->cname;
         }
@@ -1199,8 +1287,10 @@ class BLOG
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
         $query
-                     = parseQuery('SELECT cdesc FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',
-            $ph);
+                     = parseQuery(
+                         'SELECT cdesc FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',
+                         $ph
+                     );
         if (($res = sql_query($query)) && ($o = sql_fetch_object($res))) {
             return $o->cdesc;
         }
@@ -1213,8 +1303,10 @@ class BLOG
         $ph['cblog'] = $this->getID();
         $ph['catid'] = (int)$catid;
         $query
-                     = parseQuery('SELECT corder FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',
-            $ph);
+                     = parseQuery(
+                         'SELECT corder FROM [@prefix@]category WHERE cblog=[@cblog@] AND catid=[@catid@]',
+                         $ph
+                     );
         if (($res = sql_query($query)) && ($o = sql_fetch_object($res))) {
             return (int)$o->corder;
         }
@@ -1233,8 +1325,10 @@ class BLOG
         $ph['cblog'] = $this->getID();
         $ph['cname'] = sql_real_escape_string($name);
         $query
-                     = parseQuery("SELECT catid FROM [@prefix@]category WHERE cblog=[@cblog@] AND cname='[@cname@]'",
-            $ph);
+                     = parseQuery(
+                         "SELECT catid FROM [@prefix@]category WHERE cblog=[@cblog@] AND cname='[@cname@]'",
+                         $ph
+                     );
         $res         = sql_query($query);
         if ($res && ($o = sql_fetch_object($res))) {
             return $o->catid;
@@ -1525,7 +1619,7 @@ class BLOG
 
     function getSettingDefault($key, $dafalutvalue)
     {
-        if ( ! isset($this->settings[$key])) {
+        if (! isset($this->settings[$key])) {
             return $dafalutvalue;
         }
 
@@ -1568,8 +1662,10 @@ class BLOG
         $ph['tblog']   = $this->getID();
         $ph['tadmin']  = $tadmin ? 1 : 0;
         $query
-                       = parseQuery('INSERT INTO [@prefix@]team (tmember, tblog, tadmin) VALUES([@tmember@], [@tblog@], [@tadmin@])',
-            $ph);
+                       = parseQuery(
+                           'INSERT INTO [@prefix@]team (tmember, tblog, tadmin) VALUES([@tmember@], [@tblog@], [@tadmin@])',
+                           $ph
+                       );
         sql_query($query);
 
         $param = array(
@@ -1579,8 +1675,12 @@ class BLOG
         );
         $manager->notify('PostAddTeamMember', $param);
 
-        $logMsg = sprintf(_TEAM_ADD_NEWTEAMMEMBER, $tmem->getDisplayName(),
-            $tmember, $this->getName());
+        $logMsg = sprintf(
+            _TEAM_ADD_NEWTEAMMEMBER,
+            $tmem->getDisplayName(),
+            $tmember,
+            $this->getName()
+        );
         ACTIONLOG::add(INFO, $logMsg);
 
         return 1;
@@ -1602,8 +1702,10 @@ class BLOG
     {
         $ph['bshortname'] = sql_quote_string($name);
         $query
-                          = parseQuery('SELECT count(*) AS result FROM [@prefix@]blog WHERE bshortname=[@bshortname@] LIMIT 1',
-            $ph);
+                          = parseQuery(
+                              'SELECT count(*) AS result FROM [@prefix@]blog WHERE bshortname=[@bshortname@] LIMIT 1',
+                              $ph
+                          );
 
         return (int)quickQuery($query) > 0;
     }
@@ -1619,8 +1721,10 @@ class BLOG
     {
         $ph['bnumber'] = (int)$bnumber;
         $query
-                       = parseQuery('SELECT count(*) AS result FROM [@prefix@]blog WHERE bnumber=[@bnumber@] LIMIT 1',
-            $ph);
+                       = parseQuery(
+                           'SELECT count(*) AS result FROM [@prefix@]blog WHERE bnumber=[@bnumber@] LIMIT 1',
+                           $ph
+                       );
 
         return (int)quickQuery($query) > 0;
     }
@@ -1633,8 +1737,10 @@ class BLOG
         $ph['bnumber']     = $this->getID();
         $ph['bfuturepost'] = (int)$bfuturepost;
         $query
-                           = parseQuery('UPDATE [@prefix@]blog SET bfuturepost=[@bfuturepost@] WHERE bnumber=[@bnumber@]',
-            $ph);
+                           = parseQuery(
+                               'UPDATE [@prefix@]blog SET bfuturepost=[@bfuturepost@] WHERE bnumber=[@bnumber@]',
+                               $ph
+                           );
         sql_query($query);
     }
 
@@ -1659,9 +1765,11 @@ class BLOG
 
         $ph['iblog'] = $this->getID();
         $sql
-                     = parseQuery('SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] AND itime<NOW() LIMIT 1',
-            $ph);
-        if ( ! (int)quickQuery($sql)) {
+                     = parseQuery(
+                         'SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] AND itime<NOW() LIMIT 1',
+                         $ph
+                     );
+        if (! (int)quickQuery($sql)) {
             return;
         }
 
@@ -1675,13 +1783,17 @@ class BLOG
         $manager->notify('JustPosted', $param);
 
         // clear all expired future posts
-        sql_query(parseQuery('UPDATE [@prefix@]item SET iposted=1 WHERE iblog=[@iblog@] AND itime<NOW()',
-            $ph));
+        sql_query(parseQuery(
+            'UPDATE [@prefix@]item SET iposted=1 WHERE iblog=[@iblog@] AND itime<NOW()',
+            $ph
+        ));
 
         // check to see any pending future post, clear the flag is none
         $sql
-            = parseQuery('SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] LIMIT 1',
-            $ph);
+            = parseQuery(
+                'SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] LIMIT 1',
+                $ph
+            );
         if ((int)quickQuery($sql)) {
             return;
         }
@@ -1721,8 +1833,13 @@ class BLOG
     ) {
         $query = $this->getSqlItemList($itemarray, $showDrafts, $showFuture);
 
-        return $this->showUsingQuery($template, $query, $highlight, $comments,
-            $dateheads);
+        return $this->showUsingQuery(
+            $template,
+            $query,
+            $highlight,
+            $comments,
+            $dateheads
+        );
     }
 
     /**
@@ -1743,7 +1860,7 @@ class BLOG
      */
     function getSqlItemList($itemarray, $showDrafts = 0, $showFuture = 0)
     {
-        if ( ! is_array($itemarray)) {
+        if (! is_array($itemarray)) {
             return '';
         }
         $showDrafts = (int)$showDrafts;
@@ -1754,7 +1871,7 @@ class BLOG
                 $items[] = (int)$value;
             }
         }
-        if ( ! count($items)) {
+        if (! count($items)) {
             return '';
         }
         //$itemlist = join(',',$items);
@@ -1783,10 +1900,10 @@ class BLOG
                       . ' and i.iauthor=m.mnumber'
                       . ' and i.icat=c.catid';
 
-            if ( ! $showDrafts) {
+            if (! $showDrafts) {
                 $query .= ' and i.idraft=0';
             }    // exclude drafts
-            if ( ! $showFuture) {
+            if (! $showFuture) {
                 $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime());
             } // don't show future items
 
@@ -1824,5 +1941,4 @@ class BLOG
 
         return $res !== false;
     }
-
 }

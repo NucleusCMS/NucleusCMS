@@ -22,7 +22,7 @@
 
 $MYSQL_CONN = 0;
 
-if ( ! function_exists('mysqli_query') && function_exists('startUpError')) {
+if (! function_exists('mysqli_query') && function_exists('startUpError')) {
     startUpError(_NO_SUITABLE_MYSQL_LIBRARY);
 }
 
@@ -32,22 +32,22 @@ define('MYSQL_ASSOC', 1);
 define('MYSQL_NUM', 2);
 define('MYSQL_BOTH', 3);
 
-if ( ! defined('MYSQLI_TYPE_BIT')) {
+if (! defined('MYSQLI_TYPE_BIT')) {
     define('MYSQLI_TYPE_BIT', 16);
 }
-if ( ! defined('MYSQLI_TYPE_TINY')) {
+if (! defined('MYSQLI_TYPE_TINY')) {
     define('MYSQLI_TYPE_TINY', 1);
 }
-if ( ! defined('MYSQLI_TYPE_NEWDECIMAL')) {
+if (! defined('MYSQLI_TYPE_NEWDECIMAL')) {
     define('MYSQLI_TYPE_NEWDECIMAL', 246);
 }
-if ( ! defined('MYSQLI_TYPE_YEAR')) {
+if (! defined('MYSQLI_TYPE_YEAR')) {
     define('MYSQLI_TYPE_YEAR', 13);
 }
-if ( ! defined('MYSQLI_TYPE_NEWDATE')) {
+if (! defined('MYSQLI_TYPE_NEWDATE')) {
     define('MYSQLI_TYPE_NEWDATE', 14);
 }
-if ( ! defined('MYSQLI_TYPE_GEOMETRY')) {
+if (! defined('MYSQLI_TYPE_GEOMETRY')) {
     define('MYSQLI_TYPE_GEOMETRY', 255);
 }
 
@@ -61,7 +61,7 @@ function mysql_query($query, $dblink = null)
 
 function mysql_fetch_object($res)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
 
@@ -70,7 +70,7 @@ function mysql_fetch_object($res)
 
 function mysql_fetch_array($res, $result_type = MYSQL_BOTH)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
 
@@ -82,7 +82,7 @@ function mysql_fetch_array($res, $result_type = MYSQL_BOTH)
 
 function mysql_fetch_assoc($res)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
 
@@ -91,7 +91,7 @@ function mysql_fetch_assoc($res)
 
 function mysql_fetch_row($res)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
 
@@ -100,7 +100,7 @@ function mysql_fetch_row($res)
 
 function mysql_num_rows($res)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
 
@@ -109,7 +109,7 @@ function mysql_num_rows($res)
 
 function mysql_num_fields($res)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
 
@@ -118,7 +118,7 @@ function mysql_num_fields($res)
 
 function mysql_free_result($res)
 {
-    if ( ! is_object($res)) {
+    if (! is_object($res)) {
         return false;
     }
     mysqli_free_result($res);
@@ -126,7 +126,7 @@ function mysql_free_result($res)
 
 function mysql_result($res, $row, $col = 0)
 {
-    if ( ! $res) {
+    if (! $res) {
         return false;
     }
     $row = (int)$row;
@@ -135,12 +135,12 @@ function mysql_result($res, $row, $col = 0)
     }
 
     if ($row) {
-        if ( ! mysqli_data_seek($res, $row)) {
+        if (! mysqli_data_seek($res, $row)) {
             return false;
         }
     }
     $data = mysqli_fetch_row($res);
-    if ( ! $data) {
+    if (! $data) {
         return false;
     }
 
@@ -160,7 +160,7 @@ function mysql_error($dblink = null)
 {
     global $MYSQL_CONN;
     $link = ($dblink ? $dblink : $MYSQL_CONN);
-    if ( ! $link) {
+    if (! $link) {
         return 'db handler is null';
     }
 

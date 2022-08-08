@@ -106,7 +106,7 @@ class PAGEFACTORY extends BaseActions
      */
     function createAddForm($type, $contents = array())
     {
-        if ( ! in_array($type, $this->allowedTypes)) {
+        if (! in_array($type, $this->allowedTypes)) {
             return;
         }
         $this->type   = $type;
@@ -134,7 +134,7 @@ class PAGEFACTORY extends BaseActions
      */
     function createEditForm($type, $contents)
     {
-        if ( ! in_array($type, $this->allowedTypes)) {
+        if (! in_array($type, $this->allowedTypes)) {
             return;
         }
         $this->type   = $type;
@@ -168,7 +168,7 @@ class PAGEFACTORY extends BaseActions
 
         $filename = "{$DIR_LIBS}include/{$this->type}-{$this->method}.template";
 
-        if ( ! is_file($filename)) {
+        if (! is_file($filename)) {
             return '';
         }
 
@@ -176,8 +176,11 @@ class PAGEFACTORY extends BaseActions
 
         if (($contents !== false)
             && preg_match("#^(admin|bookmarklet)$#", $this->type)
-            && preg_match("#^(add|edit)$#",
-                $this->method, $m2)) {
+            && preg_match(
+                "#^(add|edit)$#",
+                $this->method,
+                $m2
+            )) {
             $this->replace_date_time_picker($contents);
         }
 
@@ -192,19 +195,19 @@ class PAGEFACTORY extends BaseActions
             $s = array();
             foreach (explode(',', _EDIT_DATE_FORMAT) as $key => $value) {
                 switch ($value) {
-                    case 'year' :
+                    case 'year':
                         $s[]
                             = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%'
                               . $stime
                               . '(year)%>" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
-                    case 'month' :
+                    case 'month':
                         $s[]
                             = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%'
                               . $stime
                               . '(mon)%>" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
-                    case 'day' :
+                    case 'day':
                         $s[]
                             = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%'
                               . $stime
@@ -248,15 +251,27 @@ class PAGEFACTORY extends BaseActions
         foreach ($items as $key => $value) {
             $items[$key] = implode("\n\t\t\t\t", $value);
         }
-        $items['itemtime'] = str_replace('act_future.', 'act_changedate.',
-            $items['itemtime']);
+        $items['itemtime'] = str_replace(
+            'act_future.',
+            'act_changedate.',
+            $items['itemtime']
+        );
 
-        $data = str_replace('<%date_time_picker%>', $items['currenttime'],
-            $data);
-        $data = str_replace('<%date_time_picker(currenttime)%>',
-            $items['currenttime'], $data);
-        $data = str_replace('<%date_time_picker(itemtime)%>',
-            $items['itemtime'], $data);
+        $data = str_replace(
+            '<%date_time_picker%>',
+            $items['currenttime'],
+            $data
+        );
+        $data = str_replace(
+            '<%date_time_picker(currenttime)%>',
+            $items['currenttime'],
+            $data
+        );
+        $data = str_replace(
+            '<%date_time_picker(itemtime)%>',
+            $items['itemtime'],
+            $data
+        );
     }
 
     // create category dropdown box
@@ -270,8 +285,13 @@ class PAGEFACTORY extends BaseActions
             $catid = $this->blog->getDefaultCategory();
         }        // on add item
 
-        ADMIN::selectBlogCategory('catid', $catid, $startidx, 1,
-            $this->blog->getID());
+        ADMIN::selectBlogCategory(
+            'catid',
+            $catid,
+            $startidx,
+            1,
+            $this->blog->getID()
+        );
     }
 
     function parse_blogid()
@@ -391,7 +411,7 @@ class PAGEFACTORY extends BaseActions
 
     function parse_contents($which)
     {
-        if ( ! isset($this->variables[$which])) {
+        if (! isset($this->variables[$which])) {
             $this->variables[$which] = '';
         }
         echo hsc($this->variables[$which]);
@@ -399,7 +419,7 @@ class PAGEFACTORY extends BaseActions
 
     function parse_checkedonval($value, $name)
     {
-        if ( ! isset($this->variables[$name])) {
+        if (! isset($this->variables[$name])) {
             $this->variables[$name] = '';
         }
         if ($this->variables[$name] == $value) {
@@ -409,7 +429,7 @@ class PAGEFACTORY extends BaseActions
 
     function parse_checked_valtext($name, $value)
     {
-        if ( ! isset($this->variables[$name])) {
+        if (! isset($this->variables[$name])) {
             $this->variables[$name] = '';
         }
         if (strcasecmp($this->variables[$name], $value) == 0) {
@@ -452,26 +472,53 @@ class PAGEFACTORY extends BaseActions
             case "0":
                 echo '<div class="jsbuttonbar">';
 
-                $this->_jsbutton('cut', 'cutThis()',
-                    _ADD_CUT_TT . " (Ctrl + X)");
-                $this->_jsbutton('copy', 'copyThis()',
-                    _ADD_COPY_TT . " (Ctrl + C)");
-                $this->_jsbutton('paste', 'pasteThis()',
-                    _ADD_PASTE_TT . " (Ctrl + V)");
+                $this->_jsbutton(
+                    'cut',
+                    'cutThis()',
+                    _ADD_CUT_TT . " (Ctrl + X)"
+                );
+                $this->_jsbutton(
+                    'copy',
+                    'copyThis()',
+                    _ADD_COPY_TT . " (Ctrl + C)"
+                );
+                $this->_jsbutton(
+                    'paste',
+                    'pasteThis()',
+                    _ADD_PASTE_TT . " (Ctrl + V)"
+                );
                 $this->_jsbuttonspacer();
-                $this->_jsbutton('bold', "boldThis()",
-                    _ADD_BOLD_TT . " (Ctrl + Shift + B)");
-                $this->_jsbutton('italic', "italicThis()",
-                    _ADD_ITALIC_TT . " (Ctrl + Shift + I)");
-                $this->_jsbutton('link', "ahrefThis()",
-                    _ADD_HREF_TT . " (Ctrl + Shift + A)");
+                $this->_jsbutton(
+                    'bold',
+                    "boldThis()",
+                    _ADD_BOLD_TT . " (Ctrl + Shift + B)"
+                );
+                $this->_jsbutton(
+                    'italic',
+                    "italicThis()",
+                    _ADD_ITALIC_TT . " (Ctrl + Shift + I)"
+                );
+                $this->_jsbutton(
+                    'link',
+                    "ahrefThis()",
+                    _ADD_HREF_TT . " (Ctrl + Shift + A)"
+                );
                 $this->_jsbuttonspacer();
-                $this->_jsbutton('alignleft', "alignleftThis()",
-                    _ADD_ALIGNLEFT_TT);
-                $this->_jsbutton('alignright', "alignrightThis()",
-                    _ADD_ALIGNRIGHT_TT);
-                $this->_jsbutton('aligncenter', "aligncenterThis()",
-                    _ADD_ALIGNCENTER_TT);
+                $this->_jsbutton(
+                    'alignleft',
+                    "alignleftThis()",
+                    _ADD_ALIGNLEFT_TT
+                );
+                $this->_jsbutton(
+                    'alignright',
+                    "alignrightThis()",
+                    _ADD_ALIGNRIGHT_TT
+                );
+                $this->_jsbutton(
+                    'aligncenter',
+                    "aligncenterThis()",
+                    _ADD_ALIGNCENTER_TT
+                );
                 $this->_jsbuttonspacer();
                 $this->_jsbutton('left', "leftThis()", _ADD_LEFT_TT);
                 $this->_jsbutton('right', "rightThis()", _ADD_RIGHT_TT);
@@ -483,12 +530,18 @@ class PAGEFACTORY extends BaseActions
                     foreach ($btns as $button) {
                         switch ($button) {
                             case "media":
-                                $this->_jsbutton('media', "addMedia()",
-                                    _ADD_MEDIA_TT . " (Ctrl + Shift + M)");
+                                $this->_jsbutton(
+                                    'media',
+                                    "addMedia()",
+                                    _ADD_MEDIA_TT . " (Ctrl + Shift + M)"
+                                );
                                 break;
                             case "preview":
-                                $this->_jsbutton('preview', "showedit()",
-                                    _ADD_PREVIEW_TT);
+                                $this->_jsbutton(
+                                    'preview',
+                                    "showedit()",
+                                    _ADD_PREVIEW_TT
+                                );
                                 break;
                         }
                     }
@@ -504,12 +557,21 @@ class PAGEFACTORY extends BaseActions
                 $this->_jsbutton('italic', "italicThis()", _ADD_ITALIC_TT);
                 $this->_jsbutton('link', "ahrefThis()", _ADD_HREF_TT);
                 $this->_jsbuttonspacer();
-                $this->_jsbutton('alignleft', "alignleftThis()",
-                    _ADD_ALIGNLEFT_TT);
-                $this->_jsbutton('alignright', "alignrightThis()",
-                    _ADD_ALIGNRIGHT_TT);
-                $this->_jsbutton('aligncenter', "aligncenterThis()",
-                    _ADD_ALIGNCENTER_TT);
+                $this->_jsbutton(
+                    'alignleft',
+                    "alignleftThis()",
+                    _ADD_ALIGNLEFT_TT
+                );
+                $this->_jsbutton(
+                    'alignright',
+                    "alignrightThis()",
+                    _ADD_ALIGNRIGHT_TT
+                );
+                $this->_jsbutton(
+                    'aligncenter',
+                    "aligncenterThis()",
+                    _ADD_ALIGNCENTER_TT
+                );
                 $this->_jsbuttonspacer();
                 $this->_jsbutton('left', "leftThis()", _ADD_LEFT_TT);
                 $this->_jsbutton('right', "rightThis()", _ADD_RIGHT_TT);
@@ -521,8 +583,11 @@ class PAGEFACTORY extends BaseActions
                     foreach ($btns as $button) {
                         switch ($button) {
                             case "media":
-                                $this->_jsbutton('media', "addMedia()",
-                                    _ADD_MEDIA_TT);
+                                $this->_jsbutton(
+                                    'media',
+                                    "addMedia()",
+                                    _ADD_MEDIA_TT
+                                );
                                 break;
                         }
                     }
@@ -647,7 +712,7 @@ class PAGEFACTORY extends BaseActions
               onmouseover="BtnHighlight(this);"
               onmouseout="BtnNormal(this);"
               onclick="<?php
-              echo $code ?>">
+                echo $code ?>">
                 <img src="images/button-<?php
                 echo $type ?>.gif" alt="<?php
                 echo $tooltip ?>" title="<?php
@@ -660,5 +725,4 @@ class PAGEFACTORY extends BaseActions
     {
         echo '<span class="jsbuttonspacer">&nbsp;</span>';
     }
-
 }

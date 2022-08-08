@@ -16,7 +16,7 @@
 
 function getVar($name, $default = null)
 {
-    if ( ! isset($_GET[$name])) {
+    if (! isset($_GET[$name])) {
         return $default;
     }
 
@@ -25,7 +25,7 @@ function getVar($name, $default = null)
 
 function postVar($name, $default = null)
 {
-    if ( ! isset($_POST[$name])) {
+    if (! isset($_POST[$name])) {
         return $default;
     }
 
@@ -34,7 +34,7 @@ function postVar($name, $default = null)
 
 function cookieVar($name, $default = null)
 {
-    if ( ! isset($_COOKIE[$name])) {
+    if (! isset($_COOKIE[$name])) {
         return $default;
     }
 
@@ -59,7 +59,7 @@ function requestVar($name, $default = null)
 function serverVar($name, $default = null)
 {
     $name = strtoupper($name);
-    if ( ! isset($_SERVER[$name])) {
+    if (! isset($_SERVER[$name])) {
         return $default;
     }
 
@@ -68,7 +68,7 @@ function serverVar($name, $default = null)
 
 function globalVar($name, $default = null)
 {
-    if ( ! isset($GLOBALS[$name])) {
+    if (! isset($GLOBALS[$name])) {
         return $default;
     }
 
@@ -78,7 +78,7 @@ function globalVar($name, $default = null)
 function confVar($name, $default = null)
 {
     global $CONF;
-    if ( ! isset($CONF[$name])) {
+    if (! isset($CONF[$name])) {
         return $default;
     }
 
@@ -97,7 +97,7 @@ function stripslashes_array($data)
 // integer array from request
 function requestIntArray($name, $default = null)
 {
-    if ( ! isset($_REQUEST[$name])) {
+    if (! isset($_REQUEST[$name])) {
         return $default;
     }
 
@@ -107,7 +107,7 @@ function requestIntArray($name, $default = null)
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name, $default = null)
 {
-    if ( ! isset($_REQUEST[$name])) {
+    if (! isset($_REQUEST[$name])) {
         return $default;
     }
 
@@ -136,7 +136,7 @@ function passRequestVars()
 
 function postFileInfo($name, $default = null)
 {
-    if ( ! isset($_FILES[$name])) {
+    if (! isset($_FILES[$name])) {
         return $default;
     }
 
@@ -155,9 +155,11 @@ function setOldAction($value)
 // removes magic quotes if that option is enabled
 function undoMagic($data)
 {
-    trigger_error('Function ' . __FUNCTION__ . '() is deperecated',
-        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE);
-    if ( ! get_magic_quotes_gpc()) {
+    trigger_error(
+        'Function ' . __FUNCTION__ . '() is deperecated',
+        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+    );
+    if (! get_magic_quotes_gpc()) {
         return $data;
     }
     if (ini_get('magic_quotes_sybase') != 1) {
@@ -170,8 +172,8 @@ function undoMagic($data)
 function undoSybaseQuotes_array($data)
 {
     trigger_error(
-        'Function undoSybaseQuotes_array() is deperecated'
-        , defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+        'Function undoSybaseQuotes_array() is deperecated',
+        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
     if (is_array($data)) {
         return array_map('undoSybaseQuotes', $data);
@@ -184,8 +186,8 @@ function undoSybaseQuotes_array($data)
 function undoSybaseQuotes($data)
 {
     trigger_error(
-        'Function undoSybaseQuotes() is deperecated'
-        , defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+        'Function undoSybaseQuotes() is deperecated',
+        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
 
     return str_replace("''", "'", $data);

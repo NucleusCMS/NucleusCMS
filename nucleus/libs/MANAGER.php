@@ -109,12 +109,15 @@ class MANAGER
                 return 0;
             }
         }
-        if ( ! $item) {
+        if (! $item) {
             // load class if needed
             $this->loadClass('ITEM');
             // load item object
-            $item                 = ITEM::getitem($itemid, $allowdraft,
-                $allowfuture);
+            $item                 = ITEM::getitem(
+                $itemid,
+                $allowdraft,
+                $allowfuture
+            );
             $this->items[$itemid] = $item;
         }
 
@@ -156,7 +159,7 @@ class MANAGER
     {
         $blog =& $this->blogs[$blogid];
 
-        if ( ! $blog) {
+        if (! $blog) {
             // load class if needed
             $this->_loadClass('BLOG', 'BLOG.php');
             // load blog object
@@ -194,7 +197,7 @@ class MANAGER
     {
         $template =& $this->templates[$templateName];
 
-        if ( ! $template) {
+        if (! $template) {
             $template                       = TEMPLATE::read($templateName);
             $this->templates[$templateName] =& $template;
         }
@@ -209,7 +212,7 @@ class MANAGER
     {
         $karma =& $this->karma[$itemid];
 
-        if ( ! $karma) {
+        if (! $karma) {
             // load class if needed
             $this->_loadClass('KARMA', 'KARMA.php');
             // create KARMA object
@@ -227,7 +230,7 @@ class MANAGER
     {
         $mem =& $this->members[$memberid];
 
-        if ( ! $mem) {
+        if (! $mem) {
             // load class if needed
             $this->_loadClass('MEMBER', 'MEMBER.php');
             // create MEMBER object
@@ -261,7 +264,7 @@ class MANAGER
      */
     function _loadClass($name, $filename)
     {
-        if ( ! class_exists($name)) {
+        if (! class_exists($name)) {
             global $DIR_LIBS;
             include_once($DIR_LIBS . $filename);
         }
@@ -274,7 +277,7 @@ class MANAGER
      */
     private function _loadPlugin($NP_Name)
     {
-        if ( ! HAS_CATCH_ERROR) {
+        if (! HAS_CATCH_ERROR) {
             $this->_loadPluginRaw($NP_Name);
 
             return class_exists($NP_Name);
@@ -293,8 +296,13 @@ class MANAGER
             global $member, $CONF;
             if ($member && $member->isLoggedIn() && $member->isAdmin()) {
                 $msg
-                    = sprintf("php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                    $NP_Name, get_class($e), $e->getLine(), $e->getFile());
+                    = sprintf(
+                        "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                        $NP_Name,
+                        get_class($e),
+                        $e->getLine(),
+                        $e->getFile()
+                    );
                 if ($CONF['DebugVars']) {
                     var_dump($e->getMessage());
                     // $e->getTraceAsString
@@ -353,13 +361,18 @@ class MANAGER
             }
         }
 
-        if ( ! $plugin_path) {
-            if ( ! defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
-                define('_MANAGER_PLUGINFILE_NOTFOUND',
-                    'Plugin %s was not loaded (File not found)');
+        if (! $plugin_path) {
+            if (! defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
+                define(
+                    '_MANAGER_PLUGINFILE_NOTFOUND',
+                    'Plugin %s was not loaded (File not found)'
+                );
             }
-            SYSTEMLOG::addUnique('error', 'Error',
-                sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $NP_Name));
+            SYSTEMLOG::addUnique(
+                'error',
+                'Error',
+                sprintf(_MANAGER_PLUGINFILE_NOTFOUND, $NP_Name)
+            );
 
             return 0;
         }
@@ -368,13 +381,18 @@ class MANAGER
         include($plugin_path);
 
         // check if class exists (avoid errors in eval'd code)
-        if ( ! class_exists($NP_Name)) {
-            if ( ! defined('_MANAGER_PLUGINFILE_NOCLASS')) {
-                define('_MANAGER_PLUGINFILE_NOCLASS',
-                    "Plugin %s was not loaded (Class not found in file, possible parse error)");
+        if (! class_exists($NP_Name)) {
+            if (! defined('_MANAGER_PLUGINFILE_NOCLASS')) {
+                define(
+                    '_MANAGER_PLUGINFILE_NOCLASS',
+                    "Plugin %s was not loaded (Class not found in file, possible parse error)"
+                );
             }
-            SYSTEMLOG::addUnique('error', 'Error',
-                sprintf(_MANAGER_PLUGINFILE_NOCLASS, $NP_Name));
+            SYSTEMLOG::addUnique(
+                'error',
+                'Error',
+                sprintf(_MANAGER_PLUGINFILE_NOCLASS, $NP_Name)
+            );
 
             return 0;
         }
@@ -425,7 +443,7 @@ class MANAGER
             }
         }
 
-        if ( ! $this->checkIfOk_supportsFeature_onLoadPlugin($NP_Name)) {
+        if (! $this->checkIfOk_supportsFeature_onLoadPlugin($NP_Name)) {
             return 0;
         }
 
@@ -467,8 +485,11 @@ class MANAGER
                 )
             ) {
                 unset($this->plugins[$NP_Name]);
-                $msg = sprintf(_MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
-                    $NP_Name, $DB_DRIVER_NAME);
+                $msg = sprintf(
+                    _MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
+                    $NP_Name,
+                    $DB_DRIVER_NAME
+                );
                 SYSTEMLOG::addUnique('error', 'Error', $msg);
 
                 return 0;
@@ -485,10 +506,10 @@ class MANAGER
     {
         // retrieve the name of the plugin in the right capitalisation
         $name = $this->getUpperCaseName($name);
-        // get the plugin   
+        // get the plugin
         $plugin =& $this->plugins[$name];
 
-        if ( ! $plugin) {
+        if (! $plugin) {
             // load class if needed
             $this->_loadPlugin($name);
             $plugin =& $this->plugins[$name];
@@ -643,7 +664,7 @@ class MANAGER
     {
         global $member;
         // load subscription list if needed
-        if ( ! is_array($this->subscriptions)) {
+        if (! is_array($this->subscriptions)) {
             $this->_loadSubscriptions();
         }
 
@@ -654,7 +675,7 @@ class MANAGER
         }
 
         // notify all of them
-        if ( ! is_array($listeners)) {
+        if (! is_array($listeners)) {
             return;
         }
 
@@ -664,9 +685,11 @@ class MANAGER
             // do notify (if method exists)
             $event_funcname = 'event_' . $eventName;
             $has_plugin     = (isset($this->plugins[$listener])
-                               && method_exists($this->plugins[$listener],
-                    $event_funcname));
-            if ( ! HAS_CATCH_ERROR) {
+                               && method_exists(
+                                   $this->plugins[$listener],
+                                   $event_funcname
+                               ));
+            if (! HAS_CATCH_ERROR) {
                 if ($has_plugin) {
                     $this->plugins[$listener]->$event_funcname($data);
                 }
@@ -678,23 +701,22 @@ class MANAGER
                     $this->plugins[$listener]->{$event_funcname}($data);
                 }
                 // can not catch : trigger_error('test error', E_USER_ERROR);
-            } catch (Error $e) // TypeError ParseError AssertionError
-            {
+            } catch (Error $e) { // TypeError ParseError AssertionError
                 if ($member && $member->isLoggedIn() && $member->isAdmin()) {
                     if (confVar('DebugVars')) {
                         var_dump($e->getMessage());
                         // $e->getTraceAsString
                     }
                     $msg = sprintf(
-                        'php error in plugin %s::%s:[%s] Line:%d (%s) : %s'
-                        , $this->plugins[$listener]->getName()
-                        , $event_funcname
-                        , get_class($e)
-                        , $e->getLine()
-                        , $e->getFile()
-                        , $e->getMessage()
+                        'php error in plugin %s::%s:[%s] Line:%d (%s) : %s',
+                        $this->plugins[$listener]->getName(),
+                        $event_funcname,
+                        get_class($e),
+                        $e->getLine(),
+                        $e->getFile(),
+                        $e->getMessage()
                     );
-                    SYSTEMLOG::addUnique('error', 'Error', $msg);
+                        SYSTEMLOG::addUnique('error', 'Error', $msg);
                 }
                 if (confVar('debug')) {
                     throw $e; // return exception
@@ -713,12 +735,12 @@ class MANAGER
 
         $res = sql_query(
             sprintf(
-                'SELECT p.pfile as pfile, e.event as event FROM %s as e, %s as p WHERE e.pid=p.pid ORDER BY p.porder ASC'
-                , sql_table('plugin_event')
-                , sql_table('plugin')
+                'SELECT p.pfile as pfile, e.event as event FROM %s as e, %s as p WHERE e.pid=p.pid ORDER BY p.porder ASC',
+                sql_table('plugin_event'),
+                sql_table('plugin')
             )
         );
-        if ( ! $res) {
+        if (! $res) {
             return;
         }
         while ($o = sql_fetch_object($res)) {
@@ -759,8 +781,10 @@ class MANAGER
     {
         $ticket = $this->_generateTicket();
 
-        return sprintf('<input type="hidden" name="ticket" value="%s" />',
-            hsc($ticket));
+        return sprintf(
+            '<input type="hidden" name="ticket" value="%s" />',
+            hsc($ticket)
+        );
     }
 
     /**
@@ -793,7 +817,7 @@ class MANAGER
         $this->_cleanUpExpiredTickets();
 
         // get member id
-        if ( ! $member->isLoggedIn()) {
+        if (! $member->isLoggedIn()) {
             $memberId = -1;
         } else {
             $memberId = $member->getID();
@@ -801,10 +825,10 @@ class MANAGER
 
         // check if ticket is a valid one
         $query = sprintf(
-            "SELECT COUNT(*) as result FROM %s WHERE member=%d AND ticket='%s'"
-            , sql_table('tickets')
-            , (int)$memberId
-            , sql_real_escape_string($ticket)
+            "SELECT COUNT(*) as result FROM %s WHERE member=%d AND ticket='%s'",
+            sql_table('tickets'),
+            (int)$memberId,
+            sql_real_escape_string($ticket)
         );
 
         return quickQuery($query) == 1;
@@ -820,7 +844,8 @@ class MANAGER
         $query   = sprintf(
             "DELETE FROM %s WHERE ctime < '%s'",
             sql_table('tickets'),
-            date('Y-m-d H:i:s', $oldTime));
+            date('Y-m-d H:i:s', $oldTime)
+        );
         sql_query($query);
     }
 
@@ -835,14 +860,14 @@ class MANAGER
             // and store in database
             global $member, $DB_PHP_MODULE_NAME;
             // get member id
-            if ( ! $member->isLoggedIn()) {
+            if (! $member->isLoggedIn()) {
                 $memberId = -1;
             } else {
                 $memberId = $member->getID();
             }
 
             $ok = false;
-            while ( ! $ok) {
+            while (! $ok) {
                 // generate a random token
                 srand((int) ((double)microtime() * 1000000));
                 $ticket = md5(uniqid(mt_rand(), true));
@@ -850,8 +875,8 @@ class MANAGER
                 // add in database as non-active
                 if ($DB_PHP_MODULE_NAME == 'pdo') {
                     $query            = sprintf(
-                        'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)'
-                        , sql_table('tickets')
+                        'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)',
+                        sql_table('tickets')
                     );
                     $input_parameters = array(
                         (string)$ticket,
@@ -863,11 +888,11 @@ class MANAGER
                     }
                 } else {  // mysql driver
                     $query = sprintf(
-                        "INSERT INTO `%s` (ticket,member,ctime) VALUES ('%s','%s','%s')"
-                        , sql_table('tickets')
-                        , sql_real_escape_string($ticket)
-                        , (int)$memberId
-                        , date('Y-m-d H:i:s', time())
+                        "INSERT INTO `%s` (ticket,member,ctime) VALUES ('%s','%s','%s')",
+                        sql_table('tickets'),
+                        sql_real_escape_string($ticket),
+                        (int)$memberId,
+                        date('Y-m-d H:i:s', time())
                     );
                     if (sql_query($query)) {
                         break;
@@ -891,5 +916,4 @@ class MANAGER
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
         return SKIN::_getText($text);
     }
-
 }

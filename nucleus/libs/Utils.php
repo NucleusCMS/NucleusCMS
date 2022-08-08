@@ -6,7 +6,7 @@
 // Utils::strlen
 // Utils::httpGet
 
-if ( ! defined('_HAS_MBSTRING')) {
+if (! defined('_HAS_MBSTRING')) {
     define('_HAS_MBSTRING', extension_loaded('mbstring'));
 }
 
@@ -25,7 +25,7 @@ class Utils
         // bool mb_send_mail ( string $to , string $subject , string $message [, string $additional_headers = NULL [, string $additional_parameter = NULL ]] )
         // bool         mail ( string $to , string $subject , string $message [, string $additional_headers [, string $additional_parameters ]] )
 
-        if ( ! _HAS_MBSTRING || ('iso-8859-1' == strtolower(_CHARSET))) {
+        if (! _HAS_MBSTRING || ('iso-8859-1' == strtolower(_CHARSET))) {
             if ('utf-8' == strtolower(_CHARSET)
                 && ( ! isset($args[3])
                      || (false === stripos($args[3], 'utf-8')))) {
@@ -41,8 +41,11 @@ class Utils
         } else {
             $mb_lang = 'uni';
             if ('utf-8' != strtolower(_CHARSET)) {
-                $lang = strtolower(str_replace(array('\\', '/'), '',
-                    getLanguageName()));
+                $lang = strtolower(str_replace(
+                    array('\\', '/'),
+                    '',
+                    getLanguageName()
+                ));
                 if (stripos('japanese', $lang) !== false) {
                     $mb_lang = 'ja';
                 }
@@ -59,14 +62,16 @@ class Utils
     public static function strftime($format, $timestamp = '')
     {
         // [PHP8.1] Deprecated: Function strftime()
-        if ( ! is_string($format) || (strlen($format) == 0)) {
+        if (! is_string($format) || (strlen($format) == 0)) {
             return '';
         }
-        if ( ! _HAS_MBSTRING) {
+        if (! _HAS_MBSTRING) {
             return @strftime($format, $timestamp);
         }
-        $old_locale = setlocale(LC_CTYPE,
-            '0'); // backup locale : maintained per process, not thread
+        $old_locale = setlocale(
+            LC_CTYPE,
+            '0'
+        ); // backup locale : maintained per process, not thread
         $locale     = setlocale(LC_CTYPE, '');
         try {
             if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
@@ -76,8 +81,11 @@ class Utils
                 // 850|866|932|936|949|950|1251|1252  //|50220|50221|50222|51932|
                 // Codepage: https://msdn.microsoft.com/ja-jp/library/windows/desktop/dd317756(v=vs.85).aspx
                 // The locale name form : https://msdn.microsoft.com/en-us/library/hzz3tw78.aspx
-                if (preg_match('/\.(850|866|932|936|949|950|1251|1252)$/',
-                    $locale, $m)) {
+                if (preg_match(
+                    '/\.(850|866|932|936|949|950|1251|1252)$/',
+                    $locale,
+                    $m
+                )) {
                     $codepage = intval($m[1]);
                     if (in_array($codepage, array(1251, 1252))) {
                         $locale_mbcahrset = "windows-{$m[1]}";
@@ -91,13 +99,21 @@ class Utils
                 }
                 if ($locale_mbcahrset) {
                     // Workaround for %e format
-                    $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d',
-                        $format);
+                    $format = preg_replace(
+                        '#(?<!%)((?:%%)*)%e#',
+                        '\1%#d',
+                        $format
+                    );
                     // Workaround for Multibyte and ANSI character sets.
                     $res
-                        = mb_convert_encoding(@strftime(mb_convert_encoding($format,
-                        $locale_mbcahrset, _CHARSET),
-                        $timestamp), _CHARSET, $locale_mbcahrset);
+                        = mb_convert_encoding(@strftime(
+                            mb_convert_encoding(
+                                $format,
+                                $locale_mbcahrset,
+                                _CHARSET
+                            ),
+                            $timestamp
+                        ), _CHARSET, $locale_mbcahrset);
                     //                    if ($old_locale != $locale)
                     //                        setlocale(LC_CTYPE, $old_locale); // restore locale
                     //    var_dump(basename(__FILE__).':'. __LINE__, $old_locale, $locale, $format, $timestamp, $res); // debug
@@ -175,7 +191,7 @@ class Utils
             $res = curl_exec($crl);
             if ($res !== false) {
                 $info = curl_getinfo($crl);
-                if ( ! empty($info) && isset($info["header_size"])) {
+                if (! empty($info) && isset($info["header_size"])) {
                     if (isset($info["http_code"])
                         && $info["http_code"] == 200) {
                         $header = rtrim(substr($res, 0, $info["header_size"]));
@@ -226,10 +242,12 @@ class Utils
             $stR  = array($c);
             $stW  = null;
             while (is_resource($c) && ! feof($c)) {
-                $tv_sec = max(1,
+                $tv_sec = max(
+                    1,
                     $timeout > 0 ? $timeout - ceil(microtime(true) - $start)
-                        : 1);
-                if ( ! stream_select($stR, $stW, $stW, $tv_sec)) {
+                    : 1
+                );
+                if (! stream_select($stR, $stW, $stW, $tv_sec)) {
                     fclose($c);
 
                     return false; // Timeout
@@ -253,7 +271,7 @@ class Utils
                 }
             }
             fclose($c);
-            if ( ! empty($meta) && isset($meta['wrapper_data'])) {
+            if (! empty($meta) && isset($meta['wrapper_data'])) {
                 return array(
                     'header' => (string)implode("\n", $meta['wrapper_data']),
                     'body'   => &$data,
@@ -265,5 +283,4 @@ class Utils
 
         return false;
     }
-
 }

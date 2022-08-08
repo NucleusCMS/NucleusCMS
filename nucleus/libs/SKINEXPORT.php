@@ -48,7 +48,7 @@ class SKINEXPORT
      */
     function addTemplate($id)
     {
-        if ( ! TEMPLATE::existsID($id)) {
+        if (! TEMPLATE::existsID($id)) {
             return 0;
         }
 
@@ -68,7 +68,7 @@ class SKINEXPORT
      */
     function addSkin($id)
     {
-        if ( ! SKIN::existsID($id)) {
+        if (! SKIN::existsID($id)) {
             return 0;
         }
 
@@ -129,8 +129,11 @@ class SKINEXPORT
         foreach ($this->templates as $templateId => $templateName) {
             $templateName = hsc($templateName, ENT_QUOTES);
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                $templateName = mb_convert_encoding($templateName, 'UTF-8',
-                    _CHARSET);
+                $templateName = mb_convert_encoding(
+                    $templateName,
+                    'UTF-8',
+                    _CHARSET
+                );
             }
             echo "\t\t" . '<template name="' . hsc($templateName, ENT_QUOTES)
                  . '" />' . "\n";
@@ -138,8 +141,11 @@ class SKINEXPORT
         // extra info
         if ($this->info) {
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                $skin_info = mb_convert_encoding($this->info, 'UTF-8',
-                    _CHARSET);
+                $skin_info = mb_convert_encoding(
+                    $this->info,
+                    'UTF-8',
+                    _CHARSET
+                );
             } else {
                 $skin_info = $this->info;
             }
@@ -176,8 +182,12 @@ class SKINEXPORT
                          . " END AS suborder2";
 
             $sql
-                 = sprintf("SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
-                $suborder2, sql_table('skin'), intval($skinId));
+                 = sprintf(
+                     "SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
+                     $suborder2,
+                     sql_table('skin'),
+                     intval($skinId)
+                 );
             $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
             $res = sql_query($sql);
             while ($partObj = sql_fetch_object($res)) {
@@ -203,10 +213,16 @@ class SKINEXPORT
             $templateName = hsc($templateName, ENT_QUOTES);
             $templateDesc = hsc(TEMPLATE::getDesc($templateId), ENT_QUOTES);
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                $templateName = mb_convert_encoding($templateName, 'UTF-8',
-                    _CHARSET);
-                $templateDesc = mb_convert_encoding($templateDesc, 'UTF-8',
-                    _CHARSET);
+                $templateName = mb_convert_encoding(
+                    $templateName,
+                    'UTF-8',
+                    _CHARSET
+                );
+                $templateDesc = mb_convert_encoding(
+                    $templateDesc,
+                    'UTF-8',
+                    _CHARSET
+                );
             }
 
             echo "\t" . '<template name="' . $templateName . '">' . "\n";
@@ -214,8 +230,11 @@ class SKINEXPORT
             echo "\t\t" . '<description>' . $templateDesc . "</description>\n";
 
             $que
-                 = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d',
-                sql_table('template'), $templateId);
+                 = sprintf(
+                     'SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d',
+                     sql_table('template'),
+                     $templateId
+                 );
             $res = sql_query($que);
             while ($partObj = sql_fetch_object($res)) {
                 $type  = hsc($partObj->tpartname, ENT_QUOTES);
@@ -242,5 +261,4 @@ class SKINEXPORT
     {
         return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
     }
-
 }

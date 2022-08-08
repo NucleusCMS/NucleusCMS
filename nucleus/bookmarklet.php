@@ -30,13 +30,13 @@ if ($action === 'contextmenucode') {
     exit;
 }
 
-if (!$member->isLoggedIn() ) {
+if (!$member->isLoggedIn()) {
     bm_loginAndPassThrough();
     exit;
 }
 
 // on successfull login
-if ( ($action === 'login') && ($member->isLoggedIn() ) ) {
+if (($action === 'login') && ($member->isLoggedIn() )) {
     $action = requestVar('nextaction');
 }
 
@@ -45,8 +45,9 @@ if ($action == '') {
 }
 
 $actiontype = postVar('actiontype');
-if($actiontype==='delete'||$actiontype==='itemdeleteconfirm')
+if ($actiontype==='delete'||$actiontype==='itemdeleteconfirm') {
     $action = $actiontype;
+}
 
 sendContentType('text/html', 'bookmarklet-' . $action);
 
@@ -55,12 +56,10 @@ $action = strtolower($action);
 
 $aActionsNotToCheck = array('login', 'add', 'edit');
 
-if (!in_array($action, $aActionsNotToCheck) ) {
-
-    if (!$manager->checkTicket() ) {
+if (!in_array($action, $aActionsNotToCheck)) {
+    if (!$manager->checkTicket()) {
         bm_doError(_ERROR_BADTICKET);
     }
-
 }
 
 // find out what to do
@@ -80,7 +79,8 @@ if ($action === 'additem') {
     bm_doShowForm();
 }
 
-function bm_doAddItem() {
+function bm_doAddItem()
+{
     global $manager;
 
     $manager->loadClass('ITEM');
@@ -99,20 +99,21 @@ function bm_doAddItem() {
     }
 
     $message = sprintf(
-        '%s <a href="%s" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="%s">%s</a>'
-        , _BOOKMARKLET_NEW_CATEGORY
-        , sprintf(
-            'index.php?action=categoryedit&amp;blogid=%s&amp;catid=%s'
-            , $blogid
-            , $result['catid']
-        )
-        , _BOOKMARKLET_NEW_WINDOW
-        , _BOOKMARKLET_NEW_CATEGORY_EDIT
+        '%s <a href="%s" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="%s">%s</a>',
+        _BOOKMARKLET_NEW_CATEGORY,
+        sprintf(
+            'index.php?action=categoryedit&amp;blogid=%s&amp;catid=%s',
+            $blogid,
+            $result['catid']
+        ),
+        _BOOKMARKLET_NEW_WINDOW,
+        _BOOKMARKLET_NEW_CATEGORY_EDIT
     );
     bm_message(_ITEM_ADDED, _ITEM_ADDED, $message, '');
 }
 
-function bm_doDeleteItem() {
+function bm_doDeleteItem()
+{
     global $manager;
     $msg = <<< EOT
 <p><%_CONFIRMTXT_ITEM%></p>
@@ -133,14 +134,14 @@ EOT;
             '<%ticket%>',
             '<%itemid%>',
             '<%itemtitle%>'
-        )
-        , array(
+        ),
+        array(
             _CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,
             $ticket,
             $itemid,
             $title
-        )
-        , $msg
+        ),
+        $msg
     );
     bm_message(_DELETE_CONFIRM_BTN, _DELETE_CONFIRM, $msg, '', 0);
     exit;
@@ -156,14 +157,15 @@ function bm_doDeleteItemComplete()
     exit;
 }
 
-function bm_doEditItem() {
+function bm_doEditItem()
+{
     global $member, $manager;
 
     $itemid = intRequestVar('itemid');
     $catid = postVar('catid');
 
     // only allow if user is allowed to alter item
-    if (!$member->canUpdateItem($itemid, $catid) ) {
+    if (!$member->canUpdateItem($itemid, $catid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
@@ -194,7 +196,7 @@ function bm_doEditItem() {
         case 'changedate':
             $publish = 1;
             $wasdraft = 0;
-            $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year') );
+            $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
             break;
         case 'edit':
             $publish = 1;
@@ -223,17 +225,18 @@ function bm_doEditItem() {
         return;
     }
     $message = sprintf(
-        '%s <a href="%s" onclick="%s" title="%s">%s</a>'
-        , _BOOKMARKLET_NEW_CATEGORY
-        , sprintf('index.php?action=categoryedit&amp;blogid=%s&amp;catid=%s', $blog->getID(), $catid)
-        , 'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;'
-        , _BOOKMARKLET_NEW_WINDOW
-        , _BOOKMARKLET_NEW_CATEGORY_EDIT
+        '%s <a href="%s" onclick="%s" title="%s">%s</a>',
+        _BOOKMARKLET_NEW_CATEGORY,
+        sprintf('index.php?action=categoryedit&amp;blogid=%s&amp;catid=%s', $blog->getID(), $catid),
+        'if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;',
+        _BOOKMARKLET_NEW_WINDOW,
+        _BOOKMARKLET_NEW_CATEGORY_EDIT
     );
     bm_message(_ITEM_UPDATED, _ITEM_UPDATED, $message);
 }
 
-function bm_loginAndPassThrough() {
+function bm_loginAndPassThrough()
+{
 
     $blogid = intRequestVar('blogid');
     $log_text = requestVar('logtext');
@@ -272,7 +275,8 @@ function bm_loginAndPassThrough() {
     <?php
 }
 
-function bm_doShowForm() {
+function bm_doShowForm()
+{
     global $member;
 
     $blogid = intRequestVar('blogid');
@@ -281,15 +285,15 @@ function bm_doShowForm() {
     $log_linktitle = strval(requestVar('loglinktitle'));
 
     if (function_exists('mb_convert_encoding')) {
-        $log_text = uniDecode($log_text,_CHARSET);
-        $log_linktitle = uniDecode($log_linktitle,_CHARSET);
+        $log_text = uniDecode($log_text, _CHARSET);
+        $log_linktitle = uniDecode($log_linktitle, _CHARSET);
     }
 
-    if (!BLOG::existsID($blogid) ) {
+    if (!BLOG::existsID($blogid)) {
         bm_doError(_ERROR_NOSUCHBLOG);
     }
 
-    if (!$member->isTeamMember($blogid) ) {
+    if (!$member->isTeamMember($blogid)) {
         bm_doError(_ERROR_NOTONTEAM);
     }
 
@@ -314,40 +318,43 @@ function bm_doShowForm() {
     $factory->createAddForm('bookmarklet', $item);
 }
 
-function bm_doEditForm() {
+function bm_doEditForm()
+{
     global $member, $manager;
 
     $itemid = intRequestVar('itemid');
 
-    if (!$manager->existsItem($itemid, 0, 0) ) {
+    if (!$manager->existsItem($itemid, 0, 0)) {
         bm_doError(_ERROR_NOSUCHITEM);
     }
 
-    if (!$member->canAlterItem($itemid) ) {
+    if (!$member->canAlterItem($itemid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
     $item =& $manager->getItem($itemid, 1, 1);
-    $blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
+    $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
 
     $data = array('item' => &$item);
     $manager->notify('PrepareItemForEdit', $data);
 
-    if ($blog->convertBreaks() ) {
+    if ($blog->convertBreaks()) {
         $item['body'] = removeBreaks($item['body']);
         $item['more'] = removeBreaks($item['more']);
     }
 
-    $formfactory = new PAGEFACTORY($blog->getID() );
+    $formfactory = new PAGEFACTORY($blog->getID());
     $formfactory->createEditForm('bookmarklet', $item);
 }
 
-function bm_doError($msg) {
+function bm_doError($msg)
+{
     bm_message(_ERROR, _ERRORMSG, $msg);
     die;
 }
 
-function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
+function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1)
+{
     ?>
 <!DOCTYPE html>
 <html <?php printf('lang="%s"', _HTML_5_LANG_CODE); ?>>
@@ -360,20 +367,22 @@ function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1) {
 <body>
 <h1><?php echo $head; ?></h1>
 <p><?php echo $msg; ?></p>
-<?php if($showClose):?>
+    <?php if ($showClose) :?>
 <p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
-<?php endif; ?>
+    <?php endif; ?>
 </body>
 </html>
-<?php
+    <?php
 }
 
-function bm_style() {
+function bm_style()
+{
     echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';
     echo '<link rel="stylesheet" type="text/css" href="styles/addedit.css" />';
 }
 
-function bm_doContextMenuCode() {
+function bm_doContextMenuCode()
+{
     global $CONF;
     // https://msdn.microsoft.com/ja-jp/library/ms534165(v=vs.85).aspx
 
@@ -383,13 +392,13 @@ function bm_doContextMenuCode() {
 var oWindow   = window.external.menuArguments;
 var oDocument = oWindow.document;
 var lt;
-<?php
+    <?php
 // debug
 //    echo "alert(typeof oWindow.getSelection);";
 //    // can not access href , ie xss filter
 //    echo "alert(typeof oWindow.location.href);";
 //    echo "if (typeof oWindow.location.href == 'unknown') { for (var name in oWindow.location) { alert(name); } }";
-?>
+    ?>
 if (typeof oWindow.getSelection == "function") {
     lt = escape(oWindow.getSelection().getRangeAt(0).toString());
 } else {
@@ -405,20 +414,22 @@ if (wingm) {
     <?php
 }
 
-function uniDecode($str,$charcode){
+function uniDecode($str, $charcode)
+{
     $text = preg_replace_callback("/%u[0-9A-Za-z]{4}/", 'toUtf8', $str);
     return mb_convert_encoding($text, $charcode, 'UTF-8');
 }
-function toUtf8($ar){
+function toUtf8($ar)
+{
     $c = '';
-    foreach($ar as $val){
-        $val = intval(substr($val,2),16);
-        if($val < 0x7F){        // 0000-007F
+    foreach ($ar as $val) {
+        $val = intval(substr($val, 2), 16);
+        if ($val < 0x7F) {        // 0000-007F
             $c .= chr($val);
-        }elseif($val < 0x800) { // 0080-0800
+        } elseif ($val < 0x800) { // 0080-0800
             $c .= chr(0xC0 | ($val / 64));
             $c .= chr(0x80 | ($val % 64));
-        }else{                // 0800-FFFF
+        } else {                // 0800-FFFF
             $c .= chr(0xE0 | (($val / 64) / 64));
             $c .= chr(0x80 | (($val / 64) % 64));
             $c .= chr(0x80 | ($val % 64));

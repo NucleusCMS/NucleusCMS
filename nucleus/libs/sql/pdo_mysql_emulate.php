@@ -16,9 +16,11 @@ function _mysql_add_admin_warnings($funcname)
         && ! in_array($names, $funcname)) {
         $names[] = $funcname;
         $message
-                 = sprintf('%s : An incompatible function was called. Please change to %s .',
-            $funcname,
-            substr($funcname, 2));
+                 = sprintf(
+                     '%s : An incompatible function was called. Please change to %s .',
+                     $funcname,
+                     substr($funcname, 2)
+                 );
         SYSTEMLOG::addUnique('error', 'Warning', $message);
     }
 }
@@ -42,7 +44,7 @@ function mysql_error($dblink = null)
     $o = ($dblink ? $dblink : $SQL_DBH);
     if ($o && is_object($o) && method_exists($o, 'errorInfo ')) {
         $msg = $o->errorInfo();
-        if ( ! empty($msg[2])) {
+        if (! empty($msg[2])) {
             return (string)$msg[2];
         }
     }

@@ -16,7 +16,7 @@
  */
 
 // prevent direct access
-if ( ! isset($member)) {
+if (! isset($member)) {
     exit;
 }
 
@@ -37,7 +37,8 @@ $f_blogger_newPost_sig = array(
     )
 );
 $f_blogger_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
-function f_blogger_newPost($m) {
+function f_blogger_newPost($m)
+{
     $blogid = _getScalar($m, 1);
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
@@ -68,7 +69,8 @@ $f_blogger_editPost_sig = array(
     )
 );
 $f_blogger_editPost_doc = "Edits an item of a blog";
-function f_blogger_editPost($m) {
+function f_blogger_editPost($m)
+{
     global $manager;
 
     $itemid = intval(_getScalar($m, 1));
@@ -82,7 +84,7 @@ function f_blogger_editPost($m) {
     $content = blogger_removeSpecialTags($content);
 
     // get old title and extended part
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
     $old =& $manager->getItem($itemid, 1, 1);
@@ -99,8 +101,18 @@ function f_blogger_editPost($m) {
         $wasdraft = 0;
     }
 
-    return _edititem($itemid, $username, $password, $catid, $title, $content, $old['more'], $wasdraft, $publish,
-        $old['closed']);
+    return _edititem(
+        $itemid,
+        $username,
+        $password,
+        $catid,
+        $title,
+        $content,
+        $old['more'],
+        $wasdraft,
+        $publish,
+        $old['closed']
+    );
 }
 
 
@@ -117,7 +129,8 @@ $f_blogger_getUsersBlogs_sig = array(
     )
 );
 $f_blogger_getUsersBlogs_doc = "Returns a list of all the blogs where the given member is on the team";
-function f_blogger_getUsersBlogs($m) {
+function f_blogger_getUsersBlogs($m)
+{
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -139,7 +152,8 @@ $f_blogger_getRecentPosts_sig = array(
     )
 );
 $f_blogger_getRecentPosts_doc = "Returns a maximum of 20 recent items";
-function f_blogger_getRecentPosts($m) {
+function f_blogger_getRecentPosts($m)
+{
     $blogid = _getScalar($m, 1);
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
@@ -163,7 +177,8 @@ $f_blogger_getPost_sig = array(
     )
 );
 $f_blogger_getPost_doc = "Returns an item (only the item body!)";
-function f_blogger_getPost($m) {
+function f_blogger_getPost($m)
+{
     $postid = _getScalar($m, 1);
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
@@ -187,7 +202,8 @@ $f_blogger_deletePost_sig = array(
     )
 );
 $f_blogger_deletePost_doc = "Deletes an item";
-function f_blogger_deletePost($m) {
+function f_blogger_deletePost($m)
+{
     $postid = _getScalar($m, 1);
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
@@ -210,7 +226,8 @@ $f_blogger_getTemplate_sig = array(
     )
 );
 $f_blogger_getTemplate_doc = "Returns the required part of the default skin for the given blog";
-function f_blogger_getTemplate($m) {
+function f_blogger_getTemplate($m)
+{
     $blogid = _getScalar($m, 1);
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
@@ -244,7 +261,8 @@ $f_blogger_setTemplate_sig = array(
     )
 );
 $f_blogger_setTemplate_doc = "Changes a part of the default skin for the selected blog";
-function f_blogger_setTemplate($m) {
+function f_blogger_setTemplate($m)
+{
     $blogid = _getScalar($m, 1);
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
@@ -276,7 +294,8 @@ $f_blogger_getUserInfo_sig = array(
     )
 );
 $f_blogger_getUserInfo_doc = "Returns info on the user";
-function f_blogger_getUserInfo($m) {
+function f_blogger_getUserInfo($m)
+{
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -287,21 +306,22 @@ function f_blogger_getUserInfo($m) {
 /**
  * Returns a list of recent items
  */
-function _getRecentItemsBlogger($blogid, $username, $password, $amount) {
+function _getRecentItemsBlogger($blogid, $username, $password, $amount)
+{
     $blogid = intval($blogid);
     $amount = intval($amount);
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
     $amount = intval($amount);
@@ -349,21 +369,22 @@ function _getRecentItemsBlogger($blogid, $username, $password, $amount) {
 /**
  * Returns one item (Blogger version)
  */
-function _getItemBlogger($itemid, $username, $password) {
+function _getItemBlogger($itemid, $username, $password)
+{
     global $manager;
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
     $blogid = getBlogIDFromItemID($itemid);
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -394,15 +415,18 @@ function _getItemBlogger($itemid, $username, $password) {
 }
 
 
-function blogger_extractTitle($body) {
+function blogger_extractTitle($body)
+{
     return blogger_matchTag('title', $body);
 }
 
-function blogger_extractCategory($body) {
+function blogger_extractCategory($body)
+{
     return blogger_matchTag('category', $body);
 }
 
-function blogger_matchTag($tag, $body) {
+function blogger_matchTag($tag, $body)
+{
     if (preg_match("/<" . $tag . ">(.+?)<\/" . $tag . ">/is", $body, $match)) {
         return $match[1];
     } else {
@@ -410,20 +434,23 @@ function blogger_matchTag($tag, $body) {
     }
 }
 
-function blogger_removeSpecialTags($body) {
+function blogger_removeSpecialTags($body)
+{
     $body = preg_replace("/<title>(.+?)<\/title>/", "", $body);
     $body = preg_replace("/<category>(.+?)<\/category>/", "", $body);
     return trim($body);
 }
 
-function blogger_specialTags($item) {
+function blogger_specialTags($item)
+{
     $result = "<title>" . $item['title'] . "</title>";
     $result .= "<category>" . $item['category'] . "</category>";
     return $result;
 }
 
 
-$functionDefs = array_merge($functionDefs,
+$functionDefs = array_merge(
+    $functionDefs,
     array(
         "blogger.getUsersBlogs" =>
             array(
@@ -490,6 +517,3 @@ $functionDefs = array_merge($functionDefs,
 
     )
 );
-
-
-?>

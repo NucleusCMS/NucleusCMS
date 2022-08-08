@@ -28,7 +28,7 @@ include_once('sql.functions.php');
 
 load_upgrade_lang();
 
-if(getVar('mode')==='exec') {
+if (getVar('mode')==='exec') {
     include_once('upgrade.php');
     exit;
 }
@@ -36,19 +36,16 @@ if(getVar('mode')==='exec') {
 // check if logged in etc
 if (!$member->isLoggedIn()) {
     $content = upgrade_showLogin('./');
-}
-elseif (!$member->isAdmin()) {
+} elseif (!$member->isAdmin()) {
     $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
-}
-elseif (!upgrade_checkinstall(300)) {
+} elseif (!upgrade_checkinstall(300)) {
     $tpl = file_get_contents('tpl/content_beforev2.tpl');
     $ph = array();
     $ph['UPGRADE_ABORTED'] = _UPG_TEXT_UPGRADE_ABORTED;
     $ph['WARN_OLD_UNSUPPORT_CORE_STOP'] = _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP;
     $ph['WARN_OLD_UNSUPPORT_CORE_STOP_INFO'] = _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO;
-    $content = upgrade_error(parseHtml($tpl,$ph));
-}
-else {
+    $content = upgrade_error(parseHtml($tpl, $ph));
+} else {
     $tpl = file_get_contents('tpl/content_default.tpl');
     $ph = array();
     $ph['UPGRADE_SCRIPTS'] = _UPG_TEXT_UPGRADE_SCRIPTS;
@@ -56,7 +53,7 @@ else {
     $ph['NOTE02']          = _UPG_TEXT_NOTE02;
     $ph['AdminURL']        = $CONF['AdminURL'];
     $ph['BACKHOME']        = _UPG_TEXT_BACKHOME;
-    $content = parseHtml(parseHtml($tpl,$ph), array('content'=>get_default_content()));
+    $content = parseHtml(parseHtml($tpl, $ph), array('content'=>get_default_content()));
 }
 
 echo renderPage($content);

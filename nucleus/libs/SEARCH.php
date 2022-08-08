@@ -74,8 +74,10 @@ class SEARCH
             if ($this->is_long_word($keyword)) {
                 $long_keywords[] = $keyword;
             } elseif (substr($keyword, 0, 1) !== '-') {
-                $score[] = sprintf(' %s ',
-                    $this->score_for_like_phrase($keyword));
+                $score[] = sprintf(
+                    ' %s ',
+                    $this->score_for_like_phrase($keyword)
+                );
             }
         }
         if ($long_keywords) {
@@ -84,8 +86,10 @@ class SEARCH
             $ph['keywords']   = sql_quote_string(join(' ', $long_keywords));
             $ph['like_score'] = join(' + ', $score);
 
-            return parseQuery('[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ',
-                $ph);
+            return parseQuery(
+                '[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ',
+                $ph
+            );
         }
     }
 
@@ -122,7 +126,7 @@ class SEARCH
     private function get_min_word_len()
     {
         $res = sql_query(parseQuery("SHOW TABLE STATUS LIKE '[@prefix@]item'"));
-        if ( ! $res) {
+        if (! $res) {
             return 4;
         }
 
@@ -173,7 +177,7 @@ class SEARCH
             foreach ($keywords as $keyword) {
                 $c           = substr($keyword, 0, 1);
                 $like_phrase = $this->get_like_phrase($keyword);
-                if ( ! $_) {
+                if (! $_) {
                     $_[] = $like_phrase;
                 } elseif ($c == '|') {
                     $_[] = 'OR ' . $like_phrase;
@@ -194,7 +198,7 @@ class SEARCH
         foreach ($keywords as $keyword) {
             $c           = substr($keyword, 0, 1);
             $like_phrase = $this->get_like_phrase($keyword);
-            if ( ! $_) {
+            if (! $_) {
                 $_[] = $like_phrase;
             } elseif ($c == '|') {
                 $_[] = 'OR ' . $like_phrase;
@@ -211,8 +215,10 @@ class SEARCH
         $ph['field']    = $this->fields;
         $ph['keywords'] = sql_quote_string($long_keywords);
 
-        return parseQuery(' match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) > 0 ',
-            $ph);
+        return parseQuery(
+            ' match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) > 0 ',
+            $ph
+        );
     }
 
     private function get_like_phrase($keyword)
@@ -222,23 +228,31 @@ class SEARCH
         $keyword            = sql_real_escape_string(ltrim($keyword, '-+|'));
         $ph['keyword']      = $keyword;
         $ph['concat_field'] = $this->fields_concat();
-        if ( ! preg_match('/[\x80-\xfe]/', $keyword)) {
+        if (! preg_match('/[\x80-\xfe]/', $keyword)) {
             if ($c === '-') {
-                $like = parseQuery("[@concat_field@] NOT LIKE '%[@keyword@]%'",
-                    $ph);
+                $like = parseQuery(
+                    "[@concat_field@] NOT LIKE '%[@keyword@]%'",
+                    $ph
+                );
             } else {
-                $like = parseQuery("[@concat_field@] LIKE '%[@keyword@]%'",
-                    $ph);
+                $like = parseQuery(
+                    "[@concat_field@] LIKE '%[@keyword@]%'",
+                    $ph
+                );
             }
         } else {
             if ($c === '-') {
                 $like
-                    = parseQuery("[@concat_field@] NOT LIKE BINARY '%[@keyword@]%'",
-                    $ph);
+                    = parseQuery(
+                        "[@concat_field@] NOT LIKE BINARY '%[@keyword@]%'",
+                        $ph
+                    );
             } else {
                 $like
-                    = parseQuery("[@concat_field@] LIKE BINARY '%[@keyword@]%'",
-                    $ph);
+                    = parseQuery(
+                        "[@concat_field@] LIKE BINARY '%[@keyword@]%'",
+                        $ph
+                    );
             }
         }
 
@@ -266,5 +280,4 @@ class SEARCH
 
         return sprintf('CONCAT(%s)', join(",'/',", $fields));
     }
-
 }

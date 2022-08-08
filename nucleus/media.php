@@ -36,7 +36,7 @@ $CONF['MediaPerPage'] = 10;
 $DIR_LIBS = '';
 require_once('../config.php');
 //include($DIR_LIBS . 'MEDIA.php');    // media classes
-include_libs('MEDIA.php',false,false);
+include_libs('MEDIA.php', false, false);
 
 //sendContentType('application/xhtml+xml', 'media');
 
@@ -66,7 +66,7 @@ if (!in_array($action, ['selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SE
     }
 }
 
-switch($action) {
+switch ($action) {
     case 'chooseupload':
     case _MEDIA_UPLOAD_TO:
     case _MEDIA_UPLOAD_NEW:

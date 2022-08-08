@@ -27,7 +27,7 @@ function media_select()
     $collections = MEDIA::getCollectionList();
 
     if (sizeof($collections) > 1) {
-?>
+        ?>
         <form method="post" action="media.php">
             <div>
                 <label for="media_collection"><?php echo hsc(_MEDIA_COLLECTION_LABEL) ?></label>
@@ -47,7 +47,7 @@ function media_select()
             </div>
         </form>
     <?php    } else {
-    ?>
+        ?>
         <form method="post" action="media.php" style="float:right">
             <div>
                 <input type="hidden" name="collection" value="<?php echo hsc($currentCollection) ?>" />
@@ -89,7 +89,6 @@ function media_select()
         $idxEnd = 0;
 
         if (sizeof($arr) > 0) {
-
             if (($offset + $CONF['MediaPerPage']) >= sizeof($arr)) {
                 $offset = sizeof($arr) - $CONF['MediaPerPage'];
             }
@@ -173,7 +172,7 @@ function media_select()
     ?>
     <input id="typeradio0" type="radio" name="typeradio" onclick="setType(0);" checked="checked" /><label for="typeradio0"><?php echo _MEDIA_INLINE ?></label>
     <input id="typeradio1" type="radio" name="typeradio" onclick="setType(1);" /><label for="typeradio1"><?php echo _MEDIA_POPUP ?></label>
-<?php
+    <?php
     media_foot();
 }
 
@@ -189,7 +188,7 @@ function media_choose()
     $collections = MEDIA::getCollectionList();
 
     media_head();
-?>
+    ?>
     <h1><?php echo _UPLOAD_TITLE ?></h1>
 
     <p><?php echo _UPLOAD_MSG ?></p>
@@ -203,7 +202,7 @@ function media_choose()
             <br />
             <input name="uploadfile" type="file" size="40" />
             <?php if (sizeof($collections) > 1) {
-            ?>
+                ?>
                 <br /><br /><label for="upload_collection">Collection:</label>
                 <br /><select name="collection" id="upload_collection">
                     <?php foreach ($collections as $dirname => $description) {
@@ -216,7 +215,7 @@ function media_choose()
                     ?>
                 </select>
             <?php        } else {
-            ?>
+                ?>
                 <input name="collection" type="hidden" value="<?php echo hsc(requestVar('collection')) ?>" />
             <?php        } // if sizeof
             ?>
@@ -230,7 +229,7 @@ function media_choose()
         </div>
     </form>
 
-<?php
+    <?php
     media_foot();
 }
 
@@ -313,7 +312,7 @@ function media_upload()
 function media_loginAndPassThrough()
 {
     media_head();
-?>
+    ?>
     <h1><?php echo _LOGIN_PLEASE ?></h1>
 
     <form method="post" action="media.php">
@@ -326,25 +325,25 @@ function media_loginAndPassThrough()
         </div>
     </form>
     <p><a href="media.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
-<?php media_foot();
+    <?php media_foot();
     exit;
 }
 
 function media_doError($msg)
 {
     media_head();
-?>
+    ?>
     <h1><?php echo _ERROR ?></h1>
     <p><?php echo $msg ?></p>
     <p><a href="media.php" onclick="history.back()"><?php echo _BACK ?></a></p>
-<?php media_foot();
+    <?php media_foot();
     exit;
 }
 
 
 function media_head()
 {
-?>
+    ?>
     <!DOCTYPE html>
     <html>
 
@@ -379,12 +378,12 @@ function media_head()
     </head>
 
     <body>
-    <?php }
+<?php }
 
 function media_foot()
 {
     ?>
     </body>
     </html>
-<?php
+    <?php
 }

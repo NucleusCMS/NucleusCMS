@@ -326,8 +326,8 @@ class NucleusPlugin
             $rs = &$_shared_data[$pid];
         } else {
             // PHP[5.x - 8.0.x]
-           static $rs = array();
-       }
+            static $rs = array();
+        }
 
         if (isset($rs[$name])) {
             return $rs[$name];
@@ -600,9 +600,9 @@ class NucleusPlugin
 
         // retrieve the data and return
         $query = sql_query(parseQuery(
-                'SELECT otype, oextra FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',
-                $ph
-            ));
+            'SELECT otype, oextra FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',
+            $ph
+        ));
 
         $o = sql_fetch_array($query);
 
@@ -838,13 +838,13 @@ class NucleusPlugin
         $ph['oid']        = (int)$oid;
         $ph['ocontextid'] = (int)$contextid;
         $has_ovalue = sql_query(parseQuery(
-                'SELECT ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]',
-                $ph
-            ));
+            'SELECT ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]',
+            $ph
+        ));
         $has_row = (int)parseQuickQuery(
-                'SELECT count(*) FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@] LIMIT 1',
-                $ph
-            );
+            'SELECT count(*) FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@] LIMIT 1',
+            $ph
+        );
         if (!$has_ovalue || ($has_row == 0)) {
             $this->_aOptionValues[$key] = $this->_getDefVal($context, $name);
             // fill DB with default value
@@ -906,9 +906,9 @@ class NucleusPlugin
 
         $ph = array('oid' => (int)$oid);
         $res = sql_query(parseQuery(
-                'SELECT ocontextid, ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@]',
-                $ph
-            ));
+            'SELECT ocontextid, ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@]',
+            $ph
+        ));
         while ($o = sql_fetch_object($res)) {
             $aOptions[$o->ocontextid] = $o->ovalue;
         }
@@ -1021,9 +1021,9 @@ class NucleusPlugin
         $this->_aOptionToInfo = array();
         $ph = array('opid' => (int)$this->plugid);
         $res = sql_query(parseQuery(
-                'SELECT oid, oname, ocontext, odef FROM [@prefix@]plugin_option_desc WHERE opid=[@opid@]',
-                $ph
-            ));
+            'SELECT oid, oname, ocontext, odef FROM [@prefix@]plugin_option_desc WHERE opid=[@opid@]',
+            $ph
+        ));
         if ($res) {
             while ($o = sql_fetch_object($res)) {
                 $k                        = $o->ocontext . '_' . $o->oname;
@@ -1065,9 +1065,9 @@ class NucleusPlugin
         // find ids
         $ph = array('ocontext' => sql_real_escape_string($context));
         $res = sql_query(parseQuery(
-                "SELECT oid FROM [@prefix@]plugin_option_desc WHERE ocontext='[@ocontext@]'",
-                $ph
-            ));
+            "SELECT oid FROM [@prefix@]plugin_option_desc WHERE ocontext='[@ocontext@]'",
+            $ph
+        ));
         while ($o = sql_fetch_object($res)) {
             $aOIDs[] = $o->oid;
         }
@@ -1140,9 +1140,9 @@ class NucleusPlugin
     {
         $ph = array('pid' => $this->getID());
         $res = sql_query(parseQuery(
-                'SELECT event FROM [@prefix@]plugin_event WHERE pid = [@pid@]',
-                $ph
-            ));
+            'SELECT event FROM [@prefix@]plugin_event WHERE pid = [@pid@]',
+            $ph
+        ));
         $ev = array();
         while ($a = sql_fetch_array($res)) {
             $ev[] = $a['event'];
@@ -1178,9 +1178,9 @@ class NucleusPlugin
             // get option type info
             $ph = array('oid' => (int)$oid);
             $res = sql_query(parseQuery(
-                    'SELECT opid, oname, ocontext, otype, oextra, odef FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',
-                    $ph
-                ));
+                'SELECT opid, oname, ocontext, otype, oextra, odef FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',
+                $ph
+            ));
             if ($o = sql_fetch_object($res)) {
                 foreach ($values as $key => $value) {
                     // avoid overriding the key used by foreach statement
@@ -1190,11 +1190,10 @@ class NucleusPlugin
                     $meta = NucleusPlugin::getOptionMeta($o->oextra);
 
                     // if the option is readonly or hidden it may not be saved
-                    if (
-                        !array_key_exists(
-                            'access',
-                            $meta
-                        )
+                    if (!array_key_exists(
+                        'access',
+                        $meta
+                    )
                         || (($meta['access'] !== 'readonly')
                             && ($meta['access'] !== 'hidden'))
                     ) {
@@ -1209,11 +1208,10 @@ class NucleusPlugin
                         }
 
                         // check the validity of numerical options
-                        if (
-                            array_key_exists(
-                                'datatype',
-                                $meta
-                            )
+                        if (array_key_exists(
+                            'datatype',
+                            $meta
+                        )
                             && ($meta['datatype'] === 'numerical')
                             && (!is_numeric($value))
                         ) {

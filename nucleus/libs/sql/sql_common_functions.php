@@ -19,7 +19,7 @@
  */
 function startUpError($msg, $title)
 {
-    if ( ! defined('_CHARSET')) {
+    if (! defined('_CHARSET')) {
         define('_CHARSET', 'UTF-8');
     }
     $tpl             = file_get_contents(NC_LIBS_PATH
@@ -52,27 +52,29 @@ function sql_gmDateTime_from_utime($timestamp)
 function get_mysql_charset_from_php_charset($charset = 'utf-8')
 {
     switch (strtolower($charset)) {
-        case 'utf-8'        :
+        case 'utf-8':
             $charset = 'utf8';
             break;
-        case 'euc-jp'       :
+        case 'euc-jp':
             $charset = 'ujis';
             break;
-        case 'iso-8859-1'   :
+        case 'iso-8859-1':
             $charset = 'latin1';
             break;
-        case 'windows-1250' :
+        case 'windows-1250':
             $charset = 'cp1250';
             break; // cp1250_general_ci
-        default :
+        default:
             global $DB_DRIVER_NAME;
             if ($DB_DRIVER_NAME === 'mysql'
                 && preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
                     $res
-                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
-                        $db);
+                        = sql_query(
+                            "SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
+                            $db
+                        );
                     if ($res && ($items = sql_fetch_assoc($res))
                         && ! empty($items['Charset'])) {
                         return $items['Charset'];
@@ -150,30 +152,32 @@ function treat_char_name($charset = 'utf8mb4')
     }
 
     switch (strtolower($charset)) {
-        case 'euc-jp'       :
+        case 'euc-jp':
             $charset = 'ujis';
             break;
-        case 'iso-8859-1'   :
+        case 'iso-8859-1':
             $charset = 'latin1';
             break;
-        case 'windows-1250' :
+        case 'windows-1250':
             $charset = 'cp1250';
             break; // cp1250_general_ci
-        case 'utf8'        :
-        case 'utf-8'        :
+        case 'utf8':
+        case 'utf-8':
             if (getCharSetFromDB(sql_table('item'), 'ibody') === 'utf8mb4') {
                 $charset = 'utf8mb4';
             } else {
                 $charset = 'utf8';
             }
             break;
-        default :
+        default:
             if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
                     $res
-                        = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
-                        $db);
+                        = sql_query(
+                            "SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'",
+                            $db
+                        );
                     if ($res && ($items = sql_fetch_assoc($res))
                         && ! empty($items['Charset'])) {
                         return $items['Charset'];
@@ -200,8 +204,10 @@ function getCharSetFromDB($tableName, $columnName, $dbh = null)
 function getCollationFromDB($tableName, $columnName, $dbh = null)
 {
     $columns
-            = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'",
-        $dbh);
+            = sql_query(
+                "SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'",
+                $dbh
+            );
     $column = sql_fetch_object($columns);
 
     return isset($column->Collation) ? $column->Collation : false;
@@ -243,7 +249,7 @@ function updateQuery($table_name, $values, $where = '', $extra = array())
         $where = join(' ', $where);
     }
 
-    if ( ! is_array($values)) {
+    if (! is_array($values)) {
         $pairs = $values;
     } else {
         foreach ($values as $key => $value) {
@@ -297,15 +303,17 @@ function sql_get_server_version($conn_or_dbh = null)
 {
     $dbh = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
 
-    return implode('.',
-        array_map('intval', explode('.', sql_get_server_info($dbh))));
+    return implode(
+        '.',
+        array_map('intval', explode('.', sql_get_server_info($dbh)))
+    );
 }
 
 function sql_get_mysql_sqlmode($conn_or_dbh = null)
 {
     $dbh = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     $q   = sql_query("SELECT @@SESSION.sql_mode;", $dbh);
-    if ( ! $q) {
+    if (! $q) {
         return '';
     }
     $row = sql_fetch_array($q);
@@ -324,8 +332,10 @@ function fix_mysql_sqlmode($conn_or_dbh = null)
         return;
     }
 
-    $options     = array_diff(explode(',', $sqlmode),
-        array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE'));
+    $options     = array_diff(
+        explode(',', $sqlmode),
+        array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE')
+    );
     $new_sqlmode = implode(',', $options);
     if (strcmp($sqlmode, $new_sqlmode) != 0) {
         sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);

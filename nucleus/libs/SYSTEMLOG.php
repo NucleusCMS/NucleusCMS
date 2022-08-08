@@ -19,7 +19,7 @@ class SYSTEMLOG
                 $table_exists = sql_existTableName(sql_table('systemlog'));
             }
         }
-        if ( ! $table_exists) {
+        if (! $table_exists) {
             return false;
         }
 
@@ -30,7 +30,7 @@ class SYSTEMLOG
     {
         global $member, $CONF, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
-        if ( ! self::checkWritable()) {
+        if (! self::checkWritable()) {
             return;
         }
 
@@ -48,13 +48,20 @@ EOL;
         $ph[':logyear']       = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
         $ph[':logtype']       = (string)$type;
         $ph[':subtype']       = (string)$subtype;
-        $ph[':mnumber']       = (int)max(0,
-            empty($options['mnumber']) ? 0 : (int)$options['mnumber']);
-        $ph[':timestamp_utc'] = (string)gmdate('Y-m-d H:i:s',
-            $_SERVER['REQUEST_TIME']);
+        $ph[':mnumber']       = (int)max(
+            0,
+            empty($options['mnumber']) ? 0 : (int)$options['mnumber']
+        );
+        $ph[':timestamp_utc'] = (string)gmdate(
+            'Y-m-d H:i:s',
+            $_SERVER['REQUEST_TIME']
+        );
         $ph[':message']       = (string)((strlen($message) > self::MAX_MSG_LEN)
-            ? substr($message, 0,
-                self::MAX_MSG_LEN) : $message);
+            ? substr(
+                $message,
+                0,
+                self::MAX_MSG_LEN
+            ) : $message);
         $ph[':message_hash']  = (string)sha1($ph[':message']);
 
         if ($DB_DRIVER_NAME == 'sqlite') {
@@ -78,10 +85,13 @@ EOL;
             $query = parseQuery($query, $ph);
             $res   = sql_query($query);
         }
-        if ( ! empty($CONF['debug']) && $CONF['debug'] && $member->isAdmin()) {
+        if (! empty($CONF['debug']) && $CONF['debug'] && $member->isAdmin()) {
             if (empty($res) || sql_affected_rows($res) == 0) {
-                $msg = sprintf('SYSTEMLOG::add query error: %s : %s',
-                    hsc(sql_error()), hsc($query));
+                $msg = sprintf(
+                    'SYSTEMLOG::add query error: %s : %s',
+                    hsc(sql_error()),
+                    hsc($query)
+                );
                 trigger_error($msg, E_USER_WARNING);
             }
         }
@@ -126,7 +136,7 @@ EOL;
     public static function clearAll()
     {
         global $DB_DRIVER_NAME;
-        if ( ! self::checkWritable()) {
+        if (! self::checkWritable()) {
             return;
         }
         if ($DB_DRIVER_NAME == 'mysql') {
@@ -146,7 +156,7 @@ EOL;
     {
         static $checked = false;
         global $DB_DRIVER_NAME;
-        if ( ! self::checkWritable() || $checked) {
+        if (! self::checkWritable() || $checked) {
             return;
         }
         $checked = true;
@@ -156,8 +166,10 @@ EOL;
         $date      = gmdate('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'] + $offset);
 
         $query = 'DELETE FROM ' . $tablename
-                 . sprintf(' WHERE timestamp_utc <=%s ',
-                sql_quote_string($date))
+                 . sprintf(
+                     ' WHERE timestamp_utc <=%s ',
+                     sql_quote_string($date)
+                 )
                  . " AND logtype='error'";
         sql_query($query);
 
@@ -173,8 +185,10 @@ EOL;
         $res   = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
             $query = 'DELETE FROM ' . $tablename
-                     . sprintf(' WHERE timestamp_utc <=%s ',
-                    sql_quote_string($obj->timestamp_utc))
+                     . sprintf(
+                         ' WHERE timestamp_utc <=%s ',
+                         sql_quote_string($obj->timestamp_utc)
+                     )
                      . " AND logtype='error'";
             sql_query($query);
         }
@@ -190,7 +204,7 @@ EOL;
         if (sql_existTableName(sql_table('systemlog'))) {
             return;
         }
-        if ( ! sql_existTableName(sql_table('config'))) {
+        if (! sql_existTableName(sql_table('config'))) {
             return;
         }
         $query          = array();
@@ -235,5 +249,4 @@ EOL;
             sql_query($query['mysql']);
         }
     }
-
 }

@@ -1,7 +1,10 @@
 <?php
 
-function upgrade_do380() {
-    if (upgrade_checkinstall(380)) return _UPG_TEXT_ALREADY_INSTALLED;
+function upgrade_do380()
+{
+    if (upgrade_checkinstall(380)) {
+        return _UPG_TEXT_ALREADY_INSTALLED;
+    }
 
     upgrade_do380_addconfig();
     
@@ -22,19 +25,21 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 {
     global $DB_DRIVER_NAME;
 
-    if ( sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype' ))
+    if (sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype')) {
         return;
+    }
 
     $upgrade_msg = parseQuery("Altering TABLE `[@prefix@]skin` ");
 
-    if ($DB_DRIVER_NAME == 'mysql')
-    {
+    if ($DB_DRIVER_NAME == 'mysql') {
         $sql = parseQuery("ALTER TABLE `[@prefix@]skin` ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts'");
         upgrade_query($upgrade_msg, $sql);
         return;
     }
     
-    if ($DB_DRIVER_NAME !== 'sqlite') return;
+    if ($DB_DRIVER_NAME !== 'sqlite') {
+        return;
+    }
     
     $dbh =  sql_get_db();
     
@@ -45,7 +50,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     
     // table
     $rs = $dbh->query(parseQuery("ALTER TABLE `[@prefix@]skin` RENAME TO `[@prefix@]old_skin`"));
-    if(!$rs) {
+    if (!$rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -58,7 +63,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
                       `spartstype`  varchar(20) NOT NULL default 'parts' ,
                       PRIMARY KEY  (`sdesc`,`stype`))");
     $rs = $dbh->query($sql);
-    if(!$rs) {
+    if (!$rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -75,8 +80,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     
     $rs = $dbh->query(parseQuery("DROP TABLE `[@prefix@]old_skin`"));
     
-    if ($rs && $dbh->commit())
-    {
+    if ($rs && $dbh->commit()) {
         upgrade_query($upgrade_msg, "SELECT 'OK'");
         return;
     }
@@ -84,9 +88,9 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     upgrade_query($upgrade_msg, 'Failure');
 }
 
-function fix_do380_Skin_ColumnSpartstype() 
+function fix_do380_Skin_ColumnSpartstype()
 {
-    if ( !sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype' )) {
+    if (!sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype')) {
         return;
     }
     
@@ -94,7 +98,7 @@ function fix_do380_Skin_ColumnSpartstype()
     $sql .= " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
     $sql .= " AND spartstype='parts'";
     
-    if(!quickQuery(parseQuery($sql))) {
+    if (!quickQuery(parseQuery($sql))) {
         return;
     }
     
@@ -106,7 +110,9 @@ function fix_do380_Skin_ColumnSpartstype()
 
 function upgrade_do380_addfield_bauthorvisible()
 {
-    if ( sql_existTableColumnName(parseQuery('[@prefix@]blog'), 'bauthorvisible') ) return;
+    if (sql_existTableColumnName(parseQuery('[@prefix@]blog'), 'bauthorvisible')) {
+        return;
+    }
     
     $query = parseQuery("ALTER TABLE `[@prefix@]blog` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default '1'");
     upgrade_query('Altering [@prefix@]blog table', $query);
@@ -114,7 +120,9 @@ function upgrade_do380_addfield_bauthorvisible()
 
 function upgrade_do380_addfield_mhalt()
 {
-    if ( sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mhalt') ) return;
+    if (sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mhalt')) {
+        return;
+    }
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mhalt` tinyint(2) NOT NULL default '0'");
     upgrade_query('Altering [@prefix@]member table', $query);
@@ -122,7 +130,9 @@ function upgrade_do380_addfield_mhalt()
 
 function upgrade_do380_addfield_mhalt_reason()
 {
-    if ( sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mhalt_reason') ) return;
+    if (sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mhalt_reason')) {
+        return;
+    }
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mhalt_reason` varchar(100) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]member table', $query);
@@ -132,7 +142,9 @@ function upgrade_do380_modfield_ballowpast()
 {
     global $DB_DRIVER_NAME;
     
-    if ($DB_DRIVER_NAME === 'sqlite') return;
+    if ($DB_DRIVER_NAME === 'sqlite') {
+        return;
+    }
     
     // mysql only. because sqlite not support MODIFY COLUMN
     $mode = (sql_existTableColumnName(parseQuery('[@prefix@]blog'), 'ballowpast') ? 'MODIFY' : 'ADD');
@@ -156,7 +168,9 @@ function upgrade_do380_modfield_ballowpast()
 function upgrade_do380_addconfig()
 {
     $query = parseQuery("SELECT count(*) as result FROM `[@prefix@]config` WHERE name='DatabaseName'");
-    if (quickQuery($query)) return;
+    if (quickQuery($query)) {
+        return;
+    }
     
     $query = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES('DatabaseName', 'Nucleus')");
     upgrade_query('Updating [@prefix@]config ', $query);
@@ -164,9 +178,10 @@ function upgrade_do380_addconfig()
 
 function upgrade_do380_addfield_mimage()
 {
-    if ( sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mimage') ) return;
+    if (sql_existTableColumnName(parseQuery('[@prefix@]member'), 'mimage')) {
+        return;
+    }
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mimage` varchar(500) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]member table', $query);
 }
-

@@ -6,8 +6,11 @@ class entity
     public static function named_to_numeric($string)
     {
         $string
-            = preg_replace_callback('/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            self::class . '::named_to_numeric_callback', $string);
+            = preg_replace_callback(
+                '/(&[0-9A-Za-z]+)(;?\=?|([^A-Za-z0-9\;\:\.\-\_]))/',
+                self::class . '::named_to_numeric_callback',
+                $string
+            );
 
         return $string;
     }
@@ -20,12 +23,18 @@ class entity
     public static function normalize_numeric($string)
     {
         global $_entities;
-        $string = preg_replace_callback('/&#([0-9]+)(;)?/',
-            self::class . '::normalize_numeric_callback1', $string);
+        $string = preg_replace_callback(
+            '/&#([0-9]+)(;)?/',
+            self::class . '::normalize_numeric_callback1',
+            $string
+        );
 
         $string
-            = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            self::class . '::normalize_numeric_callback2', $string);
+            = preg_replace_callback(
+                '/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
+                self::class . '::normalize_numeric_callback2',
+                $string
+            );
 
         $string = strtr($string, $_entities['cp1251']);
 
@@ -44,15 +53,24 @@ class entity
 
     public static function numeric_to_utf8($string)
     {
-        $string = preg_replace_callback('/&#([0-9]+)(;)?/',
-            self::class . '::numeric_to_utf8_callback1', $string);
+        $string = preg_replace_callback(
+            '/&#([0-9]+)(;)?/',
+            self::class . '::numeric_to_utf8_callback1',
+            $string
+        );
 
         $string
-            = preg_replace_callback('/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
-            self::class . '::numeric_to_utf8_callback2', $string);
+            = preg_replace_callback(
+                '/&#[Xx](0)*([0-9A-Fa-f]+)(;?|([^A-Za-z0-9\;\:\.\-\_]))/',
+                self::class . '::numeric_to_utf8_callback2',
+                $string
+            );
 
-        $string = preg_replace_callback('/&#x([0-9A-Fa-f]+);/',
-            self::class . '::numeric_to_utf8_callback3', $string);
+        $string = preg_replace_callback(
+            '/&#x([0-9A-Fa-f]+);/',
+            self::class . '::numeric_to_utf8_callback3',
+            $string
+        );
 
         return $string;
     }
@@ -75,8 +93,11 @@ class entity
     public static function numeric_to_named($string)
     {
         global $_entities;
-        $string = preg_replace_callback('/&#[Xx]([0-9A-Fa-f]+)/',
-            self::class . '::numeric_to_named_callback', $string);
+        $string = preg_replace_callback(
+            '/&#[Xx]([0-9A-Fa-f]+)/',
+            self::class . '::numeric_to_named_callback',
+            $string
+        );
         $string = strtr($string, array_flip($_entities['named']));
 
         return $string;
@@ -103,11 +124,17 @@ class entity
             '>'      => '&gt;',
         );
 
-        $string = preg_replace('/&(#?[Xx]?[0-9A-Za-z]+);/', "[[[ENTITY:\\1]]]",
-            $string);
+        $string = preg_replace(
+            '/&(#?[Xx]?[0-9A-Za-z]+);/',
+            "[[[ENTITY:\\1]]]",
+            $string
+        );
         $string = strtr($string, $specialchars);
-        $string = preg_replace('/\[\[\[ENTITY\:([^\]]+)\]\]\]/', "&\\1;",
-            $string);
+        $string = preg_replace(
+            '/\[\[\[ENTITY\:([^\]]+)\]\]\]/',
+            "&\\1;",
+            $string
+        );
 
         return $string;
     }
@@ -153,15 +180,16 @@ class entity
         while ($length > 0) {
             $check = substr($entity, 0, $length);
             if (isset($_entities['named'][$check])) {
-                return $_entities['named'][$check] . ';' . substr($entity,
-                        $length);
+                return $_entities['named'][$check] . ';' . substr(
+                    $entity,
+                    $length
+                );
             }
             $length--;
         }
 
         return $entity . ($extra === ';' ? ';' : '');
     }
-
 }
 
 

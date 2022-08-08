@@ -78,8 +78,14 @@ class ACTIONS extends BaseActions
     public function doForm($filename)
     {
         global $DIR_NUCLEUS;
-        array_push($this->parser->actions, 'formdata', 'text', 'callback',
-            'errordiv', 'ticket');
+        array_push(
+            $this->parser->actions,
+            'formdata',
+            'text',
+            'callback',
+            'errordiv',
+            'ticket'
+        );
         $oldIncludeMode   = PARSER::getProperty('IncludeMode');
         $oldIncludePrefix = PARSER::getProperty('IncludePrefix');
         PARSER::setProperty('IncludeMode', 'normal');
@@ -189,7 +195,7 @@ class ACTIONS extends BaseActions
     private function _ifPlugin($name, $key = '', $value = '')
     {
         $plugin =& manager()->getPlugin('NP_' . $name);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return false;
         }
 
@@ -245,8 +251,7 @@ class ACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! manager()->existsBlogID($blogid)) // use current blog
-        {
+            || ! manager()->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -271,8 +276,7 @@ class ACTIONS extends BaseActions
         }
 
         if ($blogName == ''
-            || ! manager()->existsBlogID($blogid)) // use current blog
-        {
+            || ! manager()->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -288,8 +292,11 @@ class ACTIONS extends BaseActions
     private function _link($url, $linktext = '')
     {
         $u = hsc($url);
-        $u = preg_replace('/&amp;amp;/', '&amp;',
-            $u); // fix URLs that already had encoded ampersands
+        $u = preg_replace(
+            '/&amp;amp;/',
+            '&amp;',
+            $u
+        ); // fix URLs that already had encoded ampersands
         if ($linktext != '') {
             $l = sprintf('<a href="%s">%s</a>', $u, hsc($linktext));
         } else {
@@ -343,7 +350,7 @@ class ACTIONS extends BaseActions
                 break;
             case 'next':
                 global $navigationItems;
-                if ( ! isset($navigationItems)) {
+                if (! isset($navigationItems)) {
                     $navigationItems = 0;
                 }
 
@@ -364,8 +371,12 @@ class ACTIONS extends BaseActions
                         $url      = $path;
                     } elseif ($i1 === 'search') {
                         $unused_highlight = '';
-                        $sqlquery         = $blog->getSqlSearch($query, $amount,
-                            $unused_highlight, 'count');
+                        $sqlquery         = $blog->getSqlSearch(
+                            $query,
+                            $amount,
+                            $unused_highlight,
+                            'count'
+                        );
                         $url              = $CONF['SearchURL'];
                     }
                     if ($sqlquery) {
@@ -396,8 +407,10 @@ class ACTIONS extends BaseActions
     private function _itemlink($id, $linktext = '')
     {
         if ($id) {
-            echo $this->_link(createItemLink($id, $this->linkparams),
-                $linktext);
+            echo $this->_link(
+                createItemLink($id, $this->linkparams),
+                $linktext
+            );
         } else {
             $this->parse_todaylink($linktext);
         }
@@ -410,8 +423,11 @@ class ACTIONS extends BaseActions
     {
         global $blog;
         if ($id) {
-            echo $this->_link(createArchiveLink($blog->getID(), $id,
-                $this->linkparams), $linktext);
+            echo $this->_link(createArchiveLink(
+                $blog->getID(),
+                $id,
+                $this->linkparams
+            ), $linktext);
         } else {
             $this->parse_todaylink($linktext);
         }
@@ -578,8 +594,10 @@ class ACTIONS extends BaseActions
                 : _DEFAULT_DATE_FORMAT_YBD);
         }
 
-        echo Utils::strftime($format,
-            mktime(0, 0, 0, $m ? $m : 1, $d ? $d : 1, $y));
+        echo Utils::strftime(
+            $format,
+            mktime(0, 0, 0, $m ? $m : 1, $d ? $d : 1, $y)
+        );
     }
 
     /**
@@ -607,8 +625,10 @@ class ACTIONS extends BaseActions
     {
         global $blog;
         if ($blog) {
-            echo $this->_link(createArchiveListLink($blog->getID(),
-                $this->linkparams), $linktext);
+            echo $this->_link(createArchiveListLink(
+                $blog->getID(),
+                $this->linkparams
+            ), $linktext);
         } else {
             echo $this->_link(createArchiveListLink(), $linktext);
         }
@@ -660,8 +680,12 @@ class ACTIONS extends BaseActions
         list($limit, $offset) = sscanf($amount, '%d(%d)');
         $this->_setBlogCategory($blog, $category);
         $this->_preBlogContent('blog', $blog);
-        $this->amountfound = $blog->readLog($template, $limit, $offset,
-            $startpos);
+        $this->amountfound = $blog->readLog(
+            $template,
+            $limit,
+            $offset,
+            $startpos
+        );
         $this->_postBlogContent('blog', $blog);
     }
 
@@ -727,7 +751,7 @@ class ACTIONS extends BaseActions
     public function parse_category($type = 'name')
     {
         global $catid, $blog;
-        if ( ! $blog->isValidCategory($catid)) {
+        if (! $blog->isValidCategory($catid)) {
             return;
         }
 
@@ -800,13 +824,13 @@ class ACTIONS extends BaseActions
             return;
         }
 
-        if ( ! $blog->isPublic() && ! $member->isLoggedIn()) {
+        if (! $blog->isPublic() && ! $member->isLoggedIn()) {
             $this->doForm('commentform-closedtopublic');
 
             return;
         }
 
-        if ( ! $destinationurl) {
+        if (! $destinationurl) {
             $destinationurl = createLink(
                 'item',
                 array(
@@ -824,15 +848,15 @@ class ACTIONS extends BaseActions
 
         // values to prefill
         $user = cookieVar($CONF['CookiePrefix'] . 'comment_user');
-        if ( ! $user) {
+        if (! $user) {
             $user = postVar('user');
         }
         $userid = cookieVar($CONF['CookiePrefix'] . 'comment_userid');
-        if ( ! $userid) {
+        if (! $userid) {
             $userid = postVar('userid');
         }
         $email = cookieVar($CONF['CookiePrefix'] . 'comment_email');
-        if ( ! $email) {
+        if (! $email) {
             $email = postVar('email');
         }
         $body = postVar('body');
@@ -852,7 +876,7 @@ class ACTIONS extends BaseActions
                 ? 'checked="checked"' : '',
         );
 
-        if ( ! $member->isLoggedIn()) {
+        if (! $member->isLoggedIn()) {
             $this->doForm('commentform-notloggedin');
         } else {
             $this->doForm('commentform-loggedin');
@@ -878,8 +902,12 @@ class ACTIONS extends BaseActions
 
         $comments = new COMMENTS($itemid);
         $comments->setItemActions($actions);
-        $comments->showComments($template, -1, 1,
-            $highlight);    // shows ALL comments
+        $comments->showComments(
+            $template,
+            -1,
+            1,
+            $highlight
+        );    // shows ALL comments
     }
 
     /**
@@ -957,12 +985,12 @@ class ACTIONS extends BaseActions
             case 'imgtag':
             default:
                 echo sprintf(
-                    '<img src="%s" width="%s" height="%s" alt="%s" title="%s" />'
-                    , $fullurl
-                    , $width
-                    , $height
-                    , $imagetext
-                    , $imagetext
+                    '<img src="%s" width="%s" height="%s" alt="%s" title="%s" />',
+                    $fullurl,
+                    $width,
+                    $height,
+                    $imagetext,
+                    $imagetext
                 );
                 break;
         }
@@ -983,8 +1011,10 @@ class ACTIONS extends BaseActions
     public function parse_item($template)
     {
         global $blog, $itemid, $highlight;
-        $this->_setBlogCategory($blog,
-            '');    // need this to select default category
+        $this->_setBlogCategory(
+            $blog,
+            ''
+        );    // need this to select default category
         $this->_preBlogContent('item', $blog);
         $r = $blog->showOneitem($itemid, $template, $highlight);
         if ($r == 0) {
@@ -1041,7 +1071,7 @@ class ACTIONS extends BaseActions
     public function parse_loginform()
     {
         global $member;
-        if ( ! $member->isLoggedIn()) {
+        if (! $member->isLoggedIn()) {
             $filename       = 'loginform-notloggedin';
             $this->formdata = array();
         } else {
@@ -1239,8 +1269,13 @@ class ACTIONS extends BaseActions
             $this->_itemlink($itemidnext, $linktext);
         } else {
             if ($this->skintype == 'search' || $this->skintype == 'index') {
-                $this->_searchlink($amount, $startpos, 'next', $linktext,
-                    $recount);
+                $this->_searchlink(
+                    $amount,
+                    $startpos,
+                    'next',
+                    $linktext,
+                    $recount
+                );
             } else {
                 $this->_archivelink($archivenext, $linktext);
             }
@@ -1379,8 +1414,10 @@ class ACTIONS extends BaseActions
     ) {
         global $query, $amount, $manager, $startpos;
         $b =& $manager->getBlog(getBlogIDFromName($blogname));
-        $this->_setBlogCategory($b,
-            '');    // need this to select default category
+        $this->_setBlogCategory(
+            $b,
+            ''
+        );    // need this to select default category
         $this->_preBlogContent('othersearchresults', $b);
         $b->search($query, $template, $amount, $maxresults, $startpos);
         $this->_postBlogContent('othersearchresults', $b);
@@ -1403,7 +1440,7 @@ class ACTIONS extends BaseActions
             return;*/
 
         $plugin =& $manager->getPlugin('NP_' . $pluginName);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return;
         }
 
@@ -1545,11 +1582,18 @@ class ACTIONS extends BaseActions
     {
         global $blog, $query, $amount, $startpos;
 
-        $this->_setBlogCategory($blog,
-            '');    // need this to select default category
+        $this->_setBlogCategory(
+            $blog,
+            ''
+        );    // need this to select default category
         $this->_preBlogContent('searchresults', $blog);
-        $this->amountfound = $blog->search($query, $template, $amount,
-            $maxresults, $startpos);
+        $this->amountfound = $blog->search(
+            $query,
+            $template,
+            $amount,
+            $maxresults,
+            $startpos
+        );
         $this->_postBlogContent('searchresults', $blog);
     }
 
@@ -1637,8 +1681,10 @@ class ACTIONS extends BaseActions
     {
         global $blog, $CONF;
         if ($blog) {
-            echo $this->_link(createBlogidLink($blog->getID(),
-                $this->linkparams), $linktext);
+            echo $this->_link(createBlogidLink(
+                $blog->getID(),
+                $this->linkparams
+            ), $linktext);
         } elseif (isset($CONF['SiteUrl']) && strlen($CONF['SiteUrl']) > 0) {
             echo $this->_link($CONF['SiteUrl'], $linktext);
         } else {
@@ -1662,8 +1708,11 @@ class ACTIONS extends BaseActions
      */
     public function parse_version()
     {
-        echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME),
-            CORE_APPLICATION_VERSION);
+        echo sprintf(
+            '%s %s',
+            hsc(CORE_APPLICATION_NAME),
+            CORE_APPLICATION_VERSION
+        );
     }
 
     /**
@@ -1700,11 +1749,12 @@ class ACTIONS extends BaseActions
         $itemid      = (int)$itemid;
         $ph['citem'] = (int)$itemid;
         $sql
-                     = parseQuery('SELECT COUNT(*) as result FROM [@prefix@]comment WHERE citem=[@citem@] LIMIT 1',
-            $ph);
+                     = parseQuery(
+                         'SELECT COUNT(*) as result FROM [@prefix@]comment WHERE citem=[@citem@] LIMIT 1',
+                         $ph
+                     );
         $res         = (int)quickQuery($sql);
 
         return ($res > 0);
     }
-
 }

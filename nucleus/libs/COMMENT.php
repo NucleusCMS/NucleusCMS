@@ -27,10 +27,10 @@ class COMMENT
     public static function getComment($commentid)
     {
         $query    = sprintf(
-            "SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid FROM %s LEFT OUTER JOIN %s ON `cmember`=`mnumber` WHERE `cnumber`=%s"
-            , sql_table('comment')
-            , sql_table('member')
-            , (int)$commentid
+            "SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid FROM %s LEFT OUTER JOIN %s ON `cmember`=`mnumber` WHERE `cnumber`=%s",
+            sql_table('comment'),
+            sql_table('member'),
+            (int)$commentid
         );
         $comments = sql_query($query);
 
@@ -60,10 +60,12 @@ class COMMENT
         $comment['email']  = trim(strtr($comment['email'], "\'\"\n", '-- '));
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-        if ( ! empty($comment['userid'])
+        if (! empty($comment['userid'])
              && (strpos($comment['userid'], 'http://') !== 0)
-             && (strpos($comment['userid'],
-                    'https://') !== 0)) {
+             && (strpos(
+                 $comment['userid'],
+                 'https://'
+             ) !== 0)) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 
@@ -144,7 +146,7 @@ class COMMENT
             $post = ',' . $post;
         }
 
-        if ( ! preg_match('#^' . $protocol . '://#', $url)) {
+        if (! preg_match('#^' . $protocol . '://#', $url)) {
             $linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://')
                          . $url;
         } else {
@@ -158,8 +160,11 @@ class COMMENT
         }
 
         return $pre . '<a href="' . $linkedUrl . '" rel="nofollow">'
-               . shorten($displayedUrl, 30,
-                '...') . '</a>' . $post;
+               . shorten(
+                   $displayedUrl,
+                   30,
+                   '...'
+               ) . '</a>' . $post;
     }
 
 
@@ -172,7 +177,7 @@ class COMMENT
      */
     public static function prepareBody_cb($match)
     {
-        if ( ! preg_match('/^[a-z]+/i', $match[2], $protocol)) {
+        if (! preg_match('/^[a-z]+/i', $match[2], $protocol)) {
             return $match[0];
         }
 
@@ -194,5 +199,4 @@ class COMMENT
                 break;
         }
     }
-
 }

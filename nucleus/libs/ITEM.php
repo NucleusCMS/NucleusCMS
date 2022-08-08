@@ -52,18 +52,18 @@ class ITEM
         $itemid = (int)$itemid;
 
         $query = sprintf(
-            'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author,  i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos,  i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid FROM %s as i, %s as m, %s as b  WHERE i.inumber=%d and i.iauthor=m.mnumber and i.iblog=b.bnumber'
-            , sql_table('item')
-            , sql_table('member')
-            , sql_table('blog')
-            , $itemid
+            'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author,  i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos,  i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid FROM %s as i, %s as m, %s as b  WHERE i.inumber=%d and i.iauthor=m.mnumber and i.iblog=b.bnumber',
+            sql_table('item'),
+            sql_table('member'),
+            sql_table('blog'),
+            $itemid
         );
 
-        if ( ! $allowdraft) {
+        if (! $allowdraft) {
             $query .= ' and i.idraft=0';
         }
 
-        if ( ! $allowfuture) {
+        if (! $allowfuture) {
             $blog  =& $manager->getBlog(getBlogIDFromItemID($itemid));
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
         }
@@ -108,11 +108,11 @@ class ITEM
         $i_catid      = postVar('catid');
         $i_draftid    = intPostVar('draftid');
 
-        if ( ! $member->canAddItem($i_catid)) {
+        if (! $member->canAddItem($i_catid)) {
             return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
         }
 
-        if ( ! $i_actiontype) {
+        if (! $i_actiontype) {
             $i_actiontype = 'addnow';
         }
 
@@ -126,7 +126,7 @@ class ITEM
                 $i_draft = 0;
         }
 
-        if ( ! trim($i_body)) {
+        if (! trim($i_body)) {
             return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
         }
 
@@ -140,7 +140,7 @@ class ITEM
             $i_catid = $blog->createNewCategory();
 
             // show error when sth goes wrong
-            if ( ! $i_catid) {
+            if (! $i_catid) {
                 return array(
                     'status'  => 'error',
                     'message' => _ERROR_CATCREATEFAIL,
@@ -153,8 +153,14 @@ class ITEM
         }
 
         if ($i_actiontype === 'addfuture') {
-            $posttime = mktime($i_hour, $i_minutes, 0, $i_month, $i_day,
-                $i_year);
+            $posttime = mktime(
+                $i_hour,
+                $i_minutes,
+                0,
+                $i_month,
+                $i_day,
+                $i_year
+            );
 
             // make sure the date is in the future, unless we allow past dates
             if (( ! $blog->allowPastPosting())
@@ -173,9 +179,18 @@ class ITEM
             $posted = 1;
         }
 
-        $itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more,
-            $i_blogid, $i_author, $posttime, $i_closed,
-            $i_draft, $posted);
+        $itemid = $blog->additem(
+            $i_catid,
+            $i_title,
+            $i_body,
+            $i_more,
+            $i_blogid,
+            $i_author,
+            $posttime,
+            $i_closed,
+            $i_draft,
+            $posted
+        );
 
         //Setting the itemOptions
         $aOptions = requestArray('plugoption');
@@ -264,13 +279,13 @@ class ITEM
 
         // update item itsself
         $query = sprintf(
-            "UPDATE %s SET ibody='%s', ititle='%s', imore='%s', iclosed=%d, icat=%d"
-            , sql_table('item')
-            , sql_real_escape_string($body)
-            , sql_real_escape_string($title)
-            , sql_real_escape_string($more)
-            , (int)$closed
-            , (int)$catid
+            "UPDATE %s SET ibody='%s', ititle='%s', imore='%s', iclosed=%d, icat=%d",
+            sql_table('item'),
+            sql_real_escape_string($body),
+            sql_real_escape_string($title),
+            sql_real_escape_string($more),
+            (int)$closed,
+            (int)$catid
         );
 
         // if we received an updated timestamp in the past, but past posting is not allowed,
@@ -299,14 +314,14 @@ class ITEM
             }
 
             // send new item notification
-            if ( ! $isFuture && $blog->getNotifyAddress()
+            if (! $isFuture && $blog->getNotifyAddress()
                  && $blog->notifyOnNewItem()) {
                 $blog->sendNewItemNotification($itemid, $title, $body);
             }
         }
 
-        // save back to drafts        
-        if ( ! $wasdraft && ! $publish) {
+        // save back to drafts
+        if (! $wasdraft && ! $publish) {
             $query .= ', idraft=1';
             // set timestamp back to zero for a draft
             $query .= ", itime=" . mysqldate($timestamp);
@@ -360,9 +375,10 @@ class ITEM
         $new_catid = (int)$new_catid;
 
         $query = sprintf(
-            'SELECT iblog,icat FROM %s WHERE inumber=%d'
-            , sql_table('item')
-            , $itemid);
+            'SELECT iblog,icat FROM %s WHERE inumber=%d',
+            sql_table('item'),
+            $itemid
+        );
         $res   = sql_query($query);
         if ($res = (sql_query($query) && ($obj = sql_fetch_object($res)))) {
             $src_blogid = (int)$obj->iblog;
@@ -371,15 +387,15 @@ class ITEM
             return false; // unkown error,  invalid inumber ?
         }
 
-        // 
+        //
         if ($new_catid <= 0) {
             $new_catid = $src_catid;
         }
         $is_same_cat = ($src_catid == $new_catid);
 
-        if ( ! $is_same_cat) {
+        if (! $is_same_cat) {
             $new_blogid = getBlogIDFromCatID($new_catid);
-            if ( ! $new_blogid) {
+            if (! $new_blogid) {
                 return false;
             } // unkown error,  invalid catid ?
         } else {
@@ -404,16 +420,17 @@ class ITEM
         $dist
                    = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
         $src       = sprintf(
-            "ititle,ibody,imore,%s,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,%s,ikarmaneg,iposted"
-            , $new_iblog
-            , $new_icat);
+            "ititle,ibody,imore,%s,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,%s,ikarmaneg,iposted",
+            $new_iblog,
+            $new_icat
+        );
         $query     = sprintf(
-            "INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s"
-            , sql_table('item')
-            , $dist
-            , $src
-            , sql_table('item')
-            , $itemid
+            "INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s",
+            sql_table('item'),
+            $dist,
+            $src,
+            sql_table('item'),
+            $itemid
         );
 
         if (sql_query($query)) {
@@ -460,21 +477,21 @@ class ITEM
         // update item table
         sql_query(
             sprintf(
-                'UPDATE %s SET iblog=%s, icat=%d WHERE inumber=%d'
-                , sql_table('item')
-                , $new_blogid
-                , $new_catid
-                , $itemid
+                'UPDATE %s SET iblog=%s, icat=%d WHERE inumber=%d',
+                sql_table('item'),
+                $new_blogid,
+                $new_catid,
+                $itemid
             )
         );
 
         // update comments
         sql_query(
             sprintf(
-                'UPDATE %s SET cblog=%s WHERE citem=%d'
-                , sql_table('comment')
-                , $new_blogid
-                , $itemid
+                'UPDATE %s SET cblog=%s WHERE citem=%d',
+                sql_table('comment'),
+                $new_blogid,
+                $itemid
             )
         );
 
@@ -497,7 +514,7 @@ class ITEM
 
         // check to ensure only those allow to alter the item can
         // proceed
-        if ( ! $member->canAlterItem($itemid)) {
+        if (! $member->canAlterItem($itemid)) {
             return 1;
         }
 
@@ -507,18 +524,18 @@ class ITEM
         // delete item
         sql_query(
             sprintf(
-                'DELETE FROM %s WHERE inumber=%d'
-                , sql_table('item')
-                , $itemid
+                'DELETE FROM %s WHERE inumber=%d',
+                sql_table('item'),
+                $itemid
             )
         );
 
         // delete the comments associated with the item
         sql_query(
             sprintf(
-                'DELETE FROM %s WHERE citem=%d'
-                , sql_table('comment')
-                , $itemid
+                'DELETE FROM %s WHERE citem=%d',
+                sql_table('comment'),
+                $itemid
             )
         );
 
@@ -543,19 +560,19 @@ class ITEM
         $id = (int)$id;
 
         $sql = sprintf(
-            'SELECT count(*) AS result FROM %s WHERE inumber=%d'
-            , sql_table('item')
-            , $id
+            'SELECT count(*) AS result FROM %s WHERE inumber=%d',
+            sql_table('item'),
+            $id
         );
-        if ( ! $future) {
+        if (! $future) {
             $bid = getBlogIDFromItemID($id);
-            if ( ! $bid) {
+            if (! $bid) {
                 return 0;
             }
             $b   =& $manager->getBlog($bid);
             $sql .= ' AND itime<=' . mysqldate($b->getCorrectTime());
         }
-        if ( ! $draft) {
+        if (! $draft) {
             $sql .= ' AND idraft=0';
         }
         $sql .= ' LIMIT 1';
@@ -614,11 +631,11 @@ class ITEM
         }
         $i_draftid = intPostVar('draftid');
 
-        if ( ! $member->canAddItem($i_catid)) {
+        if (! $member->canAddItem($i_catid)) {
             return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
         }
 
-        if ( ! trim($i_body)) {
+        if (! trim($i_body)) {
             return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
         }
 
@@ -636,17 +653,33 @@ class ITEM
         $posttime = 0;
 
         if ($i_draftid > 0) {
-            ITEM::update($i_draftid, $i_catid, $i_title, $i_body, $i_more,
-                $i_closed, 1, 0, 0);
+            ITEM::update(
+                $i_draftid,
+                $i_catid,
+                $i_title,
+                $i_body,
+                $i_more,
+                $i_closed,
+                1,
+                0,
+                0
+            );
             $itemid = $i_draftid;
         } else {
-            $itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more,
-                $i_blogid, $i_author, $posttime, $i_closed,
-                $i_draft);
+            $itemid = $blog->additem(
+                $i_catid,
+                $i_title,
+                $i_body,
+                $i_more,
+                $i_blogid,
+                $i_author,
+                $posttime,
+                $i_closed,
+                $i_draft
+            );
         }
 
         // success
         return array('status' => 'added', 'draftid' => $itemid);
     }
-
 }

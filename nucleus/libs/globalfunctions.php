@@ -16,7 +16,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if ( ! isset($_SERVER['REQUEST_TIME_FLOAT'])) {
+if (! isset($_SERVER['REQUEST_TIME_FLOAT'])) {
     $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 }
 
@@ -92,7 +92,7 @@ $special     = requestVar('special');
 $virtualpath = (getVar('virtualpath') != null) ? getVar('virtualpath')
     : serverVar('PATH_INFO');
 
-if ( ! headers_sent() && confVar('expose_generator')) {
+if (! headers_sent() && confVar('expose_generator')) {
     header(sprintf('Generator: %s', CORE_APPLICATION_NAME));
 }
 
@@ -112,7 +112,7 @@ if (($DB_DRIVER_NAME === 'mysql') && ! function_exists('mysql_query')) {
     }
 } else {
     // installer define this value.
-    if ( ! defined('_EXT_MYSQL_EMULATE')) {
+    if (! defined('_EXT_MYSQL_EMULATE')) {
         define('_EXT_MYSQL_EMULATE', 0);
     }
 }
@@ -144,7 +144,7 @@ if ($orgRequestURI !== serverVar('REQUEST_URI')) {
     if ($bLoggingSanitizedResult) {
         addToLog(WARNING, $msg);
     }
-    if ( ! $bSanitizeAndContinue) {
+    if (! $bSanitizeAndContinue) {
         exit;
     }
 }
@@ -157,7 +157,7 @@ getConfig();
 setUrlKeys();
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
-if ( ! isset($CONF['Self'])) {
+if (! isset($CONF['Self'])) {
     $CONF['Self'] = rtrim(confVar('IndexURL'), '/'); // strip trailing
 }
 
@@ -176,8 +176,7 @@ $CONF['CategoryURL']    = confVar('Self');
 
 // switch URLMode back to normal when confVar('Self') ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
-if (
-    confVar('URLMode') === null
+if (confVar('URLMode') === null
     || (
         (confVar('URLMode') === 'pathinfo')
         && (substr(confVar('Self'), strlen(confVar('Self')) - 4) === '.php')
@@ -187,9 +186,11 @@ if (
 }
 
 // automatically use simpler toolbar for mozilla
-if ( ! confVar('DisableJsTools')
-     && str_contains(serverVar('HTTP_USER_AGENT'),
-        'Mozilla/5.0')
+if (! confVar('DisableJsTools')
+     && str_contains(
+         serverVar('HTTP_USER_AGENT'),
+         'Mozilla/5.0'
+     )
      && str_contains(serverVar('HTTP_USER_AGENT'), 'Gecko')) {
     $CONF['DisableJsTools'] = 2;
 }
@@ -198,21 +199,30 @@ if ( ! confVar('DisableJsTools')
 $member = new MEMBER();
 
 // secure cookie key settings (either 'none', 0, 8, 16, 24, or 32)
-if ( ! isset($CONF['secureCookieKey'])) {
+if (! isset($CONF['secureCookieKey'])) {
     $CONF['secureCookieKey'] = 24;
 }
 switch ($CONF['secureCookieKey']) {
     case 8:
-        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+\.[0-9]+$/',
-            '', serverVar('REMOTE_ADDR'));
+        $CONF['secureCookieKeyIP'] = preg_replace(
+            '/\.[0-9]+\.[0-9]+\.[0-9]+$/',
+            '',
+            serverVar('REMOTE_ADDR')
+        );
         break;
     case 16:
-        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+\.[0-9]+$/', '',
-            serverVar('REMOTE_ADDR'));
+        $CONF['secureCookieKeyIP'] = preg_replace(
+            '/\.[0-9]+\.[0-9]+$/',
+            '',
+            serverVar('REMOTE_ADDR')
+        );
         break;
     case 24:
-        $CONF['secureCookieKeyIP'] = preg_replace('/\.[0-9]+$/', '',
-            serverVar('REMOTE_ADDR'));
+        $CONF['secureCookieKeyIP'] = preg_replace(
+            '/\.[0-9]+$/',
+            '',
+            serverVar('REMOTE_ADDR')
+        );
         break;
     case 32:
         $CONF['secureCookieKeyIP'] = serverVar('REMOTE_ADDR');
@@ -223,7 +233,7 @@ switch ($CONF['secureCookieKey']) {
 
 // login/logout when required or renew cookies
 if (requestVar('action') === 'login') {
-    if ( ! serverVar('HTTP_ACCEPT_LANGUAGE')) {
+    if (! serverVar('HTTP_ACCEPT_LANGUAGE')) {
         header("HTTP/1.0 404 Not Found");
         exit;
     }
@@ -250,8 +260,11 @@ if (requestVar('action') === 'login') {
             'username' => postVar('login'),
         );
         $manager->notify('LoginSuccess', $param);
-        $log_message = sprintf("Login successful for %s (sharedpc=%s)",
-            postVar('login'), intPostVar('shared'));
+        $log_message = sprintf(
+            "Login successful for %s (sharedpc=%s)",
+            postVar('login'),
+            intPostVar('shared')
+        );
 
         $remote_ip   = serverVar('REMOTE_ADDR', '');
         $remote_host = serverVar('REMOTE_HOST', gethostbyaddr($remote_ip));
@@ -262,8 +275,10 @@ if (requestVar('action') === 'login') {
             }
         }
         if (serverVar('HTTP_X_FORWARDED_FOR')) {
-            $remote_proxy_ip   = explode(',',
-                serverVar('HTTP_X_FORWARDED_FOR'));
+            $remote_proxy_ip   = explode(
+                ',',
+                serverVar('HTTP_X_FORWARDED_FOR')
+            );
             $remote_proxy_ip
                                = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
@@ -280,14 +295,13 @@ if (requestVar('action') === 'login') {
     } else {
         $param = array('username' => postVar('login'));
         $manager->notify('LoginFailed', $param);
-        if ( ! trim(postVar('login'))) {
+        if (! trim(postVar('login'))) {
             ACTIONLOG::add(INFO, 'Please enter a username.');
         } else {
             loadCoreLanguage();
             if ($member->isHalt()) {
                 ACTIONLOG::add(
-                    INFO
-                    ,
+                    INFO,
                     sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, postVar('login'))
                 );
             } else {
@@ -299,20 +313,20 @@ if (requestVar('action') === 'login') {
           && cookieVar(confVar('CookiePrefix') . 'user')) {
     // remove cookies on logout
     setcookie(
-        confVar('CookiePrefix') . 'user'
-        , ''
-        , time() - 2592000
-        , confVar('CookiePath')
-        , confVar('CookieDomain')
-        , confVar('CookieSecure')
+        confVar('CookiePrefix') . 'user',
+        '',
+        time() - 2592000,
+        confVar('CookiePath'),
+        confVar('CookieDomain'),
+        confVar('CookieSecure')
     );
     setcookie(
-        confVar('CookiePrefix') . 'loginkey'
-        , ''
-        , time() - 2592000
-        , confVar('CookiePath')
-        , confVar('CookieDomain')
-        , confVar('CookieSecure')
+        confVar('CookiePrefix') . 'loginkey',
+        '',
+        time() - 2592000,
+        confVar('CookiePath'),
+        confVar('CookieDomain'),
+        confVar('CookieSecure')
     );
     $param = array('username' => cookieVar(confVar('CookiePrefix') . 'user'));
     $manager->notify('Logout', $param);
@@ -324,8 +338,10 @@ if (requestVar('action') === 'login') {
     if (confVar('secureCookieKey') !== 'none') {
         $ck = md5($ck . confVar('secureCookieKeyIP'));
     }
-    $res = $member->cookielogin(cookieVar(confVar('CookiePrefix') . 'user'),
-        $ck);
+    $res = $member->cookielogin(
+        cookieVar(confVar('CookiePrefix') . 'user'),
+        $ck
+    );
     unset($ck);
 
     // renew cookies when not on a shared computer
@@ -348,7 +364,7 @@ if (confVar('DisableSite') && ! $member->isAdmin()
     if (strlen($url) > 0) {
         redirect($url);
     } else {
-        if ( ! headers_sent()) {
+        if (! headers_sent()) {
             header("HTTP/1.0 503 Service Unavailable");
             header("Cache-Control: no-cache, must-revalidate");
             header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
@@ -382,24 +398,24 @@ include_once(NC_LIBS_PATH . 'CoreCachedData.php');
 spl_autoload_register('loadCoreClassFor_spl');
 
 // set lastVisit cookie (if allowed)
-if ( ! headers_sent()) {
+if (! headers_sent()) {
     if (confVar('LastVisit')) {
         setcookie(
-            confVar('CookiePrefix') . 'lastVisit'
-            , time()
-            , time() + 2592000
-            , confVar('CookiePath')
-            , confVar('CookieDomain')
-            , confVar('CookieSecure')
+            confVar('CookiePrefix') . 'lastVisit',
+            time(),
+            time() + 2592000,
+            confVar('CookiePath'),
+            confVar('CookieDomain'),
+            confVar('CookieSecure')
         );
     } else {
         setcookie(
-            confVar('CookiePrefix') . 'lastVisit'
-            , ''
-            , time() - 2592000
-            , confVar('CookiePath')
-            , confVar('CookieDomain')
-            , confVar('CookieSecure')
+            confVar('CookiePrefix') . 'lastVisit',
+            '',
+            time() - 2592000,
+            confVar('CookiePath'),
+            confVar('CookieDomain'),
+            confVar('CookieSecure')
         );
     }
 }
@@ -410,7 +426,7 @@ $language = getLanguageName();
 
 // check if valid charset
 if (function_exists('encoding_check')) {
-    if ( ! encoding_check(false, false, _CHARSET)) {
+    if (! encoding_check(false, false, _CHARSET)) {
         foreach (array($_GET, $_POST) as $input) {
             array_walk($input, 'encoding_check');
         }
@@ -418,7 +434,7 @@ if (function_exists('encoding_check')) {
 }
 
 // make sure the archivetype skinvar keeps working when _ARCHIVETYPE_XXX not defined
-if ( ! defined('_ARCHIVETYPE_MONTH')) {
+if (! defined('_ARCHIVETYPE_MONTH')) {
     define('_ARCHIVETYPE_DAY', 'day');
     define('_ARCHIVETYPE_MONTH', 'month');
     define('_ARCHIVETYPE_YEAR', 'year');
@@ -435,7 +451,7 @@ if (confVar('URLMode') === 'pathinfo') {
     );
     $manager->notify('ParseURL', $param);
 
-    if ( ! $parsed) {
+    if (! $parsed) {
         // default implementation
         $data  = explode('/', $virtualpath);
         $total = count($data);
