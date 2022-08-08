@@ -214,28 +214,39 @@ plugid , plugin_options<br />
 <pre class="example"><code>&lt;?php
 class NP_HelloWorld extends NucleusPlugin
 {
-    function getName()    {return 'Hello World';} // プラグインの名前
-    function getVersion() {return '1.0';}         // プラグインのバージョン
-    function getAuthor()  {return 'My name';}     // プラグインの作者
-    function getURL()     {return 'http://example.com/';}
-                                                  // プラグインのサイトURL mailto:foo@example.com の形式も可
-    function getDescription() {return 'これはテストプラグインです。';}
-                                                  // インストール済みのプラグインリストに表示される説明文
-    function doSkinVar($skinType)
+    public function getName()    { return 'Hello World'; } // プラグインの名前
+    public function getVersion() { return '1.0'; }         // プラグインのバージョン
+    public function getAuthor()  { return 'My name'; }     // プラグインの作者
+
+    // プラグインのサイトURL mailto:foo@example.com の形式も可
+    public function getURL()
+    {
+        return 'http://example.com/';
+    }
+
+    // インストール済みのプラグインリストに表示される説明文
+    public function getDescription()
+    {
+        return 'これはテストプラグインです。';
+    }
+
+    public function doSkinVar($skinType)
     {
         echo 'Hello World!';
     }
 
-	function supportsFeature ($feature)
-	{
-		return in_array($feature, array(
-//			'SqlTablePrefix',  // v3.80で廃止
-//			'SqlApi',          // v3.80で廃止
-//			'SqlApi_SQL92',    // (v3.80-) : データベースがMySQL以外の場合で、プラグインがテーブルを持っている場合に必要
-//			'HelpPage',
-//			'pluginadmin',
-//			'handleSpam',
-			));
+    public function supportsFeature($feature)
+    {
+        return in_array($feature, array(
+//            'SqlTablePrefix',  // v3.80で廃止
+//            'SqlApi',          // v3.80で廃止
+//            'SqlApi_SQL92',    // (v3.80-) : データベースがMySQL以外の場合で、プラグインがテーブルを持っている場合に必要
+//            'HelpPage',
+//            'pluginadmin',
+//            'handleSpam',
+            ));
+    }
+
 }
 </code></pre>
 

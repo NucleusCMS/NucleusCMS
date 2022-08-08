@@ -119,42 +119,42 @@ Ok, lets start by writing a simple plugin. Basically, each plugin is a PHP class
 
 class NP_HelloWorld extends NucleusPlugin
 {
-	function getName()    { return 'Hello World'; } // name of plugin
-	function getVersion() { return '1.0'; }         // version of the plugin
-	function getAuthor()  { return 'My name'; }     // author of plugin
+    public function getName()    { return 'Hello World'; } // name of plugin
+    public function getVersion() { return '1.0'; }         // version of the plugin
+    public function getAuthor()  { return 'My name'; }     // author of plugin
 
-	// an URL to the plugin website
-	// can also be of the form mailto:foo@bar.com
-	function getURL()
-	{
-		return 'http://nucleuscms.org/';
-	}
+    // an URL to the plugin website
+    // can also be of the form mailto:foo@bar.com
+    public function getURL()
+    {
+        return 'http://nucleuscms.org/';
+    }
 
-	// a description to be shown on the installed plugins listing
-	function getDescription()
-	{
-		return 'Just a sample plugin.';
-	}
+    // a description to be shown on the installed plugins listing
+    public function getDescription()
+    {
+        return 'Just a sample plugin.';
+    }
 
-	function doSkinVar($skinType)
-	{
-		echo 'Hello World!';
-	}
+    public function doSkinVar($skinType)
+    {
+        echo 'Hello World!';
+    }
 
-	function supportsFeature ($feature)
-	{
-		return in_array($feature, array(
-//			'SqlTablePrefix',  // removed after v3.80
-//			'SqlApi',          // removed after v3.80
-//			'SqlApi_SQL92',   // (v3.80-) : Required if the database is other than MySQL and the plugin has a table
-//			'HelpPage',
-//			'pluginadmin',
-//			'handleSpam',
-			));
-	}
+    public function supportsFeature ($feature)
+    {
+        return in_array($feature, array(
+//            'SqlTablePrefix',  // removed after v3.80
+//            'SqlApi',          // removed after v3.80
+//            'SqlApi_SQL92',   // (v3.80-) : Required if the database is other than MySQL and the plugin has a table
+//            'HelpPage',
+//            'pluginadmin',
+//            'handleSpam',
+            ));
+    }
 
 }
-?&gt;</code></pre>
+</code></pre>
 
 <ol>
 	<li>
