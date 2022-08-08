@@ -247,16 +247,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
         }
         //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        global $DB_DRIVER_NAME;
-        switch (strtolower($DB_DRIVER_NAME))
-        {
-            case 'sqlite':
-                $MYSQL_CONN = $SQL_DBH;
-                // Fatal error: Uncaught Error: Trying to clone an uncloneable object of class PDO
-                break;
-            default:
-                $MYSQL_CONN = clone $SQL_DBH;
-                break;
+        if (7*10000 + 2*100 <= PHP_VERSION_ID) {
+            $MYSQL_CONN = $SQL_DBH; // PHP[5.x - 8.2]
+        } else {
+            $MYSQL_CONN = clone $SQL_DBH; // PHP[5.x - 7.1]
+            // PHP[7.2 - 8.2] Fatal error: Uncaught Error: Trying to clone an uncloneable object of class PDO
         }
 
         return $SQL_DBH;
@@ -392,7 +387,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         //echo '<hr />'.print_r($dbh,true).'<hr />';
         //exit;
         if ( ! is_null($dbh)) {
-            if ($dbh->exec('USE ' . $db) !== false) {
+            if ($dbh->exec(sprintf('USE `%s`', (string) $db)) !== false) {
                 return 1;
             }
 
@@ -539,7 +534,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         global $SQL_DBH;
 
         if ($dbh === null) {
-            return $SQL_DBH->quote($val);
+            return $SQL_DBH->quote((string) $val);
         }
 
         return $dbh->quote($val);
@@ -684,13 +679,13 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_field($res, $offset = 0)
     {
-        $obj     = null;
-        $results = $res->getColumnMeta($offset);
-        foreach ($results as $key => $value) {
-            $obj->$key = $value;
+        if (is_object($res) && ($res instanceof PDOStatement)) {
+            $results = $res->getColumnMeta($offset);
+            if (is_array($results) && count($results)>0) {
+                return (object) $results;
+            }
         }
-
-        return $obj;
+        return null;
     }
 
     /**
@@ -725,7 +720,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_getTableColumnNames($tablename)
     {
         global $SQL_DBH;
-        if ( ! $SQL_DBH) {
+        if (! $SQL_DBH || ! is_string($tablename) || $tablename==='') {
             return array();
         }
 
@@ -769,6 +764,9 @@ if ( ! function_exists('sql_fetch_assoc')) {
         $ColumnName,
         $casesensitive = false
     ) {
+        if (! is_string($tablename) || $tablename==='') {
+            return false;
+        }
         $names = sql_getTableColumnNames($tablename);
 
         if ( ! $names) {
@@ -794,7 +792,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_existTableName($tablename)
     {
         global $SQL_DBH;
-        if ( ! $SQL_DBH) {
+        if (! $SQL_DBH || ! is_string($tablename) || $tablename === '') {
             return false;
         }
 
@@ -1025,7 +1023,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
             return false;
         }
 
-        $res = $SQL_DBH->prepare($sql);
+        $res = $SQL_DBH->prepare((string) $sql);
         if ( ! $res && $CONF['debug']) {
             sql_print_error(sql_error($SQL_DBH));
         }
@@ -1062,7 +1060,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if ( ! $SQL_DBH) {
             return false;
         }
-        $stmt = $SQL_DBH->prepare($sql);
+        $stmt = $SQL_DBH->prepare((string) $sql);
         if ($stmt && $stmt->execute($input_parameters)) {
             return $stmt;
         }

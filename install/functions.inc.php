@@ -191,10 +191,10 @@ function doInstall() {
     $mysql_host        = postVar('install_db_host','localhost');
     $mysql_user        = postVar('install_db_user','root');
     $mysql_password    = postVar('install_db_password','');
-    $mysql_database    = postVar('install_db_database');
+    $mysql_database    = trim((string) postVar('install_db_database'));
     $mysql_create      = postVar('install_db_create');
     $mysql_usePrefix   = postVar('install_db_usePrefix');
-    $mysql_prefix      = postVar('install_db_tablePrefix');
+    $mysql_prefix      = trim((string) postVar('install_db_tablePrefix'));
     $config_indexurl   = postVar('IndexURL');
     $config_adminurl   = postVar('AdminURL');
     $config_adminpath  = postVar('AdminPath');
@@ -243,6 +243,13 @@ function doInstall() {
         @date_default_timezone_set((function_exists('date_default_timezone_get')) ? @date_default_timezone_get() : 'UTC');
     }
 
+    if (DEBUG_INSTALL_STEPS) {
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        echo sprintf("PHP version : %s<br>\n", PHP_VERSION);
+        echo sprintf("\$DB_DRIVER_NAME : %s<br>\n", $DB_DRIVER_NAME);
+        echo sprintf("\$DB_PHP_MODULE_NAME : %s<br>\n", $DB_PHP_MODULE_NAME);
+        echo sprintf("Step1(Line:%d)", __LINE__);
+    }
     // 1. check all the data
     $errors = array();
 
@@ -308,6 +315,9 @@ function doInstall() {
         showErrorMessages($errors);
     }
 
+    if (DEBUG_INSTALL_STEPS) {
+        echo sprintf("Step2(Line:%d)", __LINE__);
+    }
     // 2. try to log in to mySQL
     $db_host = $mysql_host;
 
@@ -366,6 +376,9 @@ function doInstall() {
         $DB_HANDLE->beginTransaction(); // sql_query("begin");
 
 
+    if (DEBUG_INSTALL_STEPS) {
+        echo sprintf("Step3(Line:%d)", __LINE__);
+    }
     // 3. try to create database (if needed)
     if ($is_install_mysql)
     {
@@ -395,6 +408,9 @@ function doInstall() {
         }
     }
 
+    if (DEBUG_INSTALL_STEPS) {
+        echo sprintf("Step4(Line:%d)", __LINE__);
+    }
     // 4. try to select database
     if ($is_install_mysql)
         sql_select_db($mysql_database, $DB_HANDLE) or _doError(_ERROR17);
@@ -408,6 +424,9 @@ function doInstall() {
         sql_set_charset('utf8'); // Don't localized
     }
 
+    if (DEBUG_INSTALL_STEPS) {
+        echo sprintf("Step5(Line:%d)", __LINE__);
+    }
     // 5. execute queries
     if ($is_install_sqlite)
     {
@@ -494,8 +513,9 @@ function doInstall() {
     );
     sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost,ENT_QUOTES,_CHARSET) . '): ' . sql_error() );
 
-    if (DEBUG_INSTALL_STEPS)
-        echo sprintf("Step6(%d)", __LINE__);
+    if (DEBUG_INSTALL_STEPS) {
+        echo sprintf("Step6(Line:%d)", __LINE__);
+    }
     // 6. update global settings
     updateConfig('IndexURL',   $config_indexurl);
     updateConfig('BaseURL',    getBaseUrl());
