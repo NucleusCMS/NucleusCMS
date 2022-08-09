@@ -71,7 +71,7 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
     if (ini_get('register_globals')) {
         exit('Should be change off register_globals.');
     }
-    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {
+    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {  // php.ini:magic_quotes_runtime [ - 5.3]
         exit('Should be change php.ini: magic_quotes_gpc=0');
     }
     if (ini_get('magic_quotes_sybase')) {
@@ -251,10 +251,11 @@ include_once($DIR_LIBS . 'Utils.php');
 $manager =& MANAGER::instance();
 
 // make sure there's no unnecessary escaping:
-//set_magic_quotes_runtime(0);
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    ini_set('magic_quotes_runtime', '0');
-    set_magic_quotes_runtime(0);
+//set_magic_quotes_runtime(0); // enabled PHP[-5.3] / disabled from PHP5.4  
+if (version_compare(PHP_VERSION, '5.4.0', '<')
+    && get_magic_quotes_runtime()) {
+    @ini_set('magic_quotes_runtime', '0');
+    @set_magic_quotes_runtime(false);
 }
 
 // Avoid notices
@@ -502,10 +503,8 @@ include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}entity.php");
 include_once("{$DIR_LIBS}CoreCachedData.php");
 
-if (version_compare('5.1.0', PHP_VERSION, '<=')) {
-    // register autoload class function / PHP >= 5.1.0
-    spl_autoload_register('loadCoreClassFor_spl' . (version_compare('5.3.0', PHP_VERSION, '<=') ? '' : '_prephp53'));
-}
+// register autoload class function
+spl_autoload_register('loadCoreClassFor_spl');
 
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {

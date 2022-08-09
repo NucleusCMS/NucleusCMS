@@ -116,17 +116,7 @@ if (!($member->isLoggedIn() && $member->isAdmin())) {
     if (!function_exists('hsc')) {
         function hsc($string)
         {
-            if (version_compare(PHP_VERSION, '5.2.3', '>=')) {
-                return htmlspecialchars($string, ENT_QUOTES, _CHARSET, false);
-            } else {
-                if (function_exists('htmlspecialchars_decode')) {
-                    $string = htmlspecialchars_decode($string, ENT_QUOTES);
-                } else {
-                    $string = strtr($string, array_flip(get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES)));
-                }
-                
-                return htmlspecialchars($string, ENT_QUOTES, _CHARSET);
-            }
+            return htmlspecialchars($string, ENT_QUOTES, _CHARSET, false);
         }
     }
 

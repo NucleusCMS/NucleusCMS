@@ -175,8 +175,8 @@ class Utils
             return $ret;
         } // end curl
 
-        if ($connecttimeout > 0 && version_compare(PHP_VERSION, '5.2.1', '>=')) {
-            $opts = array('http' => array('timeout' => $connecttimeout)); // php-5.2.1 Added timeout.  default_socket_timeout
+        if ($connecttimeout > 0) {
+            $opts = array('http' => array('timeout' => $connecttimeout));
             $sc = stream_context_create($opts);
             $c = @fopen($url, "r", false, $sc);
         } else {
