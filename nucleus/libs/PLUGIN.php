@@ -737,8 +737,7 @@ class NucleusPlugin
 
     final public function _getEventList()
     {
-        /// PHP_VERSION_ID : PHP[5.2.7-]
-        if (defined('PHP_VERSION_ID') && (80100 <= PHP_VERSION_ID)) {
+        if (80100 <= PHP_VERSION_ID) {
             static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
             $index = get_class($this);
             if (!isset($_shared_data[$index])) {
@@ -1124,8 +1123,7 @@ class NucleusPlugin
 
     public function checkRemoteUpdate()
     {
-        /// PHP_VERSION_ID : PHP[5.2.7-]
-        if (defined('PHP_VERSION_ID') && (80100 <= PHP_VERSION_ID)) {
+        if (80100 <= PHP_VERSION_ID) {
             static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
             $index = get_class($this);
             if (!isset($_shared_data[$index])) {

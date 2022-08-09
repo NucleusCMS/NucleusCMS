@@ -2594,15 +2594,6 @@ function loadCoreClassFor_spl($classname)
     }
 }
 
-function loadCoreClassFor_spl_prephp53($classname)
-{
- // for PHP 5.1.0 - 5.2
-    global $DIR_LIBS;
-    if (@is_file("{$DIR_LIBS}/{$classname}.php")) {
-        require_once "{$DIR_LIBS}/{$classname}.php";
-    }
-}
-
 if (!function_exists('get_magic_quotes_gpc')) {
     function get_magic_quotes_gpc()
     {

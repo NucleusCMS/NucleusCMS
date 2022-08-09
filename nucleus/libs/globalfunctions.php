@@ -29,22 +29,19 @@ if (!isset($_SERVER['REQUEST_TIME'])) {
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
-/*
 // Set PHP of the minimum requirement of the target of the current release here.
 if (version_compare(phpversion(), '5.3.0', '<')) {
-    // PHP 5.6 and 7.0 : Security Support Until Dec 2018
     if (!headers_sent()) {
         header("HTTP/1.0 503 Service Unavailable");
         header("Cache-Control: no-cache, must-revalidate");
         header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
     }
     $msg = 'The php of server module does not meet the execution minimum requirement.';
-    echo "<html><head><title>Error</title></head><body><h1>Error</h1>$msg</body></html>";
+    echo "<html><head><title>Error</title></head><body><h1>Error</h1><div style='font-size: large'>$msg</div></body></html>";
     exit();
 }
-*/
 
-define('HAS_CATCH_ERROR', version_compare('7.0.0', PHP_VERSION, '<='));
+define('HAS_CATCH_ERROR', 70000 <= PHP_VERSION_ID);
 
 // needed if we include globalfunctions from install.php
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
@@ -70,11 +67,11 @@ if (!defined('DEFAULT_USER_AGENT')) {
 }
 ini_set('user_agent', DEFAULT_USER_AGENT);
 
-if (version_compare(phpversion(), '5.4.0', '<')) {
+if (PHP_VERSION_ID < 50400) { // [ - 5.3]
     if (ini_get('register_globals')) {
         exit('Should be change off register_globals.');
     }
-    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {
+    if (get_magic_quotes_runtime() || ini_get('magic_quotes_gpc')) {  // php.ini:magic_quotes_runtime [ - 5.3]
         exit('Should be change php.ini: magic_quotes_gpc=0');
     }
     if (ini_get('magic_quotes_sybase')) {
@@ -254,10 +251,11 @@ include_once($DIR_LIBS . 'Utils.php');
 $manager =& MANAGER::instance();
 
 // make sure there's no unnecessary escaping:
-//set_magic_quotes_runtime(0);
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    ini_set('magic_quotes_runtime', '0');
-    set_magic_quotes_runtime(0);
+//set_magic_quotes_runtime(0); // enabled PHP[-5.3] / disabled from PHP5.4  
+if (version_compare(PHP_VERSION, '5.4.0', '<')
+    && get_magic_quotes_runtime()) {
+    @ini_set('magic_quotes_runtime', '0');
+    @set_magic_quotes_runtime(false);
 }
 
 // Avoid notices
@@ -505,10 +503,8 @@ include_once("{$DIR_LIBS}SEARCH.php");
 include_once("{$DIR_LIBS}entity.php");
 include_once("{$DIR_LIBS}CoreCachedData.php");
 
-if (version_compare('5.1.0', PHP_VERSION, '<=')) {
-    // register autoload class function / PHP >= 5.1.0
-    spl_autoload_register('loadCoreClassFor_spl' . (version_compare('5.3.0', PHP_VERSION, '<=') ? '' : '_prephp53'));
-}
+// register autoload class function
+spl_autoload_register('loadCoreClassFor_spl');
 
 // set lastVisit cookie (if allowed)
 if (!headers_sent()) {

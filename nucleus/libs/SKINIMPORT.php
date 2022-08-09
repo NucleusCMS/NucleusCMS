@@ -53,8 +53,9 @@ class SKINIMPORT
     function __construct()
     {
         // disable magic_quotes_runtime if it's turned on
-        if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-            set_magic_quotes_runtime(0);
+        if (version_compare(PHP_VERSION, '5.4.0', '<')
+            && get_magic_quotes_runtime()) { // magic_quotes_runtime [ - 5.3]
+            @set_magic_quotes_runtime(false);
         }
 
         // debugging mode?
