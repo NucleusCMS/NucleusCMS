@@ -202,8 +202,10 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_categorylink()
     {
-        echo createLink('category',
-            array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category));
+        echo createLink(
+            'category',
+            array('catid' => $this->currentItem->catid, 'name' => $this->currentItem->category)
+        );
     }
 
     /**
@@ -350,7 +352,6 @@ class ITEMACTIONS extends BaseActions
                 echo $karma->getTotalScore();
                 break;
         }
-
     }
 
     /**
@@ -497,8 +498,11 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_daylink()
     {
-        echo createArchiveLink($this->blog->getID(), date('Y-m-d', $this->currentItem->timestamp),
-            $this->linkparams);
+        echo createArchiveLink(
+            $this->blog->getID(),
+            date('Y-m-d', $this->currentItem->timestamp),
+            $this->linkparams
+        );
     }
 
     /**
@@ -514,8 +518,12 @@ class ITEMACTIONS extends BaseActions
         if ($this->showComments && $this->blog->commentsEnabled()) {
             $comments = new COMMENTS($this->currentItem->itemid);
             $comments->setItemActions($this);
-            $comments->showComments($this->template, $maxToShow, $this->currentItem->closed ? 0 : 1,
-                $this->strHighlight);
+            $comments->showComments(
+                $this->template,
+                $maxToShow,
+                $this->currentItem->closed ? 0 : 1,
+                $this->strHighlight
+            );
         }
     }
 
@@ -801,8 +809,7 @@ class ITEMACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -826,8 +833,7 @@ class ITEMACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -898,10 +904,12 @@ class ITEMACTIONS extends BaseActions
 
     function parse_hascomment()
     {
-        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-            sql_table('comment'), intval($this->currentItem->itemid));
+        $sqlText = sprintf(
+            "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+            sql_table('comment'),
+            intval($this->currentItem->itemid)
+        );
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }
-
 }

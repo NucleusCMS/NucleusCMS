@@ -51,7 +51,7 @@ class CoreCachedData
                 // cd_datetime      : time when data was saved
                 // $expire_datetime : Expired time
                 //                    $expire_datetime = now - (Effective time)
-                //                    If it is larger than cd_datetime, data expired                
+                //                    If it is larger than cd_datetime, data expired
                 // check if saved time > $expire_datetime
                 $sql .= " AND `cd_datetime` > ?";
                 $input_parameters[] = $expire_datetime;
@@ -63,7 +63,8 @@ class CoreCachedData
             }
         } else {
             $sql = "SELECT count(*) as result FROM `$tablename`"
-                . sprintf(" WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
+                . sprintf(
+                    " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                     sql_real_escape_string($type),
                     sql_real_escape_string($sub_type),
                     $sub_id,
@@ -71,8 +72,10 @@ class CoreCachedData
                 );
             if (!empty($expire_datetime)) {
                 // check if saved time > $expire_datetime
-                $sql .= sprintf(" AND `cd_datetime` > '%s'",
-                    sql_real_escape_string($expire_datetime));
+                $sql .= sprintf(
+                    " AND `cd_datetime` > '%s'",
+                    sql_real_escape_string($expire_datetime)
+                );
             }
             $res = quickQuery($sql);
             return intval($res) > 0;
@@ -82,7 +85,6 @@ class CoreCachedData
 
     public static function setDataEx($type, $sub_type, $sub_id, $name, $value)
     {
-        global $CONF;
         $tablename = sql_table(self::base_tablename);
 
         $type = strval($type);
@@ -91,18 +93,27 @@ class CoreCachedData
         $value = strval($value);
         $sub_id = intval($sub_id);
 
-        if ($CONF['debug']) {
+        if (isDebugMode()) {
             if (strlen($type) > 50) {
-                SYSTEMLOG::addUnique('error', 'Error',
-                    sprintf('%s : $type is to long:%d : %s', __FUNCTION__, strlen($type), $type));
+                SYSTEMLOG::addUnique(
+                    'error',
+                    'Error',
+                    sprintf('%s : $type is to long:%d : %s', __FUNCTION__, strlen($type), $type)
+                );
             }
             if (strlen($sub_type) > 50) {
-                SYSTEMLOG::addUnique('error', 'Error',
-                    sprintf('%s : $sub_type is to long:%d : %s', __FUNCTION__, strlen($sub_type), $sub_type));
+                SYSTEMLOG::addUnique(
+                    'error',
+                    'Error',
+                    sprintf('%s : $sub_type is to long:%d : %s', __FUNCTION__, strlen($sub_type), $sub_type)
+                );
             }
             if (strlen($name) > 100) {
-                SYSTEMLOG::addUnique('error', 'Error',
-                    sprintf('%s : $name is to long:%d : %s', __FUNCTION__, strlen($name), $name));
+                SYSTEMLOG::addUnique(
+                    'error',
+                    'Error',
+                    sprintf('%s : $name is to long:%d : %s', __FUNCTION__, strlen($name), $name)
+                );
             }
         }
 
@@ -110,10 +121,13 @@ class CoreCachedData
         if (self::existDataEx($type, $sub_type, $sub_id, $name)) {
             // update data
             $sql = "UPDATE `{$tablename}`"
-                . sprintf(" SET `cd_value` = '%s', `cd_datetime` = '%s'",
+                . sprintf(
+                    " SET `cd_value` = '%s', `cd_datetime` = '%s'",
                     sql_real_escape_string($value),
-                    sql_real_escape_string($datetime))
-                . sprintf(" WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
+                    sql_real_escape_string($datetime)
+                )
+                . sprintf(
+                    " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                     sql_real_escape_string($type),
                     sql_real_escape_string($sub_type),
                     $sub_id,
@@ -126,7 +140,8 @@ class CoreCachedData
         // insert data
         $sql = "INSERT INTO `{$tablename}`"
             . "(`cd_type`, `cd_sub_type`, `cd_sub_id`, `cd_name`, `cd_value`, `cd_datetime`)"
-            . sprintf(" VALUES('%s', '%s', %d, '%s', '%s', '%s') ",
+            . sprintf(
+                " VALUES('%s', '%s', %d, '%s', '%s', '%s') ",
                 sql_real_escape_string($type),
                 sql_real_escape_string($sub_type),
                 $sub_id,
@@ -154,7 +169,8 @@ class CoreCachedData
             $sql .= sprintf(" `cd_datetime` < '%s' AS 'expired'", sql_real_escape_string($expire_datetime));
         }
         $sql .= " FROM `{$tablename}`"
-            . sprintf(" WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
+            . sprintf(
+                " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                 sql_real_escape_string($type),
                 sql_real_escape_string($sub_type),
                 $sub_id,
@@ -186,7 +202,8 @@ class CoreCachedData
         }
 
         $sql = "DELETE FROM `{$tablename}`"
-            . sprintf(" WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
+            . sprintf(
+                " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                 sql_real_escape_string($type),
                 sql_real_escape_string($sub_type),
                 $sub_id,
@@ -240,5 +257,4 @@ CREATE TABLE `{$tablename}` (
 EOD;
         sql_query($sql);
     }
-
 }

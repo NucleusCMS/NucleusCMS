@@ -14,7 +14,6 @@ class Utils
 {
     function __construct()
     {
-
     }
 
     //  bool mail ( string $to , string $subject , string $message [, string $additional_headers [, string $additional_parameters ]] )
@@ -87,8 +86,10 @@ class Utils
                     // Workaround for %e format
                     $format = preg_replace('#(?<!%)((?:%%)*)%e#', '\1%#d', $format);
                     // Workaround for Multibyte and ANSI character sets.
-                    $res = mb_convert_encoding(@strftime(mb_convert_encoding($format, $locale_mbcahrset, _CHARSET),
-                        $timestamp), _CHARSET, $locale_mbcahrset);
+                    $res = mb_convert_encoding(@strftime(
+                        mb_convert_encoding($format, $locale_mbcahrset, _CHARSET),
+                        $timestamp
+                    ), _CHARSET, $locale_mbcahrset);
 //                    if ($old_locale != $locale)
 //                        setlocale(LC_CTYPE, $old_locale); // restore locale
 //    var_dump(basename(__FILE__).':'. __LINE__, $old_locale, $locale, $format, $timestamp, $res); // debug
@@ -226,5 +227,4 @@ class Utils
         }
         return false;
     }
-
 }

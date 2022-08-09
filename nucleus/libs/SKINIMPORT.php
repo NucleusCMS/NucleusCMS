@@ -61,7 +61,6 @@ class SKINIMPORT
         $this->debug = 0;
 
         $this->reset();
-
     }
 
     function reset()
@@ -99,7 +98,6 @@ class SKINIMPORT
         xml_set_element_handler($this->parser, 'startElement', 'endElement');
         xml_set_character_data_handler($this->parser, 'characterData');
         xml_parser_set_option($this->parser, XML_OPTION_CASE_FOLDING, 0);
-
     }
 
     /**
@@ -258,8 +256,11 @@ class SKINIMPORT
             if (isset($data['specialpage'])) {
                 foreach ($data['specialpage'] as $pageName => $pageData) {
                     $options = array('spartstype' => 'specialpage');
-                    $skinObj->update($pageName, (isset($pageData['content']) ? (string)$pageData['content'] : ''),
-                        $options);
+                    $skinObj->update(
+                        $pageName,
+                        (isset($pageData['content']) ? (string)$pageData['content'] : ''),
+                        $options
+                    );
                 }
             }
         }
@@ -287,8 +288,6 @@ class SKINIMPORT
                 }
             }
         }
-
-
     }
 
     /**
@@ -386,7 +385,6 @@ class SKINIMPORT
 
         // character data never contains other tags
         $this->clearCharacterData();
-
     }
 
     /**
@@ -443,7 +441,6 @@ class SKINIMPORT
                 break;
         }
         $this->clearCharacterData();
-
     }
 
     /**
@@ -504,7 +501,6 @@ class SKINIMPORT
         closedir($dirhandle);
 
         return $candidates;
-
     }
 
     function convValue($text)

@@ -16,10 +16,12 @@
 
 upgrade_do340();
 
-function upgrade_do340() {
+function upgrade_do340()
+{
 
-    if (upgrade_checkinstall(340))
+    if (upgrade_checkinstall(340)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
     
     // lengthen tpartname column of nucleus_template
     $query = sprintf(" ALTER TABLE `%s` MODIFY `tpartname` varchar(64) NOT NULL default ''", sql_table('template'));
@@ -32,13 +34,13 @@ function upgrade_do340() {
     // create DebugVars setting
     if (!upgrade_checkIfCVExists('DebugVars')) {
         $query = 'INSERT INTO '.sql_table('config')." VALUES ('DebugVars',0)";
-        upgrade_query('Creating DebugVars config value',$query);    
+        upgrade_query('Creating DebugVars config value', $query);
     }
     
     // create DefaultListSize setting
     if (!upgrade_checkIfCVExists('DefaultListSize')) {
         $query = 'INSERT INTO '.sql_table('config')." VALUES ('DefaultListSize',10)";
-        upgrade_query('Creating DefaultListSize config value',$query);  
+        upgrade_query('Creating DefaultListSize config value', $query);
     }
     
     // changing the member table
@@ -50,7 +52,4 @@ function upgrade_do340() {
     // 3.3 -> 3.4
     // update database version
     update_version('340');
-    
 }
-
-?>

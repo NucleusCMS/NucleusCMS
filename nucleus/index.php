@@ -20,7 +20,7 @@ $preload_admin_custum_php = dirname(dirname(__FILE__)) . '/settings/preload-admi
 if (@is_file($preload_admin_custum_php)) {
     include_once $preload_admin_custum_php;
 }
-define( "LOADED_PRELOAD_ADMIN_CUSTUM_PHP" , in_array(realpath($preload_admin_custum_php) , get_included_files()) );
+define("LOADED_PRELOAD_ADMIN_CUSTUM_PHP", in_array(realpath($preload_admin_custum_php), get_included_files()));
 unset($preload_admin_custum_php);
 
 // we are using admin stuff:
@@ -59,8 +59,8 @@ if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
     $bNeedsLogin = true;
 }
 
-if ($action == 'lost_pwd' && (strcasecmp($_SERVER['REQUEST_METHOD'],'GET') == 0)) {
-    $bNeedsLogin = FALSE;
+if ($action == 'lost_pwd' && (strcasecmp($_SERVER['REQUEST_METHOD'], 'GET') == 0)) {
+    $bNeedsLogin = false;
 }
 
 if ($bNeedsLogin) {

@@ -58,8 +58,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
         if (substr(PHP_OS, 0, 3) === 'WIN' && $DB_HOST === 'localhost') {
             $MYSQL_HOST = '127.0.0.1';
         }
-        $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER,
-            $DB_PASSWORD) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
+        $MYSQL_CONN = @mysql_connect(
+            $DB_HOST,
+            $DB_USER,
+            $DB_PASSWORD
+        ) or startUpError('<p>Could not connect to MySQL database.</p>', 'Connect Error');
         if (!sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
             $MYSQL_CONN = null;
@@ -156,7 +159,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
                 ACTIONLOG::add(WARNING, $str);
             }
             echo 'error';
-            if ($CONF['debug']) {
+            if (isDebugMode()) {
                 print_r(debug_backtrace());
             }
         }
@@ -524,7 +527,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
      * Jan.20, 2011 by kotorisan and cacher
      * refering to their conversation below,
      * http://japan.nucleuscms.org/bb/viewtopic.php?p=26581
-     * 
+     *
      * NOTE: shift_jis is only supported for output. Using shift_jis in DB is prohibited.
      * NOTE: iso-8859-x,windows-125x if _CHARSET is unset.
      */

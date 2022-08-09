@@ -253,8 +253,7 @@ class ACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -278,8 +277,7 @@ class ACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -522,7 +520,6 @@ class ACTIONS extends BaseActions
         $this->_preBlogContent('achive', $blog);
         $blog->showArchive($template, $y, $m, $d);
         $this->_postBlogContent('achive', $blog);
-
     }
 
     /**
@@ -1030,7 +1027,6 @@ class ACTIONS extends BaseActions
 
         // 1. only allow the member-details-page specific variables on member pages
         if ($this->skintype == 'member') {
-
             switch ($what) {
                 case 'name':
                     echo hsc($memberinfo->getDisplayName());
@@ -1121,7 +1117,6 @@ class ACTIONS extends BaseActions
                 $this->doForm('membermailform-disallowed');
             }
         }
-
     }
 
     /**
@@ -1623,10 +1618,12 @@ class ACTIONS extends BaseActions
         global $itemid;
 
         $itemid = intval($itemid);
-        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-            sql_table('comment'), intval($itemid));
+        $sqlText = sprintf(
+            "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+            sql_table('comment'),
+            intval($itemid)
+        );
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }
-
 }

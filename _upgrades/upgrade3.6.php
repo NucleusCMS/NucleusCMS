@@ -17,12 +17,14 @@
 
 upgrade_do360();
 
-function upgrade_do360() {
+function upgrade_do360()
+{
 
-    if (upgrade_checkinstall(360))
+    if (upgrade_checkinstall(360)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
     
-    // changing the blog table to lengthen bnotify field 
+    // changing the blog table to lengthen bnotify field
     $query = "    ALTER TABLE `" . sql_table('blog') . "`
                     MODIFY `bnotify` varchar(128) default NULL ;";
     
@@ -32,4 +34,3 @@ function upgrade_do360() {
     // update database version
     update_version('360');
 }
-

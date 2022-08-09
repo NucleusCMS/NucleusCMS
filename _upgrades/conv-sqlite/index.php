@@ -10,8 +10,7 @@
 
 $uri = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $uri = $uri[0];
-if (preg_match('#/[^/]+$#i', $uri) && !preg_match('#/index.php$#i', $uri))
-{
+if (preg_match('#/[^/]+$#i', $uri) && !preg_match('#/index.php$#i', $uri)) {
     header("Location: " . $uri . "/");
     exit;
 }
@@ -21,10 +20,13 @@ define('_CHARSET', 'UTF-8');
 
 // auto search config.php
 $self = '_upgrades/conv-sqlite/index.php';
-$basepath = str_replace('\\','/', substr(__FILE__,0,-strlen($self)));
+$basepath = str_replace('\\', '/', substr(__FILE__, 0, -strlen($self)));
 $config_file = $basepath . 'config.php';
-if(is_file($config_file)) include_once($config_file);
-else exit($config_file . ' Config file is not exists');
+if (is_file($config_file)) {
+    include_once($config_file);
+} else {
+    exit($config_file . ' Config file is not exists');
+}
 ob_end_clean();
 
 $installer = new ConvertInstaller($basepath);
@@ -44,41 +46,37 @@ class ConvertInstaller
 //            exit;
 //        }
 
-        if (!isset($member) || !$member->isLoggedIn())
-        {
+        if (!isset($member) || !$member->isLoggedIn()) {
             $this->showLogin('index.php');
             exit;
         }
 
-        if ($CONF['DatabaseVersion'] != CORE_APPLICATION_DATABASE_VERSION_ID)
-        {
+        if ($CONF['DatabaseVersion'] != CORE_APPLICATION_DATABASE_VERSION_ID) {
             $msg = $this->_('Before conversion, please upgrade of the core');
-            $this->error( $msg );
+            $this->error($msg);
             exit;
         }
 
-        if (!in_array('mysql', $MYSQL_HANDLER))
-        {
+        if (!in_array('mysql', $MYSQL_HANDLER)) {
             $msg = $this->_('Connected Driver is not mysql') . ' : ' . $MYSQL_HANDLER[1];
-            $this->error( $msg );
+            $this->error($msg);
             exit;
         }
 
-        foreach (array('pdo', 'pdo_sqlite', 'sqlite3') as $value)
-        if (!extension_loaded($value))
-        {
-            $msg = $this->_('Not found') . ' : extension : ' . $value;
-            $this->error( $msg );
-            exit;
+        foreach (array('pdo', 'pdo_sqlite', 'sqlite3') as $value) {
+            if (!extension_loaded($value)) {
+                $msg = $this->_('Not found') . ' : extension : ' . $value;
+                $this->error($msg);
+                exit;
+            }
         }
 
-        if ($member->isAdmin())
-        {
-            if (isset($_GET['export_config']) && $_GET['export_config']=='yes' )
+        if ($member->isAdmin()) {
+            if (isset($_GET['export_config']) && $_GET['export_config']=='yes') {
                 $this->export_config();
+            }
 
-            if (is_file($this->target_db_filename))
-            {
+            if (is_file($this->target_db_filename)) {
                 $msg = $this->_('Database file is already exists') . "<br />"
                      . "settings/db_nucleus.sqlite" . "<br />"
                      . $this->_('If you want to convert, please try again move the old file');
@@ -86,19 +84,19 @@ class ConvertInstaller
                 $msg .= "<p>" . $this->_('Download the config.php') . "</p>\n";
                 $msg .= "<p>Download <a href=\"./index.php?export_config=yes\" target=\"_blank\">config.php</a></p>\n";
 
-                $this->error( $msg );
+                $this->error($msg);
                 exit;
             }
             $this->start();
             exit;
         }
 
-        $this->error( $this->_('Only super admin'));
+        $this->error($this->_('Only super admin'));
     }
 
     function printHead($title)
     {
-?>
+        ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
@@ -108,7 +106,7 @@ class ConvertInstaller
     <link rel="stylesheet" href="../../nucleus/documentation/styles/manual.css" type="text/css" />
   </head>
   <body>
-<?php
+        <?php
         echo "\n";
         echo "<h1>" . $this->_('Convert database to sqlite') ."</h1>";
     }
@@ -120,7 +118,7 @@ class ConvertInstaller
 
     function error($msg)
     {
-        $this->printHead( $this->_('Error:') );
+        $this->printHead($this->_('Error:'));
 
         echo "\n<h1>" . $this->_('Error failed') . "</h1>\n";
         echo "\n<p>" . $this->_('Error:') . "</p>\n";
@@ -134,7 +132,7 @@ class ConvertInstaller
 
     function showLogin($type)
     {
-        $this->printHead( $this->_('Login Please') );
+        $this->printHead($this->_('Login Please'));
         $name = isset($_POST['login']) ? "value='".hsc(strval($_POST['login']))."' " : '';
         ?>
         <h1><?php echo $this->_('Login Please'); ?></h1>
@@ -161,56 +159,59 @@ class ConvertInstaller
     private function _getText($text)
     {
         static $cached_array = null;
-        if (is_null($cached_array))
-        {
+        if (is_null($cached_array)) {
             $cached_array = array();
             if (!extension_loaded('SimpleXML')) {
                 return $text;
             }
             // skin for default
             $filename = dirname(__FILE__) . '/default_text.xml';
-            if (!is_file($filename))
+            if (!is_file($filename)) {
                 return $text;
+            }
             $xml = simplexml_load_file($filename);
-            if (!$xml)
+            if (!$xml) {
                 return $text;
+            }
             foreach ($xml->children() as $text_node) {
-                if ($text_node->getName() != 'text')
+                if ($text_node->getName() != 'text') {
                     continue;
+                }
                 $keyname = '';
                 $items = array();
                 foreach ($text_node->children() as $node) {
                     $key   = $node->getName();
                     $value = (string) $node;
-                    if ($key == 'key')
+                    if ($key == 'key') {
                         $keyname = $value;
-                    else
+                    } else {
                         $items[$key] = $value;
+                    }
                 }
-                if (!isset($items['default']))
+                if (!isset($items['default'])) {
                     $items['default'] = $keyname;
-                $keyname = (function_exists ('mb_strtolower') ? mb_strtolower($keyname,'UTF-8') :  strtolower($keyname));
+                }
+                $keyname = (function_exists('mb_strtolower') ? mb_strtolower($keyname, 'UTF-8') :  strtolower($keyname));
                 $cached_array[$keyname] = $items;
 //                var_dump($keyname, $items);
             }
         }
         $key = strtolower($text);
-        if (array_key_exists($key, $cached_array) && isset($cached_array[$key][_LOCALE]))
-        {
+        if (array_key_exists($key, $cached_array) && isset($cached_array[$key][_LOCALE])) {
             $subkey = _LOCALE;
-            if (!isset($cached_array[$key][$subkey]))
-            {
-                if (!isset($cached_array[$key]['default']))
+            if (!isset($cached_array[$key][$subkey])) {
+                if (!isset($cached_array[$key]['default'])) {
                     return $text;
+                }
                 $subkey = 'default';
-            }
-            else
-            {
-                if (_CHARSET == 'UTF-8')
+            } else {
+                if (_CHARSET == 'UTF-8') {
                     return $cached_array[$key][_LOCALE];
+                }
             }
-            if (!function_exists('mb_convert_encoding'))
+            if (!function_exists('mb_convert_encoding')) {
                 return $text;
+            }
             return mb_convert_encoding($cached_array[$key][$subkey], _CHARSET, 'UTF-8');
         }
         return $text; // not found
@@ -223,10 +224,10 @@ class ConvertInstaller
         // load text
         // if undefined, search constant
         $name = strtoupper(str_replace(' ', '_', $text));
-        foreach (array('','_TEXT_','_') as $prefix)
-        {
-            if (defined($prefix.$name))
+        foreach (array('','_TEXT_','_') as $prefix) {
+            if (defined($prefix.$name)) {
                 return constant($prefix.$name);
+            }
         }
         return $this->_getText($text);
     }
@@ -234,14 +235,13 @@ class ConvertInstaller
     public function start()
     {
         global $CONF;
-        $this->printHead( $this->_('Convert data mysql to sqlite') );
+        $this->printHead($this->_('Convert data mysql to sqlite'));
 
         // check mysql database
         // check sqlite is_file
         // start convert
 
-        if (isset($_POST['action']) && $_POST['action'] == "startconvert")
-        {
+        if (isset($_POST['action']) && $_POST['action'] == "startconvert") {
             $this->doConvert();
             clearstatcache();
             echo sprintf("Size: %d", filesize($this->target_db_filename));
@@ -255,15 +255,13 @@ class ConvertInstaller
             printf("<h1>%s</h1>", $this->_('Visit your web site'));
             echo "<p><ul>";
             printf('<li><a href="%s">%s</a></li>', $CONF['AdminURL'], $this->_('Login to the admin area'));
-            printf('<li><a href="%s">%s</a></li>', $CONF['BlogURL'],  $this->_('Visit your site now'));
+            printf('<li><a href="%s">%s</a></li>', $CONF['BlogURL'], $this->_('Visit your site now'));
             echo "</ul></p>";
 //            echo "\n<h3>" . $this->_('Error failed') . "</h3>\n";
 //            echo "\n<p>" . $this->_('Error:') . "</p>\n";
 //            echo sprintf("<blockquote><div>%s</div></blockquote>", $this->_('Sorry') . ', ' . $this->_('not implemented yet'));
 //            echo sprintf("<blockquote><div>%s</div></blockquote>", $this->_('Currentry supports on shell or command prompt (php_sapi is cli). Do it yourself by manually.'));
-        }
-        else
-        {
+        } else {
             echo "<p>"  . $this->_('If you want to convert start, please press the start button') ."</p>";
             echo sprintf("<p>%s %ssettings/</p>", $this->_('Save file path:'), $this->basepath);
             // Todo : Note
@@ -294,8 +292,9 @@ EOD;
 
         $tables = array();
         $result = @sql_query(sprintf("SHOW TABLES LIKE '%s'", sql_table("") . "%"));
-        while ($row = @sql_fetch_array($result))
+        while ($row = @sql_fetch_array($result)) {
             $tables[] = $row[0];
+        }
 
         //$tables = $obj->base_table_list;
         //define('conv_debug', true);
@@ -304,8 +303,7 @@ EOD;
         $db->exec('BEGIN;');
 
         $error_messages = array();
-        foreach ($tables as $table)
-        {
+        foreach ($tables as $table) {
         //  echo $table.$obj->get_table_structure($table);
             ob_start();
             @$obj->dump_table_structure($table);
@@ -352,25 +350,26 @@ EOD;
         global $DIR_BASE;
         
         $newDir = array();
-        foreach(array('DIR_NUCLEUS'=>'nucleus', 'DIR_MEDIA'=>'media', 'DIR_SKINS'=>'skins') as $key => $value)
-        {
+        foreach (array('DIR_NUCLEUS'=>'nucleus', 'DIR_MEDIA'=>'media', 'DIR_SKINS'=>'skins') as $key => $value) {
             $newDir[$key] = sprintf("'%s'", $$key);
-            if (!isset($DIR_BASE) || strlen($DIR_BASE)==0)
+            if (!isset($DIR_BASE) || strlen($DIR_BASE)==0) {
                 continue;
-            if ($DIR_BASE. $value .'/' == $$key)
+            }
+            if ($DIR_BASE. $value .'/' == $$key) {
                 $newDir[$key] = "\$DIR_BASE . '${value}/'";
-            else if (0 === strpos($$key, $DIR_BASE))
+            } elseif (0 === strpos($$key, $DIR_BASE)) {
                 $newDir[$key] = sprintf("\$DIR_BASE . '%s'", substr($$key, strlen($DIR_BASE)));
+            }
         }
 
-        foreach(array('DIR_PLUGINS'=>'plugins', 'DIR_LANG'=>'language', 'DIR_LIBS'=>'libs') as $key => $value)
-        {
-            if ($DIR_NUCLEUS. $value .'/' == $$key)
+        foreach (array('DIR_PLUGINS'=>'plugins', 'DIR_LANG'=>'language', 'DIR_LIBS'=>'libs') as $key => $value) {
+            if ($DIR_NUCLEUS. $value .'/' == $$key) {
                 $newDir[$key] = "\$DIR_NUCLEUS . '${value}/'";
-            else if (0 === strpos($$key, $DIR_NUCLEUS))
+            } elseif (0 === strpos($$key, $DIR_NUCLEUS)) {
                 $newDir[$key] = sprintf("\$DIR_NUCLEUS . '%s'", substr($$key, strlen($DIR_NUCLEUS)));
-            else
-               $newDir[$key] = sprintf("'%s'", $$key);
+            } else {
+                $newDir[$key] = sprintf("'%s'", $$key);
+            }
 //           var_dump(__LINE__, $DIR_NUCLEUS, $key, $value, $$key);
         }
 
@@ -451,7 +450,7 @@ EOD;
 //            $this->error( $msg );
 //        }
 
-        $contents = $this->getCompleteConfig(); 
+        $contents = $this->getCompleteConfig();
         header('Content-Type: text/plain');
         header('Content-Disposition: attachment; filename="config.php"');
         header('Expires: 0');
@@ -465,27 +464,28 @@ EOD;
     {
         global $manager;
         $items = array();
-        $res = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC' , sql_table('plugin')));
-        while($res && ($row = sql_fetch_array($res)))
-        {
+        $res = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC', sql_table('plugin')));
+        while ($res && ($row = sql_fetch_array($res))) {
             $plugin = $manager->getPlugin($row[1]);
             $tablelist = $plugin->getTableList();
-            if (empty($tablelist))
+            if (empty($tablelist)) {
                 continue;
+            }
             if (is_object($plugin)
                 && ($plugin->supportsFeature('SqlApi_SQL92') || $plugin->supportsFeature('SqlApi_sqlite'))) {
                 continue;
             }
             $items[] = $row[1];
         }
-        if (count($items) == 0)
+        if (count($items) == 0) {
             return;
+        }
         sort($items);
         echo "<h2>" . hsc($this->_('The following installed plugins does not correspond to sqlite')) . "</h2>\n";
         echo "<table><ol>";
-        foreach($items as $item)
-           printf('<li>%s</li>', $item);
+        foreach ($items as $item) {
+            printf('<li>%s</li>', $item);
+        }
         echo "</ol></table>";
     }
-
 }

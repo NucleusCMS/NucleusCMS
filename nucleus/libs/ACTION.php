@@ -117,7 +117,6 @@ class ACTION
                 $url = createItemLink($post['itemid']);
                 redirect($url);
             } // end if
-
         } // else, show error message using default skin for blog
         else {
             return array(
@@ -212,7 +211,6 @@ class ACTION
         $manager->notify('ValidateForm', $param);
 
         return $result;
-
     }
 
 
@@ -238,7 +236,6 @@ class ACTION
         if ($result != 1) {
             return $result;
         } else {
-
             // even though the member can not log in, set some random initial password. One never knows.
             srand((double)microtime() * 1000000);
             $initialPwd = md5(uniqid(mt_rand(), true));
@@ -272,7 +269,6 @@ class ACTION
 
             exit;
         }
-
     }
 
 
@@ -378,7 +374,6 @@ class ACTION
 
         // send email to notification address, if any
         if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
-
             $mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
             $itemLink = createItemLink(intval($itemid));
             $temp = parse_url($itemLink);
@@ -452,7 +447,6 @@ class ACTION
         }
 
         exit;
-
     }
 
 
@@ -467,7 +461,6 @@ class ACTION
         if ($ban != 0) {
             doError(_ERROR_BANNED1 . $ban->iprange . _ERROR_BANNED2 . $ban->message . _ERROR_BANNED3);
         }
-
     }
 
 
@@ -510,7 +503,4 @@ class ACTION
 
         return false;
     }
-
 }
-
-?>

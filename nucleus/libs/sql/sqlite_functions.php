@@ -11,15 +11,17 @@ class sqlite_functions
         // standard: SUBSTR , non-standard: SUBSTRING
         // SQLite has no SUBSTRING. but has SUBSTR.
         // SUBSTRING , start index 1 or -1 , param 2 or 3
-        $dbh->sqliteCreateFunction('SUBSTRING',
+        $dbh->sqliteCreateFunction(
+            'SUBSTRING',
             function () {
                 $st = intval(func_get_arg(1));
                 if ($st > 0) {
                     $st--;
                 }
                 return substr(func_get_arg(0), $st, func_get_arg(2));
-            }
-            , 3);
+            },
+            3
+        );
         $dbh->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
         $dbh->sqliteCreateFunction('NOW', function () {
             return date("Y-m-d H:i:s", time());
@@ -28,11 +30,13 @@ class sqlite_functions
         //                    --- src_exp like pattern_text  ,  %  _
         // src_exp REGEXP pattern_text
         // 'P1' REGEXP 'P2' = P2 P1 ( return func_get_arg(0).' '.func_get_arg(1); )
-        $dbh->sqliteCreateFunction('REGEXP',
+        $dbh->sqliteCreateFunction(
+            'REGEXP',
             function ($pattern, $Text) {
                 return preg_match("/(" . str_replace("/", "\\/", (string)$pattern) . ")/im", (string)$Text) ? 1 : 0;
-            }
-            , 2);
+            },
+            2
+        );
         $dbh->sqliteCreateFunction('CONCAT', function () {
             return implode("", func_get_args());
         }, -1);

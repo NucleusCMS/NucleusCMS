@@ -261,14 +261,23 @@ function xmlrpc_encode_entitites($data, $src_encoding = '', $dest_encoding = '')
     switch (strtoupper($src_encoding . '_' . $dest_encoding)) {
         case 'ISO-8859-1_':
         case 'ISO-8859-1_US-ASCII':
-            $escaped_data = str_replace(array('&', '"', "'", '<', '>'),
-                array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
-            $escaped_data = str_replace($GLOBALS['xml_iso88591_Entities']['in'],
-                $GLOBALS['xml_iso88591_Entities']['out'], $escaped_data);
+            $escaped_data = str_replace(
+                array('&', '"', "'", '<', '>'),
+                array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'),
+                $data
+            );
+            $escaped_data = str_replace(
+                $GLOBALS['xml_iso88591_Entities']['in'],
+                $GLOBALS['xml_iso88591_Entities']['out'],
+                $escaped_data
+            );
             break;
         case 'ISO-8859-1_UTF-8':
-            $escaped_data = str_replace(array('&', '"', "'", '<', '>'),
-                array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+            $escaped_data = str_replace(
+                array('&', '"', "'", '<', '>'),
+                array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'),
+                $data
+            );
             $escaped_data = utf8_encode($escaped_data);
             break;
         case 'ISO-8859-1_ISO-8859-1':
@@ -278,8 +287,11 @@ function xmlrpc_encode_entitites($data, $src_encoding = '', $dest_encoding = '')
         case 'US-ASCII_ISO-8859-1':
         case 'UTF-8_UTF-8':
             //case 'CP1252_CP1252':
-            $escaped_data = str_replace(array('&', '"', "'", '<', '>'),
-                array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+            $escaped_data = str_replace(
+                array('&', '"', "'", '<', '>'),
+                array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'),
+                $data
+            );
             break;
         case 'UTF-8_':
         case 'UTF-8_US-ASCII':
@@ -404,8 +416,10 @@ function xmlrpc_se($parser, $name, $attrs, $accept_single_vals = false)
         } else {
             // not top level element: see if parent is OK
             $parent = end($GLOBALS['_xh']['stack']);
-            if (!array_key_exists($name, $GLOBALS['xmlrpc_valid_parents']) || !in_array($parent,
-                    $GLOBALS['xmlrpc_valid_parents'][$name])) {
+            if (!array_key_exists($name, $GLOBALS['xmlrpc_valid_parents']) || !in_array(
+                $parent,
+                $GLOBALS['xmlrpc_valid_parents'][$name]
+            )) {
                 $GLOBALS['_xh']['isf'] = 2;
                 $GLOBALS['_xh']['isf_reason'] = "xmlrpc element $name cannot be child of $parent";
                 return;
@@ -1069,7 +1083,7 @@ class xmlrpc_client
      * @return xmlrpcresp
      * @access public
      */
-    function& send($msg, $timeout = 0, $method = '')
+    function & send($msg, $timeout = 0, $method = '')
     {
         // if user deos not specify http protocol, use native method of this client
         // (i.e. method set during call to constructor)
@@ -1315,7 +1329,6 @@ class xmlrpc_client
         fclose($fp);
         $r =& $msg->parseResponse($ipd, false, $this->return_type);
         return $r;
-
     }
 
     /**
@@ -1342,9 +1355,28 @@ class xmlrpc_client
         $key = '',
         $keypass = ''
     ) {
-        $r =& $this->sendPayloadCURL($msg, $server, $port, $timeout, $username,
-            $password, $authtype, $cert, $certpass, $cacert, $cacertdir, $proxyhost, $proxyport,
-            $proxyusername, $proxypassword, $proxyauthtype, 'https', $keepalive, $key, $keypass);
+        $r =& $this->sendPayloadCURL(
+            $msg,
+            $server,
+            $port,
+            $timeout,
+            $username,
+            $password,
+            $authtype,
+            $cert,
+            $certpass,
+            $cacert,
+            $cacertdir,
+            $proxyhost,
+            $proxyport,
+            $proxyusername,
+            $proxypassword,
+            $proxyauthtype,
+            'https',
+            $keepalive,
+            $key,
+            $keypass
+        );
         return $r;
     }
 
@@ -1383,8 +1415,10 @@ class xmlrpc_client
         }
         if ($method == 'https') {
             if (($info = curl_version()) &&
-                ((is_string($info) && strpos($info,
-                            'OpenSSL') === null) || (is_array($info) && !isset($info['ssl_version'])))) {
+                ((is_string($info) && strpos(
+                    $info,
+                    'OpenSSL'
+                ) === null) || (is_array($info) && !isset($info['ssl_version'])))) {
                 $this->errstr = 'SSL unavailable on this install';
                 $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['no_ssl'], $GLOBALS['xmlrpcstr']['no_ssl']);
                 return $r;
@@ -1581,11 +1615,13 @@ class xmlrpc_client
             print "---END---\n</PRE>";
         }
 
-        if (!$result) /// @todo we should use a better check here - what if we get back '' or '0'?
-        {
+        if (!$result) { /// @todo we should use a better check here - what if we get back '' or '0'?
             $this->errstr = 'no response';
-            $resp = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['curl_fail'],
-                $GLOBALS['xmlrpcstr']['curl_fail'] . ': ' . curl_error($curl));
+            $resp = new xmlrpcresp(
+                0,
+                $GLOBALS['xmlrpcerr']['curl_fail'],
+                $GLOBALS['xmlrpcstr']['curl_fail'] . ': ' . curl_error($curl)
+            );
             curl_close($curl);
             if ($keepalive) {
                 $this->xmlrpc_curl_handle = null;
@@ -1646,8 +1682,11 @@ class xmlrpc_client
                     if (is_a($results, 'xmlrpcresp')) {
                         $result = $results;
                     } else {
-                        $result = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['multicall_error'],
-                            $GLOBALS['xmlrpcstr']['multicall_error']);
+                        $result = new xmlrpcresp(
+                            0,
+                            $GLOBALS['xmlrpcerr']['multicall_error'],
+                            $GLOBALS['xmlrpcstr']['multicall_error']
+                        );
                     }
                 }
             }
@@ -1836,7 +1875,6 @@ class xmlrpcresp
                 } else {
                     if (is_string($this->val)) {
                         $this->valtyp = 'xml';
-
                     } else {
                         $this->valtyp = 'phpvals';
                     }
@@ -1918,8 +1956,11 @@ class xmlrpcresp
             $result .= "<fault>\n" .
                 "<value>\n<struct><member><name>faultCode</name>\n<value><int>" . $this->errno .
                 "</int></value>\n</member>\n<member>\n<name>faultString</name>\n<value><string>" .
-                xmlrpc_encode_entitites($this->errstr, $GLOBALS['xmlrpc_internalencoding'],
-                    $charset_encoding) . "</string></value>\n</member>\n" .
+                xmlrpc_encode_entitites(
+                    $this->errstr,
+                    $GLOBALS['xmlrpc_internalencoding'],
+                    $charset_encoding
+                ) . "</string></value>\n</member>\n" .
                 "</struct>\n</value>\n</fault>";
         } else {
             if (!is_object($this->val) || !is_a($this->val, 'xmlrpcval')) {
@@ -2004,8 +2045,11 @@ class xmlrpcmsg
             $this->content_type = 'text/xml';
         }
         $this->payload = $this->xml_header($charset_encoding);
-        $this->payload .= '<methodName>' . xmlrpc_encode_entitites($this->methodname,
-                $GLOBALS['xmlrpc_internalencoding'], $charset_encoding) . "</methodName>\n";
+        $this->payload .= '<methodName>' . xmlrpc_encode_entitites(
+            $this->methodname,
+            $GLOBALS['xmlrpc_internalencoding'],
+            $charset_encoding
+        ) . "</methodName>\n";
         $this->payload .= "<params>\n";
         for ($i = 0; $i < count($this->params); $i++) {
             $p = $this->params[$i];
@@ -2132,8 +2176,11 @@ class xmlrpcmsg
                 $data = substr($data, $bd);
             } else {
                 error_log('XML-RPC: ' . __METHOD__ . ': HTTPS via proxy error, tunnel connection possibly failed');
-                $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['http_error'],
-                    $GLOBALS['xmlrpcstr']['http_error'] . ' (HTTPS via proxy error, tunnel connection possibly failed)');
+                $r = new xmlrpcresp(
+                    0,
+                    $GLOBALS['xmlrpcerr']['http_error'],
+                    $GLOBALS['xmlrpcstr']['http_error'] . ' (HTTPS via proxy error, tunnel connection possibly failed)'
+                );
                 return $r;
             }
         }
@@ -2143,8 +2190,7 @@ class xmlrpcmsg
             $pos = strpos($data, 'HTTP', 12);
             // server sent a Continue header without any (valid) content following...
             // give the client a chance to know it
-            if (!$pos && !is_int($pos)) // works fine in php 3, 4 and 5
-            {
+            if (!$pos && !is_int($pos)) { // works fine in php 3, 4 and 5
                 break;
             }
             $data = substr($data, $pos);
@@ -2152,8 +2198,11 @@ class xmlrpcmsg
         if (!preg_match('/^HTTP\/[0-9.]+ 200 /', $data)) {
             $errstr = substr($data, 0, strpos($data, "\n") - 1);
             error_log('XML-RPC: ' . __METHOD__ . ': HTTP error, got response: ' . $errstr);
-            $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['http_error'],
-                $GLOBALS['xmlrpcstr']['http_error'] . ' (' . $errstr . ')');
+            $r = new xmlrpcresp(
+                0,
+                $GLOBALS['xmlrpcerr']['http_error'],
+                $GLOBALS['xmlrpcstr']['http_error'] . ' (' . $errstr . ')'
+            );
             return $r;
         }
 
@@ -2251,8 +2300,11 @@ class xmlrpcmsg
             if (isset($GLOBALS['_xh']['headers']['transfer-encoding']) && $GLOBALS['_xh']['headers']['transfer-encoding'] == 'chunked') {
                 if (!$data = decode_chunked($data)) {
                     error_log('XML-RPC: ' . __METHOD__ . ': errors occurred when trying to rebuild the chunked data received from server');
-                    $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['dechunk_fail'],
-                        $GLOBALS['xmlrpcstr']['dechunk_fail']);
+                    $r = new xmlrpcresp(
+                        0,
+                        $GLOBALS['xmlrpcerr']['dechunk_fail'],
+                        $GLOBALS['xmlrpcstr']['dechunk_fail']
+                    );
                     return $r;
                 }
             }
@@ -2260,8 +2312,11 @@ class xmlrpcmsg
             // Decode gzip-compressed stuff
             // code shamelessly inspired from nusoap library by Dietrich Ayala
             if (isset($GLOBALS['_xh']['headers']['content-encoding'])) {
-                $GLOBALS['_xh']['headers']['content-encoding'] = str_replace('x-', '',
-                    $GLOBALS['_xh']['headers']['content-encoding']);
+                $GLOBALS['_xh']['headers']['content-encoding'] = str_replace(
+                    'x-',
+                    '',
+                    $GLOBALS['_xh']['headers']['content-encoding']
+                );
                 if ($GLOBALS['_xh']['headers']['content-encoding'] == 'deflate' || $GLOBALS['_xh']['headers']['content-encoding'] == 'gzip') {
                     // if decoding works, use it. else assume data wasn't gzencoded
                     if (function_exists('gzinflate')) {
@@ -2270,22 +2325,30 @@ class xmlrpcmsg
                             if ($this->debug) {
                                 print "<PRE>---INFLATED RESPONSE---[" . strlen($data) . " chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
                             }
-                        } elseif ($GLOBALS['_xh']['headers']['content-encoding'] == 'gzip' && $degzdata = @gzinflate(substr($data,
-                                10))) {
+                        } elseif ($GLOBALS['_xh']['headers']['content-encoding'] == 'gzip' && $degzdata = @gzinflate(substr(
+                            $data,
+                            10
+                        ))) {
                             $data = $degzdata;
                             if ($this->debug) {
                                 print "<PRE>---INFLATED RESPONSE---[" . strlen($data) . " chars]---\n" . htmlentities($data) . "\n---END---</PRE>";
                             }
                         } else {
                             error_log('XML-RPC: ' . __METHOD__ . ': errors occurred when trying to decode the deflated data received from server');
-                            $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['decompress_fail'],
-                                $GLOBALS['xmlrpcstr']['decompress_fail']);
+                            $r = new xmlrpcresp(
+                                0,
+                                $GLOBALS['xmlrpcerr']['decompress_fail'],
+                                $GLOBALS['xmlrpcstr']['decompress_fail']
+                            );
                             return $r;
                         }
                     } else {
                         error_log('XML-RPC: ' . __METHOD__ . ': the server sent deflated data. Your php install must have the Zlib extension compiled in to support this.');
-                        $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['cannot_decompress'],
-                            $GLOBALS['xmlrpcstr']['cannot_decompress']);
+                        $r = new xmlrpcresp(
+                            0,
+                            $GLOBALS['xmlrpcerr']['cannot_decompress'],
+                            $GLOBALS['xmlrpcstr']['cannot_decompress']
+                        );
                         return $r;
                     }
                 }
@@ -2342,8 +2405,11 @@ class xmlrpcmsg
                 $start += strlen('<!-- SERVER DEBUG INFO (BASE64 ENCODED):');
                 $end = strpos($data, '-->', $start);
                 $comments = substr($data, $start, $end - $start);
-                print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t" . htmlentities(str_replace("\n", "\n\t",
-                        base64_decode($comments))) . "\n---END---\n</PRE>";
+                print "<PRE>---SERVER DEBUG INFO (DECODED) ---\n\t" . htmlentities(str_replace(
+                    "\n",
+                    "\n\t",
+                    base64_decode($comments)
+                )) . "\n---END---\n</PRE>";
             }
         }
 
@@ -2425,13 +2491,19 @@ class xmlrpcmsg
             if ((xml_get_current_line_number($parser)) == 1) {
                 $errstr = 'XML error at line 1, check URL';
             } else {
-                $errstr = sprintf('XML error: %s at line %d, column %d',
+                $errstr = sprintf(
+                    'XML error: %s at line %d, column %d',
                     xml_error_string(xml_get_error_code($parser)),
-                    xml_get_current_line_number($parser), xml_get_current_column_number($parser));
+                    xml_get_current_line_number($parser),
+                    xml_get_current_column_number($parser)
+                );
             }
             error_log($errstr);
-            $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['invalid_return'],
-                $GLOBALS['xmlrpcstr']['invalid_return'] . ' (' . $errstr . ')');
+            $r = new xmlrpcresp(
+                0,
+                $GLOBALS['xmlrpcerr']['invalid_return'],
+                $GLOBALS['xmlrpcstr']['invalid_return'] . ' (' . $errstr . ')'
+            );
             xml_parser_free($parser);
             if ($this->debug) {
                 print $errstr;
@@ -2448,8 +2520,11 @@ class xmlrpcmsg
                 /// @todo echo something for user?
             }
 
-            $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['invalid_return'],
-                $GLOBALS['xmlrpcstr']['invalid_return'] . ' ' . $GLOBALS['_xh']['isf_reason']);
+            $r = new xmlrpcresp(
+                0,
+                $GLOBALS['xmlrpcerr']['invalid_return'],
+                $GLOBALS['xmlrpcstr']['invalid_return'] . ' ' . $GLOBALS['_xh']['isf_reason']
+            );
         }
         // third error check: parsing of the response has somehow gone boink.
         // NB: shall we omit this check, since we trust the parsing code?
@@ -2457,8 +2532,11 @@ class xmlrpcmsg
             // something odd has happened
             // and it's time to generate a client side error
             // indicating something odd went on
-            $r = new xmlrpcresp(0, $GLOBALS['xmlrpcerr']['invalid_return'],
-                $GLOBALS['xmlrpcstr']['invalid_return']);
+            $r = new xmlrpcresp(
+                0,
+                $GLOBALS['xmlrpcerr']['invalid_return'],
+                $GLOBALS['xmlrpcstr']['invalid_return']
+            );
         } else {
             if ($this->debug) {
                 print "<PRE>---PARSED---\n";
@@ -2714,8 +2792,11 @@ class xmlrpcval
                     case $GLOBALS['xmlrpcString']:
                         // G. Giunta 2005/2/13: do NOT use htmlentities, since
                         // it will produce named html entities, which are invalid xml
-                        $rs .= "<${typ}>" . xmlrpc_encode_entitites($val, $GLOBALS['xmlrpc_internalencoding'],
-                                $charset_encoding) . "</${typ}>";
+                        $rs .= "<${typ}>" . xmlrpc_encode_entitites(
+                            $val,
+                            $GLOBALS['xmlrpc_internalencoding'],
+                            $charset_encoding
+                        ) . "</${typ}>";
                         break;
                     case $GLOBALS['xmlrpcInt']:
                     case $GLOBALS['xmlrpcI4']:
@@ -2727,8 +2808,11 @@ class xmlrpcval
                         // sprintf('%F') could be most likely ok but it fails eg. on 2e-14.
                         // The code below tries its best at keeping max precision while avoiding exp notation,
                         // but there is of course no limit in the number of decimal places to be used...
-                        $rs .= "<${typ}>" . preg_replace('/\\.?0+$/', '',
-                                number_format((double)$val, 128, '.', '')) . "</${typ}>";
+                        $rs .= "<${typ}>" . preg_replace(
+                            '/\\.?0+$/',
+                            '',
+                            number_format((double)$val, 128, '.', '')
+                        ) . "</${typ}>";
                         break;
                     case $GLOBALS['xmlrpcDateTime']:
                         if (is_string($val)) {
@@ -2767,8 +2851,11 @@ class xmlrpcval
                     $rs .= "<struct>\n";
                 }
                 foreach ($val as $key2 => $val2) {
-                    $rs .= '<member><name>' . xmlrpc_encode_entitites($key2, $GLOBALS['xmlrpc_internalencoding'],
-                            $charset_encoding) . "</name>\n";
+                    $rs .= '<member><name>' . xmlrpc_encode_entitites(
+                        $key2,
+                        $GLOBALS['xmlrpc_internalencoding'],
+                        $charset_encoding
+                    ) . "</name>\n";
                     //$rs.=$this->serializeval($val2);
                     $rs .= $val2->serialize($charset_encoding);
                     $rs .= "</member>\n";
@@ -3282,16 +3369,18 @@ function php_xmlrpc_decode_xml($xml_val, $options = array())
     xml_set_character_data_handler($parser, 'xmlrpc_cd');
     xml_set_default_handler($parser, 'xmlrpc_dh');
     if (!xml_parse($parser, $xml_val, 1)) {
-        $errstr = sprintf('XML error: %s at line %d, column %d',
+        $errstr = sprintf(
+            'XML error: %s at line %d, column %d',
             xml_error_string(xml_get_error_code($parser)),
-            xml_get_current_line_number($parser), xml_get_current_column_number($parser));
+            xml_get_current_line_number($parser),
+            xml_get_current_column_number($parser)
+        );
         error_log($errstr);
         xml_parser_free($parser);
         return false;
     }
     xml_parser_free($parser);
-    if ($GLOBALS['_xh']['isf'] > 1) // test that $GLOBALS['_xh']['value'] is an obj, too???
-    {
+    if ($GLOBALS['_xh']['isf'] > 1) { // test that $GLOBALS['_xh']['value'] is an obj, too???
         error_log($GLOBALS['_xh']['isf_reason']);
         return false;
     }
@@ -3426,9 +3515,12 @@ function guess_encoding($httpheader = '', $xmlchunk = '', $encoding_prefs = null
     // Details:
     // SPACE:         (#x20 | #x9 | #xD | #xA)+ === [ \x9\xD\xA]+
     // EQ:            SPACE?=SPACE? === [ \x9\xD\xA]*=[ \x9\xD\xA]*
-    if (preg_match('/^<\?xml\s+version\s*=\s*' . "((?:\"[a-zA-Z0-9_.:-]+\")|(?:'[a-zA-Z0-9_.:-]+'))" .
+    if (preg_match(
+        '/^<\?xml\s+version\s*=\s*' . "((?:\"[a-zA-Z0-9_.:-]+\")|(?:'[a-zA-Z0-9_.:-]+'))" .
         '\s+encoding\s*=\s*' . "((?:\"[A-Za-z][A-Za-z0-9._-]*\")|(?:'[A-Za-z][A-Za-z0-9._-]*'))/",
-        $xmlchunk, $matches)) {
+        $xmlchunk,
+        $matches
+    )) {
         return strtoupper(substr($matches[2], 1, -1));
     }
 
@@ -3477,9 +3569,12 @@ function has_encoding($xmlChunk)
     // Details:
     // SPACE:         (#x20 | #x9 | #xD | #xA)+ === [ \x9\xD\xA]+
     // EQ:            SPACE?=SPACE? === [ \x9\xD\xA]*=[ \x9\xD\xA]*
-    if (preg_match('/^<\?xml\s+version\s*=\s*' . "((?:\"[a-zA-Z0-9_.:-]+\")|(?:'[a-zA-Z0-9_.:-]+'))" .
+    if (preg_match(
+        '/^<\?xml\s+version\s*=\s*' . "((?:\"[a-zA-Z0-9_.:-]+\")|(?:'[a-zA-Z0-9_.:-]+'))" .
         '\s+encoding\s*=\s*' . "((?:\"[A-Za-z][A-Za-z0-9._-]*\")|(?:'[A-Za-z][A-Za-z0-9._-]*'))/",
-        $xmlChunk, $matches)) {
+        $xmlChunk,
+        $matches
+    )) {
         return true;
     }
 
@@ -3535,5 +3630,3 @@ function is_valid_charset($encoding, $validlist)
         return false;
     }
 }
-
-?>

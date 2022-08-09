@@ -45,9 +45,11 @@ class TEMPLATE
     // (static)
     public static function getIdFromName($name)
     {
-        $query = sprintf("SELECT tdnumber FROM `%s` WHERE tdname='%s'",
+        $query = sprintf(
+            "SELECT tdnumber FROM `%s` WHERE tdname='%s'",
             sql_table('template_desc'),
-            sql_real_escape_string($name));
+            sql_real_escape_string($name)
+        );
         if (($res = sql_query($query)) && ($obj = sql_fetch_object($res))) {
             return $obj->tdnumber;
         }
@@ -80,10 +82,13 @@ class TEMPLATE
         // write new thingie
         if (strlen($content) > 0) {
             $sql = 'INSERT INTO ' . sql_table('template') . "(tcontent, tpartname, tdesc) VALUES";
-            if (!$SQL_DBH) // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-            {
-                sql_query($sql . sprintf("('%s', '%s', %d)", sql_real_escape_string($content),
-                        sql_real_escape_string($type), intval($id)));
+            if (!$SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
+                sql_query($sql . sprintf(
+                    "('%s', '%s', %d)",
+                    sql_real_escape_string($content),
+                    sql_real_escape_string($type),
+                    intval($id)
+                ));
             } else {
                 sql_prepare_execute($sql . '(?, ?, ?)', array($content, $type, intval($id)));
             }
@@ -145,10 +150,12 @@ class TEMPLATE
 
         $template = array();
         $query = 'SELECT tpartname, tcontent'
-            . sprintf(" FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
+            . sprintf(
+                " FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
                 sql_table('template_desc'),
                 sql_table('template'),
-                sql_real_escape_string($name));
+                sql_real_escape_string($name)
+            );
         $res = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $template[$obj->tpartname] = $obj->tcontent;
@@ -223,8 +230,4 @@ class TEMPLATE
         $obj = sql_fetch_object($res);
         return $obj->tddesc;
     }
-
-
 }
-
-?>

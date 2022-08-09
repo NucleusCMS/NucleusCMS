@@ -61,7 +61,6 @@ class BaseActions
         // highlights
         $this->strHighlight = '';            // full highlight
         $this->aHighlight = array();        // parsed highlight
-
     }
 
     /**
@@ -137,8 +136,7 @@ class BaseActions
     function getIncludeFileName($filename)
     {
         // leave absolute filenames and http urls as they are
-        if (
-            (substr($filename, 0, 1) == '/')
+        if ((substr($filename, 0, 1) == '/')
             || (substr($filename, 0, 7) == 'http://')
             || (substr($filename, 0, 6) == 'ftp://')
         ) {

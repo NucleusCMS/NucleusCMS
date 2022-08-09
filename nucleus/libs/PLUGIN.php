@@ -258,8 +258,12 @@ class NucleusPlugin
             $this->plugin_options = array();
             // http://japan.nucleuscms.org/forum/viewtopic.php?id=6203
             $query = "SELECT d.oname as name, o.ovalue as value FROM %s d, %s o WHERE d.opid='%s' AND d.ocontext='global' AND d.oid=o.oid AND o.ocontextid=0";
-            $query = sprintf($query, sql_table('plugin_option_desc'), sql_table('plugin_option'),
-                intval($this->getID()));
+            $query = sprintf(
+                $query,
+                sql_table('plugin_option_desc'),
+                sql_table('plugin_option'),
+                intval($this->getID())
+            );
             $rs = sql_query($query);
             while ($row = sql_fetch_object($rs)) {
                 $this->plugin_options[strtolower($row->name)] = $row->value;
@@ -360,8 +364,7 @@ class NucleusPlugin
     {
         global $CONF, $manager;
 
-        if ($this->supportsFeature('pluginadmin')) //            return  $CONF['AdminURL']. 'index.php?plugid=' . $this->getID() . '&action=pluginadmin';
-        {
+        if ($this->supportsFeature('pluginadmin')) { //            return  $CONF['AdminURL']. 'index.php?plugid=' . $this->getID() . '&action=pluginadmin';
             return $manager->addTicketToUrl('index.php?plugid=' . $this->getID() . '&action=pluginadmin');
         }
         if (isset($this->plugin_admin_url_prefix)) {
@@ -828,8 +831,10 @@ class NucleusPlugin
         sql_free_result($res);
         // delete those options. go go go
         if (count($aOIDs) > 0) {
-            $query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in (' . implode(',',
-                    $aOIDs) . ') and ocontextid=' . intval($contextid);
+            $query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in (' . implode(
+                ',',
+                $aOIDs
+            ) . ') and ocontextid=' . intval($contextid);
             sql_query($query);
         }
     }
@@ -910,7 +915,6 @@ class NucleusPlugin
         }
 
         foreach ($aOptions as $oid => $values) {
-
             // get option type info
             $query = 'SELECT opid, oname, ocontext, otype, oextra, odef FROM ' . sql_table('plugin_option_desc') . ' WHERE oid=' . intval($oid);
             $res = sql_query($query);
@@ -923,9 +927,10 @@ class NucleusPlugin
                     $meta = NucleusPlugin::getOptionMeta($o->oextra);
 
                     // if the option is readonly or hidden it may not be saved
-                    if (!array_key_exists('access',
-                            $meta) || (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden'))) {
-
+                    if (!array_key_exists(
+                        'access',
+                        $meta
+                    ) || (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden'))) {
                         switch ($o->otype) {
                             case 'yesno':
                                 if (($value != 'yes') && ($value != 'no')) {
@@ -937,8 +942,10 @@ class NucleusPlugin
                         }
 
                         // check the validity of numerical options
-                        if (array_key_exists('datatype',
-                                $meta) && ($meta['datatype'] == 'numerical') && (!is_numeric($value))) {
+                        if (array_key_exists(
+                            'datatype',
+                            $meta
+                        ) && ($meta['datatype'] == 'numerical') && (!is_numeric($value))) {
                             //the option must be numeric, but the it isn't
                             //use the default for this option
                             $value = $o->odef;
@@ -1059,13 +1066,15 @@ class NucleusPlugin
         } else {
             $sql = 'UPDATE ' . sql_table('plugin_option_desc')
                 . ' SET '
-                . sprintf(' odesc=%s , otype=%s , odef=%s , oextra=%s ',
+                . sprintf(
+                    ' odesc=%s , otype=%s , odef=%s , oextra=%s ',
                     sql_quote_string($desc),
                     sql_quote_string($type),
                     sql_quote_string($defValue),
                     sql_quote_string($typeExtras)
                 )
-                . sprintf(' WHERE opid=%d AND ocontext=%s AND oname=%s ',
+                . sprintf(
+                    ' WHERE opid=%d AND ocontext=%s AND oname=%s ',
                     intval($this->plugid),
                     sql_quote_string($context),
                     sql_quote_string($name)
@@ -1180,6 +1189,4 @@ class NucleusPlugin
         }
         return $ret_val;
     }
-
 } // end class
-

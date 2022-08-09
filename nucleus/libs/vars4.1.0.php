@@ -133,9 +133,10 @@ function undoMagic($data)
 {
     trigger_error(
         sprintf(
-            'Function %s() is deperecated'
-            , __FUNCTION__
-        ), defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+            'Function %s() is deperecated',
+            __FUNCTION__
+        ),
+        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
     if (!get_magic_quotes_gpc()) {
         return $data;
@@ -151,10 +152,10 @@ function undoSybaseQuotes_array($data)
 {
     trigger_error(
         sprintf(
-            'Function %s() is deperecated'
-            , __FUNCTION__
-        )
-        , defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+            'Function %s() is deperecated',
+            __FUNCTION__
+        ),
+        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
     if (is_array($data)) {
         return array_map('undoSybaseQuotes_array', $data);
@@ -166,9 +167,10 @@ function undoSybaseQuotes($data)
 {
     trigger_error(
         sprintf(
-            'Function %s() is deperecated'
-            , __FUNCTION__
-        ), defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
+            'Function %s() is deperecated',
+            __FUNCTION__
+        ),
+        defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
     return str_replace("''", "'", $data);
 }

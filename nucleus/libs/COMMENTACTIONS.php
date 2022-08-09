@@ -126,15 +126,12 @@ class COMMENTACTIONS extends BaseActions
                     'extra' => $this->commentsObj->itemActions->linkparams
                 )
             );
-
         } // else: non-member comment
         else {
-
             // create smart links
 
             // begin if: comment userid is not empty
             if (!empty($comment['userid'])) {
-
                 // begin if: comment userid has either "http://" or "https://" at the beginning
                 if ((strpos($comment['userid'], 'http://') === 0) || (strpos($comment['userid'], 'https://') === 0)) {
                     $comment['userlinkraw'] = $comment['userid'];
@@ -142,7 +139,6 @@ class COMMENTACTIONS extends BaseActions
                 else {
                     $comment['userlinkraw'] = 'http://' . $comment['userid'];
                 } // end if
-
             } // else if: comment email is valid
             else {
                 if (isValidMailAddress($comment['email'])) {
@@ -154,7 +150,6 @@ class COMMENTACTIONS extends BaseActions
                     }
                 }
             } // end if
-
         } // end if
 
         $this->currentComment =& $comment;
@@ -233,8 +228,12 @@ class COMMENTACTIONS extends BaseActions
      */
     function parse_date($format = '')
     {
-        echo formatDate($format, $this->currentComment['timestamp'], $this->template['FORMAT_DATE'],
-            $this->commentsObj->itemActions->blog);
+        echo formatDate(
+            $format,
+            $this->currentComment['timestamp'],
+            $this->template['FORMAT_DATE'],
+            $this->commentsObj->itemActions->blog
+        );
     }
 
     /**
@@ -688,8 +687,7 @@ class COMMENTACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $b->getID();
         }
 
@@ -715,8 +713,7 @@ class COMMENTACTIONS extends BaseActions
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid)) // use current blog
-        {
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) { // use current blog
             $blogid = $b->getID();
         }
 
@@ -788,10 +785,12 @@ class COMMENTACTIONS extends BaseActions
 
     function parse_hascomment()
     {
-        $sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-            sql_table('comment'), intval($this->currentItem->itemid));
+        $sqlText = sprintf(
+            "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+            sql_table('comment'),
+            intval($this->currentItem->itemid)
+        );
         $res = intval(quickQuery($sqlText));
         return ($res > 0);
     }
-
 }

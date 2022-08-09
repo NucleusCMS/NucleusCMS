@@ -48,8 +48,11 @@ EOL;
         $ph[':subtype'] = (string)$subtype;
         $ph[':mnumber'] = (int)max(0, empty($options['mnumber']) ? 0 : (int)$options['mnumber']);
         $ph[':timestamp_utc'] = (string)gmdate('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
-        $ph[':message'] = (string)((strlen($message) > self::MAX_MSG_LEN) ? substr($message, 0,
-            self::MAX_MSG_LEN) : $message);
+        $ph[':message'] = (string)((strlen($message) > self::MAX_MSG_LEN) ? substr(
+            $message,
+            0,
+            self::MAX_MSG_LEN
+        ) : $message);
         $ph[':message_hash'] = (string)sha1($ph[':message']);
 
         if ($DB_DRIVER_NAME == 'sqlite') {
@@ -73,7 +76,7 @@ EOL;
             $query = parseQuery($query, $ph);
             $res = sql_query($query);
         }
-        if (!empty($CONF['debug']) && $CONF['debug'] && $member->isAdmin()) {
+        if (isDebugMode() && $member->isAdmin()) {
             if (empty($res) || sql_affected_rows($res) == 0) {
                 $msg = sprintf('SYSTEMLOG::add query error: %s : %s', hsc(sql_error()), hsc($query));
                 trigger_error($msg, E_USER_WARNING);
@@ -222,5 +225,4 @@ EOL;
             sql_query($query['mysql']);
         }
     }
-
 }

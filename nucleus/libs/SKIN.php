@@ -68,7 +68,6 @@ class SKIN
         $this->contentType = $obj->sdtype;
         $this->includeMode = $obj->sdincmode;
         $this->includePrefix = $obj->sdincpref;
-
     }
 
     public function SKIN($id)
@@ -114,9 +113,11 @@ class SKIN
      */
     public static function exists($name)
     {
-        $query = sprintf("SELECT count(*) AS result FROM `%s` WHERE sdname='%s'",
+        $query = sprintf(
+            "SELECT count(*) AS result FROM `%s` WHERE sdname='%s'",
             sql_table('skin_desc'),
-            sql_real_escape_string($name));
+            sql_real_escape_string($name)
+        );
         return intval(quickQuery($query)) > 0;
     }
 
@@ -155,8 +156,11 @@ class SKIN
             $exp = sprintf(" AND spartstype = '%s'", ($spartstype == 'specialpage' ? 'specialpage' : 'parts'));
         }
 
-        $sql = sprintf("SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d ",
-                sql_table('skin'), intval($skinid)) . $exp;
+        $sql = sprintf(
+            "SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d ",
+            sql_table('skin'),
+            intval($skinid)
+        ) . $exp;
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
             if (stripos('sqlite', $DB_DRIVER_NAME) !== false) {
@@ -201,9 +205,11 @@ class SKIN
      */
     public static function getIdFromName($name)
     {
-        $query = sprintf("SELECT sdnumber FROM `%s` WHERE sdname='%s'",
+        $query = sprintf(
+            "SELECT sdnumber FROM `%s` WHERE sdname='%s'",
             sql_table('skin_desc'),
-            sql_real_escape_string($name));
+            sql_real_escape_string($name)
+        );
         $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
             return $obj->sdnumber;
@@ -355,7 +361,7 @@ class SKIN
         }
 
         $len_leak = ob_get_length();
-        if (!empty($len_leak) && !empty($CONF['debug']) && $CONF['debug']) {
+        if (!empty($len_leak) && isDebugMode()) {
             global $member;
             if ($member->isAdmin() && ini_get('display_errors')) {
                 $output .= ob_get_contents();
@@ -380,15 +386,19 @@ class SKIN
             return '';
         }
         if ('mysql' == $DB_DRIVER_NAME) {
-            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'",
+            $query = sprintf(
+                "SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'",
                 sql_table('skin'),
                 $this->id,
-                sql_real_escape_string($type));
+                sql_real_escape_string($type)
+            );
         } else {
-            $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'",
+            $query = sprintf(
+                "SELECT scontent FROM %s WHERE sdesc=%d and lower(stype)='%s'",
                 sql_table('skin'),
                 $this->id,
-                sql_real_escape_string(strtolower($type)));
+                sql_real_escape_string(strtolower($type))
+            );
         }
 
         $spartstype = 'parts';
@@ -400,8 +410,7 @@ class SKIN
 
         $res = sql_query($query);
 
-        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) // Fix for PHP(-5.4) Parse error: empty($var = "")
-        {
+        if (!$res || !($r = sql_fetch_array($res)) || empty($r)) { // Fix for PHP(-5.4) Parse error: empty($var = "")
             return '';
         }
         return $r[0];
@@ -425,23 +434,26 @@ class SKIN
         // delete old thingie
         sql_query('DELETE FROM ' . sql_table('skin')
             . " WHERE stype='" . sql_real_escape_string($type) . "' and sdesc=" . intval($skinid)
-            . " AND spartstype = " . sql_quote_string((string)$spartstype)
-        );
+            . " AND spartstype = " . sql_quote_string((string)$spartstype));
 
         global $SQL_DBH;
         // write new thingie
         if (strlen($content) > 0) {
             $sql = 'INSERT INTO ' . sql_table('skin') . "(scontent, stype, sdesc, spartstype) VALUES";
             if (!$SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-                $sql .= sprintf("('%s', '%s', %d, '%s')",
+                $sql .= sprintf(
+                    "('%s', '%s', %d, '%s')",
                     sql_real_escape_string($content),
                     sql_real_escape_string($type),
                     intval($skinid),
-                    sql_real_escape_string($spartstype));
+                    sql_real_escape_string($spartstype)
+                );
                 sql_query($sql);
             } else {
-                sql_prepare_execute($sql . '(?, ?, ?, ?)',
-                    array($content, $type, intval($skinid), (string)$spartstype));
+                sql_prepare_execute(
+                    $sql . '(?, ?, ?, ?)',
+                    array($content, $type, intval($skinid), (string)$spartstype)
+                );
             }
         }
 
@@ -719,7 +731,7 @@ class SKIN
         return true;
     }
 
-    static public function getRootURL()
+    public static function getRootURL()
     {
         global $CONF;
         return $CONF['SkinsURL'];
@@ -736,7 +748,7 @@ class SKIN
 // Note: use only core functions
 // Notice: Do not call this function from user plugin
 // return Converted text
-    static public function _getText($text)
+    public static function _getText($text)
     {
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
         global $DIR_SKINS;
@@ -846,7 +858,7 @@ class SKIN
     {
         // http://tidy.sourceforge.net/docs/quickref.html
         global $CONF, $member;
-        $debug = (isset($CONF['debug']) && $CONF['debug']);
+        $debug = isDebugMode();
         $release = !$debug;
         $is_admin = $member->isAdmin();
         $tidy_config = array(
@@ -870,5 +882,4 @@ class SKIN
 
         return $tidy_config;
     }
-
 }

@@ -64,7 +64,6 @@ class MEDIA
         closedir($dirhandle);
 
         return $collections;
-
     }
 
     /**
@@ -230,7 +229,6 @@ class MEDIA
         $manager->notify('PostMediaUpload', $param);
 
         return '';
-
     }
 
     /**
@@ -295,9 +293,7 @@ class MEDIA
         umask($oldumask);
 
         return '';
-
     }
-
 }
 
 /**
@@ -324,7 +320,6 @@ class MEDIAOBJECT
         $this->filename = $filename;
         $this->timestamp = $timestamp;
     }
-
 }
 
 /**
@@ -337,5 +332,3 @@ function sort_media($a, $b)
     }
     return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }
-
-?>

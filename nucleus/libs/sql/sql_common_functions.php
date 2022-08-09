@@ -57,16 +57,16 @@ function sql_gmDateTime_from_utime($timestamp)
 function get_mysql_charset_from_php_charset($charset = 'utf-8')
 {
     switch (strtolower($charset)) {
-        case 'utf-8'        :
+        case 'utf-8':
             $charset = 'utf8';
             break;
-        case 'euc-jp'       :
+        case 'euc-jp':
             $charset = 'ujis';
             break;
-        case 'iso-8859-1'   :
+        case 'iso-8859-1':
             $charset = 'latin1';
             break;
-        case 'windows-1250' :
+        case 'windows-1250':
             $charset = 'cp1250';
             break; // cp1250_general_ci
     }
@@ -138,24 +138,24 @@ function treat_char_name($charset = 'utf8mb4')
     }
 
     switch (strtolower($charset)) {
-        case 'euc-jp'       :
+        case 'euc-jp':
             $charset = 'ujis';
             break;
-        case 'iso-8859-1'   :
+        case 'iso-8859-1':
             $charset = 'latin1';
             break;
-        case 'windows-1250' :
+        case 'windows-1250':
             $charset = 'cp1250';
             break; // cp1250_general_ci
-        case 'utf8'        :
-        case 'utf-8'        :
+        case 'utf8':
+        case 'utf-8':
             if (getCharSetFromDB(sql_table('item'), 'ibody') === 'utf8mb4') {
                 $charset = 'utf8mb4';
             } else {
                 $charset = 'utf8';
             }
             break;
-        default :
+        default:
             if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
