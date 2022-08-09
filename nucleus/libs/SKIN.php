@@ -379,7 +379,7 @@ class SKIN
         $manager->notify('PostSkinParse', $param);
 
         $len_leak = ob_get_length();
-        if (! empty($len_leak) && ! empty($CONF['debug']) && $CONF['debug']) {
+        if (! empty($len_leak) && isDebugMode()) {
             global $member;
             if ($member->isAdmin() && ini_get('display_errors')) {
                 $output .= ob_get_contents();
@@ -921,7 +921,7 @@ class SKIN
     {
         // http://tidy.sourceforge.net/docs/quickref.html
         global $CONF, $member;
-        $debug       = (isset($CONF['debug']) && $CONF['debug']);
+        $debug       = isDebugMode();
         $release     = ! $debug;
         $is_admin    = $member->isAdmin();
         $tidy_config = array(

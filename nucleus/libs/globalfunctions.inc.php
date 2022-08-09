@@ -2886,7 +2886,7 @@ function _setErrorReporting()
     if (!isset($CONF['debug'])) {
         $CONF['debug'] = 0;
     }
-    if (!empty($CONF['debug'])) {
+    if (isDebugMode()) {
         error_reporting(E_ALL); // report all errors!
         ini_set('display_errors', 1);
     } else {
@@ -3008,4 +3008,13 @@ function un_clickjacking()
         return;
     }
     header('X-Frame-Options: SAMEORIGIN');
+}
+
+function isDebugMode()
+{
+    global $CONF;
+    if (!isset($CONF['debug'])) {
+        return false;
+    }
+    return !empty($CONF['debug']);
 }

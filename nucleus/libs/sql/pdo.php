@@ -217,7 +217,9 @@ if (! function_exists('sql_fetch_assoc')) {
             }
         } catch (PDOException $e) {
             $DBH = null;
-            if (! ($CONF['debug'])) {
+            if (isDebugMode()) {
+                $msg = '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
+            } else {
                 $msg = '<p>a1 Error!: ';
                 $pattern
                      = '/(Access denied for user|Unknown database|could not find driver)/i';
@@ -225,8 +227,6 @@ if (! function_exists('sql_fetch_assoc')) {
                     $msg .= $m[1];
                 }
                 $msg .= '</p>';
-            } else {
-                $msg = '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
             }
             startUpError($msg, 'Connect Error');
         }
@@ -310,7 +310,7 @@ if (! function_exists('sql_fetch_assoc')) {
     {
         global $CONF, $SQLCount, $SQL_DBH;
         $SQLCount++;
-        $debug = ( ! isset($CONF['debug']) || ! $CONF['debug']);
+        $debug = isDebugMode();
         $db    = ($dbh !== null ? $dbh : $SQL_DBH);
         if (is_array($query)) {
             $query = implode("\n", $query);
@@ -513,7 +513,7 @@ if (! function_exists('sql_fetch_assoc')) {
 
             return 1;
         } catch (PDOException $e) {
-            if ($CONF['debug']) {
+            if (isDebugMode()) {
                 $msg = '<p>a3 Error!: ' . $e->getMessage() . '</p>';
             } else {
                 $msg = '<p>a3 Error!: ';
@@ -1012,7 +1012,7 @@ if (! function_exists('sql_fetch_assoc')) {
             return;
         }
 
-        if (! isset($CONF['debug']) || ( ! $CONF['debug'])) {
+        if (! isDebugMode()) {
             addToLog(ERROR, $text);
         } else {
             addToLog(ERROR, $text);
@@ -1045,7 +1045,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
 
         $res = $SQL_DBH->prepare((string) $sql);
-        if (! $res && $CONF['debug']) {
+        if (! $res && isDebugMode()) {
             sql_print_error(sql_error($SQL_DBH));
         }
 

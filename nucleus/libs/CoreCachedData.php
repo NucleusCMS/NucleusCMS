@@ -95,7 +95,6 @@ class CoreCachedData
 
     public static function setDataEx($type, $sub_type, $sub_id, $name, $value)
     {
-        global $CONF;
         $tablename = sql_table(self::base_tablename);
 
         $type     = strval($type);
@@ -104,7 +103,7 @@ class CoreCachedData
         $value    = strval($value);
         $sub_id   = intval($sub_id);
 
-        if ($CONF['debug']) {
+        if (isDebugMode()) {
             if (strlen($type) > 50) {
                 SYSTEMLOG::addUnique(
                     'error',

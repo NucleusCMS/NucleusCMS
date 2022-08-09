@@ -906,11 +906,11 @@ class ADMIN
 
     function batchChangeCategorySelectOrder($type, $ids)
     {
-        global $manager, $member, $CONF;
+        global $manager, $member;
 
         $this->pagehead();
 
-        if ($CONF['debug']) {
+        if (isDebugMode()) {
             echo "<!-- " . __CLASS__ . '::' . __FUNCTION__ . "  -->\n";
             //var_dump($ids);
         }
@@ -6820,8 +6820,8 @@ EOL;
             $items[] = array("\$CONF['ItemURL']", $CONF['ItemURL']);
             $items[] = array("\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE));
             $items[] = array(
-                "\$CONF['debug']", ($CONF['debug'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
-                ($CONF['debug'] ? 'color:red' : '')
+                "\$CONF['debug'], isDebugMode()", (isDebugMode() ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
+                (isDebugMode() ? 'color:red' : '')
             );
 
             foreach ($items as $item) {
