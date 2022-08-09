@@ -2705,3 +2705,13 @@ function getBaseUrl()
     }
     return substr($_, 0, strrpos($_, '/') + 1);
 }
+
+function isDebugMode()
+{
+    global $CONF;
+    if (!isset($CONF['debug'])) {
+        return false;
+    }
+    return !empty($CONF['debug']);
+}
+
