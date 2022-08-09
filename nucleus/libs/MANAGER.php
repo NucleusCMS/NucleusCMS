@@ -632,7 +632,7 @@ class MANAGER
                             }
                                 SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
                         }
-                        if (!empty($CONF['debug']) && $CONF['debug']) {
+                        if (isDebugMode()) {
                             throw $e;
                         } // return exception
                     }

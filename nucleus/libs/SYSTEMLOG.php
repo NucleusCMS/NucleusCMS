@@ -76,7 +76,7 @@ EOL;
             $query = parseQuery($query, $ph);
             $res = sql_query($query);
         }
-        if (!empty($CONF['debug']) && $CONF['debug'] && $member->isAdmin()) {
+        if (isDebugMode() && $member->isAdmin()) {
             if (empty($res) || sql_affected_rows($res) == 0) {
                 $msg = sprintf('SYSTEMLOG::add query error: %s : %s', hsc(sql_error()), hsc($query));
                 trigger_error($msg, E_USER_WARNING);

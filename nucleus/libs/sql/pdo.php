@@ -194,7 +194,7 @@ if (!function_exists('sql_fetch_assoc')) {
             }
         } catch (PDOException $e) {
             $DBH = null;
-            if ($CONF['debug']) {
+            if (isDebugMode()) {
                 $msg = '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
             } else {
                 $msg = '<p>a1 Error!: ';
@@ -281,13 +281,13 @@ if (!function_exists('sql_fetch_assoc')) {
 //echo $query.'<hr />';
         $dbh = ($dbh && is_object($dbh) ? $dbh : $SQL_DBH);
         if (!is_object($dbh)) {
-            if (!$CONF['debug']) {
+            if (!isDebugMode()) {
                 return false;
             }
             echo "SQL error : db handle is not allocated";
         }
         $res = $dbh->query($query);
-        if (!$CONF['debug']) {
+        if (!isDebugMode()) {
             return $res;
         }
 
@@ -465,7 +465,7 @@ if (!function_exists('sql_fetch_assoc')) {
             }
             return 1;
         } catch (PDOException $e) {
-            if ($CONF['debug']) {
+            if (isDebugMode()) {
                 $msg = '<p>a3 Error!: ' . $e->getMessage() . '</p>';
             } else {
                 $msg = '<p>a3 Error!: ';
@@ -946,7 +946,7 @@ if (!function_exists('sql_fetch_assoc')) {
             return;
         }
 
-        if (!isset($CONF['debug']) || (!$CONF['debug'])) {
+        if (!isDebugMode()) {
             addToLog(ERROR, $text);
         } else {
             addToLog(ERROR, $text);
@@ -975,7 +975,7 @@ if (!function_exists('sql_fetch_assoc')) {
         }
 
         $res = $SQL_DBH->prepare($sql);
-        if (!$res && $CONF['debug']) {
+        if (!$res && isDebugMode()) {
             sql_print_error(sql_error($SQL_DBH));
         }
         return $res;

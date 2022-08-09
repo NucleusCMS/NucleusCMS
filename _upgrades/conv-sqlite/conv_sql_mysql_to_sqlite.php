@@ -35,7 +35,7 @@ $errors = ob_get_contents();
 ob_end_clean();
 
 //global $CONF;
-//if ($errors && strlen($errors)>0 && $CONF['debug'])
+//if ($errors && strlen($errors)>0 && isDebugMode())
 //    fputs(STDERR, "${errors}\n");
 
 ini_set('display_errors', '0');

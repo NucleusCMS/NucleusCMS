@@ -156,8 +156,7 @@ class NAVLIST extends ENCAPSULATE
 EOD;
         }
         if (is_null($this->total)) {
-            global $CONF;
-            if ($CONF['debug']) {
+            if (isDebugMode()) {
                 $page_navigation .= 'page navigation is disabled: set total before call ';
             } else {
                 $page_navigation = '';

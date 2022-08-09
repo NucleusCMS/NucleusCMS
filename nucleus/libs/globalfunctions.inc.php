@@ -154,10 +154,11 @@ function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET)
         */
         // v3.2x code
         if (($contenttype == 'application/xhtml+xml')
-            && (($CONF['UsingAdminArea'] && !$CONF['debug']) || !stristr(
-                serverVar('HTTP_ACCEPT'),
-                'application/xhtml+xml'
-            ))
+            && (($CONF['UsingAdminArea'] && !isDebugMode())
+                || !stristr(
+                        serverVar('HTTP_ACCEPT'),
+                        'application/xhtml+xml'
+                ))
         ) {
             $contenttype = 'text/html';
         }

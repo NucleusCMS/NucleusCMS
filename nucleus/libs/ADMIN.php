@@ -888,11 +888,11 @@ class ADMIN
 
     public function batchChangeCategorySelectOrder($type, $ids)
     {
-        global $manager , $member , $CONF;
+        global $manager , $member;
 
         $this->pagehead();
 
-        if ($CONF['debug']) {
+        if (isDebugMode()) {
             echo "<!-- ". __CLASS__ . '::' . __FUNCTION__ . "  -->\n";
             //var_dump($ids);
         } ?>

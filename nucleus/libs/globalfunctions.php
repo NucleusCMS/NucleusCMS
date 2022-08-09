@@ -82,7 +82,10 @@ if (version_compare(phpversion(), '5.4.0', '<')) {
     }
 }
 
-if (isset($CONF['debug']) && !empty($CONF['debug'])) {
+if (!isset($CONF['debug'])) {
+    $CONF['debug'] = 0;
+}
+if (isDebugMode()) {
     if (version_compare(phpversion(), '8.2.0.a', '>=')) {
         error_reporting(E_ALL & ~E_DEPRECATED); // report all errors except E_DEPRECATED
         // Nucleus v3.8 : PHP 5.x - PHP8.x

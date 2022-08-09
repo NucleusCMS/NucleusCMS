@@ -159,7 +159,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
                 ACTIONLOG::add(WARNING, $str);
             }
             echo 'error';
-            if ($CONF['debug']) {
+            if (isDebugMode()) {
                 print_r(debug_backtrace());
             }
         }
