@@ -131,7 +131,7 @@ class COMMENTACTIONS extends BaseActions
             // create smart links
 
             // begin if: comment userid is not empty
-            if ( ! empty($comment['userid'])) {
+            if (! empty($comment['userid'])) {
                 // begin if: comment userid has either "http://" or "https://" at the beginning
                 if ((strpos($comment['userid'], 'http://') === 0)
                     || (strpos($comment['userid'], 'https://') === 0)) {
@@ -140,7 +140,6 @@ class COMMENTACTIONS extends BaseActions
                 else {
                     $comment['userlinkraw'] = 'http://' . $comment['userid'];
                 } // end if
-
             } // else if: comment email is valid
             else {
                 if (isValidMailAddress($comment['email'])) {
@@ -153,7 +152,6 @@ class COMMENTACTIONS extends BaseActions
                     }
                 }
             } // end if
-
         } // end if
 
         $this->currentComment =& $comment;
@@ -234,9 +232,12 @@ class COMMENTACTIONS extends BaseActions
      */
     function parse_date($format = '')
     {
-        echo formatDate($format, $this->currentComment['timestamp'],
+        echo formatDate(
+            $format,
+            $this->currentComment['timestamp'],
             $this->template['FORMAT_DATE'],
-            $this->commentsObj->itemActions->blog);
+            $this->commentsObj->itemActions->blog
+        );
     }
 
     /**
@@ -303,7 +304,7 @@ class COMMENTACTIONS extends BaseActions
      */
     function parse_itemtitle($maxLength = 0)
     {
-        if ( ! is_numeric($maxLength) || intval($maxLength) == 0) {
+        if (! is_numeric($maxLength) || intval($maxLength) == 0) {
             echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         } else {
             $this->commentsObj->itemActions->parse_syndicate_title(intval($maxLength));
@@ -362,12 +363,12 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         // only continue when the plugin is really installed
-        if ( ! $manager->pluginInstalled('NP_' . $pluginName)) {
+        if (! $manager->pluginInstalled('NP_' . $pluginName)) {
             return;
         }
 
         $plugin =& $manager->getPlugin('NP_' . $pluginName);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return;
         }
 
@@ -380,8 +381,10 @@ class COMMENTACTIONS extends BaseActions
         // pass info on current item and current comment as well
         $params = array_merge(array(&$this->currentComment), $params);
         $params
-                = array_merge(array(&$this->commentsObj->itemActions->currentItem),
-            $params);
+                = array_merge(
+                    array(&$this->commentsObj->itemActions->currentItem),
+                    $params
+                );
 
         call_user_func_array(array($plugin, 'doTemplateCommentsVar'), $params);
     }
@@ -463,11 +466,13 @@ class COMMENTACTIONS extends BaseActions
      */
     function parse_userwebsite()
     {
-        if ( ! isset($this->currentComment['userlinkraw'])) {
+        if (! isset($this->currentComment['userlinkraw'])) {
             return;
         }
-        if (preg_match('@^https?://[^/]+@',
-            $this->currentComment['userlinkraw'])) {
+        if (preg_match(
+            '@^https?://[^/]+@',
+            $this->currentComment['userlinkraw']
+        )) {
             echo $this->currentComment['userlinkraw'];
         }
     }
@@ -478,8 +483,10 @@ class COMMENTACTIONS extends BaseActions
     function parse_userwebsitelink()
     {
         if (isset($this->currentComment['userlinkraw'])
-            && (preg_match('@^https?://[^/]+@',
-                $this->currentComment['userlinkraw']))
+            && (preg_match(
+                '@^https?://[^/]+@',
+                $this->currentComment['userlinkraw']
+            ))
         ) {
             echo '<a href="' . hsc($this->currentComment['userlinkraw'])
                  . '" rel="nofollow">' . hsc($this->currentComment['user'])
@@ -708,8 +715,7 @@ class COMMENTACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! $manager->existsBlogID($blogid)) // use current blog
-        {
+            || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $b->getID();
         }
 
@@ -737,8 +743,7 @@ class COMMENTACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! $manager->existsBlogID($blogid)) // use current blog
-        {
+            || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $b->getID();
         }
 
@@ -789,7 +794,7 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         $plugin =& $manager->getPlugin('NP_' . $name);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return;
         }
 
@@ -813,11 +818,13 @@ class COMMENTACTIONS extends BaseActions
     function parse_hascomment()
     {
         $sqlText
-             = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-            sql_table('comment'), intval($this->currentItem->itemid));
+             = sprintf(
+                 "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                 sql_table('comment'),
+                 intval($this->currentItem->itemid)
+             );
         $res = intval(quickQuery($sqlText));
 
         return ($res > 0);
     }
-
 }

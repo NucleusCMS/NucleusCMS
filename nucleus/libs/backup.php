@@ -66,12 +66,12 @@ class Backup
 
         $this->export_db_charset   = 'utf8mb4';
         $this->export_db_collation = 'utf8mb4_general_ci';
-        if ( ! $this->is_support_utf8mb4 && ($this->charsetOfDB != 'utf8mb4')) {
+        if (! $this->is_support_utf8mb4 && ($this->charsetOfDB != 'utf8mb4')) {
             $this->export_db_charset   = 'utf8';
             $this->export_db_collation = 'utf8_general_ci';
         }
         ini_set('default_charset', 'UTF-8');
-        if ( ! empty($this->charsetOfDB) && ($this->charsetOfDB != 'utf8mb4')) {
+        if (! empty($this->charsetOfDB) && ($this->charsetOfDB != 'utf8mb4')) {
             if (($this->charsetOfDB == 'utf8')
                 && $this->is_support_utf8mb4) { // utf8 utf32
                 $this->export_db_charset   = 'utf8mb4';
@@ -195,11 +195,15 @@ class Backup
             @ob_implicit_flush(0);
 
             // set filename
-            $filename = 'nucleus_db_backup_' . date("Y-m-d-H-i-s",
-                    time()) . ".sql.gz";
+            $filename = 'nucleus_db_backup_' . date(
+                "Y-m-d-H-i-s",
+                time()
+            ) . ".sql.gz";
         } else {
-            $filename = 'nucleus_db_backup_' . date("Y-m-d-H-i-s",
-                    time()) . ".sql";
+            $filename = 'nucleus_db_backup_' . date(
+                "Y-m-d-H-i-s",
+                time()
+            ) . ".sql";
         }
 
 
@@ -216,21 +220,23 @@ class Backup
                 ? _ADMINPAGEFOOT_OFFICIALURL : 'http://www.nucleuscms.org/')
              . " \n";
         echo "#\n";
-        if ( ! $this->mode_en && defined('_BACKUP_BACKUPFILE_BACKUPDATE')) {
-            echo "# " . _BACKUP_BACKUPFILE_BACKUPDATE . gmdate("d-m-Y H:i:s",
-                    time()) . " GMT\n";
+        if (! $this->mode_en && defined('_BACKUP_BACKUPFILE_BACKUPDATE')) {
+            echo "# " . _BACKUP_BACKUPFILE_BACKUPDATE . gmdate(
+                "d-m-Y H:i:s",
+                time()
+            ) . " GMT\n";
         } else {
             echo "# backup-date: " . gmdate("d-m-Y H:i:s", time()) . " GMT\n";
         }
 
-        if ( ! $this->mode_en && defined('_BACKUP_BACKUPFILE_NUCLEUSVERSION')) {
+        if (! $this->mode_en && defined('_BACKUP_BACKUPFILE_NUCLEUSVERSION')) {
             echo "# " . _BACKUP_BACKUPFILE_NUCLEUSVERSION
                  . CORE_APPLICATION_VERSION . "\n";
         } else {
             echo "# Nucleus CMS version: " . CORE_APPLICATION_VERSION . "\n";
         }
         echo "#\n";
-        if ( ! $this->mode_en && defined('_BACKUP_WARNING_NUCLEUSVERSION')) {
+        if (! $this->mode_en && defined('_BACKUP_WARNING_NUCLEUSVERSION')) {
             echo "# " . _BACKUP_WARNING_NUCLEUSVERSION . "\n";
         } else {
             echo "# WARNING: Only try to restore on servers running the exact same version of Nucleus\n";
@@ -246,8 +252,11 @@ class Backup
             $Crc      = crc32(ob_get_contents());
             $contents = gzcompress(ob_get_contents());
             ob_end_clean();
-            echo "\x1f\x8b\x08\x00\x00\x00\x00\x00" . substr($contents, 0,
-                    strlen($contents) - 4) . Backup::gzip_PrintFourChars($Crc)
+            echo "\x1f\x8b\x08\x00\x00\x00\x00\x00" . substr(
+                $contents,
+                0,
+                strlen($contents) - 4
+            ) . Backup::gzip_PrintFourChars($Crc)
                  . Backup::gzip_PrintFourChars($Size);
         }
 
@@ -264,7 +273,7 @@ class Backup
     private function _backup_dump_table($table_name)
     {
         echo "#\n";
-        if ( ! $this->mode_en && defined('_BACKUP_BACKUPFILE_TABLE_NAME')) {
+        if (! $this->mode_en && defined('_BACKUP_BACKUPFILE_TABLE_NAME')) {
             echo "# " . _BACKUP_BACKUPFILE_TABLE_NAME . $table_name . "\n";
         } else {
             echo "# TABLE: " . $table_name . "\n";
@@ -293,12 +302,21 @@ class Backup
         $result      = sql_query("SHOW CREATE TABLE $tablename");
         $create      = sql_fetch_assoc($result);
         $CreateTable = $create['Create Table'];
-        $CreateTable = preg_replace('@\s+COLLATE\s+([0-9a-zA-Z_]+)@',
-            " COLLATE {$collation}", $CreateTable);
-        $CreateTable = preg_replace('@CHARSET=([0-9a-zA-Z_]+)@',
-            "CHARSET={$charset}", $CreateTable);
-        $CreateTable = preg_replace('@COLLATE=([0-9a-zA-Z_]+)@',
-            "COLLATE={$collation}", $CreateTable);
+        $CreateTable = preg_replace(
+            '@\s+COLLATE\s+([0-9a-zA-Z_]+)@',
+            " COLLATE {$collation}",
+            $CreateTable
+        );
+        $CreateTable = preg_replace(
+            '@CHARSET=([0-9a-zA-Z_]+)@',
+            "CHARSET={$charset}",
+            $CreateTable
+        );
+        $CreateTable = preg_replace(
+            '@COLLATE=([0-9a-zA-Z_]+)@',
+            "COLLATE={$collation}",
+            $CreateTable
+        );
 
         echo $CreateTable;
         echo ";\n\n";
@@ -348,15 +366,17 @@ class Backup
         $row_count
                 = intval(quickQuery("SELECT count(*) AS result FROM $table_name"));
         $result = sql_query("SELECT * FROM $table_name");
-        if ( ! $result) {
+        if (! $result) {
             return;
         }
 
         if ($row_count > 0) {
-            if ( ! $this->mode_en
+            if (! $this->mode_en
                  && defined('_BACKUP_BACKUPFILE_TABLEDATAFOR')) {
-                echo "\n#\n# " . sprintf(_BACKUP_BACKUPFILE_TABLEDATAFOR,
-                        $table_name) . "\n#\n";
+                echo "\n#\n# " . sprintf(
+                    _BACKUP_BACKUPFILE_TABLEDATAFOR,
+                    $table_name
+                ) . "\n#\n";
             } else {
                 echo "\n#\n# Table Data for $table_name\n#\n";
             }
@@ -379,7 +399,7 @@ class Backup
 
             // Loop through the rows and fill in data for each column
             for ($j = 0; $j < $num_fields; $j++) {
-                if ( ! isset($row[$j])) {
+                if (! isset($row[$j])) {
                     // no data for column
                     echo ' NULL';
                 } elseif ($row[$j] != '') {
@@ -433,7 +453,7 @@ class Backup
             return (! $this->mode_en && defined('_BACKUP_RESTOR_NOFILEUPLOADED')
                 ? _BACKUP_RESTOR_NOFILEUPLOADED : 'No file uploaded');
         }
-        if ( ! is_uploaded_file($uploadInfo['tmp_name'])) {
+        if (! is_uploaded_file($uploadInfo['tmp_name'])) {
             return (! $this->mode_en && defined('_BACKUP_RESTOR_NOFILEUPLOADED')
                 ? _BACKUP_RESTOR_NOFILEUPLOADED : 'No file uploaded');
         }
@@ -442,7 +462,7 @@ class Backup
         $backup_file_tmpname = $uploadInfo['tmp_name'];
         $backup_file_type    = $uploadInfo['type'];
 
-        if ( ! is_file($backup_file_tmpname)) {
+        if (! is_file($backup_file_tmpname)) {
             return (! $this->mode_en && defined('_BACKUP_RESTOR_UPLOAD_ERROR')
                 ? _BACKUP_RESTOR_UPLOAD_ERROR : 'File Upload Error');
         }
@@ -450,14 +470,18 @@ class Backup
         if ($backup_file_type === 'application/download') {
             $backup_file_type = 'application/octet-stream';
         } // For firefox
-        if ( ! preg_match('@^(text/[a-zA-Z]+)|(application/(x\-)?gzip(\-compressed)?)|(application/octet-stream)$@is',
-            $backup_file_type)) {
-            return sprintf("%s(%s)",
+        if (! preg_match(
+            '@^(text/[a-zA-Z]+)|(application/(x\-)?gzip(\-compressed)?)|(application/octet-stream)$@is',
+            $backup_file_type
+        )) {
+            return sprintf(
+                "%s(%s)",
                 (! $this->mode_en
                  && defined('_BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE')
                     ? _BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE
                     : 'The uploaded file is not of the correct type'),
-                $backup_file_type);
+                $backup_file_type
+            );
         }
 
 
@@ -467,7 +491,7 @@ class Backup
             $gzip = 0;
         }
 
-        if ( ! extension_loaded("zlib") && $gzip) {
+        if (! extension_loaded("zlib") && $gzip) {
             return (! $this->mode_en && defined('_BACKUP_RESTOR_UPLOAD_NOZLIB')
                 ? _BACKUP_RESTOR_UPLOAD_NOZLIB
                 : 'Cannot decompress gzipped backup (zlib package not installed)');
@@ -478,7 +502,7 @@ class Backup
             // decompress and read
             $gz_ptr    = gzopen($backup_file_tmpname, 'rb');
             $sql_query = "";
-            while ( ! gzeof($gz_ptr)) {
+            while (! gzeof($gz_ptr)) {
                 $sql_query .= gzgets($gz_ptr, 100000);
             }
         } else {
@@ -509,7 +533,7 @@ class Backup
      */
     private function _execute_queries($sql_query)
     {
-        if ( ! $sql_query) {
+        if (! $sql_query) {
             return;
         }
 
@@ -521,11 +545,11 @@ class Backup
         for ($i = 0; $i < $sql_count; $i++) {
             $sql = trim($pieces[$i]);
 
-            if ( ! empty($sql) and $sql[0] != "#") {
+            if (! empty($sql) and $sql[0] != "#") {
                 //                DEBUG
                 //                debug("Executing: " . hsc($sql) . "\n");
                 $result = sql_query($sql);
-                if ( ! $result) {
+                if (! $result) {
                     debug(_BACKUP_RESTOR_SQL_ERROR . sql_error());
                 }
             }
@@ -550,7 +574,7 @@ class Backup
         for ($i = 0; $i < $linecount; $i++) {
             if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
                 // Notice: Uninitialized string offset: 0
-                if ( ! isset($lines[$i][0]) || $lines[$i][0] != "#") {
+                if (! isset($lines[$i][0]) || $lines[$i][0] != "#") {
                     $output .= $lines[$i] . "\n";
                 } else {
                     $output .= "\n";
@@ -598,13 +622,11 @@ class Backup
                     // Do we have a complete statement yet?
                     $complete_stmt = false;
 
-                    for (
-                        $j = $i + 1; ! $complete_stmt && ($j < $token_count);
-                        $j++
+                    for ($j = $i + 1; ! $complete_stmt && ($j < $token_count); $j++
                     ) {
                         // odd number of quotes means a completed statement
                         // (in combination with the odd number we had already)
-                        if ( ! $this->_evenNumberOfQuotes($tokens[$j])) {
+                        if (! $this->_evenNumberOfQuotes($tokens[$j])) {
                             $output[] = $temp . $tokens[$j];
 
                             // save memory.
@@ -645,14 +667,15 @@ class Backup
         $total_quotes = preg_match_all("/'/", $text, $matches);
         // Counts single quotes that are preceded by an odd number of backslashes,
         // which means they're escaped quotes.
-        $escaped_quotes = preg_match_all("/(?<!\\\\)(\\\\\\\\)*\\\\'/", $text,
-            $matches);
+        $escaped_quotes = preg_match_all(
+            "/(?<!\\\\)(\\\\\\\\)*\\\\'/",
+            $text,
+            $matches
+        );
 
         $unescaped_quotes = $total_quotes - $escaped_quotes;
 
         //        debug($total_quotes . "-" . $escaped_quotes . "-" . $unescaped_quotes);
         return (($unescaped_quotes % 2) == 0);
     }
-
 }
-

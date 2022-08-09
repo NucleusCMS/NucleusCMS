@@ -174,7 +174,7 @@ class ADMIN
         if ($msg) {
             echo sprintf('%s: %s', _MESSAGE, hsc($msg));
         }
-?>
+        ?>
 
         <form action="index.php" method="post">
             <p>
@@ -201,7 +201,7 @@ class ADMIN
                 ?>
             </p>
         </form>
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
     }
 
 
@@ -837,7 +837,7 @@ class ADMIN
     {
         global $manager;
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _MOVE_TITLE; ?></h2>
         <form method="post" action="index.php">
             <div>
@@ -863,7 +863,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
         exit;
     }
 
@@ -874,7 +874,7 @@ class ADMIN
     {
         global $manager;
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _MOVECAT_TITLE; ?></h2>
         <form method="post" action="index.php">
             <div>
@@ -900,21 +900,21 @@ class ADMIN
 
             </div>
         </form>
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
         exit;
     }
 
     function batchChangeCategorySelectOrder($type, $ids)
     {
-        global $manager, $member, $CONF;
+        global $manager, $member;
 
         $this->pagehead();
 
-        if ($CONF['debug']) {
+        if (isDebugMode()) {
             echo "<!-- " . __CLASS__ . '::' . __FUNCTION__ . "  -->\n";
             //var_dump($ids);
         }
-    ?>
+        ?>
         <h2><?php echo _CAHANGE_CATEGORY_ORDER_TITLE ?></h2>
         <form method="post" action="index.php">
             <div>
@@ -1027,7 +1027,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
         exit;
     }
 
@@ -1037,7 +1037,7 @@ class ADMIN
 
         $this->pagehead();
         $type = $batchtype;
-    ?>
+        ?>
         <h2><?php echo $title; ?></h2>
         <form method="post" action="index.php">
             <div>
@@ -1066,7 +1066,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
         exit;
     }
 
@@ -1642,7 +1642,7 @@ class ADMIN
         $body = hsc(shorten($body, 300, '...'));
 
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _DELETE_CONFIRM ?></h2>
 
         <p><?php echo _CONFIRMTXT_ITEM ?></p>
@@ -1661,7 +1661,7 @@ class ADMIN
                 <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN ?>" tabindex="10" />
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -1745,7 +1745,7 @@ class ADMIN
         $item = &$manager->getItem($itemid, 1, 1);
 
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _MOVE_TITLE ?></h2>
         <form method="post" action="index.php">
             <div>
@@ -1761,7 +1761,7 @@ class ADMIN
                 <input type="submit" value="<?php echo _MOVE_BTN ?>" tabindex="10000" onclick="return checkSubmit();" />
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -1914,7 +1914,7 @@ class ADMIN
 
         $this->pagehead();
 
-    ?>
+        ?>
         <h2><?php echo _EDITC_TITLE ?></h2>
 
         <form action="index.php" method="post">
@@ -1959,7 +1959,7 @@ class ADMIN
                         <td>
                             <textarea name="body" tabindex="10" rows="10" cols="50"><?php                   // htmlspecialchars not needed (things should be escaped already)
                                                                                     echo $comment['body'];
-                                                                                    ?></textarea>
+                            ?></textarea>
                         </td>
                     </tr>
                     <tr>
@@ -1970,7 +1970,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -2050,7 +2050,7 @@ class ADMIN
         }
 
         $this->pagehead();
-    ?>
+        ?>
 
         <h2><?php echo _DELETE_CONFIRM ?></h2>
 
@@ -2070,7 +2070,7 @@ class ADMIN
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -2159,7 +2159,7 @@ class ADMIN
         $batch->showlist($query, 'table', $template);
 
         echo '<h3>' . _MEMBERS_NEW . '</h3>';
-    ?>
+        ?>
         <form action="index.php" method="post" name="memberedit">
             <div>
 
@@ -2218,7 +2218,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -2278,7 +2278,7 @@ class ADMIN
 
         $mem = MEMBER::createFromID($memberid);
 
-    ?>
+        ?>
         <form method="post" action="index.php" name="memberedit">
             <div>
 
@@ -2332,7 +2332,7 @@ class ADMIN
                         <?php // only allow to change this by super-admins
                         // we don't want normal users to 'upgrade' themselves to super-admins, do we? ;-)
                         if ($member->isAdmin()) {
-                        ?>
+                            ?>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_SUPERADMIN ?> <?php help('superadmin'); ?></td>
@@ -2347,7 +2347,7 @@ class ADMIN
                         <td><?php if ($member->id != $mem->id) {
                                 $this->input_yesno('halt', $mem->isHalt(), 70, 1, 0, _YES, _NO, $mem->isAdmin());
                             } ?></td>
-                    <?php } ?>
+                        <?php } ?>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_NOTES ?></td>
@@ -2442,7 +2442,6 @@ class ADMIN
         $mem = MEMBER::createFromID($memberid);
 
         if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
-
             if (!isValidDisplayName($name)) {
                 $this->error(_ERROR_BADNAME);
             }
@@ -2671,7 +2670,7 @@ class ADMIN
         }
 
         if ($bNeedsPasswordChange) {
-        ?>
+            ?>
             <div>
                 <form action="index.php" method="post">
 
@@ -2710,8 +2709,7 @@ class ADMIN
                 </form>
             </div>
 
-        <?php
-
+            <?php
         }
 
         $this->pagefoot();
@@ -2844,7 +2842,7 @@ class ADMIN
         if ($count_non_team_members == 0) {
             echo _TEAM_NO_SELECTABLE_MEMBERS;
         } else {
-        ?>
+            ?>
             <form method='post' action='index.php'>
                 <div>
 
@@ -2859,7 +2857,7 @@ class ADMIN
                                 $template['name'] = 'memberid';
                                 $template['tabindex'] = 10000;
                                 showlist_by_query($query, 'select', $template);
-                                ?></td>
+                            ?></td>
                         </tr>
                         <tr>
                             <td><?php echo _TEAM_ADMIN ?><?php help('teamadmin'); ?></td>
@@ -2873,7 +2871,7 @@ class ADMIN
 
                 </div>
             </form>
-        <?php
+            <?php
         } // end $count_non_team_members > 0
         $this->pagefoot();
     }
@@ -2935,7 +2933,7 @@ class ADMIN
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -3061,7 +3059,7 @@ class ADMIN
         $this->pagehead($extrahead);
 
         echo '<p><a href="index.php?action=overview">(', _BACKHOME, ')</a></p>';
-    ?>
+        ?>
         <h2><?php echo _EBLOG_TITLE ?>: '<?php echo $this->bloglink($blog) ?>'</h2>
         <?php if ($message) {
             echo sprintf('<div class="ok">%s</div>', $message);
@@ -3135,8 +3133,7 @@ class ADMIN
                         </td>
                     </tr>
                     <?php
-                    if (
-                        !$blog->existsSetting('bauthorvisible')
+                    if (!$blog->existsSetting('bauthorvisible')
                         && !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')
                     ) {
                         // Force Upgrade
@@ -3147,12 +3144,12 @@ class ADMIN
                         <td><?php echo _EBLOG_VISIBLE_ITEM_AUTHOR; ?> <?php help('authorvisible'); ?>
                         </td>
                         <td><?php
-                            if ($blog->existsSetting('bauthorvisible') || sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')) {
-                                $this->input_yesno('authorvisible', $blog->getAuthorVisible(), 53);
-                            } else {
-                                echo "Needs to upgrade column name `authorvisible`. please reload.";
-                            }
-                            ?></td>
+                        if ($blog->existsSetting('bauthorvisible') || sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')) {
+                            $this->input_yesno('authorvisible', $blog->getAuthorVisible(), 53);
+                        } else {
+                            echo "Needs to upgrade column name `authorvisible`. please reload.";
+                        }
+                        ?></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_LINEBREAKS ?> <?php help('convertbreaks'); ?>
@@ -3186,11 +3183,17 @@ class ADMIN
                     <tr>
                         <td><?php echo _EBLOG_NOTIFY_ON ?></td>
                         <td>
-                            <input name="notifyComment" value="3" type="checkbox" tabindex="81" id="notifyComment" <?php if ($blog->notifyOnComment()) echo "checked='checked'" ?> /><label for="notifyComment"><?php echo _EBLOG_NOTIFY_COMMENT ?></label>
+                            <input name="notifyComment" value="3" type="checkbox" tabindex="81" id="notifyComment" <?php if ($blog->notifyOnComment()) {
+                                echo "checked='checked'";
+                                                                                                                   } ?> /><label for="notifyComment"><?php echo _EBLOG_NOTIFY_COMMENT ?></label>
                             <br />
-                            <input name="notifyVote" value="5" type="checkbox" tabindex="82" id="notifyVote" <?php if ($blog->notifyOnVote()) echo "checked='checked'" ?> /><label for="notifyVote"><?php echo _EBLOG_NOTIFY_KARMA ?></label>
+                            <input name="notifyVote" value="5" type="checkbox" tabindex="82" id="notifyVote" <?php if ($blog->notifyOnVote()) {
+                                echo "checked='checked'";
+                                                                                                             } ?> /><label for="notifyVote"><?php echo _EBLOG_NOTIFY_KARMA ?></label>
                             <br />
-                            <input name="notifyNewItem" value="7" type="checkbox" tabindex="83" id="notifyNewItem" <?php if ($blog->notifyOnNewItem()) echo "checked='checked'" ?> /><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM ?></label>
+                            <input name="notifyNewItem" value="7" type="checkbox" tabindex="83" id="notifyNewItem" <?php if ($blog->notifyOnNewItem()) {
+                                echo "checked='checked'";
+                                                                                                                   } ?> /><label for="notifyNewItem"><?php echo _EBLOG_NOTIFY_ITEM ?></label>
                         </td>
                     </tr>
                     <tr>
@@ -3280,7 +3283,7 @@ class ADMIN
             </div>
         </form>
 
-    <?php
+        <?php
 
         echo '<h3>', _PLUGINS_EXTRA, '</h3>';
 
@@ -3370,7 +3373,7 @@ class ADMIN
 
         echo "<p><a href='index.php?action=blogsettings&amp;blogid=$blogid'>(", _BACK_TO_BLOGSETTINGS, ")</a></p>";
 
-    ?>
+        ?>
         <h2><?php echo _EBLOG_CAT_UPDATE ?> '<?php echo hsc($cname) ?>'</h2>
         <form method='post' action='index.php'>
             <div>
@@ -3411,7 +3414,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -3515,7 +3518,7 @@ class ADMIN
 
 
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _DELETE_CONFIRM ?></h2>
 
         <div>
@@ -3531,7 +3534,7 @@ class ADMIN
                 <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -3836,7 +3839,7 @@ class ADMIN
         $blog = &$manager->getBlog($blogid);
 
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _DELETE_CONFIRM ?></h2>
 
         <p><?php echo _WARNINGTXT_BLOGDEL ?>
@@ -3954,7 +3957,7 @@ class ADMIN
 
         if ($mem->isHalt()) {
         } else {
-        ?>
+            ?>
             <form method="post" action="index.php">
                 <div>
                     <input type="hidden" name="action" value="memberhaltconfirm_execute" />
@@ -3963,7 +3966,7 @@ class ADMIN
                     <input type="submit" tabindex="10" value="<?php echo _ADMIN_MEMBER_HALT_CONFIRM_DONE_BTN ?>" />
                 </div>
             </form>
-        <?php
+            <?php
         }
         $this->pagefoot();
     }
@@ -4019,7 +4022,7 @@ class ADMIN
         if (!$canBeDeleted) {
             echo "<p>" . _ERROR_DELETEMEMBER . "</p>";
         } else {
-        ?>
+            ?>
             <form method="post" action="index.php">
                 <div>
                     <input type="hidden" name="action" value="memberdeleteconfirm" />
@@ -4028,7 +4031,7 @@ class ADMIN
                     <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
                 </div>
             </form>
-        <?php
+            <?php
         }
         $this->pagefoot();
     }
@@ -4245,7 +4248,7 @@ class ADMIN
 
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -4346,7 +4349,7 @@ class ADMIN
         $manager->notify('PostAddCategory', $param);
 
         $this->pagehead();
-    ?>
+        ?>
         <h2><?php echo _BLOGCREATED_TITLE ?></h2>
 
         <p><?php echo sprintf(_BLOGCREATED_ADDEDTXT, hsc($bname)) ?></p>
@@ -4414,7 +4417,7 @@ selector();
             </div>
         </form>
 
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
     }
 
     /**
@@ -4453,7 +4456,7 @@ selector();
 
         echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
 
-    ?>
+        ?>
         <h2><?php echo _SKINIE_TITLE_IMPORT ?></h2>
 
         <div><label for="skinie_import_local"><?php echo _SKINIE_LOCAL ?></label>
@@ -4462,7 +4465,7 @@ selector();
             $candidates = SKINIMPORT::searchForCandidates($DIR_SKINS);
 
             if (sizeof($candidates) > 0) {
-            ?>
+                ?>
                 <form method="post" action="index.php">
                     <div>
                         <input type="hidden" name="action" value="skinieimport" />
@@ -4549,7 +4552,7 @@ selector();
             </div>
         </form>
 
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -4597,7 +4600,7 @@ selector();
         $this->pagehead();
 
         echo '<p><a href="index.php?action=skinieoverview">(', _BACK, ')</a></p>';
-    ?>
+        ?>
         <h2><?php echo _SKINIE_CONFIRM_TITLE ?></h2>
 
         <ul>
@@ -4612,14 +4615,14 @@ selector();
             </li>
             <?php
             if ($hasNameClashes) {
-            ?>
+                ?>
                 <li>
                     <p><strong style="color: red;"><?php echo _SKINIE_INFO_SKINCLASH ?></strong> <?php echo implode(' <em>' . _AND . '</em> ', $skinNameClashes) ?></p>
                 </li>
                 <li>
                     <p><strong style="color: red;"><?php echo _SKINIE_INFO_TEMPLCLASH ?></strong> <?php echo implode(' <em>' . _AND . '</em> ', $templateNameClashes) ?></p>
                 </li>
-            <?php
+                <?php
             } // if (hasNameClashes)
             ?>
         </ul>
@@ -4633,17 +4636,17 @@ selector();
                 <input type="submit" value="<?php echo _SKINIE_CONFIRM_IMPORT ?>" />
                 <?php
                 if ($hasNameClashes) {
-                ?>
+                    ?>
                     <br />
                     <input type="checkbox" name="overwrite" value="1" id="cb_overwrite" /><label for="cb_overwrite"><?php echo _SKINIE_CONFIRM_OVERWRITE ?></label>
-                <?php
+                    <?php
                 } // if (hasNameClashes)
                 ?>
             </div>
         </form>
 
 
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -4693,7 +4696,7 @@ selector();
         $this->pagehead();
 
         echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
-    ?>
+        ?>
         <h2><?php echo _SKINIE_DONE ?></h2>
 
         <ul>
@@ -4708,7 +4711,7 @@ selector();
             </li>
         </ul>
 
-    <?php $this->pagefoot();
+        <?php $this->pagefoot();
     }
 
     /**
@@ -4773,7 +4776,7 @@ selector();
 
         echo '<h3>' . _TEMPLATE_NEW_TITLE . '</h3>';
 
-    ?>
+        ?>
         <form method="post" action="index.php">
             <div>
 
@@ -4797,7 +4800,7 @@ selector();
             </div>
         </form>
 
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -4821,7 +4824,7 @@ selector();
         $templatedescription = TEMPLATE::getDesc($templateid);
         $template = &$manager->getTemplate($templatename);
 
-    ?>
+        ?>
         <p>
             <a href="index.php?action=templateoverview">(<?php echo _TEMPLATE_BACK ?>)</a>
         </p>
@@ -4869,22 +4872,22 @@ selector();
                         <th colspan="2"><?php echo _TEMPLATE_ITEMS ?> <?php help('templateitems'); ?></th>
                         <?php
                         $this->_templateEditRow($template, _TEMPLATE_ITEMHEADER, 'ITEM_HEADER', '', 8);
-                        $this->_templateEditRow($template, _TEMPLATE_ITEMBODY,   'ITEM', '', 9, 1);
+                        $this->_templateEditRow($template, _TEMPLATE_ITEMBODY, 'ITEM', '', 9, 1);
                         $this->_templateEditRow($template, _TEMPLATE_ITEMFOOTER, 'ITEM_FOOTER', '', 10);
-                        $this->_templateEditRow($template, _TEMPLATE_MORELINK,   'MORELINK', 'morelink', 20);
-                        $this->_templateEditRow($template, _TEMPLATE_EDITLINK,   'EDITLINK', 'editlink', 25);
-                        $this->_templateEditRow($template, _TEMPLATE_NEW,        'NEW', 'new', 30);
+                        $this->_templateEditRow($template, _TEMPLATE_MORELINK, 'MORELINK', 'morelink', 20);
+                        $this->_templateEditRow($template, _TEMPLATE_EDITLINK, 'EDITLINK', 'editlink', 25);
+                        $this->_templateEditRow($template, _TEMPLATE_NEW, 'NEW', 'new', 30);
                         ?>
                     </tr>
                     <tr>
                         <th colspan="2"><?php echo _TEMPLATE_COMMENTS_ANY ?> <?php help('templatecomments'); ?></th>
                         <?php
                         $this->_templateEditRow($template, _TEMPLATE_CHEADER, 'COMMENTS_HEADER', 'commentheaders', 40);
-                        $this->_templateEditRow($template, _TEMPLATE_CBODY,   'COMMENTS_BODY', 'commentbody', 50, 1);
+                        $this->_templateEditRow($template, _TEMPLATE_CBODY, 'COMMENTS_BODY', 'commentbody', 50, 1);
                         $this->_templateEditRow($template, _TEMPLATE_CFOOTER, 'COMMENTS_FOOTER', 'commentheaders', 60);
-                        $this->_templateEditRow($template, _TEMPLATE_CONE,    'COMMENTS_ONE', 'commentwords', 70);
-                        $this->_templateEditRow($template, _TEMPLATE_CMANY,   'COMMENTS_MANY', 'commentwords', 80);
-                        $this->_templateEditRow($template, _TEMPLATE_CMORE,   'COMMENTS_CONTINUED', 'commentcontinued', 90);
+                        $this->_templateEditRow($template, _TEMPLATE_CONE, 'COMMENTS_ONE', 'commentwords', 70);
+                        $this->_templateEditRow($template, _TEMPLATE_CMANY, 'COMMENTS_MANY', 'commentwords', 80);
+                        $this->_templateEditRow($template, _TEMPLATE_CMORE, 'COMMENTS_CONTINUED', 'commentcontinued', 90);
                         $this->_templateEditRow($template, _TEMPLATE_CMEXTRA, 'COMMENTS_AUTH', 'memberextra', 100);
                         ?>
                     </tr>
@@ -4904,7 +4907,7 @@ selector();
                         <th colspan="2"><?php echo _TEMPLATE_ARCHIVELIST ?> <?php help('templatearchivelists'); ?></th>
                         <?php
                         $this->_templateEditRow($template, _TEMPLATE_AHEADER, 'ARCHIVELIST_HEADER', '', 130);
-                        $this->_templateEditRow($template, _TEMPLATE_AITEM,   'ARCHIVELIST_LISTITEM', '', 140);
+                        $this->_templateEditRow($template, _TEMPLATE_AITEM, 'ARCHIVELIST_LISTITEM', '', 140);
                         $this->_templateEditRow($template, _TEMPLATE_AFOOTER, 'ARCHIVELIST_FOOTER', '', 150);
                         ?>
                     </tr>
@@ -4912,7 +4915,7 @@ selector();
                         <th colspan="2"><?php echo _TEMPLATE_BLOGLIST ?> <?php help('templatebloglists'); ?></th>
                         <?php
                         $this->_templateEditRow($template, _TEMPLATE_BLOGHEADER, 'BLOGLIST_HEADER', '', 160);
-                        $this->_templateEditRow($template, _TEMPLATE_BLOGITEM,   'BLOGLIST_LISTITEM', '', 170);
+                        $this->_templateEditRow($template, _TEMPLATE_BLOGITEM, 'BLOGLIST_LISTITEM', '', 170);
                         $this->_templateEditRow($template, _TEMPLATE_BLOGFOOTER, 'BLOGLIST_FOOTER', '', 180);
                         ?>
                     </tr>
@@ -4920,7 +4923,7 @@ selector();
                         <th colspan="2"><?php echo _TEMPLATE_CATEGORYLIST ?> <?php help('templatecategorylists'); ?></th>
                         <?php
                         $this->_templateEditRow($template, _TEMPLATE_CATHEADER, 'CATLIST_HEADER', '', 190);
-                        $this->_templateEditRow($template, _TEMPLATE_CATITEM,   'CATLIST_LISTITEM', '', 200);
+                        $this->_templateEditRow($template, _TEMPLATE_CATITEM, 'CATLIST_LISTITEM', '', 200);
                         $this->_templateEditRow($template, _TEMPLATE_CATFOOTER, 'CATLIST_FOOTER', '', 210);
                         ?>
                     </tr>
@@ -4931,7 +4934,7 @@ selector();
                         $this->_templateEditRow($template, _TEMPLATE_DFOOTER, 'DATE_FOOTER', 'dateheads', 230);
                         $this->_templateEditRow($template, _TEMPLATE_DFORMAT, 'FORMAT_DATE', 'datetime', 240);
                         $this->_templateEditRow($template, _TEMPLATE_TFORMAT, 'FORMAT_TIME', 'datetime', 250);
-                        $this->_templateEditRow($template, _TEMPLATE_LOCALE,  'LOCALE', 'locale', 260);
+                        $this->_templateEditRow($template, _TEMPLATE_LOCALE, 'LOCALE', 'locale', 260);
                         ?>
                     </tr>
                     <tr>
@@ -4946,7 +4949,7 @@ selector();
                         <th colspan="2"><?php echo _TEMPLATE_SEARCH ?></th>
                         <?php
                         $this->_templateEditRow($template, _TEMPLATE_SHIGHLIGHT, 'SEARCH_HIGHLIGHT', 'highlight', 300);
-                        $this->_templateEditRow($template, _TEMPLATE_SNOTFOUND,  'SEARCH_NOTHINGFOUND', 'nothingfound', 310);
+                        $this->_templateEditRow($template, _TEMPLATE_SNOTFOUND, 'SEARCH_NOTHINGFOUND', 'nothingfound', 310);
                         ?>
                     </tr>
                     <tr>
@@ -4980,7 +4983,7 @@ selector();
 
             </div>
         </form>
-    <?php
+        <?php
         $this->pagefoot();
     }
 
@@ -4993,12 +4996,12 @@ selector();
         if (!isset($template[$name])) {
             $template[$name] = '';
         }
-    ?>
+        ?>
         </tr>
         <tr>
             <td><?php echo $description ?> <?php if ($help) {
                                                 help('template' . $help);
-                                            } ?></td>
+                } ?></td>
             <td id="td<?php echo $count ?>"><textarea class="templateedit" name="<?php echo $name ?>" tabindex="<?php echo $tabindex ?>" cols="50" rows="<?php echo $big ? 10 : 5 ?>" id="textarea<?php echo $count ?>"><?php echo  hsc($template[$name]); ?></textarea></td>
         <?php $count++;
     }
@@ -5404,7 +5407,7 @@ selector();
                         hsc(strtolower($row['stype']))
                     );
                     $s .= '<li>'
-                        . sprintf('<a tabindex="%d" href="%s">%s</a>', ($tabstart++), $url_edit,   escapeHTML($row['stype']))
+                        . sprintf('<a tabindex="%d" href="%s">%s</a>', ($tabstart++), $url_edit, escapeHTML($row['stype']))
                         . sprintf(' <a tabindex="%d" href="%s">(%s)</a>', ($tabstart++), $url_delete, escapeHTML(_LISTS_DELETE))
                         . sprintf(' <a tabindex="%d" href="%s">(%s)</a>', ($tabstart++), $url_change, escapeHTML(_ADMIN_TEXT_SKIN_PARTS_CHANGE_TO_PAGE))
                         . '</li>';
@@ -5717,158 +5720,158 @@ selector();
                 showlist_by_query($query, 'table', array('content' => 'shortnames'));
                 echo '</div>';
                 $this->pagefoot();
-            }
+    }
 
             /**
              * @todo document this
              */
-            function action_skinupdate()
-            {
-                global $member;
+    function action_skinupdate()
+    {
+        global $member;
 
-                $skinid = intRequestVar('skinid');
-                $content = trim(postVar('content'));
-                $type = postVar('type');
+        $skinid = intRequestVar('skinid');
+        $content = trim(postVar('content'));
+        $type = postVar('type');
 
-                $spartstype = (postVar('partstype') === 'specialpage' ? 'specialpage' : 'parts');
+        $spartstype = (postVar('partstype') === 'specialpage' ? 'specialpage' : 'parts');
 
-                $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                $skin = new SKIN($skinid);
-                $skin->update($type, $content, array('spartstype' => $spartstype));
+        $skin = new SKIN($skinid);
+        $skin->update($type, $content, array('spartstype' => $spartstype));
 
-                $this->action_skinedittype(_SKIN_UPDATED);
-            }
+        $this->action_skinedittype(_SKIN_UPDATED);
+    }
 
             /**
              * @todo document this
              */
-            function action_skindelete()
-            {
-                global $member, $manager, $CONF;
+    function action_skindelete()
+    {
+        global $member, $manager, $CONF;
 
-                $skinid = intRequestVar('skinid');
+        $skinid = intRequestVar('skinid');
 
-                $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                // don't allow default skin to be deleted
-                if ($skinid == $CONF['BaseSkin']) {
-                    $this->error(_ERROR_DEFAULTSKIN);
-                }
+        // don't allow default skin to be deleted
+        if ($skinid == $CONF['BaseSkin']) {
+            $this->error(_ERROR_DEFAULTSKIN);
+        }
 
-                // don't allow deletion of default skins for blogs
-                $query = sprintf("SELECT bname FROM %s WHERE bdefskin=%s", sql_table('blog'), $skinid);
-                $r = sql_query($query);
-                if ($o = sql_fetch_object($r)) {
-                    $this->error(_ERROR_SKINDEFDELETE . hsc($o->bname));
-                }
+        // don't allow deletion of default skins for blogs
+        $query = sprintf("SELECT bname FROM %s WHERE bdefskin=%s", sql_table('blog'), $skinid);
+        $r = sql_query($query);
+        if ($o = sql_fetch_object($r)) {
+            $this->error(_ERROR_SKINDEFDELETE . hsc($o->bname));
+        }
 
-                $this->pagehead();
+        $this->pagehead();
 
-                $skin = new SKIN($skinid);
-                $name = $skin->getName();
-                $desc = $skin->getDescription();
+        $skin = new SKIN($skinid);
+        $name = $skin->getName();
+        $desc = $skin->getDescription();
 
-                ?>
+        ?>
                 <h2><?php echo _DELETE_CONFIRM ?></h2>
 
                 <p>
-                    <?php echo _CONFIRMTXT_SKIN ?><b><?php echo hsc($name) ?></b> (<?php echo  hsc($desc) ?>)
+            <?php echo _CONFIRMTXT_SKIN ?><b><?php echo hsc($name) ?></b> (<?php echo  hsc($desc) ?>)
                 </p>
 
                 <form method="post" action="index.php">
                     <div>
                         <input type="hidden" name="action" value="skindeleteconfirm" />
-                        <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden() ?>
                         <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
                         <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
                     </div>
                 </form>
             <?php
-                $this->pagefoot();
-            }
+            $this->pagefoot();
+    }
 
             /**
              * @todo document this
              */
-            function action_skindeleteconfirm()
-            {
-                global $member, $CONF, $manager;
+    function action_skindeleteconfirm()
+    {
+        global $member, $CONF, $manager;
 
-                $skinid = intRequestVar('skinid');
+        $skinid = intRequestVar('skinid');
 
-                $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                // don't allow default skin to be deleted
-                if ($skinid == $CONF['BaseSkin']) {
-                    $this->error(_ERROR_DEFAULTSKIN);
-                }
+        // don't allow default skin to be deleted
+        if ($skinid == $CONF['BaseSkin']) {
+            $this->error(_ERROR_DEFAULTSKIN);
+        }
 
-                // don't allow deletion of default skins for blogs
-                $query = sprintf("SELECT bname FROM %s WHERE bdefskin=%s", sql_table('blog'), $skinid);
-                $r = sql_query($query);
-                if ($o = sql_fetch_object($r)) {
-                    $this->error(_ERROR_SKINDEFDELETE . $o->bname);
-                }
+        // don't allow deletion of default skins for blogs
+        $query = sprintf("SELECT bname FROM %s WHERE bdefskin=%s", sql_table('blog'), $skinid);
+        $r = sql_query($query);
+        if ($o = sql_fetch_object($r)) {
+            $this->error(_ERROR_SKINDEFDELETE . $o->bname);
+        }
 
-                $param = array('skinid' => $skinid);
-                $manager->notify('PreDeleteSkin', $param);
+        $param = array('skinid' => $skinid);
+        $manager->notify('PreDeleteSkin', $param);
 
-                // 1. delete description
-                sql_query('DELETE FROM ' . sql_table('skin_desc') . ' WHERE sdnumber=' . $skinid);
+        // 1. delete description
+        sql_query('DELETE FROM ' . sql_table('skin_desc') . ' WHERE sdnumber=' . $skinid);
 
-                // 2. delete parts
-                sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $skinid);
+        // 2. delete parts
+        sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $skinid);
 
-                $param = array('skinid' => $skinid);
-                $manager->notify('PostDeleteSkin', $param);
+        $param = array('skinid' => $skinid);
+        $manager->notify('PostDeleteSkin', $param);
 
-                $this->action_skinoverview();
-            }
+        $this->action_skinoverview();
+    }
 
             /**
              * @todo document this
              */
-            function action_skinremovetype()
-            {
-                global $member, $manager;
+    function action_skinremovetype()
+    {
+        global $member, $manager;
 
-                $skinid = intRequestVar('skinid');
-                $skintype = requestVar('type');
-                $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
+        $skinid = intRequestVar('skinid');
+        $skintype = requestVar('type');
+        $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
 
-                $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL;
-                switch ($spartstype) {
-                    case 'specialpage':
-                        $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
-                        if (!isValidSkinSpecialPageName($skintype)) {
-                            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-                        }
-                        break;
-                    default:
-                        if (!isValidSkinPartsName($skintype)) {
-                            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-                        }
-                }
-
-                $member->isAdmin() or $this->disallow();
-
-                // don't allow default skinparts to be deleted
-                if (($spartstype == 'parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+        $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL;
+        switch ($spartstype) {
+            case 'specialpage':
+                $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
+                if (!isValidSkinSpecialPageName($skintype)) {
                     $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
                 }
+                break;
+            default:
+                if (!isValidSkinPartsName($skintype)) {
+                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+                }
+        }
 
-                $this->pagehead();
+        $member->isAdmin() or $this->disallow();
 
-                $skin = new SKIN($skinid);
-                $name = $skin->getName();
-                $desc = $skin->getDescription();
+        // don't allow default skinparts to be deleted
+        if (($spartstype == 'parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+        }
 
-            ?>
+        $this->pagehead();
+
+        $skin = new SKIN($skinid);
+        $name = $skin->getName();
+        $desc = $skin->getDescription();
+
+        ?>
                 <h2><?php echo _DELETE_CONFIRM ?></h2>
 
                 <p>
-                    <?php echo $confirm_title; ?>
+            <?php echo $confirm_title; ?>
                 </p>
                 <p>
                     <b><?php echo escapeHTML($skintype); ?> (<?php echo escapeHTML($name); ?>)</b> (<?php echo  escapeHTML($desc) ?>)
@@ -5877,7 +5880,7 @@ selector();
                 <form method="post" action="index.php">
                     <div>
                         <input type="hidden" name="action" value="skinremovetypeconfirm" />
-                        <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden() ?>
                         <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
                         <input type="hidden" name="partstype" value="<?php echo $spartstype; ?>" />
                         <input type="hidden" name="type" value="<?php echo escapeHTML($skintype); ?>" />
@@ -5885,106 +5888,106 @@ selector();
                     </div>
                 </form>
             <?php
-                $this->pagefoot();
-            }
+            $this->pagefoot();
+    }
 
             /**
              * @todo document this
              */
-            function action_skinremovetypeconfirm()
-            {
-                global $member, $manager;
+    function action_skinremovetypeconfirm()
+    {
+        global $member, $manager;
 
-                $skinid = intRequestVar('skinid');
-                $skintype = requestVar('type');
-                $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
+        $skinid = intRequestVar('skinid');
+        $skintype = requestVar('type');
+        $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
 
-                switch ($spartstype) {
-                    case 'specialpage':
-                        if (!isValidSkinSpecialPageName($skintype)) {
-                            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-                        }
-                        break;
-                    default:
-                        if (!isValidSkinPartsName($skintype)) {
-                            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
-                        }
-                }
-
-                $member->isAdmin() or $this->disallow();
-
-                // don't allow default skinparts to be deleted
-                if (($spartstype == 'parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+        switch ($spartstype) {
+            case 'specialpage':
+                if (!isValidSkinSpecialPageName($skintype)) {
                     $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
                 }
-
-                $notify_data = array(
-                    'skinid'    => $skinid,
-                    'skintype'  => $skintype,
-                    'partstype' => $spartstype,
-                );
-                $manager->notify('PreDeleteSkinPart', $notify_data);
-
-                // delete part
-                sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
-
-                $notify_data = array(
-                    'skinid'    => $skinid,
-                    'skintype'  => $skintype,
-                    'partstype' => $spartstype,
-                );
-                $manager->notify('PostDeleteSkinPart', $notify_data);
-
-                $this->action_skinedit();
-            }
-
-            function action_skinchangestype()
-            {
-                global $member, $manager;
-
-                $member->isAdmin() or $this->disallow();
-
-                $skinid = intRequestVar('skinid');
-                $skintype = requestVar('type');  // parts name
-                $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
-
-                // don't allow default skinparts
-                if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
-                }
-
-                if (!SKIN::existsSpecialNameEx($skinid, $skintype, $spartstype)) {
-                    $msg = ($spartstype == 'parts' ? _ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST : _ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST);
-                    $this->error($msg . escapeHTML(' : ' . $skintype));
-                }
-
-                if (!isValidSkinSpecialPageName($skintype)) {
-                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE);
-                }
+                break;
+            default:
                 if (!isValidSkinPartsName($skintype)) {
-                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
                 }
+        }
 
-                if ($spartstype == 'specialpage') {
-                    $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
-                } else {
-                    $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE;
-                }
+        $member->isAdmin() or $this->disallow();
 
-                $this->pagehead();
+        // don't allow default skinparts to be deleted
+        if (($spartstype == 'parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
+        }
 
-                $from = $spartstype;
-                $to   = ($spartstype != 'specialpage' ? 'specialpage' : 'parts');
+        $notify_data = array(
+            'skinid'    => $skinid,
+            'skintype'  => $skintype,
+            'partstype' => $spartstype,
+        );
+        $manager->notify('PreDeleteSkinPart', $notify_data);
 
-                $skin = new SKIN($skinid);
-                $name = $skin->getName();
-                $desc = $skin->getDescription();
+        // delete part
+        sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
 
-            ?>
+        $notify_data = array(
+            'skinid'    => $skinid,
+            'skintype'  => $skintype,
+            'partstype' => $spartstype,
+        );
+        $manager->notify('PostDeleteSkinPart', $notify_data);
+
+        $this->action_skinedit();
+    }
+
+    function action_skinchangestype()
+    {
+        global $member, $manager;
+
+        $member->isAdmin() or $this->disallow();
+
+        $skinid = intRequestVar('skinid');
+        $skintype = requestVar('type');  // parts name
+        $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
+
+        // don't allow default skinparts
+        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
+
+        if (!SKIN::existsSpecialNameEx($skinid, $skintype, $spartstype)) {
+            $msg = ($spartstype == 'parts' ? _ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST : _ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST);
+            $this->error($msg . escapeHTML(' : ' . $skintype));
+        }
+
+        if (!isValidSkinSpecialPageName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE);
+        }
+        if (!isValidSkinPartsName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
+
+        if ($spartstype == 'specialpage') {
+            $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_PAGE;
+        } else {
+            $confirm_title = _CONFIRMTXT_SKIN_PARTS_SPECIAL_STYPE_CHANGE;
+        }
+
+        $this->pagehead();
+
+        $from = $spartstype;
+        $to   = ($spartstype != 'specialpage' ? 'specialpage' : 'parts');
+
+        $skin = new SKIN($skinid);
+        $name = $skin->getName();
+        $desc = $skin->getDescription();
+
+        ?>
                 <h2><?php echo _ADMIN_TEXT_CHANGE_CONFIRM; ?></h2>
 
                 <p>
-                    <?php echo $confirm_title; ?>
+            <?php echo $confirm_title; ?>
                 </p>
                 <p>
                     <b><?php echo escapeHTML($skintype); ?> (<?php echo escapeHTML($name); ?>)</b> (<?php echo  escapeHTML($desc) ?>)
@@ -5999,7 +6002,7 @@ selector();
                 <form method="post" action="index.php">
                     <div>
                         <input type="hidden" name="action" value="skinchangestypeconfirm" />
-                        <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden() ?>
                         <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
                         <input type="hidden" name="partstype" value="<?php echo $spartstype; ?>" />
                         <input type="hidden" name="type" value="<?php echo escapeHTML($skintype); ?>" />
@@ -6008,92 +6011,92 @@ selector();
                     </div>
                 </form>
             <?php
-                $this->pagefoot();
-            }
+            $this->pagefoot();
+    }
 
-            function action_skinchangestypeconfirm()
-            {
-                global $member;
-                global $DB_PHP_MODULE_NAME;
+    function action_skinchangestypeconfirm()
+    {
+        global $member;
+        global $DB_PHP_MODULE_NAME;
 
-                $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                $skinid = intRequestVar('skinid');
-                $skintype = requestVar('type'); // parts name
-                $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
-                $partstype_to = (requestVar('partstype_to') == 'specialpage' ? 'specialpage' : 'parts');
+        $skinid = intRequestVar('skinid');
+        $skintype = requestVar('type'); // parts name
+        $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
+        $partstype_to = (requestVar('partstype_to') == 'specialpage' ? 'specialpage' : 'parts');
 
-                // don't allow default skinparts
-                if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
-                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
-                }
+        // don't allow default skinparts
+        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
 
-                if (!SKIN::existsSpecialNameEx($skinid, $skintype, $spartstype)) {
-                    $msg = ($spartstype == 'parts' ? _ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST : _ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST);
-                    $this->error($msg . escapeHTML(' : ' . $skintype));
-                }
+        if (!SKIN::existsSpecialNameEx($skinid, $skintype, $spartstype)) {
+            $msg = ($spartstype == 'parts' ? _ERROR_SKIN_PARTS_SPECIAL_NOT_EXIST : _ERROR_SKIN_PARTS_SPECIAL_PAGE_NOT_EXIST);
+            $this->error($msg . escapeHTML(' : ' . $skintype));
+        }
 
-                if (!isValidSkinSpecialPageName($skintype)) {
-                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE);
-                }
-                if (!isValidSkinPartsName($skintype)) {
-                    $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
-                }
+        if (!isValidSkinSpecialPageName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_PAGE_STYPE_CHANGE);
+        }
+        if (!isValidSkinPartsName($skintype)) {
+            $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
+        }
 
-                $sql = sprintf("UPDATE `%s` ", sql_table('skin'));
-                if ($DB_PHP_MODULE_NAME == 'pdo') {
-                    $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
-                    sql_prepare_execute($sql, array($partstype_to, $skinid, $skintype));
-                } else {
-                    $sql .= sprintf(
-                        "SET spartstype = %s WHERE sdesc=%d AND stype=%s",
-                        sql_quote_string($partstype_to),
-                        $skinid,
-                        sql_quote_string($skintype)
-                    );
-                    sql_query($sql);
-                }
+        $sql = sprintf("UPDATE `%s` ", sql_table('skin'));
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
+            sql_prepare_execute($sql, array($partstype_to, $skinid, $skintype));
+        } else {
+            $sql .= sprintf(
+                "SET spartstype = %s WHERE sdesc=%d AND stype=%s",
+                sql_quote_string($partstype_to),
+                $skinid,
+                sql_quote_string($skintype)
+            );
+            sql_query($sql);
+        }
 
-                $this->action_skinedit();
-            }
+        $this->action_skinedit();
+    }
 
             /**
              * @todo document this
              */
-            function action_skinclone()
-            {
-                global $member;
+    function action_skinclone()
+    {
+        global $member;
 
-                $skinid = intRequestVar('skinid');
+        $skinid = intRequestVar('skinid');
 
-                $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                // 1. read skin to clone
-                $skin = new SKIN($skinid);
+        // 1. read skin to clone
+        $skin = new SKIN($skinid);
 
-                $name = "clone_" . $skin->getName();
+        $name = "clone_" . $skin->getName();
 
-                // if a skin with that name already exists:
-                if (SKIN::exists($name)) {
-                    $i = 1;
-                    while (SKIN::exists($name . $i)) {
-                        $i++;
-                    }
-                    $name .= $i;
-                }
+        // if a skin with that name already exists:
+        if (SKIN::exists($name)) {
+            $i = 1;
+            while (SKIN::exists($name . $i)) {
+                $i++;
+            }
+            $name .= $i;
+        }
 
-                // 2. create skin desc
-                $newid = SKIN::createNew(
-                    $name,
-                    $skin->getDescription(),
-                    $skin->getContentType(),
-                    $skin->getIncludeMode(),
-                    $skin->getIncludePrefix()
-                );
+        // 2. create skin desc
+        $newid = SKIN::createNew(
+            $name,
+            $skin->getDescription(),
+            $skin->getContentType(),
+            $skin->getIncludeMode(),
+            $skin->getIncludePrefix()
+        );
 
 
-                // 3. clone
-                /*
+        // 3. clone
+        /*
         $this->skinclonetype($skin, $newid, 'index');
         $this->skinclonetype($skin, $newid, 'item');
         $this->skinclonetype($skin, $newid, 'archivelist');
@@ -6102,54 +6105,54 @@ selector();
         $this->skinclonetype($skin, $newid, 'error');
         $this->skinclonetype($skin, $newid, 'member');
         $this->skinclonetype($skin, $newid, 'imagepopup');
-        */
+*/
 
-                $query = sprintf("SELECT stype FROM %s WHERE sdesc = %s", sql_table('skin'), $skinid);
-                $res = sql_query($query);
-                while ($row = sql_fetch_assoc($res)) {
-                    $this->skinclonetype($skin, $newid, $row['stype']);
-                }
+        $query = sprintf("SELECT stype FROM %s WHERE sdesc = %s", sql_table('skin'), $skinid);
+        $res = sql_query($query);
+        while ($row = sql_fetch_assoc($res)) {
+            $this->skinclonetype($skin, $newid, $row['stype']);
+        }
 
-                $this->action_skinoverview();
-            }
-
-            /**
-             * @todo document this
-             */
-            function skinclonetype($skin, $newid, $type)
-            {
-                $newid = (int) $newid;
-                $content = $skin->getContent($type);
-                if ($content) {
-                    $query = 'INSERT INTO ' . sql_table('skin') . " (sdesc, scontent, stype) VALUES ($newid," . sql_quote_string($content) . ', ' . sql_quote_string($type) . ')';
-                    sql_query($query);
-                }
-            }
+        $this->action_skinoverview();
+    }
 
             /**
              * @todo document this
              */
-            function action_settingsedit($message = '')
-            {
-                global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
+    function skinclonetype($skin, $newid, $type)
+    {
+        $newid = (int) $newid;
+        $content = $skin->getContent($type);
+        if ($content) {
+            $query = 'INSERT INTO ' . sql_table('skin') . " (sdesc, scontent, stype) VALUES ($newid," . sql_quote_string($content) . ', ' . sql_quote_string($type) . ')';
+            sql_query($query);
+        }
+    }
 
-                $member->isAdmin() or $this->disallow();
+            /**
+             * @todo document this
+             */
+    function action_settingsedit($message = '')
+    {
+        global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
 
-                $this->pagehead();
+        $member->isAdmin() or $this->disallow();
 
-                echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
-            ?>
+        $this->pagehead();
+
+        echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
+        ?>
 
                 <h2><?php echo _SETTINGS_TITLE ?></h2>
-                <?php if ($message) {
+        <?php if ($message) {
                     echo sprintf('<div class="ok">%s</div>', $message);
-                } ?>
+        } ?>
 
                 <form action="index.php" method="post">
                     <div>
 
                         <input type="hidden" name="action" value="settingsupdate" />
-                        <?php $manager->addTicketHidden() ?>
+                <?php $manager->addTicketHidden() ?>
 
                         <table>
                             <tr>
@@ -6158,13 +6161,13 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_DEFBLOG ?> <?php help('defaultblog'); ?></td>
                                 <td>
-                                    <?php
-                                    $query =  sprintf("SELECT bname as text, bnumber as value FROM %s", sql_table('blog'));
-                                    $template['name'] = 'DefaultBlog';
-                                    $template['selected'] = $CONF['DefaultBlog'];
-                                    $template['tabindex'] = 10;
-                                    showlist_by_query($query, 'select', $template);
-                                    ?>
+                            <?php
+                            $query =  sprintf("SELECT bname as text, bnumber as value FROM %s", sql_table('blog'));
+                            $template['name'] = 'DefaultBlog';
+                            $template['selected'] = $CONF['DefaultBlog'];
+                            $template['tabindex'] = 10;
+                            showlist_by_query($query, 'select', $template);
+                            ?>
                                 </td>
                             </tr>
                             <tr>
@@ -6213,27 +6216,27 @@ selector();
                                 <td>
 
                                     <select name="Language" tabindex="10050">
-                                        <?php               // show a dropdown list of all available languages
-                                        global $DIR_LANG, $DB_DRIVER_NAME;
-                                        $dirhandle = opendir($DIR_LANG);
-                                        while ($filename = readdir($dirhandle)) {
-                                            $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET != 'UTF-8')) ?  '((.*))' : '((.*)-utf8)');
-                                            if (preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches)) {
-                                                $name = $matches[2];
-                                                $s_fullname = $matches[1];
-                                                $s_displaytext = hsc($this->getDislpayLanguageText($name));
-                                                //                        if (!check_abalable_language_name($name))
-                                                //                          continue;
-                                                echo sprintf('<option value="%s"', hsc($s_fullname));
-                                                if ($s_fullname == $CONF['Language']) {
-                                                    echo " selected=\"selected\"";
-                                                }
-                                                echo sprintf(">%s</option>", $s_displaytext);
-                                            }
+                                <?php               // show a dropdown list of all available languages
+                                global $DIR_LANG, $DB_DRIVER_NAME;
+                                $dirhandle = opendir($DIR_LANG);
+                                while ($filename = readdir($dirhandle)) {
+                                    $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET != 'UTF-8')) ?  '((.*))' : '((.*)-utf8)');
+                                    if (preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches)) {
+                                        $name = $matches[2];
+                                        $s_fullname = $matches[1];
+                                        $s_displaytext = hsc($this->getDislpayLanguageText($name));
+                                        //                        if (!check_abalable_language_name($name))
+                                        //                          continue;
+                                        echo sprintf('<option value="%s"', hsc($s_fullname));
+                                        if ($s_fullname == $CONF['Language']) {
+                                            echo " selected=\"selected\"";
                                         }
-                                        closedir($dirhandle);
+                                        echo sprintf(">%s</option>", $s_displaytext);
+                                    }
+                                }
+                                closedir($dirhandle);
 
-                                        ?>
+                                ?>
                                     </select>
 
                                 </td>
@@ -6274,13 +6277,13 @@ selector();
                                 </td>
                                 <td><?php /* $this->input_yesno('DisableJsTools',$CONF['DisableJsTools'],10075); */ ?>
                                     <select name="DisableJsTools" tabindex="10075">
-                                        <?php $extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : '';
-                                        echo "<option $extra value='1'>", _SETTINGS_JSTOOLBAR_NONE, "</option>";
-                                        $extra = ($CONF['DisableJsTools'] == 2) ? 'selected="selected"' : '';
-                                        echo "<option $extra value='2'>", _SETTINGS_JSTOOLBAR_SIMPLE, "</option>";
-                                        $extra = ($CONF['DisableJsTools'] == 0) ? 'selected="selected"' : '';
-                                        echo "<option $extra value='0'>", _SETTINGS_JSTOOLBAR_FULL, "</option>";
-                                        ?>
+                                <?php $extra = ($CONF['DisableJsTools'] == 1) ? 'selected="selected"' : '';
+                                echo "<option $extra value='1'>", _SETTINGS_JSTOOLBAR_NONE, "</option>";
+                                $extra = ($CONF['DisableJsTools'] == 2) ? 'selected="selected"' : '';
+                                echo "<option $extra value='2'>", _SETTINGS_JSTOOLBAR_SIMPLE, "</option>";
+                                $extra = ($CONF['DisableJsTools'] == 0) ? 'selected="selected"' : '';
+                                echo "<option $extra value='0'>", _SETTINGS_JSTOOLBAR_FULL, "</option>";
+                                ?>
                                     </select>
                                 </td>
                             </tr>
@@ -6288,14 +6291,14 @@ selector();
                                 <td><?php echo _SETTINGS_URLMODE ?> <?php help('urlmode'); ?></td>
                                 <td><?php
 
-                                    $this->input_yesno(
-                                        'URLMode',
-                                        $CONF['URLMode'],
-                                        10077,
-                                        'normal',
-                                        'pathinfo',
-                                        _SETTINGS_URLMODE_NORMAL,
-                                        _SETTINGS_URLMODE_PATHINFO
+                                $this->input_yesno(
+                                    'URLMode',
+                                    $CONF['URLMode'],
+                                    10077,
+                                    'normal',
+                                    'pathinfo',
+                                    _SETTINGS_URLMODE_NORMAL,
+                                    _SETTINGS_URLMODE_PATHINFO
                                     );
 
                                     echo ' ', _SETTINGS_URLMODE_HELP;
@@ -6308,9 +6311,9 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_ENABLE_RSS . "( xml-rss2.php , rsd.php )"; ?></td>
                                 <td><?php
-                                    $enable_rss = !isset($CONF['DisableRSS']) || !$CONF['DisableRSS'];
-                                    $this->input_yesno('EnableRSS', $enable_rss, 10077);
-                                    ?>
+                                $enable_rss = !isset($CONF['DisableRSS']) || !$CONF['DisableRSS'];
+                                $this->input_yesno('EnableRSS', $enable_rss, 10077);
+                                ?>
                                 </td>
                             </tr>
 
@@ -6318,9 +6321,9 @@ selector();
                                 <td><?php echo _SETTINGS_DEBUGVARS ?> <?php help('debugvars'); ?></td>
                                 <td><?php
 
-                                    $this->input_yesno('DebugVars', $CONF['DebugVars'], 10078);
+                                $this->input_yesno('DebugVars', $CONF['DebugVars'], 10078);
 
-                                    ?>
+                                ?>
 
                                 </td>
                             </tr>
@@ -6341,21 +6344,21 @@ selector();
                                 </td>
                                 <td>
                                     <select name="AdminCSS" tabindex="10080">
-                                        <?php        // show a dropdown list of all available admin css files
-                                        global $DIR_NUCLEUS;
-                                        $dirhandle = opendir($DIR_NUCLEUS . "styles/");
-                                        while ($filename = readdir($dirhandle)) {
-                                            if (preg_match('#^admin_(.*)\.css$#', $filename, $matches)) {
-                                                $name = $matches[1];
-                                                echo "<option value=\"$name\"";
-                                                if ($name == $CONF['AdminCSS']) {
-                                                    echo " selected=\"selected\"";
-                                                }
-                                                echo ">$name</option>";
-                                            }
+                                <?php        // show a dropdown list of all available admin css files
+                                global $DIR_NUCLEUS;
+                                $dirhandle = opendir($DIR_NUCLEUS . "styles/");
+                                while ($filename = readdir($dirhandle)) {
+                                    if (preg_match('#^admin_(.*)\.css$#', $filename, $matches)) {
+                                        $name = $matches[1];
+                                        echo "<option value=\"$name\"";
+                                        if ($name == $CONF['AdminCSS']) {
+                                            echo " selected=\"selected\"";
                                         }
-                                        closedir($dirhandle);
-                                        ?>
+                                        echo ">$name</option>";
+                                    }
+                                }
+                                closedir($dirhandle);
+                                ?>
                                     </select>
                                 </td>
                             </tr>
@@ -6399,16 +6402,16 @@ selector();
                                 <td><?php echo _SETTINGS_MEDIADIR ?></td>
                                 <td><?php echo  hsc($DIR_MEDIA) ?>
                                     <i><?php echo _SETTINGS_SEECONFIGPHP ?></i>
-                                    <?php if (!is_dir($DIR_MEDIA)) {
+                            <?php if (!is_dir($DIR_MEDIA)) {
                                         echo "<br /><b>" . _WARNING_NOTADIR . "</b>";
-                                    }
-                                    if (!is_readable($DIR_MEDIA)) {
-                                        echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";
-                                    }
-                                    if (!is_writeable($DIR_MEDIA)) {
-                                        echo "<br /><b>" . _WARNING_NOTWRITABLE . "</b>";
-                                    }
-                                    ?>
+                            }
+                            if (!is_readable($DIR_MEDIA)) {
+                                echo "<br /><b>" . _WARNING_NOTREADABLE . "</b>";
+                            }
+                            if (!is_writeable($DIR_MEDIA)) {
+                                echo "<br /><b>" . _WARNING_NOTWRITABLE . "</b>";
+                            }
+                            ?>
                                 </td>
                             </tr>
                             <tr>
@@ -6505,14 +6508,14 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_COOKIELIFE ?></td>
                                 <td><?php $this->input_yesno(
-                                        'SessionCookie',
-                                        $CONF['SessionCookie'],
-                                        10190,
-                                        1,
-                                        0,
-                                        _SETTINGS_COOKIESESSION,
-                                        _SETTINGS_COOKIEMONTH
-                                    ); ?>
+                                    'SessionCookie',
+                                    $CONF['SessionCookie'],
+                                    10190,
+                                    1,
+                                    0,
+                                    _SETTINGS_COOKIESESSION,
+                                    _SETTINGS_COOKIEMONTH
+                                ); ?>
                                 </td>
                             </tr>
                             <tr>
@@ -6529,448 +6532,446 @@ selector();
                 </form>
 
             <?php
-                echo '<h2>', _PLUGINS_EXTRA, '</h2>';
+            echo '<h2>', _PLUGINS_EXTRA, '</h2>';
 
-                $param = array();
-                $manager->notify('GeneralSettingsFormExtras', $param);
+            $param = array();
+            $manager->notify('GeneralSettingsFormExtras', $param);
 
-                $this->pagefoot();
-            }
+            $this->pagefoot();
+    }
 
-            private function checkConfigTable()
-            {
-                global $DB_DRIVER_NAME;
-                if ($DB_DRIVER_NAME != 'mysql') {
-                    return;
-                }
-                $tablename = sql_table('config');
-                $query = sprintf("SHOW COLUMNS FROM `{$tablename}` LIKE 'name'");
-                $res = sql_query($query);
-                if (
-                    $res && ($row = sql_fetch_assoc($res))
-                    && !empty($row['Type']) && ($row['Type'] == 'varchar(20)')
-                ) {
-                    // force upgrade config table
-                    $query = <<<EOL
+    private function checkConfigTable()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql') {
+            return;
+        }
+        $tablename = sql_table('config');
+        $query = sprintf("SHOW COLUMNS FROM `{$tablename}` LIKE 'name'");
+        $res = sql_query($query);
+        if ($res && ($row = sql_fetch_assoc($res))
+            && !empty($row['Type']) && ($row['Type'] == 'varchar(20)')
+        ) {
+            // force upgrade config table
+            $query = <<<EOL
                 ALTER TABLE `{$tablename}`
                 MODIFY COLUMN `name` varchar(50)  NOT NULL default ''
 EOL;
-                    sql_query($query);
-                }
-            }
+            sql_query($query);
+        }
+    }
 
             /**
              * @todo document this
              */
-            function action_settingsupdate()
-            {
-                global $member, $CONF;
+    function action_settingsupdate()
+    {
+        global $member, $CONF;
 
-                $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                // check if email address for admin is valid
-                if (!isValidMailAddress(postVar('AdminEmail'))) {
-                    $this->error(_ERROR_BADMAILADDRESS);
-                }
+        // check if email address for admin is valid
+        if (!isValidMailAddress(postVar('AdminEmail'))) {
+            $this->error(_ERROR_BADMAILADDRESS);
+        }
 
-                $this->checkConfigTable();
+        $this->checkConfigTable();
 
-                // save settings
-                $this->updateConfig('DefaultBlog',      postVar('DefaultBlog'));
-                $this->updateConfig('BaseSkin',         postVar('BaseSkin'));
-                $this->updateConfig('IndexURL',         rtrim(postVar('IndexURL'), '/') . '/');
-                $this->updateConfig('AdminURL',         rtrim(postVar('AdminURL'), '/') . '/');
-                $this->updateConfig('PluginURL',        trim(postVar('PluginURL')));
-                $this->updateConfig('SkinsURL',         trim(postVar('SkinsURL')));
-                $this->updateConfig('ActionURL',        trim(postVar('ActionURL')));
-                $this->updateConfig('Language',         postVar('Language'));
-                $this->updateConfig('AdminEmail',       trim(postVar('AdminEmail')));
-                $this->updateConfig('SessionCookie',    postVar('SessionCookie'));
-                $this->updateConfig('AllowMemberCreate', postVar('AllowMemberCreate'));
-                $this->updateConfig('AllowMemberMail',  postVar('AllowMemberMail'));
-                $this->updateConfig('NonmemberMail',    postVar('NonmemberMail'));
-                $this->updateConfig('ProtectMemNames',  postVar('ProtectMemNames'));
-                $this->updateConfig('SiteName',         postVar('SiteName'));
-                $this->updateConfig('NewMemberCanLogon', postVar('NewMemberCanLogon'));
-                $this->updateConfig('DisableSite',      postVar('DisableSite'));
-                $this->updateConfig('DisableSiteURL',   trim(postVar('DisableSiteURL')));
-                $this->updateConfig('LastVisit',        postVar('LastVisit'));
-                $this->updateConfig('MediaURL',         rtrim(postVar('MediaURL'), '/') . '/');
-                $this->updateConfig('AllowedTypes',     postVar('AllowedTypes'));
-                $this->updateConfig('AllowUpload',      postVar('AllowUpload'));
-                $this->updateConfig('MaxUploadSize',    postVar('MaxUploadSize'));
-                $this->updateConfig('MediaPrefix',      postVar('MediaPrefix'));
-                $this->updateConfig('AllowLoginEdit',   postVar('AllowLoginEdit'));
-                $this->updateConfig('DisableJsTools',   postVar('DisableJsTools'));
-                $this->updateConfig('CookieDomain',     trim(postVar('CookieDomain')));
-                $this->updateConfig('CookiePath',       trim(postVar('CookiePath')));
-                $this->updateConfig('CookieSecure',     postVar('CookieSecure'));
-                $this->updateConfig('URLMode',          postVar('URLMode'));
-                $this->updateConfig('CookiePrefix',     trim(postVar('CookiePrefix')));
-                $this->updateConfig('DebugVars',        postVar('DebugVars'));
-                $this->updateConfig('DefaultListSize',  postVar('DefaultListSize'));
-                $this->updateConfig('AdminCSS',          postVar('AdminCSS'));
-                $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
-                if (extension_loaded('tidy')) {
-                    $this->updateOrInsertConfig('ENABLE_TIDY', (postVar('ENABLE_TIDY') ? '1' : '0'));
-                    $this->updateOrInsertConfig('ENABLE_TIDY_FORCE_HTML5', (postVar('ENABLE_TIDY_FORCE_HTML5') ? '1' : '0'));
-                    $this->updateOrInsertConfig('ENABLE_TIDY_INDENT', (postVar('ENABLE_TIDY_INDENT') ? '1' : '0'));
-                }
+        // save settings
+        $this->updateConfig('DefaultBlog', postVar('DefaultBlog'));
+        $this->updateConfig('BaseSkin', postVar('BaseSkin'));
+        $this->updateConfig('IndexURL', rtrim(postVar('IndexURL'), '/') . '/');
+        $this->updateConfig('AdminURL', rtrim(postVar('AdminURL'), '/') . '/');
+        $this->updateConfig('PluginURL', trim(postVar('PluginURL')));
+        $this->updateConfig('SkinsURL', trim(postVar('SkinsURL')));
+        $this->updateConfig('ActionURL', trim(postVar('ActionURL')));
+        $this->updateConfig('Language', postVar('Language'));
+        $this->updateConfig('AdminEmail', trim(postVar('AdminEmail')));
+        $this->updateConfig('SessionCookie', postVar('SessionCookie'));
+        $this->updateConfig('AllowMemberCreate', postVar('AllowMemberCreate'));
+        $this->updateConfig('AllowMemberMail', postVar('AllowMemberMail'));
+        $this->updateConfig('NonmemberMail', postVar('NonmemberMail'));
+        $this->updateConfig('ProtectMemNames', postVar('ProtectMemNames'));
+        $this->updateConfig('SiteName', postVar('SiteName'));
+        $this->updateConfig('NewMemberCanLogon', postVar('NewMemberCanLogon'));
+        $this->updateConfig('DisableSite', postVar('DisableSite'));
+        $this->updateConfig('DisableSiteURL', trim(postVar('DisableSiteURL')));
+        $this->updateConfig('LastVisit', postVar('LastVisit'));
+        $this->updateConfig('MediaURL', rtrim(postVar('MediaURL'), '/') . '/');
+        $this->updateConfig('AllowedTypes', postVar('AllowedTypes'));
+        $this->updateConfig('AllowUpload', postVar('AllowUpload'));
+        $this->updateConfig('MaxUploadSize', postVar('MaxUploadSize'));
+        $this->updateConfig('MediaPrefix', postVar('MediaPrefix'));
+        $this->updateConfig('AllowLoginEdit', postVar('AllowLoginEdit'));
+        $this->updateConfig('DisableJsTools', postVar('DisableJsTools'));
+        $this->updateConfig('CookieDomain', trim(postVar('CookieDomain')));
+        $this->updateConfig('CookiePath', trim(postVar('CookiePath')));
+        $this->updateConfig('CookieSecure', postVar('CookieSecure'));
+        $this->updateConfig('URLMode', postVar('URLMode'));
+        $this->updateConfig('CookiePrefix', trim(postVar('CookiePrefix')));
+        $this->updateConfig('DebugVars', postVar('DebugVars'));
+        $this->updateConfig('DefaultListSize', postVar('DefaultListSize'));
+        $this->updateConfig('AdminCSS', postVar('AdminCSS'));
+        $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
+        if (extension_loaded('tidy')) {
+            $this->updateOrInsertConfig('ENABLE_TIDY', (postVar('ENABLE_TIDY') ? '1' : '0'));
+            $this->updateOrInsertConfig('ENABLE_TIDY_FORCE_HTML5', (postVar('ENABLE_TIDY_FORCE_HTML5') ? '1' : '0'));
+            $this->updateOrInsertConfig('ENABLE_TIDY_INDENT', (postVar('ENABLE_TIDY_INDENT') ? '1' : '0'));
+        }
 
-                // load new config and redirect (this way, the new language will be used is necessary)
-                // note that when changing cookie settings, this redirect might cause the user
-                // to have to log in again.
-                getConfig();
-                redirect($CONF['AdminURL'] . '?action=settingsedit');
-                //        redirect($CONF['AdminURL'] . '?action=manage');
-                exit;
-            }
+        // load new config and redirect (this way, the new language will be used is necessary)
+        // note that when changing cookie settings, this redirect might cause the user
+        // to have to log in again.
+        getConfig();
+        redirect($CONF['AdminURL'] . '?action=settingsedit');
+        //        redirect($CONF['AdminURL'] . '?action=manage');
+        exit;
+    }
 
             /**
              *  Give an overview over the used system
              */
-            function action_systemoverview()
-            {
-                global $member, $nucleus, $CONF;
-                global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+    function action_systemoverview()
+    {
+        global $member, $nucleus, $CONF;
+        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
-                $this->pagehead();
+        $this->pagehead();
 
-                echo '<h2>' . _ADMIN_SYSTEMOVERVIEW_HEADING . "</h2>\n";
+        echo '<h2>' . _ADMIN_SYSTEMOVERVIEW_HEADING . "</h2>\n";
 
-                if ($member->isLoggedIn() && $member->isAdmin()) {
+        if ($member->isLoggedIn() && $member->isAdmin()) {
+            // Information about the used PHP and Database installation
+            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDDB . "</h3>\n";
 
-                    // Information about the used PHP and Database installation
-                    echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_PHPANDDB . "</h3>\n";
+            // Version of PHP MySQL
+            echo "<table>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "</th>\n";
+            echo "\t</tr><tr>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
+            echo "\t\t" . '<td>' . phpversion() . "</td>\n";
+            echo "\t</tr><tr>\n";
+            echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_DBANDVERSION . "</td>\n";
+            echo "\t\t" . '<td>';
+            if ($DB_DRIVER_NAME == 'mysql') {
+                echo 'MySQL';
+            } else {
+                echo hsc($DB_DRIVER_NAME);
+            }
+            echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
+            echo "\t</tr>";
+            // Database Driver
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
+            echo "\t\t" . '<td>';
+            if ($DB_PHP_MODULE_NAME == 'pdo') {
+                echo 'pdo';
+            } else {
+                echo hsc($DB_PHP_MODULE_NAME) . (_EXT_MYSQL_EMULATE ? ' / emulated mysql driver' : '');
+            }
+            echo "</td>\n";
+            echo "\t</tr>";
+            // Database charset
+            if ($DB_DRIVER_NAME == 'mysql') {
+                echo "\t<tr>";
+                echo "<td>Database charset\n";
+                echo "</td>\n";
+                echo "<td>\n";
+                echo hsc(getCollationFromDB(sql_table('config'), 'name'));
+                echo "</td>\n";
+                echo "\t</tr>";
+            }
+            echo "</table>\n";
 
-                    // Version of PHP MySQL
-                    echo "<table>\n";
-                    echo "\t<tr>\n";
-                    echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_VERSIONS . "</th>\n";
-                    echo "\t</tr><tr>\n";
-                    echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_PHPVERSION . "</td>\n";
-                    echo "\t\t" . '<td>' . phpversion() . "</td>\n";
-                    echo "\t</tr><tr>\n";
-                    echo "\t\t" . '<td>' . _ADMIN_SYSTEMOVERVIEW_DBANDVERSION . "</td>\n";
-                    echo "\t\t" . '<td>';
-                    if ($DB_DRIVER_NAME == 'mysql') {
-                        echo 'MySQL';
-                    } else {
-                        echo hsc($DB_DRIVER_NAME);
-                    }
-                    echo '&nbsp;:&nbsp;' . sql_get_server_info() . ' (' . sql_get_client_info() . ')' . "</td>\n";
-                    echo "\t</tr>";
-                    // Database Driver
-                    echo "\t<tr>\n";
-                    echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
-                    echo "\t\t" . '<td>';
-                    if ($DB_PHP_MODULE_NAME == 'pdo') {
-                        echo 'pdo';
-                    } else {
-                        echo hsc($DB_PHP_MODULE_NAME) . (_EXT_MYSQL_EMULATE ? ' / emulated mysql driver' : '');
-                    }
-                    echo "</td>\n";
-                    echo "\t</tr>";
-                    // Database charset
-                    if ($DB_DRIVER_NAME == 'mysql') {
-                        echo "\t<tr>";
-                        echo "<td>Database charset\n";
-                        echo "</td>\n";
-                        echo "<td>\n";
-                        echo hsc(getCollationFromDB(sql_table('config'), 'name'));
-                        echo "</td>\n";
-                        echo "\t</tr>";
-                    }
-                    echo "</table>\n";
+            // Important PHP settings
+            echo "<table>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
+            echo "\t</tr>\n";
 
-                    // Important PHP settings
-                    echo "<table>\n";
-                    echo "\t<tr>\n";
-                    echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
-                    echo "\t</tr>\n";
+            if (version_compare(PHP_VERSION, '5.4.0', '<')) {
+                echo "<tr>\n";
+                echo "\t\t" . '<td width="50%">register_globals' . "</td>\n";
+                $rg = ini_get('register_globals') ? 'On' : 'Off';
+                echo "\t\t" . '<td>' . $rg . "</td>\n";
+                echo "\t</tr>";
+            }
+            echo "<tr>\n";
+            echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
+            $rg = ini_get('default_charset');
+            echo "\t\t" . '<td>' . ($rg ? $rg : 'none') . "</td>\n";
+            echo "\t</tr>";
 
-                    if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-                        echo "<tr>\n";
-                        echo "\t\t" . '<td width="50%">register_globals' . "</td>\n";
-                        $rg = ini_get('register_globals') ? 'On' : 'Off';
-                        echo "\t\t" . '<td>' . $rg . "</td>\n";
-                        echo "\t</tr>";
-                    }
-                    echo "<tr>\n";
-                    echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
-                    $rg = ini_get('default_charset');
-                    echo "\t\t" . '<td>' . ($rg ? $rg : 'none') . "</td>\n";
-                    echo "\t</tr>";
+            echo "<tr>\n";
+            echo "\t\t" . '<td>date.timezone' . "</td>\n";
+            $rg = ini_get('date.timezone');
+            echo "\t\t" . '<td>' . ($rg ? $rg : 'none') . "</td>\n";
+            echo "\t</tr>";
+            echo "</table>\n";
 
-                    echo "<tr>\n";
-                    echo "\t\t" . '<td>date.timezone' . "</td>\n";
-                    $rg = ini_get('date.timezone');
-                    echo "\t\t" . '<td>' . ($rg ? $rg : 'none') . "</td>\n";
-                    echo "\t</tr>";
-                    echo "</table>\n";
-
-                    // Information about GD library
-                    $gdinfo = gd_info();
-                    echo "<table>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "</th>\n";
-                    echo "\t</tr>\n";
-                    foreach ($gdinfo as $key => $value) {
-                        if (is_bool($value)) {
-                            $value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
-                        } else {
-                            $value = hsc($value);
-                        }
-                        echo "\t<tr>";
-                        echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
-                        echo "\t\t" . '<td>' . $value . "</td>\n";
-                        echo "\t</tr>\n";
-                    }
-                    echo "</table>\n";
-
-                    // Check if special modules are loaded
-                    ob_start();
-                    phpinfo(INFO_MODULES);
-                    $im = ob_get_clean();
-                    echo "<table>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
-                    echo "\t</tr><tr>\n";
-                    echo "\t\t" . '<td width="50%">mod_rewrite' . "</td>\n";
-                    $modrewrite = (strstr($im, 'mod_rewrite') != '') ?
-                        _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                        _ADMIN_SYSTEMOVERVIEW_DISABLE;
-                    echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
-                    echo "\t</tr>\n";
-                    echo "</table>\n";
-
-                    // PHP extensions
-                    $extensions = get_loaded_extensions();
-                    sort($extensions, SORT_STRING | (defined('SORT_FLAG_CASE') ? SORT_FLAG_CASE : 0)); // SORT_FLAG_CASE : PHP5.4-
-                    echo "<table>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<th colspan="2">' . 'PHP extensions' . "</th>\n";
-                    echo "\t</tr>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<td width="50%">' . 'Loaded extensions' . '</td>' . "\n";
-                    echo sprintf("\t\t<td>%s</td>\n", implode(', ', $extensions));
-                    echo "\t</tr>\n";
-                    echo "</table>\n";
-
-                    // Tidy
-                    echo "<table>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<th colspan="2">' . 'Tidy' . "</th>\n";
-                    echo "\t</tr>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<td width="50%">Tidy</td>' . "\n";
-                    echo sprintf(
-                        "\t\t<td>%s</td>\n",
-                        extension_loaded('tidy') ?
-                            _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                            _ADMIN_SYSTEMOVERVIEW_DISABLE
-                    );
-                    echo "\t</tr>\n";
-                    if (function_exists('tidy_get_release')) {
-                        $tidy_ver = preg_match('/Tidy Version.+?>\s*([0-9\.]+)\s*</ims', $im, $m) ? $m[1] : '';
-                        if ($tidy_ver) {
-                            echo sprintf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
-                        }
-                        echo sprintf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
-                        $tidy_support_HTML5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
-                        echo sprintf(
-                            "\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
-                            $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE
-                        );
-                    }
-                    echo "</table>\n";
-
-                    // Information about the used core system
-                    echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM . "</h3>\n";
-                    $np = getNucleusPatchLevel();
-                    echo "<table>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<th colspan="2">' . hsc(CORE_APPLICATION_NAME) . "</th>\n";
-                    echo "\t</tr><tr>\n";
-                    echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_VERSION . "</td>\n";
-                    echo "\t\t" . '<td>' . sprintf('%s (%d)', CORE_APPLICATION_VERSION, CORE_APPLICATION_VERSION_ID) . "</td>\n";
-                    echo "\t</tr><tr>\n";
-                    echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL . "</td>\n";
-                    echo "\t\t" . '<td>' . $np . "</td>\n";
-                    echo "\t</tr>\n";
-                    echo "\t<tr>\n";
-                    echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION) . "</td>\n";
-                    echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
-                    echo "\t</tr>\n";
-                    echo "\t<tr>\n";
-                    echo "\t\t" . '<td width="50%">' . '_CHARSET' . "</td>\n";
-                    echo "\t\t" . '<td>' . _CHARSET . "</td>\n";
-                    echo "\t</tr>\n";
-                    echo "</table>\n";
-
-                    // Important settings of the installation
-                    echo "<table>\n";
-                    echo "\t<tr>";
-                    echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS . "</th>\n";
-                    echo "\t</tr>\n";
-
-                    $items = array(); // name , value[, style sheet]
-                    $items[] = array("\$CONF['Self']", $CONF['Self']);
-                    $items[] = array("\$CONF['ItemURL']", $CONF['ItemURL']);
-                    $items[] = array("\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE));
-                    $items[] = array(
-                        "\$CONF['debug']", ($CONF['debug'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
-                        ($CONF['debug'] ? 'color:red' : '')
-                    );
-
-                    foreach ($items as $item) {
-                        echo "\t<tr>\n";
-                        echo "\t\t" . '<td width="50%">' . $item[0] . "</td>\n";
-                        $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='{$item[2]}'" : '';
-                        echo "\t\t" . "<td{$style}>" . hsc($item[1]) . "</td>\n";
-                        echo "\t</tr>\n";
-                    }
-
-                    // Other settings of the installation
-                    ksort($CONF);
-                    $items = array('Self', 'ItemURL', 'alertOnHeadersSent', 'debug', 'AdminEmail');
-                    $items_warn_false = array('alertOnSecurityRisk');
-                    $items_warn_true  = array();
-                    foreach ($CONF as $k => $v) {
-                        if (!in_array($k, $items)) {
-                            $style = '';
-                            if ((in_array($k, $items_warn_true) && $v)
-                                ||
-                                (in_array($k, $items_warn_false) && !$v)
-                            ) {
-                                $style = " style='color:red'";
-                            }
-                            echo "\t<tr>\n";
-                            echo "\t\t" . '<td width="50%">' . $k . "</td>\n";
-                            echo "\t\t" . "<td{$style}>" . hsc($v) . "</td>\n";
-                            echo "\t</tr>\n";
-                        }
-                    }
-                    echo "</table>\n";
-
-                    // Mysql Emulate Functions
-                    echo $this->getMysqlEmulateInfo();
-
-                    // Link to the online version test at the core system official website
-                    echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
-                    echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
-                    $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-                    echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
-                    echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
-                    if ($nucleus['codename']) {
-                        hsc(sprintf(' "%s"', $nucleus['codename']));
-                    }
-                    echo '</a>';
-                    //echo '<br />';
+            // Information about GD library
+            $gdinfo = gd_info();
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_GDLIBRALY . "</th>\n";
+            echo "\t</tr>\n";
+            foreach ($gdinfo as $key => $value) {
+                if (is_bool($value)) {
+                    $value = $value ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE;
                 } else {
-                    echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
+                    $value = hsc($value);
                 }
-
-                $this->pagefoot();
+                echo "\t<tr>";
+                echo "\t\t" . '<td width="50%">' . $key . "</td>\n";
+                echo "\t\t" . '<td>' . $value . "</td>\n";
+                echo "\t</tr>\n";
             }
+            echo "</table>\n";
 
-            private function getMysqlEmulateInfo()
-            {
-                if (!defined('_EXT_MYSQL_EMULATE') || (!_EXT_MYSQL_EMULATE)) {
-                    return '';
+            // Check if special modules are loaded
+            ob_start();
+            phpinfo(INFO_MODULES);
+            $im = ob_get_clean();
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_MODULES . "</th>\n";
+            echo "\t</tr><tr>\n";
+            echo "\t\t" . '<td width="50%">mod_rewrite' . "</td>\n";
+            $modrewrite = (strstr($im, 'mod_rewrite') != '') ?
+                _ADMIN_SYSTEMOVERVIEW_ENABLE :
+                _ADMIN_SYSTEMOVERVIEW_DISABLE;
+            echo "\t\t" . '<td>' . $modrewrite . "</td>\n";
+            echo "\t</tr>\n";
+            echo "</table>\n";
+
+            // PHP extensions
+            $extensions = get_loaded_extensions();
+            sort($extensions, SORT_STRING | (defined('SORT_FLAG_CASE') ? SORT_FLAG_CASE : 0)); // SORT_FLAG_CASE : PHP5.4-
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . 'PHP extensions' . "</th>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<td width="50%">' . 'Loaded extensions' . '</td>' . "\n";
+            echo sprintf("\t\t<td>%s</td>\n", implode(', ', $extensions));
+            echo "\t</tr>\n";
+            echo "</table>\n";
+
+            // Tidy
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . 'Tidy' . "</th>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<td width="50%">Tidy</td>' . "\n";
+            echo sprintf(
+                "\t\t<td>%s</td>\n",
+                extension_loaded('tidy') ?
+                    _ADMIN_SYSTEMOVERVIEW_ENABLE :
+                    _ADMIN_SYSTEMOVERVIEW_DISABLE
+            );
+            echo "\t</tr>\n";
+            if (function_exists('tidy_get_release')) {
+                $tidy_ver = preg_match('/Tidy Version.+?>\s*([0-9\.]+)\s*</ims', $im, $m) ? $m[1] : '';
+                if ($tidy_ver) {
+                    echo sprintf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
                 }
-
-                $r = array('', '', '');
-                $lists = array(
-                    'connect', 'pconnect', 'close', 'select_db', 'query',
-                    'unbuffered_query', 'db_query', 'list_dbs', 'list_tables', 'list_fields',
-                    'list_processes', 'error', 'errno', 'affected_rows', 'insert_id',
-                    'result', 'num_rows', 'num_fields', 'fetch_row', 'fetch_array',
-                    'fetch_assoc', 'fetch_object', 'data_seek', 'fetch_lengths', 'fetch_field',
-                    'field_seek', 'free_result', 'field_name', 'field_table', 'field_len',
-                    'field_type', 'field_flags', 'escape_string', 'real_escape_string', 'stat',
-                    'thread_id', 'client_encoding', 'ping', 'get_client_info', 'get_host_info',
-                    'get_proto_info', 'get_server_info', 'info', 'set_charset', 'fieldname',
-                    'fieldtable', 'fieldlen', 'fieldtype', 'fieldflags', 'selectdb',
-                    'freeresult', 'numfields', 'numrows', 'listdbs', 'listtables',
-                    'listfields', 'db_name', 'dbname', 'tablename', 'table_name',
+                echo sprintf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
+                $tidy_support_HTML5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
+                echo sprintf(
+                    "\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
+                    $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE
                 );
-
-                foreach ($lists as $i) {
-                    $m = 'mysql_' . $i;
-                    $s = 'sql_'   . $i;
-                    if (function_exists($m)) {
-                        $r[0] .= $m . " , ";
-                    } else {
-                        if (!function_exists($s)) {
-                            $r[1] .= $m . " , ";
-                        } else {
-                            $r[1] .= "<b>$m</b> , ";
-                        }
-                    }
-                }
-
-                $tpl = "<table><tr><td>defined</td><td>%s</td></tr><tr><td>undefined</td><td>%s</td></tr></table>";
-                return "<h3>Emulated Mysql Functions (wrapper functions)</h3>\n" . sprintf($tpl, $r[0], $r[1]);
             }
+            echo "</table>\n";
+
+            // Information about the used core system
+            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM . "</h3>\n";
+            $np = getNucleusPatchLevel();
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . hsc(CORE_APPLICATION_NAME) . "</th>\n";
+            echo "\t</tr><tr>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_VERSION . "</td>\n";
+            echo "\t\t" . '<td>' . sprintf('%s (%d)', CORE_APPLICATION_VERSION, CORE_APPLICATION_VERSION_ID) . "</td>\n";
+            echo "\t</tr><tr>\n";
+            echo "\t\t" . '<td width="50%">' . _ADMIN_SYSTEMOVERVIEW_CORE_PATCHLEVEL . "</td>\n";
+            echo "\t\t" . '<td>' . $np . "</td>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td width="50%">' . hsc(_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION) . "</td>\n";
+            echo "\t\t" . '<td>' . $CONF['DatabaseVersion'] . "</td>\n";
+            echo "\t</tr>\n";
+            echo "\t<tr>\n";
+            echo "\t\t" . '<td width="50%">' . '_CHARSET' . "</td>\n";
+            echo "\t\t" . '<td>' . _CHARSET . "</td>\n";
+            echo "\t</tr>\n";
+            echo "</table>\n";
+
+            // Important settings of the installation
+            echo "<table>\n";
+            echo "\t<tr>";
+            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS . "</th>\n";
+            echo "\t</tr>\n";
+
+            $items = array(); // name , value[, style sheet]
+            $items[] = array("\$CONF['Self']", $CONF['Self']);
+            $items[] = array("\$CONF['ItemURL']", $CONF['ItemURL']);
+            $items[] = array("\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE));
+            $items[] = array(
+                "\$CONF['debug'], isDebugMode()", (isDebugMode() ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
+                (isDebugMode() ? 'color:red' : '')
+            );
+
+            foreach ($items as $item) {
+                echo "\t<tr>\n";
+                echo "\t\t" . '<td width="50%">' . $item[0] . "</td>\n";
+                $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='{$item[2]}'" : '';
+                echo "\t\t" . "<td{$style}>" . hsc($item[1]) . "</td>\n";
+                echo "\t</tr>\n";
+            }
+
+            // Other settings of the installation
+            ksort($CONF);
+            $items = array('Self', 'ItemURL', 'alertOnHeadersSent', 'debug', 'AdminEmail');
+            $items_warn_false = array('alertOnSecurityRisk');
+            $items_warn_true  = array();
+            foreach ($CONF as $k => $v) {
+                if (!in_array($k, $items)) {
+                    $style = '';
+                    if ((in_array($k, $items_warn_true) && $v)
+                        ||
+                        (in_array($k, $items_warn_false) && !$v)
+                    ) {
+                        $style = " style='color:red'";
+                    }
+                    echo "\t<tr>\n";
+                    echo "\t\t" . '<td width="50%">' . $k . "</td>\n";
+                    echo "\t\t" . "<td{$style}>" . hsc($v) . "</td>\n";
+                    echo "\t</tr>\n";
+                }
+            }
+            echo "</table>\n";
+
+            // Mysql Emulate Functions
+            echo $this->getMysqlEmulateInfo();
+
+            // Link to the online version test at the core system official website
+            echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
+            echo _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT;
+            $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">';
+            echo sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
+            if ($nucleus['codename']) {
+                hsc(sprintf(' "%s"', $nucleus['codename']));
+            }
+            echo '</a>';
+            //echo '<br />';
+        } else {
+            echo _ADMIN_SYSTEMOVERVIEW_NOT_ADMIN;
+        }
+
+        $this->pagefoot();
+    }
+
+    private function getMysqlEmulateInfo()
+    {
+        if (!defined('_EXT_MYSQL_EMULATE') || (!_EXT_MYSQL_EMULATE)) {
+            return '';
+        }
+
+        $r = array('', '', '');
+        $lists = array(
+            'connect', 'pconnect', 'close', 'select_db', 'query',
+            'unbuffered_query', 'db_query', 'list_dbs', 'list_tables', 'list_fields',
+            'list_processes', 'error', 'errno', 'affected_rows', 'insert_id',
+            'result', 'num_rows', 'num_fields', 'fetch_row', 'fetch_array',
+            'fetch_assoc', 'fetch_object', 'data_seek', 'fetch_lengths', 'fetch_field',
+            'field_seek', 'free_result', 'field_name', 'field_table', 'field_len',
+            'field_type', 'field_flags', 'escape_string', 'real_escape_string', 'stat',
+            'thread_id', 'client_encoding', 'ping', 'get_client_info', 'get_host_info',
+            'get_proto_info', 'get_server_info', 'info', 'set_charset', 'fieldname',
+            'fieldtable', 'fieldlen', 'fieldtype', 'fieldflags', 'selectdb',
+            'freeresult', 'numfields', 'numrows', 'listdbs', 'listtables',
+            'listfields', 'db_name', 'dbname', 'tablename', 'table_name',
+        );
+
+        foreach ($lists as $i) {
+            $m = 'mysql_' . $i;
+            $s = 'sql_'   . $i;
+            if (function_exists($m)) {
+                $r[0] .= $m . " , ";
+            } else {
+                if (!function_exists($s)) {
+                    $r[1] .= $m . " , ";
+                } else {
+                    $r[1] .= "<b>$m</b> , ";
+                }
+            }
+        }
+
+        $tpl = "<table><tr><td>defined</td><td>%s</td></tr><tr><td>undefined</td><td>%s</td></tr></table>";
+        return "<h3>Emulated Mysql Functions (wrapper functions)</h3>\n" . sprintf($tpl, $r[0], $r[1]);
+    }
 
             /**
              * @todo document this
              */
-            static function updateConfig($name, $val)
-            {
-                $query = parseQuery(
-                    "UPDATE [@prefix@]config SET value='[@value:escape@]' WHERE name='[@name:escape@]'",
-                    array('value' => trim($val), 'name' => $name)
-                );
-                if (!sql_query($query)) {
-                    if (!defined('_ADMIN_SQLDIE_QUERYERROR')) {
-                        define('_ADMIN_SQLDIE_QUERYERROR', 'Query error: ');
-                    }
-                    die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
-                }
-                return sql_insert_id();
+    static function updateConfig($name, $val)
+    {
+        $query = parseQuery(
+            "UPDATE [@prefix@]config SET value='[@value:escape@]' WHERE name='[@name:escape@]'",
+            array('value' => trim($val), 'name' => $name)
+        );
+        if (!sql_query($query)) {
+            if (!defined('_ADMIN_SQLDIE_QUERYERROR')) {
+                define('_ADMIN_SQLDIE_QUERYERROR', 'Query error: ');
             }
+            die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+        }
+        return sql_insert_id();
+    }
 
-            static function updateOrInsertConfig($name, $value)
-            {
-                global $DB_PHP_MODULE_NAME;
+    static function updateOrInsertConfig($name, $value)
+    {
+        global $DB_PHP_MODULE_NAME;
 
-                if ($DB_PHP_MODULE_NAME == 'pdo') {
-                    $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
-                    $res = sql_prepare_execute($sql, array((string) $name));
-                    if ($res) {
-                        $row = sql_fetch_row($res);
-                        if ($row[0] > 0) {
-                            return self::updateConfig($name, $value);
-                        }
-                    }
-                } else {
-                    $rs = parseQuickQuery(
-                        "SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name='[@name@]'",
-                        array('name' => $name)
-                    );
-                    if ($rs) {
-                        return self::updateConfig($name, $value);
-                    }
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
+            $res = sql_prepare_execute($sql, array((string) $name));
+            if ($res) {
+                $row = sql_fetch_row($res);
+                if ($row[0] > 0) {
+                    return self::updateConfig($name, $value);
                 }
-
-                if ($DB_PHP_MODULE_NAME == 'pdo') {
-                    $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
-                    $res = sql_prepare_execute($sql, array((string) $name, trim((string) $value)));
-                } else {
-                    $sql = sprintf(
-                        'INSERT INTO `%s` (name, value) VALUES(%s, %s)',
-                        sql_table('config'),
-                        sql_quote_string($name),
-                        sql_quote_string(trim($value))
-                    );
-                    $res = sql_query($sql);
-                }
-
-                $res or die((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
-                return sql_insert_id();
             }
+        } else {
+            $rs = parseQuickQuery(
+                "SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name='[@name@]'",
+                array('name' => $name)
+            );
+            if ($rs) {
+                return self::updateConfig($name, $value);
+            }
+        }
+
+        if ($DB_PHP_MODULE_NAME == 'pdo') {
+            $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
+            $res = sql_prepare_execute($sql, array((string) $name, trim((string) $value)));
+        } else {
+            $sql = sprintf(
+                'INSERT INTO `%s` (name, value) VALUES(%s, %s)',
+                sql_table('config'),
+                sql_quote_string($name),
+                sql_quote_string(trim($value))
+            );
+            $res = sql_query($sql);
+        }
+
+        $res or die((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
+        return sql_insert_id();
+    }
 
 
             /**
@@ -6978,68 +6979,68 @@ EOL;
              *
              * @param string $msg message that will be shown
              */
-            function error($msg)
-            {
-                $this->pagehead();
-                echo  "<h2>Error!</h2>\n";
-                echo $msg;
-                echo "<br />";
-                echo "<a href='index.php' onclick='history.back(); return false;'>" . _BACK . "</a>";
-                $this->pagefoot();
-                exit;
-            }
+    function error($msg)
+    {
+        $this->pagehead();
+        echo  "<h2>Error!</h2>\n";
+        echo $msg;
+        echo "<br />";
+        echo "<a href='index.php' onclick='history.back(); return false;'>" . _BACK . "</a>";
+        $this->pagefoot();
+        exit;
+    }
 
             /**
              * @todo document this
              */
-            function disallow()
-            {
-                ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
+    function disallow()
+    {
+        ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
 
-                $this->error(_ERROR_DISALLOWED);
-            }
+        $this->error(_ERROR_DISALLOWED);
+    }
 
-            function add_extrahead($text)
-            {
-                //        if (strlen($text)>0)
-                $this->extrahead[] = $text;
-            }
+    function add_extrahead($text)
+    {
+        //        if (strlen($text)>0)
+        $this->extrahead[] = $text;
+    }
 
             /**
              * @todo document this
              */
-            function pagehead($extrahead = '')
-            {
-                global $CONF, $manager, $DIR_NUCLEUS;
+    function pagehead($extrahead = '')
+    {
+        global $CONF, $manager, $DIR_NUCLEUS;
 
-                checkOutputCompression("text/html");
+        checkOutputCompression("text/html");
 
-                $param = array(
-                    'extrahead'    => &$extrahead,
-                    'action'    =>  $this->action,
-                );
-                $manager->notify('AdminPrePageHead', $param);
+        $param = array(
+            'extrahead'    => &$extrahead,
+            'action'    =>  $this->action,
+        );
+        $manager->notify('AdminPrePageHead', $param);
 
-                if (isset($this->extrahead) && count($this->extrahead) > 0) {
-                    $extrahead .= implode("\n", $this->extrahead);
+        if (isset($this->extrahead) && count($this->extrahead) > 0) {
+            $extrahead .= implode("\n", $this->extrahead);
+        }
+
+        $baseUrl = hsc($CONF['AdminURL']);
+        if (!array_key_exists('AdminCSS', $CONF)) {
+            sql_query("INSERT INTO " . sql_table('config') . " VALUES ('AdminCSS', 'original')");
+            $CONF['AdminCSS'] = 'original';
+        }
+        foreach (array($CONF['AdminCSS'], 'original', 'contemporary') as $name) {
+            $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', remove_all_directory_separator($name));
+            if (@is_file($fname)) {
+                if ($CONF['AdminCSS'] != $name) {
+                    $CONF['AdminCSS'] = $name;
                 }
+                break;
+            }
+        }
 
-                $baseUrl = hsc($CONF['AdminURL']);
-                if (!array_key_exists('AdminCSS', $CONF)) {
-                    sql_query("INSERT INTO " . sql_table('config') . " VALUES ('AdminCSS', 'original')");
-                    $CONF['AdminCSS'] = 'original';
-                }
-                foreach (array($CONF['AdminCSS'], 'original', 'contemporary') as $name) {
-                    $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', remove_all_directory_separator($name));
-                    if (@is_file($fname)) {
-                        if ($CONF['AdminCSS'] != $name) {
-                            $CONF['AdminCSS'] = $name;
-                        }
-                        break;
-                    }
-                }
-
-            ?>
+        ?>
                 <!DOCTYPE html>
                 <html lang="<?php echo _LANG_CODE; ?>">
 
@@ -7086,7 +7087,7 @@ EOL;
                             });
                         });
                     </script>
-                    <?php echo $extrahead; ?>
+            <?php echo $extrahead; ?>
                 </head>
 
                 <body>
@@ -7096,84 +7097,84 @@ EOL;
                         </div>
                         <div id="container">
                             <div id="content">
-                            <?php
-                            $this->loginname();
-                        }
+                    <?php
+                    $this->loginname();
+    }
 
-                        function loginname()
-                        {
-                            global $member, $nucleus, $CONF;
-                            ?>
+    function loginname()
+    {
+        global $member, $nucleus, $CONF;
+        ?>
                                 <div class="loginname">
-                                    <?php
-                                    if ($member->isLoggedIn()) {
-                                        echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-                                            . " - <a href='index.php?action=logout'>" . _LOGOUT . "</a>"
-                                            . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
-                                    } else {
-                                        echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
-                                    }
+                <?php
+                if ($member->isLoggedIn()) {
+                    echo _LOGGEDINAS . ' ' . $member->getDisplayName()
+                        . " - <a href='index.php?action=logout'>" . _LOGOUT . "</a>"
+                        . "<br /><a href='index.php?action=overview'>" . _ADMINHOME . "</a> - ";
+                } else {
+                    echo '<a href="index.php?action=showlogin" title="Log in">' . _NOTLOGGEDIN . '</a> <br />';
+                }
 
-                                    echo sprintf('<a href="%s">%s</a> | ', get_help_root_url(false), _HELP_TT);
-                                    echo "<a href='" . $CONF['IndexURL'] . "'>" . _YOURSITE . "</a>";
+                echo sprintf('<a href="%s">%s</a> | ', get_help_root_url(false), _HELP_TT);
+                echo "<a href='" . $CONF['IndexURL'] . "'>" . _YOURSITE . "</a>";
 
-                                    echo '<br />(';
+                echo '<br />(';
 
-                                    $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
-                                    if ($nucleus['codename']) {
-                                        $versionstring .= hsc(sprintf(' "%s"', $nucleus['codename']));
-                                    }
-                                    if ($member->isLoggedIn() && $member->isAdmin()) {
-                                        $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-                                        echo sprintf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
-                                        $newestVersion = getLatestVersion();
-                                        if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
-                                            echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
-                                        }
+                $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
+                if ($nucleus['codename']) {
+                    $versionstring .= hsc(sprintf(' "%s"', $nucleus['codename']));
+                }
+                if ($member->isLoggedIn() && $member->isAdmin()) {
+                    $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+                    echo sprintf('<a href="%s" title="%s">%s</a>', $checkURL, hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE), $versionstring);
+                    $newestVersion = getLatestVersion();
+                    if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
+                        echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
+                    }
 
-                                        if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
-                                            echo sprintf(
-                                                ')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
-                                                $CONF['IndexURL'] . '_upgrades/',
-                                                $CONF['DatabaseVersion']
-                                            );
-                                        }
-                                    } else {
-                                        echo $versionstring;
-                                    }
-                                    echo ')';
-                                    echo '</div>';
-                                }
+                    if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
+                        echo sprintf(
+                            ')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
+                            $CONF['IndexURL'] . '_upgrades/',
+                            $CONF['DatabaseVersion']
+                        );
+                    }
+                } else {
+                    echo $versionstring;
+                }
+                echo ')';
+                echo '</div>';
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function pagefoot()
-                                {
-                                    global $manager;
+    function pagefoot()
+    {
+        global $manager;
 
-                                    $param = array(
-                                        'action' => $this->action,
-                                    );
-                                    $manager->notify('AdminPrePageFoot', $param);
+        $param = array(
+            'action' => $this->action,
+        );
+        $manager->notify('AdminPrePageFoot', $param);
 
-                                    $ph = array();
-                                    $ph['url']      = _ADMINPAGEFOOT_OFFICIALURL;
-                                    $ph['app_name'] = hsc(CORE_APPLICATION_NAME);
-                                    $ph['year']     = date('Y');
-                                    $ph['copy']     = _ADMINPAGEFOOT_COPYRIGHT;
-                                    echo "\t\t" . parseHtml('<div class="foot"><a href="{%url%}">{%app_name%}</a> &copy; 2002-{%year%} {%copy%}</div>', $ph) . "\n";
+        $ph = array();
+        $ph['url']      = _ADMINPAGEFOOT_OFFICIALURL;
+        $ph['app_name'] = hsc(CORE_APPLICATION_NAME);
+        $ph['year']     = date('Y');
+        $ph['copy']     = _ADMINPAGEFOOT_COPYRIGHT;
+        echo "\t\t" . parseHtml('<div class="foot"><a href="{%url%}">{%app_name%}</a> &copy; 2002-{%year%} {%copy%}</div>', $ph) . "\n";
 
-                                    ?>
+        ?>
                                 </div><!-- content -->
-                            <?php
+        <?php
                                     $this->quickmenu();
-                                }
+    }
 
-                                function quickmenu()
-                                {
-                                    global $action, $member, $manager, $DB_DRIVER_NAME;
-                            ?>
+    function quickmenu()
+    {
+        global $action, $member, $manager, $DB_DRIVER_NAME;
+        ?>
                                 <div id="quickmenu">
 
                                     <?php               // ---- user settings ----
@@ -7216,7 +7217,6 @@ EOL;
 
                                         // ---- general settings ----
                                         if ($member->isAdmin()) {
-
                                             echo '<h2 class="accordion">', _QMENU_MANAGE, '</h2>';
 
                                             echo '<ul id="qmenu_manage">';
@@ -7254,7 +7254,6 @@ EOL;
                                         }
                                     } else {
                                         if (($action == 'activate') || ($action == 'activatesetpwd')) {
-
                                             echo '<h2>', _QMENU_ACTIVATE, '</h2>', _QMENU_ACTIVATE_TEXT;
                                         } else {
                                             // introduction text on login screen
@@ -7274,108 +7273,108 @@ EOL;
                 </body>
 
                 </html>
-            <?php   }
+    <?php   }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_regfile()
-                                {
-                                    global $member, $CONF, $manager;
+    function action_regfile()
+    {
+        global $member, $CONF, $manager;
 
-                                    $blogid = intRequestVar('blogid');
+        $blogid = intRequestVar('blogid');
 
-                                    $member->teamRights($blogid) or $this->disallow();
+        $member->teamRights($blogid) or $this->disallow();
 
-                                    if (!function_exists('mb_convert_encoding')) {
-                                        $this->disallow();
-                                    }
+        if (!function_exists('mb_convert_encoding')) {
+            $this->disallow();
+        }
 
-                                    if (!BLOG::existsID($blogid)) {
-                                        $this->disallow();
-                                    }
+        if (!BLOG::existsID($blogid)) {
+            $this->disallow();
+        }
 
-                                    $utf8BlogName = getBlogNameFromID($blogid);
-                                    if (stripos(_CHARSET, 'UTF-8') === false) {
-                                        $utf8BlogName = mb_convert_encoding($utf8BlogName, 'UTF-8', _CHARSET);
-                                    }
-                                    $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
-                                    $utf8BlogName = str_replace(array("\r", "\n"), '', $utf8BlogName); // remove cr lf
-                                    $format = (_CHARSET == 'UTF-8' ?  _WINREGFILE_TEXT : mb_convert_encoding(_WINREGFILE_TEXT, 'UTF-8', _CHARSET));
-                                    $reg_key_name = sprintf($format, $utf8BlogName);
+        $utf8BlogName = getBlogNameFromID($blogid);
+        if (stripos(_CHARSET, 'UTF-8') === false) {
+            $utf8BlogName = mb_convert_encoding($utf8BlogName, 'UTF-8', _CHARSET);
+        }
+        $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
+        $utf8BlogName = str_replace(array("\r", "\n"), '', $utf8BlogName); // remove cr lf
+        $format = (_CHARSET == 'UTF-8' ?  _WINREGFILE_TEXT : mb_convert_encoding(_WINREGFILE_TEXT, 'UTF-8', _CHARSET));
+        $reg_key_name = sprintf($format, $utf8BlogName);
 
-                                    $blog = $manager->getBlog($blogid);
-                                    $output_filename = sprintf("nucleus-%s.reg", str_replace('\\', '', $blog->getShortName()));
+        $blog = $manager->getBlog($blogid);
+        $output_filename = sprintf("nucleus-%s.reg", str_replace('\\', '', $blog->getShortName()));
 
-                                    $lines = array();
-                                    $lines[] = "Windows Registry Editor Version 5.00";
-                                    $lines[] = "";
-                                    $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
-                                    $url = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=" . (int) $blogid;
-                                    $lines[] = sprintf('@="%s"', $url);
-                                    $lines[] = '"contexts"=hex:31';      // https://msdn.microsoft.com/ja-jp/library/aa753589(v=vs.85).aspx
+        $lines = array();
+        $lines[] = "Windows Registry Editor Version 5.00";
+        $lines[] = "";
+        $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
+        $url = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=" . (int) $blogid;
+        $lines[] = sprintf('@="%s"', $url);
+        $lines[] = '"contexts"=hex:31';      // https://msdn.microsoft.com/ja-jp/library/aa753589(v=vs.85).aspx
 
-                                    // UTF16-little endian
-                                    $data = "\xFF\xFE" . mb_convert_encoding(implode("\r\n", $lines), 'UTF-16LE', 'UTF-8');
+        // UTF16-little endian
+        $data = "\xFF\xFE" . mb_convert_encoding(implode("\r\n", $lines), 'UTF-16LE', 'UTF-8');
 
-                                    header('Content-Type: application/octetstream');
-                                    header(sprintf('Content-Disposition: filename="%s"', $output_filename));
-                                    header(sprintf('Content-Length: %d', strlen($data)));
-                                    header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-                                    header('Pragma: no-cache'); // HTTP/1.0
-                                    header('Expires: Sun, 01 Jan 2017 00:00:00 GMT');   // Date in the past
+        header('Content-Type: application/octetstream');
+        header(sprintf('Content-Disposition: filename="%s"', $output_filename));
+        header(sprintf('Content-Length: %d', strlen($data)));
+        header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: no-cache'); // HTTP/1.0
+        header('Expires: Sun, 01 Jan 2017 00:00:00 GMT');   // Date in the past
 
-                                    echo $data; // output data
-                                    exit;
-                                }
+        echo $data; // output data
+        exit;
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_bookmarklet()
-                                {
-                                    global $member, $manager;
+    function action_bookmarklet()
+    {
+        global $member, $manager;
 
-                                    $blogid = intRequestVar('blogid');
+        $blogid = intRequestVar('blogid');
 
-                                    $member->teamRights($blogid) or $this->disallow();
+        $member->teamRights($blogid) or $this->disallow();
 
-                                    $blog = &$manager->getBlog($blogid);
-                                    $bm = getBookmarklet($blogid);
+        $blog = &$manager->getBlog($blogid);
+        $bm = getBookmarklet($blogid);
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    echo '<p><a href="index.php?action=overview">(', _BACKHOME, ')</a></p>';
+        echo '<p><a href="index.php?action=overview">(', _BACKHOME, ')</a></p>';
 
-            ?>
+        ?>
 
                 <h2><?php echo _BOOKMARKLET_TITLE ?></h2>
 
                 <p>
-                    <?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
+        <?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
                 </p>
 
                 <h3><?php echo _BOOKMARKLET_BOOKARKLET ?></h3>
                 <p>
-                    <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
+        <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
                     <br />
                     <br />
-                    <?php echo '<a href="' . hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
+        <?php echo '<a href="' . hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
                 </p>
 
                 <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
                 <p>
-                    <?php
+        <?php
                                     $url = 'index.php?action=regfile&blogid=' . (int) $blogid;
                                     $url = $manager->addTicketToUrl($url);
-                    ?><?php
-                                    if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932') {
-                                        $tmpurl = hsc($url, ENT_QUOTES, "SJIS");
-                                    } else {
-                                        $tmpurl = hsc($url);
-                                    }
-                                    echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . $tmpurl . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2;
-                ?>
+        ?><?php
+if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932') {
+                        $tmpurl = hsc($url, ENT_QUOTES, "SJIS");
+} else {
+                                $tmpurl = hsc($url);
+}
+                                                        echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . $tmpurl . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2;
+?>
                 </p>
 
                 <p>
@@ -7384,11 +7383,11 @@ EOL;
 
                 <h3><?php echo _BOOKMARKLET_UNINSTALLTT ?></h3>
                 <p>
-                    <?php echo _BOOKMARKLET_DELETEBAR ?>
+        <?php echo _BOOKMARKLET_DELETEBAR ?>
                 </p>
 
                 <p>
-                    <?php echo _BOOKMARKLET_DELETERIGHTT ?>
+        <?php echo _BOOKMARKLET_DELETERIGHTT ?>
                 </p>
 
                 <ol>
@@ -7400,137 +7399,137 @@ EOL;
                 </ol>
 
             <?php
-                                    $this->pagefoot();
-                                }
+            $this->pagefoot();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_actionlog()
-                                {
-                                    global $member, $manager;
+    function action_actionlog()
+    {
+        global $member, $manager;
 
-                                    $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
+        echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
 
-                                    $url = $manager->addTicketToUrl('index.php?action=clearactionlog');
+        $url = $manager->addTicketToUrl('index.php?action=clearactionlog');
 
-                                    $ticket = $manager->getHtmlInputTicketHidden();
-                                    $title  = _ACTIONLOG_CLEAR_TEXT;
-                                    $form = <<<EOL
+        $ticket = $manager->getHtmlInputTicketHidden();
+        $title  = _ACTIONLOG_CLEAR_TEXT;
+        $form = <<<EOL
 <form action="index.php?action=clearactionlog" method="post">
 $ticket
 <input type="submit" value="$title">
 </form>
 EOL;
-                                    echo sprintf('<h2>%s</h2>', _ACTIONLOG_CLEAR_TITLE);
-                                    echo sprintf('<div>%s</div>', $form);
+        echo sprintf('<h2>%s</h2>', _ACTIONLOG_CLEAR_TITLE);
+        echo sprintf('<div>%s</div>', $form);
 
-                                    echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
+        echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
-                                    $query =  sprintf("SELECT * FROM %s ORDER BY timestamp DESC", sql_table('actionlog'));
-                                    $template['content'] = 'actionlist';
-                                    $amount = showlist_by_query($query, 'table', $template);
+        $query =  sprintf("SELECT * FROM %s ORDER BY timestamp DESC", sql_table('actionlog'));
+        $template['content'] = 'actionlist';
+        $amount = showlist_by_query($query, 'table', $template);
 
-                                    if (SYSTEMLOG::checkWritable()) {
-                                        echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
-                                        echo sprintf('<p><a href="index.php?action=systemlog">%s</a></p>', _SYSTEMLOG_TITLE);
-                                    }
+        if (SYSTEMLOG::checkWritable()) {
+            echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
+            echo sprintf('<p><a href="index.php?action=systemlog">%s</a></p>', _SYSTEMLOG_TITLE);
+        }
 
-                                    $this->pagefoot();
-                                }
+        $this->pagefoot();
+    }
 
-                                function action_systemlog()
-                                {
-                                    global $member, $manager;
+    function action_systemlog()
+    {
+        global $member, $manager;
 
-                                    $member->isAdmin() or $this->disallow();
-                                    if (!SYSTEMLOG::checkWritable()) {
-                                        $this->disallow();
-                                    }
+        $member->isAdmin() or $this->disallow();
+        if (!SYSTEMLOG::checkWritable()) {
+            $this->disallow();
+        }
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
+        echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
 
-                                    $ticket = $manager->getHtmlInputTicketHidden();
-                                    $title  = _SYSTEMLOG_CLEAR_TEXT;
-                                    $form = <<<EOL
+        $ticket = $manager->getHtmlInputTicketHidden();
+        $title  = _SYSTEMLOG_CLEAR_TEXT;
+        $form = <<<EOL
 <form action="index.php?action=clearsystemlog" method="post">
 $ticket
 <input type="submit" value="$title">
 </form>
 EOL;
-                                    echo sprintf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
-                                    echo sprintf('<div>%s</div>', $form);
+        echo sprintf('<h2>%s</h2>', _SYSTEMLOG_CLEAR_TITLE);
+        echo sprintf('<div>%s</div>', $form);
 
-                                    echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
+        echo '<h2>' . _SYSTEMLOG_TITLE . '</h2>';
 
-                                    $query = sprintf("SELECT * FROM %s ORDER BY timestamp_utc DESC", sql_table('systemlog'));
-                                    // Todo: seek
-                                    // display first 20 entry. if want more info, make it plugin
-                                    $query .= ' LIMIT 20';
+        $query = sprintf("SELECT * FROM %s ORDER BY timestamp_utc DESC", sql_table('systemlog'));
+        // Todo: seek
+        // display first 20 entry. if want more info, make it plugin
+        $query .= ' LIMIT 20';
 
-                                    $template['content'] = 'systemloglist';
-                                    $amount = showlist_by_query($query, 'table', $template);
+        $template['content'] = 'systemloglist';
+        $amount = showlist_by_query($query, 'table', $template);
 
-                                    $this->pagefoot();
-                                }
-
-                                /**
-                                 * @todo document this
-                                 */
-                                function action_banlist()
-                                {
-                                    global $member, $manager;
-
-                                    $blogid = intRequestVar('blogid');
-
-                                    $member->blogAdminRights($blogid) or $this->disallow();
-
-                                    $blog = &$manager->getBlog($blogid);
-
-                                    $this->pagehead();
-
-                                    echo '<p><a href="index.php?action=overview">(', _BACKHOME, ')</a></p>';
-
-                                    echo '<h2>' . _BAN_TITLE . " '" . $this->bloglink($blog) . "'</h2>";
-
-                                    $query =  sprintf("SELECT * FROM %s WHERE blogid=%s ORDER BY iprange", sql_table('ban'), $blogid);
-                                    $template['content'] = 'banlist';
-                                    $amount = showlist_by_query($query, 'table', $template);
-
-                                    if ($amount == 0) {
-                                        echo _BAN_NONE;
-                                    }
-
-                                    echo '<h2>' . _BAN_NEW_TITLE . '</h2>';
-                                    echo "<p><a href='index.php?action=banlistnew&amp;blogid=$blogid'>" . _BAN_NEW_TEXT . "</a></p>";
-
-
-                                    $this->pagefoot();
-                                }
+        $this->pagefoot();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_banlistdelete()
-                                {
-                                    global $member, $manager;
+    function action_banlist()
+    {
+        global $member, $manager;
 
-                                    $blogid = intRequestVar('blogid');
-                                    $iprange = requestVar('iprange');
+        $blogid = intRequestVar('blogid');
 
-                                    $member->blogAdminRights($blogid) or $this->disallow();
+        $member->blogAdminRights($blogid) or $this->disallow();
 
-                                    $blog = &$manager->getBlog($blogid);
-                                    $banBlogName =  hsc($blog->getName());
+        $blog = &$manager->getBlog($blogid);
 
-                                    $this->pagehead();
-            ?>
+        $this->pagehead();
+
+        echo '<p><a href="index.php?action=overview">(', _BACKHOME, ')</a></p>';
+
+        echo '<h2>' . _BAN_TITLE . " '" . $this->bloglink($blog) . "'</h2>";
+
+        $query =  sprintf("SELECT * FROM %s WHERE blogid=%s ORDER BY iprange", sql_table('ban'), $blogid);
+        $template['content'] = 'banlist';
+        $amount = showlist_by_query($query, 'table', $template);
+
+        if ($amount == 0) {
+            echo _BAN_NONE;
+        }
+
+        echo '<h2>' . _BAN_NEW_TITLE . '</h2>';
+        echo "<p><a href='index.php?action=banlistnew&amp;blogid=$blogid'>" . _BAN_NEW_TEXT . "</a></p>";
+
+
+        $this->pagefoot();
+    }
+
+                                /**
+                                 * @todo document this
+                                 */
+    function action_banlistdelete()
+    {
+        global $member, $manager;
+
+        $blogid = intRequestVar('blogid');
+        $iprange = requestVar('iprange');
+
+        $member->blogAdminRights($blogid) or $this->disallow();
+
+        $blog = &$manager->getBlog($blogid);
+        $banBlogName =  hsc($blog->getName());
+
+        $this->pagehead();
+        ?>
                 <h2><?php echo _BAN_REMOVE_TITLE ?></h2>
 
                 <form method="post" action="index.php">
@@ -7538,7 +7537,7 @@ EOL;
                     <h3><?php echo _BAN_IPRANGE ?></h3>
 
                     <p>
-                        <?php echo _CONFIRMTXT_BAN ?> <?php echo hsc($iprange) ?>
+        <?php echo _CONFIRMTXT_BAN ?> <?php echo hsc($iprange) ?>
                         <input name="iprange" type="hidden" value="<?php echo hsc($iprange) ?>" />
                     </p>
 
@@ -7555,92 +7554,92 @@ EOL;
                     <h3><?php echo _BAN_DELETE_TITLE ?></h3>
 
                     <div>
-                        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden() ?>
                         <input type="hidden" name="action" value="banlistdeleteconfirm" />
                         <input type="submit" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
                     </div>
 
                 </form>
             <?php
-                                    $this->pagefoot();
-                                }
+            $this->pagefoot();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_banlistdeleteconfirm()
-                                {
-                                    global $member, $manager;
+    function action_banlistdeleteconfirm()
+    {
+        global $member, $manager;
 
-                                    $blogid = intPostVar('blogid');
-                                    $allblogs = postVar('allblogs');
-                                    $iprange = postVar('iprange');
+        $blogid = intPostVar('blogid');
+        $allblogs = postVar('allblogs');
+        $iprange = postVar('iprange');
 
-                                    $member->blogAdminRights($blogid) or $this->disallow();
+        $member->blogAdminRights($blogid) or $this->disallow();
 
-                                    $deleted = array();
+        $deleted = array();
 
-                                    if (!$allblogs) {
-                                        if (BAN::removeBan($blogid, $iprange)) {
-                                            $deleted[] = $blogid;
-                                        }
-                                    } else {
-                                        // get blogs fot which member has admin rights
-                                        $adminblogs = $member->getAdminBlogs();
-                                        foreach ($adminblogs as $blogje) {
-                                            if (BAN::removeBan($blogje, $iprange)) {
-                                                $deleted[] = $blogje;
-                                            }
-                                        }
-                                    }
+        if (!$allblogs) {
+            if (BAN::removeBan($blogid, $iprange)) {
+                $deleted[] = $blogid;
+            }
+        } else {
+            // get blogs fot which member has admin rights
+            $adminblogs = $member->getAdminBlogs();
+            foreach ($adminblogs as $blogje) {
+                if (BAN::removeBan($blogje, $iprange)) {
+                    $deleted[] = $blogje;
+                }
+            }
+        }
 
-                                    if (sizeof($deleted) == 0) {
-                                        $this->error(_ERROR_DELETEBAN);
-                                    }
+        if (sizeof($deleted) == 0) {
+            $this->error(_ERROR_DELETEBAN);
+        }
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    echo '<a href="index.php?action=banlist&amp;blogid=', $blogid, '">(', _BACK, ')</a>';
-                                    echo '<h2>' . _BAN_REMOVED_TITLE . '</h2>';
-                                    echo "<p>" . _BAN_REMOVED_TEXT . "</p>";
+        echo '<a href="index.php?action=banlist&amp;blogid=', $blogid, '">(', _BACK, ')</a>';
+        echo '<h2>' . _BAN_REMOVED_TITLE . '</h2>';
+        echo "<p>" . _BAN_REMOVED_TEXT . "</p>";
 
-                                    echo "<ul>";
-                                    foreach ($deleted as $delblog) {
-                                        $b = &$manager->getBlog($delblog);
-                                        echo "<li>" . hsc($b->getName()) . "</li>";
-                                    }
-                                    echo "</ul>";
+        echo "<ul>";
+        foreach ($deleted as $delblog) {
+            $b = &$manager->getBlog($delblog);
+            echo "<li>" . hsc($b->getName()) . "</li>";
+        }
+        echo "</ul>";
 
-                                    $this->pagefoot();
-                                }
-
-                                /**
-                                 * @todo document this
-                                 */
-                                function action_banlistnewfromitem()
-                                {
-                                    $this->action_banlistnew(getBlogIDFromItemID(intRequestVar('itemid')));
-                                }
+        $this->pagefoot();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_banlistnew($blogid = '')
-                                {
-                                    global $member, $manager;
+    function action_banlistnewfromitem()
+    {
+        $this->action_banlistnew(getBlogIDFromItemID(intRequestVar('itemid')));
+    }
 
-                                    if ($blogid == '') {
-                                        $blogid = intRequestVar('blogid');
-                                    }
+                                /**
+                                 * @todo document this
+                                 */
+    function action_banlistnew($blogid = '')
+    {
+        global $member, $manager;
 
-                                    $ip = requestVar('ip');
+        if ($blogid == '') {
+            $blogid = intRequestVar('blogid');
+        }
 
-                                    $member->blogAdminRights($blogid) or $this->disallow();
+        $ip = requestVar('ip');
 
-                                    $blog = &$manager->getBlog($blogid);
+        $member->blogAdminRights($blogid) or $this->disallow();
 
-                                    $this->pagehead();
-            ?>
+        $blog = &$manager->getBlog($blogid);
+
+        $this->pagehead();
+        ?>
                 <h2><?php echo _BAN_ADD_TITLE ?></h2>
 
 
@@ -7652,26 +7651,26 @@ EOL;
 
                     <div class="note">
                         <strong><?php echo _BAN_EXAMPLE_TITLE ?></strong>
-                        <?php echo _BAN_EXAMPLE_TEXT ?>
+        <?php echo _BAN_EXAMPLE_TEXT ?>
                     </div>
 
                     <div>
-                        <?php
-                                    if ($ip) {
-                                        $iprangeVal = hsc($ip);
-                        ?>
+        <?php
+        if ($ip) {
+            $iprangeVal = hsc($ip);
+            ?>
                             <input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
                             <label for="ip_fixed"><?php echo $iprangeVal ?></label>
                             <br />
                             <input name="iprange" type="radio" value="custom" id="ip_custom" />
                             <label for="ip_custom"><?php echo _BAN_IP_CUSTOM ?></label>
                             <input name='customiprange' value='<?php echo $iprangeVal ?>' maxlength='15' size='15' />
-                        <?php
-                                    } else {
-                                        echo "<input name='iprange' value='custom' type='hidden' />";
-                                        echo "<input name='customiprange' value='' maxlength='15' size='15' />";
-                                    }
-                        ?>
+                                        <?php
+        } else {
+            echo "<input name='iprange' value='custom' type='hidden' />";
+            echo "<input name='customiprange' value='' maxlength='15' size='15' />";
+        }
+        ?>
                     </div>
 
                     <h3><?php echo _BAN_BLOGS ?></h3>
@@ -7702,103 +7701,101 @@ EOL;
                 </form>
 
             <?php $this->pagefoot();
-                                }
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_banlistadd()
-                                {
-                                    global $member;
+    function action_banlistadd()
+    {
+        global $member;
 
-                                    $blogid =       intPostVar('blogid');
-                                    $allblogs =     postVar('allblogs');
-                                    $iprange =      postVar('iprange');
-                                    if ($iprange == "custom") {
-                                        $iprange = postVar('customiprange');
-                                    }
-                                    $reason =       postVar('reason');
+        $blogid =       intPostVar('blogid');
+        $allblogs =     postVar('allblogs');
+        $iprange =      postVar('iprange');
+        if ($iprange == "custom") {
+            $iprange = postVar('customiprange');
+        }
+        $reason =       postVar('reason');
 
-                                    $member->blogAdminRights($blogid) or $this->disallow();
+        $member->blogAdminRights($blogid) or $this->disallow();
 
-                                    // TODO: check IP range validity
+        // TODO: check IP range validity
 
-                                    if (!$allblogs) {
-                                        if (!BAN::addBan($blogid, $iprange, $reason)) {
-                                            $this->error(_ERROR_ADDBAN);
-                                        }
-                                    } else {
-                                        // get blogs fot which member has admin rights
-                                        $adminblogs = $member->getAdminBlogs();
-                                        $failed = 0;
-                                        foreach ($adminblogs as $blogje) {
-                                            if (!BAN::addBan($blogje, $iprange, $reason)) {
-                                                $failed = 1;
-                                            }
-                                        }
-                                        if ($failed) {
-                                            $this->error(_ERROR_ADDBAN);
-                                        }
-                                    }
+        if (!$allblogs) {
+            if (!BAN::addBan($blogid, $iprange, $reason)) {
+                $this->error(_ERROR_ADDBAN);
+            }
+        } else {
+            // get blogs fot which member has admin rights
+            $adminblogs = $member->getAdminBlogs();
+            $failed = 0;
+            foreach ($adminblogs as $blogje) {
+                if (!BAN::addBan($blogje, $iprange, $reason)) {
+                    $failed = 1;
+                }
+            }
+            if ($failed) {
+                $this->error(_ERROR_ADDBAN);
+            }
+        }
 
-                                    $this->action_banlist();
-                                }
-
-                                /**
-                                 * @todo document this
-                                 */
-                                function action_clearactionlog()
-                                {
-                                    global $member;
-
-                                    if (
-                                        !$member->isAdmin()
-                                        || empty($_SERVER['REQUEST_METHOD'])
-                                        || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') != 0)
-                                    ) {
-                                        $this->disallow();
-                                    }
-
-                                    ACTIONLOG::clear();
-
-                                    $this->action_manage(_MSG_ACTIONLOGCLEARED);
-                                }
-
-                                function action_clearsystemlog()
-                                {
-                                    global $member;
-
-                                    if (
-                                        !$member->isAdmin() || empty($_SERVER['REQUEST_METHOD'])
-                                        || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') != 0)
-                                        || !class_exists('SYSTEMLOG')
-                                        || !SYSTEMLOG::checkWritable()
-                                    ) {
-                                        $this->disallow();
-                                    }
-
-                                    SYSTEMLOG::clearAll();
-
-                                    $this->action_manage(_MSG_SYSTEMLOGCLEARED);
-                                }
+        $this->action_banlist();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_backupoverview()
-                                {
-                                    global $member, $manager, $DB_DRIVER_NAME;
+    function action_clearactionlog()
+    {
+        global $member;
 
-                                    $member->isAdmin() or $this->disallow();
+        if (!$member->isAdmin()
+            || empty($_SERVER['REQUEST_METHOD'])
+            || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') != 0)
+        ) {
+            $this->disallow();
+        }
 
-                                    if ($DB_DRIVER_NAME != 'mysql') {
-                                        $this->disallow();
-                                    }
+        ACTIONLOG::clear();
 
-                                    $this->pagehead();
+        $this->action_manage(_MSG_ACTIONLOGCLEARED);
+    }
 
-                                    echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
-            ?>
+    function action_clearsystemlog()
+    {
+        global $member;
+
+        if (!$member->isAdmin() || empty($_SERVER['REQUEST_METHOD'])
+            || (strcasecmp($_SERVER['REQUEST_METHOD'], 'post') != 0)
+            || !class_exists('SYSTEMLOG')
+            || !SYSTEMLOG::checkWritable()
+        ) {
+            $this->disallow();
+        }
+
+        SYSTEMLOG::clearAll();
+
+        $this->action_manage(_MSG_SYSTEMLOGCLEARED);
+    }
+
+                                /**
+                                 * @todo document this
+                                 */
+    function action_backupoverview()
+    {
+        global $member, $manager, $DB_DRIVER_NAME;
+
+        $member->isAdmin() or $this->disallow();
+
+        if ($DB_DRIVER_NAME != 'mysql') {
+            $this->disallow();
+        }
+
+        $this->pagehead();
+
+        echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
+        ?>
                 <h2><?php echo _BACKUPS_TITLE ?></h2>
 
                 <h3><?php echo _BACKUP_TITLE ?></h3>
@@ -7808,7 +7805,7 @@ EOL;
                 <form method="post" action="index.php">
                     <p>
                         <input type="hidden" name="action" value="backupcreate" />
-                        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden() ?>
 
                         <input type="radio" name="gzip" value="1" checked="checked" id="gzip_yes" tabindex="10" /><label for="gzip_yes"><?php echo _BACKUP_ZIP_YES ?></label>
                         <br />
@@ -7831,7 +7828,7 @@ EOL;
                 <form method="post" action="index.php" enctype="multipart/form-data">
                     <p>
                         <input type="hidden" name="action" value="backuprestore" />
-                        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden() ?>
                         <input name="backup_file" type="file" tabindex="30" />
                         <br /><br />
                         <input type="submit" value="<?php echo _RESTORE_BTN ?>" tabindex="40" />
@@ -7841,133 +7838,132 @@ EOL;
                 </form>
 
             <?php $this->pagefoot();
-                                }
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_backupcreate()
-                                {
-                                    global $member, $DIR_LIBS;
+    function action_backupcreate()
+    {
+        global $member, $DIR_LIBS;
 
-                                    $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                                    // use compression ?
-                                    $useGzip = (int) postVar('gzip');
+        // use compression ?
+        $useGzip = (int) postVar('gzip');
 
-                                    include($DIR_LIBS . 'backup.php');
+        include($DIR_LIBS . 'backup.php');
 
-                                    // try to extend time limit
-                                    // (creating/restoring dumps might take a while)
-                                    @set_time_limit(1200);
+        // try to extend time limit
+        // (creating/restoring dumps might take a while)
+        @set_time_limit(1200);
 
-                                    $bu = new Backup();
-                                    $bu->do_backup($useGzip);
-                                    exit;
-                                }
+        $bu = new Backup();
+        $bu->do_backup($useGzip);
+        exit;
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_backuprestore()
-                                {
-                                    global $member, $DIR_LIBS;
+    function action_backuprestore()
+    {
+        global $member, $DIR_LIBS;
 
-                                    $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                                    if (intPostVar('letsgo') != 1) {
-                                        $this->error(_ERROR_BACKUP_NOTSURE);
-                                    }
+        if (intPostVar('letsgo') != 1) {
+            $this->error(_ERROR_BACKUP_NOTSURE);
+        }
 
-                                    include($DIR_LIBS . 'backup.php');
+        include($DIR_LIBS . 'backup.php');
 
-                                    // try to extend time limit
-                                    // (creating/restoring dumps might take a while)
-                                    @set_time_limit(1200);
+        // try to extend time limit
+        // (creating/restoring dumps might take a while)
+        @set_time_limit(1200);
 
-                                    $bu = new Backup();
-                                    $message = $bu->do_restore();
-                                    if ($message != '') {
-                                        $this->error($message);
-                                    }
+        $bu = new Backup();
+        $message = $bu->do_restore();
+        if ($message != '') {
+            $this->error($message);
+        }
 
-                                    $this->pagehead();
-            ?>
+        $this->pagehead();
+        ?>
                 <h2><?php echo _RESTORE_COMPLETE ?></h2>
             <?php $this->pagefoot();
-                                }
+    }
 
-                                private function force_rename_np_plugin_dir()
-                                {
-                                    global $DIR_PLUGINS;
-                                    $path = @realpath($DIR_PLUGINS); // Since $DIR_PLUGINS is a user input value, it converts it to an absolute path
-                                    if (empty($DIR_PLUGINS) || empty($path) || !is_dir($path)) {
-                                        return;
-                                    }
-                                    $path = str_replace('\\', '/', $path) . '/';
-                                    $dh = opendir($path);
-                                    if ($dh) {
-                                        while (($file = readdir($dh)) !== false) {
-                                            if (in_array($file, array('.', '..'))) {
-                                                continue;
-                                            }
-                                            $old_dir_name = "{$path}{$file}";
-                                            if (is_dir($old_dir_name) && preg_match('@^np_[0-9a-z_]+$@i', $file)) {
-                                                $np_lists = glob("{$old_dir_name}/NP_*.php", GLOB_NOSORT);
-                                                if (empty($np_lists) || substr(basename($np_lists[0]), 0, 2) != 'NP') // Native Windows case insensitive
-                                                {
-                                                    continue;
-                                                }
-                                                $NP_Name = substr(basename($np_lists[0]), 0, -4);
-                                                if ((strcmp($file, $NP_Name) == 0) || (strcasecmp($file, $NP_Name) != 0)) {
-                                                    continue;
-                                                }
-                                                $new_dir_name = "{$path}{$NP_Name}";
-                                                $success = @rename($old_dir_name, $new_dir_name);
-                                                if (class_exists('SYSTEMLOG')) {
-                                                    $msg = sprintf('Plugin folder name [%s] is invalid.', $file);
-                                                    if ($success) {
-                                                        $msg .= sprintf(' force rename to [%s]', $NP_Name);
-                                                        SYSTEMLOG::add('error', 'Error', $msg);
-                                                    } else {
-                                                        $msg .= sprintf(' Please change to [%s] manually', $NP_Name);
-                                                        SYSTEMLOG::addUnique('error', 'Error', $msg);
-                                                    }
-                                                }
-                                            }
-                                        }
-                                        closedir($dh);
-                                    }
-                                }
+    private function force_rename_np_plugin_dir()
+    {
+        global $DIR_PLUGINS;
+        $path = @realpath($DIR_PLUGINS); // Since $DIR_PLUGINS is a user input value, it converts it to an absolute path
+        if (empty($DIR_PLUGINS) || empty($path) || !is_dir($path)) {
+            return;
+        }
+        $path = str_replace('\\', '/', $path) . '/';
+        $dh = opendir($path);
+        if ($dh) {
+            while (($file = readdir($dh)) !== false) {
+                if (in_array($file, array('.', '..'))) {
+                    continue;
+                }
+                $old_dir_name = "{$path}{$file}";
+                if (is_dir($old_dir_name) && preg_match('@^np_[0-9a-z_]+$@i', $file)) {
+                    $np_lists = glob("{$old_dir_name}/NP_*.php", GLOB_NOSORT);
+                    if (empty($np_lists) || substr(basename($np_lists[0]), 0, 2) != 'NP') { // Native Windows case insensitive
+                        continue;
+                    }
+                    $NP_Name = substr(basename($np_lists[0]), 0, -4);
+                    if ((strcmp($file, $NP_Name) == 0) || (strcasecmp($file, $NP_Name) != 0)) {
+                        continue;
+                    }
+                    $new_dir_name = "{$path}{$NP_Name}";
+                    $success = @rename($old_dir_name, $new_dir_name);
+                    if (class_exists('SYSTEMLOG')) {
+                        $msg = sprintf('Plugin folder name [%s] is invalid.', $file);
+                        if ($success) {
+                            $msg .= sprintf(' force rename to [%s]', $NP_Name);
+                            SYSTEMLOG::add('error', 'Error', $msg);
+                        } else {
+                            $msg .= sprintf(' Please change to [%s] manually', $NP_Name);
+                            SYSTEMLOG::addUnique('error', 'Error', $msg);
+                        }
+                    }
+                }
+            }
+            closedir($dh);
+        }
+    }
 
                                 /*
  * @todo document this
  */
-                                function action_pluginlist()
-                                {
-                                    global $member, $manager;
+    function action_pluginlist()
+    {
+        global $member, $manager;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    $this->force_rename_np_plugin_dir();
+        $this->force_rename_np_plugin_dir();
 
-                                    echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
+        echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
 
-                                    echo '<h2>', _PLUGS_TITLE_MANAGE, ' ', help('plugins'), '</h2>';
+        echo '<h2>', _PLUGS_TITLE_MANAGE, ' ', help('plugins'), '</h2>';
 
-                                    echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
+        echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
 
-                                    $query =  sprintf("SELECT * FROM %s ORDER BY porder ASC", sql_table('plugin'));
+        $query =  sprintf("SELECT * FROM %s ORDER BY porder ASC", sql_table('plugin'));
 
-                                    $template['content'] = 'pluginlist';
-                                    $template['tabindex'] = 10;
-                                    showlist_by_query($query, 'table', $template);
+        $template['content'] = 'pluginlist';
+        $template['tabindex'] = 10;
+        showlist_by_query($query, 'table', $template);
 
-            ?>
+        ?>
                 <h3><?php echo _PLUGS_TITLE_UPDATE ?></h3>
 
                 <p><?php echo _PLUGS_TEXT_UPDATE ?></p>
@@ -7975,21 +7971,21 @@ EOL;
                 <form method="post" action="index.php">
                     <div>
                         <input type="hidden" name="action" value="pluginupdate" />
-                        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden() ?>
                         <input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
                     </div>
                 </form>
 
                 <h3><?php echo _PLUGS_TITLE_NEW ?></h3>
 
-                <?php
+        <?php
                                     $list_installed_PluginName = array();
                                     $sql = sprintf("SELECT pfile FROM %s ORDER BY pfile ASC", sql_table('plugin'));
-                                    if ($res = sql_query($sql)) {
-                                        while ($v = sql_fetch_array($res)) {
-                                            $list_installed_PluginName[$v[0]] = strtolower($v[0]);
-                                        }
-                                    }
+        if ($res = sql_query($sql)) {
+            while ($v = sql_fetch_array($res)) {
+                $list_installed_PluginName[$v[0]] = strtolower($v[0]);
+            }
+        }
                                     // find a list of possibly non-installed plugins
                                     $candidates = array();
                                     global $DIR_PLUGINS;
@@ -7997,499 +7993,498 @@ EOL;
                                     // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
                                     $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, true);
                                     //        var_dump(__FUNCTION__, $status, $plugins);
-                                    if ($status['result'] && count($plugins) > 0) {
-                                        foreach ($plugins as $key => $value) {
-                                            $name = $value['name'];
-                                            // only show in list when not yet installed
-                                            if (!in_array(strtolower('NP_' . $name), $list_installed_PluginName)) {
-                                                $candidates[] = $name;
-                                            }
-                                        }
-                                    }
+        if ($status['result'] && count($plugins) > 0) {
+            foreach ($plugins as $key => $value) {
+                $name = $value['name'];
+                // only show in list when not yet installed
+                if (!in_array(strtolower('NP_' . $name), $list_installed_PluginName)) {
+                    $candidates[] = $name;
+                }
+            }
+        }
 
-                                    if (sizeof($candidates) > 0) {
-                                        $options = array();
-                                        foreach ($candidates as $name) {
-                                            $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
-                                        }
-                                        $options_tag = implode("\n  ", $options);
+        if (sizeof($candidates) > 0) {
+            $options = array();
+            foreach ($candidates as $name) {
+                $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
+            }
+            $options_tag = implode("\n  ", $options);
 
-                                        echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
+            echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
 
-                                        echo "<form method='post' action='index.php'><div>\n";
-                                        echo "  <input type='hidden' name='action' value='pluginadd' />\n";
-                                        echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
-                                        echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
-                                        echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
-                                        echo "</div></form>\n";
-                                    } else {
-                                        echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
-                                    }
+            echo "<form method='post' action='index.php'><div>\n";
+            echo "  <input type='hidden' name='action' value='pluginadd' />\n";
+            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
+            echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
+            echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+            echo "</div></form>\n";
+        } else {
+            echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
+        }
 
                                     echo "\n";
                                     $this->pagefoot();
-                                }
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_pluginhelp()
-                                {
-                                    global $member, $manager;
+    function action_pluginhelp()
+    {
+        global $member, $manager;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $plugid = intGetVar('plugid');
+        $plugid = intGetVar('plugid');
 
-                                    if (!$manager->pidInstalled($plugid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
+        if (!$manager->pidInstalled($plugid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
 
-                                    $plugName = getPluginNameFromPid($plugid);
+        $plugName = getPluginNameFromPid($plugid);
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    echo '<p><a href="index.php?action=pluginlist">(', _PLUGS_BACK, ')</a></p>';
+        echo '<p><a href="index.php?action=pluginlist">(', _PLUGS_BACK, ')</a></p>';
 
-                                    echo '<h2>', _PLUGS_HELP_TITLE, ': ', hsc($plugName), '</h2>';
+        echo '<h2>', _PLUGS_HELP_TITLE, ': ', hsc($plugName), '</h2>';
 
-                                    $plug = &$manager->getPlugin($plugName);
-                                    $cplugindir = $plug->getDirectory();
-                                    if (is_file("{$cplugindir}help.php")) {
-                                        $helpFile = "{$cplugindir}help.php";
-                                    } elseif (is_file("{$cplugindir}help.html")) {
-                                        $helpFile = "{$cplugindir}help.html";
-                                    } elseif (is_file("{$cplugindir}help/index.php")) {
-                                        $helpFile = "{$cplugindir}help/index.php";
-                                    } elseif (is_file("{$cplugindir}help/index.html")) {
-                                        $helpFile = "{$cplugindir}help/index.html";
-                                    }
+        $plug = &$manager->getPlugin($plugName);
+        $cplugindir = $plug->getDirectory();
+        if (is_file("{$cplugindir}help.php")) {
+            $helpFile = "{$cplugindir}help.php";
+        } elseif (is_file("{$cplugindir}help.html")) {
+            $helpFile = "{$cplugindir}help.html";
+        } elseif (is_file("{$cplugindir}help/index.php")) {
+            $helpFile = "{$cplugindir}help/index.php";
+        } elseif (is_file("{$cplugindir}help/index.html")) {
+            $helpFile = "{$cplugindir}help/index.html";
+        }
 
-                                    if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@is_file($helpFile))) {
-                                        if (substr($helpFile, -4) === '.php') {
-                                            include_once($helpFile);
-                                        } else {
-                                            @readfile($helpFile);
-                                        }
-                                    } else {
-                                        echo '<p>' . _ERROR . ': ', _ERROR_PLUGNOHELPFILE, '</p>';
-                                        echo '<p><a href="index.php?action=pluginlist">(', _BACK, ')</a></p>';
-                                    }
+        if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@is_file($helpFile))) {
+            if (substr($helpFile, -4) === '.php') {
+                include_once($helpFile);
+            } else {
+                @readfile($helpFile);
+            }
+        } else {
+            echo '<p>' . _ERROR . ': ', _ERROR_PLUGNOHELPFILE, '</p>';
+            echo '<p><a href="index.php?action=pluginlist">(', _BACK, ')</a></p>';
+        }
 
 
-                                    $this->pagefoot();
-                                }
-
-                                /**
-                                 * @todo document this
-                                 */
-                                function action_pluginadd()
-                                {
-                                    global $member, $manager;
-
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
-
-                                    $name = postVar('filename');
-
-                                    if ($manager->pluginInstalled($name)) {
-                                        $this->error(_ERROR_DUPPLUGIN);
-                                    }
-                                    if (!checkPlugin($name)) {
-                                        $this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');
-                                    }
-
-                                    // get number of currently installed plugins
-                                    $res = sql_query(sprintf("SELECT count(*) FROM %s", sql_table('plugin')));
-                                    $numCurrent = (int) sql_result($res);
-
-                                    // plugin will be added as last one in the list
-                                    $newOrder = $numCurrent + 1;
-
-                                    $param = array(
-                                        'file' => &$name,
-                                    );
-                                    $manager->notify('PreAddPlugin', $param);
-
-                                    // do this before calling getPlugin (in case the plugin id is used there)
-                                    $query = sprintf(
-                                        'INSERT INTO %s (porder, pfile) VALUES (%d, %s)',
-                                        sql_table('plugin'),
-                                        $newOrder,
-                                        sql_quote_string($name)
-                                    );
-                                    sql_query($query);
-                                    $iPid = sql_insert_id();
-
-                                    $manager->clearCachedInfo('installedPlugins');
-
-                                    // Load the plugin for condition checking and instalation
-                                    $plugin = &$manager->getPlugin($name);
-
-                                    // check if it got loaded (could have failed)
-                                    if (!$plugin) {
-                                        sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid=' . (int) $iPid);
-                                        $manager->clearCachedInfo('installedPlugins');
-                                        $this->error(_ERROR_PLUGIN_LOAD);
-                                    }
-
-                                    // check if plugin needs a newer Nucleus version
-                                    if (getNucleusVersion() < $plugin->getMinNucleusVersion()) {
-                                        // uninstall plugin again...
-                                        $this->deleteOnePlugin($plugin->getID());
-
-                                        // ...and show error
-                                        $this->error(_ERROR_NUCLEUSVERSIONREQ . hsc($plugin->getMinNucleusVersion()));
-                                    }
-
-                                    // check if plugin needs a newer Nucleus version
-                                    if ((getNucleusVersion() == $plugin->getMinNucleusVersion()) && (getNucleusPatchLevel() < $plugin->getMinNucleusPatchLevel())) {
-                                        // uninstall plugin again...
-                                        $this->deleteOnePlugin($plugin->getID());
-
-                                        // ...and show error
-                                        $this->error(_ERROR_NUCLEUSVERSIONREQ . hsc($plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel()));
-                                    }
-
-                                    $pluginList = $plugin->getPluginDep();
-                                    foreach ($pluginList as $pluginName) {
-
-                                        $res = sql_query(sprintf("SELECT count(*) FROM %s WHERE pfile='%s'", sql_table('plugin'), $pluginName));
-                                        $ct = (int) sql_result($res);
-                                        if ($ct == 0) {
-                                            // uninstall plugin again...
-                                            $this->deleteOnePlugin($plugin->getID());
-
-                                            $this->error(sprintf(_ERROR_INSREQPLUGIN, hsc($pluginName)));
-                                        }
-                                    }
-
-                                    // call the install method of the plugin
-                                    $plugin->install();
-
-                                    $param = array(
-                                        'plugin' => &$plugin,
-                                    );
-                                    $manager->notify('PostAddPlugin', $param);
-
-                                    // update all events
-                                    $this->action_pluginupdate();
-                                }
+        $this->pagefoot();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_pluginupdate()
-                                {
-                                    global $member, $manager, $CONF;
+    function action_pluginadd()
+    {
+        global $member, $manager;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    // delete everything from plugin_events
-                                    sql_query(sprintf("DELETE FROM %s", sql_table('plugin_event')));
+        $name = postVar('filename');
 
-                                    // loop over all installed plugins
-                                    $res = sql_query(sprintf("SELECT pid, pfile FROM %s", sql_table('plugin')));
-                                    while ($o = sql_fetch_object($res)) {
-                                        $pid = $o->pid;
-                                        $plug = &$manager->getPlugin($o->pfile);
-                                        if ($plug) {
-                                            $eventList = $plug->_getEventList();
-                                            foreach ($eventList as $eventName) {
-                                                sql_query(sprintf("INSERT INTO %s (pid, event) VALUES (%s, %s)", sql_table('plugin_event'), $pid, sql_quote_string($eventName)));
-                                            }
-                                        }
-                                    }
-                                    $manager->_loadSubscriptions();
-                                    $data = array();
-                                    $manager->notify('PostUpdatePlugin', $data);
+        if ($manager->pluginInstalled($name)) {
+            $this->error(_ERROR_DUPPLUGIN);
+        }
+        if (!checkPlugin($name)) {
+            $this->error(_ERROR_PLUGFILEERROR . ' (' . hsc($name) . ')');
+        }
 
-                                    redirect($CONF['AdminURL'] . '?action=pluginlist');
-                                    //        $this->action_pluginlist();
-                                }
+        // get number of currently installed plugins
+        $res = sql_query(sprintf("SELECT count(*) FROM %s", sql_table('plugin')));
+        $numCurrent = (int) sql_result($res);
+
+        // plugin will be added as last one in the list
+        $newOrder = $numCurrent + 1;
+
+        $param = array(
+            'file' => &$name,
+        );
+        $manager->notify('PreAddPlugin', $param);
+
+        // do this before calling getPlugin (in case the plugin id is used there)
+        $query = sprintf(
+            'INSERT INTO %s (porder, pfile) VALUES (%d, %s)',
+            sql_table('plugin'),
+            $newOrder,
+            sql_quote_string($name)
+        );
+        sql_query($query);
+        $iPid = sql_insert_id();
+
+        $manager->clearCachedInfo('installedPlugins');
+
+        // Load the plugin for condition checking and instalation
+        $plugin = &$manager->getPlugin($name);
+
+        // check if it got loaded (could have failed)
+        if (!$plugin) {
+            sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid=' . (int) $iPid);
+            $manager->clearCachedInfo('installedPlugins');
+            $this->error(_ERROR_PLUGIN_LOAD);
+        }
+
+        // check if plugin needs a newer Nucleus version
+        if (getNucleusVersion() < $plugin->getMinNucleusVersion()) {
+            // uninstall plugin again...
+            $this->deleteOnePlugin($plugin->getID());
+
+            // ...and show error
+            $this->error(_ERROR_NUCLEUSVERSIONREQ . hsc($plugin->getMinNucleusVersion()));
+        }
+
+        // check if plugin needs a newer Nucleus version
+        if ((getNucleusVersion() == $plugin->getMinNucleusVersion()) && (getNucleusPatchLevel() < $plugin->getMinNucleusPatchLevel())) {
+            // uninstall plugin again...
+            $this->deleteOnePlugin($plugin->getID());
+
+            // ...and show error
+            $this->error(_ERROR_NUCLEUSVERSIONREQ . hsc($plugin->getMinNucleusVersion() . ' patch ' . $plugin->getMinNucleusPatchLevel()));
+        }
+
+        $pluginList = $plugin->getPluginDep();
+        foreach ($pluginList as $pluginName) {
+            $res = sql_query(sprintf("SELECT count(*) FROM %s WHERE pfile='%s'", sql_table('plugin'), $pluginName));
+            $ct = (int) sql_result($res);
+            if ($ct == 0) {
+                // uninstall plugin again...
+                $this->deleteOnePlugin($plugin->getID());
+
+                $this->error(sprintf(_ERROR_INSREQPLUGIN, hsc($pluginName)));
+            }
+        }
+
+        // call the install method of the plugin
+        $plugin->install();
+
+        $param = array(
+            'plugin' => &$plugin,
+        );
+        $manager->notify('PostAddPlugin', $param);
+
+        // update all events
+        $this->action_pluginupdate();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_plugindelete()
-                                {
-                                    global $member, $manager;
+    function action_pluginupdate()
+    {
+        global $member, $manager, $CONF;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $pid = intGetVar('plugid');
+        // delete everything from plugin_events
+        sql_query(sprintf("DELETE FROM %s", sql_table('plugin_event')));
 
-                                    if (!$manager->pidInstalled($pid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
+        // loop over all installed plugins
+        $res = sql_query(sprintf("SELECT pid, pfile FROM %s", sql_table('plugin')));
+        while ($o = sql_fetch_object($res)) {
+            $pid = $o->pid;
+            $plug = &$manager->getPlugin($o->pfile);
+            if ($plug) {
+                $eventList = $plug->_getEventList();
+                foreach ($eventList as $eventName) {
+                    sql_query(sprintf("INSERT INTO %s (pid, event) VALUES (%s, %s)", sql_table('plugin_event'), $pid, sql_quote_string($eventName)));
+                }
+            }
+        }
+        $manager->_loadSubscriptions();
+        $data = array();
+        $manager->notify('PostUpdatePlugin', $data);
 
-                                    $this->pagehead();
-                ?>
+        redirect($CONF['AdminURL'] . '?action=pluginlist');
+        //        $this->action_pluginlist();
+    }
+
+                                /**
+                                 * @todo document this
+                                 */
+    function action_plugindelete()
+    {
+        global $member, $manager;
+
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
+
+        $pid = intGetVar('plugid');
+
+        if (!$manager->pidInstalled($pid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
+
+        $this->pagehead();
+        ?>
                 <h2><?php echo _DELETE_CONFIRM ?></h2>
 
                 <p><?php echo _CONFIRMTXT_PLUGIN ?> <strong><?php echo getPluginNameFromPid($pid) ?></strong>?</p>
 
                 <form method="post" action="index.php">
                     <div>
-                        <?php $manager->addTicketHidden() ?>
+        <?php $manager->addTicketHidden() ?>
                         <input type="hidden" name="action" value="plugindeleteconfirm" />
                         <input type="hidden" name="plugid" value="<?php echo $pid; ?>" />
                         <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
                     </div>
                 </form>
             <?php
-                                    $this->pagefoot();
-                                }
+            $this->pagefoot();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_plugindeleteconfirm()
-                                {
-                                    global $member, $CONF;
+    function action_plugindeleteconfirm()
+    {
+        global $member, $CONF;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $pid = intPostVar('plugid');
+        $pid = intPostVar('plugid');
 
-                                    $error = $this->deleteOnePlugin($pid, 1);
-                                    if ($error) {
-                                        $this->error($error);
-                                    }
+        $error = $this->deleteOnePlugin($pid, 1);
+        if ($error) {
+            $this->error($error);
+        }
 
-                                    redirect($CONF['AdminURL'] . '?action=pluginlist');
-                                    //        $this->action_pluginlist();
-                                }
+        redirect($CONF['AdminURL'] . '?action=pluginlist');
+        //        $this->action_pluginlist();
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function deleteOnePlugin($pid, $callUninstall = 0)
-                                {
-                                    global $manager;
+    function deleteOnePlugin($pid, $callUninstall = 0)
+    {
+        global $manager;
 
-                                    $pid = (int) $pid;
+        $pid = (int) $pid;
 
-                                    if (!$manager->pidInstalled($pid)) {
-                                        return _ERROR_NOSUCHPLUGIN;
-                                    }
+        if (!$manager->pidInstalled($pid)) {
+            return _ERROR_NOSUCHPLUGIN;
+        }
 
-                                    $name = quickQuery(sprintf("SELECT pfile as result FROM %s WHERE pid=%s", sql_table('plugin'), $pid));
+        $name = quickQuery(sprintf("SELECT pfile as result FROM %s WHERE pid=%s", sql_table('plugin'), $pid));
 
-                                    /*        // call the unInstall method of the plugin
+        /*        // call the unInstall method of the plugin
         if ($callUninstall) {
             $plugin =& $manager->getPlugin($name);
             if ($plugin) $plugin->unInstall();
         }*/
 
-                                    // check dependency before delete
-                                    $res = sql_query(sprintf("SELECT pfile FROM %s", sql_table('plugin')));
-                                    while ($o = sql_fetch_object($res)) {
-                                        $plug = &$manager->getPlugin($o->pfile);
-                                        if ($plug) {
-                                            $depList = $plug->getPluginDep();
-                                            foreach ($depList as $depName) {
-                                                if ($name == $depName) {
-                                                    return sprintf(_ERROR_DELREQPLUGIN, $o->pfile);
-                                                }
-                                            }
-                                        }
-                                    }
+        // check dependency before delete
+        $res = sql_query(sprintf("SELECT pfile FROM %s", sql_table('plugin')));
+        while ($o = sql_fetch_object($res)) {
+            $plug = &$manager->getPlugin($o->pfile);
+            if ($plug) {
+                $depList = $plug->getPluginDep();
+                foreach ($depList as $depName) {
+                    if ($name == $depName) {
+                        return sprintf(_ERROR_DELREQPLUGIN, $o->pfile);
+                    }
+                }
+            }
+        }
 
-                                    $param = array('plugid' => $pid);
-                                    $manager->notify('PreDeletePlugin', $param);
+        $param = array('plugid' => $pid);
+        $manager->notify('PreDeletePlugin', $param);
 
-                                    // call the unInstall method of the plugin
-                                    if ($callUninstall) {
-                                        $plugin = &$manager->getPlugin($name);
-                                        if ($plugin) {
-                                            $plugin->unInstall();
-                                        }
-                                    }
+        // call the unInstall method of the plugin
+        if ($callUninstall) {
+            $plugin = &$manager->getPlugin($name);
+            if ($plugin) {
+                $plugin->unInstall();
+            }
+        }
 
-                                    // delete all subscriptions
-                                    sql_query('DELETE FROM ' . sql_table('plugin_event') . ' WHERE pid=' . $pid);
+        // delete all subscriptions
+        sql_query('DELETE FROM ' . sql_table('plugin_event') . ' WHERE pid=' . $pid);
 
-                                    // delete all options
-                                    // get OIDs from plugin_option_desc
-                                    $res = sql_query(sprintf("SELECT oid FROM %s WHERE opid=%s", sql_table('plugin_option_desc'), $pid));
-                                    $aOIDs = array();
-                                    while ($o = sql_fetch_object($res)) {
-                                        $aOIDs[] = $o->oid;
-                                    }
+        // delete all options
+        // get OIDs from plugin_option_desc
+        $res = sql_query(sprintf("SELECT oid FROM %s WHERE opid=%s", sql_table('plugin_option_desc'), $pid));
+        $aOIDs = array();
+        while ($o = sql_fetch_object($res)) {
+            $aOIDs[] = $o->oid;
+        }
 
-                                    // delete from plugin_option and plugin_option_desc
-                                    sql_query('DELETE FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
-                                    if (count($aOIDs) > 0) {
-                                        sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in (' . implode(',', $aOIDs) . ')');
-                                    }
+        // delete from plugin_option and plugin_option_desc
+        sql_query('DELETE FROM ' . sql_table('plugin_option_desc') . ' WHERE opid=' . $pid);
+        if (count($aOIDs) > 0) {
+            sql_query('DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in (' . implode(',', $aOIDs) . ')');
+        }
 
-                                    // update order numbers
-                                    $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s", sql_table('plugin'), $pid));
-                                    $o = sql_fetch_object($res);
-                                    sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=(porder - 1) WHERE porder>' . $o->porder);
+        // update order numbers
+        $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s", sql_table('plugin'), $pid));
+        $o = sql_fetch_object($res);
+        sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=(porder - 1) WHERE porder>' . $o->porder);
 
-                                    // delete row
-                                    sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid=' . $pid);
+        // delete row
+        sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid=' . $pid);
 
-                                    // delete cached_data
-                                    if (CoreCachedData::existTable()) {
-                                        sql_query(sprintf(
-                                            "DELETE FROM `%s` WHERE `cd_type` = 'plugin_remote_latest_version' AND `cd_sub_id` = %d",
-                                            sql_table('cached_data'),
-                                            $pid
-                                        ));
-                                    }
+        // delete cached_data
+        if (CoreCachedData::existTable()) {
+            sql_query(sprintf(
+                "DELETE FROM `%s` WHERE `cd_type` = 'plugin_remote_latest_version' AND `cd_sub_id` = %d",
+                sql_table('cached_data'),
+                $pid
+            ));
+        }
 
-                                    $manager->clearCachedInfo('installedPlugins');
-                                    $param = array('plugid' => $pid);
-                                    $manager->notify('PostDeletePlugin', $param);
+        $manager->clearCachedInfo('installedPlugins');
+        $param = array('plugid' => $pid);
+        $manager->notify('PostDeletePlugin', $param);
 
-                                    return '';
-                                }
-
-                                /**
-                                 * @todo document this
-                                 */
-                                function action_pluginup()
-                                {
-                                    global $member, $manager, $CONF;
-
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
-
-                                    $plugid = intGetVar('plugid');
-
-                                    if (!$manager->pidInstalled($plugid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
-
-                                    // 1. get old order number
-                                    $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s", sql_table('plugin'), $plugid));
-                                    $o = sql_fetch_object($res);
-                                    $oldOrder = $o->porder;
-
-                                    // 2. calculate new order number
-                                    $newOrder = ($oldOrder > 1) ? ($oldOrder - 1) : 1;
-
-                                    // 3. update plug numbers
-                                    sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $oldOrder . ' WHERE porder=' . $newOrder);
-                                    sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $newOrder . ' WHERE pid=' . $plugid);
-
-                                    //$this->action_pluginlist();
-                                    // To avoid showing ticket in the URL, redirect to pluginlist, instead.
-                                    redirect($CONF['AdminURL'] . '?action=pluginlist');
-                                }
+        return '';
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_plugindown()
-                                {
-                                    global $member, $manager, $CONF;
+    function action_pluginup()
+    {
+        global $member, $manager, $CONF;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $plugid = intGetVar('plugid');
-                                    if (!$manager->pidInstalled($plugid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
+        $plugid = intGetVar('plugid');
 
-                                    // 1. get old order number
-                                    $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s", sql_table('plugin'), $plugid));
-                                    $o = sql_fetch_object($res);
-                                    $oldOrder = $o->porder;
+        if (!$manager->pidInstalled($plugid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
 
-                                    $res = sql_query(sprintf("SELECT count(*) FROM %s", sql_table('plugin')));
-                                    $maxOrder = (int) sql_result($res);
+        // 1. get old order number
+        $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s", sql_table('plugin'), $plugid));
+        $o = sql_fetch_object($res);
+        $oldOrder = $o->porder;
 
-                                    // 2. calculate new order number
-                                    $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
+        // 2. calculate new order number
+        $newOrder = ($oldOrder > 1) ? ($oldOrder - 1) : 1;
 
-                                    // 3. update plug numbers
-                                    sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $oldOrder . ' WHERE porder=' . $newOrder);
-                                    sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $newOrder . ' WHERE pid=' . $plugid);
+        // 3. update plug numbers
+        sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $oldOrder . ' WHERE porder=' . $newOrder);
+        sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $newOrder . ' WHERE pid=' . $plugid);
 
-                                    //$this->action_pluginlist();
-                                    // To avoid showing ticket in the URL, redirect to pluginlist, instead.
-                                    redirect($CONF['AdminURL'] . '?action=pluginlist');
-                                }
+        //$this->action_pluginlist();
+        // To avoid showing ticket in the URL, redirect to pluginlist, instead.
+        redirect($CONF['AdminURL'] . '?action=pluginlist');
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_pluginadmin($message = '')
-                                {
-                                    global $member, $manager;
+    function action_plugindown()
+    {
+        global $member, $manager, $CONF;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $pid = intRequestVar('plugid');
-                                    if (!$manager->pidInstalled($pid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
+        $plugid = intGetVar('plugid');
+        if (!$manager->pidInstalled($plugid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
 
-                                    //        $o_plugin = $manager->pidLoaded($pid);
-                                    $o_plugin = $manager->getPluginFromPid($pid);
-                                    if (!$o_plugin || !is_object($o_plugin)) {
-                                        $this->error(_ERROR_PLUGFILEERROR . $o_plugin);
-                                    }
-                                    //
-                                    $plugin_admin_php_file = $o_plugin->getDirectory() . 'index.php';
-                                    if (!is_file($plugin_admin_php_file)) {
-                                        $this->error(_ERROR_PLUGFILEERROR);
-                                    }
+        // 1. get old order number
+        $res = sql_query(sprintf("SELECT porder FROM %s WHERE pid=%s", sql_table('plugin'), $plugid));
+        $o = sql_fetch_object($res);
+        $oldOrder = $o->porder;
 
-                                    $url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
-                                    if (!defined('ENABLE_PLUGIN_ADMIN_V2')) {
-                                        define('ENABLE_PLUGIN_ADMIN_V2', true);
-                                    }
-                                    if (ENABLE_PLUGIN_ADMIN_V2) {
-                                        define('PLUGIN_ADMIN_BASE_URL', $url);
-                                        //            $this->pagehead();
-                                        include_once($plugin_admin_php_file);
-                                        //            $this->pagefoot();
-                                    } else {
-                                        // TODO: redirect old admin page or Error message
-                                        $this->pagehead();
-                                        echo "not implemented";
-                                        $this->pagefoot();
-                                    }
-                                }
+        $res = sql_query(sprintf("SELECT count(*) FROM %s", sql_table('plugin')));
+        $maxOrder = (int) sql_result($res);
+
+        // 2. calculate new order number
+        $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
+
+        // 3. update plug numbers
+        sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $oldOrder . ' WHERE porder=' . $newOrder);
+        sql_query('UPDATE ' . sql_table('plugin') . ' SET porder=' . $newOrder . ' WHERE pid=' . $plugid);
+
+        //$this->action_pluginlist();
+        // To avoid showing ticket in the URL, redirect to pluginlist, instead.
+        redirect($CONF['AdminURL'] . '?action=pluginlist');
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_pluginoptions($message = '')
-                                {
-                                    global $member, $manager;
+    function action_pluginadmin($message = '')
+    {
+        global $member, $manager;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $pid = intRequestVar('plugid');
-                                    if (!$manager->pidInstalled($pid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
+        $pid = intRequestVar('plugid');
+        if (!$manager->pidInstalled($pid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
 
-                                    $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-                                    $pluginName = hsc(getPluginNameFromPid($pid));
-                                    $this->pagehead($extrahead);
+        //        $o_plugin = $manager->pidLoaded($pid);
+        $o_plugin = $manager->getPluginFromPid($pid);
+        if (!$o_plugin || !is_object($o_plugin)) {
+            $this->error(_ERROR_PLUGFILEERROR . $o_plugin);
+        }
+        //
+        $plugin_admin_php_file = $o_plugin->getDirectory() . 'index.php';
+        if (!is_file($plugin_admin_php_file)) {
+            $this->error(_ERROR_PLUGFILEERROR);
+        }
 
-            ?>
+        $url = $manager->addTicketToUrl('index.php?plugid=' . $pid . '&action=pluginadmin');
+        if (!defined('ENABLE_PLUGIN_ADMIN_V2')) {
+            define('ENABLE_PLUGIN_ADMIN_V2', true);
+        }
+        if (ENABLE_PLUGIN_ADMIN_V2) {
+            define('PLUGIN_ADMIN_BASE_URL', $url);
+            //            $this->pagehead();
+            include_once($plugin_admin_php_file);
+            //            $this->pagefoot();
+        } else {
+            // TODO: redirect old admin page or Error message
+            $this->pagehead();
+            echo "not implemented";
+            $this->pagefoot();
+        }
+    }
+
+                                /**
+                                 * @todo document this
+                                 */
+    function action_pluginoptions($message = '')
+    {
+        global $member, $manager;
+
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
+
+        $pid = intRequestVar('plugid');
+        if (!$manager->pidInstalled($pid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
+
+        $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+        $pluginName = hsc(getPluginNameFromPid($pid));
+        $this->pagehead($extrahead);
+
+        ?>
                 <p><a href="index.php?action=pluginlist">(<?php echo _PLUGS_BACK ?>)</a></p>
 
                 <h2><?php echo sprintf(_PLUGIN_OPTIONS_TITLE, $pluginName) ?></h2>
 
-                <?php if ($message) {
+        <?php if ($message) {
                                         echo $message;
-                                    } ?>
+        } ?>
 
                 <form action="index.php" method="post">
                     <div>
@@ -8498,13 +8493,13 @@ EOL;
 
                         <?php
 
-                                    $manager->addTicketHidden();
+                        $manager->addTicketHidden();
 
-                                    $aOptions = array();
-                                    $aOIDs = array();
-                                    $query = sprintf("SELECT * FROM %s WHERE ocontext='global' and opid=%s ORDER BY oid ASC", sql_table('plugin_option_desc'), $pid);
-                                    $r = sql_query($query);
-                                    while ($o = sql_fetch_object($r)) {
+                        $aOptions = array();
+                        $aOIDs = array();
+                        $query = sprintf("SELECT * FROM %s WHERE ocontext='global' and opid=%s ORDER BY oid ASC", sql_table('plugin_option_desc'), $pid);
+                        $r = sql_query($query);
+                        while ($o = sql_fetch_object($r)) {
                                         $aOIDs[] = $o->oid;
                                         $aOptions[$o->oid] = array(
                                             'oid' => $o->oid,
@@ -8515,255 +8510,254 @@ EOL;
                                             'typeinfo' => $o->oextra,
                                             'contextid' => 0,
                                         );
-                                    }
+                        }
                                     // fill out actual values
-                                    if (count($aOIDs) > 0) {
-                                        $r = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE oid in (%s)", sql_table('plugin_option'), implode(',', $aOIDs)));
-                                        while ($o = sql_fetch_object($r)) {
-                                            $aOptions[$o->oid]['value'] = $o->ovalue;
-                                        }
-                                    }
+                        if (count($aOIDs) > 0) {
+                            $r = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE oid in (%s)", sql_table('plugin_option'), implode(',', $aOIDs)));
+                            while ($o = sql_fetch_object($r)) {
+                                $aOptions[$o->oid]['value'] = $o->ovalue;
+                            }
+                        }
 
                                     // call plugins
-                                    $param = array(
-                                        'context'    =>  'global',
-                                        'plugid'    =>  $pid,
-                                        'options'    => &$aOptions,
-                                    );
-                                    $manager->notify('PrePluginOptionsEdit', $param);
+                                                    $param = array(
+                                                    'context'    =>  'global',
+                                                    'plugid'    =>  $pid,
+                                                    'options'    => &$aOptions,
+                                                    );
+                                                    $manager->notify('PrePluginOptionsEdit', $param);
 
-                                    $template['content'] = 'plugoptionlist';
-                                    $amount = showlist_by_array($aOptions, 'table', $template);
-                                    if ($amount == 0) {
-                                        echo '<p>', _ERROR_NOPLUGOPTIONS, '</p>';
-                                    }
+                                                    $template['content'] = 'plugoptionlist';
+                                                    $amount = showlist_by_array($aOptions, 'table', $template);
+                                                    if ($amount == 0) {
+                                                        echo '<p>', _ERROR_NOPLUGOPTIONS, '</p>';
+                                                    }
 
-                        ?>
+                                                    ?>
                     </div>
                 </form>
         <?php $this->pagefoot();
-                                }
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_pluginoptionsupdate()
-                                {
-                                    global $member, $manager;
+    function action_pluginoptionsupdate()
+    {
+        global $member, $manager;
 
-                                    // check if allowed
-                                    $member->isAdmin() or $this->disallow();
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
 
-                                    $pid = intRequestVar('plugid');
-                                    if (!$manager->pidInstalled($pid)) {
-                                        $this->error(_ERROR_NOSUCHPLUGIN);
-                                    }
+        $pid = intRequestVar('plugid');
+        if (!$manager->pidInstalled($pid)) {
+            $this->error(_ERROR_NOSUCHPLUGIN);
+        }
 
-                                    $aOptions = requestArray('plugoption');
-                                    NucleusPlugin::_applyPluginOptions($aOptions);
+        $aOptions = requestArray('plugoption');
+        NucleusPlugin::_applyPluginOptions($aOptions);
 
-                                    $param = array(
-                                        'context'    => 'global',
-                                        'plugid'    => $pid,
-                                    );
-                                    $manager->notify('PostPluginOptionsUpdate', $param);
+        $param = array(
+            'context'    => 'global',
+            'plugid'    => $pid,
+        );
+        $manager->notify('PostPluginOptionsUpdate', $param);
 
-                                    $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
-                                }
+        $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
+    }
 
                                 /**
                                  * @static
                                  * @todo document this
                                  */
-                                public static function _insertPluginOptions($context, $contextid = 0)
-                                {
-                                    // get all current values for this contextid
-                                    // (note: this might contain doubles for overlapping contextids)
-                                    $aIdToValue = array();
-                                    $res = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE ocontextid=%s", sql_table('plugin_option'), (int) $contextid));
-                                    while ($o = sql_fetch_object($res)) {
-                                        $aIdToValue[$o->oid] = $o->ovalue;
-                                    }
+    public static function _insertPluginOptions($context, $contextid = 0)
+    {
+        // get all current values for this contextid
+        // (note: this might contain doubles for overlapping contextids)
+        $aIdToValue = array();
+        $res = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE ocontextid=%s", sql_table('plugin_option'), (int) $contextid));
+        while ($o = sql_fetch_object($res)) {
+            $aIdToValue[$o->oid] = $o->ovalue;
+        }
 
-                                    // get list of oids per pid
-                                    $query = sprintf("SELECT * FROM %s,%s WHERE opid=pid and ocontext=%s ORDER BY porder, oid ASC", sql_table('plugin_option_desc'), sql_table('plugin'), sql_quote_string($context));
-                                    $res = sql_query($query);
-                                    $aOptions = array();
-                                    while ($o = sql_fetch_object($res)) {
-                                        if (in_array($o->oid, array_keys($aIdToValue))) {
-                                            $value = $aIdToValue[$o->oid];
-                                        } else {
-                                            $value = $o->odef;
-                                        }
+        // get list of oids per pid
+        $query = sprintf("SELECT * FROM %s,%s WHERE opid=pid and ocontext=%s ORDER BY porder, oid ASC", sql_table('plugin_option_desc'), sql_table('plugin'), sql_quote_string($context));
+        $res = sql_query($query);
+        $aOptions = array();
+        while ($o = sql_fetch_object($res)) {
+            if (in_array($o->oid, array_keys($aIdToValue))) {
+                $value = $aIdToValue[$o->oid];
+            } else {
+                $value = $o->odef;
+            }
 
-                                        $aOptions[] = array(
-                                            'pid' => $o->pid,
-                                            'pfile' => $o->pfile,
-                                            'oid' => $o->oid,
-                                            'value' => $value,
-                                            'name' => $o->oname,
-                                            'description' => $o->odesc,
-                                            'type' => $o->otype,
-                                            'typeinfo' => $o->oextra,
-                                            'contextid' => $contextid,
-                                            'extra' => '',
-                                        );
-                                    }
+            $aOptions[] = array(
+                'pid' => $o->pid,
+                'pfile' => $o->pfile,
+                'oid' => $o->oid,
+                'value' => $value,
+                'name' => $o->oname,
+                'description' => $o->odesc,
+                'type' => $o->otype,
+                'typeinfo' => $o->oextra,
+                'contextid' => $contextid,
+                'extra' => '',
+            );
+        }
 
-                                    global $manager;
-                                    $param = array(
-                                        'context'    =>  $context,
-                                        'contextid'    =>  $contextid,
-                                        'options'    => &$aOptions,
-                                    );
-                                    $manager->notify('PrePluginOptionsEdit', $param);
+        global $manager;
+        $param = array(
+            'context'    =>  $context,
+            'contextid'    =>  $contextid,
+            'options'    => &$aOptions,
+        );
+        $manager->notify('PrePluginOptionsEdit', $param);
 
 
-                                    $iPrevPid = -1;
-                                    foreach ($aOptions as $aOption) {
+        $iPrevPid = -1;
+        foreach ($aOptions as $aOption) {
+            // new plugin?
+            if ($iPrevPid != $aOption['pid']) {
+                $iPrevPid = $aOption['pid'];
+                if (!defined('_PLUGIN_OPTIONS_TITLE')) {
+                    define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
+                }
+                echo '<tr><th colspan="2">' . sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])) . '</th></tr>';
+            }
 
-                                        // new plugin?
-                                        if ($iPrevPid != $aOption['pid']) {
-                                            $iPrevPid = $aOption['pid'];
-                                            if (!defined('_PLUGIN_OPTIONS_TITLE')) {
-                                                define('_PLUGIN_OPTIONS_TITLE', 'Options for %s');
-                                            }
-                                            echo '<tr><th colspan="2">' . sprintf(_PLUGIN_OPTIONS_TITLE, hsc($aOption['pfile'])) . '</th></tr>';
-                                        }
-
-                                        $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
-                                        if (@$meta['access'] != 'hidden') {
-                                            echo '<tr>';
-                                            listplug_plugOptionRow($aOption);
-                                            echo '</tr>';
-                                        }
-                                    }
-                                }
+            $meta = NucleusPlugin::getOptionMeta($aOption['typeinfo']);
+            if (@$meta['access'] != 'hidden') {
+                echo '<tr>';
+                listplug_plugOptionRow($aOption);
+                echo '</tr>';
+            }
+        }
+    }
 
                                 /**
                                  * Helper functions to create option forms etc.
                                  *
                                  * @todo document parameters
                                  */
-                                public static function input_yesno($name, $checkedval, $tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0)
-                                {
-                                    $id = hsc($name);
-                                    $id = str_replace('[', '-', $id);
-                                    $id = str_replace(']', '-', $id);
-                                    $id1 = $id . hsc($value1);
-                                    $id2 = $id . hsc($value2);
+    public static function input_yesno($name, $checkedval, $tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0)
+    {
+        $id = hsc($name);
+        $id = str_replace('[', '-', $id);
+        $id = str_replace(']', '-', $id);
+        $id1 = $id . hsc($value1);
+        $id2 = $id . hsc($value2);
 
-                                    if ($name == "admin") {
-                                        echo '<input onclick="selectCanLogin(true);" type="radio" name="', hsc($name), '" value="', hsc($value1), '" ';
-                                    } else {
-                                        echo '<input type="radio" name="', hsc($name), '" value="', hsc($value1), '" ';
-                                    }
+        if ($name == "admin") {
+            echo '<input onclick="selectCanLogin(true);" type="radio" name="', hsc($name), '" value="', hsc($value1), '" ';
+        } else {
+            echo '<input type="radio" name="', hsc($name), '" value="', hsc($value1), '" ';
+        }
 
-                                    if ($checkedval == $value1) {
-                                        echo "tabindex='$tabindex' checked='checked'";
-                                    }
-                                    echo ' id="' . $id1 . '" /><label for="' . $id1 . '">' . $yesval . '</label>';
-                                    echo ' ';
-                                    if ($name == "admin") {
-                                        echo '<input onclick="selectCanLogin(false);" type="radio" name="', hsc($name), '" value="', hsc($value2), '" ';
-                                    } else {
-                                        echo '<input type="radio" name="', hsc($name), '" value="', hsc($value2), '" ';
-                                    }
-                                    if ($checkedval != $value1) {
-                                        echo "tabindex='$tabindex' checked='checked'";
-                                    }
-                                    if ($isAdmin && $name == "canlogin") {
-                                        echo ' disabled="disabled"';
-                                    }
-                                    echo ' id="' . $id2 . '" /><label for="' . $id2 . '">' . $noval . '</label>';
-                                }
+        if ($checkedval == $value1) {
+            echo "tabindex='$tabindex' checked='checked'";
+        }
+        echo ' id="' . $id1 . '" /><label for="' . $id1 . '">' . $yesval . '</label>';
+        echo ' ';
+        if ($name == "admin") {
+            echo '<input onclick="selectCanLogin(false);" type="radio" name="', hsc($name), '" value="', hsc($value2), '" ';
+        } else {
+            echo '<input type="radio" name="', hsc($name), '" value="', hsc($value2), '" ';
+        }
+        if ($checkedval != $value1) {
+            echo "tabindex='$tabindex' checked='checked'";
+        }
+        if ($isAdmin && $name == "canlogin") {
+            echo ' disabled="disabled"';
+        }
+        echo ' id="' . $id2 . '" /><label for="' . $id2 . '">' . $noval . '</label>';
+    }
 
-                                function checkSecurityRisk()
-                                {
-                                    global $CONF;
+    function checkSecurityRisk()
+    {
+        global $CONF;
 
-                                    if (!$CONF['alertOnSecurityRisk']) {
-                                        return;
-                                    }
+        if (!$CONF['alertOnSecurityRisk']) {
+            return;
+        }
 
-                                    // check if files exist and generate an error if so
-                                    $RiskFiles = array(
-                                        '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
-                                        '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
-                                    );
-                                    $RiskDirs = array(
-                                        'convert'        => _ERRORS_CONVERTDIR,  // don't localized, old version
-                                        '../install'     => _ERRORS_INSTALLDIR,  // current version
-                                        '../_upgrades'   => _ERRORS_UPGRADESDIR  // current version
-                                    );
-                                    $aFound = array();
-                                    foreach ($RiskFiles as $fileName => $fileDesc) {
-                                        if (@is_file($fileName)) {
-                                            $aFound[] = $fileDesc;
-                                        }
-                                    }
-                                    foreach ($RiskDirs as $fileName => $fileDesc) {
-                                        if (@is_dir($fileName)) {
-                                            $aFound[] = $fileDesc;
-                                        }
-                                    }
-                                    if (strpos(str_replace('\\', '/', getcwd()), '/plugins/') === false && @is_writable('../config.php')) {
-                                        $aFound[] = _ERRORS_CONFIGPHP;
-                                    }
+        // check if files exist and generate an error if so
+        $RiskFiles = array(
+            '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
+            '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
+        );
+        $RiskDirs = array(
+            'convert'        => _ERRORS_CONVERTDIR,  // don't localized, old version
+            '../install'     => _ERRORS_INSTALLDIR,  // current version
+            '../_upgrades'   => _ERRORS_UPGRADESDIR  // current version
+        );
+        $aFound = array();
+        foreach ($RiskFiles as $fileName => $fileDesc) {
+            if (@is_file($fileName)) {
+                $aFound[] = $fileDesc;
+            }
+        }
+        foreach ($RiskDirs as $fileName => $fileDesc) {
+            if (@is_dir($fileName)) {
+                $aFound[] = $fileDesc;
+            }
+        }
+        if (strpos(str_replace('\\', '/', getcwd()), '/plugins/') === false && @is_writable('../config.php')) {
+            $aFound[] = _ERRORS_CONFIGPHP;
+        }
 
-                                    if (count($aFound) <= 0) {
-                                        return;
-                                    }
+        if (count($aFound) <= 0) {
+            return;
+        }
 
-                                    $title = _ERRORS_STARTUPERROR3;
-                                    $msg = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
-                                    // check core upgrade
-                                    if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
-                                        $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
-                                        $msg = sprintf('<h2>%s</h2>', hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
-                                            sprintf(
-                                                '<div><a style="color:red" href="%s">%s</a>(Current database %d)',
-                                                $CONF['IndexURL'] . '_upgrades/',
-                                                hsc($link_title),
-                                                $CONF['DatabaseVersion']
-                                            )
-                                            . '</div><br /><hr />' . $msg;
-                                    }
-                                    startUpError($msg, $title);
-                                }
+        $title = _ERRORS_STARTUPERROR3;
+        $msg = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
+        // check core upgrade
+        if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
+            $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
+            $msg = sprintf('<h2>%s</h2>', hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
+                sprintf(
+                    '<div><a style="color:red" href="%s">%s</a>(Current database %d)',
+                    $CONF['IndexURL'] . '_upgrades/',
+                    hsc($link_title),
+                    $CONF['DatabaseVersion']
+                )
+                . '</div><br /><hr />' . $msg;
+        }
+        startUpError($msg, $title);
+    }
 
                                 /**
                                  * @todo document this
                                  */
-                                function action_optimizeoverview()
-                                {
-                                    global $member, $DB_DRIVER_NAME;
+    function action_optimizeoverview()
+    {
+        global $member, $DB_DRIVER_NAME;
 
-                                    $member->isAdmin() or $this->disallow();
+        $member->isAdmin() or $this->disallow();
 
-                                    $this->pagehead();
-                                    echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
-                                    echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
+        $this->pagehead();
+        echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
+        echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
 
-                                    if (isset($_POST['mode']) && isset($_POST['step'])) {
-                                        if ($DB_DRIVER_NAME == 'sqlite' && PostVar('mode') == 'optimize' && PostVar('step') == 'start') {
-                                            echo '<p><a href="index.php?action=optimizeoverview">' . _BACKTOOVERVIEW . '</a></p>';
-                                            echo sprintf("%s %s : %s<br />\n", _ADMIN_OLD, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
-                                            $this->db_optimize_sqlite();
-                                            echo sprintf("%s %s : %s<br />\n", _ADMIN_NEW, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
+        if (isset($_POST['mode']) && isset($_POST['step'])) {
+            if ($DB_DRIVER_NAME == 'sqlite' && PostVar('mode') == 'optimize' && PostVar('step') == 'start') {
+                echo '<p><a href="index.php?action=optimizeoverview">' . _BACKTOOVERVIEW . '</a></p>';
+                echo sprintf("%s %s : %s<br />\n", _ADMIN_OLD, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
+                $this->db_optimize_sqlite();
+                echo sprintf("%s %s : %s<br />\n", _ADMIN_NEW, _ADMIN_FILESIZE, $this->get_db_sqliteFileSizeText());
 
-                                            $this->pagefoot();
-                                            return;
-                                        }
-                                    }
+                $this->pagefoot();
+                return;
+            }
+        }
 
-                                    if (in_array($DB_DRIVER_NAME, array('mysql', 'sqlite'))) {
-                                        echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
+        if (in_array($DB_DRIVER_NAME, array('mysql', 'sqlite'))) {
+            echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
 
-                                        if ($DB_DRIVER_NAME == 'sqlite') {
-                                            echo _ADMIN_FILESIZE . " : " . $this->get_db_sqliteFileSizeText();
-                                            $btn_title = _ADMIN_TITLE_OPTIMIZE;
-                                            $s = <<<EOD
+            if ($DB_DRIVER_NAME == 'sqlite') {
+                echo _ADMIN_FILESIZE . " : " . $this->get_db_sqliteFileSizeText();
+                $btn_title = _ADMIN_TITLE_OPTIMIZE;
+                $s = <<<EOD
         <form method="post" action="index.php"><p>
         <input type="hidden" name="action" value="optimizeoverview" />
         <input type="hidden" name="mode"   value="optimize" />
@@ -8771,46 +8765,44 @@ EOL;
         <input type="submit" value="{$btn_title}" tabindex="20" />
         </p></form>
 EOD;
-                                            echo $s;
-                                        } else {
-                                            if (!$this->db_mysql_checktables(true)) {
-                                                echo sprintf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
-                                            } else {
-                                                $tables = array();
-                                                $confirmOptimize = false;
-                                                $has_big = false;
-                                                $warn_size = 10 * pow(10, 6); // 10 Mega Byte
-                                                $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
-                                                while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
-                                                    $tables[$row['Name']] = $row;
-                                                    if ($row['Engine'] != 'InnoDB') {
-                                                        if ((int) $row['Data_free'] > 0) {
-                                                            $confirmOptimize = true;
-                                                        }
-                                                        if ((int) $row['Data_free'] > $warn_size) // 10*pow(10,6)
-                                                        {
-                                                            $has_big = true;
-                                                        }
-                                                    }
-                                                }
-                                                if ($confirmOptimize) {
-                                                    if (
-                                                        isset($_POST['mode']) && isset($_POST['step'])
-                                                        && PostVar('mode') == 'optimize' && PostVar('step') == 'start'
-                                                    ) {
-                                                        echo '<p><a href="index.php?action=optimizeoverview">' . _BACKTOOVERVIEW . '</a></p>';
-                                                        if ($this->db_optimize_mysql()) {
-                                                            echo sprintf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
-                                                        }
-                                                        $this->pagefoot();
-                                                        return;
-                                                    }
-                                                    if ($has_big) {
-                                                        echo sprintf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
-                                                    }
-                                                    echo sprintf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
-                                                    $btn_title = hsc(_ADMIN_BTN_TITLE_OPTIMIZE);
-                                                    $s = <<<EOD
+                echo $s;
+            } else {
+                if (!$this->db_mysql_checktables(true)) {
+                    echo sprintf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
+                } else {
+                    $tables = array();
+                    $confirmOptimize = false;
+                    $has_big = false;
+                    $warn_size = 10 * pow(10, 6); // 10 Mega Byte
+                    $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+                    while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
+                        $tables[$row['Name']] = $row;
+                        if ($row['Engine'] != 'InnoDB') {
+                            if ((int) $row['Data_free'] > 0) {
+                                $confirmOptimize = true;
+                            }
+                            if ((int) $row['Data_free'] > $warn_size) { // 10*pow(10,6)
+                                $has_big = true;
+                            }
+                        }
+                    }
+                    if ($confirmOptimize) {
+                        if (isset($_POST['mode']) && isset($_POST['step'])
+                            && PostVar('mode') == 'optimize' && PostVar('step') == 'start'
+                        ) {
+                            echo '<p><a href="index.php?action=optimizeoverview">' . _BACKTOOVERVIEW . '</a></p>';
+                            if ($this->db_optimize_mysql()) {
+                                echo sprintf("<p>%s</p>\n", hsc(_ADMIN_EXEC_TITLE_OPTIMIZE));
+                            }
+                            $this->pagefoot();
+                            return;
+                        }
+                        if ($has_big) {
+                            echo sprintf("<p style='color: #ff0000'>%s</p>\n", hsc(_ADMIN_PLEASE_OPTIMIZE));
+                        }
+                        echo sprintf("<p>%s</p>\n", hsc(_ADMIN_CONFIRM_TITLE_OPTIMIZE));
+                        $btn_title = hsc(_ADMIN_BTN_TITLE_OPTIMIZE);
+                        $s = <<<EOD
         <form method="post" action="index.php"><p>
         <input type="hidden" name="action" value="optimizeoverview" />
         <input type="hidden" name="mode"   value="optimize" />
@@ -8818,87 +8810,86 @@ EOD;
         <input type="submit" value="{$btn_title}" tabindex="20" />
         </p></form>
 EOD;
-                                                    echo $s;
-                                                }
-                                                echo "<table>";
-                                                echo sprintf(
-                                                    "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th></tr>",
-                                                    hsc(_ADMIN_TABLENAME),
-                                                    hsc(_SIZE),
-                                                    hsc(_OVERHEAD)
-                                                );
-                                                foreach ($tables as $key => $item) {
-                                                    echo sprintf(
-                                                        "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
-                                                        hsc($key),
-                                                        hsc($item['Data_length']),
-                                                        hsc($item['Data_free']),
-                                                        hsc($item['Engine'])
-                                                    );
-                                                }
-                                                echo "</table>";
-                                            }
-                                        }
-                                    }
+                        echo $s;
+                    }
+                    echo "<table>";
+                    echo sprintf(
+                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th></tr>",
+                        hsc(_ADMIN_TABLENAME),
+                        hsc(_SIZE),
+                        hsc(_OVERHEAD)
+                    );
+                    foreach ($tables as $key => $item) {
+                        echo sprintf(
+                            "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                            hsc($key),
+                            hsc($item['Data_length']),
+                            hsc($item['Data_free']),
+                            hsc($item['Engine'])
+                        );
+                    }
+                    echo "</table>";
+                }
+            }
+        }
 
-                                    if (in_array($DB_DRIVER_NAME, array('mysql'))) {
-                                        echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
-                                        $this->db_mysql_checktables();
-                                    }
+        if (in_array($DB_DRIVER_NAME, array('mysql'))) {
+            echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
+            $this->db_mysql_checktables();
+        }
 
-                                    $this->pagefoot();
-                                }
+        $this->pagefoot();
+    }
 
-                                private function db_mysql_checktables($checkonly = false)
-                                {
-                                    global $DB_DRIVER_NAME;
-                                    if ($DB_DRIVER_NAME != 'mysql') {
-                                        return array();
-                                    }
-                                    $tables = array();
-                                    $res = sql_query(sprintf("SHOW TABLES LIKE '%s%%'", sql_table('')));
-                                    while ($res && ($row = sql_fetch_array($res)) && !empty($row)) {
-                                        $tables[] = $row[0];
-                                    }
+    private function db_mysql_checktables($checkonly = false)
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql') {
+            return array();
+        }
+        $tables = array();
+        $res = sql_query(sprintf("SHOW TABLES LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_array($res)) && !empty($row)) {
+            $tables[] = $row[0];
+        }
 
-                                    $items = array();
-                                    if (count($tables)) {
-                                        $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
-                                        $res = sql_query($sql);
-                                        while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
-                                            if ($row['Msg_type'] != 'status') {
-                                                continue;
-                                            }
-                                            if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date') {
-                                                $items[$row['Table']] = $row;
-                                            }
-                                        }
-                                    }
+        $items = array();
+        if (count($tables)) {
+            $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
+            $res = sql_query($sql);
+            while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
+                if ($row['Msg_type'] != 'status') {
+                    continue;
+                }
+                if ($row['Msg_text'] != 'OK' && $row['Msg_text'] != 'Table is already up to date') {
+                    $items[$row['Table']] = $row;
+                }
+            }
+        }
 
-                                    if ($checkonly) {
-                                        return count($items) == 0;
-                                    }
+        if ($checkonly) {
+            return count($items) == 0;
+        }
 
-                                    if (count($items) > 0) {
-                                        if (
-                                            isset($_POST['mode']) && isset($_POST['step'])
-                                            && PostVar('mode') == 'repaire' && PostVar('step') == 'start'
-                                        ) {
-                                            echo "<p>" . hsc(_ADMIN_EXEC_TITLE_AUTO_REPAIR) . "</p>";
-                                            echo '<p><a href="index.php?action=optimizeoverview">' . _BACKTOOVERVIEW . '</a></p>';
-                                            // REPAIR   TABLE tablename1[, tablename2, ..]
-                                            // result : Table  Op  Msg_type   Msg_text :  tablename   repair    status   OK
-                                            $sql = "REPAIR TABLE `" . implode("`, `", array_keys($items)) . "`";
-                                            $res = sql_query($sql);
-                                            $items = array();
-                                            while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
-                                                $items[$row['Table']] = $row;
-                                            }
-                                        } else {
-                                            echo "<p>" . hsc(_PROBLEMS_FOUND_ON_TABLE) . "</p>";
-                                            echo "<p>" . hsc(_ADMIN_CONFIRM_TITLE_AUTO_REPAIR) . "</p>";
-                                            $btn_title = hsc(_ADMIN_BTN_TITLE_AUTO_REPAIR);
-                                            $s = <<<EOD
+        if (count($items) > 0) {
+            if (isset($_POST['mode']) && isset($_POST['step'])
+                && PostVar('mode') == 'repaire' && PostVar('step') == 'start'
+            ) {
+                echo "<p>" . hsc(_ADMIN_EXEC_TITLE_AUTO_REPAIR) . "</p>";
+                echo '<p><a href="index.php?action=optimizeoverview">' . _BACKTOOVERVIEW . '</a></p>';
+                // REPAIR   TABLE tablename1[, tablename2, ..]
+                // result : Table  Op  Msg_type   Msg_text :  tablename   repair    status   OK
+                $sql = "REPAIR TABLE `" . implode("`, `", array_keys($items)) . "`";
+                $res = sql_query($sql);
+                $items = array();
+                while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
+                    $items[$row['Table']] = $row;
+                }
+            } else {
+                echo "<p>" . hsc(_PROBLEMS_FOUND_ON_TABLE) . "</p>";
+                echo "<p>" . hsc(_ADMIN_CONFIRM_TITLE_AUTO_REPAIR) . "</p>";
+                $btn_title = hsc(_ADMIN_BTN_TITLE_AUTO_REPAIR);
+                $s = <<<EOD
         <form method="post" action="index.php"><p>
         <input type="hidden" name="action" value="optimizeoverview" />
         <input type="hidden" name="mode"   value="repaire" />
@@ -8906,343 +8897,342 @@ EOD;
         <input type="submit" value="{$btn_title}" tabindex="20" />
         </p></form>
 EOD;
-                                            echo $s;
-                                        }
-                                        echo "<table>";
-                                        echo sprintf("<tr><th>%s</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
-                                        foreach ($items as $key => $item) {
-                                            echo sprintf("<tr><td>%s</td><td>%s</td></tr>", hsc($key), hsc($item['Msg_text']));
-                                        }
-                                        echo "</table>";
-                                    } else {
-                                        echo hsc(_NO_PROBLEMS_FOUND);
-                                    }
-                                }
+                echo $s;
+            }
+            echo "<table>";
+            echo sprintf("<tr><th>%s</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
+            foreach ($items as $key => $item) {
+                echo sprintf("<tr><td>%s</td><td>%s</td></tr>", hsc($key), hsc($item['Msg_text']));
+            }
+            echo "</table>";
+        } else {
+            echo hsc(_NO_PROBLEMS_FOUND);
+        }
+    }
 
-                                private function db_optimize_mysql()
-                                {
-                                    global $DB_DRIVER_NAME;
-                                    if ($DB_DRIVER_NAME != 'mysql') {
-                                        return false;
-                                    }
+    private function db_optimize_mysql()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME != 'mysql') {
+            return false;
+        }
 
-                                    $success = false;
+        $success = false;
 
-                                    $tables = array();
-                                    $inotables = array();
-                                    $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
-                                    while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
-                                        if ((int) $row['Data_free'] > 0) {
-                                            if ($row['Engine'] == 'InnoDB') {
-                                                $inotables[] = $row['Name'];
-                                            } else {
-                                                $tables[] = $row['Name'];
-                                            }
-                                        }
-                                    }
+        $tables = array();
+        $inotables = array();
+        $res = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
+        while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
+            if ((int) $row['Data_free'] > 0) {
+                if ($row['Engine'] == 'InnoDB') {
+                    $inotables[] = $row['Name'];
+                } else {
+                    $tables[] = $row['Name'];
+                }
+            }
+        }
 
-                                    if (count($tables) > 0) {
-                                        // OPTIMIZE TABLE tablename1[, tablename2, ..]
-                                        // result : Table  Op  Msg_type   Msg_text :  tablename   optimize   status   OK
-                                        $sql = "OPTIMIZE TABLE `" . implode("`, `", $tables) . "`";
-                                        $res = sql_query($sql);
-                                        echo "<table>";
-                                        echo sprintf("<tr><th>%s</th><th>Msg_type</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
-                                        while ($res && ($row = sql_fetch_assoc($res))) { // Table , Op , Msg_type , Msg_text
-                                            echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>", hsc($row['Table']), hsc($row['Msg_type']), hsc($row['Msg_text']));
-                                        }
-                                        echo "</table>";
-                                        if ($res) {
-                                            sql_free_result($res);
-                                        }
-                                        $success = true;
-                                        //            echo sprintf('<div>%s</div>', hsc($sql));
-                                    }
-                                    if (count($inotables) > 0) {
-                                        // InnoDB issue
-                                        // Can not optimize manually;
-                                        // Table does not support optimize, doing recreate + analyze instead
-                                        //  x : ALTER TABLE tablename ENGINE='InnoDB';
-                                        //            foreach($inotables as $tablename)
-                                        //                sql_query(sprintf("ALTER TABLE %s ENGINE='InnoDB'", $tablename));
-                                        echo sprintf('<p>InnoDB can not optimize manually</p>');
-                                        echo '<ul>';
-                                        foreach ($inotables as $tablename) {
-                                            echo sprintf('<li>%s</li>', hsc($tablename));
-                                        }
-                                        echo '</ul>';
-                                    }
-                                    return $success;
-                                }
+        if (count($tables) > 0) {
+            // OPTIMIZE TABLE tablename1[, tablename2, ..]
+            // result : Table  Op  Msg_type   Msg_text :  tablename   optimize   status   OK
+            $sql = "OPTIMIZE TABLE `" . implode("`, `", $tables) . "`";
+            $res = sql_query($sql);
+            echo "<table>";
+            echo sprintf("<tr><th>%s</th><th>Msg_type</th><th>%s</th></tr>", hsc(_ADMIN_TABLENAME), hsc(_MESSAGE));
+            while ($res && ($row = sql_fetch_assoc($res))) { // Table , Op , Msg_type , Msg_text
+                echo sprintf("<tr><td>%s</td><td>%s</td><td>%s</td></tr>", hsc($row['Table']), hsc($row['Msg_type']), hsc($row['Msg_text']));
+            }
+            echo "</table>";
+            if ($res) {
+                sql_free_result($res);
+            }
+            $success = true;
+            //            echo sprintf('<div>%s</div>', hsc($sql));
+        }
+        if (count($inotables) > 0) {
+            // InnoDB issue
+            // Can not optimize manually;
+            // Table does not support optimize, doing recreate + analyze instead
+            //  x : ALTER TABLE tablename ENGINE='InnoDB';
+            //            foreach($inotables as $tablename)
+            //                sql_query(sprintf("ALTER TABLE %s ENGINE='InnoDB'", $tablename));
+            echo sprintf('<p>InnoDB can not optimize manually</p>');
+            echo '<ul>';
+            foreach ($inotables as $tablename) {
+                echo sprintf('<li>%s</li>', hsc($tablename));
+            }
+            echo '</ul>';
+        }
+        return $success;
+    }
 
-                                private function db_optimize_sqlite()
-                                {
-                                    global $DB_DRIVER_NAME;
-                                    if ($DB_DRIVER_NAME !== 'sqlite') {
-                                        return false;
-                                    }
-                                    sql_query('vacuum;');
-                                }
+    private function db_optimize_sqlite()
+    {
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME !== 'sqlite') {
+            return false;
+        }
+        sql_query('vacuum;');
+    }
 
-                                private function get_db_sqliteFileSizeText()
-                                {
-                                    global $DB_DRIVER_NAME, $DB_DATABASE;
-                                    if ($DB_DRIVER_NAME !== 'sqlite') {
-                                        return false;
-                                    }
-                                    clearstatcache();
-                                    $size = filesize($DB_DATABASE);
-                                    $t = array('', 'K', 'M', 'G', 'T');
-                                    $n = min(4, ($size > 0 ? floor(log($size, 10) / 3) : 0));
-                                    $sizetext = sprintf('%d %s', $size / pow(10, $n * 3), $t[$n]);
-                                    return sprintf("%s(%d) byte", $sizetext, $size);
-                                }
+    private function get_db_sqliteFileSizeText()
+    {
+        global $DB_DRIVER_NAME, $DB_DATABASE;
+        if ($DB_DRIVER_NAME !== 'sqlite') {
+            return false;
+        }
+        clearstatcache();
+        $size = filesize($DB_DATABASE);
+        $t = array('', 'K', 'M', 'G', 'T');
+        $n = min(4, ($size > 0 ? floor(log($size, 10) / 3) : 0));
+        $sizetext = sprintf('%d %s', $size / pow(10, $n * 3), $t[$n]);
+        return sprintf("%s(%d) byte", $sizetext, $size);
+    }
 
-                                static public function getQueryFilterForItemlist01($bid, $mode = 'all')
-                                {
-                                    // $bid = 0 : all blog
-                                    $v = (string) $mode;
-                                    $where = '';
-                                    $t = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
-                                    switch ($v) {
-                                        case 'all':
-                                        case 'draft':
-                                            break;
-                                        default:
-                                            if ($bid) {
-                                                if (is_object($bid)) {
-                                                    $t = $bid->getCorrectTime();
-                                                } else {
-                                                    global $manager;
-                                                    $o = $manager->getBlog($bid);
-                                                    if ($o) {
-                                                        $t = $o->getCorrectTime();
-                                                    }
-                                                }
-                                            } else {
-                                                global $member, $manager;
-                                                $sql = 'SELECT tblog as result FROM `' . sql_table('team') . '` WHERE tmember=' . $member->getID() . ' LIMIT 1';
-                                                $res = (int) quickQuery($sql);
-                                                if (!$res) {
-                                                    $sql = 'SELECT bnumber as result FROM `' . sql_table('blog') . '` LIMIT 1';
-                                                }
-                                                if ($res > 0) {
-                                                    $o = $manager->getBlog($res);
-                                                    if ($o) {
-                                                        $t = $o->getCorrectTime();
-                                                    }
-                                                }
-                                            }
-                                            break;
-                                    }
-                                    $common_normal_filter   = "idraft=0";
-                                    $common_normal_duringperiod_filter = $common_normal_filter
-                                        . sprintf(" AND itime <= %s", sqldate($t));
-                                    $common_nondraft_filter = "idraft=0";
-                                    $common_draft_filter    = "idraft=1";
-                                    switch ($v) {
-                                        case 'all':
-                                            break;
-                                        case 'draft':
-                                            $where .= $common_draft_filter;
-                                            break;
-                                        case 'non_draft':
-                                            $where .= $common_nondraft_filter;
-                                            break;
-                                        case 'normal':
-                                            $where .= $common_normal_duringperiod_filter;
-                                            break;
-                                        case 'normal_term_only':
-                                            $where .= $common_normal_duringperiod_filter;
-                                            break;
-                                        case 'normal_term_future':
-                                            $where .= $common_normal_filter
-                                                . sprintf(" AND itime > %s", sqldate($t));
-                                            break;
-                                        default: // invalid $mode
-                                            $where .= '1=0'; //
-                                            break;
-                                    }
+    public static function getQueryFilterForItemlist01($bid, $mode = 'all')
+    {
+        // $bid = 0 : all blog
+        $v = (string) $mode;
+        $where = '';
+        $t = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
+        switch ($v) {
+            case 'all':
+            case 'draft':
+                break;
+            default:
+                if ($bid) {
+                    if (is_object($bid)) {
+                        $t = $bid->getCorrectTime();
+                    } else {
+                        global $manager;
+                        $o = $manager->getBlog($bid);
+                        if ($o) {
+                            $t = $o->getCorrectTime();
+                        }
+                    }
+                } else {
+                    global $member, $manager;
+                    $sql = 'SELECT tblog as result FROM `' . sql_table('team') . '` WHERE tmember=' . $member->getID() . ' LIMIT 1';
+                    $res = (int) quickQuery($sql);
+                    if (!$res) {
+                        $sql = 'SELECT bnumber as result FROM `' . sql_table('blog') . '` LIMIT 1';
+                    }
+                    if ($res > 0) {
+                        $o = $manager->getBlog($res);
+                        if ($o) {
+                            $t = $o->getCorrectTime();
+                        }
+                    }
+                }
+                break;
+        }
+        $common_normal_filter   = "idraft=0";
+        $common_normal_duringperiod_filter = $common_normal_filter
+            . sprintf(" AND itime <= %s", sqldate($t));
+        $common_nondraft_filter = "idraft=0";
+        $common_draft_filter    = "idraft=1";
+        switch ($v) {
+            case 'all':
+                break;
+            case 'draft':
+                $where .= $common_draft_filter;
+                break;
+            case 'non_draft':
+                $where .= $common_nondraft_filter;
+                break;
+            case 'normal':
+                $where .= $common_normal_duringperiod_filter;
+                break;
+            case 'normal_term_only':
+                $where .= $common_normal_duringperiod_filter;
+                break;
+            case 'normal_term_future':
+                $where .= $common_normal_filter
+                    . sprintf(" AND itime > %s", sqldate($t));
+                break;
+            default: // invalid $mode
+                $where .= '1=0'; //
+                break;
+        }
 
-                                    if (empty($where)) {
-                                        return '';
-                                    }
-                                    return sprintf(' AND( %s ) ', $where);
-                                }
+        if (empty($where)) {
+            return '';
+        }
+        return sprintf(' AND( %s ) ', $where);
+    }
 
-                                static function getRemotePluginVersion($NP_Name, $trim = false)
-                                {
-                                    static $cached = null;
-                                    if (!function_exists('json_decode')) // PHP 5 >= 5.2.0
-                                    {
-                                        return false;
-                                    }
+    static function getRemotePluginVersion($NP_Name, $trim = false)
+    {
+        static $cached = null;
+        if (!function_exists('json_decode')) { // PHP 5 >= 5.2.0
+            return false;
+        }
 
-                                    $expired_time = time() - 60 * 60 * 6; // cache expired time 6 hour
+        $expired_time = time() - 60 * 60 * 6; // cache expired time 6 hour
 
-                                    if ($cached === false) {
-                                        return false;
-                                    }
+        if ($cached === false) {
+            return false;
+        }
 
-                                    $col_type      = 'plugin_remote_list';
-                                    $col_sub_type  = 'comma';
-                                    $col_name      = 'github';
+        $col_type      = 'plugin_remote_list';
+        $col_sub_type  = 'comma';
+        $col_name      = 'github';
 
-                                    if (is_null($cached)) {
-                                        if (!CoreCachedData::existTable()) {
-                                            $cached = false;
-                                            return false;
-                                        }
-                                        $cached = CoreCachedData::getDataEx($col_type, $col_sub_type, 0, $col_name, $expired_time);
-                                    }
+        if (is_null($cached)) {
+            if (!CoreCachedData::existTable()) {
+                $cached = false;
+                return false;
+            }
+            $cached = CoreCachedData::getDataEx($col_type, $col_sub_type, 0, $col_name, $expired_time);
+        }
 
-                                    $http_options = array('connecttimeout' => 5, 'timeout' => 5);
-                                    if (empty($cached) || $cached['expired']) {
-                                        $http_raw_options = array_merge($http_options, array('reply_response' => 1));
-                                        if (!is_array($cached)) {
-                                            $cached = array('value' => '');
-                                        }
-                                        $url = "https://api.github.com/users/NucleusCMS/repos";
-                                        ini_set('user_agent', DEFAULT_USER_AGENT);
-                                        $count = 0;
-                                        $values = array();
-                                        $nexturl = $url;
-                                        while ($count < 100 && ($s = Utils::httpGet($nexturl, $http_raw_options))) {
-                                            $count++;
-                                            if (!is_array($s)) {
-                                                $s = array('body' => $s);
-                                            }
-                                            if (isset($s['header'])) {
-                                                if (stripos($s['header'], "\nStatus: 200 OK") === false || stripos($s['header'], "\nContent-Type: application/json") === false) {
-                                                    break;
-                                                }
-                                            }
-                                            if (!empty($s['body']) && (substr(ltrim($s['body']), 0, 1) == '[')) {
-                                                $obj = json_decode($s['body']);
-                                                if (!empty($obj)) {
-                                                    foreach ($obj as $item) {
-                                                        if (isset($item->name) && preg_match('#^NP_#', $item->name)) {
-                                                            $values[strtolower($item->name)] = (string) $item->name;
-                                                        }
-                                                    }
-                                                }
-                                            }
-                                            if (!isset($s['header']) || empty($s['header'])) {
-                                                break;
-                                            }
-                                            //                var_dump($s['header']);
-                                            // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
-                                            $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
-                                            if (!preg_match($pattern, $s['header'], $m)) {
-                                                break;
-                                            }
-                                            $nextpage = (int) $m[1];
-                                            if (($count + 1) != $nextpage) {
-                                                break;
-                                            }
-                                            $nexturl = $url . '?page=' . $nextpage;
-                                        }
-                                        if (empty($values)) {
-                                            $cached = false;
-                                            return false;
-                                        }
-                                        ksort($values);
-                                        //                var_dump($values);
-                                        $cached['list'] = &$values;
-                                        $cached['value'] = implode(',', $values);
-                                        CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
-                                    }
+        $http_options = array('connecttimeout' => 5, 'timeout' => 5);
+        if (empty($cached) || $cached['expired']) {
+            $http_raw_options = array_merge($http_options, array('reply_response' => 1));
+            if (!is_array($cached)) {
+                $cached = array('value' => '');
+            }
+            $url = "https://api.github.com/users/NucleusCMS/repos";
+            ini_set('user_agent', DEFAULT_USER_AGENT);
+            $count = 0;
+            $values = array();
+            $nexturl = $url;
+            while ($count < 100 && ($s = Utils::httpGet($nexturl, $http_raw_options))) {
+                $count++;
+                if (!is_array($s)) {
+                    $s = array('body' => $s);
+                }
+                if (isset($s['header'])) {
+                    if (stripos($s['header'], "\nStatus: 200 OK") === false || stripos($s['header'], "\nContent-Type: application/json") === false) {
+                        break;
+                    }
+                }
+                if (!empty($s['body']) && (substr(ltrim($s['body']), 0, 1) == '[')) {
+                    $obj = json_decode($s['body']);
+                    if (!empty($obj)) {
+                        foreach ($obj as $item) {
+                            if (isset($item->name) && preg_match('#^NP_#', $item->name)) {
+                                $values[strtolower($item->name)] = (string) $item->name;
+                            }
+                        }
+                    }
+                }
+                if (!isset($s['header']) || empty($s['header'])) {
+                    break;
+                }
+                //                var_dump($s['header']);
+                // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
+                $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
+                if (!preg_match($pattern, $s['header'], $m)) {
+                    break;
+                }
+                $nextpage = (int) $m[1];
+                if (($count + 1) != $nextpage) {
+                    break;
+                }
+                $nexturl = $url . '?page=' . $nextpage;
+            }
+            if (empty($values)) {
+                $cached = false;
+                return false;
+            }
+            ksort($values);
+            //                var_dump($values);
+            $cached['list'] = &$values;
+            $cached['value'] = implode(',', $values);
+            CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
+        }
 
-                                    if (!empty($cached['value']) && !isset($cached['list'])) {
-                                        $cached['list'] = array();
-                                        foreach (explode(',', $cached['value']) as $item) {
-                                            $item = trim($item);
-                                            if (!empty($item)) {
-                                                $cached['list'][strtolower($item)] = (string) $item;
-                                            }
-                                        }
-                                    }
+        if (!empty($cached['value']) && !isset($cached['list'])) {
+            $cached['list'] = array();
+            foreach (explode(',', $cached['value']) as $item) {
+                $item = trim($item);
+                if (!empty($item)) {
+                    $cached['list'][strtolower($item)] = (string) $item;
+                }
+            }
+        }
 
-                                    $lc_np_name = strtolower($NP_Name);
-                                    $url = false;
-                                    $retry_url = false;
-                                    $extra_pattern = false;
-                                    $force_get = false; // debug
-                                    if (isset($cached['list']) && isset($cached['list'][$lc_np_name])) {
-                                        $repo_name = $cached['list'][$lc_np_name];
-                                        $url = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/{$NP_Name}.php";
-                                    }
+        $lc_np_name = strtolower($NP_Name);
+        $url = false;
+        $retry_url = false;
+        $extra_pattern = false;
+        $force_get = false; // debug
+        if (isset($cached['list']) && isset($cached['list'][$lc_np_name])) {
+            $repo_name = $cached['list'][$lc_np_name];
+            $url = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/{$NP_Name}.php";
+        }
 
-                                    if (empty($url) && empty($cached['list']) && $force_get) {
-                                        $url = "https://raw.githubusercontent.com/NucleusCMS/{$NP_Name}/master/{$NP_Name}.php";
-                                    } // debug
+        if (empty($url) && empty($cached['list']) && $force_get) {
+            $url = "https://raw.githubusercontent.com/NucleusCMS/{$NP_Name}/master/{$NP_Name}.php";
+        } // debug
 
-                                    if (empty($url)) {
-                                        return false;
-                                    }
+        if (empty($url)) {
+            return false;
+        }
 
-                                    switch ($lc_np_name) { // Workaround for unusual repositories
-                                        case 'np_extraskinjp':
-                                            $url       = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/plugins/{$NP_Name}.php";
-                                            $retry_url = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/{$NP_Name}.php";
-                                            break;
-                                    }
+        switch ($lc_np_name) { // Workaround for unusual repositories
+            case 'np_extraskinjp':
+                $url       = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/plugins/{$NP_Name}.php";
+                $retry_url = "https://raw.githubusercontent.com/NucleusCMS/{$repo_name}/master/{$NP_Name}.php";
+                break;
+        }
 
-                                    $s = Utils::httpGet($url, array('connecttimeout' => 2, 'timeout' => 2));
-                                    if (empty($s) && !empty($retry_url)) {
-                                        $s = Utils::httpGet($retry_url, array('connecttimeout' => 2, 'timeout' => 2));
-                                    }
+        $s = Utils::httpGet($url, array('connecttimeout' => 2, 'timeout' => 2));
+        if (empty($s) && !empty($retry_url)) {
+            $s = Utils::httpGet($retry_url, array('connecttimeout' => 2, 'timeout' => 2));
+        }
 
-                                    $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
-                                    $pattern1 = "/getVersion{$pattern0}/im";
-                                    $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
+        $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
+        $pattern1 = "/getVersion{$pattern0}/im";
+        $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
 
-                                    if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<')) {
-                                        return false;
-                                    }
+        if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<')) {
+            return false;
+        }
 
-                                    if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern, $s, $m))) {
-                                        // Check plugin's min nucleus version
-                                        /** @var TYPE_NAME $m2 */
-                                        if (preg_match($pattern2, $s, $m2) && ((int) $m2[1] > CORE_APPLICATION_VERSION_ID)) {
-                                            return false;
-                                        }
-                                        if ($trim) {
-                                            return preg_replace('#[^0-9\.\-\_]+.+?$#', '', $m[1]);
-                                        }
-                                        return $m[1];
-                                    }
-                                    return false;
-                                }
+        if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern, $s, $m))) {
+            // Check plugin's min nucleus version
+            /** @var TYPE_NAME $m2 */
+            if (preg_match($pattern2, $s, $m2) && ((int) $m2[1] > CORE_APPLICATION_VERSION_ID)) {
+                return false;
+            }
+            if ($trim) {
+                return preg_replace('#[^0-9\.\-\_]+.+?$#', '', $m[1]);
+            }
+            return $m[1];
+        }
+        return false;
+    }
 
-                                function action_lost_pwd()
-                                {
-                                    global $member;
+    function action_lost_pwd()
+    {
+        global $member;
 
-                                    if ($member->isLoggedIn()) {
-                                        if (headers_sent()) {
-                                            $this->pagehead();
-                                            echo _GFUNCTIONS_HEADERSALREADYSENT_TITLE;
-                                            $this->pagefoot();
-                                            exit;
-                                        }
-                                        redirect('index.php');
-                                    }
+        if ($member->isLoggedIn()) {
+            if (headers_sent()) {
+                $this->pagehead();
+                echo _GFUNCTIONS_HEADERSALREADYSENT_TITLE;
+                $this->pagefoot();
+                exit;
+            }
+            redirect('index.php');
+        }
 
-                                    // show form
+        // show form
 
-                                    $this->pagehead();
+        $this->pagehead();
 
-                                    //      $post_url = './index.php'; // Not implemented yet.
-                                    $post_url = '../action.php';
-                                    $title = _ADMIN_LOST_PSWD_TEXT_TITLE;
-                                    $msg1  = _ADMIN_LOST_PSWD_TEXT_1;
-                                    $msg2  = _ADMIN_LOST_PSWD_TEXT_2;
-                                    $msg3  = _ADMIN_LOST_PSWD_TEXT_3;
-                                    $msg_username  = _ADMIN_LOST_PSWD_TEXT_USENAME; // _LOGINFORM_NAME
-                                    $msg_email     = _ADMIN_LOST_PSWD_TEXT_EMAIL;  // _MEMBERMAIL_MAIL
+        //      $post_url = './index.php'; // Not implemented yet.
+        $post_url = '../action.php';
+        $title = _ADMIN_LOST_PSWD_TEXT_TITLE;
+        $msg1  = _ADMIN_LOST_PSWD_TEXT_1;
+        $msg2  = _ADMIN_LOST_PSWD_TEXT_2;
+        $msg3  = _ADMIN_LOST_PSWD_TEXT_3;
+        $msg_username  = _ADMIN_LOST_PSWD_TEXT_USENAME; // _LOGINFORM_NAME
+        $msg_email     = _ADMIN_LOST_PSWD_TEXT_EMAIL;  // _MEMBERMAIL_MAIL
 
-                                    $s = <<<EOL
+        $s = <<<EOL
         <h2>$title</h2>
         <p>$msg1</p>
         <form method="post" action="$post_url">
@@ -9261,8 +9251,8 @@ EOD;
 
         <p>$msg2</p>
 EOL;
-                                    echo $s;
-                                    $this->pagefoot();
-                                    exit;
-                                }
-                            } // class ADMIN
+        echo $s;
+        $this->pagefoot();
+        exit;
+    }
+} // class ADMIN

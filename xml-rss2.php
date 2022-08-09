@@ -32,7 +32,6 @@ if (isset($CONF['DisableRSS']) && $CONF['DisableRSS']) {
 }
 
 if (!$CONF['DisableSite']) {
-
     // get feed into $feed
     ob_start();
     selectSkin('feeds/rss20');
@@ -46,7 +45,7 @@ if (!$CONF['DisableSite']) {
     header('Etag: ' . $eTag);
 
     // compare Etag to what we got
-    if ($eTag == serverVar('HTTP_IF_NONE_MATCH') ) {
+    if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {
         header('HTTP/1.0 304 Not Modified');
         header('Content-Length: 0');
     } else {
@@ -57,7 +56,6 @@ if (!$CONF['DisableSite']) {
         // dump feed
         echo $feed;
     }
-
 } else {
     // output empty RSS file...
     // (because site is disabled)

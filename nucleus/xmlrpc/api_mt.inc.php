@@ -21,7 +21,7 @@
 global $xmlrpcArray, $xmlrpcString, $xmlrpcBoolean, $xmlrpcInt, $functionDefs;
 
 // prevent direct access
-if ( ! isset($member)) {
+if (! isset($member)) {
     exit;
 }
 
@@ -125,8 +125,8 @@ $f_mt_getTrackbackPings_sig = array(
 $f_mt_getTrackbackPings_doc = '(this is currently just a placeholder. It returns an empty array.)';
 
 $functionDefs = array_merge(
-    $functionDefs
-    , array(
+    $functionDefs,
+    array(
         "mt.supportedMethods" =>
             array(
                 "function" => "f_mt_supportedMethods",
@@ -185,9 +185,10 @@ $functionDefs = array_merge(
     )
 );
 
-function f_mt_supportedMethods($m) {
+function f_mt_supportedMethods($m)
+{
     $res = new xmlrpcresp(new xmlrpcval(
-            array(
+        array(
                 new xmlrpcval('mt.supportedMethods', 'string'),
                 new xmlrpcval('mt.supportedTextFilters', 'string'),
                 new xmlrpcval('mt.publishPost', 'string'),
@@ -196,20 +197,24 @@ function f_mt_supportedMethods($m) {
                 new xmlrpcval('mt.setPostCategories', 'string'),
                 new xmlrpcval('mt.getRecentPostTitles', 'string'),
                 new xmlrpcval('mt.getTrackbackPings', 'string'),
-            ), 'array')
-    );
+        ),
+        'array'
+    ));
     return $res;
 }
 
-function f_mt_supportedTextFilters($m) {
+function f_mt_supportedTextFilters($m)
+{
     $res = new xmlrpcresp(new xmlrpcval(
-            array(// no text filters in nucleus
-            ), 'array')
-    );
+        array(// no text filters in nucleus
+        ),
+        'array'
+    ));
     return $res;
 }
 
-function f_mt_getCategoryList($m) {
+function f_mt_getCategoryList($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -217,7 +222,8 @@ function f_mt_getCategoryList($m) {
     return _mt_categoryList($blogid, $username, $password);
 }
 
-function f_mt_publishPost($m) {
+function f_mt_publishPost($m)
+{
     $itemid = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -225,7 +231,8 @@ function f_mt_publishPost($m) {
     return _mt_publishPost($itemid, $username, $password);
 }
 
-function f_mt_getPostCategories($m) {
+function f_mt_getPostCategories($m)
+{
     $itemid = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -233,7 +240,8 @@ function f_mt_getPostCategories($m) {
     return _mt_getPostCategories($itemid, $username, $password);
 }
 
-function f_mt_setPostCategories($m) {
+function f_mt_setPostCategories($m)
+{
     $itemid = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -248,7 +256,7 @@ function f_mt_setPostCategories($m) {
         if ($bPrimary) {
             $bPrimary = $bPrimary->scalarval();
         } else {
-            if ( ! $category) {
+            if (! $category) {
                 $bPrimary = 1;
             }
         }    // "Using isPrimary to set the primary category is optional--
@@ -263,7 +271,8 @@ function f_mt_setPostCategories($m) {
     return _mt_setPostCategories($itemid, $username, $password, $category);
 }
 
-function f_mt_getRecentPostTitles($m) {
+function f_mt_getRecentPostTitles($m)
+{
     $blogid = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -272,7 +281,8 @@ function f_mt_getRecentPostTitles($m) {
     return _mt_getRecentPostTitles($blogid, $username, $password, $iAmount);
 }
 
-function f_mt_getTrackbackPings($m) {
+function f_mt_getTrackbackPings($m)
+{
     global $manager;
 
     $itemid = intval(_getScalar($m, 0));
@@ -292,31 +302,33 @@ function f_mt_getTrackbackPings($m) {
                 "pingTitle" => new xmlrpcval($v['title'], "string"),
                 "pingURL" => new xmlrpcval($v['url'], "string"),
                 "pingIP" => new xmlrpcval($v['ip'], "string")
-            )
-            , 'struct');
+            ),
+            'struct'
+        );
     }
 
     return new xmlrpcresp(new xmlrpcval($tbstruct, "array"));
 }
 
-function _mt_setPostCategories($itemid, $username, $password, $category) {
+function _mt_setPostCategories($itemid, $username, $password, $category)
+{
     global $manager;
 
     // login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if item exists
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
 
     $blogid = getBlogIDFromItemID($itemid);
     $blog = new BLOG($blogid);
 
-    if ( ! $mem->canAlterItem($itemid)) {
+    if (! $mem->canAlterItem($itemid)) {
         return _error(7, "Not allowed to alter item");
     }
 
@@ -332,28 +344,39 @@ function _mt_setPostCategories($itemid, $username, $password, $category) {
         $wasdraft = 0;
     }
 
-    return _edititem($itemid, $username, $password, $catid, $old['title'], $old['body'], $old['more'], $wasdraft,
-        $publish, $old['closed']);
+    return _edititem(
+        $itemid,
+        $username,
+        $password,
+        $catid,
+        $old['title'],
+        $old['body'],
+        $old['more'],
+        $wasdraft,
+        $publish,
+        $old['closed']
+    );
 }
 
-function _mt_getPostCategories($itemid, $username, $password) {
+function _mt_getPostCategories($itemid, $username, $password)
+{
     global $manager;
 
     // login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if item exists
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
 
     $blogid = getBlogIDFromItemID($itemid);
     $blog = new BLOG($blogid);
 
-    if ( ! $mem->canAlterItem($itemid)) {
+    if (! $mem->canAlterItem($itemid)) {
         return _error(7, 'You are not allowed to request this information');
     }
 
@@ -365,16 +388,18 @@ function _mt_getPostCategories($itemid, $username, $password) {
             'categoryId' => new xmlrpcval($catName, 'string'),
             'categoryName' => new xmlrpcval($catName, 'string'),
             'isPrimary' => new xmlrpcval(1, 'boolean')
-        ), 'struct'
+        ),
+        'struct'
     );
 
     return new xmlrpcresp(new xmlrpcval(array($struct), 'array'));
 }
 
-function _mt_publishPost($itemid, $username, $password) {
+function _mt_publishPost($itemid, $username, $password)
+{
     global $manager;
 
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
 
@@ -383,22 +408,33 @@ function _mt_publishPost($itemid, $username, $password) {
     $blog = new BLOG($blogid);
     $old =& $manager->getItem($itemid, 1, 1);
 
-    return _edititem($itemid, $username, $password, $old['catid'], $old['title'], $old['body'], $old['more'],
-        $old['draft'], 1, $old['closed']);
+    return _edititem(
+        $itemid,
+        $username,
+        $password,
+        $old['catid'],
+        $old['title'],
+        $old['body'],
+        $old['more'],
+        $old['draft'],
+        1,
+        $old['closed']
+    );
 }
 
-function _mt_categoryList($blogid, $username, $password) {
+function _mt_categoryList($blogid, $username, $password)
+{
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if on team and blog exists
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -417,29 +453,31 @@ function _mt_categoryList($blogid, $username, $password) {
             array(
                 "categoryName" => new xmlrpcval($obj->cname, "string"),
                 "categoryId" => new xmlrpcval($obj->cname, "string")
-            )
-            , 'struct');
+            ),
+            'struct'
+        );
     }
 
 
     return new xmlrpcresp(new xmlrpcval($categorystruct, "array"));
 }
 
-function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount) {
+function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
+{
     $blogid = intval($blogid);
     $iAmount = intval($iAmount);
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
     $iAmount = intval($iAmount);

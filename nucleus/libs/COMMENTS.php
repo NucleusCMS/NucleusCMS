@@ -16,7 +16,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if ( ! function_exists('requestVar')) {
+if (! function_exists('requestVar')) {
     exit;
 }
 require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
@@ -172,12 +172,12 @@ class COMMENTS
         $settings->readSettings();
 
         // begin if: comments disabled
-        if ( ! $settings->commentsEnabled()) {
+        if (! $settings->commentsEnabled()) {
             return _ERROR_COMMENTS_DISABLED;
         } // end if
 
         // begin if: public cannot comment
-        if ( ! $settings->isPublic() && ! $member->isLoggedIn()) {
+        if (! $settings->isPublic() && ! $member->isLoggedIn()) {
             return _ERROR_COMMENTS_NONPUBLIC;
         } // end if
 
@@ -227,18 +227,24 @@ class COMMENTS
         $plugins  = array();
 
         if (isset($manager->subscriptions['ValidateForm'])) {
-            $plugins = array_merge($plugins,
-                $manager->subscriptions['ValidateForm']);
+            $plugins = array_merge(
+                $plugins,
+                $manager->subscriptions['ValidateForm']
+            );
         }
 
         if (isset($manager->subscriptions['PreAddComment'])) {
-            $plugins = array_merge($plugins,
-                $manager->subscriptions['PreAddComment']);
+            $plugins = array_merge(
+                $plugins,
+                $manager->subscriptions['PreAddComment']
+            );
         }
 
         if (isset($manager->subscriptions['PostAddComment'])) {
-            $plugins = array_merge($plugins,
-                $manager->subscriptions['PostAddComment']);
+            $plugins = array_merge(
+                $plugins,
+                $manager->subscriptions['PostAddComment']
+            );
         }
 
         $plugins = array_unique($plugins);
@@ -270,7 +276,7 @@ class COMMENTS
         $param = array('spamcheck' => &$spamcheck);
         $manager->notify('SpamCheck', $param);
 
-        if ( ! $continue && isset($spamcheck['result'])
+        if (! $continue && isset($spamcheck['result'])
              && $spamcheck['result'] == true) {
             return _ERROR_COMMENTS_SPAM;
         }
@@ -389,7 +395,7 @@ class COMMENTS
         // check if there exists a item for this date
         $item =& $manager->getItem($this->itemid, 0, 0);
 
-        if ( ! $item) {
+        if (! $item) {
             return _ERROR_NOSUCHITEM;
         }
 
@@ -413,7 +419,7 @@ class COMMENTS
         }
 
         // only check username if no member logged in
-        if ( ! $member->isLoggedIn()) {
+        if (! $member->isLoggedIn()) {
             if (strlen($comment['user']) < 2) {
                 return _ERROR_COMMENT_NOUSERNAME;
             }
@@ -437,5 +443,4 @@ class COMMENTS
 
         return $result;
     }
-
 }

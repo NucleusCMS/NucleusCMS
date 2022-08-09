@@ -20,7 +20,7 @@
 global $xmlrpcString,$xmlrpcBoolean,$xmlrpcInt,$xmlrpcArray,$xmlrpcStruct;
 
 // prevent direct access
-if ( ! isset($member)) {
+if (! isset($member)) {
     exit;
 }
 
@@ -131,10 +131,11 @@ $f_nucleus_deleteItem_sig = array(
 );
 $f_nucleus_deleteItem_doc = "Deletes an item";
 
-if ( ! isset($functionDefs)) {
+if (! isset($functionDefs)) {
     $functionDefs = array();
 }
-$functionDefs = array_merge($functionDefs,
+$functionDefs = array_merge(
+    $functionDefs,
     array(
         'nucleus.addItem' =>
             array(
@@ -187,7 +188,8 @@ $functionDefs = array_merge($functionDefs,
     )
 );
 
-function f_nucleus_addItem($m) {
+function f_nucleus_addItem($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -198,18 +200,19 @@ function f_nucleus_addItem($m) {
     $closed = _getScalar($m, 7);
 
     return _addItem(
-        $blogid
-        , $username
-        , $password
-        , $title
-        , $body
-        , $more
-        , $publish
-        , $closed
+        $blogid,
+        $username,
+        $password,
+        $title,
+        $body,
+        $more,
+        $publish,
+        $closed
     );
 }
 
-function f_nucleus_addDatedItem($m) {
+function f_nucleus_addDatedItem($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -224,14 +227,16 @@ function f_nucleus_addDatedItem($m) {
     return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 1);
 }
 
-function f_nucleus_getUsersBlogs($m) {
+function f_nucleus_getUsersBlogs($m)
+{
     $username = _getScalar($m, 0);
     $password = _getScalar($m, 1);
 
     return _getUsersBlogs($username, $password);
 }
 
-function f_nucleus_editItem($m) {
+function f_nucleus_editItem($m)
+{
     global $manager;
 
     $itemid = intval(_getScalar($m, 0));
@@ -244,18 +249,29 @@ function f_nucleus_editItem($m) {
     $closed = _getScalar($m, 7);
 
     // get old title and extended part
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
 
     $old =& $manager->getItem($itemid, 1, 1);
     $wasdraft = ($old['draft']) ? 1 : 0;
 
-    return _edititem($itemid, $username, $password, $old['catid'], $title, $content, $more, $wasdraft, $publish,
-        $closed);
+    return _edititem(
+        $itemid,
+        $username,
+        $password,
+        $old['catid'],
+        $title,
+        $content,
+        $more,
+        $wasdraft,
+        $publish,
+        $closed
+    );
 }
 
-function f_nucleus_getRecentItems($m) {
+function f_nucleus_getRecentItems($m)
+{
     $blogid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -264,7 +280,8 @@ function f_nucleus_getRecentItems($m) {
     return _getRecentItems($blogid, $username, $password, $amount);
 }
 
-function f_nucleus_getItem($m) {
+function f_nucleus_getItem($m)
+{
     $postid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -272,7 +289,8 @@ function f_nucleus_getItem($m) {
     return _getItem($postid, $username, $password);
 }
 
-function f_nucleus_deleteItem($m) {
+function f_nucleus_deleteItem($m)
+{
     $itemid = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
@@ -284,21 +302,22 @@ function f_nucleus_deleteItem($m) {
  * Returns a list of recent items (Nucleus Version)
  * ($amount = max 20);
  */
-function _getRecentItems($blogid, $username, $password, $amount) {
+function _getRecentItems($blogid, $username, $password, $amount)
+{
     $blogid = (int)$blogid;
     $amount = (int)$amount;
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, 'Could not log in');
     }
 
     // 2. check if allowed
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, 'No such blog (' . $blogid . ')');
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, 'Not a team member');
     }
     $amount = (int)$amount;
@@ -312,10 +331,10 @@ function _getRecentItems($blogid, $username, $password, $amount) {
     $structarray = array();        // the array in which the structs will be stored
 
     $query = sprintf(
-        'SELECT ibody, iauthor, ibody, imore, ititle, iclosed, idraft, itime FROM %s WHERE iblog=%d ORDER BY itime DESC LIMIT %d'
-        , sql_table('item')
-        , $blogid
-        , $amount
+        'SELECT ibody, iauthor, ibody, imore, ititle, iclosed, idraft, itime FROM %s WHERE iblog=%d ORDER BY itime DESC LIMIT %d',
+        sql_table('item'),
+        $blogid,
+        $amount
     );
     $r = sql_query($query);
     while ($obj = sql_fetch_object($r)) {
@@ -338,22 +357,23 @@ function _getRecentItems($blogid, $username, $password, $amount) {
 /**
  * Returns one item (Nucleus version)
  */
-function _getItem($itemid, $username, $password) {
+function _getItem($itemid, $username, $password)
+{
     global $manager;
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, 'Could not log in');
     }
 
     // 2. check if allowed
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, 'No such item (' . $itemid . ')');
     }
     $blogid = getBlogIDFromItemID($itemid);
 
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, 'Not a team member');
     }
 

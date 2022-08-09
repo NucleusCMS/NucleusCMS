@@ -28,14 +28,14 @@ class BAN
     {
         $blogid = (int)$blogid;
         $query  = sprintf(
-            'SELECT * FROM %s WHERE blogid=%d'
-            , sql_table('ban')
-            , $blogid
+            'SELECT * FROM %s WHERE blogid=%d',
+            sql_table('ban'),
+            $blogid
         );
         $res    = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
-            if ( ! ($found === false)) {
+            if (! ($found === false)) {
                 // found a match!
                 return new BANINFO($obj->iprange, $obj->reason);
             }
@@ -61,11 +61,11 @@ class BAN
         $manager->notify('PreAddBan', $param);
 
         $res = sql_query(sprintf(
-            "INSERT INTO %s (blogid, iprange, reason) VALUES (%d,'%s','%s')"
-            , sql_table('ban')
-            , $blogid
-            , sql_real_escape_string($iprange)
-            , sql_real_escape_string($reason)
+            "INSERT INTO %s (blogid, iprange, reason) VALUES (%d,'%s','%s')",
+            sql_table('ban'),
+            $blogid,
+            sql_real_escape_string($iprange),
+            sql_real_escape_string($reason)
         ));
 
         $param = array(
@@ -94,9 +94,9 @@ class BAN
         $manager->notify('PreDeleteBan', $param);
 
         sql_query(sprintf(
-            "DELETE FROM %s WHERE blogid=$blogid and iprange='%s'"
-            , sql_table('ban')
-            , sql_real_escape_string($iprange)
+            "DELETE FROM %s WHERE blogid=$blogid and iprange='%s'",
+            sql_table('ban'),
+            sql_real_escape_string($iprange)
         ));
 
         $result = (sql_affected_rows() > 0);
@@ -109,7 +109,6 @@ class BAN
 
         return $result;
     }
-
 }
 
 class BANINFO
@@ -123,5 +122,4 @@ class BANINFO
         $this->iprange = $iprange;
         $this->message = $message;
     }
-
 }

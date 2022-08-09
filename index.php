@@ -10,7 +10,9 @@ if (!is_file('./config.php')) {
         exit;
     }
     $f = __DIR__ .'/nucleus/libs/config-error.php';
-    if (is_file($f)) @include($f);
+    if (is_file($f)) {
+        @include($f);
+    }
     header('Content-type: text/html; charset=utf-8');
     echo '<h1>Configuration error</h1>';
     echo '<p>please run the <a href="./install/index.php">install script</a> or modify config.php</p>';

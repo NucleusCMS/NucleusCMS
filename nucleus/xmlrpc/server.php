@@ -96,11 +96,23 @@ $s = new xmlrpc_server($functionDefs);
 /**
  * Adds an item to the given blog. Username and password are required to login
  */
-function _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $catname = "") {
+function _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $catname = "")
+{
     $blog = new BLOG($blogid);
     $timestamp = $blog->getCorrectTime();
-    return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 0,
-        $catname);
+    return _addDatedItem(
+        $blogid,
+        $username,
+        $password,
+        $title,
+        $body,
+        $more,
+        $publish,
+        $closed,
+        $timestamp,
+        0,
+        $catname
+    );
 }
 
 /**
@@ -122,18 +134,18 @@ function _addDatedItem(
     // 1. login
     $mem = new MEMBER();
 
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed to add to blog
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
-    if ( ! trim($body)) {
+    if (! trim($body)) {
         return _error(4, "Cannot add empty items!");
     }
 
@@ -188,15 +200,15 @@ function _edititem(
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed to add to blog
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
-    if ( ! $mem->canAlterItem($itemid)) {
+    if (! $mem->canAlterItem($itemid)) {
         return _error(7, "Not allowed to alter item");
     }
 
@@ -215,10 +227,11 @@ function _edititem(
 /**
  * Gives the list of blogs to which the user with given name and password has access
  */
-function _getUsersBlogs($username, $password) {
+function _getUsersBlogs($username, $password)
+{
     // 1. Try to login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
@@ -250,10 +263,11 @@ function _getUsersBlogs($username, $password) {
 }
 
 
-function _getUserInfo($username, $password) {
+function _getUserInfo($username, $password)
+{
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
@@ -275,21 +289,22 @@ function _getUserInfo($username, $password) {
 /**
  * deletes an item
  */
-function _deleteItem($itemid, $username, $password) {
+function _deleteItem($itemid, $username, $password)
+{
     global $manager;
 
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! $manager->existsItem($itemid, 1, 1)) {
+    if (! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ($itemid)");
     }
     $blogid = getBlogIDFromItemID($itemid);
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -302,18 +317,19 @@ function _deleteItem($itemid, $username, $password) {
 /**
  * Returns a template
  */
-function _getSkinPart($blogid, $username, $password, $type) {
+function _getSkinPart($blogid, $username, $password, $type)
+{
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -323,18 +339,19 @@ function _getSkinPart($blogid, $username, $password, $type) {
     return new xmlrpcresp(new xmlrpcval($skin->getContent($type), "string"));
 }
 
-function _setSkinPart($blogid, $username, $password, $content, $type) {
+function _setSkinPart($blogid, $username, $password, $content, $type)
+{
     // 1. login
     $mem = new MEMBER();
-    if ( ! $mem->login($username, $password)) {
+    if (! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if ( ! BLOG::existsID($blogid)) {
+    if (! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ($blogid)");
     }
-    if ( ! $mem->teamRights($blogid)) {
+    if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -350,14 +367,16 @@ function _setSkinPart($blogid, $username, $password, $content, $type) {
  * Some convenience methods
  */
 
-function _getScalar($m, $idx) {
+function _getScalar($m, $idx)
+{
     $v = $m->getParam($idx);
     return $v->scalarval();
 }
 
-function _getStructVal($struct, $key) {
+function _getStructVal($struct, $key)
+{
     $t = $struct->structmem($key);
-    if ( ! $t) {
+    if (! $t) {
         return '';
     }    // no such struct value
     else {
@@ -365,7 +384,8 @@ function _getStructVal($struct, $key) {
     }
 }
 
-function _getArrayVal($a, $idx) {
+function _getArrayVal($a, $idx)
+{
     $t = $a->arraymem($idx);
     return $t->scalarval();
 }
@@ -374,7 +394,8 @@ function _getArrayVal($a, $idx) {
  * Returns an XML-RPC error response
  * $err is the error number (>0, will be added to $xmlrpcerruser)
  */
-function _error($err, $msg) {
+function _error($err, $msg)
+{
     global $xmlrpcerruser;
     return new xmlrpcresp(0, $xmlrpcerruser + $err, $msg);
 }

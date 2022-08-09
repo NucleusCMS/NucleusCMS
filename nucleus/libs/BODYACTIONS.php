@@ -89,7 +89,7 @@ class BODYACTIONS extends BaseActions
         }*/
 
         $plugin =& $manager->getPlugin('NP_' . $pluginName);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return;
         }
 
@@ -206,33 +206,33 @@ class BODYACTIONS extends BaseActions
         $windowheight = $height;
 
         $vars['rawpopuplink'] = sprintf(
-            "%s?imagepopup=%s&amp;width=%s&amp;height=%s&amp;imagetext=%s"
-            , $CONF['Self']
-            , hsc($filename)
-            , $width
-            , $height
-            , urlencode(hsc($text))
+            "%s?imagepopup=%s&amp;width=%s&amp;height=%s&amp;imagetext=%s",
+            $CONF['Self'],
+            hsc($filename),
+            $width,
+            $height,
+            urlencode(hsc($text))
         );
         $vars['popupcode']    = sprintf(
-            "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=%s,height=%s');return false;"
-            , $windowwidth
-            , $windowheight
+            "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=%s,height=%s');return false;",
+            $windowwidth,
+            $windowheight
         );
         $vars['popuptext']    = hsc($text);
         $vars['popuplink']    = sprintf(
-            '<a href="%s" onclick="%s">%s</a>'
-            , $vars['rawpopuplink']
-            , $vars['popupcode']
-            , $vars['popuptext']
+            '<a href="%s" onclick="%s">%s</a>',
+            $vars['rawpopuplink'],
+            $vars['popupcode'],
+            $vars['popuptext']
         );
         $vars['width']        = $width;
         $vars['height']       = $height;
         $vars['text']         = $text;
         $vars['link']         = hsc($CONF['MediaURL'] . $filename);
         $vars['media']        = sprintf(
-            '<a href="%s">%s</a>'
-            , $vars['link']
-            , $vars['popuptext']
+            '<a href="%s">%s</a>',
+            $vars['link'],
+            $vars['popuptext']
         );
 
         echo TEMPLATE::fill($this->template['POPUP_CODE'], $vars);
@@ -440,8 +440,7 @@ class BODYACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! $manager->existsBlogID($blogid)) // use current blog
-        {
+            || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -466,8 +465,7 @@ class BODYACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! $manager->existsBlogID($blogid)) // use current blog
-        {
+            || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -518,7 +516,7 @@ class BODYACTIONS extends BaseActions
         global $manager;
 
         $plugin =& $manager->getPlugin('NP_' . $name);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return false;
         }
 
@@ -541,14 +539,13 @@ class BODYACTIONS extends BaseActions
     function parse_hascomment()
     {
         $sqlText
-             = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1"
-            , sql_table('comment')
-            , (int)$this->currentItem->itemid
-        );
+             = sprintf(
+                 "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                 sql_table('comment'),
+                 (int)$this->currentItem->itemid
+             );
         $res = (int)quickQuery($sqlText);
 
         return ($res > 0);
     }
-
 }
-

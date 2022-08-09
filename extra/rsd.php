@@ -23,5 +23,3 @@ if (isset($CONF['DisableRSS']) && $CONF['DisableRSS']) {
 
 selectSkin('xml/rsd');
 selector();
-
-?>

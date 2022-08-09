@@ -136,6 +136,5 @@ class BATCH extends ENCAPSULATE
 
         return $this->doEncapsulate($call, $params, $errorMessage);
     }
-
 }
 

@@ -44,7 +44,7 @@ class KARMA
 
     function getNbPosVotes()
     {
-        if ( ! $this->inforead) {
+        if (! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -53,7 +53,7 @@ class KARMA
 
     function getNbNegVotes()
     {
-        if ( ! $this->inforead) {
+        if (! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -62,7 +62,7 @@ class KARMA
 
     function getNbOfVotes()
     {
-        if ( ! $this->inforead) {
+        if (! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -71,7 +71,7 @@ class KARMA
 
     function getTotalScore()
     {
-        if ( ! $this->inforead) {
+        if (! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -134,8 +134,11 @@ class KARMA
     function isVoteAllowed($ip)
     {
         $sql = 'SELECT count(*) AS result FROM ' . sql_table('karma')
-               . sprintf(" WHERE itemid=%d AND ip='%s' LIMIT 1", $this->itemid,
-                sql_real_escape_string($ip));
+               . sprintf(
+                   " WHERE itemid=%d AND ip='%s' LIMIT 1",
+                   $this->itemid,
+                   sql_real_escape_string($ip)
+               );
 
         return (intval(quickQuery($sql)) == 0);
     }
@@ -148,5 +151,4 @@ class KARMA
                  . sql_real_escape_string(serverVar('REMOTE_ADDR')) . "')";
         sql_query($query);
     }
-
 }

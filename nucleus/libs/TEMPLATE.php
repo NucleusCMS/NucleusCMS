@@ -45,9 +45,11 @@ class TEMPLATE
     // (static)
     public static function getIdFromName($name)
     {
-        $query = sprintf("SELECT tdnumber FROM `%s` WHERE tdname='%s'",
+        $query = sprintf(
+            "SELECT tdnumber FROM `%s` WHERE tdname='%s'",
             sql_table('template_desc'),
-            sql_real_escape_string($name));
+            sql_real_escape_string($name)
+        );
         if (($res = sql_query($query)) && ($obj = sql_fetch_object($res))) {
             return $obj->tdnumber;
         }
@@ -61,11 +63,11 @@ class TEMPLATE
     function updateGeneralInfo($name, $desc)
     {
         sql_query(sprintf(
-            "UPDATE %s SET tdname='%s', tddesc='%s' WHERE tdnumber=%d"
-            , sql_table('template_desc')
-            , sql_real_escape_string($name)
-            , sql_real_escape_string($desc)
-            , $this->getID()
+            "UPDATE %s SET tdname='%s', tddesc='%s' WHERE tdnumber=%d",
+            sql_table('template_desc'),
+            sql_real_escape_string($name),
+            sql_real_escape_string($desc),
+            $this->getID()
         ));
     }
 
@@ -78,27 +80,31 @@ class TEMPLATE
 
         // delete old thingie
         sql_query(sprintf(
-                "DELETE FROM %s WHERE tpartname='%s' and tdesc=%d"
-                , sql_table('template')
-                , sql_real_escape_string($type)
-                , (int)$id)
-        );
+            "DELETE FROM %s WHERE tpartname='%s' and tdesc=%d",
+            sql_table('template'),
+            sql_real_escape_string($type),
+            (int)$id
+        ));
 
         global $SQL_DBH;
         // write new thingie
         if (strlen($content) > 0) {
             $sql = sprintf(
-                'INSERT INTO %s(tcontent, tpartname, tdesc) VALUES'
-                , sql_table('template')
+                'INSERT INTO %s(tcontent, tpartname, tdesc) VALUES',
+                sql_table('template')
             );
-            if ( ! $SQL_DBH) // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-            {
-                sql_query($sql . sprintf("('%s', '%s', %d)",
-                        sql_real_escape_string($content),
-                        sql_real_escape_string($type), (int)$id));
+            if (! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
+                sql_query($sql . sprintf(
+                    "('%s', '%s', %d)",
+                    sql_real_escape_string($content),
+                    sql_real_escape_string($type),
+                    (int)$id
+                ));
             } else {
-                sql_prepare_execute($sql . '(?, ?, ?)',
-                    array($content, $type, (int)$id));
+                sql_prepare_execute(
+                    $sql . '(?, ?, ?)',
+                    array($content, $type, (int)$id)
+                );
             }
         }
     }
@@ -111,9 +117,10 @@ class TEMPLATE
     {
         sql_query(
             sprintf(
-                "DELETE FROM %s WHERE tdesc=%d"
-                , sql_table('template')
-                , $this->getID())
+                "DELETE FROM %s WHERE tdesc=%d",
+                sql_table('template'),
+                $this->getID()
+            )
         );
     }
 
@@ -133,11 +140,11 @@ class TEMPLATE
         $manager->notify('PreAddTemplate', $param);
 
         sql_query(sprintf(
-                "INSERT INTO %s (tdname, tddesc) VALUES ('%s','%s')"
-                , sql_table('template_desc')
-                , sql_real_escape_string($name)
-                , sql_real_escape_string($desc))
-        );
+            "INSERT INTO %s (tdname, tddesc) VALUES ('%s','%s')",
+            sql_table('template_desc'),
+            sql_real_escape_string($name),
+            sql_real_escape_string($desc)
+        ));
         $newId = sql_insert_id();
 
         $param = array(
@@ -173,10 +180,10 @@ class TEMPLATE
 
         $template = array();
         $res      = sql_query(sprintf(
-            "SELECT tpartname, tcontent FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'"
-            , sql_table('template_desc')
-            , sql_table('template')
-            , sql_real_escape_string($name)
+            "SELECT tpartname, tcontent FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
+            sql_table('template_desc'),
+            sql_table('template'),
+            sql_real_escape_string($name)
         ));
         while ($obj = sql_fetch_object($res)) {
             $template[$obj->tpartname] = $obj->tcontent;
@@ -224,9 +231,9 @@ class TEMPLATE
     public static function exists($name)
     {
         $res = quickQuery(sprintf(
-            "select count(*) as result FROM %s WHERE tdname='%s' limit 1"
-            , sql_table('template_desc')
-            , sql_real_escape_string($name)
+            "select count(*) as result FROM %s WHERE tdname='%s' limit 1",
+            sql_table('template_desc'),
+            sql_real_escape_string($name)
         ));
 
         return ((int)$res > 0);
@@ -237,9 +244,9 @@ class TEMPLATE
     public static function existsID($id)
     {
         $res = quickQuery(sprintf(
-            'select count(*) as result FROM %s WHERE tdnumber=%d limit 1'
-            , sql_table('template_desc')
-            , (int)$id
+            'select count(*) as result FROM %s WHERE tdnumber=%d limit 1',
+            sql_table('template_desc'),
+            (int)$id
         ));
 
         return ((int)$res > 0);
@@ -248,12 +255,13 @@ class TEMPLATE
     // (static)
     public static function getNameFromId($id)
     {
-        return quickQuery(sprintf(
-                'SELECT tdname as result FROM %s WHERE tdnumber=%d'
-                , sql_table('template_desc')
-                , (int)$id
-            )
-            , 'cacheClear'
+        return quickQuery(
+            sprintf(
+                'SELECT tdname as result FROM %s WHERE tdnumber=%d',
+                sql_table('template_desc'),
+                (int)$id
+            ),
+            'cacheClear'
         );
     }
 
@@ -261,14 +269,12 @@ class TEMPLATE
     public static function getDesc($id)
     {
         $res = sql_query(sprintf(
-            'SELECT tddesc FROM %s WHERE tdnumber=%d'
-            , sql_table('template_desc')
-            , (int)$id
+            'SELECT tddesc FROM %s WHERE tdnumber=%d',
+            sql_table('template_desc'),
+            (int)$id
         ));
         $obj = sql_fetch_object($res);
 
         return $obj->tddesc;
     }
-
-
 }

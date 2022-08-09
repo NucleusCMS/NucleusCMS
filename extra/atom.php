@@ -30,31 +30,28 @@ if (isset($CONF['DisableRSS']) && $CONF['DisableRSS']) {
 }
 
 if (!$CONF['DisableSite']) {
-	// get feed into $feed
-	ob_start();
-		selectSkin('feeds/atom');
-		selector();
-		$feed = ob_get_contents();
-	ob_end_clean();
+    // get feed into $feed
+    ob_start();
+        selectSkin('feeds/atom');
+        selector();
+        $feed = ob_get_contents();
+    ob_end_clean();
 
-	// create ETAG (hash of feed)
-	// (HTTP_IF_NONE_MATCH has quotes around it)
-	$eTag = '"' . md5($feed) . '"';
-	header('Etag: ' . $eTag);
+    // create ETAG (hash of feed)
+    // (HTTP_IF_NONE_MATCH has quotes around it)
+    $eTag = '"' . md5($feed) . '"';
+    header('Etag: ' . $eTag);
 
-	// compare Etag to what we got
-	if ($eTag == serverVar('HTTP_IF_NONE_MATCH') ) {
-		header('HTTP/1.0 304 Not Modified');
-		header('Content-Length: 0');
-	} else {
-		if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {
-			$feed = mb_convert_encoding($feed, "UTF-8", _CHARSET);
-		}
-		header("Content-Type: application/xml");
-		// dump feed
-		echo $feed;
-	}
-
+    // compare Etag to what we got
+    if ($eTag == serverVar('HTTP_IF_NONE_MATCH')) {
+        header('HTTP/1.0 304 Not Modified');
+        header('Content-Length: 0');
+    } else {
+        if ((strtolower(_CHARSET) != 'utf-8') && function_exists('mb_convert_encoding')) {
+            $feed = mb_convert_encoding($feed, "UTF-8", _CHARSET);
+        }
+        header("Content-Type: application/xml");
+        // dump feed
+        echo $feed;
+    }
 }
-
-?>

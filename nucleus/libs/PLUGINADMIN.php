@@ -32,14 +32,14 @@ class PluginAdmin
         $this->strFullName = 'NP_' . $pluginName;
 
         // check if plugin exists and is installed
-        if ( ! $manager->pluginInstalled($this->strFullName)) {
+        if (! $manager->pluginInstalled($this->strFullName)) {
             doError(_ERROR_INVALID_PLUGIN);
         }
 
         $this->plugin =& $manager->getPlugin($this->strFullName);
         $this->bValid = $this->plugin;
 
-        if ( ! $this->bValid) {
+        if (! $this->bValid) {
             doError(_ERROR_INVALID_PLUGIN);
         }
 
@@ -69,7 +69,7 @@ class PluginAdmin
     function _AddTicketByJS()
     {
         global $CONF, $ticketforplugin;
-        if ( ! ($ticket = $ticketforplugin['ticket'])) {
+        if (! ($ticket = $ticketforplugin['ticket'])) {
             //echo "\n<!--TicketForPlugin skipped-->\n";
             return;
         }
@@ -132,5 +132,4 @@ class PluginAdmin
             /*]]>*/
         </script><?php
     }
-
 }

@@ -40,7 +40,7 @@ class MEDIA
         $collections[$member->getID()] = PRIVATE_COLLECTION;
 
         // add global collections
-        if ( ! is_dir($DIR_MEDIA)) {
+        if (! is_dir($DIR_MEDIA)) {
             return $collections;
         }
 
@@ -85,17 +85,20 @@ class MEDIA
         $mediadir = $DIR_MEDIA . $collection . '/';
 
         // return if dir does not exist
-        if ( ! is_dir($mediadir)) {
+        if (! is_dir($mediadir)) {
             return $filelist;
         }
 
         $dirhandle = opendir($mediadir);
         while ($filename = readdir($dirhandle)) {
             // only add files that match the filter
-            if ( ! @is_dir($filename)
+            if (! @is_dir($filename)
                  && MEDIA::checkFilter($filename, $filter)) {
-                $filelist[] = new MEDIAOBJECT($collection, $filename,
-                    filemtime($mediadir . $filename));
+                $filelist[] = new MEDIAOBJECT(
+                    $collection,
+                    $filename,
+                    filemtime($mediadir . $filename)
+                );
             }
         }
         closedir($dirhandle);
@@ -176,7 +179,7 @@ class MEDIA
 
         // don't allow uploads to unknown or forbidden collections
         $exceptReadOnly = true;
-        if ( ! MEDIA::isValidCollection($collection, $exceptReadOnly)) {
+        if (! MEDIA::isValidCollection($collection, $exceptReadOnly)) {
             return _ERROR_DISALLOWED;
         }
 
@@ -184,20 +187,20 @@ class MEDIA
         $mediadir = $DIR_MEDIA . $collection;
 
         // try to create new private media directories if needed
-        if ( ! @is_dir($mediadir) && is_numeric($collection)) {
+        if (! @is_dir($mediadir) && is_numeric($collection)) {
             $oldumask = umask(0000);
-            if ( ! mkdir($mediadir, 0777) && ! is_dir($mediadir)) {
+            if (! mkdir($mediadir, 0777) && ! is_dir($mediadir)) {
                 return _ERROR_BADPERMISSIONS;
             }
             umask($oldumask);
         }
 
         // if dir still not exists, the action is disallowed
-        if ( ! @is_dir($mediadir)) {
+        if (! @is_dir($mediadir)) {
             return _ERROR_DISALLOWED;
         }
 
-        if ( ! is_writable($mediadir)) {
+        if (! is_writable($mediadir)) {
             return _ERROR_BADPERMISSIONS;
         }
 
@@ -210,11 +213,11 @@ class MEDIA
 
         // move file to directory
         if (is_uploaded_file($uploadfile)) {
-            if ( ! @move_uploaded_file($uploadfile, $mediadir . $filename)) {
+            if (! @move_uploaded_file($uploadfile, $mediadir . $filename)) {
                 return _ERROR_UPLOADMOVEP;
             }
         } else {
-            if ( ! copy($uploadfile, $mediadir . $filename)) {
+            if (! copy($uploadfile, $mediadir . $filename)) {
                 return _ERROR_UPLOADCOPY;
             }
         }
@@ -255,20 +258,20 @@ class MEDIA
         $mediadir = $DIR_MEDIA . $collection;
 
         // try to create new private media directories if needed
-        if ( ! @is_dir($mediadir) && is_numeric($collection)) {
+        if (! @is_dir($mediadir) && is_numeric($collection)) {
             $oldumask = umask(0000);
-            if ( ! mkdir($mediadir, 0777) && ! is_dir($mediadir)) {
+            if (! mkdir($mediadir, 0777) && ! is_dir($mediadir)) {
                 return _ERROR_BADPERMISSIONS;
             }
             umask($oldumask);
         }
 
         // if dir still not exists, the action is disallowed
-        if ( ! @is_dir($mediadir)) {
+        if (! @is_dir($mediadir)) {
             return _ERROR_DISALLOWED;
         }
 
-        if ( ! is_writable($mediadir)) {
+        if (! is_writable($mediadir)) {
             return _ERROR_BADPERMISSIONS;
         }
 
@@ -281,12 +284,12 @@ class MEDIA
 
         // create file
         $fh = @fopen($mediadir . $filename, 'wb');
-        if ( ! $fh) {
+        if (! $fh) {
             return _ERROR_UPLOADFAILED;
         }
         $ok = @fwrite($fh, $data);
         @fclose($fh);
-        if ( ! $ok) {
+        if (! $ok) {
             return _ERROR_UPLOADFAILED;
         }
 
@@ -297,7 +300,6 @@ class MEDIA
 
         return '';
     }
-
 }
 
 /**
@@ -325,7 +327,6 @@ class MEDIAOBJECT
         $this->filename   = $filename;
         $this->timestamp  = $timestamp;
     }
-
 }
 
 /**

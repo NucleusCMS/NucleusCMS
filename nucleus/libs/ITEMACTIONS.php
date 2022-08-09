@@ -203,11 +203,13 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_categorylink()
     {
-        echo createLink('category',
+        echo createLink(
+            'category',
             array(
                 'catid' => $this->currentItem->catid,
                 'name'  => $this->currentItem->category,
-            ));
+            )
+        );
     }
 
     /**
@@ -369,7 +371,7 @@ class ITEMACTIONS extends BaseActions
     {
         global $blog;
 
-        if ( ! $blog || ! $blog->getAuthorVisible()) {
+        if (! $blog || ! $blog->getAuthorVisible()) {
             return "";
         }
 
@@ -397,7 +399,7 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_smartbody()
     {
-        if ( ! $this->currentItem->more) {
+        if (! $this->currentItem->more) {
             $this->highlightAndParse($this->currentItem->body);
         } else {
             $this->highlightAndParse($this->currentItem->more);
@@ -421,11 +423,15 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_date($format = '')
     {
-        if ( ! isset($this->template['FORMAT_DATE'])) {
+        if (! isset($this->template['FORMAT_DATE'])) {
             $this->template['FORMAT_DATE'] = '';
         }
-        echo formatDate($format, $this->currentItem->timestamp,
-            $this->template['FORMAT_DATE'], $this->blog);
+        echo formatDate(
+            $format,
+            $this->currentItem->timestamp,
+            $this->template['FORMAT_DATE'],
+            $this->blog
+        );
     }
 
     /**
@@ -435,11 +441,13 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_time($format = '')
     {
-        if ( ! isset($this->template['FORMAT_TIME'])) {
+        if (! isset($this->template['FORMAT_TIME'])) {
             $this->template['FORMAT_TIME'] = '';
         }
-        echo Utils::strftime($format ? $format : $this->template['FORMAT_TIME'],
-            $this->currentItem->timestamp);
+        echo Utils::strftime(
+            $format ? $format : $this->template['FORMAT_TIME'],
+            $this->currentItem->timestamp
+        );
     }
 
     /**
@@ -511,9 +519,11 @@ class ITEMACTIONS extends BaseActions
      */
     function parse_daylink()
     {
-        echo createArchiveLink($this->blog->getID(),
+        echo createArchiveLink(
+            $this->blog->getID(),
             date('Y-m-d', $this->currentItem->timestamp),
-            $this->linkparams);
+            $this->linkparams
+        );
     }
 
     /**
@@ -529,9 +539,12 @@ class ITEMACTIONS extends BaseActions
         if ($this->showComments && $this->blog->commentsEnabled()) {
             $comments = new COMMENTS($this->currentItem->itemid);
             $comments->setItemActions($this);
-            $comments->showComments($this->template, $maxToShow,
+            $comments->showComments(
+                $this->template,
+                $maxToShow,
                 $this->currentItem->closed ? 0 : 1,
-                $this->strHighlight);
+                $this->strHighlight
+            );
         }
     }
 
@@ -552,7 +565,7 @@ class ITEMACTIONS extends BaseActions
             return;*/
 
         $plugin =& $manager->getPlugin('NP_' . $pluginName);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return;
         }
 
@@ -829,8 +842,7 @@ class ITEMACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! $manager->existsBlogID($blogid)) // use current blog
-        {
+            || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -855,8 +867,7 @@ class ITEMACTIONS extends BaseActions
         }
 
         if (($blogName == '')
-            || ! $manager->existsBlogID($blogid)) // use current blog
-        {
+            || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $blog->getID();
         }
 
@@ -907,7 +918,7 @@ class ITEMACTIONS extends BaseActions
         global $manager;
 
         $plugin =& $manager->getPlugin('NP_' . $name);
-        if ( ! $plugin) {
+        if (! $plugin) {
             return;
         }
 
@@ -930,11 +941,13 @@ class ITEMACTIONS extends BaseActions
     function parse_hascomment()
     {
         $sqlText
-             = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-            sql_table('comment'), (int)$this->currentItem->itemid);
+             = sprintf(
+                 "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+                 sql_table('comment'),
+                 (int)$this->currentItem->itemid
+             );
         $res = (int)quickQuery($sqlText);
 
         return ($res > 0);
     }
-
 }

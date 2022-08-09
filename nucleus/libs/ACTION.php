@@ -92,28 +92,28 @@ class ACTION
         if ($post['remember'] == 1) {
             $lifetime = time() + 2592000;
             setcookie(
-                $CONF['CookiePrefix'] . 'comment_user'
-                , $post['user']
-                , $lifetime
-                , '/'
-                , ''
-                , 0
+                $CONF['CookiePrefix'] . 'comment_user',
+                $post['user'],
+                $lifetime,
+                '/',
+                '',
+                0
             );
             setcookie(
-                $CONF['CookiePrefix'] . 'comment_userid'
-                , $post['userid']
-                , $lifetime
-                , '/'
-                , ''
-                , 0
+                $CONF['CookiePrefix'] . 'comment_userid',
+                $post['userid'],
+                $lifetime,
+                '/',
+                '',
+                0
             );
             setcookie(
-                $CONF['CookiePrefix'] . 'comment_email'
-                , $post['email']
-                , $lifetime
-                , '/'
-                , ''
-                , 0
+                $CONF['CookiePrefix'] . 'comment_email',
+                $post['email'],
+                $lifetime,
+                '/',
+                '',
+                0
             );
         } // end if
 
@@ -135,7 +135,6 @@ class ACTION
                 $url = createItemLink($post['itemid']);
                 redirect($url);
             } // end if
-
         } // else, show error message using default skin for blog
         else {
             return array(
@@ -161,7 +160,7 @@ class ACTION
             return array('message' => $error);
         }
 
-        if ( ! $member->isLoggedIn()) {
+        if (! $member->isLoggedIn()) {
             $fromMail = postVar('frommail');
             $fromName = _MMAIL_FROMANON;
         } else {
@@ -173,20 +172,24 @@ class ACTION
         $tomem->readFromId(postVar('memberid'));
 
         $message = sprintf(
-            "%s %s\n(%s %s) \n\n%s \n\n%s"
-            , _MMAIL_MSG
-            , $fromName
-            , _MMAIL_FROMNUC
-            , $CONF['IndexURL']
-            , _MMAIL_MAIL
-            , postVar('message')
+            "%s %s\n(%s %s) \n\n%s \n\n%s",
+            _MMAIL_MSG,
+            $fromName,
+            _MMAIL_FROMNUC,
+            $CONF['IndexURL'],
+            _MMAIL_MAIL,
+            postVar('message')
         );
         $message .= getMailFooter();
 
         $title = _MMAIL_TITLE . ' ' . $fromName;
 
-        @Utils::mail($tomem->getEmail(), $title, $message,
-            'From: ' . $fromMail);
+        @Utils::mail(
+            $tomem->getEmail(),
+            $title,
+            $message,
+            'From: ' . $fromMail
+        );
 
         if (postVar('url')) {
             redirect(postVar('url'));
@@ -195,8 +198,8 @@ class ACTION
 
             if ($CONF['URLMode'] === 'pathinfo') {
                 $url = createLink(
-                    'member'
-                    , array(
+                    'member',
+                    array(
                         'memberid' => $tomem->getID()
                     ,
                         'name'     => $tomem->getDisplayName(),
@@ -221,15 +224,15 @@ class ACTION
     {
         global $CONF, $member, $manager;
 
-        if ( ! $CONF['AllowMemberMail']) {
+        if (! $CONF['AllowMemberMail']) {
             return _ERROR_MEMBERMAILDISABLED;
         }
 
-        if ( ! $member->isLoggedIn() && ! $CONF['NonmemberMail']) {
+        if (! $member->isLoggedIn() && ! $CONF['NonmemberMail']) {
             return _ERROR_DISALLOWED;
         }
 
-        if ( ! $member->isLoggedIn()
+        if (! $member->isLoggedIn()
              && ! isValidMailAddress(postVar('frommail'))) {
             return _ERROR_BADMAILADDRESS;
         }
@@ -254,7 +257,7 @@ class ACTION
     {
         global $CONF, $manager;
 
-        if ( ! $CONF['AllowMemberCreate']) {
+        if (! $CONF['AllowMemberCreate']) {
             doError(_ERROR_MEMBERCREATEDISABLED);
         }
 
@@ -277,15 +280,14 @@ class ACTION
         // create member (non admin/can not login/no notes/random string as password)
         $name = shorten(postVar('name'), 32, '');
         $r    = MEMBER::create(
-            $name
-            , postVar('realname')
-            , $initialPwd
-            , postVar('email')
-            , postVar('url')
-            ,
-            0
-            , 0
-            , ''
+            $name,
+            postVar('realname'),
+            $initialPwd,
+            postVar('email'),
+            postVar('url'),
+            0,
+            0,
+            ''
         );
 
         if ($r != 1) {
@@ -305,15 +307,15 @@ class ACTION
             exit;
         }
 
-        if ( ! headers_sent()) {
+        if (! headers_sent()) {
             sendContentType('text/html', '', _CHARSET);
         }
         echo _MSG_ACTIVATION_SENT;
         echo sprintf(
-            '<br /><br />Return to <a href="%s" title="%s">%s</a>'
-            , $CONF['IndexURL']
-            , $CONF['SiteName']
-            , $CONF['SiteName']
+            '<br /><br />Return to <a href="%s" title="%s">%s</a>',
+            $CONF['IndexURL'],
+            $CONF['SiteName'],
+            $CONF['SiteName']
         );
         echo "\n</body>\n</html>";
 
@@ -328,7 +330,7 @@ class ACTION
     {
         $membername = trim(postVar('name'));
 
-        if ( ! MEMBER::exists($membername)) {
+        if (! MEMBER::exists($membername)) {
             doError(_ERROR_NOSUCHMEMBER);
         }
 
@@ -345,7 +347,7 @@ class ACTION
         }
 
         // check if e-mail address is correct
-        if ( ! ($mem->getEmail() == postVar('email'))) {
+        if (! ($mem->getEmail() == postVar('email'))) {
             doError(_ERROR_INCORRECTEMAIL);
         }
 
@@ -360,11 +362,11 @@ class ACTION
         global $CONF;
         sendContentType('text/html', '', _CHARSET);
         echo sprintf(
-            '%s<br /><br />Return to <a href="%s" title="%s">%s</a>'
-            , _MSG_ACTIVATION_SENT
-            , $CONF['IndexURL']
-            , $CONF['SiteName']
-            , $CONF['SiteName']
+            '%s<br /><br />Return to <a href="%s" title="%s">%s</a>',
+            _MSG_ACTIVATION_SENT,
+            $CONF['IndexURL'],
+            $CONF['SiteName'],
+            $CONF['SiteName']
         );
 
         exit;
@@ -388,7 +390,7 @@ class ACTION
         global $itemid, $member, $CONF, $manager;
 
         // check if itemid exists
-        if ( ! $manager->existsItem($itemid, 0, 0)) {
+        if (! $manager->existsItem($itemid, 0, 0)) {
             doError(_ERROR_NOSUCHITEM);
         }
 
@@ -406,7 +408,7 @@ class ACTION
         $manager->notify('PreVote', $params);
 
         // check if not already voted
-        if ( ! $isVoteAllowed) {
+        if (! $isVoteAllowed) {
             doError(_ERROR_VOTEDBEFORE);
         }
 
@@ -436,14 +438,14 @@ class ACTION
         // send email to notification address, if any
         if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
             $mailto_msg = sprintf(
-                "%s %s\n"
-                , _NOTIFY_KV_MSG
-                , $itemid
+                "%s %s\n",
+                _NOTIFY_KV_MSG,
+                $itemid
             );
             $itemLink   = createItemLink((int)$itemid);
             $temp       = parse_url($itemLink);
 
-            if ( ! $temp['scheme']) {
+            if (! $temp['scheme']) {
                 $itemLink = $CONF['IndexURL'] . $itemLink;
             }
 
@@ -451,40 +453,41 @@ class ACTION
 
             if ($member->isLoggedIn()) {
                 $mailto_msg .= sprintf(
-                    "%s %s (ID=%s)\n"
-                    , _NOTIFY_MEMBER
-                    , $member->getDisplayName()
-                    , $member->getID()
+                    "%s %s (ID=%s)\n",
+                    _NOTIFY_MEMBER,
+                    $member->getDisplayName(),
+                    $member->getID()
                 );
             }
 
             $mailto_msg .= sprintf(
-                "%s %s\n"
-                , _NOTIFY_IP
-                , serverVar('REMOTE_ADDR')
+                "%s %s\n",
+                _NOTIFY_IP,
+                serverVar('REMOTE_ADDR')
             );
             $mailto_msg .= sprintf(
-                "%s %s\n"
-                , _NOTIFY_HOST
-                , gethostbyaddr(serverVar('REMOTE_ADDR'))
+                "%s %s\n",
+                _NOTIFY_HOST,
+                gethostbyaddr(serverVar('REMOTE_ADDR'))
             );
             $mailto_msg .= sprintf(
-                "%s\n %s\n"
-                , _NOTIFY_VOTE
-                , $type
+                "%s\n %s\n",
+                _NOTIFY_VOTE,
+                $type
             );
             $mailto_msg .= getMailFooter();
 
             $notify = new NOTIFICATION($blog->getNotifyAddress());
             $notify->notify(
                 sprintf(
-                    '%s %s (%s)'
-                    , _NOTIFY_KV_TITLE
-                    , strip_tags($item['title'])
-                    , $itemid
-                )
-                , $mailto_msg
-                , $member->getNotifyFromMailAddress());
+                    '%s %s (%s)',
+                    _NOTIFY_KV_TITLE,
+                    strip_tags($item['title']),
+                    $itemid
+                ),
+                $mailto_msg,
+                $member->getNotifyFromMailAddress()
+            );
         }
 
         $refererUrl = serverVar('HTTP_REFERER');
@@ -510,7 +513,7 @@ class ACTION
         $pluginName = 'NP_' . requestVar('name');
 
         // 1: check if plugin is installed
-        if ( ! $manager->pluginInstalled($pluginName)) {
+        if (! $manager->pluginInstalled($pluginName)) {
             doError(_ERROR_NOSUCHPLUGIN);
         }
 
@@ -544,12 +547,12 @@ class ACTION
 
         if ($ban != 0) {
             doError(sprintf(
-                '%s%s%s%s%s'
-                , _ERROR_BANNED1
-                , $ban->iprange
-                , _ERROR_BANNED2
-                , $ban->message
-                , _ERROR_BANNED3
+                '%s%s%s%s%s',
+                _ERROR_BANNED1,
+                $ban->iprange,
+                _ERROR_BANNED2,
+                $ban->message,
+                _ERROR_BANNED3
             ));
         }
     }
@@ -594,5 +597,4 @@ class ACTION
 
         return false;
     }
-
 }

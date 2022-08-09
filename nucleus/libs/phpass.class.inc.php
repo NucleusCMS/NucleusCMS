@@ -232,8 +232,10 @@ class PasswordHash
         if (strlen($random) < 6) {
             $random = $this->get_random_bytes(6);
         }
-        $hash = $this->crypt_private($password,
-            $this->gensalt_private($random));
+        $hash = $this->crypt_private(
+            $password,
+            $this->gensalt_private($random)
+        );
         if (strlen($hash) == 34) {
             return $hash;
         }
@@ -253,5 +255,4 @@ class PasswordHash
 
         return $hash === $stored_hash;
     }
-
 }

@@ -51,7 +51,6 @@ class ENCAPSULATE
 
         return $nbOfRows;
     }
-
 }
 
 include_libs('BATCH.php');

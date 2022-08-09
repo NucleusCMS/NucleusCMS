@@ -15,7 +15,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if ( ! function_exists('requestVar')) {
+if (! function_exists('requestVar')) {
     exit;
 }
 require_once __DIR__ . '/BaseActions.php';
@@ -73,7 +73,7 @@ class PARSER
         if (is_null($content)) {
             return;
         }
-        if ( ! str_contains($this->delim, ',')) {
+        if (! str_contains($this->delim, ',')) {
             $this->legacyParse($content);
 
             return;
@@ -121,7 +121,7 @@ class PARSER
     {
         global $manager;
 
-        if ( ! $action) {
+        if (! $action) {
             return;
         }
 
@@ -145,7 +145,7 @@ class PARSER
         $actionlc = strtolower($action);
 
         // skip execution of skinvars while inside an if condition which hides this part of the page
-        if ( ! $this->handler->if_currentlevel
+        if (! $this->handler->if_currentlevel
              &&
              ! in_array($actionlc, array('else', 'elseif', 'endif', 'ifnot', 'elseifnot'))
              &&
@@ -154,8 +154,10 @@ class PARSER
         }
 
         if (in_array($actionlc, $this->actions) || $this->norestrictions) {
-            call_user_func_array(array($this->handler, 'parse_' . $actionlc),
-                $params);
+            call_user_func_array(
+                array($this->handler, 'parse_' . $actionlc),
+                $params
+            );
         } elseif ($action === '_') {
             // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
             global $manager;
@@ -166,22 +168,24 @@ class PARSER
             }
 
             return;
-        } elseif (in_array($actionlc,
-                array(
+        } elseif (in_array(
+            $actionlc,
+            array(
                     'getvar',
                     'postvar',
                     'cookievar',
                     'requestvar',
                     'servervar',
                     'confvar',
-                ))
+            )
+        )
                   && isset($params[0])) {
             $default = isset($params[1]) ? $params[1] : '';
             echo hsc($actionlc($params[0], $default));
         } else {
             // redirect to plugin action if possible
             //            define(DISABLE_PARSE_NP_PLUGIN, TRUE);
-            if ( ! defined('DISABLE_PARSE_NP_PLUGIN')
+            if (! defined('DISABLE_PARSE_NP_PLUGIN')
                  || ! DISABLE_PARSE_NP_PLUGIN) {
                 if ((strncmp($actionlc, 'np_', 3) == 0)
                     && in_array('plugin', $this->actions)
@@ -191,37 +195,40 @@ class PARSER
             }
             if (in_array('plugin', $this->actions)
                 && $manager->pluginInstalled('NP_' . $action)) {
-                if ( ! HAS_CATCH_ERROR) {
+                if (! HAS_CATCH_ERROR) {
                     $this->doAction(sprintf(
-                        'plugin(%s%s%s)'
-                        , $action
-                        , $this->pdelim
-                        , implode($this->pdelim, $params)
+                        'plugin(%s%s%s)',
+                        $action,
+                        $this->pdelim,
+                        implode($this->pdelim, $params)
                     ));
                 } else {
                     try {
                         $this->doAction(sprintf(
-                            'plugin(%s%s%s)'
-                            , $action
-                            , $this->pdelim
-                            , implode($this->pdelim, $params)
+                            'plugin(%s%s%s)',
+                            $action,
+                            $this->pdelim,
+                            implode($this->pdelim, $params)
                         ));
                     } catch (Error $e) {
                         global $member;
                         if ($member && $member->isLoggedIn()
                             && $member->isAdmin()) {
                             $msg = sprintf(
-                                'php critical error in plugin(%s):[%s] Line:%d (%s) : '
-                                , 'NP_' . $action
-                                , get_class($e)
-                                , $e->getLine()
-                                , $e->getFile()
+                                'php critical error in plugin(%s):[%s] Line:%d (%s) : ',
+                                'NP_' . $action,
+                                get_class($e),
+                                $e->getLine(),
+                                $e->getFile()
                             );
                             if (confVar('DebugVars')) {
                                 var_dump($e->getMessage());
                             }
-                            SYSTEMLOG::addUnique('error', 'Error',
-                                $msg . $e->getMessage());
+                            SYSTEMLOG::addUnique(
+                                'error',
+                                'Error',
+                                $msg . $e->getMessage()
+                            );
                             if (get_class($e) !== 'ArgumentCountError') {
                                 throw $e;
                             }
@@ -231,8 +238,10 @@ class PARSER
                     }
                 }
             } elseif (confVar('DebugVars')) {
-                echo '&lt;%', $action, '(', join($this->pdelim,
-                    $params), ')%&gt;';
+                echo '&lt;%', $action, '(', join(
+                    $this->pdelim,
+                    $params
+                ), ')%&gt;';
             }
         }
     }

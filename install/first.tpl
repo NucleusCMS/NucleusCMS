@@ -97,7 +97,8 @@
             </tr>
             <tr>
                 <td><label for="install_db_database">{%_TEXT4_TAB_FIELD4%}:</label></td>
-                <td><input id="install_db_database" name="install_db_database" /> (<input name="install_db_create" value="1" type="checkbox" id="install_db_create" /><label for="install_db_create">{%_TEXT4_TAB_FIELD4_ADD%}</label>)</td>
+                <td><input id="install_db_database" name="install_db_database"
+                           pattern="^[a-zA-Z\$_\u0080-\uFFFF][0-9a-zA-Z\$_\u0080-\uFFFF]+$" /> ASCII: a-z A-Z 0-9 $ _ <br>U+0080 .. U+FFFF(<input name="install_db_create" value="1" type="checkbox" id="install_db_create" /><label for="install_db_create">{%_TEXT4_TAB_FIELD4_ADD%}</label>)</td>
             </tr>
         </table>
     </fieldset>

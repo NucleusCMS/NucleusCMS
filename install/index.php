@@ -8,8 +8,8 @@
  * as published by the Free Software Foundation; either version 2
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
- * 
- * This script will install the Nucleus tables in your SQL-database, 
+ *
+ * This script will install the Nucleus tables in your SQL-database,
  * and initialize the data in those tables.
  *
  * Below is a friendly way of letting users on non-php systems know that Nucleus won't run there.
@@ -32,25 +32,26 @@ include_once('../nucleus/libs/helpers.php');
 define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
 
-$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0',PHP_VERSION, '<=');
-define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0) ); // allow sqlite install , boolean
+$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0', PHP_VERSION, '<=');
+define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0)); // allow sqlite install , boolean
 define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
-define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION' , '5.5.0'); // (string) , format : dot separated
+define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '5.5.0'); // (string) , format : dot separated
 
 define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
 
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
-if (preg_match('#/install$#', $path))
-{
+if (preg_match('#/install$#', $path)) {
     header("Location: " . $path . "/");
     exit;
 }
 
-if (DEBUG_INSTALL_QUERY)
-    { global $CONF; $CONF=array('debug'=>1); }
+if (DEBUG_INSTALL_QUERY) {
+    global $CONF;
+    $CONF=array('debug'=>1);
+}
 
 include_once('../nucleus/libs/version.php');
 
@@ -58,46 +59,45 @@ $install_lang_defs = get_install_lang_defs();
 $install_lang_keys = get_install_lang_keys();
 
 global $lang;
-if (isset($_POST['lang']))
-    $lang = strtolower( $_POST['lang'] );
-else if (isset($_GET['lang']))
-    $lang = strtolower( $_GET['lang'] );
-
-if ($lang != '' && !in_array($lang, $install_lang_keys))
-    $lang = 'en';
-else if ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php"))
-{
-   // do nothing
+if (isset($_POST['lang'])) {
+    $lang = strtolower($_POST['lang']);
+} elseif (isset($_GET['lang'])) {
+    $lang = strtolower($_GET['lang']);
 }
-else
-{
+
+if ($lang != '' && !in_array($lang, $install_lang_keys)) {
+    $lang = 'en';
+} elseif ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php")) {
+   // do nothing
+} else {
     $v = '';
     $http_lang = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
-    foreach($http_lang as $key)
-    {
-        if (!isset($install_lang_defs[$key]))
-        {
+    foreach ($http_lang as $key) {
+        if (!isset($install_lang_defs[$key])) {
             $key = substr($key, 2);
-            if (!isset($install_lang_defs[$key]))
+            if (!isset($install_lang_defs[$key])) {
                 continue;
+            }
         }
         if ($key != 'en' && in_array($key, $install_lang_keys)
-                         && is_file("./install_lang_{$key}.php") )
-           {  $v = $lang = $key; break; }
+                         && is_file("./install_lang_{$key}.php")) {
+            $v = $lang = $key;
+            break;
+        }
     }
-    if (!$v)
-       $lang = 'en';
+    if (!$v) {
+        $lang = 'en';
+    }
 }
 
-    define('INSTALL_LANG' , $lang);
+    define('INSTALL_LANG', $lang);
     include_once("./install_lang_{$lang}.php");
 
-    if ($lang != 'en')
-    {
-        ob_start();
-        include_once("./install_lang_en.php");
-        ob_end_clean();
-    }
+if ($lang != 'en') {
+    ob_start();
+    include_once("./install_lang_en.php");
+    ob_end_clean();
+}
 
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
@@ -138,18 +138,21 @@ if (version_compare(PHP_VERSION, '5.3.0', '<')) {
 
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
-if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0) ) {
+if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
     global $CONF;
     $CONF['installscript'] = 1;
 }
 
 
 // include core classes that are needed for login & plugin handling
-if (!function_exists('mysql_query')) include_once('../nucleus/libs/sql/mysql_emulate.php');
-else                                 define('_EXT_MYSQL_EMULATE' , 0);
+if (!function_exists('mysql_query')) {
+    include_once('../nucleus/libs/sql/mysql_emulate.php');
+} else {
+    define('_EXT_MYSQL_EMULATE', 0);
+}
 
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
-if ( ENABLE_SQLITE_INSTALL && (postVar('install_db_type') == 'sqlite')) {
+if (ENABLE_SQLITE_INSTALL && (postVar('install_db_type') == 'sqlite')) {
     $DB_DRIVER_NAME = 'sqlite';
     $DB_PHP_MODULE_NAME = 'pdo';
 }
@@ -169,17 +172,22 @@ include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
 if ($DB_PHP_MODULE_NAME == 'pdo') {
-    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) doError(_ERROR1);
+    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) {
+        doError(_ERROR1);
+    }
+} elseif (!function_exists('mysql_query')) {
+    _doError(_ERROR1);
 }
-elseif (!function_exists('mysql_query') ) _doError(_ERROR1);
 
 // check config.php, v3.80-
 if (@is_file('../config.php')) {
     _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
 }
 
-if (postVar('action') == 'go') doInstall();
-else                           showInstallForm();
+if (postVar('action') == 'go') {
+    doInstall();
+} else {
+    showInstallForm();
+}
 
 exit;
-

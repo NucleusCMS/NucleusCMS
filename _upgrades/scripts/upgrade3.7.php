@@ -1,17 +1,20 @@
 <?php
 
-function upgrade_do371() {
+function upgrade_do371()
+{
 
-    if (upgrade_checkinstall(371))
+    if (upgrade_checkinstall(371)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
 
     $query = array();
     if (!sql_existTableColumnName(sql_table('category'), 'corder')) {
         $query[] = "ADD `corder` int(11) NOT NULL default '100', ADD INDEX `corder` (`corder`)";
     }
     $q = sql_query(parseQuery("show index from `[@prefix@]category` WHERE Column_name = 'cblog'"));
-    if (!$q || !sql_num_rows($q))
+    if (!$q || !sql_num_rows($q)) {
         $query[] = "ADD INDEX `cblog` (`cblog`)";
+    }
     unset($q);
     if (count($query)) {
         $query = parseQuery("ALTER TABLE `[@prefix@]category` ") . join(', ', $query);
@@ -23,10 +26,12 @@ function upgrade_do371() {
     update_version('371');
 }
 
-function upgrade_do370() {
+function upgrade_do370()
+{
 
-    if (upgrade_checkinstall(370))
+    if (upgrade_checkinstall(370)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
     
     $query = parseQuery("ALTER TABLE `[@prefix@]item`
                     MODIFY COLUMN `ibody` mediumtext default NULL,
