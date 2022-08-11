@@ -2500,9 +2500,9 @@ class ADMIN
 
         if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
             $mem->setDisplayName($name);
-        }
-        if ($password) {
-            $mem->setPassword($password);
+            if ($password) {
+                $mem->setPassword($password);
+            }
         }
 
         $oldEmail = $mem->getEmail();

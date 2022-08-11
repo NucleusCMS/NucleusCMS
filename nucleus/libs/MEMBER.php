@@ -772,7 +772,11 @@ class MEMBER
 
     function checkPassword($pw)
     {
-        return (md5($pw) == $this->getPassword());
+        if (str_contains($this->getPassword(), '$')) {
+            return $this->hasher->CheckPassword($pw, $this->getPassword());
+        } else {
+            return md5($pw) === $this->getPassword();
+        }
     }
 
     function getRealName()
@@ -981,6 +985,9 @@ class MEMBER
         }
         if (! $password) {
             return _ERROR_PASSWORDMISSING;
+        }
+        if (strlen($password) < 6) {
+            return _ERROR_PASSWORDTOOSHORT;
         }
 
         $obj = new MEMBER();
@@ -1230,5 +1237,5 @@ class MEMBER
             sql_table('activation'),
             date('Y-m-d H:i:s', $boundary)
         ));
-    }
+    }   
 }
