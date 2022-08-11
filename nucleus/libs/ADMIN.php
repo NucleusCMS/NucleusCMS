@@ -178,9 +178,9 @@ class ADMIN
 
         <form action="index.php" method="post">
             <p>
-                <?php echo _LOGIN_NAME; ?> <br /><input name="login" tabindex="10" />
+                <?php echo _LOGIN_NAME; ?> <br /><input name="login" tabindex="10" required />
                 <br />
-                <?php echo _LOGIN_PASSWORD; ?> <br /><input name="password" tabindex="20" type="password" />
+                <?php echo _LOGIN_PASSWORD; ?> <br /><input name="password" tabindex="20" type="password" required />
                 <br />
                 <input name="action" value="login" type="hidden" />
                 <br />
@@ -2174,11 +2174,11 @@ class ADMIN
                         <td><?php echo _MEMBERS_DISPLAY ?> <?php help('shortnames'); ?>
                             <br /><small><?php echo _MEMBERS_DISPLAY_INFO ?></small>
                         </td>
-                        <td><input tabindex="10010" name="name" size="32" maxlength="32" /></td>
+                        <td><input tabindex="10010" name="name" size="32" maxlength="32" required autocomplete="off" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REALNAME ?></td>
-                        <td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
+                        <td><input name="realname" tabindex="10020" size="40" maxlength="60" required autocomplete="off" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_PWD ?>
@@ -2192,7 +2192,7 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_EMAIL ?></td>
-                        <td><input name="email" tabindex="10040" size="40" maxlength="60" /></td>
+                        <td><input name="email" tabindex="10040" size="40" maxlength="60" required /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_URL ?></td>
@@ -2296,7 +2296,7 @@ class ADMIN
                         </td>
                         <td>
                             <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-                                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  hsc($mem->getDisplayName()); ?>" />
+                                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  hsc($mem->getDisplayName()); ?>" required />
                             <?php } else {
                                 echo hsc($member->getDisplayName());
                             }
@@ -2305,7 +2305,7 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REALNAME ?></td>
-                        <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" /></td>
+                        <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" required /></td>
                     </tr>
                     <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
                         <tr>
@@ -2324,7 +2324,7 @@ class ADMIN
                         <td><?php echo _MEMBERS_EMAIL ?>
                             <br /><small><?php echo _MEMBERS_EMAIL_EDIT ?></small>
                         </td>
-                        <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  hsc($mem->getEmail()); ?>" /></td>
+                        <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  hsc($mem->getEmail()); ?>" required /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_URL ?></td>
@@ -2482,7 +2482,7 @@ class ADMIN
         }
 
 
-        if (!$realname) {
+        if (trim($realname) === '') {
             $this->error(_ERROR_REALNAMEMISSING);
         }
 
@@ -4200,7 +4200,7 @@ class ADMIN
                         <td><?php echo _EBLOG_SHORTNAME ?>
                             <?php help('shortblogname'); ?>
                         </td>
-                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" /></td>
+                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" required pattern="^[a-z0-9]+$" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
@@ -4250,7 +4250,8 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_CREATE ?></td>
-                        <td><input type="submit" tabindex="200" value="<?php echo _EBLOG_CREATE_BTN ?>" onclick="return checkSubmit();" /></td>
+                        <td><input type="submit" tabindex="200" value="<?php echo _EBLOG_CREATE_BTN ?>"
+                                   onclick="if (this.form.shortname.value.length==0) { alert('<?php echo hsc(strip_tags(_EBLOG_SHORTNAME.' : '._EBLOG_SHORTNAME_EXTRA)) ?>'); return false; } return checkSubmit();" /></td>
                     </tr>
                 </table>
 
