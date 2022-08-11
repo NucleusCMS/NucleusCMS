@@ -43,6 +43,9 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+
+define('ERROR_PASSWORD_INVALID_CHARACTERS',  'password contains invalid characters');
+
 define('_SETTINGS_ENABLE_RSS',          'Enable RSS output');
 
 define('_ERROR_NOSUCHPAGE',				'No such page');

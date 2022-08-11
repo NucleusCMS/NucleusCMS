@@ -2182,13 +2182,13 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_PWD ?>
-                            <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?></small>
+                            <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                         </td>
-                        <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
+                        <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" required autocomplete="off"  pattern="^[\x21-\x7e]{6,}$" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REPPWD ?></td>
-                        <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" /></td>
+                        <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" required pattern="^[\x21-\x7e]{6,}$" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_EMAIL ?></td>
@@ -2310,14 +2310,14 @@ class ADMIN
                     <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
                         <tr>
                             <td><?php echo _MEMBERS_PWD ?>
-                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?></small>
+                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                                 <input type="password" name="dummy" autocomplete="off" style="display:none;" />
                             </td>
-                            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
+                            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" pattern="^$|^[\x21-\x7e]{6,}$" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _MEMBERS_REPPWD ?></td>
-                            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
+                            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" pattern="^$|^[\x21-\x7e]{6,}$" /></td>
                         </tr>
                     <?php } ?>
                     <tr>
@@ -2456,6 +2456,10 @@ class ADMIN
 
             if ($password && (strlen($password) < 6)) {
                 $this->error(_ERROR_PASSWORDTOOSHORT);
+            }
+
+            if ($password !== '' && !MEMBER::checkIfValidPasswordCharacters($password)) {
+                $this->error(ERROR_PASSWORD_INVALID_CHARACTERS);
             }
 
             if ($password) {
@@ -2681,7 +2685,7 @@ class ADMIN
                     <table>
                         <tr>
                             <td><?php echo _MEMBERS_PWD ?>
-                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?></small>
+                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                             </td>
                             <td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
                         </tr>
@@ -2741,8 +2745,8 @@ class ADMIN
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
         }
 
-        $password       = postVar('password');
-        $repeatpassword = postVar('repeatpassword');
+        $password       = (string) postVar('password');
+        $repeatpassword = (string) postVar('repeatpassword');
 
         if (!trim($password) || (trim($password) != $password)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
@@ -2754,6 +2758,10 @@ class ADMIN
 
         if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
+        }
+
+        if (!MEMBER::checkIfValidPasswordCharacters($password)) {
+            return $this->_showActivationPage($key, ERROR_PASSWORD_INVALID_CHARACTERS);
         }
 
         if ($password) {

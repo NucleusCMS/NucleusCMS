@@ -806,7 +806,12 @@ class MEMBER
 
     function setPassword($pwd)
     {
+        if (! self::checkIfValidPasswordCharacters($pwd)) {
+            return false;
+        }
         $this->password = $this->hasher->HashPassword($pwd);
+
+        return true;
     }
 
     function setHalt($halt)
@@ -988,6 +993,9 @@ class MEMBER
         }
         if (strlen($password) < 6) {
             return _ERROR_PASSWORDTOOSHORT;
+        }
+        if (! self::checkIfValidPasswordCharacters($password)) {
+            return ERROR_PASSWORD_INVALID_CHARACTERS;
         }
 
         $obj = new MEMBER();
@@ -1237,5 +1245,12 @@ class MEMBER
             sql_table('activation'),
             date('Y-m-d H:i:s', $boundary)
         ));
-    }   
+    }
+    
+    public static function checkIfValidPasswordCharacters($password) {
+        // check Characters
+        // 0x21-0x7e : 0-9 a-z A-Z ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+        return preg_match('/^[\x21-\x7e]{6,}$/', $password);
+    }
+    
 }

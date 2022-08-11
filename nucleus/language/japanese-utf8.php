@@ -154,6 +154,8 @@ define('_SYSTEMLOG_CLEAR_TITLE', "システムログの消去");
 define('_SYSTEMLOG_CLEAR_TEXT',  "システムログを今すぐ消去");
 define('_MSG_SYSTEMLOGCLEARED',  "システムログが消去されました");
 
+define('ERROR_PASSWORD_INVALID_CHARACTERS',  'パスワードに使えない文字が含まれています');
+
 /********************************************
  *        Start New for 3.71                *
  ********************************************/
