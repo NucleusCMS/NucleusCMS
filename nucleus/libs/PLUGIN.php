@@ -312,22 +312,14 @@ class NucleusPlugin
         return $this->_setOption('item', $itemid, $name, $value);
     }
 
+    private $data_getoption = array();
+    
     /**
      * Retrieves the current value for an option
      */
     function getOption($name)
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $pid = $this->getID();
-            if (!isset($_shared_data[$pid])) {
-                $_shared_data[$pid] = array();
-            }
-            $rs = &$_shared_data[$pid];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $rs = array();
-        }
+        $rs = &$this->data_getoption;
 
         if (isset($rs[$name])) {
             return $rs[$name];
@@ -529,6 +521,7 @@ class NucleusPlugin
     {
         $this->_aOptionValues = array();
         $this->plugin_options = 0;
+        $this->data_getoption = array();
     }
 
     // internal functions of the class starts here
@@ -558,6 +551,8 @@ class NucleusPlugin
         $this->__construct();
     }
 
+    private $data_getoptiontop = array();
+
     /**
      * Retrieves an array of the top (or bottom) of an option from a plugin.
      *
@@ -573,17 +568,7 @@ class NucleusPlugin
      */
     function _getOptionTop($context, $name, $amount = 10, $sort = 'desc')
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $pid = $this->getID();
-            if (!isset($_shared_data[$pid])) {
-                $_shared_data[$pid] = array();
-            }
-            $rs = &$_shared_data[$pid];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $rs = array();
-        }
+        $rs = &$this->data_getoptiontop;
 
         $rkey = md5(print_r(func_get_args(), true));
         if (isset($rs[$rkey])) {
@@ -794,6 +779,8 @@ class NucleusPlugin
         return 1;
     }
 
+    private $data__getoption = array();
+    
     /**
      * Get an option from Cache or database
      *      - if not in the option Cache read it from the database
@@ -803,17 +790,7 @@ class NucleusPlugin
      */
     function _getOption($context, $contextid, $name)
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $pid = $this->getID();
-            if (!isset($_shared_data[$pid])) {
-                $_shared_data[$pid] = array();
-            }
-            $rs = &$_shared_data[$pid];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $rs = array();
-        }
+        $rs = &$this->data__getoption;
 
         $rkey = md5(print_r(func_get_args(), true));
 
@@ -863,6 +840,8 @@ class NucleusPlugin
         return $this->_aOptionValues[$key];
     }
 
+    private $data_getalloptions = array();
+
     /**
      * Returns assoc array with all values for a given option
      * (one option per possible context id)
@@ -871,17 +850,7 @@ class NucleusPlugin
      */
     function _getAllOptions($context, $name)
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $pid = $this->getID();
-            if (!isset($_shared_data[$pid])) {
-                $_shared_data[$pid] = null;
-            }
-            $rs = &$_shared_data[$pid];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $rs = null;
-        }
+        $rs = &$this->data_getalloptions;
 
         $key = md5(print_r(func_get_args(), true));
         if (isset($rs[$key])) {
@@ -917,20 +886,12 @@ class NucleusPlugin
 
         return $aOptions;
     }
+    
+    private $data_getctxidasarray = array();
 
     private function getCtxIdAsArray($context)
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $pid = $this->getID();
-            if (!isset($_shared_data[$pid])) {
-                $_shared_data[$pid] = array();
-            }
-            $ids = &$_shared_data[$pid];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $ids = array();
-        }
+        $ids = &$this->data_getctxidasarray;
 
         if (isset($ids[$context])) {
             return $ids[$context];
@@ -968,37 +929,24 @@ class NucleusPlugin
         return $ids[$context];
     }
 
+    private $event_list;
+
     final public function _getEventList()
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $index = get_class($this);
-            if (!isset($_shared_data[$index])) {
-                $_shared_data[$index] = array();
-            }
-            $res = &$_shared_data[$index];
-            if (!empty($res)) {
-                return $res;
-            }
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $res = null;
-            if (!is_null($res)) {
-                return $res;
-            }
-            $res = array();
+        if ($this->event_list !== null) {
+            return $this->event_list;
         }
+        $this->event_list = array();
 
         $list = get_class_methods($this);
         if (!empty($list)) {
             foreach ($list as $name) {
                 if (strncmp($name, "event_", 6) == 0) {
-                    $res[] = substr($name, 6);
+                    $this->event_list[] = substr($name, 6);
                 }
             }
         }
-
-        return $res;
+        return $this->event_list;
     }
 
     /**
@@ -1479,26 +1427,11 @@ class NucleusPlugin
 
     public function checkRemoteUpdate()
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $index = get_class($this);
-            if (!isset($_shared_data[$index])) {
-                $_shared_data[$index] = null;
-            }
-            $enable_db = &$_shared_data[$index];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $enable_db = null;
-        }
-
         $ret_val = array('result' => false, 'version' => '', 'download' => '');
         //        if (!function_exists('get_called_class'))
         //            return $ret_val;
         $NP_Name = get_class($this); // get_called_class();
-        if ($enable_db === null) {
-            $enable_db = CoreCachedData::existTable();
-        }
-        if (!$enable_db) {
+        if (!CoreCachedData::existTable()) {
             return $ret_val;
         }
 
