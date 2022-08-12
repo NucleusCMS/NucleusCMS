@@ -1612,10 +1612,24 @@ class ADMIN
                 $CONF['AdminURL'] . 'index.php?action=itemlist&blogid=' . getBlogIDFromItemID($itemid)
             );
         } else {
-            // TODO: set start item correctly for itemlist
-            //            $this->action_itemlist(getBlogIDFromItemID($itemid));               // list : Filter by the same category as item
-            //            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid); // list : non filter
-            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);   // back to itemedit
+            // page select : Page to display after saving the item
+            $select_page_after_save = $member->getOption('item', 'select_page_after_save', '');
+            switch ($select_page_after_save) {
+                case 'back_home' :
+                    $url_redirect = $CONF['AdminURL'] . '?action=overview';
+                    break;
+                case 'list' :
+                    $url_redirect = $CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid; 
+                    break;
+                case 'list_with_category' :
+                    $this->action_itemlist(getBlogIDFromItemID($itemid)); // list : Filter by the same category as item
+                    exit;
+                    break;
+                default:
+                    $url_redirect = $CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid; // back to itemedit
+                    break;
+            }
+            redirect($url_redirect);
             exit;
         }
     }
@@ -2390,6 +2404,25 @@ class ADMIN
                         <td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
                     </tr>
                     <?php
+
+        // Which page does current member want to select after saving the item?
+        if (MEMBER::existOptionTable()) {
+            $select_page_after_save = $member->getOption('item', 'select_page_after_save', '');
+            printf("<tr><td>%s</td><td>\n", hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_TITLE));
+            echo "<select name='select_page_after_save' tabindex='88'>";
+            $v = array(
+                '' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_ITEM) ,
+                'list' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST) ,
+                'list_with_category' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST_WITH_CATEGORY) ,
+                'back_home' => hsc(_BACKHOME) ,                
+            );
+            foreach($v as $key => $value) {
+                $op = $key===$select_page_after_save ? " selected='selected'" : '';
+                printf("<option value='%s'%s>%s</option>", $key, $op, $value);
+            }
+            echo "</select>\n";
+        }
+
                     // plugin options
                     $this->_insertPluginOptions('member', $memberid);
                     ?>
@@ -2531,6 +2564,15 @@ class ADMIN
         $mem->setAutosave($autosave);
 
         $mem->write();
+        
+        // Which page does current member want to select after saving the item?
+        if (MEMBER::existOptionTable()) {
+            $select_page_after_save = (string) postVar('select_page_after_save');
+            if (!in_array($select_page_after_save, array('','list','list_with_category','back_home'))) {
+                $select_page_after_save = '';
+            }
+            $mem->updateOption('item', 'select_page_after_save', $select_page_after_save);
+        }
 
         // store plugin options
         $aOptions = requestArray('plugoption');
@@ -4105,6 +4147,12 @@ class ADMIN
         $query = 'DELETE FROM ' . sql_table('activation') . ' WHERE vmember=' . $memberid;
         sql_query($query);
 
+        // delete member_option
+        if (MEMBER::existOptionTable()) {
+            $query = 'DELETE FROM ' . sql_table('member_option') . ' WHERE omember=' . $memberid;
+            sql_query($query);
+        }
+        
         // delete all associated plugin options
         NucleusPlugin::_deleteOptionValues('member', $memberid);
 

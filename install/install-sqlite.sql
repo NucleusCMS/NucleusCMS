@@ -299,6 +299,14 @@ INSERT INTO `nucleus_member` (
     1, 1, 'd767aefc60415859570d64c649257f19'
 );
 
+CREATE TABLE IF NOT EXISTS `nucleus_member_option` (
+  `omember`  int(11)      NOT NULL,
+  `ocontext` varchar(20)  NOT NULL default '' COLLATE NOCASE,
+  `name`     varchar(100) NOT NULL COLLATE NOCASE ,
+  `value`    varchar(255) NOT NULL default '',
+  UNIQUE (`omember`, `ocontext`, `name`)
+);
+
 CREATE TABLE IF NOT EXISTS `nucleus_plugin` (
   `pid`    INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,
   `pfile`  varchar(40) NOT NULL default '' COLLATE NOCASE ,

@@ -45,6 +45,12 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://japan.nucleuscms.org" title="
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_TITLE', 'アイテム保存後に表示されるページ');
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_ITEM' , '保存したアイテムの編集に戻る');
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST' , 'アイテム一覧に戻る');
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST_WITH_CATEGORY' , 'アイテム一覧（カテゴリ）に戻る');
+
 define('_SETTINGS_ENABLE_RSS',         'RSSの出力を有効にする');
 
 define('_ERROR_NOSUCHPAGE',            '指定されたページはありません');
