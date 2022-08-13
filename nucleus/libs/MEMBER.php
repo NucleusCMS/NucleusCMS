@@ -211,7 +211,7 @@ class MEMBER
             $this->setURL($obj->murl);
             $this->setDisplayName($obj->mname);
             $this->setAdmin($obj->madmin);
-            $this->id = $obj->mnumber;
+            $this->id = (int) $obj->mnumber;
             $this->setCanLogin($obj->mcanlogin);
             $this->setNotes($obj->mnotes);
             $this->setLanguage($obj->deflang);
@@ -772,7 +772,11 @@ class MEMBER
 
     function checkPassword($pw)
     {
-        return (md5($pw) == $this->getPassword());
+        if (str_contains($this->getPassword(), '$')) {
+            return $this->hasher->CheckPassword($pw, $this->getPassword());
+        } else {
+            return md5($pw) === $this->getPassword();
+        }
     }
 
     function getRealName()
@@ -802,7 +806,12 @@ class MEMBER
 
     function setPassword($pwd)
     {
+        if (! self::checkIfValidPasswordCharacters($pwd)) {
+            return false;
+        }
         $this->password = $this->hasher->HashPassword($pwd);
+
+        return true;
     }
 
     function setHalt($halt)
@@ -869,7 +878,7 @@ class MEMBER
 
     function setAdmin($val)
     {
-        $this->admin = $val;
+        $this->admin = (int) $val;
     }
 
     function canLogin()
@@ -879,7 +888,7 @@ class MEMBER
 
     function setCanLogin($val)
     {
-        $this->canlogin = $val;
+        $this->canlogin = (int) $val;
     }
 
     function getNotes()
@@ -899,7 +908,7 @@ class MEMBER
 
     function setAutosave($val)
     {
-        $this->autosave = $val;
+        $this->autosave = (int) $val;
     }
 
     function getID()
@@ -981,6 +990,12 @@ class MEMBER
         }
         if (! $password) {
             return _ERROR_PASSWORDMISSING;
+        }
+        if (strlen($password) < 6) {
+            return _ERROR_PASSWORDTOOSHORT;
+        }
+        if (! self::checkIfValidPasswordCharacters($password)) {
+            return ERROR_PASSWORD_INVALID_CHARACTERS;
         }
 
         $obj = new MEMBER();
@@ -1230,5 +1245,101 @@ class MEMBER
             sql_table('activation'),
             date('Y-m-d H:i:s', $boundary)
         ));
+    }
+
+    public static function checkIfValidPasswordCharacters($password)
+    {
+        // check Characters
+        // 0x21-0x7e : 0-9 a-z A-Z ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+        return preg_match('/^[\x21-\x7e]{6,}$/', $password);
+    }
+
+    public static function existOptionTable()
+    {
+        static $res = null;
+        if ($res === null) {
+            global $CONF;
+            $res = sql_existTableName(sql_table('member_option'));
+            if (!$res && NUCLEUS_DEVELOP && $CONF['DatabaseVersion'] == 380) {
+                // v3.8dev : force upgrade
+                self::createOptionTable();
+                $res = sql_existTableName(sql_table('member_option'));
+            }
+        }
+        return $res;
+    }
+
+    public function getOption($context, $name, $default = '')
+    {
+        if (!self::existOptionTable()) {
+            return $default;
+        }
+        $res = quickQuery(sprintf(
+            "SELECT value as result FROM %s WHERE omember=%d and ocontext='%s' and name='%s';",
+            sql_table('member_option'),
+            $this->id,
+            sql_real_escape_string($context),
+            sql_real_escape_string($name)
+        ));
+        if (is_string($res)) {
+            return $res;
+        }
+        return $default;
+    }
+
+    public function updateOption($context, $name, $value)
+    {
+        if (!self::existOptionTable()) {
+            return false;
+        }
+        $ct = (int) quickQuery(sprintf(
+            "SELECT count(*) FROM %s WHERE omember=%d and ocontext='%s' and name='%s' limit 1;",
+            sql_table('member_option'),
+            $this->id,
+            sql_real_escape_string($context),
+            sql_real_escape_string($name)
+        ));
+
+        if ($ct == 0) {
+            $query = sprintf(
+                "INSERT INTO %s (omember, ocontext, name, value) VALUES('%s', '%s', '%s', '%s');",
+                sql_table('member_option'),
+                $this->id,
+                sql_real_escape_string($context),
+                sql_real_escape_string($name),
+                sql_real_escape_string($value)
+            );
+        } else {
+            $query = sprintf(
+                "UPDATE %s SET value = '%s' WHERE omember=%d and ocontext='%s' and name='%s';",
+                sql_table('member_option'),
+                sql_real_escape_string($value),
+                $this->id,
+                sql_real_escape_string($context),
+                sql_real_escape_string($name)
+            );
+        }
+        sql_query($query);
+    }
+    
+    public static function createOptionTable()
+    {
+        if (self::existOptionTable()) {
+            return;
+        }
+        global $DB_DRIVER_NAME;
+        if ($DB_DRIVER_NAME === 'sqlite') {
+            return;
+        }
+        $query = parseQuery("
+            CREATE TABLE `[@prefix@]member_option` (
+              `omember`  int(11)      NOT NULL,
+              `ocontext` varchar(20)  NOT NULL default '',
+              `name`     varchar(100) NOT NULL,
+              `value`    varchar(255) NOT NULL default '',
+              PRIMARY KEY (`omember`),
+              UNIQUE  KEY (`omember`, `ocontext`, `name`)
+            ) ENGINE=MyISAM;");
+        sql_query($query);
     }
 }

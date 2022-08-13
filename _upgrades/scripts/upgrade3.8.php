@@ -15,6 +15,7 @@ function upgrade_do380()
     upgrade_do380_Skin_UpgardeAddColumnSpartstype();
     upgrade_do380_addfield_mimage();
     fix_do380_Skin_ColumnSpartstype();
+    upgrade_do380_addtable_memberoption();
 
     //  -> 3.80
     // update database version
@@ -184,4 +185,25 @@ function upgrade_do380_addfield_mimage()
     
     $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mimage` varchar(500) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]member table', $query);
+}
+
+function upgrade_do380_addtable_memberoption()
+{
+    global $DB_DRIVER_NAME;
+    if (sql_existTableName(sql_table('member_option'))) {
+        return;
+    }
+    if ($DB_DRIVER_NAME === 'sqlite') {
+        return;
+    }
+    $query = parseQuery("
+        CREATE TABLE `[@prefix@]member_option` (
+          `omember`  int(11)      NOT NULL,
+          `ocontext` varchar(20)  NOT NULL default '',
+          `name`     varchar(100) NOT NULL,
+          `value`    varchar(255) NOT NULL default '',
+          PRIMARY KEY (`omember`),
+          UNIQUE  KEY (`omember`, `ocontext`, `name`)
+        ) ENGINE=MyISAM;");
+    upgrade_query('Add [@prefix@]member table', $query);
 }

@@ -210,6 +210,15 @@ INSERT INTO `nucleus_member` (
     1                                   /* mautosave */
 );
 
+CREATE TABLE `nucleus_member_option` (
+  `omember`  int(11)      NOT NULL,
+  `ocontext` varchar(20)  NOT NULL default '',
+  `name`     varchar(100) NOT NULL,
+  `value`    varchar(255) NOT NULL default '',
+  PRIMARY KEY (`omember`),
+  UNIQUE  KEY (`omember`, `name`, `ocontext`)
+) ENGINE=MyISAM;
+
 CREATE TABLE `nucleus_plugin` (
   `pid`    int(11)     NOT NULL auto_increment,
   `pfile`  varchar(40) NOT NULL default '',

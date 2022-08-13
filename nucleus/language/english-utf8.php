@@ -43,6 +43,14 @@ define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleu
 /********************************************
  *        Start New for 3.80                *
  ********************************************/
+
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_TITLE', 'Which page do you want to select after saving the item?');
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_ITEM' , 'back to the item');
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST' , 'back to item lists');
+define('_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST_WITH_CATEGORY' , 'back to item lists with category');
+
+define('ERROR_PASSWORD_INVALID_CHARACTERS',  'password contains invalid characters');
+
 define('_SETTINGS_ENABLE_RSS',          'Enable RSS output');
 
 define('_ERROR_NOSUCHPAGE',				'No such page');

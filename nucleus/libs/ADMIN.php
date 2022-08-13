@@ -178,9 +178,9 @@ class ADMIN
 
         <form action="index.php" method="post">
             <p>
-                <?php echo _LOGIN_NAME; ?> <br /><input name="login" tabindex="10" />
+                <?php echo _LOGIN_NAME; ?> <br /><input name="login" tabindex="10" required />
                 <br />
-                <?php echo _LOGIN_PASSWORD; ?> <br /><input name="password" tabindex="20" type="password" />
+                <?php echo _LOGIN_PASSWORD; ?> <br /><input name="password" tabindex="20" type="password" required />
                 <br />
                 <input name="action" value="login" type="hidden" />
                 <br />
@@ -1612,10 +1612,24 @@ class ADMIN
                 $CONF['AdminURL'] . 'index.php?action=itemlist&blogid=' . getBlogIDFromItemID($itemid)
             );
         } else {
-            // TODO: set start item correctly for itemlist
-            //            $this->action_itemlist(getBlogIDFromItemID($itemid));               // list : Filter by the same category as item
-            //            redirect($CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid); // list : non filter
-            redirect($CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid);   // back to itemedit
+            // page select : Page to display after saving the item
+            $select_page_after_save = $member->getOption('item', 'select_page_after_save', '');
+            switch ($select_page_after_save) {
+                case 'back_home' :
+                    $url_redirect = $CONF['AdminURL'] . '?action=overview';
+                    break;
+                case 'list' :
+                    $url_redirect = $CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid; 
+                    break;
+                case 'list_with_category' :
+                    $this->action_itemlist(getBlogIDFromItemID($itemid)); // list : Filter by the same category as item
+                    exit;
+                    break;
+                default:
+                    $url_redirect = $CONF['AdminURL'] . '?action=itemedit&itemid=' . $itemid; // back to itemedit
+                    break;
+            }
+            redirect($url_redirect);
             exit;
         }
     }
@@ -2174,25 +2188,25 @@ class ADMIN
                         <td><?php echo _MEMBERS_DISPLAY ?> <?php help('shortnames'); ?>
                             <br /><small><?php echo _MEMBERS_DISPLAY_INFO ?></small>
                         </td>
-                        <td><input tabindex="10010" name="name" size="32" maxlength="32" /></td>
+                        <td><input tabindex="10010" name="name" size="32" maxlength="32" required autocomplete="off" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REALNAME ?></td>
-                        <td><input name="realname" tabindex="10020" size="40" maxlength="60" /></td>
+                        <td><input name="realname" tabindex="10020" size="40" maxlength="60" required autocomplete="off" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_PWD ?>
-                            <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?></small>
+                            <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                         </td>
-                        <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" /></td>
+                        <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" required autocomplete="off"  pattern="^[\x21-\x7e]{6,}$" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REPPWD ?></td>
-                        <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" /></td>
+                        <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" required pattern="^[\x21-\x7e]{6,}$" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_EMAIL ?></td>
-                        <td><input name="email" tabindex="10040" size="40" maxlength="60" /></td>
+                        <td><input name="email" tabindex="10040" size="40" maxlength="60" required /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_URL ?></td>
@@ -2296,7 +2310,7 @@ class ADMIN
                         </td>
                         <td>
                             <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-                                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  hsc($mem->getDisplayName()); ?>" />
+                                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  hsc($mem->getDisplayName()); ?>" required />
                             <?php } else {
                                 echo hsc($member->getDisplayName());
                             }
@@ -2305,26 +2319,26 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REALNAME ?></td>
-                        <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" /></td>
+                        <td><input name="realname" tabindex="20" maxlength="60" size="40" value="<?php echo  hsc($mem->getRealName()); ?>" required /></td>
                     </tr>
                     <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
                         <tr>
                             <td><?php echo _MEMBERS_PWD ?>
-                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?></small>
+                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                                 <input type="password" name="dummy" autocomplete="off" style="display:none;" />
                             </td>
-                            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" /></td>
+                            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" pattern="^$|^[\x21-\x7e]{6,}$" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _MEMBERS_REPPWD ?></td>
-                            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
+                            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" pattern="^$|^[\x21-\x7e]{6,}$" /></td>
                         </tr>
                     <?php } ?>
                     <tr>
                         <td><?php echo _MEMBERS_EMAIL ?>
                             <br /><small><?php echo _MEMBERS_EMAIL_EDIT ?></small>
                         </td>
-                        <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  hsc($mem->getEmail()); ?>" /></td>
+                        <td><input name="email" tabindex="40" size="40" maxlength="60" value="<?php echo  hsc($mem->getEmail()); ?>" required /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_URL ?></td>
@@ -2390,6 +2404,25 @@ class ADMIN
                         <td><?php $this->input_yesno('autosave', $mem->getAutosave(), 87); ?></td>
                     </tr>
                     <?php
+
+        // Which page does current member want to select after saving the item?
+        if (MEMBER::existOptionTable()) {
+            $select_page_after_save = $member->getOption('item', 'select_page_after_save', '');
+            printf("<tr><td>%s</td><td>\n", hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_TITLE));
+            echo "<select name='select_page_after_save' tabindex='88'>";
+            $v = array(
+                '' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_ITEM) ,
+                'list' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST) ,
+                'list_with_category' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST_WITH_CATEGORY) ,
+                'back_home' => hsc(_BACKHOME) ,                
+            );
+            foreach($v as $key => $value) {
+                $op = $key===$select_page_after_save ? " selected='selected'" : '';
+                printf("<option value='%s'%s>%s</option>", $key, $op, $value);
+            }
+            echo "</select>\n";
+        }
+
                     // plugin options
                     $this->_insertPluginOptions('member', $memberid);
                     ?>
@@ -2458,6 +2491,10 @@ class ADMIN
                 $this->error(_ERROR_PASSWORDTOOSHORT);
             }
 
+            if ($password !== '' && !MEMBER::checkIfValidPasswordCharacters($password)) {
+                $this->error(ERROR_PASSWORD_INVALID_CHARACTERS);
+            }
+
             if ($password) {
                 $pwdvalid = true;
                 $pwderror = '';
@@ -2478,7 +2515,7 @@ class ADMIN
         }
 
 
-        if (!$realname) {
+        if (trim($realname) === '') {
             $this->error(_ERROR_REALNAMEMISSING);
         }
 
@@ -2500,9 +2537,9 @@ class ADMIN
 
         if ($CONF['AllowLoginEdit'] || $member->isAdmin()) {
             $mem->setDisplayName($name);
-        }
-        if ($password) {
-            $mem->setPassword($password);
+            if ($password) {
+                $mem->setPassword($password);
+            }
         }
 
         $oldEmail = $mem->getEmail();
@@ -2527,6 +2564,15 @@ class ADMIN
         $mem->setAutosave($autosave);
 
         $mem->write();
+        
+        // Which page does current member want to select after saving the item?
+        if (MEMBER::existOptionTable()) {
+            $select_page_after_save = (string) postVar('select_page_after_save');
+            if (!in_array($select_page_after_save, array('','list','list_with_category','back_home'))) {
+                $select_page_after_save = '';
+            }
+            $mem->updateOption('item', 'select_page_after_save', $select_page_after_save);
+        }
 
         // store plugin options
         $aOptions = requestArray('plugoption');
@@ -2681,7 +2727,7 @@ class ADMIN
                     <table>
                         <tr>
                             <td><?php echo _MEMBERS_PWD ?>
-                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?></small>
+                                <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                             </td>
                             <td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
                         </tr>
@@ -2741,8 +2787,8 @@ class ADMIN
             return $this->_showActivationPage($key, _ERROR_ACTIVATE);
         }
 
-        $password       = postVar('password');
-        $repeatpassword = postVar('repeatpassword');
+        $password       = (string) postVar('password');
+        $repeatpassword = (string) postVar('repeatpassword');
 
         if (!trim($password) || (trim($password) != $password)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDMISSING);
@@ -2754,6 +2800,10 @@ class ADMIN
 
         if ($password && (strlen($password) < 6)) {
             return $this->_showActivationPage($key, _ERROR_PASSWORDTOOSHORT);
+        }
+
+        if (!MEMBER::checkIfValidPasswordCharacters($password)) {
+            return $this->_showActivationPage($key, ERROR_PASSWORD_INVALID_CHARACTERS);
         }
 
         if ($password) {
@@ -4097,6 +4147,12 @@ class ADMIN
         $query = 'DELETE FROM ' . sql_table('activation') . ' WHERE vmember=' . $memberid;
         sql_query($query);
 
+        // delete member_option
+        if (MEMBER::existOptionTable()) {
+            $query = 'DELETE FROM ' . sql_table('member_option') . ' WHERE omember=' . $memberid;
+            sql_query($query);
+        }
+        
         // delete all associated plugin options
         NucleusPlugin::_deleteOptionValues('member', $memberid);
 
@@ -4192,7 +4248,7 @@ class ADMIN
                         <td><?php echo _EBLOG_SHORTNAME ?>
                             <?php help('shortblogname'); ?>
                         </td>
-                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" /></td>
+                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" required pattern="^[a-z0-9]+$" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
@@ -4242,7 +4298,8 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_CREATE ?></td>
-                        <td><input type="submit" tabindex="200" value="<?php echo _EBLOG_CREATE_BTN ?>" onclick="return checkSubmit();" /></td>
+                        <td><input type="submit" tabindex="200" value="<?php echo _EBLOG_CREATE_BTN ?>"
+                                   onclick="if (this.form.shortname.value.length==0) { alert('<?php echo hsc(strip_tags(_EBLOG_SHORTNAME.' : '._EBLOG_SHORTNAME_EXTRA)) ?>'); return false; } return checkSubmit();" /></td>
                     </tr>
                 </table>
 

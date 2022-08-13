@@ -123,6 +123,7 @@
 			<li><a href="#nucleus_item">nucleus_item</a></li>
 			<li><a href="#nucleus_comment">nucleus_comment</a></li>
 			<li><a href="#nucleus_member">nucleus_member</a></li>
+			<li><a href="#nucleus_member_option">nucleus_member_option</a></li>
 			<li><a href="#nucleus_team">nucleus_team</a></li>
 		</ul>
 	</li>
@@ -607,6 +608,37 @@
 </tr></table>
 
 
+
+<h1><a id="nucleus_member_option" name="nucleus_member_option">nucleus_member_optionテーブル</a><a href="#top" class="toplink"><img src="../icon-up.gif" alt="back to top" width="15" height="15" /></a></h1>
+
+<p>主に管理画面でシステムが利用するためのテーブルで、プラグインからの利用は意図していません。</p>
+
+<table summary="nucleus_member_optionテーブル"><tr>
+	<th class="column" abbr="カラム名">カラム名</th>
+	<th class="type" abbr="データ型">データ型</th>
+	<th class="default" abbr="既定値">既定値</th>
+	<th class="description" abbr="データの説明">説明</th>
+</tr><tr>
+	<td class="notnull primary unique">omember</td>
+	<td>int(11)</td>
+	<td></td>
+	<td>メンバーのID</td>
+</tr><tr>
+	<td class="notnull unique">ocontext</td>
+	<td>varchar(20)</td>
+	<td>(空白)</td>
+	<td>オプションのコンテキスト</td>
+</tr><tr>
+	<td class="notnull unique">name</td>
+	<td>varchar(100)</td>
+	<td></td>
+	<td>設定値の名前</td>
+</tr><tr>
+	<td class="notnull">value</td>
+	<td>varchar(255)</td>
+	<td>(空白)</td>
+	<td>設定値</td>
+</tr></table>
 
 
 
