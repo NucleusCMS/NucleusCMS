@@ -211,7 +211,7 @@ class MEMBER
             $this->setURL($obj->murl);
             $this->setDisplayName($obj->mname);
             $this->setAdmin($obj->madmin);
-            $this->id = $obj->mnumber;
+            $this->id = (int) $obj->mnumber;
             $this->setCanLogin($obj->mcanlogin);
             $this->setNotes($obj->mnotes);
             $this->setLanguage($obj->deflang);
@@ -878,7 +878,7 @@ class MEMBER
 
     function setAdmin($val)
     {
-        $this->admin = $val;
+        $this->admin = (int) $val;
     }
 
     function canLogin()
@@ -888,7 +888,7 @@ class MEMBER
 
     function setCanLogin($val)
     {
-        $this->canlogin = $val;
+        $this->canlogin = (int) $val;
     }
 
     function getNotes()
@@ -908,7 +908,7 @@ class MEMBER
 
     function setAutosave($val)
     {
-        $this->autosave = $val;
+        $this->autosave = (int) $val;
     }
 
     function getID()
