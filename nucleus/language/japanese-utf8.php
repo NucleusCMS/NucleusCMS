@@ -17,10 +17,10 @@
 /********************************************
  *        Important Settings                *
  ********************************************/
-if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
-if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
-if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
-if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'ja');
+try_define('_CHARSET', 'UTF-8'); // charset to use
+try_define('_LOCALE',  'ja_JP');  // common locale
+try_define('_LOCALE_NAME_WINDOWS', 'Japanese');
+try_define('_HTML_5_LANG_CODE', 'ja');
 
 /********************************************
  *        Admin Links Settings                *

@@ -1186,6 +1186,13 @@ function getLanguageName()
     return 'english';
 }
 
+function try_define($name , $value)
+{
+    if (!defined($name)) {
+        define($name , $value);
+    }
+}
+
 function LoadCoreLanguage()
 {
     static $loaded = false;
@@ -1203,18 +1210,17 @@ function LoadCoreLanguage()
         include_once($filename);
     }
 
-    if (( ! defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
-        && (defined('_CHARSET') && (strtoupper(_CHARSET) === 'UTF-8'))) {
-        // load undefined constant
-        if ((stripos($language, 'english') === false)
-            && (stripos($language, 'japan') === false)) {
-            if (@is_file($DIR_LANG . 'english-utf8' . '.php')) {
-                // load default lang
-                ob_start();
-                @include($DIR_LANG . 'english-utf8' . '.php');
-                ob_end_clean();
-            }
-        }
+    // load LanguageFallback : english-utf8.php
+    if (defined('_CHARSET')
+       && strtoupper(_CHARSET) === 'UTF-8'
+       && !preg_match('/(english|japan)/i' , $language)
+       && @is_file("{$DIR_LANG}english-utf8.php")
+    ) {
+        // LanguageFallback
+        // load default lang
+        ob_start();
+        @include("{$DIR_LANG}english-utf8.php");
+        ob_end_clean();
     }
     sql_set_charset_v2(_CHARSET);
     //  if (isset($SQL_DBH) && $SQL_DBH)

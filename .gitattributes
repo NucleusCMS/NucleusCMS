@@ -22,3 +22,4 @@
 .gitignore           export-ignore
 .gitattributes       export-ignore
 /archives            export-ignore
+/nucleus/language/_*.php    export-ignore
