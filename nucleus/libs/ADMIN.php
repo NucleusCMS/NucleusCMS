@@ -6422,36 +6422,10 @@ selector();
 
                             <?php
                             // Tidy
-                            if (_CHARSET == 'UTF-8') {
-                                // ENABLE_TIDY
-                                $tidy_loaded = extension_loaded('tidy');
-                                $s_disable = sprintf('[%s] ', _ADMIN_SYSTEMOVERVIEW_DISABLE);
-                                echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
-                                $enable_tidy = isset($CONF['ENABLE_TIDY']) && $CONF['ENABLE_TIDY'];
-                                if ($tidy_loaded) {
-                                    $this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);
-                                } else {
-                                    echo $s_disable;
-                                }
-                                echo "</td></tr>\n";
-                                if ($tidy_loaded) {
-                                    $isTidy5 = (function_exists('tidy_get_release')
-                                        && (strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30')));
-                                    // ENABLE_TIDY_FORCE_HTML5
-                                    if ($isTidy5) {
-                                        $enable_tidy_f_html5 = isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5'];
-                                        echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_FORCE_HTML5);
-                                        $this->input_yesno('ENABLE_TIDY_FORCE_HTML5', $enable_tidy_f_html5, 10082);
-                                        echo "</td></tr>\n";
-                                    }
-                                    // ENABLE_TIDY_INDENT
-                                    $enable_tidy_indent = (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']);
-                                    echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
-                                    $this->input_yesno('ENABLE_TIDY_INDENT', $enable_tidy_indent, 10083);
-                                    echo "</td></tr>\n";
-                                }
-                            }
+                            $tabindex = 10081;
+                            $this->parts_settingsedit_global_tidy($tabindex);
                             ?>
+
                             <tr>
                                 <th colspan="2"><?php echo _SETTINGS_MEDIA ?> <?php help('media'); ?></th>
                             </tr>
@@ -6597,6 +6571,67 @@ selector();
             $this->pagefoot();
     }
 
+    private function parts_settingsedit_global_tidy(&$tabindex)
+    {
+        global $CONF;
+        if (_CHARSET !== 'UTF-8'
+        ) {
+            return;
+        }
+        
+        // ENABLE_TIDY
+        $tidy_loaded = extension_loaded('tidy');
+        $s_disable = sprintf('[%s] ', _ADMIN_SYSTEMOVERVIEW_DISABLE);
+
+        echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
+        $enable_tidy = isset($CONF['tidy_enable']) && $CONF['tidy_enable'];
+        if ($tidy_loaded) {
+            $this->input_yesno('tidy_enable', $enable_tidy, $tabindex++);
+        } else {
+            echo $s_disable;
+        }
+        echo "</td></tr>\n";
+        
+        if (!$tidy_loaded) {
+            return;
+        }
+        
+        $isTidy5 = (function_exists('tidy_get_release')
+            && (strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30')));
+        // doctype
+        $doctypes = array();
+        $def_doctype = isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype'] : 'auto';
+        $doctypes[] = array('value' => 'html5,strict', 'label'=> 'Priority HTML5, HTML4(strict): depending on lib version');
+        if ($isTidy5) {
+            $doctypes[] = array('value' => 'html5', 'label'=> 'html5: HTML5');
+        } elseif ($def_doctype == 'html5') {
+            $def_doctype == 'auto';
+        }
+        $doctypes[] = array('value' => 'strict', 'label'=> 'strict: HTML4');
+        $doctypes[] = array('value' => 'auto', 'label'=> 'auto: Automatic selection by html code : depending on lib version');
+        $doctypes[] = array('value' => 'omit', 'label'=> 'omit');
+
+        echo "<tr><td>Tidy: doctype</td><td>\n";
+        self::input_type_select('tidy_opt_config_doctype', $doctypes, $def_doctype, $tabindex++);
+        echo "</td></tr>\n";
+
+        // ENABLE_TIDY_INDENT
+        $enable_tidy_indent = (isset($CONF['tidy_opt_config_indent_enable']) && $CONF['tidy_opt_config_indent_enable']);
+        printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
+        $this->input_yesno('tidy_opt_config_indent_enable', $enable_tidy_indent, $tabindex++);
+        echo "</td></tr>\n";
+
+        // todo: make it customizable
+        // tidy_opt_config_text
+        $v = isset($CONF['tidy_opt_config_text']) ? hsc((string) $CONF['tidy_opt_config_text']) : '';
+        $styles = 'max-height:8em';
+        printf("<tr><td>Tidy: config<br>[example]<br>indent-spaces: 2<br>hide-comments: no</td>\n");
+        printf("<td><textarea name='tidy_opt_config_text' style='%s'>%s</textarea></td></tr>\n",
+                $styles,
+                $v
+        );
+    }
+
     private function checkConfigTable()
     {
         global $DB_DRIVER_NAME;
@@ -6671,9 +6706,19 @@ EOL;
         $this->updateConfig('AdminCSS', postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
         if (extension_loaded('tidy')) {
-            $this->updateOrInsertConfig('ENABLE_TIDY', (postVar('ENABLE_TIDY') ? '1' : '0'));
-            $this->updateOrInsertConfig('ENABLE_TIDY_FORCE_HTML5', (postVar('ENABLE_TIDY_FORCE_HTML5') ? '1' : '0'));
-            $this->updateOrInsertConfig('ENABLE_TIDY_INDENT', (postVar('ENABLE_TIDY_INDENT') ? '1' : '0'));
+            $this->updateOrInsertConfig('tidy_enable', (postVar('tidy_enable') ? '1' : '0'));
+            // doctype
+            $doctype = (string) postVar('tidy_opt_config_doctype');
+            if (!in_array($doctype, array('html5,strict','auto','html5','strict','omit'))) {
+                // [25 March 2009] : auto, omit, strict, loose or <fpi> / strict(HTML4) 
+                // [2015/06/30 - ] : html5, omit, auto, strict, transitional, user
+                $doctype = 'auto';
+            }
+            $this->updateOrInsertConfig('tidy_opt_config_doctype', $doctype);
+            // indent
+            $this->updateOrInsertConfig('tidy_opt_config_indent_enable', (postVar('tidy_opt_config_indent_enable') ? '1' : '0'));
+            // config
+            $this->updateOrInsertConfig('tidy_opt_config_text', (string) postVar('tidy_opt_config_text'));
         }
 
         // load new config and redirect (this way, the new language will be used is necessary)
@@ -6905,7 +6950,12 @@ EOL;
                     }
                     echo "\t<tr>\n";
                     echo "\t\t" . '<td width="50%">' . $k . "</td>\n";
-                    echo "\t\t" . "<td{$style}>" . hsc($v) . "</td>\n";
+                    if (strpos($v, "\n") !== false) {
+                        $style = " style='overflow-wrap: anywhere; max-height: 10em; overflow: auto;'";
+                        echo "\t\t" . "<td{$style}>" . str_replace("\n", "<br>\n", hsc($v)) . "</td>\n";
+                    } else {
+                        echo "\t\t" . "<td{$style}>" . hsc($v) . "</td>\n";
+                    }
                     echo "\t</tr>\n";
                 }
             }
@@ -6977,6 +7027,8 @@ EOL;
              */
     static function updateConfig($name, $val)
     {
+        // name : $CONF is case sensitive
+        
         $query = parseQuery(
             "UPDATE [@prefix@]config SET value='[@value:escape@]' WHERE name='[@name:escape@]'",
             array('value' => trim($val), 'name' => $name)
@@ -7097,6 +7149,26 @@ EOL;
             }
         }
 
+        // Tidy
+        if (_CHARSET === 'UTF-8') {
+            ob_start();
+            register_shutdown_function(function ()
+                {
+                    if (ob_get_level() > 0) {
+                        $data = @ob_get_contents();
+                        @ob_end_clean();
+                        if ($data !== false && strlen($data) > 0) {
+                            try {
+                                ADMIN::doTidy($data);
+                            } finally {
+                                echo $data;
+                            }
+                        }
+                    }
+                }
+            );
+        }
+        
         ?>
                 <!DOCTYPE html>
                 <html lang="<?php echo _LANG_CODE; ?>">
@@ -8736,6 +8808,65 @@ EOL;
         echo ' id="' . $id2 . '" /><label for="' . $id2 . '">' . $noval . '</label>';
     }
 
+    public static function html_build_attributes($attributes = array(), $exclude_names = array())
+    {
+        $items = array();
+        $ex = array();
+        if (empty($exclude_names) || !is_array($exclude_names)) {
+            $exclude_names = array();
+        } else {
+            foreach($exclude_names as $v) {
+                $ex[] = strtolower((string) $v);
+            }
+        }
+        if (empty($attributes)) {
+            return '';
+        }
+        if (!is_array($attributes)) {
+            trigger_error('Error: Not string', E_USER_ERROR);
+            return '';
+        }
+        foreach($attributes as $k => $v) {
+            $k = trim((string) $k);
+            $v = (string) $v;
+            if (strlen($k)===0 || in_array(strtolower($k), $ex)) {
+                continue;
+            }
+            $items[] = sprintf("%s='%s'", $k, hsc($v));
+        }
+        return implode(', ', $items);
+    }
+
+    public static function input_type_select($name, $lists, $defalutval, $tabindex = 0, $attributes = array())
+    {
+        $lines = array();
+        $ex_attrs = array('name','value','selected');
+        if ((int) $tabindex !== 0) {
+            $ex_attrs[] = 'tabindex';
+        }
+        $attr = self::html_build_attributes($attributes, $ex_attrs);
+        if ((int) $tabindex !== 0) {
+            $attr .= ($attr!=='' ? ', ': '') . sprintf("tabindex='%d'", (int) $tabindex); 
+        }
+        $lines[] = sprintf("<select name='%s' %s>", $name, $attr);
+        $selected = '';
+        foreach($lists as $v) {
+            $value = (string) $v['value'];
+            $label = (string) $v['label'];
+            $attr = isset($v['attribute']) ? self::html_build_attributes($attributes, array('name')) : '';
+            if ($defalutval !== null
+                && $selected === ''
+                && $value === (string) $defalutval
+            ) {
+                $selected = " selected='selected'";
+                $attr .= $selected;
+            }
+            $lines[] = sprintf("<option value='%s' %s>%s</option>", $value, $attr, hsc($label));
+        }
+        $lines[] = "</select>";
+        echo implode("\n", $lines);
+    }
+
     function checkSecurityRisk()
     {
         global $CONF;
@@ -9318,5 +9449,33 @@ EOL;
         echo $s;
         $this->pagefoot();
         exit;
+    }
+    
+    public static function doTidy(&$data)
+    {
+        if (!extension_loaded('tidy') || _CHARSET !== 'UTF-8') {
+            return;
+        }
+        $tidy_release = str_replace(array('.'), '/', tidy_get_release());
+        $tidy_version = (strtotime($tidy_release) >= strtotime('2015/06/30')) ? 5 : 4;
+        $tidy_config = array(
+            'doctype'       => $tidy_version >=5 ? 'html5' : 'auto',
+            // html5, omit, auto, strict, transitional, user
+            'output-xhtml'  => false,
+            'char-encoding' => 'utf8',
+            'fix-uri'       => false,
+            'hide-comments' => false,
+            'tidy-mark'     => true,
+            'wrap'          => false,
+            // 200
+        );
+
+        $tidy_config = array_merge($tidy_config, array('indent' => true,'indent-spaces' => 4)); // indent: space
+//        $tidy_config = array_merge($tidy_config, array('indent' => true,'indent-with-tabs'=> true, 'tab-size' => 4)); // indent: tab
+
+        $tidy = new tidy();
+        $tidy->parseString($data, $tidy_config, 'utf8');
+        $tidy->cleanRepair();
+        $data = (string)$tidy;
     }
 } // class ADMIN

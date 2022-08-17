@@ -152,7 +152,6 @@ define('_ADMIN_LOST_PSWD_TEXT_USENAME', "ユーザー名(ログインID)：");
 define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "メールアドレス：");
 
 define('_SETTINGS_ENABLE_TIDY', "Tidyによるhtml自動整形を有効にする");
-define('_SETTINGS_ENABLE_TIDY_FORCE_HTML5', "Tidy: html5を強制する");
 define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: タグを字下げする(インデント)");
 
 define('_SYSTEMLOG_TITLE',       "システムログ");

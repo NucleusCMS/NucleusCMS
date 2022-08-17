@@ -152,7 +152,6 @@ try_define('_ADMIN_LOST_PSWD_TEXT_USENAME', "Username:");
 try_define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "Email address:");
 
 try_define('_SETTINGS_ENABLE_TIDY', "Enable html auto-formatting by Tidy");
-try_define('_SETTINGS_ENABLE_TIDY_FORCE_HTML5', "Tidy: Force HTML5");
 try_define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: Indent the html tag");
 
 try_define('_SYSTEMLOG_TITLE',       "System Log");
