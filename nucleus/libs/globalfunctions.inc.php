@@ -3018,3 +3018,20 @@ function isDebugMode()
     }
     return !empty($CONF['debug']);
 }
+
+function file_get_extension($filename, $period = false)
+{
+    $basename = basename((string) $filename);
+    $i = strrpos($basename, '.');
+    if ($i === false) {
+        return '';
+    }
+    if (! $period) {
+        $i++;
+    }
+    $ext = substr($basename, $i);
+    if (strlen($ext)>0 && $ext !== '.') {
+        return $ext;
+    }
+    return '';
+}

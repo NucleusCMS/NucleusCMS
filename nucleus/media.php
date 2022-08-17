@@ -70,14 +70,14 @@ switch ($action) {
     case 'chooseupload':
     case _MEDIA_UPLOAD_TO:
     case _MEDIA_UPLOAD_NEW:
-        if (!$member->isAdmin() && $CONF['AllowUpload'] != true) {
+        if (!MEDIA::checkMemberHasUploadRights()) {
             media_doError(_ERROR_DISALLOWED);
         } else {
             media_choose();
         }
         break;
     case 'uploadfile':
-        if (!$member->isAdmin() && $CONF['AllowUpload'] != true) {
+        if (!MEDIA::checkMemberHasUploadRights()) {
             media_doError(_ERROR_DISALLOWED);
         } else {
             media_upload();
