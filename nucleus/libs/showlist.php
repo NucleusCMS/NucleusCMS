@@ -1138,7 +1138,7 @@ function listplug_table_actionlist($template, $type)
             $current = $template['current'];
 
             echo '<td>', hsc($current->timestamp), '</td>';
-            echo '<td>', hsc($current->message), '</td>';
+            echo "<td><div style='overflow-wrap: anywhere; max-height: 10em; overflow: auto;'>", hsc($current->message), '</div></td>';
 
             break;
     }

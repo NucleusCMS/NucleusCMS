@@ -107,8 +107,8 @@
         <legend>{%_TEXT4_TAB2_HEAD%}</legend>
         <table>
             <tr>
-                <td><input name="install_db_usePrefix" value="1" type="checkbox" id="install_db_usePrefix" />
-                    <label for="install_db_usePrefix">{%_TEXT4_TAB2_FIELD%}:</label></td>
+                <td><input name="install_db_use_prefix" value="1" type="checkbox" id="install_db_use_prefix" />
+                    <label for="install_db_use_prefix">{%_TEXT4_TAB2_FIELD%}:</label></td>
                 <td><input name="install_db_tablePrefix" value="" /></td>
             </tr>
         </table>

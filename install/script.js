@@ -10,7 +10,7 @@ function db_change(db_type) {
   var elm_install_db_database  = document.getElementById("install_db_database");
   var elm_install_db_password  = document.getElementById("install_db_password");
   var elm_install_db_user  = document.getElementById("install_db_user");
-  var elm_install_db_usePrefix  = document.getElementById("install_db_usePrefix");
+  var elm_install_db_use_prefix  = document.getElementById("install_db_use_prefix");
   var elm_charset  = document.getElementById("charset");
 
   if (!elm_mysql) {

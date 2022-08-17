@@ -111,3 +111,12 @@ function mysql_insert_id($res)
 
     return false;
 }
+
+function mysql_close($dblink = null)
+{
+    global $SQL_DBH;
+    $obj = ($dblink ? $dblink : $SQL_DBH);
+    $obj = null;
+    return true;
+}
+

@@ -21,9 +21,16 @@ class sqlite_functions
                     $st--;
                 }
 
-                return substr(func_get_arg(0), $st, func_get_arg(2));
+                return mb_substr(func_get_arg(0), $st, func_get_arg(2), 'utf-8');
             },
             3
+        );
+        $dbh->sqliteCreateFunction(
+            'CHAR_LENGTH',
+            function () {
+                return mb_strlen(func_get_arg(0), 'utf-8');
+            },
+            1
         );
         $dbh->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
         $dbh->sqliteCreateFunction('NOW', function () {

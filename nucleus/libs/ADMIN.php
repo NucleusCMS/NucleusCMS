@@ -7487,7 +7487,14 @@ EOL;
 
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
-        $query =  sprintf("SELECT * FROM %s ORDER BY timestamp DESC", sql_table('actionlog'));
+        // cut big message
+        $colmessage = "CASE WHEN CHAR_LENGTH(`message`) < 2000 THEN `message`
+                       ELSE CONCAT(SUBSTRING(`message`, 1, 2000), ' ...') END as 'message' ";
+        $query =  sprintf(
+                    "SELECT timestamp, %s FROM %s ORDER BY timestamp DESC",
+                    $colmessage,
+                    sql_table('actionlog')
+                );
         $template['content'] = 'actionlist';
         $amount = showlist_by_query($query, 'table', $template);
 
