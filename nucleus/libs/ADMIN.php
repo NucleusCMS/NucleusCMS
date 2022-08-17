@@ -6191,7 +6191,7 @@ selector();
              */
     function action_settingsedit($message = '')
     {
-        global $member, $manager, $CONF, $DIR_NUCLEUS, $DIR_MEDIA;
+        global $member, $manager;
 
         $member->isAdmin() or $this->disallow();
 
@@ -6209,9 +6209,47 @@ selector();
                     <div>
 
                         <input type="hidden" name="action" value="settingsupdate" />
-                <?php $manager->addTicketHidden() ?>
+                <?php
+                        $manager->addTicketHidden();
+                        ?>
 
                         <table>
+                            <?php
+                            // global settings
+                            $tabindex = 10;
+                            $this->parts_settingsedit_global($tabindex);
+                            
+                            // media
+                            $tabindex = 10090;
+                            $this->parts_settingsedit_media($tabindex);
+                            
+                            // member
+                            $tabindex = 10120;
+                            $this->parts_settingsedit_member($tabindex);
+
+                            // cookie
+                            $tabindex = 10159;
+                            $this->parts_settingsedit_cookie($tabindex);
+                            ?>
+                        </table>
+                        <div><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN ?>" onclick="return checkSubmit();" /></div>
+
+                    </div>
+                </form>
+
+            <?php
+            echo '<h2>', _PLUGINS_EXTRA, '</h2>';
+
+            $param = array();
+            $manager->notify('GeneralSettingsFormExtras', $param);
+
+            $this->pagefoot();
+    }
+
+    private function parts_settingsedit_global(&$tabindex)
+    {
+        global $CONF, $DIR_NUCLEUS;
+                            ?>
                             <tr>
                                 <th colspan="2"><?php echo _SETTINGS_SUB_GENERAL ?></th>
                             </tr>
@@ -6420,12 +6458,16 @@ selector();
                                 </td>
                             </tr>
 
-                            <?php
-                            // Tidy
-                            $tabindex = 10081;
-                            $this->parts_settingsedit_global_tidy($tabindex);
-                            ?>
+        <?php
+        // Tidy
+        $tabindex = 10081;
+        $this->parts_settingsedit_global_tidy($tabindex);
+    }
 
+    private function parts_settingsedit_media(&$tabindex)
+    {
+        global $CONF, $DIR_MEDIA;
+                            ?>
                             <tr>
                                 <th colspan="2"><?php echo _SETTINGS_MEDIA ?> <?php help('media'); ?></th>
                             </tr>
@@ -6470,8 +6512,14 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_MEDIAPREFIX ?></td>
                                 <td><?php $this->input_yesno('MediaPrefix', $CONF['MediaPrefix'], 10110); ?></td>
-
                             </tr>
+    <?php
+    }
+
+    private function parts_settingsedit_member(&$tabindex)
+    {
+        global $CONF;
+                            ?>
                             <tr>
                                 <th colspan="2"><?php echo _SETTINGS_MEMBERS ?></th>
                             </tr>
@@ -6513,10 +6561,13 @@ selector();
                                 </td>
                                 <td><?php $this->input_yesno('ProtectMemNames', $CONF['ProtectMemNames'], 10156); ?>
                                 </td>
-
-
-
                             </tr>
+    <?php
+    }
+    private function parts_settingsedit_cookie(&$tabindex)
+    {
+        global $CONF;
+                            ?>
                             <tr>
                                 <th colspan="2"><?php echo _SETTINGS_COOKIES_TITLE ?> <?php help('cookies'); ?></th>
                             </tr>
@@ -6552,23 +6603,8 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_LASTVISIT ?></td>
                                 <td><?php $this->input_yesno('LastVisit', $CONF['LastVisit'], 10200); ?></td>
-
-
-
                             </tr>
-                        </table>
-                        <div><input type="submit" tabindex="10210" value="<?php echo _SETTINGS_UPDATE_BTN ?>" onclick="return checkSubmit();" /></div>
-
-                    </div>
-                </form>
-
-            <?php
-            echo '<h2>', _PLUGINS_EXTRA, '</h2>';
-
-            $param = array();
-            $manager->notify('GeneralSettingsFormExtras', $param);
-
-            $this->pagefoot();
+    <?php
     }
 
     private function parts_settingsedit_global_tidy(&$tabindex)
@@ -6988,7 +7024,7 @@ EOL;
             return '';
         }
 
-        $r = array('', '', '');
+        $r = array('', '', '', ''); // [defined , undefined, defined , undefined]
         $lists = array(
             'connect', 'pconnect', 'close', 'select_db', 'query',
             'unbuffered_query', 'db_query', 'list_dbs', 'list_tables', 'list_fields',
@@ -7016,10 +7052,27 @@ EOL;
                     $r[1] .= "<b>$m</b> , ";
                 }
             }
+            if (function_exists($s)) {
+                $r[2] .= $s . " , ";
+            } else {
+                $r[3] .= $s . " , ";
+            }
         }
 
-        $tpl = "<table><tr><td>defined</td><td>%s</td></tr><tr><td>undefined</td><td>%s</td></tr></table>";
-        return "<h3>Emulated Mysql Functions (wrapper functions)</h3>\n" . sprintf($tpl, $r[0], $r[1]);
+        $title = array(
+            'Emulated Mysql Functions (wrapper functions)',
+            'sql Functions'
+        );
+        $tpl = "<h3>%s</h3>\n<table><tr><td>defined</td><td>%s</td></tr><tr><td>undefined</td><td>%s</td></tr></table>";
+        $res = '';
+        for($i=1; $i>=0; $i--) {
+            $res .= sprintf($tpl,
+                    $title[$i],
+                    $r[0 + $i*2],
+                    $r[1 + $i*2]
+            );
+        }
+        return $res;
     }
 
             /**
