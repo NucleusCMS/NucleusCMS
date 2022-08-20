@@ -37,6 +37,7 @@ global $nucleus, $CONF, $manager, $member;
 define('HAS_CATCH_ERROR', version_compare('7.0.0', PHP_VERSION, '<='));
 
 include_once(NC_LIBS_PATH . 'version.php');
+include_once(NC_LIBS_PATH . 'phpfunctions.php');
 include_once(NC_LIBS_PATH . 'helpers.php');
 include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
 
@@ -237,6 +238,16 @@ if (requestVar('action') === 'login') {
         header("HTTP/1.0 404 Not Found");
         exit;
     }
+
+    if (isset($_POST['login'])) {
+        // force trim login
+        $_POST['login'] = substr((string) $_POST['login'], 0,32);
+    }
+    if (isset($_POST['password'])) {
+        // force trim password
+        $_POST['password'] = substr((string) $_POST['password'], 0,40);
+    }
+
     // Form Authentication
     // avoid md5 collision by using a long key
     if ($member->login(postVar('login'), substr(postVar('password'), 0, 40))) {
@@ -295,17 +306,18 @@ if (requestVar('action') === 'login') {
     } else {
         $param = array('username' => postVar('login'));
         $manager->notify('LoginFailed', $param);
-        if (! trim(postVar('login'))) {
+        if (! trim((string) postVar('login'))) {
             ACTIONLOG::add(INFO, 'Please enter a username.');
         } else {
+            $loginname = preg_replace('|[^a-z0-9]|i', '_', substr((string) postVar('login'),0,32));
             loadCoreLanguage();
             if ($member->isHalt()) {
                 ACTIONLOG::add(
                     INFO,
-                    sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, postVar('login'))
+                    sprintf(_GFUNCTIONS_LOGIN_FAILED_HALT_TXT, $loginname)
                 );
             } else {
-                ACTIONLOG::add(INFO, 'Login failed for ' . postVar('login'));
+                ACTIONLOG::add(INFO, sprintf('Login failed for %s [ %s ]', $loginname, (string) serverVar('REMOTE_ADDR', '')));
             }
         }
     }

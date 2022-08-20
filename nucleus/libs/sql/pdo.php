@@ -1103,4 +1103,6 @@ if (! function_exists('sql_fetch_assoc')) {
 
         return (int)sql_fetch_column($stmt);
     }
-}
+
+} // if not exist sql_* functions
+

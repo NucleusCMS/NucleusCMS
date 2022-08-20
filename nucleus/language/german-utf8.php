@@ -12,9 +12,19 @@
 //
 // Fully translated language file can be sent to us and will be made
 // available for download (with proper credit to the author, of course)
-if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
-if (!defined('_LOCALE'))  define('_LOCALE', 'de_DE');
-if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'german');
+
+/********************************************
+ *        Wichtige Einstellungen            *
+ ********************************************/
+try_define('_CHARSET', 'UTF-8');
+try_define('_LOCALE', 'de_DE');
+try_define('_LOCALE_NAME_WINDOWS', 'german');
+try_define('_HTML_5_LANG_CODE', 'de');
+
+
+// HTML-Ausgaben
+define('_HTML_XML_NAME_SPACE_AND_LANG_CODE', 'xmlns="http://www.w3.org/1999/xhtml" xml:lang="de" lang="de"');
+define('_LANG_CODE', 'de');
 
 /********************************************
  *        Start New for 3.71                *

@@ -18,8 +18,7 @@ global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 //$DB_DRIVER_NAME = 'sqlite'; $DB_PHP_MODULE_NAME = 'pdo';
 $DB_DRIVER_NAME = 'mysql'; $DB_PHP_MODULE_NAME = 'mysql';
 
-if ($DB_DRIVER_NAME=='sqlite')
-{
+if ($DB_DRIVER_NAME === 'sqlite') {
    $DB_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
 // $DB_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
@@ -55,4 +54,3 @@ if (!isset($DIR_NUCLEUS) || !@is_file($DIR_LIBS . 'globalfunctions.php')) {
 
 // include libs
 include($DIR_LIBS.'globalfunctions.php');
-

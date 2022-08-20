@@ -135,9 +135,18 @@ class MEMBER
         );
         $manager->notify('CustomLogin', $param);
 
-        if ($success && $this->readFromName($formv_username)) {
+        if ('' === $formv_username || 32 < strlen($formv_username)) { // mname varchar(32)
+            $this->loggedin = 0;
+            return 0;
+        }
+
+        if  ($success && $this->readFromName($formv_username)) {
             $this->loggedin = 1;
         } elseif (! $success && $allowlocal) {
+            if ('' === $formv_password || 40 < strlen($formv_password)) { // avoid md5 collision by using a long key
+                $this->loggedin = 0;
+                return 0;
+            }
             $userInfo     = $this->readFromName($formv_username);
             $dbv_password = $this->getPassword();
 

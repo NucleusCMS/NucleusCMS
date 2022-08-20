@@ -1186,6 +1186,13 @@ function getLanguageName()
     return 'english';
 }
 
+function try_define($name , $value)
+{
+    if (!defined($name)) {
+        define($name , $value);
+    }
+}
+
 function LoadCoreLanguage()
 {
     static $loaded = false;
@@ -1203,18 +1210,17 @@ function LoadCoreLanguage()
         include_once($filename);
     }
 
-    if (( ! defined('_ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM'))
-        && (defined('_CHARSET') && (strtoupper(_CHARSET) === 'UTF-8'))) {
-        // load undefined constant
-        if ((stripos($language, 'english') === false)
-            && (stripos($language, 'japan') === false)) {
-            if (@is_file($DIR_LANG . 'english-utf8' . '.php')) {
-                // load default lang
-                ob_start();
-                @include($DIR_LANG . 'english-utf8' . '.php');
-                ob_end_clean();
-            }
-        }
+    // load LanguageFallback : english-utf8.php
+    if (defined('_CHARSET')
+       && strtoupper(_CHARSET) === 'UTF-8'
+       && !preg_match('/(english|japan)/i' , $language)
+       && @is_file("{$DIR_LANG}english-utf8.php")
+    ) {
+        // LanguageFallback
+        // load default lang
+        ob_start();
+        @include("{$DIR_LANG}english-utf8.php");
+        ob_end_clean();
     }
     sql_set_charset_v2(_CHARSET);
     //  if (isset($SQL_DBH) && $SQL_DBH)
@@ -2759,19 +2765,6 @@ function loadCoreClassFor_spl($classname)
     }
 }
 
-if (! function_exists('get_magic_quotes_gpc')) {
-    function get_magic_quotes_gpc()
-    {
-        return false;
-    }
-}
-if (! function_exists('get_magic_quotes_runtime')) {
-    function get_magic_quotes_runtime()
-    {
-        return false;
-    }
-}
-
 function checkOutputCompression($content_type)
 {
     // supports Content-Encoding: gzip
@@ -2805,52 +2798,6 @@ function checkOutputCompression($content_type)
 function str_contain($haystack, $needle)
 {
     return str_contains($haystack, $needle);
-}
-
-if (!function_exists('str_contains')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
-    // Note: This function returns true if the needle string is empty.
-    function str_contains($haystack, $needle)
-    {
-        return strpos($haystack, $needle) !== false; // don't localize
-        // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
-        // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
-        // result = bool(false) : php -nr "var_dump(str_contains('','0'));"
-        // result = bool(true)  : php -nr "$haystack='';$needle='';var_dump(strpos($haystack, $needle) !== false);"
-        // result = bool(true)  : php -nr "$haystack='0';$needle='';var_dump(strpos($haystack, $needle) !== false);"
-        // result = bool(false) : php -nr "$haystack='';$needle='0';var_dump(strpos($haystack, $needle) !== false);"
-    }
-}
-
-if (!function_exists('str_starts_with')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with
-    // Note: This function returns true if the needle string is empty.
-    function str_starts_with($haystack, $needle)
-    {
-        return strncmp($haystack, $needle, strlen($needle)) === 0; // don't localize
-        // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
-        // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
-        // result = bool(false) : php -nr "var_dump(str_starts_with('','0'));"
-        // result = bool(true)  : php -nr "var_dump(strncmp('','', 0) === 0);"
-        // result = bool(true)  : php -nr "var_dump(strncmp('0','', 0) === 0);"
-        // result = bool(false) : php -nr "var_dump(strncmp('','0', 1) === 0);"
-    }
-}
-
-if (!function_exists('str_ends_with')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
-    // Note: This function returns true if the needle string is empty.
-    function str_ends_with($haystack, $needle)
-    {
-        if (strlen($needle) > strlen($haystack)) {
-            return false; // don't localize
-        }
-        return strlen($needle) === 0 || substr($haystack, -strlen($needle)) === $needle;
-        // result = bool(true)  : php -nr "var_dump(str_ends_with('',''));"
-        // result = bool(true)  : php -nr "var_dump(str_ends_with('0',''));"
-        // result = bool(true)  : php -nr "var_dump(str_ends_with('1',''));"
-        // result = bool(false) : php -nr "var_dump(str_ends_with('','0'));"
-    }
 }
 
 function getBaseUrl()
@@ -3017,4 +2964,21 @@ function isDebugMode()
         return false;
     }
     return !empty($CONF['debug']);
+}
+
+function file_get_extension($filename, $period = false)
+{
+    $basename = basename((string) $filename);
+    $i = strrpos($basename, '.');
+    if ($i === false) {
+        return '';
+    }
+    if (! $period) {
+        $i++;
+    }
+    $ext = substr($basename, $i);
+    if (strlen($ext)>0 && $ext !== '.') {
+        return $ext;
+    }
+    return '';
 }

@@ -55,9 +55,9 @@ function getSiteUrl()
  */
 function tableName($unPrefixed)
 {
-    global $mysql_usePrefix, $mysql_prefix;
+    global $mysql_use_prefix, $mysql_prefix;
 
-    if ($mysql_usePrefix == 1) {
+    if ($mysql_use_prefix == 1) {
         return $mysql_prefix . $unPrefixed;
     } else {
         return $unPrefixed;
@@ -204,7 +204,7 @@ function treatPathStr($str)
  */
 function doInstall()
 {
-    global $mysql_usePrefix, $mysql_prefix;
+    global $mysql_use_prefix, $mysql_prefix;
     global $lang;
 
     // 0. put all POST-vars into vars
@@ -212,8 +212,8 @@ function doInstall()
     $mysql_user        = postVar('install_db_user', 'root');
     $mysql_password    = postVar('install_db_password', '');
     $mysql_database    = trim((string) postVar('install_db_database'));
-    $mysql_create      = postVar('install_db_create');
-    $mysql_usePrefix   = postVar('install_db_usePrefix');
+    $mysql_create      = (int) postVar('install_db_create') ? 1 : 0;
+    $mysql_use_prefix   = (int) postVar('install_db_use_prefix') ? 1 :0;
     $mysql_prefix      = trim((string) postVar('install_db_tablePrefix'));
     $config_indexurl   = postVar('IndexURL');
     $config_adminurl   = postVar('AdminURL');
@@ -244,6 +244,11 @@ function doInstall()
     $is_install_sqlite = ($install_db_type == 'sqlite');
     if (!$is_install_mysql) {
         $charset = 'utf8';
+    }
+    if ($install_db_type === 'sqlite') {
+        $mysql_host = '';
+        $mysql_user = '';
+        $mysql_password = '';
     }
 
     $config_indexurl  = treatPathStr($config_indexurl);
@@ -278,11 +283,11 @@ function doInstall()
     if (!$mysql_database && !$is_install_sqlite) {
         array_push($errors, _ERROR_NO_DBNAME);
     }
-    if (($mysql_usePrefix == 1) && (strlen($mysql_prefix) == 0)) {
+    if (($mysql_use_prefix == 1) && (strlen($mysql_prefix) == 0)) {
         array_push($errors, _ERROR3);
     }
 
-    if (($mysql_usePrefix == 1) && (!preg_match('#^[a-zA-Z0-9_]+$#', $mysql_prefix) )) {
+    if (($mysql_use_prefix == 1) && (!preg_match('#^[a-zA-Z0-9_]+$#', $mysql_prefix) )) {
         array_push($errors, _ERROR4);
     }
 
@@ -377,7 +382,7 @@ function doInstall()
         $db_name = $sqlite_db_name;
 
         $mysql_create = 0;
-        $mysql_usePrefix = 0;
+        $mysql_use_prefix = 0;
         $MYSQL_CONN = @sql_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
         $SQL_DBH = $MYSQL_CONN;
         $DB_PHP_MODULE_NAME = 'pdo';
@@ -502,7 +507,7 @@ function doInstall()
         if ($query) {
 //       echo "QUERY = \n" . htmlspecialchars($query) . "\n<p>";
 
-            if ($mysql_usePrefix == 1) {
+            if ($mysql_use_prefix == 1) {
                 $query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
             }
             
@@ -627,11 +632,12 @@ function doInstall()
         // 10. set global variables
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE, $DB_PREFIX;
 
+        $db__use_prefix = $mysql_use_prefix;
         $DB_HOST = $mysql_host;
         $DB_USER = $mysql_user;
         $DB_PASSWORD = $mysql_password;
         $DB_DATABASE = $mysql_database;
-        $DB_PREFIX = ($mysql_usePrefix == 1)?$mysql_prefix:'';
+        $DB_PREFIX = ($db__use_prefix == 1)?$mysql_prefix:'';
 
         global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
 
@@ -682,37 +688,47 @@ function doInstall()
 //      || (@is_file($configFilename) && is_writable($configFilename))
         ) {
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME, $MYSQL_HANDLER;
+        $indent = str_repeat(' ',4);
         $config_data = '<' . '?php' . "\n\n";
         //$config_data .= "\n"; (extraneous, just added extra \n to previous line
-        $config_data .= "	// database connection information\n";
-        $config_data .= "	\$MYSQL_HOST = '" . $mysql_host . "';\n";
-        $config_data .= "	\$MYSQL_USER = '" . $mysql_user . "';\n";
-        $config_data .= "	\$MYSQL_PASSWORD = '" . $mysql_password . "';\n";
-        $config_data .= "	\$MYSQL_DATABASE = '" . $mysql_database . "';\n";
-        $config_data .= "	\$MYSQL_PREFIX = '" . (($mysql_usePrefix == 1)?$mysql_prefix:'') . "';\n";
-        $config_data .= "	// new in 3.50. first element is db handler, the second is the db driver used by the handler\n";
-        $config_data .= "	// default is \$MYSQL_HANDLER = array('mysql','');\n";
-        $config_data .= "	//\$MYSQL_HANDLER = array('mysql','mysql');\n";
-        $config_data .= "	//\$MYSQL_HANDLER = array('pdo','mysql');\n";
-        $config_data .= "	\$MYSQL_HANDLER = array('".$MYSQL_HANDLER[0]."','".$MYSQL_HANDLER[1]."');\n";
+        $config_data .= "// database connection information\n";
+        $config_data .= "\$DB_HOST = '" . $DB_HOST . "';\n";
+        $config_data .= "\$DB_USER = '" . $DB_USER . "';\n";
+        $config_data .= "\$DB_PASSWORD = '" . $DB_PASSWORD . "';\n";
+        $config_data .= "\$DB_DATABASE = '" . $DB_DATABASE . "';\n";
+        $config_data .= "\$DB_PREFIX = '" . (($db__use_prefix == 1) ? $DB_PREFIX : '') . "';\n";
         $config_data .= "\n";
-        $config_data .= "	// main nucleus directory\n";
-        $config_data .= "	\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
+        $config_data .= "global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;\n";
+        
+        $config_data .= "// Database driver settings\n";
+        if ($DB_DRIVER_NAME=='mysql') {
+            $config_data .= "// default is  \$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';\n";
+            $config_data .= "//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'mysql';\n";
+            $config_data .= "//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'pdo';\n";
+            $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}';\n";
+            $config_data .= "\$DB_PHP_MODULE_NAME = '{$DB_PHP_MODULE_NAME}'; // pdo or mysql\n";
+        } elseif ($DB_DRIVER_NAME=='sqlite') {
+            $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}'; // sqlite\n";
+            $config_data .= "\$DB_PHP_MODULE_NAME = '{$DB_PHP_MODULE_NAME}'; // pdo\n";
+        }
         $config_data .= "\n";
-        $config_data .= "	// path to media dir\n";
-        $config_data .= "	\$DIR_MEDIA = '" . $config_mediapath . "';\n";
+        $config_data .= "// main nucleus directory\n";
+        $config_data .= "\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
         $config_data .= "\n";
-        $config_data .= "	// extra skin files for imported skins\n";
-        $config_data .= "	\$DIR_SKINS = '" . $config_skinspath . "';\n";
+        $config_data .= "// path to media dir\n";
+        $config_data .= "\$DIR_MEDIA = '" . $config_mediapath . "';\n";
         $config_data .= "\n";
-        $config_data .= "	// these dirs are normally sub dirs of the nucleus dir, but \n";
-        $config_data .= "	// you can redefine them if you wish\n";
-        $config_data .= "	\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
-        $config_data .= "	\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
-        $config_data .= "	\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
+        $config_data .= "// extra skin files for imported skins\n";
+        $config_data .= "\$DIR_SKINS = '" . $config_skinspath . "';\n";
         $config_data .= "\n";
-        $config_data .= "	// include libs\n";
-        $config_data .= "	include(\$DIR_LIBS.'globalfunctions.php');\n";
+        $config_data .= "// these dirs are normally sub dirs of the nucleus dir, but \n";
+        $config_data .= "// you can redefine them if you wish\n";
+        $config_data .= "\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
+        $config_data .= "\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
+        $config_data .= "\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
+        $config_data .= "\n";
+        $config_data .= "// include libs\n";
+        $config_data .= "include(\$DIR_LIBS.'globalfunctions.php');\n";
 
         $result = @file_put_contents($configFilename, $config_data);
         if ($result) {

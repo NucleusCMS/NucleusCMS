@@ -877,7 +877,7 @@ class SKIN
     {
         global $CONF;
 
-        if (! isset($CONF['ENABLE_TIDY']) || ! $CONF['ENABLE_TIDY']) {
+        if (! isset($CONF['tidy_enable']) || ! $CONF['tidy_enable']) {
             return;
         }
         if (! extension_loaded('tidy') || (_CHARSET !== 'UTF-8')
@@ -887,27 +887,53 @@ class SKIN
             return;
         }
 
-        $force_html5 = (isset($CONF['ENABLE_TIDY_FORCE_HTML5'])
-                        && $CONF['ENABLE_TIDY_FORCE_HTML5']);
+        $doctype = (isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype']
+                        : 'auto');
 
-        //      tidy ver5 : 2015.06.30
-        $is_tidy_html5 = strtotime(str_replace(
-            array('.'),
-            '/',
-            tidy_get_release()
-        )) >= strtotime('2015/06/30');
-        if ($force_html5 && ! $is_tidy_html5) {
-            return;
-        } // tidy lib is too old.
-        // <!DOCTYPE html>
-        if (! $is_tidy_html5
-             && preg_match('/^\s*<!DOCTYPE\s+html\s*>/ms', $data)) {
-            return;
-        } // tidy lib is too old. The source is probably html5.
+        $tidy_release = str_replace(array('.'), '/', tidy_get_release());
+        $tidy_version = (strtotime($tidy_release) >= strtotime('2015/06/30')) ? 5 : 4;
+        // tidy ver5 : [2015.06.30 - ]
+        
+        if ($tidy_version <= 4) {
+            // tidy lib : html4
+            if ($doctype === 'html5') {
+                $doctype == 'auto';  // tidy lib is too old.
+            }
+        }
+        if ($doctype === 'html5,strict') {
+            $doctype = $tidy_version >= 5 ? 'html5' : 'strict';
+        }
+//        var_dump(__LINE__, $doctype, $tidy_version, $tidy_release);
 
         $tidy_config = $this->getTidyConfig();
-        if ($force_html5) {
-            $tidy_config['doctype'] = 'html5';
+        if (!empty($doctype)) {
+            // [25 March 2009] : auto, omit, strict, loose or <fpi> / strict(HTML4) 
+            // [2015/06/30 - ] : html5, omit, auto, strict, transitional, user
+            $tidy_config['doctype'] = $doctype;
+        }
+//        $tidy_config['doctype'] = 'strict';
+//        $tidy_config['language'] = 'ja';
+
+        // tidy_opt_config_text
+        $usrconfig = isset($CONF['tidy_opt_config_text']) ? trim((string) $CONF['tidy_opt_config_text']) : '';
+        if (strlen($usrconfig)>0){
+            $usrconfig = preg_replace('/\s*[,]\s+/', ', ', $usrconfig);
+            $matches = array();
+            if (preg_match_all('/^\s*([a-z\\-0-9]+)\s*:(.+$)/mi', $usrconfig, $matches, PREG_SET_ORDER)) {
+                foreach($matches as $m) {
+                    $k = trim($m[1]);
+                    $v = trim($m[2]);
+                    if (empty($k)) {
+                        continue;
+                    }
+                    if (in_array(strtolower($v), array('yes','on','true'))) {
+                        $v = true;
+                    } elseif (in_array(strtolower($v), array('no','off','false'))) {
+                        $v = false;
+                    }
+                    $tidy_config[$k] = $v;
+                }
+            }
         }
 
         $tidy = new tidy;
@@ -929,8 +955,8 @@ class SKIN
             // html5, omit, auto, strict, transitional, user
             'output-xhtml'  => false,
             'char-encoding' => 'utf8',
-            'indent'        => (isset($CONF['ENABLE_TIDY_INDENT'])
-                                && $CONF['ENABLE_TIDY_INDENT']),
+            'indent'        => (isset($CONF['tidy_opt_config_indent_enable'])
+                                && $CONF['tidy_opt_config_indent_enable']),
             'indent-spaces' => 2,
             'fix-uri'       => false,
             'hide-comments' => ! $is_admin,
@@ -943,7 +969,7 @@ class SKIN
             $tidy_config['char-encoding'] = 'raw';
         }
         if ($release) {
-            //            $tidy_config['language'] = 'ja';
+//            $tidy_config['language'] = 'ja';
         }
 
         return $tidy_config;

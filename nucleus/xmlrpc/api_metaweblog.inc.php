@@ -550,7 +550,7 @@ function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount)
 
 function _newMediaObject($blogid, $username, $password, $info)
 {
-    global $CONF, $DIR_MEDIA, $DIR_LIBS;
+    global $CONF, $DIR_MEDIA, $DIR_LIBS, $member;
 
     // - login
     $mem = new MEMBER();
@@ -580,7 +580,7 @@ function _newMediaObject($blogid, $username, $password, $info)
     // - check if filetype is allowed (check filename)
     $filename = $info['name'];
     $ok = 0;
-    $allowedtypes = explode(',', $CONF['AllowedTypes']);
+    $allowedtypes = MEDIA::getAllowedTypes();
     foreach ($allowedtypes as $type) {
         //if (eregi("\." .$type. "$",$filename)) $ok = 1;
         if (preg_match("#\." . $type . "$#i", $filename)) {
@@ -604,6 +604,7 @@ function _newMediaObject($blogid, $username, $password, $info)
         $filename = date("Ymd-", time()) . $filename;
     }
 
+    $member = $mem;
     $res = MEDIA::addMediaObjectRaw($collection, $filename, $data);
     if ($res) {
         return _error(10, $res);

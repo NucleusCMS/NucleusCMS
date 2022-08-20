@@ -17,10 +17,10 @@
 /********************************************
  *        Important Settings                *
  ********************************************/
-if (!defined('_CHARSET')) define('_CHARSET', 'UTF-8'); // charset to use
-if (!defined('_LOCALE'))  define('_LOCALE',  'ja_JP');  // common locale
-if (!defined('_LOCALE_NAME_WINDOWS'))  define('_LOCALE_NAME_WINDOWS', 'Japanese');
-if (!defined('_HTML_5_LANG_CODE'))     define('_HTML_5_LANG_CODE', 'ja');
+try_define('_CHARSET', 'UTF-8'); // charset to use
+try_define('_LOCALE',  'ja_JP');  // common locale
+try_define('_LOCALE_NAME_WINDOWS', 'Japanese');
+try_define('_HTML_5_LANG_CODE', 'ja');
 
 /********************************************
  *        Admin Links Settings                *
@@ -152,7 +152,6 @@ define('_ADMIN_LOST_PSWD_TEXT_USENAME', "ユーザー名(ログインID)：");
 define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "メールアドレス：");
 
 define('_SETTINGS_ENABLE_TIDY', "Tidyによるhtml自動整形を有効にする");
-define('_SETTINGS_ENABLE_TIDY_FORCE_HTML5', "Tidy: html5を強制する");
 define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: タグを字下げする(インデント)");
 
 define('_SYSTEMLOG_TITLE',       "システムログ");
