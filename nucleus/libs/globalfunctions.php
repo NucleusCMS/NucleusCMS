@@ -22,6 +22,11 @@ global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 include_once($DIR_LIBS. 'version.php');
 include_once($DIR_LIBS. 'phpfunctions.php');
 
+if (PHP_VERSION_ID > 80000) {
+    exit('<h1>Error</h1><div>This version does not support PHP 8.0 or later.</div>
+        <div>Nucleus CMS version 3.80 or later is required to work with PHP8.0 or later.</div>');
+}
+
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 

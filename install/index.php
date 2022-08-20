@@ -30,6 +30,11 @@
 	-- Start Of Configurable Part --
 */
 
+if (version_compare('8.0.0',phpversion(),'<=')) {
+    exit('<h1>Error</h1><div>This version does not support PHP 8.0 or later.</div>
+        <div>Nucleus CMS version 3.80 or later is required to work with PHP8.0 or later.</div>');
+}
+
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
 if (preg_match('#/install$#', $path))
