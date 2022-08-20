@@ -20,6 +20,8 @@
 define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'データベースのアップグレードが必要です');
 define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
 
+define('ERROR_PASSWORD_INVALID_CHARACTERS',  'パスワードに使えない文字が含まれています');
+
 /********************************************
  *        Start New for 3.71                *
  ********************************************/

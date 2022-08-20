@@ -231,7 +231,7 @@ class COMMENTS {
 
         $plugins = array_unique($plugins);
 
-        while ( list(, $plugin) = each($plugins) )
+        foreach($plugins as $plugin)
         {
             $p = $manager->getPlugin($plugin);
             $continue = $continue || $p->supportsFeature('handleSpam');

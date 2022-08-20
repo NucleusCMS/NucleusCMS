@@ -32,7 +32,11 @@ $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 if(ini_get('register_globals')) exit('Should be change off register_globals.');
 
 if (isset($CONF['debug'])&&!empty($CONF['debug'])) {
-    error_reporting(E_ALL); // report all errors!
+    if (70400 < PHP_VERSION_ID) {
+        error_reporting(E_ALL & ~ E_DEPRECATED);
+    } else {
+        error_reporting(E_ALL); // report all errors!
+    }
 } else {
     if(!isset($CONF['UsingAdminArea'])||empty($CONF['UsingAdminArea']))
         ini_set('display_errors','0');
@@ -255,6 +259,16 @@ if ($action == 'login') {
         header("HTTP/1.0 404 Not Found");
         exit;
     }
+
+    if (isset($_POST['login'])) {
+        // force trim login
+        $_POST['login'] = substr((string) $_POST['login'], 0,32);
+    }
+    if (isset($_POST['password'])) {
+        // force trim password
+        $_POST['password'] = substr((string) $_POST['password'], 0,40);
+    }
+
     // Form Authentication
     $login = postVar('login');
     $pw = postVar('password');
@@ -2424,4 +2438,29 @@ function loadCoreClassFor_spl_prephp53($classname) { // for PHP 5.1.0 - 5.2
     global $DIR_LIBS;
     if (@is_file("{$DIR_LIBS}/{$classname}.php"))
         require_once "{$DIR_LIBS}/{$classname}.php";
+}
+
+function isDebugMode()
+{
+    global $CONF;
+    if (!isset($CONF['debug'])) {
+        return false;
+    }
+    return !empty($CONF['debug']);
+}
+function file_get_extension($filename, $period = false)
+{
+    $basename = basename((string) $filename);
+    $i = strrpos($basename, '.');
+    if ($i === false) {
+        return '';
+    }
+    if (! $period) {
+        $i++;
+    }
+    $ext = substr($basename, $i);
+    if (strlen($ext)>0 && $ext !== '.') {
+        return $ext;
+    }
+    return '';
 }

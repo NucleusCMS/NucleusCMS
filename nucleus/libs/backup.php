@@ -235,15 +235,15 @@ class Backup
             echo ", \n";
     
             if($x == 'PRIMARY')
-                echo '    PRIMARY KEY (`' . implode($columns, '`, `') . '`)';
+                echo '    PRIMARY KEY (`' . implode('`, `', $columns) . '`)';
             elseif (substr($x,0,6) == 'UNIQUE')
-                echo '    UNIQUE KEY ' . substr($x,7) . ' (`' . implode($columns, '`, `') . '`)';
+                echo '    UNIQUE KEY ' . substr($x,7) . ' (`' . implode('`, `', $columns) . '`)';
             elseif (substr($x,0,8) == 'FULLTEXT')
-                echo '    FULLTEXT KEY ' . substr($x,9) . ' (`' . implode($columns, '`, `') . '`)';
+                echo '    FULLTEXT KEY ' . substr($x,9) . ' (`' . implode('`, `', $columns) . '`)';
             elseif (($x == 'ibody') || ($x == 'cbody'))            // karma 2004-05-30 quick and dirty fix. fulltext keys were not in SQL correctly.
-                echo '    FULLTEXT KEY ' . substr($x,9) . ' (`' . implode($columns, '`, `') . '`)';
+                echo '    FULLTEXT KEY ' . substr($x,9) . ' (`' . implode('`, `', $columns) . '`)';
             else
-                echo "    KEY $x (`" . implode($columns, '`, `') . '`)';
+                echo "    KEY $x (`" . implode('`, `', $columns) . '`)';
         }
     
         echo "\n);\n\n";

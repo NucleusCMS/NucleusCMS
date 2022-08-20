@@ -152,7 +152,7 @@ class MEMBER {
             $this->setURL($obj->murl);
             $this->setDisplayName($obj->mname);
             $this->setAdmin($obj->madmin);
-            $this->id = $obj->mnumber;
+            $this->id = (int) $obj->mnumber;
             $this->setCanLogin($obj->mcanlogin);
             $this->setNotes($obj->mnotes);
             $this->setLanguage($obj->deflang);
@@ -528,8 +528,13 @@ class MEMBER {
         return $rs;
     }
     
-    function checkPassword($pw) {
-        return (md5($pw) == $this->getPassword());
+    function checkPassword($pw)
+    {
+        if (str_contains($this->getPassword(), '$')) {
+            return $this->hasher->CheckPassword($pw, $this->getPassword());
+        } else {
+            return md5($pw) === $this->getPassword();
+        }
     }
 
     function getRealName() {
@@ -552,8 +557,14 @@ class MEMBER {
         return $this->password;
     }
 
-    function setPassword($pwd) {
+    function setPassword($pwd)
+    {
+        if (! self::checkIfValidPasswordCharacters($pwd)) {
+            return false;
+        }
         $this->password = $this->hasher->HashPassword($pwd);
+
+        return true;
     }
 
     function getCookieKey() {
@@ -693,6 +704,12 @@ class MEMBER {
         if (!$password)
         {
             return _ERROR_PASSWORDMISSING;
+        }
+        if (strlen($password) < 6) {
+            return _ERROR_PASSWORDTOOSHORT;
+        }
+        if (! self::checkIfValidPasswordCharacters($password)) {
+            return ERROR_PASSWORD_INVALID_CHARACTERS;
         }
 
         $obj = new MEMBER();
@@ -886,6 +903,13 @@ class MEMBER {
 
         // 2. delete activation entries for real
         sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date('Y-m-d H:i:s',$boundary) . '\'');
+    }
+
+    public static function checkIfValidPasswordCharacters($password)
+    {
+        // check Characters
+        // 0x21-0x7e : 0-9 a-z A-Z ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+        return preg_match('/^[\x21-\x7e]{6,}$/', $password);
     }
 
 }
