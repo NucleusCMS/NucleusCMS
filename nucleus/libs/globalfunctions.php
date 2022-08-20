@@ -20,6 +20,7 @@
 global $nucleus, $CONF, $DIR_LIBS, $DIR_LANG, $manager, $member;
 
 include_once($DIR_LIBS. 'version.php');
+include_once($DIR_LIBS. 'phpfunctions.php');
 
 $nucleus['version'] = 'v'.NUCLEUS_VERSION;
 $nucleus['codename'] = '';
@@ -2058,7 +2059,9 @@ function _addInputTags(&$keys,$prefix=''){
         if ($prefix) $key=$prefix.'['.$key.']';
         if (is_array($value)) _addInputTags($value,$key);
         else {
-            if (get_magic_quotes_gpc()) $value=stripslashes($value);
+            if (PHP_VERSION_ID < 50400 && get_magic_quotes_gpc()) {
+                $value=stripslashes($value);
+            }
             if ($key=='ticket') continue;
             echo '<input type="hidden" name="'.hsc($key).
                 '" value="'.hsc($value).'" />'."\n";
@@ -2131,7 +2134,7 @@ function sanitizeArray(&$array)
 
         // when magic quotes is on, need to use stripslashes,
         // and then addslashes
-        if (get_magic_quotes_gpc()) {
+        if (PHP_VERSION_ID < 50400 && get_magic_quotes_gpc()) {
             $val = stripslashes($val);
         }
         // note that we must use addslashes here because this function is called before the db connection is made

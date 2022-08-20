@@ -656,9 +656,9 @@ class NucleusPlugin {
 
                     // if the option is readonly or hidden it may not be saved
                     if (!array_key_exists('access', $meta) || (($meta['access'] != 'readonly') && ($meta['access'] != 'hidden'))) {
-
-                        $value = undoMagic($value);    // value comes from request
-
+                        if (PHP_VERSION_ID < 50400) {
+                            $value = undoMagic($value);    // value comes from request
+                        }
                         switch($o->otype) {
                             case 'yesno':
                                 if (($value != 'yes') && ($value != 'no')) $value = 'no';

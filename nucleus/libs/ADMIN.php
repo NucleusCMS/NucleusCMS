@@ -5555,7 +5555,7 @@ selector();
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
             echo "\t</tr>\n";
 
-            if (version_compare(PHP_VERSION, '5.3.0', '<'))
+            if (PHP_VERSION_ID < 50400)
             {
                 echo "<tr>\n";
             echo "\t\t" . '<td width="50%">magic_quotes_gpc' . "</td>\n";
