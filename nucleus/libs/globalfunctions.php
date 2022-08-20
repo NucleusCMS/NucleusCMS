@@ -37,6 +37,7 @@ global $nucleus, $CONF, $manager, $member;
 define('HAS_CATCH_ERROR', version_compare('7.0.0', PHP_VERSION, '<='));
 
 include_once(NC_LIBS_PATH . 'version.php');
+include_once(NC_LIBS_PATH . 'phpfunctions.php');
 include_once(NC_LIBS_PATH . 'helpers.php');
 include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
 
