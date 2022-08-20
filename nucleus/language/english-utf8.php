@@ -19,6 +19,13 @@
  */
 
 /********************************************
+ *        Start New for 3.7x                *
+ ********************************************/
+
+define('ERROR_PASSWORD_INVALID_CHARACTERS',  'password contains invalid characters');
+
+
+/********************************************
  *        Start New for 3.71                *
  ********************************************/
 define('_ADMIN_SYSTEMOVERVIEW_DBANDVERSION',  'Database and Version');

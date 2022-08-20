@@ -14,6 +14,11 @@
  *
  */
 
+if (version_compare('8.0.0',phpversion(),'<=')) {
+    exit('<h1>Error</h1><div>This version does not support PHP 8.0 or later.</div>
+        <div>Nucleus CMS version 3.80 or later is required to work with PHP8.0 or later.</div>');
+}
+
 define('NUCLEUS_UPGRADE_VERSION_ID' , 371);
 
 include('upgrade.functions.php');

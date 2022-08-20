@@ -68,14 +68,14 @@ switch($action) {
     case 'chooseupload':
     case _MEDIA_UPLOAD_TO:
     case _MEDIA_UPLOAD_NEW:
-        if (!$member->isAdmin() and $CONF['AllowUpload'] != true) {
+        if (!MEDIA::checkMemberHasUploadRights()) {
             media_doError(_ERROR_DISALLOWED);
         } else {
             media_choose();
         }
         break;
     case 'uploadfile':
-        if (!$member->isAdmin() and $CONF['AllowUpload'] != true) {
+        if (!MEDIA::checkMemberHasUploadRights()) {
             media_doError(_ERROR_DISALLOWED);
         } else {
             media_upload();
@@ -99,9 +99,9 @@ function media_select() {
     // files sorted according to last modification date
 
     // currently selected collection
-    $currentCollection = requestVar('collection');
+    $currentCollection = (string) requestVar('collection');
     if (!$currentCollection || !@is_dir($DIR_MEDIA . $currentCollection))
-        $currentCollection = $member->getID();
+        $currentCollection = (string) $member->getID();
 
     // avoid directory travarsal and accessing invalid directory
     if (!MEDIA::isValidCollection($currentCollection)) media_doError(_ERROR_DISALLOWED);
@@ -287,7 +287,7 @@ function media_choose() {
     $manager->notify('MediaUploadFormExtras', $data);
     ?>
     <br /><br />
-    <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" />
+    <input type="submit" value="<?php echo _UPLOAD_BUTTON?>" onclick="if (this.form.uploadfile.value == '') { alert('Select a file before clicking'); return false; }" />
     </div>
     </form>
 
@@ -337,7 +337,7 @@ function media_upload() {
     
     // check file type against allowed types
     $ok = 0;
-    $allowedtypes = explode (',', $CONF['AllowedTypes']);
+    $allowedtypes = MEDIA::getAllowedTypes();
     foreach ( $allowedtypes as $type )
     {
         //if (eregi("\." .$type. "$",$filename)) $ok = 1;
@@ -431,5 +431,3 @@ function media_foot() {
     </body>
     </html>
 <?php }
-
-?>

@@ -192,14 +192,14 @@ function listplug_table_pluginlist($template, $type) {
                 echo '<td>';
                     echo _LIST_PLUGS_DESC .'<br/>'. hsc($plug->getDescription());
                     if (sizeof($plug->getEventList()) > 0) {
-                        echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',hsc(implode($plug->getEventList(),', '));
+                        echo '<br /><br />',_LIST_PLUGS_SUBS,'<br />',hsc(implode(', ', $plug->getEventList()));
                         // check the database to see if it is up-to-date and notice the user if not
                     }
                     if (!$plug->subscribtionListIsUptodate()) {
                         echo '<br /><br /><strong>',_LIST_PLUG_SUBS_NEEDUPDATE,'</strong>';
                     }
                     if (sizeof($plug->getPluginDep()) > 0) {
-                        echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',hsc(implode($plug->getPluginDep(),', '));
+                        echo '<br /><br />',_LIST_PLUGS_DEP,'<br />',hsc(implode(', ', $plug->getPluginDep()));
                     }
 // <add by shizuki>
                 // check dependency require
@@ -679,7 +679,7 @@ function listplug_table_skinlist($template, $type) {
                             $types[$i] = '<li>' . helpHtml('skinpartspecial') . ' <a href="index.php?action=skinedittype&amp;skinid='.$current->sdnumber.'&amp;type='.$type.'" tabindex="'.$template['tabindex'].'">' . hsc($friendlyNames[$type]) . "</a></li>";
                         }
                     }
-                    echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode($types,'') ,'</ul>';
+                    echo '<br /><br />',_LIST_SKINS_DEFINED,' <ul>',implode('', $types) ,'</ul>';
                 }
             echo "</td>";
             echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='".$template['tabindex']."'>"._LISTS_EDIT."</a></td>";
@@ -736,7 +736,7 @@ function listplug_table_actionlist($template, $type) {
             $current = $template['current'];
 
             echo '<td>' , hsc($current->timestamp), '</td>';
-            echo '<td>' , hsc($current->message), '</td>';
+            echo "<td><div style='overflow-wrap: anywhere; max-height: 10em; overflow: auto;'>", hsc($current->message), '</div></td>';
 
             break;
     }

@@ -59,7 +59,7 @@ function serverVar($name) {
 
 // removes magic quotes if that option is enabled
 function undoMagic($data) {
-    if (!get_magic_quotes_gpc())
+    if (PHP_VERSION_ID >= 50400 || !get_magic_quotes_gpc())
         return $data;
     if (ini_get('magic_quotes_sybase') != 1)
         return stripslashes_array($data);

@@ -30,6 +30,11 @@
 	-- Start Of Configurable Part --
 */
 
+if (version_compare('8.0.0',phpversion(),'<=')) {
+    exit('<h1>Error</h1><div>This version does not support PHP 8.0 or later.</div>
+        <div>Nucleus CMS version 3.80 or later is required to work with PHP8.0 or later.</div>');
+}
+
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
 if (preg_match('#/install$#', $path))
@@ -319,7 +324,7 @@ function showInstallForm() {
 	@sql_disconnect($conn);
 	//End and clean output buffer
 	ob_end_clean();
-	$mysqlVersion = implode($match, '.');
+	$mysqlVersion = implode('.', $match);
 	$minVersion = '3.23';
 
 	if (version_compare($mysqlVersion, '0.0.0', '==')) {

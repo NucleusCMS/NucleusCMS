@@ -340,7 +340,7 @@ if (!isset($member))
 	}
 
 	function _newMediaObject($blogid, $username, $password, $info) {
-		global $CONF, $DIR_MEDIA, $DIR_LIBS;
+		global $CONF, $DIR_MEDIA, $DIR_LIBS, $member;
 
 		// - login
 		$mem = new MEMBER();
@@ -366,7 +366,7 @@ if (!isset($member))
 		// - check if filetype is allowed (check filename)
 		$filename = $info['name'];
 		$ok = 0;
-		$allowedtypes = explode (',', $CONF['AllowedTypes']);
+		$allowedtypes = MEDIA::getAllowedTypes();
 		foreach ( $allowedtypes as $type )
 		{
 			//if (eregi("\." .$type. "$",$filename)) $ok = 1;
@@ -387,6 +387,7 @@ if (!isset($member))
 		if ($CONF['MediaPrefix'])
 			$filename = strftime("%Y%m%d-", time()) . $filename;
 
+        $member = $mem;
 		$res = MEDIA::addMediaObjectRaw($collection, $filename, $data);
 		if ($res)
 			return _error(10, $res);

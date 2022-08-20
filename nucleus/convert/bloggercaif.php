@@ -500,7 +500,7 @@ class ReadCAIF {
 	function startElement($parser, $name, $attrs) {
 		array_push($this->tag_stack, $name);
 
-//		echo "<br />BEGIN: ", implode($this->tag_stack,'-&gt;');
+//		echo "<br />BEGIN: ", implode('-&gt;', $this->tag_stack);
 		if ( !$this->in_rec and !strcmp($name, 'comment') ) {
 			$this->in_rec = 1;
 			$this->rec_lvl = sizeof($this->tag_stack);
@@ -520,7 +520,7 @@ class ReadCAIF {
 	function endElement($parser, $name) {
 		array_pop($this->tag_stack);
 
-//		echo "<br />END: ", implode($this->tag_stack,'-&gt;');
+//		echo "<br />END: ", implode('-&gt;', $this->tag_stack);
 
 		if ( $this->in_rec ) {
 

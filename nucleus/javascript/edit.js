@@ -209,8 +209,12 @@ function checkSubmit() {
 		submitcount++;
 		return true;
 	} else {
-		return false;
-	}
+        if (document.documentElement.lang === 'ja') {
+            return window.confirm("もう一度送信しますか ?");
+        } else {
+            return window.confirm("Would you like to retry submitting the form?");
+        }
+    }
 }
 
 
