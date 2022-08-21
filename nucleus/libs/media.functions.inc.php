@@ -295,7 +295,7 @@ function media_upload()
     // prefix filename with current date (YYYY-MM-DD-)
     // this to avoid nameclashes
     if ($CONF['MediaPrefix']) {
-        $filename = strftime("%Y%m%d-", time()) . $filename;
+        $filename = date("Ymd-", time()) . $filename;
     }
 
     $collection = requestVar('collection');
