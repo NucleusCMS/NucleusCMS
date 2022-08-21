@@ -2982,3 +2982,96 @@ function file_get_extension($filename, $period = false)
     }
     return '';
 }
+
+function tidy_parse_config_string($config_strings)
+{
+    $config = array();
+    if (strlen($config_strings) > 0) {
+        $config_strings = preg_replace('/\s*[,]\s+/', ', ', $config_strings);
+        $matches = array();
+        if (preg_match_all('/^\s*([a-z\\-0-9]+)\s*:(.+$)/mi', $config_strings, $matches, PREG_SET_ORDER)) {
+            foreach($matches as $m) {
+                $k = trim($m[1]);
+                $v = trim($m[2]);
+                if (empty($k)) {
+                    continue;
+                }
+                // tidy boolean
+                //  [5.6-   ] : yes, no
+                //  [5.0-5.4] : y/n, yes/no, t/f, true/false, 1/0
+                if (in_array(strtolower($v), array('yes','y','true','t','on'))) {
+                    $v = true;
+                } elseif (in_array(strtolower($v), array('no','n','false','f','off'))) {
+                    $v = false;
+                }
+                $config[$k] = $v;
+            }
+        }
+    }
+    return $config;
+}
+
+function tidy_get_default_config($apply_user_conf = true)
+{
+    // http://tidy.sourceforge.net/docs/quickref.html
+    // http://api.html-tidy.org/
+    //   Contents : tidy command : Configuration
+    global $CONF, $member;
+    $debug       = isDebugMode();
+    $release     = ! $debug;
+    $is_admin    = $member->isAdmin();
+    $tidy_config = array(
+        'doctype'       => 'auto',
+        // html5, omit, auto, strict, transitional, user
+        'output-xhtml'  => false,
+        'char-encoding' => 'utf8',
+        'indent'        => (isset($CONF['tidy_opt_config_indent_enable'])
+                            && $CONF['tidy_opt_config_indent_enable']),
+        'indent-spaces' => 2,
+        'fix-uri'       => false,
+        'hide-comments' => ! $is_admin,
+        'tidy-mark'     => $is_admin,
+        'wrap'          => false,
+        // 200
+    );
+
+    if (_CHARSET !== 'UTF-8') {
+        $tidy_config['char-encoding'] = 'raw';
+    }
+    if ($release) {
+//            $tidy_config['language'] = 'ja';
+    }
+
+    $doctype = (isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype']
+                    : 'auto');
+
+    $tidy_release = str_replace(array('.'), '/', tidy_get_release());
+    $tidy_version = (strtotime($tidy_release) >= strtotime('2015/06/30')) ? 5 : 4;
+    // tidy ver5 : [2015.06.30 - ]
+
+    if ($tidy_version <= 4) {
+        // tidy lib : html4
+        if ($doctype === 'html5') {
+            $doctype == 'auto';  // tidy lib is too old.
+        }
+    }
+    if ($doctype === 'html5,strict') {
+        $doctype = $tidy_version >= 5 ? 'html5' : 'strict';
+    }
+//      var_dump(__LINE__, $doctype, $tidy_version, $tidy_release);
+
+    if (!empty($doctype)) {
+        // [25 March 2009] : auto, omit, strict, loose or <fpi> / strict(HTML4) 
+        // [2015/06/30 - ] : html5, omit, auto, strict, transitional, user
+        $tidy_config['doctype'] = $doctype;
+    }
+
+    if ($apply_user_conf) {
+        // tidy_opt_config_text
+        $userconfig = isset($CONF['tidy_opt_config_text']) ? trim((string) $CONF['tidy_opt_config_text']) : '';
+        if (strlen($userconfig) > 0) {
+            return array_merge($tidy_config, tidy_parse_config_string($userconfig));
+        }
+    }
+    return $tidy_config;
+}
