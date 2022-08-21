@@ -283,4 +283,127 @@ class Utils
 
         return false;
     }
+
+    public static function date_with_strftime_format($format, $timestamp = null)
+    {
+        $fmt = self::convertDateformatFromStrftimeformat($format);
+        if ($fmt !== false) {
+            if ($timestamp !== null) {
+                return date($fmt, $timestamp);
+            } else {
+                return date($fmt);
+            }
+        }
+        return false;
+    }
+    
+    public static function convertDateformatFromStrftimeformat($format)
+    {
+        // Todo: ignore error option
+        $force = true;
+        $parts = preg_split('|(%[%a-z])|i', $format, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
+        $res = array();
+
+        foreach($parts as $part) {
+            if (substr($part, 0, 1) !== '%') {
+                // normal string
+               $res[] = preg_replace('|([a-z])|i', '\\\\${1}', $part);
+               continue;
+            }
+            if (strlen($part) != 2) {
+                // syntax error;
+                if ($force) {
+                   $res[] = '%';
+                   continue;
+                }
+                return false;
+            }
+            // %a %A %d %e %j %u %w %U %V %W %b %B %h %m %C %g %G %y %Y %H %k %I %l %M %p %P %r %R %S %T %X %z %Z %c %D %F %s %x %n %t %%
+            if (false === strpos('aAdejuwUVWbBhmCgGyYHkIlMpPrRSTXzZcDFsxnt%', substr($part, 1, 1))) {
+                // syntax error;
+                return false;
+            }
+            $pairs = array(
+                '%%' => '%',
+                '%y' => 'y',
+                '%Y' => 'Y',
+                '%m' => 'm',
+                '%d' => 'd',
+                '%H' => 'H',
+                '%M' => 'i',
+                '%S' => 's',
+                '%s' => 'U',
+                '%w' => 'w',
+                '%W' => 'W',
+                '%z' => 'O',
+                '%Z' => 'T',
+                '%T' => 'H:i:s', // %T "%H:%M:%S"  
+                '%p' => 'A', // AM PM
+                '%P' => 'a', // am pm
+                '%I' => 'h',  // 01-12 (hour)
+                '%a' => 'D',  // Mon - Sun
+                '%A' => 'l',  // Monday - Sunday
+//                '%j' => 'z',  // %j 001-366  / z 0 - 365
+                '%u' => 'N',  // week number
+                '%h' => 'M',  // Jan - Dec
+                '%b' => 'M',
+                '%B' => 'F',  // January - December
+                '%n' => "\n",
+                '%t' => "\t",
+                '%F' => 'Y-m-d', // %F "%Y-%m-%d"
+                '%D' => 'm/d/y', // %D "%m/%d/%y"
+                //
+//                '%e' => '',
+//                '%u' => '',
+//                '%U' => '',
+//                '%V' => '',
+//                '%C' => '',
+//                '%g' => '',
+//                '%G' => '',
+//                '%k' => '',
+//                '%l' => '',
+//                '%r' => '',
+//                '%R' => '',
+//                '%X' => '',
+//                '%c' => '',
+//                '%x' => '',
+            );
+            $new = strtr($part, $pairs);
+            if (strcmp($new, $part) === 0) {
+                // Not implemented yet.
+                if ($force) {
+                   // todo: ? or do nothing or as it is
+//                   $res[] = '?';
+//                   $res[] = $part;
+                   continue;
+                }
+                return false;
+//              continue;
+            }
+            $res[] = $new;
+        }
+        return implode('', $res);
+    }    
+    
+    public static function test_date_with_strftime_format()
+    {
+        //  php -r "include('Utils.php'); Utils::test_date_with_strftime_format();"
+        $list = array(
+            '%Y-%m-%d %H:%M:%S',
+            '%W %w %s',
+            'text : ok?',
+            '%z %Z %T %P %p %I %j',
+            '%u %a %A %h %b %B',
+            '%F %D %y',
+        );
+        foreach($list as $format) {
+            $date_fmt = self::convertDateformatFromStrftimeformat($format);
+            printf("format                        : %s\n", $format);
+            printf("  date fmt convert            : %s\n", $date_fmt);
+            printf("  strftime()                  : %s\n", strftime($format));
+            printf("  date_with_strftime_format() : %s\n", self::date_with_strftime_format($format));
+            printf("  date()                      : %s\n", date($date_fmt));
+        }     
+    }
+   
 }
