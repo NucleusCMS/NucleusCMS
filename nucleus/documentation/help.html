@@ -604,6 +604,17 @@ selector(),
 </div>
 
 <div class="page">
+<a name="password"></a>
+<h1>パスワード</h1>
+
+<p>パスワードに使用できる文字は、</p>
+<p>英数字 a～z A～Z 0～9 </p>
+<p>記号 ! &quot; # $ % &amp; &#039; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~</p>
+<p>です</p>
+
+<!--<p class="comment"><a href="http://japan.nucleuscms.org/help/shortnames">内容について気がついた事があればご連絡ください。</a></p>-->
+</div>
+<div class="page">
 <a name="skinpartarchive"></a>
 <h1>スキン：月別アーカイブページ</h1>
 <p>「メインの目次ページ」と似た振る舞いをする、「１ヶ月分のアーカイブ」で、該当する１ヶ月分のアイテムを全て表示します。</p>
@@ -2635,6 +2646,26 @@ $HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 <li><strong>loggedin</strong>：訪問者がログインしているか調べます。</li>
 <li><strong>onteam</strong>：訪問者がログインし、現在のブログ、または、<em>name</em> で指示されたブログのチームに入っているか調べます。</li>
 <li><strong>admin</strong>：訪問者がログインし、現在のブログ、または<em>name</em> で指示されたブログの管理権限があるか調べます。</li>
+
+      <li><strong>authorvisible</strong> : 投稿者名の表示許可を確認します。<br>
+        &lt;%if(authorvisible)%&gt;<br>
+        投稿者: &lt;%if(loggedin)%&gt;&lt;a href=&quot;&lt;%authorlink%&gt;&quot; title=&quot;投稿者: &lt;%author%&gt;&quot;&gt;&lt;%author%&gt;&lt;/a&gt;&lt;%endif%&gt;
+        <br>&lt;%endif%&gt;
+      </li>
+      <li><strong>commentclosed </strong> : コメントが締め切られているか調べます。<br>
+        &lt;%if(commentclosed)%&gt;<br>
+        閉鎖中<br>
+        &lt;%else%&gt;<br>
+        ようこそ！<br>
+        &lt;%endif%&gt;<br>
+      </li>
+      <li><strong>hascomment</strong> :  コメントがあるか調べます。<br>
+        &lt;%if(hascomment)%&gt;<br>
+          コメントあり<br>
+        &lt;%else%&gt;<br>
+          コメントなし<br>
+        &lt;%endif%&gt;<br>
+      </li>
 
 </ul>
 </li>
