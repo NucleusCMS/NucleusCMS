@@ -6634,6 +6634,13 @@ selector();
         
         $isTidy5 = (function_exists('tidy_get_release')
             && (strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30')));
+
+        // ENABLE_TIDY_INDENT
+        $enable_tidy_indent = (isset($CONF['tidy_opt_config_indent_enable']) && $CONF['tidy_opt_config_indent_enable']);
+        printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
+        $this->input_yesno('tidy_opt_config_indent_enable', $enable_tidy_indent, $tabindex++);
+        echo "</td></tr>\n";
+
         // doctype
         $doctypes = array();
         $def_doctype = isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype'] : 'auto';
@@ -6647,21 +6654,15 @@ selector();
         $doctypes[] = array('value' => 'auto', 'label'=> 'auto: Automatic selection by html code : depending on lib version');
         $doctypes[] = array('value' => 'omit', 'label'=> 'omit');
 
-        echo "<tr><td>Tidy: doctype</td><td>\n";
+        echo "<tr><td>Tidy: doctype (blog)</td><td>\n";
         self::input_type_select('tidy_opt_config_doctype', $doctypes, $def_doctype, $tabindex++);
-        echo "</td></tr>\n";
-
-        // ENABLE_TIDY_INDENT
-        $enable_tidy_indent = (isset($CONF['tidy_opt_config_indent_enable']) && $CONF['tidy_opt_config_indent_enable']);
-        printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
-        $this->input_yesno('tidy_opt_config_indent_enable', $enable_tidy_indent, $tabindex++);
         echo "</td></tr>\n";
 
         // todo: make it customizable
         // tidy_opt_config_text
         $v = isset($CONF['tidy_opt_config_text']) ? hsc((string) $CONF['tidy_opt_config_text']) : '';
         $styles = 'max-height:8em';
-        printf("<tr><td>Tidy: config<br>[example]<br>indent-spaces: 2<br>hide-comments: no</td>\n");
+        printf("<tr><td>Tidy: config (blog)<br>[example]<br>indent-spaces: 2<br>hide-comments: no</td>\n");
         printf("<td><textarea name='tidy_opt_config_text' style='%s'>%s</textarea></td></tr>\n",
                 $styles,
                 $v
@@ -7203,25 +7204,22 @@ EOL;
         }
 
         // Tidy
-        if (_CHARSET === 'UTF-8') {
-            ob_start();
-            register_shutdown_function(function ()
-                {
-                    if (ob_get_level() > 0) {
-                        $data = @ob_get_contents();
-                        @ob_end_clean();
-                        if ($data !== false && strlen($data) > 0) {
-                            try {
-                                ADMIN::doTidy($data);
-                            } finally {
-                                echo $data;
-                            }
-                        }
-                    }
-                }
-            );
+        if (_CHARSET === 'UTF-8'
+            && extension_loaded('tidy')
+            && isset($CONF['tidy_enable'])
+            && $CONF['tidy_enable']
+        ) {
+/*
+//            tidy.default_config : [PHP_INI_SYSTEM] php.ini or httpd.conf
+            $tidy_config_path = ini_get('tidy.default_config');
+            if (!empty($tidy_config_path) && @is_file($tidy_config_path)) {
+                ob_start('ob_tidyhandler');
+            } else 
+ */
+            if (ob_start()) {
+                register_shutdown_function(array($this, 'tidy_shutdown_end_obhandler'), ob_get_level());
+            }
         }
-        
         ?>
                 <!DOCTYPE html>
                 <html lang="<?php echo _LANG_CODE; ?>">
@@ -9503,32 +9501,54 @@ EOL;
         $this->pagefoot();
         exit;
     }
-    
+
     public static function doTidy(&$data)
     {
         if (!extension_loaded('tidy') || _CHARSET !== 'UTF-8') {
             return;
         }
-        $tidy_release = str_replace(array('.'), '/', tidy_get_release());
-        $tidy_version = (strtotime($tidy_release) >= strtotime('2015/06/30')) ? 5 : 4;
-        $tidy_config = array(
-            'doctype'       => $tidy_version >=5 ? 'html5' : 'auto',
-            // html5, omit, auto, strict, transitional, user
-            'output-xhtml'  => false,
-            'char-encoding' => 'utf8',
-            'fix-uri'       => false,
-            'hide-comments' => false,
-            'tidy-mark'     => true,
-            'wrap'          => false,
-            // 200
-        );
 
-        $tidy_config = array_merge($tidy_config, array('indent' => true,'indent-spaces' => 4)); // indent: space
-//        $tidy_config = array_merge($tidy_config, array('indent' => true,'indent-with-tabs'=> true, 'tab-size' => 4)); // indent: tab
+        $tidy_config = tidy_get_default_config(false);
+        $tidy_config['doctype'] = 'auto';
+
+//        $tidy_config['indent-spaces']    = 4; // indent is space
+//        $tidy_config['indent-with-tabs'] = 4; // indent is tab
 
         $tidy = new tidy();
         $tidy->parseString($data, $tidy_config, 'utf8');
         $tidy->cleanRepair();
         $data = (string)$tidy;
     }
+
+    function tidy_shutdown_end_obhandler($level)
+    {
+        $current_level = ob_get_level();
+        if ($current_level === 0) {
+            return;
+        }
+        $data = array();
+        try {
+            while($level <= $current_level && 0 < $current_level) {
+                $status = ob_get_status();
+                if ($status['name'] === 'ob_gzhandler') {
+                    break;
+                }
+                $s = ob_get_clean();
+                if ($s !== false && strlen($s) > 0) {
+                    array_unshift($data, $s);
+                }
+                $current_level = ob_get_level();
+            }
+        } finally {
+            if (!empty($data)) {
+                $data = implode('', $data);
+                try {
+                    ADMIN::doTidy($data);
+                } finally {
+                    echo $data;
+                }
+            }
+        }
+    }
+    
 } // class ADMIN

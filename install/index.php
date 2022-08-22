@@ -26,6 +26,7 @@
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
+include_once('../nucleus/libs/phpfunctions.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
 include_once('../nucleus/libs/helpers.php');
 
