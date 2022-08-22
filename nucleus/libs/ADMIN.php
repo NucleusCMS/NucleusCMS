@@ -6404,7 +6404,7 @@ EOL;
             // Link to the online version test at the core system official website
             echo '<h3>' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK . "</h3>\n";
             if ($nucleus['codename'] != '') {
-                $codenamestring = ' &quot;' . $nucleus['codename'] . '&quot;';
+                $codenamestring = ' ' . $nucleus['codename'];
             } else {
                 $codenamestring = '';
             }
@@ -6688,7 +6688,7 @@ EOL;
         $ph['help_link'] = isset($CONF['help_link']) ? $CONF['help_link'] : get_help_root_url();
         $ph['_HELP_TT'] = _HELP_TT;
         $ph['_YOURSITE'] = _YOURSITE;
-        $codenamestring = ($nucleus['codename']!='')? ' &quot;'.$nucleus['codename'].'&quot;':'';
+        $codenamestring = ($nucleus['codename']!='')? ' '.$nucleus['codename']:'';
         $ph['versionName'] = sprintf('%s %s%s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION, hsc($codenamestring));
         $ph['checkURL'] = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
         $ph['_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE'] = hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE);

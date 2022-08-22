@@ -633,13 +633,13 @@ if (!function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_field($res, $offset = 0)
     {
-        $results = array();
-        $obj = null;
-        $results = $res->getColumnMeta($offset);
-        foreach ($results as $key => $value) {
-            $obj->$key = $value;
+        if (is_object($res) && ($res instanceof PDOStatement)) {
+            $results = $res->getColumnMeta($offset);
+            if (is_array($results) && count($results) > 0) {
+                return (object) $results;
+            }
         }
-        return $obj;
+        return null;
     }
 
     /**

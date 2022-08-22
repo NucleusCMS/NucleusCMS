@@ -734,37 +734,25 @@ class NucleusPlugin
 
         return $aOptions;
     }
+    
+    private $event_list;
 
     final public function _getEventList()
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $index = get_class($this);
-            if (!isset($_shared_data[$index])) {
-                $_shared_data[$index] = array();
-            }
-            $res = &$_shared_data[$index];
-            if (!empty($res)) {
-                return $res;
-            }
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $res = null;
-            if (!is_null($res)) {
-                return $res;
-            }
-            $res = array();
+        if ($this->event_list !== null) {
+            return $this->event_list;
         }
+        $this->event_list = array();
 
         $list = get_class_methods($this);
         if (!empty($list)) {
             foreach ($list as $name) {
                 if (strncmp($name, "event_", 6) == 0) {
-                    $res[] = substr($name, 6);
+                    $this->event_list[] = substr($name, 6);
                 }
             }
         }
-        return $res;
+        return $this->event_list;
     }
 
     /**
@@ -1123,26 +1111,11 @@ class NucleusPlugin
 
     public function checkRemoteUpdate()
     {
-        if (80100 <= PHP_VERSION_ID) {
-            static $_shared_data = array(); // Note[important] : PHP[8.1 - ]  inherited method will share static variables with the parent method
-            $index = get_class($this);
-            if (!isset($_shared_data[$index])) {
-                $_shared_data[$index] = null;
-            }
-            $enable_db = &$_shared_data[$index];
-        } else {
-            // PHP[5.x - 8.0.x]
-            static $enable_db = null;
-        }
-
         $ret_val = array('result' => false, 'version' => '', 'download' => '');
 //        if (!function_exists('get_called_class'))
 //            return $ret_val;
         $NP_Name = get_class($this); // get_called_class();
-        if (is_null($enable_db)) {
-            $enable_db = CoreCachedData::existTable();
-        }
-        if (!$enable_db) {
+        if (!CoreCachedData::existTable()) {
             return $ret_val;
         }
 
