@@ -1932,6 +1932,9 @@ function serverStringToArray($str, &$array, &$frontParam)
 {
     // init param
     $array = array();
+    if ($str === null) {
+        $str = '';
+    }
     // split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
     if (strpos($str, "?") !== false) {
         list($frontParam, $args) = preg_split("/\?/", $str, 2);
@@ -1956,6 +1959,9 @@ function serverStringToArray($str, &$array, &$frontParam)
  */
 function arrayToServerString($array, $frontParam, &$str)
 {
+    if ($str === null) {
+        $str = '';
+    }
     if (strpos($str, "?") !== false) {
         $str = $frontParam . "?";
     } else {
