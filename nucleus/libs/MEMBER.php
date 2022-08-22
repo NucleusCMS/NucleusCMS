@@ -37,6 +37,7 @@ class MEMBER
     public $notes;
     public $autosave = 1;        // if the member use the autosave draft function
 
+    private $hasher;
     private $halt = 0;
 
     /**
@@ -127,9 +128,18 @@ class MEMBER
         );
         $manager->notify('CustomLogin', $param);
 
+        if ('' === $formv_username || 32 < strlen($formv_username)) { // mname varchar(32)
+            $this->loggedin = 0;
+            return 0;
+        }
+
         if ($success && $this->readFromName($formv_username)) {
             $this->loggedin = 1;
         } elseif (!$success && $allowlocal) {
+            if ('' === $formv_password || 40 < strlen($formv_password)) { // avoid md5 collision by using a long key
+                $this->loggedin = 0;
+                return 0;
+            }
             $userInfo = $this->readFromName($formv_username);
             $dbv_password = $this->getPassword();
 
@@ -657,7 +667,11 @@ class MEMBER
 
     function checkPassword($pw)
     {
-        return (md5($pw) == $this->getPassword());
+        if (str_contains($this->getPassword(), '$')) {
+            return $this->hasher->CheckPassword($pw, $this->getPassword());
+        } else {
+            return md5($pw) === $this->getPassword();
+        }
     }
 
     function getRealName()
