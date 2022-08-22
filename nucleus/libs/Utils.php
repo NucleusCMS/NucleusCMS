@@ -59,11 +59,22 @@ class Utils
         }
     }
 
-    public static function strftime($format, $timestamp = '')
+    public static function strftime($format, $timestamp = null)
     {
         // [PHP8.1] Deprecated: Function strftime()
+        // $ php -r "echo strftime('%Y-%m-%d %H:%M:%S', null);"
+        //  1970-01-01 09:00:00
+        // PHP bug: manual : defaults to the current local time if timestamp is null
+        //                   actual result : null treat as int 0
+
         if (! is_string($format) || (strlen($format) == 0)) {
             return '';
+        }
+        if ((func_num_args() == 1)) {
+            $timestamp = time();
+        }
+        if (90000 <= PHP_VERSION_ID && USER_FUNCTION_STRFTIME) {
+            return self::date_with_strftime_format($format, $timestamp);
         }
         if (! _HAS_MBSTRING) {
             return @strftime($format, $timestamp);
@@ -288,10 +299,10 @@ class Utils
     {
         $fmt = self::convertDateformatFromStrftimeformat($format);
         if ($fmt !== false) {
-            if ($timestamp !== null) {
-                return date($fmt, $timestamp);
-            } else {
+            if ((func_num_args() == 1)) {
                 return date($fmt);
+            } else {
+                return date($fmt, $timestamp);
             }
         }
         return false;
@@ -387,6 +398,7 @@ class Utils
     
     public static function test_date_with_strftime_format()
     {
+        $t = null;
         //  php -r "include('Utils.php'); Utils::test_date_with_strftime_format();"
         $list = array(
             '%Y-%m-%d %H:%M:%S',
@@ -400,10 +412,14 @@ class Utils
             $date_fmt = self::convertDateformatFromStrftimeformat($format);
             printf("format                        : %s\n", $format);
             printf("  date fmt convert            : %s\n", $date_fmt);
-            printf("  strftime()                  : %s\n", strftime($format));
+            printf("  strftime(\$format)           : %s\n", strftime($format));
             printf("  date_with_strftime_format() : %s\n", self::date_with_strftime_format($format));
             printf("  date()                      : %s\n", date($date_fmt));
-        }     
+            echo "\n";
+            printf("  strftime(\$format, \$t)       : %s\n", strftime($format, $t));
+            printf("  date_with_strftime_format() : %s\n", self::date_with_strftime_format($format, $t));
+            printf("  date()                      : %s\n", date($date_fmt, $t));
+        }
     }
    
 }

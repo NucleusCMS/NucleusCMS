@@ -15,7 +15,8 @@ if (! function_exists('get_magic_quotes_runtime')) {
     }
 }
 
-if (! function_exists('strftime')) {
+define('USER_FUNCTION_STRFTIME', ! function_exists('strftime'));
+if (USER_FUNCTION_STRFTIME) {
     // strftime : deprecated PHP[8.1-] / removed? PHP9.0 
     // strftime(string $format, ?int $timestamp = null): string|false
     function strftime($format, $timestamp = null)
