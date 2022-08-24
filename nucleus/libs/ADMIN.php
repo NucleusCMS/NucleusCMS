@@ -5902,8 +5902,8 @@ selector();
             foreach ($items as $item) {
                 echo "\t<tr>\n";
                 echo "\t\t" . '<td width="50%">'. $item[0] . "</td>\n";
-                $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='${item[2]}'" : '';
-                echo "\t\t" . "<td${style}>" . hsc($item[1]) . "</td>\n";
+                $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='{$item[2]}'" : '';
+                echo "\t\t" . "<td{$style}>" . hsc($item[1]) . "</td>\n";
                 echo "\t</tr>\n";
             }
 //            echo "</table>\n";
@@ -5929,7 +5929,7 @@ selector();
                     }
                     echo "\t<tr>\n";
                     echo "\t\t" . '<td width="50%">'. $k . "</td>\n";
-                    echo "\t\t" . "<td${style}>" . hsc($v) . "</td>\n";
+                    echo "\t\t" . "<td{$style}>" . hsc($v) . "</td>\n";
                     echo "\t</tr>\n";
                 }
             }

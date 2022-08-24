@@ -987,6 +987,7 @@ define('_ERROR_FILE_TOO_BIG',		'File is too big!');
 define('_ERROR_BADFILETYPE',		'Sorry, this filetype is not allowed');
 define('_ERROR_BADREQUEST',			'Bad upload request');
 define('_ERROR_DISALLOWEDUPLOAD',	'You are not on any weblogs teamlist. Hence, you are not allowed to upload files');
+define('_ERROR_DISALLOWEDUPLOAD_V50',	'Warning! The version of PHP you are running is old and we cannot guarantee normal operation.');
 define('_ERROR_BADPERMISSIONS',		'File/Dir permissions are not set correctly');
 define('_ERROR_UPLOADMOVEP',		'Error while moving uploaded file');
 define('_ERROR_UPLOADCOPY',			'Error while copying file');

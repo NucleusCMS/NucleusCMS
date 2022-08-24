@@ -41,7 +41,7 @@ if (ini_get('register_globals')) {
 }
 
 if (isset($CONF['debug']) && !empty($CONF['debug'])) {
-    if (70400 < PHP_VERSION_ID) {
+    if (70400 <= PHP_VERSION_ID) {
         error_reporting(E_ALL & ~ E_DEPRECATED);
     } else {
         error_reporting(E_ALL); // report all errors!

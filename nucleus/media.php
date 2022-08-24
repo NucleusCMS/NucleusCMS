@@ -52,7 +52,7 @@ if (sql_num_rows($teams) == 0 && !$member->isAdmin()) {
 }
 
 if (PHP_VERSION_ID < 50100) {
-    media_doError(_ERROR_DISALLOWEDUPLOAD);
+    media_doError(_ERROR_DISALLOWEDUPLOAD_V50);
 }
 
 // get action

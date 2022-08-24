@@ -69,6 +69,8 @@ class MANAGER
         return $instance[0];
     }
 
+    public $parserPrefs;
+    
     /**
       * The constructor of this class initializes the object caches
       */

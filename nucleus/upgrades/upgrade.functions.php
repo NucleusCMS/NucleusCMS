@@ -228,7 +228,7 @@ function upgrade_query($friendly, $query)
 function update_version($version)
 {
     global $upgrade_failures;
-    $message = "Updating DatabaseVersion in config table to ${version}";
+    $message = "Updating DatabaseVersion in config table to {$version}";
     if (0 == $upgrade_failures) {
         $query = sprintf("UPDATE %s set value='%s' where name='DatabaseVersion'", sql_table('config'), $version);
         upgrade_query($message, $query);

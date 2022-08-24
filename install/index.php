@@ -60,7 +60,7 @@ function get_install_lang_defs()
 //        'zh_tw' => array('name' => 'traditional_chinese' , 'title' => '中文 - Chinese traditional'),
     );
     foreach (array_keys($val) as $key) {
-        if (!is_file("./install_lang_${key}.php")) {
+        if (!is_file("./install_lang_{$key}.php")) {
             unset($val[$key]);
         }
     }
@@ -88,7 +88,7 @@ if (isset($_POST['lang'])) {
 
 if ($lang != '' && !in_array($lang, $install_lang_keys)) {
     $lang = 'en';
-} elseif ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_${lang}.php")) {
+} elseif ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php")) {
     // do nothing
 } else {
     $v         = '';
@@ -101,7 +101,7 @@ if ($lang != '' && !in_array($lang, $install_lang_keys)) {
             }
         }
         if ($key != 'en' && in_array($key, $install_lang_keys)
-                         && is_file("./install_lang_${key}.php")) {
+                         && is_file("./install_lang_{$key}.php")) {
             $v = $lang = $key;
             break;
         }
@@ -112,7 +112,7 @@ if ($lang != '' && !in_array($lang, $install_lang_keys)) {
 }
 
 define('INSTALL_LANG', $lang);
-include_once("./install_lang_${lang}.php");
+include_once("./install_lang_{$lang}.php");
 
 if ($lang != 'en') {
     ob_start();
@@ -926,7 +926,7 @@ function doInstall()
            . " cdesc	  = '" . $cat_desc . "'"
            . " WHERE"
            . " catid	  = 1";
-//     . " SET cname = '${cat_name}', cdesc = '${cat_desc}' WHERE catid = 1");
+//     . " SET cname = '{$cat_name}', cdesc = '{$cat_desc}' WHERE catid = 1");
 
     sql_query($query, $MYSQL_CONN) or _doError(_ERROR20 . ': ' . sql_error($MYSQL_CONN));
 

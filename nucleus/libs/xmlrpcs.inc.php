@@ -171,8 +171,8 @@ $_xmlrpcs_multicall_sdoc = array(array('list of response structs, where each str
 function _xmlrpcs_multicall_error($err)
 {
     if (is_string($err)) {
-        $str  = $GLOBALS['xmlrpcstr']["multicall_${err}"];
-        $code = $GLOBALS['xmlrpcerr']["multicall_${err}"];
+        $str  = $GLOBALS['xmlrpcstr']["multicall_{$err}"];
+        $code = $GLOBALS['xmlrpcerr']["multicall_{$err}"];
     } else {
         $code = $err->faultCode();
         $str  = $err->faultString();
@@ -675,7 +675,7 @@ class xmlrpc_server
             }
         }
         if (isset($wanted)) {
-            return array(0, "Wanted ${wanted}, got ${got} at param ${pno}");
+            return array(0, "Wanted {$wanted}, got {$got} at param {$pno}");
         } else {
             return array(0, "No method signature matches number of parameters");
         }
@@ -940,7 +940,7 @@ class xmlrpc_server
                 return new xmlrpcresp(
                     0,
                     $GLOBALS['xmlrpcerr']['incorrect_params'],
-                    $GLOBALS['xmlrpcstr']['incorrect_params'] . ": ${errstr}"
+                    $GLOBALS['xmlrpcstr']['incorrect_params'] . ": {$errstr}"
                 );
             }
         }

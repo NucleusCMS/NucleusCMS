@@ -182,7 +182,7 @@ function upgrade_manual_96()
   </p>
   <pre>
   // path to media dir
-  \$DIR_MEDIA = '<b>${guess}</b>';
+  \$DIR_MEDIA = '<b>{$guess}</b>';
   </pre>
 
   <p>
@@ -205,7 +205,7 @@ function upgrade_manual_200()
   </p>
   <pre>
   // extra skin files for imported skins
-  \$DIR_SKINS = '<b>${guess}</b>';
+  \$DIR_SKINS = '<b>{$guess}</b>';
   </pre>
 
   <p>Also, it will be necessary to create this directory yourself. Downloaded skins can then be expanded into that directory and be imported from inside the Nucleus admin area.</p>

@@ -289,7 +289,7 @@ class Backup
         //
         // Grab the data from the table.
         //
-        $row_count = intval(quickQuery("SELECT count(*) AS result FROM ${tablename}"));
+        $row_count = intval(quickQuery("SELECT count(*) AS result FROM {$tablename}"));
         $result    = sql_query("SELECT * FROM {$tablename}");
         if (!$result) {
             return;

@@ -998,6 +998,7 @@ define('_ERROR_FILE_TOO_BIG',				'ファイルが大きすぎます！');
 define('_ERROR_BADFILETYPE',				'アップロードが認められていないファイルタイプです。');
 define('_ERROR_BADREQUEST',					'不正なアップロード要求です');
 define('_ERROR_DISALLOWEDUPLOAD',			'どのBlogチームにも入っていないためファイルをアップロードできません。');
+define('_ERROR_DISALLOWEDUPLOAD_V50',			'警告！ 動作しているPHPのバージョンが古く、正常な動作を保証できません。');
 define('_ERROR_BADPERMISSIONS',				'ファイル/ディレクトリのパーミッションが正しくセットされていません。');
 define('_ERROR_UPLOADMOVEP',				'アップロードファイルの移動中にエラーが発生しました。');
 define('_ERROR_UPLOADCOPY',					'ファイルのコピー中にエラーが発生しました。');
