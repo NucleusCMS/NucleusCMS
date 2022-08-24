@@ -53,11 +53,6 @@ class BLOG
         $this->setSelectedCategory($catid);
     }
 
-    public function BLOG($id)
-    {
-        $this->__construct($id);
-    }
-
     /**
      * Shows the given amount of items for this blog
      *

@@ -49,11 +49,6 @@ class MEMBER
         $this->hasher = new PasswordHash();
     }
 
-    public function MEMBER()
-    {
-        $this->__construct();
-    }
-
     private function init_member()
     {
         $this->loggedin = 0;

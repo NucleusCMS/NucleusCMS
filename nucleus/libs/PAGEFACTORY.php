@@ -92,11 +92,6 @@ class PAGEFACTORY extends BaseActions
         $this->allowedTypes = array('bookmarklet', 'admin');
     }
 
-    public function PAGEFACTORY($blogid)
-    {
-        $this->__construct($blogid);
-    }
-
     /**
      * creates a "add item" form for a given type of page
      *

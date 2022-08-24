@@ -69,11 +69,6 @@ class SKIN
         $this->includePrefix = $obj->sdincpref;
     }
 
-    public function SKIN($id)
-    {
-        $this->__construct($id);
-    }
-
     public function getID()
     {
         return $this->id;

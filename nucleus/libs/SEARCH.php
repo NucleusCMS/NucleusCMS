@@ -59,11 +59,6 @@ class SEARCH
         }
     }
 
-    public function SEARCH($keywords)
-    {
-        $this->__construct($keywords);
-    }
-
     public function boolean_sql_select($match)
     {
         if (strlen($this->inclusive) == 0) {

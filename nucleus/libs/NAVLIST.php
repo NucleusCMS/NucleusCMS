@@ -34,11 +34,6 @@ class NAVLIST extends ENCAPSULATE
         $this->itemid    = $itemid;
     }
 
-    public function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid)
-    {
-        $this->__construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid);
-    }
-
     public function showBatchList($batchtype, $query, $type, $template, $errorMessage = _LISTS_NOMORE)
     {
         $batch  = new BATCH($batchtype);

@@ -839,11 +839,6 @@ class xmlrpc_client
      */
     public function __construct($path, $server = '', $port = '', $method = '')
     {
-        $this->xmlrpc_client($path, $server, $port, $method);
-    }
-
-    public function xmlrpc_client($path, $server = '', $port = '', $method = '')
-    {
         // allow user to specify all params in $path
         if ($server == '' and $port == '' and $method == '') {
             $parts  = parse_url($path);

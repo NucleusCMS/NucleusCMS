@@ -27,11 +27,6 @@ class Backup
         // do nothing
     }
 
-    public function Backup()
-    {
-        $this->__construct();
-    }
-
     /**
      * This function creates an sql dump of the database and sends it to
      * the user as a file (can be gzipped if they want)
