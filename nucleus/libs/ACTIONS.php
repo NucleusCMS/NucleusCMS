@@ -16,8 +16,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class ACTIONS extends BaseActions {
-
+class ACTIONS extends BaseActions
+{
     // part of the skin currently being parsed ('index', 'item', 'archive',
     // 'archivelist', 'member', 'search', 'error', 'imagepopup')
     public $skintype;
@@ -40,46 +40,51 @@ class ACTIONS extends BaseActions {
     /**
      * Constructor for a new ACTIONS object
      */
-    function __construct($type) {
+    public function __construct($type)
+    {
         // call constructor of superclass first
         parent::__construct();
 
         $this->skintype = $type;
 
         global $catid;
-        if ($catid)
+        if ($catid) {
             $this->linkparams = array('catid' => $catid);
+        }
     }
 
     /**
      *  Set the skin
      */
-    function setSkin(&$skin) {
-		unset($this->skin);
-        $this->skin =& $skin;
+    public function setSkin(&$skin)
+    {
+        unset($this->skin);
+        $this->skin = & $skin;
     }
 
     /**
      *  Set the parser
      */
-    function setParser(&$parser) {
-		unset($this->parser);
-        $this->parser =& $parser;
+    public function setParser(&$parser)
+    {
+        unset($this->parser);
+        $this->parser = & $parser;
     }
 
     /**
      *    Forms get parsedincluded now, using an extra <formdata> skinvar
     */
-    function doForm($filename) {
+    public function doForm($filename)
+    {
         global $DIR_NUCLEUS;
-        array_push($this->parser->actions,'formdata','text','callback','errordiv','ticket');
-        $oldIncludeMode = PARSER::getProperty('IncludeMode');
+        array_push($this->parser->actions, 'formdata', 'text', 'callback', 'errordiv', 'ticket');
+        $oldIncludeMode   = PARSER::getProperty('IncludeMode');
         $oldIncludePrefix = PARSER::getProperty('IncludePrefix');
-        PARSER::setProperty('IncludeMode','normal');
-        PARSER::setProperty('IncludePrefix','');
+        PARSER::setProperty('IncludeMode', 'normal');
+        PARSER::setProperty('IncludePrefix', '');
         $this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
-        PARSER::setProperty('IncludeMode',$oldIncludeMode);
-        PARSER::setProperty('IncludePrefix',$oldIncludePrefix);
+        PARSER::setProperty('IncludeMode', $oldIncludeMode);
+        PARSER::setProperty('IncludePrefix', $oldIncludePrefix);
         array_pop($this->parser->actions);        // errordiv
         array_pop($this->parser->actions);        // callback
         array_pop($this->parser->actions);        // text
@@ -91,17 +96,18 @@ class ACTIONS extends BaseActions {
      * Checks conditions for if statements
      *
      * @param string $field type of <%if%>
-     * @param string $name property of field
+     * @param string $name  property of field
      * @param string $value value of property
      */
-    function checkCondition($field, $name='', $value = '') {
+    public function checkCondition($field, $name = '', $value = '')
+    {
         global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 //        global $mobiledetect;
 
         $condition = 0;
         switch($field) {
             case 'category':
-                $condition = ($blog && $this->_ifCategory($name,$value));
+                $condition = ($blog && $this->_ifCategory($name, $value));
                 break;
             case 'blogsetting':
                 $condition = ($blog && ($blog->getSetting($name) == $value));
@@ -133,20 +139,20 @@ class ACTIONS extends BaseActions {
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
-			case 'commentclosed':
-				$condition = $this->parse_commentclosed();
-				break;
-			case 'hascomment':
-				$condition = $this->parse_hascomment();
-				break;
-//			case 'ismobile':
-//			case 'ismobileaccess':
-//				$condition = isMobileAccess();
-//				break;
-//			case 'istablet':
-//				$condition = $mobiledetect->isTablet();
+            case 'commentclosed':
+                $condition = $this->parse_commentclosed();
+                break;
+            case 'hascomment':
+                $condition = $this->parse_hascomment();
+                break;
+                //			case 'ismobile':
+                //			case 'ismobileaccess':
+                //				$condition = isMobileAccess();
+                //				break;
+                //			case 'istablet':
+                //				$condition = $mobiledetect->isTablet();
 
-				break;
+                break;
             default:
                 $condition = $manager->pluginInstalled('NP_' . $field) && $this->_ifPlugin($field, $name, $value);
                 break;
@@ -162,20 +168,21 @@ class ACTIONS extends BaseActions {
      *    hasplugin,PlugName,OptionName=value
      *       -> checks if the option OptionName from plugin PlugName is set to value
      */
-    function _ifHasPlugin($name, $value) {
+    public function _ifHasPlugin($name, $value)
+    {
         global $manager;
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_'.$name)) {
-            $plugin =& $manager->getPlugin('NP_' . $name);
-            if ($plugin != NULL) {
+            $plugin = & $manager->getPlugin('NP_' . $name);
+            if ($plugin != null) {
                 if ($value == "") {
                     $condition = true;
                 } else {
                     list($name2, $value2) = explode('=', $value, 2);
                     if ($value2 == "" && $plugin->getOption($name2) != 'no') {
                         $condition = true;
-                    } else if ($plugin->getOption($name2) == $value2) {
+                    } elseif ($plugin->getOption($name2) == $value2) {
                         $condition = true;
                     }
                 }
@@ -187,11 +194,14 @@ class ACTIONS extends BaseActions {
     /**
      * Checks if a plugin exists and call its doIf function
      */
-    function _ifPlugin($name, $key = '', $value = '') {
+    public function _ifPlugin($name, $key = '', $value = '')
+    {
         global $manager;
 
-        $plugin =& $manager->getPlugin('NP_' . $name);
-        if (!$plugin) return;
+        $plugin = & $manager->getPlugin('NP_' . $name);
+        if (!$plugin) {
+            return;
+        }
 
         $params = func_get_args();
         array_shift($params);
@@ -202,23 +212,27 @@ class ACTIONS extends BaseActions {
     /**
      *  Different checks for a category
      */
-    function _ifCategory($name = '', $value='') {
+    public function _ifCategory($name = '', $value = '')
+    {
         global $blog, $catid;
 
         // when no parameter is defined, just check if a category is selected
-        if (($name != 'catname' && $name != 'catid') || ($value == ''))
+        if (($name != 'catname' && $name != 'catid') || ($value == '')) {
             return $blog->isValidCategory($catid);
+        }
 
         // check category name
         if ($name == 'catname') {
             $value = $blog->getCategoryIdFromName($value);
-            if ($value == $catid)
+            if ($value == $catid) {
                 return $blog->isValidCategory($catid);
+            }
         }
 
         // check category id
-        if (($name == 'catid') && ($value == $catid))
+        if (($name == 'catid') && ($value == $catid)) {
             return $blog->isValidCategory($catid);
+        }
 
         return false;
     }
@@ -226,20 +240,24 @@ class ACTIONS extends BaseActions {
     /**
      *  Checks if a member is on the team of a blog and return his rights
      */
-    function _ifOnTeam($blogName = '') {
+    public function _ifOnTeam($blogName = '')
+    {
         global $blog, $member, $manager;
 
         // when no blog found
-        if (($blogName == '') && (!is_object($blog)))
+        if (($blogName == '') && (!is_object($blog))) {
             return 0;
+        }
 
         // explicit blog selection
-        if ($blogName != '')
+        if ($blogName != '') {
             $blogid = getBlogIDFromName($blogName);
+        }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid))
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) {
             // use current blog
             $blogid = $blog->getID();
+        }
 
         return $member->teamRights($blogid);
     }
@@ -247,40 +265,45 @@ class ACTIONS extends BaseActions {
     /**
      *  Checks if a member is admin of a blog
      */
-    function _ifAdmin($blogName = '') {
+    public function _ifAdmin($blogName = '')
+    {
         global $blog, $member, $manager;
 
         // when no blog found
-        if (($blogName == '') && (!is_object($blog)))
+        if (($blogName == '') && (!is_object($blog))) {
             return 0;
+        }
 
         // explicit blog selection
-        if ($blogName != '')
+        if ($blogName != '') {
             $blogid = getBlogIDFromName($blogName);
+        }
 
-        if (($blogName == '') || !$manager->existsBlogID($blogid))
+        if (($blogName == '') || !$manager->existsBlogID($blogid)) {
             // use current blog
             $blogid = $blog->getID();
+        }
 
         return $member->blogAdminRights($blogid);
     }
-    
+
     /**
      * returns either
      *        - a raw link (html/xml encoded) when no linktext is provided
      *        - a (x)html <a href... link when a text is present (text htmlencoded)
      */
-    function _link($url, $linktext = '')
+    public function _link($url, $linktext = '')
     {
         $u = hsc($url);
-        $u = preg_replace("/&amp;amp;/",'&amp;',$u); // fix URLs that already had encoded ampersands
-        if ($linktext != '')
+        $u = preg_replace("/&amp;amp;/", '&amp;', $u); // fix URLs that already had encoded ampersands
+        if ($linktext != '') {
             $l = '<a href="' . $u .'">'.hsc($linktext).'</a>';
-        else
+        } else {
             $l = $u;
+        }
         return $l;
     }
-    
+
     /**
      * Outputs a next/prev link
      *
@@ -294,22 +317,22 @@ class ACTIONS extends BaseActions {
      *        When present, the output will be a full <a href...> link. When empty,
      *        only a raw link will be outputted
      */
-    function _searchlink($maxresults, $startpos, $direction, $linktext = '', $recount = '') {
+    public function _searchlink($maxresults, $startpos, $direction, $linktext = '', $recount = '')
+    {
         global $CONF, $blog, $query, $amount;
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
-        $startpos    = intval($startpos);        // will be 0 when empty.
-        $parsed      = parse_url(serverVar('REQUEST_URI'));
-        $path        = (isset($parsed['path']) ? $parsed['path'] : '');
-        $parsed      = $parsed['query'];
-        $url         = '';
+        $startpos = intval($startpos);        // will be 0 when empty.
+        $parsed   = parse_url(serverVar('REQUEST_URI'));
+        $path     = (isset($parsed['path']) ? $parsed['path'] : '');
+        $parsed   = $parsed['query'];
+        $url      = '';
 
         switch ($direction) {
             case 'prev':
-                if ( intval($startpos) - intval($maxresults) >= 0) {
-                    $startpos     = intval($startpos) - intval($maxresults);
+                if (intval($startpos) - intval($maxresults) >= 0) {
+                    $startpos = intval($startpos) - intval($maxresults);
                     //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    switch ($this->skintype)
-                    {
+                    switch ($this->skintype) {
                         case 'index':
                             $url = $path;
                             break;
@@ -317,77 +340,84 @@ class ACTIONS extends BaseActions {
                             $url = $CONF['SearchURL'];
                             break;
                     }
-                    $url .= '?'.alterQueryStr($parsed,'startpos',$startpos);
+                    $url .= '?'.alterQueryStr($parsed, 'startpos', $startpos);
                 }
                 break;
             case 'next':
                 global $navigationItems;
-                if (!isset($navigationItems)) $navigationItems = 0;
-                
-                if ($recount)
+                if (!isset($navigationItems)) {
+                    $navigationItems = 0;
+                }
+
+                if ($recount) {
                     $iAmountOnPage = 0;
-                else 
+                } else {
                     $iAmountOnPage = $this->amountfound;
-                
+                }
+
                 if (intval($navigationItems) > 0) {
                     $iAmountOnPage = intval($navigationItems) - intval($startpos);
-                }
-                elseif ($iAmountOnPage == 0)
-                {
+                } elseif ($iAmountOnPage == 0) {
                     // [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
                     // try a count query
-                    switch ($this->skintype)
-                    {
+                    switch ($this->skintype) {
                         case 'index':
                             $sqlquery = $blog->getSqlBlog('', 'count');
-                            $url = $path;
+                            $url      = $path;
                             break;
                         case 'search':
                             $unused_highlight = '';
-                            $sqlquery = $blog->getSqlSearch($query, $amount, $unused_highlight, 'count');
-                            $url = $CONF['SearchURL'];
+                            $sqlquery         = $blog->getSqlSearch($query, $amount, $unused_highlight, 'count');
+                            $url              = $CONF['SearchURL'];
                             break;
                     }
-                    if ($sqlquery)
+                    if ($sqlquery) {
                         $iAmountOnPage = intval(quickQuery($sqlquery)) - intval($startpos);
+                    }
                 }
                 if (intval($iAmountOnPage) >= intval($maxresults)) {
-                    $startpos     = intval($startpos) + intval($maxresults);
+                    $startpos = intval($startpos) + intval($maxresults);
                     //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    $url        .= '?'.alterQueryStr($parsed,'startpos',$startpos);
+                    $url .= '?'.alterQueryStr($parsed, 'startpos', $startpos);
+                } else {
+                    $url = '';
                 }
-                else $url    = '';
                 break;
             default:
                 break;
         } // switch($direction)
 
-        if ($url != '')
+        if ($url != '') {
             echo $this->_link($url, $linktext);
+        }
     }
 
     /**
-     *  Creates an item link and if no id is given a todaylink 
+     *  Creates an item link and if no id is given a todaylink
      */
-    function _itemlink($id, $linktext = '') {
+    public function _itemlink($id, $linktext = '')
+    {
         global $CONF;
-        if ($id)
+        if ($id) {
             echo $this->_link(createItemLink($id, $this->linkparams), $linktext);
-        else
+        } else {
             $this->parse_todaylink($linktext);
+        }
     }
-    
+
     /**
-     *  Creates an archive link and if no id is given a todaylink 
+     *  Creates an archive link and if no id is given a todaylink
      */
-    function _archivelink($id, $linktext = '') {
+    public function _archivelink($id, $linktext = '')
+    {
         global $CONF, $blog;
-        if ($id)
+        if ($id) {
             echo $this->_link(createArchiveLink($blog->getID(), $id, $this->linkparams), $linktext);
-        else
+        } else {
             $this->parse_todaylink($linktext);
+        }
     }
-    
+
     /**
       * Helper function that sets the category that a blog will need to use
       *
@@ -396,22 +426,25 @@ class ACTIONS extends BaseActions {
       * @param $catname
       *        The name of the category to use
       */
-    function _setBlogCategory($blog, $catname) {
+    public function _setBlogCategory($blog, $catname)
+    {
         global $catid;
-        if ($catname != '')
+        if ($catname != '') {
             $blog->setSelectedCategoryByName($catname);
-        else
+        } else {
             $blog->setSelectedCategory($catid);
+        }
     }
 
     /**
      *  Notifies the Manager that a PreBlogContent event occurs
      */
-    function _preBlogContent($type, &$blog) {
+    public function _preBlogContent($type, &$blog)
+    {
         global $manager;
         $param = array(
             'blog' => &$blog,
-            'type' =>  $type
+            'type' => $type
         );
         $manager->notify('PreBlogContent', $param);
     }
@@ -419,75 +452,81 @@ class ACTIONS extends BaseActions {
     /**
      *  Notifies the Manager that a PostBlogContent event occurs
      */
-    function _postBlogContent($type, &$blog) {
+    public function _postBlogContent($type, &$blog)
+    {
         global $manager;
         $param = array(
             'blog' => &$blog,
-            'type' =>  $type
+            'type' => $type
         );
         $manager->notify('PostBlogContent', $param);
     }
-    
+
     /**
      * Parse skinvar additemform
      */
-    function parse_additemform() {
+    public function parse_additemform()
+    {
         global $blog, $CONF;
         $this->formdata = array(
             'adminurl' => hsc($CONF['AdminURL']),
-            'catid' => $blog->getDefaultCategory()
+            'catid'    => $blog->getDefaultCategory()
         );
         $blog->InsertJavaScriptInfo();
         $this->doForm('additemform');
     }
-    
+
     /**
      * Parse skinvar addlink
      * A Link that allows to open a bookmarklet to add an item
      */
-    function parse_addlink() {
+    public function parse_addlink()
+    {
         global $CONF, $member, $blog;
-        if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid) ) {
+        if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid)) {
             echo $CONF['AdminURL'].'bookmarklet.php?blogid='.$blog->blogid;
         }
     }
-    
+
     /**
      * Parse skinvar addpopupcode
      * Code that opens a bookmarklet in an popup window
      */
-    function parse_addpopupcode() {
+    public function parse_addpopupcode()
+    {
         echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();";
         echo "winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width=600,height=500,left=10,top=10,status=yes,resizable=yes');";
         echo "winbm.focus();return false;";
     }
-    
+
     /**
      * Parse skinvar adminurl
-     * (shortcut for admin url)     
+     * (shortcut for admin url)
      */
-    function parse_adminurl() {
+    public function parse_adminurl()
+    {
         $this->parse_sitevar('adminurl');
     }
 
     /**
      * Parse skinvar archive
      */
-    function parse_archive($template, $category = '') {
+    public function parse_archive($template, $category = '')
+    {
         global $blog, $archive;
         // can be used with either yyyy-mm or yyyy-mm-dd
-        sscanf($archive,'%d-%d-%d',$y,$m,$d);
+        sscanf($archive, '%d-%d-%d', $y, $m, $d);
         $this->_setBlogCategory($blog, $category);
-        $this->_preBlogContent('achive',$blog);
+        $this->_preBlogContent('achive', $blog);
         $blog->showArchive($template, $y, $m, $d);
-        $this->_postBlogContent('achive',$blog);
-
+        $this->_postBlogContent('achive', $blog);
     }
 
     /**
       * %archivedate(locale,date format)%
       */
-    function parse_archivedate($locale = '-def-') {
+    public function parse_archivedate($locale = '-def-')
+    {
         global $archive;
 
         // get format
@@ -496,36 +535,34 @@ class ACTIONS extends BaseActions {
         // FIXME: check valid locale name
         //       PHP7.0RC7 (win) hangup when invalid strings
         $pattern = '@^[0-9a-z\._\-]{2,}$@i';
-        if ($locale == '-def-')
-        {
+        if ($locale == '-def-') {
             // FIXME: can not determin default LOCALE
             global $manager, $currentTemplateName;
-            if (isset($currentTemplateName) && TEMPLATE::exists($currentTemplateName))
-            {
-                $template =& $manager->getTemplate($currentTemplateName);
-                if (isset($template['LOCALE']) && preg_match($pattern, $template['LOCALE']))
+            if (isset($currentTemplateName) && TEMPLATE::exists($currentTemplateName)) {
+                $template = & $manager->getTemplate($currentTemplateName);
+                if (isset($template['LOCALE']) && preg_match($pattern, $template['LOCALE'])) {
                     setlocale(LC_TIME, $template['LOCALE']);
+                }
             }
-        }
-        else
-        {
+        } else {
             $locale = @trim($locale);
-            if ($locale && preg_match($pattern, $locale))
-                setlocale(LC_TIME,$locale);
-            else if (func_num_args() == 1 && strlen($locale)>0)
-                array_unshift ($args, ''); // move to date format
+            if ($locale && preg_match($pattern, $locale)) {
+                setlocale(LC_TIME, $locale);
+            } elseif (func_num_args() == 1 && strlen($locale) > 0) {
+                array_unshift($args, '');
+            } // move to date format
         }
 
         // get archive date
-        sscanf($archive,'%d-%d-%d',$y,$m,$d);
+        sscanf($archive, '%d-%d-%d', $y, $m, $d);
 
         // format can be spread over multiple parameters
-        if (sizeof($args) > 1) {
+        if (count($args) > 1) {
             // take away locale
             array_shift($args);
             // implode
-            $format=implode(',',$args);
-        } elseif ($d == 0 && $m !=0) {
+            $format = implode(',', $args);
+        } elseif ($d == 0 && $m != 0) {
             $format = '%B %Y';
         } elseif ($m == 0) {
             $format = '%Y';
@@ -533,54 +570,66 @@ class ACTIONS extends BaseActions {
             $format = '%d %B %Y';
         }
 
-        echo Utils::strftime($format, mktime(0,0,0,$m?$m:1,$d?$d:1,$y));
+        echo Utils::strftime($format, mktime(0, 0, 0, $m ? $m : 1, $d ? $d : 1, $y));
     }
 
     /**
      *  Parse skinvar archivedaylist
-     */         
-    function parse_archivedaylist($template, $category = 'all', $limit = 0) {
+     */
+    public function parse_archivedaylist($template, $category = 'all', $limit = 0)
+    {
         global $blog;
-        if ($category == 'all') $category = '';
-        $this->_preBlogContent('archivelist',$blog);
+        if ($category == 'all') {
+            $category = '';
+        }
+        $this->_preBlogContent('archivelist', $blog);
         $this->_setBlogCategory($blog, $category);
         $blog->showArchiveList($template, 'day', $limit);
-        $this->_postBlogContent('archivelist',$blog);
+        $this->_postBlogContent('archivelist', $blog);
     }
-    
+
     /**
      *    A link to the archives for the current blog (or for default blog)
      */
-    function parse_archivelink($linktext = '') {
+    public function parse_archivelink($linktext = '')
+    {
         global $blog, $CONF;
-        if ($blog)
-            echo $this->_link(createArchiveListLink($blog->getID(),$this->linkparams), $linktext);
-        else
+        if ($blog) {
+            echo $this->_link(createArchiveListLink($blog->getID(), $this->linkparams), $linktext);
+        } else {
             echo $this->_link(createArchiveListLink(), $linktext);
+        }
     }
 
-    function parse_archivelist($template, $category = 'all', $limit = 0) {
+    public function parse_archivelist($template, $category = 'all', $limit = 0)
+    {
         global $blog;
-        if ($category == 'all') $category = '';
-        $this->_preBlogContent('archivelist',$blog);
+        if ($category == 'all') {
+            $category = '';
+        }
+        $this->_preBlogContent('archivelist', $blog);
         $this->_setBlogCategory($blog, $category);
         $blog->showArchiveList($template, 'month', $limit);
-        $this->_postBlogContent('archivelist',$blog);
+        $this->_postBlogContent('archivelist', $blog);
     }
 
-    function parse_archiveyearlist($template, $category = 'all', $limit = 0) {
+    public function parse_archiveyearlist($template, $category = 'all', $limit = 0)
+    {
         global $blog;
-        if ($category == 'all') $category = '';
-        $this->_preBlogContent('archivelist',$blog);
+        if ($category == 'all') {
+            $category = '';
+        }
+        $this->_preBlogContent('archivelist', $blog);
         $this->_setBlogCategory($blog, $category);
         $blog->showArchiveList($template, 'year', $limit);
-        $this->_postBlogContent('archivelist',$blog);
+        $this->_postBlogContent('archivelist', $blog);
     }
 
     /**
      * Parse skinvar archivetype
      */
-    function parse_archivetype() {
+    public function parse_archivetype()
+    {
         global $archivetype;
         echo $archivetype;
     }
@@ -588,31 +637,34 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar blog
      */
-    function parse_blog($template, $amount = 10, $category = '') {
+    public function parse_blog($template, $amount = 10, $category = '')
+    {
         global $blog, $startpos;
 
         list($limit, $offset) = sscanf($amount, '%d(%d)');
         $this->_setBlogCategory($blog, $category);
-        $this->_preBlogContent('blog',$blog);
+        $this->_preBlogContent('blog', $blog);
         $this->amountfound = $blog->readLog($template, $limit, $offset, $startpos);
-        $this->_postBlogContent('blog',$blog);
+        $this->_postBlogContent('blog', $blog);
     }
-    
+
     /*
     *    Parse skinvar bloglist
     *    Shows a list of all blogs
-    *    bnametype: whether 'name' or 'shortname' is used for the link text       
+    *    bnametype: whether 'name' or 'shortname' is used for the link text
     *    orderby: order criteria
-    *    direction: order ascending or descending          
+    *    direction: order ascending or descending
     */
-    function parse_bloglist($template, $bnametype = '', $orderby='number', $direction='asc') {
+    public function parse_bloglist($template, $bnametype = '', $orderby = 'number', $direction = 'asc')
+    {
         BLOG::showBlogList($template, $bnametype, $orderby, $direction);
     }
-    
+
     /**
      * Parse skinvar blogsetting
      */
-    function parse_blogsetting($which) {
+    public function parse_blogsetting($which)
+    {
         global $blog;
         switch($which) {
             case 'id':
@@ -632,24 +684,26 @@ class ACTIONS extends BaseActions {
                 break;
         }
     }
-    
+
     /**
      * Parse callback
      */
-    function parse_callback($eventName, $type)
+    public function parse_callback($eventName, $type)
     {
         global $manager;
         $param = array('type' => $type);
         $manager->notify($eventName, $param);
     }
-    
+
     /**
      * Parse skinvar category
      */
-    function parse_category($type = 'name') {
+    public function parse_category($type = 'name')
+    {
         global $catid, $blog;
-        if (!$blog->isValidCategory($catid))
+        if (!$blog->isValidCategory($catid)) {
             return;
+        }
 
         switch($type) {
             case 'name':
@@ -663,76 +717,79 @@ class ACTIONS extends BaseActions {
                 break;
         }
     }
-    
+
     /**
      * Parse categorylist
      */
-    function parse_categorylist($template, $blogname = '') {
+    public function parse_categorylist($template, $blogname = '')
+    {
         global $blog, $manager;
-        
+
         // when no blog found
-        if (($blogname == '') && (!is_object($blog)))
+        if (($blogname == '') && (!is_object($blog))) {
             return 0;
-            
+        }
+
         if ($blogname == '') {
-            $this->_preBlogContent('categorylist',$blog);
+            $this->_preBlogContent('categorylist', $blog);
             $blog->showCategoryList($template);
-            $this->_postBlogContent('categorylist',$blog);
+            $this->_postBlogContent('categorylist', $blog);
         } else {
-            $b =& $manager->getBlog(getBlogIDFromName($blogname));
-            $this->_preBlogContent('categorylist',$b);
+            $b = & $manager->getBlog(getBlogIDFromName($blogname));
+            $this->_preBlogContent('categorylist', $b);
             $b->showCategoryList($template);
-            $this->_postBlogContent('categorylist',$b);
+            $this->_postBlogContent('categorylist', $b);
         }
     }
-    
+
     /**
      * Parse skinvar charset
      */
-    function parse_charset() {
+    public function parse_charset()
+    {
         echo _CHARSET;
     }
-    
+
     /**
      * Parse skinvar commentform
      */
-    function parse_commentform($destinationurl = '') {
+    public function parse_commentform($destinationurl = '')
+    {
         global $blog, $itemid, $member, $CONF, $manager, $DIR_LIBS, $errormessage;
 
         // warn when trying to provide a actionurl (used to be a parameter in Nucleus <2.0)
         if (stristr($destinationurl, 'action.php')) {
-            $args = func_get_args();
+            $args           = func_get_args();
             $destinationurl = $args[1];
-            ACTIONLOG::add(WARNING,_ACTIONURL_NOTLONGER_PARAMATER);
+            ACTIONLOG::add(WARNING, _ACTIONURL_NOTLONGER_PARAMATER);
         }
 
         $actionurl = $CONF['ActionURL'];
 
         // if item is closed, show message and do nothing
-        $item =& $manager->getItem($itemid,0,0);
+        $item = & $manager->getItem($itemid, 0, 0);
         if ($item['closed'] || !$blog->commentsEnabled()) {
             $this->doForm('commentform-closed');
             return;
         }
-        
+
         if (!$blog->isPublic() && !$member->isLoggedIn()) {
             $this->doForm('commentform-closedtopublic');
             return;
         }
-        
-        if (!$destinationurl)
-        {
+
+        if (!$destinationurl) {
             $destinationurl = createLink(
                 'item',
                 array(
-                    'itemid' => $itemid,
-                    'title' => $item['title'],
+                    'itemid'    => $itemid,
+                    'title'     => $item['title'],
                     'timestamp' => $item['timestamp'],
-                    'extra' => $this->linkparams
+                    'extra'     => $this->linkparams
                 )
             );
 
-            // note: createLink returns an HTML encoded URL
+        // note: createLink returns an HTML encoded URL
         } else {
             // HTML encode URL
             $destinationurl = hsc($destinationurl);
@@ -740,9 +797,13 @@ class ACTIONS extends BaseActions {
 
         // values to prefill
         $user = cookieVar($CONF['CookiePrefix'] .'comment_user');
-        if (!$user) $user = postVar('user');
+        if (!$user) {
+            $user = postVar('user');
+        }
         $userid = cookieVar($CONF['CookiePrefix'] .'comment_userid');
-        if (!$userid) $userid = postVar('userid');
+        if (!$userid) {
+            $userid = postVar('userid');
+        }
         $email = cookieVar($CONF['CookiePrefix'] .'comment_email');
         if (!$email) {
             $email = postVar('email');
@@ -750,15 +811,15 @@ class ACTIONS extends BaseActions {
         $body = postVar('body');
 
         $this->formdata = array(
-            'destinationurl' => $destinationurl,    // url is already HTML encoded
-            'actionurl' => hsc($actionurl),
-            'itemid' => $itemid,
-            'user' => hsc($user),
-            'userid' => hsc($userid),
-            'email' => hsc($email),
-            'body' => hsc($body),
-            'membername' => $member->getDisplayName(),
-            'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user')?'checked="checked"':''
+            'destinationurl'  => $destinationurl,    // url is already HTML encoded
+            'actionurl'       => hsc($actionurl),
+            'itemid'          => $itemid,
+            'user'            => hsc($user),
+            'userid'          => hsc($userid),
+            'email'           => hsc($email),
+            'body'            => hsc($body),
+            'membername'      => $member->getDisplayName(),
+            'rememberchecked' => cookieVar($CONF['CookiePrefix'] .'comment_user') ? 'checked="checked"' : ''
         );
 
         if (!$member->isLoggedIn()) {
@@ -767,18 +828,19 @@ class ACTIONS extends BaseActions {
             $this->doForm('commentform-loggedin');
         }
     }
-    
+
     /**
      * Parse skinvar comments
-     * include comments for one item     
+     * include comments for one item
      */
-    function parse_comments($template) {
+    public function parse_comments($template)
+    {
         global $itemid, $manager, $blog, $highlight;
-        $template =& $manager->getTemplate($template);
+        $template = & $manager->getTemplate($template);
 
         // create parser object & action handler
         $actions = new ITEMACTIONS($blog);
-        $parser = new PARSER($actions->getDefinedActions(),$actions);
+        $parser  = new PARSER($actions->getDefinedActions(), $actions);
         $actions->setTemplate($template);
         $actions->setParser($parser);
         $item = ITEM::getitem($itemid, 0, 0);
@@ -792,56 +854,62 @@ class ACTIONS extends BaseActions {
     /**
      * Parse errordiv
      */
-    function parse_errordiv() {
+    public function parse_errordiv()
+    {
         global $errormessage;
-        if ($errormessage)
+        if ($errormessage) {
             echo '<div class="error">', hsc($errormessage),'</div>';
+        }
     }
-    
+
     /**
      * Parse skinvar errormessage
      */
-    function parse_errormessage() {
+    public function parse_errormessage()
+    {
         global $errormessage;
         echo $errormessage;
     }
-    
+
     /**
      * Parse formdata
      */
-    function parse_formdata($what) {
+    public function parse_formdata($what)
+    {
         echo $this->formdata[$what];
     }
-    
+
     /**
      * Parse ifcat
      */
-    function parse_ifcat($text = '') {
+    public function parse_ifcat($text = '')
+    {
         if ($text == '') {
             // new behaviour
             $this->parse_if('category');
         } else {
             // old behaviour
             global $catid, $blog;
-            if ($blog->isValidCategory($catid))
+            if ($blog->isValidCategory($catid)) {
                 echo $text;
+            }
         }
     }
 
     /**
      * Parse skinvar image
      */
-    function parse_image($what = 'imgtag') {
+    public function parse_image($what = 'imgtag')
+    {
         global $CONF;
 
-        $imagetext     = hsc(requestVar('imagetext'));
+        $imagetext  = hsc(requestVar('imagetext'));
         $imagepopup = requestVar('imagepopup');
-        $width         = intRequestVar('width');
+        $width      = intRequestVar('width');
         $height     = intRequestVar('height');
-        $fullurl     = hsc($CONF['MediaURL'] . $imagepopup);
+        $fullurl    = hsc($CONF['MediaURL'] . $imagepopup);
 
-        switch($what)
-        {
+        switch($what) {
             case 'url':
                 echo $fullurl;
                 break;
@@ -857,44 +925,49 @@ class ACTIONS extends BaseActions {
                 break;
             case 'imgtag':
             default:
-                echo "<img src=\"$fullurl\" width=\"$width\" height=\"$height\" alt=\"$imagetext\" title=\"$imagetext\" />";
+                echo "<img src=\"{$fullurl}\" width=\"{$width}\" height=\"{$height}\" alt=\"{$imagetext}\" title=\"{$imagetext}\" />";
                 break;
         }
     }
-    
+
     /**
      * Parse skinvar imagetext
      */
-    function parse_imagetext() {
+    public function parse_imagetext()
+    {
         echo hsc(requestVar('imagetext'));
     }
 
     /**
      * Parse skinvar item
-     * include one item (no comments)     
+     * include one item (no comments)
      */
-    function parse_item($template) {
+    public function parse_item($template)
+    {
         global $blog, $itemid, $highlight;
         $this->_setBlogCategory($blog, '');    // need this to select default category
-        $this->_preBlogContent('item',$blog);
+        $this->_preBlogContent('item', $blog);
         $r = $blog->showOneitem($itemid, $template, $highlight);
-        if ($r == 0)
+        if ($r == 0) {
             echo _ERROR_NOSUCHITEM;
-        $this->_postBlogContent('item',$blog);
+        }
+        $this->_postBlogContent('item', $blog);
     }
 
     /**
      * Parse skinvar itemid
      */
-    function parse_itemid() {
+    public function parse_itemid()
+    {
         global $itemid;
         echo $itemid;
     }
-    
+
     /**
      * Parse skinvar itemlink
      */
-    function parse_itemlink($linktext = '') {
+    public function parse_itemlink($linktext = '')
+    {
         global $itemid;
         $this->_itemlink($itemid, $linktext);
     }
@@ -902,16 +975,17 @@ class ACTIONS extends BaseActions {
     /**
      * Parse itemtitle
      */
-    function parse_itemtitle($format = '') {
+    public function parse_itemtitle($format = '')
+    {
         global $manager, $itemid;
-        $item =& $manager->getItem($itemid,0,0);
+        $item = & $manager->getItem($itemid, 0, 0);
 
         switch ($format) {
             case 'xml':
-                echo stringToXML ($item['title']);
+                echo stringToXML($item['title']);
                 break;
             case 'attribute':
-                echo stringToAttribute ($item['title']);
+                echo stringToAttribute($item['title']);
                 break;
             case 'raw':
                 echo $item['title'];
@@ -925,13 +999,14 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar loginform
      */
-    function parse_loginform() {
+    public function parse_loginform()
+    {
         global $member, $CONF;
         if (!$member->isLoggedIn()) {
-            $filename = 'loginform-notloggedin';
+            $filename       = 'loginform-notloggedin';
             $this->formdata = array();
         } else {
-            $filename = 'loginform-loggedin';
+            $filename       = 'loginform-loggedin';
             $this->formdata = array(
                 'membername' => $member->getDisplayName(),
             );
@@ -941,14 +1016,14 @@ class ACTIONS extends BaseActions {
 
     /**
      * Parse skinvar member
-     * (includes a member info thingie)     
+     * (includes a member info thingie)
      */
-    function parse_member($what) {
+    public function parse_member($what)
+    {
         global $memberinfo, $member, $CONF;
 
         // 1. only allow the member-details-page specific variables on member pages
         if ($this->skintype == 'member') {
-
             switch($what) {
                 case 'name':
                     echo hsc($memberinfo->getDisplayName());
@@ -972,8 +1047,7 @@ class ACTIONS extends BaseActions {
         }
 
         // 2. the next bunch of options is available everywhere, as long as the user is logged in
-        if ($member->isLoggedIn())
-        {
+        if ($member->isLoggedIn()) {
             switch($what) {
                 case 'yourname':
                     echo $member->getDisplayName();
@@ -994,54 +1068,57 @@ class ACTIONS extends BaseActions {
                     echo $member->getID();
                     break;
                 case 'yourprofileurl':
-                    if ($CONF['URLMode'] == 'pathinfo')
+                    if ($CONF['URLMode'] == 'pathinfo') {
                         echo createMemberLink($member->getID());
-                    else
+                    } else {
                         echo $CONF['IndexURL'] . createMemberLink($member->getID());
+                    }
                     break;
             }
         }
     }
-    
+
     /**
      * Parse skinvar membermailform
      */
-    function parse_membermailform($rows = 10, $cols = 40, $desturl = '') {
+    public function parse_membermailform($rows = 10, $cols = 40, $desturl = '')
+    {
         global $member, $CONF, $memberid;
 
         if ($desturl == '') {
-            if ($CONF['URLMode'] == 'pathinfo')
+            if ($CONF['URLMode'] == 'pathinfo') {
                 $desturl = createMemberLink($memberid);
-            else
+            } else {
                 $desturl = $CONF['IndexURL'] . createMemberLink($memberid);
+            }
         }
 
-        $message = postVar('message');
+        $message  = postVar('message');
         $frommail = postVar('frommail');
 
         $this->formdata = array(
-            'url' => hsc($desturl),
+            'url'       => hsc($desturl),
             'actionurl' => hsc($CONF['ActionURL']),
-            'memberid' => $memberid,
-            'rows' => $rows,
-            'cols' => $cols,
-            'message' => hsc($message),
-            'frommail' => hsc($frommail)
+            'memberid'  => $memberid,
+            'rows'      => $rows,
+            'cols'      => $cols,
+            'message'   => hsc($message),
+            'frommail'  => hsc($frommail)
         );
         if ($member->isLoggedIn()) {
             $this->doForm('membermailform-loggedin');
-        } else if ($CONF['NonmemberMail']) {
+        } elseif ($CONF['NonmemberMail']) {
             $this->doForm('membermailform-notloggedin');
         } else {
             $this->doForm('membermailform-disallowed');
         }
-
     }
-    
+
     /**
      * Parse skinvar nextarchive
      */
-    function parse_nextarchive() {
+    public function parse_nextarchive()
+    {
         global $archivenext;
         echo $archivenext;
     }
@@ -1050,24 +1127,28 @@ class ACTIONS extends BaseActions {
      * Parse skinvar nextitem
      * (include itemid of next item)
      */
-    function parse_nextitem() {
+    public function parse_nextitem()
+    {
         global $itemidnext;
-        if (isset($itemidnext)) echo (int)$itemidnext;
+        if (isset($itemidnext)) {
+            echo (int)$itemidnext;
+        }
     }
 
     /**
      * Parse skinvar nextitemtitle
      * (include itemtitle of next item)
      */
-    function parse_nextitemtitle($format = '') {
+    public function parse_nextitemtitle($format = '')
+    {
         global $itemtitlenext;
 
         switch ($format) {
             case 'xml':
-                echo stringToXML ($itemtitlenext);
+                echo stringToXML($itemtitlenext);
                 break;
             case 'attribute':
-                echo stringToAttribute ($itemtitlenext);
+                echo stringToAttribute($itemtitlenext);
                 break;
             case 'raw':
                 echo $itemtitlenext;
@@ -1081,115 +1162,132 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar nextlink
      */
-    function parse_nextlink($linktext = '', $amount = 10, $recount = '') {
+    public function parse_nextlink($linktext = '', $amount = 10, $recount = '')
+    {
         global $itemidnext, $archivenext, $startpos;
-        if ($this->skintype == 'item')
+        if ($this->skintype == 'item') {
             $this->_itemlink($itemidnext, $linktext);
-        else if ($this->skintype == 'search' || $this->skintype == 'index')
+        } elseif ($this->skintype == 'search' || $this->skintype == 'index') {
             $this->_searchlink($amount, $startpos, 'next', $linktext, $recount);
-        else
+        } else {
             $this->_archivelink($archivenext, $linktext);
+        }
     }
 
     /**
      * Parse skinvar nucleusbutton
      */
-    function parse_nucleusbutton($imgurl = '',
-                                 $imgwidth = '85',
-                                 $imgheight = '31') {
+    public function parse_nucleusbutton(
+        $imgurl = '',
+        $imgwidth = '85',
+        $imgheight = '31'
+    )
+    {
         global $CONF;
         if ($imgurl == '') {
             $imgurl = $CONF['AdminURL'] . 'nucleus.gif';
-        } else if (PARSER::getProperty('IncludeMode') == 'skindir'){
+        } elseif (PARSER::getProperty('IncludeMode') == 'skindir') {
             // when skindit IncludeMode is used: start from skindir
             $imgurl = $CONF['SkinsURL'] . PARSER::getProperty('IncludePrefix') . $imgurl;
         }
 
         $this->formdata = array(
-            'imgurl' => $imgurl,
-            'imgwidth' => $imgwidth,
+            'imgurl'    => $imgurl,
+            'imgwidth'  => $imgwidth,
             'imgheight' => $imgheight,
         );
         $this->doForm('nucleusbutton');
     }
-    
+
     /**
      * Parse skinvar otherarchive
-     */    
-    function parse_otherarchive($blogname, $template, $category = '') {
+     */
+    public function parse_otherarchive($blogname, $template, $category = '')
+    {
         global $archive, $manager;
-        sscanf($archive,'%d-%d-%d',$y,$m,$d);
-        $b =& $manager->getBlog(getBlogIDFromName($blogname));
+        sscanf($archive, '%d-%d-%d', $y, $m, $d);
+        $b = & $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
-        $this->_preBlogContent('otherachive',$b);
+        $this->_preBlogContent('otherachive', $b);
         $b->showArchive($template, $y, $m, $d);
-        $this->_postBlogContent('otherachive',$b);
+        $this->_postBlogContent('otherachive', $b);
     }
-    
+
     /**
      * Parse skinvar otherarchivedaylist
      */
-    function parse_otherarchivedaylist($blogname, $template, $category = 'all', $limit = 0) {
+    public function parse_otherarchivedaylist($blogname, $template, $category = 'all', $limit = 0)
+    {
         global $manager;
-        if ($category == 'all') $category = '';
-        $b =& $manager->getBlog(getBlogIDFromName($blogname));
+        if ($category == 'all') {
+            $category = '';
+        }
+        $b = & $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
-        $this->_preBlogContent('otherarchivelist',$b);
+        $this->_preBlogContent('otherarchivelist', $b);
         $b->showArchiveList($template, 'day', $limit);
-        $this->_postBlogContent('otherarchivelist',$b);
+        $this->_postBlogContent('otherarchivelist', $b);
     }
-    
+
     /**
      * Parse skinvar otherarchivelist
      */
-    function parse_otherarchivelist($blogname, $template, $category = 'all', $limit = 0) {
+    public function parse_otherarchivelist($blogname, $template, $category = 'all', $limit = 0)
+    {
         global $manager;
-        if ($category == 'all') $category = '';
-        $b =& $manager->getBlog(getBlogIDFromName($blogname));
+        if ($category == 'all') {
+            $category = '';
+        }
+        $b = & $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
-        $this->_preBlogContent('otherarchivelist',$b);
+        $this->_preBlogContent('otherarchivelist', $b);
         $b->showArchiveList($template, 'month', $limit);
-        $this->_postBlogContent('otherarchivelist',$b);
+        $this->_postBlogContent('otherarchivelist', $b);
     }
 
     /**
      * Parse skinvar otherarchiveyearlist
      */
-    function parse_otherarchiveyearlist($blogname, $template, $category = 'all', $limit = 0) {
+    public function parse_otherarchiveyearlist($blogname, $template, $category = 'all', $limit = 0)
+    {
         global $manager;
-        if ($category == 'all') $category = '';
-        $b =& $manager->getBlog(getBlogIDFromName($blogname));
+        if ($category == 'all') {
+            $category = '';
+        }
+        $b = & $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
-        $this->_preBlogContent('otherarchivelist',$b);
+        $this->_preBlogContent('otherarchivelist', $b);
         $b->showArchiveList($template, 'year', $limit);
-        $this->_postBlogContent('otherarchivelist',$b);
+        $this->_postBlogContent('otherarchivelist', $b);
     }
 
     /**
      * Parse skinvar otherblog
      */
-    function parse_otherblog($blogname, $template, $amount = 10, $category = '') {
+    public function parse_otherblog($blogname, $template, $amount = 10, $category = '')
+    {
         global $manager;
 
         list($limit, $offset) = sscanf($amount, '%d(%d)');
 
-        $b =& $manager->getBlog(getBlogIDFromName($blogname));
+        $b = & $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
-        $this->_preBlogContent('otherblog',$b);
+        $this->_preBlogContent('otherblog', $b);
         $this->amountfound = $b->readLog($template, $limit, $offset);
-        $this->_postBlogContent('otherblog',$b);
+        $this->_postBlogContent('otherblog', $b);
     }
 
     /**
      * Parse skinvar othersearchresults
      */
-    function parse_othersearchresults($blogname, $template, $maxresults = 50) {
+    public function parse_othersearchresults($blogname, $template, $maxresults = 50)
+    {
         global $query, $amount, $manager, $startpos;
-        $b =& $manager->getBlog(getBlogIDFromName($blogname));
+        $b = & $manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, '');    // need this to select default category
-        $this->_preBlogContent('othersearchresults',$b);
+        $this->_preBlogContent('othersearchresults', $b);
         $b->search($query, $template, $amount, $maxresults, $startpos);
-        $this->_postBlogContent('othersearchresults',$b);
+        $this->_postBlogContent('othersearchresults', $b);
     }
 
     /**
@@ -1199,7 +1297,8 @@ class ACTIONS extends BaseActions {
       *
       * extra parameters can be added
       */
-    function parse_plugin($pluginName) {
+    public function parse_plugin($pluginName)
+    {
         global $manager;
 
         // should be already tested from the parser (PARSER.php)
@@ -1207,8 +1306,10 @@ class ACTIONS extends BaseActions {
         /*if (!$manager->pluginInstalled('NP_' . $pluginName))
             return;*/
 
-        $plugin =& $manager->getPlugin('NP_' . $pluginName);
-        if (!$plugin) return;
+        $plugin = & $manager->getPlugin('NP_' . $pluginName);
+        if (!$plugin) {
+            return;
+        }
 
         // get arguments
         $params = func_get_args();
@@ -1221,11 +1322,12 @@ class ACTIONS extends BaseActions {
 
         call_user_func_array(array($plugin,'doSkinVar'), $params);
     }
-    
+
     /**
      * Parse skinvar prevarchive
      */
-    function parse_prevarchive() {
+    public function parse_prevarchive()
+    {
         global $archiveprev;
         echo $archiveprev;
     }
@@ -1233,42 +1335,48 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar preview
      */
-    function parse_preview($template) {
+    public function parse_preview($template)
+    {
         global $blog, $CONF, $manager;
 
-        $template =& $manager->getTemplate($template);
-        $row['body'] = '<span id="prevbody"></span>';
-        $row['title'] = '<span id="prevtitle"></span>';
-        $row['more'] = '<span id="prevmore"></span>';
+        $template        = & $manager->getTemplate($template);
+        $row['body']     = '<span id="prevbody"></span>';
+        $row['title']    = '<span id="prevtitle"></span>';
+        $row['more']     = '<span id="prevmore"></span>';
         $row['itemlink'] = '';
-        $row['itemid'] = 0; $row['blogid'] = $blog->getID();
-        echo TEMPLATE::fill($template['ITEM_HEADER'],$row);
-        echo TEMPLATE::fill($template['ITEM'],$row);
-        echo TEMPLATE::fill($template['ITEM_FOOTER'],$row);
+        $row['itemid']   = 0;
+        $row['blogid']   = $blog->getID();
+        echo TEMPLATE::fill($template['ITEM_HEADER'], $row);
+        echo TEMPLATE::fill($template['ITEM'], $row);
+        echo TEMPLATE::fill($template['ITEM_FOOTER'], $row);
     }
 
     /*
      * Parse skinvar previtem
-     * (include itemid of prev item)          
+     * (include itemid of prev item)
      */
-    function parse_previtem() {
+    public function parse_previtem()
+    {
         global $itemidprev;
-        if (isset($itemidprev)) echo (int)$itemidprev;
+        if (isset($itemidprev)) {
+            echo (int)$itemidprev;
+        }
     }
 
     /**
      * Parse skinvar previtemtitle
      * (include itemtitle of prev item)
      */
-    function parse_previtemtitle($format = '') {
+    public function parse_previtemtitle($format = '')
+    {
         global $itemtitleprev;
 
         switch ($format) {
             case 'xml':
-                echo stringToXML ($itemtitleprev);
+                echo stringToXML($itemtitleprev);
                 break;
             case 'attribute':
-                echo stringToAttribute ($itemtitleprev);
+                echo stringToAttribute($itemtitleprev);
                 break;
             case 'raw':
                 echo $itemtitleprev;
@@ -1282,46 +1390,51 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar prevlink
      */
-    function parse_prevlink($linktext = '', $amount = 10) {
+    public function parse_prevlink($linktext = '', $amount = 10)
+    {
         global $itemidprev, $archiveprev, $startpos;
 
-        if ($this->skintype == 'item')
+        if ($this->skintype == 'item') {
             $this->_itemlink($itemidprev, $linktext);
-        else if ($this->skintype == 'search' || $this->skintype == 'index')
+        } elseif ($this->skintype == 'search' || $this->skintype == 'index') {
             $this->_searchlink($amount, $startpos, 'prev', $linktext);
-        else
+        } else {
             $this->_archivelink($archiveprev, $linktext);
+        }
     }
 
     /**
      * Parse skinvar query
-     * (includes the search query)     
+     * (includes the search query)
      */
-    function parse_query() {
+    public function parse_query()
+    {
         global $query;
         echo hsc($query);
     }
-    
+
     /**
      * Parse skinvar referer
      */
-    function parse_referer() {
+    public function parse_referer()
+    {
         echo hsc(serverVar('HTTP_REFERER'));
     }
 
     /**
      * Parse skinvar searchform
      */
-    function parse_searchform($blogname = '') {
+    public function parse_searchform($blogname = '')
+    {
         global $CONF, $manager, $maxresults;
         if ($blogname) {
-            $blog =& $manager->getBlog(getBlogIDFromName($blogname));
+            $blog = & $manager->getBlog(getBlogIDFromName($blogname));
         } else {
             global $blog;
         }
         // use default blog when no blog is selected
         $this->formdata = array(
-            'id' => $blog?$blog->getID():$CONF['DefaultBlog'],
+            'id'    => $blog ? $blog->getID() : $CONF['DefaultBlog'],
             'query' => hsc(getVar('query')),
         );
         $this->doForm('searchform');
@@ -1330,19 +1443,21 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar searchresults
      */
-    function parse_searchresults($template, $maxresults = 50 ) {
+    public function parse_searchresults($template, $maxresults = 50)
+    {
         global $blog, $query, $amount, $startpos;
 
         $this->_setBlogCategory($blog, '');    // need this to select default category
-        $this->_preBlogContent('searchresults',$blog);
+        $this->_preBlogContent('searchresults', $blog);
         $this->amountfound = $blog->search($query, $template, $amount, $maxresults, $startpos);
-        $this->_postBlogContent('searchresults',$blog);
+        $this->_postBlogContent('searchresults', $blog);
     }
 
     /**
      * Parse skinvar self
      */
-    function parse_self() {
+    public function parse_self()
+    {
         global $CONF;
         echo $CONF['Self'];
     }
@@ -1351,7 +1466,8 @@ class ACTIONS extends BaseActions {
      * Parse skinvar sitevar
      * (include a sitevar)
      */
-    function parse_sitevar($which) {
+    public function parse_sitevar($which)
+    {
         global $CONF;
         switch($which) {
             case 'url':
@@ -1371,70 +1487,78 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinname
      */
-    function parse_skinname() {
+    public function parse_skinname()
+    {
         echo $this->skin->getName();
     }
-    
+
     /**
      * Parse skintype (experimental)
      */
-    function parse_skintype() {
+    public function parse_skintype()
+    {
         echo $this->skintype;
     }
 
     /**
      * Parse text
      */
-    function parse_text($which) {
+    public function parse_text($which)
+    {
         // constant($which) only available from 4.0.4 :(
         if (defined($which)) {
-            eval("echo $which;");
+            eval("echo {$which};");
         }
     }
-    
+
     /**
      * Parse ticket
      */
-    function parse_ticket() {
+    public function parse_ticket()
+    {
         global $manager;
         $manager->addTicketHidden();
     }
 
-	/**
-	 * Parse ticket_id
-	 */
-	function parse_ticket_id()
-	{
-		global $manager;
-		printf("%s" , $manager->_generateTicket());
-	}
+    /**
+     * Parse ticket_id
+     */
+    public function parse_ticket_id()
+    {
+        global $manager;
+        printf("%s", $manager->_generateTicket());
+    }
 
-	/**
+    /**
      *    Parse skinvar todaylink
      *    A link to the today page (depending on selected blog, etc...)
      */
-    function parse_todaylink($linktext = '') {
+    public function parse_todaylink($linktext = '')
+    {
         global $blog, $CONF;
-        if ($blog)
-            echo $this->_link(createBlogidLink($blog->getID(),$this->linkparams), $linktext);
-        else
+        if ($blog) {
+            echo $this->_link(createBlogidLink($blog->getID(), $this->linkparams), $linktext);
+        } else {
             echo $this->_link($CONF['SiteUrl'], $linktext);
+        }
     }
 
     /**
      * Parse vars
-     * When commentform is not used, to include a hidden field with itemid     
+     * When commentform is not used, to include a hidden field with itemid
      */
-    function parse_vars() {
+    public function parse_vars()
+    {
         global $itemid;
         echo '<input type="hidden" name="itemid" value="'.$itemid.'" />';
     }
 
     /**
      * Parse skinvar version
-     * (include nucleus versionnumber)     
+     * (include nucleus versionnumber)
      */
-    function parse_version() {
+    public function parse_version()
+    {
         global $nucleus;
         echo 'Nucleus CMS ' . $nucleus['version'];
     }
@@ -1442,38 +1566,44 @@ class ACTIONS extends BaseActions {
     /**
      * Parse skinvar sticky
      */
-    function parse_sticky($itemnumber = 0, $template = '') {
+    public function parse_sticky($itemnumber = 0, $template = '')
+    {
         global $manager;
-        
-        $itemnumber = intval($itemnumber);
-        $itemarray = array($itemnumber);
 
-        $b =& $manager->getBlog(getBlogIDFromItemID($itemnumber));
-        $this->_preBlogContent('sticky',$b);
+        $itemnumber = intval($itemnumber);
+        $itemarray  = array($itemnumber);
+
+        $b = & $manager->getBlog(getBlogIDFromItemID($itemnumber));
+        $this->_preBlogContent('sticky', $b);
         $this->amountfound = $b->readLogFromList($itemarray, $template);
-        $this->_postBlogContent('sticky',$b);
+        $this->_postBlogContent('sticky', $b);
     }
 
-	function parse_commentclosed()
-	{
-		global $blog, $itemid, $manager;
+    public function parse_commentclosed()
+    {
+        global $blog, $itemid, $manager;
 
-		$itemid = intval($itemid);
-		// if item is closed, show message and do nothing
-		$item =& $manager->getItem($itemid,0,0);
-		if ($item['closed'] || !$blog->commentsEnabled())
-		  { return TRUE; } else { return FALSE; }
-	}
+        $itemid = intval($itemid);
+        // if item is closed, show message and do nothing
+        $item = & $manager->getItem($itemid, 0, 0);
+        if ($item['closed'] || !$blog->commentsEnabled()) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 
-	function parse_hascomment()
-	{
-		global $itemid;
+    public function parse_hascomment()
+    {
+        global $itemid;
 
-		$itemid = intval($itemid);
-		$sqlText = sprintf("SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
-						   sql_table('comment'), intval($itemid));
-		$res = intval(quickQuery($sqlText));
-		return ($res > 0);
-	}
-
+        $itemid  = intval($itemid);
+        $sqlText = sprintf(
+            "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
+            sql_table('comment'),
+            intval($itemid)
+        );
+        $res = intval(quickQuery($sqlText));
+        return ($res > 0);
+    }
 }

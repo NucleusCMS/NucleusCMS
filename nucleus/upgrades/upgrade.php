@@ -46,39 +46,53 @@ switch($from) {
     case 95:
         upgrade_do95();
         upgrade_do96();
+        // no break
     case 96:
         upgrade_do100();
+        // no break
     case 100:
         upgrade_do110();
+        // no break
     case 110:
         upgrade_do150();
+        // no break
     case 150:
         upgrade_do200();
+        // no break
     case 200:
         upgrade_do250();
+        // no break
     case 250:
         upgrade_do300();
+        // no break
     case 300:
         include_once('upgrade3.1.php');
         upgrade_do310();
+        // no break
     case 310:
         include_once('upgrade3.2.php');
         upgrade_do320();
+        // no break
     case 320:
         include_once('upgrade3.3.php');
         upgrade_do330();
+        // no break
     case 330:
         include_once('upgrade3.4.php');
         upgrade_do340();
+        // no break
     case 340:
         include_once('upgrade3.5.php');
         upgrade_do350();
+        // no break
     case 350:
         include_once('upgrade3.6.php');
         upgrade_do360();
+        // no break
     case 360:
         include_once('upgrade3.7.php');
         upgrade_do370();
+        // no break
     case 370:
         include_once('upgrade3.7.php');
         upgrade_do371();
@@ -88,6 +102,4 @@ switch($from) {
         break;
 }
 
-
-
-upgrade_end( _UPG_TEXT_UPGRADE_COMPLETED );
+upgrade_end(_UPG_TEXT_UPGRADE_COMPLETED);

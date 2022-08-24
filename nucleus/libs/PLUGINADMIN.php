@@ -16,62 +16,65 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-class PluginAdmin {
-
+class PluginAdmin
+{
     public $strFullName;        // NP_SomeThing
     public $plugin;            // ref. to plugin object
     public $bValid;            // evaluates to true when object is considered valid
     public $admin;                // ref to an admin object
 
-    function __construct($pluginName)
+    public function __construct($pluginName)
     {
         global $manager, $DIR_LIBS;
         include_once($DIR_LIBS . 'ADMIN.php');
-        
+
         $this->strFullName = 'NP_' . $pluginName;
 
         // check if plugin exists and is installed
-        if (!$manager->pluginInstalled($this->strFullName))
+        if (!$manager->pluginInstalled($this->strFullName)) {
             doError(_ERROR_INVALID_PLUGIN);
+        }
 
-        $this->plugin =& $manager->getPlugin($this->strFullName);
+        $this->plugin = & $manager->getPlugin($this->strFullName);
         $this->bValid = $this->plugin;
 
-        if (!$this->bValid)
+        if (!$this->bValid) {
             doError(_ERROR_INVALID_PLUGIN);
+        }
 
-        $this->admin = new ADMIN();
+        $this->admin         = new ADMIN();
         $this->admin->action = 'plugin_' . $pluginName;
     }
 
-    function start($extraHead = '')
+    public function start($extraHead = '')
     {
         global $CONF;
-        $strBaseHref  = '<base href="' . hsc($CONF['AdminURL']) . '" />';
+        $strBaseHref = '<base href="' . hsc($CONF['AdminURL']) . '" />';
         $extraHead .= $strBaseHref;
 
         $this->admin->pagehead($extraHead);
     }
 
-    function end()
+    public function end()
     {
         $this->_AddTicketByJS();
         $this->admin->pagefoot();
     }
 
-/** 
+/**
  * Add ticket when not used in plugin's admin page
  * to avoid CSRF.
  */
-    function _AddTicketByJS(){
+    public function _AddTicketByJS()
+    {
         global $CONF,$ticketforplugin;
-        if (!($ticket=$ticketforplugin['ticket'])) {
+        if (!($ticket = $ticketforplugin['ticket'])) {
             //echo "\n<!--TicketForPlugin skipped-->\n";
             return;
         }
-        $ticket=hsc($ticket);
- 
-?><script type="text/javascript">
+        $ticket = hsc($ticket);
+
+        ?><script type="text/javascript">
 /*<![CDATA[*/
 /* Add tickets for available links (outside blog excluded) */
 for (i=0;document.links[i];i++){
@@ -124,6 +127,6 @@ for (i=0;document.forms[i];i++){
 }
 /*]]>*/
 </script><?php
- 
+
     }
 }

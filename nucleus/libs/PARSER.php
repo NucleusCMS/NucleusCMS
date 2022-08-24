@@ -14,15 +14,17 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if ( !function_exists('requestVar') ) exit;
+if (!function_exists('requestVar')) {
+    exit;
+}
 require_once dirname(__FILE__) . '/BaseActions.php';
 
 /**
  * This is the parser class of Nucleus. It is used for various things (skin parsing,
  * form generation, ...)
  */
-class PARSER {
-
+class PARSER
+{
     // array with the names of all allowed actions
     public $actions;
 
@@ -47,22 +49,23 @@ class PARSER {
      * @param $delim optional delimiter
      * @param $paramdelim optional parameterdelimiter
      */
-    function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',') {
-        $this->actions = $allowedActions;
-        $this->handler =& $handler;
-        $this->delim = $delim;
-        $this->pdelim = $pdelim;
+    public function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',')
+    {
+        $this->actions        = $allowedActions;
+        $this->handler        = & $handler;
+        $this->delim          = $delim;
+        $this->pdelim         = $pdelim;
         $this->norestrictions = 0;    // set this to 1 to disable checking for allowedActions
     }
 
     /**
      * Parses the given contents and outputs it
      */
-    function parse(&$contents) {
+    public function parse(&$contents)
+    {
+        $pieces = preg_split('/'.$this->delim.'/', $contents);
 
-        $pieces = preg_split('/'.$this->delim.'/',$contents);
-
-        $maxidx = sizeof($pieces);
+        $maxidx = count($pieces);
         for ($idx = 0; $idx < $maxidx; $idx++) {
             echo $pieces[$idx];
             $idx++;
@@ -72,26 +75,30 @@ class PARSER {
         }
     }
 
-
     /**
       * Called from the parser to handle an action
-      * 
+      *
       * @param $action name of the action (e.g. blog, image ...)
       */
-    function doAction($action) {
+    public function doAction($action)
+    {
         global $manager, $CONF;
 
-        if (!$action) return;
+        if (!$action) {
+            return;
+        }
 
         // split into action name + arguments
-        if (strstr($action,'(')) {
+        if (strstr($action, '(')) {
             $paramStartPos = strpos($action, '(');
-            $params = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
-            $action = substr($action, 0, $paramStartPos);
-            $params = explode ($this->pdelim, $params);
+            $params        = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
+            $action        = substr($action, 0, $paramStartPos);
+            $params        = explode($this->pdelim, $params);
 
             // trim parameters
-             foreach ($params as $key => $value) { $params[$key] = trim($value); }
+            foreach ($params as $key => $value) {
+                $params[$key] = trim($value);
+            }
         } else {
             // no parameters
             $params = array();
@@ -103,46 +110,44 @@ class PARSER {
         if (!$this->handler->if_currentlevel
             && ($actionlc != 'else') && ($actionlc != 'elseif')
             && ($actionlc != 'endif') && ($actionlc != 'ifnot')
-            && ($actionlc != 'elseifnot') && (substr($actionlc,0,2) != 'if'))
+            && ($actionlc != 'elseifnot') && (substr($actionlc, 0, 2) != 'if')) {
             return;
+        }
 
-        if ( in_array($actionlc, $this->actions) || $this->norestrictions )
-        {
+        if (in_array($actionlc, $this->actions) || $this->norestrictions) {
             call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
         } else {
             // redirect to plugin action if possible
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled('NP_'.$action)) {
-                $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim,$params).')');
+                $this->doAction('plugin('.$action.$this->pdelim.implode($this->pdelim, $params).')');
             } else {
-                if ($CONF['DebugVars']==true) {
+                if ($CONF['DebugVars'] == true) {
                     echo '&lt;%' , $action , '(', implode($this->pdelim, $params), ')%&gt;';
-        }
+                }
             }
-            
         }
-
     }
 
     /**
      * Set a property of the parser in the manager
-     * 
+     *
      * @param $property additional parser property (e.g. include prefix of the skin)
      * @param $value new value
      */
-    public static function setProperty($property, $value) {
+    public static function setProperty($property, $value)
+    {
         global $manager;
         $manager->setParserProperty($property, $value);
     }
 
     /**
      * Get a property of the parser from the manager
-     * 
+     *
      * @param $name name of the property
      */
-    public static function getProperty($name) {
+    public static function getProperty($name)
+    {
         global $manager;
         return $manager->getParserProperty($name);
     }
-
-
 }

@@ -15,27 +15,34 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
-class TEMPLATE {
-
+class TEMPLATE
+{
     public $id;
 
-    public function TEMPLATE($templateid) { $this->__construct($templateid); }
-    function __construct($templateid) {
+    public function TEMPLATE($templateid)
+    {
+        $this->__construct($templateid);
+    }
+    public function __construct($templateid)
+    {
         $this->id = intval($templateid);
     }
 
-    function getID() {
+    public function getID()
+    {
         return intval($this->id);
     }
 
     // (static)
-    public static function createFromName($name) {
+    public static function createFromName($name)
+    {
         return new TEMPLATE(TEMPLATE::getIdFromName($name));
     }
 
     // (static)
-    public static function getIdFromName($name) {
-        $query =  'SELECT tdnumber'
+    public static function getIdFromName($name)
+    {
+        $query = 'SELECT tdnumber'
                . ' FROM '.sql_table('template_desc')
                . ' WHERE tdname="'.sql_real_escape_string($name).'"';
         $res = sql_query($query);
@@ -46,8 +53,9 @@ class TEMPLATE {
     /**
      * Updates the general information about the template
      */
-    function updateGeneralInfo($name, $desc) {
-        $query =  'UPDATE '.sql_table('template_desc').' SET'
+    public function updateGeneralInfo($name, $desc)
+    {
+        $query = 'UPDATE '.sql_table('template_desc').' SET'
                . " tdname='" . sql_real_escape_string($name) . "',"
                . " tddesc='" . sql_real_escape_string($desc) . "'"
                . " WHERE tdnumber=" . $this->getID();
@@ -57,7 +65,8 @@ class TEMPLATE {
     /**
      * Updates the contents of one part of the template
      */
-    function update($type, $content) {
+    public function update($type, $content)
+    {
         $id = $this->getID();
 
         // delete old thingie
@@ -69,11 +78,11 @@ class TEMPLATE {
         }
     }
 
-
     /**
      * Deletes all template parts from the database
      */
-    function deleteAllParts() {
+    public function deleteAllParts()
+    {
         sql_query('DELETE FROM '.sql_table('template').' WHERE tdesc='.$this->getID());
     }
 
@@ -82,12 +91,13 @@ class TEMPLATE {
      *
      * (static)
      */
-    public static function createNew($name, $desc) {
+    public static function createNew($name, $desc)
+    {
         global $manager;
 
         $param = array(
-            'name'            => &$name,
-            'description'    => &$desc
+            'name'        => &$name,
+            'description' => &$desc
         );
         $manager->notify('PreAddTemplate', $param);
 
@@ -95,16 +105,14 @@ class TEMPLATE {
         $newId = sql_insert_id();
 
         $param = array(
-            'templateid'    => $newId,
-            'name'            => $name,
-            'description'    => $desc
+            'templateid'  => $newId,
+            'name'        => $name,
+            'description' => $desc
         );
         $manager->notify('PostAddTemplate', $param);
 
         return $newId;
     }
-
-
 
     /**
      * Reads a template and returns an array with the parts.
@@ -112,27 +120,30 @@ class TEMPLATE {
      *
      * @param $name name of the template file
      */
-    public static function read($name) {
+    public static function read($name)
+    {
         global $manager;
-        
+
         $param = array(
             'template' => &$name
         );
         $manager->notify('PreTemplateRead', $param);
 
         $template = array();
-        $query = 'SELECT tpartname, tcontent'
+        $query    = 'SELECT tpartname, tcontent'
                . ' FROM '.sql_table('template_desc').', '.sql_table('template')
                . ' WHERE tdesc=tdnumber and tdname="' . sql_real_escape_string($name) . '"';
         $res = sql_query($query);
-        while ($obj = sql_fetch_object($res))
+        while ($obj = sql_fetch_object($res)) {
             $template[$obj->tpartname] = $obj->tcontent;
+        }
 
         // set locale according to template:
-        if (isset($template['LOCALE']))
-            setlocale(LC_TIME,$template['LOCALE']);
-        else
-            setlocale(LC_TIME,'');
+        if (isset($template['LOCALE'])) {
+            setlocale(LC_TIME, $template['LOCALE']);
+        } else {
+            setlocale(LC_TIME, '');
+        }
 
         return $template;
     }
@@ -146,22 +157,23 @@ class TEMPLATE {
       * @param $values
       *        Array of all the values
       */
-    public static function fill($template, $values) {
-
-        if (sizeof($values) != 0) {
+    public static function fill($template, $values)
+    {
+        if (count($values) != 0) {
             // go through all the values
-            for(reset($values); $key = key($values); next($values)) {
-                $template = str_replace("<%$key%>",$values[$key],$template);
+            for (reset($values); $key = key($values); next($values)) {
+                $template = str_replace("<%{$key}%>", $values[$key], $template);
             }
         }
 
         // remove non matched template-tags
-        return preg_replace('/<%[a-zA-Z]+%>/','',$template);
+        return preg_replace('/<%[a-zA-Z]+%>/', '', $template);
     }
 
     // returns true if there is a template with the given shortname
     // (static)
-    public static function exists($name) {
+    public static function exists($name)
+    {
         $sql = 'select count(*) as result FROM '.sql_table('template_desc')
               . sprintf(" WHERE tdname='%s' limit 1", sql_real_escape_string($name));
         $res = quickQuery($sql);
@@ -170,7 +182,8 @@ class TEMPLATE {
 
     // returns true if there is a template with the given ID
     // (static)
-    public static function existsID($id) {
+    public static function existsID($id)
+    {
         $sql = 'select count(*) as result FROM '.sql_table('template_desc')
               . sprintf(" WHERE tdnumber=%d limit 1", intval($id));
         $res = quickQuery($sql);
@@ -178,18 +191,17 @@ class TEMPLATE {
     }
 
     // (static)
-    public static function getNameFromId($id) {
+    public static function getNameFromId($id)
+    {
         return quickQuery('SELECT tdname as result FROM '.sql_table('template_desc').' WHERE tdnumber=' . intval($id));
     }
 
     // (static)
-    public static function getDesc($id) {
+    public static function getDesc($id)
+    {
         $query = 'SELECT tddesc FROM '.sql_table('template_desc').' WHERE tdnumber='. intval($id);
-        $res = sql_query($query);
-        $obj = sql_fetch_object($res);
+        $res   = sql_query($query);
+        $obj   = sql_fetch_object($res);
         return $obj->tddesc;
     }
-
-
-
 }

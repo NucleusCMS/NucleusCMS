@@ -18,323 +18,336 @@
  */
 
 // prevent direct access
-if (!isset($member))
-  exit;
+if (!isset($member)) {
+    exit;
+}
 
-	// nucleus.addItem
-	$f_nucleus_addItem_sig = array(array(
-			// return type
-			$xmlrpcString,	// itemid of the new item
+// nucleus.addItem
+$f_nucleus_addItem_sig = array(array(
+            // return type
+        $xmlrpcString,	// itemid of the new item
 
-			// params:
-			$xmlrpcString,	// blogid
-			$xmlrpcString,	// username
-			$xmlrpcString,	// password
-			$xmlrpcString,  // title
-			$xmlrpcString,	// body
-			$xmlrpcString,	// extended part
-			$xmlrpcBoolean,	// publish boolean (set to false to create draft)
-			$xmlrpcBoolean,	// closed boolean (set to true to disable comments)
+            // params:
+        $xmlrpcString,	// blogid
+        $xmlrpcString,	// username
+        $xmlrpcString,	// password
+        $xmlrpcString,  // title
+        $xmlrpcString,	// body
+        $xmlrpcString,	// extended part
+        $xmlrpcBoolean,	// publish boolean (set to false to create draft)
+        $xmlrpcBoolean,	// closed boolean (set to true to disable comments)
 
-		));
-	$f_nucleus_addItem_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
-	function f_nucleus_addItem($m) {
-		$blogid = _getScalar($m,0);
-		$username = _getScalar($m,1);
-		$password = _getScalar($m,2);
-		$title = _getScalar($m,3);
-		$body = _getScalar($m,4);
-		$more = _getScalar($m,5);
-		$publish = _getScalar($m,6);
-		$closed = _getScalar($m,7);
+    ));
+$f_nucleus_addItem_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
+function f_nucleus_addItem($m)
+{
+    $blogid   = _getScalar($m, 0);
+    $username = _getScalar($m, 1);
+    $password = _getScalar($m, 2);
+    $title    = _getScalar($m, 3);
+    $body     = _getScalar($m, 4);
+    $more     = _getScalar($m, 5);
+    $publish  = _getScalar($m, 6);
+    $closed   = _getScalar($m, 7);
 
-		return _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed);
-	}
+    return _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed);
+}
 
-	// nucleus.addDatedItem (the time of the item can be given here, for offline blogging)
-	$f_nucleus_addDatedItem_sig = array(array(
-			// return type
-			$xmlrpcString,	// itemid of the new item
+// nucleus.addDatedItem (the time of the item can be given here, for offline blogging)
+$f_nucleus_addDatedItem_sig = array(array(
+            // return type
+        $xmlrpcString,	// itemid of the new item
 
-			// params:
-			$xmlrpcString,	// blogid
-			$xmlrpcString,	// username
-			$xmlrpcString,	// password
-			$xmlrpcString,  // title
-			$xmlrpcString,	// body
-			$xmlrpcString,	// extended part
-			$xmlrpcBoolean,	// publish boolean (set to false to create draft)
-			$xmlrpcBoolean,	// closed boolean (set to true to disable comments)
-			$xmlrpcInt	// item time (unix timestamp)
+            // params:
+        $xmlrpcString,	// blogid
+        $xmlrpcString,	// username
+        $xmlrpcString,	// password
+        $xmlrpcString,  // title
+        $xmlrpcString,	// body
+        $xmlrpcString,	// extended part
+        $xmlrpcBoolean,	// publish boolean (set to false to create draft)
+        $xmlrpcBoolean,	// closed boolean (set to true to disable comments)
+        $xmlrpcInt	// item time (unix timestamp)
 
-		));
-	$f_nucleus_addDatedItem_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false. The timestamp of the item needs to be given as a Unix timestamp";
-	function f_nucleus_addDatedItem($m) {
-		$blogid = _getScalar($m,0);
-		$username = _getScalar($m,1);
-		$password = _getScalar($m,2);
-		$title = _getScalar($m,3);
-		$body = _getScalar($m,4);
-		$more = _getScalar($m,5);
-		$publish = _getScalar($m,6);
-		$closed = _getScalar($m,7);
-		$timestamp = _getScalar($m,8);
+    ));
+$f_nucleus_addDatedItem_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false. The timestamp of the item needs to be given as a Unix timestamp";
+function f_nucleus_addDatedItem($m)
+{
+    $blogid    = _getScalar($m, 0);
+    $username  = _getScalar($m, 1);
+    $password  = _getScalar($m, 2);
+    $title     = _getScalar($m, 3);
+    $body      = _getScalar($m, 4);
+    $more      = _getScalar($m, 5);
+    $publish   = _getScalar($m, 6);
+    $closed    = _getScalar($m, 7);
+    $timestamp = _getScalar($m, 8);
 
-		// use '1' as $future param to make sure the date does not get erased
-		return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 1);
-	}
+    // use '1' as $future param to make sure the date does not get erased
+    return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 1);
+}
 
-	// nucleus.editItem
-	$f_nucleus_editItem_sig = array(array(
-			// return type
-			$xmlrpcBoolean,	// true or false
+// nucleus.editItem
+$f_nucleus_editItem_sig = array(array(
+            // return type
+        $xmlrpcBoolean,	// true or false
 
-			// params:
-			$xmlrpcString,	// itemid
-			$xmlrpcString,	// username
-			$xmlrpcString,	// password
-			$xmlrpcString,  // title
-			$xmlrpcString,	// body
-			$xmlrpcString,	// extended part
-			$xmlrpcBoolean,	// publish boolean (set to false if you want a draft to stay draft)
-			$xmlrpcBoolean,	// closed boolean (set to true to disable comments)
-		));
-	$f_nucleus_editItem_doc = "Edits an item of a blog";
-	function f_nucleus_editItem($m) {
-		global $manager;
+            // params:
+        $xmlrpcString,	// itemid
+        $xmlrpcString,	// username
+        $xmlrpcString,	// password
+        $xmlrpcString,  // title
+        $xmlrpcString,	// body
+        $xmlrpcString,	// extended part
+        $xmlrpcBoolean,	// publish boolean (set to false if you want a draft to stay draft)
+        $xmlrpcBoolean,	// closed boolean (set to true to disable comments)
+    ));
+$f_nucleus_editItem_doc = "Edits an item of a blog";
+function f_nucleus_editItem($m)
+{
+    global $manager;
 
-		$itemid = intval(_getScalar($m,0));
-		$username = _getScalar($m,1);
-		$password = _getScalar($m,2);
-		$title = _getScalar($m,3);
-		$content = _getScalar($m,4);
-		$more = _getScalar($m,5);
-		$publish = _getScalar($m,6);
-		$closed = _getScalar($m,7);
+    $itemid   = intval(_getScalar($m, 0));
+    $username = _getScalar($m, 1);
+    $password = _getScalar($m, 2);
+    $title    = _getScalar($m, 3);
+    $content  = _getScalar($m, 4);
+    $more     = _getScalar($m, 5);
+    $publish  = _getScalar($m, 6);
+    $closed   = _getScalar($m, 7);
 
-		// get old title and extended part
-		if (!$manager->existsItem($itemid,1,1))
-			return _error(6,"No such item ($itemid)");
+    // get old title and extended part
+    if (!$manager->existsItem($itemid, 1, 1)) {
+        return _error(6, "No such item ({$itemid})");
+    }
 
-		$old =& $manager->getItem($itemid,1,1);
-		$wasdraft = ($old['draft']) ? 1 : 0;
+    $old      = & $manager->getItem($itemid, 1, 1);
+    $wasdraft = ($old['draft']) ? 1 : 0;
 
-		return _edititem($itemid, $username, $password, $old['catid'], $title, $content, $more, $wasdraft, $publish, $closed);
-	}
+    return _edititem($itemid, $username, $password, $old['catid'], $title, $content, $more, $wasdraft, $publish, $closed);
+}
 
+// nucleus.getUsersBlogs
+$f_nucleus_getUsersBlogs_sig = array(array(
+            // return type
+        $xmlrpcArray,	// array containing structs containing blog info
 
-	// nucleus.getUsersBlogs
-	$f_nucleus_getUsersBlogs_sig = array(array(
-			// return type
-			$xmlrpcArray,	// array containing structs containing blog info
+            // params:
+        $xmlrpcString,	// username
+        $xmlrpcString,	// password
+    ));
+$f_nucleus_getUsersBlogs_doc = "Returns a list of all the blogs where the given member is on the team";
+function f_nucleus_getUsersBlogs($m)
+{
+    $username = _getScalar($m, 0);
+    $password = _getScalar($m, 1);
 
-			// params:
-			$xmlrpcString,	// username
-			$xmlrpcString,	// password
-		));
-	$f_nucleus_getUsersBlogs_doc = "Returns a list of all the blogs where the given member is on the team";
-	function f_nucleus_getUsersBlogs($m) {
-		$username = _getScalar($m,0);
-		$password = _getScalar($m,1);
+    return _getUsersBlogs($username, $password);
+}
 
-		return _getUsersBlogs($username, $password);
-	}
+// nucleus.getRecentItems
+$f_nucleus_getRecentItems_sig = array(array(
+            // return type
+        $xmlrpcArray,	// array of strucs (representing items)
 
-	// nucleus.getRecentItems
-	$f_nucleus_getRecentItems_sig = array(array(
-			// return type
-			$xmlrpcArray,	// array of strucs (representing items)
+            // params
+        $xmlrpcString,	// blogid
+        $xmlrpcString, 	// username
+        $xmlrpcString,	// password
+        $xmlrpcInt,	// amount of items to return (max = 20)
+    ));
+$f_nucleus_getRecentItems_doc = "Returns a maximum of 20 recent items for a given webblog";
+function f_nucleus_getRecentItems($m)
+{
+    $blogid   = _getScalar($m, 0);
+    $username = _getScalar($m, 1);
+    $password = _getScalar($m, 2);
+    $amount   = _getScalar($m, 3);
 
-			// params
-			$xmlrpcString,	// blogid
-			$xmlrpcString, 	// username
-			$xmlrpcString,	// password
-			$xmlrpcInt,	// amount of items to return (max = 20)
-		));
-	$f_nucleus_getRecentItems_doc = "Returns a maximum of 20 recent items for a given webblog";
-	function f_nucleus_getRecentItems($m) {
-		$blogid = _getScalar($m, 0);
-		$username = _getScalar($m, 1);
-		$password = _getScalar($m, 2);
-		$amount = _getScalar($m, 3);
+    return _getRecentItems($blogid, $username, $password, $amount);
+}
 
-		return _getRecentItems($blogid, $username, $password, $amount);
-	}
+// nucleus.getItem
+$f_nucleus_getItem_sig = array(array(
+            // return type
+        $xmlrpcStruct,	// A struct representing the item
 
-	// nucleus.getItem
-	$f_nucleus_getItem_sig = array(array(
-			// return type
-			$xmlrpcStruct,	// A struct representing the item
+            // params
+        $xmlrpcString,	// itemid
+        $xmlrpcString, 	// username
+        $xmlrpcString,	// password
+    ));
+$f_nucleus_getItem_doc = "Returns an item";
+function f_nucleus_getItem($m)
+{
+    $postid   = _getScalar($m, 0);
+    $username = _getScalar($m, 1);
+    $password = _getScalar($m, 2);
 
-			// params
-			$xmlrpcString,	// itemid
-			$xmlrpcString, 	// username
-			$xmlrpcString,	// password
-		));
-	$f_nucleus_getItem_doc = "Returns an item";
-	function f_nucleus_getItem($m) {
-		$postid = _getScalar($m, 0);
-		$username = _getScalar($m, 1);
-		$password = _getScalar($m, 2);
+    return _getItem($postid, $username, $password);
+}
 
-		return _getItem($postid, $username, $password);
-	}
+// nucleus.deleteItem
+$f_nucleus_deleteItem_sig = array(array(
+            // return type
+        $xmlrpcBoolean,	// boolean (ok or not ok)
 
-	// nucleus.deleteItem
-	$f_nucleus_deleteItem_sig = array(array(
-			// return type
-			$xmlrpcBoolean,	// boolean (ok or not ok)
+            // params
+        $xmlrpcString,	// itemid
+        $xmlrpcString, 	// username
+        $xmlrpcString,	// password
+    ));
+$f_nucleus_deleteItem_doc = "Deletes an item";
+function f_nucleus_deleteItem($m)
+{
+    $itemid   = _getScalar($m, 0);
+    $username = _getScalar($m, 1);
+    $password = _getScalar($m, 2);
 
-			// params
-			$xmlrpcString,	// itemid
-			$xmlrpcString, 	// username
-			$xmlrpcString,	// password
-		));
-	$f_nucleus_deleteItem_doc = "Deletes an item";
-	function f_nucleus_deleteItem($m) {
-		$itemid = _getScalar($m,0);
-		$username = _getScalar($m, 1);
-		$password = _getScalar($m, 2);
+    return _deleteItem($itemid, $username, $password);
+}
 
-		return _deleteItem($itemid, $username, $password);
-	}
+/**
+  * Returns a list of recent items (Nucleus Version)
+  * ($amount = max 20);
+  */
+function _getRecentItems($blogid, $username, $password, $amount)
+{
+    $blogid = intval($blogid);
+    $amount = intval($amount);
 
+    // 1. login
+    $mem = new MEMBER();
+    if (!$mem->login($username, $password)) {
+        return _error(1, "Could not log in");
+    }
 
-	/**
-	  * Returns a list of recent items (Nucleus Version)
-	  * ($amount = max 20);
-	  */
-	function _getRecentItems($blogid, $username, $password, $amount) {
-		$blogid = intval($blogid);
-		$amount = intval($amount);
+    // 2. check if allowed
+    if (!BLOG::existsID($blogid)) {
+        return _error(2, "No such blog ({$blogid})");
+    }
+    if (!$mem->teamRights($blogid)) {
+        return _error(3, "Not a team member");
+    }
+    $amount = intval($amount);
+    if (($amount < 1) or ($amount > 20)) {
+        return _error(5, "Amount parameter must be in range 1..20");
+    }
 
-		// 1. login
-		$mem = new MEMBER();
-		if (!$mem->login($username, $password))
-			return _error(1,"Could not log in");
+    // 3. create and return list of recent items
+    // Struct returned has dateCreated, userid, blogid and content
 
-		// 2. check if allowed
-		if (!BLOG::existsID($blogid))
-			return _error(2,"No such blog ($blogid)");
-		if (!$mem->teamRights($blogid))
-			return _error(3,"Not a team member");
-		$amount = intval($amount);
-		if (($amount < 1) or ($amount > 20))
-			return _error(5,"Amount parameter must be in range 1..20");
+    $structarray = array();		// the array in which the structs will be stored
 
-		// 3. create and return list of recent items
-		// Struct returned has dateCreated, userid, blogid and content
+    $query = "SELECT ibody, iauthor, ibody, imore, ititle, iclosed, idraft, itime"
+           .' FROM '.sql_table('item')
+           ." WHERE iblog={$blogid}"
+           ." ORDER BY itime DESC"
+           ." LIMIT {$amount}";
+    $r = sql_query($query);
+    while ($obj = sql_fetch_object($r)) {
+        $newstruct = new xmlrpcval(array(
+            "publishDate" => new xmlrpcval(iso8601_encode(strtotime($obj->itime)), "dateTime.iso8601"),
+            "userid"      => new xmlrpcval($obj->iauthor, "string"),
+            "blogid"      => new xmlrpcval($blogid, "string"),
+            "title"       => new xmlrpcval($obj->ititle, "string"),
+            "body"        => new xmlrpcval($obj->ibody, "string"),
+            "more"        => new xmlrpcval($obj->imore, "string"),
+            "draft"       => new xmlrpcval($obj->idraft, "boolean"),
+            "closed"      => new xmlrpcval($obj->iclosed, "boolean"),
+        ), 'struct');
+        array_push($structarray, $newstruct);
+    }
 
-		$structarray = array();		// the array in which the structs will be stored
+    return new xmlrpcresp(new xmlrpcval($structarray, "array"));
+}
 
-		$query = "SELECT ibody, iauthor, ibody, imore, ititle, iclosed, idraft, itime"
-			   .' FROM '.sql_table('item')
-			   ." WHERE iblog=$blogid"
-			   ." ORDER BY itime DESC"
-			   ." LIMIT $amount";
-		$r = sql_query($query);
-		while ($obj = sql_fetch_object($r)) {
-			$newstruct = new xmlrpcval(array(
-				"publishDate" => new xmlrpcval(iso8601_encode(strtotime($obj->itime)),"dateTime.iso8601"),
-				"userid" => new xmlrpcval($obj->iauthor,"string"),
-				"blogid" => new xmlrpcval($blogid,"string"),
-				"title" => new xmlrpcval($obj->ititle,"string"),
-				"body" => new xmlrpcval($obj->ibody,"string"),
-				"more" => new xmlrpcval($obj->imore,"string"),
-				"draft" => new xmlrpcval($obj->idraft,"boolean"),
-				"closed" => new xmlrpcval($obj->iclosed,"boolean"),
-			),'struct');
-			array_push($structarray, $newstruct);
-		}
+/**
+  * Returns one item (Nucleus version)
+  */
+function _getItem($itemid, $username, $password)
+{
+    global $manager;
 
-		return new xmlrpcresp(new xmlrpcval( $structarray , "array"));
+    // 1. login
+    $mem = new MEMBER();
+    if (!$mem->login($username, $password)) {
+        return _error(1, "Could not log in");
+    }
 
-	}
+    // 2. check if allowed
+    if (!$manager->existsItem($itemid, 1, 1)) {
+        return _error(6, "No such item ({$itemid})");
+    }
+    $blogid = getBlogIDFromItemID($itemid);
 
+    if (!$mem->teamRights($blogid)) {
+        return _error(3, "Not a team member");
+    }
 
+    // 3. return the item
+    // Structure returned has dateCreated, userid, blogid and content
 
-	/**
-	  * Returns one item (Nucleus version)
-	  */
-	function _getItem($itemid, $username, $password) {
-		global $manager;
+    $item = & $manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
 
-		// 1. login
-		$mem = new MEMBER();
-		if (!$mem->login($username, $password))
-			return _error(1,"Could not log in");
+    $blog = new BLOG($blogid);
+    if ($blog->convertBreaks()) {
+        $item['body'] = removeBreaks($item['body']);
+    }
 
-		// 2. check if allowed
-		if (!$manager->existsItem($itemid,1,1))
-			return _error(6,"No such item ($itemid)");
-		$blogid = getBlogIDFromItemID($itemid);
+    $newstruct = new xmlrpcval(array(
+        "publishDate" => new xmlrpcval(iso8601_encode($item['timestamp']), "dateTime.iso8601"),
+        "userid"      => new xmlrpcval($item['authorid'], "string"),
+        "blogid"      => new xmlrpcval($blogid, "string"),
+        "title"       => new xmlrpcval($item['title'], "string"),
+        "body"        => new xmlrpcval($item['body'], "string"),
+        "more"        => new xmlrpcval($item['more'], "string"),
+        "draft"       => new xmlrpcval($item['draft'], "boolean"),
+        "closed"      => new xmlrpcval($item['closed'], "boolean"),
+    ), 'struct');
 
-		if (!$mem->teamRights($blogid))
-			return _error(3,"Not a team member");
+    return new xmlrpcresp($newstruct);
+}
 
-		// 3. return the item
-		// Structure returned has dateCreated, userid, blogid and content
+if (!isset($functionDefs)) {
+    $functionDefs = array();
+}
+$functionDefs = array_merge(
+    $functionDefs,
+    array(
+        "nucleus.addItem" => array(
+        "function"      => "f_nucleus_addItem",
+            "signature" => $f_nucleus_addItem_sig,
+            "docstring" => $f_nucleus_addItem_doc),
 
-		$item =& $manager->getItem($itemid,1,1); // (also allow drafts and future items)
+        "nucleus.editItem" => array(
+            "function"  => "f_nucleus_editItem",
+            "signature" => $f_nucleus_editItem_sig,
+            "docstring" => $f_nucleus_editItem_doc),
 
-		$blog = new BLOG($blogid);
-		if ($blog->convertBreaks())
-			$item['body'] = removeBreaks($item['body']);
+        "nucleus.addDatedItem" => array(
+            "function"  => "f_nucleus_addDatedItem",
+            "signature" => $f_nucleus_addDatedItem_sig,
+            "docstring" => $f_nucleus_addDatedItem_doc),
 
-		$newstruct = new xmlrpcval(array(
-			"publishDate" => new xmlrpcval(iso8601_encode($item['timestamp']),"dateTime.iso8601"),
-			"userid" => new xmlrpcval($item['authorid'],"string"),
-			"blogid" => new xmlrpcval($blogid,"string"),
-			"title" => new xmlrpcval($item['title'],"string"),
-			"body" => new xmlrpcval($item['body'],"string"),
-			"more" => new xmlrpcval($item['more'],"string"),
-			"draft" => new xmlrpcval($item['draft'],"boolean"),
-			"closed" => new xmlrpcval($item['closed'],"boolean"),
-		),'struct');
+        "nucleus.deleteItem" => array(
+            "function"  => "f_nucleus_deleteItem",
+            "signature" => $f_nucleus_deleteItem_sig,
+            "docstring" => $f_nucleus_deleteItem_doc),
 
-		return new xmlrpcresp($newstruct);
+        "nucleus.getUsersBlogs" => array(
+            "function"  => "f_nucleus_getUsersBlogs",
+            "signature" => $f_nucleus_getUsersBlogs_sig,
+            "docstring" => $f_nucleus_getUsersBlogs_doc),
 
+        "nucleus.getRecentItems" => array(
+            "function"  => "f_nucleus_getRecentItems",
+            "signature" => $f_nucleus_getRecentItems_sig,
+            "docstring" => $f_nucleus_getRecentItems_doc),
 
-	}
-
-	if (!isset($functionDefs))
-	  $functionDefs = array();
-	$functionDefs = array_merge($functionDefs,
-		array(
-			"nucleus.addItem" =>
-			array( "function" => "f_nucleus_addItem",
-				"signature" => $f_nucleus_addItem_sig,
-				"docstring" => $f_nucleus_addItem_doc),
-
-			"nucleus.editItem" =>
-			array( "function" => "f_nucleus_editItem",
-				"signature" => $f_nucleus_editItem_sig,
-				"docstring" => $f_nucleus_editItem_doc),
-
-			"nucleus.addDatedItem" =>
-			array( "function" => "f_nucleus_addDatedItem",
-				"signature" => $f_nucleus_addDatedItem_sig,
-				"docstring" => $f_nucleus_addDatedItem_doc),
-
-			"nucleus.deleteItem" =>
-			array( "function" => "f_nucleus_deleteItem",
-				"signature" => $f_nucleus_deleteItem_sig,
-				"docstring" => $f_nucleus_deleteItem_doc),
-
-			"nucleus.getUsersBlogs" =>
-			array( "function" => "f_nucleus_getUsersBlogs",
-				"signature" => $f_nucleus_getUsersBlogs_sig,
-				"docstring" => $f_nucleus_getUsersBlogs_doc),
-
-			"nucleus.getRecentItems" =>
-			array( "function" => "f_nucleus_getRecentItems",
-				"signature" => $f_nucleus_getRecentItems_sig,
-				"docstring" => $f_nucleus_getRecentItems_doc),
-
-			"nucleus.getItem" =>
-			array( "function" => "f_nucleus_getItem",
-				"signature" => $f_nucleus_getItem_sig,
-				"docstring" => $f_nucleus_getItem_doc)
-		)
-
-	);
+        "nucleus.getItem" => array(
+            "function"  => "f_nucleus_getItem",
+            "signature" => $f_nucleus_getItem_sig,
+            "docstring" => $f_nucleus_getItem_doc)
+    )
+);

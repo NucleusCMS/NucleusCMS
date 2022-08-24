@@ -16,8 +16,8 @@
  * admin area, bookmarklet, skins or any other places where such a form
  * might be needed
  */
-class PAGEFACTORY extends BaseActions {
-
+class PAGEFACTORY extends BaseActions
+{
     // ref to the blog object for which an add:edit form is created
     public $blog;
 
@@ -37,13 +37,17 @@ class PAGEFACTORY extends BaseActions {
     /**
      * creates a new PAGEFACTORY object
      */
-    public function PAGEFACTORY($blogid) { $this->__construct($blogid); }
-    function __construct($blogid) {
+    public function PAGEFACTORY($blogid)
+    {
+        $this->__construct($blogid);
+    }
+    public function __construct($blogid)
+    {
         // call constructor of superclass first
         parent::__construct();
 
         global $manager;
-        $this->blog =& $manager->getBlog($blogid);
+        $this->blog = & $manager->getBlog($blogid);
 
         // TODO: move the definition of actions to the createXForm
         // methods
@@ -90,16 +94,18 @@ class PAGEFACTORY extends BaseActions {
      * @param type
      *        'admin' or 'bookmarklet'
      */
-    function createAddForm($type, $contents = array()) {
-        if (!in_array($type, $this->allowedTypes))
+    public function createAddForm($type, $contents = array())
+    {
+        if (!in_array($type, $this->allowedTypes)) {
             return;
-        $this->type = $type;
+        }
+        $this->type   = $type;
         $this->method = 'add';
 
         global $manager;
         $param = array(
-            'contents'    => &$contents,
-            'blog'        => &$this->blog
+            'contents' => &$contents,
+            'blog'     => &$this->blog
         );
         $manager->notify('PreAddItemForm', $param);
 
@@ -116,10 +122,12 @@ class PAGEFACTORY extends BaseActions {
      *            'author' => author
      *            '' =>
      */
-    function createEditForm($type, $contents) {
-        if (!in_array($type, $this->allowedTypes))
+    public function createEditForm($type, $contents)
+    {
+        if (!in_array($type, $this->allowedTypes)) {
             return;
-        $this->type = $type;
+        }
+        $this->type   = $type;
         $this->method = 'edit';
         $this->createForm($contents);
     }
@@ -127,7 +135,8 @@ class PAGEFACTORY extends BaseActions {
     /**
      * (private) creates a form for a given type of page
      */
-    function createForm($contents) {
+    public function createForm($contents)
+    {
         // save contents
         $this->variables = $contents;
 
@@ -142,47 +151,57 @@ class PAGEFACTORY extends BaseActions {
     /**
      * returns an appropriate template
      */
-    function getTemplateFor($type) {
+    public function getTemplateFor($type)
+    {
         global $DIR_LIBS;
 
         $filename = "{$DIR_LIBS}include/{$this->type}-{$this->method}.template";
 
-        if (!is_file($filename))
+        if (!is_file($filename)) {
             return '';
+        }
 
         $contents = file_get_contents($filename);
-        return ($contents!==False ? $contents : '' );
+        return ($contents !== false ? $contents : '');
     }
 
     // create category dropdown box
-    function parse_categories($startidx = 0) {
-            if (array_key_exists('catid', $this->variables) && $this->variables['catid'])
-                $catid = $this->variables['catid'];                // on edit item
-            else
-                $catid = $this->blog->getDefaultCategory();        // on add item
+    public function parse_categories($startidx = 0)
+    {
+        if (array_key_exists('catid', $this->variables) && $this->variables['catid']) {
+            $catid = $this->variables['catid'];
+        }                // on edit item
+        else {
+            $catid = $this->blog->getDefaultCategory();
+        }        // on add item
 
-            ADMIN::selectBlogCategory('catid',$catid,$startidx,1,$this->blog->getID());
+        ADMIN::selectBlogCategory('catid', $catid, $startidx, 1, $this->blog->getID());
     }
 
-    function parse_blogid() {
+    public function parse_blogid()
+    {
         echo $this->blog->getID();
     }
 
-    function parse_blogname() {
+    public function parse_blogname()
+    {
         echo $this->blog->getName();
     }
 
-    function parse_bloglink() {
+    public function parse_bloglink()
+    {
         echo '<a href="'.hsc($this->blog->getURL()).'">'.hsc($this->blog->getName()).'</a>';
     }
 
-    function parse_authorname() {
+    public function parse_authorname()
+    {
         // don't use on add item?
         global $member;
         echo $member->getDisplayName();
     }
 
-    function parse_title() {
+    public function parse_title()
+    {
         echo $this->contents['title'];
     }
 
@@ -195,43 +214,51 @@ class PAGEFACTORY extends BaseActions {
      *
      * the conditional block ends with an <endif> var
      */
-    function parse_ifblogsetting($name,$value=1) {
+    public function parse_ifblogsetting($name, $value = 1)
+    {
         $this->_addIfCondition(($this->blog->getSetting($name) == $value));
     }
 
-    function parse_ifitemproperty($name,$value=1) {
+    public function parse_ifitemproperty($name, $value = 1)
+    {
         $this->_addIfCondition(($this->variables[$name] == $value));
     }
 
-    function parse_ifautosave($name,$value=1) {
+    public function parse_ifautosave($name, $value = 1)
+    {
         global $member;
         $this->_addIfCondition($member->getAutosave() == $value);
     }
 
-    function parse_helplink($topic) {
+    public function parse_helplink($topic)
+    {
         help($topic);
     }
 
     // for future items
-    function parse_currenttime($what) {
+    public function parse_currenttime($what)
+    {
         $nu = getdate($this->blog->getCorrectTime());
         echo $nu[$what];
     }
 
     // date change on edit item
-    function parse_itemtime($what) {
+    public function parse_itemtime($what)
+    {
         $itemtime = getdate($this->variables['timestamp']);
         echo $itemtime[$what];
     }
 
     // some init stuff for all forms
-    function parse_init() {
+    public function parse_init()
+    {
         $authorid = ($this->method == 'edit') ? $this->variables['authorid'] : '';
         $this->blog->insertJavaScriptInfo($authorid);
     }
 
     // on bookmarklets only: insert extra html header information (by plugins)
-    function parse_extrahead() {
+    public function parse_extrahead()
+    {
         global $manager;
 
         $extrahead = '';
@@ -245,34 +272,42 @@ class PAGEFACTORY extends BaseActions {
     }
 
     // inserts some localized text
-    function parse_text($which) {
+    public function parse_text($which)
+    {
         // constant($which) only available from 4.0.4 :(
         if (defined($which)) {
-            eval("echo $which;");
+            eval("echo {$which};");
         } else {
             echo $which;    // this way we see where definitions are missing
         }
-
     }
 
-    function parse_contents($which) {
-        if (!isset($this->variables[$which])) $this->variables[$which] = '';
+    public function parse_contents($which)
+    {
+        if (!isset($this->variables[$which])) {
+            $this->variables[$which] = '';
+        }
         echo hsc($this->variables[$which]);
     }
 
-    function parse_checkedonval($value, $name) {
-        if (!isset($this->variables[$name])) $this->variables[$name] = '';
-        if ($this->variables[$name] == $value)
+    public function parse_checkedonval($value, $name)
+    {
+        if (!isset($this->variables[$name])) {
+            $this->variables[$name] = '';
+        }
+        if ($this->variables[$name] == $value) {
             echo "checked='checked'";
+        }
     }
 
     // extra javascript for input and textarea fields
-    function parse_jsinput($which) {
+    public function parse_jsinput($which)
+    {
         global $CONF, $member;
-        
-        $attributes  = " name=\"{$which}\"";
+
+        $attributes = " name=\"{$which}\"";
         $attributes .= " id=\"input{$which}\"";
-        
+
         if ($CONF['DisableJsTools'] != 1) {
             $attributes .= ' onclick="storeCaret(this);"';
             $attributes .= ' onselect="storeCaret(this);"';
@@ -281,8 +316,7 @@ class PAGEFACTORY extends BaseActions {
             } else {
                 $attributes .= " onkeyup=\"storeCaret(this); updPreview('{$which}');\"";
             }
-        }
-        else {
+        } else {
             if ($CONF['DisableJsTools'] == 0) {
                 $attributes .= ' onkeypress="shortCuts();"';
             }
@@ -294,43 +328,42 @@ class PAGEFACTORY extends BaseActions {
     }
 
     // shows the javascript button bar
-    function parse_jsbuttonbar($extrabuttons = "") {
+    public function parse_jsbuttonbar($extrabuttons = "")
+    {
         global $CONF;
-        switch($CONF['DisableJsTools'])    {
-
+        switch($CONF['DisableJsTools']) {
             case "0":
                 echo '<div class="jsbuttonbar">';
 
-                    $this->_jsbutton('cut','cutThis()',_ADD_CUT_TT . " (Ctrl + X)");
-                    $this->_jsbutton('copy','copyThis()',_ADD_COPY_TT . " (Ctrl + C)");
-                    $this->_jsbutton('paste','pasteThis()',_ADD_PASTE_TT . " (Ctrl + V)");
-                    $this->_jsbuttonspacer();
-                    $this->_jsbutton('bold',"boldThis()",_ADD_BOLD_TT ." (Ctrl + Shift + B)");
-                    $this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT ." (Ctrl + Shift + I)");
-                    $this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT ." (Ctrl + Shift + A)");
-                    $this->_jsbuttonspacer();
-                    $this->_jsbutton('alignleft',"alignleftThis()",_ADD_ALIGNLEFT_TT);
-                    $this->_jsbutton('alignright',"alignrightThis()",_ADD_ALIGNRIGHT_TT);
-                    $this->_jsbutton('aligncenter',"aligncenterThis()",_ADD_ALIGNCENTER_TT);
-                    $this->_jsbuttonspacer();
-                    $this->_jsbutton('left',"leftThis()",_ADD_LEFT_TT);
-                    $this->_jsbutton('right',"rightThis()",_ADD_RIGHT_TT);
+                $this->_jsbutton('cut', 'cutThis()', _ADD_CUT_TT . " (Ctrl + X)");
+                $this->_jsbutton('copy', 'copyThis()', _ADD_COPY_TT . " (Ctrl + C)");
+                $this->_jsbutton('paste', 'pasteThis()', _ADD_PASTE_TT . " (Ctrl + V)");
+                $this->_jsbuttonspacer();
+                $this->_jsbutton('bold', "boldThis()", _ADD_BOLD_TT ." (Ctrl + Shift + B)");
+                $this->_jsbutton('italic', "italicThis()", _ADD_ITALIC_TT ." (Ctrl + Shift + I)");
+                $this->_jsbutton('link', "ahrefThis()", _ADD_HREF_TT ." (Ctrl + Shift + A)");
+                $this->_jsbuttonspacer();
+                $this->_jsbutton('alignleft', "alignleftThis()", _ADD_ALIGNLEFT_TT);
+                $this->_jsbutton('alignright', "alignrightThis()", _ADD_ALIGNRIGHT_TT);
+                $this->_jsbutton('aligncenter', "aligncenterThis()", _ADD_ALIGNCENTER_TT);
+                $this->_jsbuttonspacer();
+                $this->_jsbutton('left', "leftThis()", _ADD_LEFT_TT);
+                $this->_jsbutton('right', "rightThis()", _ADD_RIGHT_TT);
 
-
-                    if ($extrabuttons) {
-                        $btns = explode('+',$extrabuttons);
-                        $this->_jsbuttonspacer();
-                        foreach ($btns as $button) {
-                            switch($button) {
-                                case "media":
-                                    $this->_jsbutton('media',"addMedia()",_ADD_MEDIA_TT .    " (Ctrl + Shift + M)");
-                                    break;
-                                case "preview":
-                                    $this->_jsbutton('preview',"showedit()",_ADD_PREVIEW_TT);
-                                    break;
-                            }
+                if ($extrabuttons) {
+                    $btns = explode('+', $extrabuttons);
+                    $this->_jsbuttonspacer();
+                    foreach ($btns as $button) {
+                        switch($button) {
+                            case "media":
+                                $this->_jsbutton('media', "addMedia()", _ADD_MEDIA_TT .    " (Ctrl + Shift + M)");
+                                break;
+                            case "preview":
+                                $this->_jsbutton('preview', "showedit()", _ADD_PREVIEW_TT);
+                                break;
                         }
                     }
+                }
 
                 echo '</div>';
 
@@ -338,29 +371,28 @@ class PAGEFACTORY extends BaseActions {
             case "2":
                 echo '<div class="jsbuttonbar">';
 
-                    $this->_jsbutton('bold',"boldThis()",_ADD_BOLD_TT);
-                    $this->_jsbutton('italic',"italicThis()",_ADD_ITALIC_TT);
-                    $this->_jsbutton('link',"ahrefThis()",_ADD_HREF_TT);
-                    $this->_jsbuttonspacer();
-                    $this->_jsbutton('alignleft',"alignleftThis()",_ADD_ALIGNLEFT_TT);
-                    $this->_jsbutton('alignright',"alignrightThis()",_ADD_ALIGNRIGHT_TT);
-                    $this->_jsbutton('aligncenter',"aligncenterThis()",_ADD_ALIGNCENTER_TT);
-                    $this->_jsbuttonspacer();
-                    $this->_jsbutton('left',"leftThis()",_ADD_LEFT_TT);
-                    $this->_jsbutton('right',"rightThis()",_ADD_RIGHT_TT);
+                $this->_jsbutton('bold', "boldThis()", _ADD_BOLD_TT);
+                $this->_jsbutton('italic', "italicThis()", _ADD_ITALIC_TT);
+                $this->_jsbutton('link', "ahrefThis()", _ADD_HREF_TT);
+                $this->_jsbuttonspacer();
+                $this->_jsbutton('alignleft', "alignleftThis()", _ADD_ALIGNLEFT_TT);
+                $this->_jsbutton('alignright', "alignrightThis()", _ADD_ALIGNRIGHT_TT);
+                $this->_jsbutton('aligncenter', "aligncenterThis()", _ADD_ALIGNCENTER_TT);
+                $this->_jsbuttonspacer();
+                $this->_jsbutton('left', "leftThis()", _ADD_LEFT_TT);
+                $this->_jsbutton('right', "rightThis()", _ADD_RIGHT_TT);
 
-
-                    if ($extrabuttons) {
-                        $btns = explode('+',$extrabuttons);
-                        $this->_jsbuttonspacer();
-                        foreach ($btns as $button) {
-                            switch($button) {
-                                case "media":
-                                    $this->_jsbutton('media',"addMedia()",_ADD_MEDIA_TT);
-                                    break;
-                            }
+                if ($extrabuttons) {
+                    $btns = explode('+', $extrabuttons);
+                    $this->_jsbuttonspacer();
+                    foreach ($btns as $button) {
+                        switch($button) {
+                            case "media":
+                                $this->_jsbutton('media', "addMedia()", _ADD_MEDIA_TT);
+                                break;
                         }
                     }
+                }
 
                 echo '</div>';
 
@@ -371,7 +403,8 @@ class PAGEFACTORY extends BaseActions {
     /**
      * Allows plugins to add their own custom fields
      */
-    function parse_pluginextras() {
+    public function parse_pluginextras()
+    {
         global $manager;
 
         switch ($this->method) {
@@ -383,9 +416,9 @@ class PAGEFACTORY extends BaseActions {
                 break;
             case 'edit':
                 $param = array(
-                    'variables'    =>  $this->variables,
-                    'blog'        => &$this->blog,
-                    'itemid'    =>  $this->variables['itemid']
+                    'variables' => $this->variables,
+                    'blog'      => &$this->blog,
+                    'itemid'    => $this->variables['itemid']
                 );
                 $manager->notify('EditItemFormExtras', $param);
                 break;
@@ -396,12 +429,14 @@ class PAGEFACTORY extends BaseActions {
      * Adds the itemOptions of a plugin to a page
      * @author TeRanEX
      */
-    function parse_itemoptions() {
+    public function parse_itemoptions()
+    {
         global $itemid;
         ADMIN::_insertPluginOptions('item', $itemid);
     }
 
-    function parse_ticket() {
+    public function parse_ticket()
+    {
         global $manager;
         $manager->addTicketHidden();
     }
@@ -409,8 +444,9 @@ class PAGEFACTORY extends BaseActions {
     /**
      * convenience method
      */
-    function _jsbutton($type, $code ,$tooltip) {
-    ?>
+    public function _jsbutton($type, $code, $tooltip)
+    {
+        ?>
             <span class="jsbutton"
                 onmouseover="BtnHighlight(this);"
                 onmouseout="BtnNormal(this);"
@@ -418,9 +454,9 @@ class PAGEFACTORY extends BaseActions {
                 <img src="images/button-<?php echo $type?>.gif" alt="<?php echo $tooltip?>" title="<?php echo $tooltip?>" width="16" height="16"/>
             </span>
     <?php    }
-    
-    function _jsbuttonspacer() {
+
+    public function _jsbuttonspacer()
+    {
         echo '<span class="jsbuttonspacer">&nbsp;</span>';
     }
-
 }

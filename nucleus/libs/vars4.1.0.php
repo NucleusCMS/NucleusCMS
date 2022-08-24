@@ -14,7 +14,8 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-function getVar($name) {
+function getVar($name)
+{
     if (!isset($_GET[$name])) {
         return;
     }
@@ -22,7 +23,8 @@ function getVar($name) {
     return undoMagic($_GET[$name]);
 }
 
-function postVar($name) {
+function postVar($name)
+{
     if (!isset($_POST[$name])) {
         return;
     }
@@ -30,7 +32,8 @@ function postVar($name) {
     return undoMagic($_POST[$name]);
 }
 
-function cookieVar($name) {
+function cookieVar($name)
+{
     if (!isset($_COOKIE[$name])) {
         return;
     }
@@ -38,18 +41,21 @@ function cookieVar($name) {
     return undoMagic($_COOKIE[$name]);
 }
 
-function requestVar($name) {
-    if(array_key_exists($name,$_REQUEST))
+function requestVar($name)
+{
+    if (array_key_exists($name, $_REQUEST)) {
         return undoMagic($_REQUEST[$name]);
-    elseif( array_key_exists($name,$_GET))
+    } elseif (array_key_exists($name, $_GET)) {
         return undoMagic($_GET[$name]);
-    elseif( array_key_exists($name,$_POST))
+    } elseif (array_key_exists($name, $_POST)) {
         return undoMagic($_POST[$name]);
-    else
+    } else {
         return;
+    }
 }
 
-function serverVar($name) {
+function serverVar($name)
+{
     if (!isset($_SERVER[$name])) {
         return false;
     }
@@ -58,29 +64,36 @@ function serverVar($name) {
 }
 
 // removes magic quotes if that option is enabled
-function undoMagic($data) {
-    if (PHP_VERSION_ID >= 50400 || !get_magic_quotes_gpc())
+function undoMagic($data)
+{
+    if (PHP_VERSION_ID >= 50400 || !get_magic_quotes_gpc()) {
         return $data;
-    if (ini_get('magic_quotes_sybase') != 1)
+    }
+    if (ini_get('magic_quotes_sybase') != 1) {
         return stripslashes_array($data);
-    else
+    } else {
         return undoSybaseQuotes_array($data);
+    }
 }
 
-function stripslashes_array($data) {
+function stripslashes_array($data)
+{
     return is_array($data) ? array_map('stripslashes_array', $data) : stripslashes($data);
 }
 
-function undoSybaseQuotes_array($data) {
+function undoSybaseQuotes_array($data)
+{
     return is_array($data) ? array_map('undoSybaseQuotes', $data) : stripslashes($data);
 }
 
-function undoSybaseQuotes($data) {
+function undoSybaseQuotes($data)
+{
     return str_replace("''", "'", $data);
 }
 
 // integer array from request
-function requestIntArray($name) {
+function requestIntArray($name)
+{
     if (!isset($_REQUEST[$name])) {
         return;
     }
@@ -89,7 +102,8 @@ function requestIntArray($name) {
 }
 
 // array from request. Be sure to call undoMagic on the strings inside
-function requestArray($name) {
+function requestArray($name)
+{
     if (!isset($_REQUEST[$name])) {
         return;
     }
@@ -99,21 +113,26 @@ function requestArray($name) {
 
 // add all the variables from the request as hidden input field
 // @see globalfunctions.php#passVar
-function passRequestVars() {
+function passRequestVars()
+{
     foreach ($_REQUEST as $key => $value) {
-        if (($key == 'action') && ($value != requestVar('nextaction')))
+        if (($key == 'action') && ($value != requestVar('nextaction'))) {
             $key = 'nextaction';
+        }
 
         // a nextaction of 'showlogin' makes no sense
-        if (($key == 'nextaction') && ($value == 'showlogin'))
+        if (($key == 'nextaction') && ($value == 'showlogin')) {
             continue;
+        }
 
-        if (($key != 'login') && ($key != 'password'))
+        if (($key != 'login') && ($key != 'password')) {
             passVar($key, $value);
+        }
     }
 }
 
-function postFileInfo($name) {
+function postFileInfo($name)
+{
     if (!isset($_FILES[$name])) {
         return;
     }
@@ -121,6 +140,7 @@ function postFileInfo($name) {
     return $_FILES[$name];
 }
 
-function setOldAction($value) {
+function setOldAction($value)
+{
     $_POST['oldaction'] = $value;
 }

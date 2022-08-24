@@ -15,29 +15,32 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-define('ERROR',1);        // only errors
-define('WARNING',2);    // errors and warnings
-define('INFO',3);        // info, errors and warnings
-define('DEBUG',4);        // everything
+define('ERROR', 1);        // only errors
+define('WARNING', 2);    // errors and warnings
+define('INFO', 3);        // info, errors and warnings
+define('DEBUG', 4);        // everything
 $CONF['LogLevel'] = INFO;
 
-class ACTIONLOG {
-
+class ACTIONLOG
+{
     /**
       * (Static) Method to add a message to the action log
       */
-    public static function add($level, $message) {
+    public static function add($level, $message)
+    {
         global $member, $CONF;
 
-        if ($CONF['LogLevel'] < $level)
+        if ($CONF['LogLevel'] < $level) {
             return;
+        }
 
-        if ($member && $member->isLoggedIn())
+        if ($member && $member->isLoggedIn()) {
             $message = "[" . $member->getDisplayName() . "] " . $message;
+        }
 
-        $message = sql_real_escape_string($message);        // add slashes
-        $timestamp = date("Y-m-d H:i:s",time());    // format timestamp
-        $query = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('$timestamp', '$message')";
+        $message   = sql_real_escape_string($message);        // add slashes
+        $timestamp = date("Y-m-d H:i:s", time());    // format timestamp
+        $query     = "INSERT INTO " . sql_table('actionlog') . " (timestamp, message) VALUES ('{$timestamp}', '{$message}')";
 
         sql_query($query);
 
@@ -47,11 +50,12 @@ class ACTIONLOG {
     /**
       * (Static) Method to clear the whole action log
       */
-    public static function clear() {
+    public static function clear()
+    {
         global $manager;
 
         $query = 'DELETE FROM ' . sql_table('actionlog');
-        
+
         $param = array();
         $manager->notify('ActionLogCleared', $param);
 
@@ -61,11 +65,14 @@ class ACTIONLOG {
     /**
       * (Static) Method to trim the action log (from over 500 back to 250 entries)
       */
-    public static function trimLog() {
+    public static function trimLog()
+    {
         static $checked = 0;
 
         // only check once per run
-        if ($checked) return;
+        if ($checked) {
+            return;
+        }
 
         // trim
         $checked = 1;
@@ -73,13 +80,11 @@ class ACTIONLOG {
         $iTotal = quickQuery('SELECT COUNT(*) AS result FROM ' . sql_table('actionlog'));
 
         // if size > 500, drop back to about 250
-        $iMaxSize = 500;
+        $iMaxSize  = 500;
         $iDropSize = 250;
         if ($iTotal > $iMaxSize) {
             $tsChop = quickQuery('SELECT timestamp as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT '.$iDropSize.',1');
             sql_query('DELETE FROM ' . sql_table('actionlog') . ' WHERE timestamp < \'' . $tsChop . '\'');
         }
-
     }
-
 }

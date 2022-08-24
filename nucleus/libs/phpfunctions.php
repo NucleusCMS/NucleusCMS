@@ -2,23 +2,35 @@
 
 if (!defined('PHP_VERSION_ID')) { // PHP[5.2.7 -]
     $v = explode('.', PHP_VERSION);
-    define('PHP_VERSION_ID', $v[0]*10000 + $v[1]*100 + $v[2]);
+    define('PHP_VERSION_ID', $v[0] * 10000 + $v[1] * 100 + $v[2]);
     unset($v);
 }
 
-if (! function_exists('get_magic_quotes_gpc')) {  // removed function PHP[ - 7.4]
+if (!function_exists('get_magic_quotes_gpc')) {  // removed function PHP[ - 7.4]
     function get_magic_quotes_gpc()
     {
         return false;
     }
 }
-if (! function_exists('get_magic_quotes_runtime')) {
+if (!function_exists('get_magic_quotes_runtime')) {
     function get_magic_quotes_runtime()
     {
         return false;
     }
 }
 
+if (!function_exists('each')) { // removed function PHP[ - 7.4]
+    function each(&$array)
+    {
+        $value = current($array);
+        $key   = key($array);
+        if ($key === null) {
+            return false;
+        }
+        next($array);
+        return array(1 => $value, 'value' => $value, 0 => $key, 'key' => $key);
+    }
+}
 
 if (!function_exists('str_contains')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr

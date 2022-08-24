@@ -14,10 +14,11 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-function upgrade_do320() {
-
-    if (upgrade_checkinstall(320))
+function upgrade_do320()
+{
+    if (upgrade_checkinstall(320)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
+    }
 
     // create nucleus_activation table
     if (!upgrade_checkIfTableExists('tickets')) {
@@ -29,13 +30,13 @@ function upgrade_do320() {
                . ' vextra varchar(128) NOT NULL default \'\','
                . ' PRIMARY KEY  (vkey) '
                . ' )';
-        upgrade_query('Creating account activation table', $query);    
+        upgrade_query('Creating account activation table', $query);
     }
-    
+
     // create CookiePrefix setting
     if (!upgrade_checkIfCVExists('CookiePrefix')) {
         $query = 'INSERT INTO '.sql_table('config')." VALUES ('CookiePrefix','')";
-        upgrade_query('Creating CookiePrefix config value',$query); 
+        upgrade_query('Creating CookiePrefix config value', $query);
     }
 
     // create nucleus_tickets table
@@ -46,12 +47,12 @@ function upgrade_do320() {
                . ' member int(11) NOT NULL default \'0\', '
                . ' PRIMARY KEY  (ticket, member) '
                . ' )';
-        upgrade_query('Creating ticket table', $query);    
+        upgrade_query('Creating ticket table', $query);
     }
-    
+
     // 3.1 -> 3.2
-    // update database version  
+    // update database version
     update_version('320');
-    
+
     // nothing!
 }

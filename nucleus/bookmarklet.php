@@ -17,7 +17,7 @@
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)
-$CONF = array();
+$CONF                   = array();
 $CONF['UsingAdminArea'] = 1;
 
 // include all classes and config data
@@ -30,13 +30,13 @@ if ($action == 'contextmenucode') {
     exit;
 }
 
-if (!$member->isLoggedIn() ) {
+if (!$member->isLoggedIn()) {
     bm_loginAndPassThrough();
     exit;
 }
 
 // on successfull login
-if ( ($action == 'login') && ($member->isLoggedIn() ) ) {
+if (($action == 'login') && ($member->isLoggedIn())) {
     $action = requestVar('nextaction');
 }
 
@@ -51,12 +51,10 @@ $action = strtolower($action);
 
 $aActionsNotToCheck = array('login', 'add', 'edit');
 
-if (!in_array($action, $aActionsNotToCheck) ) {
-
-    if (!$manager->checkTicket() ) {
+if (!in_array($action, $aActionsNotToCheck)) {
+    if (!$manager->checkTicket()) {
         bm_doError(_ERROR_BADTICKET);
     }
-
 }
 
 // find out what to do
@@ -66,29 +64,30 @@ switch ($action) {
         bm_doAddItem();
         break;
 
-    // shows the edit item form
+        // shows the edit item form
     case 'edit':
         bm_doEditForm();
         break;
 
-    // edits the item for real
+        // edits the item for real
     case 'edititem':
         bm_doEditItem();
         break;
 
-    // on login, 'action' gets changed to 'nextaction'
+        // on login, 'action' gets changed to 'nextaction'
     case 'login':
         bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
         break;
 
-    // shows the fill in form
+        // shows the fill in form
     case 'add':
     default:
         bm_doShowForm();
         break;
 }
 
-function bm_doAddItem() {
+function bm_doAddItem()
+{
     global $member, $manager, $CONF;
 
     $manager->loadClass('ITEM');
@@ -99,36 +98,37 @@ function bm_doAddItem() {
     }
 
     $blogid = getBlogIDFromItemID($result['itemid']);
-    $blog =& $manager->getBlog($blogid);
+    $blog   = & $manager->getBlog($blogid);
 
     if ($result['status'] == 'newcategory') {
-        $message = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'] . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
+        $message   = 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blogid . '&amp;catid=' . $result['catid'] . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>';
         $extrahead = '';
     } else {
-        $message = _ITEM_ADDED;
+        $message   = _ITEM_ADDED;
         $extrahead = '';
     }
 
-    bm_message(_ITEM_ADDED, _ITEM_ADDED, $message,$extrahead);
+    bm_message(_ITEM_ADDED, _ITEM_ADDED, $message, $extrahead);
 }
 
-function bm_doEditItem() {
+function bm_doEditItem()
+{
     global $member, $manager, $CONF;
 
     $itemid = intRequestVar('itemid');
-    $catid = postVar('catid');
+    $catid  = postVar('catid');
 
     // only allow if user is allowed to alter item
-    if (!$member->canUpdateItem($itemid, $catid) ) {
+    if (!$member->canUpdateItem($itemid, $catid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
-    $body = postVar('body');
-    $title = postVar('title');
-    $more = postVar('more');
-    $closed = intPostVar('closed');
+    $body       = postVar('body');
+    $title      = postVar('title');
+    $more       = postVar('more');
+    $closed     = intPostVar('closed');
     $actiontype = postVar('actiontype');
-    $draftid = intPostVar('draftid');
+    $draftid    = intPostVar('draftid');
 
     // redirect to admin area on delete (has delete confirmation)
     if ($actiontype == 'delete') {
@@ -137,12 +137,12 @@ function bm_doEditItem() {
     }
 
     // create new category if needed (only on edit/changedate)
-    if (strstr($catid,'newcat') ) {
+    if (strstr($catid, 'newcat')) {
         // get blogid
         list($blogid) = sscanf($catid, "newcat-%d");
 
         // create
-        $blog =& $manager->getBlog($blogid);
+        $blog  = & $manager->getBlog($blogid);
         $catid = $blog->createNewCategory();
 
         // show error when sth goes wrong
@@ -154,18 +154,18 @@ function bm_doEditItem() {
     // only edit action is allowed for bookmarklet edit
     switch ($actiontype) {
         case 'changedate':
-            $publish = 1;
-            $wasdraft = 0;
-            $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year') );
+            $publish   = 1;
+            $wasdraft  = 0;
+            $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
             break;
         case 'edit':
-            $publish = 1;
-            $wasdraft = 0;
+            $publish   = 1;
+            $wasdraft  = 0;
             $timestamp = 0;
             break;
         case 'backtodrafts':
-            $publish = 0;
-            $wasdraft = 0;
+            $publish   = 0;
+            $wasdraft  = 0;
             $timestamp = 0;
             break;
         default:
@@ -180,18 +180,18 @@ function bm_doEditItem() {
     }
 
     // show success message
-    if ($catid != intPostVar('catid') ) {
+    if ($catid != intPostVar('catid')) {
         bm_message(_ITEM_UPDATED, _ITEM_UPDATED, 'Item was added, and a new category was created. <a href="index.php?action=categoryedit&amp;blogid=' . $blog->getID() . '&amp;catid=' . $catid . '" onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); window.open(this.href); return false;" title="Opens in new window">Click here to edit the name and description of the category.</a>', '');
     } else {
         bm_message(_ITEM_UPDATED, _ITEM_UPDATED, _ITEM_UPDATED, '');
     }
 }
 
-function bm_loginAndPassThrough() {
-
-    $blogid = intRequestVar('blogid');
-    $log_text = requestVar('logtext');
-    $log_link = requestVar('loglink');
+function bm_loginAndPassThrough()
+{
+    $blogid        = intRequestVar('blogid');
+    $log_text      = requestVar('logtext');
+    $log_link      = requestVar('loglink');
     $log_linktitle = requestVar('loglinktitle');
 
     ?>
@@ -226,19 +226,20 @@ function bm_loginAndPassThrough() {
     <?php
 }
 
-function bm_doShowForm() {
+function bm_doShowForm()
+{
     global $member;
 
-    $blogid = intRequestVar('blogid');
-    $log_text = trim(requestVar('logtext'));
-    $log_link = requestVar('loglink');
+    $blogid        = intRequestVar('blogid');
+    $log_text      = trim(requestVar('logtext'));
+    $log_link      = requestVar('loglink');
     $log_linktitle = requestVar('loglinktitle');
 
-    if (!BLOG::existsID($blogid) ) {
+    if (!BLOG::existsID($blogid)) {
         bm_doError(_ERROR_NOSUCHBLOG);
     }
 
-    if (!$member->isTeamMember($blogid) ) {
+    if (!$member->isTeamMember($blogid)) {
         bm_doError(_ERROR_NOTONTEAM);
     }
 
@@ -256,47 +257,50 @@ function bm_doShowForm() {
         $logje .= '<a href="' . hsc($log_link) . '">' . hsc($log_linktitle) . '</a>';
     }
 
-    $item['body'] = $logje;
+    $item['body']  = $logje;
     $item['title'] = hsc($log_linktitle);
 
     $factory = new PAGEFACTORY($blogid);
     $factory->createAddForm('bookmarklet', $item);
 }
 
-function bm_doEditForm() {
+function bm_doEditForm()
+{
     global $member, $manager;
 
     $itemid = intRequestVar('itemid');
 
-    if (!$manager->existsItem($itemid, 0, 0) ) {
+    if (!$manager->existsItem($itemid, 0, 0)) {
         bm_doError(_ERROR_NOSUCHITEM);
     }
 
-    if (!$member->canAlterItem($itemid) ) {
+    if (!$member->canAlterItem($itemid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
-    $item =& $manager->getItem($itemid, 1, 1);
-    $blog =& $manager->getBlog(getBlogIDFromItemID($itemid) );
+    $item = & $manager->getItem($itemid, 1, 1);
+    $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
 
     $data = array('item' => &$item);
     $manager->notify('PrepareItemForEdit', $data);
 
-    if ($blog->convertBreaks() ) {
+    if ($blog->convertBreaks()) {
         $item['body'] = removeBreaks($item['body']);
         $item['more'] = removeBreaks($item['more']);
     }
 
-    $formfactory = new PAGEFACTORY($blog->getID() );
+    $formfactory = new PAGEFACTORY($blog->getID());
     $formfactory->createEditForm('bookmarklet', $item);
 }
 
-function bm_doError($msg) {
+function bm_doError($msg)
+{
     bm_message(_ERROR, _ERRORMSG, $msg);
     die;
 }
 
-function bm_message($title, $head, $msg, $extrahead = '') {
+function bm_message($title, $head, $msg, $extrahead = '')
+{
     ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -316,12 +320,14 @@ function bm_message($title, $head, $msg, $extrahead = '') {
     <?php
 }
 
-function bm_style() {
+function bm_style()
+{
     echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';
     echo '<link rel="stylesheet" type="text/css" href="styles/addedit.css" />';
 }
 
-function bm_doContextMenuCode() {
+function bm_doContextMenuCode()
+{
     global $CONF;
     // https://msdn.microsoft.com/ja-jp/library/ms534165(v=vs.85).aspx
 
@@ -337,7 +343,7 @@ var lt;
 //    // can not access href , ie xss filter
 //    echo "alert(typeof oWindow.location.href);";
 //    echo "if (typeof oWindow.location.href == 'unknown') { for (var name in oWindow.location) { alert(name); } }";
-?>
+    ?>
 if (typeof oWindow.getSelection == "function") {
     lt = escape(oWindow.getSelection().getRangeAt(0).toString());
 } else {
