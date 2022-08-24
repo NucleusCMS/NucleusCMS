@@ -9,7 +9,7 @@ if (!@is_file('./config.php')) {
         header('Location: ./install/');
         exit;
     }
-    $f = dirname(__FILE__).'/nucleus/libs/config-error.php';
+    $f = __DIR__.'/nucleus/libs/config-error.php';
     if (@is_file($f)) {
         @include($f);
     }

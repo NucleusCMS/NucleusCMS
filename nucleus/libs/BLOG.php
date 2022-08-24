@@ -20,7 +20,7 @@
 if (!function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/ITEMACTIONS.php';
+require_once __DIR__ . '/ITEMACTIONS.php';
 
 class BLOG
 {

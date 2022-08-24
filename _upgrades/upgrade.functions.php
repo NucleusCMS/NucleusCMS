@@ -32,7 +32,7 @@ function load_upgrade_lang()
     $langNames[] = stripos($_, 'japan') !== false ? 'japanese' : $_;
     $langNames[] = 'english';
     foreach ($langNames as $langName) {
-        $lang_path = dirname(__FILE__) . "/upgrade_lang_{$langName}.php";
+        $lang_path = __DIR__ . "/upgrade_lang_{$langName}.php";
         if (is_file($lang_path)) {
             break;
         } else {

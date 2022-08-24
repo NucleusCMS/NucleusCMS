@@ -23,7 +23,7 @@
 $MYSQL_CONN = 0;
 
 if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
-    include(dirname(__FILE__) . '/sql_common_functions.php');
+    include(__DIR__ . '/sql_common_functions.php');
 
     /**
      * Connects to mysql server with arguments

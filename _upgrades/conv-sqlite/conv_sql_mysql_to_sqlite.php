@@ -6,8 +6,8 @@
  * Copyright (C) 2011-2016 piyoyo
  */
 
-$this_dir   = dirname(__FILE__);
-$parent_dir = dirname(dirname(__FILE__));
+$this_dir   = __DIR__;
+$parent_dir = dirname(__DIR__);
 
 if (version_compare(PHP_VERSION, '5.1.0', '<')) {
     fwrite(STDERR, "php 5.1.0 or higher needed.\n");

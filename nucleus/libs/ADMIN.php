@@ -19,7 +19,7 @@
 if (!function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/showlist.php';
+require_once __DIR__ . '/showlist.php';
 
 /**
  * Builds the admin area and executes admin actions

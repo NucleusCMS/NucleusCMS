@@ -16,7 +16,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-require_once dirname(__FILE__) . '/BaseActions.php'; // PHP Fatal error:  Class 'BaseActions' not found
+require_once __DIR__ . '/BaseActions.php'; // PHP Fatal error:  Class 'BaseActions' not found
 
 class ACTIONS extends BaseActions
 {

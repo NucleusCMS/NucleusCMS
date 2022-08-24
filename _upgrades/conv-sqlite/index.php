@@ -164,7 +164,7 @@ class ConvertInstaller
                 return $text;
             }
             // skin for default
-            $filename = dirname(__FILE__) . '/default_text.xml';
+            $filename = __DIR__ . '/default_text.xml';
             if (!is_file($filename)) {
                 return $text;
             }
@@ -282,7 +282,7 @@ EOD;
 
     private function doConvert()
     {
-        include_once(dirname(__FILE__) . '/table_conv_mysql_to_sqlite.php');
+        include_once(__DIR__ . '/table_conv_mysql_to_sqlite.php');
 
         //$obj = new TableConvertor();
         $obj = new TableConvertor_mysql_to_sqlite();
@@ -334,7 +334,7 @@ EOD;
 \$MYSQL_HANDLER = array(&#039;pdo&#039;,&#039;sqlite&#039;);
 if (\$MYSQL_HANDLER[1]==&#039;sqlite&#039;)
 {
-   \$MYSQL_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, /, &#039;/settings/db_nucleus.sqlite&#039;);
+   \$MYSQL_DATABASE = __DIR__ . str_replace(&#039;/&#039;, /, &#039;/settings/db_nucleus.sqlite&#039;);
 // \$MYSQL_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
 }</b></pre></blockquote>
 EOD;
@@ -393,12 +393,12 @@ EOD;
 
 if (\$MYSQL_HANDLER[1]=='sqlite')
 {
-   \$MYSQL_DATABASE = dirname(__FILE__) . '/settings/db_nucleus.sqlite';
+   \$MYSQL_DATABASE = __DIR__ . '/settings/db_nucleus.sqlite';
 // \$MYSQL_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
 
 // main nucleus directory
-\$DIR_BASE = dirname(__FILE__) . '/';
+\$DIR_BASE = __DIR__ . '/';
 
 //\$DIR_NUCLEUS = \$DIR_BASE . 'nucleus/';
 \$DIR_NUCLEUS = {$newDir['DIR_NUCLEUS']};
@@ -426,7 +426,7 @@ if (\$MYSQL_HANDLER[1]=='sqlite')
 \$DIR_LIBS = {$newDir['DIR_LIBS']};
 
 if (!isset(\$DIR_NUCLEUS) || !@is_file(\$DIR_LIBS . 'globalfunctions.php')) {
-    foreach(array(\$DIR_LIBS , dirname(__FILE__).'/nucleus/libs/') as \$path)
+    foreach(array(\$DIR_LIBS , __DIR__.'/nucleus/libs/') as \$path)
         if (@is_file(\$path.'config-error.php')) @include(\$path.'config-error.php');
     header('Content-type: text/html; charset=utf-8');
     echo '<h1>Configuration error</h1>';

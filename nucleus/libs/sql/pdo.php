@@ -25,7 +25,7 @@ global $SQL_DBH;
 $SQL_DBH = null;
 
 if (!function_exists('sql_fetch_assoc')) {
-    include(dirname(__FILE__) . '/sql_common_functions.php');
+    include(__DIR__ . '/sql_common_functions.php');
 
     /**
      * Connects to mysql server
@@ -319,7 +319,7 @@ if (!function_exists('sql_fetch_assoc')) {
         $SQLCount++;
         return; //
 
-        $filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'query_log.txt';
+        $filename = __DIR__ . DIRECTORY_SEPARATOR . 'query_log.txt';
         $handle   = fopen($filename, ($override ? "w" : "a"));
         if ($handle) {
             if ($_SERVER['REQUEST_TIME_FLOAT']) {

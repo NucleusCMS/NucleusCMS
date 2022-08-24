@@ -346,7 +346,7 @@ function doInstall()
     if ($is_install_sqlite) {
         global $DB_DRIVER_NAME;
         $DB_DRIVER_NAME = 'sqlite';
-        $sqlite_db_dir  = @realpath(dirname(__FILE__) . '/../settings');
+        $sqlite_db_dir  = @realpath(__DIR__ . '/../settings');
         $sqlite_db_name = $sqlite_db_dir . '/db_nucleus.sqlite';
         $mysql_database = $sqlite_db_name;
 
@@ -683,7 +683,7 @@ function doInstall()
     // 14. Write config file ourselves (if possible)
     $bConfigWritten = 0;
 
-    $configFilename = dirname(dirname(__FILE__)) . '/config.php';
+    $configFilename = dirname(__DIR__) . '/config.php';
     if (!@is_file($configFilename)
 //      || (@is_file($configFilename) && is_writable($configFilename))
     ) {
