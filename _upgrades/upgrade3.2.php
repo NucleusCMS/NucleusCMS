@@ -18,7 +18,6 @@ upgrade_do320();
 
 function upgrade_do320()
 {
-
     if (upgrade_checkinstall(320)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
@@ -35,7 +34,7 @@ function upgrade_do320()
                . ' )';
         upgrade_query('Creating account activation table', $query);
     }
-    
+
     // create CookiePrefix setting
     if (!upgrade_checkIfCVExists('CookiePrefix')) {
         $query = 'INSERT INTO '.sql_table('config')." VALUES ('CookiePrefix','')";
@@ -52,10 +51,10 @@ function upgrade_do320()
                . ' )';
         upgrade_query('Creating ticket table', $query);
     }
-    
+
     // 3.1 -> 3.2
     // update database version
     update_version('320');
-    
+
     // nothing!
 }

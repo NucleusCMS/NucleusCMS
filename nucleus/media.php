@@ -45,7 +45,7 @@ if (!$member->isLoggedIn()) {
 }
 
 // check if member is on at least one teamlist
-$query = 'SELECT count(*) as result FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
+$query          = 'SELECT count(*) as result FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
 $is_belong_team = (intval(quickQuery($query)) > 0);
 if (!$is_belong_team && !$member->isAdmin()) {
     media_doError(_ERROR_DISALLOWEDUPLOAD);
@@ -64,7 +64,6 @@ if (!in_array($action, $aActionsNotToCheck)) {
         media_doError(_ERROR_BADTICKET);
     }
 }
-
 
 switch ($action) {
     case 'chooseupload':
@@ -123,13 +122,13 @@ function media_select()
             <label for="media_collection"><?php echo hsc(_MEDIA_COLLECTION_LABEL)?></label>
             <select name="collection" id="media_collection">
                 <?php                    foreach ($collections as $dirname => $description) {
-                        echo '<option value="',hsc($dirname),'"';
+                    echo '<option value="',hsc($dirname),'"';
                     if ($dirname == $currentCollection) {
                         echo ' selected="selected"';
                     }
-                        echo '>',hsc($description),'</option>';
+                    echo '>',hsc($description),'</option>';
                 }
-                ?>
+        ?>
             </select>
             <input type="submit" name="action" value="<?php echo hsc(_MEDIA_COLLECTION_SELECT) ?>" title="<?php echo hsc(_MEDIA_COLLECTION_TT)?>" />
             <input type="submit" name="action" value="<?php echo hsc(_MEDIA_UPLOAD_TO) ?>" title="<?php echo hsc(_MEDIA_UPLOADLINK) ?>" />
@@ -146,7 +145,7 @@ function media_select()
 
     $filter = requestVar('filter');
     $offset = intRequestVar('offset');
-    $arr = MEDIA::getMediaListByCollection($currentCollection, $filter);
+    $arr    = MEDIA::getMediaListByCollection($currentCollection, $filter);
 
     ?>
         <form method="post" action="media.php"><div>
@@ -167,11 +166,11 @@ function media_select()
         </tr>
 
     <?php
-    
+
     $idxStart = 0;
-    $idxEnd = 0;
-    
-    if (sizeof($arr)>0) {
+    $idxEnd   = 0;
+
+    if (sizeof($arr) > 0) {
         if (($offset + $CONF['MediaPerPage']) >= sizeof($arr)) {
             $offset = sizeof($arr) - $CONF['MediaPerPage'];
         }
@@ -181,9 +180,9 @@ function media_select()
         }
 
         $idxStart = $offset;
-        $idxEnd = $offset + $CONF['MediaPerPage'];
-        $idxNext = $idxEnd;
-        $idxPrev = $idxStart - $CONF['MediaPerPage'];
+        $idxEnd   = $offset + $CONF['MediaPerPage'];
+        $idxNext  = $idxEnd;
+        $idxPrev  = $idxStart - $CONF['MediaPerPage'];
 
         if ($idxPrev < 0) {
             $idxPrev = 0;
@@ -193,15 +192,15 @@ function media_select()
             $idxEnd = sizeof($arr);
         }
 
-        for ($i=$idxStart; $i<$idxEnd; $i++) {
-            $obj = $arr[$i];
+        for ($i = $idxStart; $i < $idxEnd; $i++) {
+            $obj      = $arr[$i];
             $filename = $DIR_MEDIA . $currentCollection . '/' . $obj->filename;
 
             $old_level = error_reporting(0);
-            $size = @GetImageSize($filename);
+            $size      = @GetImageSize($filename);
             error_reporting($old_level);
-            $width = $size[0];
-            $height = $size[1];
+            $width    = $size[0];
+            $height   = $size[1];
             $filetype = $size[2];
 
             echo "<tr>";
@@ -209,7 +208,7 @@ function media_select()
 
             // strings for javascript
             $jsCurrentCollection = str_replace("'", "\\'", $currentCollection);
-            $jsFileName = str_replace("'", "\\'", $obj->filename);
+            $jsFileName          = str_replace("'", "\\'", $obj->filename);
 
             if ($filetype != 0) {
                 // image (gif/jpg/png/swf)
@@ -279,13 +278,13 @@ function media_choose()
         <br /><br /><label for="upload_collection">Collection:</label>
         <br /><select name="collection" id="upload_collection">
             <?php                foreach ($collections as $dirname => $description) {
-                    echo '<option value="',hsc($dirname),'"';
+                echo '<option value="',hsc($dirname),'"';
                 if ($dirname == $currentCollection) {
                     echo ' selected="selected"';
                 }
-                    echo '>',hsc($description),'</option>';
+                echo '>',hsc($description),'</option>';
             }
-            ?>
+        ?>
         </select>
     <?php        } else {
         ?>
@@ -306,34 +305,34 @@ function media_choose()
     media_foot();
 }
 
-
 /**
   * accepts a file for upload
   */
 function media_upload()
 {
     global $DIR_MEDIA, $member, $CONF;
-    
+
     $uploadInfo = postFileInfo('uploadfile');
-    
-    $filename = $uploadInfo['name'];
-    $filetype = $uploadInfo['type'];
-    $filesize = $uploadInfo['size'];
+
+    $filename     = $uploadInfo['name'];
+    $filetype     = $uploadInfo['type'];
+    $filesize     = $uploadInfo['size'];
     $filetempname = $uploadInfo['tmp_name'];
-    $fileerror = intval($uploadInfo['error']);
-    
+    $fileerror    = intval($uploadInfo['error']);
+
     // clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
     $filename = cleanFileName($filename);
     if ($filename === false) {
         media_doError(_ERROR_BADFILETYPE);
     }
-    
+
     switch ($fileerror) {
         case 0: // = UPLOAD_ERR_OK
             break;
         case 1: // = UPLOAD_ERR_INI_SIZE
         case 2:    // = UPLOAD_ERR_FORM_SIZE
             media_doError(_ERROR_FILE_TOO_BIG);
+            // no break
         case 3: // = UPLOAD_ERR_PARTIAL
         case 4: // = UPLOAD_ERR_NO_FILE
         case 6: // = UPLOAD_ERR_NO_TMP_DIR
@@ -343,13 +342,13 @@ function media_upload()
             // (see http://www.php.net/manual/en/features.file-upload.errors.php)
             media_doError(_ERROR_BADREQUEST . ' (' . $fileerror . ')');
     }
-    
+
     if ($filesize > $CONF['MaxUploadSize']) {
         media_doError(_ERROR_FILE_TOO_BIG);
     }
-    
+
     // check file type against allowed types
-    $ok = 0;
+    $ok           = 0;
     $allowedtypes = explode(',', $CONF['AllowedTypes']);
     foreach ($allowedtypes as $type) {
         if (preg_match("#\." .$type. "$#i", $filename)) {
@@ -359,19 +358,19 @@ function media_upload()
     if (!$ok) {
         media_doError(_ERROR_BADFILETYPE);
     }
-    
+
     if (!is_uploaded_file($filetempname)) {
         media_doError(_ERROR_BADREQUEST);
     }
-    
+
     // prefix filename with current date (YYYY-MM-DD-)
     // this to avoid nameclashes
     if ($CONF['MediaPrefix']) {
-        $filename = date(("Ymd-", time()) . $filename);
+        $filename = date("Ymd-", time()) . $filename;
     }
 
     $collection = requestVar('collection');
-    $res = MEDIA::addMediaObject($collection, $filetempname, $filename);
+    $res        = MEDIA::addMediaObject($collection, $filetempname, $filename);
 
     if ($res != '') {
         media_doError($res);
@@ -411,7 +410,6 @@ function media_doError($msg)
     <?php    media_foot();
     exit;
 }
-
 
 function media_head()
 {
@@ -454,5 +452,3 @@ function media_foot()
     </body>
     </html>
 <?php }
-
-?>

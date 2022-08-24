@@ -17,7 +17,6 @@
 
 class BAN
 {
-
     /**
      * Checks if a given IP is banned from commenting/voting
      *
@@ -27,8 +26,8 @@ class BAN
     public static function isBanned($blogid, $ip)
     {
         $blogid = intval($blogid);
-        $query = 'SELECT * FROM ' . sql_table('ban') . ' WHERE blogid=' . $blogid;
-        $res = sql_query($query);
+        $query  = 'SELECT * FROM ' . sql_table('ban') . ' WHERE blogid=' . $blogid;
+        $res    = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = !strncmp($ip, $obj->iprange, strlen($obj->iprange));
             if (!($found === false)) { // found a match!
@@ -48,20 +47,20 @@ class BAN
         $blogid = intval($blogid);
 
         $param = array(
-            'blogid' => $blogid,
+            'blogid'  => $blogid,
             'iprange' => &$iprange,
-            'reason' => &$reason
+            'reason'  => &$reason
         );
         $manager->notify('PreAddBan', $param);
 
         $query = 'INSERT INTO ' . sql_table('ban') . " (blogid, iprange, reason) VALUES "
-            . "($blogid,'" . sql_real_escape_string($iprange) . "','" . sql_real_escape_string($reason) . "')";
+            . "({$blogid},'" . sql_real_escape_string($iprange) . "','" . sql_real_escape_string($reason) . "')";
         $res = sql_query($query);
 
         $param = array(
-            'blogid' => $blogid,
+            'blogid'  => $blogid,
             'iprange' => $iprange,
-            'reason' => $reason
+            'reason'  => $reason
         );
         $manager->notify('PostAddBan', $param);
 
@@ -79,18 +78,18 @@ class BAN
 
         $param = array(
             'blogid' => $blogid,
-            'range' => $iprange
+            'range'  => $iprange
         );
         $manager->notify('PreDeleteBan', $param);
 
-        $query = 'DELETE FROM ' . sql_table('ban') . " WHERE blogid=$blogid and iprange='" . sql_real_escape_string($iprange) . "'";
+        $query = 'DELETE FROM ' . sql_table('ban') . " WHERE blogid={$blogid} and iprange='" . sql_real_escape_string($iprange) . "'";
         sql_query($query);
 
         $result = (sql_affected_rows() > 0);
 
         $param = array(
             'blogid' => $blogid,
-            'range' => $iprange
+            'range'  => $iprange
         );
         $manager->notify('PostDeleteBan', $param);
 
@@ -103,7 +102,7 @@ class BANINFO
     public $iprange;
     public $message;
 
-    function __construct($iprange, $message)
+    public function __construct($iprange, $message)
     {
         $this->iprange = $iprange;
         $this->message = $message;

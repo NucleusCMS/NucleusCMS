@@ -47,7 +47,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     }
     public function supportsFeature($feature)
     {
-        return in_array($feature, array (
+        return in_array($feature, array(
                    'SqlTablePrefix', 'SqlApi', 'SqlApi_sqlite',
                    'pluginadmin'
                    ));
@@ -113,11 +113,11 @@ class NP_SecurityEnforcer extends NucleusPlugin
             include_once($this->getDirectory().'english.php');
         }
 
-        $this->enable_security = $this->getOption('enable_security');
-        $this->pwd_min_length = intval($this->getOption('pwd_min_length'));
-        $this->pwd_complexity = intval($this->getOption('pwd_complexity'));
+        $this->enable_security  = $this->getOption('enable_security');
+        $this->pwd_min_length   = intval($this->getOption('pwd_min_length'));
+        $this->pwd_complexity   = intval($this->getOption('pwd_complexity'));
         $this->max_failed_login = intval($this->getOption('max_failed_login'));
-        $this->login_lockout = intval($this->getOption('login_lockout'));
+        $this->login_lockout    = intval($this->getOption('login_lockout'));
     }
 
     public function event_QuickMenu(&$data)
@@ -132,7 +132,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
         array_push(
             $data['options'],
             array('title' => 'Security Enforcer',
-                'url' => $this->getAdminURL(),
+                'url'     => $this->getAdminURL(),
                 'tooltip' => _SECURITYENFORCER_ADMIN_TOOLTIP
             )
         );
@@ -150,11 +150,11 @@ class NP_SecurityEnforcer extends NucleusPlugin
             } else {
                 $emptyAllowed = false;
             }
-            if ((!$emptyAllowed)||$password) {
+            if ((!$emptyAllowed) || $password) {
                 $message = $this->_validate_and_messsage($password, $this->pwd_min_length, $this->pwd_complexity);
                 if ($message) {
                     $data['errormessage'] = _SECURITYENFORCER_INSUFFICIENT_COMPLEXITY . $message. "<br /><br />\n";
-                    $data['valid'] = false;
+                    $data['valid']        = false;
                 }
             }
         }
@@ -181,18 +181,18 @@ class NP_SecurityEnforcer extends NucleusPlugin
         if ($this->enable_security == 'yes' && $this->max_failed_login > 0) {
             global $_SERVER;
             $login = $data['login'];
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip    = $_SERVER['REMOTE_ADDR'];
             sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE lastfail < ".(time() - ($this->login_lockout * 60)));
             $query = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
             $query .= "WHERE login=".sql_quote_string($login);
             $flogin = quickQuery($query);
-            $query = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
+            $query  = "SELECT fails as result FROM ".sql_table('plug_securityenforcer')." ";
             $query .= "WHERE login=".sql_quote_string($ip);
             $fip = quickQuery($query);
             if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
-                $data['success'] = 0;
+                $data['success']    = 0;
                 $data['allowlocal'] = 0;
-                $info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, htmlspecialchars($login, ENT_QUOTES, _CHARSET), htmlspecialchars($ip, ENT_QUOTES, _CHARSET));
+                $info               = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, htmlspecialchars($login, ENT_QUOTES, _CHARSET), htmlspecialchars($ip, ENT_QUOTES, _CHARSET));
                 ACTIONLOG::add(INFO, $info);
             }
         }
@@ -203,20 +203,20 @@ class NP_SecurityEnforcer extends NucleusPlugin
         if ($this->enable_security == 'yes' && $this->max_failed_login > 0) {
             global $_SERVER;
             $login = $data['username'];
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip    = $_SERVER['REMOTE_ADDR'];
             sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login=" . sql_quote_string($login));
             sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login=" . sql_quote_string($ip));
         }
     }
 
-    function event_LoginFailed(&$data)
+    public function event_LoginFailed(&$data)
     {
         if ($this->enable_security == 'yes' && $this->max_failed_login > 0) {
             global $_SERVER;
             $login = $data['username'];
-            $ip = $_SERVER['REMOTE_ADDR'];
+            $ip    = $_SERVER['REMOTE_ADDR'];
 
-            $sql = "SELECT count(*) as result FROM ".sql_table('plug_securityenforcer')." WHERE login=" . sql_quote_string($login);
+            $sql   = "SELECT count(*) as result FROM ".sql_table('plug_securityenforcer')." WHERE login=" . sql_quote_string($login);
             $count = intval(quickQuery($sql));
             if ($count > 0) {
                 sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login=".sql_quote_string($login));
@@ -224,7 +224,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
                 sql_query("INSERT INTO ".sql_table('plug_securityenforcer')." (login,fails,lastfail) VALUES (".sql_quote_string($login)." ,1,".time().")");
             }
 
-            $sql = "SELECT count(*) as result FROM ".sql_table('plug_securityenforcer')." WHERE login=".sql_quote_string($ip) ;
+            $sql   = "SELECT count(*) as result FROM ".sql_table('plug_securityenforcer')." WHERE login=".sql_quote_string($ip) ;
             $count = intval(quickQuery($sql));
             if ($count > 0) {
                 sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login=".sql_quote_string($ip));
@@ -238,7 +238,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     {
         if (isset($data['plugid'])
              && ($data['plugid'] === $this->getID())
-            ) {
+        ) {
             foreach ($data['options'] as $key => $value) {
                 if (defined($value['description'])) {
                     $data['options'][$key]['description'] = constant($value['description']);
@@ -254,7 +254,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     private function _validate_passwd($passwd, $minlength = 6, $complexity = 0)
     {
-        $minlength = intval($minlength);
+        $minlength  = intval($minlength);
         $complexity = intval($complexity);
 
         if ($minlength < 6) {
@@ -267,16 +267,16 @@ class NP_SecurityEnforcer extends NucleusPlugin
         if ($complexity > 4) {
             $complexity = 4;
         }
-        $ucchars = "[A-Z]";
-        $lcchars = "[a-z]";
-        $numchars = "[0-9]";
-        $ochars = "[-~!@#$%^&*()_+=,.<>?:;|]";
+        $ucchars   = "[A-Z]";
+        $lcchars   = "[a-z]";
+        $numchars  = "[0-9]";
+        $ochars    = "[-~!@#$%^&*()_+=,.<>?:;|]";
         $chartypes = array($ucchars, $lcchars, $numchars, $ochars);
-        $tot = array(0,0,0,0);
-        $i = 0;
+        $tot       = array(0,0,0,0);
+        $i         = 0;
         foreach ($chartypes as $value) {
             $tot[$i] = preg_match("/".$value."/", $passwd);
-            $i = $i + 1;
+            $i       = $i + 1;
         }
 
         if (array_sum($tot) >= $complexity) {
@@ -288,7 +288,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     private function _validate_and_messsage($passwd, $minlength = 6, $complexity = 0)
     {
-        $minlength = intval($minlength);
+        $minlength  = intval($minlength);
         $complexity = intval($complexity);
 
         $message = '';
@@ -302,16 +302,16 @@ class NP_SecurityEnforcer extends NucleusPlugin
         if ($complexity > 4) {
             $complexity = 4;
         }
-        $ucchars = "[A-Z]";
-        $lcchars = "[a-z]";
-        $numchars = "[0-9]";
-        $ochars = "[-~!@#$%^&*()_+=,.<>?:;|]";
+        $ucchars   = "[A-Z]";
+        $lcchars   = "[a-z]";
+        $numchars  = "[0-9]";
+        $ochars    = "[-~!@#$%^&*()_+=,.<>?:;|]";
         $chartypes = array($ucchars, $lcchars, $numchars, $ochars);
-        $tot = array(0,0,0,0);
-        $i = 0;
+        $tot       = array(0,0,0,0);
+        $i         = 0;
         foreach ($chartypes as $value) {
             $tot[$i] = preg_match("/".$value."/", $passwd);
-            $i = $i + 1;
+            $i       = $i + 1;
         }
 
         if (array_sum($tot) < $complexity) {

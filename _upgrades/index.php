@@ -14,6 +14,15 @@
  *
  */
 
+if (version_compare(phpversion(), '5.3.0', '<') || 90000 <= PHP_VERSION_ID) {
+    $ver = explode('.', phpversion());
+    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
+    }
+    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
+}
+
 define('NUCLEUS_UPGRADE_VERSION', "3.80");
 define('NUCLEUS_UPGRADE_VERSION_ID', 380);
 
@@ -41,7 +50,7 @@ if (!$member->isAdmin()) {
     upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 }
 
-$echo = array();
+$echo   = array();
 $echo[] = '<h1>'  . _UPG_TEXT_UPGRADE_SCRIPTS . '</h1>';
 $echo[] = _UPG_TEXT_NOTE01NEW;
 $echo[] = '<p>' . _UPG_TEXT_NOTE02 . '</p>';
@@ -81,10 +90,10 @@ if (version_compare(phpversion(), '5.0.0', '<')) {
     $echo[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
 } else {
     $tmp_title = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_UPGRADE_VERSION);
-    $echo[] = sprintf('<p class="warning"><a href="upgrade.php?from=%s" class="btn btn-warning">%s</a></p>', $current, $tmp_title);
-    $echo[] = '<div class="note">';
-    $echo[] = sprintf('<b>%s:</b> %s', _UPG_TEXT_NOTE50_WARNING, _UPG_TEXT_NOTE50_MAKE_BACKUP);
-    $echo[] = '</div>';
+    $echo[]    = sprintf('<p class="warning"><a href="upgrade.php?from=%s" class="btn btn-warning">%s</a></p>', $current, $tmp_title);
+    $echo[]    = '<div class="note">';
+    $echo[]    = sprintf('<b>%s:</b> %s', _UPG_TEXT_NOTE50_WARNING, _UPG_TEXT_NOTE50_MAKE_BACKUP);
+    $echo[]    = '</div>';
 }
 
 $from = intGetVar('from');
@@ -104,8 +113,8 @@ if (version_compare('5.0.0', phpversion(), '<=') && $from < NUCLEUS_UPGRADE_VERS
     if ($from < 366) {
         $sth[] = upgrade_manual_366();
     }
-    
-    $sth = trim(join('', $sth));
+
+    $sth = trim(implode('', $sth));
     if (!empty($sth)) {
         $echo[] = '<h1>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES .'</h1>';
         $echo[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
@@ -122,7 +131,7 @@ if (defined('UPGRADE_CHECK_PLUGIN_SYNTAX') && UPGRADE_CHECK_PLUGIN_SYNTAX) {
 }
 
 upgrade_head();
-echo join("\n", $echo);
+echo implode("\n", $echo);
 upgrade_foot();
 
 function upgrade_todo($ver)
@@ -134,11 +143,11 @@ function upgrade_manual_atom1_0()
 {
     // atom 1.0
     $query = sprintf('SELECT sddesc FROM %s WHERE sdname="feeds/atom"', sql_table('skin_desc'));
-    $res = sql_query($query);
-    
+    $res   = sql_query($query);
+
     $echo = array();
     while ($o = sql_fetch_object($res)) {
-        if ($o->sddesc=='Atom 0.3 weblog syndication') {
+        if ($o->sddesc == 'Atom 0.3 weblog syndication') {
             $echo[] = '<h2>Atom 1.0</h2>';
             $echo[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
             $echo[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
@@ -147,14 +156,14 @@ function upgrade_manual_atom1_0()
     }
 
     // default skin
-    $query = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"', sql_table('template_desc'));
-    $res = sql_query($query);
+    $query    = sprintf('SELECT tdnumber FROM %s WHERE tdname="default/index"', sql_table('template_desc'));
+    $res      = sql_query($query);
     $tdnumber = 0;
-    $o = sql_fetch_object($res);
+    $o        = sql_fetch_object($res);
     $tdnumber = $o->tdnumber;
-    if (0<$tdnumber) {
+    if (0 < $tdnumber) {
         $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'", sql_table('template'), $tdnumber);
-        $res = sql_query($query);
+        $res   = sql_query($query);
         if (!sql_fetch_object($res)) {
             $echo[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
             $echo[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
@@ -162,12 +171,12 @@ function upgrade_manual_atom1_0()
             $echo[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
         }
     }
-    return !empty($echo) ? join("\n", $echo) : '';
+    return !empty($echo) ? implode("\n", $echo) : '';
 }
 
 function upgrade_manual_340()
 {
-    $row = array();
+    $row   = array();
     $row[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS, '3.4') . '</h2>';
     $row[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
     $row[] = '<p>';
@@ -177,17 +186,17 @@ function upgrade_manual_340()
     $row[] = '<li><a href="../../extra/htaccess/skins/readme.ja.txt">extra/htaccess/skins/readme.ja.txt</a></li>';
     $row[] = '</ul>';
     $row[] = '</p>';
-    return join("\n", $row);
+    return implode("\n", $row);
 }
 
 function upgrade_manual_366()
 {
-    $row = array();
+    $row     = array();
     $content = @file_get_contents('../../action.php');
-    if (strpos($content, '=&')===false) {
+    if (strpos($content, '=&') === false) {
         return '';
     }
     $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
     $row[] = '<p>' . _UPG_TEXT_V366_02_UPDATE_ACTION_PHP .'</p>';
-    return join("\n", $row);
+    return implode("\n", $row);
 }

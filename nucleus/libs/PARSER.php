@@ -25,7 +25,6 @@ require_once dirname(__FILE__) . '/BaseActions.php';
  */
 class PARSER
 {
-
     // array with the names of all allowed actions
     public $actions;
 
@@ -50,19 +49,19 @@ class PARSER
      * @param $delim optional delimiter
      * @param $paramdelim optional parameterdelimiter
      */
-    function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',')
+    public function __construct($allowedActions, &$handler, $delim = '(<%|%>)', $pdelim = ',')
     {
-        $this->actions = $allowedActions;
-        $this->handler =& $handler;
-        $this->delim = $delim;
-        $this->pdelim = $pdelim;
+        $this->actions        = $allowedActions;
+        $this->handler        = & $handler;
+        $this->delim          = $delim;
+        $this->pdelim         = $pdelim;
         $this->norestrictions = 0;    // set this to 1 to disable checking for allowedActions
     }
 
     /**
      * Parses the given contents and outputs it
      */
-    function parse(&$contents)
+    public function parse(&$contents)
     {
         global $manager;
         if (is_null($contents)) {
@@ -87,7 +86,7 @@ class PARSER
 
         $pieces = preg_split('/' . $this->delim . '/', $contents);
 
-        $maxidx = sizeof($pieces);
+        $maxidx = count($pieces);
         for ($idx = 0; $idx < $maxidx; $idx++) {
             echo $pieces[$idx];
             $idx++;
@@ -97,13 +96,12 @@ class PARSER
         }
     }
 
-
     /**
      * Called from the parser to handle an action
      *
      * @param $action name of the action (e.g. blog, image ...)
      */
-    function doAction($action)
+    public function doAction($action)
     {
         global $manager, $CONF, $doActionStack, $doActionCount;
 
@@ -114,9 +112,9 @@ class PARSER
         // split into action name + arguments
         if (strstr($action, '(')) {
             $paramStartPos = strpos($action, '(');
-            $params = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
-            $action = substr($action, 0, $paramStartPos);
-            $params = explode($this->pdelim, $params);
+            $params        = substr($action, $paramStartPos + 1, strlen($action) - $paramStartPos - 2);
+            $action        = substr($action, 0, $paramStartPos);
+            $params        = explode($this->pdelim, $params);
 
             foreach ($params as $key => $value) {
                 $params[$key] = trim($value);
@@ -146,10 +144,10 @@ class PARSER
             $bt = microtime(true);
             call_user_func_array(array($this->handler, 'parse_' . $actionlc), $params);
             $doActionCount++;
-            $et = microtime(true);
-            $diff = number_format($et - $bt, 20);
-            $hscAction = hsc("<%{$raw_action}%>");
-            $doActionStack[$doActionCount] = "[$doActionCount] {$diff}s - {$hscAction}";
+            $et                            = microtime(true);
+            $diff                          = number_format($et - $bt, 20);
+            $hscAction                     = hsc("<%{$raw_action}%>");
+            $doActionStack[$doActionCount] = "[{$doActionCount}] {$diff}s - {$hscAction}";
         } else {
             // redirect to plugin action if possible
 //            define(DISABLE_PARSE_NP_PLUGIN, TRUE);
@@ -162,15 +160,15 @@ class PARSER
             }
             if (in_array('plugin', $this->actions) && $manager->pluginInstalled("NP_{$action}")) {
                 if (!HAS_CATCH_ERROR) {
-                    $this->doAction('plugin(' . $action . $this->pdelim . join($this->pdelim, $params) . ')');
+                    $this->doAction('plugin(' . $action . $this->pdelim . implode($this->pdelim, $params) . ')');
                 } else {
                     try {
-                        $this->doAction('plugin(' . $action . $this->pdelim . join($this->pdelim, $params) . ')');
+                        $this->doAction('plugin(' . $action . $this->pdelim . implode($this->pdelim, $params) . ')');
                     } catch (Error $e) {
                         global $member, $CONF;
                         if ($member && $member->isLoggedIn() && $member->isAdmin()) {
                             $NP_Name = 'NP_' . $action;
-                            $msg = sprintf(
+                            $msg     = sprintf(
                                 "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
                                 $NP_Name,
                                 get_class($e),
@@ -203,9 +201,8 @@ class PARSER
      * Calls a method using an array of parameters (for use with PHP versions lower than 4.0.5)
      * ( = call_user_func_array() function )
      */
-    function call_using_array($methodname, &$handler, $paramarray)
+    public function call_using_array($methodname, &$handler, $paramarray)
     {
-
         $methodname = 'parse_' . $methodname;
 
         if (!method_exists($handler, $methodname)) {

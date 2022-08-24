@@ -12,7 +12,7 @@ class TableConvertor
     protected $error_logs;
     public $logs_count = 0;
 
-    function __construct()
+    public function __construct()
     {
         $this->error_logs = array();
 
@@ -72,7 +72,7 @@ class TableConvertor
         $s = sprintf("DROP TABLE IF EXISTS `%s`;\n", $tablename);
         ob_start();
         $result = sql_query(sprintf("SHOW CREATE TABLE `%s`", $tablename));
-        $msg = ob_get_contents();
+        $msg    = ob_get_contents();
         ob_end_clean();
         if (($result) && ($create = sql_fetch_assoc($result))) {
             $s .= $create['Create Table'] . ";\n";
@@ -86,7 +86,7 @@ class TableConvertor
     public function dump_table_structure($tablename)
     {
         echo "\n" . $this->commentline("\n");
-        echo $this->commentline(" Table: $tablename") . "\n";
+        echo $this->commentline(" Table: {$tablename}") . "\n";
         echo $this->commentline("\n") . "\n";
         echo $this->get_table_structure($tablename);
     }
@@ -94,8 +94,8 @@ class TableConvertor
     public function dump_table_data($tablename, $callback_function_real_escape_string = null)
     {
         ob_start();
-        $sql = sprintf("SELECT COUNT(*) FROM `%s` limit 1", $tablename);
-        $ct = intval(sql_result(sql_query($sql), 0, 0));
+        $sql    = sprintf("SELECT COUNT(*) FROM `%s` limit 1", $tablename);
+        $ct     = intval(sql_result(sql_query($sql), 0, 0));
         $result = sql_query(sprintf("SELECT * FROM `%s`", $tablename));
         ob_end_clean();
 
@@ -109,11 +109,11 @@ class TableConvertor
         }
 
         echo "\n" . $this->commentline("\n");
-        echo $this->commentline(" Table Data for $tablename");
+        echo $this->commentline(" Table Data for {$tablename}");
         echo $this->commentline("\n") . "\n";
 
         $num_fields = sql_num_fields($result);
-        $fields = array();
+        $fields     = array();
         for ($j = 0; $j < $num_fields; $j++) {
             $fields[] = sql_field_name($result, $j);
         }
@@ -133,7 +133,7 @@ class TableConvertor
                     } else {
                         echo " '" . call_user_func($callback_function_real_escape_string, $row[$j]) . "'";
                     }
-                    // todo: other database change function
+                // todo: other database change function
                 } else {
                     // empty column (!= no data!)
                     echo "''";
@@ -152,10 +152,9 @@ class TableConvertor
     }
 }
 
-
 class TableConvertor_mysql_to_sqlite extends TableConvertor
 {
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -187,9 +186,9 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
             return $structure;
         }
 
-        $pattern = '/(CREATE.+)$/ims';
+        $pattern             = '/(CREATE.+)$/ims';
         $this->current_table = $tablename;
-        $structure = preg_replace_callback($pattern, array($this, "callback_replace_sql_create"), $structure);
+        $structure           = preg_replace_callback($pattern, array($this, "callback_replace_sql_create"), $structure);
         return $structure;
     }
 
@@ -199,13 +198,13 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
 
         $s = $match[0];
 
-        $index_key = array();
-        $unique_key = array();
+        $index_key    = array();
+        $unique_key   = array();
         $fulltext_key = array();
 
         // adjust line breaks
         $pattern = '/(\r\n|\n\r|[\r\n])/ims';
-        $s = preg_replace($pattern, "\n", $s);
+        $s       = preg_replace($pattern, "\n", $s);
 
         // move ,
         $s = str_replace(",\n", "\n,", $s);
@@ -219,7 +218,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
             $pattern = '/,?(\s+)PRIMARY\s+KEY\s*\(\s*(`oid`)\s*\)(\s*,?\s*)/ims';
             if (preg_match($pattern, $s, $m)) {
                 $index_key[] = $m[2];
-                $rep = "";
+                $rep         = "";
 //               $rep = $1 KEY $2 ($2)$3';
                 $s = preg_replace($pattern, $rep, $s);
             }
@@ -227,7 +226,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
             $pattern = '/(\s+`oid`.+?)AUTO_INCREMENT(\s*,?\s*)/ims';
             if (preg_match($pattern, $s, $m)) {
                 $rep = $m[1] . $m[2];
-                $s = preg_replace($pattern, $rep, $s);
+                $s   = preg_replace($pattern, $rep, $s);
             }
 //          var_dump($pattern , $s); exit;
         }
@@ -242,10 +241,10 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
                 . ')';
         // `column name`[(length)][, ..]
         $sub_pattern2 = '(`[^`]+`\s*\(\s*\d+\s*\)\s*,?\s*|`[^`]+\s*,\s*)+';
-        $pattern = '/,\s+' . $sub_pattern1 . '\s*\(' . $sub_pattern2 . '\)\s*(,?)\s*$/ims';
+        $pattern      = '/,\s+' . $sub_pattern1 . '\s*\(' . $sub_pattern2 . '\)\s*(,?)\s*$/ims';
         if (preg_match($pattern, $s, $m)) {
             $rep = 'preg_replace(\'/\(\s*\d+\s*\)/ims\', \'\', "\\0");';
-            $s = preg_replace($pattern . 'e', $rep, $s);
+            $s   = preg_replace($pattern . 'e', $rep, $s);
 //      var_dump($pattern, $m, $s); exit;
         }
 
@@ -254,8 +253,8 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
         if (preg_match($pattern, $s, $m)) {
 //      var_dump($m);
             $AUTO_INCREMENT = $m[1];
-            $rep = $m[1] . ' INTEGER PRIMARY KEY AUTOINCREMENT ' . trim($m[3]);
-            $s = preg_replace($pattern, $rep, $s, 1);
+            $rep            = $m[1] . ' INTEGER PRIMARY KEY AUTOINCREMENT ' . trim($m[3]);
+            $s              = preg_replace($pattern, $rep, $s, 1);
         }
 
         if (isset($AUTO_INCREMENT)) {
@@ -265,13 +264,13 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
             if (preg_match($pattern, $s, $m)) {
 //          var_dump($pattern);
                 $rep = '$2'; // /* $0 */
-                $s = preg_replace($pattern, $rep, $s);
+                $s   = preg_replace($pattern, $rep, $s);
             } else { // multiple PRIMARY
                 $pattern = '/([\s]+)PRIMARY\s+KEY \(([^\(\)]+)\)\s*(,?)\s*$/ims';
 //          var_dump($pattern);
                 if (preg_match($pattern, $s, $m)) {
                     $rep = '$1 UNIQUE ($2)$3'; //$m[1].' UNIQUE ('.$m[2].')'.$m[3];
-                    $s = preg_replace($pattern, $rep, $s);
+                    $s   = preg_replace($pattern, $rep, $s);
                 }
             }
             unset($AUTO_INCREMENT);
@@ -284,15 +283,14 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
         $pattern = '/(,?\s+\s+`[^\`]+`\s*varchar\(\s*\d+\s*\)\s.+?\s*)(,?)(\s*)$/ims';
         if (preg_match($pattern, $s, $m)) {
             $rep = '$1 COLLATE NOCASE $2$3';
-            $s = preg_replace($pattern, $rep, $s);
-            $s = preg_replace("/\n COLLATE NOCASE \n/ims", " COLLATE NOCASE\n ", $s);
+            $s   = preg_replace($pattern, $rep, $s);
+            $s   = preg_replace("/\n COLLATE NOCASE \n/ims", " COLLATE NOCASE\n ", $s);
         }
 //          var_dump($pattern,$s); exit;
 //      }
 
-
         $pattern = '/,,\s*$/ims';
-        $s = preg_replace($pattern, ",", $s);
+        $s       = preg_replace($pattern, ",", $s);
 
         // UNIQUE KEY `index_name` (`col`[,..])
         //              1                            2                  3
@@ -301,7 +299,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
 //      {
         if (preg_match($pattern, $s, $m)) {
             $rep = '$1($2)$3'; // $m[1].' ('.$m[2].')'.trim($m[3]);
-            $s = preg_replace($pattern, $rep, $s);
+            $s   = preg_replace($pattern, $rep, $s);
         }
 //          var_dump($pattern,$s); exit;
 //      }
@@ -313,7 +311,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
                 $index_key[] = $a[2];
             }
             $rep = '/* $0 */';
-            $s = preg_replace($pattern, $rep, $s);
+            $s   = preg_replace($pattern, $rep, $s);
 //          var_dump($pattern,$s); exit;
         }
 
@@ -336,7 +334,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
                 $fulltext_key[] = $a[2];
             }
             $rep = '/* $0 */';
-            $s = preg_replace($pattern, $rep, $s);
+            $s   = preg_replace($pattern, $rep, $s);
 //          var_dump($pattern,$s,$match[0]); exit;
         }
 
@@ -344,7 +342,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
 //      $s = str_replace("\n," , ",\n", $s);
 
         $pattern = '/[^\(\)]+;$/ims';
-        $s = preg_replace($pattern, ";", $s);
+        $s       = preg_replace($pattern, ";", $s);
 
         if ((count($index_key) == 0) && (count($fulltext_key) == 0)
         ) {
@@ -382,17 +380,16 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
           SELECT inumber , ibody, ititle, imore FROM nucleus_item order by inumber ASC;
          */
 
-
         // CREATE VIRTUAL TABLE
         $i = 0;
         foreach ($fulltext_key as $item) {
             $vt_tablename = $tablename . '_fts';
-            $key_names = explode(',', $item);
+            $key_names    = explode(',', $item);
             foreach ($key_names as $n => $v) {
                 $key_names[$n] = preg_replace('/[`\s]/ims', '', $v);
             }
             $s .= "\n"
-                    . "DROP TABLE IF EXISTS `$vt_tablename`;\n"
+                    . "DROP TABLE IF EXISTS `{$vt_tablename}`;\n"
                     . sprintf(
                         "CREATE VIRTUAL TABLE `%s` USING fts4(%s);\n\n",
                         $vt_tablename,

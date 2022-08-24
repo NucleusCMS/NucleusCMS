@@ -23,7 +23,6 @@ define('READ_ONLY_MEDIA_FOLDER', '(Read Only)');
  */
 class MEDIA
 {
-
     /**
      * Gets the list of collections available to the currently logged
      * in member
@@ -109,7 +108,7 @@ class MEDIA
         if ($strFilter == '') {
             return 1;
         } else {
-            return is_integer(strpos(strtolower($strText), strtolower($strFilter)));
+            return is_int(strpos(strtolower($strText), strtolower($strFilter)));
         }
     }
 
@@ -127,7 +126,7 @@ class MEDIA
         }
 
         $collections = MEDIA::getCollectionList($exceptReadOnly);
-        $dirname = $collections[$collectionName];
+        $dirname     = $collections[$collectionName];
         if ($dirname == null || $dirname === PRIVATE_COLLECTION) {
             return false;
         }
@@ -167,7 +166,7 @@ class MEDIA
         $param = array(
             'collection' => &$collection,
             'uploadfile' => $uploadfile,
-            'filename' => &$filename
+            'filename'   => &$filename
         );
         $manager->notify('PreMediaUpload', $param);
 
@@ -194,7 +193,7 @@ class MEDIA
             return _ERROR_DISALLOWED;
         }
 
-        if (!is_writeable($mediadir)) {
+        if (!is_writable($mediadir)) {
             return _ERROR_BADPERMISSIONS;
         }
 
@@ -223,8 +222,8 @@ class MEDIA
 
         $param = array(
             'collection' => $collection,
-            'mediadir' => $mediadir,
-            'filename' => $filename
+            'mediadir'   => $mediadir,
+            'filename'   => $filename
         );
         $manager->notify('PostMediaUpload', $param);
 
@@ -265,7 +264,7 @@ class MEDIA
             return _ERROR_DISALLOWED;
         }
 
-        if (!is_writeable($mediadir)) {
+        if (!is_writable($mediadir)) {
             return _ERROR_BADPERMISSIONS;
         }
 
@@ -307,18 +306,17 @@ class MEDIA
  */
 class MEDIAOBJECT
 {
-
     public $private;
     public $collection;
     public $filename;
     public $timestamp;
 
-    function __construct($collection, $filename, $timestamp)
+    public function __construct($collection, $filename, $timestamp)
     {
-        $this->private = is_numeric($collection);
+        $this->private    = is_numeric($collection);
         $this->collection = $collection;
-        $this->filename = $filename;
-        $this->timestamp = $timestamp;
+        $this->filename   = $filename;
+        $this->timestamp  = $timestamp;
     }
 }
 

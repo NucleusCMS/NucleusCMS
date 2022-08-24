@@ -1,6 +1,5 @@
 <?php
 
-
 if (!headers_sent()) {
     header('Content-type: text/html; charset=utf-8');
 }

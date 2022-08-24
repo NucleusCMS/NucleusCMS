@@ -41,5 +41,3 @@ define('_SECURITYENFORCER_LOGIN_DISALLOWED',		'login disallowed by NP_SecurityEn
 
 // QuickMenu title
 define('_SECURITYENFORCER_ADMIN_TITLE',				'Security Enforcer Administration');
-
-?>

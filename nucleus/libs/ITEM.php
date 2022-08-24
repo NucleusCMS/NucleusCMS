@@ -18,7 +18,6 @@
 
 class ITEM
 {
-
     public $itemid;
 
     /**
@@ -26,7 +25,7 @@ class ITEM
      *
      * @param integer $itemid id of the item
      */
-    function __construct($itemid)
+    public function __construct($itemid)
     {
         $this->itemid = $itemid;
     }
@@ -39,7 +38,7 @@ class ITEM
     /**
      * Returns one item with the specific itemid
      *
-     * @param integer $itemid id of the item
+     * @param integer $itemid      id of the item
      * @param boolean $allowdraft
      * @param boolean $allowfuture
      * @static
@@ -64,7 +63,7 @@ class ITEM
         }
 
         if (!$allowfuture) {
-            $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
+            $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
         }
 
@@ -93,17 +92,17 @@ class ITEM
     {
         global $member, $manager;
 
-        $i_author = $member->getID();
-        $i_body = postVar('body');
-        $i_title = postVar('title');
-        $i_more = postVar('more');
+        $i_author     = $member->getID();
+        $i_body       = postVar('body');
+        $i_title      = postVar('title');
+        $i_more       = postVar('more');
         $i_actiontype = postVar('actiontype');
-        $i_closed = intPostVar('closed');
-        $i_hour = intPostVar('hour');
-        $i_minutes = intPostVar('minutes');
-        $i_month = intPostVar('month');
-        $i_day = intPostVar('day');
-        $i_year = intPostVar('year');
+        $i_closed     = intPostVar('closed');
+        $i_hour       = intPostVar('hour');
+        $i_minutes    = intPostVar('minutes');
+        $i_month      = intPostVar('month');
+        $i_day        = intPostVar('day');
+        $i_year       = intPostVar('year');
 
         $i_catid = postVar('catid');
 
@@ -137,7 +136,7 @@ class ITEM
             list($i_blogid) = sscanf($i_catid, "newcat-%d");
 
             // create
-            $blog =& $manager->getBlog($i_blogid);
+            $blog    = & $manager->getBlog($i_blogid);
             $i_catid = $blog->createNewCategory();
 
             // show error when sth goes wrong
@@ -147,7 +146,7 @@ class ITEM
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);
-            $blog =& $manager->getBlog($i_blogid);
+            $blog     = & $manager->getBlog($i_blogid);
         }
 
         if ($i_actiontype == 'addfuture') {
@@ -187,13 +186,13 @@ class ITEM
         NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
         $param = array(
             'context' => 'item',
-            'itemid' => $itemid,
-            'item' => array(
-                'title' => $i_title,
-                'body' => $i_body,
-                'more' => $i_more,
+            'itemid'  => $itemid,
+            'item'    => array(
+                'title'  => $i_title,
+                'body'   => $i_body,
+                'more'   => $i_more,
                 'closed' => $i_closed,
-                'catid' => $i_catid
+                'catid'  => $i_catid
             )
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
@@ -210,7 +209,6 @@ class ITEM
             return array('status' => 'added', 'itemid' => $itemid);
         }
     }
-
 
     /**
      * Updates an item
@@ -236,7 +234,7 @@ class ITEM
         $moveNeeded = (($new_blogid != $old_blogid) ? 1 : 0);
 
         // add <br /> before newlines
-        $blog =& $manager->getBlog($new_blogid);
+        $blog = & $manager->getBlog($new_blogid);
         if ($blog->convertBreaks()) {
             $body = addBreaks($body);
             $more = addBreaks($more);
@@ -245,12 +243,12 @@ class ITEM
         // call plugins
         $param = array(
             'itemid' => $itemid,
-            'title' => &$title,
-            'body' => &$body,
-            'more' => &$more,
-            'blog' => &$blog,
+            'title'  => &$title,
+            'body'   => &$body,
+            'more'   => &$more,
+            'blog'   => &$blog,
             'closed' => &$closed,
-            'catid' => &$catid
+            'catid'  => &$catid
         );
         $manager->notify('PreUpdateItem', $param);
 
@@ -324,13 +322,13 @@ class ITEM
         NucleusPlugin::_applyPluginOptions($aOptions);
         $param = array(
             'context' => 'item',
-            'itemid' => $itemid,
-            'item' => array(
-                'title' => $title,
-                'body' => $body,
-                'more' => $more,
+            'itemid'  => $itemid,
+            'item'    => array(
+                'title'  => $title,
+                'body'   => $body,
+                'more'   => $more,
                 'closed' => $closed,
-                'catid' => $catid
+                'catid'  => $catid
             )
         );
         $manager->notify('PostPluginOptionsUpdate', $param);
@@ -346,14 +344,14 @@ class ITEM
     {
         global $manager, $member;
 
-        $tbl_item = sql_table('item');
-        $itemid = intval($itemid);
+        $tbl_item  = sql_table('item');
+        $itemid    = intval($itemid);
         $new_catid = intval($new_catid);
 
         $query = sprintf("SELECT iblog,icat FROM %s WHERE inumber=%d", $tbl_item, $itemid);
         if ($res = sql_query($query) && ($obj = sql_fetch_object($res))) {
             $src_blogid = intval($obj->iblog);
-            $src_catid = intval($obj->icat);
+            $src_catid  = intval($obj->icat);
         } else {
             return false; // unkown error,  invalid inumber ?
         }
@@ -383,20 +381,20 @@ class ITEM
 //            'itemid'        => $itemid,
 //            'blogid'        => $new_blogid,
 //            'catid'         => $new_catid,
-            'src_itemid' => $itemid,
-            'src_blogid' => $src_blogid,
-            'src_catid' => $src_catid,
-            'dest_blogid' => $new_blogid,
-            'dest_catid' => $new_catid,
+            'src_itemid'       => $itemid,
+            'src_blogid'       => $src_blogid,
+            'src_catid'        => $src_catid,
+            'dest_blogid'      => $new_blogid,
+            'dest_catid'       => $new_catid,
             'is_same_category' => $is_same_cat
         );
 //        $manager->notify('PreCloneItem', $param); // not implemented yet
 
         $new_iblog = $is_same_cat ? 'iblog' : sprintf('%d as iblog', $new_blogid);
-        $new_icat = $is_same_cat ? 'icat' : sprintf('%d as icat', $new_catid);
-        $dist = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
-        $src = "ititle,ibody,imore,${new_iblog},iauthor,itime,iclosed,'1' AS idraft,ikarmapos,${new_icat},ikarmaneg,iposted";
-        $query = sprintf(
+        $new_icat  = $is_same_cat ? 'icat' : sprintf('%d as icat', $new_catid);
+        $dist      = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
+        $src       = "ititle,ibody,imore,{$new_iblog},iauthor,itime,iclosed,'1' AS idraft,ikarmapos,{$new_icat},ikarmaneg,iposted";
+        $query     = sprintf(
             "INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s",
             $tbl_item,
             $dist,
@@ -412,11 +410,11 @@ class ITEM
                 'itemid' => $new_itemid,
 //                'blogid'        => $new_blogid,
 //                'catid'         => $new_catid,
-                'src_itemid' => $itemid,
-                'src_blogid' => $src_blogid,
-                'src_catid' => $src_catid,
-                'dest_blogid' => $new_blogid,
-                'dest_catid' => $new_catid,
+                'src_itemid'       => $itemid,
+                'src_blogid'       => $src_blogid,
+                'src_catid'        => $src_catid,
+                'dest_blogid'      => $new_blogid,
+                'dest_catid'       => $new_catid,
                 'is_same_category' => ($src_catid == $new_catid)
             );
 //            $manager->notify('PostCloneItem', $param); // not implemented yet
@@ -432,21 +430,20 @@ class ITEM
     {
         global $manager;
 
-        $itemid = intval($itemid);
+        $itemid    = intval($itemid);
         $new_catid = intval($new_catid);
 
         $new_blogid = getBlogIDFromCatID($new_catid);
 
         $param = array(
-            'itemid' => $itemid,
+            'itemid'     => $itemid,
             'destblogid' => $new_blogid,
-            'destcatid' => $new_catid
+            'destcatid'  => $new_catid
         );
         $manager->notify('PreMoveItem', $param);
 
-
         // update item table
-        $query = 'UPDATE ' . sql_table('item') . " SET iblog=$new_blogid, icat=$new_catid WHERE inumber=$itemid";
+        $query = 'UPDATE ' . sql_table('item') . " SET iblog={$new_blogid}, icat={$new_catid} WHERE inumber={$itemid}";
         sql_query($query);
 
         // update comments
@@ -454,9 +451,9 @@ class ITEM
         sql_query($query);
 
         $param = array(
-            'itemid' => $itemid,
+            'itemid'     => $itemid,
             'destblogid' => $new_blogid,
-            'destcatid' => $new_catid
+            'destcatid'  => $new_catid
         );
         $manager->notify('PostMoveItem', $param);
     }
@@ -513,7 +510,7 @@ class ITEM
             if (!$bid) {
                 return 0;
             }
-            $b =& $manager->getBlog($bid);
+            $b = & $manager->getBlog($bid);
             $sql .= ' AND itime<=' . mysqldate($b->getCorrectTime());
         }
         if (!$draft) {
@@ -540,21 +537,21 @@ class ITEM
         global $member, $manager;
 
         $i_author = $member->getID();
-        $i_body = postVar('body');
-        $i_title = postVar('title');
-        $i_more = postVar('more');
+        $i_body   = postVar('body');
+        $i_title  = postVar('title');
+        $i_more   = postVar('more');
 
         if ((strtoupper(_CHARSET) != 'UTF-8')
             && (($mb = function_exists('mb_convert_encoding')) || function_exists('iconv'))
         ) {
             if ($mb) {
-                $i_body = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
+                $i_body  = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
                 $i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
-                $i_more = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
+                $i_more  = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
             } else {
-                $i_body = iconv("UTF-8", _CHARSET, $i_body);
+                $i_body  = iconv("UTF-8", _CHARSET, $i_body);
                 $i_title = iconv("UTF-8", _CHARSET, $i_title);
-                $i_more = iconv("UTF-8", _CHARSET, $i_more);
+                $i_more  = iconv("UTF-8", _CHARSET, $i_more);
             }
         }
         //$i_actiontype = postVar('actiontype');
@@ -566,7 +563,7 @@ class ITEM
         //$i_year = intPostVar('year');
         $i_catid = postVar('catid');
         $i_draft = 1;
-        $type = postVar('type');
+        $type    = postVar('type');
         if ($type == 'edit') {
             $i_blogid = getBlogIDFromItemID(intPostVar('itemid'));
         } else {
@@ -585,12 +582,12 @@ class ITEM
         // create new category if needed
         if (strstr($i_catid, 'newcat')) {
             // Set in default category
-            $blog =& $manager->getBlog($i_blogid);
+            $blog    = & $manager->getBlog($i_blogid);
             $i_catid = $blog->getDefaultCategory();
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);
-            $blog =& $manager->getBlog($i_blogid);
+            $blog     = & $manager->getBlog($i_blogid);
         }
 
         $posttime = 0;

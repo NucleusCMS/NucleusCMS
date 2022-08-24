@@ -1,4 +1,5 @@
 <?php
+
 #
 # Portable PHP password hashing framework.
 #
@@ -31,7 +32,7 @@ class PasswordHash
     public $portable_hashes;
     public $random_state;
 
-    function __construct($iteration_count_log2 = 8, $portable_hashes = true)
+    public function __construct($iteration_count_log2 = 8, $portable_hashes = true)
     {
         $this->itoa64 = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
 
@@ -45,7 +46,7 @@ class PasswordHash
         $this->random_state = microtime() . uniqid(mt_rand(), true);
     }
 
-    function get_random_bytes($count)
+    public function get_random_bytes($count)
     {
         $output = '';
         if (@is_readable('/dev/urandom') &&
@@ -57,8 +58,7 @@ class PasswordHash
         if (strlen($output) < $count) {
             $output = '';
             for ($i = 0; $i < $count; $i += 16) {
-                $this->random_state =
-                    md5(microtime() . $this->random_state);
+                $this->random_state = md5(microtime() . $this->random_state);
                 $output .=
                     pack('H*', md5($this->random_state));
             }
@@ -68,10 +68,10 @@ class PasswordHash
         return $output;
     }
 
-    function encode64($input, $count)
+    public function encode64($input, $count)
     {
         $output = '';
-        $i = 0;
+        $i      = 0;
         do {
             $value = ord($input[$i++]);
             $output .= $this->itoa64[$value & 0x3f];
@@ -95,7 +95,7 @@ class PasswordHash
         return $output;
     }
 
-    function gensalt_private($input)
+    public function gensalt_private($input)
     {
         $output = '$P$';
         $output .= $this->itoa64[min($this->iteration_count_log2 + 5, 30)];
@@ -104,7 +104,7 @@ class PasswordHash
         return $output;
     }
 
-    function crypt_private($password, $setting)
+    public function crypt_private($password, $setting)
     {
         $output = '*0';
         if (substr($setting, 0, 2) == $output) {
@@ -147,7 +147,7 @@ class PasswordHash
         return $output;
     }
 
-    function gensalt_extended($input)
+    public function gensalt_extended($input)
     {
         $count_log2 = min($this->iteration_count_log2 + 8, 24);
         # This should be odd to not reveal weak DES keys, and the
@@ -165,7 +165,7 @@ class PasswordHash
         return $output;
     }
 
-    function gensalt_blowfish($input)
+    public function gensalt_blowfish($input)
     {
         # This one needs to use a different order of characters and a
         # different encoding scheme from the one in encode64() above.
@@ -206,14 +206,13 @@ class PasswordHash
         return $output;
     }
 
-    function HashPassword($password)
+    public function HashPassword($password)
     {
         $random = '';
 
         if (CRYPT_BLOWFISH == 1 && !$this->portable_hashes) {
             $random = $this->get_random_bytes(16);
-            $hash =
-                crypt($password, $this->gensalt_blowfish($random));
+            $hash   = crypt($password, $this->gensalt_blowfish($random));
             if (strlen($hash) == 60) {
                 return $hash;
             }
@@ -223,8 +222,7 @@ class PasswordHash
             if (strlen($random) < 3) {
                 $random = $this->get_random_bytes(3);
             }
-            $hash =
-                crypt($password, $this->gensalt_extended($random));
+            $hash = crypt($password, $this->gensalt_extended($random));
             if (strlen($hash) == 20) {
                 return $hash;
             }
@@ -233,11 +231,10 @@ class PasswordHash
         if (strlen($random) < 6) {
             $random = $this->get_random_bytes(6);
         }
-        $hash =
-            $this->crypt_private(
-                $password,
-                $this->gensalt_private($random)
-            );
+        $hash = $this->crypt_private(
+            $password,
+            $this->gensalt_private($random)
+        );
         if (strlen($hash) == 34) {
             return $hash;
         }
@@ -248,7 +245,7 @@ class PasswordHash
         return '*';
     }
 
-    function CheckPassword($password, $stored_hash)
+    public function CheckPassword($password, $stored_hash)
     {
         $hash = $this->crypt_private($password, $stored_hash);
         if (substr($hash, 0, 1) === '*') {

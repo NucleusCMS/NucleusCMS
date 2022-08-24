@@ -63,7 +63,7 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
-$CONF = array();
+$CONF     = array();
 $DIR_LIBS = '';
 require("../../config.php");    // include Nucleus libs and code
 //include($DIR_LIBS . "xmlrpc.inc.php");
@@ -74,7 +74,7 @@ include_libs('xmlrpcs.inc.php', false, false);
 /* define xmlrpc settings */
 //$xmlrpc_internalencoding = _CHARSET;
 $xmlrpc_internalencoding = 'UTF-8';
-$xmlrpc_defencoding = 'UTF-8';
+$xmlrpc_defencoding      = 'UTF-8';
 
 /* definition of available methods */
 
@@ -86,10 +86,8 @@ include('api_metaweblog.inc.php');
 // include('api_nucleus.inc.php'); // uncomment if you still want to use the nucleus.* methods
 include('api_mt.inc.php');
 
-
 // create server
 $s = new xmlrpc_server($functionDefs);
-
 
 /* ------------------------------ private functions ---------------------------------- */
 
@@ -98,7 +96,7 @@ $s = new xmlrpc_server($functionDefs);
   */
 function _addItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $catname = "")
 {
-    $blog = new BLOG($blogid);
+    $blog      = new BLOG($blogid);
     $timestamp = $blog->getCorrectTime();
     return _addDatedItem($blogid, $username, $password, $title, $body, $more, $publish, $closed, $timestamp, 0, $catname);
 }
@@ -117,7 +115,7 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 
     // 2. check if allowed to add to blog
     if (!BLOG::existsID($blogid)) {
-        return _error(2, "No such blog ($blogid)");
+        return _error(2, "No such blog ({$blogid})");
     }
     if (!$mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
@@ -143,8 +141,8 @@ function _addDatedItem($blogid, $username, $password, $title, $body, $more, $pub
 
     if (strtolower(_CHARSET) != 'utf-8') {
         $title = mb_convert_encoding($title, _CHARSET, "UTF-8");
-        $body = mb_convert_encoding($body, _CHARSET, "UTF-8");
-        $more = mb_convert_encoding($more, _CHARSET, "UTF-8");
+        $body  = mb_convert_encoding($body, _CHARSET, "UTF-8");
+        $more  = mb_convert_encoding($more, _CHARSET, "UTF-8");
     }
 
     // 4. add to blog
@@ -170,7 +168,7 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
 
     // 2. check if allowed to add to blog
     if (!$manager->existsItem($itemid, 1, 1)) {
-        return _error(6, "No such item ($itemid)");
+        return _error(6, "No such item ({$itemid})");
     }
     if (!$mem->canAlterItem($itemid)) {
         return _error(7, "Not allowed to alter item");
@@ -178,8 +176,8 @@ function _edititem($itemid, $username, $password, $catid, $title, $body, $more, 
 
     if (strtolower(_CHARSET) != 'utf-8') {
         $title = mb_convert_encoding($title, _CHARSET, _CHARSET.",UTF-8");
-        $body = mb_convert_encoding($body, _CHARSET, _CHARSET.",UTF-8");
-        $more = mb_convert_encoding($more, _CHARSET, _CHARSET.",UTF-8");
+        $body  = mb_convert_encoding($body, _CHARSET, _CHARSET.",UTF-8");
+        $more  = mb_convert_encoding($more, _CHARSET, _CHARSET.",UTF-8");
     }
 
     // 3. update item
@@ -202,7 +200,7 @@ function _getUsersBlogs($username, $password)
     // 2. Get list of blogs
 
     $structarray = array();
-    $query =  "SELECT bnumber, bname, burl"
+    $query       = "SELECT bnumber, bname, burl"
             . ' FROM '.sql_table('blog').', '.sql_table('team')
             . " WHERE tblog=bnumber and tmember=" . $mem->getID()
             . " ORDER BY bname";
@@ -216,8 +214,8 @@ function _getUsersBlogs($username, $password)
         }
 
         $newstruct = new xmlrpcval(array(
-            "url" => new xmlrpcval($blogurl, "string"),
-            "blogid" => new xmlrpcval($obj->bnumber, "string"),
+            "url"      => new xmlrpcval($blogurl, "string"),
+            "blogid"   => new xmlrpcval($obj->bnumber, "string"),
             "blogName" => new xmlrpcval($obj->bname, "string")
         ), 'struct');
         array_push($structarray, $newstruct);
@@ -225,7 +223,6 @@ function _getUsersBlogs($username, $password)
 
     return new xmlrpcresp(new xmlrpcval($structarray, "array"));
 }
-
 
 function _getUserInfo($username, $password)
 {
@@ -239,11 +236,11 @@ function _getUserInfo($username, $password)
     // Structure returned has nickname, userid, url, email, lastname, firstname
 
     $newstruct = new xmlrpcval(array(
-        "nickname" => new xmlrpcval($mem->getDisplayName(), "string"),
-        "userid" => new xmlrpcval($mem->getID(), "string"),
-        "url" => new xmlrpcval($mem->getURL(), "string"),
-        "email" => new xmlrpcval($mem->getEmail(), "string"),
-        "lastname" => new xmlrpcval("", "string"),
+        "nickname"  => new xmlrpcval($mem->getDisplayName(), "string"),
+        "userid"    => new xmlrpcval($mem->getID(), "string"),
+        "url"       => new xmlrpcval($mem->getURL(), "string"),
+        "email"     => new xmlrpcval($mem->getEmail(), "string"),
+        "lastname"  => new xmlrpcval("", "string"),
         "firstname" => new xmlrpcval($mem->getRealName(), "string")
     ), 'struct');
 
@@ -265,7 +262,7 @@ function _deleteItem($itemid, $username, $password)
 
     // 2. check if allowed
     if (!$manager->existsItem($itemid, 1, 1)) {
-        return _error(6, "No such item ($itemid)");
+        return _error(6, "No such item ({$itemid})");
     }
     $blogid = getBlogIDFromItemID($itemid);
     if (!$mem->teamRights($blogid)) {
@@ -291,7 +288,7 @@ function _getSkinPart($blogid, $username, $password, $type)
 
     // 2. check if allowed
     if (!BLOG::existsID($blogid)) {
-        return _error(2, "No such blog ($blogid)");
+        return _error(2, "No such blog ({$blogid})");
     }
     if (!$mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
@@ -313,7 +310,7 @@ function _setSkinPart($blogid, $username, $password, $content, $type)
 
     // 2. check if allowed
     if (!BLOG::existsID($blogid)) {
-        return _error(2, "No such blog ($blogid)");
+        return _error(2, "No such blog ({$blogid})");
     }
     if (!$mem->teamRights($blogid)) {
         return _error(3, "Not a team member");

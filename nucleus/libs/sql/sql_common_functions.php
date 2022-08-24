@@ -159,7 +159,7 @@ function treat_char_name($charset = 'utf8mb4')
             if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
-                    $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
+                    $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'", $db);
                     if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset'])) {
                         return $items['Charset'];
                     }
@@ -183,7 +183,7 @@ function getCharSetFromDB($tableName, $columnName, $dbh = null)
 function getCollationFromDB($tableName, $columnName, $dbh = null)
 {
     $columns = sql_query("SHOW FULL COLUMNS FROM `{$tableName}` LIKE '{$columnName}'", $dbh);
-    $column = sql_fetch_object($columns);
+    $column  = sql_fetch_object($columns);
     return isset($column->Collation) ? $column->Collation : false;
 }
 
@@ -201,7 +201,7 @@ function sql_get_server_version($conn_or_dbh = null)
 function sql_get_mysql_sqlmode($conn_or_dbh = null)
 {
     $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
-    $q = sql_query("SELECT @@SESSION.sql_mode;", $dbh);
+    $q   = sql_query("SELECT @@SESSION.sql_mode;", $dbh);
     if (!$q) {
         return '';
     }
@@ -211,13 +211,13 @@ function sql_get_mysql_sqlmode($conn_or_dbh = null)
 
 function fix_mysql_sqlmode($conn_or_dbh = null)
 {
-    $dbh = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+    $dbh     = (!empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     $sqlmode = sql_get_mysql_sqlmode($dbh);
     if (empty($sqlmode)
         || version_compare(sql_get_server_version($dbh), '5.6.0', '<')) {
         return;
     }
-    $options = array_diff(explode(',', $sqlmode), array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE'));
+    $options     = array_diff(explode(',', $sqlmode), array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE'));
     $new_sqlmode = implode(',', $options);
     if (strcmp($sqlmode, $new_sqlmode) != 0) {
         sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);

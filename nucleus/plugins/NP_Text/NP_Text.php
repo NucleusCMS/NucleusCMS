@@ -14,9 +14,9 @@
 
 class NP_Text extends NucleusPlugin
 {
-    private $incModePref = array();
+    private $incModePref    = array();
     private $constantPrefix = "SL_";
-    
+
     public function getEventList()
     {
         return array('PreSkinParse');
@@ -47,7 +47,7 @@ class NP_Text extends NucleusPlugin
                 $desc = mb_convert_encoding($desc, 'EUC-JP', 'UTF-8');
                 break;
             default:
-                $desc ='Display constants from language files: <%Text(CONSTANT)%>';
+                $desc = 'Display constants from language files: <%Text(CONSTANT)%>';
                 break;
         }
         return $desc;
@@ -67,27 +67,27 @@ class NP_Text extends NucleusPlugin
     {
         $this->incModePref = $this->skin_incmodepref();
     }
-    
+
     public function event_PreSkinParse()
     {
         global $member;
         if (!$member->isLoggedIn() and isset($_GET['lang'])) {
             // 3 months
-            setcookie('NP_Text', getVar('lang'), time()+60*60*24*90);
+            setcookie('NP_Text', getVar('lang'), time() + 60 * 60 * 24 * 90);
         }
     }
-     
+
     public function doSkinVar($skinType, $constant = '')
     {
         global $member, $CONF;
 
-        if ($constant==='') {
+        if ($constant === '') {
             return ;
         }
-        $language = getLanguageName();
-        $getLanguage = isset($_GET['lang']) ? getVar('lang') : false;
+        $language       = getLanguageName();
+        $getLanguage    = isset($_GET['lang']) ? getVar('lang') : false;
         $cookieLanguage = isset($_COOKIE['NP_Text']) ? cookieVar('NP_Text') : false;
-        
+
         if ($getLanguage) {
             $this->use_lang($getLanguage, $constant);
         } elseif ($cookieLanguage) {
@@ -96,18 +96,18 @@ class NP_Text extends NucleusPlugin
             $this->use_lang($language, $constant);
         }
     }
-    
+
     public function doTemplateVar(&$item, $constant = '')
     {
         global $member, $CONF;
 
-        if ($constant==='') {
+        if ($constant === '') {
             return ;
         }
-        $language = getLanguageName();
-        $getLanguage = isset($_GET['lang']) ? getVar('lang') : false;
+        $language       = getLanguageName();
+        $getLanguage    = isset($_GET['lang']) ? getVar('lang') : false;
         $cookieLanguage = isset($_COOKIE['NP_Text']) ? cookieVar('NP_Text') : false;
-        
+
         if ($getLanguage) {
             $this->use_lang($getLanguage, $constant);
         } elseif ($cookieLanguage) {
@@ -116,13 +116,13 @@ class NP_Text extends NucleusPlugin
             $this->use_lang($language, $constant);
         }
     }
-    
+
     public function use_lang($language, $constant)
     {
         global $DIR_SKINS;
-        
+
         $filename = '';
-        
+
         if ($this->incModePref[0] == "normal") {
             $filename = $filename.$this->incModePref[1];
             $filename = $filename."language/";
@@ -135,13 +135,13 @@ class NP_Text extends NucleusPlugin
             $filename = $filename.$language;
             $filename = $filename.".php";
         }
-        
+
         if (is_file($filename)) {
             include($filename);
         } else {
             addToLog(1, "NP_Text cannot find ".$filename);
         }
-        
+
         if (defined($this->constantPrefix.$constant)) {
             echo constant($this->constantPrefix.$constant);
         } else {
@@ -151,11 +151,11 @@ class NP_Text extends NucleusPlugin
             }
         }
     }
-    
+
     public function skin_incmodepref()
     {
         global $currentSkinName;
-        $sql = sprintf("SELECT * FROM %s WHERE sdname = %s", sql_table("skin_desc"), sql_quote_string($currentSkinName));
+        $sql    = sprintf("SELECT * FROM %s WHERE sdname = %s", sql_table("skin_desc"), sql_quote_string($currentSkinName));
         $result = sql_query($sql);
         if ($result) {
             $row = sql_fetch_assoc($result);

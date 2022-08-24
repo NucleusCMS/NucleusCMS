@@ -224,19 +224,19 @@ function convert_mysqlFieldDefObj_from_mysqliFieldDefObj($obj, $offset = 0)
 {
     $o = new stdClass();
 //      $o->mysqli_feild = $obj;
-    $o->name = $obj->name;
-    $o->table = $obj->table;
-    $o->def = $obj->def;
-    $o->max_length = $obj->max_length;
-    $o->type = convert_mysqlFieldType_from_mysqliFieldType($obj->type);
-    $o->not_null = (($obj->flags & MYSQLI_NOT_NULL_FLAG) ? 1 : 0);
-    $o->primary_key = (($obj->flags & MYSQLI_PRI_KEY_FLAG) ? 1 : 0);
+    $o->name         = $obj->name;
+    $o->table        = $obj->table;
+    $o->def          = $obj->def;
+    $o->max_length   = $obj->max_length;
+    $o->type         = convert_mysqlFieldType_from_mysqliFieldType($obj->type);
+    $o->not_null     = (($obj->flags & MYSQLI_NOT_NULL_FLAG) ? 1 : 0);
+    $o->primary_key  = (($obj->flags & MYSQLI_PRI_KEY_FLAG) ? 1 : 0);
     $o->multiple_key = (($obj->flags & MYSQLI_MULTIPLE_KEY_FLAG) ? 1 : 0);
-    $o->unique_key = (($obj->flags & MYSQLI_UNIQUE_KEY_FLAG) ? 1 : 0);
-    $o->numeric = (($obj->flags & MYSQLI_NUM_FLAG) ? 1 : 0);
-    $o->blob = (($obj->flags & MYSQLI_BLOB_FLAG) ? 1 : 0);
-    $o->unsigned = (($obj->flags & MYSQLI_UNSIGNED_FLAG) ? 1 : 0);
-    $o->zerofill = (($obj->flags & MYSQLI_ZEROFILL_FLAG) ? 1 : 0);
+    $o->unique_key   = (($obj->flags & MYSQLI_UNIQUE_KEY_FLAG) ? 1 : 0);
+    $o->numeric      = (($obj->flags & MYSQLI_NUM_FLAG) ? 1 : 0);
+    $o->blob         = (($obj->flags & MYSQLI_BLOB_FLAG) ? 1 : 0);
+    $o->unsigned     = (($obj->flags & MYSQLI_UNSIGNED_FLAG) ? 1 : 0);
+    $o->zerofill     = (($obj->flags & MYSQLI_ZEROFILL_FLAG) ? 1 : 0);
     return $o;
 }
 

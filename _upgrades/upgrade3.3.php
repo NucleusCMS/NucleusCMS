@@ -18,7 +18,6 @@ upgrade_do330();
 
 function upgrade_do330()
 {
-
     if (upgrade_checkinstall(330)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
@@ -43,12 +42,6 @@ function upgrade_do330()
         "SET cemail = cmail, cmail = '' " .
         "WHERE cmail LIKE '%@%'"
     );
-
-
-
-
-
-
 
     // 3.2 -> 3.3
     // update database version

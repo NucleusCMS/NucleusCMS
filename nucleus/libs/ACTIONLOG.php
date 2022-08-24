@@ -23,7 +23,6 @@ $CONF['LogLevel'] = INFO;
 
 class ACTIONLOG
 {
-
     /**
      * (Static) Method to add a message to the action log
      */
@@ -45,7 +44,7 @@ class ACTIONLOG
             sql_prepare_execute($query, array((string)$timestamp, (string)$message));
         } else {
             $message = sql_quote_string($message);        // add slashes
-            $query = sprintf(
+            $query   = sprintf(
                 "INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)",
                 sql_table('actionlog'),
                 $timestamp,
@@ -118,7 +117,7 @@ class ACTIONLOG
         $iTotal = quickQuery('SELECT COUNT(*) AS result FROM ' . sql_table('actionlog'));
 
         // if size > 500, drop back to about 250
-        $iMaxSize = 500;
+        $iMaxSize  = 500;
         $iDropSize = 250;
         if ($iTotal > $iMaxSize) {
             $tsChop = quickQuery('SELECT timestamp as result FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT ' . $iDropSize . ',1');

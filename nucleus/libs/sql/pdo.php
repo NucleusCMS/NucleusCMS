@@ -49,16 +49,16 @@ if (!function_exists('sql_fetch_assoc')) {
 
         try {
             if (strpos($db_host, ':') === false) {
-                $host = $db_host;
-                $port = '';
+                $host    = $db_host;
+                $port    = '';
                 $portnum = '';
             } else {
                 list($host, $port) = explode(":", $db_host);
                 if (isset($port)) {
                     $portnum = $port;
-                    $port = ';port=' . trim($port);
+                    $port    = ';port=' . trim($port);
                 } else {
-                    $port = '';
+                    $port    = '';
                     $portnum = '';
                 }
             }
@@ -177,13 +177,13 @@ if (!function_exists('sql_fetch_assoc')) {
                     $charset = get_mysql_charset_from_php_charset(_CHARSET);
                 } else {
                     $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
-                    $res = sql_query($query, $DBH);
+                    $res   = sql_query($query, $DBH);
                     if (!$res) {
                         exit('Language name fetch error');
                     }
-                    $obj = sql_fetch_object($res);
+                    $obj      = sql_fetch_object($res);
                     $Language = $obj->value;
-                    $charset = get_charname_from_langname($Language);
+                    $charset  = get_charname_from_langname($Language);
                 }
                 sql_set_charset_v2($charset, $DBH);
                 fix_mysql_sqlmode($DBH);
@@ -193,7 +193,7 @@ if (!function_exists('sql_fetch_assoc')) {
             if (isDebugMode()) {
                 $msg = '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
             } else {
-                $msg = '<p>a1 Error!: ';
+                $msg     = '<p>a1 Error!: ';
                 $pattern = '/(Access denied for user|Unknown database|could not find driver)/i';
                 if (preg_match($pattern, $e->getMessage(), $m)) {
                     $msg .= $m[1];
@@ -217,7 +217,7 @@ if (!function_exists('sql_fetch_assoc')) {
         $SQL_DBH = sql_connect_args($DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE);
         if (!$SQL_DBH) {
             $title = 'Connect Error';
-            $msg = '<p>Error : Database Connection</p>';
+            $msg   = '<p>Error : Database Connection</p>';
             $msg .= sprintf(
                 '<br><p><a href="%s">%s</a></p>',
                 $_SERVER['REQUEST_URI'],
@@ -229,7 +229,7 @@ if (!function_exists('sql_fetch_assoc')) {
         }
 //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        $MYSQL_CONN =& $SQL_DBH;
+        $MYSQL_CONN = & $SQL_DBH;
         return $SQL_DBH;
     }
 
@@ -269,12 +269,12 @@ if (!function_exists('sql_fetch_assoc')) {
     {
         global $CONF, $SQLCount, $SQL_DBH;
         $SQLCount++;
-//echo '<hr />SQL_DBH: ';
-//print_r($SQL_DBH);
-//echo '<hr />DBH: ';
-//print_r($dbh);
-//echo '<hr />';
-//echo $query.'<hr />';
+        //echo '<hr />SQL_DBH: ';
+        //print_r($SQL_DBH);
+        //echo '<hr />DBH: ';
+        //print_r($dbh);
+        //echo '<hr />';
+        //echo $query.'<hr />';
         $dbh = ($dbh && is_object($dbh) ? $dbh : $SQL_DBH);
         if (!is_object($dbh)) {
             if (!isDebugMode()) {
@@ -290,15 +290,15 @@ if (!function_exists('sql_fetch_assoc')) {
         $style = 'height:100px; overflow:auto; background:#C0DCC0';
         if ($res === false) {
             printf(
-                "SQL error with query <div style=\"${style}\">%s</div>: <p />",
+                "SQL error with query <div style=\"{$style}\">%s</div>: <p />",
                 hsc(sql_error($dbh)) . '<br />' . hsc($query)
             );
         } else {
             if ($res->errorCode() != '00000') {
-                $errors = $res->errorInfo();
+                $errors   = $res->errorInfo();
                 $msg_text = $errors[0] . '-' . $errors[1] . ' ' . $errors[2];
                 printf(
-                    "SQL error with query <div style=\"${style}\">%s</div>: %s<p />",
+                    "SQL error with query <div style=\"{$style}\">%s</div>: %s<p />",
                     hsc($msg_text),
                     hsc($query)
                 );
@@ -320,7 +320,7 @@ if (!function_exists('sql_fetch_assoc')) {
         return; //
 
         $filename = dirname(__FILE__) . DIRECTORY_SEPARATOR . 'query_log.txt';
-        $handle = fopen($filename, ($override ? "w" : "a"));
+        $handle   = fopen($filename, ($override ? "w" : "a"));
         if ($handle) {
             if ($_SERVER['REQUEST_TIME_FLOAT']) {
                 $s = sprintf(
@@ -360,23 +360,23 @@ if (!function_exists('sql_fetch_assoc')) {
     {
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE, $DB_DRIVER_NAME;
         global $CONF, $MYSQL_CONN, $SQL_DBH;
-//echo '<hr />'.print_r($dbh,true).'<hr />';
-//exit;
+        //echo '<hr />'.print_r($dbh,true).'<hr />';
+        //exit;
         if (!is_null($dbh)) {
-            if ($dbh->exec("USE $db") !== false) {
+            if ($dbh->exec("USE {$db}") !== false) {
                 return 1;
             }
             return 0;
         }
 
         try {
-            $SQL_DBH = null;
+            $SQL_DBH           = null;
             list($host, $port) = explode(":", $DB_HOST);
             if (isset($port)) {
                 $portnum = $port;
-                $port = ';port=' . trim($port);
+                $port    = ';port=' . trim($port);
             } else {
-                $port = '';
+                $port    = '';
                 $portnum = '';
             }
             //$SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.trim($host).$port.';dbname='.$db, $DB_USER, $DB_PASSWORD));
@@ -464,7 +464,7 @@ if (!function_exists('sql_fetch_assoc')) {
             if (isDebugMode()) {
                 $msg = '<p>a3 Error!: ' . $e->getMessage() . '</p>';
             } else {
-                $msg = '<p>a3 Error!: ';
+                $msg     = '<p>a3 Error!: ';
                 $pattern = '/(Access denied for user|Unknown database)/i';
                 if (preg_match($pattern, $e->getMessage(), $m)) {
                     $msg .= $m[1];
@@ -627,7 +627,6 @@ if (!function_exists('sql_fetch_assoc')) {
         return false;
     }
 
-
     /**
      * Get column information from a result and return as an object
      */
@@ -682,17 +681,17 @@ if (!function_exists('sql_fetch_assoc')) {
 
         $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
         if ($drivername == 'sqlite') {
-            $sql = sprintf('PRAGMA TABLE_INFO(`%s`)', $tablename);
+            $sql    = sprintf('PRAGMA TABLE_INFO(`%s`)', $tablename);
             $target = 'name';
         } else {
             // mysql
-            $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+            $sql    = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
             $target = 'Field';
         }
 
         $items = array();
-        $res = array();
-        $stmt = $SQL_DBH->prepare($sql);
+        $res   = array();
+        $stmt  = $SQL_DBH->prepare($sql);
         if ($stmt && $stmt->execute()) {
             $res = $stmt->fetchAll();
         }
@@ -739,7 +738,7 @@ if (!function_exists('sql_fetch_assoc')) {
             return false;
         }
 
-        $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
+        $drivername       = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
         $input_parameters = array(':name' => $tablename);
         if ($drivername == 'sqlite') {
             $sql = "SELECT name FROM sqlite_master WHERE type='table' AND name = :name";
@@ -747,7 +746,7 @@ if (!function_exists('sql_fetch_assoc')) {
             // mysql
             $sql = 'SHOW TABLES LIKE :name ';
         }
-        $res = array();
+        $res  = array();
         $stmt = $SQL_DBH->prepare($sql);
         if ($stmt && $stmt->execute($input_parameters)) {
             $res = $stmt->fetch();
@@ -889,12 +888,12 @@ if (!function_exists('sql_fetch_assoc')) {
                 case 'gb2312':
                     $charset = 'gb2312';
                     break;
-                /*
-                case 'shift_jis':  // Japanese Shift_JIS
-                case 'sjis':
-                    $charset = 'sjis';
-                    break;
-                */
+                    /*
+                    case 'shift_jis':  // Japanese Shift_JIS
+                    case 'sjis':
+                        $charset = 'sjis';
+                        break;
+                    */
                 case 'iso-8859-1':
                     $charset = 'latin1';
                     break;
@@ -902,9 +901,9 @@ if (!function_exists('sql_fetch_assoc')) {
                     $converted = false;
                     if (preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                         // ISO 8859-  2 8 7 9 13
-                        $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-${m[1]} %'", $db);
+                        $res = sql_query("SHOW CHARACTER SET where Description LIKE 'ISO 8859-{$m[1]} %'", $db);
                         if ($res && ($items = sql_fetch_assoc($res)) && !empty($items['Charset'])) {
-                            $charset = $items['Charset'];
+                            $charset   = $items['Charset'];
                             $converted = true;
                         }
                     }
@@ -1025,5 +1024,4 @@ if (!function_exists('sql_fetch_assoc')) {
         }
         return intval($res);
     }
-
 }

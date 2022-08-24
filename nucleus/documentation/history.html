@@ -50,16 +50,13 @@
 
 <ul>
 	<li>
-		<strong>Nucleus v3.80 日本語版 (2018年x月x日)</strong> tagged as <a href="https://github.com/NucleusCMS/NucleusCMS-ja/tree/v3.80-ja/">v3.80-ja</a> in <a href="https://github.com/NucleusCMS/NucleusCMS-ja">nucleus-jp</a> hosted in <a href="https://github.com/">GitHub</a>.
+		<strong>Nucleus v3.80 日本語版 (?年x月x日)</strong> tagged as <a href="https://github.com/NucleusCMS/NucleusCMS-ja/tree/v3.80-ja/">v3.80-ja</a> in <a href="https://github.com/NucleusCMS/NucleusCMS-ja">nucleus-jp</a> hosted in <a href="https://github.com/">GitHub</a>.
 		<ul>
 		<li>[重要,変更] NucleusCMS本体のサポートされるPHPのバージョンが変更されました。プラグインも使用するPHPのバージョンに対応している必要あります。</li>
 		<li>[重要,新規] グローバル変数 $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME が追加されました。</li>
-		<li>[重要,新機能] sqlite対応pluginのsupportsFeatureに 'SqlApi_SQL92' , 'SqlApi_ドライバ名' が追加されました。</li>
 		<li>[重要,変更] 次のsupportsFeature が廃止されました [SqlTablePrefix, SqlApi](sql_table関数の十分な周知期間が経過したため)。プラグインのロード時に これらのsupportsFeature のチェックは行われなくなりました。</li>
 		<li>[新機能] PluginOneFolder機能が追加されました。(NP_プラグイン名.phpをショートネームフォルダに入れることができます。)</li>
 		<li>[重要,変更] 次のバンドルpluginの場所が変更されました。(NP_SecurityEnforcer, NP_Text)<br />古いファイルは削除してください<ul><li>plugins/NP_SecurityEnforcer.php</li><li>plugins/securityenforcer/*</li><li>plugins/NP_Text.php</li></ul></li>
-		<li>[新機能] インストーラー：SQLiteインストールが追加されました。(実験的)<br />
-			mysqlからデータを移行したい場合は、<a href="../../_upgrades/conv-sqlite/">/_upgrades/conv-sqlite/</a>にアクセスしてください。変換は一方通行です。現時点において、sqliteのデータをmysqlに戻す機能はありません。</li>
 		<li>[新機能] データベースの最適化/修復が追加されました。</li>
 		<li>[新機能] メンバーの停止(アカウントロック)が追加されました。<br />有効にするとメンバーはログインやパスワード発行などの各種操作ができなくなります。</li>
 		<li>[新機能] コンテンツの圧縮をサポート(gzip, deflate)</li>
