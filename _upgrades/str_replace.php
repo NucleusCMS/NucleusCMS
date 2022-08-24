@@ -77,10 +77,12 @@ function convert($new_collation)
     while ($row=sql_fetch_array($rs)) {
         $srcTableNames[] = $row[0];
     }
-        
+
+    // todo: undefined $vs $output   
     foreach ($srcTableNames as $srcTableName) {
         $sql = vsprintf("ALTER TABLE `%s` CONVERT TO CHARACTER SET %s COLLATE %s", $vs);
         sql_query(parseQuery($sql));
+    }
         return join("\n", $output) . '<p>変換を完了しました。 <a href="convert.php">戻る</a></p>';
         //sleep(3);
         //header('Location:convert.php?complete');
