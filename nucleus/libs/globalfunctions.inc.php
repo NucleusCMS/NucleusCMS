@@ -1003,10 +1003,15 @@ function get_help_root_url()
     static $doc_root = null;
     if ($doc_root === null) {
         $doc_root = $CONF['AdminURL'] . 'documentation/';
+        $sub_dirs = array('ja');
         $lang     = getLanguageName();
-        if (@stripos($lang, 'japan') === false) {
-            if (is_dir($DIR_NUCLEUS . 'documentation/en')) {
-                $doc_root .= 'en/';
+        if (!str_contains($lang, 'japan')) {
+            $sub_dirs = array('en', '', 'ja');
+        }
+        foreach ($sub_dirs as $sub_dir) {
+            if (@is_file($DIR_NUCLEUS . "documentation/{$sub_dir}/help.html")) {
+                $doc_root .= $sub_dir . '/';
+                break;
             }
         }
     }
