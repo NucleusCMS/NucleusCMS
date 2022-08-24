@@ -21,24 +21,27 @@ define('READ_ONLY_MEDIA_FOLDER', '(Read Only)');
 /**
   * Represents the media objects for a certain member
   */
-class MEDIA {
-
+class MEDIA
+{
     /**
       * Gets the list of collections available to the currently logged
       * in member
       *
       * @returns array of dirname => display name
       */
-    public static function getCollectionList($exceptReadOnly = false) {
+    public static function getCollectionList($exceptReadOnly = false)
+    {
         global $member, $DIR_MEDIA;
 
         $collections = array();
 
         // add private directory for member
         $collections[$member->getID()] = PRIVATE_COLLECTION;
-        
+
         // add global collections
-        if (!is_dir($DIR_MEDIA)) return $collections;
+        if (!is_dir($DIR_MEDIA)) {
+            return $collections;
+        }
 
         $dirhandle = opendir($DIR_MEDIA);
         while ($dirname = readdir($dirhandle)) {
@@ -46,17 +49,17 @@ class MEDIA {
             if (@is_dir($DIR_MEDIA . $dirname)
                 && (!str_starts_with($dirname, '.')) //  . ..  and other dot started folder
                 && ($dirname !== 'CVS')
-                && (!is_numeric($dirname)))  {
-                if (@is_writable($DIR_MEDIA . $dirname))
+                && (!is_numeric($dirname))) {
+                if (@is_writable($DIR_MEDIA . $dirname)) {
                     $collections[$dirname] = $dirname;
-                else if ($exceptReadOnly == false)
+                } elseif ($exceptReadOnly == false) {
                     $collections[$dirname] = $dirname . ' ' . READ_ONLY_MEDIA_FOLDER;
+                }
             }
         }
         closedir($dirhandle);
 
         return $collections;
-
     }
 
     /**
@@ -67,7 +70,8 @@ class MEDIA {
       * @param $filter
       *        filter on filename (defaults to none)
       */
-    public static function getMediaListByCollection($collection, $filter = '') {
+    public static function getMediaListByCollection($collection, $filter = '')
+    {
         global $DIR_MEDIA;
 
         $filelist = array();
@@ -77,19 +81,22 @@ class MEDIA {
         $mediadir = $DIR_MEDIA . $collection . '/';
 
         // return if dir does not exist
-        if (!is_dir($mediadir)) return $filelist;
+        if (!is_dir($mediadir)) {
+            return $filelist;
+        }
 
         $dirhandle = opendir($mediadir);
         while ($filename = readdir($dirhandle)) {
             if (str_starts_with($filename, '.')
                || str_ends_with($filename, '.tmp')
                || preg_match('/^(Thumbs\.db|desktop\.ini)$/i', $filename) // windows hidden system files
-                ) {
+            ) {
                 continue;
             }
             // only add files that match the filter
-            if (!@is_dir($filename) && MEDIA::checkFilter($filename, $filter))
+            if (!@is_dir($filename) && MEDIA::checkFilter($filename, $filter)) {
                 array_push($filelist, new MEDIAOBJECT($collection, $filename, filemtime($mediadir . $filename)));
+            }
         }
         closedir($dirhandle);
 
@@ -99,36 +106,42 @@ class MEDIA {
         return $filelist;
     }
 
-    public static function checkFilter($strText, $strFilter) {
-        if ($strFilter == '')
+    public static function checkFilter($strText, $strFilter)
+    {
+        if ($strFilter == '') {
             return 1;
-        else
-            return is_integer(strpos(strtolower($strText), strtolower($strFilter)));
+        } else {
+            return is_int(strpos(strtolower($strText), strtolower($strFilter)));
+        }
     }
 
     /**
       * checks if a collection exists with the given name, and if it's
       * allowed for the currently logged in member to upload files to it
       */
-    public static function isValidCollection($collectionName, $exceptReadOnly = false) {
+    public static function isValidCollection($collectionName, $exceptReadOnly = false)
+    {
         global $member, $DIR_MEDIA;
 
         if (!is_string($collectionName)) {
             $collectionName = (string) $collectionName;
         }
         // allow creating new private directory
-        if ($collectionName === (string)$member->getID())
+        if ($collectionName === (string)$member->getID()) {
             return true;
-            
+        }
+
         $collections = MEDIA::getCollectionList($exceptReadOnly);
-        $dirname = $collections[$collectionName];
-        if ($dirname == NULL || $dirname === PRIVATE_COLLECTION)
-            return false;  
+        $dirname     = $collections[$collectionName];
+        if ($dirname == null || $dirname === PRIVATE_COLLECTION) {
+            return false;
+        }
 
         // other collections should exist and be writable
         $collectionDir = $DIR_MEDIA . $collectionName;
-        if ($exceptReadOnly)
+        if ($exceptReadOnly) {
             return (@is_dir($collectionDir) && @is_writable($collectionDir));
+        }
 
         // other collections should exist
         return @is_dir($collectionDir);
@@ -148,7 +161,7 @@ class MEDIA {
     public static function addMediaObject($collection, $uploadfile, $filename)
     {
         global $DIR_MEDIA, $manager;
-        
+
         if (!self::checkMemberHasUploadRights()) {
             return _ERROR_DISALLOWEDUPLOAD;
         }
@@ -159,7 +172,7 @@ class MEDIA {
         if ($filename === false || str_starts_with(trim($filename), '.')) {
             return _ERROR_BADFILETYPE;
         }
-        
+
         // check exist && not root dir
         $mediadir = !empty($DIR_MEDIA) ? str_replace('\\', '/', @realpath($DIR_MEDIA)) : false;
         if ($mediadir === false
@@ -172,17 +185,18 @@ class MEDIA {
         $DIR_MEDIA = $mediadir . '/';
 
         $param = array(
-            'collection'    => &$collection,
-            'uploadfile'    =>  $uploadfile,
-            'filename'        => &$filename
+            'collection' => &$collection,
+            'uploadfile' => $uploadfile,
+            'filename'   => &$filename
         );
         $manager->notify('PreMediaUpload', $param);
-        
+
         $collection = str_replace('\\', '/', (string) $collection);
         // don't allow uploads to unknown or forbidden collections
         $exceptReadOnly = true;
-        if (!MEDIA::isValidCollection($collection,$exceptReadOnly))
+        if (!MEDIA::isValidCollection($collection, $exceptReadOnly)) {
             return _ERROR_DISALLOWED;
+        }
 
         // check dir permissions (try to create dir if it does not exist)
         $mediadir .= '/' . $collection;
@@ -190,23 +204,27 @@ class MEDIA {
         // try to create new private media directories if needed
         if (!@is_dir($mediadir) && is_numeric($collection)) {
             $oldumask = umask(0000);
-            if (!@mkdir($mediadir, 0777))
+            if (!@mkdir($mediadir, 0777)) {
                 return _ERROR_BADPERMISSIONS;
+            }
             umask($oldumask);
         }
 
         // if dir still not exists, the action is disallowed
-        if (!@is_dir($mediadir))
+        if (!@is_dir($mediadir)) {
             return _ERROR_DISALLOWED;
+        }
 
-        if (!is_writeable($mediadir))
+        if (!is_writable($mediadir)) {
             return _ERROR_BADPERMISSIONS;
+        }
 
         // add trailing slash (don't add it earlier since it causes mkdir to fail on some systems)
         $mediadir .= '/';
 
-        if (file_exists($mediadir . $filename))
+        if (file_exists($mediadir . $filename)) {
             return _ERROR_UPLOADDUPLICATE;
+        }
 
         if (!self::checkFileData($uploadfile, $mediadir . $filename)) {
             return _ERROR_BADFILETYPE;
@@ -214,11 +232,13 @@ class MEDIA {
 
         // move file to directory
         if (is_uploaded_file($uploadfile)) {
-            if (!@move_uploaded_file($uploadfile, $mediadir . $filename))
+            if (!@move_uploaded_file($uploadfile, $mediadir . $filename)) {
                 return _ERROR_UPLOADMOVEP;
+            }
         } else {
-            if (!copy($uploadfile, $mediadir . $filename))
+            if (!copy($uploadfile, $mediadir . $filename)) {
                 return _ERROR_UPLOADCOPY ;
+            }
         }
 
         // chmod uploaded file
@@ -227,9 +247,9 @@ class MEDIA {
         umask($oldumask);
 
         $param = array(
-            'collection'    => $collection,
-            'mediadir'        => $mediadir,
-            'filename'        => $filename
+            'collection' => $collection,
+            'mediadir'   => $mediadir,
+            'filename'   => $filename
         );
         $manager->notify('PostMediaUpload', $param);
 
@@ -260,7 +280,7 @@ class MEDIA {
         if (strlen($data) == 0 || (int) $CONF['MaxUploadSize'] < strlen($data)) {
             return _ERROR_DISALLOWED;
         }
-        
+
         // check exist && not root dir
         $mediadir = !empty($DIR_MEDIA) ? str_replace('\\', '/', @realpath($DIR_MEDIA)) : false;
         if ($mediadir === false
@@ -270,7 +290,7 @@ class MEDIA {
             return _ERROR_DISALLOWED;
 //            return __ERROR.': '._SETTINGS_MEDIADIR;
         }
-        
+
         // create tmpdir
         $tmpdir = "{$mediadir}/.ht.tmp.dir"; // Normal apache configuration disallows web access starting with .ht
         if (!@file_exists($tmpdir)) {
@@ -288,16 +308,16 @@ class MEDIA {
         if (!@is_dir($tmpdir) || !is_writable($tmpdir)) {
             return _ERROR_UPLOADFAILED;
         }
-        
+
         // Clean files : on debug , PHP timeout , other reason
         foreach (glob($tmpdir . "/tmp*.tmp") as $filename) {
             $t = filemtime($filename);
-            if ($t !== false && ($t < time() - 3*60)) {
+            if ($t !== false && ($t < time() - 3 * 60)) {
                 // 3 minutes passed
                 @unlink($filename);
             }
         }
-        
+
         // Send to the addMediaObject function for event processing and various checks
         // create tmpfile
         $tmp_filename = tempnam("{$tmpdir}/", sprintf('tmp-%s-', date('YmdHis'))); // prefix Windows[0-3], Other[0-63]
@@ -315,18 +335,32 @@ class MEDIA {
             if ($len !== false && $len === strlen($data)) {
                 $res = self::addMediaObject($collection, $tmp_filename, $filename);
             }
-        } finally { // PHP[5.5-]  5.5\php -nr "try{}finally{}"
+            if (@is_file($tmp_filename)) {
+                @unlink($tmp_filename);
+            }
+        } catch (Throwable $t) { // PHP[5.1-] / PHP[5.0] Fatal error: Class 'Throwable' not found  5.0\php -r "try{}catch(Throwable $t){};"
+            // Executed only in PHP 7, will not match in PHP 5.x
+            if (@is_file($tmp_filename)) {
+                @unlink($tmp_filename);
+            }
+        } catch (Exception $e) { // ok: 5.0\php -r "try{}catch(Exception $e){};"
+            // Executed only in PHP 5.x, will not be reached in PHP 7
             if (@is_file($tmp_filename)) {
                 @unlink($tmp_filename);
             }
         }
+//        } finally { // PHP[5.5-]  5.5\php -nr "try{}finally{}"
+//            if (@is_file($tmp_filename)) {
+//                @unlink($tmp_filename);
+//            }
+//        }
         return $res;
     }
 
     public static function getAllowedTypes()
     {
         global $CONF;
-        $except = array(); // Add forbidden type here in lower case
+        $except       = array(); // Add forbidden type here in lower case
         $allowedtypes = preg_split('|[,\s]+|', str_replace('.', ',', strtolower(trim((string) $CONF['AllowedTypes']))));
         if (false !== $allowedtypes) {
             $allowedtypes = array_unique(array_diff($allowedtypes, array('', 'htaccess', 'htpassword', 'tmp'), $except));
@@ -362,7 +396,7 @@ class MEDIA {
         if (! @is_file($src_filename) || @filesize($src_filename) < 1) {
             return false;
         }
-        $ext = file_get_extension($new_filename);
+        $ext  = file_get_extension($new_filename);
         $type = array(
             'image' => array('jpg','jpeg','gif','png','tiff','bmp','ico','swf'),
             'movie' => array('mpg','avi','mov','mp3'),
@@ -439,27 +473,29 @@ class MEDIA {
   *  - collection: collection to which the file belongs (can also be a owner ID, for private collections)
   *  - private: true if the media belongs to a private member collection
   */
-class MEDIAOBJECT {
-
+class MEDIAOBJECT
+{
     public $private;
     public $collection;
     public $filename;
     public $timestamp;
 
-    function __construct($collection, $filename, $timestamp) {
-        $this->private = is_numeric($collection);
+    public function __construct($collection, $filename, $timestamp)
+    {
+        $this->private    = is_numeric($collection);
         $this->collection = $collection;
-        $this->filename = $filename;
-        $this->timestamp = $timestamp;
+        $this->filename   = $filename;
+        $this->timestamp  = $timestamp;
     }
-
 }
 
 /**
   * User-defined sort method to sort an array of MEDIAOBJECTS
   */
-function sort_media($a, $b) {
-    if ($a->timestamp == $b->timestamp) return 0;
+function sort_media($a, $b)
+{
+    if ($a->timestamp == $b->timestamp) {
+        return 0;
+    }
     return ($a->timestamp > $b->timestamp) ? -1 : 1;
 }
-
