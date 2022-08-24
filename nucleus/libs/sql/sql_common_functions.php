@@ -22,7 +22,7 @@ function startUpError($msg, $title)
     if (! defined('_CHARSET')) {
         define('_CHARSET', 'UTF-8');
     }
-    $tpl             = file_get_contents(NC_LIBS_PATH
+    $tpl = file_get_contents(NC_LIBS_PATH
                                          . 'include/startup_error.template');
     $ph              = array();
     $ph['lang_code'] = defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en';
@@ -221,17 +221,17 @@ function is_sql_result($res)
 function selectQuery($table_name, $where = '', $fields = '*', $extra = array())
 {
     if (is_array($table_name)) {
-        $table_name = join(' ', $table_name);
+        $table_name = implode(' ', $table_name);
     }
     $table_name = parseQuery($table_name);
     if (is_array($fields)) {
         $fields = _getFieldsStringFromArray($fields);
     }
     if (is_array($where)) {
-        $where = join(' ', $where);
+        $where = implode(' ', $where);
     }
     if (is_array($extra)) {
-        $extra = join(' ', $extra);
+        $extra = implode(' ', $extra);
     }
 
     if (trim($where)) {
@@ -246,7 +246,7 @@ function updateQuery($table_name, $values, $where = '', $extra = array())
     $table_name = parseQuery($table_name);
 
     if (is_array($where)) {
-        $where = join(' ', $where);
+        $where = implode(' ', $where);
     }
 
     if (! is_array($values)) {
@@ -262,7 +262,7 @@ function updateQuery($table_name, $values, $where = '', $extra = array())
             }
             $pair[$key] = "`{$key}`={$value}";
         }
-        $pairs = join(',', $pair);
+        $pairs = implode(',', $pair);
     }
 
     if ($where != '') {
@@ -296,7 +296,7 @@ function _getFieldsStringFromArray($fields = array())
         $_[0] = preg_replace('@^distinct[, ]*@i', '', $_[0]);
     }
 
-    return join(',', $_);
+    return implode(',', $_);
 }
 
 function sql_get_server_version($conn_or_dbh = null)
@@ -323,7 +323,7 @@ function sql_get_mysql_sqlmode($conn_or_dbh = null)
 
 function fix_mysql_sqlmode($conn_or_dbh = null)
 {
-    $dbh     = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+    $dbh = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     if (version_compare(sql_get_server_version($dbh), '5.6.0', '<')) {
         return;
     }
@@ -332,7 +332,7 @@ function fix_mysql_sqlmode($conn_or_dbh = null)
         return;
     }
 
-    $options     = array_diff(
+    $options = array_diff(
         explode(',', $sqlmode),
         array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE')
     );

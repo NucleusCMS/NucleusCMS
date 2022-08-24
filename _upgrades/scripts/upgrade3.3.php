@@ -2,7 +2,6 @@
 
 function upgrade_do330()
 {
-
     if (upgrade_checkinstall(330)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
@@ -25,7 +24,7 @@ function upgrade_do330_addfield_cemail()
     if (upgrade_checkIfColumnExists('comment', 'cemail')) {
         return;
     }
-    
+
     $query = parseQuery("ALTER TABLE `[@prefix@]comment` ADD `cemail` VARCHAR( 100 ) AFTER `cmail`");
     upgrade_query('Altering [@prefix@]comment table', $query);
 }
@@ -35,7 +34,7 @@ function upgrade_do330_addfield_breqemail()
     if (upgrade_checkIfColumnExists('blog', 'breqemail')) {
         return;
     }
-    
+
     $query = parseQuery("ALTER TABLE `[@prefix@]blog` ADD `breqemail` TINYINT( 2 ) DEFAULT '0' NOT NULL");
     upgrade_query('Altering [@prefix@]blog table', $query);
 }
@@ -52,27 +51,26 @@ function upgrade_do330_addfield_iposted()
     if (upgrade_checkIfColumnExists('item', 'iposted')) {
         return;
     }
-    
+
     $query = parseQuery("ALTER TABLE `[@prefix@]item` ADD `iposted` TINYINT(2) DEFAULT 1 NOT NULL");
     upgrade_query('Altering [@prefix@]item table', $query);
 }
-
 
 function upgrade_do330_addfield_bfuturepost()
 {
     if (upgrade_checkIfColumnExists('blog', 'bfuturepost')) {
         return;
     }
-    
+
     $query = parseQuery("ALTER TABLE `[@prefix@]blog` ADD `bfuturepost` TINYINT(2) DEFAULT 0 NOT NULL");
     upgrade_query('Altering [@prefix@]blog table', $query);
 }
-    
+
 function upgrade_do330_shownotice_sendping()
 {
     // check to see if user turn on Weblogs.com ping, if so, suggest to install the plugin
     $query = parseQuery("SELECT bsendping FROM [@prefix@]blog WHERE bsendping='1'");
-    $res = sql_query($query);
+    $res   = sql_query($query);
     if (sql_num_rows($res) > 0) {
         echo '<li>' . _UPG_TEXT_NOTE_PING01 . '</li>';
     }

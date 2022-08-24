@@ -2,7 +2,6 @@
 
 function upgrade_do371()
 {
-
     if (upgrade_checkinstall(371)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
@@ -17,7 +16,7 @@ function upgrade_do371()
     }
     unset($q);
     if (count($query)) {
-        $query = parseQuery("ALTER TABLE `[@prefix@]category` ") . join(', ', $query);
+        $query = parseQuery("ALTER TABLE `[@prefix@]category` ") . implode(', ', $query);
         upgrade_query('Altering [@prefix@]category table', $query);
     }
 
@@ -28,20 +27,19 @@ function upgrade_do371()
 
 function upgrade_do370()
 {
-
     if (upgrade_checkinstall(370)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
-    
+
     $query = parseQuery("ALTER TABLE `[@prefix@]item`
                     MODIFY COLUMN `ibody` mediumtext default NULL,
                     MODIFY COLUMN `imore` mediumtext default NULL;");
-    
+
     upgrade_query(parseQuery('Altering [@prefix@]item table'), $query);
-    
+
     $query = parseQuery("ALTER TABLE `[@prefix@]member` MODIFY COLUMN `mpassword`  varchar(255)  NOT NULL default ''");
     upgrade_query('Altering [@prefix@]member table', $query);
-    
+
     // 3.6 -> 3.7
     // update database version
     update_version('370');

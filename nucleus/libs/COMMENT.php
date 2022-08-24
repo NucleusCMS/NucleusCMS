@@ -18,7 +18,6 @@
 
 class COMMENT
 {
-
     /**
      * Returns the requested comment
      *
@@ -26,7 +25,7 @@ class COMMENT
      */
     public static function getComment($commentid)
     {
-        $query    = sprintf(
+        $query = sprintf(
             "SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid FROM %s LEFT OUTER JOIN %s ON `cmember`=`mnumber` WHERE `cnumber`=%s",
             sql_table('comment'),
             sql_table('member'),
@@ -111,7 +110,6 @@ class COMMENT
         return $body;
     }
 
-
     /**
      * Creates a link code for unlinked URLs with different protocols
      *
@@ -167,11 +165,10 @@ class COMMENT
                ) . '</a>' . $post;
     }
 
-
     /**
      * This method is a callback for creating link codes
      *
-     * @param   array  $match
+     * @param array $match
      *
      * @return string
      */

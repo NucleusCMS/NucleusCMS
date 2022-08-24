@@ -2,7 +2,6 @@
 
 function upgrade_do310()
 {
-
     if (upgrade_checkinstall(310)) {
         return _UPG_TEXT_ALREADY_INSTALLED;
     }

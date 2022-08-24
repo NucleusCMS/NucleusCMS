@@ -30,7 +30,7 @@ class NAVLIST extends ENCAPSULATE
     public $itemid;
     public $total = null;
 
-    function __construct(
+    public function __construct(
         $action,
         $start,
         $amount,
@@ -50,7 +50,7 @@ class NAVLIST extends ENCAPSULATE
         $this->itemid    = $itemid;
     }
 
-    function NAVLIST(
+    public function NAVLIST(
         $action,
         $start,
         $amount,
@@ -72,7 +72,7 @@ class NAVLIST extends ENCAPSULATE
         );
     }
 
-    function showBatchList(
+    public function showBatchList(
         $batchtype,
         &$query,
         $type,
@@ -85,13 +85,12 @@ class NAVLIST extends ENCAPSULATE
         $this->doEncapsulate($call, $params, $errorMessage);
     }
 
-
-    function showHead()
+    public function showHead()
     {
         $this->showNavigation();
     }
 
-    function showFoot()
+    public function showFoot()
     {
         if ($this->isFootNavigation) {
             $this->showNavigation();
@@ -101,7 +100,7 @@ class NAVLIST extends ENCAPSULATE
     /**
      * Displays a next/prev bar for long tables
      */
-    function showNavigation()
+    public function showNavigation()
     {
         $action    = $this->action;
         $start     = $this->start;
@@ -274,42 +273,42 @@ class NAVLIST extends ENCAPSULATE
                 <tr>
                     <td colspan="4">
                         <?php
-                        $s      = '_LISTS_FORM_SELECT_ITEM_OPTION_'
+                        $s = '_LISTS_FORM_SELECT_ITEM_OPTION_'
                                   . strtoupper($view_item_options);
-                        $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
-                        printf(
-                            '<div style="%s"><span class="filter">%s</span>',
-                            $style1,
-                            hsc(defined($s) ? constant($s) : $s)
-                        );
-                        echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
-                        ?>
+                $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
+                printf(
+                    '<div style="%s"><span class="filter">%s</span>',
+                    $style1,
+                    hsc(defined($s) ? constant($s) : $s)
+                );
+                echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
+                ?>
                         <div style="display: inline-block">
                             <form method="post" action="index.php"
                                   style="display: inline-block">
                                 <input type="submit" value="<?php
-                                echo _LISTS_CHANGE; ?>"/>
+                        echo _LISTS_CHANGE; ?>"/>
                                 <input type="hidden" name="blogid" value="<?php
-                                echo $blogid; ?>"/>
+                        echo $blogid; ?>"/>
                                 <input type="hidden" name="itemid" value="<?php
-                                echo $itemid; ?>"/>
+                        echo $itemid; ?>"/>
                                 <?php
-                                echo '<input type="hidden" name="catid" value="'
-                                     . $catid . '" />'; ?>
+                        echo '<input type="hidden" name="catid" value="'
+                             . $catid . '" />'; ?>
                                 <input type="hidden" name="action" value="<?php
-                                echo $action; ?>"/>
+                        echo $action; ?>"/>
                                 <input type="hidden" name="amount" value="<?php
-                                echo $amount; ?>"/>
+                        echo $amount; ?>"/>
                                 <input type="hidden" name="search" value="<?php
-                                echo $search; ?>"/>
+                        echo $search; ?>"/>
                                 <input type="hidden" name="start" value="0"/>
                                 <?php
-                                echo $this->getFormSelectViewItemOptions(
-                                    $action,
-                                    $blogid,
-                                    $catid,
-                                    $view_item_options
-                                ); ?>
+                        echo $this->getFormSelectViewItemOptions(
+                                 $action,
+                                 $blogid,
+                                 $catid,
+                                 $view_item_options
+                             ); ?>
                             </form>
                         </div>
                         </div>
@@ -321,7 +320,7 @@ class NAVLIST extends ENCAPSULATE
         <?php
     }
 
-    static function getValidViewItemOption($name, $default = 'all')
+    public static function getValidViewItemOption($name, $default = 'all')
     {
         $list = array(
             'all'
@@ -364,7 +363,7 @@ class NAVLIST extends ENCAPSULATE
 
         // calc count
         static $count_cached = array();
-        $cachekey = sprintf('%d_%d', $blogid, $selected_catid);
+        $cachekey            = sprintf('%d_%d', $blogid, $selected_catid);
         if (! isset($count_cached[$cachekey])) {
             global $member;
             $count_cached[$cachekey] = array();
@@ -412,7 +411,7 @@ class NAVLIST extends ENCAPSULATE
                                $selected_catid
                            ) : '');
                 }
-                $query                         = $sql . ' '
+                $query = $sql . ' '
                                                  . ADMIN::getQueryFilterForItemlist01(
                                                      $blogid,
                                                      $key
@@ -433,9 +432,9 @@ class NAVLIST extends ENCAPSULATE
             $selected = ($key == $in_value ? ' selected' : '');
             $title    = '_LISTS_FORM_SELECT_ITEM_OPTION_' . strtoupper($key);
             $title    = hsc(defined($title) ? constant($title) : $key);
-            $title    .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key])
+            $title .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key])
                 ? $count_cached[$cachekey][$key] : 0));
-            $s        .= "\n\t\t" . sprintf(
+            $s .= "\n\t\t" . sprintf(
                 '<option value="%s"%s>%s</option>',
                 $key,
                 $selected,
@@ -472,7 +471,7 @@ class NAVLIST extends ENCAPSULATE
             return '';
         }
 
-        static $r = array();
+        static $r  = array();
         $saved_key = sprintf(
             "%s_%d_%d_%s",
             $action,
@@ -488,11 +487,11 @@ class NAVLIST extends ENCAPSULATE
         $selected       = false;
         $selected_catid = intval($selected_catid);
         // @todo NP_MultipleCategories
-        $sql   = 'SELECT catid , cname , count(inumber) as count FROM '
+        $sql = 'SELECT catid , cname , count(inumber) as count FROM '
                  . sql_table('category')
                  . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
                  . ' WHERE cblog=' . intval($blogid)
-                 . " $extraQuery "
+                 . " {$extraQuery} "
                  . ' group BY catid '
                  . ' ORDER BY corder ASC , cname ASC';
         $total = 0;
@@ -507,7 +506,7 @@ class NAVLIST extends ENCAPSULATE
                 )
                            . hsc($row['cname'])
                            . sprintf('(%d)', $row['count']) . '</option>';
-                $total   += $row['count'];
+                $total += $row['count'];
                 if (! $selected && intval($row['catid']) == $selected_catid) {
                     $selected = true;
                 }
@@ -562,7 +561,7 @@ class NAVLIST extends ENCAPSULATE
               . ' LEFT JOIN ' . sql_table('blog') . ' ON cblog=bnumber '
               . ' WHERE iauthor=' . intval($member->id)
               //              . (($blogid>0) ? sprintf(' cblog=%d', $blogid) : '')
-              . " $extraQuery "
+              . " {$extraQuery} "
               . ' group BY catid '
               . ' ORDER BY corder ASC , cname ASC';
 
@@ -588,7 +587,7 @@ class NAVLIST extends ENCAPSULATE
                                   . hsc($row['cname'])
                                   . sprintf('(%d)', $row['count'])
                                   . '</option>';
-                $total          += $row['count'];
+                $total += $row['count'];
                 if (! $selected && intval($row['catid']) == $selected_catid) {
                     $selected = true;
                 }

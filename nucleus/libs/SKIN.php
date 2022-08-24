@@ -22,7 +22,6 @@ require_once __DIR__ . '/ACTIONS.php';
 
 class SKIN
 {
-
     // after creating a SKIN object, evaluates to true when the skin exists
     public $isValid;
 
@@ -49,7 +48,7 @@ class SKIN
             'SELECT * FROM [@prefix@]skin_desc WHERE sdnumber=[@sdnumber@]',
             array('sdnumber' => $this->id)
         );
-        $res   = sql_query($query);
+        $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
             $this->isValid = is_object($obj);
         } else {
@@ -104,7 +103,7 @@ class SKIN
     /**
      * Checks if a skin with a given shortname exists
      *
-     * @param   string  $name  Skin short name
+     * @param string $name Skin short name
      *
      * @return int number of skins with the given ID
      * @static
@@ -122,7 +121,7 @@ class SKIN
     /**
      * Checks if a skin with a given ID exists
      *
-     * @param   string  $id  Skin ID
+     * @param string $id Skin ID
      *
      * @return int number of skins with the given ID
      * @static
@@ -201,7 +200,7 @@ class SKIN
     /**
      * Returns a skin given its shortname
      *
-     * @param   string  $name  Skin shortname
+     * @param string $name Skin shortname
      *
      * @return object SKIN
      * @static
@@ -214,7 +213,7 @@ class SKIN
     /**
      * Returns a skin ID given its shortname
      *
-     * @param   string  $name  Skin shortname
+     * @param string $name Skin shortname
      *
      * @return int Skin ID
      * @static
@@ -235,7 +234,7 @@ class SKIN
     /**
      * Returns a skin shortname given its ID
      *
-     * @param   string  $name
+     * @param string $name
      *
      * @return string Skin short name
      * @static
@@ -274,11 +273,11 @@ class SKIN
         sql_query(parseQuery(
             "INSERT INTO [@prefix@]skin_desc (sdname,sddesc,sdtype,sdincmode,sdincpref) VALUES ('[@sdname@]','[@sddesc@]','[@sdtype@]','[@sdincmode@]','[@sdincpref@]')",
             array(
-                'sdname'    => sql_real_escape_string($name)
+                'sdname' => sql_real_escape_string($name)
             ,
-                'sddesc'    => sql_real_escape_string($desc)
+                'sddesc' => sql_real_escape_string($desc)
             ,
-                'sdtype'    => sql_real_escape_string($type)
+                'sdtype' => sql_real_escape_string($type)
             ,
                 'sdincmode' => sql_real_escape_string($includeMode)
             ,
@@ -303,9 +302,9 @@ class SKIN
     /**
      * Parse a SKIN
      *
-     * @param   string  $type
+     * @param string $type
      */
-    function parse($type, $options = array())
+    public function parse($type, $options = array())
     {
         global $manager, $CONF, $skinid;
 
@@ -398,7 +397,7 @@ class SKIN
      *
      * @param $type type of the skin (e.g. index, item, search ...)
      */
-    function getContent($type, $options = array())
+    public function getContent($type, $options = array())
     {
         global $DB_DRIVER_NAME, $CONF;
         if (strpos($type, '/') !== false) {
@@ -440,7 +439,7 @@ class SKIN
      * @param $type    type of the skin part (e.g. index, item, search ...)
      * @param $content new content for this skin part
      */
-    function update($type, $content, $options = array())
+    public function update($type, $content, $options = array())
     {
         $skinid = $this->id;
 
@@ -491,7 +490,7 @@ class SKIN
     /**
      * Deletes all skin parts from the database
      */
-    function deleteAllParts()
+    public function deleteAllParts()
     {
         sql_query(sprintf(
             "DELETE FROM %s WHERE sdesc=%d",
@@ -503,7 +502,7 @@ class SKIN
     /**
      * Updates the general information about the skin
      */
-    function updateGeneralInfo(
+    public function updateGeneralInfo(
         $name,
         $desc,
         $type = 'text/html',
@@ -550,7 +549,7 @@ class SKIN
             "SELECT stype FROM %s WHERE stype NOT IN ('index','item','error','search','archive','archivelist','imagepopup','member') AND spartstype='parts'",
             sql_table('skin')
         );
-        $res   = sql_query($query);
+        $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
             $skintypes[strtolower($row['stype'])] = $row['stype'];
         }
@@ -839,7 +838,7 @@ class SKIN
                 if (! isset($items['default'])) {
                     $items['default'] = $keyname;
                 }
-                $keyname                = (function_exists('mb_strtolower')
+                $keyname = (function_exists('mb_strtolower')
                     ? mb_strtolower($keyname, 'UTF-8') : strtolower($keyname));
                 $cached_array[$keyname] = $items;
                 //                var_dump($keyname, $items);
@@ -889,11 +888,10 @@ class SKIN
 
         $tidy_config = tidy_get_default_config(true);
 
-        $tidy = new tidy;
+        $tidy = new tidy();
         $tidy->parseString($data, $tidy_config, 'utf8');
         $tidy->cleanRepair();
 
         $data = (string)$tidy;
     }
-
 }

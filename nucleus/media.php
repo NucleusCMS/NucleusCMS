@@ -47,7 +47,7 @@ if (!$member->isLoggedIn()) {
 }
 
 // check if member is on at least one teamlist
-$query = 'SELECT count(*) as result FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
+$query          = 'SELECT count(*) as result FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
 $is_belong_team = ((int)quickQuery($query) > 0);
 if (!$is_belong_team && !$member->isAdmin()) {
     media_doError(_ERROR_DISALLOWEDUPLOAD);
@@ -60,7 +60,7 @@ if ($action == '') {
 }
 
 // check ticket
-if (!in_array($action, ['selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT])) {
+if (!in_array($action, array('selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT))) {
     if (!$manager->checkTicket()) {
         media_doError(_ERROR_BADTICKET);
     }

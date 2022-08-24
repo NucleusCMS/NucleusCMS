@@ -51,14 +51,14 @@ class PARSER
      * @param $delim          optional delimiter
      * @param $paramdelim     optional parameterdelimiter
      */
-    function __construct(
+    public function __construct(
         $allowedActions,
         &$handler,
         $delim = '<%,%>',
         $pdelim = ','
     ) {
         $this->actions = $allowedActions;
-        $this->handler =& $handler;
+        $this->handler = & $handler;
         $this->delim   = $delim;
         $this->pdelim  = $pdelim;
         $this->norestrictions
@@ -99,7 +99,7 @@ class PARSER
         }
     }
 
-    function legacyParse(&$contents)
+    public function legacyParse(&$contents)
     {
         $pieces = preg_split('/' . $this->delim . '/', $contents);
         $maxidx = count($pieces);
@@ -136,7 +136,7 @@ class PARSER
             foreach ($params as $key => $value) {
                 $params[$key] = trim($value);
             }
-            $paramText = join(',', $params);
+            $paramText = implode(',', $params);
         } else {
             // no parameters
             $params    = array();
@@ -238,7 +238,7 @@ class PARSER
                     }
                 }
             } elseif (confVar('DebugVars')) {
-                echo '&lt;%', $action, '(', join(
+                echo '&lt;%', $action, '(', implode(
                     $this->pdelim,
                     $params
                 ), ')%&gt;';

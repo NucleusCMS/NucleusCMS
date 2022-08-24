@@ -127,58 +127,50 @@ $f_mt_getTrackbackPings_doc = '(this is currently just a placeholder. It returns
 $functionDefs = array_merge(
     $functionDefs,
     array(
-        "mt.supportedMethods" =>
-            array(
-                "function" => "f_mt_supportedMethods",
+        "mt.supportedMethods" => array(
+                "function"  => "f_mt_supportedMethods",
                 "signature" => $f_mt_supportedMethods_sig,
                 "docstring" => $f_mt_supportedMethods_doc
             ),
 
-        "mt.supportedTextFilters" =>
-            array(
-                "function" => "f_mt_supportedTextFilters",
+        "mt.supportedTextFilters" => array(
+                "function"  => "f_mt_supportedTextFilters",
                 "signature" => $f_mt_supportedTextFilters_sig,
                 "docstring" => $f_mt_supportedTextFilters_doc
             ),
 
-        "mt.getCategoryList" =>
-            array(
-                "function" => "f_mt_getCategoryList",
+        "mt.getCategoryList" => array(
+                "function"  => "f_mt_getCategoryList",
                 "signature" => $f_mt_getCategoryList_sig,
                 "docstring" => $f_mt_getCategoryList_doc
             ),
 
-        "mt.publishPost" =>
-            array(
-                "function" => "f_mt_publishPost",
+        "mt.publishPost" => array(
+                "function"  => "f_mt_publishPost",
                 "signature" => $f_mt_publishPost_sig,
                 "docstring" => $f_mt_publishPost_doc
             ),
 
-        "mt.getPostCategories" =>
-            array(
-                "function" => "f_mt_getPostCategories",
+        "mt.getPostCategories" => array(
+                "function"  => "f_mt_getPostCategories",
                 "signature" => $f_mt_getPostCategories_sig,
                 "docstring" => $f_mt_getPostCategories_doc
             ),
 
-        "mt.setPostCategories" =>
-            array(
-                "function" => "f_mt_setPostCategories",
+        "mt.setPostCategories" => array(
+                "function"  => "f_mt_setPostCategories",
                 "signature" => $f_mt_setPostCategories_sig,
                 "docstring" => $f_mt_setPostCategories_doc
             ),
 
-        "mt.getRecentPostTitles" =>
-            array(
-                "function" => "f_mt_getRecentPostTitles",
+        "mt.getRecentPostTitles" => array(
+                "function"  => "f_mt_getRecentPostTitles",
                 "signature" => $f_mt_getRecentPostTitles_sig,
                 "docstring" => $f_mt_getRecentPostTitles_doc
             ),
 
-        "mt.getTrackbackPings" =>
-            array(
-                "function" => "f_mt_getTrackbackPings",
+        "mt.getTrackbackPings" => array(
+                "function"  => "f_mt_getTrackbackPings",
                 "signature" => $f_mt_getTrackbackPings_sig,
                 "docstring" => $f_mt_getTrackbackPings_doc
             )
@@ -215,7 +207,7 @@ function f_mt_supportedTextFilters($m)
 
 function f_mt_getCategoryList($m)
 {
-    $blogid = _getScalar($m, 0);
+    $blogid   = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -224,7 +216,7 @@ function f_mt_getCategoryList($m)
 
 function f_mt_publishPost($m)
 {
-    $itemid = intval(_getScalar($m, 0));
+    $itemid   = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -233,7 +225,7 @@ function f_mt_publishPost($m)
 
 function f_mt_getPostCategories($m)
 {
-    $itemid = intval(_getScalar($m, 0));
+    $itemid   = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -242,16 +234,16 @@ function f_mt_getPostCategories($m)
 
 function f_mt_setPostCategories($m)
 {
-    $itemid = intval(_getScalar($m, 0));
+    $itemid   = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
     $categories = $m->getParam(3);
-    $iSize = $categories->arraysize();
+    $iSize      = $categories->arraysize();
 
     $category = '';
     for ($i = 0; $i < $iSize; $i++) {
-        $struct = $categories->arraymem($i);
+        $struct   = $categories->arraymem($i);
         $bPrimary = $struct->structmem('isPrimary');
         if ($bPrimary) {
             $bPrimary = $bPrimary->scalarval();
@@ -273,10 +265,10 @@ function f_mt_setPostCategories($m)
 
 function f_mt_getRecentPostTitles($m)
 {
-    $blogid = intval(_getScalar($m, 0));
+    $blogid   = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
-    $iAmount = intval(_getScalar($m, 3));
+    $iAmount  = intval(_getScalar($m, 3));
 
     return _mt_getRecentPostTitles($blogid, $username, $password, $iAmount);
 }
@@ -288,10 +280,10 @@ function f_mt_getTrackbackPings($m)
     $itemid = intval(_getScalar($m, 0));
 
     $trackbacks = array();
-    $tbstruct = array();
+    $tbstruct   = array();
 
     $data = array(
-        'tb_id' => $itemid,
+        'tb_id'      => $itemid,
         'trackbacks' => & $trackbacks
     );
     $manager->notify('RetrieveTrackback', $data);
@@ -300,8 +292,8 @@ function f_mt_getTrackbackPings($m)
         $tbstruct[] = new xmlrpcval(
             array(
                 "pingTitle" => new xmlrpcval($v['title'], "string"),
-                "pingURL" => new xmlrpcval($v['url'], "string"),
-                "pingIP" => new xmlrpcval($v['ip'], "string")
+                "pingURL"   => new xmlrpcval($v['url'], "string"),
+                "pingIP"    => new xmlrpcval($v['ip'], "string")
             ),
             'struct'
         );
@@ -322,24 +314,24 @@ function _mt_setPostCategories($itemid, $username, $password, $category)
 
     // check if item exists
     if (! $manager->existsItem($itemid, 1, 1)) {
-        return _error(6, "No such item ($itemid)");
+        return _error(6, "No such item ({$itemid})");
     }
 
     $blogid = getBlogIDFromItemID($itemid);
-    $blog = new BLOG($blogid);
+    $blog   = new BLOG($blogid);
 
     if (! $mem->canAlterItem($itemid)) {
         return _error(7, "Not allowed to alter item");
     }
 
-    $old =& $manager->getItem($itemid, 1, 1);
+    $old = & $manager->getItem($itemid, 1, 1);
 
     $catid = $blog->getCategoryIdFromName($category);
 
     $publish = 0;
     if ($old['draft'] && $publish) {
         $wasdraft = 1;
-        $publish = 1;
+        $publish  = 1;
     } else {
         $wasdraft = 0;
     }
@@ -370,24 +362,24 @@ function _mt_getPostCategories($itemid, $username, $password)
 
     // check if item exists
     if (! $manager->existsItem($itemid, 1, 1)) {
-        return _error(6, "No such item ($itemid)");
+        return _error(6, "No such item ({$itemid})");
     }
 
     $blogid = getBlogIDFromItemID($itemid);
-    $blog = new BLOG($blogid);
+    $blog   = new BLOG($blogid);
 
     if (! $mem->canAlterItem($itemid)) {
         return _error(7, 'You are not allowed to request this information');
     }
 
-    $info =& $manager->getItem($itemid, 1, 1);
+    $info    = & $manager->getItem($itemid, 1, 1);
     $catName = $blog->getCategoryName($info['catid']);
 
     $struct = new xmlrpcval(
         array(
-            'categoryId' => new xmlrpcval($catName, 'string'),
+            'categoryId'   => new xmlrpcval($catName, 'string'),
             'categoryName' => new xmlrpcval($catName, 'string'),
-            'isPrimary' => new xmlrpcval(1, 'boolean')
+            'isPrimary'    => new xmlrpcval(1, 'boolean')
         ),
         'struct'
     );
@@ -400,13 +392,13 @@ function _mt_publishPost($itemid, $username, $password)
     global $manager;
 
     if (! $manager->existsItem($itemid, 1, 1)) {
-        return _error(6, "No such item ($itemid)");
+        return _error(6, "No such item ({$itemid})");
     }
 
     // get item data
     $blogid = getBlogIDFromItemID($itemid);
-    $blog = new BLOG($blogid);
-    $old =& $manager->getItem($itemid, 1, 1);
+    $blog   = new BLOG($blogid);
+    $old    = & $manager->getItem($itemid, 1, 1);
 
     return _edititem(
         $itemid,
@@ -432,7 +424,7 @@ function _mt_categoryList($blogid, $username, $password)
 
     // check if on team and blog exists
     if (! BLOG::existsID($blogid)) {
-        return _error(2, "No such blog ($blogid)");
+        return _error(2, "No such blog ({$blogid})");
     }
     if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
@@ -452,19 +444,18 @@ function _mt_categoryList($blogid, $username, $password)
         $categorystruct[] = new xmlrpcval(
             array(
                 "categoryName" => new xmlrpcval($obj->cname, "string"),
-                "categoryId" => new xmlrpcval($obj->cname, "string")
+                "categoryId"   => new xmlrpcval($obj->cname, "string")
             ),
             'struct'
         );
     }
-
 
     return new xmlrpcresp(new xmlrpcval($categorystruct, "array"));
 }
 
 function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
 {
-    $blogid = intval($blogid);
+    $blogid  = intval($blogid);
     $iAmount = intval($iAmount);
 
     // 1. login
@@ -475,7 +466,7 @@ function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
 
     // 2. check if allowed
     if (! BLOG::existsID($blogid)) {
-        return _error(2, "No such blog ($blogid)");
+        return _error(2, "No such blog ({$blogid})");
     }
     if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
@@ -494,17 +485,17 @@ function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
 
     $query = "SELECT inumber, ititle as title, itime, iauthor"
         . ' FROM ' . sql_table('item')
-        . " WHERE iblog=$blogid"
+        . " WHERE iblog={$blogid}"
         . " ORDER BY itime DESC"
-        . " LIMIT $iAmount";
+        . " LIMIT {$iAmount}";
     $r = sql_query($query);
 
     while ($row = sql_fetch_assoc($r)) {
         $newstruct = new xmlrpcval(array(
             "dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])), "dateTime.iso8601"),
-            "postid" => new xmlrpcval($row['inumber'], "string"),
-            "title" => new xmlrpcval($row['title'], "string"),
-            "userid" => new xmlrpcval($row['iauthor'], "string")
+            "postid"      => new xmlrpcval($row['inumber'], "string"),
+            "title"       => new xmlrpcval($row['title'], "string"),
+            "userid"      => new xmlrpcval($row['iauthor'], "string")
         ), 'struct');
 
         array_push($structarray, $newstruct);

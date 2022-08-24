@@ -12,8 +12,7 @@ if (! defined('_HAS_MBSTRING')) {
 
 class Utils
 {
-
-    function __construct()
+    public function __construct()
     {
     }
 
@@ -27,7 +26,7 @@ class Utils
 
         if (! _HAS_MBSTRING || ('iso-8859-1' == strtolower(_CHARSET))) {
             if ('utf-8' == strtolower(_CHARSET)
-                && ( ! isset($args[3])
+                && (! isset($args[3])
                      || (false === stripos($args[3], 'utf-8')))) {
                 $additional_headers = 'Content-Type: text/plain; charset=utf-8';
                 if (isset($args[3])) {
@@ -83,7 +82,7 @@ class Utils
             LC_CTYPE,
             '0'
         ); // backup locale : maintained per process, not thread
-        $locale     = setlocale(LC_CTYPE, '');
+        $locale = setlocale(LC_CTYPE, '');
         try {
             if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
                 $locale_mbcahrset = false;
@@ -167,7 +166,7 @@ class Utils
         if (is_null($enable_curl)) {
             $enable_curl = (function_exists('curl_init'));
         }
-        $timeout        = ((isset($options['timeout'])
+        $timeout = ((isset($options['timeout'])
                             && $options['timeout'] > 0) ? $options['timeout']
             : 0);
         $connecttimeout = ((isset($options['connecttimeout'])
@@ -217,7 +216,7 @@ class Utils
                                 'body'   => &$body,
                             );
                         } else {
-                            $ret =& $body;
+                            $ret = & $body;
                         }
                     }
                 }
@@ -307,25 +306,25 @@ class Utils
         }
         return false;
     }
-    
+
     public static function convertDateformatFromStrftimeformat($format)
     {
         // Todo: ignore error option
         $force = true;
         $parts = preg_split('|(%[%a-z])|i', $format, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        $res = array();
+        $res   = array();
 
-        foreach($parts as $part) {
+        foreach ($parts as $part) {
             if (substr($part, 0, 1) !== '%') {
                 // normal string
-               $res[] = preg_replace('|([a-z])|i', '\\\\${1}', $part);
-               continue;
+                $res[] = preg_replace('|([a-z])|i', '\\\\${1}', $part);
+                continue;
             }
             if (strlen($part) != 2) {
                 // syntax error;
                 if ($force) {
-                   $res[] = '%';
-                   continue;
+                    $res[] = '%';
+                    continue;
                 }
                 return false;
             }
@@ -348,7 +347,7 @@ class Utils
                 '%W' => 'W',
                 '%z' => 'O',
                 '%Z' => 'T',
-                '%T' => 'H:i:s', // %T "%H:%M:%S"  
+                '%T' => 'H:i:s', // %T "%H:%M:%S"
                 '%p' => 'A', // AM PM
                 '%P' => 'a', // am pm
                 '%I' => 'h',  // 01-12 (hour)
@@ -383,10 +382,10 @@ class Utils
             if (strcmp($new, $part) === 0) {
                 // Not implemented yet.
                 if ($force) {
-                   // todo: ? or do nothing or as it is
+                    // todo: ? or do nothing or as it is
 //                   $res[] = '?';
 //                   $res[] = $part;
-                   continue;
+                    continue;
                 }
                 return false;
 //              continue;
@@ -394,8 +393,8 @@ class Utils
             $res[] = $new;
         }
         return implode('', $res);
-    }    
-    
+    }
+
     public static function test_date_with_strftime_format()
     {
         $t = null;
@@ -408,7 +407,7 @@ class Utils
             '%u %a %A %h %b %B',
             '%F %D %y',
         );
-        foreach($list as $format) {
+        foreach ($list as $format) {
             $date_fmt = self::convertDateformatFromStrftimeformat($format);
             printf("format                        : %s\n", $format);
             printf("  date fmt convert            : %s\n", $date_fmt);
@@ -421,5 +420,4 @@ class Utils
             printf("  date()                      : %s\n", date($date_fmt, $t));
         }
     }
-   
 }

@@ -2,8 +2,7 @@
 
 class SYSTEMLOG
 {
-
-    const MAX_MSG_LEN = 1000000;
+    public const MAX_MSG_LEN = 1000000;
 
     public static function checkWritable()
     {
@@ -38,17 +37,17 @@ class SYSTEMLOG
             $message = (string)$message;
         }
 
-        $tablename            = sql_table('systemlog');
-        $query                = <<< EOL
-            INSERT INTO `$tablename`
+        $tablename = sql_table('systemlog');
+        $query     = <<< EOL
+            INSERT INTO `{$tablename}`
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash)
             VALUES(:logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash)
 EOL;
-        $ph                   = array();
-        $ph[':logyear']       = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
-        $ph[':logtype']       = (string)$type;
-        $ph[':subtype']       = (string)$subtype;
-        $ph[':mnumber']       = (int)max(
+        $ph             = array();
+        $ph[':logyear'] = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
+        $ph[':logtype'] = (string)$type;
+        $ph[':subtype'] = (string)$subtype;
+        $ph[':mnumber'] = (int)max(
             0,
             empty($options['mnumber']) ? 0 : (int)$options['mnumber']
         );
@@ -56,20 +55,20 @@ EOL;
             'Y-m-d H:i:s',
             $_SERVER['REQUEST_TIME']
         );
-        $ph[':message']       = (string)((strlen($message) > self::MAX_MSG_LEN)
+        $ph[':message'] = (string)((strlen($message) > self::MAX_MSG_LEN)
             ? substr(
                 $message,
                 0,
                 self::MAX_MSG_LEN
             ) : $message);
-        $ph[':message_hash']  = (string)sha1($ph[':message']);
+        $ph[':message_hash'] = (string)sha1($ph[':message']);
 
         if ($DB_DRIVER_NAME == 'sqlite') {
             $query = <<< EOL
-            INSERT INTO `$tablename`
+            INSERT INTO `{$tablename}`
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash, logid)
             SELECT :logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash
-                    , ifnull((SELECT MAX(logid) FROM `$tablename` WHERE logyear=:logyear),0)+1
+                    , ifnull((SELECT MAX(logid) FROM `{$tablename}` WHERE logyear=:logyear),0)+1
 EOL;
         }
 
@@ -79,7 +78,7 @@ EOL;
             $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
             foreach (array_keys($ph) as $key) {
                 $new_key      = substr($key, 1);
-                $ph[$new_key] =& $ph[$key];
+                $ph[$new_key] = & $ph[$key];
                 unset($ph[$key]);
             }
             $query = parseQuery($query, $ph);
@@ -115,7 +114,7 @@ EOL;
 
         $tablename = sql_table('systemlog');
         $query     = <<< EOL
-            DELETE FROM `$tablename`
+            DELETE FROM `{$tablename}`
             WHERE logtype=:logtype AND subtype=:subtype AND message_hash=:message_hash
 EOL;
         if ($DB_PHP_MODULE_NAME == 'pdo') {
@@ -124,7 +123,7 @@ EOL;
             $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
             foreach (array_keys($ph) as $key) {
                 $new_key      = substr($key, 1);
-                $ph[$new_key] =& $ph[$key];
+                $ph[$new_key] = & $ph[$key];
                 unset($ph[$key]);
             }
             $query = parseQuery($query, $ph);
@@ -182,7 +181,7 @@ EOL;
             SELECT timestamp_utc FROM `{$tablename}` WHERE logtype='error'
             ORDER BY timestamp_utc DESC LIMIT 19,1
 EOL;
-        $res   = sql_query($query);
+        $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
             $query = 'DELETE FROM ' . $tablename
                      . sprintf(

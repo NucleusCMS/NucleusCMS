@@ -51,7 +51,7 @@ if (preg_match('#/install$#', $path)) {
 
 if (DEBUG_INSTALL_QUERY) {
     global $CONF;
-    $CONF=array('debug'=>1);
+    $CONF = array('debug' => 1);
 }
 
 include_once('../nucleus/libs/version.php');
@@ -69,9 +69,9 @@ if (isset($_POST['lang'])) {
 if ($lang != '' && !in_array($lang, $install_lang_keys)) {
     $lang = 'en';
 } elseif ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php")) {
-   // do nothing
+    // do nothing
 } else {
-    $v = '';
+    $v         = '';
     $http_lang = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
     foreach ($http_lang as $key) {
         if (!isset($install_lang_defs[$key])) {
@@ -91,8 +91,8 @@ if ($lang != '' && !in_array($lang, $install_lang_keys)) {
     }
 }
 
-    define('INSTALL_LANG', $lang);
-    include_once("./install_lang_{$lang}.php");
+define('INSTALL_LANG', $lang);
+include_once("./install_lang_{$lang}.php");
 
 if ($lang != 'en') {
     ob_start();
@@ -111,7 +111,6 @@ $aConfPlugsToInstall = array(
 //        'NP_CKEditor',
 );
 
-
 // array with skins to install. skins must be present under the skins/ directory with
 // a subdirectory having the same name that contains a skinbackup.xml file
 //
@@ -127,7 +126,7 @@ $aConfSkinsToImport = array('atom','rss2.0','rsd','default');
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 if (version_compare(phpversion(), NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
-    $msg = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
+    $msg    = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
     $errors = array($msg);
     showErrorMessages($errors); // exit to instalation
 }
@@ -144,7 +143,6 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
     $CONF['installscript'] = 1;
 }
 
-
 // include core classes that are needed for login & plugin handling
 if (!function_exists('mysql_query')) {
     include_once('../nucleus/libs/sql/mysql_emulate.php');
@@ -154,18 +152,18 @@ if (!function_exists('mysql_query')) {
 
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
 if (ENABLE_SQLITE_INSTALL && (postVar('install_db_type') == 'sqlite')) {
-    $DB_DRIVER_NAME = 'sqlite';
+    $DB_DRIVER_NAME     = 'sqlite';
     $DB_PHP_MODULE_NAME = 'pdo';
 }
 
 //set the handler if different from mysql (or mysqli)
-if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME)==0) {
+if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME) == 0) {
     $mode1 = INSTALL_PRIORITY_MYSQL_MODULE && (extension_loaded('mysql') || extension_loaded('mysqli'));
     if ($mode1) {
         $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
     } else {
         $DB_PHP_MODULE_NAME = 'pdo';
-        $DB_DRIVER_NAME = 'mysql';
+        $DB_DRIVER_NAME     = 'mysql';
     }
 }
 include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');

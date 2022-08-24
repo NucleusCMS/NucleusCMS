@@ -23,7 +23,6 @@
 
 class SEARCH
 {
-
     public $fields;
     public $keywords;
     public $mode; // hybrid | likeonly | fulltext
@@ -83,8 +82,8 @@ class SEARCH
         if ($long_keywords) {
             $long_keywords    = $this->add_boolean($long_keywords);
             $ph['field']      = $this->fields;
-            $ph['keywords']   = sql_quote_string(join(' ', $long_keywords));
-            $ph['like_score'] = join(' + ', $score);
+            $ph['keywords']   = sql_quote_string(implode(' ', $long_keywords));
+            $ph['like_score'] = implode(' + ', $score);
 
             return parseQuery(
                 '[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ',
@@ -151,7 +150,7 @@ class SEARCH
             $keywords[$i] = ltrim($keyword, '-+|');
         }
 
-        return join(' ', $keywords);
+        return implode(' ', $keywords);
     }
 
     public function get_where_phrase()
@@ -171,7 +170,7 @@ class SEARCH
         $_ = array();
         if ($long_keywords) {
             $long_keywords = $this->add_boolean($long_keywords);
-            $_[]           = $this->get_ft_phrase(join(' ', $long_keywords));
+            $_[]           = $this->get_ft_phrase(implode(' ', $long_keywords));
         }
         if ($keywords) {
             foreach ($keywords as $keyword) {
@@ -187,7 +186,7 @@ class SEARCH
             }
         }
 
-        return join(' ', $_);
+        return implode(' ', $_);
     }
 
     public function get_where_phrase_ja($keywords)
@@ -207,7 +206,7 @@ class SEARCH
             }
         }
 
-        return join(' ', $_);
+        return implode(' ', $_);
     }
 
     private function get_ft_phrase($long_keywords)
@@ -261,8 +260,8 @@ class SEARCH
 
     private function score_for_like_phrase($keyword)
     {
-        $fields        = explode(',', $this->fields);
-        $score         = array();
+        $fields = explode(',', $this->fields);
+        $score  = array();
         $tpl
                        = " 0.2*(LENGTH([@field@]) - LENGTH(REPLACE(LOWER([@field@]), LOWER([@keyword@]), '')))/LENGTH([@keyword@]) ";
         $ph['keyword'] = sql_quote_string($keyword);
@@ -271,13 +270,13 @@ class SEARCH
             $score[]     = parseQuery($tpl, $ph);
         }
 
-        return join(' + ', $score);
+        return implode(' + ', $score);
     }
 
     private function fields_concat()
     {
         $fields = explode(',', $this->fields);
 
-        return sprintf('CONCAT(%s)', join(",'/',", $fields));
+        return sprintf('CONCAT(%s)', implode(",'/',", $fields));
     }
 }

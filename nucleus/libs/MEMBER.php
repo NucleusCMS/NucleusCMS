@@ -18,7 +18,6 @@
 
 class MEMBER
 {
-
     // 1 when authenticated, 0 when not
     public $loggedin = 0;
     public $password;        // not the actual password, but rather a MD5 hash
@@ -32,7 +31,7 @@ class MEMBER
     public $email;
     public $url;
     public $language = '';        // name of the language file to use (e.g. 'english' -> english.php)
-    public $admin = 0;            // (either 0 or 1)
+    public $admin    = 0;            // (either 0 or 1)
     public $canlogin = 0;        // (either 0 or 1)
     public $notes;
     public $autosave = 1;        // if the member use the autosave draft function
@@ -43,7 +42,7 @@ class MEMBER
     /**
      * Constructor for a member object
      */
-    function __construct()
+    public function __construct()
     {
         global $DIR_LIBS;
         include_once("{$DIR_LIBS}phpass.class.inc.php");
@@ -101,7 +100,7 @@ class MEMBER
         return $mem;
     }
 
-    function readFromName($displayname)
+    public function readFromName($displayname)
     {
         return $this->read(sprintf(
             "mname='%s'",
@@ -109,7 +108,7 @@ class MEMBER
         ));
     }
 
-    function readFromID($id)
+    public function readFromID($id)
     {
         return $this->read('mnumber=' . (int)$id);
     }
@@ -119,7 +118,7 @@ class MEMBER
      * Returns true when succeeded, returns false when failed
      * 3.40 adds CustomLogin event
      */
-    function login($formv_username, $formv_password)
+    public function login($formv_username, $formv_password)
     {
         global $manager;
 
@@ -140,7 +139,7 @@ class MEMBER
             return 0;
         }
 
-        if  ($success && $this->readFromName($formv_username)) {
+        if ($success && $this->readFromName($formv_username)) {
             $this->loggedin = 1;
         } elseif (! $success && $allowlocal) {
             if ('' === $formv_password || 40 < strlen($formv_password)) { // avoid md5 collision by using a long key
@@ -170,7 +169,7 @@ class MEMBER
     /**
      * Login using cookie key
      */
-    function cookielogin($login, $cookiekey)
+    public function cookielogin($login, $cookiekey)
     {
         $this->loggedin = 0;
         if (! $this->readFromName($login)) {
@@ -184,17 +183,17 @@ class MEMBER
         return $this->isLoggedIn();
     }
 
-    function logout()
+    public function logout()
     {
         $this->loggedin = 0;
     }
 
-    function isLoggedIn()
+    public function isLoggedIn()
     {
         return $this->loggedin;
     }
 
-    function isHalt()
+    public function isHalt()
     {
         return $this->halt;
     }
@@ -202,7 +201,7 @@ class MEMBER
     /**
      * Read member information from the database
      */
-    function read($where)
+    public function read($where)
     {
         // read info
         $query = sprintf(
@@ -238,12 +237,11 @@ class MEMBER
         return 0; // not found or removed user
     }
 
-
     /**
      * Returns true if member is an admin for the given blog
      * (returns false if not a team member)
      */
-    function isBlogAdmin($blogid)
+    public function isBlogAdmin($blogid)
     {
         $query = sprintf(
             'SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d AND tadmin=1 LIMIT 1',
@@ -255,13 +253,12 @@ class MEMBER
         return (int)quickQuery($query) > 0;
     }
 
-    function blogAdminRights($blogid)
+    public function blogAdminRights($blogid)
     {
         return ($this->isAdmin() || $this->isBlogAdmin($blogid));
     }
 
-
-    function teamRights($blogid)
+    public function teamRights($blogid)
     {
         return ($this->isAdmin() || $this->isTeamMember($blogid));
     }
@@ -269,7 +266,7 @@ class MEMBER
     /**
      * Returns true if this member is a team member of the given blog
      */
-    function isTeamMember($blogid)
+    public function isTeamMember($blogid)
     {
         $query = sprintf(
             'SELECT count(*) AS result FROM %s WHERE tblog=%d AND tmember=%d LIMIT 1',
@@ -281,7 +278,7 @@ class MEMBER
         return (int)quickQuery($query) > 0;
     }
 
-    function canAddItem($catid)
+    public function canAddItem($catid)
     {
         global $manager;
 
@@ -319,7 +316,7 @@ class MEMBER
      *   - member is admin of the blog associated with the comment
      *   - member is author of the item associated with the comment
      */
-    function canAlterComment($commentid)
+    public function canAlterComment($commentid)
     {
         if ($this->isAdmin()) {
             return 1;
@@ -332,8 +329,8 @@ class MEMBER
             sql_table('blog'),
             (int)$commentid
         );
-        $res   = sql_query($query);
-        $obj   = sql_fetch_object($res);
+        $res = sql_query($query);
+        $obj = sql_fetch_object($res);
 
         return ($obj->cauthor == $this->getID())
                or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor
@@ -346,7 +343,7 @@ class MEMBER
      *           - member is the author of the item
      *        - member is admin of the the associated blog
      */
-    function canAlterItem($itemid)
+    public function canAlterItem($itemid)
     {
         if ($this->isAdmin()) {
             return 1;
@@ -357,7 +354,7 @@ class MEMBER
             sql_table('item'),
             (int)$itemid
         );
-        $res   = sql_query($query);
+        $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res)) && is_object($obj)) {
             return ($obj->iauthor == $this->getID())
                    or $this->isBlogAdmin($obj->iblog);
@@ -370,7 +367,7 @@ class MEMBER
      * Return true if member can be deleted. This means that there are no items
      * posted by the member left
      */
-    function canBeDeleted()
+    public function canBeDeleted()
     {
         $sql = sprintf(
             'SELECT count(*) AS result FROM %s WHERE iauthor=%d',
@@ -381,7 +378,7 @@ class MEMBER
         return ((int)quickQuery($sql) == 0);
     }
 
-    function getTotalPosts()
+    public function getTotalPosts()
     {
         $res = sql_query(sprintf(
             'SELECT count(*) FROM %s WHERE iauthor=%d',
@@ -392,7 +389,7 @@ class MEMBER
         return (int)sql_result($res, 0, 0);
     }
 
-    function getTotalComments()
+    public function getTotalComments()
     {
         $sql = sprintf(
             'SELECT count(*) FROM %s WHERE cmember=%d',
@@ -409,7 +406,7 @@ class MEMBER
      *
      * @param   itemid
      */
-    function canCloneItem($itemid)
+    public function canCloneItem($itemid)
     {
         if ($this->isAdmin()) {
             return 1;
@@ -419,7 +416,7 @@ class MEMBER
             sql_table('item'),
             (int)$itemid
         );
-        $res   = sql_query($query);
+        $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
             return ($obj->iauthor == $this->getID())
                    or $this->isTeamMember($obj->iblog);
@@ -435,7 +432,7 @@ class MEMBER
      * @param   itemid
      * @param   newcat (can also be of form 'newcat-x' with x=blogid)
      */
-    function canUpdateItem($itemid, $newcat)
+    public function canUpdateItem($itemid, $newcat)
     {
         global $manager;
 
@@ -464,9 +461,8 @@ class MEMBER
             return 0;
         }
 
-
         // get item
-        $item =& $manager->getItem($itemid, 1, 1);
+        $item = & $manager->getItem($itemid, 1, 1);
 
         // old catid = new catid -> OK
         if ($item['catid'] == $newcat) {
@@ -514,7 +510,7 @@ class MEMBER
      *        set this to 1 when using a shared computer. Cookies will expire
      *        at the end of the session in this case.
      */
-    function setCookies($shared = 0)
+    public function setCookies($shared = 0)
     {
         global $CONF;
 
@@ -554,7 +550,7 @@ class MEMBER
         }
     }
 
-    function sendActivationLink($type, $extra = '')
+    public function sendActivationLink($type, $extra = '')
     {
         global $CONF;
 
@@ -580,7 +576,7 @@ class MEMBER
                 $message = _ACTIVATE_CHANGE_MAIL;
                 $title   = _ACTIVATE_CHANGE_MAILTITLE;
                 break;
-            default;
+            default:
         }
 
         // fill out variables in text
@@ -615,7 +611,7 @@ class MEMBER
     /**
      * Returns an array of all blogids for which member has admin rights
      */
-    function getAdminBlogs()
+    public function getAdminBlogs()
     {
         if ($this->isAdmin()) {
             $res = sql_query(sprintf(
@@ -645,7 +641,7 @@ class MEMBER
     /**
      * Returns an array of all blogids for which member has team rights
      */
-    function getTeamBlogs($incAdmin = 1)
+    public function getTeamBlogs($incAdmin = 1)
     {
         $incAdmin = (int)$incAdmin;
 
@@ -679,7 +675,7 @@ class MEMBER
      * voting can be sent. A suggestion can be given for when the member is not
      * logged in
      */
-    function getNotifyFromMailAddress($suggest = "")
+    public function getNotifyFromMailAddress($suggest = "")
     {
         global $CONF;
 
@@ -701,7 +697,7 @@ class MEMBER
     /**
      * Write data to database
      */
-    function write()
+    public function write()
     {
         $query = sprintf(
             "UPDATE %s SET mname='%s',mrealname='%s',mpassword='%s',mcookiekey='%s',murl='%s',memail='%s',madmin=%d,mnotes='%s',mcanlogin=%d,deflang='%s',mautosave=%d ,mhalt=%s WHERE mnumber=%d",
@@ -723,7 +719,7 @@ class MEMBER
         sql_query($query);
     }
 
-    function writeCookieKey()
+    public function writeCookieKey()
     {
         $query = sprintf(
             "UPDATE %s SET mcookiekey='%s' WHERE mnumber=%d",
@@ -734,12 +730,12 @@ class MEMBER
         sql_query($query);
     }
 
-    function checkCookieKey($key)
+    public function checkCookieKey($key)
     {
         return (($key != '') && ($key == $this->getCookieKey()));
     }
 
-    function password_verify($formv_password, $hash)
+    public function password_verify($formv_password, $hash)
     {
         if (isset($this->halt) && ($this->halt)) {
             return false;
@@ -770,7 +766,7 @@ class MEMBER
                     sql_real_escape_string($password_hash),
                     (int)$mnumber
                 );
-                $rs    = sql_query($query);
+                $rs = sql_query($query);
             } else {
                 $rs = false;
             }
@@ -779,7 +775,7 @@ class MEMBER
         return $rs;
     }
 
-    function checkPassword($pw)
+    public function checkPassword($pw)
     {
         if (str_contains($this->getPassword(), '$')) {
             return $this->hasher->CheckPassword($pw, $this->getPassword());
@@ -788,32 +784,32 @@ class MEMBER
         }
     }
 
-    function getRealName()
+    public function getRealName()
     {
         return $this->realname;
     }
 
-    function setRealName($name)
+    public function setRealName($name)
     {
         $this->realname = $name;
     }
 
-    function getEmail()
+    public function getEmail()
     {
         return $this->email;
     }
 
-    function setEmail($email)
+    public function setEmail($email)
     {
         $this->email = $email;
     }
 
-    function getPassword()
+    public function getPassword()
     {
         return $this->password;
     }
 
-    function setPassword($pwd)
+    public function setPassword($pwd)
     {
         if (! self::checkIfValidPasswordCharacters($pwd)) {
             return false;
@@ -823,12 +819,12 @@ class MEMBER
         return true;
     }
 
-    function setHalt($halt)
+    public function setHalt($halt)
     {
         $this->halt = $halt ? 1 : 0;
     }
 
-    function getCookieKey()
+    public function getCookieKey()
     {
         return $this->cookiekey;
     }
@@ -836,91 +832,91 @@ class MEMBER
     /**
      * Generate new cookiekey, save it, and return it
      */
-    function newCookieKey()
+    public function newCookieKey()
     {
-        mt_srand((double)microtime() * 1000000);
+        mt_srand((float)microtime() * 1000000);
         $this->cookiekey = md5(uniqid(mt_rand(), true));
         $this->writeCookieKey();
 
         return $this->cookiekey;
     }
 
-    function setCookieKey($val)
+    public function setCookieKey($val)
     {
         $this->cookiekey = $val;
     }
 
-    function getURL()
+    public function getURL()
     {
         return $this->url;
     }
 
-    function setURL($site)
+    public function setURL($site)
     {
         $this->url = $site;
     }
 
-    function getLanguage()
+    public function getLanguage()
     {
         return $this->language;
     }
 
-    function setLanguage($lang)
+    public function setLanguage($lang)
     {
         $this->language = $lang;
     }
 
-    function setDisplayName($nick)
+    public function setDisplayName($nick)
     {
         $this->displayname = $nick;
     }
 
-    function getDisplayName()
+    public function getDisplayName()
     {
         return $this->displayname;
     }
 
-    function isAdmin()
+    public function isAdmin()
     {
         return $this->admin;
     }
 
-    function setAdmin($val)
+    public function setAdmin($val)
     {
         $this->admin = (int) $val;
     }
 
-    function canLogin()
+    public function canLogin()
     {
         return $this->canlogin;
     }
 
-    function setCanLogin($val)
+    public function setCanLogin($val)
     {
         $this->canlogin = (int) $val;
     }
 
-    function getNotes()
+    public function getNotes()
     {
         return $this->notes;
     }
 
-    function setNotes($val)
+    public function setNotes($val)
     {
         $this->notes = $val;
     }
 
-    function getAutosave()
+    public function getAutosave()
     {
         return $this->autosave;
     }
 
-    function setAutosave($val)
+    public function setAutosave($val)
     {
         $this->autosave = (int) $val;
     }
 
-    function getID()
+    public function getID()
     {
         return $this->id;
     }
@@ -961,7 +957,7 @@ class MEMBER
      *  Checks if a username is protected.
      *  If so, it can not be used on anonymous comments
      */
-    function isNameProtected($name)
+    public function isNameProtected($name)
     {
         // extract name
         $name = strip_tags($name);
@@ -1061,7 +1057,7 @@ class MEMBER
             sql_table('activation'),
             sql_real_escape_string($key)
         );
-        $res   = sql_query($query);
+        $res = sql_query($query);
 
         if ($res && ($obj = sql_fetch_object($res))) {
             return $obj;
@@ -1083,7 +1079,7 @@ class MEMBER
      *
      * @author dekarma
      */
-    function generateActivationEntry($type, $extra = '')
+    public function generateActivationEntry($type, $extra = '')
     {
         // clean up old entries
         $this->cleanupActivationTable();
@@ -1330,7 +1326,7 @@ class MEMBER
         }
         sql_query($query);
     }
-    
+
     public static function createOptionTable()
     {
         if (self::existOptionTable()) {

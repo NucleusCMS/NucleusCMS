@@ -22,7 +22,7 @@ if (isset($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
     echo renderPage($content);
     exit;
 }
-if (intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID || intGetVar('from')>=NUCLEUS_UPGRADE_VERSION_ID) {
+if (intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID || intGetVar('from') >= NUCLEUS_UPGRADE_VERSION_ID) {
     $query = "SELECT count(*) as result FROM `[@prefix@]config` WHERE name='DatabaseName' AND value='Nucleus'";
     if (!quickQuery(parseQuery($query))) {
         $content = upgrade_error('It is an incompatible database.');
@@ -30,7 +30,7 @@ if (intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID || intGetVar(
         exit;
     }
 }
-if (intGetVar('from') && intGetVar('from')<300) {
+if (intGetVar('from') && intGetVar('from') < 300) {
     $content = '<p class="warning">'    . _UPG_TEXT_UPGRADE_ABORTED .'</p>'
          . '<p class="deprecated">' . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP .'</p>'
          . '<p class="note">'       . _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO .'</p>'

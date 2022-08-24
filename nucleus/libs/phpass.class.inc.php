@@ -1,4 +1,5 @@
 <?php
+
 #
 # Portable PHP password hashing framework.
 #
@@ -26,13 +27,12 @@
 #
 class PasswordHash
 {
-
     public $itoa64;
     public $iteration_count_log2;
     public $portable_hashes;
     public $random_state;
 
-    function __construct($iteration_count_log2 = 8, $portable_hashes = true)
+    public function __construct($iteration_count_log2 = 8, $portable_hashes = true)
     {
         $this->itoa64
             = './0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
@@ -47,7 +47,7 @@ class PasswordHash
         $this->random_state = microtime() . uniqid(mt_rand(), true);
     }
 
-    function get_random_bytes($count)
+    public function get_random_bytes($count)
     {
         $output = '';
         if (@is_readable('/dev/urandom')
@@ -60,7 +60,7 @@ class PasswordHash
             $output = '';
             for ($i = 0; $i < $count; $i += 16) {
                 $this->random_state = md5(microtime() . $this->random_state);
-                $output             .= pack('H*', md5($this->random_state));
+                $output .= pack('H*', md5($this->random_state));
             }
             $output = substr($output, 0, $count);
         }
@@ -68,12 +68,12 @@ class PasswordHash
         return $output;
     }
 
-    function encode64($input, $count)
+    public function encode64($input, $count)
     {
         $output = '';
         $i      = 0;
         do {
-            $value  = ord($input[$i++]);
+            $value = ord($input[$i++]);
             $output .= $this->itoa64[$value & 0x3f];
             if ($i < $count) {
                 $value |= ord($input[$i]) << 8;
@@ -95,7 +95,7 @@ class PasswordHash
         return $output;
     }
 
-    function gensalt_private($input)
+    public function gensalt_private($input)
     {
         $output = '$P$';
         $output .= $this->itoa64[min($this->iteration_count_log2 + 5, 30)];
@@ -104,7 +104,7 @@ class PasswordHash
         return $output;
     }
 
-    function crypt_private($password, $setting)
+    public function crypt_private($password, $setting)
     {
         $output = '*0';
         if (substr($setting, 0, 2) == $output) {
@@ -147,7 +147,7 @@ class PasswordHash
         return $output;
     }
 
-    function gensalt_extended($input)
+    public function gensalt_extended($input)
     {
         $count_log2 = min($this->iteration_count_log2 + 8, 24);
         # This should be odd to not reveal weak DES keys, and the
@@ -165,7 +165,7 @@ class PasswordHash
         return $output;
     }
 
-    function gensalt_blowfish($input)
+    public function gensalt_blowfish($input)
     {
         # This one needs to use a different order of characters and a
         # different encoding scheme from the one in encode64() above.
@@ -185,21 +185,21 @@ class PasswordHash
 
         $i = 0;
         do {
-            $c1     = ord($input[$i++]);
+            $c1 = ord($input[$i++]);
             $output .= $itoa64[$c1 >> 2];
-            $c1     = ($c1 & 0x03) << 4;
+            $c1 = ($c1 & 0x03) << 4;
             if ($i >= 16) {
                 $output .= $itoa64[$c1];
                 break;
             }
 
-            $c2     = ord($input[$i++]);
-            $c1     |= $c2 >> 4;
+            $c2 = ord($input[$i++]);
+            $c1 |= $c2 >> 4;
             $output .= $itoa64[$c1];
-            $c1     = ($c2 & 0x0f) << 2;
+            $c1 = ($c2 & 0x0f) << 2;
 
-            $c2     = ord($input[$i++]);
-            $c1     |= $c2 >> 6;
+            $c2 = ord($input[$i++]);
+            $c1 |= $c2 >> 6;
             $output .= $itoa64[$c1];
             $output .= $itoa64[$c2 & 0x3f];
         } while (1);
@@ -207,7 +207,7 @@ class PasswordHash
         return $output;
     }
 
-    function HashPassword($password)
+    public function HashPassword($password)
     {
         $random = '';
 
@@ -246,7 +246,7 @@ class PasswordHash
         return '*';
     }
 
-    function CheckPassword($password, $stored_hash)
+    public function CheckPassword($password, $stored_hash)
     {
         $hash = $this->crypt_private($password, $stored_hash);
         if (substr($hash, 0, 1) === '*') {

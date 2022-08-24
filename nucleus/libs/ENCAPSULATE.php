@@ -26,7 +26,7 @@ class ENCAPSULATE
      *
      * Passes on the amount of results found (for further encapsulation)
      */
-    function doEncapsulate(
+    public function doEncapsulate(
         &$call,
         &$params,
         $errorMessage = _ENCAPSULATE_ENCAPSULATE_NOENTRY

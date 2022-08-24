@@ -126,7 +126,7 @@ include_once(NC_LIBS_PATH . 'PLUGIN.php');
 include_once(NC_LIBS_PATH . 'SYSTEMLOG.php');
 include_once(NC_LIBS_PATH . 'Utils.php');
 
-$manager =& MANAGER::instance();
+$manager = & MANAGER::instance();
 
 // only needed when updating logs
 if (confVar('UsingAdminArea')) {
@@ -241,11 +241,11 @@ if (requestVar('action') === 'login') {
 
     if (isset($_POST['login'])) {
         // force trim login
-        $_POST['login'] = substr((string) $_POST['login'], 0,32);
+        $_POST['login'] = substr((string) $_POST['login'], 0, 32);
     }
     if (isset($_POST['password'])) {
         // force trim password
-        $_POST['password'] = substr((string) $_POST['password'], 0,40);
+        $_POST['password'] = substr((string) $_POST['password'], 0, 40);
     }
 
     // Form Authentication
@@ -286,14 +286,14 @@ if (requestVar('action') === 'login') {
             }
         }
         if (serverVar('HTTP_X_FORWARDED_FOR')) {
-            $remote_proxy_ip   = explode(
+            $remote_proxy_ip = explode(
                 ',',
                 serverVar('HTTP_X_FORWARDED_FOR')
             );
             $remote_proxy_ip
                                = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
-            $log_message       .= sprintf(" , proxy %s", $remote_proxy_ip);
+            $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
             if ($remote_proxy_host !== false
                 && $remote_proxy_host != $remote_proxy_ip) {
                 $log_message .= sprintf('(%s)', $remote_proxy_host);
@@ -309,7 +309,7 @@ if (requestVar('action') === 'login') {
         if (! trim((string) postVar('login'))) {
             ACTIONLOG::add(INFO, 'Please enter a username.');
         } else {
-            $loginname = preg_replace('|[^a-z0-9]|i', '_', substr((string) postVar('login'),0,32));
+            $loginname = preg_replace('|[^a-z0-9]|i', '_', substr((string) postVar('login'), 0, 32));
             loadCoreLanguage();
             if ($member->isHalt()) {
                 ACTIONLOG::add(
@@ -358,7 +358,7 @@ if (requestVar('action') === 'login') {
 
     // renew cookies when not on a shared computer
     if ($res && (cookieVar(confVar('CookiePrefix') . 'sharedpc') != 1)
-        && ( ! headers_sent())) {
+        && (! headers_sent())) {
         $member->setCookieKey(cookieVar(confVar('CookiePrefix') . 'loginkey'));
         $member->setCookies();
     }
@@ -383,7 +383,7 @@ if (confVar('DisableSite') && ! $member->isAdmin()
         }
         $title = 'Service Unavailable';
         $msg   = 'Service Unavailable.';
-        echo "<html><head><title>$title</title></head><body><h1>$title</h1>$msg</body></html>";
+        echo "<html><head><title>{$title}</title></head><body><h1>{$title}</h1>{$msg}</body></html>";
     }
     exit;
 }
@@ -456,7 +456,7 @@ if (! defined('_ARCHIVETYPE_MONTH')) {
 if (confVar('URLMode') === 'pathinfo') {
     $parsed = false;
     $param  = array(
-        'type'     => basename(serverVar('SCRIPT_NAME')),
+        'type' => basename(serverVar('SCRIPT_NAME')),
         // e.g. item, blog, ...
         'info'     => $virtualpath,
         'complete' => &$parsed,
@@ -483,7 +483,7 @@ if (confVar('URLMode') === 'pathinfo') {
                     }
                     break;
 
-                // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
+                    // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
                 case confVar('ArchiveKey'):
                     if (($i + 1) < $total
                         && strpos($data[$i + 1], '-') === false) {

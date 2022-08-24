@@ -119,4 +119,3 @@ function mysql_close($dblink = null)
     $obj = null;
     return true;
 }
-
