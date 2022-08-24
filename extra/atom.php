@@ -50,5 +50,3 @@ if (!$CONF['DisableSite']) {
 	}
 
 }
-
-?>

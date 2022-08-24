@@ -65,5 +65,3 @@ function upgrade_do330() {
         echo "<li>" . _UPG_TEXT_NOTE_PING01 . "</li>";
     }
 }
-
-?>

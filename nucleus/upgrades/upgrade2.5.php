@@ -136,5 +136,3 @@ function upgrade_do250() {
         echo "<li>Adding DatabaseVersion to config table ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-
-?>

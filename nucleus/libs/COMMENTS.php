@@ -445,5 +445,3 @@ class COMMENTS {
     }
 
 }
-
-?>

@@ -119,5 +119,3 @@ function upgrade_do150() {
         echo "<li>Creating nucleus_plugin_option table ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-
-?>

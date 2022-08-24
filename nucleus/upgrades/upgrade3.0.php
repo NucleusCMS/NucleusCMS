@@ -24,5 +24,3 @@ function upgrade_do300() {
     update_version('300');
     // nothing!
 }
-
-?>

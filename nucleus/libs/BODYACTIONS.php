@@ -431,4 +431,3 @@ class BODYACTIONS extends BaseActions {
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 }
-?>

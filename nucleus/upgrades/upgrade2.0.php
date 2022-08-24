@@ -98,4 +98,3 @@ function upgrade_do200() {
         echo "<li>Adding IncludeMode and IncludePrefix properties to skins ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-?>

@@ -124,6 +124,3 @@ function postFileInfo($name) {
 function setOldAction($value) {
     $_POST['oldaction'] = $value;
 }
-
-
-?>

@@ -352,5 +352,3 @@ if (wingm) {
 </script>
     <?php
 }
-
-?>

@@ -55,5 +55,3 @@ function upgrade_do320() {
     
     // nothing!
 }
-
-?>

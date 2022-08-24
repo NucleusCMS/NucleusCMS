@@ -28,5 +28,3 @@ function upgrade_do95() {
         echo "<li>Adding 'send ping' and convert linebreaks options ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-
-?>

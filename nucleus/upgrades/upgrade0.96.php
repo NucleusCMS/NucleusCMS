@@ -103,6 +103,3 @@ function upgrade_do96() {
         echo "<li>Adding IP attribute to comments ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-
-
-?>

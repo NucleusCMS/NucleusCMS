@@ -111,5 +111,3 @@ class KARMA {
         sql_query($query);
     }
 }
-
-?>

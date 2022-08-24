@@ -570,5 +570,3 @@ class ACTION
     }
 
 }
-
-?>

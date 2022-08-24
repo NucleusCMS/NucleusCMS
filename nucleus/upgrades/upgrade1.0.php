@@ -61,6 +61,3 @@ function upgrade_do100() {
         echo "<li>Adding cookiekey attribute to members ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-
-
-?>

@@ -123,4 +123,3 @@ function upgrade_do110() {
         echo "<li>Adding Notify Type Setting ... <span class=\"warning\">NOT EXECUTED</span>\n<blockquote>Errors occurred during upgrade process.</blockquote>";
     }
 }
-?>

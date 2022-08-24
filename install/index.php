@@ -1432,5 +1432,3 @@ function showErrorMessages($errors) {
 
 /* for the non-php systems that decide to show the contents:
 ?></div><?php	*/
-
-?>
