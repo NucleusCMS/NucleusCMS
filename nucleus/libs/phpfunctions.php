@@ -1,17 +1,30 @@
 <?php
 
 
-if (! function_exists('get_magic_quotes_gpc')) {
+if (!function_exists('get_magic_quotes_gpc')) {  // removed function PHP[ - 7.4]
     function get_magic_quotes_gpc()
     {
         return false;
     }
 }
 
-if (! function_exists('get_magic_quotes_runtime')) {
+if (!function_exists('get_magic_quotes_runtime')) {
     function get_magic_quotes_runtime()
     {
         return false;
+    }
+}
+
+if (!function_exists('each')) { // removed function PHP[ - 7.4]
+    function each(&$array)
+    {
+        $value = current($array);
+        $key   = key($array);
+        if ($key === null) {
+            return false;
+        }
+        next($array);
+        return array(1 => $value, 'value' => $value, 0 => $key, 'key' => $key);
     }
 }
 
