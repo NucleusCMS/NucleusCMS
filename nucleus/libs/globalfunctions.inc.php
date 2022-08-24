@@ -16,6 +16,10 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+if (!defined('_PHPFUNCTIONS_PHP_')) {
+    include_once(dirname(__FILE__) . '/phpfunctions.php');
+}
+
 function include_libs($file, $once = true, $require = true)
 {
     if (! is_dir(NC_LIBS_PATH)) {

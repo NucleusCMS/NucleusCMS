@@ -34,18 +34,23 @@ class ACTION
         switch ($action) {
             case 'autodraft':
                 return $this->autoDraft();
+                break;
 
             case 'updateticket':
                 return $this->updateTicket();
+                break;
 
             case 'addcomment':
                 return $this->addComment();
+                break;
 
             case 'sendmessage':
                 return $this->sendMessage();
+                break;
 
             case 'createaccount':
                 return $this->createAccount();
+                break;
 
             case 'forgotpassword':
                 $this->forgotPassword();
@@ -156,7 +161,7 @@ class ACTION
             return array('message' => $error);
         }
 
-        if (! $member->isLoggedIn()) {
+        if (!$member->isLoggedIn()) {
             $fromMail = postVar('frommail');
             $fromName = _MMAIL_FROMANON;
         } else {
@@ -503,6 +508,7 @@ class ACTION
         global $manager;
 
         $pluginName = 'NP_' . requestVar('name');
+        $actionType = (string) requestVar('type');
 
         // 1: check if plugin is installed
         if (! $manager->pluginInstalled($pluginName)) {
@@ -513,7 +519,7 @@ class ACTION
         $pluginObject = & $manager->getPlugin($pluginName);
 
         if ($pluginObject) {
-            $error = $pluginObject->doAction(requestVar('type'));
+            $error = $pluginObject->doAction($actionType);
         } else {
             $error = 'Could not load plugin (see actionlog)';
         }

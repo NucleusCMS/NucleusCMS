@@ -23,6 +23,16 @@
 
     -- Start Of Configurable Part --
 */
+
+if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+    $ver = explode('.', phpversion());
+    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
+    }
+    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
+}
+
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
@@ -33,9 +43,8 @@ include_once('../nucleus/libs/helpers.php');
 define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
 
-$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0', PHP_VERSION, '<=');
-define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0)); // allow sqlite install , boolean
-define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
+define('ENABLE_SQLITE_INSTALL', 0); // allow sqlite install , boolean  PHP[7.1-] , QA test not conducted , move to v3.90dev
+define('INSTALL_PRIORITY_MYSQL_MODULE', PHP_VERSION_ID <= 70000 ? 1 : 0); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
 define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '5.5.0'); // (string) , format : dot separated

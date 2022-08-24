@@ -16,6 +16,7 @@
 
 // preload-admin-custum.php : You can write freely the settings such as allow ip address or spam tools.
 $preload_admin_custum_php = dirname(dirname(__FILE__)) . '/settings/preload-admin-custum.php';
+
 if (@is_file($preload_admin_custum_php)) {
     include_once $preload_admin_custum_php;
 }
@@ -34,8 +35,6 @@ if (!@is_file('../config.php')) {
 }
 // include the admin code
 require_once('../config.php');
-
-$admin = new ADMIN();
 
 $bNeedsLogin   = false;
 $bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
@@ -70,4 +69,5 @@ if ($bNeedsLogin) {
 
 sendContentType('text/html', 'admin-' . $action);
 
+$admin = new ADMIN();
 $admin->action($action);

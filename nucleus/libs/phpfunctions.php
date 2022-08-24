@@ -1,5 +1,9 @@
 <?php
 
+if (!defined('_PHPFUNCTIONS_PHP_')) {
+    define('_PHPFUNCTIONS_PHP_', 1);
+}
+
 if (!function_exists('get_magic_quotes_gpc')) {  // removed function PHP[ - 7.4]
     function get_magic_quotes_gpc()
     {

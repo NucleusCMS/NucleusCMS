@@ -114,7 +114,6 @@
     <li><a href="#dependency">プラグイン依存チェック</a></li>
 	<li><a href="#internationalization">プラグインの国際化</a></li>
 	<li><a href="#skinvar-formatting">スキン変数の出力の書式</a></li>
-	<li><a href="#sqlite">SQLite 対応プラグインの作り方</a></li>
 	<li><a href="#additional-reading">追記事項</a></li>
 <!--    <li><a href="#parser">Using the <code>PARSER</code> class</a></li>
     <li><a href="#"></a></li>
@@ -2142,7 +2141,6 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 </ol>
 <div class="note">
 <strong>注：</strong> DELETE, INSERT, UPDATE 文　以外で sql_num_rowsを使用している場合は 置き換えてください。
-sqliteでは、SELECT文でのsql_num_rowsは未対応です。予期せぬ結果が発生する恐れがあります。
 </div>
 
 <h2>独自テーブル</h2>
@@ -2640,51 +2638,6 @@ foreach ($couples as $values) {
 }</code></pre>
 
 	</li>
-</ol>
-
-
-<h1>SQLite 対応プラグインの作り方 <a name="sqlite" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-<p>v3.8からデータベースにSQLiteが追加されました。プラグインをSQLiteに対応させるには少しの修正が必要です。</p>
-<p>標準SQL92に従った書き方をしていれば、データベースの種類に依存しないプラグインを作成することができます。</p>
-<ol>
-  <li>supportsFeatureに SqlApi_sqlite を追加します。データベース言語に依存しない場合は、SqlApi_SQL92を追加してください。
-      <pre class="example"><code>function supportsFeature($feature) {
-  return in_array($feature , array('SqlTablePrefix', 'SqlApi', 'SqlApi_sqlite'));
-}</code></pre>
-      <pre class="example"><code>function supportsFeature($feature) {
-  return in_array($feature , array('SqlTablePrefix', 'SqlApi', 'SqlApi_SQL92'));
-}</code></pre>
-  </li>
-  <li>v3.8以前の対応プラグインにする場合は、init関数に次の行を追加してください。
-      <pre class="example"><code>function init() {
-  $this->is_db_sqlite = (isset($this->is_db_sqlite) && $this->is_db_sqlite);
-}</code></pre>
-    以下のコードでも同じことができます
-      <pre class="example"><code>function init() {
-  global $MYSQL_HANDLER;
-  $this->is_db_sqlite = ('sqlite' == $MYSQL_HANDLER[1]);
-}</code></pre>
-  </li>
-  <li>SQL文の共存できない部分はコードを分離します
-      <pre class="example"><code>function install() {
-  if ($this->is_db_sqlite) {
-    // sqlite用のコード
-    sql_query('SQL文');
-  } else {
-    // mysqlのコード
-    sql_query('SQL文');
-}</code></pre>
-    CREATE構文は、データベースの種類ごとに書き方が違う場合が多いのでコードを分離したほうがいいでしょう。
-  </li>
-</ol>
-<p>以上のステップでSQLiteに対応したプラグインができあがります。</p>
-<h2>既存のプラグインをSQLiteに対応させるための確認事項。</h2>
-<ol>
-  <li>'SqlApi'対応プラグインにします。mysql_*関数をすべてsql_関数に置き換えます</li>
-  <li>SELECT 文でsql_num_rowsが使用しない。SELECT 文でsql_num_rowsは対応していません。SELECT countを使用した文に変更してください。</li>
-  <li>INSERT .. SET  文を使用しない。対応していません。</li>
-  <li>INSERT文で列名を省略しない。</li>
-  <li>MySQL特有の構文を使用したい場合は、SQL文をSQLite用とに分離する。</li>
 </ol>
 
 

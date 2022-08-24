@@ -16,6 +16,15 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+    $ver = explode('.', phpversion());
+    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
+    }
+    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
+}
+
 if (! isset($_SERVER['REQUEST_TIME_FLOAT'])) {
     $_SERVER['REQUEST_TIME_FLOAT'] = microtime(true);
 }
@@ -40,10 +49,6 @@ include_once(NC_LIBS_PATH . 'version.php');
 include_once(NC_LIBS_PATH . 'phpfunctions.php');
 include_once(NC_LIBS_PATH . 'helpers.php');
 include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
-
-if (version_compare(phpversion(), '5.5.0', '<')) {
-    exit('Current PHP version does not meet minimum requirements.');
-}
 
 // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_NAME', 'Nucleus CMS');
