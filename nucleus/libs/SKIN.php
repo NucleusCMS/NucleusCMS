@@ -364,7 +364,6 @@ class SKIN
         ob_end_clean();
 
         $skinid = $this->id;
-        $this->doTidy($output);
         return $output;
     }
 
@@ -811,69 +810,4 @@ class SKIN
         return $text; // not found
     }
 
-    private function doTidy(&$data)
-    {
-        global $CONF;
-
-        if (!isset($CONF['ENABLE_TIDY']) || !$CONF['ENABLE_TIDY']) {
-            return;
-        }
-        if (!extension_loaded('tidy') || (_CHARSET != 'UTF-8')
-            || ($this->getContentType() != 'text/html')
-            || !is_string($data) || (strlen($data) == 0)) {
-            return;
-        }
-
-        $force_html5 = (isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5']);
-
-//      tidy ver5 : 2015.06.30
-        $is_tidy_html5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
-        if ($force_html5 && !$is_tidy_html5) {
-            return;
-        } // tidy lib is too old.
-        // <!DOCTYPE html>
-        if (!$is_tidy_html5 && preg_match('/^\s*<!DOCTYPE\s+html\s*>/ms', $data)) {
-            return;
-        } // tidy lib is too old. The source is probably html5.
-
-        $tidy_config = $this->getTidyConfig();
-        if ($force_html5) {
-            $tidy_config['doctype'] = 'html5';
-        }
-
-        $tidy = new tidy();
-        $tidy->parseString($data, $tidy_config, 'utf8');
-        $tidy->cleanRepair();
-
-        $data = (string)$tidy;
-    }
-
-    private function getTidyConfig()
-    {
-        // http://tidy.sourceforge.net/docs/quickref.html
-        global $CONF, $member;
-        $debug       = isDebugMode();
-        $release     = !$debug;
-        $is_admin    = $member->isAdmin();
-        $tidy_config = array(
-            'doctype'       => 'auto', // html5, omit, auto, strict, transitional, user
-            'output-xhtml'  => false,
-            'char-encoding' => 'utf8',
-            'indent'        => (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']),
-            'indent-spaces' => 2,
-            'fix-uri'       => false,
-            'hide-comments' => !$is_admin,
-            'tidy-mark'     => $is_admin,
-            'wrap'          => false, // 200
-        );
-
-        if (_CHARSET != 'UTF-8') {
-            $tidy_config['char-encoding'] = 'raw';
-        }
-        if ($release) {
-//            $tidy_config['language'] = 'ja';
-        }
-
-        return $tidy_config;
-    }
-}
+ }

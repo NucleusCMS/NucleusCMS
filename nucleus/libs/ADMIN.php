@@ -5949,37 +5949,6 @@ selector();
             </td>
         </tr>
 
-        <?php
-        // Tidy
-        if (_CHARSET == 'UTF-8') {
-            // ENABLE_TIDY
-            $tidy_loaded = extension_loaded('tidy');
-            $s_disable   = sprintf('[%s] ', _ADMIN_SYSTEMOVERVIEW_DISABLE);
-            printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
-            $enable_tidy = isset($CONF['ENABLE_TIDY']) && $CONF['ENABLE_TIDY'];
-            if ($tidy_loaded) {
-                $this->input_yesno('ENABLE_TIDY', $enable_tidy, 10081);
-            } else {
-                echo $s_disable;
-            }
-            echo "</td></tr>\n";
-            if ($tidy_loaded) {
-                $isTidy5 = (function_exists('tidy_get_release')
-                            && (strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30')));
-                // ENABLE_TIDY_FORCE_HTML5
-                if ($isTidy5) {
-                    $enable_tidy_f_html5 = isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5'];
-                    printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_FORCE_HTML5);
-                    $this->input_yesno('ENABLE_TIDY_FORCE_HTML5', $enable_tidy_f_html5, 10082);
-                    echo "</td></tr>\n";
-                }
-                // ENABLE_TIDY_INDENT
-                $enable_tidy_indent = (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']);
-                printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
-                $this->input_yesno('ENABLE_TIDY_INDENT', $enable_tidy_indent, 10083);
-                echo "</td></tr>\n";
-            }
-        } ?>
         <tr>
             <th colspan="2"><?php echo _SETTINGS_MEDIA?> <?php help('media'); ?></th>
         </tr><tr>
@@ -6176,11 +6145,6 @@ EOL;
         $this->updateConfig('DefaultListSize', postVar('DefaultListSize'));
         $this->updateConfig('AdminCSS', postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
-        if (extension_loaded('tidy')) {
-            $this->updateOrInsertConfig('ENABLE_TIDY', (postVar('ENABLE_TIDY') ? '1' : '0'));
-            $this->updateOrInsertConfig('ENABLE_TIDY_FORCE_HTML5', (postVar('ENABLE_TIDY_FORCE_HTML5') ? '1' : '0'));
-            $this->updateOrInsertConfig('ENABLE_TIDY_INDENT', (postVar('ENABLE_TIDY_INDENT') ? '1' : '0'));
-        }
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
@@ -6307,34 +6271,6 @@ EOL;
             echo "\t\t" . '<td width="50%">'. 'Loaded extensions' .'</td>' . "\n";
             printf("\t\t<td>%s</td>\n", implode(', ', $extensions));
             echo "\t</tr>\n";
-            echo "</table>\n";
-
-            // Tidy
-            echo "<table>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . 'Tidy' . "</th>\n";
-            echo "\t</tr>\n";
-            echo "\t<tr>";
-            echo "\t\t" . '<td width="50%">Tidy</td>' . "\n";
-            printf(
-                "\t\t<td>%s</td>\n",
-                extension_loaded('tidy') ?
-                     _ADMIN_SYSTEMOVERVIEW_ENABLE :
-                     _ADMIN_SYSTEMOVERVIEW_DISABLE
-            );
-            echo "\t</tr>\n";
-            if (function_exists('tidy_get_release')) {
-                $tidy_ver = preg_match('/Tidy Version.+?>\s*([0-9\.]+)\s*</ims', $im, $m) ? $m[1] : '';
-                if ($tidy_ver) {
-                    printf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
-                }
-                printf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
-                $tidy_support_HTML5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
-                printf(
-                    "\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
-                    $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE
-                );
-            }
             echo "</table>\n";
 
             // Information about the used core system
