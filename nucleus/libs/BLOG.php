@@ -20,7 +20,7 @@
 if (!function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/ITEMACTIONS.php';
+require_once __DIR__ . '/ITEMACTIONS.php';
 
 class BLOG
 {
@@ -42,20 +42,15 @@ class BLOG
      *
      * @param $id blogid
      */
-    function __construct($id)
+    public function __construct($id)
     {
-        $this->blogid = intval($id);
+        $this->blogid = (int)$id;
         $this->readSettings();
 
         // try to set catid
         // (the parse functions in SKIN.php will override this, so it's mainly useless)
         global $catid;
         $this->setSelectedCategory($catid);
-    }
-
-    public function BLOG($id)
-    {
-        $this->__construct($id);
     }
 
     /**
@@ -66,11 +61,13 @@ class BLOG
      * @param $amountEntries
      *      amount of entries to show
      * @param $startpos
-     *      offset from where items should be shown (e.g. 5 = start at fifth item)
+     *      offset from where items should be shown (e.g. 5 = start at fifth
+     *      item)
+     *
      * @returns int
      *      amount of items shown
      */
-    function readLog($template, $amountEntries, $offset = 0, $startpos = 0)
+    public function readLog($template, $amountEntries, $offset = 0, $startpos = 0)
     {
         return $this->readLogAmount($template, $amountEntries, '', '', 1, 1, $offset, $startpos);
     }
@@ -85,19 +82,18 @@ class BLOG
      * @param $template
      *      String representing the template name to be used
      */
-    function showArchive($templatename, $year, $month = 0, $day = 0)
+    public function showArchive($templatename, $year, $month = 0, $day = 0)
     {
-
         // create extra where clause for select query
         if ($day == 0 && $month != 0) {
             $timestamp_start = mktime(0, 0, 0, $month, 1, $year);
-            $timestamp_end = mktime(0, 0, 0, $month + 1, 1, $year);  // also works when $month==12
+            $timestamp_end   = mktime(0, 0, 0, $month + 1, 1, $year);  // also works when $month==12
         } elseif ($month == 0) {
             $timestamp_start = mktime(0, 0, 0, 1, 1, $year);
-            $timestamp_end = mktime(0, 0, 0, 12, 31, $year);  // also works when $month==12
+            $timestamp_end   = mktime(0, 0, 0, 12, 31, $year);  // also works when $month==12
         } else {
             $timestamp_start = mktime(0, 0, 0, $month, $day, $year);
-            $timestamp_end = mktime(0, 0, 0, $month, $day + 1, $year);
+            $timestamp_end   = mktime(0, 0, 0, $month, $day + 1, $year);
         }
         $extra_query = ' and i.itime>=' . mysqldate($timestamp_start)
             . ' and i.itime<' . mysqldate($timestamp_end);
@@ -108,17 +104,17 @@ class BLOG
     /**
      * Sets the selected category by id (only when category exists)
      */
-    function setSelectedCategory($catid)
+    public function setSelectedCategory($catid)
     {
-        if ($this->isValidCategory($catid) || (intval($catid) == 0)) {
-            $this->selectedcatid = intval($catid);
+        if ($this->isValidCategory($catid) || ((int)$catid == 0)) {
+            $this->selectedcatid = (int)$catid;
         }
     }
 
     /**
      * Sets the selected category by name
      */
-    function setSelectedCategoryByName($catname)
+    public function setSelectedCategoryByName($catname)
     {
         $this->setSelectedCategory($this->getCategoryIdFromName($catname));
     }
@@ -126,7 +122,7 @@ class BLOG
     /**
      * Returns the selected category
      */
-    function getSelectedCategory()
+    public function getSelectedCategory()
     {
         return $this->selectedcatid;
     }
@@ -148,10 +144,11 @@ class BLOG
      *      1=show dateheads 0=don't show dateheads
      * @param $offset
      *      offset
+     *
      * @returns int
      *      amount of items shown
      */
-    function readLogAmount(
+    public function readLogAmount(
         $template,
         $amountEntries,
         $extraQuery,
@@ -161,7 +158,6 @@ class BLOG
         $offset = 0,
         $startpos = 0
     ) {
-
         $query = $this->getSqlBlog($extraQuery);
 
         if ($amountEntries > 0) {
@@ -175,7 +171,7 @@ class BLOG
     /**
      * Do the job for readLogAmmount
      */
-    function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1)
+    public function showUsingQuery($templateName, $query, $highlight = '', $comments = 0, $dateheads = 1)
     {
         global $CONF, $manager;
 
@@ -188,11 +184,11 @@ class BLOG
         global $currentTemplateName;
         $currentTemplateName = $templateName;
 
-        $template =& $manager->getTemplate($templateName);
+        $template = & $manager->getTemplate($templateName);
 
         // create parser object & action handler
         $actions = new ITEMACTIONS($this);
-        $parser = new PARSER($actions->getDefinedActions(), $actions);
+        $parser  = new PARSER($actions->getDefinedActions(), $actions);
         $actions->setTemplate($template);
         $actions->setHighlight($highlight);
         $actions->setLastVisit($lastVisit);
@@ -221,7 +217,7 @@ class BLOG
                     if ($old_date != 0) {
                         $oldTS = strtotime($old_date);
                         $param = array(
-                            'blog' => &$this,
+                            'blog'      => &$this,
                             'timestamp' => $oldTS
                         );
                         $manager->notify('PreDateFoot', $param);
@@ -231,13 +227,13 @@ class BLOG
                         );
                         $parser->parse($tmp_footer);
                         $param = array(
-                            'blog' => &$this,
+                            'blog'      => &$this,
                             'timestamp' => $oldTS
                         );
                         $manager->notify('PostDateFoot', $param);
                     }
                     $param = array(
-                        'blog' => &$this,
+                        'blog'      => &$this,
                         'timestamp' => $timestamp
                     );
                     $manager->notify('PreDateHead', $param);
@@ -249,7 +245,7 @@ class BLOG
                     );
                     $parser->parse($tmp_header);
                     $param = array(
-                        'blog' => &$this,
+                        'blog'      => &$this,
                         'timestamp' => $timestamp
                     );
                     $manager->notify('PostDateHead', $param);
@@ -276,13 +272,13 @@ class BLOG
         // add another date footer if there was at least one item
         if (($numrows > 0) && $dateheads) {
             $param = array(
-                'blog' => &$this,
+                'blog'      => &$this,
                 'timestamp' => strtotime($old_date)
             );
             $manager->notify('PreDateFoot', $param);
             $parser->parse($template['DATE_FOOTER']);
             $param = array(
-                'blog' => &$this,
+                'blog'      => &$this,
                 'timestamp' => strtotime($old_date)
             );
             $manager->notify('PostDateFoot', $param);
@@ -296,7 +292,7 @@ class BLOG
     /**
      * Simplified function for showing only one item
      */
-    function showOneitem($itemid, $template, $highlight)
+    public function showOneitem($itemid, $template, $highlight)
     {
         $extraQuery = ' and inumber=' . intval($itemid);
 
@@ -306,16 +302,16 @@ class BLOG
     /**
      * Adds an item to this blog
      */
-    function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted = '1')
+    public function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted = '1')
     {
         global $manager;
 
-        $blogid = intval($blogid);
+        $blogid   = intval($blogid);
         $authorid = intval($authorid);
-        $title = $title;
-        $body = $body;
-        $more = $more;
-        $catid = intval($catid);
+        $title    = $title;
+        $body     = $body;
+        $more     = $more;
+        $catid    = intval($catid);
         $isFuture = 0;
 
         // convert newlines to <br />
@@ -342,24 +338,24 @@ class BLOG
         $timestamp = date('Y-m-d H:i:s', $timestamp);
 
         $param = array(
-            'title' => &$title,
-            'body' => &$body,
-            'more' => &$more,
-            'blog' => &$this,
-            'authorid' => &$authorid,
+            'title'     => &$title,
+            'body'      => &$body,
+            'more'      => &$more,
+            'blog'      => &$this,
+            'authorid'  => &$authorid,
             'timestamp' => &$timestamp,
-            'closed' => &$closed,
-            'draft' => &$draft,
-            'catid' => &$catid
+            'closed'    => &$closed,
+            'draft'     => &$draft,
+            'catid'     => &$catid
         );
         $manager->notify('PreAddItem', $param);
 
         $ititle = sql_real_escape_string($title);
-        $ibody = sql_real_escape_string($body);
-        $imore = sql_real_escape_string($more);
+        $ibody  = sql_real_escape_string($body);
+        $imore  = sql_real_escape_string($more);
 
         $query = 'INSERT INTO ' . sql_table('item') . ' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IDRAFT, ICAT, IPOSTED) '
-            . "VALUES ('$ititle', '$ibody', '$imore', $blogid, $authorid, '$timestamp', $closed, $draft, $catid, $posted)";
+            . "VALUES ('{$ititle}', '{$ibody}', '{$imore}', {$blogid}, {$authorid}, '{$timestamp}', {$closed}, {$draft}, {$catid}, {$posted})";
         sql_query($query);
         $itemid = sql_insert_id();
 
@@ -388,7 +384,7 @@ class BLOG
      * @param $body
      *        body of the item
      */
-    function sendNewItemNotification($itemid, $title, $body)
+    public function sendNewItemNotification($itemid, $title, $body)
     {
         global $CONF, $member;
 
@@ -396,7 +392,7 @@ class BLOG
         $ascii = toAscii($body);
 
         $mailto_msg = _NOTIFY_NI_MSG . " \n";
-        $temp = parse_url($CONF['Self']);
+        $temp       = parse_url($CONF['Self']);
         if ($temp['scheme']) {
             $mailto_msg .= createItemLink($itemid) . "\n\n";
         } else {
@@ -432,7 +428,7 @@ class BLOG
      *        the new category-id in case of success.
      *        0 on failure
      */
-    function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC, $corder = null)
+    public function createNewCategory($catName = '', $catDescription = _CREATED_NEW_CATEGORY_DESC, $corder = null)
     {
         global $member, $manager;
 
@@ -440,7 +436,7 @@ class BLOG
             // generate
             if ($catName == '') {
                 $catName = _CREATED_NEW_CATEGORY_NAME;
-                $i = 1;
+                $i       = 1;
 
                 $res = true;
                 while ($res !== false) {
@@ -456,10 +452,10 @@ class BLOG
             }
 
             $param = array(
-                'blog' => &$this,
-                'name' => &$catName,
+                'blog'        => &$this,
+                'name'        => &$catName,
                 'description' => $catDescription,
-                'order' => &$corder
+                'order'       => &$corder
             );
             $manager->notify('PreAddCategory', $param);
 
@@ -473,11 +469,11 @@ class BLOG
             $catid = sql_insert_id();
 
             $param = array(
-                'blog' => &$this,
-                'name' => $catName,
+                'blog'        => &$this,
+                'name'        => $catName,
                 'description' => $catDescription,
-                'catid' => $catid,
-                'order' => $corder
+                'catid'       => $catid,
+                'order'       => $corder
             );
             $manager->notify('PostAddCategory', $param);
 
@@ -503,16 +499,16 @@ class BLOG
      * @returns
      *      amount of hits found
      */
-    function search($query, $template, $amountMonths, $maxresults, $startpos)
+    public function search($query, $template, $amountMonths, $maxresults, $startpos)
     {
         global $CONF, $manager;
 
         $highlight = '';
-        $sqlquery = $this->getSqlSearch($query, $amountMonths, $highlight);
+        $sqlquery  = $this->getSqlSearch($query, $amountMonths, $highlight);
 
         if ($sqlquery == '') {
             // no query -> show everything
-            $extraquery = '';
+            $extraquery  = '';
             $amountfound = $this->readLogAmount($template, $maxresults, $extraquery, $query, 1, 1);
         } else {
             // add LIMIT to query (to split search results into pages)
@@ -525,9 +521,9 @@ class BLOG
 
             // when no results were found, show a message
             if ($amountfound == 0) {
-                $template =& $manager->getTemplate($template);
-                $vars = array(
-                    'query' => hsc($query),
+                $template = & $manager->getTemplate($template);
+                $vars     = array(
+                    'query'  => hsc($query),
                     'blogid' => $this->getID()
                 );
                 echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'], $vars);
@@ -553,7 +549,7 @@ class BLOG
      * @note
      *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
-    function getSqlSearch($query, $amountMonths = 0, &$highlight = null, $mode = '')
+    public function getSqlSearch($query, $amountMonths = 0, &$highlight = null, $mode = '')
     {
         $searchclass = new SEARCH($query);
 
@@ -564,14 +560,13 @@ class BLOG
             return '';
         }
 
-
-        $where = $searchclass->boolean_sql_where('ititle,ibody,imore');
+        $where  = $searchclass->boolean_sql_where('ititle,ibody,imore');
         $select = $searchclass->boolean_sql_select('ititle,ibody,imore');
 
         // get list of blogs to search
-        $blogs = $searchclass->blogs;      // array containing blogs that always need to be included
-        $blogs[] = $this->getID();           // also search current blog (duh)
-        $blogs = array_unique($blogs);     // remove duplicates
+        $blogs       = $searchclass->blogs;      // array containing blogs that always need to be included
+        $blogs[]     = $this->getID();           // also search current blog (duh)
+        $blogs       = array_unique($blogs);     // remove duplicates
         $selectblogs = '';
         if (count($blogs) > 0) {
             $selectblogs = ' and i.iblog in (' . implode(',', $blogs) . ')';
@@ -597,7 +592,7 @@ class BLOG
 
         // take into account amount of months to search
         if ($amountMonths > 0) {
-            $localtime = getdate($this->getCorrectTime());
+            $localtime       = getdate($this->getCorrectTime());
             $timestamp_start = mktime(0, 0, 0, $localtime['mon'] - $amountMonths, 1, $localtime['year']);
             $query .= ' and i.itime>' . mysqldate($timestamp_start);
         }
@@ -623,7 +618,7 @@ class BLOG
      * @note
      *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
-    function getSqlBlog($extraQuery, $mode = '')
+    public function getSqlBlog($extraQuery, $mode = '')
     {
         if ($mode == '') {
             $query = 'SELECT i.inumber as itemid, i.ititle as title, i.ibody as body, m.mname as author, m.mrealname as authorname, i.itime, i.imore as more, m.mnumber as authorid, m.memail as authormail, m.murl as authorurl, c.cname as category, i.icat as catid, i.iclosed as closed';
@@ -643,7 +638,6 @@ class BLOG
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
         }
 
-
         $query .= $extraQuery;
 
         if ($mode == '') {
@@ -656,7 +650,7 @@ class BLOG
     /**
      * Shows the archivelist using the given template
      */
-    function showArchiveList($template, $mode = 'month', $limit = 0)
+    public function showArchiveList($template, $mode = 'month', $limit = 0)
     {
         global $CONF, $catid, $manager;
 
@@ -665,8 +659,8 @@ class BLOG
             $linkparams = array('catid' => $catid);
         }
 
-        $template =& $manager->getTemplate($template);
-        $data = array();
+        $template       = & $manager->getTemplate($template);
+        $data           = array();
         $data['blogid'] = $this->getID();
 
         $tplt = isset($template['ARCHIVELIST_HEADER']) ? $template['ARCHIVELIST_HEADER']
@@ -702,27 +696,27 @@ class BLOG
             $current->itime = strtotime($current->itime);   // string time -> unix timestamp
 
             if ($mode == 'day') {
-                $archivedate = date('Y-m-d', $current->itime);
-                $archive['day'] = date('d', $current->itime);
-                $data['day'] = date('d', $current->itime);
-                $data['month'] = date('m', $current->itime);
+                $archivedate      = date('Y-m-d', $current->itime);
+                $archive['day']   = date('d', $current->itime);
+                $data['day']      = date('d', $current->itime);
+                $data['month']    = date('m', $current->itime);
                 $archive['month'] = $data['month'];
             } elseif ($mode == 'year') {
-                $archivedate = date('Y', $current->itime);
-                $data['day'] = '';
-                $data['month'] = '';
-                $archive['day'] = '';
+                $archivedate      = date('Y', $current->itime);
+                $data['day']      = '';
+                $data['month']    = '';
+                $archive['day']   = '';
                 $archive['month'] = '';
             } else {
-                $archivedate = date('Y-m', $current->itime);
-                $data['month'] = date('m', $current->itime);
+                $archivedate      = date('Y-m', $current->itime);
+                $data['month']    = date('m', $current->itime);
                 $archive['month'] = $data['month'];
-                $data['day'] = '';
-                $archive['day'] = '';
+                $data['day']      = '';
+                $archive['day']   = '';
             }
 
-            $data['year'] = date('Y', $current->itime);
-            $archive['year'] = $data['year'];
+            $data['year']        = date('Y', $current->itime);
+            $archive['year']     = $data['year'];
             $data['archivelink'] = createArchiveLink($this->getID(), $archivedate, $linkparams);
 
             $param = array('listitem' => &$data);
@@ -742,7 +736,7 @@ class BLOG
     /**
      * Shows the list of categories using a given template
      */
-    function showCategoryList($template)
+    public function showCategoryList($template)
     {
         global $CONF;
         global $manager;
@@ -751,20 +745,20 @@ class BLOG
 
         $linkparams = array();
         if ($archive) {
-            $blogurl = createArchiveLink($this->getID(), $archive, '');
-            $linkparams['blogid'] = $this->getID();
+            $blogurl               = createArchiveLink($this->getID(), $archive, '');
+            $linkparams['blogid']  = $this->getID();
             $linkparams['archive'] = $archive;
         } else {
             if ($archivelist) {
-                $blogurl = createArchiveListLink($this->getID(), '');
+                $blogurl                   = createArchiveListLink($this->getID(), '');
                 $linkparams['archivelist'] = $archivelist;
             } else {
-                $blogurl = createBlogidLink($this->getID(), '');
+                $blogurl              = createBlogidLink($this->getID(), '');
                 $linkparams['blogid'] = $this->getID();
             }
         }
 
-        $template =& $manager->getTemplate($template);
+        $template = & $manager->getTemplate($template);
 
         if ($this->getSelectedCategory()) {
             $nocatselected = 'no';
@@ -778,11 +772,11 @@ class BLOG
             $template_catlist_header = $template['CATLIST_HEADER'];
         }
         $template_catlist_header_param = array(
-            'blogid' => $this->getID(),
-            'blogurl' => $blogurl,
-            'self' => $CONF['Self'],
+            'blogid'       => $this->getID(),
+            'blogurl'      => $blogurl,
+            'self'         => $CONF['Self'],
             'catiscurrent' => $nocatselected,
-            'currentcat' => $nocatselected
+            'currentcat'   => $nocatselected
         );
         echo TEMPLATE::fill($template_catlist_header, $template_catlist_header_param);
 
@@ -800,42 +794,42 @@ class BLOG
             $data['catname'] = $data['cname']; //カテゴリーネーム設定 (yotaca: 2020/07/23)
             $data['catdesc'] = $data['cdesc']; //カテゴリー詳細 (yotaca: 2020/07/23)
 
-            $data['catorder'] = $data['corder']; //オーダー番号追加:start (yotaca: 2020/07/23)
-            $c = $this->hnmCategoryType($data['corder']);
-            $data['cattype'] = $c['type'];
+            $data['catorder']  = $data['corder']; //オーダー番号追加:start (yotaca: 2020/07/23)
+            $c                 = $this->hnmCategoryType($data['corder']);
+            $data['cattype']   = $c['type'];
             $data['catparent'] = $c['parnt'];
-            $data['catchild'] = $c['child'];
-            $data['catclass'] = $c['cls']; //オーダー番号追加:end (yotaca: 2020/07/23)
+            $data['catchild']  = $c['child'];
+            $data['catclass']  = $c['cls']; //オーダー番号追加:end (yotaca: 2020/07/23)
 
-            $data['blogid'] = $this->getID();
+            $data['blogid']  = $this->getID();
             $data['blogurl'] = $blogurl;
 
             $param = array(
                 'catid' => $data['catid'],
-                'name' => $data['catname'],
+                'name'  => $data['catname'],
                 'extra' => $linkparams
             );
             $data['catlink'] = createLink('category', $param);
-            
+
             $data['self'] = $CONF['Self'];
 
             //catiscurrent
             //: Change: Bugfix for catiscurrent logic so it gives catiscurrent = no when no category is selected.
             $data['catiscurrent'] = 'no';
-            $data['currentcat'] = 'no';
+            $data['currentcat']   = 'no';
             if ($this->getSelectedCategory()) {
                 if ($this->getSelectedCategory() == $data['catid']) {
                     $data['catiscurrent'] = 'yes';
-                    $data['currentcat'] = 'yes';
+                    $data['currentcat']   = 'yes';
                 }
             } else {
                 global $itemid;
                 if (intval($itemid) && $manager->existsItem(intval($itemid), 0, 0)) {
-                    $iobj =& $manager->getItem(intval($itemid), 0, 0);
-                    $cid = $iobj['catid'];
+                    $iobj = & $manager->getItem(intval($itemid), 0, 0);
+                    $cid  = $iobj['catid'];
                     if ($cid == $data['catid']) {
                         $data['catiscurrent'] = 'yes';
-                        $data['currentcat'] = 'yes';
+                        $data['currentcat']   = 'yes';
                     }
                 }
             }
@@ -858,9 +852,9 @@ class BLOG
             $template_catlist_footer = $template['CATLIST_FOOTER'];
         }
         $template_catlist_footer_param = array(
-            'blogid' => $this->getID(),
+            'blogid'  => $this->getID(),
             'blogurl' => $blogurl,
-            'self' => $CONF['Self']
+            'self'    => $CONF['Self']
         );
         echo TEMPLATE::fill($template_catlist_footer, $template_catlist_footer_param);
     }
@@ -905,18 +899,18 @@ class BLOG
                 break;
         }
 
-        $template =& $manager->getTemplate($template);
+        $template = & $manager->getTemplate($template);
 
         echo TEMPLATE::fill(
             (isset($template['BLOGLIST_HEADER']) ? $template['BLOGLIST_HEADER'] : null),
             array(
                 'sitename' => $CONF['SiteName'],
-                'siteurl' => $CONF['IndexURL']
+                'siteurl'  => $CONF['IndexURL']
             )
         );
 
         $query = 'SELECT bnumber, bname, bshortname, bdesc, burl FROM ' . sql_table('blog') . ' ORDER BY ' . $orderby . ' ' . $direction;
-        $res = sql_query($query);
+        $res   = sql_query($query);
 
         while ($data = sql_fetch_assoc($res)) {
             $list = array();
@@ -945,7 +939,7 @@ class BLOG
             (isset($template['BLOGLIST_FOOTER']) ? $template['BLOGLIST_FOOTER'] : null),
             array(
                 'sitename' => $CONF['SiteName'],
-                'siteurl' => $CONF['IndexURL']
+                'siteurl'  => $CONF['IndexURL']
             )
         );
     }
@@ -953,7 +947,7 @@ class BLOG
     /**
      * Read the blog settings
      */
-    function readSettings()
+    public function readSettings()
     {
         $query = 'SELECT *'
             . ' FROM ' . sql_table('blog')
@@ -961,7 +955,7 @@ class BLOG
         $res = sql_query($query);
 
         $this->settings = ($res ? sql_fetch_assoc($res) : array());
-        $this->isValid = !empty($this->settings);
+        $this->isValid  = !empty($this->settings);
         if (!$this->isValid) {
             $this->settings = array();
         }
@@ -970,9 +964,8 @@ class BLOG
     /**
      * Write the blog settings
      */
-    function writeSettings()
+    public function writeSettings()
     {
-
         // (can't use floatval since not available prior to PHP 4.2)
         $offset = $this->getTimeOffset();
         if (!is_float($offset)) {
@@ -980,8 +973,8 @@ class BLOG
         }
 
         $q_bauthorvisible = (
-        !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') ? '' :
-            "   bauthorvisible=" . intval($this->getAuthorVisible()) . ","
+            !sql_existTableColumnName(sql_table('blog'), 'bauthorvisible') ? '' :
+                "   bauthorvisible=" . intval($this->getAuthorVisible()) . ","
         );
 
         $query = 'UPDATE ' . sql_table('blog')
@@ -1010,11 +1003,11 @@ class BLOG
     /**
      * Update the update file if requested
      */
-    function updateUpdatefile()
+    public function updateUpdatefile()
     {
         if ($this->getUpdateFile()) {
             $f_update = fopen($this->getUpdateFile(), 'w');
-            fputs($f_update, $this->getCorrectTime());
+            fwrite($f_update, $this->getCorrectTime());
             fclose($f_update);
         }
     }
@@ -1025,7 +1018,7 @@ class BLOG
      * @param $catid
      *     category id
      */
-    function isValidCategory($catid)
+    public function isValidCategory($catid)
     {
         global $manager;
         $query = 'SELECT count(*) as result FROM ' . sql_table('category') . ' WHERE cblog=' . $this->getID() . ' AND catid=' . intval($catid)
@@ -1042,10 +1035,10 @@ class BLOG
      * @param $catid
      *     category id
      */
-    function getCategoryName($catid)
+    public function getCategoryName($catid)
     {
         $res = sql_query('SELECT cname FROM ' . sql_table('category') . ' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid));
-        $o = sql_fetch_object($res);
+        $o   = sql_fetch_object($res);
         if (is_object($o)) {
             return $o->cname;
         }
@@ -1057,10 +1050,10 @@ class BLOG
      * @param $catid
      *     category id
      */
-    function getCategoryDesc($catid)
+    public function getCategoryDesc($catid)
     {
         $res = sql_query('SELECT cdesc FROM ' . sql_table('category') . ' WHERE cblog=' . $this->getID() . ' and catid=' . intval($catid));
-        $o = sql_fetch_object($res);
+        $o   = sql_fetch_object($res);
         return $o->cdesc;
     }
 
@@ -1080,7 +1073,7 @@ class BLOG
      * @param $name
      *     category name
      */
-    function getCategoryIdFromName($name)
+    public function getCategoryIdFromName($name)
     {
         $query = sprintf(
             "SELECT catid FROM `%s` WHERE cblog=%d AND cname='%s'",
@@ -1100,7 +1093,7 @@ class BLOG
      * Get the the setting for the line break handling
      * [should be named as getConvertBreaks()]
      */
-    function convertBreaks()
+    public function convertBreaks()
     {
         return $this->getSetting('bconvertbreaks');
     }
@@ -1111,7 +1104,7 @@ class BLOG
      * @param $val
      *     new value for bconvertbreaks
      */
-    function setConvertBreaks($val)
+    public function setConvertBreaks($val)
     {
         $this->setSetting('bconvertbreaks', $val);
     }
@@ -1123,7 +1116,7 @@ class BLOG
      * @param $authorid
      *     id of the author
      */
-    function insertJavaScriptInfo($authorid = '')
+    public function insertJavaScriptInfo($authorid = '')
     {
         global $member, $CONF;
 
@@ -1146,7 +1139,7 @@ class BLOG
      * @param $val
      *     new value for ballowpast
      */
-    function setAllowPastPosting($val)
+    public function setAllowPastPosting($val)
     {
         $this->setSetting('ballowpast', $val);
     }
@@ -1155,12 +1148,12 @@ class BLOG
      * Get the the setting if it is allowed to publish postings in the past
      * [should be named as getAllowPastPosting()]
      */
-    function allowPastPosting()
+    public function allowPastPosting()
     {
         return $this->getSetting('ballowpast');
     }
 
-    function getCorrectTime($t = 0)
+    public function getCorrectTime($t = 0)
     {
         if ($t == 0) {
             $t = time();
@@ -1168,70 +1161,70 @@ class BLOG
         return ($t + 3600 * $this->getTimeOffset());
     }
 
-    function getName()
+    public function getName()
     {
         return $this->getSetting('bname');
     }
 
-    function getShortName()
+    public function getShortName()
     {
         return $this->getSetting('bshortname');
     }
 
-    function getMaxComments()
+    public function getMaxComments()
     {
         return $this->getSetting('bmaxcomments');
     }
 
-    function getNotifyAddress()
+    public function getNotifyAddress()
     {
         return $this->getSetting('bnotify');
     }
 
-    function getNotifyType()
+    public function getNotifyType()
     {
         return $this->getSetting('bnotifytype');
     }
 
-    function notifyOnComment()
+    public function notifyOnComment()
     {
         $n = $this->getNotifyType();
         return (($n != 0) && (($n % 3) == 0));
     }
 
-    function notifyOnVote()
+    public function notifyOnVote()
     {
         $n = $this->getNotifyType();
         return (($n != 0) && (($n % 5) == 0));
     }
 
-    function notifyOnNewItem()
+    public function notifyOnNewItem()
     {
         $n = $this->getNotifyType();
         return (($n != 0) && (($n % 7) == 0));
     }
 
-    function setNotifyType($val)
+    public function setNotifyType($val)
     {
         $this->setSetting('bnotifytype', $val);
     }
 
-    function getTimeOffset()
+    public function getTimeOffset()
     {
         return $this->getSetting('btimeoffset');
     }
 
-    function commentsEnabled()
+    public function commentsEnabled()
     {
         return $this->getSetting('bcomments');
     }
 
-    function getURL()
+    public function getURL()
     {
         return $this->getSetting('burl');
     }
 
-    function getRealURL()
+    public function getRealURL()
     {
         $url = $this->getSetting('burl');
         if (strlen(trim($url)) == 0) {
@@ -1240,102 +1233,102 @@ class BLOG
         return $url;
     }
 
-    function getDefaultSkin()
+    public function getDefaultSkin()
     {
         return $this->getSetting('bdefskin');
     }
 
-    function getUpdateFile()
+    public function getUpdateFile()
     {
         return $this->getSetting('bupdate');
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return $this->getSetting('bdesc');
     }
 
-    function isPublic()
+    public function isPublic()
     {
         return $this->getSetting('bpublic');
     }
 
-    function emailRequired()
+    public function emailRequired()
     {
         return $this->getSetting('breqemail');
     }
 
-    function getSearchable()
+    public function getSearchable()
     {
         return $this->getSetting('bincludesearch');
     }
 
-    function getDefaultCategory()
+    public function getDefaultCategory()
     {
         return $this->getSetting('bdefcat');
     }
 
-    function setPublic($val)
+    public function setPublic($val)
     {
         $this->setSetting('bpublic', $val);
     }
 
-    function setSearchable($val)
+    public function setSearchable($val)
     {
         $this->setSetting('bincludesearch', $val);
     }
 
-    function setDescription($val)
+    public function setDescription($val)
     {
         $this->setSetting('bdesc', $val);
     }
 
-    function setUpdateFile($val)
+    public function setUpdateFile($val)
     {
         $this->setSetting('bupdate', $val);
     }
 
-    function setDefaultSkin($val)
+    public function setDefaultSkin($val)
     {
         $this->setSetting('bdefskin', $val);
     }
 
-    function setURL($val)
+    public function setURL($val)
     {
         $this->setSetting('burl', $val);
     }
 
-    function setName($val)
+    public function setName($val)
     {
         $this->setSetting('bname', $val);
     }
 
-    function setShortName($val)
+    public function setShortName($val)
     {
         $this->setSetting('bshortname', $val);
     }
 
-    function setCommentsEnabled($val)
+    public function setCommentsEnabled($val)
     {
         $this->setSetting('bcomments', $val);
     }
 
-    function setMaxComments($val)
+    public function setMaxComments($val)
     {
         $this->setSetting('bmaxcomments', $val);
     }
 
-    function setNotifyAddress($val)
+    public function setNotifyAddress($val)
     {
         $this->setSetting('bnotify', $val);
     }
 
-    function setEmailRequired($val)
+    public function setEmailRequired($val)
     {
         $this->setSetting('breqemail', $val);
     }
 
-    function setTimeOffset($val)
+    public function setTimeOffset($val)
     {
         // check validity of value
         // 1. replace , by . (common mistake)
@@ -1350,17 +1343,17 @@ class BLOG
         $this->setSetting('btimeoffset', $val);
     }
 
-    function setDefaultCategory($val)
+    public function setDefaultCategory($val)
     {
         $this->setSetting('bdefcat', $val);
     }
 
-    function existsSetting($key)
+    public function existsSetting($key)
     {
         return isset($this->settings[$key]);
     }
 
-    function getSetting($key)
+    public function getSetting($key)
     {
         if (isset($this->settings[$key])) {
             return $this->settings[$key];
@@ -1368,7 +1361,7 @@ class BLOG
         return;
     }
 
-    function getSettingDefault($key, $dafalutvalue)
+    public function getSettingDefault($key, $dafalutvalue)
     {
         if (!isset($this->settings[$key])) {
             return $dafalutvalue;
@@ -1376,7 +1369,7 @@ class BLOG
         return $this->settings[$key];
     }
 
-    function setSetting($key, $value)
+    public function setSetting($key, $value)
     {
         $this->settings[$key] = $value;
     }
@@ -1385,12 +1378,12 @@ class BLOG
      * Tries to add a member to the team.
      * Returns false if the member was already on the team
      */
-    function addTeamMember($memberid, $admin)
+    public function addTeamMember($memberid, $admin)
     {
         global $manager;
 
         $memberid = intval($memberid);
-        $admin = intval($admin);
+        $admin    = intval($admin);
 
         // check if member is already a member
         $tmem = MEMBER::createFromID($memberid);
@@ -1400,9 +1393,9 @@ class BLOG
         }
 
         $param = array(
-            'blog' => &$this,
+            'blog'   => &$this,
             'member' => &$tmem,
-            'admin' => &$admin
+            'admin'  => &$admin
         );
         $manager->notify('PreAddTeamMember', $param);
 
@@ -1412,9 +1405,9 @@ class BLOG
         sql_query($query);
 
         $param = array(
-            'blog' => &$this,
+            'blog'   => &$this,
             'member' => &$tmem,
-            'admin' => $admin
+            'admin'  => $admin
         );
         $manager->notify('PostAddTeamMember', $param);
 
@@ -1424,7 +1417,7 @@ class BLOG
         return 1;
     }
 
-    function getID()
+    public function getID()
     {
         return intVal($this->blogid);
     }
@@ -1466,7 +1459,7 @@ class BLOG
     /**
      * flag there is a future post pending
      */
-    function setFuturePost()
+    public function setFuturePost()
     {
         $query = 'UPDATE ' . sql_table('blog')
             . " SET bfuturepost='1' WHERE bnumber=" . $this->getID();
@@ -1476,7 +1469,7 @@ class BLOG
     /**
      * clear there is a future post pending
      */
-    function clearFuturePost()
+    public function clearFuturePost()
     {
         $query = 'UPDATE ' . sql_table('blog')
             . " SET bfuturepost='0' WHERE bnumber=" . $this->getID();
@@ -1486,20 +1479,20 @@ class BLOG
     /**
      * check if we should throw justPosted event
      */
-    function checkJustPosted()
+    public function checkJustPosted()
     {
         global $manager;
 
         if ($this->settings['bfuturepost'] == 1) {
             $blogid = $this->getID();
-            $sql = "SELECT count(*) AS result FROM " . sql_table('item')
+            $sql    = "SELECT count(*) AS result FROM " . sql_table('item')
                 . " WHERE iposted=0 AND iblog=" . $blogid . " AND itime<NOW()"
                 . ' LIMIT 1';
             if (intval(quickQuery($sql)) > 0) {
                 // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
                 // Note that the plugins's calling order is subject to thri order in the plugin list
                 $pinged = false;
-                $param = array(
+                $param  = array(
                     'blogid' => $blogid,
                     'pinged' => &$pinged
                 );
@@ -1539,7 +1532,7 @@ class BLOG
      * @returns int
      *      amount of items shown
      */
-    function readLogFromList(
+    public function readLogFromList(
         $itemarray,
         $template,
         $highlight = '',
@@ -1548,7 +1541,6 @@ class BLOG
         $showDrafts = 0,
         $showFuture = 0
     ) {
-
         $query = $this->getSqlItemList($itemarray, $showDrafts, $showFuture);
 
         return $this->showUsingQuery($template, $query, $highlight, $comments, $dateheads);
@@ -1568,14 +1560,14 @@ class BLOG
      * @note
      *      No LIMIT clause is added. (caller should add this if multiple pages are requested)
      */
-    function getSqlItemList($itemarray, $showDrafts = 0, $showFuture = 0)
+    public function getSqlItemList($itemarray, $showDrafts = 0, $showFuture = 0)
     {
         if (!is_array($itemarray)) {
             return '';
         }
         $showDrafts = intval($showDrafts);
         $showFuture = intval($showFuture);
-        $items = array();
+        $items      = array();
         foreach ($itemarray as $value) {
             if (intval($value)) {
                 $items[] = intval($value);
@@ -1585,7 +1577,7 @@ class BLOG
             return '';
         }
         //$itemlist = implode(',',$items);
-        $i = count($items);
+        $i     = count($items);
         $query = '';
         foreach ($items as $value) {
             $query .= '('
@@ -1632,17 +1624,17 @@ class BLOG
         return $query;
     }
 
-    function getAuthorVisible()
+    public function getAuthorVisible()
     {
         return intval($this->getSettingDefault('bauthorvisible', 1));
     }
 
-    function setAuthorVisible($val)
+    public function setAuthorVisible($val)
     {
         $this->setSetting('bauthorvisible', ($val ? 1 : 0));
     }
 
-    static function UpgardeAddColumnAuthorVisible()
+    public static function UpgardeAddColumnAuthorVisible()
     {
         global $CONF;
 
@@ -1657,9 +1649,9 @@ class BLOG
     }
 
     //オーダー番号追加 (yotaca: 2018/5/19)
-    function hnmCategoryType($val)
+    public function hnmCategoryType($val)
     {
-        $r = array('type'=>'', 'parnt'=>0, 'child'=>0, 'cls'=>'', 'sts'=>'');
+        $r = array('type' => '', 'parnt' => 0, 'child' => 0, 'cls' => '', 'sts' => '');
         $p = "parent_cat";
         $c = "child_cat";
 
@@ -1670,13 +1662,13 @@ class BLOG
             $len = strlen($val);
 
             if ($len <= 2) {
-                $r["type"] = $p;
+                $r["type"]  = $p;
                 $r["parnt"] = $val;
             } elseif ($len >= 3) {
                 $r["parnt"] = substr($val, 0, -2);
                 $r["child"] = substr($val, -2);
 
-                if ($r["child"]=="00") {
+                if ($r["child"] == "00") {
                     $r["type"] = $p;
                 } else {
                     $r["type"] = $c;
@@ -1688,7 +1680,7 @@ class BLOG
         if ($r["sts"] == $r["parnt"]) {
             $r["sts"] = "current ";
         } else {
-             $r["sts"] = "";
+            $r["sts"] = "";
         }
 
         $r["cls"] = $r["sts"].$r["type"]." p_".$r["parnt"]." c_".$r["child"]; // カレント追加(yotaca: 2018/7/1)
@@ -1696,7 +1688,7 @@ class BLOG
     }
 
     //カレントカテゴリのオーダー番号を抽出します。 (yotaca: 2018/7/1)
-    function hnmGetCategoryid()
+    public function hnmGetCategoryid()
     {
         global $catid,$itemid;
 
@@ -1720,12 +1712,12 @@ class BLOG
     }
 
     //アイテムからカテゴリIDを抽出します。 (yotaca: 2018/7/1)
-    function hnmGetItemCatid($itemid)
+    public function hnmGetItemCatid($itemid)
     {
         $itemid = intval($itemid);
-        $query =  'SELECT i.icat as catid FROM '.sql_table('item').' as i WHERE i.inumber=' . $itemid.' LIMIT 1';
-        $r = sql_query($query);
-        $r = sql_fetch_assoc($r);
+        $query  = 'SELECT i.icat as catid FROM '.sql_table('item').' as i WHERE i.inumber=' . $itemid.' LIMIT 1';
+        $r      = sql_query($query);
+        $r      = sql_fetch_assoc($r);
         return $r['catid'];
     }
 }

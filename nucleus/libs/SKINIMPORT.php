@@ -18,7 +18,6 @@
 
 class SKINIMPORT
 {
-
     // hardcoded value (see constructor). When 1, interesting info about the
     // parsing process is sent to the output
     public $debug;
@@ -46,11 +45,10 @@ class SKINIMPORT
     public $currentPartName;
     public $cdata;
 
-
     /**
      * constructor initializes data structures
      */
-    function __construct()
+    public function __construct()
     {
         // disable magic_quotes_runtime if it's turned on
         if (version_compare(PHP_VERSION, '5.4.0', '<')
@@ -64,7 +62,7 @@ class SKINIMPORT
         $this->reset();
     }
 
-    function reset()
+    public function reset()
     {
         if ($this->parser) {
             xml_parser_free($this->parser);
@@ -72,22 +70,22 @@ class SKINIMPORT
 
         // which data has been read?
         $this->metaDataRead = 0;
-        $this->allRead = 0;
+        $this->allRead      = 0;
 
         // to maintain track of where we are inside the XML file
-        $this->inXml = 0;
-        $this->inData = 0;
-        $this->inMeta = 0;
-        $this->inSkin = 0;
-        $this->inTemplate = 0;
-        $this->currentName = '';
+        $this->inXml           = 0;
+        $this->inData          = 0;
+        $this->inMeta          = 0;
+        $this->inSkin          = 0;
+        $this->inTemplate      = 0;
+        $this->currentName     = '';
         $this->currentPartName = '';
 
         // character data pile
         $this->cdata = '';
 
         // list of skinnames and templatenames (will be array of array)
-        $this->skins = array();
+        $this->skins     = array();
         $this->templates = array();
 
         // extra info included in the XML files (e.g. installation notes)
@@ -119,7 +117,7 @@ class SKINIMPORT
      *                     xml_parse : parce error occured from PHP 7.0.3(to 7.0.6) and later
      *                     add readFileWithSimpleXML function
      */
-    function readFile($filename, $metaOnly = 0)
+    public function readFile($filename, $metaOnly = 0)
     {
         // php bug (windows) : php 7.0.3 and later : xml_parse will be parce error
         if (version_compare(PHP_VERSION, '7.0.3', '>=')) {
@@ -180,7 +178,7 @@ class SKINIMPORT
     /**
      * Returns the list of skin names
      */
-    function getSkinNames()
+    public function getSkinNames()
     {
         return array_keys($this->skins);
     }
@@ -188,7 +186,7 @@ class SKINIMPORT
     /**
      * Returns the list of template names
      */
-    function getTemplateNames()
+    public function getTemplateNames()
     {
         return array_keys($this->templates);
     }
@@ -196,7 +194,7 @@ class SKINIMPORT
     /**
      * Returns the extra information included in the XML file
      */
-    function getInfo()
+    public function getInfo()
     {
         return $this->info;
     }
@@ -208,14 +206,14 @@ class SKINIMPORT
      *        set to 1 when allowed to overwrite existing skins with the same name
      *        (default = 0)
      */
-    function writeToDatabase($allowOverwrite = 0)
+    public function writeToDatabase($allowOverwrite = 0)
     {
-        $existingSkins = $this->checkSkinNameClashes();
+        $existingSkins     = $this->checkSkinNameClashes();
         $existingTemplates = $this->checkTemplateNameClashes();
 
         // if not allowed to overwrite, check if any nameclashes exists
         if (!$allowOverwrite) {
-            if ((sizeof($existingSkins) > 0) || (sizeof($existingTemplates) > 0)) {
+            if ((count($existingSkins) > 0) || (count($existingTemplates) > 0)) {
                 return _SKINIE_NAME_CLASHES_DETECTED;
             }
         }
@@ -279,7 +277,7 @@ class SKINIMPORT
                     // update general info
                     $templateObj->updateGeneralInfo($templateName, $data['description']);
                 } else {
-                    $templateid = TEMPLATE::createNew($templateName, $data['description']);
+                    $templateid  = TEMPLATE::createNew($templateName, $data['description']);
                     $templateObj = new TEMPLATE($templateid);
                 }
 
@@ -294,7 +292,7 @@ class SKINIMPORT
     /**
      * returns an array of all the skin nameclashes (empty array when no name clashes)
      */
-    function checkSkinNameClashes()
+    public function checkSkinNameClashes()
     {
         $clashes = array();
 
@@ -311,7 +309,7 @@ class SKINIMPORT
      * returns an array of all the template nameclashes
      * (empty array when no name clashes)
      */
-    function checkTemplateNameClashes()
+    public function checkTemplateNameClashes()
     {
         $clashes = array();
 
@@ -329,7 +327,7 @@ class SKINIMPORT
     /**
      * Called by XML parser for each new start element encountered
      */
-    function startElement($parser, $name, $attrs)
+    public function startElement($parser, $name, $attrs)
     {
         foreach ($attrs as $key => $value) {
             $attrs[$key] = hsc($value);
@@ -351,24 +349,24 @@ class SKINIMPORT
                 break;
             case 'skin':
                 if (!$this->inMeta) {
-                    $this->inSkin = 1;
-                    $this->currentName = $attrs['name'];
-                    $this->skins[$this->currentName]['type'] = $attrs['type'];
-                    $this->skins[$this->currentName]['includeMode'] = $attrs['includeMode'];
+                    $this->inSkin                                     = 1;
+                    $this->currentName                                = $attrs['name'];
+                    $this->skins[$this->currentName]['type']          = $attrs['type'];
+                    $this->skins[$this->currentName]['includeMode']   = $attrs['includeMode'];
                     $this->skins[$this->currentName]['includePrefix'] = $attrs['includePrefix'];
-                    $this->skins[$this->currentName]['parts'] = array();
+                    $this->skins[$this->currentName]['parts']         = array();
                 } else {
-                    $this->skins[$attrs['name']] = array();
+                    $this->skins[$attrs['name']]          = array();
                     $this->skins[$attrs['name']]['parts'] = array();
                 }
                 break;
             case 'template':
                 if (!$this->inMeta) {
-                    $this->inTemplate = 1;
-                    $this->currentName = $attrs['name'];
+                    $this->inTemplate                             = 1;
+                    $this->currentName                            = $attrs['name'];
                     $this->templates[$this->currentName]['parts'] = array();
                 } else {
-                    $this->templates[$attrs['name']] = array();
+                    $this->templates[$attrs['name']]          = array();
                     $this->templates[$attrs['name']]['parts'] = array();
                 }
                 break;
@@ -391,7 +389,7 @@ class SKINIMPORT
     /**
      * Called by the XML parser for each closing tag encountered
      */
-    function endElement($parser, $name)
+    public function endElement($parser, $name)
     {
         if ($this->debug) {
             echo 'END: ' . hsc($name) . '<br />';
@@ -399,15 +397,16 @@ class SKINIMPORT
 
         switch ($name) {
             case 'nucleusskin':
-                $this->inData = 0;
+                $this->inData  = 0;
                 $this->allRead = 1;
                 break;
             case 'meta':
-                $this->inMeta = 0;
+                $this->inMeta       = 0;
                 $this->metaDataRead = 1;
                 break;
             case 'info':
                 $this->info = $this->getCharacterData();
+                // no break
             case 'skin':
                 if (!$this->inMeta) {
                     $this->inSkin = 0;
@@ -447,7 +446,7 @@ class SKINIMPORT
     /**
      * Called by XML parser for data inside elements
      */
-    function characterData($parser, $data)
+    public function characterData($parser, $data)
     {
         if ($this->debug) {
             echo 'NEW DATA: ' . hsc($data) . '<br />';
@@ -458,7 +457,7 @@ class SKINIMPORT
     /**
      * Returns the data collected so far
      */
-    function getCharacterData()
+    public function getCharacterData()
     {
         if ((strtoupper(_CHARSET) == 'UTF-8')
             or (strtoupper(_CHARSET) == 'ISO-8859-1')
@@ -472,7 +471,7 @@ class SKINIMPORT
     /**
      * Clears the data buffer
      */
-    function clearCharacterData()
+    public function clearCharacterData()
     {
         $this->cdata = '';
     }
@@ -504,7 +503,7 @@ class SKINIMPORT
         return $candidates;
     }
 
-    function convValue($text)
+    public function convValue($text)
     {
         static $flag = -1;
         if ($flag == 0) {
@@ -528,7 +527,7 @@ class SKINIMPORT
     private function readFileWithSimpleXML($filename, $metaOnly = 0)
     {
         unset($this->skins, $this->templates);
-        $this->skins = array();
+        $this->skins     = array();
         $this->templates = array();
 
         $src_text = @file_get_contents($filename);
@@ -570,14 +569,14 @@ class SKINIMPORT
                     continue;
                 }
                 $data[$parent] = array();
-                $meta = $xml->xpath('/nucleusskin/meta');
+                $meta          = $xml->xpath('/nucleusskin/meta');
 
                 if ($meta) {
                     foreach ($meta[0] as $child) {
                         $name = $child->getName();
                         if ('info' == $name) {
                             $data[$parent][$name] = $this->convValue((string )$child);
-                            $this->info =& $data[$parent][$name];
+                            $this->info           = & $data[$parent][$name];
                         } else { // skin template
                             foreach ($child->attributes() as $k => $v) {
                                 if ('name' == $k) {
@@ -607,15 +606,15 @@ class SKINIMPORT
                 continue;
             }
             foreach ($xml_first as $child) {
-                $item = array();
-                $name = $child->getName(); // skin template
+                $item       = array();
+                $name       = $child->getName(); // skin template
                 $attributes = array();
                 foreach ($child->attributes() as $k => $v) {
                     $attributes[$k] = (string )$v;
                 }
                 $current_name = @$attributes['name'];
 
-                $description = $child->xpath('description');
+                $description         = $child->xpath('description');
                 $item['description'] = ($description ? $this->convValue((string )$description[0]) : '');
 
                 // parts
@@ -625,7 +624,7 @@ class SKINIMPORT
                     foreach ($part->attributes() as $k => $v) {
                         $attr[$k] = (string )$v;
                     }
-                    $part_name = @$attr['name'];
+                    $part_name                 = @$attr['name'];
                     $item['parts'][$part_name] = $this->convValue((string )$part);
                 }
                 // specialpage
@@ -636,9 +635,9 @@ class SKINIMPORT
                     foreach ($xml_page->attributes() as $k => $v) {
                         $attr[$k] = (string )$v;
                     }
-                    $part_name = @$attr['name'];
-                    $page_data = array_merge($attr);
-                    $page_data['content'] = $this->convValue((string )$xml_page);
+                    $part_name                       = @$attr['name'];
+                    $page_data                       = array_merge($attr);
+                    $page_data['content']            = $this->convValue((string )$xml_page);
                     $item['specialpage'][$part_name] = $page_data;
                 }
 
@@ -653,10 +652,10 @@ class SKINIMPORT
 
         if (!$metaOnly) {
             if (isset($data['skin'])) {
-                $this->skins =& $data['skin'];
+                $this->skins = & $data['skin'];
             }
             if (isset($data['template'])) {
-                $this->templates =& $data['template'];
+                $this->templates = & $data['template'];
             }
         }
         if (is_array($this->skins)) {

@@ -18,11 +18,10 @@
 if (!function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/ACTIONS.php';
+require_once __DIR__ . '/ACTIONS.php';
 
 class SKIN
 {
-
     // after creating a SKIN object, evaluates to true when the skin exists
     public $isValid;
 
@@ -49,13 +48,13 @@ class SKIN
         // read skin name/description/content type
         $query = 'SELECT * FROM ' . sql_table('skin_desc') . " WHERE sdnumber='{$this->id}'";
         if (isset($resultCache[$query])) {
-            $obj = $resultCache[$query];
+            $obj   = $resultCache[$query];
             $count = $resultCache["count{$query}"];
         } else {
-            $res = sql_query($query);
-            $obj = sql_fetch_object($res);
-            $count = is_object($obj) ? 1 : 0;
-            $resultCache[$query] = $obj;
+            $res                          = sql_query($query);
+            $obj                          = sql_fetch_object($res);
+            $count                        = is_object($obj) ? 1 : 0;
+            $resultCache[$query]          = $obj;
             $resultCache["count{$query}"] = $count;
         }
         $this->isValid = ($count > 0);
@@ -63,52 +62,47 @@ class SKIN
             return;
         }
 
-        $this->name = $obj->sdname;
-        $this->description = $obj->sddesc;
-        $this->contentType = $obj->sdtype;
-        $this->includeMode = $obj->sdincmode;
+        $this->name          = $obj->sdname;
+        $this->description   = $obj->sddesc;
+        $this->contentType   = $obj->sdtype;
+        $this->includeMode   = $obj->sdincmode;
         $this->includePrefix = $obj->sdincpref;
     }
 
-    public function SKIN($id)
-    {
-        $this->__construct($id);
-    }
-
-    function getID()
+    public function getID()
     {
         return $this->id;
     }
 
-    function getName()
+    public function getName()
     {
         return $this->name;
     }
 
-    function getDescription()
+    public function getDescription()
     {
         return $this->description;
     }
 
-    function getContentType()
+    public function getContentType()
     {
         return $this->contentType;
     }
 
-    function getIncludeMode()
+    public function getIncludeMode()
     {
         return $this->includeMode;
     }
 
-    function getIncludePrefix()
+    public function getIncludePrefix()
     {
         return $this->includePrefix;
     }
 
     /**
      * Checks if a skin with a given shortname exists
-     * @param string $name Skin short name
-     * @return int number of skins with the given ID
+     * @param  string $name Skin short name
+     * @return int    number of skins with the given ID
      * @static
      */
     public static function exists($name)
@@ -123,8 +117,8 @@ class SKIN
 
     /**
      * Checks if a skin with a given ID exists
-     * @param string $id Skin ID
-     * @return int number of skins with the given ID
+     * @param  string $id Skin ID
+     * @return int    number of skins with the given ID
      * @static
      */
     public static function existsID($id)
@@ -188,7 +182,7 @@ class SKIN
 
     /**
      * Returns a skin given its shortname
-     * @param string $name Skin shortname
+     * @param  string $name Skin shortname
      * @return object SKIN
      * @static
      */
@@ -199,8 +193,8 @@ class SKIN
 
     /**
      * Returns a skin ID given its shortname
-     * @param string $name Skin shortname
-     * @return int Skin ID
+     * @param  string $name Skin shortname
+     * @return int    Skin ID
      * @static
      */
     public static function getIdFromName($name)
@@ -219,7 +213,7 @@ class SKIN
 
     /**
      * Returns a skin shortname given its ID
-     * @param string $name
+     * @param  string $name
      * @return string Skin short name
      * @static
      */
@@ -238,10 +232,10 @@ class SKIN
         global $manager;
 
         $param = array(
-            'name' => &$name,
-            'description' => &$desc,
-            'type' => &$type,
-            'includeMode' => &$includeMode,
+            'name'          => &$name,
+            'description'   => &$desc,
+            'type'          => &$type,
+            'includeMode'   => &$includeMode,
             'includePrefix' => &$includePrefix
         );
         $manager->notify('PreAddSkin', $param);
@@ -250,11 +244,11 @@ class SKIN
         $newid = sql_insert_id();
 
         $param = array(
-            'skinid' => $newid,
-            'name' => $name,
-            'description' => $desc,
-            'type' => $type,
-            'includeMode' => $includeMode,
+            'skinid'        => $newid,
+            'name'          => $name,
+            'description'   => $desc,
+            'type'          => $type,
+            'includeMode'   => $includeMode,
             'includePrefix' => $includePrefix
         );
         $manager->notify('PostAddSkin', $param);
@@ -267,15 +261,15 @@ class SKIN
      *
      * @param string $type
      */
-    function parse($type, $options = array())
+    public function parse($type, $options = array())
     {
         global $manager, $CONF, $skinid;
 
         $spartstype = (isset($options['spartstype']) ? $options['spartstype'] : 'parts');
 
         $notify_data = array(
-            'skin' => &$this,
-            'type' => $type,
+            'skin'      => &$this,
+            'type'      => $type,
             'partstype' => $spartstype
         );
         $manager->notify('InitSkinParse', $notify_data);
@@ -289,7 +283,7 @@ class SKIN
         $currentSkinName = $this->getName();
 
         $getcontents_options = array('spartstype' => $spartstype);
-        $contents = $this->getContent($type, $getcontents_options);
+        $contents            = $this->getContent($type, $getcontents_options);
 
         if (!$contents) {
             if ($spartstype == 'specialpage') {
@@ -298,7 +292,7 @@ class SKIN
                 return;
             }
             // use base skin if this skin does not have contents
-            $defskin = new SKIN($CONF['BaseSkin']);
+            $defskin  = new SKIN($CONF['BaseSkin']);
             $contents = $defskin->getContent($type, $getcontents_options);
             if (!$contents) {
                 $contents = $this->getContent('index');
@@ -312,9 +306,9 @@ class SKIN
         $actions = $this->getAllowedActionsForType($type);
 
         $param = array(
-            'skin' => &$this,
-            'type' => $type,
-            'contents' => &$contents,
+            'skin'      => &$this,
+            'type'      => $type,
+            'contents'  => &$contents,
             'partstype' => $spartstype
         );
         $manager->notify('PreSkinParse', $param);
@@ -325,7 +319,7 @@ class SKIN
         PARSER::setProperty('IncludePrefix', $this->getIncludePrefix());
 
         $handler = new ACTIONS($type, $this);
-        $parser = new PARSER($actions, $handler);
+        $parser  = new PARSER($actions, $handler);
         $handler->setParser($parser);
         $handler->setSkin($this);
 
@@ -335,28 +329,28 @@ class SKIN
         @ob_clean();
 
         $md5['<%BenchMark%>'] = md5('<%BenchMark%>');
-        if (strpos($output, $md5['<%BenchMark%>']) !== false) {
+        if (str_contains($output, $md5['<%BenchMark%>'])) {
             $output = str_replace($md5['<%BenchMark%>'], '<%BenchMark%>', $output);
         }
 
         $md5['<%DebugInfo%>'] = md5('<%DebugInfo%>');
-        if (strpos($output, $md5['<%DebugInfo%>']) !== false) {
+        if (str_contains($output, $md5['<%DebugInfo%>'])) {
             $output = str_replace($md5['<%DebugInfo%>'], '<%DebugInfo%>', $output);
         }
 
         $param = array(
-            'skin' => &$this,
-            'type' => $type,
+            'skin'   => &$this,
+            'type'   => $type,
             'output' => &$output
         );
         $manager->notify('PostSkinParse', $param);
 
-        if (strpos($output, '<%BenchMark%>') !== false) {
-            $rs = coreSkinVar('<%BenchMark%>');
+        if (str_contains($output, '<%BenchMark%>')) {
+            $rs     = coreSkinVar('<%BenchMark%>');
             $output = str_replace('<%BenchMark%>', $rs, $output);
         }
-        if (strpos($output, '<%DebugInfo%>') !== false) {
-            $rs = coreSkinVar('<%DebugInfo%>');
+        if (str_contains($output, '<%DebugInfo%>')) {
+            $rs     = coreSkinVar('<%DebugInfo%>');
             $output = str_replace('<%DebugInfo%>', $rs, $output);
         }
 
@@ -370,7 +364,6 @@ class SKIN
         ob_end_clean();
 
         $skinid = $this->id;
-        $this->doTidy($output);
         return $output;
     }
 
@@ -379,10 +372,10 @@ class SKIN
      *
      * @param $type type of the skin (e.g. index, item, search ...)
      */
-    function getContent($type, $options = array())
+    public function getContent($type, $options = array())
     {
         global $DB_DRIVER_NAME, $CONF;
-        if (strpos($type, '/') !== false) {
+        if (str_contains($type, '/')) {
             return '';
         }
         if ('mysql' == $DB_DRIVER_NAME) {
@@ -422,7 +415,7 @@ class SKIN
      * @param $type type of the skin part (e.g. index, item, search ...)
      * @param $content new content for this skin part
      */
-    function update($type, $content, $options = array())
+    public function update($type, $content, $options = array())
     {
         $skinid = $this->id;
 
@@ -465,7 +458,7 @@ class SKIN
     /**
      * Deletes all skin parts from the database
      */
-    function deleteAllParts()
+    public function deleteAllParts()
     {
         sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $this->getID());
     }
@@ -473,7 +466,7 @@ class SKIN
     /**
      * Updates the general information about the skin
      */
-    function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
+    public function updateGeneralInfo($name, $desc, $type = 'text/html', $includeMode = 'normal', $includePrefix = '')
     {
         $query = 'UPDATE ' . sql_table('skin_desc') . ' SET'
             . " sdname='" . sql_real_escape_string($name) . "',"
@@ -498,14 +491,14 @@ class SKIN
     public static function getFriendlyNames()
     {
         $skintypes = array(
-            'index' => _SKIN_PART_MAIN,
-            'item' => _SKIN_PART_ITEM,
+            'index'       => _SKIN_PART_MAIN,
+            'item'        => _SKIN_PART_ITEM,
             'archivelist' => _SKIN_PART_ALIST,
-            'archive' => _SKIN_PART_ARCHIVE,
-            'search' => _SKIN_PART_SEARCH,
-            'error' => _SKIN_PART_ERROR,
-            'member' => _SKIN_PART_MEMBER,
-            'imagepopup' => _SKIN_PART_POPUP
+            'archive'     => _SKIN_PART_ARCHIVE,
+            'search'      => _SKIN_PART_SEARCH,
+            'error'       => _SKIN_PART_ERROR,
+            'member'      => _SKIN_PART_MEMBER,
+            'imagepopup'  => _SKIN_PART_POPUP
         );
 
         $query = "SELECT stype FROM " . sql_table('skin')
@@ -721,12 +714,12 @@ class SKIN
             return false;
         }
 
-        $this->isValid = true;
-        $this->id = $id;
-        $this->name = $obj->sdname;
-        $this->description = $obj->sddesc;
-        $this->contentType = $obj->sdtype;
-        $this->includeMode = $obj->sdincmode;
+        $this->isValid       = true;
+        $this->id            = $id;
+        $this->name          = $obj->sdname;
+        $this->description   = $obj->sddesc;
+        $this->contentType   = $obj->sdtype;
+        $this->includeMode   = $obj->sdincmode;
         $this->includePrefix = $obj->sdincpref;
         return true;
     }
@@ -778,9 +771,9 @@ class SKIN
                     continue;
                 }
                 $keyname = '';
-                $items = array();
+                $items   = array();
                 foreach ($text_node->children() as $node) {
-                    $key = $node->getName();
+                    $key   = $node->getName();
                     $value = (string)$node;
                     if ($key == 'key') {
                         $keyname = $value;
@@ -791,7 +784,7 @@ class SKIN
                 if (!isset($items['default'])) {
                     $items['default'] = $keyname;
                 }
-                $keyname = (function_exists('mb_strtolower') ? mb_strtolower($keyname, 'UTF-8') : strtolower($keyname));
+                $keyname                = (function_exists('mb_strtolower') ? mb_strtolower($keyname, 'UTF-8') : strtolower($keyname));
                 $cached_array[$keyname] = $items;
 //                var_dump($keyname, $items);
             }
@@ -817,69 +810,4 @@ class SKIN
         return $text; // not found
     }
 
-    private function doTidy(&$data)
-    {
-        global $CONF;
-
-        if (!isset($CONF['ENABLE_TIDY']) || !$CONF['ENABLE_TIDY']) {
-            return;
-        }
-        if (!extension_loaded('tidy') || (_CHARSET != 'UTF-8')
-            || ($this->getContentType() != 'text/html')
-            || !is_string($data) || (strlen($data) == 0)) {
-            return;
-        }
-
-        $force_html5 = (isset($CONF['ENABLE_TIDY_FORCE_HTML5']) && $CONF['ENABLE_TIDY_FORCE_HTML5']);
-
-//      tidy ver5 : 2015.06.30
-        $is_tidy_html5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
-        if ($force_html5 && !$is_tidy_html5) {
-            return;
-        } // tidy lib is too old.
-        // <!DOCTYPE html>
-        if (!$is_tidy_html5 && preg_match('/^\s*<!DOCTYPE\s+html\s*>/ms', $data)) {
-            return;
-        } // tidy lib is too old. The source is probably html5.
-
-        $tidy_config = $this->getTidyConfig();
-        if ($force_html5) {
-            $tidy_config['doctype'] = 'html5';
-        }
-
-        $tidy = new tidy;
-        $tidy->parseString($data, $tidy_config, 'utf8');
-        $tidy->cleanRepair();
-
-        $data = (string)$tidy;
-    }
-
-    private function getTidyConfig()
-    {
-        // http://tidy.sourceforge.net/docs/quickref.html
-        global $CONF, $member;
-        $debug = isDebugMode();
-        $release = !$debug;
-        $is_admin = $member->isAdmin();
-        $tidy_config = array(
-            'doctype' => 'auto', // html5, omit, auto, strict, transitional, user
-            'output-xhtml' => false,
-            'char-encoding' => 'utf8',
-            'indent' => (isset($CONF['ENABLE_TIDY_INDENT']) && $CONF['ENABLE_TIDY_INDENT']),
-            'indent-spaces' => 2,
-            'fix-uri' => false,
-            'hide-comments' => !$is_admin,
-            'tidy-mark' => $is_admin,
-            'wrap' => false, // 200
-        );
-
-        if (_CHARSET != 'UTF-8') {
-            $tidy_config['char-encoding'] = 'raw';
-        }
-        if ($release) {
-//            $tidy_config['language'] = 'ja';
-        }
-
-        return $tidy_config;
-    }
-}
+ }

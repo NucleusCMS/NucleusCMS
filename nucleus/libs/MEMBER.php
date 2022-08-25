@@ -18,7 +18,6 @@
 
 class MEMBER
 {
-
     // 1 when authenticated, 0 when not
     public $loggedin = 0;
     public $password;        // not the actual password, but rather a MD5 hash
@@ -32,7 +31,7 @@ class MEMBER
     public $email;
     public $url;
     public $language = '';        // name of the language file to use (e.g. 'english' -> english.php)
-    public $admin = 0;            // (either 0 or 1)
+    public $admin    = 0;            // (either 0 or 1)
     public $canlogin = 0;        // (either 0 or 1)
     public $notes;
     public $autosave = 1;        // if the member use the autosave draft function
@@ -43,16 +42,11 @@ class MEMBER
     /**
      * Constructor for a member object
      */
-    function __construct()
+    public function __construct()
     {
         global $DIR_LIBS;
         include_once("{$DIR_LIBS}phpass.class.inc.php");
         $this->hasher = new PasswordHash();
-    }
-
-    public function MEMBER()
-    {
-        $this->__construct();
     }
 
     private function init_member()
@@ -66,11 +60,11 @@ class MEMBER
         unset($this->email);
         unset($this->url);
         $this->language = '';       // name of the language file to use (e.g. 'english' -> english.php)
-        $this->admin = 0;           // (either 0 or 1)
+        $this->admin    = 0;           // (either 0 or 1)
         $this->canlogin = 0;        // (either 0 or 1)
         unset($this->notes);
         $this->autosave = 1;        // if the member use the autosave draft function
-        $this->halt = 0;
+        $this->halt     = 0;
     }
 
     /**
@@ -82,6 +76,7 @@ class MEMBER
     {
         $mem = new MEMBER();
         $mem->readFromName($displayname);
+
         return $mem;
     }
 
@@ -94,17 +89,21 @@ class MEMBER
     {
         $mem = new MEMBER();
         $mem->readFromID($id);
+
         return $mem;
     }
 
-    function readFromName($displayname)
+    public function readFromName($displayname)
     {
-        return $this->read(sprintf("mname='%s'", sql_real_escape_string($displayname)));
+        return $this->read(sprintf(
+            "mname='%s'",
+            sql_real_escape_string($displayname)
+        ));
     }
 
-    function readFromID($id)
+    public function readFromID($id)
     {
-        return $this->read('mnumber=' . intval($id));
+        return $this->read('mnumber=' . (int)$id);
     }
 
     /**
@@ -112,18 +111,18 @@ class MEMBER
      * Returns true when succeeded, returns false when failed
      * 3.40 adds CustomLogin event
      */
-    function login($formv_username, $formv_password)
+    public function login($formv_username, $formv_password)
     {
         global $manager;
 
         $this->loggedin = 0;
-        $success = 0;
-        $allowlocal = 1;
+        $success        = 0;
+        $allowlocal     = 1;
 
         $param = array(
-            'login' => &$formv_username,
-            'password' => &$formv_password,
-            'success' => &$success,
+            'login'      => &$formv_username,
+            'password'   => &$formv_password,
+            'success'    => &$success,
             'allowlocal' => &$allowlocal
         );
         $manager->notify('CustomLogin', $param);
@@ -140,12 +139,15 @@ class MEMBER
                 $this->loggedin = 0;
                 return 0;
             }
-            $userInfo = $this->readFromName($formv_username);
+            $userInfo     = $this->readFromName($formv_username);
             $dbv_password = $this->getPassword();
 
             if (!$userInfo) {
                 $this->loggedin = 0;
-            } elseif (!$this->password_verify($formv_password, $dbv_password)) {
+            } elseif (!$this->password_verify(
+                $formv_password,
+                $dbv_password
+            )) {
                 $this->loggedin = 0;
             } else {
                 $this->loggedin = 1;
@@ -160,7 +162,7 @@ class MEMBER
     /**
      * Login using cookie key
      */
-    function cookielogin($username, $cookiekey)
+    public function cookielogin($username, $cookiekey)
     {
         $this->loggedin = 0;
 
@@ -170,22 +172,22 @@ class MEMBER
         if (!$this->checkCookieKey($cookiekey)) {
             return 0;
         }
-
         $this->loggedin = 1;
+
         return 1;
     }
 
-    function logout()
+    public function logout()
     {
         $this->loggedin = 0;
     }
 
-    function isLoggedIn()
+    public function isLoggedIn()
     {
         return $this->loggedin;
     }
 
-    function isHalt()
+    public function isHalt()
     {
         return $this->halt;
     }
@@ -193,10 +195,14 @@ class MEMBER
     /**
      * Read member information from the database
      */
-    function read($where)
+    public function read($where)
     {
         // read info
-        $query = sprintf('SELECT * FROM %s WHERE %s', sql_table('member'), $where);
+        $query = sprintf(
+            'SELECT * FROM %s WHERE %s',
+            sql_table('member'),
+            $where
+        );
 
         $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
@@ -207,46 +213,46 @@ class MEMBER
             $this->setURL($obj->murl);
             $this->setDisplayName($obj->mname);
             $this->setAdmin($obj->madmin);
-            $this->id = $obj->mnumber;
+            $this->id = (int) $obj->mnumber;
             $this->setCanLogin($obj->mcanlogin);
             $this->setNotes($obj->mnotes);
             $this->setLanguage($obj->deflang);
             $this->setAutosave($obj->mautosave);
 
-            $this->halt = @intval($obj->mhalt);
+            $this->halt = (isset($obj->mhalt) && ((int) $obj->mhalt)) ? 1 : 0;
+
             if ($this->halt) {
                 return 0;
             }
 
             return 1;
         }
+
         return 0; // not found or removed user
     }
-
 
     /**
      * Returns true if member is an admin for the given blog
      * (returns false if not a team member)
      */
-    function isBlogAdmin($blogid)
+    public function isBlogAdmin($blogid)
     {
         $query = sprintf(
-            'SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d',
+            'SELECT count(*) AS result FROM %s WHERE tblog=%d and tmember=%d AND tadmin=1 LIMIT 1',
             sql_table('team'),
-            intval($blogid),
+            (int)$blogid,
             $this->getID()
-        )
-            . ' LIMIT 1';
-        return intval(quickQuery($query)) > 0;
+        );
+
+        return (int)quickQuery($query) > 0;
     }
 
-    function blogAdminRights($blogid)
+    public function blogAdminRights($blogid)
     {
         return ($this->isAdmin() || $this->isBlogAdmin($blogid));
     }
 
-
-    function teamRights($blogid)
+    public function teamRights($blogid)
     {
         return ($this->isAdmin() || $this->isTeamMember($blogid));
     }
@@ -254,25 +260,29 @@ class MEMBER
     /**
      * Returns true if this member is a team member of the given blog
      */
-    function isTeamMember($blogid)
+    public function isTeamMember($blogid)
     {
-        $query = 'SELECT count(*) AS result FROM ' . sql_table('team') . ' WHERE'
-            . ' tblog=' . intval($blogid)
-            . ' AND tmember=' . $this->getID()
-            . ' LIMIT 1';
-        return intval(quickQuery($query)) > 0;
+        $query = sprintf(
+            'SELECT count(*) AS result FROM %s WHERE tblog=%d AND tmember=%d LIMIT 1',
+            sql_table('team'),
+            (int)$blogid,
+            $this->getID()
+        );
+
+        return (int)quickQuery($query) > 0;
     }
 
-    function canAddItem($catid)
+    public function canAddItem($catid)
     {
         global $manager;
 
         // if this is a 'newcat' style newcat
         // no blog admin of destination blog -> NOK
         // blog admin of destination blog -> OK
-        if (strstr($catid, 'newcat')) {
+        if (str_contains($catid, 'newcat')) {
             // get blogid
             list($blogid) = sscanf($catid, "newcat-%d");
+
             return $this->blogAdminRights($blogid);
         }
 
@@ -293,45 +303,58 @@ class MEMBER
     }
 
     /**
-     * Returns true if this member can edit/delete a commentitem. This can be in the
-     * following cases:
+     * Returns true if this member can edit/delete a commentitem. This can be
+     * in the following cases:
      *      - member is a super-admin
      *   - member is the author of the comment
      *   - member is admin of the blog associated with the comment
      *   - member is author of the item associated with the comment
      */
-    function canAlterComment($commentid)
+    public function canAlterComment($commentid)
     {
         if ($this->isAdmin()) {
             return 1;
         }
 
-        $query = 'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor'
-            . ' FROM ' . sql_table('comment') . ', ' . sql_table('item') . ', ' . sql_table('blog')
-            . ' WHERE citem=inumber and iblog=bnumber and cnumber=' . intval($commentid);
+        $query = sprintf(
+            'SELECT citem as itemid, iblog as blogid, cmember as cauthor, iauthor FROM %s, %s, %s
+             WHERE citem=inumber and iblog=bnumber and cnumber=%d',
+            sql_table('comment'),
+            sql_table('item'),
+            sql_table('blog'),
+            (int)$commentid
+        );
         $res = sql_query($query);
         $obj = sql_fetch_object($res);
 
-        return ($obj->cauthor == $this->getID()) or $this->isBlogAdmin($obj->blogid) or ($obj->iauthor == $this->getID());
+        return ($obj->cauthor == $this->getID())
+                or $this->isBlogAdmin($obj->blogid)
+                or ($obj->iauthor == $this->getID());
     }
 
     /**
-     * Returns true if this member can edit/delete an item. This is true in the following
-     * cases: - member is a super-admin
+     * Returns true if this member can edit/delete an item. This is true in the
+     * following cases: - member is a super-admin
      *           - member is the author of the item
      *        - member is admin of the the associated blog
      */
-    function canAlterItem($itemid)
+    public function canAlterItem($itemid)
     {
         if ($this->isAdmin()) {
             return 1;
         }
 
-        $query = 'SELECT iblog, iauthor FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid);
+        $query = sprintf(
+            'SELECT iblog, iauthor FROM %s WHERE inumber=%d',
+            sql_table('item'),
+            (int)$itemid
+        );
         $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res)) && is_object($obj)) {
-            return ($obj->iauthor == $this->getID()) or $this->isBlogAdmin($obj->iblog);
+            return ($obj->iauthor == $this->getID())
+                    or $this->isBlogAdmin($obj->iblog);
         }
+
         return false;
     }
 
@@ -339,23 +362,38 @@ class MEMBER
      * Return true if member can be deleted. This means that there are no items
      * posted by the member left
      */
-    function canBeDeleted()
+    public function canBeDeleted()
     {
-        $sql = 'SELECT count(*) AS result FROM ' . sql_table('item') . ' WHERE iauthor=' . $this->getID();
-        return (intval(quickQuery($sql)) == 0);
+        $sql = sprintf(
+            'SELECT count(*) AS result FROM %s WHERE iauthor=%d LIMIT 1',
+            sql_table('item'),
+            $this->getID()
+        );
+
+        return ((int)quickQuery($sql) == 0);
     }
 
-    function getTotalPosts()
+    public function getTotalPosts()
     {
-        $res = sql_query('SELECT count(*) FROM ' . sql_table('item') . ' WHERE iauthor=' . $this->getID());
-        return intval(sql_result($res, 0, 0));
+        $res = sql_query(sprintf(
+            'SELECT count(*) FROM %s WHERE iauthor=%d',
+            sql_table('item'),
+            $this->getID()
+        ));
+
+        return (int)sql_result($res, 0, 0);
     }
 
-    function getTotalComments()
+    public function getTotalComments()
     {
-        $sql = 'SELECT count(*) FROM ' . sql_table('comment') . ' WHERE cmember=' . $this->getID();
+        $sql = sprintf(
+            'SELECT count(*) FROM %s WHERE cmember=%d',
+            sql_table('comment'),
+            $this->getID()
+        );
         $res = sql_query($sql);
-        return intval(sql_result($res, 0, 0));
+
+        return (int)sql_result($res, 0, 0);
     }
 
     /**
@@ -365,7 +403,7 @@ class MEMBER
      * @param itemid
      * @param newcat (can also be of form 'newcat-x' with x=blogid)
      */
-    function canUpdateItem($itemid, $newcat)
+    public function canUpdateItem($itemid, $newcat)
     {
         global $manager;
 
@@ -382,9 +420,10 @@ class MEMBER
         // if this is a 'newcat' style newcat
         // no blog admin of destination blog -> NOK
         // blog admin of destination blog -> OK
-        if (strstr($newcat, 'newcat')) {
+        if (str_contains($newcat, 'newcat')) {
             // get blogid
             list($blogid) = sscanf($newcat, 'newcat-%d');
+
             return $this->blogAdminRights($blogid);
         }
 
@@ -393,9 +432,8 @@ class MEMBER
             return 0;
         }
 
-
         // get item
-        $item =& $manager->getItem($itemid, 1, 1);
+        $item = & $manager->getItem($itemid, 1, 1);
 
         // old catid = new catid -> OK
         if ($item['catid'] == $newcat) {
@@ -403,14 +441,18 @@ class MEMBER
         }
 
         // not a valid category -> NOK
-        $validCat = quickQuery('SELECT COUNT(*) AS result FROM ' . sql_table('category') . ' WHERE catid=' . intval($newcat));
+        $validCat = quickQuery(sprintf(
+            'SELECT COUNT(*) AS result FROM %s WHERE catid=%d',
+            sql_table('category'),
+            (int)$newcat
+        ));
         if (!$validCat) {
             return 0;
         }
 
         // get destination blog
         $source_blogid = getBlogIDFromItemID($itemid);
-        $dest_blogid = getBlogIDFromCatID($newcat);
+        $dest_blogid   = getBlogIDFromCatID($newcat);
 
         // not a team member of destination blog -> NOK
         if (!$this->teamRights($dest_blogid)) {
@@ -423,7 +465,8 @@ class MEMBER
         }
 
         // if member has admin rights on both blogs: OK
-        if (($this->blogAdminRights($dest_blogid)) && ($this->blogAdminRights($source_blogid))) {
+        if (($this->blogAdminRights($dest_blogid))
+            && ($this->blogAdminRights($source_blogid))) {
             return 1;
         }
 
@@ -438,7 +481,7 @@ class MEMBER
      *        set this to 1 when using a shared computer. Cookies will expire
      *        at the end of the session in this case.
      */
-    function setCookies($shared = 0)
+    public function setCookies($shared = 0)
     {
         global $CONF;
 
@@ -478,7 +521,7 @@ class MEMBER
         }
     }
 
-    function sendActivationLink($type, $extra = '')
+    public function sendActivationLink($type, $extra = '')
     {
         global $CONF;
 
@@ -494,50 +537,65 @@ class MEMBER
         switch ($type) {
             case 'register':
                 $message = _ACTIVATE_REGISTER_MAIL;
-                $title = _ACTIVATE_REGISTER_MAILTITLE;
+                $title   = _ACTIVATE_REGISTER_MAILTITLE;
                 break;
             case 'forgot':
                 $message = _ACTIVATE_FORGOT_MAIL;
-                $title = _ACTIVATE_FORGOT_MAILTITLE;
+                $title   = _ACTIVATE_FORGOT_MAILTITLE;
                 break;
             case 'addresschange':
                 $message = _ACTIVATE_CHANGE_MAIL;
-                $title = _ACTIVATE_CHANGE_MAILTITLE;
+                $title   = _ACTIVATE_CHANGE_MAILTITLE;
                 break;
-            default;
+            default:
         }
 
         // fill out variables in text
 
         $aVars = array(
-            'siteName' => $CONF['SiteName'],
-            'siteUrl' => $CONF['IndexURL'],
-            'memberName' => $this->getDisplayName(),
-            'activationUrl' => $url,
+            'siteName'       => $CONF['SiteName'],
+            'siteUrl'        => $CONF['IndexURL'],
+            'memberName'     => $this->getDisplayName(),
+            'activationUrl'  => $url,
             'activationDays' => $CONF['ActivationDays']
         );
 
         $message = TEMPLATE::fill($message, $aVars);
-        $title = TEMPLATE::fill($title, $aVars);
+        $title   = TEMPLATE::fill($title, $aVars);
 
         // send mail
 
-        @Utils::mail($this->getEmail(), $title, $message, 'From: ' . $CONF['AdminEmail']);
+        @Utils::mail(
+            $this->getEmail(),
+            $title,
+            $message,
+            'From: ' . $CONF['AdminEmail']
+        );
 
-        ACTIONLOG::add(INFO, _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')');
+        ACTIONLOG::add(
+            INFO,
+            _ACTIONLOG_ACTIVATIONLINK . ' (' . $this->getDisplayName() . ' / type: ' . $type . ')'
+        );
     }
 
     /**
      * Returns an array of all blogids for which member has admin rights
      */
-    function getAdminBlogs()
+    public function getAdminBlogs()
     {
         $blogs = array();
 
         if ($this->isAdmin()) {
-            $query = 'SELECT bnumber as blogid from ' . sql_table('blog');
+            $query = sprintf(
+                'SELECT bnumber as blogid from %s',
+                sql_table('blog')
+            );
         } else {
-            $query = 'SELECT tblog as blogid from ' . sql_table('team') . ' where tadmin=1 and tmember=' . $this->getID();
+            $query = sprintf(
+                "SELECT tblog as blogid from %s where tadmin=1 and tmember=%d",
+                sql_table('team'),
+                $this->getID()
+            );
         }
 
         $res = sql_query($query);
@@ -553,15 +611,22 @@ class MEMBER
     /**
      * Returns an array of all blogids for which member has team rights
      */
-    function getTeamBlogs($incAdmin = 1)
+    public function getTeamBlogs($incAdmin = 1)
     {
-        $incAdmin = intval($incAdmin);
-        $blogs = array();
+        $incAdmin = (int)$incAdmin;
+        $blogs    = array();
 
         if ($this->isAdmin() && $incAdmin) {
-            $query = 'SELECT bnumber as blogid from ' . sql_table('blog');
+            $query = sprintf(
+                'SELECT bnumber as blogid from %s',
+                sql_table('blog')
+            );
         } else {
-            $query = 'SELECT tblog as blogid from ' . sql_table('team') . ' where tmember=' . $this->getID();
+            $query = sprintf(
+                "SELECT tblog as blogid from %s where tmember=%d",
+                sql_table('team'),
+                $this->getID()
+            );
         }
 
         $res = sql_query($query);
@@ -575,68 +640,79 @@ class MEMBER
     }
 
     /**
-     * Returns an email address from which notification of commenting/karma voting can
-     * be sent. A suggestion can be given for when the member is not logged in
+     * Returns an email address from which notification of commenting/karma
+     * voting can be sent. A suggestion can be given for when the member is not
+     * logged in
      */
-    function getNotifyFromMailAddress($suggest = "")
+    public function getNotifyFromMailAddress($suggest = "")
     {
         global $CONF;
+
         if ($this->isLoggedIn()) {
-            return $this->getDisplayName() . " <" . $this->getEmail() . ">";
-        } else {
-            if (isValidMailAddress($suggest)) {
-                return $suggest;
-            } else {
-                return $CONF['AdminEmail'];
-            }
+            return sprintf(
+                '%s <%s>',
+                $this->getDisplayName(),
+                $this->getEmail()
+            );
         }
+
+        if (isValidMailAddress($suggest)) {
+            return $suggest;
+        }
+
+        return $CONF['AdminEmail'];
     }
 
     /**
      * Write data to database
      */
-    function write()
+    public function write()
     {
-
-        $query = 'UPDATE ' . sql_table('member')
-            . " SET mname='" . sql_real_escape_string($this->getDisplayName()) . "',"
-            . "     mrealname='" . sql_real_escape_string($this->getRealName()) . "',"
-            . "     mpassword='" . sql_real_escape_string($this->getPassword()) . "',"
-            . "     mcookiekey='" . sql_real_escape_string($this->getCookieKey()) . "',"
-            . "     murl='" . sql_real_escape_string($this->getURL()) . "',"
-            . "     memail='" . sql_real_escape_string($this->getEmail()) . "',"
-            . "     madmin=" . $this->isAdmin() . ","
-            . "     mnotes='" . sql_real_escape_string($this->getNotes()) . "',"
-            . "     mcanlogin=" . $this->canLogin() . ","
-            . "       deflang='" . sql_real_escape_string($this->getLanguage()) . "',"
-            . "       mautosave=" . intval($this->getAutosave()) . " , "
-            . "     mhalt=" . sprintf('%d', $this->halt) . ""
-            . " WHERE mnumber=" . $this->getID();
+        $query = sprintf(
+            "UPDATE %s SET mname='%s',mrealname='%s',mpassword='%s',mcookiekey='%s',murl='%s',memail='%s',madmin=%d,mnotes='%s',mcanlogin=%d,deflang='%s',mautosave=%d ,mhalt=%d WHERE mnumber=%d",
+            sql_table('member'),
+            sql_real_escape_string($this->getDisplayName()),
+            sql_real_escape_string($this->getRealName()),
+            sql_real_escape_string($this->getPassword()),
+            sql_real_escape_string($this->getCookieKey()),
+            sql_real_escape_string($this->getURL()),
+            sql_real_escape_string($this->getEmail()),
+            $this->isAdmin(),
+            sql_real_escape_string($this->getNotes()),
+            $this->canLogin(),
+            sql_real_escape_string($this->getLanguage()),
+            (int)$this->getAutosave(),
+            (int)$this->halt,
+            $this->getID()
+        );
         sql_query($query);
     }
 
-    function writeCookieKey()
+    public function writeCookieKey()
     {
-        $query = 'UPDATE ' . sql_table('member')
-            . " SET "
-            . "     mcookiekey='" . sql_real_escape_string($this->getCookieKey()) . "'"
-            . " WHERE mnumber=" . $this->getID();
+        $query = sprintf(
+            "UPDATE %s SET mcookiekey='%s' WHERE mnumber=%d",
+            sql_table('member'),
+            sql_real_escape_string($this->getCookieKey()),
+            $this->getID()
+        );
         sql_query($query);
     }
 
-    function checkCookieKey($key)
+    public function checkCookieKey($key)
     {
         return (($key != '') && ($key == $this->getCookieKey()));
     }
 
-    function password_verify($formv_password, $hash)
+    public function password_verify($formv_password, $hash)
     {
         if (isset($this->halt) && ($this->halt)) {
             return false;
         }
+
         global $CONF;
 
-        if (strpos($hash, '$') !== false) {
+        if (str_contains($hash, '$')) {
             $rs = $this->hasher->CheckPassword($formv_password, $hash);
         } else {
             $rs = (md5($formv_password) === $hash);
@@ -656,16 +732,17 @@ class MEMBER
                 $param[] = sql_table('member');
                 $param[] = sql_real_escape_string($password_hash);
                 $param[] = intval($mnumber);
-                $query = vsprintf("UPDATE %s SET mpassword='%s' WHERE mnumber=%s", $param);
-                $rs = sql_query($query);
+                $query   = vsprintf("UPDATE %s SET mpassword='%s' WHERE mnumber=%s", $param);
+                $rs      = sql_query($query);
             } else {
                 $rs = false;
             }
         }
+
         return $rs;
     }
 
-    function checkPassword($pw)
+    public function checkPassword($pw)
     {
         if (str_contains($this->getPassword(), '$')) {
             return $this->hasher->CheckPassword($pw, $this->getPassword());
@@ -674,42 +751,47 @@ class MEMBER
         }
     }
 
-    function getRealName()
+    public function getRealName()
     {
         return $this->realname;
     }
 
-    function setRealName($name)
+    public function setRealName($name)
     {
         $this->realname = $name;
     }
 
-    function getEmail()
+    public function getEmail()
     {
         return $this->email;
     }
 
-    function setEmail($email)
+    public function setEmail($email)
     {
         $this->email = $email;
     }
 
-    function getPassword()
+    public function getPassword()
     {
         return $this->password;
     }
 
-    function setPassword($pwd)
+    public function setPassword($pwd)
     {
+        if (! self::checkIfValidPasswordCharacters($pwd)) {
+            return false;
+        }
         $this->password = $this->hasher->HashPassword($pwd);
+
+        return true;
     }
 
-    function setHalt($halt)
+    public function setHalt($halt)
     {
         $this->halt = $halt ? 1 : 0;
     }
 
-    function getCookieKey()
+    public function getCookieKey()
     {
         return $this->cookiekey;
     }
@@ -717,90 +799,91 @@ class MEMBER
     /**
      * Generate new cookiekey, save it, and return it
      */
-    function newCookieKey()
+    public function newCookieKey()
     {
-        mt_srand((double)microtime() * 1000000);
-        $this->cookiekey = md5(uniqid(mt_rand()));
+        mt_srand((float)microtime() * 1000000);
+        $this->cookiekey = md5(uniqid(mt_rand(), true));
         $this->writeCookieKey();
+
         return $this->cookiekey;
     }
 
-    function setCookieKey($val)
+    public function setCookieKey($val)
     {
         $this->cookiekey = $val;
     }
 
-    function getURL()
+    public function getURL()
     {
         return $this->url;
     }
 
-    function setURL($site)
+    public function setURL($site)
     {
         $this->url = $site;
     }
 
-    function getLanguage()
+    public function getLanguage()
     {
         return $this->language;
     }
 
-    function setLanguage($lang)
+    public function setLanguage($lang)
     {
         $this->language = $lang;
     }
 
-    function setDisplayName($nick)
+    public function setDisplayName($nick)
     {
         $this->displayname = $nick;
     }
 
-    function getDisplayName()
+    public function getDisplayName()
     {
         return $this->displayname;
     }
 
-    function isAdmin()
+    public function isAdmin()
     {
         return $this->admin;
     }
 
-    function setAdmin($val)
+    public function setAdmin($val)
     {
-        $this->admin = $val;
+        $this->admin = (int) $val;
     }
 
-    function canLogin()
+    public function canLogin()
     {
         return $this->canlogin;
     }
 
-    function setCanLogin($val)
+    public function setCanLogin($val)
     {
-        $this->canlogin = $val;
+        $this->canlogin = (int) $val;
     }
 
-    function getNotes()
+    public function getNotes()
     {
         return $this->notes;
     }
 
-    function setNotes($val)
+    public function setNotes($val)
     {
         $this->notes = $val;
     }
 
-    function getAutosave()
+    public function getAutosave()
     {
         return $this->autosave;
     }
 
-    function setAutosave($val)
+    public function setAutosave($val)
     {
-        $this->autosave = $val;
+        $this->autosave = (int) $val;
     }
 
-    function getID()
+    public function getID()
     {
         return $this->id;
     }
@@ -817,7 +900,8 @@ class MEMBER
             sql_table('member'),
             sql_real_escape_string($name)
         );
-        return (intval(quickQuery($sql)) > 0);
+
+        return ((int)quickQuery($sql) > 0);
     }
 
     /**
@@ -827,17 +911,21 @@ class MEMBER
      */
     public static function existsID($id)
     {
-        $sql = 'SELECT count(*) AS result FROM ' . sql_table('member') . " WHERE mnumber='" . intval($id) . "' LIMIT 1";
-        return (intval(quickQuery($sql)) > 0);
+        $sql = sprintf(
+            "SELECT count(*) AS result FROM %s WHERE mnumber='%d' LIMIT 1",
+            sql_table('member'),
+            (int)$id
+        );
+
+        return ((int)quickQuery($sql) > 0);
     }
 
     /**
      *  Checks if a username is protected.
      *  If so, it can not be used on anonymous comments
      */
-    function isNameProtected($name)
+    public function isNameProtected($name)
     {
-
         // extract name
         $name = strip_tags($name);
         $name = trim($name);
@@ -850,8 +938,16 @@ class MEMBER
      *
      * @static
      */
-    public static function create($name, $realname, $password, $email, $url, $admin, $canlogin, $notes)
-    {
+    public static function create(
+        $name,
+        $realname,
+        $password,
+        $email,
+        $url,
+        $admin,
+        $canlogin,
+        $notes
+    ) {
         if (!isValidMailAddress($email)) {
             return _ERROR_BADMAILADDRESS;
         }
@@ -867,6 +963,12 @@ class MEMBER
         if (!$password) {
             return _ERROR_PASSWORDMISSING;
         }
+        if (strlen($password) < 6) {
+            return _ERROR_PASSWORDTOOSHORT;
+        }
+        if (! self::checkIfValidPasswordCharacters($password)) {
+            return ERROR_PASSWORD_INVALID_CHARACTERS;
+        }
 
         $obj = new MEMBER();
         $obj->setPassword($password);
@@ -876,21 +978,32 @@ class MEMBER
             $url = 'http://' . $url;
         } // end if
 
-        $name = sql_real_escape_string($name);
+        $name     = sql_real_escape_string($name);
         $realname = sql_real_escape_string($realname);
         $password = sql_real_escape_string($obj->getPassword());
-        $email = sql_real_escape_string($email);
-        $url = sql_real_escape_string($url);
-        $admin = intval($admin);
-        $canlogin = intval($canlogin);
-        $notes = sql_real_escape_string($notes);
+        $email    = sql_real_escape_string($email);
+        $url      = sql_real_escape_string($url);
+        $admin    = (int)$admin;
+        $canlogin = (int)$canlogin;
+        $notes    = sql_real_escape_string($notes);
 
         if (($admin) && !($canlogin)) {
             return _ERROR;
         }
 
-        $query = 'INSERT INTO ' . sql_table('member') . " (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL, MADMIN, MCANLOGIN, MNOTES) "
-            . "VALUES ('$name','$realname','$password','$email','$url',$admin, $canlogin, '$notes')";
+        $query = sprintf(
+            "INSERT INTO %s (MNAME,MREALNAME,MPASSWORD,MEMAIL,MURL,MADMIN,MCANLOGIN,MNOTES)
+             VALUES ('%s','%s','%s','%s','%s',%d, %d,'%s')",
+            sql_table('member'),
+            $name,
+            $realname,
+            $password,
+            $email,
+            $url,
+            $admin,
+            $canlogin,
+            $notes
+        );
         sql_query($query);
 
         ACTIONLOG::add(INFO, _ACTIONLOG_NEWMEMBER . ' ' . $name);
@@ -899,41 +1012,53 @@ class MEMBER
     }
 
     /**
-     * Returns activation info for a certain key (an object with properties vkey, vmember, ...)
+     * Returns activation info for a certain key (an object with properties
+     * vkey, vmember, ...)
      * (static)
      *
      * @author karma
      */
     public static function getActivationInfo($key)
     {
-        $query = 'SELECT * FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key) . '\'';
+        $query = sprintf(
+            "SELECT * FROM %s WHERE vkey='%s'",
+            sql_table('activation'),
+            sql_real_escape_string($key)
+        );
         $res = sql_query($query);
 
         if ($res && ($obj = sql_fetch_object($res))) {
             return $obj;
         }
+
         return 0;
     }
 
     /**
      * Creates an account activation key
      *
-     * @param $type one of the following values (determines what to do when activation expires)
-     *                'register' (new member registration)
-     *                'forgot' (forgotton password)
-     *                'addresschange' (member address has changed)
-     * @param $extra extra info (needed when validation link expires)
+     * @param $type     one of the following values (determines what to do when
+     *                  activation expires)
+     *                  'register' (new member registration)
+     *                  'forgot' (forgotton password)
+     *                  'addresschange' (member address has changed)
+     * @param $extra    extra info (needed when validation link expires)
      *                  addresschange -> old email address
+     *
      * @author dekarma
      */
-    function generateActivationEntry($type, $extra = '')
+    public function generateActivationEntry($type, $extra = '')
     {
         // clean up old entries
         $this->cleanupActivationTable();
 
         // kill any existing entries for the current member (delete is ok)
         // (only one outstanding activation key can be present for a member)
-        sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vmember=' . intval($this->getID()));
+        sql_query(sprintf(
+            'DELETE FROM %s WHERE vmember=%d',
+            sql_table('activation'),
+            (int)$this->getID()
+        ));
 
         $canLoginWhileActive = false; // indicates if the member can log in while the link is active
         switch ($type) {
@@ -950,16 +1075,21 @@ class MEMBER
         $ok = false;
         while (!$ok) {
             // generate a random key
-            srand((double)microtime() * 1000000);
+            mt_srand((float)microtime() * 1000000);
             $key = md5(uniqid(mt_rand(), true));
 
             // attempt to add entry in database
             // add in database as non-active
-            $query = 'INSERT INTO ' . sql_table('activation') . ' (vkey, vtime, vmember, vtype, vextra) ';
-            $query .= 'VALUES (\'' . sql_real_escape_string($key) . '\', \'' . date(
-                'Y-m-d H:i:s',
-                time()
-            ) . '\', \'' . intval($this->getID()) . '\', \'' . sql_real_escape_string($type) . '\', \'' . sql_real_escape_string($extra) . '\')';
+            $query = sprintf(
+                "INSERT INTO %s (vkey, vtime, vmember, vtype, vextra)
+                 VALUES ('%s', '%s', '%d', '%s', '%s')",
+                sql_table('activation'),
+                sql_real_escape_string($key),
+                date('Y-m-d H:i:s'),
+                (int)$this->getID(),
+                sql_real_escape_string($type),
+                sql_real_escape_string($extra)
+            );
             if (sql_query($query)) {
                 $ok = true;
             }
@@ -976,8 +1106,9 @@ class MEMBER
     }
 
     /**
-     * Inidicates that an activation link has been clicked and any forms displayed
-     * there have been successfully filled out.
+     * Inidicates that an activation link has been clicked and any forms
+     * displayed there have been successfully filled out.
+     *
      * @author dekarma
      */
     public static function activate($key)
@@ -997,24 +1128,39 @@ class MEMBER
             case 'register':
                 // set canlogin value
                 global $CONF;
-                sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($CONF['NewMemberCanLogon']) . ' WHERE mnumber=' . intval($info->vmember));
+                sql_query(sprintf(
+                    'UPDATE %s SET mcanlogin=%d WHERE mnumber=%d',
+                    sql_table('member'),
+                    (int)$CONF['NewMemberCanLogon'],
+                    (int)$info->vmember
+                ));
                 break;
             case 'addresschange':
                 // reset old 'canlogin' value
                 list($oldEmail, $oldCanLogin) = explode('/', $info->vextra);
-                sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin) . ' WHERE mnumber=' . intval($info->vmember));
+                sql_query(sprintf(
+                    'UPDATE %s SET mcanlogin=%d WHERE mnumber=%d',
+                    sql_table('member'),
+                    (int)$oldCanLogin,
+                    (int)$info->vmember
+                ));
                 break;
         }
 
         // delete from activation table
-        sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vkey=\'' . sql_real_escape_string($key) . '\'');
+        sql_query(sprintf(
+            "DELETE FROM %s WHERE vkey='%s'",
+            sql_table('activation'),
+            sql_real_escape_string($key)
+        ));
 
         // success!
         return true;
     }
 
     /**
-     * Cleans up entries in the activation table. All entries older than 2 days are removed.
+     * Cleans up entries in the activation table. All entries older than 2 days
+     * are removed.
      * (static)
      *
      * @author dekarma
@@ -1024,18 +1170,20 @@ class MEMBER
         global $CONF, $DIR_LIBS;
 
         $actdays = 2;
-        if (isset($CONF['ActivationDays']) && intval($CONF['ActivationDays']) > 0) {
-            $actdays = intval($CONF['ActivationDays']);
+        if (isset($CONF['ActivationDays'])
+            && (int)$CONF['ActivationDays'] > 0) {
+            $actdays = (int)$CONF['ActivationDays'];
         } else {
             $CONF['ActivationDays'] = 2;
         }
         $boundary = time() - (60 * 60 * 24 * $actdays);
 
         // 1. walk over all entries, and see if special actions need to be performed
-        $res = sql_query('SELECT * FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date(
-            'Y-m-d H:i:s',
-            $boundary
-        ) . '\'');
+        $res = sql_query(sprintf(
+            "SELECT * FROM %s WHERE vtime < '%s'",
+            sql_table('activation'),
+            date('Y-m-d H:i:s', $boundary)
+        ));
 
         if ($res) {
             while ($o = sql_fetch_object($res)) {
@@ -1044,12 +1192,21 @@ class MEMBER
                         // delete all information about this site member. registration is undone because there was
                         // no timely activation
                         include_once($DIR_LIBS . 'ADMIN.php');
-                        ADMIN::deleteOneMember(intval($o->vmember));
+                        ADMIN::deleteOneMember((int)$o->vmember);
                         break;
                     case 'addresschange':
                         // revert the e-mail address of the member back to old address
-                        list($oldEmail, $oldCanLogin) = explode('/', $o->vextra);
-                        sql_query('UPDATE ' . sql_table('member') . ' SET mcanlogin=' . intval($oldCanLogin) . ', memail=\'' . sql_real_escape_string($oldEmail) . '\' WHERE mnumber=' . intval($o->vmember));
+                        list($oldEmail, $oldCanLogin) = explode(
+                            '/',
+                            $o->vextra
+                        );
+                        sql_query(sprintf(
+                            "UPDATE %s SET mcanlogin=%d, memail='%s' WHERE mnumber=%d",
+                            sql_table('member'),
+                            (int)$oldCanLogin,
+                            sql_real_escape_string($oldEmail),
+                            (int)$o->vmember
+                        ));
                         break;
                     case 'forgot':
                         // delete the activation link and ignore. member can request a new password using the
@@ -1060,9 +1217,17 @@ class MEMBER
         }
 
         // 2. delete activation entries for real
-        sql_query('DELETE FROM ' . sql_table('activation') . ' WHERE vtime < \'' . date(
-            'Y-m-d H:i:s',
-            $boundary
-        ) . '\'');
+        sql_query(sprintf(
+            "DELETE FROM %s WHERE vtime < '%s'",
+            sql_table('activation'),
+            date('Y-m-d H:i:s', $boundary)
+        ));
+    }
+
+    public static function checkIfValidPasswordCharacters($password)
+    {
+        // check Characters
+        // 0x21-0x7e : 0-9 a-z A-Z ! " # $ % & ' ( ) * + , - . / : ; < = > ? @ [ \ ] ^ _ ` { | } ~
+        return preg_match('/^[\x21-\x7e]{6,}$/', $password);
     }
 }

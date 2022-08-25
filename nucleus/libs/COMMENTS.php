@@ -19,11 +19,10 @@
 if (!function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
+require_once __DIR__ . '/COMMENTACTIONS.php';
 
 class COMMENTS
 {
-
     // item for which comment are being displayed
     public $itemid;
 
@@ -39,7 +38,7 @@ class COMMENTS
      * @param $itemid
      *        id of the item
      */
-    function __construct($itemid)
+    public function __construct($itemid)
     {
         $this->itemid = intval($itemid);
     }
@@ -50,10 +49,10 @@ class COMMENTS
      * @param $itemActions
      *        itemActions object, that will take care of the parsing
      */
-    function setItemActions(&$itemActions)
+    public function setItemActions(&$itemActions)
     {
         unset($this->itemActions);
-        $this->itemActions =& $itemActions;
+        $this->itemActions = & $itemActions;
     }
 
     /**
@@ -70,13 +69,13 @@ class COMMENTS
      * @param highlight
      *        Highlight to use (if any)
      */
-    function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '')
+    public function showComments($template, $maxToShow = -1, $showNone = 1, $highlight = '')
     {
         global $CONF, $manager;
 
         // create parser object & action handler
         $actions = new COMMENTACTIONS($this);
-        $parser = new PARSER($actions->getDefinedActions(), $actions);
+        $parser  = new PARSER($actions->getDefinedActions(), $actions);
         $actions->setTemplate($template);
         $actions->setParser($parser);
 
@@ -92,7 +91,7 @@ class COMMENTS
                 . ' WHERE c.citem=' . $this->itemid
                 . ' ORDER BY c.ctime';
 
-            $comments = sql_query($query);
+            $comments           = sql_query($query);
             $this->commentcount = intval(quickQuery($query_ct));
         }
 
@@ -134,7 +133,7 @@ class COMMENTS
     /**
      * Returns the amount of comments for this itemid
      */
-    function amountComments()
+    public function amountComments()
     {
         $query = 'SELECT COUNT(*)'
             . ' FROM ' . sql_table('comment') . ' as c'
@@ -147,17 +146,17 @@ class COMMENTS
 
     /**
      * Adds a new comment to the database
-     * @param string $timestamp
-     * @param array $comment
+     * @param  string $timestamp
+     * @param  array  $comment
      * @return mixed
      */
-    function addComment($timestamp, $comment)
+    public function addComment($timestamp, $comment)
     {
         global $CONF, $member, $manager;
 
         $blogid = getBlogIDFromItemID($this->itemid);
 
-        $settings =& $manager->getBlog($blogid);
+        $settings = & $manager->getBlog($blogid);
         $settings->readSettings();
 
         // begin if: comments disabled
@@ -196,22 +195,22 @@ class COMMENTS
         } // end if
 
         $comment['timestamp'] = $timestamp;
-        $comment['host'] = gethostbyaddr(serverVar('REMOTE_ADDR'));
-        $comment['ip'] = serverVar('REMOTE_ADDR');
+        $comment['host']      = gethostbyaddr(serverVar('REMOTE_ADDR'));
+        $comment['ip']        = serverVar('REMOTE_ADDR');
 
         // begin if: member is logged in, use that data
         if ($member->isLoggedIn()) {
             $comment['memberid'] = $member->getID();
-            $comment['user'] = '';
-            $comment['userid'] = '';
-            $comment['email'] = '';
+            $comment['user']     = '';
+            $comment['userid']   = '';
+            $comment['email']    = '';
         } else {
             $comment['memberid'] = 0;
         }
 
         // spam check
         $continue = false;
-        $plugins = array();
+        $plugins  = array();
 
         if (isset($manager->subscriptions['ValidateForm'])) {
             $plugins = array_merge($plugins, $manager->subscriptions['ValidateForm']);
@@ -228,27 +227,27 @@ class COMMENTS
         $plugins = array_unique($plugins);
 
         foreach ($plugins as $plugin_name) {
-            $p = $manager->getPlugin($plugin_name);
+            $p        = $manager->getPlugin($plugin_name);
             $continue = $continue || $p->supportsFeature('handleSpam');
         }
 
         $spamcheck = array(
-            'type' => 'comment',
-            'body' => $comment['body'],
-            'id' => $comment['itemid'],
-            'live' => true,
+            'type'   => 'comment',
+            'body'   => $comment['body'],
+            'id'     => $comment['itemid'],
+            'live'   => true,
             'return' => $continue
         );
 
         // begin if: member logged in
         if ($member->isLoggedIn()) {
             $spamcheck['author'] = $member->displayname;
-            $spamcheck['email'] = $member->email;
+            $spamcheck['email']  = $member->email;
         } // else: public
         else {
             $spamcheck['author'] = $comment['user'];
-            $spamcheck['email'] = $comment['email'];
-            $spamcheck['url'] = $comment['userid'];
+            $spamcheck['email']  = $comment['email'];
+            $spamcheck['url']    = $comment['userid'];
         } // end if
 
         $param = array('spamcheck' => &$spamcheck);
@@ -295,7 +294,7 @@ class COMMENTS
             $mailto_msg .= _NOTIFY_COMMENT . "\n " . $comment['body'] . "\n";
             $mailto_msg .= getMailFooter();
 
-            $item =& $manager->getItem($this->itemid, 0, 0);
+            $item         = & $manager->getItem($this->itemid, 0, 0);
             $mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title']) . ' (' . $this->itemid . ')';
 
             $frommail = $member->getNotifyFromMailAddress($comment['email']);
@@ -307,20 +306,20 @@ class COMMENTS
         $comment = COMMENT::prepare($comment);
 
         $param = array(
-            'comment' => &$comment,
+            'comment'   => &$comment,
             'spamcheck' => &$spamcheck
         );
         $manager->notify('PreAddComment', $param);
 
-        $name = sql_real_escape_string($comment['user']);
-        $url = sql_real_escape_string($comment['userid']);
-        $email = sql_real_escape_string($comment['email']);
-        $body = sql_real_escape_string($comment['body']);
-        $host = sql_real_escape_string($comment['host']);
-        $ip = sql_real_escape_string($comment['ip']);
-        $memberid = intval($comment['memberid']);
+        $name      = sql_real_escape_string($comment['user']);
+        $url       = sql_real_escape_string($comment['userid']);
+        $email     = sql_real_escape_string($comment['email']);
+        $body      = sql_real_escape_string($comment['body']);
+        $host      = sql_real_escape_string($comment['host']);
+        $ip        = sql_real_escape_string($comment['ip']);
+        $memberid  = intval($comment['memberid']);
         $timestamp = date('Y-m-d H:i:s', $comment['timestamp']);
-        $itemid = $this->itemid;
+        $itemid    = $this->itemid;
 
         $qSql = 'SELECT COUNT(*) AS result '
             . 'FROM ' . sql_table('comment')
@@ -330,21 +329,21 @@ class COMMENTS
             . " AND cbody   = '{$body}'"
             . " AND citem   = '{$itemid}'"
             . " AND cblog   = '{$blogid}'";
-        $result = (integer)quickQuery($qSql);
+        $result = (int)quickQuery($qSql);
 
         if ($result > 0) {
             return _ERROR_BADACTION;
         }
 
         $query = 'INSERT INTO ' . sql_table('comment') . ' (CUSER, CMAIL, CEMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CIP, CBLOG) '
-            . "VALUES ('$name', '$url', '$email', $memberid, '$body', $itemid, '$timestamp', '$host', '$ip', '$blogid')";
+            . "VALUES ('{$name}', '{$url}', '{$email}', {$memberid}, '{$body}', {$itemid}, '{$timestamp}', '{$host}', '{$ip}', '{$blogid}')";
 
         sql_query($query);
 
         // post add comment
         $commentid = sql_insert_id();
-        $param = array(
-            'comment' => &$comment,
+        $param     = array(
+            'comment'   => &$comment,
             'commentid' => &$commentid,
             'spamcheck' => &$spamcheck
         );
@@ -354,18 +353,16 @@ class COMMENTS
         return true;
     }
 
-
     /**
      * Checks if a comment is valid and call plugins
      * that can check if the comment is a spam comment
      */
-    function isValidComment(&$comment, &$spamcheck)
+    public function isValidComment(&$comment, &$spamcheck)
     {
-
         global $member, $manager;
 
         // check if there exists a item for this date
-        $item =& $manager->getItem($this->itemid, 0, 0);
+        $item = & $manager->getItem($this->itemid, 0, 0);
 
         if (!$item) {
             return _ERROR_NOSUCHITEM;
@@ -403,10 +400,10 @@ class COMMENTS
         // let plugins do verification (any plugin which thinks the comment is invalid
         // can change 'error' to something other than '1')
         $result = 1;
-        $param = array(
-            'type' => 'comment',
-            'comment' => &$comment,
-            'error' => &$result,
+        $param  = array(
+            'type'      => 'comment',
+            'comment'   => &$comment,
+            'error'     => &$result,
             'spamcheck' => &$spamcheck
         );
         $manager->notify('ValidateForm', $param);

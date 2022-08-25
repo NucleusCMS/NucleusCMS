@@ -15,7 +15,7 @@
  */
 
 // preload-admin-custum.php : You can write freely the settings such as allow ip address or spam tools.
-$preload_admin_custum_php = dirname(dirname(__FILE__)) . '/settings/preload-admin-custum.php';
+$preload_admin_custum_php = dirname(__DIR__) . '/settings/preload-admin-custum.php';
 
 if (@is_file($preload_admin_custum_php)) {
     include_once $preload_admin_custum_php;
@@ -24,9 +24,9 @@ define("LOADED_PRELOAD_ADMIN_CUSTUM_PHP", in_array(realpath($preload_admin_custu
 unset($preload_admin_custum_php);
 
 // we are using admin stuff:
-$CONF = array();
-$CONF['UsingAdminArea'] = 1;
-$CONF['alertOnSecurityRisk']=1;
+$CONF                        = array();
+$CONF['UsingAdminArea']      = 1;
+$CONF['alertOnSecurityRisk'] = 1;
 
 if (!@is_file('../config.php')) {
     if (@is_file('../install/index.php') && !headers_sent()) {
@@ -37,7 +37,7 @@ if (!@is_file('../config.php')) {
 // include the admin code
 require_once('../config.php');
 
-$bNeedsLogin = false;
+$bNeedsLogin   = false;
 $bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
 
 if ($action == 'logout') {
@@ -45,7 +45,7 @@ if ($action == 'logout') {
 }
 
 if ($member->isHalt()) {
-    $error = '( '.$member->getDisplayName()  .  ' ) '._ERROR_LOGIN_DISALLOWED_BY_HALT;
+    $error       = '( '.$member->getDisplayName()  .  ' ) '._ERROR_LOGIN_DISALLOWED_BY_HALT;
     $bNeedsLogin = true;
 }
 
@@ -55,7 +55,7 @@ if (!$member->isLoggedIn() && !$bIsActivation) {
 
 // show error if member cannot login to admin
 if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
-    $error = _ERROR_LOGINDISALLOWED;
+    $error       = _ERROR_LOGINDISALLOWED;
     $bNeedsLogin = true;
 }
 

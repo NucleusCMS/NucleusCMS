@@ -21,7 +21,7 @@ function upgrade_do380()
     }
 
     $query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName'", sql_table('config'));
-    $res = quickQuery($query);
+    $res   = quickQuery($query);
     if (empty($res)) {
         $query = sprintf("INSERT INTO `%s` (name, value) VALUES('DatabaseName', 'Nucleus')", sql_table('config'));
         upgrade_query('Updating ' . sql_table('config') . ' ', $query);
@@ -54,7 +54,7 @@ function upgrade_do380()
     $query = sprintf("ALTER TABLE `%s`
                     MODIFY COLUMN `ibody` mediumtext NOT NULL,
                     MODIFY COLUMN `imore` mediumtext NOT NULL;", sql_table('item'));
-    
+
     upgrade_query('Altering ' . sql_table('item') . ' table', $query);
 
     $query = sprintf("ALTER TABLE `%s`

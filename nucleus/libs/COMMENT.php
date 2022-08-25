@@ -18,7 +18,6 @@
 
 class COMMENT
 {
-
     /**
      * Returns the requested comment
      *
@@ -47,20 +46,20 @@ class COMMENT
      */
     public static function prepare($comment)
     {
-        $comment['user'] = strip_tags($comment['user']);
+        $comment['user']   = strip_tags($comment['user']);
         $comment['userid'] = strip_tags($comment['userid']);
-        $comment['email'] = strip_tags($comment['email']);
+        $comment['email']  = strip_tags($comment['email']);
 
         // remove newlines from user; remove quotes and newlines from userid and email; trim whitespace from beginning and end
-        $comment['user'] = trim(strtr($comment['user'], "\n", ' '));
+        $comment['user']   = trim(strtr($comment['user'], "\n", ' '));
         $comment['userid'] = trim(strtr($comment['userid'], "\'\"\n", '-- '));
-        $comment['email'] = trim(strtr($comment['email'], "\'\"\n", '-- '));
+        $comment['email']  = trim(strtr($comment['email'], "\'\"\n", '-- '));
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-        if (!empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos(
-            $comment['userid'],
-            'https://'
-        ) !== 0)) {
+        if (!empty($comment['userid'])
+            && (!str_starts_with($comment['userid'], 'http://'))
+            && (!str_starts_with($comment['userid'], 'https://'))
+        ) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 
@@ -76,7 +75,6 @@ class COMMENT
      */
     public static function prepareBody($body)
     {
-
         // convert Windows and Mac style 'returns' to *nix newlines
         $body = preg_replace("/\r\n/", "\n", $body);
         $body = preg_replace("/\r/", "\n", $body);
@@ -108,7 +106,6 @@ class COMMENT
         return $body;
     }
 
-
     /**
      * Creates a link code for unlinked URLs with different protocols
      *
@@ -127,19 +124,19 @@ class COMMENT
 
             if ($pos) {
                 $post = substr($url, $pos) . $post;
-                $url = substr($url, 0, $pos);
+                $url  = substr($url, 0, $pos);
             }
         }
 
         // remove entities at end (&&&&)
         if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
             $post = $matches[0] . $post;    // found entities (1 or more)
-            $url = substr($url, 0, strlen($url) - strlen($post));
+            $url  = substr($url, 0, strlen($url) - strlen($post));
         }
 
         // move ending comma from url to 'post' part
         if (substr($url, strlen($url) - 1) == ',') {
-            $url = substr($url, 0, strlen($url) - 1);
+            $url  = substr($url, 0, strlen($url) - 1);
             $post = ',' . $post;
         }
 
@@ -162,10 +159,9 @@ class COMMENT
         ) . '</a>' . $post;
     }
 
-
     /**
      * This method is a callback for creating link codes
-     * @param array $match
+     * @param  array  $match
      * @return string
      */
     public static function prepareBody_cb($match)

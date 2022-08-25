@@ -2,12 +2,11 @@
 
 // created by piyoyo 2017
 
-
 class CoreCachedData
 {
     const base_tablename = 'cached_data';
 
-    function __construct()
+    public function __construct()
     {
     }
 
@@ -18,7 +17,7 @@ class CoreCachedData
             return $ret;
         }
         $tablename = sql_table(self::base_tablename);
-        $ret = sql_existTableName($tablename);
+        $ret       = sql_existTableName($tablename);
         if (!$ret) {
             // force create table
             self::CreateTable();
@@ -36,14 +35,14 @@ class CoreCachedData
         global $DB_PHP_MODULE_NAME;
         $tablename = sql_table(self::base_tablename);
 
-        $type = strval($type);
+        $type     = strval($type);
         $sub_type = strval($sub_type);
-        $name = strval($name);
-        $sub_id = intval($sub_id);
+        $name     = strval($name);
+        $sub_id   = intval($sub_id);
 
         $expire_datetime = (is_null($expire_time) ? '' : sql_gmDateTime_from_utime($expire_time));
         if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql = "SELECT count(*) FROM `$tablename`"
+            $sql = "SELECT count(*) FROM `{$tablename}`"
                 . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
                 . " AND `cd_name` = ? ";
             $input_parameters = array($type, $sub_type, $sub_id, $name);
@@ -62,7 +61,7 @@ class CoreCachedData
                 return ($row[0] > 0);
             }
         } else {
-            $sql = "SELECT count(*) as result FROM `$tablename`"
+            $sql = "SELECT count(*) as result FROM `{$tablename}`"
                 . sprintf(
                     " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                     sql_real_escape_string($type),
@@ -87,11 +86,11 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
 
-        $type = strval($type);
+        $type     = strval($type);
         $sub_type = strval($sub_type);
-        $name = strval($name);
-        $value = strval($value);
-        $sub_id = intval($sub_id);
+        $name     = strval($name);
+        $value    = strval($value);
+        $sub_id   = intval($sub_id);
 
         if (isDebugMode()) {
             if (strlen($type) > 50) {
@@ -156,12 +155,12 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
 
-        $type = strval($type);
+        $type     = strval($type);
         $sub_type = strval($sub_type);
-        $name = strval($name);
-        $sub_id = intval($sub_id);
+        $name     = strval($name);
+        $sub_id   = intval($sub_id);
 
-        $sql = "SELECT *, ";
+        $sql             = "SELECT *, ";
         $expire_datetime = (is_null($expire_time) ? '' : sql_gmDateTime_from_utime($expire_time));
         if (empty($expire_datetime)) {
             $sql .= " 0 AS 'expired'";
@@ -179,9 +178,9 @@ class CoreCachedData
         $sql .= " LIMIT 1";
         $res = sql_query($sql);
         if ($res && ($row = sql_fetch_assoc($res))) {
-            $ret = array_merge($row);
-            $ret['name'] =& $ret['cd_name'];
-            $ret['value'] =& $ret['cd_value'];
+            $ret            = array_merge($row);
+            $ret['name']    = & $ret['cd_name'];
+            $ret['value']   = & $ret['cd_value'];
             $ret['expired'] = intval($ret['expired']);
             return $ret;
         }
@@ -192,10 +191,10 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
 
-        $type = strval($type);
+        $type     = strval($type);
         $sub_type = strval($sub_type);
-        $name = strval($name);
-        $sub_id = intval($sub_id);
+        $name     = strval($name);
+        $sub_id   = intval($sub_id);
 
         if (!self::existDataEx($type, $sub_type, $sub_id, $name)) {
             return;
@@ -225,7 +224,7 @@ class CoreCachedData
     private static function CreateTable_sqlite()
     {
         $tablename = sql_table(self::base_tablename);
-        $sql = <<<EOD
+        $sql       = <<<EOD
 CREATE TABLE IF NOT EXISTS `{$tablename}` (
   `cd_type`        varchar(50)   NOT NULL default '' COLLATE NOCASE,
   `cd_sub_type`    varchar(50)   NOT NULL default '' COLLATE NOCASE,
@@ -243,7 +242,7 @@ EOD;
     private static function CreateTable_mysql()
     {
         $tablename = sql_table(self::base_tablename);
-        $sql = <<<EOD
+        $sql       = <<<EOD
 CREATE TABLE `{$tablename}` (
   `cd_type`        varchar(50)   NOT NULL default '',
   `cd_sub_type`    varchar(50)   NOT NULL default '',

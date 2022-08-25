@@ -68,13 +68,13 @@ class NP_SkinFiles extends NucleusPlugin
     }
     public function supportsFeature($feature)
     {
-        return in_array($feature, array ('SqlTablePrefix', 'HelpPage'));
+        return in_array($feature, array('SqlTablePrefix', 'HelpPage'));
     }
     public function hasAdminArea()
     {
         return 1;
     }
-    
+
     public function install()
     {
         $this->createOption(
@@ -91,12 +91,12 @@ class NP_SkinFiles extends NucleusPlugin
         );
         return;
     }
-    
+
     public function unInstall()
     {
         return;
     }
-    
+
     public function getEventList()
     {
         return array(
@@ -105,7 +105,7 @@ class NP_SkinFiles extends NucleusPlugin
             'PrePluginOptionsEdit'
         );
     }
-    
+
     public function init()
     {
         $language = str_replace(array('\\','/'), '', getLanguageName());
@@ -117,7 +117,7 @@ class NP_SkinFiles extends NucleusPlugin
         }
         return;
     }
-    
+
     public function event_QuickMenu(&$data)
     {
         global $member;
@@ -136,7 +136,7 @@ class NP_SkinFiles extends NucleusPlugin
         );
         return;
     }
-    
+
     public function event_AdminPrePageHead(&$data)
     {
         global $CONF;
@@ -145,7 +145,7 @@ class NP_SkinFiles extends NucleusPlugin
         }
         $data['extrahead'] .= sprintf('<link rel="stylesheet" type="text/css" href="%sskinfiles/style.css" />', $CONF['PluginURL']);
     }
-    
+
     public function event_PrePluginOptionsEdit($data)
     {
         if ($data['context'] !== 'global' || $data['plugid'] !== $this->getID()) {

@@ -2,7 +2,6 @@
 
 class SYSTEMLOG
 {
-
     const MAX_MSG_LEN = 1000000;
 
     public static function checkWritable()
@@ -37,18 +36,18 @@ class SYSTEMLOG
         }
 
         $tablename = sql_table('systemlog');
-        $query = <<< EOL
-            INSERT INTO `$tablename`
+        $query     = <<< EOL
+            INSERT INTO `{$tablename}`
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash)
             VALUES(:logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash)
 EOL;
-        $ph = array();
-        $ph[':logyear'] = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
-        $ph[':logtype'] = (string)$type;
-        $ph[':subtype'] = (string)$subtype;
-        $ph[':mnumber'] = (int)max(0, empty($options['mnumber']) ? 0 : (int)$options['mnumber']);
+        $ph                   = array();
+        $ph[':logyear']       = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
+        $ph[':logtype']       = (string)$type;
+        $ph[':subtype']       = (string)$subtype;
+        $ph[':mnumber']       = (int)max(0, empty($options['mnumber']) ? 0 : (int)$options['mnumber']);
         $ph[':timestamp_utc'] = (string)gmdate('Y-m-d H:i:s', $_SERVER['REQUEST_TIME']);
-        $ph[':message'] = (string)((strlen($message) > self::MAX_MSG_LEN) ? substr(
+        $ph[':message']       = (string)((strlen($message) > self::MAX_MSG_LEN) ? substr(
             $message,
             0,
             self::MAX_MSG_LEN
@@ -57,10 +56,10 @@ EOL;
 
         if ($DB_DRIVER_NAME == 'sqlite') {
             $query = <<< EOL
-            INSERT INTO `$tablename`
+            INSERT INTO `{$tablename}`
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash, logid)
             SELECT :logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash
-                    , ifnull((SELECT MAX(logid) FROM `$tablename` WHERE logyear=:logyear),0)+1
+                    , ifnull((SELECT MAX(logid) FROM `{$tablename}` WHERE logyear=:logyear),0)+1
 EOL;
         }
 
@@ -69,12 +68,12 @@ EOL;
         } else {
             $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
             foreach (array_keys($ph) as $key) {
-                $new_key = substr($key, 1);
-                $ph[$new_key] =& $ph[$key];
+                $new_key      = substr($key, 1);
+                $ph[$new_key] = & $ph[$key];
                 unset($ph[$key]);
             }
             $query = parseQuery($query, $ph);
-            $res = sql_query($query);
+            $res   = sql_query($query);
         }
         if (isDebugMode() && $member->isAdmin()) {
             if (empty($res) || sql_affected_rows($res) == 0) {
@@ -90,14 +89,14 @@ EOL;
         global $DB_PHP_MODULE_NAME;
         $message = (string)((strlen($message) > self::MAX_MSG_LEN) ? substr($message, 0, self::MAX_MSG_LEN) : $message);
 
-        $ph = array();
-        $ph[':logtype'] = (string)$type;
-        $ph[':subtype'] = (string)$subtype;
+        $ph                  = array();
+        $ph[':logtype']      = (string)$type;
+        $ph[':subtype']      = (string)$subtype;
         $ph[':message_hash'] = (string)sha1($message);
 
         $tablename = sql_table('systemlog');
-        $query = <<< EOL
-            DELETE FROM `$tablename`
+        $query     = <<< EOL
+            DELETE FROM `{$tablename}`
             WHERE logtype=:logtype AND subtype=:subtype AND message_hash=:message_hash
 EOL;
         if ($DB_PHP_MODULE_NAME == 'pdo') {
@@ -105,8 +104,8 @@ EOL;
         } else {
             $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
             foreach (array_keys($ph) as $key) {
-                $new_key = substr($key, 1);
-                $ph[$new_key] =& $ph[$key];
+                $new_key      = substr($key, 1);
+                $ph[$new_key] = & $ph[$key];
                 unset($ph[$key]);
             }
             $query = parseQuery($query, $ph);
@@ -144,8 +143,8 @@ EOL;
         $checked = true;
 
         $tablename = sql_table('systemlog');
-        $offset = -3600 * 24 * 7; // sec, 7 days
-        $date = gmdate('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'] + $offset);
+        $offset    = -3600 * 24 * 7; // sec, 7 days
+        $date      = gmdate('Y-m-d H:i:s', $_SERVER['REQUEST_TIME'] + $offset);
 
         $query = 'DELETE FROM ' . $tablename
             . sprintf(' WHERE timestamp_utc <=%s ', sql_quote_string($date))
@@ -153,7 +152,7 @@ EOL;
         sql_query($query);
 
         $query = "SELECT COUNT(*) FROM `{$tablename}` WHERE logtype='error'";
-        $ct = intval(quickQuery($query));
+        $ct    = intval(quickQuery($query));
         if ($ct < 20) {
             return;
         }
@@ -183,8 +182,8 @@ EOL;
         if (!sql_existTableName(sql_table('config'))) {
             return;
         }
-        $query = array();
-        $tablename = sql_table('systemlog');
+        $query          = array();
+        $tablename      = sql_table('systemlog');
         $query['mysql'] = <<<EOL
 CREATE TABLE `{$tablename}` (
   `logyear`        SMALLINT     NOT NULL,

@@ -18,20 +18,14 @@
 
 class TEMPLATE
 {
-
     public $id;
 
-    function __construct($templateid)
+    public function __construct($templateid)
     {
         $this->id = intval($templateid);
     }
 
-    public function TEMPLATE($templateid)
-    {
-        $this->__construct($templateid);
-    }
-
-    function getID()
+    public function getID()
     {
         return intval($this->id);
     }
@@ -59,7 +53,7 @@ class TEMPLATE
     /**
      * Updates the general information about the template
      */
-    function updateGeneralInfo($name, $desc)
+    public function updateGeneralInfo($name, $desc)
     {
         $query = 'UPDATE ' . sql_table('template_desc') . ' SET'
             . " tdname='" . sql_real_escape_string($name) . "',"
@@ -71,7 +65,7 @@ class TEMPLATE
     /**
      * Updates the contents of one part of the template
      */
-    function update($type, $content)
+    public function update($type, $content)
     {
         $id = $this->getID();
 
@@ -95,11 +89,10 @@ class TEMPLATE
         }
     }
 
-
     /**
      * Deletes all template parts from the database
      */
-    function deleteAllParts()
+    public function deleteAllParts()
     {
         sql_query('DELETE FROM ' . sql_table('template') . ' WHERE tdesc=' . $this->getID());
     }
@@ -114,7 +107,7 @@ class TEMPLATE
         global $manager;
 
         $param = array(
-            'name' => &$name,
+            'name'        => &$name,
             'description' => &$desc
         );
         $manager->notify('PreAddTemplate', $param);
@@ -123,15 +116,14 @@ class TEMPLATE
         $newId = sql_insert_id();
 
         $param = array(
-            'templateid' => $newId,
-            'name' => $name,
+            'templateid'  => $newId,
+            'name'        => $name,
             'description' => $desc
         );
         $manager->notify('PostAddTemplate', $param);
 
         return $newId;
     }
-
 
     /**
      * Reads a template and returns an array with the parts.
@@ -149,7 +141,7 @@ class TEMPLATE
         $manager->notify('PreTemplateRead', $param);
 
         $template = array();
-        $query = 'SELECT tpartname, tcontent'
+        $query    = 'SELECT tpartname, tcontent'
             . sprintf(
                 " FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
                 sql_table('template_desc'),
@@ -185,10 +177,10 @@ class TEMPLATE
         if (is_null($template)) {
             return '';
         }
-        if (sizeof($values) != 0) {
+        if (count($values) != 0) {
             // go through all the values
             for (reset($values); $key = key($values); next($values)) {
-                $template = str_replace("<%$key%>", $values[$key], $template);
+                $template = str_replace("<%{$key}%>", $values[$key], $template);
             }
         }
 
@@ -226,8 +218,8 @@ class TEMPLATE
     public static function getDesc($id)
     {
         $query = 'SELECT tddesc FROM ' . sql_table('template_desc') . ' WHERE tdnumber=' . intval($id);
-        $res = sql_query($query);
-        $obj = sql_fetch_object($res);
+        $res   = sql_query($query);
+        $obj   = sql_fetch_object($res);
         return $obj->tddesc;
     }
 }

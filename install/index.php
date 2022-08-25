@@ -25,6 +25,16 @@
 
     -- Start Of Configurable Part --
 */
+
+if (version_compare(phpversion(), '5.3.0', '<') || 90000 <= PHP_VERSION_ID) {
+    $ver = explode('.', phpversion());
+    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
+    }
+    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
+}
+
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
@@ -34,9 +44,8 @@ include_once('../nucleus/libs/vars4.1.0.php');
 define('NC_BASE_PATH', str_replace(array('\\', 'install'), array('/', ''), __DIR__));
 define('NC_SITE_URL', getSiteUrl());
 
-$allow_sqlite = extension_loaded('PDO_SQLITE') && version_compare('7.1.0', PHP_VERSION, '<=');
-define('ENABLE_SQLITE_INSTALL', ($allow_sqlite ? 1 : 0)); // allow sqlite install , boolean
-define('INSTALL_PRIORITY_MYSQL_MODULE', 1); // mode , 0: pdo mysql , 1: mysql module
+define('ENABLE_SQLITE_INSTALL', 0); // allow sqlite install , boolean  PHP[7.1-] , QA test not conducted , move to v3.90dev
+define('INSTALL_PRIORITY_MYSQL_MODULE', PHP_VERSION_ID <= 70000 ? 1 : 0); // mode , 0: pdo mysql , 1: mysql module
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
 define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '5.3.0'); // (string) , format : dot separated
@@ -66,7 +75,7 @@ if (isset($_REQUEST['lang'])) {
 }
 
 if (!$lang) {
-    $v = '';
+    $v         = '';
     $http_lang = explode('-', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
 
     foreach ($http_lang as $key) {
@@ -76,7 +85,7 @@ if (!$lang) {
                 continue;
             }
         }
-        if ($key !== 'en' && in_array($key, $install_lang_keys) && is_file("./install_lang_${key}.php")) {
+        if ($key !== 'en' && in_array($key, $install_lang_keys) && is_file("./install_lang_{$key}.php")) {
             $v = $lang = $key;
             break;
         }
@@ -98,7 +107,7 @@ $aConfSkinsToImport = array('atom', 'rss2.0', 'rsd', 'default');
 error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 if (version_compare(PHP_VERSION, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
-    $msg = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
+    $msg    = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
     $errors = array($msg);
     showErrorMessages($errors); // exit to instalation
 }
@@ -116,7 +125,7 @@ if (!function_exists('mysql_query')) {
 
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
 if (ENABLE_SQLITE_INSTALL && (postVar('install_db_type') === 'sqlite')) {
-    $DB_DRIVER_NAME = 'sqlite';
+    $DB_DRIVER_NAME     = 'sqlite';
     $DB_PHP_MODULE_NAME = 'pdo';
 }
 
@@ -127,7 +136,7 @@ if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME) === 0) {
         $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
     } else {
         $DB_PHP_MODULE_NAME = 'pdo';
-        $DB_DRIVER_NAME = 'mysql';
+        $DB_DRIVER_NAME     = 'mysql';
     }
 }
 include_once(sprintf('../nucleus/libs/sql/%s.php', $DB_PHP_MODULE_NAME));
@@ -218,7 +227,7 @@ function showErrorMessages($errors)
         while ($msg = array_shift($errors)) {
             echo '<li>' . $msg . '</li>';
         }
-        ?>
+    ?>
     </ul>
     <p>
         <a href="index.php" onclick="history.back();return false;"><?php echo _TEXT17; ?></a>

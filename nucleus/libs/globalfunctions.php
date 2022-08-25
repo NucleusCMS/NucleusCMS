@@ -10,10 +10,25 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
+
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
+
+if (version_compare(phpversion(), '5.3.0', '<') || 90000 <= PHP_VERSION_ID) {
+    if (!headers_sent()) {
+        header("HTTP/1.0 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+    }
+    $ver = explode('.', phpversion());
+    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
+    }
+    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
+}
 
 global $DIR_NUCLEUS;
 if (is_file($DIR_NUCLEUS . 'autoload.php')) {
@@ -29,18 +44,6 @@ if (!isset($_SERVER['REQUEST_TIME'])) {
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
 
-// Set PHP of the minimum requirement of the target of the current release here.
-if (version_compare(phpversion(), '5.3.0', '<')) {
-    if (!headers_sent()) {
-        header("HTTP/1.0 503 Service Unavailable");
-        header("Cache-Control: no-cache, must-revalidate");
-        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
-    }
-    $msg = 'The php of server module does not meet the execution minimum requirement.';
-    echo "<html><head><title>Error</title></head><body><h1>Error</h1><div style='font-size: large'>$msg</div></body></html>";
-    exit();
-}
-
 define('HAS_CATCH_ERROR', 70000 <= PHP_VERSION_ID);
 
 // needed if we include globalfunctions from install.php
@@ -53,14 +56,14 @@ define('CORE_APPLICATION_NAME', 'Nucleus CMS'); // if you forked product, you ca
 define('CORE_APPLICATION_VERSION', NUCLEUS_VERSION);
 define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
-$nucleus['version'] = 'v' . NUCLEUS_VERSION;
+$nucleus['version']  = 'v' . NUCLEUS_VERSION;
 $nucleus['codename'] = (defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP') ? 'ja-dev' : 'ja');
 
-$default_user_agent = array('ie' => array());
-$default_user_agent['ie']['7'] = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent              = array('ie' => array());
+$default_user_agent['ie']['7']   = 'Mozilla/5.0 (Windows NT 6.1; Trident/7.0; rv:11.0) like Gecko';
 $default_user_agent['ie']['8.1'] = 'Mozilla/5.0 (Windows NT 6.3; Win64, x64; Trident/7.0; Touch; rv:11.0) like Gecko';
-$default_user_agent['ie']['11'] = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
-$default_user_agent['default'] = &$default_user_agent['ie']['11'];
+$default_user_agent['ie']['11']  = 'Mozilla/5.0 (Windows NT 10.0; WOW64; Trident/7.0; rv:11.0) like Gecko';
+$default_user_agent['default']   = &$default_user_agent['ie']['11'];
 // http://msdn.microsoft.com/ja-jp/library/ie/hh869301%28v=vs.85%29.aspx
 if (!defined('DEFAULT_USER_AGENT')) {
     define('DEFAULT_USER_AGENT', $default_user_agent['default']);
@@ -85,9 +88,9 @@ if (!isset($CONF['debug'])) {
 if (isDebugMode()) {
     if (version_compare(phpversion(), '8.2.0.a', '>=')) {
         error_reporting(E_ALL & ~E_DEPRECATED); // report all errors except E_DEPRECATED
-        // Nucleus v3.8 : PHP 5.x - PHP8.x
-        // [PHP8.2 Deprecated] callback function array('self','FunctionName')
-        // [PHP5.5 - ] self::class , callback replace array('self','FunctionName') to self::class . '::FunctionName'
+    // Nucleus v3.8 : PHP 5.x - PHP8.x
+    // [PHP8.2 Deprecated] callback function array('self','FunctionName')
+    // [PHP5.5 - ] self::class , callback replace array('self','FunctionName') to self::class . '::FunctionName'
     } else {
         error_reporting(E_ALL); // report all errors!
     }
@@ -184,31 +187,31 @@ if ($CONF['installscript'] != 1) { // vars were already included in install.php
 
 // sanitize option
 $bLoggingSanitizedResult = 0;
-$bSanitizeAndContinue = 0;
+$bSanitizeAndContinue    = 0;
 
 $orgRequestURI = serverVar('REQUEST_URI');
 sanitizeParams();
 
 // get all variables that can come from the request and put them in the global scope
-$blogid = requestVar('blogid');
-$itemid = intRequestVar('itemid');
-$catid = intRequestVar('catid');
-$skinid = requestVar('skinid');
-$memberid = requestVar('memberid');
-$archivelist = requestVar('archivelist');
-$imagepopup = requestVar('imagepopup');
-$archive = requestVar('archive');
-$query = requestVar('query');
-$highlight = requestVar('highlight');
-$amount = requestVar('amount');
-$action = requestVar('action');
-$nextaction = requestVar('nextaction');
-$maxresults = requestVar('maxresults');
-$startpos = intRequestVar('startpos');
+$blogid       = requestVar('blogid');
+$itemid       = intRequestVar('itemid');
+$catid        = intRequestVar('catid');
+$skinid       = requestVar('skinid');
+$memberid     = requestVar('memberid');
+$archivelist  = requestVar('archivelist');
+$imagepopup   = requestVar('imagepopup');
+$archive      = requestVar('archive');
+$query        = requestVar('query');
+$highlight    = requestVar('highlight');
+$amount       = requestVar('amount');
+$action       = requestVar('action');
+$nextaction   = requestVar('nextaction');
+$maxresults   = requestVar('maxresults');
+$startpos     = intRequestVar('startpos');
 $errormessage = '';
-$error = '';
-$special = requestVar('special');
-$virtualpath = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
+$error        = '';
+$special      = requestVar('special');
+$virtualpath  = ((getVar('virtualpath') != null) ? getVar('virtualpath') : serverVar('PATH_INFO'));
 
 if (!isset($CONF['expose_generator'])) {
     $CONF['expose_generator'] = false;
@@ -248,10 +251,10 @@ include_once($DIR_LIBS . 'PLUGIN.php');
 include_once($DIR_LIBS . 'SYSTEMLOG.php');
 include_once($DIR_LIBS . 'Utils.php');
 
-$manager =& MANAGER::instance();
+$manager = & MANAGER::instance();
 
 // make sure there's no unnecessary escaping:
-//set_magic_quotes_runtime(0); // enabled PHP[-5.3] / disabled from PHP5.4  
+//set_magic_quotes_runtime(0); // enabled PHP[-5.3] / disabled from PHP5.4
 if (version_compare(PHP_VERSION, '5.4.0', '<')
     && get_magic_quotes_runtime()) {
     @ini_set('magic_quotes_runtime', '0');
@@ -281,7 +284,7 @@ if ($orgRequestURI !== serverVar('REQUEST_URI')) {
         addToLog(WARNING, $msg);
     }
     if (!$bSanitizeAndContinue) {
-        die("");
+        exit;
     }
 }
 
@@ -300,13 +303,13 @@ if ($CONF['URLMode'] === 'pathinfo' && substr($CONF['Self'], -4) === '.php') {
     $CONF['Self'] = rtrim($CONF['IndexURL'], '/');
 }
 
-$CONF['ItemURL'] = $CONF['Self'];
-$CONF['ArchiveURL'] = $CONF['Self'];
+$CONF['ItemURL']        = $CONF['Self'];
+$CONF['ArchiveURL']     = $CONF['Self'];
 $CONF['ArchiveListURL'] = $CONF['Self'];
-$CONF['MemberURL'] = $CONF['Self'];
-$CONF['SearchURL'] = $CONF['Self'];
-$CONF['BlogURL'] = $CONF['Self'];
-$CONF['CategoryURL'] = $CONF['Self'];
+$CONF['MemberURL']      = $CONF['Self'];
+$CONF['SearchURL']      = $CONF['Self'];
+$CONF['BlogURL']        = $CONF['Self'];
+$CONF['CategoryURL']    = $CONF['Self'];
 
 // switch URLMode back to normal when $CONF['Self'] ends in .php
 // this avoids urls like index.php/item/13/index.php/item/15
@@ -356,8 +359,8 @@ if ($action == 'login') {
         exit;
     }
     // Form Authentication
-    $login = postVar('login');
-    $pw = postVar('password');
+    $login  = postVar('login');
+    $pw     = postVar('password');
     $shared = intPostVar('shared'); // shared computer or not
 
     $pw = substr($pw, 0, 40); // avoid md5 collision by using a long key
@@ -378,14 +381,14 @@ if ($action == 'login') {
         }
 
         $param = array(
-            'member' => &$member,
+            'member'   => &$member,
             'username' => $login
         );
         $manager->notify('LoginSuccess', $param);
         $errormessage = '';
-        $log_message = sprintf("Login successful for %s (sharedpc=%s)", $login, $shared);
+        $log_message  = sprintf("Login successful for %s (sharedpc=%s)", $login, $shared);
 
-        $remote_ip = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
+        $remote_ip   = (isset($_SERVER["REMOTE_ADDR"]) ? $_SERVER["REMOTE_ADDR"] : '');
         $remote_host = (isset($_SERVER["REMOTE_HOST"]) ? $_SERVER["REMOTE_HOST"] : gethostbyaddr($remote_ip));
         if ($remote_ip !== '') {
             $log_message .= sprintf(" %s", $remote_ip);
@@ -394,8 +397,8 @@ if ($action == 'login') {
             }
         }
         if (isset($_SERVER["HTTP_X_FORWARDED_FOR"])) {
-            $remote_proxy_ip = explode(',', $_SERVER["HTTP_X_FORWARDED_FOR"]);
-            $remote_proxy_ip = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
+            $remote_proxy_ip   = explode(',', $_SERVER["HTTP_X_FORWARDED_FOR"]);
+            $remote_proxy_ip   = $remote_proxy_ip[0]; //   explode(,)[0] syntax error php(-5.2)
             $remote_proxy_host = gethostbyaddr($remote_proxy_ip);
             $log_message .= sprintf(" , proxy %s", $remote_proxy_ip);
             if ($remote_proxy_host !== false && $remote_proxy_host != $remote_proxy_ip) {
@@ -478,8 +481,8 @@ if ($CONF['DisableSite'] && !$member->isAdmin() && !$CONF['UsingAdminArea']) {
             header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
         }
         $title = 'Service Unavailable';
-        $msg = 'Service Unavailable.';
-        echo "<html><head><title>$title</title></head><body><h1>$title</h1>$msg</body></html>";
+        $msg   = 'Service Unavailable.';
+        echo "<html><head><title>{$title}</title></head><body><h1>{$title}</h1>{$msg}</body></html>";
     }
     exit;
 }
@@ -594,9 +597,9 @@ if ($CONF['URLMode'] == 'pathinfo') {
     }
 
     $parsed = false;
-    $param = array(
-        'type' => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
-        'info' => $virtualpath,
+    $param  = array(
+        'type'     => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
+        'info'     => $virtualpath,
         'complete' => &$parsed
     );
     $manager->notify('ParseURL', $param);
@@ -604,12 +607,12 @@ if ($CONF['URLMode'] == 'pathinfo') {
     if (!$parsed) {
         // default implementation
         $data = explode("/", $virtualpath);
-        for ($i = 0; $i < sizeof($data); $i++) {
+        for ($i = 0; $i < count($data); $i++) {
             switch ($data[$i]) {
                 case $CONF['ItemKey']: // item/1 (blogid)
                     $i++;
 
-                    if ($i < sizeof($data)) {
+                    if ($i < count($data)) {
                         $itemid = intval($data[$i]);
                     }
                     break;
@@ -617,19 +620,19 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['ArchivesKey']: // archives/1 (blogid)
                     $i++;
 
-                    if ($i < sizeof($data)) {
+                    if ($i < count($data)) {
                         $archivelist = intval($data[$i]);
                     }
                     break;
 
                 case $CONF['ArchiveKey']: // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
-                    if ((($i + 1) < sizeof($data)) && (!strstr($data[$i + 1], '-'))) {
+                    if ((($i + 1) < count($data)) && (!strstr($data[$i + 1], '-'))) {
                         $blogid = intval($data[++$i]);
                     }
 
                     $i++;
 
-                    if ($i < sizeof($data)) {
+                    if ($i < count($data)) {
                         $archive = $data[$i];
                     }
                     break;
@@ -638,7 +641,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['BlogKey']: // blog/1
                     $i++;
 
-                    if ($i < sizeof($data)) {
+                    if ($i < count($data)) {
                         $blogid = intval($data[$i]);
                     }
                     break;
@@ -647,7 +650,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case 'catid':
                     $i++;
 
-                    if ($i < sizeof($data)) {
+                    if ($i < count($data)) {
                         $catid = intval($data[$i]);
                     }
                     break;
@@ -655,7 +658,7 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['MemberKey']:
                     $i++;
 
-                    if ($i < sizeof($data)) {
+                    if ($i < count($data)) {
                         $memberid = intval($data[$i]);
                     }
                     break;
@@ -663,8 +666,8 @@ if ($CONF['URLMode'] == 'pathinfo') {
                 case $CONF['SpecialskinKey']:
                     $i++;
 
-                    if ($i < sizeof($data)) {
-                        $special = $data[$i];
+                    if ($i < count($data)) {
+                        $special             = $data[$i];
                         $_REQUEST['special'] = $special;
                     }
                     break;

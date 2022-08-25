@@ -28,11 +28,11 @@ if (is_file('../config.php')) {
 
 function load_upgrade_lang()
 {
-    $_ = getLanguageName();
-    $langNames[] = stripos($_, 'japan')!==false ? 'japanese' : $_;
+    $_           = getLanguageName();
+    $langNames[] = stripos($_, 'japan') !== false ? 'japanese' : $_;
     $langNames[] = 'english';
     foreach ($langNames as $langName) {
-        $lang_path = dirname(__FILE__) . "/upgrade_lang_{$langName}.php";
+        $lang_path = __DIR__ . "/upgrade_lang_{$langName}.php";
         if (is_file($lang_path)) {
             break;
         } else {
@@ -49,27 +49,27 @@ function upgrade_checkinstall($version)
     $installed = 0;
     switch ($version) {
         case '200':
-            $query = sprintf('SELECT sdincpref FROM %s LIMIT 1', sql_table('skin_desc'));
+            $query   = sprintf('SELECT sdincpref FROM %s LIMIT 1', sql_table('skin_desc'));
             $minrows = -1;
             break;
-        // dev only (v2.2)
+            // dev only (v2.2)
         case '220':
-            $query = sprintf('SELECT oid FROM %s LIMIT 1', sql_table('plugin_option_desc'));
+            $query   = sprintf('SELECT oid FROM %s LIMIT 1', sql_table('plugin_option_desc'));
             $minrows = -1;
             break;
-        // v2.5 beta
+            // v2.5 beta
         case '240':
-            $query = sprintf('SELECT bincludesearch FROM %s LIMIT 1', sql_table('blog'));
+            $query   = sprintf('SELECT bincludesearch FROM %s LIMIT 1', sql_table('blog'));
             $minrows = -1;
             break;
         default:
-            $query = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%s LIMIT 1", sql_table('config'), intval($version));
+            $query   = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%s LIMIT 1", sql_table('config'), intval($version));
             $minrows = 1;
             break;
     }
 
     $count = 0;
-    $res = sql_query($query);
+    $res   = sql_query($query);
     while ($res && sql_fetch_object($res)) {
         $count++;
     }
@@ -77,11 +77,10 @@ function upgrade_checkinstall($version)
     return $installed;
 }
 
-
-    /** this function gets the nucleus version, even if the getNucleusVersion
-     * function does not exist yet
-     * return 96 for all versions < 100
-     */
+/** this function gets the nucleus version, even if the getNucleusVersion
+ * function does not exist yet
+ * return 96 for all versions < 100
+ */
 function upgrade_getNucleusVersion()
 {
     if (!function_exists('getNucleusVersion')) {
@@ -157,7 +156,6 @@ function upgrade_error($msg)
     exit;
 }
 
-
 function upgrade_start()
 {
     global $upgrade_failures;
@@ -186,17 +184,17 @@ function upgrade_end($msg = "")
     exit;
 }
 
-    /**
-      * Tries to execute a query, gives a message when failed
-      *
-      * @param friendly name
-      * @param query
-      */
+/**
+  * Tries to execute a query, gives a message when failed
+  *
+  * @param friendly name
+  * @param query
+  */
 function upgrade_query($friendly, $query)
 {
     global $upgrade_failures;
 
-    echo "<li>$friendly ... ";
+    echo "<li>{$friendly} ... ";
     $res = sql_query($query);
     if (!$res) {
         echo '<span style="color:red">' . _UPG_TEXT_FAILURE . "</span>\n";
@@ -209,17 +207,17 @@ function upgrade_query($friendly, $query)
     return $res;
 }
 
-    /**
-      * Tries to update database version, gives a message when failed
-      *
-      * @param $version
-      *     Schema version the database has been upgraded to
-      */
+/**
+  * Tries to update database version, gives a message when failed
+  *
+  * @param $version
+  *     Schema version the database has been upgraded to
+  */
 function update_version($version)
 {
     global $upgrade_failures;
     $message = "Updating DatabaseVersion in config table to {$version}";
-    if (0==$upgrade_failures) {
+    if (0 == $upgrade_failures) {
         $query = sprintf("UPDATE %s set value='%s' where name='DatabaseVersion'", sql_table('config'), $version);
         upgrade_query($message, $query);
     } else {
@@ -227,18 +225,18 @@ function update_version($version)
     }
 }
 
-    /**
-     * @param $table
-     *        table to check (without prefix)
-     * @param $aColumns
-     *        array of column names included
-     */
+/**
+ * @param $table
+ *        table to check (without prefix)
+ * @param $aColumns
+ *        array of column names included
+ */
 function upgrade_checkIfIndexExists($table, $aColumns)
 {
     // get info for indices from database
 
     $aIndices = array();
-    $res = sql_query(sprintf('show index from %s', sql_table($table)));
+    $res      = sql_query(sprintf('show index from %s', sql_table($table)));
     if ($res) {
         while ($o = sql_fetch_object($res)) {
             if (!$aIndices[$o->Key_name]) {
@@ -259,44 +257,44 @@ function upgrade_checkIfIndexExists($table, $aColumns)
     return 0;
 }
 
-    /**
-      * Checks to see if a given table exists
-      *
-      * @param $table
-      *     Name of table to check for existance of
-      *     Uses sql_table internally
-      * @return true if table exists, false otherwise.
-      */
+/**
+  * Checks to see if a given table exists
+  *
+  * @param $table
+  *     Name of table to check for existance of
+  *     Uses sql_table internally
+  * @return true if table exists, false otherwise.
+  */
 function upgrade_checkIfTableExists($table)
 {
     $res = sql_query(sprintf("SHOW TABLES LIKE '%s'", sql_table($table)));
     return ($res != 0) && (sql_num_rows($res) == 1);
 }
 
-    /**
-      * Checks to see if a given configuration value exists
-      *
-      * @param $name
-      *     Config value to check for existance of.
-      *     Paramater must be MySQL escaped
-      * @return true if configuration value exists, false otherwise.
-      */
+/**
+  * Checks to see if a given configuration value exists
+  *
+  * @param $name
+  *     Config value to check for existance of.
+  *     Paramater must be MySQL escaped
+  * @return true if configuration value exists, false otherwise.
+  */
 function upgrade_checkIfCVExists($name)
 {
     $res = sql_query(sprintf("SELECT name from %s WHERE name='%s'", sql_table('config'), $name));
     return ($res != 0) && (sql_num_rows($res) == 1);
 }
 
-    /**
-      * Checks to see if a given column exists
-      *
-      * @param $table
-      *     Name of table to check for column in
-      *     Uses sql_table internally
-      * @param $col
-      *     Name of column to check for existance of
-      * @return true if column exists, false otherwise.
-      */
+/**
+  * Checks to see if a given column exists
+  *
+  * @param $table
+  *     Name of table to check for column in
+  *     Uses sql_table internally
+  * @param $col
+  *     Name of column to check for existance of
+  * @return true if column exists, false otherwise.
+  */
 function upgrade_checkIfColumnExists($table, $col)
 {
     $res = sql_query(sprintf('DESC `%s` `%s`', sql_table($table), $col));
@@ -308,13 +306,13 @@ if (!function_exists('sql_existTableColumnName')) {
     {
         $names = sql_getTableColumnNames($tablename);
 
-        if (count($names)>0) {
+        if (count($names) > 0) {
             if ($casesensitive) {
                 return in_array($ColumnName, $names);
             } else {
                 foreach ($names as $v) {
                     if (strcasecmp($ColumnName, $v) == 0) {
-                         return true;
+                        return true;
                     }
                 }
             }
@@ -381,18 +379,18 @@ if (!function_exists('sql_existTableColumnName')) {
         function sql_existTableName($tablename, $link_identifier = null)
         {
             $query = sprintf("SHOW TABLES LIKE '%s' ", sql_real_escape_string($tablename));
-            $res = sql_query($query, $link_identifier);
+            $res   = sql_query($query, $link_identifier);
             return ($res && ($r = sql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
         }
     }
 
     function sql_getTableColumnNames($tablename)
     {
-        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $sql    = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
         $target = 'Field';
 
         $items = array();
-        $res = sql_query($sql);
+        $res   = sql_query($sql);
         if (!$res) {
             return array();
         }
@@ -402,7 +400,7 @@ if (!function_exists('sql_existTableColumnName')) {
             }
         }
 
-        if (count($items)>0) {
+        if (count($items) > 0) {
             sort($items);
         }
         return $items;
@@ -418,7 +416,7 @@ function upgrade_remove_RefNew($filename)
     $pattern = '/(\s*=\s*)&(\s*new\s)/ms';
     if (preg_match($pattern, $src)) {
         $src_new = preg_replace($pattern, '\\1\\2', $src);
-        $len = strlen($src_new);
+        $len     = strlen($src_new);
         if (($len > 0) && ($len != strlen($src))) {
             file_put_contents($filename, $src_new);
         }
@@ -441,7 +439,7 @@ function upgrade_find_file($dir, $file_regex_pattern, $subdir_search = true, $li
     if ((int) $limit <= 0) {
         return array();
     }
-    if (strlen($dir)>0 && substr($dir, -1, 1)!='/') {
+    if (strlen($dir) > 0 && substr($dir, -1, 1) != '/') {
         $dir .= '/';
     }
     $limit--;
@@ -482,29 +480,29 @@ function upgrade_check_plugin_syntax()
     if (($retval !== 0) || empty($output) || !preg_match('@^(PHP\s+[\d\.]+)@i', $output[0], $ver)) {
         return;
     }
-    $ver = $ver[1];
+    $ver   = $ver[1];
     $files = upgrade_find_file($DIR_PLUGINS, '/\.php$/i');
     sort($files);
 //    var_dump($output, $retval, $files);
     $errors = array();
     foreach ($files as $file) {
         $output = '';
-        $arg = escapeshellarg($file);
+        $arg    = escapeshellarg($file);
         exec("{$php} -l {$arg}", $output, $retval);
         $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
         if (defined('UPGRADE_AUTOFIX_PLUGIN') && UPGRADE_AUTOFIX_PLUGIN) {
-            if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")!==false) {
+            if (str_contains($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")) {
                 upgrade_remove_RefNew($file);
                 $output1 = $output;
-                $output = '';
+                $output  = '';
                 exec("{$php} -l {$arg}", $output, $retval);
                 $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
-                if (strpos($output, 'No syntax errors detected')!==false) {
+                if (str_contains($output, 'No syntax errors detected')) {
                     $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file, strlen($DIR_PLUGINS)), hsc($output1));
                 }
             }
         }
-        if (strpos($output, 'No syntax errors detected')!==false) {
+        if (str_contains($output, 'No syntax errors detected')) {
             continue;
         }
         if (preg_match('/^[^:]+error:/', $output)) {

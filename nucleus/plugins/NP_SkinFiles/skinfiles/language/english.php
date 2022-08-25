@@ -177,4 +177,3 @@ define('_SKINFILES_02',				'The file is empty. Do you delete this? ');
 
 define('_SKINFILES_OPT_GENBACKUP',				'When editing, is back-up file generated?');
 define('_SKINFILES_OPT_BACKUPPREFIX',			'Prefix of the file name of the backup');
-?>

@@ -1,7 +1,7 @@
 <?php
 
 // This file will generate and return the main page of the site
-$CONF = array();
+$CONF         = array();
 $CONF['Self'] = 'index.php';
 
 if (!@is_file('./config.php')) {
@@ -9,7 +9,7 @@ if (!@is_file('./config.php')) {
         header('Location: ./install/');
         exit;
     }
-    $f = dirname(__FILE__).'/nucleus/libs/config-error.php';
+    $f = __DIR__.'/nucleus/libs/config-error.php';
     if (@is_file($f)) {
         @include($f);
     }

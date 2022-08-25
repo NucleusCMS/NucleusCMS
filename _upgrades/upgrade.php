@@ -35,9 +35,9 @@ if (!$member->isAdmin()) {
 if (!empty($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
     upgrade_error('It is an incompatible database.');
 }
-if ((intval($CONF['DatabaseVersion']) >= 380) || (intval($from)>=380)) {
+if ((intval($CONF['DatabaseVersion']) >= 380) || (intval($from) >= 380)) {
     $query = sprintf("SELECT count(*) as result FROM `%s` WHERE name='DatabaseName' AND value='Nucleus'", sql_table('config'));
-    $res = quickQuery($query);
+    $res   = quickQuery($query);
     if (empty($res)) {
         upgrade_error('It is an incompatible database.');
     }
@@ -51,21 +51,29 @@ upgrade_start();
 switch ($from) {
     case 300:
         include_once('upgrade3.1.php');
+        // no break
     case 310:
         include_once('upgrade3.2.php');
+        // no break
     case 320:
         include_once('upgrade3.3.php');
+        // no break
     case 330:
         include_once('upgrade3.31.php');
+        // no break
     case 331:
         include_once('upgrade3.4.php');
+        // no break
     case 340:
         include_once('upgrade3.5.php');
+        // no break
     case 350:
         include_once('upgrade3.6.php');
+        // no break
     case 360:
     case 370:
         include_once('upgrade3.7.php');
+        // no break
     case 371:
         include_once('upgrade3.8.php');
         break;
@@ -75,9 +83,8 @@ switch ($from) {
 }
 
 global $upgrade_failures;
-if (isset($_GET['from']) && ($from>0) && empty($upgrade_failures)) {
+if (isset($_GET['from']) && ($from > 0) && empty($upgrade_failures)) {
     upgrade_check_action_php();
 }
-
 
 upgrade_end(_UPG_TEXT_UPGRADE_COMPLETED);

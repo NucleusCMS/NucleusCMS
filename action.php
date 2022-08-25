@@ -25,8 +25,8 @@ require('./config.php');
 //include_once($DIR_LIBS . 'ACTION.php');
 include_libs('ACTION.php', true, false);
 
-$action = requestVar('action');
-$a = new ACTION();
+$action    = requestVar('action');
+$a         = new ACTION();
 $errorInfo = $a->doAction($action);
 
 if ($errorInfo) {

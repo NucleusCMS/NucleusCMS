@@ -12,7 +12,7 @@ if (!defined('_HAS_MBSTRING')) {
 
 class Utils
 {
-    function __construct()
+    public function __construct()
     {
     }
 
@@ -61,7 +61,7 @@ class Utils
             return @strftime($format, $timestamp);
         }
         $old_locale = setlocale(LC_CTYPE, '0'); // backup locale : maintained per process, not thread
-        $locale = setlocale(LC_CTYPE, '');
+        $locale     = setlocale(LC_CTYPE, '');
         try {
             if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
                 $locale_mbcahrset = false;
@@ -126,9 +126,9 @@ class Utils
         if (is_null($enable_curl)) {
             $enable_curl = (function_exists('curl_init'));
         }
-        $timeout = ((isset($options['timeout']) && $options['timeout'] > 0) ? $options['timeout'] : 0);
+        $timeout        = ((isset($options['timeout']) && $options['timeout'] > 0) ? $options['timeout'] : 0);
         $connecttimeout = ((isset($options['connecttimeout']) && $options['connecttimeout'] > 0) ? $options['connecttimeout'] : 0);
-        $start = microtime(true);
+        $start          = microtime(true);
         $reply_response = (isset($options['reply_response']) && $options['reply_response']);
 
         if ($enable_curl) {
@@ -166,7 +166,7 @@ class Utils
                         if ($reply_response) {
                             $ret = array('header' => &$header, 'body' => &$body);
                         } else {
-                            $ret =& $body;
+                            $ret = & $body;
                         }
                     }
                 }
@@ -177,8 +177,8 @@ class Utils
 
         if ($connecttimeout > 0) {
             $opts = array('http' => array('timeout' => $connecttimeout));
-            $sc = stream_context_create($opts);
-            $c = @fopen($url, "r", false, $sc);
+            $sc   = stream_context_create($opts);
+            $c    = @fopen($url, "r", false, $sc);
         } else {
             $c = @fopen($url, "r");
         }
@@ -195,8 +195,8 @@ class Utils
                 stream_set_timeout($c, $timeout);
             }
             $data = '';
-            $stR = array($c);
-            $stW = null;
+            $stR  = array($c);
+            $stW  = null;
             while (is_resource($c) && !feof($c)) {
                 $tv_sec = max(1, $timeout > 0 ? $timeout - ceil(microtime(true) - $start) : 1);
                 if (!stream_select($stR, $stW, $stW, $tv_sec)) {

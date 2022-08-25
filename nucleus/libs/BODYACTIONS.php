@@ -18,12 +18,11 @@
 
 class BODYACTIONS extends BaseActions
 {
-
     public $currentItem;
 
     public $template;
 
-    function __construct()
+    public function __construct()
     {
         parent::__construct();
     }
@@ -34,9 +33,9 @@ class BODYACTIONS extends BaseActions
      * @param &$item
      *             reference to the current item
      */
-    function setCurrentItem(&$item)
+    public function setCurrentItem(&$item)
     {
-        $this->currentItem =& $item;
+        $this->currentItem = & $item;
         global $currentitemid;
         $currentitemid = $this->currentItem->itemid;
     }
@@ -47,15 +46,15 @@ class BODYACTIONS extends BaseActions
      * @param $template
      *             Template to be used
      */
-    function setTemplate($template)
+    public function setTemplate($template)
     {
-        $this->template =& $template;
+        $this->template = & $template;
     }
 
     /**
      * Get the defined actions in an item
      */
-    function getDefinedActions()
+    public function getDefinedActions()
     {
         return array('image', 'media', 'popup', 'plugin', 'if', 'else', 'endif', 'elseif', 'ifnot', 'elseifnot');
     }
@@ -66,7 +65,7 @@ class BODYACTIONS extends BaseActions
      *
      * Calls the doItemVar function in the plugin
      */
-    function parse_plugin($pluginName)
+    public function parse_plugin($pluginName)
     {
         global $manager;
 
@@ -76,7 +75,7 @@ class BODYACTIONS extends BaseActions
             return;
         }*/
 
-        $plugin =& $manager->getPlugin('NP_' . $pluginName);
+        $plugin = & $manager->getPlugin('NP_' . $pluginName);
         if (!$plugin) {
             return;
         }
@@ -97,7 +96,7 @@ class BODYACTIONS extends BaseActions
      * Parse image
      * Called if <%image(...)%> in an item appears
      */
-    function parse_image()
+    public function parse_image()
     {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
@@ -108,7 +107,7 @@ class BODYACTIONS extends BaseActions
     /**
      * Creates the code for an image
      */
-    function createImageCode($filename, $width, $height, $text = '')
+    public function createImageCode($filename, $width, $height, $text = '')
     {
         global $CONF;
 
@@ -117,16 +116,15 @@ class BODYACTIONS extends BaseActions
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
-        $windowwidth = $width;
+        $windowwidth  = $width;
         $windowheight = $height;
 
-        $vars['link'] = hsc($CONF['MediaURL'] . $filename);
-        $vars['text'] = hsc($text);
-        $vars['image'] = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
-        $vars['width'] = $width;
+        $vars['link']   = hsc($CONF['MediaURL'] . $filename);
+        $vars['text']   = hsc($text);
+        $vars['image']  = '<img src="' . $vars['link'] . '" width="' . $width . '" height="' . $height . '" alt="' . $vars['text'] . '" title="' . $vars['text'] . '" />';
+        $vars['width']  = $width;
         $vars['height'] = $height;
-        $vars['media'] = '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
-
+        $vars['media']  = '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
         echo TEMPLATE::fill($this->template['IMAGE_CODE'], $vars);
     }
@@ -135,7 +133,7 @@ class BODYACTIONS extends BaseActions
      * Parse media
      * Called if <%media(...)%> in an item appears
      */
-    function parse_media()
+    public function parse_media()
     {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
@@ -146,7 +144,7 @@ class BODYACTIONS extends BaseActions
     /**
      * Creates the code for a media
      */
-    function createMediaCode($filename, $text = '')
+    public function createMediaCode($filename, $text = '')
     {
         global $CONF;
 
@@ -155,8 +153,8 @@ class BODYACTIONS extends BaseActions
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
-        $vars['link'] = hsc($CONF['MediaURL'] . $filename);
-        $vars['text'] = hsc($text);
+        $vars['link']  = hsc($CONF['MediaURL'] . $filename);
+        $vars['text']  = hsc($text);
         $vars['media'] = '<a href="' . $vars['link'] . '">' . $vars['text'] . '</a>';
 
         echo TEMPLATE::fill($this->template['MEDIA_CODE'], $vars);
@@ -166,7 +164,7 @@ class BODYACTIONS extends BaseActions
      * Parse popup
      * Called if <%popup(...)%> in an item appears
      */
-    function parse_popup()
+    public function parse_popup()
     {
         // image/popup calls have arguments separated by |
         $args = func_get_args();
@@ -177,7 +175,7 @@ class BODYACTIONS extends BaseActions
     /**
      * Creates the code for a popup
      */
-    function createPopupCode($filename, $width, $height, $text = '')
+    public function createPopupCode($filename, $width, $height, $text = '')
     {
         global $CONF;
 
@@ -186,22 +184,21 @@ class BODYACTIONS extends BaseActions
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
-        $windowwidth = $width;
+        $windowwidth  = $width;
         $windowheight = $height;
 
-        $vars['rawpopuplink'] = $CONF['Self'] . "?imagepopup=" . hsc($filename) . "&amp;width=$width&amp;height=$height&amp;imagetext=" . urlencode(hsc($text));
-        $vars['popupcode'] = "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width=$windowwidth,height=$windowheight');return false;";
-        $vars['popuptext'] = hsc($text);
-        $vars['popuplink'] = '<a href="' . $vars['rawpopuplink'] . '" onclick="' . $vars['popupcode'] . '" >' . $vars['popuptext'] . '</a>';
-        $vars['width'] = $width;
-        $vars['height'] = $height;
-        $vars['text'] = $text;
-        $vars['link'] = hsc($CONF['MediaURL'] . $filename);
-        $vars['media'] = '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
+        $vars['rawpopuplink'] = $CONF['Self'] . "?imagepopup=" . hsc($filename) . "&amp;width={$width}&amp;height={$height}&amp;imagetext=" . urlencode(hsc($text));
+        $vars['popupcode']    = "window.open(this.href,'imagepopup','status=no,toolbar=no,scrollbars=no,resizable=yes,width={$windowwidth},height={$windowheight}');return false;";
+        $vars['popuptext']    = hsc($text);
+        $vars['popuplink']    = '<a href="' . $vars['rawpopuplink'] . '" onclick="' . $vars['popupcode'] . '" >' . $vars['popuptext'] . '</a>';
+        $vars['width']        = $width;
+        $vars['height']       = $height;
+        $vars['text']         = $text;
+        $vars['link']         = hsc($CONF['MediaURL'] . $filename);
+        $vars['media']        = '<a href="' . $vars['link'] . '">' . $vars['popuptext'] . '</a>';
 
         echo TEMPLATE::fill($this->template['POPUP_CODE'], $vars);
     }
-
 
     // function to enable if-else-elseif-elseifnot-ifnot-endif to item template fields
 
@@ -209,10 +206,10 @@ class BODYACTIONS extends BaseActions
      * Checks conditions for if statements
      *
      * @param string $field type of <%if%>
-     * @param string $name property of field
+     * @param string $name  property of field
      * @param string $value value of property
      */
-    function checkCondition($field, $name = '', $value = '')
+    public function checkCondition($field, $name = '', $value = '')
     {
         global $catid, $blog, $member, $itemidnext, $itemidprev, $manager, $archiveprevexists, $archivenextexists;
 
@@ -228,7 +225,7 @@ class BODYACTIONS extends BaseActions
                 $condition = ($blog && ($blog->getSetting($name) == $value));
                 break;
             case 'itemblogsetting':
-                $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+                $b         = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
                 $condition = ($b && ($b->getSetting($name) == $value));
                 break;
             case 'loggedin':
@@ -243,21 +240,21 @@ class BODYACTIONS extends BaseActions
             case 'author':
                 $condition = ($this->_ifAuthor($name, $value));
                 break;
-            /*            case 'nextitem':
-                            $condition = ($itemidnext != '');
-                            break;
-                        case 'previtem':
-                            $condition = ($itemidprev != '');
-                            break;
-                        case 'archiveprevexists':
-                            $condition = ($archiveprevexists == true);
-                            break;
-                        case 'archivenextexists':
-                            $condition = ($archivenextexists == true);
-                            break;
-                        case 'skintype':
-                            $condition = ($name == $this->skintype);
-                            break; */
+                /*            case 'nextitem':
+                                $condition = ($itemidnext != '');
+                                break;
+                            case 'previtem':
+                                $condition = ($itemidprev != '');
+                                break;
+                            case 'archiveprevexists':
+                                $condition = ($archiveprevexists == true);
+                                break;
+                            case 'archivenextexists':
+                                $condition = ($archivenextexists == true);
+                                break;
+                            case 'skintype':
+                                $condition = ($name == $this->skintype);
+                                break; */
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
@@ -280,7 +277,7 @@ class BODYACTIONS extends BaseActions
     /**
      *  Different checks for a category
      */
-    function _ifCategory($name = '', $value = '')
+    public function _ifCategory($name = '', $value = '')
     {
         global $blog, $catid;
 
@@ -305,15 +302,14 @@ class BODYACTIONS extends BaseActions
         return false;
     }
 
-
     /**
      *  Different checks for an author
      */
-    function _ifAuthor($name = '', $value = '')
+    public function _ifAuthor($name = '', $value = '')
     {
         global $member, $manager;
 
-        $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+        $b = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
         if (($name != 'isadmin' && $name != 'name') || ($name == 'name' && $value == '')) {
@@ -330,9 +326,9 @@ class BODYACTIONS extends BaseActions
 
         // check if author is admin
         if (($name == 'isadmin')) {
-            $aid = intval($this->currentItem->authorid);
-            $blogid = intval($b->getID());
-            $amember =& $manager->getMember($aid);
+            $aid     = intval($this->currentItem->authorid);
+            $blogid  = intval($b->getID());
+            $amember = & $manager->getMember($aid);
             if ($amember->isAdmin()) {
                 return true;
             }
@@ -346,11 +342,11 @@ class BODYACTIONS extends BaseActions
     /**
      *  Different checks for a category
      */
-    function _ifItemCategory($name = '', $value = '')
+    public function _ifItemCategory($name = '', $value = '')
     {
         global $catid, $manager;
 
-        $b =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+        $b = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
         if (($name != 'catname' && $name != 'catid') || ($value == '')) {
@@ -376,11 +372,10 @@ class BODYACTIONS extends BaseActions
         return false;
     }
 
-
     /**
      *  Checks if a member is on the team of a blog and return his rights
      */
-    function _ifOnTeam($blogName = '')
+    public function _ifOnTeam($blogName = '')
     {
         global $blog, $member, $manager;
 
@@ -404,7 +399,7 @@ class BODYACTIONS extends BaseActions
     /**
      *  Checks if a member is admin of a blog
      */
-    function _ifAdmin($blogName = '')
+    public function _ifAdmin($blogName = '')
     {
         global $blog, $member, $manager;
 
@@ -425,7 +420,6 @@ class BODYACTIONS extends BaseActions
         return $member->isBlogAdmin($blogid);
     }
 
-
     /**
      *    hasplugin,PlugName
      *       -> checks if plugin exists
@@ -434,13 +428,13 @@ class BODYACTIONS extends BaseActions
      *    hasplugin,PlugName,OptionName=value
      *       -> checks if the option OptionName from plugin PlugName is set to value
      */
-    function _ifHasPlugin($name, $value)
+    public function _ifHasPlugin($name, $value)
     {
         global $manager;
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_' . $name)) {
-            $plugin =& $manager->getPlugin('NP_' . $name);
+            $plugin = & $manager->getPlugin('NP_' . $name);
             if ($plugin != null) {
                 if ($value == "") {
                     $condition = true;
@@ -462,11 +456,11 @@ class BODYACTIONS extends BaseActions
     /**
      * Checks if a plugin exists and call its doIf function
      */
-    function _ifPlugin($name, $key = '', $value = '')
+    public function _ifPlugin($name, $key = '', $value = '')
     {
         global $manager;
 
-        $plugin =& $manager->getPlugin('NP_' . $name);
+        $plugin = & $manager->getPlugin('NP_' . $name);
         if (!$plugin) {
             return;
         }
@@ -477,7 +471,7 @@ class BODYACTIONS extends BaseActions
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 
-    function parse_commentclosed()
+    public function parse_commentclosed()
     {
         // if item is closed, show message and do nothing
         if ($this->currentItem->closed || !$this->blog->commentsEnabled()) {
@@ -487,7 +481,7 @@ class BODYACTIONS extends BaseActions
         }
     }
 
-    function parse_hascomment()
+    public function parse_hascomment()
     {
         $sqlText = sprintf(
             "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",

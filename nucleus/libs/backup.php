@@ -19,18 +19,12 @@
 
 class Backup
 {
-
     /**
      * Constructor
      */
-    function __construct()
+    public function __construct()
     {
         // do nothing
-    }
-
-    public function Backup()
-    {
-        $this->__construct();
     }
 
     /**
@@ -42,7 +36,7 @@ class Backup
      * @param gzip
      *        1 = compress backup file, 0 = no compression (default)
      */
-    function do_backup($gzip = 0)
+    public function do_backup($gzip = 0)
     {
         global $manager;
 
@@ -81,7 +75,7 @@ class Backup
         ob_start();
         $res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
         while ($plugName = sql_fetch_object($res)) {
-            $plug =& $manager->getPlugin($plugName->pfile);
+            $plug = & $manager->getPlugin($plugName->pfile);
             if ($plug) {
                 $tables = array_merge($tables, (array)$plug->getTableList());
             }
@@ -110,10 +104,9 @@ class Backup
             $filename = 'nucleus_db_backup_' . date("Y-m-d-H-i-s", time()) . ".sql";
         }
 
-
         // send headers that tell the browser a file is coming
-        header("Content-Type: text/x-delimtext; name=\"$filename\"");
-        header("Content-disposition: attachment; filename=$filename");
+        header("Content-Type: text/x-delimtext; name=\"{$filename}\"");
+        header("Content-disposition: attachment; filename={$filename}");
 
         // dump header
         echo "#\n";
@@ -132,8 +125,8 @@ class Backup
         array_walk($tables, array(&$this, '_backup_dump_table'));
 
         if ($gzip) {
-            $Size = ob_get_length();
-            $Crc = crc32(ob_get_contents());
+            $Size     = ob_get_length();
+            $Crc      = crc32(ob_get_contents());
             $contents = gzcompress(ob_get_contents());
             ob_end_clean();
             echo "\x1f\x8b\x08\x00\x00\x00\x00\x00" . substr(
@@ -146,14 +139,12 @@ class Backup
         exit;
     }
 
-
     /**
      * Creates a dump for a single table
      * ($tablename and $key are filled in by array_walk)
      */
-    function _backup_dump_table($tablename, $key)
+    public function _backup_dump_table($tablename, $key)
     {
-
         echo "#\n";
         echo "# " . _BACKUP_BACKUPFILE_TABLE_NAME . $tablename . "\n";
         echo "#\n";
@@ -168,13 +159,12 @@ class Backup
     /**
      * Creates a dump of the table structure for one table
      */
-    function _backup_dump_structure($tablename)
+    public function _backup_dump_structure($tablename)
     {
-
         // add command to drop table on restore
-        echo "DROP TABLE IF EXISTS $tablename;\n";
-        $result = sql_query("SHOW CREATE TABLE $tablename");
-        $create = sql_fetch_assoc($result);
+        echo "DROP TABLE IF EXISTS {$tablename};\n";
+        $result      = sql_query("SHOW CREATE TABLE {$tablename}");
+        $create      = sql_fetch_assoc($result);
         $CreateTable = $create['Create Table'];
         $CreateTable = preg_replace('@\s+COLLATE\s+([0-9a-zA-Z_]+)@', ' COLLATE utf8_general_ci', $CreateTable);
         $CreateTable = preg_replace('@CHARSET=([0-9a-zA-Z_]+)@', 'CHARSET=utf8', $CreateTable);
@@ -189,9 +179,8 @@ class Backup
      *
      * (column1, column2, ..., columnn)
      */
-    function _backup_get_field_names($result, $num_fields)
+    public function _backup_get_field_names($result, $num_fields)
     {
-
         /*    if (function_exists('mysqli_fetch_fields') ) {
 
                 $fields = mysqli_fetch_fields($result);
@@ -213,13 +202,13 @@ class Backup
     /**
      * Creates a dump of the table content for one table
      */
-    function _backup_dump_contents($tablename)
+    public function _backup_dump_contents($tablename)
     {
         //
         // Grab the data from the table.
         //
-        $row_count = intval(quickQuery("SELECT count(*) AS result FROM ${tablename}"));
-        $result = sql_query("SELECT * FROM $tablename");
+        $row_count = intval(quickQuery("SELECT count(*) AS result FROM {$tablename}"));
+        $result    = sql_query("SELECT * FROM {$tablename}");
         if (!$result) {
             return;
         }
@@ -228,7 +217,7 @@ class Backup
             if (defined('_BACKUP_BACKUPFILE_TABLEDATAFOR')) {
                 echo "\n#\n# " . sprintf(_BACKUP_BACKUPFILE_TABLEDATAFOR, $tablename) . "\n#\n";
             } else {
-                echo "\n#\n# Table Data for $tablename\n#\n";
+                echo "\n#\n# Table Data for {$tablename}\n#\n";
             }
         }
 
@@ -245,7 +234,7 @@ class Backup
         while ($row = sql_fetch_array($result)) {
             // Start building the SQL statement.
 
-            echo "INSERT INTO `" . $tablename . "` $tablename_list VALUES(";
+            echo "INSERT INTO `" . $tablename . "` {$tablename_list} VALUES(";
 
             // Loop through the rows and fill in data for each column
             for ($j = 0; $j < $num_fields; $j++) {
@@ -269,14 +258,13 @@ class Backup
             echo ");\n";
         }
 
-
         echo "\n";
     }
 
     /**
      * copied from phpBB
      */
-    function gzip_PrintFourChars($Val)
+    public function gzip_PrintFourChars($Val)
     {
         for ($i = 0; $i < 4; $i++) {
             $return .= chr($Val % 256);
@@ -288,9 +276,8 @@ class Backup
     /**
      * Restores a database backup
      */
-    function do_restore()
+    public function do_restore()
     {
-
         $uploadInfo = postFileInfo('backup_file');
 
         // first of all: get uploaded file:
@@ -301,9 +288,9 @@ class Backup
             return _BACKUP_RESTOR_NOFILEUPLOADED;
         }
 
-        $backup_file_name = $uploadInfo['name'];
+        $backup_file_name    = $uploadInfo['name'];
         $backup_file_tmpname = $uploadInfo['tmp_name'];
-        $backup_file_type = $uploadInfo['type'];
+        $backup_file_type    = $uploadInfo['type'];
 
         if (!file_exists($backup_file_tmpname)) {
             return _BACKUP_RESTOR_UPLOAD_ERROR;
@@ -319,7 +306,6 @@ class Backup
             return _BACKUP_RESTOR_UPLOAD_NOCORRECTTYPE . "({$backup_file_type})";
         }
 
-
         if (preg_match("/\.gz/is", $backup_file_name)) {
             $gzip = 1;
         } else {
@@ -333,7 +319,7 @@ class Backup
         // get sql query according to gzip setting (either decompress, or not)
         if ($gzip) {
             // decompress and read
-            $gz_ptr = gzopen($backup_file_tmpname, 'rb');
+            $gz_ptr    = gzopen($backup_file_tmpname, 'rb');
             $sql_query = "";
             while (!gzeof($gz_ptr)) {
                 $sql_query .= gzgets($gz_ptr, 100000);
@@ -360,7 +346,7 @@ class Backup
     /**
      * Executes a SQL query
      */
-    function _execute_queries($sql_query)
+    public function _execute_queries($sql_query)
     {
         if (!$sql_query) {
             return;
@@ -368,7 +354,7 @@ class Backup
 
         // Strip out sql comments...
         $sql_query = $this->remove_remarks($sql_query);
-        $pieces = $this->split_sql_file($sql_query);
+        $pieces    = $this->split_sql_file($sql_query);
 
         $sql_count = count($pieces);
         for ($i = 0; $i < $sql_count; $i++) {
@@ -390,7 +376,7 @@ class Backup
      * remove_remarks will strip the sql comment lines
      * out of an uploaded sql file
      */
-    function remove_remarks($sql)
+    public function remove_remarks($sql)
     {
         $lines = explode("\n", $sql);
 
@@ -398,7 +384,7 @@ class Backup
         $sql = "";
 
         $linecount = count($lines);
-        $output = "";
+        $output    = "";
 
         for ($i = 0; $i < $linecount; $i++) {
             if (($i != ($linecount - 1)) || (strlen($lines[$i]) > 0)) {
@@ -422,13 +408,13 @@ class Backup
      * Note: expects trim() to have already been run on $sql.
      * taken from phpBB
      */
-    function split_sql_file($sql)
+    public function split_sql_file($sql)
     {
         // Split up our string into "possible" SQL statements.
         $tokens = explode(";", $sql);
 
         // try to save mem.
-        $sql = "";
+        $sql    = "";
         $output = array();
 
         // we don't actually care about the matches preg gives us.
@@ -441,12 +427,12 @@ class Backup
             if (($i != ($token_count - 1)) || (strlen($tokens[$i] > 0))) {
                 // even number of quotes means a complete SQL statement
                 if ($this->_evenNumberOfQuotes($tokens[$i])) {
-                    $output[] = $tokens[$i];
+                    $output[]   = $tokens[$i];
                     $tokens[$i] = "";     // save memory.
                 } else {
                     // incomplete sql statement. keep adding tokens until we have a complete one.
                     // $temp will hold what we have so far.
-                    $temp = $tokens[$i] . ";";
+                    $temp       = $tokens[$i] . ";";
                     $tokens[$i] = "";    // save memory..
 
                     // Do we have a complete statement yet?
@@ -460,7 +446,7 @@ class Backup
 
                             // save memory.
                             $tokens[$j] = "";
-                            $temp = "";
+                            $temp       = "";
 
                             // exit the loop.
                             $complete_stmt = true;
@@ -486,7 +472,7 @@ class Backup
      *
      * taken from phpBB
      */
-    function _evenNumberOfQuotes($text)
+    public function _evenNumberOfQuotes($text)
     {
         // This is the total number of single quotes in the token.
         $total_quotes = preg_match_all("/'/", $text, $matches);

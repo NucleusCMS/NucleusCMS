@@ -23,14 +23,13 @@
 $MYSQL_CONN = 0;
 
 if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
-    include(dirname(__FILE__) . '/sql_common_functions.php');
+    include(__DIR__ . '/sql_common_functions.php');
 
     /**
      * Connects to mysql server with arguments
      */
     function sql_connect_args($mysql_host = 'localhost', $mysql_user = '', $mysql_password = '', $mysql_database = '')
     {
-
         $CONN = @mysql_connect($mysql_host, $mysql_user, $mysql_password);
         if ($mysql_database) {
             sql_select_db($mysql_database, $CONN);
@@ -66,8 +65,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
         if (!sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
             $MYSQL_CONN = null;
-            $msg = '';
-            $pattern = '/(Access denied for user|Unknown database|db handler is null)/i';
+            $msg        = '';
+            $pattern    = '/(Access denied for user|Unknown database|db handler is null)/i';
             if (preg_match($pattern, mysql_error(), $m)) {
                 $msg .= $m[1];
             }
@@ -78,13 +77,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
             $charset = get_mysql_charset_from_php_charset(_CHARSET);
         } else {
             $query = sprintf("SELECT * FROM %s WHERE name='Language'", sql_table('config'));
-            $res = sql_query($query);
+            $res   = sql_query($query);
             if (!$res) {
                 exit('Language name fetch error');
             }
-            $obj = sql_fetch_object($res);
-            $Language = $obj->value;
-            $charset = get_charname_from_langname($Language);
+            $obj         = sql_fetch_object($res);
+            $Language    = $obj->value;
+            $charset     = get_charname_from_langname($Language);
             $charsetOfDB = getCharSetFromDB(sql_table('config'), 'name', $MYSQL_CONN);
             if ((stripos($charset, 'utf') !== false) && (stripos($charsetOfDB, 'utf8') !== false)) {
                 $charset = $charsetOfDB;
@@ -150,7 +149,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
             }
         }
 
-        $bt = microtime(true);
+        $bt  = microtime(true);
         $res = mysql_query($query, $conn);
         if (!$res) {
             $uri = hsc(serverVar('REQUEST_URI'));
@@ -164,8 +163,8 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
             }
         }
         $SQLCount++;
-        $et = microtime(true) - $bt;
-        $SQLStack[$SQLCount] = "[$SQLCount] {$et}s - {$query}";
+        $et                  = microtime(true) - $bt;
+        $SQLStack[$SQLCount] = "[{$SQLCount}] {$et}s - {$query}";
         return $res;
     }
 
@@ -374,11 +373,11 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
             return array();
         }
 
-        $sql = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
+        $sql    = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
         $target = 'Field';
 
         $items = array();
-        $res = mysql_query($sql);
+        $res   = mysql_query($sql);
         if (!$res) {
             return array();
         }

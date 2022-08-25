@@ -18,7 +18,6 @@
 
 class SKINEXPORT
 {
-
     public $templates;
     public $skins;
     public $info;
@@ -26,7 +25,7 @@ class SKINEXPORT
     /**
      * Constructor initializes data structures
      */
-    function __construct()
+    public function __construct()
     {
         // list of templateIDs to export
         $this->templates = array();
@@ -45,12 +44,11 @@ class SKINEXPORT
      *        template ID
      * @result false when no such ID exists
      */
-    function addTemplate($id)
+    public function addTemplate($id)
     {
         if (!TEMPLATE::existsID($id)) {
             return 0;
         }
-
 
         $this->templates[$id] = TEMPLATE::getNameFromId($id);
 
@@ -64,7 +62,7 @@ class SKINEXPORT
      *        skin ID
      * @result false when no such ID exists
      */
-    function addSkin($id)
+    public function addSkin($id)
     {
         if (!SKIN::existsID($id)) {
             return 0;
@@ -78,11 +76,10 @@ class SKINEXPORT
     /**
      * Sets the extra info to be included in the exported file
      */
-    function setInfo($info)
+    public function setInfo($info)
     {
         $this->info = $info;
     }
-
 
     /**
      * Outputs the XML contents of the export file
@@ -91,7 +88,7 @@ class SKINEXPORT
      *        set to 0 if you don't want to send out headers
      *        (optional, default 1)
      */
-    function export($setHeaders = 1)
+    public function export($setHeaders = 1)
     {
         if ($setHeaders) {
             // make sure the mimetype is correct, and that the data does not show up
@@ -143,17 +140,17 @@ class SKINEXPORT
 
         // contents skins
         foreach ($this->skins as $skinId => $skinName) {
-            $skinId = intval($skinId);
-            $skinObj = new SKIN($skinId);
+            $skinId   = intval($skinId);
+            $skinObj  = new SKIN($skinId);
             $skinName = hsc($skinName);
             $contentT = hsc($skinObj->getContentType());
-            $incMode = hsc($skinObj->getIncludeMode());
+            $incMode  = hsc($skinObj->getIncludeMode());
             $incPrefx = hsc($skinObj->getIncludePrefix());
             $skinDesc = hsc($skinObj->getDescription());
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
                 $skinName = mb_convert_encoding($skinName, 'UTF-8', _CHARSET);
                 $contentT = mb_convert_encoding($contentT, 'UTF-8', _CHARSET);
-                $incMode = mb_convert_encoding($incMode, 'UTF-8', _CHARSET);
+                $incMode  = mb_convert_encoding($incMode, 'UTF-8', _CHARSET);
                 $incPrefx = mb_convert_encoding($incPrefx, 'UTF-8', _CHARSET);
                 $skinDesc = mb_convert_encoding($skinDesc, 'UTF-8', _CHARSET);
             }
@@ -176,16 +173,16 @@ class SKINEXPORT
             $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
             $res = sql_query($sql);
             while ($partObj = sql_fetch_object($res)) {
-                $type = hsc($partObj->stype);
-                $cdata = $this->escapeCDATA($partObj->scontent);
+                $type   = hsc($partObj->stype);
+                $cdata  = $this->escapeCDATA($partObj->scontent);
                 $tmptag = ($partObj->spartstype == 'specialpage' ? 'specialpage' : 'part');
                 if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $type = mb_convert_encoding($type, 'UTF-8', _CHARSET);
+                    $type  = mb_convert_encoding($type, 'UTF-8', _CHARSET);
                     $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
                 }
                 printf("\t\t" . '<%s name="%s">', $tmptag, $type);
                 echo '<![CDATA[' . $cdata . ']]>';
-                echo "</${tmptag}>\n\n";
+                echo "</{$tmptag}>\n\n";
             }
 
             echo "\t</skin>\n\n\n";
@@ -193,7 +190,7 @@ class SKINEXPORT
 
         // contents templates
         foreach ($this->templates as $templateId => $templateName) {
-            $templateId = intval($templateId);
+            $templateId   = intval($templateId);
             $templateName = hsc($templateName);
             $templateDesc = hsc(TEMPLATE::getDesc($templateId));
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
@@ -208,10 +205,10 @@ class SKINEXPORT
             $que = sprintf('SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d', sql_table('template'), $templateId);
             $res = sql_query($que);
             while ($partObj = sql_fetch_object($res)) {
-                $type = hsc($partObj->tpartname);
+                $type  = hsc($partObj->tpartname);
                 $cdata = $this->escapeCDATA($partObj->tcontent);
                 if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {
-                    $type = mb_convert_encoding($type, 'UTF-8', _CHARSET);
+                    $type  = mb_convert_encoding($type, 'UTF-8', _CHARSET);
                     $cdata = mb_convert_encoding($cdata, 'UTF-8', _CHARSET);
                 }
                 echo "\t\t" . '<part name="' . $type . '">';
@@ -228,7 +225,7 @@ class SKINEXPORT
     /**
      * Escapes CDATA content so it can be included in another CDATA section
      */
-    function escapeCDATA($cdata)
+    public function escapeCDATA($cdata)
     {
         return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
     }

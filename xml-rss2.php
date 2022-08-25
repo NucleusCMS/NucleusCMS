@@ -72,5 +72,3 @@ if (!$CONF['DisableSite']) {
     </rss>
     <?php
 }
-
-?>

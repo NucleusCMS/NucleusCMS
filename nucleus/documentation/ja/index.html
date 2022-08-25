@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="ja">
+	<head>
+		<!--
+			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+			Copyright (C) 2002-2018 The Nucleus Group
+
+			This program is free software; you can redistribute it and/or
+			modify it under the terms of the GNU General Public License
+			as published by the Free Software Foundation; either version 2
+			of the License, or (at your option) any later version.
+			(see nucleus/documentation/index.html#license for more info)
+		-->
+		<meta charset="UTF-8" />
+		<title>Nucleus CMS マニュアル</title>
+		<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+		<script src="http://www.google.com/jsapi"></script>
+		<script type="text/javascript">
+			google.load("jquery", "1");
+			google.setOnLoadCallback(function() {
+				$.getScript("devdocs/javascript/fontsizeChanger.js");
+			});
+		</script>
+	</head>
+	<body>
+		<div id="fontSizeChanger">
+		<a href="#top" id="f_small">小</a>
+		<a href="#top" id="f_medium">中</a>
+		<a href="#top" id="f_large">大</a>
+		</div>
+
+	<div id="body">
+
+		<div class="heading">
+			Nucleus CMS マニュアル
+			<i>(v3.80)</i>
+		</div>
+
+		<div class="note">
+			<b>はじめに:</b>
+			<ul>
+				<li>このマニュアルは管理エリアにて使用しているポップアップヘルプ(<a href="help.html">help.html</a>)に記載されていない内容を収録しております。Nucleusの<a href="#installation">インストールガイド</a>も収録しておりますので参考にしてください。</li>
+				<li>デベロッパーの方は、 <a href="devdocs/index.html">開発者向けマニュアル</a> を併せてご覧下さい。</li>
+			</ul>
+		</div>
+
+		<h1><a name="toc"></a>目次</h1>
+
+		<ul>
+			<li><a href="#about">Nucleus CMS とは</a></li>
+			<li><a href="#license">ライセンスについて</a></li>
+			<li><a href="#installation">インストールガイド</a></li>
+			<li><a href="skins.html">スキンとテンプレートの編集(ページデザイン)</a> (別ファイル)</li>
+			<li><a href="#security">セキュリティについて</a></li>
+			<li><a href="#performance">パフォーマンスについて</a></li>
+			<li><a href="#comments">コメント受付時のルール</a></li>
+			<li><a href="#xmlrpc">XML-RPC インターフェイスについて</a></li>
+			<li><a href="#trouble">困った時は (FAQ)</a></li>
+			<li><a href="tips.html">便利な使い方のヒント</a> (別ファイル)</li>
+			<li><a href="history.html">履歴</a> (別ファイル)</li>
+			<li><a href="#acknowledgments">謝辞</a></li>
+		</ul>
+
+		<h1>Nucleus とは<a name="about" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<p>
+			Nucleus とはコンテンツマネジメントシステム(Contents Management System : 略してCMS)ツールです。PHPで書かれており、blogサイト運営に強力に役立ちます。主な特徴は以下の通りです:
+		</p>
+
+		<ul>
+			<li>自分のサーバで運用できる</li>
+			<li>複数のblog設置が可能で単一ページに複数blog表示も可能</li>
+			<li>プラグインによる機能拡張</li>
+			<li>コメント投稿の標準装備</li>
+			<li>自動過去ログ作成</li>
+			<li>カテゴリ分け</li>
+			<li>検索機能の標準装備</li>
+			<li>複数人による記事投稿</li>
+			<li>未来の日付での投稿</li>
+			<li>草稿機能</li>
+			<li>拡張性のある管理エリア</li>
+			<li>画像などのファイル添付機能</li>
+			<li>ページデザインのフルカスタマイズ</li>
+			<li>スキンのインポート/エクスポート</li>
+			<li>コメント悪用者のブロック</li>
+			<li>RSS 自動作成</li>
+			<li>インストールが簡単</li>
+			<li>バックアップが簡単</li>
+			<li>XML-RPC インターフェイス ( <a href="http://plant.blogger.com/api/">Blogger API</a> / <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> / <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a> 採用)</li>
+			<li>XHTML 準拠</li>
+			<li><s>Blogger と GreyMatter blogsからのコンバートツール</s></li>
+			<li>...</li>
+		</ul>
+
+		<h2>動作環境</h2>
+		<p>
+			Nucleusのインストールには以下の環境が必要です: <small>(不明な点はサーバ管理者にお尋ね下さい)</small>
+		</p>
+
+		<ul>
+			<li>Webサーバー</li>
+			<li><a href="https://www.php.net/manual/ja/">PHP</a><br />
+				&nbsp;&nbsp; バージョン 8 : 8.2, 8.1 , 8.0<br />
+				&nbsp;&nbsp; バージョン 7 : 7.4, 7.3 , 7.2 , 7.1 , 7.0<br />
+				&nbsp;&nbsp; バージョン 5 : 5.6, 5.5<br />
+				&nbsp;&nbsp; プラグインも使用するPHPに対応している必要があります。
+			</li>
+			<li>データベース<br />
+				下記のうちいづれか１つを選択する必要があります。
+				<ul><li>MySQL系のデータベース
+					<ul>
+					<li><a href="https://mariadb.org/">MariaDB</a> (バージョン 5.5, 10.0 以降)</li>
+					<li><a href="https://dev.mysql.com/doc/">MySQL</a> データベース (バージョン 5.5 以降)</li>
+					</ul>
+				</ul>
+			</li>
+			<li>ファイル・フォルダ操作の基礎知識</li>
+			<li>デザインのカスタマイズをする場合は、<acronym title="Hypertext Markup Language">HTML</acronym> と <acronym title="Cascading Style Sheets">CSS</acronym> の基礎知識</li>
+		</ul>
+
+
+
+		<p>
+			Nucleus はサイト構築にあたって、自分で完全に制御し調整したい人のためのものです。
+		</p>
+
+		<p class="note">
+			HTMLに関する知識が全くなく、簡単にblogサイトを持ちたい人は インストール不要のホスティング型のblogサービス(<a href="http://dir.yahoo.co.jp/Computers_and_Internet/Internet/Free_Services/Diaries/">Yahoo! JAPANの該当カテゴリ</a>参照)を利用した方が良いかもしれません。
+		</p>
+
+
+
+
+		<p><a name="license"></a></p>
+		<h1>ライセンスについて <a name="copyright" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<p>
+			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+			<br />
+			Copyright (C) 2002-2018 The Nucleus Group
+		</p>
+
+		<p>このプログラムはフリーウェアです。
+		フリーソフトウェア財団(the Free Software Foundation)が公表した<a href="https://www.gnu.org/licenses/gpl-2.0.html">GNU一般公共使用許諾(GNU General Public License)の
+		「バージョン2」</a>或いはそれ以降の各バージョンの中からいずれかを選択し、
+		そのバージョンが定める条項に従ったうえで、本プログラムの再配布・改変を認めています。</p>
+
+		<p>このプログラムがご自身の使用目的に合ったものであれば幸いです。
+		しかしながら 、商品性および特定目的に対する適合性に関する黙示的な保証を含み、
+		いかなる保証もいたしません。
+		詳細につきましてはGNU 一般公有使用許諾書をお読みください。</p>
+
+		<p>このプログラムと併せて<a href="./licenses/nucleus/license.txt">GNU General Public Licenseのコピー</a>
+		をお受け取りのはずかと思いますが、お受け取りになられていない場合は、<a href="https://www.gnu.org/licenses/gpl-2.0.txt">こちらにアクセス</a>してコピーをお受け取りください</p>
+
+		<p>
+			付属するライブラリ等の使用にあたり、それらの各ライセンスに同意する必要があります。
+		</p>
+
+		<p>
+			このソフトウェアを所有することは、これらの条件に同意することを意味します。これらの条件に同意されない方は、所持するこのソフトウェアのコピーを削除してください。
+		</p>
+
+
+		<h1>インストールガイド <a name="installation" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<div class="note">
+			<b>注意:</b> 旧バージョンをすでにご使用の方は、Nucleus Webサイトの<a href="http://japan.nucleuscms.org/upgrade.php">アップグレードガイド</a>の方をご覧下さい。
+		</div>
+
+		<p>
+			ほんの数ステップでインストールは完了します。手順は以下の通り:
+		</p>
+
+		<h2>1. 圧縮ファイルの解凍</h2>
+
+		<p>
+			ダウンロードしたパッケージファイルを解凍します。生成されるディレクトリ構成は以下のようになっているかをご確認下さい。(*はディレクトリ以下にファイルがある事を意味します)
+		</p>
+
+		<table id="files_index">
+			<tr>
+				<th>/*</th><td>(サイト表示用メインファイル)</td>
+			</tr><tr>
+				<th>/extra/*</th><td>(fancy URL用ファイルなど特殊なファイル)</td>
+			</tr><tr>
+				<th>/install/*</th><td>(インストール用ファイル)</td>
+			</tr><tr>
+				<th>/media/*</th><td>(添付ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/*</th><td>(サイト管理用ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/documentation/*</th><td>(説明書)</td>
+			</tr><tr>
+				<th>/nucleus/forms/*</th><td>(入力フォーム部品ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/images/*</th><td>(管理エリア専用画像ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/javascript/*</th><td>(javascripts スクリプト)</td>
+			</tr><tr>
+				<th>/nucleus/language/*</th><td>(言語ファイル)</td>
+			</tr><tr>
+				<th>/nucleus/libs/*</th><td>(Nucleus のコアライブラリ)</td>
+			</tr><tr>
+				<th>/nucleus/plugins/*</th><td>(プラグインファイル)</td>
+			</tr><tr>
+				<th>/nucleus/styles/*</th><td>(管理エリア専用cssファイル)</td>
+			</tr><tr>
+				<th>/nucleus/xmlrpc/*</th><td>(XML-RPC インターフェイス用ファイル)</td>
+			</tr><tr>
+				<th>/skins/*</th><td>(スキンファイル [読込み時にも使用])</td>
+
+			</tr>
+		</table>
+
+		<div class="note">
+			<b>補足:</b>
+			<ul>
+				<li> 英語バージョンは一部の環境において正常に解凍できないとの報告があります。ファイルサイズが0バイトでないことを確認してください。</li>
+				<li>/nucleus/forms/ ディレクトリにあるファイルの拡張子はすべて「.template」です。<br />
+				ファイル名が長いため拡張子の一部がカットされている場合がありますので確認してください。</li>
+			</ul>
+		</div>
+
+		<h2>2. サーバに転送</h2>
+
+		<p>
+			FTPソフトを使ってサーバに全部のファイルを転送します。拡張子が.phpのファイルは必ずASCIIモードで転送してください。モードを間違えると動作しません。
+		</p>
+
+		<h3>パーミッションの変更(やらなくてもOK):</h3>
+
+		<ol>
+<!--
+			<li>
+				この段階で <em>config.php</em> のパーミッションを <strong>666</strong>に変更しておくと、後のインストール手順を減らす事ができます。この手順をスキップした方は手動で <em>config.php</em> を編集するだけですのでどちらでも構いません。 (パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)
+			</li>
+-->
+			<li>
+				画像など添付ファイルを使用される予定のある方は、mediaディレクトリを作成してこのディレクトリのパーミッションを書き込み可能に変更してください。書き込み可能にしておかないとアップロードが正常に行えません。通常は <strong>777</strong> かと思います(パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)。<br />（root 権限をお持ちの場合は、ディレクトリを <tt>httpd</tt> プロセスが動作しているユーザに <tt>chgrp</tt> してください。通常は <tt>httpd</tt> もしくは<tt>nobody</tt> で、ディレクトリは <tt>chmod 755</tt> になるでしょう。）
+			</li>
+			<li>
+				ファイル編集に SkinFiles プラグインをお使いになる場合は、/skins/ ディレクトリ以下にあるすべてのファイルとディレクトリのパーミッションを変更する必要があるでしょう。ファイルの編集を可能にするには、ファイルのパーミッションは <strong>666</strong> にしておくことになるでしょう(パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)。新しいファイルやディレクトリを作成できるようにするためには、親ディレクトリのパーミッションを <strong>777</strong> にしておくことになるでしょう。
+			</li>
+		</ol>
+
+
+		<h2>3. /install/ディレクトリにアクセス</h2>
+
+		<p>
+			ブラウザを開いてサーバに転送した/install/ディレクトリにアクセスします。URLは下記のようになります。(<i>www.yoursite.com</i> と <i>yourpath</i>の部分は読み替えてください)
+		</p>
+
+		<pre>	http://www.yoursite.com/yourpath/install/</pre>
+
+		<p>
+			表示されたページに必要入力事項を入力します。あらかじめ自動検知して入力済の部分がありますが確認をお願いします。送信後に次に行う手順が表示されますのでそれに従って作業してください。(最後にいくつかのファイルを手動でサーバから削除する作業が必要ですのでお忘れなく。)
+		</p>
+
+		<div class="note">
+			<b>注意:</b> <i>/install/</i> ディレクトリにアクセスした際、「If you see this text in your browser...」というテキストが表示されたり、 index.phpのダウンロードが促されたりした場合は、そのサーバではphpスクリプトは動作しません。当然、残念ながらphpスクリプトであるNucleusを運用することができません。
+		</div>
+
+		<h2>4. 完了</h2>
+
+		<p>
+			インストールが完了したらすぐにトップページにアクセスすることができます。インストール完了画面の一番下にリンクが自動表示されていますのでジャンプして確認してみてください。
+		</p>
+
+
+
+
+
+
+
+		<h1>セキュリティについて <a name="security" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<h2>mySQL のパスワード</h2>
+
+		<p>
+			NucleusはphpスクリプトからmySQLデータベースにアクセスしますので、phpスクリプト内にmySQLパスワードを書き込んでおく必要があります。 複数ユーザーで使用するサーバの場合は100%安全ではないことをご了解下さい。また、ログイン名とログインパスワードを盗まれる可能性もあることもお知りおきください。phpスクリプトに重要な情報を埋め込んで使用する事の是非について調べたい方は詳しい方におたずね下さい。
+		</p>
+
+		<p>
+			この危険性はデータベースを使用するすべてのphpスクリプトに共通する問題です。通常はユーザー側で解決できる問題ではありません。100%安全ではないと言うことを念頭に置いておいて下さい。
+		</p>
+
+		<h2>クッキー</h2>
+
+		<p>
+			Nucleus ではログイン情報の保持にクッキーを使用しています。クッキーが盗まれ誰かにログインされる危険性があります。 クッキーを覗いただけではパスワードは推測できません <small>(実際にはパスワードは暗号化して格納しています)</small> が、残念ながら、盗んだクッキーを利用してログインユーザーを偽装することが技術的に可能ではあります。
+		</p>
+
+		<h2>メディアディレクトリ</h2>
+
+		<p>
+			添付ファイルを使用する際はメディアディレクトリのパーミッションを777にする必要があります。777にするという事は、そのサーバ上にいる<b>誰もが</b>そのディレクトリを操作できる権限を持つという事です。しかしながら、オンラインでPHPスクリプトからファイルをアップロードするためにはこの設定は必須です。代替案はありません。
+		</p>
+
+
+
+
+
+		<h1>パフォーマンスについて <a name="performance" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<p>
+			ほかのweblogツールとは異なり、Nucleusではあらゆる表示ページをサーバ上に保存しません。アクセスがあったURLを元にデータを呼出しその都度ページを生成して表示するという方法を採っています(動的ページ生成)。
+		</p>
+
+		<p>
+			この仕組みが原因でトラブルが起きる事はまずありません。1秒あたりものすごい数のアクセスのある大規模なサイトであれば動作に問題があるかもしれませんが、今のところはよくわかっていません。そこそこ大きなサイトで、1つのNucleusで30以上のblogを運用しているサイトでも特に問題点はないという報告を受けていることをご紹介しておきます。
+		</p>
+
+
+
+		<h1>コメント受付時のルール  <a name="comments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<p>
+			Nucleus では、コメントの性質を考えて以下のルールを設けています:
+		</p>
+
+		<ul>
+			<li>90字を越える連続した半角の英数字記号の投稿を禁止 (レイアウトが崩れるため) </li>
+			<li>コメント文は3文字以上であること</li>
+			<li>コメント文は5,000文字以下であること</li>
+			<li>ゲストの名前は2文字以上であること </li>
+			<li>ゲストの名前やe-mail欄は引用符、改行使用禁止 </li>
+			<li>コメント本文の3つの連続改行を1つの改行に置換 (見映え優先)</li>
+			<li>HTML タグは使用不可能</li>
+			<li>左右の余分なスペースは削除</li>
+			<li>URL はリンクテキストを短縮した上で自動リンク</li>
+		</ul>
+
+		<p>
+			これらのルールを変更したい場合はコアファイルの書き換えが必要となります。
+		</p>
+
+
+
+
+
+
+		<h1>XML-RPC インターフェイス <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+		<div class="note">
+			※この機能はメンテナンスされていません。
+		</div>
+
+		<div class="note">
+			Nucleusの XML-RPC インターフェイスのURL:
+			<br />
+			<b>http://www.yourserver.com/yourpath/nucleus/xmlrpc/server.php</b>
+		</div>
+
+		<p>
+			<a href="http://www.xmlrpc.com/">XML-RPC</a> とは、XMLを利用してデータを読み書きする規格です。難しく聞こえるかもしれませんが、このXML-RPCという規格を組み込んでいれば他のツールを使ってデータの読み書きが可能になるという事だけ覚えておいてください。
+		</p>
+
+		<p>
+			現在の所、<a href="http://plant.blogger.com/api/">Blogger API</a>、<a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>と<a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a>の3つの規格をサポートしています。この規格を使用した記事投稿ツールに興味のある方は、 <a href="http://www.cweblogs.com/wbeditor/">WB Editor</a> (Windows版:日本語対応) または <a href="http://www.kung-foo.tv/ecto/">Ecto</a> (MacOS版:日本語対応不明) を使ってみてください。
+		</p>
+
+		<p>
+			このXML-RPC インターフェイスの呼出し方法につきましては、開発者向けドキュメントにて解説しています。 <!-- a href="http://nucleuscms.org/download.php">こちらからダウンロード</a>するか、 <a href="http://nucleuscms.org/documentation/devdocs/xmlrpc.html">オンラインで</a>ご覧下さい。 -->
+			<a href="./devdocs/xmlrpc.html">Nucleus - XML-RPC インターフェイス</a>をご覧下さい。
+		</p>
+
+
+
+		<h1>困った時は (FAQ) <a name="trouble" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<p>Nuleusについて良く聞かれる質問をFAQとしてまとめました。質問される前にご一読下さい。大抵のケースでは解決できるのではないでしょうか。
+		</p>
+
+		<div class="faq">
+			<div class="question">このようなエラーが表示されるのですが: <q>Cannot send headers. Headers already sent...</q></div>
+			<div class="answer">
+				<code>config.php</code>の冒頭と末尾に空白(スペース)が入っている場合によく起こります。<tt>&lt;?</tt> の前、あるいは <tt>?&gt;</tt>よりも後にスペースが挿入されていないかどうか確認してください。このスペースを削除するとエラーは解消されます。また、同様に言語ファイルやインストールしているプラグインのファイルについても同じ事が起きますので確認してみてください。UTF-8で保存する場合はBOMを付けないでください。
+			</div>
+		</div>
+
+		<div class="faq">
+			<div class="question">インストール時に/install/ディレクトリにアクセスするとダウンロードを促されるのですが。</div>
+			<div class="answer">そのサーバはPHPプログラムに対応していません。残念ながらそのサーバでNucleusを運用することはできません。</div>
+		</div>
+
+		<div class="faq">
+			<div class="question">トップページにアクセスすると「Connection Error」と表示されました。なぜですか？</div>
+			<div class="answer">
+			データベースサーバにアクセスできないことを意味しています。<i>config.php</i>の最初で定義しているデータベース接続情報が正確かどうかをもう一度確認してみてください(パスワードがxxxxxxのままというケースがよくあります)。 また、本当にmySQLサーバがダウンしているのが原因かもしれません。
+			</div>
+		</div>
+
+		<div class="faq">
+			<div class="question">更新記録ファイルに更新情報が記録されないのですが。</div>
+			<div class="answer">
+				更新記録ファイルを使うためにはファイルのパーミッションの適切な設定が必要です。またblog設定にて設定する前にこのファイルを置いておく必要があります(空のファイルを作成してアップロードを先にしてください)。この更新記録ファイルのパーミッションは666、このファイルがあるディレクトリは755としてください。 (パーミッションの変更方法につきましては<a href="tips.html#filepermissions">パーミッションの変更ガイド</a>を参照してください)
+			</div>
+		</div>
+
+		<div class="faq">
+			<div class="question">XML-RPC インターフェイスを有効にしたくないのですが。</div>
+			<div class="answer">xmlrpc/ ディレクトリを削除するだけでOKです。何も問題はありません。</div>
+		</div>
+
+		<div class="faq">
+			<div class="question">RSSの吐出しをしたくないのですが。</div>
+			<div class="answer">xml-rss.php ( xml-rss2.php , rsd.php ) を削除して、念のために「xmlrss」(「feeds/rss20」)という名前のスキン／テンプレートを削除してください。</div>
+		</div>
+
+		<div class="faq">
+			<div class="question">転送量を削減したい。</div>
+			<div class="answer"><ul>
+				<li>PHPの設定: zlib拡張が有効になっているか確認してください。</li>
+				<li>apache設定: extra/htaccess/mod_deflate.htaccess の内容を参考にサイトルートフォルダの.htaccessを修正してみてください。</li>
+			</ul></div>
+		</div>
+
+		<div class="faq">
+			<div class="question">ある日突然、空白ページになったり、データベースのエラーが表示されるようになりました。</div>
+			<div class="answer"><ul>
+				<li>データベースのオーバーヘッドが増したり、インデックスが破損したりしている可能性がありますので、データベース管理ツールで、テーブルの「修復」および「最適化」を実行してください。</li>
+				<li>レンタルサーバーをお使いの場合は、サーバーのメンテナンス情報などで何らかのアップグレードがなかったか確認をしてください。</li>
+			</ul></div>
+		</div>
+
+		<h1>謝辞 <a name="acknowledgments" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+		<h2>作者</h2>
+
+		<ul>
+			<li>The Nucleus Group , The NucleusCMS Japan Team , その他の作者の方々 </li>
+		</ul>
+
+		<h2>コアファイル改良</h2>
+		<ul>
+			<li>たくさんの方々... (<a href="history.html">開発履歴</a>, <a href="contributors.html">貢献者一覧</a>をご覧下さい)</li>
+		</ul>
+
+		<h2>ライブラリなど</h2>
+
+		<ul>
+			<li><a href="https://jquery.org/">jQuery</a> : <a href="https://jquery.org/license/"> jQuery License</a></li>
+			<li><a href="http://jqueryui.com/">jQuery UI</a> : Licensed MIT</li>
+			<li>XML-RPC インターフェイス 部分に使用した <a href="http://phpxmlrpc.sourceforge.net/">'XML-RPC for PHP'</a> (from <!--<a href="http://www.usefulinc.com/">Useful Inc.</a>-->Useful Inc.)</li>
+			<li>Jeff MacMichael氏（NP_SkinFiles プラグイン）</li>
+			<li>Ivan Fong氏、Moraes氏、Hcgtv氏（Nucleus 3.2 標準スキン）</li>
+			<li>各種プラグイン作者の方々</li>
+			<li>ロゴを作成してくださったRodrigo Moraes氏</li>
+			<li>RSS 2.0 スキン作成された <a href="http://www.xiffy.nl">Xiffy</a>氏</li>
+			<li>バックアップ/リストア部分の開発の元にさせていただいた <a href="http://phpbb.sourceforge.net/">phpBB</a> </li>
+			<li>即時プレビューのJavaScript コード の元にさせていただいたコードを書いた <!--<a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a>-->Mijn Kop Thee氏 <small>(dutch)</small> と <!--<a href="http://www.milov.nl/">milov.nl</a>-->milov.nl氏</li>
+			<li>管理エリアで地球アイコンを使用させていただいている <a href="http://www.matterform.com/qbullets/legend.html">QBullets</a></li>
+		</ul>
+
+		<h2>感謝</h2>
+
+		<p>
+		Nucleusが今日に至るのも、また、このほかのたくさんの方々の支援に支えられているからです。御礼申し上げます。</p>
+
+		<ul>
+			<li><a href="http://forum.nucleuscms.org/groupcp.php?g=3">フォーラムを取り仕切ってくださっている方々</a> <a href="http://japan.nucleuscms.org/bb/groupcp.php?g=871">(日本)</a> や <a href="http://forum.nucleuscms.org/memberlist.php?mode=posts&amp;order=DESC">フォーラムに来てくださっている方々</a> <a href="http://japan.nucleuscms.org/bb/memberlist.php?mode=posts&amp;order=DESC">(日本)</a>にも厚く御礼申し上げます。</li>
+		</ul>
+
+	</div>
+
+	</body>
+</html>
