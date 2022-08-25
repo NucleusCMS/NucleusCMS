@@ -5754,9 +5754,9 @@ selector();
         $this->pagefoot();
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_skinupdate()
     {
         global $member;
@@ -5775,9 +5775,9 @@ selector();
         $this->action_skinedittype(_SKIN_UPDATED);
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_skindelete()
     {
         global $member, $manager, $CONF;
@@ -5823,9 +5823,9 @@ selector();
             $this->pagefoot();
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_skindeleteconfirm()
     {
         global $member, $CONF, $manager;
@@ -5861,9 +5861,9 @@ selector();
         $this->action_skinoverview();
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_skinremovetype()
     {
         global $member, $manager;
@@ -5923,9 +5923,9 @@ selector();
             $this->pagefoot();
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_skinremovetypeconfirm()
     {
         global $member, $manager;
@@ -6092,9 +6092,9 @@ selector();
         $this->action_skinedit();
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_skinclone()
     {
         global $member;
@@ -6147,9 +6147,9 @@ selector();
         $this->action_skinoverview();
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function skinclonetype($skin, $newid, $type)
     {
         $newid   = (int) $newid;
@@ -6160,9 +6160,9 @@ selector();
         }
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_settingsedit($message = '')
     {
         global $member, $manager;
@@ -6665,9 +6665,9 @@ EOL;
         }
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function action_settingsupdate()
     {
         global $member, $CONF;
@@ -6742,9 +6742,9 @@ EOL;
         exit;
     }
 
-            /**
-             *  Give an overview over the used system
-             */
+    /**
+     *  Give an overview over the used system
+     */
     public function action_systemoverview()
     {
         global $member, $nucleus, $CONF;
@@ -7052,9 +7052,9 @@ EOL;
         return $res;
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public static function updateConfig($name, $val)
     {
         // name : $CONF is case sensitive
@@ -7112,11 +7112,11 @@ EOL;
         return sql_insert_id();
     }
 
-            /**
-             * Error message
-             *
-             * @param string $msg message that will be shown
-             */
+    /**
+     * Error message
+     *
+     * @param string $msg message that will be shown
+     */
     public function error($msg)
     {
         $this->pagehead();
@@ -7128,9 +7128,9 @@ EOL;
         exit;
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function disallow()
     {
         ACTIONLOG::add(WARNING, _ACTIONLOG_DISALLOWED . serverVar('REQUEST_URI'));
@@ -7144,9 +7144,9 @@ EOL;
         $this->extrahead[] = $text;
     }
 
-            /**
-             * @todo document this
-             */
+    /**
+     * @todo document this
+     */
     public function pagehead($extrahead = '')
     {
         global $CONF, $manager, $DIR_NUCLEUS;
@@ -7301,9 +7301,9 @@ EOL;
         echo '</div>';
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function pagefoot()
     {
         global $manager;
@@ -7427,9 +7427,9 @@ EOL;
                 </html>
     <?php   }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_regfile()
     {
         global $member, $CONF, $manager;
@@ -7480,9 +7480,9 @@ EOL;
         exit;
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_bookmarklet()
     {
         global $member, $manager;
@@ -7551,12 +7551,13 @@ if (setlocale(LC_CTYPE, 0) == 'Japanese_Japan.932') {
                 </ol>
 
             <?php
-                    $this->pagefoot();
+
+        $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_actionlog()
     {
         global $member, $manager;
@@ -7638,9 +7639,9 @@ EOL;
         $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_banlist()
     {
         global $member, $manager;
@@ -7671,9 +7672,9 @@ EOL;
         $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_banlistdelete()
     {
         global $member, $manager;
@@ -7722,9 +7723,9 @@ EOL;
             $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_banlistdeleteconfirm()
     {
         global $member, $manager;
@@ -7771,17 +7772,17 @@ EOL;
         $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_banlistnewfromitem()
     {
         $this->action_banlistnew(getBlogIDFromItemID(intRequestVar('itemid')));
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_banlistnew($blogid = '')
     {
         global $member, $manager;
@@ -7858,12 +7859,13 @@ EOL;
 
                 </form>
 
-            <?php $this->pagefoot();
+            <?php
+        $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_banlistadd()
     {
         global $member;
@@ -7901,9 +7903,9 @@ EOL;
         $this->action_banlist();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_clearactionlog()
     {
         global $member;
@@ -7937,9 +7939,9 @@ EOL;
         $this->action_manage(_MSG_SYSTEMLOGCLEARED);
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_backupoverview()
     {
         global $member, $manager, $DB_DRIVER_NAME;
@@ -7998,9 +8000,9 @@ EOL;
             <?php $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_backupcreate()
     {
         global $member, $DIR_LIBS;
@@ -8021,9 +8023,9 @@ EOL;
         exit;
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_backuprestore()
     {
         global $member, $DIR_LIBS;
@@ -8094,9 +8096,9 @@ EOL;
         }
     }
 
-                                /*
- * @todo document this
- */
+    /*
+     * @todo document this
+     */
     public function action_pluginlist()
     {
         global $member, $manager;
@@ -8183,9 +8185,9 @@ EOL;
         $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginhelp()
     {
         global $member, $manager;
@@ -8233,9 +8235,9 @@ EOL;
         $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginadd()
     {
         global $member, $manager;
@@ -8328,9 +8330,9 @@ EOL;
         $this->action_pluginupdate();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginupdate()
     {
         global $member, $manager, $CONF;
@@ -8361,9 +8363,9 @@ EOL;
         //        $this->action_pluginlist();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_plugindelete()
     {
         global $member, $manager;
@@ -8395,9 +8397,9 @@ EOL;
             $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_plugindeleteconfirm()
     {
         global $member, $CONF;
@@ -8416,9 +8418,9 @@ EOL;
         //        $this->action_pluginlist();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function deleteOnePlugin($pid, $callUninstall = 0)
     {
         global $manager;
@@ -8503,9 +8505,9 @@ EOL;
         return '';
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginup()
     {
         global $member, $manager, $CONF;
@@ -8536,9 +8538,9 @@ EOL;
         redirect($CONF['AdminURL'] . '?action=pluginlist');
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_plugindown()
     {
         global $member, $manager, $CONF;
@@ -8571,9 +8573,9 @@ EOL;
         redirect($CONF['AdminURL'] . '?action=pluginlist');
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginadmin($message = '')
     {
         global $member, $manager;
@@ -8614,9 +8616,9 @@ EOL;
         }
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginoptions($message = '')
     {
         global $member, $manager;
@@ -8695,9 +8697,9 @@ EOL;
         <?php $this->pagefoot();
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_pluginoptionsupdate()
     {
         global $member, $manager;
@@ -8722,10 +8724,10 @@ EOL;
         $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
     }
 
-                                /**
-                                 * @static
-                                 * @todo document this
-                                 */
+    /**
+     * @static
+     * @todo document this
+     */
     public static function _insertPluginOptions($context, $contextid = 0)
     {
         // get all current values for this contextid
@@ -8789,11 +8791,11 @@ EOL;
         }
     }
 
-                                /**
-                                 * Helper functions to create option forms etc.
-                                 *
-                                 * @todo document parameters
-                                 */
+    /**
+     * Helper functions to create option forms etc.
+     *
+     * @todo document parameters
+     */
     public static function input_yesno($name, $checkedval, $tabindex = 0, $value1 = 1, $value2 = 0, $yesval = _YES, $noval = _NO, $isAdmin = 0)
     {
         $id  = hsc($name);
@@ -8940,9 +8942,9 @@ EOL;
         startUpError($msg, $title);
     }
 
-                                /**
-                                 * @todo document this
-                                 */
+    /**
+     * @todo document this
+     */
     public function action_optimizeoverview()
     {
         global $member, $DB_DRIVER_NAME;
