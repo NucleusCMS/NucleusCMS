@@ -7715,7 +7715,7 @@ EOL;
     {
         global $manager;
 
-        $pid = intval($pid);
+        $pid = (int) $pid;
 
         if (!$manager->pidInstalled($pid)) {
             return _ERROR_NOSUCHPLUGIN;
@@ -7849,7 +7849,7 @@ EOL;
         $oldOrder = $o->porder;
 
         $res      = sql_query('SELECT count(*) FROM '.sql_table('plugin'));
-        $maxOrder = intval(sql_result($res));
+        $maxOrder = (int) sql_result($res);
 
         // 2. calculate new order number
         $newOrder = ($oldOrder < $maxOrder) ? ($oldOrder + 1) : $maxOrder;
@@ -8196,7 +8196,7 @@ EOD;
                     while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
                         $tables[$row['Name']] = $row;
                         if ($row['Engine'] != 'InnoDB') {
-                            if (intval($row['Data_free']) > 0) {
+                            if ((int) $row['Data_free'] > 0) {
                                 $confirmOptimize = true;
                             }
                             if (intval($row['Data_free']) > $warn_size) { // 10*pow(10,6)
@@ -8407,7 +8407,7 @@ EOD;
     public static function getQueryFilterForItemlist01($bid, $mode = 'all')
     {
         // $bid = 0 : all blog
-        $v     = strval($mode);
+        $v     = (string) $mode;
         $where = '';
         $t     = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
         switch ($v) {
@@ -8551,7 +8551,7 @@ EOD;
                 if (!preg_match($pattern, $s['header'], $m)) {
                     break;
                 }
-                $nextpage = intval($m[1]);
+                $nextpage = (int) $m[1];
                 if (($count + 1) != $nextpage) {
                     break;
                 }

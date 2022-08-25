@@ -40,22 +40,22 @@ function include_plugins($file, $once = true, $require = true)
 
 function intPostVar($name)
 {
-    return intval(postVar($name));
+    return (int)postVar($name);
 }
 
 function intGetVar($name)
 {
-    return intval(getVar($name));
+    return (int)getVar($name);
 }
 
 function intRequestVar($name)
 {
-    return intval(requestVar($name));
+    return (int)requestVar($name);
 }
 
 function intCookieVar($name)
 {
-    return intval(cookieVar($name));
+    return (int)cookieVar($name);
 }
 
 /**
@@ -127,72 +127,51 @@ function sql_table($name = '')
 
     if (strlen($DB_PREFIX) > 0) {
         return $DB_PREFIX . 'nucleus_' . $name;
-    } else {
-        return 'nucleus_' . $name;
     }
+
+    return 'nucleus_' . $name;
 }
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET)
 {
     global $manager, $CONF;
 
-    if (!headers_sent()) {
-        // if content type is application/xhtml+xml, only send it to browsers
-        // that can handle it (IE6 cannot). Otherwise, send text/html
+    if (headers_sent()) {
+        return;
+    }
 
-        // v2.5: For admin area pages, keep sending text/html (unless it's a debug version)
-        //       application/xhtml+xml still causes too much problems with the javascript implementations
-
-        // v3.3: ($CONF['UsingAdminArea'] && !$CONF['debug']) gets removed,
-        //       application/xhtml+xml seems to be working, so we're going to use it if we can.
-        //
-        // Note: reverted the following function in JP version
-        //
-        /*
-            // v3.3 code
-            if (
-                    ($contenttype == 'application/xhtml+xml')
-                &&  (!stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml') )
-                ) {
-                $contenttype = 'text/html';
-            }
-        */
-        // v3.2x code
-        if (($contenttype == 'application/xhtml+xml')
-            && (($CONF['UsingAdminArea'] && !isDebugMode())
-                || !stristr(
-                    serverVar('HTTP_ACCEPT'),
-                    'application/xhtml+xml'
-                ))
+    if ($contenttype === 'application/xhtml+xml') {
+        if (($CONF['UsingAdminArea'] && !isDebugMode())
+            || !stristr(serverVar('HTTP_ACCEPT'), 'application/xhtml+xml')
         ) {
             $contenttype = 'text/html';
         }
+    }
 
-        $param = array(
-            'contentType' => &$contenttype,
-            'charset'     => &$charset,
-            'pageType'    => $pagetype
-        );
+    $param = array(
+        'contentType' => &$contenttype,
+        'charset'     => &$charset,
+        'pageType'    => $pagetype
+    );
 
-        if (!function_exists('sql_connected') || sql_connected()) {
-            $manager->notify('PreSendContentType', $param);
-        }
+    if (!function_exists('sql_connected') || sql_connected()) {
+        $manager->notify('PreSendContentType', $param);
+    }
 
-        // strip strange characters
-        $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
-        $charset     = preg_replace('|[^a-z0-9-_]|i', '', $charset);
+    // strip strange characters
+    $contenttype = preg_replace('|[^a-z0-9-+./]|i', '', $contenttype);
+    $charset     = preg_replace('|[^a-z0-9-_]|i', '', $charset);
 
-        if ($charset != '') {
-            header('Content-Type: ' . $contenttype . '; charset=' . $charset);
-        } else {
-            header('Content-Type: ' . $contenttype);
-        }
+    if ($charset != '') {
+        header('Content-Type: ' . $contenttype . '; charset=' . $charset);
+    } else {
+        header('Content-Type: ' . $contenttype);
+    }
 
-        // check if valid charset
-        if (!encoding_check(false, false, $charset)) {
-            foreach (array($_GET, $_POST) as $input) {
-                array_walk($input, 'encoding_check');
-            }
+    // check if valid charset
+    if (!encoding_check(false, false, $charset)) {
+        foreach (array($_GET, $_POST) as $input) {
+            array_walk($input, 'encoding_check');
         }
     }
 }
@@ -274,9 +253,9 @@ function parseHighlight($query)
 
     if (count($aHighlight) == 1) {
         return $aHighlight[0];
-    } else {
-        return $aHighlight;
     }
+
+    return $aHighlight;
 }
 
 /**
@@ -290,9 +269,9 @@ function isValidMailAddress($address)
         $address
     )) {
         return 1;
-    } else {
-        return 0;
     }
+
+    return 0;
 }
 
 // some helper functions
@@ -303,7 +282,8 @@ function getBlogIDFromName($bshortname)
     if ($res !== false) {
         $res = intval($res);
     }
-    return $res;
+
+    return (int)$res;
 }
 
 function getBlogNameFromID($bnumber)
@@ -319,7 +299,8 @@ function getBlogIDFromItemID($inumber)
     if ($res !== false) {
         $res = intval($res);
     }
-    return $res;
+
+    return (int)$res;
 }
 
 function getBlogIDFromCommentID($cnumber)
@@ -329,7 +310,8 @@ function getBlogIDFromCommentID($cnumber)
     if ($res !== false) {
         $res = intval($res);
     }
-    return $res;
+
+    return (int)$res;
 }
 
 function getBlogIDFromCatID($catid)
@@ -339,7 +321,8 @@ function getBlogIDFromCatID($catid)
     if ($res !== false) {
         $res = intval($res);
     }
-    return $res;
+
+    return (int)$res;
 }
 
 function getCatIDFromName($cname)
@@ -349,7 +332,8 @@ function getCatIDFromName($cname)
     if ($res !== false) {
         $res = intval($res);
     }
-    return $res;
+
+    return (int)$res;
 }
 
 function quickQuery($query)
@@ -363,7 +347,7 @@ function quickQuery($query)
 
 function getPluginNameFromPid($pid)
 {
-    $ph['pid'] = intval($pid);
+    $ph['pid'] = (int)$pid;
     $res       = sql_query(parseQuery('SELECT pfile FROM `<%prefix%>plugin` WHERE pid=<%pid%>', $ph));
     if ($res && ($obj = sql_fetch_object($res))) {
         return $obj->pfile;
@@ -828,9 +812,10 @@ function addBreaks($text)
 
 function removeBreaks($var)
 {
-    if (strpos($var, "\r") !== false) {
+    if (str_contains($var, "\r")) {
         $var = str_replace("\r", '', $var);
     }
+
     return preg_replace("@<br[ /]*>\n@i", "\n", $var);
 }
 
@@ -838,6 +823,7 @@ function removeBreaks($var)
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd)
 {
+    $maxlength = (int)$maxlength;
     // 1. remove entities...
 //    $trans = get_html_translation_table(HTML_ENTITIES);
     $trans = get_html_translation_table(HTML_SPECIALCHARS, ENT_QUOTES); // for Japanese
@@ -893,7 +879,7 @@ function selectCategory($cat)
     global $catid;
     if (!$catid) {
         if (is_numeric($cat)) {
-            $catid = intval($cat);
+            $catid = (int)$cat;
         } else {
             $catid = getCatIDFromName($cat);
         }
@@ -1023,6 +1009,7 @@ function getMailFooter()
     $message = "\n\n-----------------------------";
     $message .= "\n   Powered by Nucleus CMS";
     $message .= "\n(http://www.nucleuscms.org/)";
+
     return $message;
 }
 
@@ -1133,6 +1120,7 @@ function includephp($filename)
 function checkLanguage($lang)
 {
     global $DIR_LANG;
+
     # important note that '\' must be matched with '\\\\' in preg* expressions
 
     return is_file($DIR_LANG . str_replace(array('\\', '/'), '', $lang) . '.php');
@@ -2632,11 +2620,7 @@ function checkOutputCompression($content_type)
 
 function str_contain($haystack, $needle)
 {
-    $pos = strpos($haystack, $needle);
-    if ($pos !== false) {
-        return true;
-    }
-    return false;
+    return str_contains($haystack, $needle);
 }
 
 function getBaseUrl()
@@ -2645,6 +2629,7 @@ function getBaseUrl()
     if ($_ === '/install' || $_ === '/nucleus' || $_ === '/_upgrades') {
         return '/';
     }
+
     return substr($_, 0, strrpos($_, '/') + 1);
 }
 
@@ -2655,4 +2640,21 @@ function isDebugMode()
         return false;
     }
     return !empty($CONF['debug']);
+}
+
+function file_get_extension($filename, $period = false)
+{
+    $basename = basename((string) $filename);
+    $i        = strrpos($basename, '.');
+    if ($i === false) {
+        return '';
+    }
+    if (! $period) {
+        $i++;
+    }
+    $ext = substr($basename, $i);
+    if (strlen($ext) > 0 && $ext !== '.') {
+        return $ext;
+    }
+    return '';
 }

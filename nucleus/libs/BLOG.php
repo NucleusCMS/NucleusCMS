@@ -44,7 +44,7 @@ class BLOG
      */
     public function __construct($id)
     {
-        $this->blogid = intval($id);
+        $this->blogid = (int)$id;
         $this->readSettings();
 
         // try to set catid
@@ -61,7 +61,9 @@ class BLOG
      * @param $amountEntries
      *      amount of entries to show
      * @param $startpos
-     *      offset from where items should be shown (e.g. 5 = start at fifth item)
+     *      offset from where items should be shown (e.g. 5 = start at fifth
+     *      item)
+     *
      * @returns int
      *      amount of items shown
      */
@@ -104,8 +106,8 @@ class BLOG
      */
     public function setSelectedCategory($catid)
     {
-        if ($this->isValidCategory($catid) || (intval($catid) == 0)) {
-            $this->selectedcatid = intval($catid);
+        if ($this->isValidCategory($catid) || ((int)$catid == 0)) {
+            $this->selectedcatid = (int)$catid;
         }
     }
 
@@ -142,6 +144,7 @@ class BLOG
      *      1=show dateheads 0=don't show dateheads
      * @param $offset
      *      offset
+     *
      * @returns int
      *      amount of items shown
      */

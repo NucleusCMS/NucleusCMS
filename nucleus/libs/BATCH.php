@@ -20,6 +20,8 @@
  */
 class BATCH extends ENCAPSULATE
 {
+    public $type;
+
     public function __construct($type)
     {
         $this->type = $type;
@@ -40,7 +42,8 @@ class BATCH extends ENCAPSULATE
         $this->showOperationList();
         ?>
         </form>
-    <?php }
+        <?php
+    }
 
     public function showOperationList()
     {
@@ -110,13 +113,15 @@ class BATCH extends ENCAPSULATE
                onclick="if (event &amp;&amp; event.preventDefault) event.preventDefault(); return batchSelectAll(0); "><?php echo _BATCH_DESELECTALL ?></a>
             )
         </div>
-    <?php }
+        <?php
+    }
 
     // shortcut :)
     public function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
     {
         $call   = 'showlist';
         $params = array($query, $type, $template);
+
         return $this->doEncapsulate($call, $params, $errorMessage);
     }
 }

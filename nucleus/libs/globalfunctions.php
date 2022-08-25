@@ -10,12 +10,18 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  */
+
 /**
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
 
 if (version_compare(phpversion(), '5.3.0', '<') || 90000 <= PHP_VERSION_ID) {
+    if (!headers_sent()) {
+        header("HTTP/1.0 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+    }
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
@@ -37,18 +43,6 @@ if (!isset($_SERVER['REQUEST_TIME'])) {
 } // (PHP 5.1-) : $_SERVER['REQUEST_TIME']
 global $StartTime;
 $StartTime = $_SERVER['REQUEST_TIME_FLOAT'];
-
-// Set PHP of the minimum requirement of the target of the current release here.
-if (version_compare(phpversion(), '5.3.0', '<')) {
-    if (!headers_sent()) {
-        header("HTTP/1.0 503 Service Unavailable");
-        header("Cache-Control: no-cache, must-revalidate");
-        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
-    }
-    $msg = 'The php of server module does not meet the execution minimum requirement.';
-    echo "<html><head><title>Error</title></head><body><h1>Error</h1><div style='font-size: large'>{$msg}</div></body></html>";
-    exit();
-}
 
 define('HAS_CATCH_ERROR', 70000 <= PHP_VERSION_ID);
 
@@ -290,7 +284,7 @@ if ($orgRequestURI !== serverVar('REQUEST_URI')) {
         addToLog(WARNING, $msg);
     }
     if (!$bSanitizeAndContinue) {
-        die("");
+        exit;
     }
 }
 

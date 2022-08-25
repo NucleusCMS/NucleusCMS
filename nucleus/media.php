@@ -46,7 +46,7 @@ if (!$member->isLoggedIn()) {
 
 // check if member is on at least one teamlist
 $query          = 'SELECT count(*) as result FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
-$is_belong_team = (intval(quickQuery($query)) > 0);
+$is_belong_team = ((int)quickQuery($query) > 0);
 if (!$is_belong_team && !$member->isAdmin()) {
     media_doError(_ERROR_DISALLOWEDUPLOAD);
 }

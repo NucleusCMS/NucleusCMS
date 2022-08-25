@@ -2,7 +2,7 @@
 
 class SYSTEMLOG
 {
-    public const MAX_MSG_LEN = 1000000;
+    const MAX_MSG_LEN = 1000000;
 
     public static function checkWritable()
     {

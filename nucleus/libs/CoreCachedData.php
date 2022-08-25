@@ -4,7 +4,7 @@
 
 class CoreCachedData
 {
-    public const base_tablename = 'cached_data';
+    const base_tablename = 'cached_data';
 
     public function __construct()
     {

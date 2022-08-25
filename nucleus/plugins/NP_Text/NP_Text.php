@@ -159,7 +159,7 @@ class NP_Text extends NucleusPlugin
         $result = sql_query($sql);
         if ($result) {
             $row = sql_fetch_assoc($result);
-            if ($row) {
+            if (!empty($row) && is_array($row)) {
                 return array($row['sdincmode'], $row['sdincpref']);
             }
         }
