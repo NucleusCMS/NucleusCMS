@@ -17,7 +17,6 @@
 
 class BAN
 {
-
     /**
      * Checks if a given IP is banned from commenting/voting
      *
@@ -32,7 +31,7 @@ class BAN
             sql_table('ban'),
             $blogid
         );
-        $res    = sql_query($query);
+        $res = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
             $found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
             if (! ($found === false)) {
@@ -94,7 +93,7 @@ class BAN
         $manager->notify('PreDeleteBan', $param);
 
         sql_query(sprintf(
-            "DELETE FROM %s WHERE blogid=$blogid and iprange='%s'",
+            "DELETE FROM %s WHERE blogid={$blogid} and iprange='%s'",
             sql_table('ban'),
             sql_real_escape_string($iprange)
         ));
@@ -113,11 +112,10 @@ class BAN
 
 class BANINFO
 {
-
     public $iprange;
     public $message;
 
-    function __construct($iprange, $message)
+    public function __construct($iprange, $message)
     {
         $this->iprange = $iprange;
         $this->message = $message;

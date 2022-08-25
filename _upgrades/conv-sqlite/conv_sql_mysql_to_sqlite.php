@@ -6,19 +6,19 @@
  * Copyright (C) 2011-2016 piyoyo
  */
 
-$this_dir = dirname(__FILE__);
-$parent_dir = dirname(dirname(__FILE__));
+$this_dir   = __DIR__;
+$parent_dir = dirname(__DIR__);
 
 if (version_compare(PHP_VERSION, '5.1.0', '<')) {
-    fputs(STDERR, "php 5.1.0 or higher needed.\n");
+    fwrite(STDERR, "php 5.1.0 or higher needed.\n");
     exit();
 }
 if (!extension_loaded('pdo') || !extension_loaded('pdo_sqlite')) {
-    fputs(STDERR, "pdo or pdo_sqlite not found.\n");
+    fwrite(STDERR, "pdo or pdo_sqlite not found.\n");
     exit();
 }
 if (php_sapi_name() != 'cli') {
-    fputs(STDERR, "run on cli only.\n");
+    fwrite(STDERR, "run on cli only.\n");
     exit();
 }
 
@@ -69,7 +69,7 @@ while ($row = @sql_fetch_array($result)) {
 echo "BEGIN;\n\n";
 $error_messages = array();
 foreach ($tables as $table) {
-//  echo $table.$obj->get_table_structure($table);
+    //  echo $table.$obj->get_table_structure($table);
     @$obj->dump_table_structure($table);
     echo "\n";
     @$obj->dump_table_data($table);

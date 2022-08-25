@@ -23,7 +23,6 @@ define('READ_ONLY_MEDIA_FOLDER', '(Read Only)');
  */
 class MEDIA
 {
-
     /**
      * Gets the list of collections available to the currently logged
      * in member
@@ -50,7 +49,7 @@ class MEDIA
             if (@is_dir($DIR_MEDIA . $dirname)
                 && (!str_starts_with($dirname, '.')) //  . ..  and other dot started folder
                 && ($dirname !== 'CVS')
-                && ( ! is_numeric($dirname))) {
+                && (! is_numeric($dirname))) {
                 if (@is_writable($DIR_MEDIA . $dirname)) {
                     $collections[$dirname] = $dirname;
                 } else {
@@ -94,7 +93,7 @@ class MEDIA
             if (str_starts_with($filename, '.')
                || str_ends_with($filename, '.tmp')
                || preg_match('/^(Thumbs\.db|desktop\.ini)$/i', $filename) // windows hidden system files
-                ) {
+            ) {
                 continue;
             }
             // only add files that match the filter
@@ -290,7 +289,7 @@ class MEDIA
         if (strlen($data) == 0 || (int) $CONF['MaxUploadSize'] < strlen($data)) {
             return _ERROR_DISALLOWED;
         }
-        
+
         // check exist && not root dir
         $mediadir = !empty($DIR_MEDIA) ? str_replace('\\', '/', @realpath($DIR_MEDIA)) : false;
         if ($mediadir === false
@@ -300,7 +299,7 @@ class MEDIA
             return _ERROR_DISALLOWED;
 //            return __ERROR.': '._SETTINGS_MEDIADIR;
         }
-        
+
         // create tmpdir
         $tmpdir = "{$mediadir}/.ht.tmp.dir"; // Normal apache configuration disallows web access starting with .ht
         if (!@file_exists($tmpdir)) {
@@ -318,16 +317,16 @@ class MEDIA
         if (!@is_dir($tmpdir) || !is_writable($tmpdir)) {
             return _ERROR_UPLOADFAILED;
         }
-        
+
         // Clean files : on debug , PHP timeout , other reason
         foreach (glob($tmpdir . "/tmp*.tmp") as $filename) {
             $t = filemtime($filename);
-            if ($t !== false && ($t < time() - 3*60)) {
+            if ($t !== false && ($t < time() - 3 * 60)) {
                 // 3 minutes passed
                 @unlink($filename);
             }
         }
-        
+
         // Send to the addMediaObject function for event processing and various checks
         // create tmpfile
         $tmp_filename = tempnam("{$tmpdir}/", sprintf('tmp-%s-', date('YmdHis'))); // prefix Windows[0-3], Other[0-63]
@@ -356,7 +355,7 @@ class MEDIA
     public static function getAllowedTypes()
     {
         global $CONF;
-        $except = array(); // Add forbidden type here in lower case
+        $except       = array(); // Add forbidden type here in lower case
         $allowedtypes = preg_split('|[,\s]+|', str_replace('.', ',', strtolower(trim((string) $CONF['AllowedTypes']))));
         if (false !== $allowedtypes) {
             $allowedtypes = array_unique(array_diff($allowedtypes, array('', 'htaccess', 'htpassword', 'tmp'), $except));
@@ -392,7 +391,7 @@ class MEDIA
         if (! @is_file($src_filename) || @filesize($src_filename) < 1) {
             return false;
         }
-        $ext = file_get_extension($new_filename);
+        $ext  = file_get_extension($new_filename);
         $type = array(
             'image' => array('jpg','jpeg','gif','png','tiff','bmp','ico','swf'),
             'movie' => array('mpg','avi','mov','mp3'),
@@ -472,13 +471,12 @@ class MEDIA
  */
 class MEDIAOBJECT
 {
-
     public $private;
     public $collection;
     public $filename;
     public $timestamp;
 
-    function __construct($collection, $filename, $timestamp)
+    public function __construct($collection, $filename, $timestamp)
     {
         $this->private    = is_numeric($collection);
         $this->collection = $collection;

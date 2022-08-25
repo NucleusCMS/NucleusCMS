@@ -2,7 +2,6 @@
 
 class sqlite_functions
 {
-
     public static function pdo_register_user_functions($dbh)
     {
         if (empty($dbh) || ! ($dbh instanceof PDO)) {

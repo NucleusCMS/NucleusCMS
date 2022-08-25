@@ -91,7 +91,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
                 "SELECT * FROM %s WHERE name='Language'",
                 sql_table('config')
             );
-            $res   = sql_query($query);
+            $res = sql_query($query);
             if (! $res) {
                 exit('Language name fetch error');
             }

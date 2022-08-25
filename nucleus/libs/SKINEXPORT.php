@@ -18,7 +18,6 @@
 
 class SKINEXPORT
 {
-
     public $templates;
     public $skins;
     public $info;
@@ -26,7 +25,7 @@ class SKINEXPORT
     /**
      * Constructor initializes data structures
      */
-    function __construct()
+    public function __construct()
     {
         // list of templateIDs to export
         $this->templates = array();
@@ -46,12 +45,11 @@ class SKINEXPORT
      *
      * @result false when no such ID exists
      */
-    function addTemplate($id)
+    public function addTemplate($id)
     {
         if (! TEMPLATE::existsID($id)) {
             return 0;
         }
-
 
         $this->templates[$id] = TEMPLATE::getNameFromId($id);
 
@@ -66,7 +64,7 @@ class SKINEXPORT
      *
      * @result false when no such ID exists
      */
-    function addSkin($id)
+    public function addSkin($id)
     {
         if (! SKIN::existsID($id)) {
             return 0;
@@ -80,11 +78,10 @@ class SKINEXPORT
     /**
      * Sets the extra info to be included in the exported file
      */
-    function setInfo($info)
+    public function setInfo($info)
     {
         $this->info = $info;
     }
-
 
     /**
      * Outputs the XML contents of the export file
@@ -93,7 +90,7 @@ class SKINEXPORT
      *        set to 0 if you don't want to send out headers
      *        (optional, default 1)
      */
-    function export($setHeaders = 1)
+    public function export($setHeaders = 1)
     {
         if ($setHeaders) {
             // make sure the mimetype is correct, and that the data does not show up
@@ -257,7 +254,7 @@ class SKINEXPORT
     /**
      * Escapes CDATA content so it can be included in another CDATA section
      */
-    function escapeCDATA($cdata)
+    public function escapeCDATA($cdata)
     {
         return preg_replace('/]]>/', ']]]]><![CDATA[>', $cdata);
     }

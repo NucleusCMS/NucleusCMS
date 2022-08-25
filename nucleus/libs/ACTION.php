@@ -18,36 +18,39 @@
 
 class ACTION
 {
-
     /**
      *  Constructor for an new ACTION object
      */
-    function __construct()
+    public function __construct()
     {
         // do nothing
     }
 
-
     /**
      *  Calls functions that handle an action called from action.php
      */
-    function doAction($action)
+    public function doAction($action)
     {
         switch ($action) {
             case 'autodraft':
                 return $this->autoDraft();
+                break;
 
             case 'updateticket':
                 return $this->updateTicket();
+                break;
 
             case 'addcomment':
                 return $this->addComment();
+                break;
 
             case 'sendmessage':
                 return $this->sendMessage();
+                break;
 
             case 'createaccount':
                 return $this->createAccount();
+                break;
 
             case 'forgotpassword':
                 $this->forgotPassword();
@@ -70,11 +73,10 @@ class ACTION
         return '';
     }
 
-
     /**
      *  Adds a new comment to an item (if IP isn't banned)
      */
-    function addComment()
+    public function addComment()
     {
         global $CONF, $errormessage, $manager;
 
@@ -121,7 +123,7 @@ class ACTION
 
         $blog_id = getBlogIDFromItemID($post['itemid']);
         $this->checkban($blog_id);
-        $blog =& $manager->getBlog($blog_id);
+        $blog = & $manager->getBlog($blog_id);
 
         // note: PreAddComment and PostAddComment gets called somewhere inside addComment
         $errormessage = $comments->addComment($blog->getCorrectTime(), $post);
@@ -146,11 +148,10 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Sends a message from the current member to the member given as argument
      */
-    function sendMessage()
+    public function sendMessage()
     {
         global $CONF, $member;
 
@@ -160,7 +161,7 @@ class ACTION
             return array('message' => $error);
         }
 
-        if (! $member->isLoggedIn()) {
+        if (!$member->isLoggedIn()) {
             $fromMail = postVar('frommail');
             $fromName = _MMAIL_FROMANON;
         } else {
@@ -202,7 +203,7 @@ class ACTION
                     array(
                         'memberid' => $tomem->getID()
                     ,
-                        'name'     => $tomem->getDisplayName(),
+                        'name' => $tomem->getDisplayName(),
                     )
                 );
             } else {
@@ -215,12 +216,11 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Checks if a mail to a member is allowed
      *  Returns a string with the error message if the mail is disallowed
      */
-    function validateMessage()
+    public function validateMessage()
     {
         global $CONF, $member, $manager;
 
@@ -249,11 +249,10 @@ class ACTION
         return $result;
     }
 
-
     /**
      *  Creates a new user account
      */
-    function createAccount()
+    public function createAccount()
     {
         global $CONF, $manager;
 
@@ -274,7 +273,7 @@ class ACTION
         }
 
         // even though the member can not log in, set some random initial password. One never knows.
-        mt_srand((double)microtime() * 1000000);
+        mt_srand((float)microtime() * 1000000);
         $initialPwd = md5(uniqid(mt_rand(), true));
 
         // create member (non admin/can not login/no notes/random string as password)
@@ -322,11 +321,10 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Sends a new password
      */
-    function forgotPassword()
+    public function forgotPassword()
     {
         $membername = trim(postVar('name'));
 
@@ -375,7 +373,7 @@ class ACTION
     /**
      *  Handle karma votes
      */
-    function doKarma($type)
+    public function doKarma($type)
     {
         $this->doVote(($type === 'pos' || $type === '+') ? '+' : '-');
 
@@ -385,7 +383,7 @@ class ACTION
     /**
      *  Handle votes
      */
-    function doVote($type)
+    public function doVote($type)
     {
         global $itemid, $member, $CONF, $manager;
 
@@ -397,7 +395,7 @@ class ACTION
         $blogid = getBlogIDFromItemID($itemid);
         $this->checkban($blogid);
 
-        $karma         =& $manager->getKarma($itemid);
+        $karma         = & $manager->getKarma($itemid);
         $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR'));
 
         $params = array(
@@ -413,7 +411,7 @@ class ACTION
         }
 
         // check if item does allow voting
-        $item =& $manager->getItem($itemid, 0, 0);
+        $item = & $manager->getItem($itemid, 0, 0);
 
         if ($item['closed']) {
             doError(_ERROR_ITEMCLOSED);
@@ -433,7 +431,7 @@ class ACTION
         $manager->notify('PostVote', $params);
 
         //        $blogid = getBlogIDFromItemID($itemid);
-        $blog =& $manager->getBlog($blogid);
+        $blog = & $manager->getBlog($blogid);
 
         // send email to notification address, if any
         if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
@@ -442,8 +440,8 @@ class ACTION
                 _NOTIFY_KV_MSG,
                 $itemid
             );
-            $itemLink   = createItemLink((int)$itemid);
-            $temp       = parse_url($itemLink);
+            $itemLink = createItemLink((int)$itemid);
+            $temp     = parse_url($itemLink);
 
             if (! $temp['scheme']) {
                 $itemLink = $CONF['IndexURL'] . $itemLink;
@@ -502,15 +500,15 @@ class ACTION
         exit;
     }
 
-
     /**
      * Calls a plugin action
      */
-    function callPlugin()
+    public function callPlugin()
     {
         global $manager;
 
         $pluginName = 'NP_' . requestVar('name');
+        $actionType = (string) requestVar('type');
 
         // 1: check if plugin is installed
         if (! $manager->pluginInstalled($pluginName)) {
@@ -518,10 +516,10 @@ class ACTION
         }
 
         // 2: call plugin
-        $pluginObject =& $manager->getPlugin($pluginName);
+        $pluginObject = & $manager->getPlugin($pluginName);
 
         if ($pluginObject) {
-            $error = $pluginObject->doAction(requestVar('type'));
+            $error = $pluginObject->doAction($actionType);
         } else {
             $error = 'Could not load plugin (see actionlog)';
         }
@@ -536,11 +534,10 @@ class ACTION
         exit;
     }
 
-
     /**
      *  Checks if an IP or IP range is banned
      */
-    function checkban($blogid)
+    public function checkban($blogid)
     {
         // check if banned
         $ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
@@ -557,11 +554,10 @@ class ACTION
         }
     }
 
-
     /**
      * Gets a new ticket
      */
-    function updateTicket()
+    public function updateTicket()
     {
         global $manager;
 
@@ -574,11 +570,10 @@ class ACTION
         return false;
     }
 
-
     /**
      * Handles AutoSaveDraft
      */
-    function autoDraft()
+    public function autoDraft()
     {
         global $manager;
 

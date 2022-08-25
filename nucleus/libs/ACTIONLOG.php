@@ -23,7 +23,6 @@ $CONF['LogLevel'] = INFO;
 
 class ACTIONLOG
 {
-
     /**
      * (Static) Method to add a message to the action log
      */

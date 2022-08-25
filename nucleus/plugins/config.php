@@ -9,7 +9,8 @@ if (@is_file($config_file) && is_readable($config_file)) {
 } else {
     // config.php
     $config_file = dirname(__FILE__) . '/../../config.php';
-    if (@is_file($config_file) && is_readable($config_file))
-       include_once($config_file);
+    if (@is_file($config_file) && is_readable($config_file)) {
+        include_once($config_file);
+    }
 }
 unset($config_file);

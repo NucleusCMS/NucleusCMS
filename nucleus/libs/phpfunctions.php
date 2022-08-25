@@ -1,23 +1,39 @@
 <?php
 
+if (!defined('_PHPFUNCTIONS_PHP_')) {
+    define('_PHPFUNCTIONS_PHP_', 1);
+}
 
-if (! function_exists('get_magic_quotes_gpc')) {
+if (!function_exists('get_magic_quotes_gpc')) {  // removed function PHP[ - 7.4]
     function get_magic_quotes_gpc()
     {
         return false;
     }
 }
 
-if (! function_exists('get_magic_quotes_runtime')) {
+if (!function_exists('get_magic_quotes_runtime')) {
     function get_magic_quotes_runtime()
     {
         return false;
     }
 }
 
+if (!function_exists('each')) { // removed function PHP[ - 7.4]
+    function each(&$array)
+    {
+        $value = current($array);
+        $key   = key($array);
+        if ($key === null) {
+            return false;
+        }
+        next($array);
+        return array(1 => $value, 'value' => $value, 0 => $key, 'key' => $key);
+    }
+}
+
 define('USER_FUNCTION_STRFTIME', ! function_exists('strftime'));
 if (USER_FUNCTION_STRFTIME) {
-    // strftime : deprecated PHP[8.1-] / removed? PHP9.0 
+    // strftime : deprecated PHP[8.1-] / removed? PHP9.0
     // strftime(string $format, ?int $timestamp = null): string|false
     function strftime($format, $timestamp = null)
     {
@@ -29,7 +45,6 @@ if (USER_FUNCTION_STRFTIME) {
         return Utils::date_with_strftime_format($format, $timestamp);
     }
 }
-
 
 if (!function_exists('str_contains')) {
     // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr

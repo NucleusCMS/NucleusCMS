@@ -195,7 +195,7 @@ if (! function_exists('sql_fetch_assoc')) {
                         "SELECT * FROM %s WHERE name='Language'",
                         sql_table('config')
                     );
-                    $res   = sql_query($query, $DBH);
+                    $res = sql_query($query, $DBH);
                     if (! $res) {
                         exit('Language name fetch error');
                     }
@@ -252,7 +252,7 @@ if (! function_exists('sql_fetch_assoc')) {
         if (! $SQL_DBH) {
             $title = 'Connect Error';
             $msg   = '<p>Error : Database Connection</p>';
-            $msg   .= sprintf(
+            $msg .= sprintf(
                 '<br><p><a href="%s">%s</a></p>',
                 $_SERVER['REQUEST_URI'],
                 'URL'
@@ -263,7 +263,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
         //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        if (7*10000 + 2*100 <= PHP_VERSION_ID) {
+        if (7 * 10000 + 2 * 100 <= PHP_VERSION_ID) {
             $MYSQL_CONN = $SQL_DBH; // PHP[5.x - 8.2]
         } else {
             $MYSQL_CONN = clone $SQL_DBH; // PHP[5.x - 7.1]
@@ -410,7 +410,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
 
         try {
-            $SQL_DBH = null;
+            $SQL_DBH           = null;
             list($host, $port) = explode(':', $DB_HOST);
             if (isset($port)) {
                 $portnum = $port;
@@ -690,7 +690,6 @@ if (! function_exists('sql_fetch_assoc')) {
         return $res->fetchColumn($column_number);
     }
 
-
     /**
      * Get column information from a result and return as an object
      */
@@ -698,7 +697,7 @@ if (! function_exists('sql_fetch_assoc')) {
     {
         if (is_object($res) && ($res instanceof PDOStatement)) {
             $results = $res->getColumnMeta($offset);
-            if (is_array($results) && count($results)>0) {
+            if (is_array($results) && count($results) > 0) {
                 return (object) $results;
             }
         }
@@ -737,7 +736,7 @@ if (! function_exists('sql_fetch_assoc')) {
     function sql_getTableColumnNames($tablename)
     {
         global $SQL_DBH;
-        if (! $SQL_DBH || ! is_string($tablename) || $tablename==='') {
+        if (! $SQL_DBH || ! is_string($tablename) || $tablename === '') {
             return array();
         }
 
@@ -781,7 +780,7 @@ if (! function_exists('sql_fetch_assoc')) {
         $ColumnName,
         $casesensitive = false
     ) {
-        if (! is_string($tablename) || $tablename==='') {
+        if (! is_string($tablename) || $tablename === '') {
             return false;
         }
         $names = sql_getTableColumnNames($tablename);
@@ -1103,6 +1102,4 @@ if (! function_exists('sql_fetch_assoc')) {
 
         return (int)sql_fetch_column($stmt);
     }
-
 } // if not exist sql_* functions
-

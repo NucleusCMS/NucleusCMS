@@ -2,7 +2,6 @@
 
 class entity
 {
-
     public static function named_to_numeric($string)
     {
         $string
@@ -139,7 +138,6 @@ class entity
         return $string;
     }
 
-
     public static function _hex_to_utf8($s)
     {
         $c = hexdec($s);
@@ -191,7 +189,6 @@ class entity
         return $entity . ($extra === ';' ? ';' : '');
     }
 }
-
 
 $_entities['cp1251'] = array(
     '&#x80;' => '&#x20AC;',

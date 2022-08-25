@@ -18,30 +18,24 @@
 
 class ITEM
 {
-
     public $itemid;
 
     /**
      * Constructor of an ITEM object
      *
-     * @param   integer  $itemid  id of the item
+     * @param integer $itemid id of the item
      */
-    function __construct($itemid)
+    public function __construct($itemid)
     {
         $this->itemid = $itemid;
-    }
-
-    public function ITEM($itemid)
-    {
-        $this->__construct($itemid);
     }
 
     /**
      * Returns one item with the specific itemid
      *
-     * @param   integer  $itemid  id of the item
-     * @param   boolean  $allowdraft
-     * @param   boolean  $allowfuture
+     * @param integer $itemid      id of the item
+     * @param boolean $allowdraft
+     * @param boolean $allowfuture
      *
      * @static
      */
@@ -64,7 +58,7 @@ class ITEM
         }
 
         if (! $allowfuture) {
-            $blog  =& $manager->getBlog(getBlogIDFromItemID($itemid));
+            $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
         }
 
@@ -136,7 +130,7 @@ class ITEM
             list($i_blogid) = sscanf($i_catid, "newcat-%d");
 
             // create
-            $blog    =& $manager->getBlog($i_blogid);
+            $blog    = & $manager->getBlog($i_blogid);
             $i_catid = $blog->createNewCategory();
 
             // show error when sth goes wrong
@@ -149,7 +143,7 @@ class ITEM
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);
-            $blog     =& $manager->getBlog($i_blogid);
+            $blog     = & $manager->getBlog($i_blogid);
         }
 
         if ($i_actiontype === 'addfuture') {
@@ -163,7 +157,7 @@ class ITEM
             );
 
             // make sure the date is in the future, unless we allow past dates
-            if (( ! $blog->allowPastPosting())
+            if ((! $blog->allowPastPosting())
                 && ($posttime < $blog->getCorrectTime())) {
                 $posttime = $blog->getCorrectTime();
             }
@@ -225,7 +219,6 @@ class ITEM
         }
     }
 
-
     /**
      * Updates an item
      *
@@ -259,7 +252,7 @@ class ITEM
         $moveNeeded = (($new_blogid != $old_blogid) ? 1 : 0);
 
         // add <br /> before newlines
-        $blog =& $manager->getBlog($new_blogid);
+        $blog = & $manager->getBlog($new_blogid);
         if ($blog->convertBreaks()) {
             $body = addBreaks($body);
             $more = addBreaks($more);
@@ -290,17 +283,17 @@ class ITEM
 
         // if we received an updated timestamp in the past, but past posting is not allowed,
         // reject that date change (timestamp = 0 will make sure the current date is kept)
-        if (( ! $blog->allowPastPosting())
+        if ((! $blog->allowPastPosting())
             && ($timestamp < $blog->getCorrectTime())) {
             $timestamp = 0;
         }
 
         if ($timestamp > $blog->getCorrectTime(time())) {
             $isFuture = 1;
-            $query    .= ', iposted=0';
+            $query .= ', iposted=0';
         } else {
             $isFuture = 0;
-            $query    .= ', iposted=1';
+            $query .= ', iposted=1';
         }
 
         if ($wasdraft && $publish) {
@@ -379,7 +372,7 @@ class ITEM
             sql_table('item'),
             $itemid
         );
-        $res   = sql_query($query);
+        $res = sql_query($query);
         if ($res = (sql_query($query) && ($obj = sql_fetch_object($res)))) {
             $src_blogid = (int)$obj->iblog;
             $src_catid  = (int)$obj->icat;
@@ -416,7 +409,7 @@ class ITEM
 
         $new_iblog = $is_same_cat ? 'iblog'
             : sprintf('%d as iblog', $new_blogid);
-        $new_icat  = $is_same_cat ? 'icat' : sprintf('%d as icat', $new_catid);
+        $new_icat = $is_same_cat ? 'icat' : sprintf('%d as icat', $new_catid);
         $dist
                    = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
         $src       = sprintf(
@@ -424,7 +417,7 @@ class ITEM
             $new_iblog,
             $new_icat
         );
-        $query     = sprintf(
+        $query = sprintf(
             "INSERT INTO %s(%s) SELECT %s FROM %s WHERE inumber=%s",
             sql_table('item'),
             $dist,
@@ -472,7 +465,6 @@ class ITEM
             'destcatid'  => $new_catid,
         );
         $manager->notify('PreMoveItem', $param);
-
 
         // update item table
         sql_query(
@@ -569,7 +561,7 @@ class ITEM
             if (! $bid) {
                 return 0;
             }
-            $b   =& $manager->getBlog($bid);
+            $b = & $manager->getBlog($bid);
             $sql .= ' AND itime<=' . mysqldate($b->getCorrectTime());
         }
         if (! $draft) {
@@ -642,12 +634,12 @@ class ITEM
         // create new category if needed
         if (str_contains($i_catid, 'newcat')) {
             // Set in default category
-            $blog    =& $manager->getBlog($i_blogid);
+            $blog    = & $manager->getBlog($i_blogid);
             $i_catid = $blog->getDefaultCategory();
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);
-            $blog     =& $manager->getBlog($i_blogid);
+            $blog     = & $manager->getBlog($i_blogid);
         }
 
         $posttime = 0;

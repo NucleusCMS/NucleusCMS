@@ -137,51 +137,44 @@ if (! isset($functionDefs)) {
 $functionDefs = array_merge(
     $functionDefs,
     array(
-        'nucleus.addItem' =>
-            array(
-                'function' => 'f_nucleus_addItem',
+        'nucleus.addItem' => array(
+                'function'  => 'f_nucleus_addItem',
                 'signature' => $f_nucleus_addItem_sig,
                 'docstring' => $f_nucleus_addItem_doc
             ),
 
-        'nucleus.editItem' =>
-            array(
-                'function' => 'f_nucleus_editItem',
+        'nucleus.editItem' => array(
+                'function'  => 'f_nucleus_editItem',
                 'signature' => $f_nucleus_editItem_sig,
                 'docstring' => $f_nucleus_editItem_doc
             ),
 
-        "nucleus.addDatedItem" =>
-            array(
-                'function' => 'f_nucleus_addDatedItem',
+        "nucleus.addDatedItem" => array(
+                'function'  => 'f_nucleus_addDatedItem',
                 'signature' => $f_nucleus_addDatedItem_sig,
                 'docstring' => $f_nucleus_addDatedItem_doc
             ),
 
-        'nucleus.deleteItem' =>
-            array(
-                'function' => 'f_nucleus_deleteItem',
+        'nucleus.deleteItem' => array(
+                'function'  => 'f_nucleus_deleteItem',
                 'signature' => $f_nucleus_deleteItem_sig,
                 'docstring' => $f_nucleus_deleteItem_doc
             ),
 
-        "nucleus.getUsersBlogs" =>
-            array(
-                'function' => 'f_nucleus_getUsersBlogs',
+        "nucleus.getUsersBlogs" => array(
+                'function'  => 'f_nucleus_getUsersBlogs',
                 'signature' => $f_nucleus_getUsersBlogs_sig,
                 'docstring' => $f_nucleus_getUsersBlogs_doc
             ),
 
-        'nucleus.getRecentItems' =>
-            array(
-                'function' => 'f_nucleus_getRecentItems',
+        'nucleus.getRecentItems' => array(
+                'function'  => 'f_nucleus_getRecentItems',
                 'signature' => $f_nucleus_getRecentItems_sig,
                 'docstring' => $f_nucleus_getRecentItems_doc
             ),
 
-        'nucleus.getItem' =>
-            array(
-                'function' => 'f_nucleus_getItem',
+        'nucleus.getItem' => array(
+                'function'  => 'f_nucleus_getItem',
                 'signature' => $f_nucleus_getItem_sig,
                 'docstring' => $f_nucleus_getItem_doc
             )
@@ -190,14 +183,14 @@ $functionDefs = array_merge(
 
 function f_nucleus_addItem($m)
 {
-    $blogid = _getScalar($m, 0);
+    $blogid   = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
-    $title = _getScalar($m, 3);
-    $body = _getScalar($m, 4);
-    $more = _getScalar($m, 5);
-    $publish = _getScalar($m, 6);
-    $closed = _getScalar($m, 7);
+    $title    = _getScalar($m, 3);
+    $body     = _getScalar($m, 4);
+    $more     = _getScalar($m, 5);
+    $publish  = _getScalar($m, 6);
+    $closed   = _getScalar($m, 7);
 
     return _addItem(
         $blogid,
@@ -213,14 +206,14 @@ function f_nucleus_addItem($m)
 
 function f_nucleus_addDatedItem($m)
 {
-    $blogid = _getScalar($m, 0);
-    $username = _getScalar($m, 1);
-    $password = _getScalar($m, 2);
-    $title = _getScalar($m, 3);
-    $body = _getScalar($m, 4);
-    $more = _getScalar($m, 5);
-    $publish = _getScalar($m, 6);
-    $closed = _getScalar($m, 7);
+    $blogid    = _getScalar($m, 0);
+    $username  = _getScalar($m, 1);
+    $password  = _getScalar($m, 2);
+    $title     = _getScalar($m, 3);
+    $body      = _getScalar($m, 4);
+    $more      = _getScalar($m, 5);
+    $publish   = _getScalar($m, 6);
+    $closed    = _getScalar($m, 7);
     $timestamp = _getScalar($m, 8);
 
     // use '1' as $future param to make sure the date does not get erased
@@ -239,21 +232,21 @@ function f_nucleus_editItem($m)
 {
     global $manager;
 
-    $itemid = intval(_getScalar($m, 0));
+    $itemid   = intval(_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
-    $title = _getScalar($m, 3);
-    $content = _getScalar($m, 4);
-    $more = _getScalar($m, 5);
-    $publish = _getScalar($m, 6);
-    $closed = _getScalar($m, 7);
+    $title    = _getScalar($m, 3);
+    $content  = _getScalar($m, 4);
+    $more     = _getScalar($m, 5);
+    $publish  = _getScalar($m, 6);
+    $closed   = _getScalar($m, 7);
 
     // get old title and extended part
     if (! $manager->existsItem($itemid, 1, 1)) {
-        return _error(6, "No such item ($itemid)");
+        return _error(6, "No such item ({$itemid})");
     }
 
-    $old =& $manager->getItem($itemid, 1, 1);
+    $old      = & $manager->getItem($itemid, 1, 1);
     $wasdraft = ($old['draft']) ? 1 : 0;
 
     return _edititem(
@@ -272,17 +265,17 @@ function f_nucleus_editItem($m)
 
 function f_nucleus_getRecentItems($m)
 {
-    $blogid = _getScalar($m, 0);
+    $blogid   = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
-    $amount = _getScalar($m, 3);
+    $amount   = _getScalar($m, 3);
 
     return _getRecentItems($blogid, $username, $password, $amount);
 }
 
 function f_nucleus_getItem($m)
 {
-    $postid = _getScalar($m, 0);
+    $postid   = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -291,7 +284,7 @@ function f_nucleus_getItem($m)
 
 function f_nucleus_deleteItem($m)
 {
-    $itemid = _getScalar($m, 0);
+    $itemid   = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -340,13 +333,13 @@ function _getRecentItems($blogid, $username, $password, $amount)
     while ($obj = sql_fetch_object($r)) {
         $newstruct = new xmlrpcval(array(
             'publishDate' => new xmlrpcval(iso8601_encode(strtotime($obj->itime)), 'dateTime.iso8601'),
-            'userid' => new xmlrpcval($obj->iauthor, 'string'),
-            'blogid' => new xmlrpcval($blogid, 'string'),
-            'title' => new xmlrpcval($obj->ititle, 'string'),
-            'body' => new xmlrpcval($obj->ibody, 'string'),
-            'more' => new xmlrpcval($obj->imore, 'string'),
-            'draft' => new xmlrpcval($obj->idraft, 'boolean'),
-            'closed' => new xmlrpcval($obj->iclosed, 'boolean'),
+            'userid'      => new xmlrpcval($obj->iauthor, 'string'),
+            'blogid'      => new xmlrpcval($blogid, 'string'),
+            'title'       => new xmlrpcval($obj->ititle, 'string'),
+            'body'        => new xmlrpcval($obj->ibody, 'string'),
+            'more'        => new xmlrpcval($obj->imore, 'string'),
+            'draft'       => new xmlrpcval($obj->idraft, 'boolean'),
+            'closed'      => new xmlrpcval($obj->iclosed, 'boolean'),
         ), 'struct');
         $structarray[] = $newstruct;
     }
@@ -380,7 +373,7 @@ function _getItem($itemid, $username, $password)
     // 3. return the item
     // Structure returned has dateCreated, userid, blogid and content
 
-    $item =& $manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
+    $item = & $manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
 
     $blog = new BLOG($blogid);
     if ($blog->convertBreaks()) {
@@ -389,13 +382,13 @@ function _getItem($itemid, $username, $password)
 
     $newstruct = new xmlrpcval(array(
         'publishDate' => new xmlrpcval(iso8601_encode($item['timestamp']), 'dateTime.iso8601'),
-        'userid' => new xmlrpcval($item['authorid'], 'string'),
-        'blogid' => new xmlrpcval($blogid, 'string'),
-        'title' => new xmlrpcval($item['title'], 'string'),
-        'body' => new xmlrpcval($item['body'], 'string'),
-        'more' => new xmlrpcval($item['more'], 'string'),
-        'draft' => new xmlrpcval($item['draft'], 'boolean'),
-        'closed' => new xmlrpcval($item['closed'], 'boolean'),
+        'userid'      => new xmlrpcval($item['authorid'], 'string'),
+        'blogid'      => new xmlrpcval($blogid, 'string'),
+        'title'       => new xmlrpcval($item['title'], 'string'),
+        'body'        => new xmlrpcval($item['body'], 'string'),
+        'more'        => new xmlrpcval($item['more'], 'string'),
+        'draft'       => new xmlrpcval($item['draft'], 'boolean'),
+        'closed'      => new xmlrpcval($item['closed'], 'boolean'),
     ), 'struct');
 
     return new xmlrpcresp($newstruct);

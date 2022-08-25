@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-	<!-- $Id$ -->
 	<title>Nucleus - Plugin API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 	<style type="text/css">
@@ -69,7 +68,6 @@ This document contains information on how you can write your own Nucleus plugins
 	<li><a href="#dependency">Plugin Dependency Check</a></li>
 	<li><a href="#internationalization">Internationalizing a Plugin</a></li>
 	<li><a href="#skinvar-formatting">Formatting Output of SkinVars</a></li>
-	<li><a href="#sqlite">How to make SQLite compatible Plugin</a></li>
 	<li><a href="#additional-reading">Additional Reading</a></li>
 <!--	<li><a href="#parser">Using the <code>PARSER</code> class</a></li>	
 	<li><a href="#"></a></li>
@@ -2497,51 +2495,6 @@ foreach ($couples as $values) {
 }</code></pre>
 	
 	</li>
-</ol>
-
-
-<h1>How to make SQLite compatible Plugin <a name="sqlite" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-<p>SQLite from v3.8 to the database has been added.It is to adapt the plugin SQLite requires little modification.</p>
-<p>If the writing in accordance with the standard SQL92, you can create a plugin that does not depend on the type of database.</p>
-<ol>
-  <li>Add the SqlApi_sqlite to supportsFeature.If you do not want to depend on the database language, please add the SqlApi_SQL92.
-      <pre class="example"><code>function supportsFeature($feature) {
-  return in_array($feature , array('SqlTablePrefix', 'SqlApi', 'SqlApi_sqlite'));
-}</code></pre>
-      <pre class="example"><code>function supportsFeature($feature) {
-  return in_array($feature , array('SqlTablePrefix', 'SqlApi', 'SqlApi_SQL92'));
-}</code></pre>
-  </li>
-  <li>If you want to previous v3.8 corresponding plugins, please add the following line to the init function.
-      <pre class="example"><code>function init() {
-  $this->is_db_sqlite = (isset($this->is_db_sqlite) && $this->is_db_sqlite);
-}</code></pre>
-    You can do the same with the following code.
-      <pre class="example"><code>function init() {
-  global $MYSQL_HANDLER;
-  $this->is_db_sqlite = ('sqlite' == $MYSQL_HANDLER[1]);
-}</code></pre>
-  </li>
-  <li>Coexistence can not be part of the SQL statement to separate the code.
-      <pre class="example"><code>function install() {
-  if ($this->is_db_sqlite) {
-    // sqlite
-    sql_query('SQL文');
-  } else {
-    // mysql
-    sql_query('SQL文');
-}</code></pre>
-    CREATE syntax, it is better to separate the code because in many cases writing is different for each type of database.
-  </li>
-</ol>
-<p>Easy to handle plugin for SQLite in the above step.</p>
-<h2>Checklist for to adapt the existing plugin SQLite.</h2>
-<ol>
-  <li>make the SqlApi compatible plugins. Replace all the functions mysql_ * to sql_* function</li>
-  <li>mysql_num_rows is not used in the SELECT statement.sql_num_rows is not supported in the SELECT statement. Please change to the statement using the SELECT count.</li>
-  <li>Do not use the INSERT .. SELECT statement. It does not correspond.</li>
-  <li>Do not omit the column name in the INSERT statement.</li>
-  <li>If you want to use the MySQL specific syntax, to separate the SQL statement and for SQLite.</li>
 </ol>
 
 

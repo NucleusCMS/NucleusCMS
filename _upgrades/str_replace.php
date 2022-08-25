@@ -1,4 +1,5 @@
 <?php
+
 if (is_file('../config.php')) {
     include_once('../config.php');
 } elseif (is_file('config.php')) {
@@ -12,83 +13,84 @@ $conv->run();
 
 exit;
 
-class convert {
-    
-    var $current_collation;
-    var $current_charset;
-    var $new_collation;
-    var $new_charset;
-    var $collations;
+class convert
+{
+    public $current_collation;
+    public $current_charset;
+    public $new_collation;
+    public $new_charset;
+    public $collations;
 
-function __construct()
-{
-}
-    
-function run()
-{
-    global $CONF;
-        
-    if (strpos($CONF['IndexURL'], 'https://')===0) {
-        exit('すでにhttps化済です。');
+    public function __construct()
+    {
     }
-    $tpl = $this->getTemplate();
-    $ph['content'] = $this->getContent();
-    header('Content-Type: text/html; charset=UTF-8');
-    echo parseText($tpl, $ph);
-    exit;
-}
-    
-function getContent()
-{
-    if (isset($_GET['convertto'])) {
-        $mode = 'convert';
-    } elseif (isset($_GET['complete'])) {
-        $mode = 'complete';
-    } else {
-        $mode = 'default';
+
+    public function run()
+    {
+        global $CONF;
+
+        if (strpos($CONF['IndexURL'], 'https://') === 0) {
+            exit('すでにhttps化済です。');
+        }
+        $tpl           = $this->getTemplate();
+        $ph['content'] = $this->getContent();
+        header('Content-Type: text/html; charset=UTF-8');
+        echo parseText($tpl, $ph);
+        exit;
     }
-    switch ($mode) {
-        case 'convert':
-            $new_collation = trim($_GET['convertto']);
-            return $this->convert($new_collation);
-            break;
-        case 'complete':
-            return '<p>変換を完了しました。</p>';
-            break;
-        default:
-            $tpl = $this->getMainContent();
-            $ph['current_collation'] = $this->current_collation;
-            $ph['options']           = $this->getOptions($this->current_collation);
-            return parseText($tpl, $ph);
+
+    public function getContent()
+    {
+        if (isset($_GET['convertto'])) {
+            $mode = 'convert';
+        } elseif (isset($_GET['complete'])) {
+            $mode = 'complete';
+        } else {
+            $mode = 'default';
+        }
+        switch ($mode) {
+            case 'convert':
+                $new_collation = trim($_GET['convertto']);
+                return $this->convert($new_collation);
+                break;
+            case 'complete':
+                return '<p>変換を完了しました。</p>';
+                break;
+            default:
+                $tpl                     = $this->getMainContent();
+                $ph['current_collation'] = $this->current_collation;
+                $ph['options']           = $this->getOptions($this->current_collation);
+                return parseText($tpl, $ph);
+        }
     }
-}
-    
-function convert($new_collation)
-{
-        
-    @set_time_limit(0);
-        
-    $rs = sql_query("SHOW TABLES LIKE '{$currentPrefix}%'");
-    if (!$rs) {
-        exit('Nucleusのtableがありません。何もせずに終了します。');
-    }
-        
-    $srcTableNames=array();
-    while ($row=sql_fetch_array($rs)) {
-        $srcTableNames[] = $row[0];
-    }
-        
-    foreach ($srcTableNames as $srcTableName) {
-        $sql = vsprintf("ALTER TABLE `%s` CONVERT TO CHARACTER SET %s COLLATE %s", $vs);
-        sql_query(parseQuery($sql));
-        return join("\n", $output) . '<p>変換を完了しました。 <a href="convert.php">戻る</a></p>';
+
+    public function convert($new_collation)
+    {
+        @set_time_limit(0);
+
+        $rs = sql_query("SHOW TABLES LIKE '{$currentPrefix}%'");
+        if (!$rs) {
+            exit('Nucleusのtableがありません。何もせずに終了します。');
+        }
+
+        $srcTableNames = array();
+        while ($row = sql_fetch_array($rs)) {
+            $srcTableNames[] = $row[0];
+        }
+
+        // todo: undefined $vs $output
+        foreach ($srcTableNames as $srcTableName) {
+            $sql = vsprintf("ALTER TABLE `%s` CONVERT TO CHARACTER SET %s COLLATE %s", $vs);
+            sql_query(parseQuery($sql));
+        }
+        return implode("\n", $output) . '<p>変換を完了しました。 <a href="convert.php">戻る</a></p>';
         //sleep(3);
         //header('Location:convert.php?complete');
     }
-    
-    function getMainContent()
-    {
-        $tpl = '
+
+        public function getMainContent()
+        {
+            $tpl = '
     <h1>コレーションコンバータ</h1>
     <p>各テーブルのコレーション(照合順序)を変更します。旧テーブルは別名をつけてバックアップします。</p>
     <p>iPhoneの絵文字や異体字などを扱いたい場合は文字コードとしてutf8mb4を、半角・全角・ひらがな・カタカナ・濁音・半濁音を同一扱いするなど曖昧検索が必要な場合は言語名としてunicodeを選んでください。<br />
@@ -103,12 +105,12 @@ function convert($new_collation)
     </form>
     </div>
 ';
-        return $tpl;
-    }
-    
-    function getTemplate()
-    {
-        $tpl = '
+            return $tpl;
+        }
+
+        public function getTemplate()
+        {
+            $tpl = '
 <html>
 <head>
     <title>Convert</title>
@@ -130,19 +132,19 @@ function convert($new_collation)
 </body>
 </html>
 ';
-        return $tpl;
-    }
-    
-    function getOptions()
-    {
-        $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
-        $_ = array();
-        foreach ($this->collations as $collation) {
-            if ($collation===$this->current_collation) {
-                continue;
-            }
-            $_[] = parseText($tpl, array('collation'=>$collation));
+            return $tpl;
         }
-        return join("\n", $_);
-    }
+
+        public function getOptions()
+        {
+            $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
+            $_   = array();
+            foreach ($this->collations as $collation) {
+                if ($collation === $this->current_collation) {
+                    continue;
+                }
+                $_[] = parseText($tpl, array('collation' => $collation));
+            }
+            return implode("\n", $_);
+        }
 }

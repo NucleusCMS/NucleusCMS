@@ -17,7 +17,7 @@
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)
-$CONF = array();
+$CONF                   = array();
 $CONF['UsingAdminArea'] = 1;
 
 // include all classes and config data
@@ -36,7 +36,7 @@ if (!$member->isLoggedIn()) {
 }
 
 // on successfull login
-if (($action === 'login') && ($member->isLoggedIn() )) {
+if (($action === 'login') && ($member->isLoggedIn())) {
     $action = requestVar('nextaction');
 }
 
@@ -45,7 +45,7 @@ if ($action == '') {
 }
 
 $actiontype = postVar('actiontype');
-if ($actiontype==='delete'||$actiontype==='itemdeleteconfirm') {
+if ($actiontype === 'delete' || $actiontype === 'itemdeleteconfirm') {
     $action = $actiontype;
 }
 
@@ -91,7 +91,7 @@ function bm_doAddItem()
     }
 
     $blogid = getBlogIDFromItemID($result['itemid']);
-    $blog =& $manager->getBlog($blogid);
+    $blog   = & $manager->getBlog($blogid);
 
     if ($result['status'] !== 'newcategory') {
         bm_message(_ITEM_ADDED, _ITEM_ADDED, _ITEM_ADDED, '');
@@ -127,8 +127,8 @@ function bm_doDeleteItem()
 EOT;
     $ticket = $manager->getNewTicket();
     $itemid = intRequestVar('itemid');
-    $title = postVar('title');
-    $msg = str_replace(
+    $title  = postVar('title');
+    $msg    = str_replace(
         array(
             '<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>',
             '<%ticket%>',
@@ -162,19 +162,19 @@ function bm_doEditItem()
     global $member, $manager;
 
     $itemid = intRequestVar('itemid');
-    $catid = postVar('catid');
+    $catid  = postVar('catid');
 
     // only allow if user is allowed to alter item
     if (!$member->canUpdateItem($itemid, $catid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
-    $body = postVar('body');
-    $title = postVar('title');
-    $more = postVar('more');
-    $closed = intPostVar('closed');
+    $body       = postVar('body');
+    $title      = postVar('title');
+    $more       = postVar('more');
+    $closed     = intPostVar('closed');
     $actiontype = postVar('actiontype');
-    $draftid = intPostVar('draftid');
+    $draftid    = intPostVar('draftid');
 
     // create new category if needed (only on edit/changedate)
     if (strpos($catid, 'newcat') !== false) {
@@ -182,7 +182,7 @@ function bm_doEditItem()
         list($blogid) = sscanf($catid, "newcat-%d");
 
         // create
-        $blog =& $manager->getBlog($blogid);
+        $blog  = & $manager->getBlog($blogid);
         $catid = $blog->createNewCategory();
 
         // show error when sth goes wrong
@@ -194,18 +194,18 @@ function bm_doEditItem()
     // only edit action is allowed for bookmarklet edit
     switch ($actiontype) {
         case 'changedate':
-            $publish = 1;
-            $wasdraft = 0;
+            $publish   = 1;
+            $wasdraft  = 0;
             $timestamp = mktime(intPostVar('hour'), intPostVar('minutes'), 0, intPostVar('month'), intPostVar('day'), intPostVar('year'));
             break;
         case 'edit':
-            $publish = 1;
-            $wasdraft = 0;
+            $publish   = 1;
+            $wasdraft  = 0;
             $timestamp = 0;
             break;
         case 'backtodrafts':
-            $publish = 0;
-            $wasdraft = 0;
+            $publish   = 0;
+            $wasdraft  = 0;
             $timestamp = 0;
             break;
         default:
@@ -237,10 +237,9 @@ function bm_doEditItem()
 
 function bm_loginAndPassThrough()
 {
-
-    $blogid = intRequestVar('blogid');
-    $log_text = requestVar('logtext');
-    $log_link = requestVar('loglink');
+    $blogid        = intRequestVar('blogid');
+    $log_text      = requestVar('logtext');
+    $log_link      = requestVar('loglink');
     $log_linktitle = requestVar('loglinktitle');
 
     ?>
@@ -279,13 +278,13 @@ function bm_doShowForm()
 {
     global $member;
 
-    $blogid = intRequestVar('blogid');
-    $log_text = trim(strval(requestVar('logtext')));
-    $log_link = strval(requestVar('loglink'));
+    $blogid        = intRequestVar('blogid');
+    $log_text      = trim(strval(requestVar('logtext')));
+    $log_link      = strval(requestVar('loglink'));
     $log_linktitle = strval(requestVar('loglinktitle'));
 
     if (function_exists('mb_convert_encoding')) {
-        $log_text = uniDecode($log_text, _CHARSET);
+        $log_text      = uniDecode($log_text, _CHARSET);
         $log_linktitle = uniDecode($log_linktitle, _CHARSET);
     }
 
@@ -311,7 +310,7 @@ function bm_doShowForm()
         $logje .= '<a href="' . hsc($log_link) . '">' . hsc($log_linktitle) . '</a>';
     }
 
-    $item['body'] = $logje;
+    $item['body']  = $logje;
     $item['title'] = hsc($log_linktitle);
 
     $factory = new PAGEFACTORY($blogid);
@@ -332,8 +331,8 @@ function bm_doEditForm()
         bm_doError(_ERROR_DISALLOWED);
     }
 
-    $item =& $manager->getItem($itemid, 1, 1);
-    $blog =& $manager->getBlog(getBlogIDFromItemID($itemid));
+    $item = & $manager->getItem($itemid, 1, 1);
+    $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
 
     $data = array('item' => &$item);
     $manager->notify('PrepareItemForEdit', $data);
@@ -437,4 +436,3 @@ function toUtf8($ar)
     }
     return $c;
 }
-

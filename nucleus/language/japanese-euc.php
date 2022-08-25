@@ -1,5 +1,5 @@
 <?php
-    $filename = dirname(__FILE__) . '/japanese-utf8.php';
+    $filename = __DIR__ . '/japanese-utf8.php';
     $contents = file_get_contents($filename);
 
     if (function_exists('mb_convert_encoding'))

@@ -2,13 +2,11 @@
 
 // created by piyoyo 2017
 
-
 class CoreCachedData
 {
-
     const base_tablename = 'cached_data';
 
-    function __construct()
+    public function __construct()
     {
     }
 
@@ -51,7 +49,7 @@ class CoreCachedData
         $expire_datetime = (is_null($expire_time) ? ''
             : sql_gmDateTime_from_utime($expire_time));
         if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql              = "SELECT count(*) FROM `$tablename`"
+            $sql = "SELECT count(*) FROM `{$tablename}`"
                                 . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
                                 . " AND `cd_name` = ? ";
             $input_parameters = array($type, $sub_type, $sub_id, $name);
@@ -61,7 +59,7 @@ class CoreCachedData
                 //                    $expire_datetime = now - (Effective time)
                 //                    If it is larger than cd_datetime, data expired
                 // check if saved time > $expire_datetime
-                $sql                .= " AND `cd_datetime` > ?";
+                $sql .= " AND `cd_datetime` > ?";
                 $input_parameters[] = $expire_datetime;
             }
             $sql .= " LIMIT 1";
@@ -70,7 +68,7 @@ class CoreCachedData
                 return ($row[0] > 0);
             }
         } else {
-            $sql = "SELECT count(*) as result FROM `$tablename`"
+            $sql = "SELECT count(*) as result FROM `{$tablename}`"
                    . sprintf(
                        " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
                        sql_real_escape_string($type),
@@ -215,8 +213,8 @@ class CoreCachedData
         $res = sql_query($sql);
         if ($res && ($row = sql_fetch_assoc($res))) {
             $ret            = array_merge($row);
-            $ret['name']    =& $ret['cd_name'];
-            $ret['value']   =& $ret['cd_value'];
+            $ret['name']    = & $ret['cd_name'];
+            $ret['value']   = & $ret['cd_value'];
             $ret['expired'] = intval($ret['expired']);
 
             return $ret;

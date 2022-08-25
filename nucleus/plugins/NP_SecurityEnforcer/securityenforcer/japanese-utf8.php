@@ -41,5 +41,3 @@ define('_SECURITYENFORCER_LOGIN_DISALLOWED',		'SecurityEnforcerによってロ�
 
 // QuickMenu title
 define('_SECURITYENFORCER_ADMIN_TITLE',				'SecurityEnforcerプラグインの管理');
-
-?>

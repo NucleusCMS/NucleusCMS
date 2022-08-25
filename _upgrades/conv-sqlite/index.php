@@ -19,7 +19,7 @@ ob_start();
 define('_CHARSET', 'UTF-8');
 
 // auto search config.php
-$basepath = realpath(dirname(__FILE__) . '/../../');
+$basepath = realpath(__DIR__ . '/../../');
 if (substr($basepath, -1, 1) != DIRECTORY_SEPARATOR) {
     $basepath .= DIRECTORY_SEPARATOR;
 }
@@ -35,11 +35,10 @@ $installer = new ConvertInstaller($basepath);
 
 class ConvertInstaller
 {
-
     public function __construct($basepath)
     {
         global $member, $CONF, $DB_DRIVER_NAME;
-        $this->basepath = $basepath;
+        $this->basepath           = $basepath;
         $this->target_db_filename = $basepath . 'settings' . DIRECTORY_SEPARATOR . 'db_nucleus.sqlite';
 
         if (!isset($member) || !$member->isLoggedIn()) {
@@ -68,7 +67,7 @@ class ConvertInstaller
         }
 
         if ($member->isAdmin()) {
-            if (isset($_GET['export_config']) && $_GET['export_config']=='yes') {
+            if (isset($_GET['export_config']) && $_GET['export_config'] == 'yes') {
                 $this->export_config();
             }
 
@@ -90,7 +89,7 @@ class ConvertInstaller
         $this->error($this->_('Only super admin'));
     }
 
-    function printHead($title)
+    public function printHead($title)
     {
         ?>
 <!DOCTYPE html>
@@ -107,12 +106,12 @@ class ConvertInstaller
         echo "<h1>" . $this->_('Convert database to sqlite') ."</h1>";
     }
 
-    function printFoot()
+    public function printFoot()
     {
         echo "\n  </body>\n</html>";
     }
 
-    function error($msg)
+    public function error($msg)
     {
         $this->printHead($this->_('Error:'));
 
@@ -126,7 +125,7 @@ class ConvertInstaller
         exit;
     }
 
-    function showLogin($type)
+    public function showLogin($type)
     {
         $this->printHead($this->_('Login Please'));
         $name = isset($_POST['login']) ? "value='".hsc(strval($_POST['login']))."' " : '';
@@ -161,7 +160,7 @@ class ConvertInstaller
                 return $text;
             }
             // skin for default
-            $filename = dirname(__FILE__) . '/default_text.xml';
+            $filename = __DIR__ . '/default_text.xml';
             if (!is_file($filename)) {
                 return $text;
             }
@@ -174,7 +173,7 @@ class ConvertInstaller
                     continue;
                 }
                 $keyname = '';
-                $items = array();
+                $items   = array();
                 foreach ($text_node->children() as $node) {
                     $key   = $node->getName();
                     $value = (string) $node;
@@ -187,7 +186,7 @@ class ConvertInstaller
                 if (!isset($items['default'])) {
                     $items['default'] = $keyname;
                 }
-                $keyname = (function_exists('mb_strtolower') ? mb_strtolower($keyname, 'UTF-8') :  strtolower($keyname));
+                $keyname                = (function_exists('mb_strtolower') ? mb_strtolower($keyname, 'UTF-8') : strtolower($keyname));
                 $cached_array[$keyname] = $items;
 //                var_dump($keyname, $items);
             }
@@ -262,13 +261,13 @@ class ConvertInstaller
             echo "<p>"  . $this->_('Save file path:') . " settings/</p>";
             // Todo : Note
             $btn_title = $this->_('Start convert');
-                    $s = <<<EOD
+            $s         = <<<EOD
             <form method="post" action="index.php"><p>
             <input type="hidden" name="action" value="startconvert" />
             <input type="submit" value="{$btn_title}" tabindex="20" />
             </p></form>
 EOD;
-                    echo $s;
+            echo $s;
             $this->showUnSupportedPlugins();
         }
 
@@ -279,7 +278,7 @@ EOD;
 
     private function doConvert()
     {
-        include_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "table_conv_mysql_to_sqlite.php");
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . "table_conv_mysql_to_sqlite.php");
 
         //$obj = new TableConvertor();
         $obj = new TableConvertor_mysql_to_sqlite();
@@ -300,7 +299,7 @@ EOD;
 
         $error_messages = array();
         foreach ($tables as $table) {
-        //  echo $table.$obj->get_table_structure($table);
+            //  echo $table.$obj->get_table_structure($table);
             ob_start();
             @$obj->dump_table_structure($table);
             echo "\n";
@@ -326,12 +325,12 @@ EOD;
 
     public function getDefaultConfig()
     {
-        $short =<<<EOD
+        $short = <<<EOD
 <blockquote><pre style="width:100%; overflow: auto; background-color: #ffffe1"><b>//</b>\$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';<b>
 \$DB_DRIVER_NAME = &#039;sqlite&#039;; \$DB_PHP_MODULE_NAME = &#039;pdo&#039;;
 if (\$DB_DRIVER_NAME==&#039;sqlite&#039;)
 {
-   \$DB_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
+   \$DB_DATABASE = __DIR__ . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
 // \$DB_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
 }</b></pre></blockquote>
 EOD;
@@ -344,11 +343,11 @@ EOD;
         global $DIR_NUCLEUS,  $DIR_MEDIA, $DIR_SKINS;
         global $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
         global $DIR_BASE;
-        
+
         $newDir = array();
-        foreach (array('DIR_NUCLEUS'=>'nucleus', 'DIR_MEDIA'=>'media', 'DIR_SKINS'=>'skins') as $key => $value) {
+        foreach (array('DIR_NUCLEUS' => 'nucleus', 'DIR_MEDIA' => 'media', 'DIR_SKINS' => 'skins') as $key => $value) {
             $newDir[$key] = sprintf("'%s'", $$key);
-            if (!isset($DIR_BASE) || strlen($DIR_BASE)==0) {
+            if (!isset($DIR_BASE) || strlen($DIR_BASE) == 0) {
                 continue;
             }
             if ($DIR_BASE. $value .'/' == $$key) {
@@ -358,7 +357,7 @@ EOD;
             }
         }
 
-        foreach (array('DIR_PLUGINS'=>'plugins', 'DIR_LANG'=>'language', 'DIR_LIBS'=>'libs') as $key => $value) {
+        foreach (array('DIR_PLUGINS' => 'plugins', 'DIR_LANG' => 'language', 'DIR_LIBS' => 'libs') as $key => $value) {
             if ($DIR_NUCLEUS. $value .'/' == $$key) {
                 $newDir[$key] = "\$DIR_NUCLEUS . '{$value}/'";
             } elseif (0 === strpos($$key, $DIR_NUCLEUS)) {
@@ -369,18 +368,18 @@ EOD;
 //           var_dump(__LINE__, $DIR_NUCLEUS, $key, $value, $$key);
         }
 
-        $s =<<<EOD
+        $s = <<<EOD
 <?php
 
 // This file contains variables with the locations of the data dirs
 // and basic functions that every page can use
 
 // mySQL connection information
-\$DB_HOST     = '$DB_HOST';
-\$DB_USER     = '$DB_USER';
-\$DB_PASSWORD = '$DB_PASSWORD';
-\$DB_DATABASE = '$DB_DATABASE';
-\$DB_PREFIX   = '$DB_PREFIX';
+\$DB_HOST     = '{$DB_HOST}';
+\$DB_USER     = '{$DB_USER}';
+\$DB_PASSWORD = '{$DB_PASSWORD}';
+\$DB_DATABASE = '{$DB_DATABASE}';
+\$DB_PREFIX   = '{$DB_PREFIX}';
 
 global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;
 // default is default is  \$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';
@@ -390,12 +389,12 @@ global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;
 
 if (\$DB_DRIVER_NAME=='sqlite')
 {
-   \$DB_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+   \$DB_DATABASE = __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
 // \$DB_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
 
 // main nucleus directory
-\$DIR_BASE = dirname(__FILE__) . '/';
+\$DIR_BASE = __DIR__ . '/';
 
 //\$DIR_NUCLEUS = \$DIR_BASE . 'nucleus/';
 \$DIR_NUCLEUS = {$newDir['DIR_NUCLEUS']};
@@ -423,7 +422,7 @@ if (\$DB_DRIVER_NAME=='sqlite')
 \$DIR_LIBS = {$newDir['DIR_LIBS']};
 
 if (!isset(\$DIR_NUCLEUS) || !@is_file(\$DIR_LIBS . 'globalfunctions.php')) {
-    foreach(array(\$DIR_LIBS , dirname(__FILE__).'/nucleus/libs/') as \$path)
+    foreach(array(\$DIR_LIBS , __DIR__.'/nucleus/libs/') as \$path)
         if (@is_file(\$path.'config-error.php')) @include(\$path.'config-error.php');
     header('Content-type: text/html; charset=utf-8');
     echo '<h1>Configuration error</h1>';
@@ -460,9 +459,9 @@ EOD;
     {
         global $manager;
         $items = array();
-        $res = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC', sql_table('plugin')));
+        $res   = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC', sql_table('plugin')));
         while ($res && ($row = sql_fetch_array($res))) {
-            $plugin = $manager->getPlugin($row[1]);
+            $plugin    = $manager->getPlugin($row[1]);
             $tablelist = $plugin->getTableList();
             if (empty($tablelist)) {
                 continue;

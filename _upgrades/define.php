@@ -1,4 +1,5 @@
 <?php
+
 define('NUCLEUS_UPGRADE_VERSION', '3.80');  // (string) , format : dot separated
 define('NUCLEUS_UPGRADE_VERSION_ID', 380);    // (int)
 define('NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION', '5.0.5'); // (string) , format : dot separated

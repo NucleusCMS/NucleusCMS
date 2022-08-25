@@ -19,7 +19,6 @@
 
 class Backup
 {
-
     private $is_support_utf8mb4;
     private $charsetOfDB;
     private $collationOfDB;
@@ -32,11 +31,6 @@ class Backup
      * Constructor
      */
     public function __construct()
-    {
-        $this->Backup();
-    }
-
-    function Backup()
     {
         // do nothing
 
@@ -115,7 +109,6 @@ class Backup
         //        exit(sprintf("_CHARSET(%s) , export_db_charset(%s) , mode_en(%s)", _CHARSET, $this->export_db_charset, $this->mode_en ? 'true' : 'false'));
     }
 
-
     /**
      * This function creates an sql dump of the database and sends it to
      * the user as a file (can be gzipped if they want)
@@ -123,7 +116,7 @@ class Backup
      * @requires
      *        no output may have preceded (new headers are sent)
      *
-     * @param   int  $gzip
+     * @param int $gzip
      */
     public function do_backup($gzip = 0)
     {
@@ -169,7 +162,7 @@ class Backup
         ob_start();
         $res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
         while ($plugName = sql_fetch_object($res)) {
-            $plug =& $manager->getPlugin($plugName->pfile);
+            $plug = & $manager->getPlugin($plugName->pfile);
             if ($plug) {
                 $plugTableList = $plug->getTableList();
                 if ($plugTableList) {
@@ -209,10 +202,9 @@ class Backup
             ) . ".sql";
         }
 
-
         // send headers that tell the browser a file is coming
-        header("Content-Type: text/x-delimtext; name=\"$filename\"");
-        header("Content-disposition: attachment; filename=$filename");
+        header("Content-Type: text/x-delimtext; name=\"{$filename}\"");
+        header("Content-disposition: attachment; filename={$filename}");
 
         // dump header
         echo "#\n";
@@ -266,7 +258,6 @@ class Backup
         exit;
     }
 
-
     /**
      * Creates a dump for a single table
      * ($tablename is filled in by array_walk)
@@ -301,8 +292,8 @@ class Backup
         $collation = $this->export_db_collation;
 
         // add command to drop table on restore
-        echo "DROP TABLE IF EXISTS $tablename;\n";
-        $result      = sql_query("SHOW CREATE TABLE $tablename");
+        echo "DROP TABLE IF EXISTS {$tablename};\n";
+        $result      = sql_query("SHOW CREATE TABLE {$tablename}");
         $create      = sql_fetch_assoc($result);
         $CreateTable = $create['Create Table'];
         $CreateTable = preg_replace(
@@ -367,8 +358,8 @@ class Backup
         // Grab the data from the table.
         //
         $row_count
-                = intval(quickQuery("SELECT count(*) AS result FROM $table_name"));
-        $result = sql_query("SELECT * FROM $table_name");
+                = intval(quickQuery("SELECT count(*) AS result FROM {$table_name}"));
+        $result = sql_query("SELECT * FROM {$table_name}");
         if (! $result) {
             return;
         }
@@ -381,7 +372,7 @@ class Backup
                     $table_name
                 ) . "\n#\n";
             } else {
-                echo "\n#\n# Table Data for $table_name\n#\n";
+                echo "\n#\n# Table Data for {$table_name}\n#\n";
             }
         }
 
@@ -398,7 +389,7 @@ class Backup
         while ($row = sql_fetch_array($result)) {
             // Start building the SQL statement.
 
-            echo "INSERT INTO `" . $table_name . "` $tablename_list VALUES(";
+            echo "INSERT INTO `" . $table_name . "` {$tablename_list} VALUES(";
 
             // Loop through the rows and fill in data for each column
             for ($j = 0; $j < $num_fields; $j++) {
@@ -422,7 +413,6 @@ class Backup
             echo ");\n";
         }
 
-
         echo "\n";
     }
 
@@ -438,7 +428,7 @@ class Backup
         $return = '';
         for ($i = 0; $i < 4; $i++) {
             $return .= chr($Val % 256);
-            $Val    = floor($Val / 256);
+            $Val = floor($Val / 256);
         }
 
         return $return;
@@ -447,7 +437,7 @@ class Backup
     /**
      * Restores a database backup
      */
-    function do_restore()
+    public function do_restore()
     {
         $uploadInfo = postFileInfo('backup_file');
 
@@ -486,7 +476,6 @@ class Backup
                 $backup_file_type
             );
         }
-
 
         if (preg_match("/\.gz/is", $backup_file_name)) {
             $gzip = 1;

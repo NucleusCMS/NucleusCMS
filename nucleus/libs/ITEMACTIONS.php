@@ -18,7 +18,6 @@
 
 class ITEMACTIONS extends BaseActions
 {
-
     // contains an assoc array with parameters that need to be included when
     // generating links to items/archives/... (e.g. catid)
     public $linkparams;
@@ -41,7 +40,7 @@ class ITEMACTIONS extends BaseActions
     // true when comments need to be displayed
     public $showComments;
 
-    function __construct(&$blog)
+    public function __construct(&$blog)
     {
         // call constructor of superclass first
         parent::__construct();
@@ -63,7 +62,7 @@ class ITEMACTIONS extends BaseActions
      * Returns an array with the actions that are defined
      * in the ITEMACTIONS class
      */
-    function getDefinedActions()
+    public function getDefinedActions()
     {
         return array(
             'blogid',
@@ -116,21 +115,21 @@ class ITEMACTIONS extends BaseActions
         );
     }
 
-    function setLastVisit($lastVisit)
+    public function setLastVisit($lastVisit)
     {
         $this->lastVisit = $lastVisit;
     }
 
-    function setParser(&$parser)
+    public function setParser(&$parser)
     {
         unset($this->parser);
-        $this->parser =& $parser;
+        $this->parser = & $parser;
     }
 
-    function setCurrentItem(&$item)
+    public function setCurrentItem(&$item)
     {
         unset($this->currentItem);
-        $this->currentItem =& $item;
+        $this->currentItem = & $item;
         global $currentitemid;
         if (is_array($this->currentItem)) {
             $currentitemid = $this->currentItem['itemid'];
@@ -139,29 +138,28 @@ class ITEMACTIONS extends BaseActions
         }
     }
 
-    function setBlog(&$blog)
+    public function setBlog(&$blog)
     {
         unset($this->blog);
-        $this->blog =& $blog;
+        $this->blog = & $blog;
     }
 
-    function setTemplate($template)
+    public function setTemplate($template)
     {
-        $this->template =& $template;
+        $this->template = & $template;
     }
 
-    function setShowComments($val)
+    public function setShowComments($val)
     {
         $this->showComments = $val;
     }
 
     // methods used by parser to insert content
 
-
     /**
      * Parse templatevar blogid
      */
-    function parse_blogid()
+    public function parse_blogid()
     {
         echo $this->blog->getID();
     }
@@ -169,7 +167,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar body
      */
-    function parse_body()
+    public function parse_body()
     {
         $this->highlightAndParse($this->currentItem->body);
     }
@@ -177,7 +175,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar more
      */
-    function parse_more()
+    public function parse_more()
     {
         $this->highlightAndParse($this->currentItem->more);
     }
@@ -185,7 +183,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar itemid
      */
-    function parse_itemid()
+    public function parse_itemid()
     {
         echo $this->currentItem->itemid;
     }
@@ -193,7 +191,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar category
      */
-    function parse_category()
+    public function parse_category()
     {
         echo $this->currentItem->category;
     }
@@ -201,7 +199,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar categorylink
      */
-    function parse_categorylink()
+    public function parse_categorylink()
     {
         echo createLink(
             'category',
@@ -215,7 +213,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar catid
      */
-    function parse_catid()
+    public function parse_catid()
     {
         echo $this->currentItem->catid;
     }
@@ -223,7 +221,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar authorid
      */
-    function parse_authorid()
+    public function parse_authorid()
     {
         echo $this->currentItem->authorid;
     }
@@ -231,7 +229,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar authorlink
      */
-    function parse_authorlink()
+    public function parse_authorlink()
     {
         echo createLink(
             'member',
@@ -246,7 +244,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar query
      */
-    function parse_query()
+    public function parse_query()
     {
         echo $this->strHighlight;
     }
@@ -254,7 +252,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar itemlink
      */
-    function parse_itemlink()
+    public function parse_itemlink()
     {
         echo createLink(
             'item',
@@ -270,7 +268,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar blogurl
      */
-    function parse_blogurl()
+    public function parse_blogurl()
     {
         echo $this->blog->getRealURL();
     }
@@ -278,7 +276,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar closed
      */
-    function parse_closed()
+    public function parse_closed()
     {
         echo $this->currentItem->closed;
     }
@@ -286,7 +284,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar relevance
      */
-    function parse_relevance()
+    public function parse_relevance()
     {
         echo round($this->currentItem->score, 2);
     }
@@ -294,9 +292,9 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar title
      *
-     * @param   string  $format  defines in which format the title is shown
+     * @param string $format defines in which format the title is shown
      */
-    function parse_title($format = '')
+    public function parse_title($format = '')
     {
         if (is_array($this->currentItem)) {
             $itemtitle = $this->currentItem['title'];
@@ -326,12 +324,12 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar karma
      */
-    function parse_karma($type = 'totalscore')
+    public function parse_karma($type = 'totalscore')
     {
         global $manager;
 
         // get karma object
-        $karma =& $manager->getKarma($this->currentItem->itemid);
+        $karma = & $manager->getKarma($this->currentItem->itemid);
 
         switch ($type) {
             case 'pos':
@@ -367,7 +365,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar author
      */
-    function parse_author($which = '')
+    public function parse_author($which = '')
     {
         global $blog;
 
@@ -397,7 +395,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar smartbody
      */
-    function parse_smartbody()
+    public function parse_smartbody()
     {
         if (! $this->currentItem->more) {
             $this->highlightAndParse($this->currentItem->body);
@@ -409,7 +407,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar morelink
      */
-    function parse_morelink()
+    public function parse_morelink()
     {
         if ($this->currentItem->more) {
             $this->parser->parse($this->template['MORELINK']);
@@ -421,7 +419,7 @@ class ITEMACTIONS extends BaseActions
      *
      * @param   format optional strftime format
      */
-    function parse_date($format = '')
+    public function parse_date($format = '')
     {
         if (! isset($this->template['FORMAT_DATE'])) {
             $this->template['FORMAT_DATE'] = '';
@@ -439,7 +437,7 @@ class ITEMACTIONS extends BaseActions
      *
      * @param   format optional strftime format
      */
-    function parse_time($format = '')
+    public function parse_time($format = '')
     {
         if (! isset($this->template['FORMAT_TIME'])) {
             $this->template['FORMAT_TIME'] = '';
@@ -455,7 +453,7 @@ class ITEMACTIONS extends BaseActions
      *
      * @param   maxLength optional maximum length
      */
-    function parse_syndicate_title($maxLength = 100)
+    public function parse_syndicate_title($maxLength = 100)
     {
         $syndicated = strip_tags($this->currentItem->title);
         echo hsc(shorten($syndicated, $maxLength, '...'));
@@ -466,7 +464,7 @@ class ITEMACTIONS extends BaseActions
      *
      * @param   maxLength optional maximum length
      */
-    function parse_syndicate_description($maxLength = 250, $addHighlight = 0)
+    public function parse_syndicate_description($maxLength = 250, $addHighlight = 0)
     {
         $syndicated = strip_tags($this->currentItem->body);
         if ($addHighlight) {
@@ -482,7 +480,7 @@ class ITEMACTIONS extends BaseActions
      *
      * @param   string text
      */
-    function parse_karmaposlink($text = '')
+    public function parse_karmaposlink($text = '')
     {
         global $CONF;
         $link = $CONF['ActionURL'] . '?action=votepositive&amp;itemid='
@@ -495,7 +493,7 @@ class ITEMACTIONS extends BaseActions
      *
      * @param   string text
      */
-    function parse_karmaneglink($text = '')
+    public function parse_karmaneglink($text = '')
     {
         global $CONF;
         $link = $CONF['ActionURL'] . '?action=votenegative&amp;itemid='
@@ -506,7 +504,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar new
      */
-    function parse_new()
+    public function parse_new()
     {
         if (($this->lastVisit != 0)
             && ($this->currentItem->timestamp > $this->lastVisit)) {
@@ -517,7 +515,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar daylink
      */
-    function parse_daylink()
+    public function parse_daylink()
     {
         echo createArchiveLink(
             $this->blog->getID(),
@@ -529,7 +527,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar comments
      */
-    function parse_comments($maxToShow = 0)
+    public function parse_comments($maxToShow = 0)
     {
         if ($maxToShow == 0) {
             $maxToShow = $this->blog->getMaxComments();
@@ -555,7 +553,7 @@ class ITEMACTIONS extends BaseActions
      *
      * extra parameters can be added
      */
-    function parse_plugin($pluginName)
+    public function parse_plugin($pluginName)
     {
         global $manager;
 
@@ -564,7 +562,7 @@ class ITEMACTIONS extends BaseActions
         /*if (!$manager->pluginInstalled('NP_' . $pluginName))
             return;*/
 
-        $plugin =& $manager->getPlugin('NP_' . $pluginName);
+        $plugin = & $manager->getPlugin('NP_' . $pluginName);
         if (! $plugin) {
             return;
         }
@@ -584,7 +582,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar edit
      */
-    function parse_edit()
+    public function parse_edit()
     {
         global $member;
         if ($this->allowEditAll
@@ -597,7 +595,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar editlink
      */
-    function parse_editlink()
+    public function parse_editlink()
     {
         global $CONF;
         echo $CONF['AdminURL'], 'bookmarklet.php?action=edit&amp;itemid=', $this->currentItem->itemid;
@@ -606,7 +604,7 @@ class ITEMACTIONS extends BaseActions
     /**
      * Parse templatevar editpopupcode
      */
-    function parse_editpopupcode()
+    public function parse_editpopupcode()
     {
         echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width='+window.parent.screen.width*0.9+',height='+window.parent.screen.height*0.9+',left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
     }
@@ -618,7 +616,7 @@ class ITEMACTIONS extends BaseActions
      * trusted team members from hacking your weblog.
      * 'plugin variables in items' implementation by Andy
      */
-    function highlightAndParse(&$data)
+    public function highlightAndParse(&$data)
     {
         $actions = new BODYACTIONS($this->blog);
         $parser  = new PARSER($actions->getDefinedActions(), $actions);
@@ -646,11 +644,11 @@ class ITEMACTIONS extends BaseActions
     /**
      * Checks conditions for if statements
      *
-     * @param   string  $field  type of <%if%>
-     * @param   string  $name   property of field
-     * @param   string  $value  value of property
+     * @param string $field type of <%if%>
+     * @param string $name  property of field
+     * @param string $value value of property
      */
-    function checkCondition($field, $name = '', $value = '')
+    public function checkCondition($field, $name = '', $value = '')
     {
         global $blog, $member, $manager;
 
@@ -667,7 +665,7 @@ class ITEMACTIONS extends BaseActions
                 break;
             case 'itemblogsetting':
                 $b
-                           =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+                           = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
                 $condition = ($b && ($b->getSetting($name) == $value));
                 break;
             case 'loggedin':
@@ -682,21 +680,21 @@ class ITEMACTIONS extends BaseActions
             case 'author':
                 $condition = ($this->_ifAuthor($name, $value));
                 break;
-            /*            case 'nextitem':
-                            $condition = ($itemidnext != '');
-                            break;
-                        case 'previtem':
-                            $condition = ($itemidprev != '');
-                            break;
-                        case 'archiveprevexists':
-                            $condition = ($archiveprevexists == true);
-                            break;
-                        case 'archivenextexists':
-                            $condition = ($archivenextexists == true);
-                            break;
-                        case 'skintype':
-                            $condition = ($name == $this->skintype);
-                            break; */
+                /*            case 'nextitem':
+                                $condition = ($itemidnext != '');
+                                break;
+                            case 'previtem':
+                                $condition = ($itemidprev != '');
+                                break;
+                            case 'archiveprevexists':
+                                $condition = ($archiveprevexists == true);
+                                break;
+                            case 'archivenextexists':
+                                $condition = ($archivenextexists == true);
+                                break;
+                            case 'skintype':
+                                $condition = ($name == $this->skintype);
+                                break; */
             case 'hasplugin':
                 $condition = $this->_ifHasPlugin($name, $value);
                 break;
@@ -721,7 +719,7 @@ class ITEMACTIONS extends BaseActions
     /**
      *  Different checks for a category
      */
-    function _ifCategory($name = '', $value = '')
+    public function _ifCategory($name = '', $value = '')
     {
         global $blog, $catid;
 
@@ -746,16 +744,15 @@ class ITEMACTIONS extends BaseActions
         return false;
     }
 
-
     /**
      *  Different checks for an author
      */
-    function _ifAuthor($name = '', $value = '')
+    public function _ifAuthor($name = '', $value = '')
     {
         global $member, $manager;
 
         $b
-            =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+            = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
         if (($name != 'isadmin' && $name != 'name')
@@ -778,7 +775,7 @@ class ITEMACTIONS extends BaseActions
         if (($name == 'isadmin')) {
             $aid     = (int)$this->currentItem->authorid;
             $blogid  = (int)$b->getID();
-            $amember =& $manager->getMember($aid);
+            $amember = & $manager->getMember($aid);
             if ($amember->isAdmin()) {
                 return true;
             }
@@ -792,12 +789,12 @@ class ITEMACTIONS extends BaseActions
     /**
      *  Different checks for a category
      */
-    function _ifItemCategory($name = '', $value = '')
+    public function _ifItemCategory($name = '', $value = '')
     {
         global $catid, $manager;
 
         $b
-            =& $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+            = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
         if (($name != 'catname' && $name != 'catid') || ($value == '')) {
@@ -823,16 +820,15 @@ class ITEMACTIONS extends BaseActions
         return false;
     }
 
-
     /**
      *  Checks if a member is on the team of a blog and return his rights
      */
-    function _ifOnTeam($blogName = '')
+    public function _ifOnTeam($blogName = '')
     {
         global $blog, $member, $manager;
 
         // when no blog found
-        if (($blogName == '') && ( ! is_object($blog))) {
+        if (($blogName == '') && (! is_object($blog))) {
             return 0;
         }
 
@@ -852,12 +848,12 @@ class ITEMACTIONS extends BaseActions
     /**
      *  Checks if a member is admin of a blog
      */
-    function _ifAdmin($blogName = '')
+    public function _ifAdmin($blogName = '')
     {
         global $blog, $member, $manager;
 
         // when no blog found
-        if (($blogName == '') && ( ! is_object($blog))) {
+        if (($blogName == '') && (! is_object($blog))) {
             return 0;
         }
 
@@ -874,7 +870,6 @@ class ITEMACTIONS extends BaseActions
         return $member->isBlogAdmin($blogid);
     }
 
-
     /**
      *    hasplugin,PlugName
      *       -> checks if plugin exists
@@ -884,13 +879,13 @@ class ITEMACTIONS extends BaseActions
      *       -> checks if the option OptionName from plugin PlugName is set to
      *       value
      */
-    function _ifHasPlugin($name, $value)
+    public function _ifHasPlugin($name, $value)
     {
         global $manager;
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_' . $name)) {
-            $plugin =& $manager->getPlugin('NP_' . $name);
+            $plugin = & $manager->getPlugin('NP_' . $name);
             if ($plugin != null) {
                 if ($value == "") {
                     $condition = true;
@@ -913,11 +908,11 @@ class ITEMACTIONS extends BaseActions
     /**
      * Checks if a plugin exists and call its doIf function
      */
-    function _ifPlugin($name, $key = '', $value = '')
+    public function _ifPlugin($name, $key = '', $value = '')
     {
         global $manager;
 
-        $plugin =& $manager->getPlugin('NP_' . $name);
+        $plugin = & $manager->getPlugin('NP_' . $name);
         if (! $plugin) {
             return;
         }
@@ -928,7 +923,7 @@ class ITEMACTIONS extends BaseActions
         return call_user_func_array(array($plugin, 'doIf'), $params);
     }
 
-    function parse_commentclosed()
+    public function parse_commentclosed()
     {
         // if item is closed, show message and do nothing
         if ($this->currentItem->closed || ! $this->blog->commentsEnabled()) {
@@ -938,7 +933,7 @@ class ITEMACTIONS extends BaseActions
         }
     }
 
-    function parse_hascomment()
+    public function parse_hascomment()
     {
         $sqlText
              = sprintf(

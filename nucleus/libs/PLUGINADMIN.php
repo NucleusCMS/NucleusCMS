@@ -18,13 +18,12 @@
 
 class PluginAdmin
 {
-
     public $strFullName;        // NP_SomeThing
     public $plugin;            // ref. to plugin object
     public $bValid;            // evaluates to true when object is considered valid
     public $admin;                // ref to an admin object
 
-    function __construct($pluginName)
+    public function __construct($pluginName)
     {
         global $manager, $DIR_LIBS;
         include_once($DIR_LIBS . 'ADMIN.php');
@@ -32,14 +31,14 @@ class PluginAdmin
         $this->strFullName = 'NP_' . $pluginName;
 
         // check if plugin exists and is installed
-        if (! $manager->pluginInstalled($this->strFullName)) {
+        if (!$manager->pluginInstalled($this->strFullName)) {
             doError(_ERROR_INVALID_PLUGIN);
         }
 
-        $this->plugin =& $manager->getPlugin($this->strFullName);
+        $this->plugin = & $manager->getPlugin($this->strFullName);
         $this->bValid = $this->plugin;
 
-        if (! $this->bValid) {
+        if (!$this->bValid) {
             doError(_ERROR_INVALID_PLUGIN);
         }
 
@@ -47,16 +46,16 @@ class PluginAdmin
         $this->admin->action = 'plugin_' . $pluginName;
     }
 
-    function start($extraHead = '')
+    public function start($extraHead = '')
     {
         global $CONF;
         $strBaseHref = '<base href="' . hsc($CONF['AdminURL']) . '" />';
-        $extraHead   .= $strBaseHref;
+        $extraHead .= $strBaseHref;
 
         $this->admin->pagehead($extraHead);
     }
 
-    function end()
+    public function end()
     {
         $this->_AddTicketByJS();
         $this->admin->pagefoot();
@@ -66,10 +65,10 @@ class PluginAdmin
      * Add ticket when not used in plugin's admin page
      * to avoid CSRF.
      */
-    function _AddTicketByJS()
+    public function _AddTicketByJS()
     {
         global $CONF, $ticketforplugin;
-        if (! ($ticket = $ticketforplugin['ticket'])) {
+        if (!($ticket = $ticketforplugin['ticket'])) {
             //echo "\n<!--TicketForPlugin skipped-->\n";
             return;
         }

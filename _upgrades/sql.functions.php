@@ -1,4 +1,5 @@
 <?php
+
 if (!function_exists('sql_existTableColumnName')) {
     function sql_existTableColumnName($tablename, $ColumnName, $casesensitive = false)
     {
@@ -12,7 +13,7 @@ if (!function_exists('sql_existTableColumnName')) {
         } else {
             foreach ($names as $v) {
                 if (strcasecmp($ColumnName, $v) == 0) {
-                     return true;
+                    return true;
                 }
             }
         }
@@ -23,11 +24,11 @@ if (!function_exists('sql_existTableColumnName')) {
 if (!function_exists('sql_getTableColumnNames')) {
     function sql_getTableColumnNames($tablename)
     {
-        $sql = sprintf('SHOW COLUMNS FROM `%s` ', parseQuery($tablename));
+        $sql    = sprintf('SHOW COLUMNS FROM `%s` ', parseQuery($tablename));
         $target = 'Field';
 
         $items = array();
-        $res = sql_query($sql);
+        $res   = sql_query($sql);
         if (!$res) {
             return array();
         }
@@ -37,7 +38,7 @@ if (!function_exists('sql_getTableColumnNames')) {
             }
         }
 
-        if (count($items)>0) {
+        if (count($items) > 0) {
             sort($items);
         }
         return $items;
@@ -103,7 +104,7 @@ if (!function_exists('sql_existTableName')) {
     function sql_existTableName($tablename, $link_identifier = null)
     {
         $query = sprintf("SHOW TABLES LIKE '%s' ", sql_real_escape_string(parseQuery($tablename)));
-        $res = sql_query($query, $link_identifier);
+        $res   = sql_query($query, $link_identifier);
         return ($res && ($r = sql_fetch_array($res)) && !empty($r)); // PHP(-5.4) Parse error: empty($var = "")  syntax error
     }
 }

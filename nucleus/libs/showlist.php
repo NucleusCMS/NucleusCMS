@@ -108,7 +108,7 @@ function listplug_select($template, $type)
                            && $template['selected'] == $current->value)
             ? 'selected' : '';
         if (isset($template['shorten']) && $template['shorten'] > 0) {
-            $ph['text']  = shorten(
+            $ph['text'] = shorten(
                 $current->text,
                 $template['shorten'],
                 $template['shortenel']
@@ -197,7 +197,7 @@ function listplug_table_memberlist($template, $type)
         $ph['halting']    = _LISTS_HALTING;
         $ph['halt']       = _LISTS_HALT;
 
-        $td    = array();
+        $td = array();
         $td[0]
                = '<input type="checkbox" id="batch{%id%}" name="batch[{%id%}]" value="{%mnumber%}" />';
         $td[0] .= '<label for="batch{%id%}"><a href="mailto:{%memail:hsc%}" tabindex="{%tabindex%}">{%mname:hsc%}</a></label>';
@@ -225,7 +225,7 @@ function listplug_table_memberlist($template, $type)
             $tpl[] = '<td>' . $v . '</td>';
         }
 
-        return parseHtml(join("\n", $tpl), $ph);
+        return parseHtml(implode("\n", $tpl), $ph);
     }
 }
 
@@ -253,7 +253,7 @@ function listplug_table_teamlist($template, $type)
             echo '</td>';
             echo '<td>', hsc($current->mrealname), '</td>';
             echo '<td>', ($current->tadmin ? _YES : _NO), '</td>';
-            echo "<td><a href='index.php?action=teamdelete&amp;memberid=$current->tmember&amp;blogid=$current->tblog' tabindex='"
+            echo "<td><a href='index.php?action=teamdelete&amp;memberid={$current->tmember}&amp;blogid={$current->tblog}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             $url = 'index.php?action=teamchangeadmin&memberid='
@@ -278,7 +278,7 @@ function listplug_table_pluginlist($template, $type)
         case 'BODY':
             $current = $template['current'];
 
-            $plug =& $manager->getPlugin($current->pfile);
+            $plug = & $manager->getPlugin($current->pfile);
             if ($plug) {
                 echo '<td>';
                 echo '<strong>', hsc($plug->getName()), '</strong><br />';
@@ -335,7 +335,7 @@ function listplug_table_pluginlist($template, $type)
                 $req = array();
                 $res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
                 while ($o = sql_fetch_object($res)) {
-                    $preq =& $manager->getPlugin($o->pfile);
+                    $preq = & $manager->getPlugin($o->pfile);
                     if ($preq) {
                         $depList = $preq->getPluginDep();
                         foreach ($depList as $depName) {
@@ -370,7 +370,7 @@ function listplug_table_pluginlist($template, $type)
             echo " | <a href='", hsc($url), "' tabindex='"
                                             . $template['tabindex']
                                             . "'>", _LIST_PLUGS_DOWN, "</a>";
-            echo "<br /><a href='index.php?action=plugindelete&amp;plugid=$current->pid' tabindex='"
+            echo "<br /><a href='index.php?action=plugindelete&amp;plugid={$current->pid}' tabindex='"
                  . $template['tabindex'] . "'>", _LIST_PLUGS_UNINSTALL, "</a>";
             if ($plug && ($plug->hasAdminArea() > 0)) {
                 if ($plug->supportsFeature('pluginadmin')) {
@@ -388,14 +388,14 @@ function listplug_table_pluginlist($template, $type)
                 }
             }
             if ($plug && ($plug->supportsFeature('HelpPage') > 0)) {
-                echo "<br /><a href='index.php?action=pluginhelp&amp;plugid=$current->pid'  tabindex='"
+                echo "<br /><a href='index.php?action=pluginhelp&amp;plugid={$current->pid}'  tabindex='"
                      . $template['tabindex'] . "'>", _LIST_PLUGS_HELP, "</a>";
             }
             if (quickQuery('SELECT COUNT(*) AS result FROM '
                            . sql_table('plugin_option_desc')
                            . ' WHERE ocontext=\'global\' and opid='
                            . $current->pid) > 0) {
-                echo "<br /><a href='index.php?action=pluginoptions&amp;plugid=$current->pid'  tabindex='"
+                echo "<br /><a href='index.php?action=pluginoptions&amp;plugid={$current->pid}'  tabindex='"
                      . $template['tabindex']
                      . "'>", _LIST_PLUGS_OPTIONS, "</a>";
             }
@@ -545,7 +545,7 @@ function listplug_table_itemlist($template, $type)
                 echo '0000-00-00 00:00';
             }
             echo "</td>";
-            echo "<td $cssclass>";
+            echo "<td {$cssclass}>";
 
             $id = listplug_nextBatchId();
 
@@ -555,13 +555,12 @@ function listplug_table_itemlist($template, $type)
             echo '</label>';
             echo "<br />";
 
-
             $current->ibody = strip_tags($current->ibody);
             $current->ibody = hsc(shorten($current->ibody, 300, '...'));
 
             $COMMENTS = new COMMENTS($current->inumber);
-            echo "$current->ibody</td>";
-            echo "<td  style=\"white-space:nowrap\" $cssclass>";
+            echo "{$current->ibody}</td>";
+            echo "<td  style=\"white-space:nowrap\" {$cssclass}>";
             echo "<a href='index.php?action=itemedit&amp;itemid={$current->inumber}'>"
                  . _LISTS_EDIT . "</a>";
             echo " / <a href='index.php?action=itemmove&amp;itemid={$current->inumber}'>"
@@ -581,7 +580,7 @@ function listplug_table_itemlist($template, $type)
             // evaluate amount of comments for the item
             $camount = $COMMENTS->amountComments();
             if ($camount > 0) {
-                echo "<a href='index.php?action=itemcommentlist&amp;itemid=$current->inumber'>";
+                echo "<a href='index.php?action=itemcommentlist&amp;itemid={$current->inumber}'>";
                 echo "( " . sprintf(
                     _LIST_ITEM_COMMENTS,
                     $COMMENTS->amountComments()
@@ -628,9 +627,9 @@ function listplug_table_commentlist($template, $type)
                 $show_action_link_itemcommentlist = ($action
                                                      == 'blogcommentlist');
             } else {
-                $current->iauthor                 = intval($current->iauthor);
-                $current->cmember                 = intval($current->cmember);
-                $show_action_link                 = ($current->cmember
+                $current->iauthor = intval($current->iauthor);
+                $current->cmember = intval($current->cmember);
+                $show_action_link = ($current->cmember
                                                      == $member->id)
                                                     || ($current->iauthor
                                                         == $member->id);
@@ -672,16 +671,16 @@ function listplug_table_commentlist($template, $type)
             echo '</td>';
 
             if ($show_action_link) {
-                echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid=$current->cnumber'>"
+                echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentedit&amp;commentid={$current->cnumber}'>"
                      . _LISTS_EDIT . "</a></td>";
-                echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid=$current->cnumber'>"
+                echo "<td style=\"white-space:nowrap\"><a href='index.php?action=commentdelete&amp;commentid={$current->cnumber}'>"
                      . _LISTS_DELETE . "</a></td>";
             } else {
                 echo "<td style=\"white-space:nowrap\">&nbsp;</td>";
                 echo "<td style=\"white-space:nowrap\">&nbsp;</td>";
             }
             if ($template['canAddBan']) {
-                echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid=$current->citem&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"
+                echo "<td style=\"white-space:nowrap\"><a href='index.php?action=banlistnewfromitem&amp;itemid={$current->citem}&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"
                                                                                                                                                                                                 . _LIST_COMMENT_BANIP
                                                                                                                                                                                                 . "</a></td>";
             }
@@ -717,7 +716,6 @@ function listplug_table_commentlist($template, $type)
     }
 }
 
-
 function listplug_table_bloglist($template, $type)
 {
     switch ($type) {
@@ -728,31 +726,30 @@ function listplug_table_bloglist($template, $type)
         case 'BODY':
             $current = $template['current'];
 
-            echo "<td title='blogid:$current->bnumber shortname:$current->bshortname'><a href='$current->burl'><img src='images/globe.gif' width='13' height='13' alt='"
+            echo "<td title='blogid:{$current->bnumber} shortname:{$current->bshortname}'><a href='{$current->burl}'><img src='images/globe.gif' width='13' height='13' alt='"
                  . _BLOGLIST_TT_VISIT . "' /></a> " . hsc($current->bname)
                  . "</td>";
-            echo "<td><a href='index.php?action=createitem&amp;blogid=$current->bnumber' title='"
+            echo "<td><a href='index.php?action=createitem&amp;blogid={$current->bnumber}' title='"
                  . _BLOGLIST_TT_ADD . "'>" . _BLOGLIST_ADD . "</a></td>";
-            echo "<td><a href='index.php?action=itemlist&amp;blogid=$current->bnumber' title='"
+            echo "<td><a href='index.php?action=itemlist&amp;blogid={$current->bnumber}' title='"
                  . _BLOGLIST_TT_EDIT . "'>" . _BLOGLIST_EDIT . "</a></td>";
-            echo "<td><a href='index.php?action=blogcommentlist&amp;blogid=$current->bnumber' title='"
+            echo "<td><a href='index.php?action=blogcommentlist&amp;blogid={$current->bnumber}' title='"
                  . _BLOGLIST_TT_COMMENTS . "'>" . _BLOGLIST_COMMENTS
                  . "</a></td>";
 
             if ($current->tadmin == 1) {
-                echo "<td><a href='index.php?action=blogsettings&amp;blogid=$current->bnumber' title='"
+                echo "<td><a href='index.php?action=blogsettings&amp;blogid={$current->bnumber}' title='"
                      . _BLOGLIST_TT_SETTINGS . "'>" . _BLOGLIST_SETTINGS
                      . "</a></td>";
-                echo "<td><a href='index.php?action=banlist&amp;blogid=$current->bnumber' title='"
+                echo "<td><a href='index.php?action=banlist&amp;blogid={$current->bnumber}' title='"
                      . _BLOGLIST_TT_BANS . "'>" . _BLOGLIST_BANS . "</a></td>";
             }
 
             if ($template['superadmin']) {
-                echo "<td><a href='index.php?action=deleteblog&amp;blogid=$current->bnumber' title='"
+                echo "<td><a href='index.php?action=deleteblog&amp;blogid={$current->bnumber}' title='"
                      . _BLOGLIST_TT_DELETE . "'>" . _BLOGLIST_DELETE
                      . "</a></td>";
             }
-
 
             break;
     }
@@ -791,7 +788,6 @@ function listplug_table_shortnames($template, $type)
     }
 }
 
-
 function listplug_table_categorylist($template, $type)
 {
     switch ($type) {
@@ -816,15 +812,14 @@ function listplug_table_categorylist($template, $type)
             echo '<td>', hsc($current->corder), '</td>';
             echo '<td>', hsc($current->icount), '</td>';
             echo '<td>', hsc($current->cdesc), '</td>';
-            echo "<td><a href='index.php?action=categorydelete&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='"
+            echo "<td><a href='index.php?action=categorydelete&amp;blogid={$current->cblog}&amp;catid={$current->catid}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
-            echo "<td><a href='index.php?action=categoryedit&amp;blogid=$current->cblog&amp;catid=$current->catid' tabindex='"
+            echo "<td><a href='index.php?action=categoryedit&amp;blogid={$current->cblog}&amp;catid={$current->catid}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             break;
     }
 }
-
 
 function listplug_table_templatelist($template, $type)
 {
@@ -839,7 +834,7 @@ function listplug_table_templatelist($template, $type)
 
             echo "<td>", hsc($current->tdname), "</td>";
             echo "<td>", hsc($current->tddesc), "</td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateedit&amp;templateid=$current->tdnumber' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateedit&amp;templateid={$current->tdnumber}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             $url
@@ -850,7 +845,7 @@ function listplug_table_templatelist($template, $type)
                                                                           . "'>"
                                                                           . _LISTS_CLONE
                                                                           . "</a></td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templatedelete&amp;templateid=$current->tdnumber' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templatedelete&amp;templateid={$current->tdnumber}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             break;
@@ -911,7 +906,7 @@ function listplug_table_skinlist($template, $type)
 
                 if (@ is_file($DIR_SKINS . $current->sdincpref
                               . 'readme.html')) {
-                    $url         = $CONF['SkinsURL'] . hsc($current->sdincpref)
+                    $url = $CONF['SkinsURL'] . hsc($current->sdincpref)
                                    . 'readme.html';
                     $readmeTitle = sprintf(
                         _LIST_SKIN_README,
@@ -923,7 +918,6 @@ function listplug_table_skinlist($template, $type)
             }
 
             echo "</td>";
-
 
             echo "<td>", hsc($current->sddesc);
             echo '<div style="height: auto; width: 100%; overflow: auto; max-height: 250px;">';
@@ -942,8 +936,8 @@ function listplug_table_skinlist($template, $type)
                     'item',
                     'index',
                 );
-                $tmp_ct    = count($tmp_items);
-                $order     = "";
+                $tmp_ct = count($tmp_items);
+                $order  = "";
                 for ($i = 0; $i < $tmp_ct; $i++) {
                     $order .= sprintf(
                         " WHEN '%s' THEN %d",
@@ -957,7 +951,7 @@ function listplug_table_skinlist($template, $type)
                 sql_table('skin'),
                 'spartstype'
             );
-            $sql            = sprintf(
+            $sql = sprintf(
                 "SELECT stype FROM `%s` WHERE sdesc=%d ",
                 sql_table('skin'),
                 $current->sdnumber
@@ -965,7 +959,7 @@ function listplug_table_skinlist($template, $type)
             if ($has_spartstype) {
                 $sql .= " AND spartstype='parts' ";
             }
-            $sql   .= $order;
+            $sql .= $order;
             $r     = sql_query($sql);
             $types = array();
             $parts = array(array(), array());
@@ -1007,14 +1001,14 @@ function listplug_table_skinlist($template, $type)
                     }
                 }
                 if (count($parts[0]) > 0) {
-                    echo _SKIN_PARTS_TITLE . ' <ul>' . implode($parts[0])
+                    echo _SKIN_PARTS_TITLE . ' <ul>' . implode('', $parts[0])
                          . '</ul>';
                 }
                 if (count($parts[1])
                     > 0) { //                    echo _SKIN_PARTS_SPECIAL . ' <ul>'.implode($parts[1]).'</ul>';
                     printf(
                         "<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s</div>",
-                        _SKIN_PARTS_SPECIAL . ' <ul>' . implode($parts[1])
+                        _SKIN_PARTS_SPECIAL . ' <ul>' . implode('', $parts[1])
                         . '</ul>'
                     );
                 }
@@ -1063,10 +1057,9 @@ function listplug_table_skinlist($template, $type)
                 echo "</div>";
             }
 
-
             echo '</div>';
             echo "</td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid=$current->sdnumber' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid={$current->sdnumber}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             $url = $manager->addTicketToUrl('index.php?action=skinclone&skinid='
@@ -1076,7 +1069,7 @@ function listplug_table_skinlist($template, $type)
                                                                           . "'>"
                                                                           . _LISTS_CLONE
                                                                           . "</a></td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skindelete&amp;skinid=$current->sdnumber' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skindelete&amp;skinid={$current->sdnumber}' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             break;
@@ -1095,9 +1088,9 @@ function listplug_table_draftlist($template, $type)
 
             echo '<td>', hsc($current->bshortname), '</td>';
             echo '<td>', hsc(strip_tags($current->ititle)), '</td>';
-            echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"
+            echo "<td><a href='index.php?action=itemedit&amp;itemid={$current->inumber}'>"
                  . _LISTS_EDIT . "</a></td>";
-            echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"
+            echo "<td><a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>"
                  . _LISTS_DELETE . "</a></td>";
 
             break;
@@ -1118,9 +1111,9 @@ function listplug_table_otherdraftlist($template, $type)
             echo '<td>', hsc($current->bshortname), '</td>';
             echo '<td>', hsc(strip_tags($current->ititle)), '</td>';
             echo '<td>', hsc($current->mname), '</td>';
-            echo "<td><a href='index.php?action=itemedit&amp;itemid=$current->inumber'>"
+            echo "<td><a href='index.php?action=itemedit&amp;itemid={$current->inumber}'>"
                  . _LISTS_EDIT . "</a></td>";
-            echo "<td><a href='index.php?action=itemdelete&amp;itemid=$current->inumber'>"
+            echo "<td><a href='index.php?action=itemdelete&amp;itemid={$current->inumber}'>"
                  . _LISTS_DELETE . "</a></td>";
 
             break;
@@ -1177,7 +1170,7 @@ function listplug_table_systemloglist($template, $type)
                 'Y-m-d H:i:s',
                 strtotime($current->timestamp_utc . ' UTC')
             );
-            $lines[]    = '<td>' . hsc($local_time) . '</td>';
+            $lines[] = '<td>' . hsc($local_time) . '</td>';
             //            $lines[] = sprintf('<td>%s<br />%s</td>', hsc($current->logyear), hsc($current->logid));
             //            $lines[] = sprintf('<td>%s<br />%s</td>', hsc($current->logtype), hsc($current->subtype));
             $lines[] = sprintf(

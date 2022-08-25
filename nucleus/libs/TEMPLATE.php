@@ -18,20 +18,14 @@
 
 class TEMPLATE
 {
-
     public $id;
 
-    function __construct($templateid)
+    public function __construct($templateid)
     {
         $this->id = (int)$templateid;
     }
 
-    public function TEMPLATE($templateid)
-    {
-        $this->__construct($templateid);
-    }
-
-    function getID()
+    public function getID()
     {
         return (int)$this->id;
     }
@@ -60,7 +54,7 @@ class TEMPLATE
     /**
      * Updates the general information about the template
      */
-    function updateGeneralInfo($name, $desc)
+    public function updateGeneralInfo($name, $desc)
     {
         sql_query(sprintf(
             "UPDATE %s SET tdname='%s', tddesc='%s' WHERE tdnumber=%d",
@@ -74,7 +68,7 @@ class TEMPLATE
     /**
      * Updates the contents of one part of the template
      */
-    function update($type, $content)
+    public function update($type, $content)
     {
         $id = $this->getID();
 
@@ -109,11 +103,10 @@ class TEMPLATE
         }
     }
 
-
     /**
      * Deletes all template parts from the database
      */
-    function deleteAllParts()
+    public function deleteAllParts()
     {
         sql_query(
             sprintf(
@@ -156,7 +149,6 @@ class TEMPLATE
 
         return $newId;
     }
-
 
     /**
      * Reads a template and returns an array with the parts.
@@ -218,7 +210,7 @@ class TEMPLATE
         if (count($values) != 0) {
             // go through all the values
             for (reset($values); $key = key($values); next($values)) {
-                $template = str_replace("<%$key%>", $values[$key], $template);
+                $template = str_replace("<%{$key}%>", $values[$key], $template);
             }
         }
 

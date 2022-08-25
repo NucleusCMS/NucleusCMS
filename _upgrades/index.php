@@ -14,6 +14,15 @@
  *
  */
 
+if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+    $ver = explode('.', phpversion());
+    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
+    }
+    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
+}
+
 global $CONF;
 
 include_once('define.php');
@@ -28,7 +37,7 @@ include_once('sql.functions.php');
 
 load_upgrade_lang();
 
-if (getVar('mode')==='exec') {
+if (getVar('mode') === 'exec') {
     include_once('upgrade.php');
     exit;
 }
@@ -39,21 +48,21 @@ if (!$member->isLoggedIn()) {
 } elseif (!$member->isAdmin()) {
     $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
 } elseif (!upgrade_checkinstall(300)) {
-    $tpl = file_get_contents('tpl/content_beforev2.tpl');
-    $ph = array();
-    $ph['UPGRADE_ABORTED'] = _UPG_TEXT_UPGRADE_ABORTED;
-    $ph['WARN_OLD_UNSUPPORT_CORE_STOP'] = _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP;
+    $tpl                                     = file_get_contents('tpl/content_beforev2.tpl');
+    $ph                                      = array();
+    $ph['UPGRADE_ABORTED']                   = _UPG_TEXT_UPGRADE_ABORTED;
+    $ph['WARN_OLD_UNSUPPORT_CORE_STOP']      = _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP;
     $ph['WARN_OLD_UNSUPPORT_CORE_STOP_INFO'] = _UPG_TEXT_WARN_OLD_UNSUPPORT_CORE_STOP_INFO;
-    $content = upgrade_error(parseHtml($tpl, $ph));
+    $content                                 = upgrade_error(parseHtml($tpl, $ph));
 } else {
-    $tpl = file_get_contents('tpl/content_default.tpl');
-    $ph = array();
+    $tpl                   = file_get_contents('tpl/content_default.tpl');
+    $ph                    = array();
     $ph['UPGRADE_SCRIPTS'] = _UPG_TEXT_UPGRADE_SCRIPTS;
     $ph['NOTE01NEW']       = _UPG_TEXT_NOTE01NEW;
     $ph['NOTE02']          = _UPG_TEXT_NOTE02;
     $ph['AdminURL']        = $CONF['AdminURL'];
     $ph['BACKHOME']        = _UPG_TEXT_BACKHOME;
-    $content = parseHtml(parseHtml($tpl, $ph), array('content'=>get_default_content()));
+    $content               = parseHtml(parseHtml($tpl, $ph), array('content' => get_default_content()));
 }
 
 echo renderPage($content);
