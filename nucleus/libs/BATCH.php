@@ -29,11 +29,6 @@ class BATCH extends ENCAPSULATE
         $this->type = $type;
     }
 
-    public function BATCH($type)
-    {
-        $this->__construct($type);
-    }
-
     public function showHead()
     {
         ?>

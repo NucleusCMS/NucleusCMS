@@ -32,11 +32,6 @@ class Backup
      */
     public function __construct()
     {
-        $this->Backup();
-    }
-
-    public function Backup()
-    {
         // do nothing
 
         ob_start();

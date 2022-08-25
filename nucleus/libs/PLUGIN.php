@@ -544,11 +544,6 @@ class NucleusPlugin
         $this->init_driver_flag();
     }
 
-    public function NucleusPlugin()
-    {
-        $this->__construct();
-    }
-
     private $data_getoptiontop = array();
 
     /**

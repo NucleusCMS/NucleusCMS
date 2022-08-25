@@ -25,11 +25,6 @@ class TEMPLATE
         $this->id = (int)$templateid;
     }
 
-    public function TEMPLATE($templateid)
-    {
-        $this->__construct($templateid);
-    }
-
     public function getID()
     {
         return (int)$this->id;

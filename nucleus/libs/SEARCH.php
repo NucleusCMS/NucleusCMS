@@ -34,11 +34,6 @@ class SEARCH
         $this->keywords = $this->forge_keywords($keywords);
     }
 
-    public function SEARCH($keywords)
-    {
-        $this->__construct($keywords);
-    }
-
     public function forge_keywords($keywords)
     {
         $chars    = explode(' ', '/ ] [ < > = ? ! # ^ ( ) : ; \\ %');

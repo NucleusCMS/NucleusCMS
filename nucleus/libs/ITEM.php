@@ -30,11 +30,6 @@ class ITEM
         $this->itemid = $itemid;
     }
 
-    public function ITEM($itemid)
-    {
-        $this->__construct($itemid);
-    }
-
     /**
      * Returns one item with the specific itemid
      *
