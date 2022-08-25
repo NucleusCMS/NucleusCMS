@@ -17,6 +17,11 @@
  */
 
 if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+    if (!headers_sent()) {
+        header("HTTP/1.0 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+    }
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
