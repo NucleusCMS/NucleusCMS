@@ -19,7 +19,7 @@ ob_start();
 define('_CHARSET', 'UTF-8');
 
 // auto search config.php
-$basepath = realpath(dirname(__FILE__) . '/../../');
+$basepath = realpath(__DIR__ . '/../../');
 if (substr($basepath, -1, 1) != DIRECTORY_SEPARATOR) {
     $basepath .= DIRECTORY_SEPARATOR;
 }
@@ -160,7 +160,7 @@ class ConvertInstaller
                 return $text;
             }
             // skin for default
-            $filename = dirname(__FILE__) . '/default_text.xml';
+            $filename = __DIR__ . '/default_text.xml';
             if (!is_file($filename)) {
                 return $text;
             }
@@ -278,7 +278,7 @@ EOD;
 
     private function doConvert()
     {
-        include_once(dirname(__FILE__) . DIRECTORY_SEPARATOR . "table_conv_mysql_to_sqlite.php");
+        include_once(__DIR__ . DIRECTORY_SEPARATOR . "table_conv_mysql_to_sqlite.php");
 
         //$obj = new TableConvertor();
         $obj = new TableConvertor_mysql_to_sqlite();
@@ -330,7 +330,7 @@ EOD;
 \$DB_DRIVER_NAME = &#039;sqlite&#039;; \$DB_PHP_MODULE_NAME = &#039;pdo&#039;;
 if (\$DB_DRIVER_NAME==&#039;sqlite&#039;)
 {
-   \$DB_DATABASE = dirname(__FILE__) . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
+   \$DB_DATABASE = __DIR__ . str_replace(&#039;/&#039;, DIRECTORY_SEPARATOR, &#039;/settings/db_nucleus.sqlite&#039;);
 // \$DB_DATABASE = &#039;pathto/&#039; . &#039;db_nucleus.sqlite&#039;;
 }</b></pre></blockquote>
 EOD;
@@ -389,12 +389,12 @@ global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;
 
 if (\$DB_DRIVER_NAME=='sqlite')
 {
-   \$DB_DATABASE = dirname(__FILE__) . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
+   \$DB_DATABASE = __DIR__ . str_replace('/', DIRECTORY_SEPARATOR, '/settings/db_nucleus.sqlite');
 // \$DB_DATABASE = 'pathto/' . 'db_nucleus.sqlite';
 }
 
 // main nucleus directory
-\$DIR_BASE = dirname(__FILE__) . '/';
+\$DIR_BASE = __DIR__ . '/';
 
 //\$DIR_NUCLEUS = \$DIR_BASE . 'nucleus/';
 \$DIR_NUCLEUS = {$newDir['DIR_NUCLEUS']};
@@ -422,7 +422,7 @@ if (\$DB_DRIVER_NAME=='sqlite')
 \$DIR_LIBS = {$newDir['DIR_LIBS']};
 
 if (!isset(\$DIR_NUCLEUS) || !@is_file(\$DIR_LIBS . 'globalfunctions.php')) {
-    foreach(array(\$DIR_LIBS , dirname(__FILE__).'/nucleus/libs/') as \$path)
+    foreach(array(\$DIR_LIBS , __DIR__.'/nucleus/libs/') as \$path)
         if (@is_file(\$path.'config-error.php')) @include(\$path.'config-error.php');
     header('Content-type: text/html; charset=utf-8');
     echo '<h1>Configuration error</h1>';

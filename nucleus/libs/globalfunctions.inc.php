@@ -17,7 +17,7 @@
  */
 
 if (!defined('_PHPFUNCTIONS_PHP_')) {
-    include_once(dirname(__FILE__) . '/phpfunctions.php');
+    include_once(__DIR__ . '/phpfunctions.php');
 }
 
 function include_libs($file, $once = true, $require = true)

@@ -19,7 +19,7 @@
 if (! function_exists('requestVar')) {
     exit;
 }
-require_once dirname(__FILE__) . '/COMMENTACTIONS.php';
+require_once __DIR__ . '/COMMENTACTIONS.php';
 
 class COMMENTS
 {

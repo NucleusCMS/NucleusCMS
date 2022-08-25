@@ -572,7 +572,7 @@ function renderPage($content = '')
 if (!function_exists('hsc')) {
     function hsc($str)
     {
-        return htmlspecialchars(dirname(__FILE__), ENT_COMPAT, _CHARSET);
+        return htmlspecialchars(__DIR__, ENT_COMPAT, _CHARSET);
     }
 }
 
@@ -598,7 +598,7 @@ function get_default_content()
         if (!defined('_ERRORS_UPGRADESDIR')) {
             define('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
         }
-        $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, hsc(dirname(__FILE__)));
+        $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, hsc(__DIR__));
     } else {
         $tmp_title  = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_UPGRADE_VERSION);
         $messages[] = sprintf('<p class="warning"><a href="?mode=exec&from=%s&db_optimize=1">%s</a></p>', $current, $tmp_title);

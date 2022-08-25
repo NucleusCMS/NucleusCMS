@@ -23,7 +23,7 @@
  * ==========================================================================================
  */
 $DIR_LIBS = '';
-$p        = explode(DIRECTORY_SEPARATOR, dirname(__FILE__));
+$p        = explode(DIRECTORY_SEPARATOR, __DIR__);
 while ($p && array_pop($p) && !empty($p)) {
     $strRel = implode(DIRECTORY_SEPARATOR, $p) . DIRECTORY_SEPARATOR;
     if (@is_file($strRel . 'config.php')) {
