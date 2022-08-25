@@ -77,7 +77,7 @@ function get_charname_from_langname($language_name = 'english-utf8')
 {
     $language_name = strtolower($language_name);
 
-    if (strpos(strtolower($language_name), 'utf8') !== false) {
+    if (str_contains(strtolower($language_name), 'utf8')) {
         return 'utf8';
     }
 
@@ -172,7 +172,7 @@ function treat_char_name($charset = 'utf8mb4')
 function getCharSetFromDB($tableName, $columnName, $dbh = null)
 {
     $collation = getCollationFromDB($tableName, $columnName, $dbh);
-    if (strpos($collation, '_') === false) {
+    if (!str_contains($collation, '_')) {
         $charset = $collation;
     } else {
         list($charset, $dummy) = explode('_', $collation, 2);

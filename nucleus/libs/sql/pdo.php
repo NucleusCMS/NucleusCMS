@@ -48,7 +48,7 @@ if (!function_exists('sql_fetch_assoc')) {
 //        var_dump($AvailableDrivers);
 
         try {
-            if (strpos($db_host, ':') === false) {
+            if (!str_contains($db_host, ':')) {
                 $host    = $db_host;
                 $port    = '';
                 $portnum = '';
@@ -143,7 +143,7 @@ if (!function_exists('sql_fetch_assoc')) {
                     // check file path
                     $db_path = trim(dirname($db_name));
                     if ((strlen($db_path) == 0) || !is_dir($db_path)
-                        || (strpos(str_replace("\\", '/', $db_path), '/') === false)) {
+                        || (!str_contains(str_replace("\\", '/', $db_path), '/'))) {
                         exit('ERROR : database filename maybe wrong ');
                     }
 

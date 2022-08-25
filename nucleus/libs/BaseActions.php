@@ -102,7 +102,7 @@ class BaseActions
         if (!$skin->isValid && !file_exists($file)) {
             return;
         }
-        $contents = (strpos($filename, '/') === false ? $skin->getContent($filename) : false);
+        $contents = (!str_contains($filename, '/') ? $skin->getContent($filename) : false);
         if (!$contents) {
             if (!is_file($file)) {
                 return;
@@ -114,7 +114,7 @@ class BaseActions
         }
         $this->level = $this->level + 1;
         // parse file contents
-        if (strpos($contents, '<%') !== false) {
+        if (str_contains($contents, '<%')) {
             $this->parser->parse($contents);
         } else {
             echo $contents;

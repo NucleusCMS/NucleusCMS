@@ -491,18 +491,18 @@ function upgrade_check_plugin_syntax()
         exec("{$php} -l {$arg}", $output, $retval);
         $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
         if (defined('UPGRADE_AUTOFIX_PLUGIN') && UPGRADE_AUTOFIX_PLUGIN) {
-            if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)") !== false) {
+            if (str_contains($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")) {
                 upgrade_remove_RefNew($file);
                 $output1 = $output;
                 $output  = '';
                 exec("{$php} -l {$arg}", $output, $retval);
                 $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
-                if (strpos($output, 'No syntax errors detected') !== false) {
+                if (str_contains($output, 'No syntax errors detected')) {
                     $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file, strlen($DIR_PLUGINS)), hsc($output1));
                 }
             }
         }
-        if (strpos($output, 'No syntax errors detected') !== false) {
+        if (str_contains($output, 'No syntax errors detected')) {
             continue;
         }
         if (preg_match('/^[^:]+error:/', $output)) {

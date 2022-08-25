@@ -67,18 +67,18 @@ class PARSER
         if (is_null($contents)) {
             return;
         }
-        if (strpos($contents, '<%') === false) {
+        if (!str_contains($contents, '<%')) {
             echo $contents;
             return;
         }
         $hashedTagBM = md5('<%BenchMark%>');
-        if (strpos($contents, '<%BenchMark%>') !== false) {
+        if (str_contains($contents, '<%BenchMark%>')) {
             if (!$manager->pluginInstalled('NP_BenchMark')) {
                 $contents = str_replace('<%BenchMark%>', $hashedTagBM, $contents);
             }
         }
         $hashedTagDI = md5('<%DebugInfo%>');
-        if (strpos($contents, '<%DebugInfo%>') !== false) {
+        if (str_contains($contents, '<%DebugInfo%>')) {
             if (!$manager->pluginInstalled('NP_DebugInfo')) {
                 $contents = str_replace('<%DebugInfo%>', $hashedTagDI, $contents);
             }

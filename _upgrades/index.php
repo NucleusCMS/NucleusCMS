@@ -193,7 +193,7 @@ function upgrade_manual_366()
 {
     $row     = array();
     $content = @file_get_contents('../../action.php');
-    if (strpos($content, '=&') === false) {
+    if (!str_contains($content, '=&')) {
         return '';
     }
     $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';

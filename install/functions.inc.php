@@ -506,7 +506,7 @@ function doInstall()
                 $query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
             }
 
-            if ($is_install_mysql && $mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0) {
+            if ($is_install_mysql && $mysql_create != 1 && str_starts_with($query, 'CREATE TABLE')) {
                 $query .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
             }
 

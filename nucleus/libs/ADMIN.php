@@ -8519,7 +8519,7 @@ EOD;
             $values  = array();
             $nexturl = $url;
             while ($count < 100 && ($s = Utils::httpGet($nexturl, $http_raw_options))) {
-                if (strpos($s['header'], '403 Forbidden') !== false) {
+                if (str_contains($s['header'], '403 Forbidden')) {
                     $forbidden = 1;
                     break;
                 }

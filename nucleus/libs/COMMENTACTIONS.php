@@ -131,7 +131,8 @@ class COMMENTACTIONS extends BaseActions
             // begin if: comment userid is not empty
             if (!empty($comment['userid'])) {
                 // begin if: comment userid has either "http://" or "https://" at the beginning
-                if ((strpos($comment['userid'], 'http://') === 0) || (strpos($comment['userid'], 'https://') === 0)) {
+                if ((str_starts_with($comment['userid'], 'http://'))
+                 || (str_starts_with($comment['userid'], 'https://'))) {
                     $comment['userlinkraw'] = $comment['userid'];
                 } // else: prepend the "http://" (backwards compatibility before rev 1471)
                 else {

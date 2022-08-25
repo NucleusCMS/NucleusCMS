@@ -1278,7 +1278,7 @@ function createBlogLink($url, $params)
 {
     global $CONF;
     if ($CONF['URLMode'] == 'normal') {
-        if (strpos($url, '?') === false && is_array($params)) {
+        if (!str_contains($url, '?') && is_array($params)) {
             $fParam = reset($params);
             $fKey   = key($params);
             array_shift($params);
@@ -1639,7 +1639,7 @@ function ticketForPlugin()
     $p_translated = str_replace('\\', '/', $p_translated);
     $d_plugins    = str_replace('\\', '/', $DIR_PLUGINS);
 
-    if (strpos($p_translated, $d_plugins) !== 0) {
+    if (!str_starts_with($p_translated, $d_plugins)) {
         return;// This isn't plugin php file.
     }
 
@@ -2501,7 +2501,7 @@ function parseText($tpl = '', $ph = array())
     }
 
     foreach ($ph as $k => $v) {
-        if (strpos($tpl, '<%') === false) {
+        if (!str_contains($tpl, '<%')) {
             break;
         }
         $tpl = str_replace("<%{$k}%>", (string) $v, $tpl);
@@ -2520,22 +2520,22 @@ function parseHtml($query = '', $ph = array())
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'] . mt_rand());
 
     foreach ($ph as $k => $v) {
-        if (strpos($query, '{%') === false) {
+        if (!str_contains($query, '{%')) {
             break;
         }
 
-        if (strpos($v, '{%') !== false) {
+        if (str_contains($v, '{%')) {
             $v = str_replace('{%', "[{$esc}%", $v);
         }
         $query = str_replace("{%{$k}%}", $v, $query);
-        if (strpos($query, "{%{$k}:hsc%}") !== false) {
+        if (str_contains($query, "{%{$k}:hsc%}")) {
             $query = str_replace("{%{$k}:hsc%}", hsc($v), $query);
         }
-        if (strpos($query, "{%{$k}:urlencode%}") !== false) {
+        if (str_contains($query, "{%{$k}:urlencode%}")) {
             $query = str_replace("{%{$k}:urlencode%}", urlencode($v), $query);
         }
     }
-    if (strpos($query, '{' . $esc . '%') !== false) {
+    if (str_contains($query, '{' . $esc . '%')) {
         $query = str_replace('{' . $esc . '%', '{%', $query);
     }
     return $query;
@@ -2545,7 +2545,7 @@ function parseQuery($query = '', $ph = array())
 {
     // $ph is placeholders
 
-    if (strpos($query, '<%') !== false) {
+    if (str_contains($query, '<%')) {
         $query = str_replace(array('<%', '%>'), array('[@', '@]'), $query);
     }
 
@@ -2558,22 +2558,22 @@ function parseQuery($query = '', $ph = array())
     }
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'] . mt_rand());
     foreach ($ph as $k => $v) {
-        if (strpos($query, '[@') === false) {
+        if (!str_contains($query, '[@')) {
             break;
         }
 
-        if (strpos($v, '[@') !== false) {
+        if (str_contains($v, '[@')) {
             $v = str_replace('[@', "[{$esc}@", $v);
         }
         $query = str_replace("[@{$k}@]", $v, $query);
-        if (strpos($query, "[@{$k}:escape@]") !== false) {
+        if (str_contains($query, "[@{$k}:escape@]")) {
             $query = str_replace("[@{$k}:escape@]", sql_real_escape_string($v), $query);
         }
-        if (strpos($query, "[@{$k}:int@]") !== false) {
+        if (str_contains($query, "[@{$k}:int@]")) {
             $query = str_replace("[@{$k}:int@]", (int)$v, $query);
         }
     }
-    if (strpos($query, "[{$esc}@") !== false) {
+    if (str_contains($query, "[{$esc}@")) {
         $query = str_replace("<[{$esc}}@", '[@', $query);
     }
     return $query;

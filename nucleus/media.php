@@ -116,7 +116,7 @@ function media_select()
     // get collection list
     $collections = MEDIA::getCollectionList();
 
-    if (sizeof($collections) > 1) {
+    if (count($collections) > 1) {
         ?>
         <form method="post" action="media.php"><div>
             <label for="media_collection"><?php echo hsc(_MEDIA_COLLECTION_LABEL)?></label>
@@ -170,9 +170,9 @@ function media_select()
     $idxStart = 0;
     $idxEnd   = 0;
 
-    if (sizeof($arr) > 0) {
-        if (($offset + $CONF['MediaPerPage']) >= sizeof($arr)) {
-            $offset = sizeof($arr) - $CONF['MediaPerPage'];
+    if (count($arr) > 0) {
+        if (($offset + $CONF['MediaPerPage']) >= count($arr)) {
+            $offset = count($arr) - $CONF['MediaPerPage'];
         }
 
         if ($offset < 0) {
@@ -188,8 +188,8 @@ function media_select()
             $idxPrev = 0;
         }
 
-        if ($idxEnd > sizeof($arr)) {
-            $idxEnd = sizeof($arr);
+        if ($idxEnd > count($arr)) {
+            $idxEnd = count($arr);
         }
 
         for ($i = $idxStart; $i < $idxEnd; $i++) {
@@ -235,10 +235,10 @@ function media_select()
         </table>
     <?php
     if ($idxStart > 0) {
-        echo "<a href='media.php?offset=$idxPrev&amp;collection=".urlencode($currentCollection)."'>". _LISTS_PREV."</a> ";
+        echo "<a href='media.php?offset={$idxPrev}&amp;collection=".urlencode($currentCollection)."'>". _LISTS_PREV."</a> ";
     }
-    if ($idxEnd < sizeof($arr)) {
-        echo "<a href='media.php?offset=$idxNext&amp;collection=".urlencode($currentCollection)."'>". _LISTS_NEXT."</a> ";
+    if ($idxEnd < count($arr)) {
+        echo "<a href='media.php?offset={$idxNext}&amp;collection=".urlencode($currentCollection)."'>". _LISTS_NEXT."</a> ";
     }
 
     ?>
@@ -273,7 +273,7 @@ function media_choose()
       File:
       <br />
       <input name="uploadfile" type="file" size="40" />
-    <?php        if (sizeof($collections) > 1) {
+    <?php        if (count($collections) > 1) {
         ?>
         <br /><br /><label for="upload_collection">Collection:</label>
         <br /><select name="collection" id="upload_collection">
