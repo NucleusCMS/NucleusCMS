@@ -6941,9 +6941,11 @@ EOL;
             echo "</table>\n";
 
             // Important settings of the installation
+            $btn = sprintf("<span onclick='%s'> [+]</span>", 'this.style.display = "none";  document.getElementById("div_imp1").style.height = "auto";');
+            echo "<div style='height: 15.5em; overflow: auto' id='div_imp1'>\n";
             echo "<table>\n";
             echo "\t<tr>";
-            echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS . "</th>\n";
+            echo "\t\t" . '<th colspan="2" style="position:sticky;top:0;left:0;">' . _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS . $btn."</th>\n";
             echo "\t</tr>\n";
 
             $items   = []; // name , value[, style sheet]
@@ -6989,6 +6991,7 @@ EOL;
                 }
             }
             echo "</table>\n";
+            echo "</div>\n";
 
             // Mysql Emulate Functions
             echo $this->getMysqlEmulateInfo();
