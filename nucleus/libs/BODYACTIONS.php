@@ -57,7 +57,7 @@ class BODYACTIONS extends BaseActions
      */
     public function getDefinedActions()
     {
-        return array(
+        return [
             'image',
             'media',
             'popup',
@@ -68,7 +68,7 @@ class BODYACTIONS extends BaseActions
             'elseif',
             'ifnot',
             'elseifnot',
-        );
+        ];
     }
 
     /**
@@ -99,9 +99,9 @@ class BODYACTIONS extends BaseActions
         array_shift($params);
 
         // add item reference (array_unshift didn't work)
-        $params = array_merge(array(&$this->currentItem), $params);
+        $params = array_merge([&$this->currentItem], $params);
 
-        call_user_func_array(array($plugin, 'doItemVar'), $params);
+        call_user_func_array([$plugin, 'doItemVar'], $params);
     }
 
     /**
@@ -113,7 +113,7 @@ class BODYACTIONS extends BaseActions
         // image/popup calls have arguments separated by |
         $args = func_get_args();
         $args = explode('|', implode(', ', $args));
-        call_user_func_array(array($this, 'createImageCode'), $args);
+        call_user_func_array([$this, 'createImageCode'], $args);
     }
 
     /**
@@ -153,7 +153,7 @@ class BODYACTIONS extends BaseActions
         // image/popup calls have arguments separated by |
         $args = func_get_args();
         $args = explode('|', implode(', ', $args));
-        call_user_func_array(array($this, 'createMediaCode'), $args);
+        call_user_func_array([$this, 'createMediaCode'], $args);
     }
 
     /**
@@ -185,7 +185,7 @@ class BODYACTIONS extends BaseActions
         // image/popup calls have arguments separated by |
         $args = func_get_args();
         $args = explode('|', implode(', ', $args));
-        call_user_func_array(array($this, 'createPopupCode'), $args);
+        call_user_func_array([$this, 'createPopupCode'], $args);
     }
 
     /**
@@ -517,7 +517,7 @@ class BODYACTIONS extends BaseActions
         $params = func_get_args();
         array_shift($params);
 
-        return call_user_func_array(array($plugin, 'doIf'), $params);
+        return call_user_func_array([$plugin, 'doIf'], $params);
     }
 
     public function parse_commentclosed()

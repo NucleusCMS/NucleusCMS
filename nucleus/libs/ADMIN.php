@@ -50,10 +50,10 @@ class ADMIN
         global $manager;
 
         // list of action aliases
-        $alias = array(
+        $alias = [
             'login' => 'overview',
             ''      => 'overview',
-        );
+        ];
 
         if (isset($alias[$action])) {
             $action = $alias[$action];
@@ -66,7 +66,7 @@ class ADMIN
         // check ticket. All actions need a ticket, unless they are considered to be safe (a safe action
         // is an action that requires user interaction before something is actually done)
         // all safe actions are in this array:
-        $aActionsNotToCheck = array(
+        $aActionsNotToCheck = [
             'showlogin',
             'login',
             'overview',
@@ -122,7 +122,7 @@ class ADMIN
             'optimizeoverview',
             'skinchangestype',
             'systemlog',
-        );
+        ];
         /*
         // the rest of the actions needs to be checked
         $aActionsToCheck = array('additem', 'itemupdate', 'itemmoveto', 'itemclone', 'categoryupdate', 'categorydeleteconfirm', 'itemdeleteconfirm', 'commentdeleteconfirm', 'teamdeleteconfirm', 'memberdeleteconfirm', 'templatedeleteconfirm', 'skindeleteconfirm', 'banlistdeleteconfirm', 'plugindeleteconfirm', 'batchitem', 'batchcomment', 'batchmember', 'batchcategory', 'batchteam', 'regfile', 'commentupdate', 'banlistadd', 'changemembersettings', 'clearactionlog', 'settingsupdate', 'blogsettingsupdate', 'categorynew', 'teamchangeadmin', 'teamaddmember', 'memberadd', 'addnewlog', 'addnewlog2', 'backupcreate', 'backuprestore', 'pluginup', 'plugindown', 'pluginupdate', 'pluginadd', 'pluginoptionsupdate', 'skinupdate', 'skinclone', 'skineditgeneral', 'templateclone', 'templatenew', 'templateupdate', 'skinieimport', 'skinieexport', 'skiniedoimport', 'skinnew', 'deleteblogconfirm', 'activatesetpwd');
@@ -134,7 +134,7 @@ class ADMIN
         }
 
         if (method_exists($this, $methodName)) {
-            call_user_func(array($this, $methodName));
+            call_user_func([$this, $methodName]);
         } else {
             $this->error(_BADACTION . hsc(" ({$action})"));
         }
@@ -220,7 +220,7 @@ class ADMIN
         /* ---- add items ---- */
         echo '<h2>' . _OVERVIEW_YRBLOGS . '</h2>';
 
-        $ph = array();
+        $ph = [];
         if (requestVar('showall') == 'yes' && $member->isAdmin()) {
             // Super-Admins have access to all blogs! (no add item support though)
             $query = 'SELECT bnumber, bname, 1 as tadmin, burl, bshortname';
@@ -255,10 +255,10 @@ class ADMIN
             // Todo display author
             $query = parseQuery(
                 'SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY bnumber ASC',
-                array('iauthor' => $member->getID())
+                ['iauthor' => $member->getID()]
             );
 
-            $items = array();
+            $items = [];
             $rs    = sql_query($query);
             if ($rs) {
                 while ($row = sql_fetch_row($rs)) {
@@ -1092,7 +1092,7 @@ class ADMIN
         global $member, $CONF;
 
         // 0. get IDs of blogs to which member can post items (+ forced blog)
-        $aBlogIds = array();
+        $aBlogIds = [];
         if ($iForcedBlogInclude != -1) {
             $aBlogIds[] = (int) $iForcedBlogInclude;
         }
@@ -1212,7 +1212,7 @@ class ADMIN
         }
 
         if ($search) {
-            $ph           = array();
+            $ph           = [];
             $ph['search'] = sql_quote_string('%' . $search . '%');
             $query .= parseQuery(' and ((ititle LIKE [@search@]) or (ibody LIKE [@search@]) or (imore LIKE [@search@]))', $ph);
         }
@@ -1500,7 +1500,7 @@ class ADMIN
         }
         $blog = &$manager->getBlog(getBlogIDFromItemID($itemid));
 
-        $param = array('item' => &$item);
+        $param = ['item' => &$item];
         $manager->notify('PrepareItemForEdit', $param);
 
         if ($blog->convertBreaks()) {
@@ -1577,7 +1577,7 @@ class ADMIN
         $blogid = getBlogIDFromItemID($itemid);
         $blog   = &$manager->getBlog($blogid);
 
-        $wasdrafts = array('adddraft', 'addfuture', 'addnow');
+        $wasdrafts = ['adddraft', 'addfuture', 'addnow'];
         $wasdraft  = in_array($actiontype, $wasdrafts) ? 1 : 0;
         $publish   = ($actiontype != 'adddraft' && $actiontype != 'backtodrafts') ? 1 : 0;
         if ($actiontype == 'addfuture' || $actiontype == 'changedate') {
@@ -1894,7 +1894,7 @@ class ADMIN
             $this->action_categoryedit($result['catid'], $blogid, $distURI);
         } else {
             $methodName = 'action_itemList';
-            call_user_func(array($this, $methodName), $blogid);
+            call_user_func([$this, $methodName], $blogid);
         }
     }
 
@@ -1911,7 +1911,7 @@ class ADMIN
 
         $comment = COMMENT::getComment($commentid);
 
-        $param = array('comment' => &$comment);
+        $param = ['comment' => &$comment];
         $manager->notify('PrepareCommentForEdit', $param);
 
         // change <br /> to \n
@@ -2014,7 +2014,7 @@ class ADMIN
         $body = COMMENT::prepareBody($body);
 
         // call plugins
-        $param = array('body' => &$body);
+        $param = ['body' => &$body];
         $manager->notify('PreUpdateComment', $param);
 
         $query = 'UPDATE ' . sql_table('comment')
@@ -2120,14 +2120,14 @@ class ADMIN
             return _ERROR_DISALLOWED;
         }
 
-        $param = array('commentid' => $commentid);
+        $param = ['commentid' => $commentid];
         $manager->notify('PreDeleteComment', $param);
 
         // delete the comments associated with the item
         $query = 'DELETE FROM ' . sql_table('comment') . ' WHERE cnumber=' . $commentid;
         sql_query($query);
 
-        $param = array('commentid' => $commentid);
+        $param = ['commentid' => $commentid];
         $manager->notify('PostDeleteComment', $param);
 
         return '';
@@ -2402,12 +2402,12 @@ class ADMIN
             $select_page_after_save = $member->getOption('item', 'select_page_after_save', '');
             printf("<tr><td>%s</td><td>\n", hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_TITLE));
             echo "<select name='select_page_after_save' tabindex='88'>";
-            $v = array(
+            $v = [
                 ''                   => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_ITEM) ,
                 'list'               => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST) ,
                 'list_with_category' => hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_LIST_WITH_CATEGORY) ,
                 'back_home'          => hsc(_BACKHOME) ,
-            );
+            ];
             foreach ($v as $key => $value) {
                 $op = $key === $select_page_after_save ? " selected='selected'" : '';
                 printf("<option value='%s'%s>%s</option>", $key, $op, $value);
@@ -2429,7 +2429,7 @@ class ADMIN
         <?php
         echo '<h3>', _PLUGINS_EXTRA, '</h3>';
 
-        $param = array('member' => &$mem);
+        $param = ['member' => &$mem];
         $manager->notify('MemberSettingsFormExtras', $param);
 
         $this->pagefoot();
@@ -2490,11 +2490,11 @@ class ADMIN
             if ($password) {
                 $pwdvalid = true;
                 $pwderror = '';
-                $param    = array(
+                $param    = [
                     'password'     => $password,
                     'errormessage' => &$pwderror,
                     'valid'        => &$pwdvalid,
-                );
+                ];
                 $manager->notify('PrePasswordSet', $param);
                 if (!$pwdvalid) {
                     $this->error($pwderror);
@@ -2558,7 +2558,7 @@ class ADMIN
         // Which page does current member want to select after saving the item?
         if (MEMBER::existOptionTable()) {
             $select_page_after_save = (string) postVar('select_page_after_save');
-            if (!in_array($select_page_after_save, array('','list','list_with_category','back_home'))) {
+            if (!in_array($select_page_after_save, ['','list','list_with_category','back_home'])) {
                 $select_page_after_save = '';
             }
             $mem->updateOption('item', 'select_page_after_save', $select_page_after_save);
@@ -2567,11 +2567,11 @@ class ADMIN
         // store plugin options
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $param = array(
+        $param = [
             'context'  => 'member',
             'memberid' => $memberid,
             'member'   => &$mem,
-        );
+        ];
         $manager->notify('PostPluginOptionsUpdate', $param);
 
         // if email changed, generate new password
@@ -2627,7 +2627,7 @@ class ADMIN
         // fire PostRegister event
         $newmem = new MEMBER();
         $newmem->readFromName(postVar('name'));
-        $param = array('member' => &$newmem);
+        $param = ['member' => &$newmem];
         $manager->notify('PostRegister', $param);
 
         $this->action_usermanagement();
@@ -2688,9 +2688,9 @@ class ADMIN
                 break;
         }
 
-        $aVars = array(
+        $aVars = [
             'memberName' => hsc($mem->getDisplayName()),
-        );
+        ];
         $title = TEMPLATE::fill($title, $aVars);
         $text  = TEMPLATE::fill($text, $aVars);
 
@@ -2725,10 +2725,10 @@ class ADMIN
                             <?php
 
                             global $manager;
-            $param = array(
+            $param = [
                 'type'   => 'activation',
                 'member' => $mem,
-            );
+            ];
             $manager->notify('FormExtra', $param);
 
             ?>
@@ -2798,11 +2798,11 @@ class ADMIN
             $pwderror = '';
 
             global $manager;
-            $param = array(
+            $param = [
                 'password'     => $password,
                 'errormessage' => &$pwderror,
                 'valid'        => &$pwdvalid,
-            );
+            ];
             $manager->notify('PrePasswordSet', $param);
 
             if (!$pwdvalid) {
@@ -2811,11 +2811,11 @@ class ADMIN
         }
 
         $error = '';
-        $param = array(
+        $param = [
             'type'   => 'activation',
             'member' => $mem,
             'error'  => &$error,
-        );
+        ];
         $manager->notify('ValidateForm', $param);
         if ($error != '') {
             return $this->_showActivationPage($key, $error);
@@ -3006,10 +3006,10 @@ class ADMIN
         //           - (there remains at least one team member)
         $tmem = MEMBER::createFromID($memberid);
 
-        $param = array(
+        $param = [
             'member' => &$tmem,
             'blogid' => $blogid,
-        );
+        ];
         $manager->notify('PreDeleteTeamMember', $param);
 
         if ($tmem->isBlogAdmin($blogid)) {
@@ -3025,10 +3025,10 @@ class ADMIN
         $query = 'DELETE FROM ' . sql_table('team') . " WHERE tblog={$blogid} and tmember={$memberid}";
         sql_query($query);
 
-        $param = array(
+        $param = [
             'member' => &$tmem,
             'blogid' => $blogid,
-        );
+        ];
         $manager->notify('PostDeleteTeamMember', $param);
 
         return '';
@@ -3103,7 +3103,7 @@ class ADMIN
         <p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
             <?php
             $res      = sql_query(sprintf("SELECT mname, mrealname FROM %s,%s WHERE mnumber=tmember AND tblog=%s", sql_table('member'), sql_table('team'), (int) $blogid));
-        $aMemberNames = array();
+        $aMemberNames = [];
         if ($res) {
             while ($o = sql_fetch_object($res)) {
                 $aMemberNames[] = hsc($o->mname) . ' (' . hsc($o->mrealname) . ')';
@@ -3320,7 +3320,7 @@ class ADMIN
 
         echo '<h3>', _PLUGINS_EXTRA, '</h3>';
 
-        $param = array('blog' => &$blog);
+        $param = ['blog' => &$blog];
         $manager->notify('BlogSettingsFormExtras', $param);
         echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
         echo '<form action="index.php" method="GET">';
@@ -3503,10 +3503,10 @@ class ADMIN
         // store plugin options
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $param = array(
+        $param = [
             'context' => 'category',
             'catid'   => $catid,
-        );
+        ];
         $manager->notify('PostPluginOptionsUpdate', $param);
 
         if ($desturl) {
@@ -3626,7 +3626,7 @@ class ADMIN
             return _ERROR_DELETELASTCATEGORY;
         }
 
-        $param = array('catid' => $catid);
+        $param = ['catid' => $catid];
         $manager->notify('PreDeleteCategory', $param);
 
         // change category for all items to the default category
@@ -3640,7 +3640,7 @@ class ADMIN
         $query = 'DELETE FROM ' . sql_table('category') . ' WHERE catid=' . $catid;
         sql_query($query);
 
-        $param = array('catid' => $catid);
+        $param = ['catid' => $catid];
         $manager->notify('PostDeleteCategory', $param);
     }
 
@@ -3683,11 +3683,11 @@ class ADMIN
             return _ERROR_MOVEDEFCATEGORY;
         }
 
-        $param = array(
+        $param = [
             'catid'      => &$catid,
             'sourceblog' => &$blog,
             'destblog'   => &$destblog,
-        );
+        ];
         $manager->notify('PreMoveCategory', $param);
 
         // update comments table (cblog)
@@ -3705,11 +3705,11 @@ class ADMIN
         $query = 'UPDATE ' . sql_table('category') . ' SET cblog=' . $destblogid . ' WHERE catid=' . $catid;
         sql_query($query);
 
-        $param = array(
+        $param = [
             'catid'      => &$catid,
             'sourceblog' => &$blog,
             'destblog'   => $destblog,
-        );
+        ];
         $manager->notify('PostMoveCategory', $param);
     }
 
@@ -3736,12 +3736,12 @@ class ADMIN
         }
 
         $old_corder = $blog->getCategoryOrder($catid);
-        $param      = array(
+        $param      = [
             'catid'      => $catid,
             'blog'       => $blog,
             'old_corder' => $old_corder,
             'new_corder' => &$new_corder,
-        );
+        ];
         $manager->notify('PreChangeCategoryOrder', $param);
 
         // update category corder
@@ -3750,12 +3750,12 @@ class ADMIN
             . ' WHERE cblog=' . $blogid . ' AND catid=' . $catid;
         sql_query($query);
 
-        $param = array(
+        $param = [
             'catid'      => $catid,
             'blog'       => $blog,
             'old_corder' => $old_corder,
             'new_corder' => $new_corder,
-        );
+        ];
         $manager->notify('PostChangeCategoryOrder', $param);
     }
 
@@ -3836,11 +3836,11 @@ class ADMIN
         // store plugin options
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $param = array(
+        $param = [
             'context' => 'blog',
             'blogid'  => $blogid,
             'blog'    => &$blog,
-        );
+        ];
         $manager->notify('PostPluginOptionsUpdate', $param);
 
         //        $this->action_overview(_MSG_SETTINGSCHANGED);
@@ -3897,7 +3897,7 @@ class ADMIN
 
         $blogid = intRequestVar('blogid');
 
-        $param = array('blogid' => $blogid);
+        $param = ['blogid' => $blogid];
         $manager->notify('PreDeleteBlog', $param);
 
         $member->blogAdminRights($blogid) or $this->disallow();
@@ -3934,7 +3934,7 @@ class ADMIN
         $query = 'DELETE FROM ' . sql_table('blog') . ' WHERE bnumber=' . $blogid;
         sql_query($query);
 
-        $param = array('blogid' => $blogid);
+        $param = ['blogid' => $blogid];
         $manager->notify('PostDeleteBlog', $param);
 
         $this->action_overview(_DELETED_BLOG);
@@ -4100,7 +4100,7 @@ class ADMIN
             return _ERROR_DELETEMEMBER;
         }
 
-        $param = array('member' => &$mem);
+        $param = ['member' => &$mem];
         $manager->notify('PreDeleteMember', $param);
 
         /* unlink comments from memberid */
@@ -4132,7 +4132,7 @@ class ADMIN
         // delete all associated plugin options
         NucleusPlugin::_deleteOptionValues('member', $memberid);
 
-        $param = array('member' => &$mem);
+        $param = ['member' => &$mem];
         $manager->notify('PostDeleteMember', $param);
 
         return '';
@@ -4312,13 +4312,13 @@ class ADMIN
             $this->error(_ERROR_DUPSHORTBLOGNAME);
         }
 
-        $param = array(
+        $param = [
             'name'        => &$bname,
             'shortname'   => &$bshortname,
             'timeoffset'  => &$btimeoffset,
             'description' => &$bdesc,
             'defaultskin' => &$bdefskin,
-        );
+        ];
         $manager->notify('PreAddBlog', $param);
 
         // add slashes for sql queries
@@ -4367,17 +4367,17 @@ class ADMIN
             sql_query(sprintf('UPDATE %s SET iclosed=1 WHERE inumber=%d', sql_table('item'), $new_itemid));
         }
 
-        $param = array(
+        $param = [
             'blog' => &$blog,
-        );
+        ];
         $manager->notify('PostAddBlog', $param);
 
-        $param = array(
+        $param = [
             'blog'        => &$blog,
             'name'        => _EBLOGDEFAULTCATEGORY_NAME,
             'description' => _EBLOGDEFAULTCATEGORY_DESC,
             'catid'       => $catid,
-        );
+        ];
         $manager->notify('PostAddCategory', $param);
 
         $this->pagehead();
@@ -4762,10 +4762,10 @@ selector();
         $aTemplates = requestIntArray('template');
 
         if (!is_array($aTemplates)) {
-            $aTemplates = array();
+            $aTemplates = [];
         }
         if (!is_array($aSkins)) {
-            $aSkins = array();
+            $aSkins = [];
         }
 
         $skinList     = array_keys($aSkins);
@@ -4988,8 +4988,8 @@ selector();
                         <th colspan="2"><?php echo _TEMPLATE_PLUGIN_FIELDS ?></th>
                         <?php
         $tab          = 600;
-        $pluginfields = array();
-        $param        = array('fields' => &$pluginfields);
+        $pluginfields = [];
+        $param        = ['fields' => &$pluginfields];
         $manager->notify('TemplateExtraFields', $param);
 
         foreach ($pluginfields as $pfkey => $pfvalue) {
@@ -5066,16 +5066,16 @@ selector();
         // 1. Remove all template parts
         $query = parseQuery(
             'DELETE FROM [@prefix@]template WHERE tdesc=[@templateid@]',
-            array('templateid' => $templateid)
+            ['templateid' => $templateid]
         );
         sql_query($query);
 
         // 2. Update description
         $query = parseQuery(
             "UPDATE [@prefix@]template_desc SET tdname='[@tdname@]', tddesc='[@tddesc@]' WHERE tdnumber=[@tdnumber@]",
-            array(
+            [
                 'tdname' => sql_real_escape_string($name), 'tddesc' => sql_real_escape_string($desc), 'tdnumber' => $templateid,
-            )
+            ]
         );
         sql_query($query);
 
@@ -5115,8 +5115,8 @@ selector();
         $this->addToTemplate($templateid, 'MEDIA_CODE', postVar('MEDIA_CODE'));
         $this->addToTemplate($templateid, 'IMAGE_CODE', postVar('IMAGE_CODE'));
 
-        $pluginfields = array();
-        $param        = array('fields' => &$pluginfields);
+        $pluginfields = [];
+        $param        = ['fields' => &$pluginfields];
         $manager->notify('TemplateExtraFields', $param);
         foreach ($pluginfields as $pfkey  => $pfvalue) {
             foreach ($pfvalue as $pffield => $pfdesc) {
@@ -5201,7 +5201,7 @@ selector();
 
         $member->isAdmin() or $this->disallow();
 
-        $param = array('templateid' => $templateid);
+        $param = ['templateid' => $templateid];
         $manager->notify('PreDeleteTemplate', $param);
 
         // 1. delete description
@@ -5218,7 +5218,7 @@ selector();
             $templateid
         ));
 
-        $param = array('templateid' => $templateid);
+        $param = ['templateid' => $templateid];
         $manager->notify('PostDeleteTemplate', $param);
 
         $this->action_templateoverview();
@@ -5639,7 +5639,7 @@ selector();
             echo "<p>" . _MESSAGE . ": {$msg}</p>";
         }
 
-        $form   = array();
+        $form   = [];
         $form[] = '<form method="post" action="index.php">';
         $form[] = '<div style="text-align: left;">';
         $form[] = '<input type="hidden" name="action" value="skinupdate" />';
@@ -5660,7 +5660,7 @@ selector();
                     '(skin type: %s)',
                     hsc(isset($friendlyNames[$type]) ? $friendlyNames[$type] : $type)
                 );
-                $types = array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup');
+                $types = ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'];
                 if (in_array($type, $types)) {
                     $subtitle .= helpHtml('skinpart' . $type);
                 } else {
@@ -5671,7 +5671,7 @@ selector();
 
         $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent(
             $type,
-            array('spartstype' => $spartstype)
+            ['spartstype' => $spartstype]
         )));
 
         $form[] = '<br />';
@@ -5734,7 +5734,7 @@ selector();
                 $SpecialskinKey = $CONF['SpecialskinKey'];
             }
             echo "<br /><br />\n";
-            $tmp   = array();
+            $tmp   = [];
             $tmp[] = sprintf('<a href="<%%blogurl%%>index.php?%s=%s">%s</a>', $SpecialskinKey, $type, $type);
             $tmp[] = sprintf('index.php?%s=%s', $SpecialskinKey, $type);
             $tmp[] = sprintf('/%s/%s', $SpecialskinKey, $type);
@@ -5746,10 +5746,10 @@ selector();
 
         echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
         $query = sprintf("SELECT bshortname, bname FROM %s", sql_table('blog'));
-        showlist_by_query($query, 'table', array('content' => 'shortblognames'));
+        showlist_by_query($query, 'table', ['content' => 'shortblognames']);
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = sprintf("SELECT tdname as name, tddesc as description FROM %s", sql_table('template_desc'));
-        showlist_by_query($query, 'table', array('content' => 'shortnames'));
+        showlist_by_query($query, 'table', ['content' => 'shortnames']);
         echo '</div>';
         $this->pagefoot();
     }
@@ -5770,7 +5770,7 @@ selector();
         $member->isAdmin() or $this->disallow();
 
         $skin = new SKIN($skinid);
-        $skin->update($type, $content, array('spartstype' => $spartstype));
+        $skin->update($type, $content, ['spartstype' => $spartstype]);
 
         $this->action_skinedittype(_SKIN_UPDATED);
     }
@@ -5846,7 +5846,7 @@ selector();
             $this->error(_ERROR_SKINDEFDELETE . $o->bname);
         }
 
-        $param = array('skinid' => $skinid);
+        $param = ['skinid' => $skinid];
         $manager->notify('PreDeleteSkin', $param);
 
         // 1. delete description
@@ -5855,7 +5855,7 @@ selector();
         // 2. delete parts
         sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $skinid);
 
-        $param = array('skinid' => $skinid);
+        $param = ['skinid' => $skinid];
         $manager->notify('PostDeleteSkin', $param);
 
         $this->action_skinoverview();
@@ -5889,7 +5889,7 @@ selector();
         $member->isAdmin() or $this->disallow();
 
         // don't allow default skinparts to be deleted
-        if (($spartstype == 'parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+        if (($spartstype == 'parts') && in_array($skintype, ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'])) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
@@ -5949,25 +5949,25 @@ selector();
         $member->isAdmin() or $this->disallow();
 
         // don't allow default skinparts to be deleted
-        if (($spartstype == 'parts') && in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+        if (($spartstype == 'parts') && in_array($skintype, ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'])) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_DELETE);
         }
 
-        $notify_data = array(
+        $notify_data = [
             'skinid'    => $skinid,
             'skintype'  => $skintype,
             'partstype' => $spartstype,
-        );
+        ];
         $manager->notify('PreDeleteSkinPart', $notify_data);
 
         // delete part
         sql_query('DELETE FROM ' . sql_table('skin') . ' WHERE sdesc=' . $skinid . ' AND stype=\'' . $skintype . '\'');
 
-        $notify_data = array(
+        $notify_data = [
             'skinid'    => $skinid,
             'skintype'  => $skintype,
             'partstype' => $spartstype,
-        );
+        ];
         $manager->notify('PostDeleteSkinPart', $notify_data);
 
         $this->action_skinedit();
@@ -5984,7 +5984,7 @@ selector();
         $spartstype = (requestVar('partstype') == 'specialpage' ? 'specialpage' : 'parts');
 
         // don't allow default skinparts
-        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+        if (in_array($skintype, ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'])) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
         }
 
@@ -6059,7 +6059,7 @@ selector();
         $partstype_to = (requestVar('partstype_to') == 'specialpage' ? 'specialpage' : 'parts');
 
         // don't allow default skinparts
-        if (in_array($skintype, array('index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'))) {
+        if (in_array($skintype, ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'])) {
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
         }
 
@@ -6078,7 +6078,7 @@ selector();
         $sql = sprintf("UPDATE `%s` ", sql_table('skin'));
         if ($DB_PHP_MODULE_NAME == 'pdo') {
             $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
-            sql_prepare_execute($sql, array($partstype_to, $skinid, $skintype));
+            sql_prepare_execute($sql, [$partstype_to, $skinid, $skintype]);
         } else {
             $sql .= sprintf(
                 "SET spartstype = %s WHERE sdesc=%d AND stype=%s",
@@ -6214,7 +6214,7 @@ selector();
             <?php
             echo '<h2>', _PLUGINS_EXTRA, '</h2>';
 
-        $param = array();
+        $param = [];
         $manager->notify('GeneralSettingsFormExtras', $param);
 
         $this->pagefoot();
@@ -6607,7 +6607,7 @@ selector();
         }
 
         $isTidy5 = (function_exists('tidy_get_release')
-            && (strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30')));
+            && (strtotime(str_replace(['.'], '/', tidy_get_release())) >= strtotime('2015/06/30')));
 
         // ENABLE_TIDY_INDENT
         $enable_tidy_indent = (isset($CONF['tidy_opt_config_indent_enable']) && $CONF['tidy_opt_config_indent_enable']);
@@ -6616,17 +6616,17 @@ selector();
         echo "</td></tr>\n";
 
         // doctype
-        $doctypes    = array();
+        $doctypes    = [];
         $def_doctype = isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype'] : 'auto';
-        $doctypes[]  = array('value' => 'html5,strict', 'label' => 'Priority HTML5, HTML4(strict): depending on lib version');
+        $doctypes[]  = ['value' => 'html5,strict', 'label' => 'Priority HTML5, HTML4(strict): depending on lib version'];
         if ($isTidy5) {
-            $doctypes[] = array('value' => 'html5', 'label' => 'html5: HTML5');
+            $doctypes[] = ['value' => 'html5', 'label' => 'html5: HTML5'];
         } elseif ($def_doctype == 'html5') {
             $def_doctype == 'auto';
         }
-        $doctypes[] = array('value' => 'strict', 'label' => 'strict: HTML4');
-        $doctypes[] = array('value' => 'auto', 'label' => 'auto: Automatic selection by html code : depending on lib version');
-        $doctypes[] = array('value' => 'omit', 'label' => 'omit');
+        $doctypes[] = ['value' => 'strict', 'label' => 'strict: HTML4'];
+        $doctypes[] = ['value' => 'auto', 'label' => 'auto: Automatic selection by html code : depending on lib version'];
+        $doctypes[] = ['value' => 'omit', 'label' => 'omit'];
 
         echo "<tr><td>Tidy: doctype (blog)</td><td>\n";
         self::input_type_select('tidy_opt_config_doctype', $doctypes, $def_doctype, $tabindex++);
@@ -6721,7 +6721,7 @@ EOL;
             $this->updateOrInsertConfig('tidy_enable', (postVar('tidy_enable') ? '1' : '0'));
             // doctype
             $doctype = (string) postVar('tidy_opt_config_doctype');
-            if (!in_array($doctype, array('html5,strict','auto','html5','strict','omit'))) {
+            if (!in_array($doctype, ['html5,strict','auto','html5','strict','omit'])) {
                 // [25 March 2009] : auto, omit, strict, loose or <fpi> / strict(HTML4)
                 // [2015/06/30 - ] : html5, omit, auto, strict, transitional, user
                 $doctype = 'auto';
@@ -6892,7 +6892,7 @@ EOL;
                     echo sprintf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
                 }
                 echo sprintf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
-                $tidy_support_HTML5 = strtotime(str_replace(array('.'), '/', tidy_get_release())) >= strtotime('2015/06/30');
+                $tidy_support_HTML5 = strtotime(str_replace(['.'], '/', tidy_get_release())) >= strtotime('2015/06/30');
                 echo sprintf(
                     "\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
                     $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE
@@ -6929,14 +6929,14 @@ EOL;
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS . "</th>\n";
             echo "\t</tr>\n";
 
-            $items   = array(); // name , value[, style sheet]
-            $items[] = array("\$CONF['Self']", $CONF['Self']);
-            $items[] = array("\$CONF['ItemURL']", $CONF['ItemURL']);
-            $items[] = array("\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE));
-            $items[] = array(
+            $items   = []; // name , value[, style sheet]
+            $items[] = ["\$CONF['Self']", $CONF['Self']];
+            $items[] = ["\$CONF['ItemURL']", $CONF['ItemURL']];
+            $items[] = ["\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE)];
+            $items[] = [
                 "\$CONF['debug'], isDebugMode()", (isDebugMode() ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
                 (isDebugMode() ? 'color:red' : '')
-            );
+            ];
 
             foreach ($items as $item) {
                 echo "\t<tr>\n";
@@ -6948,9 +6948,9 @@ EOL;
 
             // Other settings of the installation
             ksort($CONF);
-            $items            = array('Self', 'ItemURL', 'alertOnHeadersSent', 'debug', 'AdminEmail');
-            $items_warn_false = array('alertOnSecurityRisk');
-            $items_warn_true  = array();
+            $items            = ['Self', 'ItemURL', 'alertOnHeadersSent', 'debug', 'AdminEmail'];
+            $items_warn_false = ['alertOnSecurityRisk'];
+            $items_warn_true  = [];
             foreach ($CONF as $k => $v) {
                 if (!in_array($k, $items)) {
                     $style = '';
@@ -7000,8 +7000,8 @@ EOL;
             return '';
         }
 
-        $r     = array('', '', '', ''); // [defined , undefined, defined , undefined]
-        $lists = array(
+        $r     = ['', '', '', '']; // [defined , undefined, defined , undefined]
+        $lists = [
             'connect', 'pconnect', 'close', 'select_db', 'query',
             'unbuffered_query', 'db_query', 'list_dbs', 'list_tables', 'list_fields',
             'list_processes', 'error', 'errno', 'affected_rows', 'insert_id',
@@ -7014,7 +7014,7 @@ EOL;
             'fieldtable', 'fieldlen', 'fieldtype', 'fieldflags', 'selectdb',
             'freeresult', 'numfields', 'numrows', 'listdbs', 'listtables',
             'listfields', 'db_name', 'dbname', 'tablename', 'table_name',
-        );
+        ];
 
         foreach ($lists as $i) {
             $m = 'mysql_' . $i;
@@ -7035,10 +7035,10 @@ EOL;
             }
         }
 
-        $title = array(
+        $title = [
             'Emulated Mysql Functions (wrapper functions)',
             'sql Functions'
-        );
+        ];
         $tpl = "<h3>%s</h3>\n<table><tr><td>defined</td><td>%s</td></tr><tr><td>undefined</td><td>%s</td></tr></table>";
         $res = '';
         for ($i = 1; $i >= 0; $i--) {
@@ -7061,7 +7061,7 @@ EOL;
 
         $query = parseQuery(
             "UPDATE [@prefix@]config SET value='[@value:escape@]' WHERE name='[@name:escape@]'",
-            array('value' => trim($val), 'name' => $name)
+            ['value' => trim($val), 'name' => $name]
         );
         if (!sql_query($query)) {
             if (!defined('_ADMIN_SQLDIE_QUERYERROR')) {
@@ -7078,7 +7078,7 @@ EOL;
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
             $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
-            $res = sql_prepare_execute($sql, array((string) $name));
+            $res = sql_prepare_execute($sql, [(string) $name]);
             if ($res) {
                 $row = sql_fetch_row($res);
                 if ($row[0] > 0) {
@@ -7088,7 +7088,7 @@ EOL;
         } else {
             $rs = parseQuickQuery(
                 "SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name='[@name@]'",
-                array('name' => $name)
+                ['name' => $name]
             );
             if ($rs) {
                 return self::updateConfig($name, $value);
@@ -7097,7 +7097,7 @@ EOL;
 
         if ($DB_PHP_MODULE_NAME == 'pdo') {
             $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
-            $res = sql_prepare_execute($sql, array((string) $name, trim((string) $value)));
+            $res = sql_prepare_execute($sql, [(string) $name, trim((string) $value)]);
         } else {
             $sql = sprintf(
                 'INSERT INTO `%s` (name, value) VALUES(%s, %s)',
@@ -7153,10 +7153,10 @@ EOL;
 
         checkOutputCompression("text/html");
 
-        $param = array(
+        $param = [
             'extrahead' => &$extrahead,
             'action'    => $this->action,
-        );
+        ];
         $manager->notify('AdminPrePageHead', $param);
 
         if (isset($this->extrahead) && count($this->extrahead) > 0) {
@@ -7168,7 +7168,7 @@ EOL;
             sql_query("INSERT INTO " . sql_table('config') . " VALUES ('AdminCSS', 'original')");
             $CONF['AdminCSS'] = 'original';
         }
-        foreach (array($CONF['AdminCSS'], 'original', 'contemporary') as $name) {
+        foreach ([$CONF['AdminCSS'], 'original', 'contemporary'] as $name) {
             $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', remove_all_directory_separator($name));
             if (@is_file($fname)) {
                 if ($CONF['AdminCSS'] != $name) {
@@ -7192,7 +7192,7 @@ EOL;
                         } else
              */
             if (ob_start()) {
-                register_shutdown_function(array($this, 'tidy_shutdown_end_obhandler'), ob_get_level());
+                register_shutdown_function([$this, 'tidy_shutdown_end_obhandler'], ob_get_level());
             }
         }
         ?>
@@ -7308,12 +7308,12 @@ EOL;
     {
         global $manager;
 
-        $param = array(
+        $param = [
             'action' => $this->action,
-        );
+        ];
         $manager->notify('AdminPrePageFoot', $param);
 
-        $ph             = array();
+        $ph             = [];
         $ph['url']      = _ADMINPAGEFOOT_OFFICIALURL;
         $ph['app_name'] = hsc(CORE_APPLICATION_NAME);
         $ph['year']     = date('Y');
@@ -7391,10 +7391,10 @@ EOL;
                                             echo '</ul>';
                                         }
 
-                                        $aPluginExtras = array();
-                                        $param         = array(
+                                        $aPluginExtras = [];
+                                        $param         = [
                                             'options' => &$aPluginExtras,
-                                        );
+                                        ];
                                         $manager->notify('QuickMenu', $param);
                                         if (count($aPluginExtras) > 0) {
                                             echo '<h2 class="accordion">', _QMENU_PLUGINS, '</h2>';
@@ -7451,14 +7451,14 @@ EOL;
             $utf8BlogName = mb_convert_encoding($utf8BlogName, 'UTF-8', _CHARSET);
         }
         $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
-        $utf8BlogName = str_replace(array("\r", "\n"), '', $utf8BlogName); // remove cr lf
+        $utf8BlogName = str_replace(["\r", "\n"], '', $utf8BlogName); // remove cr lf
         $format       = (_CHARSET == 'UTF-8' ? _WINREGFILE_TEXT : mb_convert_encoding(_WINREGFILE_TEXT, 'UTF-8', _CHARSET));
         $reg_key_name = sprintf($format, $utf8BlogName);
 
         $blog            = $manager->getBlog($blogid);
         $output_filename = sprintf("nucleus-%s.reg", str_replace('\\', '', $blog->getShortName()));
 
-        $lines   = array();
+        $lines   = [];
         $lines[] = "Windows Registry Editor Version 5.00";
         $lines[] = "";
         $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
@@ -7736,7 +7736,7 @@ EOL;
 
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $deleted = array();
+        $deleted = [];
 
         if (!$allblogs) {
             if (BAN::removeBan($blogid, $iprange)) {
@@ -8065,7 +8065,7 @@ EOL;
         $dh   = opendir($path);
         if ($dh) {
             while (($file = readdir($dh)) !== false) {
-                if (in_array($file, array('.', '..'))) {
+                if (in_array($file, ['.', '..'])) {
                     continue;
                 }
                 $old_dir_name = "{$path}{$file}";
@@ -8138,7 +8138,7 @@ EOL;
                 <h3><?php echo _PLUGS_TITLE_NEW ?></h3>
 
         <?php
-                                    $list_installed_PluginName = array();
+                                    $list_installed_PluginName = [];
         $sql                                                   = sprintf("SELECT pfile FROM %s ORDER BY pfile ASC", sql_table('plugin'));
         if ($res = sql_query($sql)) {
             while ($v = sql_fetch_array($res)) {
@@ -8146,7 +8146,7 @@ EOL;
             }
         }
         // find a list of possibly non-installed plugins
-        $candidates = array();
+        $candidates = [];
         global $DIR_PLUGINS;
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
@@ -8163,7 +8163,7 @@ EOL;
         }
 
         if (count($candidates) > 0) {
-            $options = array();
+            $options = [];
             foreach ($candidates as $name) {
                 $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
             }
@@ -8261,9 +8261,9 @@ EOL;
         // plugin will be added as last one in the list
         $newOrder = $numCurrent + 1;
 
-        $param = array(
+        $param = [
             'file' => &$name,
-        );
+        ];
         $manager->notify('PreAddPlugin', $param);
 
         // do this before calling getPlugin (in case the plugin id is used there)
@@ -8321,9 +8321,9 @@ EOL;
         // call the install method of the plugin
         $plugin->install();
 
-        $param = array(
+        $param = [
             'plugin' => &$plugin,
-        );
+        ];
         $manager->notify('PostAddPlugin', $param);
 
         // update all events
@@ -8356,7 +8356,7 @@ EOL;
             }
         }
         $manager->_loadSubscriptions();
-        $data = array();
+        $data = [];
         $manager->notify('PostUpdatePlugin', $data);
 
         redirect($CONF['AdminURL'] . '?action=pluginlist');
@@ -8453,7 +8453,7 @@ EOL;
             }
         }
 
-        $param = array('plugid' => $pid);
+        $param = ['plugid' => $pid];
         $manager->notify('PreDeletePlugin', $param);
 
         // call the unInstall method of the plugin
@@ -8470,7 +8470,7 @@ EOL;
         // delete all options
         // get OIDs from plugin_option_desc
         $res   = sql_query(sprintf("SELECT oid FROM %s WHERE opid=%s", sql_table('plugin_option_desc'), $pid));
-        $aOIDs = array();
+        $aOIDs = [];
         while ($o = sql_fetch_object($res)) {
             $aOIDs[] = $o->oid;
         }
@@ -8499,7 +8499,7 @@ EOL;
         }
 
         $manager->clearCachedInfo('installedPlugins');
-        $param = array('plugid' => $pid);
+        $param = ['plugid' => $pid];
         $manager->notify('PostDeletePlugin', $param);
 
         return '';
@@ -8653,13 +8653,13 @@ EOL;
 
                         $manager->addTicketHidden();
 
-        $aOptions = array();
-        $aOIDs    = array();
+        $aOptions = [];
+        $aOIDs    = [];
         $query    = sprintf("SELECT * FROM %s WHERE ocontext='global' and opid=%s ORDER BY oid ASC", sql_table('plugin_option_desc'), $pid);
         $r        = sql_query($query);
         while ($o = sql_fetch_object($r)) {
             $aOIDs[]           = $o->oid;
-            $aOptions[$o->oid] = array(
+            $aOptions[$o->oid] = [
                 'oid'         => $o->oid,
                 'value'       => $o->odef,
                 'name'        => $o->oname,
@@ -8667,7 +8667,7 @@ EOL;
                 'type'        => $o->otype,
                 'typeinfo'    => $o->oextra,
                 'contextid'   => 0,
-            );
+            ];
         }
         // fill out actual values
         if (count($aOIDs) > 0) {
@@ -8678,11 +8678,11 @@ EOL;
         }
 
         // call plugins
-        $param = array(
+        $param = [
         'context' => 'global',
         'plugid'  => $pid,
         'options' => &$aOptions,
-        );
+        ];
         $manager->notify('PrePluginOptionsEdit', $param);
 
         $template['content'] = 'plugoptionlist';
@@ -8715,10 +8715,10 @@ EOL;
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
 
-        $param = array(
+        $param = [
             'context' => 'global',
             'plugid'  => $pid,
-        );
+        ];
         $manager->notify('PostPluginOptionsUpdate', $param);
 
         $this->action_pluginoptions(_PLUGS_OPTIONS_UPDATED);
@@ -8732,7 +8732,7 @@ EOL;
     {
         // get all current values for this contextid
         // (note: this might contain doubles for overlapping contextids)
-        $aIdToValue = array();
+        $aIdToValue = [];
         $res        = sql_query(sprintf("SELECT oid, ovalue FROM %s WHERE ocontextid=%s", sql_table('plugin_option'), (int) $contextid));
         while ($o = sql_fetch_object($res)) {
             $aIdToValue[$o->oid] = $o->ovalue;
@@ -8741,7 +8741,7 @@ EOL;
         // get list of oids per pid
         $query    = sprintf("SELECT * FROM %s,%s WHERE opid=pid and ocontext=%s ORDER BY porder, oid ASC", sql_table('plugin_option_desc'), sql_table('plugin'), sql_quote_string($context));
         $res      = sql_query($query);
-        $aOptions = array();
+        $aOptions = [];
         while ($o = sql_fetch_object($res)) {
             if (in_array($o->oid, array_keys($aIdToValue))) {
                 $value = $aIdToValue[$o->oid];
@@ -8749,7 +8749,7 @@ EOL;
                 $value = $o->odef;
             }
 
-            $aOptions[] = array(
+            $aOptions[] = [
                 'pid'         => $o->pid,
                 'pfile'       => $o->pfile,
                 'oid'         => $o->oid,
@@ -8760,15 +8760,15 @@ EOL;
                 'typeinfo'    => $o->oextra,
                 'contextid'   => $contextid,
                 'extra'       => '',
-            );
+            ];
         }
 
         global $manager;
-        $param = array(
+        $param = [
             'context'   => $context,
             'contextid' => $contextid,
             'options'   => &$aOptions,
-        );
+        ];
         $manager->notify('PrePluginOptionsEdit', $param);
 
         $iPrevPid = -1;
@@ -8829,12 +8829,12 @@ EOL;
         echo ' id="' . $id2 . '" /><label for="' . $id2 . '">' . $noval . '</label>';
     }
 
-    public static function html_build_attributes($attributes = array(), $exclude_names = array())
+    public static function html_build_attributes($attributes = [], $exclude_names = [])
     {
-        $items = array();
-        $ex    = array();
+        $items = [];
+        $ex    = [];
         if (empty($exclude_names) || !is_array($exclude_names)) {
-            $exclude_names = array();
+            $exclude_names = [];
         } else {
             foreach ($exclude_names as $v) {
                 $ex[] = strtolower((string) $v);
@@ -8858,10 +8858,10 @@ EOL;
         return implode(', ', $items);
     }
 
-    public static function input_type_select($name, $lists, $defalutval, $tabindex = 0, $attributes = array())
+    public static function input_type_select($name, $lists, $defalutval, $tabindex = 0, $attributes = [])
     {
-        $lines    = array();
-        $ex_attrs = array('name','value','selected');
+        $lines    = [];
+        $ex_attrs = ['name','value','selected'];
         if ((int) $tabindex !== 0) {
             $ex_attrs[] = 'tabindex';
         }
@@ -8874,7 +8874,7 @@ EOL;
         foreach ($lists as $v) {
             $value = (string) $v['value'];
             $label = (string) $v['label'];
-            $attr  = isset($v['attribute']) ? self::html_build_attributes($attributes, array('name')) : '';
+            $attr  = isset($v['attribute']) ? self::html_build_attributes($attributes, ['name']) : '';
             if ($defalutval !== null
                 && $selected === ''
                 && $value === (string) $defalutval
@@ -8897,16 +8897,16 @@ EOL;
         }
 
         // check if files exist and generate an error if so
-        $RiskFiles = array(
+        $RiskFiles = [
             '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
             '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
-        );
-        $RiskDirs = array(
+        ];
+        $RiskDirs = [
             'convert'      => _ERRORS_CONVERTDIR,  // don't localized, old version
             '../install'   => _ERRORS_INSTALLDIR,  // current version
             '../_upgrades' => _ERRORS_UPGRADESDIR  // current version
-        );
-        $aFound = array();
+        ];
+        $aFound = [];
         foreach ($RiskFiles as $fileName => $fileDesc) {
             if (@is_file($fileName)) {
                 $aFound[] = $fileDesc;
@@ -8967,7 +8967,7 @@ EOL;
             }
         }
 
-        if (in_array($DB_DRIVER_NAME, array('mysql', 'sqlite'))) {
+        if (in_array($DB_DRIVER_NAME, ['mysql', 'sqlite'])) {
             echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_OPTIMIZE);
 
             if ($DB_DRIVER_NAME == 'sqlite') {
@@ -8986,7 +8986,7 @@ EOD;
                 if (!$this->db_mysql_checktables(true)) {
                     echo sprintf("<p>%s</p>\n", hsc(_PROBLEMS_FOUND_ON_TABLE));
                 } else {
-                    $tables          = array();
+                    $tables          = [];
                     $confirmOptimize = false;
                     $has_big         = false;
                     $warn_size       = 10 * pow(10, 6); // 10 Mega Byte
@@ -9049,7 +9049,7 @@ EOD;
             }
         }
 
-        if (in_array($DB_DRIVER_NAME, array('mysql'))) {
+        if (in_array($DB_DRIVER_NAME, ['mysql'])) {
             echo sprintf("<h3>%s</h3>\n", _ADMIN_TITLE_REPAIR);
             $this->db_mysql_checktables();
         }
@@ -9061,15 +9061,15 @@ EOD;
     {
         global $DB_DRIVER_NAME;
         if ($DB_DRIVER_NAME != 'mysql') {
-            return array();
+            return [];
         }
-        $tables = array();
+        $tables = [];
         $res    = sql_query(sprintf("SHOW TABLES LIKE '%s%%'", sql_table('')));
         while ($res && ($row = sql_fetch_array($res)) && !empty($row)) {
             $tables[] = $row[0];
         }
 
-        $items = array();
+        $items = [];
         if (count($tables)) {
             $sql = "CHECK TABLE `" . implode("`, `", $tables) . "`";
             $res = sql_query($sql);
@@ -9097,7 +9097,7 @@ EOD;
                 // result : Table  Op  Msg_type   Msg_text :  tablename   repair    status   OK
                 $sql   = "REPAIR TABLE `" . implode("`, `", array_keys($items)) . "`";
                 $res   = sql_query($sql);
-                $items = array();
+                $items = [];
                 while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
                     $items[$row['Table']] = $row;
                 }
@@ -9135,8 +9135,8 @@ EOD;
 
         $success = false;
 
-        $tables    = array();
-        $inotables = array();
+        $tables    = [];
+        $inotables = [];
         $res       = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
         while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
             if ((int) $row['Data_free'] > 0) {
@@ -9199,7 +9199,7 @@ EOD;
         }
         clearstatcache();
         $size     = filesize($DB_DATABASE);
-        $t        = array('', 'K', 'M', 'G', 'T');
+        $t        = ['', 'K', 'M', 'G', 'T'];
         $n        = min(4, ($size > 0 ? floor(log($size, 10) / 3) : 0));
         $sizetext = sprintf('%d %s', $size / pow(10, $n * 3), $t[$n]);
         return sprintf("%s(%d) byte", $sizetext, $size);
@@ -9302,21 +9302,21 @@ EOD;
             $cached = CoreCachedData::getDataEx($col_type, $col_sub_type, 0, $col_name, $expired_time);
         }
 
-        $http_options = array('connecttimeout' => 5, 'timeout' => 5);
+        $http_options = ['connecttimeout' => 5, 'timeout' => 5];
         if (empty($cached) || $cached['expired']) {
-            $http_raw_options = array_merge($http_options, array('reply_response' => 1));
+            $http_raw_options = array_merge($http_options, ['reply_response' => 1]);
             if (!is_array($cached)) {
-                $cached = array('value' => '');
+                $cached = ['value' => ''];
             }
             $url = "https://api.github.com/users/NucleusCMS/repos";
             ini_set('user_agent', DEFAULT_USER_AGENT);
             $count   = 0;
-            $values  = array();
+            $values  = [];
             $nexturl = $url;
             while ($count < 100 && ($s = Utils::httpGet($nexturl, $http_raw_options))) {
                 $count++;
                 if (!is_array($s)) {
-                    $s = array('body' => $s);
+                    $s = ['body' => $s];
                 }
                 if (isset($s['header'])) {
                     if (stripos($s['header'], "\nStatus: 200 OK") === false || stripos($s['header'], "\nContent-Type: application/json") === false) {
@@ -9360,7 +9360,7 @@ EOD;
         }
 
         if (!empty($cached['value']) && !isset($cached['list'])) {
-            $cached['list'] = array();
+            $cached['list'] = [];
             foreach (explode(',', $cached['value']) as $item) {
                 $item = trim($item);
                 if (!empty($item)) {
@@ -9394,9 +9394,9 @@ EOD;
                 break;
         }
 
-        $s = Utils::httpGet($url, array('connecttimeout' => 2, 'timeout' => 2));
+        $s = Utils::httpGet($url, ['connecttimeout' => 2, 'timeout' => 2]);
         if (empty($s) && !empty($retry_url)) {
-            $s = Utils::httpGet($retry_url, array('connecttimeout' => 2, 'timeout' => 2));
+            $s = Utils::httpGet($retry_url, ['connecttimeout' => 2, 'timeout' => 2]);
         }
 
         $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
@@ -9496,7 +9496,7 @@ EOL;
         if ($current_level === 0) {
             return;
         }
-        $data = array();
+        $data = [];
         try {
             while ($level <= $current_level && 0 < $current_level) {
                 $status = ob_get_status();

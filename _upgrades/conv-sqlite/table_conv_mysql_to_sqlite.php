@@ -14,9 +14,9 @@ class TableConvertor
 
     public function __construct()
     {
-        $this->error_logs = array();
+        $this->error_logs = [];
 
-        $this->base_table_list = array(
+        $this->base_table_list = [
             sql_table('actionlog'),
             sql_table('ban'),
             sql_table('blog'),
@@ -37,14 +37,14 @@ class TableConvertor
             sql_table('category'),
             sql_table('activation'),
             sql_table('tickets'),
-        );
+        ];
     }
 
 //   function __destruct() { }
 
     public function clean_logs()
     {
-        $this->error_logs = array();
+        $this->error_logs = [];
     }
 
     public function get_logs()
@@ -113,7 +113,7 @@ class TableConvertor
         echo $this->commentline("\n") . "\n";
 
         $num_fields = sql_num_fields($result);
-        $fields     = array();
+        $fields     = [];
         for ($j = 0; $j < $num_fields; $j++) {
             $fields[] = sql_field_name($result, $j);
         }
@@ -171,7 +171,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
         if (!is_null($callback_function_real_escape_string)) {
             $callback = $callback_function_real_escape_string;
         } elseif (class_exists("SQLite3")) {
-            $callback = array("SQLite3", "escapeString");
+            $callback = ["SQLite3", "escapeString"];
         } else {
             $callback = "sqlite_escape_string";
         }
@@ -188,7 +188,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
 
         $pattern             = '/(CREATE.+)$/ims';
         $this->current_table = $tablename;
-        $structure           = preg_replace_callback($pattern, array($this, "callback_replace_sql_create"), $structure);
+        $structure           = preg_replace_callback($pattern, [$this, "callback_replace_sql_create"], $structure);
         return $structure;
     }
 
@@ -198,9 +198,9 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
 
         $s = $match[0];
 
-        $index_key    = array();
-        $unique_key   = array();
-        $fulltext_key = array();
+        $index_key    = [];
+        $unique_key   = [];
+        $fulltext_key = [];
 
         // adjust line breaks
         $pattern = '/(\r\n|\n\r|[\r\n])/ims';
@@ -319,7 +319,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
             $index_key[] = '`cblog`';
         }
         if (preg_match('/nucleus_item$/ims', $this->current_table)) {
-            foreach (array('`iblog`', '`idraft`', '`icat`') as $k) {
+            foreach (['`iblog`', '`idraft`', '`icat`'] as $k) {
                 if (!in_array($k, $index_key)) {
                     $index_key[] = $k;
                 }
@@ -436,7 +436,7 @@ class TableConvertor_mysql_to_sqlite extends TableConvertor
                 . sprintf("DELETE FROM %s WHERE docid = OLD.%s;\n", $vt_table, $num)
                 . "END;\n\n";
 
-        $sets = array();
+        $sets = [];
         foreach ($key_names as $k) {
             $sets[] = sprintf("ifts_%s = NEW.%s", $k, $k);
         }

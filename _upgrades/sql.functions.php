@@ -27,10 +27,10 @@ if (!function_exists('sql_getTableColumnNames')) {
         $sql    = sprintf('SHOW COLUMNS FROM `%s` ', parseQuery($tablename));
         $target = 'Field';
 
-        $items = array();
+        $items = [];
         $res   = sql_query($sql);
         if (!$res) {
-            return array();
+            return [];
         }
         while ($row = sql_fetch_array($res)) {
             if (isset($row[$target])) {

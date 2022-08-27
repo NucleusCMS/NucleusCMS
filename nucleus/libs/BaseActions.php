@@ -54,15 +54,15 @@ class BaseActions
 
         // if nesting level
         $this->if_conditions
-            = array(); // array on which condition values are pushed/popped
+            = []; // array on which condition values are pushed/popped
         $this->if_execute
-            = array();     // array on which condition values are pushed/popped
+            = [];     // array on which condition values are pushed/popped
         $this->if_currentlevel
             = 1;        // 1 = current level is displayed; 0 = current level not displayed
 
         // highlights
         $this->strHighlight = '';            // full highlight
-        $this->aHighlight   = array();        // parsed highlight
+        $this->aHighlight   = [];        // parsed highlight
     }
 
     /**
@@ -264,7 +264,7 @@ class BaseActions
     public function parse_if()
     {
         $this->_addIfExecute();
-        $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
+        $condition = call_user_func_array([$this, 'checkCondition'], func_get_args());
         $this->_addIfCondition($condition);
     }
 
@@ -308,7 +308,7 @@ class BaseActions
             $this->_addIfCondition(0);
         } else {
             ob_end_clean();
-            $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
+            $condition = call_user_func_array([$this, 'checkCondition'], func_get_args());
             $this->_addIfCondition($condition);
         }
     }
@@ -319,7 +319,7 @@ class BaseActions
     public function parse_ifnot()
     {
         $this->_addIfExecute();
-        $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
+        $condition = call_user_func_array([$this, 'checkCondition'], func_get_args());
         $this->_addIfCondition(!$condition);
     }
 
@@ -341,7 +341,7 @@ class BaseActions
             $this->_addIfCondition(0);
         } else {
             ob_end_clean();
-            $condition = call_user_func_array(array($this, 'checkCondition'), func_get_args());
+            $condition = call_user_func_array([$this, 'checkCondition'], func_get_args());
             $this->_addIfCondition(!$condition);
         }
     }

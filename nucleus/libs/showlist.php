@@ -102,7 +102,7 @@ function listplug_select($template, $type)
         }
     } elseif ($type == 'BODY') {
         $current        = $template['current'];
-        $ph             = array();
+        $ph             = [];
         $ph['value']    = $current->value;
         $ph['selected'] = (isset($template['selected'])
                            && $template['selected'] == $current->value)
@@ -197,7 +197,7 @@ function listplug_table_memberlist($template, $type)
         $ph['halting']    = _LISTS_HALTING;
         $ph['halt']       = _LISTS_HALT;
 
-        $td = array();
+        $td = [];
         $td[0]
                = '<input type="checkbox" id="batch{%id%}" name="batch[{%id%}]" value="{%mnumber%}" />';
         $td[0] .= '<label for="batch{%id%}"><a href="mailto:{%memail:hsc%}" tabindex="{%tabindex%}">{%mname:hsc%}</a></label>';
@@ -220,7 +220,7 @@ function listplug_table_memberlist($template, $type)
                 = '<a href="index.php?action=memberhalt&amp;memberid={%mnumber%}" tabindex="{%tabindex%}">{%halt:hsc%}</a>';
         }
 
-        $tpl = array();
+        $tpl = [];
         foreach ($td as $v) {
             $tpl[] = '<td>' . $v . '</td>';
         }
@@ -332,7 +332,7 @@ function listplug_table_pluginlist($template, $type)
                 }
                 // <add by shizuki>
                 // check dependency require
-                $req = array();
+                $req = [];
                 $res = sql_query('SELECT pfile FROM ' . sql_table('plugin'));
                 while ($o = sql_fetch_object($res)) {
                     $preq = & $manager->getPlugin($o->pfile);
@@ -603,7 +603,7 @@ function listplug_nextBatchId()
 
 function listplug_table_commentlist($template, $type)
 {
-    static $amountComments = array();
+    static $amountComments = [];
     global $action;
 
     $colspan = 3;
@@ -926,7 +926,7 @@ function listplug_table_skinlist($template, $type)
                 $order
                     = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
             } else {
-                $tmp_items = array(
+                $tmp_items = [
                     'member',
                     'imagepopup',
                     'error',
@@ -935,7 +935,7 @@ function listplug_table_skinlist($template, $type)
                     'archivelist',
                     'item',
                     'index',
-                );
+                ];
                 $tmp_ct = count($tmp_items);
                 $order  = "";
                 for ($i = 0; $i < $tmp_ct; $i++) {
@@ -961,8 +961,8 @@ function listplug_table_skinlist($template, $type)
             }
             $sql .= $order;
             $r     = sql_query($sql);
-            $types = array();
-            $parts = array(array(), array());
+            $types = [];
+            $parts = [[], []];
             while ($o = sql_fetch_object($r)) {
                 $types[] = $o->stype;
             }
@@ -972,7 +972,7 @@ function listplug_table_skinlist($template, $type)
                     $type = $types[$i];
                     if (in_array(
                         $type,
-                        array(
+                        [
                             'index',
                             'item',
                             'archivelist',
@@ -981,7 +981,7 @@ function listplug_table_skinlist($template, $type)
                             'error',
                             'member',
                             'imagepopup',
-                        )
+                        ]
                     )) {
                         $parts[0][] = '<li>' . helpHtml('skinpart' . $type)
                                       . ' <a href="index.php?action=skinedittype&amp;skinid='
@@ -1025,7 +1025,7 @@ function listplug_table_skinlist($template, $type)
             } else {
                 $res = false;
             }
-            $names = array();
+            $names = [];
             if ($has_spartstype && $res) {
                 while ($o = sql_fetch_object($res)) {
                     $names[] = $o->stype;
@@ -1156,7 +1156,7 @@ function listplug_table_banlist($template, $type)
 
 function listplug_table_systemloglist($template, $type)
 {
-    $lines = array();
+    $lines = [];
     switch ($type) {
         case 'HEAD':
             $lines[] = '<th>' . _LISTS_TIME . '</th>';

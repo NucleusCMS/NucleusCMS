@@ -48,10 +48,10 @@ class ACTIONLOG
                     'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)',
                     sql_table('actionlog')
                 ),
-                array(
+                [
                     (string)$timestamp,
                     (string)$message,
-                )
+                ]
             );
         } else {
             $message = sql_quote_string($message);        // add slashes
@@ -89,7 +89,7 @@ class ACTIONLOG
                 "DELETE FROM `%s` WHERE message=?",
                 sql_table('actionlog')
             );
-            sql_prepare_execute($query, array((string)$msg));
+            sql_prepare_execute($query, [(string)$msg]);
         } else {
             $query = sprintf(
                 "DELETE FROM `%s` WHERE message=%s",
@@ -109,7 +109,7 @@ class ACTIONLOG
     {
         global $manager;
 
-        $param = array();
+        $param = [];
         $manager->notify('ActionLogCleared', $param);
 
         return sql_query(sprintf('DELETE FROM %s', sql_table('actionlog')));

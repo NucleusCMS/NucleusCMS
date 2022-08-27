@@ -36,7 +36,7 @@ if (@!is_file($strRel . 'config.php')) {
 require($strRel . 'config.php');
 include_libs('PLUGINADMIN.php');
 
-$language = str_replace(array('\\','/'), '', getLanguageName());
+$language = str_replace(['\\','/'], '', getLanguageName());
 $langfile = $language.'.php';
 if (is_file('language/'.$langfile)) {
     include_once('language/'.$langfile);
@@ -65,11 +65,11 @@ $rootDirectory = sfRealPath($DIR_SKINS);
 $rootUrl       = $CONF['SkinsURL'];
 $pluginUrl     = $oPluginAdmin->plugin->getAdminURL();
 
-$filetypes = array(
-    'text' => array('inc', 'txt', 'css', 'js', 'php'),
-    'html' => array('htm', 'html'),
-    'img'  => array('png', 'gif', 'jpg', 'jpeg', 'bmp', 'ico', 'swf'),
-);
+$filetypes = [
+    'text' => ['inc', 'txt', 'css', 'js', 'php'],
+    'html' => ['htm', 'html'],
+    'img'  => ['png', 'gif', 'jpg', 'jpeg', 'bmp', 'ico', 'swf'],
+];
 
 /**
   * Bypass admin area for downloads
@@ -90,12 +90,12 @@ $oPluginAdmin->start();
 
 echo "<h2>" . _SKINFILES_MANAGEMENT . "</h2>";
 
-$actions = array(
+$actions = [
     'renfile', 'renfile_process', 'delfile', 'delfile_process',
     'editfile', 'editfile_process', 'uploadfile', 'createfile', 'viewfile',
     'rendir', 'rendir_process', 'deldir', 'deldir_process',
     'emptydir', 'emptydir_process', 'createdir'
-);
+];
 
 if (in_array($action, $actions)) {
     if (!$manager->checkTicket()) {
@@ -290,8 +290,8 @@ function sfShowDirectory($default = '')
 
     echo '<p class="location">' . _SKINFILES_CURRENT_LOCATION . sfDisplayPath($relative) . '</p>';
 
-    $dirs  = array();
-    $files = array();
+    $dirs  = [];
+    $files = [];
 
     if ($dh = @opendir($directory)) {
         while (($file = readdir($dh)) !== false) {
@@ -712,7 +712,7 @@ function _skinfiles_emptydir()
     $directory = sfExpandDirectory($directory);
 
     if (sfValidPath($directory . $file) && file_exists($directory . $file) && is_dir($directory . $file)) {
-        $files = array();
+        $files = [];
 
         if ($dh = @opendir($directory . $file)) {
             while (($name = readdir($dh)) !== false) {

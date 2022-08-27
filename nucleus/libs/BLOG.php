@@ -256,10 +256,10 @@ class BLOG
                     $timestamp = $item->timestamp;
                     if ($old_date != 0) {
                         $oldTS = strtotime($old_date);
-                        $param = array(
+                        $param = [
                             'blog'      => &$this,
                             'timestamp' => $oldTS,
-                        );
+                        ];
                         $manager->notify('PreDateFoot', $param);
                         $tmp_footer
                             = Utils::strftime(
@@ -268,16 +268,16 @@ class BLOG
                                 $oldTS
                             );
                         $parser->parse($tmp_footer);
-                        $param = array(
+                        $param = [
                             'blog'      => &$this,
                             'timestamp' => $oldTS,
-                        );
+                        ];
                         $manager->notify('PostDateFoot', $param);
                     }
-                    $param = array(
+                    $param = [
                         'blog'      => &$this,
                         'timestamp' => $timestamp,
-                    );
+                    ];
                     $manager->notify('PreDateHead', $param);
                     // note, to use templatvars in the dateheader, the %-characters need to be doubled in
                     // order to be preserved by strftime
@@ -288,10 +288,10 @@ class BLOG
                             $timestamp
                         );
                     $parser->parse($tmp_header);
-                    $param = array(
+                    $param = [
                         'blog'      => &$this,
                         'timestamp' => $timestamp,
-                    );
+                    ];
                     $manager->notify('PostDateHead', $param);
                 }
                 $old_date = $new_date;
@@ -299,32 +299,32 @@ class BLOG
 
             // parse item
             $parser->parse($template['ITEM_HEADER']);
-            $param = array(
+            $param = [
                 'blog' => &$this,
                 'item' => &$item,
-            );
+            ];
             $manager->notify('PreItem', $param);
             $parser->parse($template['ITEM']);
-            $param = array(
+            $param = [
                 'blog' => &$this,
                 'item' => &$item,
-            );
+            ];
             $manager->notify('PostItem', $param);
             $parser->parse($template['ITEM_FOOTER']);
         }
 
         // add another date footer if there was at least one item
         if (($numrows > 0) && $dateheads) {
-            $param = array(
+            $param = [
                 'blog'      => &$this,
                 'timestamp' => strtotime($old_date),
-            );
+            ];
             $manager->notify('PreDateFoot', $param);
             $parser->parse($template['DATE_FOOTER']);
-            $param = array(
+            $param = [
                 'blog'      => &$this,
                 'timestamp' => strtotime($old_date),
-            );
+            ];
             $manager->notify('PostDateFoot', $param);
         }
 
@@ -395,7 +395,7 @@ class BLOG
 
         $itime = date('Y-m-d H:i:s', $itime);
 
-        $param = array(
+        $param = [
             'title'     => &$ititle,
             'body'      => &$ibody,
             'more'      => &$imore,
@@ -405,7 +405,7 @@ class BLOG
             'closed'    => &$iclosed,
             'draft'     => &$idraft,
             'catid'     => &$icat,
-        );
+        ];
         $manager->notify('PreAddItem', $param);
 
         $ititle = sql_quote_string($ititle);
@@ -418,7 +418,7 @@ class BLOG
         sql_query($query);
         $itemid = sql_insert_id();
 
-        $param = array('itemid' => $itemid);
+        $param = ['itemid' => $itemid];
         $manager->notify('PostAddItem', $param);
 
         if (! $idraft) {
@@ -507,10 +507,10 @@ class BLOG
 
                 $res = true;
                 while ($res !== false) {
-                    $ph = array(
+                    $ph = [
                         'cname' => sql_quote_string($catName . $i),
                         'cblog' => (int)$this->getID(),
-                    );
+                    ];
                     $sql
                          = parseQuery(
                              'SELECT catid AS result FROM [@prefix@]category WHERE cname=[@cname@] and cblog=[@cblog@]',
@@ -526,12 +526,12 @@ class BLOG
                 $catName = $catName . $i;
             }
 
-            $param = array(
+            $param = [
                 'blog'        => &$this,
                 'name'        => &$catName,
                 'description' => $catDescription,
                 'order'       => &$corder,
-            );
+            ];
             $manager->notify('PreAddCategory', $param);
 
             $ph['cblog'] = $this->getID();
@@ -548,13 +548,13 @@ class BLOG
             sql_query(parseQuery($query, $ph));
             $catid = sql_insert_id();
 
-            $param = array(
+            $param = [
                 'blog'        => &$this,
                 'name'        => $catName,
                 'description' => $catDescription,
                 'catid'       => $catid,
                 'order'       => $corder,
-            );
+            ];
             $manager->notify('PostAddCategory', $param);
 
             return $catid;
@@ -617,10 +617,10 @@ class BLOG
             // when no results were found, show a message
             if ($amountfound == 0) {
                 $template = & $manager->getTemplate($template);
-                $vars     = array(
+                $vars     = [
                     'query'  => hsc($keywords),
                     'blogid' => $this->getID(),
-                );
+                ];
                 echo TEMPLATE::fill($template['SEARCH_NOTHINGFOUND'], $vars);
             }
         }
@@ -666,7 +666,7 @@ class BLOG
         $score = $search->get_score();
 
         if ($mode == '') {
-            $fields = array();
+            $fields = [];
             $fields[]
                       = 'i.inumber as itemid, i.ititle as title, i.ibody as body, i.itime, i.imore as more, i.icat as catid, i.iclosed as closed';
             $fields[] = 'c.cname as category';
@@ -679,12 +679,12 @@ class BLOG
             $fields = 'COUNT(*) as result ';
         }
 
-        $from   = array();
+        $from   = [];
         $from[] = '[@prefix@]item i';
         $from[] = 'LEFT JOIN [@prefix@]member m ON i.iauthor=m.mnumber';
         $from[] = 'LEFT JOIN [@prefix@]category c ON i.icat=c.catid';
 
-        $where   = array();
+        $where   = [];
         $where[] = 'i.idraft=0';  // exclude drafts
         $blogs
                  = $this->searchableBlogs(); // array containing blogs that always need to be included
@@ -731,7 +731,7 @@ class BLOG
     {
         $res
                = sql_query(parseQuery('SELECT bnumber FROM [@prefix@]blog WHERE bincludesearch=1'));
-        $blogs = array();
+        $blogs = [];
         while ($obj = sql_fetch_object($res)) {
             $blogs[] = (int)$obj->bnumber;
         }
@@ -796,7 +796,7 @@ class BLOG
             if (!is_null($value) && (strlen($value) > 0) && str_contains($value, '<%_(')) {
                 $template[$key] = preg_replace_callback(
                     '#<%_\(([^)]*?)\)%>#',
-                    array($this, '_workaround_gettext_callback'),
+                    [$this, '_workaround_gettext_callback'],
                     $value
                 );
             }
@@ -825,13 +825,13 @@ class BLOG
     {
         global $catid, $manager;
 
-        $linkparams = array();
+        $linkparams = [];
         if ($catid) {
-            $linkparams = array('catid' => $catid);
+            $linkparams = ['catid' => $catid];
         }
 
         $template           = & $manager->getTemplate($template);
-        $archdata           = array();
+        $archdata           = [];
         $archdata['blogid'] = $this->getID();
 
         // Note: ArchiveList is not parced. parcer not called.
@@ -904,7 +904,7 @@ class BLOG
                 $linkparams
             );
 
-            $param = array('listitem' => &$archdata);
+            $param = ['listitem' => &$archdata];
             $manager->notify('PreArchiveListItem', $param);
 
             $temp = TEMPLATE::fill(
@@ -932,7 +932,7 @@ class BLOG
         // I guess this can be done in a better way, but it works
         global $archive, $archivelist;
 
-        $linkparams = array();
+        $linkparams = [];
         if ($archive) {
             $blogurl = createArchiveLink(
                 $this->getID(),
@@ -974,14 +974,14 @@ class BLOG
         echo TEMPLATE::fill(
             (isset($template['CATLIST_HEADER'])
             ? $template['CATLIST_HEADER'] : null),
-            array(
+            [
                 'blogid'  => $this->getID(),
                 'blogurl' => $blogurl,
                 'self'    => $CONF['Self'],
                 //: Change: Set catiscurrent template variable for header
                 'catiscurrent' => $nocatselected,
                 'currentcat'   => $nocatselected,
-            )
+            ]
         );
 
         $ph['cblog'] = $this->getID();
@@ -1001,11 +1001,11 @@ class BLOG
             $catdata['blogurl']  = $blogurl;
             $catdata['catlink']  = createLink(
                 'category',
-                array(
+                [
                     'catid' => $catdata['catid'],
                     'name'  => $catdata['catname'],
                     'extra' => $linkparams,
-                )
+                ]
             );
             $catdata['self'] = $CONF['Self'];
 
@@ -1038,7 +1038,7 @@ class BLOG
                 }
             }
 
-            $param = array('listitem' => &$catdata);
+            $param = ['listitem' => &$catdata];
             $manager->notify('PreCategoryListItem', $param);
 
             echo TEMPLATE::fill(
@@ -1055,14 +1055,14 @@ class BLOG
         echo TEMPLATE::fill(
             (isset($template['CATLIST_FOOTER'])
             ? $template['CATLIST_FOOTER'] : null),
-            array(
+            [
                 'blogid'  => $this->getID(),
                 'blogurl' => $blogurl,
                 'self'    => $CONF['Self'],
                 //: Change: Set catiscurrent template variable for footer
                 'catiscurrent' => $nocatselected,
                 'currentcat'   => $nocatselected,
-            )
+            ]
         );
     }
 
@@ -1084,10 +1084,10 @@ class BLOG
         echo TEMPLATE::fill(
             (isset($template['BLOGLIST_HEADER'])
             ? $template['BLOGLIST_HEADER'] : null),
-            array(
+            [
                 'sitename' => $CONF['SiteName'],
                 'siteurl'  => $CONF['IndexURL'],
-            )
+            ]
         );
 
         switch (strtolower($orderby)) {
@@ -1111,7 +1111,7 @@ class BLOG
         if ($res) {
             $usePathInfo = ($CONF['URLMode'] === 'pathinfo');
             while ($bldata = sql_fetch_assoc($res)) {
-                $list = array();
+                $list = [];
 
                 //            $list['bloglink'] = createLink('blog', array('blogid' => $data['bnumber']));
                 if (strlen(trim($bldata['burl'])) > 0) {
@@ -1130,7 +1130,7 @@ class BLOG
                     $list['blogname'] = hsc($bldata['bname']);
                 }
 
-                $param = array('listitem' => &$list);
+                $param = ['listitem' => &$list];
                 $manager->notify('PreBlogListItem', $param);
 
                 echo TEMPLATE::fill(
@@ -1145,10 +1145,10 @@ class BLOG
         echo TEMPLATE::fill(
             (isset($template['BLOGLIST_FOOTER'])
             ? $template['BLOGLIST_FOOTER'] : null),
-            array(
+            [
                 'sitename' => $CONF['SiteName'],
                 'siteurl'  => $CONF['IndexURL'],
-            )
+            ]
         );
     }
 
@@ -1165,10 +1165,10 @@ class BLOG
                        );
         $res = sql_query($query);
 
-        $this->settings = ($res ? sql_fetch_assoc($res) : array());
+        $this->settings = ($res ? sql_fetch_assoc($res) : []);
         $this->isValid  = ! empty($this->settings);
         if (! $this->isValid) {
-            $this->settings = array();
+            $this->settings = [];
         }
     }
 
@@ -1179,7 +1179,7 @@ class BLOG
     {
         $btimeoffset = $this->getTimeOffset();
 
-        $v = array();
+        $v = [];
 
         $v['bname']        = $this->getName();
         $v['bshortname']   = $this->getShortName();
@@ -1636,15 +1636,15 @@ class BLOG
             return 0;
         }
 
-        $param = array(
+        $param = [
             'blog'   => &$this,
             'member' => &$tmem,
             'admin'  => &$tadmin,
-        );
+        ];
         $manager->notify('PreAddTeamMember', $param);
 
         // add to team
-        $ph            = array();
+        $ph            = [];
         $ph['tmember'] = $tmember;
         $ph['tblog']   = $this->getID();
         $ph['tadmin']  = $tadmin ? 1 : 0;
@@ -1655,11 +1655,11 @@ class BLOG
                        );
         sql_query($query);
 
-        $param = array(
+        $param = [
             'blog'   => &$this,
             'member' => &$tmem,
             'admin'  => $tadmin,
-        );
+        ];
         $manager->notify('PostAddTeamMember', $param);
 
         $logMsg = sprintf(
@@ -1763,10 +1763,10 @@ class BLOG
         // This $pinged is allow a plugin to tell other hook to the event that a ping is sent already
         // Note that the plugins's calling order is subject to thri order in the plugin list
         $pinged = false;
-        $param  = array(
+        $param  = [
             'blogid' => $ph['iblog'],
             'pinged' => &$pinged,
-        );
+        ];
         $manager->notify('JustPosted', $param);
 
         // clear all expired future posts
@@ -1852,7 +1852,7 @@ class BLOG
         }
         $showDrafts = (int)$showDrafts;
         $showFuture = (int)$showFuture;
-        $items      = array();
+        $items      = [];
         foreach ($itemarray as $value) {
             if ((int)$value) {
                 $items[] = (int)$value;

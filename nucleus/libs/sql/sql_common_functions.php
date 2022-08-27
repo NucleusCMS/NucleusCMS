@@ -24,7 +24,7 @@ function startUpError($msg, $title)
     }
     $tpl = file_get_contents(NC_LIBS_PATH
                                          . 'include/startup_error.template');
-    $ph              = array();
+    $ph              = [];
     $ph['lang_code'] = defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en';
     $ph['CHARSET']   = _CHARSET;
     $ph['title']     = hsc($title);
@@ -218,7 +218,7 @@ function is_sql_result($res)
     return _EXT_MYSQL_EMULATE ? is_object($res) : is_resource($res);
 }
 
-function selectQuery($table_name, $where = '', $fields = '*', $extra = array())
+function selectQuery($table_name, $where = '', $fields = '*', $extra = [])
 {
     if (is_array($table_name)) {
         $table_name = implode(' ', $table_name);
@@ -241,7 +241,7 @@ function selectQuery($table_name, $where = '', $fields = '*', $extra = array())
     return "SELECT {$fields} FROM {$table_name} {$where} {$extra}";
 }
 
-function updateQuery($table_name, $values, $where = '', $extra = array())
+function updateQuery($table_name, $values, $where = '', $extra = [])
 {
     $table_name = parseQuery($table_name);
 
@@ -272,13 +272,13 @@ function updateQuery($table_name, $values, $where = '', $extra = array())
     return sql_query("UPDATE {$table_name} SET {$pairs} {$where}");
 }
 
-function _getFieldsStringFromArray($fields = array())
+function _getFieldsStringFromArray($fields = [])
 {
     if (empty($fields)) {
         return '*';
     }
 
-    $_ = array();
+    $_ = [];
     foreach ($fields as $k => $v) {
         if (preg_match('@^[0-9]+$@', $k)) {
             $_[] = $v;
@@ -334,7 +334,7 @@ function fix_mysql_sqlmode($conn_or_dbh = null)
 
     $options = array_diff(
         explode(',', $sqlmode),
-        array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE')
+        ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE']
     );
     $new_sqlmode = implode(',', $options);
     if (strcmp($sqlmode, $new_sqlmode) != 0) {

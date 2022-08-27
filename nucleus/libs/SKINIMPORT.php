@@ -79,8 +79,8 @@ class SKINIMPORT
         $this->cdata = '';
 
         // list of skinnames and templatenames (will be array of array)
-        $this->skins     = array();
-        $this->templates = array();
+        $this->skins     = [];
+        $this->templates = [];
 
         // extra info included in the XML files (e.g. installation notes)
         $this->info = '';
@@ -258,7 +258,7 @@ class SKINIMPORT
             //  spartstype = 'specialpage'
             if (isset($data['specialpage'])) {
                 foreach ($data['specialpage'] as $pageName => $pageData) {
-                    $options = array('spartstype' => 'specialpage');
+                    $options = ['spartstype' => 'specialpage'];
                     $skinObj->update(
                         $pageName,
                         (isset($pageData['content'])
@@ -306,7 +306,7 @@ class SKINIMPORT
      */
     public function checkSkinNameClashes()
     {
-        $clashes = array();
+        $clashes = [];
 
         foreach ($this->skins as $skinName => $data) {
             if (SKIN::exists($skinName)) {
@@ -323,7 +323,7 @@ class SKINIMPORT
      */
     public function checkTemplateNameClashes()
     {
-        $clashes = array();
+        $clashes = [];
 
         if (is_array($this->templates)) {
             foreach ($this->templates as $templateName => $data) {
@@ -370,10 +370,10 @@ class SKINIMPORT
                                                               = $attrs['includeMode'];
                     $this->skins[$this->currentName]['includePrefix']
                                                               = $attrs['includePrefix'];
-                    $this->skins[$this->currentName]['parts'] = array();
+                    $this->skins[$this->currentName]['parts'] = [];
                 } else {
-                    $this->skins[$attrs['name']]          = array();
-                    $this->skins[$attrs['name']]['parts'] = array();
+                    $this->skins[$attrs['name']]          = [];
+                    $this->skins[$attrs['name']]['parts'] = [];
                 }
                 break;
             case 'template':
@@ -381,10 +381,10 @@ class SKINIMPORT
                     $this->inTemplate = 1;
                     $this->currentName
                                                                   = $attrs['name'];
-                    $this->templates[$this->currentName]['parts'] = array();
+                    $this->templates[$this->currentName]['parts'] = [];
                 } else {
-                    $this->templates[$attrs['name']]          = array();
-                    $this->templates[$attrs['name']]['parts'] = array();
+                    $this->templates[$attrs['name']]          = [];
+                    $this->templates[$attrs['name']]['parts'] = [];
                 }
                 break;
             case 'description':
@@ -506,12 +506,12 @@ class SKINIMPORT
      */
     public static function searchForCandidates($dir)
     {
-        $candidates = array();
+        $candidates = [];
 
         $dirhandle = opendir($dir);
         while ($filename = readdir($dirhandle)) {
             if (is_dir($dir . $filename)
-                && ! in_array($filename, array('.', '..'))) {
+                && ! in_array($filename, ['.', '..'])) {
                 $xml_file = sprintf('%s%s/skinbackup.xml', $dir, $filename);
                 if (is_file($xml_file) && is_readable($xml_file)) {
                     $candidates[$filename] = $filename; //$xml_file;
@@ -554,8 +554,8 @@ class SKINIMPORT
     private function readFileWithSimpleXML($filename, $metaOnly = 0)
     {
         unset($this->skins, $this->templates);
-        $this->skins     = array();
-        $this->templates = array();
+        $this->skins     = [];
+        $this->templates = [];
 
         $src_text = @file_get_contents($filename);
         if ($src_text === false) {
@@ -589,18 +589,18 @@ class SKINIMPORT
         }
 
         if ($metaOnly) {
-            $parents = array('meta');
+            $parents = ['meta'];
         } else {
-            $parents = array('meta', 'skin', 'template');
+            $parents = ['meta', 'skin', 'template'];
         }
 
-        $data = array();
+        $data = [];
         foreach ($parents as $parent) {
             if ('meta' === $parent) {
                 if (isset($data[$parent])) {
                     continue;
                 }
-                $data[$parent] = array();
+                $data[$parent] = [];
                 $meta          = $xml->xpath('/nucleusskin/meta');
 
                 if ($meta) {
@@ -620,12 +620,12 @@ class SKINIMPORT
                         if ($metaOnly) {
                             if (isset($data[$parent]['skin'])) {
                                 foreach ($data[$parent]['skin'] as $v) {
-                                    $this->skins[$v] = array();
+                                    $this->skins[$v] = [];
                                 }
                             }
                             if (isset($data[$parent]['template'])) {
                                 foreach ($data[$parent]['template'] as $v) {
-                                    $this->templates[$v] = array();
+                                    $this->templates[$v] = [];
                                 }
                             }
                         }
@@ -639,9 +639,9 @@ class SKINIMPORT
                 continue;
             }
             foreach ($xml_first as $child) {
-                $item       = array();
+                $item       = [];
                 $name       = $child->getName(); // skin template
-                $attributes = array();
+                $attributes = [];
                 foreach ($child->attributes() as $k => $v) {
                     $attributes[$k] = (string )$v;
                 }
@@ -654,7 +654,7 @@ class SKINIMPORT
                 // parts
                 $parts = $child->xpath('part');
                 foreach ($parts as $part) {
-                    $attr = array();
+                    $attr = [];
                     foreach ($part->attributes() as $k => $v) {
                         $attr[$k] = (string )$v;
                     }
@@ -666,7 +666,7 @@ class SKINIMPORT
                 //  spartstype = 'specialpage'
                 $xml_pages = $child->xpath('specialpage');
                 foreach ($xml_pages as $xml_page) {
-                    $attr = array();
+                    $attr = [];
                     foreach ($xml_page->attributes() as $k => $v) {
                         $attr[$k] = (string )$v;
                     }
@@ -678,7 +678,7 @@ class SKINIMPORT
                 }
 
                 //
-                foreach (array('type', 'includeMode', 'includePrefix') as $a) {
+                foreach (['type', 'includeMode', 'includePrefix'] as $a) {
                     $item[$a] = isset($attributes[$a]) ? $attributes[$a] : '';
                 }
 

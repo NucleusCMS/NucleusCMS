@@ -41,7 +41,7 @@ class Utils
             $mb_lang = 'uni';
             if ('utf-8' != strtolower(_CHARSET)) {
                 $lang = strtolower(str_replace(
-                    array('\\', '/'),
+                    ['\\', '/'],
                     '',
                     getLanguageName()
                 ));
@@ -97,7 +97,7 @@ class Utils
                     $m
                 )) {
                     $codepage = intval($m[1]);
-                    if (in_array($codepage, array(1251, 1252))) {
+                    if (in_array($codepage, [1251, 1252])) {
                         $locale_mbcahrset = "windows-{$m[1]}";
                     } else {
                         if ($codepage == 932) {
@@ -160,7 +160,7 @@ class Utils
 
     public static function httpGet(
         $url,
-        $options = array('connecttimeout' => 3)
+        $options = ['connecttimeout' => 3]
     ) {
         static $enable_curl = null;
         if (is_null($enable_curl)) {
@@ -211,10 +211,10 @@ class Utils
                             $body = substr($res, $info["header_size"]);
                         }
                         if ($reply_response) {
-                            $ret = array(
+                            $ret = [
                                 'header' => &$header,
                                 'body'   => &$body,
-                            );
+                            ];
                         } else {
                             $ret = & $body;
                         }
@@ -229,14 +229,14 @@ class Utils
         if ($connecttimeout > 0
             && version_compare(PHP_VERSION, '5.2.1', '>=')) {
             $opts
-                = array('http' => array('timeout' => $connecttimeout)); // php-5.2.1 Added timeout.  default_socket_timeout
+                = ['http' => ['timeout' => $connecttimeout]]; // php-5.2.1 Added timeout.  default_socket_timeout
             $sc = stream_context_create($opts);
             $c  = @fopen($url, "r", false, $sc);
         } else {
             $c = @fopen($url, "r");
         }
         if ($c) {
-            $meta = array();
+            $meta = [];
             if ($reply_response) {
                 $meta = stream_get_meta_data($c);
             }
@@ -249,7 +249,7 @@ class Utils
                 stream_set_timeout($c, $timeout);
             }
             $data = '';
-            $stR  = array($c);
+            $stR  = [$c];
             $stW  = null;
             while (is_resource($c) && ! feof($c)) {
                 $tv_sec = max(
@@ -282,10 +282,10 @@ class Utils
             }
             fclose($c);
             if (! empty($meta) && isset($meta['wrapper_data'])) {
-                return array(
+                return [
                     'header' => (string)implode("\n", $meta['wrapper_data']),
                     'body'   => &$data,
-                );
+                ];
             }
 
             return $data;
@@ -312,7 +312,7 @@ class Utils
         // Todo: ignore error option
         $force = true;
         $parts = preg_split('|(%[%a-z])|i', $format, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        $res   = array();
+        $res   = [];
 
         foreach ($parts as $part) {
             if (substr($part, 0, 1) !== '%') {
@@ -333,7 +333,7 @@ class Utils
                 // syntax error;
                 return false;
             }
-            $pairs = array(
+            $pairs = [
                 '%%' => '%',
                 '%y' => 'y',
                 '%Y' => 'Y',
@@ -377,7 +377,7 @@ class Utils
 //                '%X' => '',
 //                '%c' => '',
 //                '%x' => '',
-            );
+            ];
             $new = strtr($part, $pairs);
             if (strcmp($new, $part) === 0) {
                 // Not implemented yet.
@@ -399,14 +399,14 @@ class Utils
     {
         $t = null;
         //  php -r "include('Utils.php'); Utils::test_date_with_strftime_format();"
-        $list = array(
+        $list = [
             '%Y-%m-%d %H:%M:%S',
             '%W %w %s',
             'text : ok?',
             '%z %Z %T %P %p %I %j',
             '%u %a %A %h %b %B',
             '%F %D %y',
-        );
+        ];
         foreach ($list as $format) {
             $date_fmt = self::convertDateformatFromStrftimeformat($format);
             printf("format                        : %s\n", $format);

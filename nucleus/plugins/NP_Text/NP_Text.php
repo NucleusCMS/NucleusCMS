@@ -14,12 +14,12 @@
 
 class NP_Text extends NucleusPlugin
 {
-    private $incModePref    = array();
+    private $incModePref    = [];
     private $constantPrefix = "SL_";
 
     public function getEventList()
     {
-        return array('PreSkinParse');
+        return ['PreSkinParse'];
     }
     public function getName()
     {
@@ -54,7 +54,7 @@ class NP_Text extends NucleusPlugin
     }
     public function supportsFeature($feature)
     {
-        return in_array($feature, array('SqlTablePrefix', 'SqlApi'));
+        return in_array($feature, ['SqlTablePrefix', 'SqlApi']);
     }
     public function install()
     {
@@ -160,9 +160,9 @@ class NP_Text extends NucleusPlugin
         if ($result) {
             $row = sql_fetch_assoc($result);
             if (!empty($row) && is_array($row)) {
-                return array($row['sdincmode'], $row['sdincpref']);
+                return [$row['sdincmode'], $row['sdincpref']];
             }
         }
-        return array();
+        return [];
     }
 }

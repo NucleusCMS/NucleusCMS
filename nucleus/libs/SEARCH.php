@@ -63,7 +63,7 @@ class SEARCH
         }
 
         $keywords      = explode(' ', $this->keywords);
-        $long_keywords = array();
+        $long_keywords = [];
         foreach ($keywords as $keyword) {
             if ($this->is_long_word($keyword)) {
                 $long_keywords[] = $keyword;
@@ -92,7 +92,7 @@ class SEARCH
         return ($this->get_min_word_len() <= strlen(trim($keyword, '-+| ')));
     }
 
-    private function add_boolean($keys = array())
+    private function add_boolean($keys = [])
     {
         foreach ($keys as $i => $key) {
             $c    = substr($key, 0, 1);
@@ -155,14 +155,14 @@ class SEARCH
         }
 
         $keywords      = explode(' ', $this->keywords);
-        $long_keywords = array();
+        $long_keywords = [];
         foreach ($keywords as $i => $keyword) {
             if ($this->is_long_word($keyword)) {
                 $long_keywords[] = $keyword;
                 unset($keywords[$i]);
             }
         }
-        $_ = array();
+        $_ = [];
         if ($long_keywords) {
             $long_keywords = $this->add_boolean($long_keywords);
             $_[]           = $this->get_ft_phrase(implode(' ', $long_keywords));
@@ -188,7 +188,7 @@ class SEARCH
     {
         $keywords = explode(' ', $keywords);
 
-        $_ = array();
+        $_ = [];
         foreach ($keywords as $keyword) {
             $c           = substr($keyword, 0, 1);
             $like_phrase = $this->get_like_phrase($keyword);
@@ -256,7 +256,7 @@ class SEARCH
     private function score_for_like_phrase($keyword)
     {
         $fields = explode(',', $this->fields);
-        $score  = array();
+        $score  = [];
         $tpl
                        = " 0.2*(LENGTH([@field@]) - LENGTH(REPLACE(LOWER([@field@]), LOWER([@keyword@]), '')))/LENGTH([@keyword@]) ";
         $ph['keyword'] = sql_quote_string($keyword);

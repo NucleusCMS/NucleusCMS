@@ -57,7 +57,7 @@ $GLOBALS['xmlrpcArray']    = 'array';
 $GLOBALS['xmlrpcStruct']   = 'struct';
 $GLOBALS['xmlrpcValue']    = 'undefined';
 
-$GLOBALS['xmlrpcTypes'] = array(
+$GLOBALS['xmlrpcTypes'] = [
     $GLOBALS['xmlrpcI4']       => 1,
     $GLOBALS['xmlrpcInt']      => 1,
     $GLOBALS['xmlrpcBoolean']  => 1,
@@ -67,29 +67,29 @@ $GLOBALS['xmlrpcTypes'] = array(
     $GLOBALS['xmlrpcBase64']   => 1,
     $GLOBALS['xmlrpcArray']    => 2,
     $GLOBALS['xmlrpcStruct']   => 3
-);
+];
 
-$GLOBALS['xmlrpc_valid_parents'] = array(
-    'VALUE'            => array('MEMBER', 'DATA', 'PARAM', 'FAULT'),
-    'BOOLEAN'          => array('VALUE'),
-    'I4'               => array('VALUE'),
-    'INT'              => array('VALUE'),
-    'STRING'           => array('VALUE'),
-    'DOUBLE'           => array('VALUE'),
-    'DATETIME.ISO8601' => array('VALUE'),
-    'BASE64'           => array('VALUE'),
-    'MEMBER'           => array('STRUCT'),
-    'NAME'             => array('MEMBER'),
-    'DATA'             => array('ARRAY'),
-    'ARRAY'            => array('VALUE'),
-    'STRUCT'           => array('VALUE'),
-    'PARAM'            => array('PARAMS'),
-    'METHODNAME'       => array('METHODCALL'),
-    'PARAMS'           => array('METHODCALL', 'METHODRESPONSE'),
-    'FAULT'            => array('METHODRESPONSE'),
-    'NIL'              => array('VALUE'), // only used when extension activated
-    'EX:NIL'           => array('VALUE') // only used when extension activated
-);
+$GLOBALS['xmlrpc_valid_parents'] = [
+    'VALUE'            => ['MEMBER', 'DATA', 'PARAM', 'FAULT'],
+    'BOOLEAN'          => ['VALUE'],
+    'I4'               => ['VALUE'],
+    'INT'              => ['VALUE'],
+    'STRING'           => ['VALUE'],
+    'DOUBLE'           => ['VALUE'],
+    'DATETIME.ISO8601' => ['VALUE'],
+    'BASE64'           => ['VALUE'],
+    'MEMBER'           => ['STRUCT'],
+    'NAME'             => ['MEMBER'],
+    'DATA'             => ['ARRAY'],
+    'ARRAY'            => ['VALUE'],
+    'STRUCT'           => ['VALUE'],
+    'PARAM'            => ['PARAMS'],
+    'METHODNAME'       => ['METHODCALL'],
+    'PARAMS'           => ['METHODCALL', 'METHODRESPONSE'],
+    'FAULT'            => ['METHODRESPONSE'],
+    'NIL'              => ['VALUE'], // only used when extension activated
+    'EX:NIL'           => ['VALUE'] // only used when extension activated
+];
 
 // define extra types for supporting NULL (useful for json or <NIL/>)
 $GLOBALS['xmlrpcNull']          = 'null';
@@ -97,19 +97,19 @@ $GLOBALS['xmlrpcTypes']['null'] = 1;
 
 // Not in use anymore since 2.0. Shall we remove it?
 /// @deprecated
-$GLOBALS['xmlEntities'] = array(
+$GLOBALS['xmlEntities'] = [
     'amp'  => '&',
     'quot' => '"',
     'lt'   => '<',
     'gt'   => '>',
     'apos' => "'"
-);
+];
 
 // tables used for transcoding different charsets into us-ascii xml
 
-$GLOBALS['xml_iso88591_Entities']        = array();
-$GLOBALS['xml_iso88591_Entities']['in']  = array();
-$GLOBALS['xml_iso88591_Entities']['out'] = array();
+$GLOBALS['xml_iso88591_Entities']        = [];
+$GLOBALS['xml_iso88591_Entities']['in']  = [];
+$GLOBALS['xml_iso88591_Entities']['out'] = [];
 for ($i = 0; $i < 32; $i++) {
     $GLOBALS['xml_iso88591_Entities']['in'][]  = chr($i);
     $GLOBALS['xml_iso88591_Entities']['out'][] = '&#'.$i.';';
@@ -140,7 +140,7 @@ for ($i = 160; $i < 256; $i++) {
   );
 */
 
-$GLOBALS['xmlrpcerr'] = array(
+$GLOBALS['xmlrpcerr'] = [
 'unknown_method'      => 1,
 'invalid_return'      => 2,
 'incorrect_params'    => 3,
@@ -165,9 +165,9 @@ $GLOBALS['xmlrpcerr'] = array(
 'dechunk_fail'             => 105,
 'server_cannot_decompress' => 106,
 'server_decompress_fail'   => 107
-);
+];
 
-$GLOBALS['xmlrpcstr'] = array(
+$GLOBALS['xmlrpcstr'] = [
 'unknown_method'      => 'Unknown method',
 'invalid_return'      => 'Invalid return payload: enable debugging to examine incoming payload',
 'incorrect_params'    => 'Incorrect parameters passed to method',
@@ -192,7 +192,7 @@ $GLOBALS['xmlrpcstr'] = array(
 'dechunk_fail'             => 'Received from server invalid chunked HTTP',
 'server_cannot_decompress' => 'Received from client compressed HTTP request and cannot decompress',
 'server_decompress_fail'   => 'Received from client invalid compressed HTTP request'
-);
+];
 
 // The charset encoding used by the server for received messages and
 // by the client for received responses when received charset cannot be determined
@@ -261,11 +261,11 @@ function xmlrpc_encode_entitites($data, $src_encoding = '', $dest_encoding = '')
     switch (strtoupper($src_encoding.'_'.$dest_encoding)) {
         case 'ISO-8859-1_':
         case 'ISO-8859-1_US-ASCII':
-            $escaped_data = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+            $escaped_data = str_replace(['&', '"', "'", '<', '>'], ['&amp;', '&quot;', '&apos;', '&lt;', '&gt;'], $data);
             $escaped_data = str_replace($GLOBALS['xml_iso88591_Entities']['in'], $GLOBALS['xml_iso88591_Entities']['out'], $escaped_data);
             break;
         case 'ISO-8859-1_UTF-8':
-            $escaped_data = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+            $escaped_data = str_replace(['&', '"', "'", '<', '>'], ['&amp;', '&quot;', '&apos;', '&lt;', '&gt;'], $data);
             $escaped_data = utf8_encode($escaped_data);
             break;
         case 'ISO-8859-1_ISO-8859-1':
@@ -275,7 +275,7 @@ function xmlrpc_encode_entitites($data, $src_encoding = '', $dest_encoding = '')
         case 'US-ASCII_ISO-8859-1':
         case 'UTF-8_UTF-8':
             //case 'CP1252_CP1252':
-            $escaped_data = str_replace(array('&', '"', "'", '<', '>'), array('&amp;', '&quot;', '&apos;', '&lt;', '&gt;'), $data);
+            $escaped_data = str_replace(['&', '"', "'", '<', '>'], ['&amp;', '&quot;', '&apos;', '&lt;', '&gt;'], $data);
             break;
         case 'UTF-8_':
         case 'UTF-8_US-ASCII':
@@ -438,8 +438,8 @@ function xmlrpc_se($parser, $name, $attrs, $accept_single_vals = false)
                     return;
                 }
                 // create an empty array to hold child values, and push it onto appropriate stack
-                $cur_val           = array();
-                $cur_val['values'] = array();
+                $cur_val           = [];
+                $cur_val['values'] = [];
                 $cur_val['type']   = $name;
                 // check for out-of-band information to rebuild php objs
                 // and in case it is found, save it
@@ -770,8 +770,8 @@ class xmlrpc_client
     public $proxy_user     = '';
     public $proxy_pass     = '';
     public $proxy_authtype = 1;
-    public $cookies        = array();
-    public $extracurlopts  = array();
+    public $cookies        = [];
+    public $extracurlopts  = [];
 
     /**
     * List of http compression methods accepted by the client for responses.
@@ -782,7 +782,7 @@ class xmlrpc_client
     * it supports. You might check for the presence of 'zlib' in the output of
     * curl_version() to determine wheter compression is supported or not
     */
-    public $accepted_compression = array();
+    public $accepted_compression = [];
     /**
     * Name of compression scheme to be used for sending requests.
     * Either null, gzip or deflate
@@ -796,7 +796,7 @@ class xmlrpc_client
     /// Whether to use persistent connections for http 1.1 and https
     public $keepalive = false;
     /// Charset encodings that can be decoded without problems by the client
-    public $accepted_charset_encodings = array();
+    public $accepted_charset_encodings = [];
     /// Charset encoding to be used in serializing request. NULL = use ASCII
     public $request_charset_encoding = '';
     /**
@@ -859,14 +859,14 @@ class xmlrpc_client
             function_exists('curl_init') && (($info = curl_version()) &&
             ((is_string($info) && strpos($info, 'zlib') !== null) || isset($info['libz_version'])))
         )) {
-            $this->accepted_compression = array('gzip', 'deflate');
+            $this->accepted_compression = ['gzip', 'deflate'];
         }
 
         // keepalives: enabled by default
         $this->keepalive = true;
 
         // by default the xml parser can support these 3 charset encodings
-        $this->accepted_charset_encodings = array('UTF-8', 'ISO-8859-1', 'US-ASCII');
+        $this->accepted_charset_encodings = ['UTF-8', 'ISO-8859-1', 'US-ASCII'];
 
         // initialize user_agent string
         $this->user_agent = $GLOBALS['xmlrpcName'] . ' ' . $GLOBALS['xmlrpcVersion'];
@@ -1005,11 +1005,11 @@ class xmlrpc_client
     public function setAcceptedCompression($compmethod)
     {
         if ($compmethod == 'any') {
-            $this->accepted_compression = array('gzip', 'deflate');
+            $this->accepted_compression = ['gzip', 'deflate'];
         } elseif ($compmethod == false) {
-            $this->accepted_compression = array();
+            $this->accepted_compression = [];
         } else {
-            $this->accepted_compression = array($compmethod);
+            $this->accepted_compression = [$compmethod];
         }
     }
 
@@ -1497,7 +1497,7 @@ class xmlrpc_client
             }
         }
         // extra headers
-        $headers = array('Content-Type: ' . $msg->content_type , 'Accept-Charset: ' . implode(',', $this->accepted_charset_encodings));
+        $headers = ['Content-Type: ' . $msg->content_type , 'Accept-Charset: ' . implode(',', $this->accepted_charset_encodings)];
         // if no keepalive is wanted, let the server know it in advance
         if (!$keepalive) {
             $headers[] = 'Connection: close';
@@ -1679,7 +1679,7 @@ class xmlrpc_client
             $fallback = true;
         }
 
-        $results = array();
+        $results = [];
         if ($fallback) {
             // system.multicall is (probably) unsupported by server:
             // emulate multicall via multiple requests
@@ -1706,11 +1706,11 @@ class xmlrpc_client
     public function _try_multicall($msgs, $timeout, $method)
     {
         // Construct multicall message
-        $calls = array();
+        $calls = [];
         foreach ($msgs as $msg) {
             $call['methodName'] = new xmlrpcval($msg->method(), 'string');
             $numParams          = $msg->getNumParams();
-            $params             = array();
+            $params             = [];
             for ($i = 0; $i < $numParams; $i++) {
                 $params[$i] = $msg->getParam($i);
             }
@@ -1744,7 +1744,7 @@ class xmlrpc_client
                 return false;       // wrong number of return values.
             }
 
-            $response = array();
+            $response = [];
             for ($i = 0; $i < $numRets; $i++) {
                 $val = $rets[$i];
                 if (!is_array($val)) {
@@ -1785,7 +1785,7 @@ class xmlrpc_client
                 return false;       // wrong number of return values.
             }
 
-            $response = array();
+            $response = [];
             for ($i = 0; $i < $numRets; $i++) {
                 $val = $rets->arraymem($i);
                 switch ($val->kindOf()) {
@@ -1823,8 +1823,8 @@ class xmlrpcresp
     public $errno  = 0;
     public $errstr = '';
     public $payload;
-    public $hdrs         = array();
-    public $_cookies     = array();
+    public $hdrs         = [];
+    public $_cookies     = [];
     public $content_type = 'text/xml';
     public $raw_data     = '';
 
@@ -1970,7 +1970,7 @@ class xmlrpcmsg
 {
     public $payload;
     public $methodname;
-    public $params       = array();
+    public $params       = [];
     public $debug        = 0;
     public $content_type = 'text/xml';
 
@@ -2184,8 +2184,8 @@ class xmlrpcmsg
             return $r;
         }
 
-        $GLOBALS['_xh']['headers'] = array();
-        $GLOBALS['_xh']['cookies'] = array();
+        $GLOBALS['_xh']['headers'] = [];
+        $GLOBALS['_xh']['cookies'] = [];
 
         // be tolerant to usage of \n instead of \r\n to separate headers and data
         // (even though it is not valid http)
@@ -2219,7 +2219,7 @@ class xmlrpcmsg
                         // there could be many cookies on one line, comma separated
                         $cookies = explode(',', $arr[1]);
                     } else {
-                        $cookies = array($arr[1]);
+                        $cookies = [$arr[1]];
                     }
                     foreach ($cookies as $cookie) {
                         // glue together all received cookies, using a comma to separate them
@@ -2240,7 +2240,7 @@ class xmlrpcmsg
                             /// @todo with version 1 cookies, we should strip leading and trailing " chars
                             if ($pos == 0) {
                                 $cookiename                                      = $tag;
-                                $GLOBALS['_xh']['cookies'][$tag]                 = array();
+                                $GLOBALS['_xh']['cookies'][$tag]                 = [];
                                 $GLOBALS['_xh']['cookies'][$cookiename]['value'] = urldecode($val);
                             } else {
                                 if ($tag != 'value') {
@@ -2341,7 +2341,7 @@ class xmlrpcmsg
             return $r;
         }
 
-        $GLOBALS['_xh'] = array();
+        $GLOBALS['_xh'] = [];
 
         $raw_data = $data;
         // parse the HTTP headers of the response, if present, and separate them from data
@@ -2354,8 +2354,8 @@ class xmlrpcmsg
                 return $r;
             }
         } else {
-            $GLOBALS['_xh']['headers'] = array();
-            $GLOBALS['_xh']['cookies'] = array();
+            $GLOBALS['_xh']['headers'] = [];
+            $GLOBALS['_xh']['cookies'] = [];
         }
 
         if ($this->debug) {
@@ -2394,8 +2394,8 @@ class xmlrpcmsg
 
         $GLOBALS['_xh']['ac'] = '';
         //$GLOBALS['_xh']['qt']=''; //unused...
-        $GLOBALS['_xh']['stack']      = array();
-        $GLOBALS['_xh']['valuestack'] = array();
+        $GLOBALS['_xh']['stack']      = [];
+        $GLOBALS['_xh']['valuestack'] = [];
         $GLOBALS['_xh']['isf']        = 0; // 0 = OK, 1 for xmlrpc fault responses, 2 = invalid xmlrpc
         $GLOBALS['_xh']['isf_reason'] = '';
         $GLOBALS['_xh']['rt']         = ''; // 'methodcall or 'methodresponse'
@@ -2405,7 +2405,7 @@ class xmlrpcmsg
         // The following code might be better for mb_string enabled installs, but
         // makes the lib about 200% slower...
         //if (!is_valid_charset($resp_encoding, array('UTF-8')))
-        if (!in_array($resp_encoding, array('UTF-8', 'US-ASCII')) && !has_encoding($data)) {
+        if (!in_array($resp_encoding, ['UTF-8', 'US-ASCII']) && !has_encoding($data)) {
             if ($resp_encoding == 'ISO-8859-1') {
                 $data = utf8_encode($data);
             } else {
@@ -2425,7 +2425,7 @@ class xmlrpcmsg
         // we use the broadest one, ie. utf8
         // This allows to send data which is native in various charset,
         // by extending xmlrpc_encode_entitites() and setting xmlrpc_internalencoding
-        if (!in_array($GLOBALS['xmlrpc_internalencoding'], array('UTF-8', 'ISO-8859-1', 'US-ASCII'))) {
+        if (!in_array($GLOBALS['xmlrpc_internalencoding'], ['UTF-8', 'ISO-8859-1', 'US-ASCII'])) {
             xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'UTF-8');
         } else {
             xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $GLOBALS['xmlrpc_internalencoding']);
@@ -2533,7 +2533,7 @@ class xmlrpcmsg
 
 class xmlrpcval
 {
-    public $me         = array();
+    public $me         = [];
     public $mytype     = 0;
     public $_php_class = null;
 
@@ -3059,7 +3059,7 @@ function iso8601_decode($idate, $utc = 0)
 * @param array $options if 'decode_php_objs' is set in the options array, xmlrpc structs can be decoded into php objects; if 'dates_as_objects' is set xmlrpc datetimes are decoded as php DateTime objects (standard is
 * @return mixed
 */
-function php_xmlrpc_decode($xmlrpc_val, $options = array())
+function php_xmlrpc_decode($xmlrpc_val, $options = [])
 {
     switch ($xmlrpc_val->kindOf()) {
         case 'scalar':
@@ -3099,7 +3099,7 @@ function php_xmlrpc_decode($xmlrpc_val, $options = array())
             return $xmlrpc_val->scalarval();
         case 'array':
             $size = $xmlrpc_val->arraysize();
-            $arr  = array();
+            $arr  = [];
             for ($i = 0; $i < $size; $i++) {
                 $arr[] = php_xmlrpc_decode($xmlrpc_val->arraymem($i), $options);
             }
@@ -3118,7 +3118,7 @@ function php_xmlrpc_decode($xmlrpc_val, $options = array())
                 }
                 return $obj;
             } else {
-                $arr = array();
+                $arr = [];
                 while (list($key, $value) = $xmlrpc_val->structeach()) {
                     $arr[$key] = php_xmlrpc_decode($value, $options);
                 }
@@ -3127,7 +3127,7 @@ function php_xmlrpc_decode($xmlrpc_val, $options = array())
             // no break
         case 'msg':
             $paramcount = $xmlrpc_val->getNumParams();
-            $arr        = array();
+            $arr        = [];
             for ($i = 0; $i < $paramcount; $i++) {
                 $arr[] = php_xmlrpc_decode($xmlrpc_val->getParam($i));
             }
@@ -3161,7 +3161,7 @@ if (function_exists('xmlrpc_decode')) {
 * @param array $options can include 'encode_php_objs', 'auto_dates', 'null_extension' or 'extension_api'
 * @return xmlrpcval
 */
-function php_xmlrpc_encode($php_val, $options = array())
+function php_xmlrpc_encode($php_val, $options = [])
 {
     $type = gettype($php_val);
     switch ($type) {
@@ -3191,7 +3191,7 @@ function php_xmlrpc_encode($php_val, $options = array())
             // $tmp = array_diff(array_keys($php_val), range(0, count($php_val)-1));
             // but execution time skyrockets!
             $j   = 0;
-            $arr = array();
+            $arr = [];
             $ko  = false;
             foreach ($php_val as $key => $val) {
                 $arr[$key] = php_xmlrpc_encode($val, $options);
@@ -3212,7 +3212,7 @@ function php_xmlrpc_encode($php_val, $options = array())
             } elseif (is_a($php_val, 'DateTime')) {
                 $xmlrpc_val = new xmlrpcval($php_val->format('Ymd\TH:i:s'), $GLOBALS['xmlrpcStruct']);
             } else {
-                $arr = array();
+                $arr = [];
                 foreach ($php_val as $k => $v) {
                     $arr[$k] = php_xmlrpc_encode($v, $options);
                 }
@@ -3258,14 +3258,14 @@ function php_xmlrpc_encode($php_val, $options = array())
 * @param array $options
 * @return mixed false on error, or an instance of either xmlrpcval, xmlrpcmsg or xmlrpcresp
 */
-function php_xmlrpc_decode_xml($xml_val, $options = array())
+function php_xmlrpc_decode_xml($xml_val, $options = [])
 {
-    $GLOBALS['_xh']               = array();
+    $GLOBALS['_xh']               = [];
     $GLOBALS['_xh']['ac']         = '';
-    $GLOBALS['_xh']['stack']      = array();
-    $GLOBALS['_xh']['valuestack'] = array();
-    $GLOBALS['_xh']['params']     = array();
-    $GLOBALS['_xh']['pt']         = array();
+    $GLOBALS['_xh']['stack']      = [];
+    $GLOBALS['_xh']['valuestack'] = [];
+    $GLOBALS['_xh']['params']     = [];
+    $GLOBALS['_xh']['pt']         = [];
     $GLOBALS['_xh']['isf']        = 0;
     $GLOBALS['_xh']['isf_reason'] = '';
     $GLOBALS['_xh']['method']     = false;
@@ -3279,7 +3279,7 @@ function php_xmlrpc_decode_xml($xml_val, $options = array())
     // The following code might be better for mb_string enabled installs, but
     // makes the lib about 200% slower...
     //if (!is_valid_charset($val_encoding, array('UTF-8')))
-    if (!in_array($val_encoding, array('UTF-8', 'US-ASCII')) && !has_encoding($xml_val)) {
+    if (!in_array($val_encoding, ['UTF-8', 'US-ASCII']) && !has_encoding($xml_val)) {
         if ($val_encoding == 'ISO-8859-1') {
             $xml_val = utf8_encode($xml_val);
         } else {
@@ -3295,7 +3295,7 @@ function php_xmlrpc_decode_xml($xml_val, $options = array())
     xml_parser_set_option($parser, XML_OPTION_CASE_FOLDING, true);
     // What if internal encoding is not in one of the 3 allowed?
     // we use the broadest one, ie. utf8!
-    if (!in_array($GLOBALS['xmlrpc_internalencoding'], array('UTF-8', 'ISO-8859-1', 'US-ASCII'))) {
+    if (!in_array($GLOBALS['xmlrpc_internalencoding'], ['UTF-8', 'ISO-8859-1', 'US-ASCII'])) {
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, 'UTF-8');
     } else {
         xml_parser_set_option($parser, XML_OPTION_TARGET_ENCODING, $GLOBALS['xmlrpc_internalencoding']);
@@ -3426,7 +3426,7 @@ function guess_encoding($httpheader = '', $xmlchunk = '', $encoding_prefs = null
     //   the received charset is a quoted string. But nobody uses such charset names...
 
     /// @todo this test will pass if ANY header has charset specification, not only Content-Type. Fix it?
-    $matches = array();
+    $matches = [];
     if (preg_match('/;\s*charset\s*=([^;]+)/i', $httpheader, $matches)) {
         return strtoupper(trim($matches[1], " \t\""));
     }
@@ -3525,13 +3525,13 @@ function has_encoding($xmlChunk)
 */
 function is_valid_charset($encoding, $validlist)
 {
-    $charset_supersets = array(
-        'US-ASCII' => array('ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4',
+    $charset_supersets = [
+        'US-ASCII' => ['ISO-8859-1', 'ISO-8859-2', 'ISO-8859-3', 'ISO-8859-4',
             'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8',
             'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-11', 'ISO-8859-12',
             'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15', 'UTF-8',
-            'EUC-JP', 'EUC-', 'EUC-KR', 'EUC-CN')
-    );
+            'EUC-JP', 'EUC-', 'EUC-KR', 'EUC-CN']
+    ];
     if (is_string($validlist)) {
         $validlist = explode(',', $validlist);
     }

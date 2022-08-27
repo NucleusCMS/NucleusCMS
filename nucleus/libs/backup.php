@@ -125,7 +125,7 @@ class Backup
         $this->init_do_backup();
 
         // tables of which backup is needed
-        $tables = array(
+        $tables = [
             sql_table('actionlog'),
             sql_table('ban'),
             sql_table('blog'),
@@ -146,7 +146,7 @@ class Backup
             sql_table('category'),
             sql_table('activation'),
             sql_table('tickets'),
-        );
+        ];
         if (sql_existTableName(sql_table('cached_data'))) {
             $tables[] = sql_table('cached_data');
         }
@@ -240,7 +240,7 @@ class Backup
 
         // dump all tables
         reset($tables);
-        array_walk($tables, array($this, '_backup_dump_table'));
+        array_walk($tables, [$this, '_backup_dump_table']);
 
         if ($gzip) {
             $Size     = ob_get_length();
@@ -337,7 +337,7 @@ class Backup
 
             } else {*/
 
-        $fields = array();
+        $fields = [];
         for ($j = 0; $j < $num_fields; $j++) {
             $fields[] = sql_field_name($result, $j);
         }
@@ -594,7 +594,7 @@ class Backup
     {
         // Split up our string into "possible" SQL statements.
         $tokens = explode(';', $sql);
-        $output = array();
+        $output = [];
 
         // this is faster than calling count($tokens) every time thru the loop.
         $token_count = count($tokens);

@@ -25,8 +25,8 @@ if (! isset($member)) {
 }
 
 // nucleus.addItem
-$f_nucleus_addItem_sig = array(
-    array(
+$f_nucleus_addItem_sig = [
+    [
         // return type
         $xmlrpcString,    // itemid of the new item
         // params:
@@ -38,13 +38,13 @@ $f_nucleus_addItem_sig = array(
         $xmlrpcString,    // extended part
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
         $xmlrpcBoolean,    // closed boolean (set to true to disable comments)
-    )
-);
+    ]
+];
 $f_nucleus_addItem_doc = 'Adds a new item to the given blog. Adds it as a draft when publish is false';
 
 // nucleus.addDatedItem (the time of the item can be given here, for offline blogging)
-$f_nucleus_addDatedItem_sig = array(
-    array(
+$f_nucleus_addDatedItem_sig = [
+    [
         // return type
         $xmlrpcString,    // itemid of the new item
         // params:
@@ -57,13 +57,13 @@ $f_nucleus_addDatedItem_sig = array(
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
         $xmlrpcBoolean,    // closed boolean (set to true to disable comments)
         $xmlrpcInt    // item time (unix timestamp)
-    )
-);
+    ]
+];
 $f_nucleus_addDatedItem_doc = 'Adds a new item to the given blog. Adds it as a draft when publish is false. The timestamp of the item needs to be given as a Unix timestamp';
 
 // nucleus.editItem
-$f_nucleus_editItem_sig = array(
-    array(
+$f_nucleus_editItem_sig = [
+    [
         // return type
         $xmlrpcBoolean,    // true or false
         // params:
@@ -75,25 +75,25 @@ $f_nucleus_editItem_sig = array(
         $xmlrpcString,    // extended part
         $xmlrpcBoolean,    // publish boolean (set to false if you want a draft to stay draft)
         $xmlrpcBoolean,    // closed boolean (set to true to disable comments)
-    )
-);
+    ]
+];
 $f_nucleus_editItem_doc = "Edits an item of a blog";
 
 // nucleus.getUsersBlogs
-$f_nucleus_getUsersBlogs_sig = array(
-    array(
+$f_nucleus_getUsersBlogs_sig = [
+    [
         // return type
         $xmlrpcArray,    // array containing structs containing blog info
         // params:
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    )
-);
+    ]
+];
 $f_nucleus_getUsersBlogs_doc = 'Returns a list of all the blogs where the given member is on the team';
 
 // nucleus.getRecentItems
-$f_nucleus_getRecentItems_sig = array(
-    array(
+$f_nucleus_getRecentItems_sig = [
+    [
         // return type
         $xmlrpcArray,    // array of strucs (representing items)
         // params
@@ -101,84 +101,84 @@ $f_nucleus_getRecentItems_sig = array(
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcInt,    // amount of items to return (max = 20)
-    )
-);
+    ]
+];
 $f_nucleus_getRecentItems_doc = "Returns a maximum of 20 recent items for a given webblog";
 
 // nucleus.getItem
-$f_nucleus_getItem_sig = array(
-    array(
+$f_nucleus_getItem_sig = [
+    [
         // return type
         $xmlrpcStruct,    // A struct representing the item
         // params
         $xmlrpcString,    // itemid
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    )
-);
+    ]
+];
 $f_nucleus_getItem_doc = "Returns an item";
 
 // nucleus.deleteItem
-$f_nucleus_deleteItem_sig = array(
-    array(
+$f_nucleus_deleteItem_sig = [
+    [
         // return type
         $xmlrpcBoolean,    // boolean (ok or not ok)
         // params
         $xmlrpcString,    // itemid
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    )
-);
+    ]
+];
 $f_nucleus_deleteItem_doc = "Deletes an item";
 
 if (! isset($functionDefs)) {
-    $functionDefs = array();
+    $functionDefs = [];
 }
 $functionDefs = array_merge(
     $functionDefs,
-    array(
-        'nucleus.addItem' => array(
+    [
+        'nucleus.addItem' => [
                 'function'  => 'f_nucleus_addItem',
                 'signature' => $f_nucleus_addItem_sig,
                 'docstring' => $f_nucleus_addItem_doc
-            ),
+            ],
 
-        'nucleus.editItem' => array(
+        'nucleus.editItem' => [
                 'function'  => 'f_nucleus_editItem',
                 'signature' => $f_nucleus_editItem_sig,
                 'docstring' => $f_nucleus_editItem_doc
-            ),
+            ],
 
-        "nucleus.addDatedItem" => array(
+        "nucleus.addDatedItem" => [
                 'function'  => 'f_nucleus_addDatedItem',
                 'signature' => $f_nucleus_addDatedItem_sig,
                 'docstring' => $f_nucleus_addDatedItem_doc
-            ),
+            ],
 
-        'nucleus.deleteItem' => array(
+        'nucleus.deleteItem' => [
                 'function'  => 'f_nucleus_deleteItem',
                 'signature' => $f_nucleus_deleteItem_sig,
                 'docstring' => $f_nucleus_deleteItem_doc
-            ),
+            ],
 
-        "nucleus.getUsersBlogs" => array(
+        "nucleus.getUsersBlogs" => [
                 'function'  => 'f_nucleus_getUsersBlogs',
                 'signature' => $f_nucleus_getUsersBlogs_sig,
                 'docstring' => $f_nucleus_getUsersBlogs_doc
-            ),
+            ],
 
-        'nucleus.getRecentItems' => array(
+        'nucleus.getRecentItems' => [
                 'function'  => 'f_nucleus_getRecentItems',
                 'signature' => $f_nucleus_getRecentItems_sig,
                 'docstring' => $f_nucleus_getRecentItems_doc
-            ),
+            ],
 
-        'nucleus.getItem' => array(
+        'nucleus.getItem' => [
                 'function'  => 'f_nucleus_getItem',
                 'signature' => $f_nucleus_getItem_sig,
                 'docstring' => $f_nucleus_getItem_doc
-            )
-    )
+            ]
+    ]
 );
 
 function f_nucleus_addItem($m)
@@ -321,7 +321,7 @@ function _getRecentItems($blogid, $username, $password, $amount)
     // 3. create and return list of recent items
     // Struct returned has dateCreated, userid, blogid and content
 
-    $structarray = array();        // the array in which the structs will be stored
+    $structarray = [];        // the array in which the structs will be stored
 
     $query = sprintf(
         'SELECT ibody, iauthor, ibody, imore, ititle, iclosed, idraft, itime FROM %s WHERE iblog=%d ORDER BY itime DESC LIMIT %d',
@@ -331,7 +331,7 @@ function _getRecentItems($blogid, $username, $password, $amount)
     );
     $r = sql_query($query);
     while ($obj = sql_fetch_object($r)) {
-        $newstruct = new xmlrpcval(array(
+        $newstruct = new xmlrpcval([
             'publishDate' => new xmlrpcval(iso8601_encode(strtotime($obj->itime)), 'dateTime.iso8601'),
             'userid'      => new xmlrpcval($obj->iauthor, 'string'),
             'blogid'      => new xmlrpcval($blogid, 'string'),
@@ -340,7 +340,7 @@ function _getRecentItems($blogid, $username, $password, $amount)
             'more'        => new xmlrpcval($obj->imore, 'string'),
             'draft'       => new xmlrpcval($obj->idraft, 'boolean'),
             'closed'      => new xmlrpcval($obj->iclosed, 'boolean'),
-        ), 'struct');
+        ], 'struct');
         $structarray[] = $newstruct;
     }
 
@@ -380,7 +380,7 @@ function _getItem($itemid, $username, $password)
         $item['body'] = removeBreaks($item['body']);
     }
 
-    $newstruct = new xmlrpcval(array(
+    $newstruct = new xmlrpcval([
         'publishDate' => new xmlrpcval(iso8601_encode($item['timestamp']), 'dateTime.iso8601'),
         'userid'      => new xmlrpcval($item['authorid'], 'string'),
         'blogid'      => new xmlrpcval($blogid, 'string'),
@@ -389,7 +389,7 @@ function _getItem($itemid, $username, $password)
         'more'        => new xmlrpcval($item['more'], 'string'),
         'draft'       => new xmlrpcval($item['draft'], 'boolean'),
         'closed'      => new xmlrpcval($item['closed'], 'boolean'),
-    ), 'struct');
+    ], 'struct');
 
     return new xmlrpcresp($newstruct);
 }

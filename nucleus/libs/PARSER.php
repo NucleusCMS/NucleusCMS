@@ -139,7 +139,7 @@ class PARSER
             $paramText = implode(',', $params);
         } else {
             // no parameters
-            $params    = array();
+            $params    = [];
             $paramText = '';
         }
         $actionlc = strtolower($action);
@@ -147,7 +147,7 @@ class PARSER
         // skip execution of skinvars while inside an if condition which hides this part of the page
         if (! $this->handler->if_currentlevel
              &&
-             ! in_array($actionlc, array('else', 'elseif', 'endif', 'ifnot', 'elseifnot'))
+             ! in_array($actionlc, ['else', 'elseif', 'endif', 'ifnot', 'elseifnot'])
              &&
              strpos($actionlc, 'if') !== 0) {
             return;
@@ -155,7 +155,7 @@ class PARSER
 
         if (in_array($actionlc, $this->actions) || $this->norestrictions) {
             call_user_func_array(
-                array($this->handler, 'parse_' . $actionlc),
+                [$this->handler, 'parse_' . $actionlc],
                 $params
             );
         } elseif ($action === '_') {
@@ -170,14 +170,14 @@ class PARSER
             return;
         } elseif (in_array(
             $actionlc,
-            array(
+            [
                     'getvar',
                     'postvar',
                     'cookievar',
                     'requestvar',
                     'servervar',
                     'confvar',
-            )
+            ]
         )
                   && isset($params[0])) {
             $default = isset($params[1]) ? $params[1] : '';

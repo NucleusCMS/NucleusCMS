@@ -33,7 +33,7 @@ class MEDIA
     {
         global $member, $DIR_MEDIA;
 
-        $collections = array();
+        $collections = [];
 
         // add private directory for member
         $collections[$member->getID()] = PRIVATE_COLLECTION;
@@ -77,7 +77,7 @@ class MEDIA
     {
         global $DIR_MEDIA;
 
-        $filelist = array();
+        $filelist = [];
 
         // 1. go through all objects and add them to the filelist
 
@@ -193,11 +193,11 @@ class MEDIA
         }
         $DIR_MEDIA = $mediadir . '/';
 
-        $param = array(
+        $param = [
             'collection' => &$collection,
             'uploadfile' => $uploadfile,
             'filename'   => &$filename,
-        );
+        ];
         $manager->notify('PreMediaUpload', $param);
 
         $collection = str_replace('\\', '/', (string) $collection);
@@ -255,11 +255,11 @@ class MEDIA
         @chmod($mediadir . $filename, 0644);
         umask($oldumask);
 
-        $param = array(
+        $param = [
             'collection' => $collection,
             'mediadir'   => $mediadir,
             'filename'   => $filename,
-        );
+        ];
         $manager->notify('PostMediaUpload', $param);
 
         return '';
@@ -355,14 +355,14 @@ class MEDIA
     public static function getAllowedTypes()
     {
         global $CONF;
-        $except       = array(); // Add forbidden type here in lower case
+        $except       = []; // Add forbidden type here in lower case
         $allowedtypes = preg_split('|[,\s]+|', str_replace('.', ',', strtolower(trim((string) $CONF['AllowedTypes']))));
         if (false !== $allowedtypes) {
-            $allowedtypes = array_unique(array_diff($allowedtypes, array('', 'htaccess', 'htpassword', 'tmp'), $except));
+            $allowedtypes = array_unique(array_diff($allowedtypes, ['', 'htaccess', 'htpassword', 'tmp'], $except));
             sort($allowedtypes);
             return $allowedtypes;
         }
-        return array();
+        return [];
     }
 
     public static function checkAllowedFilename($filename)
@@ -392,10 +392,10 @@ class MEDIA
             return false;
         }
         $ext  = file_get_extension($new_filename);
-        $type = array(
-            'image' => array('jpg','jpeg','gif','png','tiff','bmp','ico','swf'),
-            'movie' => array('mpg','avi','mov','mp3'),
-        );
+        $type = [
+            'image' => ['jpg','jpeg','gif','png','tiff','bmp','ico','swf'],
+            'movie' => ['mpg','avi','mov','mp3'],
+        ];
         if (defined('IMAGETYPE_WEBP')) {
             $type['image'][] = 'webp';
         }

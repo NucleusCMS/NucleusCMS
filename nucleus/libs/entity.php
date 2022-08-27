@@ -110,7 +110,7 @@ class entity
     public static function specialchars($string, $type = 'xml')
     {
         $apos         = $type === 'xml' ? '&apos;' : '&#39;';
-        $specialchars = array(
+        $specialchars = [
             '&quot;' => '&quot;',
             '&amp;'  => '&amp;',
             '&apos;' => $apos,
@@ -121,7 +121,7 @@ class entity
             "'"      => $apos,
             '<'      => '&lt;',
             '>'      => '&gt;',
-        );
+        ];
 
         $string = preg_replace(
             '/&(#?[Xx]?[0-9A-Za-z]+);/',
@@ -190,7 +190,7 @@ class entity
     }
 }
 
-$_entities['cp1251'] = array(
+$_entities['cp1251'] = [
     '&#x80;' => '&#x20AC;',
     '&#x82;' => '&#x201A;',
     '&#x83;' => '&#x192;',
@@ -218,9 +218,9 @@ $_entities['cp1251'] = array(
     '&#x9C;' => '&#x153;',
     '&#x9E;' => '&#x17E;',
     '&#x9F;' => '&#x178;',
-);
+];
 
-$_entities['named'] = array(
+$_entities['named'] = [
     '&nbsp'     => '&#160',
     '&iexcl'    => '&#161',
     '&cent'     => '&#162',
@@ -469,4 +469,4 @@ $_entities['named'] = array(
     '&clubs'    => '&#9827',
     '&hearts'   => '&#9829',
     '&diams'    => '&#9830',
-);
+];

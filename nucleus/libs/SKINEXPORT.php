@@ -28,10 +28,10 @@ class SKINEXPORT
     public function __construct()
     {
         // list of templateIDs to export
-        $this->templates = array();
+        $this->templates = [];
 
         // list of skinIDs to export
-        $this->skins = array();
+        $this->skins = [];
 
         // extra info to be in XML file
         $this->info = '';

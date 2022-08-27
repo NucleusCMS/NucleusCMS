@@ -81,7 +81,7 @@ class convert
             exit('Nucleusのtableがありません。何もせずに終了します。');
         }
 
-        $srcTableNames = array();
+        $srcTableNames = [];
         while ($row = sql_fetch_array($rs)) {
             $srcTableNames[] = $row[0];
         }
@@ -91,7 +91,7 @@ class convert
 
             sql_query("SET NAMES {$this->current_charset}");
             sql_query("CREATE TABLE `{$tmpTableName}` LIKE `{$srcTableName}`");
-            $vs  = array($tmpTableName, $new_charset, $new_collation);
+            $vs  = [$tmpTableName, $new_charset, $new_collation];
             $sql = vsprintf("ALTER TABLE `%s` CONVERT TO CHARACTER SET %s COLLATE %s", $vs);
             sql_query($sql);
 
@@ -99,8 +99,8 @@ class convert
             $rs = sql_query("SELECT * FROM `{$srcTableName}`");
             if (0 < sql_num_rows($rs)) {
                 while ($row = sql_fetch_object($rs)) {
-                    $fields = array();
-                    $values = array();
+                    $fields = [];
+                    $values = [];
                     foreach ($row as $fieldName => $value) {
                         $v        = sql_real_escape_string($value);
                         $fields[] = "`{$fieldName}`";
@@ -196,12 +196,12 @@ class convert
     public function getOptions()
     {
         $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
-        $_   = array();
+        $_   = [];
         foreach ($this->collations as $collation) {
             if ($collation === $this->current_collation) {
                 continue;
             }
-            $_[] = parseText($tpl, array('collation' => $collation));
+            $_[] = parseText($tpl, ['collation' => $collation]);
         }
         return implode("\n", $_);
     }

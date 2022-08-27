@@ -76,7 +76,7 @@ function upgrade_checkinstall($version)
 function upgrade_showLogin($type)
 {
     $tpl                             = file_get_contents('tpl/content_show_login.tpl');
-    $ph                              = array();
+    $ph                              = [];
     $ph['type']                      = $type;
     $ph['_UPG_TEXT_PLEASE_LOGIN']    = _UPG_TEXT_PLEASE_LOGIN;
     $ph['_UPG_TEXT_ENTER_YOUR_DATA'] = _UPG_TEXT_ENTER_YOUR_DATA;
@@ -118,7 +118,7 @@ function upgrade_foot()
 
 function upgrade_error($content)
 {
-    $ph                 = array();
+    $ph                 = [];
     $ph['ERROR_FAILED'] = _UPG_TEXT_ERROR_FAILED;
     $ph['ERROR_WAS']    = _UPG_TEXT_ERROR_WAS;
     $ph['content']      = $content;
@@ -189,7 +189,7 @@ function update_version($version)
     $message = "Updating DatabaseVersion in config table to {$version}";
     if (0 == $upgrade_failures) {
         $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
-        upgrade_query($message, parseQuery($query, array('version' => $version)));
+        upgrade_query($message, parseQuery($query, ['version' => $version]));
     } else {
         echo '<li>'.$message.' ... <span class="warning">NOT EXECUTED</span><blockquote>Errors occurred during upgrade process.</blockquote>';
     }
@@ -205,12 +205,12 @@ function upgrade_checkIfIndexExists($table, $aColumns)
 {
     // get info for indices from database
 
-    $aIndices = array();
+    $aIndices = [];
     $res      = sql_query(sprintf('show index from %s', sql_table($table)));
     if ($res) {
         while ($o = sql_fetch_object($res)) {
             if (!$aIndices[$o->Key_name]) {
-                $aIndices[$o->Key_name] = array();
+                $aIndices[$o->Key_name] = [];
             }
             $aIndices[$o->Key_name][] = $o->Column_name;
         }
@@ -286,14 +286,14 @@ function upgrade_db_optimize_mysql()
         return;
     }
 
-    $tables = array();
+    $tables = [];
     $res    = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
     while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
         $tables[] = $row['Name'];
     }
 
     if (count($tables) > 0) {
-        foreach (array('REPAIR', 'OPTIMIZE') as $cmd) {
+        foreach (['REPAIR', 'OPTIMIZE'] as $cmd) {
             $sql = $cmd . " TABLE `" . implode("`, `", $tables) . "`";
             $res = upgrade_query($cmd . ' TABLE', $sql);
             while ($res && ($row = sql_fetch_assoc($res))) {
@@ -335,17 +335,17 @@ function upgrade_check_action_php()
 function upgrade_find_file($dir, $file_regex_pattern, $subdir_search = true, $limit = 3)
 {
     if ((int) $limit <= 0) {
-        return array();
+        return [];
     }
     if (strlen($dir) > 0 && substr($dir, -1, 1) != '/') {
         $dir .= '/';
     }
     $limit--;
-    $list = array();
+    $list = [];
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
-                if (!in_array($file, array('.','..'))) {
+                if (!in_array($file, ['.','..'])) {
                     if (is_dir($dir . $file)) {
                         $child = upgrade_find_file($dir . $file, $file_regex_pattern, $subdir_search, $limit);
                         if (empty($child)) {
@@ -382,7 +382,7 @@ function upgrade_check_plugin_syntax()
     $files = upgrade_find_file($DIR_PLUGINS, '/\.php$/i');
     sort($files);
 //    var_dump($output, $retval, $files);
-    $errors = array();
+    $errors = [];
     foreach ($files as $file) {
         $output = '';
         $arg    = escapeshellarg($file);
@@ -423,7 +423,7 @@ function upgrade_manual_atom1_0()
     // atom 1.0
     $res = sql_query(parseQuery('SELECT sddesc FROM [@prefix@]skin_desc WHERE sdname="feeds/atom"'));
 
-    $messages = array();
+    $messages = [];
     while ($o = sql_fetch_object($res)) {
         if ($o->sddesc == 'Atom 0.3 weblog syndication') {
             $messages[] = '<h2>Atom 1.0</h2>';
@@ -453,7 +453,7 @@ function upgrade_manual_atom1_0()
 
 function upgrade_manual_340()
 {
-    $row   = array();
+    $row   = [];
     $row[] = '<h2>' . sprintf(_UPG_TEXT_CHANGES_NEEDED_FOR_NUCLEUS, '3.4') . '</h2>';
     $row[] = '<p>' . _UPG_TEXT_V340_01 . '</p>';
     $row[] = '<p>';
@@ -482,7 +482,7 @@ EOL;
 
 function upgrade_manual_366()
 {
-    $row     = array();
+    $row     = [];
     $content = @file_get_contents('../../action.php');
     if (strpos($content, '=&') === false) {
         return '';
@@ -530,7 +530,7 @@ function get_current_version()
 }
 
 if (!function_exists('parseQuery')) {
-    function parseQuery($query = '', $ph = array())
+    function parseQuery($query = '', $ph = [])
     {
         // $ph is placeholders
         $ph['prefix'] = sql_table();
@@ -546,7 +546,7 @@ if (!function_exists('parseQuery')) {
 }
 
 if (!function_exists('parseHtml')) {
-    function parseHtml($tpl = '', $ph = array())
+    function parseHtml($tpl = '', $ph = [])
     {
         // $ph is placeholders
         foreach ($ph as $k => $v) {
@@ -579,7 +579,7 @@ if (!function_exists('hsc')) {
 function get_default_content()
 {
     $current  = get_current_version();
-    $messages = array();
+    $messages = [];
 
     if (version_compare(phpversion(), '5.0.0', '<')) {
         $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
@@ -613,7 +613,7 @@ function get_default_content()
     }
 
     if (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '>=') && $from < NUCLEUS_UPGRADE_VERSION_ID) {
-        $sth = array();
+        $sth = [];
         if ($from < 330) {
             $sth[] = upgrade_manual_atom1_0(); // atom feed supports 1.0 and blogsetting is added
         }
@@ -650,7 +650,7 @@ function do_upgrade()
 {
     if (preg_match('@^3[0-9][0-9]$@', intGetVar('from'))) {
         $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
-        sql_query(parseQuery($query, array('version' => intGetVar('from'))));
+        sql_query(parseQuery($query, ['version' => intGetVar('from')]));
     }
 
     ob_start();

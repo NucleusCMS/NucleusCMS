@@ -144,8 +144,8 @@ function validateIso8601($date)
 }
 
 // metaWeblog.newPost
-$f_metaWeblog_newPost_sig = array(
-    array(
+$f_metaWeblog_newPost_sig = [
+    [
         // return type
         $xmlrpcString,    // itemid of the new item
 
@@ -156,8 +156,8 @@ $f_metaWeblog_newPost_sig = array(
         $xmlrpcStruct,    // content
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
 
-    )
-);
+    ]
+];
 $f_metaWeblog_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
 function f_metaWeblog_newPost($m)
 {
@@ -225,17 +225,17 @@ function f_metaWeblog_newPost($m)
     }
 
     // Handle trackbacks
-    $trackbacks = array();
+    $trackbacks = [];
     $tblist     = $struct->structmem('mt_tb_ping_urls');
     if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
         for ($i = 0; $i < $tblist->arraysize(); $i++) {
             $trackbacks[] = _getArrayVal($tblist, $i);
         }
 
-        $data = array(
+        $data = [
             'tb_id' => $itemid,
             'urls'  => & $trackbacks
-        );
+        ];
         $manager->notify('SendTrackback', $data);
     }
 
@@ -243,8 +243,8 @@ function f_metaWeblog_newPost($m)
 }
 
 // metaWeblog.getCategories
-$f_metaWeblog_getCategories_sig = array(
-    array(
+$f_metaWeblog_getCategories_sig = [
+    [
         // return
         $xmlrpcStruct,    // categories for blog
 
@@ -253,8 +253,8 @@ $f_metaWeblog_getCategories_sig = array(
         $xmlrpcString,    // username
         $xmlrpcString,    // password
 
-    )
-);
+    ]
+];
 $f_metaWeblog_getCategories_doc = "Returns the categories for a given blog";
 function f_metaWeblog_getCategories($m)
 {
@@ -266,8 +266,8 @@ function f_metaWeblog_getCategories($m)
 }
 
 // metaWeblog.getPost
-$f_metaWeblog_getPost_sig = array(
-    array(
+$f_metaWeblog_getPost_sig = [
+    [
         // return
         $xmlrpcStruct,    // the juice
 
@@ -276,8 +276,8 @@ $f_metaWeblog_getPost_sig = array(
         $xmlrpcString,    // username
         $xmlrpcString,    // password
 
-    )
-);
+    ]
+];
 $f_metaWeblog_getPost_doc = "Retrieves a post";
 function f_metaWeblog_getPost($m)
 {
@@ -289,8 +289,8 @@ function f_metaWeblog_getPost($m)
 }
 
 // metaWeblog.editPost
-$f_metaWeblog_editPost_sig = array(
-    array(
+$f_metaWeblog_editPost_sig = [
+    [
         // return type
         $xmlrpcBoolean,    // true
 
@@ -301,8 +301,8 @@ $f_metaWeblog_editPost_sig = array(
         $xmlrpcStruct,    // content
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
 
-    )
-);
+    ]
+];
 $f_metaWeblog_editPost_doc = "Edits an item";
 function f_metaWeblog_editPost($m)
 {
@@ -399,17 +399,17 @@ function f_metaWeblog_editPost($m)
     }
 
     // Handle trackbacks
-    $trackbacks = array();
+    $trackbacks = [];
     $tblist     = $struct->structmem('mt_tb_ping_urls');
     if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
         for ($i = 0; $i < $tblist->arraysize(); $i++) {
             $trackbacks[] = _getArrayVal($tblist, $i);
         }
 
-        $data = array(
+        $data = [
             'tb_id' => $itemid,
             'urls'  => & $trackbacks
-        );
+        ];
         $manager->notify('SendTrackback', $data);
     }
 
@@ -417,8 +417,8 @@ function f_metaWeblog_editPost($m)
 }
 
 // metaWeblog.newMediaObject
-$f_metaWeblog_newMediaObject_sig = array(
-    array(
+$f_metaWeblog_newMediaObject_sig = [
+    [
         //  return type
         $xmlrpcStruct,        // "url" element
 
@@ -427,8 +427,8 @@ $f_metaWeblog_newMediaObject_sig = array(
         $xmlrpcString,        // username
         $xmlrpcString,        // password
         $xmlrpcStruct        // 'name', 'type' and 'bits'
-    )
-);
+    ]
+];
 $f_metaWeblog_newMediaObject_doc = 'Uploads a file to to the media library of the user';
 function f_metaWeblog_newMediaObject($m)
 {
@@ -441,12 +441,12 @@ function f_metaWeblog_newMediaObject($m)
     $type   = _getStructVal($struct, 'type');
     $bits   = _getStructVal($struct, 'bits');
 
-    return _newMediaObject($blogid, $username, $password, array('name' => $name, 'type' => $type, 'bits' => $bits));
+    return _newMediaObject($blogid, $username, $password, ['name' => $name, 'type' => $type, 'bits' => $bits]);
 }
 
 // metaWeblog.getRecentPosts
-$f_metaWeblog_getRecentPosts_sig = array(
-    array(
+$f_metaWeblog_getRecentPosts_sig = [
+    [
         // return type
         $xmlrpcStruct,        // array of structs
 
@@ -455,8 +455,8 @@ $f_metaWeblog_getRecentPosts_sig = array(
         $xmlrpcString,        // username
         $xmlrpcString,        // password
         $xmlrpcInt            // number of posts
-    )
-);
+    ]
+];
 $f_metaWeblog_getRecentPosts_doc = 'Returns recent weblog items.';
 function f_metaWeblog_getRecentPosts($m)
 {
@@ -496,7 +496,7 @@ function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount)
 
     $blog = new BLOG($blogid);
 
-    $structarray = array();        // the array in which the structs will be stored
+    $structarray = [];        // the array in which the structs will be stored
 
     $query = "SELECT mname, ibody, imore, iauthor, ibody, inumber, ititle as title, itime, cname as category, iclosed"
         . ' FROM ' . sql_table('item') . ', ' . sql_table('category') . ', ' . sql_table('member')
@@ -512,7 +512,7 @@ function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount)
             $row['imore'] = removeBreaks($row['imore']);
         }
 
-        $newstruct = new xmlrpcval(array(
+        $newstruct = new xmlrpcval([
             "dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])), "dateTime.iso8601"),
             "userid"      => new xmlrpcval($row['iauthor'], "string"),
             "blogid"      => new xmlrpcval($blogid, "string"),
@@ -520,16 +520,16 @@ function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount)
             "description" => new xmlrpcval($row['ibody'], "string"),
             "title"       => new xmlrpcval($row['title'], "string"),
             "categories"  => new xmlrpcval(
-                array(
+                [
                     new xmlrpcval($row['category'], "string")
-                ),
+                ],
                 "array"
             ),
 
             "mt_text_more"      => new xmlrpcval($row['imore'], "string"),
             "mt_allow_comments" => new xmlrpcval($row['iclosed'] ? 0 : 1, "int"),
             "mt_allow_pings"    => new xmlrpcval(1, "int")
-        ), 'struct');
+        ], 'struct');
 
         //TODO: String link?
         //TODO: String permaLink?
@@ -602,9 +602,9 @@ function _newMediaObject($blogid, $username, $password, $info)
     }
 
     // - return URL
-    $urlstruct = new xmlrpcval(array(
+    $urlstruct = new xmlrpcval([
         "url" => new xmlrpcval($CONF['MediaURL'] . $collection . '/' . $filename, 'string')
-    ), 'struct');
+    ], 'struct');
 
     return new xmlrpcresp($urlstruct);
 }
@@ -627,7 +627,7 @@ function _categoryList($blogid, $username, $password)
 
     $b = new BLOG($blogid);
 
-    $structarray = array();
+    $structarray = [];
 
     $query = "SELECT cname, cdesc, catid"
         . ' FROM ' . sql_table('category')
@@ -637,13 +637,13 @@ function _categoryList($blogid, $username, $password)
 
     while ($obj = sql_fetch_object($r)) {
         array_push($structarray, new xmlrpcval(
-            array(
+            [
                 "title"       => new xmlrpcval($obj->cname, "string"),
                 "categoryId"  => new xmlrpcval($obj->catid, "string"),
                 "description" => new xmlrpcval($obj->cdesc, "string"),
                 "htmlUrl"     => new xmlrpcval($b->getURL() . "?catid=" . $obj->catid, "string"),
                 "rssUrl"      => new xmlrpcval("", "string")
-            ),
+            ],
             'struct'
         ));
     }
@@ -681,7 +681,7 @@ function _mw_getPost($itemid, $username, $password)
 
     $categoryname = $b->getCategoryName($item['catid']);
 
-    $newstruct = new xmlrpcval(array(
+    $newstruct = new xmlrpcval([
         "dateCreated" => new xmlrpcval(iso8601_encode($item['timestamp']), "dateTime.iso8601"),
         "userid"      => new xmlrpcval($item['authorid'], "string"),
         "blogid"      => new xmlrpcval($blogid, "string"),
@@ -689,16 +689,16 @@ function _mw_getPost($itemid, $username, $password)
         "description" => new xmlrpcval($item['body'], "string"),
         "title"       => new xmlrpcval($item['title'], "string"),
         "categories"  => new xmlrpcval(
-            array(
+            [
                 new xmlrpcval($categoryname, "string")
-            ),
+            ],
             "array"
         ),
 
         "mt_text_more"      => new xmlrpcval($item['more'], "string"),
         "mt_allow_comments" => new xmlrpcval($item['closed'] ? 0 : 1, "int"),
         "mt_allow_pings"    => new xmlrpcval(1, "int")
-    ), 'struct');
+    ], 'struct');
 
     //TODO: add "String link" to struct?
     //TODO: add "String permaLink" to struct?
@@ -708,42 +708,42 @@ function _mw_getPost($itemid, $username, $password)
 
 $functionDefs = array_merge(
     $functionDefs,
-    array(
-        "metaWeblog.newPost" => array(
+    [
+        "metaWeblog.newPost" => [
                 "function"  => "f_metaWeblog_newPost",
                 "signature" => $f_metaWeblog_newPost_sig,
                 "docstring" => $f_metaWeblog_newPost_doc
-            ),
+            ],
 
-        "metaWeblog.getCategories" => array(
+        "metaWeblog.getCategories" => [
                 "function"  => "f_metaWeblog_getCategories",
                 "signature" => $f_metaWeblog_getCategories_sig,
                 "docstring" => $f_metaWeblog_getCategories_doc
-            ),
+            ],
 
-        "metaWeblog.getPost" => array(
+        "metaWeblog.getPost" => [
                 "function"  => "f_metaWeblog_getPost",
                 "signature" => $f_metaWeblog_getPost_sig,
                 "docstring" => $f_metaWeblog_getPost_doc
-            ),
+            ],
 
-        "metaWeblog.editPost" => array(
+        "metaWeblog.editPost" => [
                 "function"  => "f_metaWeblog_editPost",
                 "signature" => $f_metaWeblog_editPost_sig,
                 "docstring" => $f_metaWeblog_editPost_doc
-            ),
+            ],
 
-        'metaWeblog.newMediaObject' => array(
+        'metaWeblog.newMediaObject' => [
                 'function'  => 'f_metaWeblog_newMediaObject',
                 'signature' => $f_metaWeblog_newMediaObject_sig,
                 'docstring' => $f_metaWeblog_newMediaObject_doc
-            ),
+            ],
 
-        'metaWeblog.getRecentPosts' => array(
+        'metaWeblog.getRecentPosts' => [
                 'function'  => 'f_metaWeblog_getRecentPosts',
                 'signature' => $f_metaWeblog_getRecentPosts_sig,
                 'docstring' => $f_metaWeblog_getRecentPosts_doc
-            )
+            ]
 
-    )
+    ]
 );

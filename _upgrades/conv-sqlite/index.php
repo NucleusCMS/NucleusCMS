@@ -58,7 +58,7 @@ class ConvertInstaller
             exit;
         }
 
-        foreach (array('pdo', 'pdo_sqlite', 'sqlite3') as $value) {
+        foreach (['pdo', 'pdo_sqlite', 'sqlite3'] as $value) {
             if (!extension_loaded($value)) {
                 $msg = $this->_('Not found') . ' : extension : ' . $value;
                 $this->error($msg);
@@ -155,7 +155,7 @@ class ConvertInstaller
     {
         static $cached_array = null;
         if (is_null($cached_array)) {
-            $cached_array = array();
+            $cached_array = [];
             if (!extension_loaded('SimpleXML')) {
                 return $text;
             }
@@ -173,7 +173,7 @@ class ConvertInstaller
                     continue;
                 }
                 $keyname = '';
-                $items   = array();
+                $items   = [];
                 foreach ($text_node->children() as $node) {
                     $key   = $node->getName();
                     $value = (string) $node;
@@ -219,7 +219,7 @@ class ConvertInstaller
         // load text
         // if undefined, search constant
         $name = strtoupper(str_replace(' ', '_', $text));
-        foreach (array('','_TEXT_','_') as $prefix) {
+        foreach (['','_TEXT_','_'] as $prefix) {
             if (defined($prefix.$name)) {
                 return constant($prefix.$name);
             }
@@ -285,7 +285,7 @@ EOD;
 
         //var_dump ($obj->base_table_list);
 
-        $tables = array();
+        $tables = [];
         $result = @sql_query(sprintf("SHOW TABLES LIKE '%s'", sql_table("") . "%"));
         while ($row = @sql_fetch_array($result)) {
             $tables[] = $row[0];
@@ -297,7 +297,7 @@ EOD;
         $db = new SQLite3($this->target_db_filename);
         $db->exec('BEGIN;');
 
-        $error_messages = array();
+        $error_messages = [];
         foreach ($tables as $table) {
             //  echo $table.$obj->get_table_structure($table);
             ob_start();
@@ -344,8 +344,8 @@ EOD;
         global $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
         global $DIR_BASE;
 
-        $newDir = array();
-        foreach (array('DIR_NUCLEUS' => 'nucleus', 'DIR_MEDIA' => 'media', 'DIR_SKINS' => 'skins') as $key => $value) {
+        $newDir = [];
+        foreach (['DIR_NUCLEUS' => 'nucleus', 'DIR_MEDIA' => 'media', 'DIR_SKINS' => 'skins'] as $key => $value) {
             $newDir[$key] = sprintf("'%s'", $$key);
             if (!isset($DIR_BASE) || strlen($DIR_BASE) == 0) {
                 continue;
@@ -357,7 +357,7 @@ EOD;
             }
         }
 
-        foreach (array('DIR_PLUGINS' => 'plugins', 'DIR_LANG' => 'language', 'DIR_LIBS' => 'libs') as $key => $value) {
+        foreach (['DIR_PLUGINS' => 'plugins', 'DIR_LANG' => 'language', 'DIR_LIBS' => 'libs'] as $key => $value) {
             if ($DIR_NUCLEUS. $value .'/' == $$key) {
                 $newDir[$key] = "\$DIR_NUCLEUS . '{$value}/'";
             } elseif (0 === strpos($$key, $DIR_NUCLEUS)) {
@@ -458,7 +458,7 @@ EOD;
     public function showUnSupportedPlugins()
     {
         global $manager;
-        $items = array();
+        $items = [];
         $res   = sql_query(sprintf('SELECT pid, pfile FROM `%s` ORDER BY porder ASC', sql_table('plugin')));
         while ($res && ($row = sql_fetch_array($res))) {
             $plugin    = $manager->getPlugin($row[1]);

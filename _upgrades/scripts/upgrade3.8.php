@@ -149,7 +149,7 @@ function upgrade_do380_modfield_ballowpast()
 
     // mysql only. because sqlite not support MODIFY COLUMN
     $mode  = (sql_existTableColumnName(parseQuery('[@prefix@]blog'), 'ballowpast') ? 'MODIFY' : 'ADD');
-    $query = parseQuery("ALTER TABLE `[@prefix@]blog` [@mode@] COLUMN `ballowpast` tinyint(2)   NOT NULL default '1'", array('mode' => $mode));
+    $query = parseQuery("ALTER TABLE `[@prefix@]blog` [@mode@] COLUMN `ballowpast` tinyint(2)   NOT NULL default '1'", ['mode' => $mode]);
     upgrade_query('Altering [@prefix@]blog table', $query);
 
     $query = parseQuery("ALTER TABLE `[@prefix@]item`

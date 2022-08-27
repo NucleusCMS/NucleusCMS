@@ -20,7 +20,7 @@
 class NOTIFICATION
 {
     // array of addresses that need to get a notification
-    public $addresses = array();
+    public $addresses = [];
 
     /**
      * takes one string as argument, containing multiple e-mail addresses

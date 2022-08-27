@@ -66,7 +66,7 @@ class MANAGER
      */
     public static function &instance()
     {
-        static $instance = array();
+        static $instance = [];
         if (empty($instance)) {
             $instance[0] = new MANAGER();
         }
@@ -79,12 +79,12 @@ class MANAGER
      */
     public function __construct()
     {
-        $this->items       = array();
-        $this->blogs       = array();
-        $this->plugins     = array();
-        $this->karma       = array();
-        $this->parserPrefs = array();
-        $this->cachedInfo  = array();
+        $this->items       = [];
+        $this->blogs       = [];
+        $this->plugins     = [];
+        $this->karma       = [];
+        $this->parserPrefs = [];
+        $this->cachedInfo  = [];
     }
 
     /**
@@ -325,13 +325,13 @@ class MANAGER
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
         $plugin_dir_type = 0;
-        $_               = array(
+        $_               = [
             'NP_Name/NP_Name.php' => "{$NP_Name}/{$NP_Name}.php"
         ,
             'NP_Name.php' => "{$NP_Name}.php"
         ,
             'shortname/NP_Name.php' => "{$shortname}/{$NP_Name}.php",
-        );
+        ];
         $plugin_path = false;
         foreach ($_ as $key => $f) {
             $f = $DIR_PLUGINS . $f;
@@ -632,7 +632,7 @@ class MANAGER
         switch ($what) {
             // 'installedPlugins' = array ($pid => $name)
             case 'installedPlugins':
-                $this->cachedInfo['installedPlugins'] = array();
+                $this->cachedInfo['installedPlugins'] = [];
                 $res
                                                       = sql_query('SELECT pid, pfile FROM '
                                                                   . sql_table('plugin'));
@@ -731,7 +731,7 @@ class MANAGER
     public function _loadSubscriptions()
     {
         // initialize as array
-        $this->subscriptions = array();
+        $this->subscriptions = [];
 
         $res = sql_query(
             sprintf(
@@ -878,11 +878,11 @@ class MANAGER
                         'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)',
                         sql_table('tickets')
                     );
-                    $input_parameters = array(
+                    $input_parameters = [
                         (string)$ticket,
                         (int)$memberId,
                         date('Y-m-d H:i:s', time()),
-                    );
+                    ];
                     if (sql_prepare_execute($query, $input_parameters)) {
                         break;
                     }

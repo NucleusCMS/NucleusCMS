@@ -60,7 +60,7 @@ if (preg_match('#/install$#', $path)) {
 
 if (DEBUG_INSTALL_QUERY) {
     global $CONF;
-    $CONF = array('debug' => 1);
+    $CONF = ['debug' => 1];
 }
 
 include_once('../nucleus/libs/version.php');
@@ -114,18 +114,18 @@ if ($lang != 'en') {
 //
 // example:
 //     array('NP_CKEditor', 'NP_Text')
-$aConfPlugsToInstall = array(
+$aConfPlugsToInstall = [
     'NP_SkinFiles',
 //        'NP_CustomURL',
 //        'NP_CKEditor',
-);
+];
 
 // array with skins to install. skins must be present under the skins/ directory with
 // a subdirectory having the same name that contains a skinbackup.xml file
 //
 // example:
 //     array('base','rsd')
-$aConfSkinsToImport = array('atom','rss2.0','rsd','default');
+$aConfSkinsToImport = ['atom','rss2.0','rsd','default'];
 
 /*
     -- End Of Configurable Part --
@@ -136,7 +136,7 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 if (version_compare(phpversion(), NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
     $msg    = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
-    $errors = array($msg);
+    $errors = [$msg];
     showErrorMessages($errors); // exit to instalation
 }
 

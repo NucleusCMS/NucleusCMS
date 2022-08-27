@@ -49,7 +49,7 @@ class PAGEFACTORY extends BaseActions
 
         // TODO: move the definition of actions to the createXForm
         // methods
-        $this->actions = array(
+        $this->actions = [
             'actionurl',
             'title',
             'body',
@@ -85,11 +85,11 @@ class PAGEFACTORY extends BaseActions
             'copytabindex',
             'tabindex',
             'settabindex',
-        );
+        ];
 
         // TODO: maybe add 'skin' later on?
         // TODO: maybe add other pages from admin area
-        $this->allowedTypes = array('bookmarklet', 'admin');
+        $this->allowedTypes = ['bookmarklet', 'admin'];
     }
 
     /**
@@ -98,7 +98,7 @@ class PAGEFACTORY extends BaseActions
      * @param   type
      *        'admin' or 'bookmarklet'
      */
-    public function createAddForm($type, $contents = array())
+    public function createAddForm($type, $contents = [])
     {
         if (! in_array($type, $this->allowedTypes)) {
             return;
@@ -107,10 +107,10 @@ class PAGEFACTORY extends BaseActions
         $this->method = 'add';
 
         global $manager;
-        $param = array(
+        $param = [
             'contents' => &$contents,
             'blog'     => &$this->blog,
-        );
+        ];
         $manager->notify('PreAddItemForm', $param);
 
         $this->createForm($contents);
@@ -183,10 +183,10 @@ class PAGEFACTORY extends BaseActions
 
     private function replace_date_time_picker(&$data)
     {
-        $items = array();
+        $items = [];
         $spa   = explode(',', _EDIT_DATE_FORMAT_SEPARATOR);
-        foreach (array('itemtime', 'currenttime') as $stime) {
-            $s = array();
+        foreach (['itemtime', 'currenttime'] as $stime) {
+            $s = [];
             foreach (explode(',', _EDIT_DATE_FORMAT) as $key => $value) {
                 switch ($value) {
                     case 'year':
@@ -385,9 +385,9 @@ class PAGEFACTORY extends BaseActions
 
         $extrahead = '';
 
-        $param = array(
+        $param = [
             'extrahead' => &$extrahead,
-        );
+        ];
         $manager->notify('BookmarkletExtraHead', $param);
 
         echo $extrahead;
@@ -600,17 +600,17 @@ class PAGEFACTORY extends BaseActions
 
         switch ($this->method) {
             case 'add':
-                $param = array(
+                $param = [
                     'blog' => &$this->blog,
-                );
+                ];
                 $manager->notify('AddItemFormExtras', $param);
                 break;
             case 'edit':
-                $param = array(
+                $param = [
                     'variables' => $this->variables,
                     'blog'      => &$this->blog,
                     'itemid'    => $this->variables['itemid'],
-                );
+                ];
                 $manager->notify('EditItemFormExtras', $param);
                 break;
         }
