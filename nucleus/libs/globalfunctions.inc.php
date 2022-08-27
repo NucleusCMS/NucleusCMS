@@ -2770,6 +2770,16 @@ function loadCoreClassFor_spl($classname)
 {
     if (@is_file(__DIR__ . "/{$classname}.php")) {
         require_once __DIR__ . "/{$classname}.php";
+    } else {
+        $name    = $classname;
+        $uc_name = strtoupper($classname);
+        if (in_array($uc_name, ['BASEGLOBALVAR', 'POSTVAR', 'GETVAR', 'CONF'])) {
+            $name = 'GlobalVars';
+        }
+        $path = __DIR__ . "/{$name}.php";
+        if (@is_file($path)) {
+            require_once $path;
+        }
     }
 }
 
