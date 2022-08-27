@@ -352,7 +352,7 @@ EOD;
             }
             if ($DIR_BASE. $value .'/' == $$key) {
                 $newDir[$key] = "\$DIR_BASE . '{$value}/'";
-            } elseif (0 === strpos($$key, $DIR_BASE)) {
+            } elseif (str_starts_with($$key, $DIR_BASE)) {
                 $newDir[$key] = sprintf("\$DIR_BASE . '%s'", substr($$key, strlen($DIR_BASE)));
             }
         }
@@ -360,7 +360,7 @@ EOD;
         foreach (['DIR_PLUGINS' => 'plugins', 'DIR_LANG' => 'language', 'DIR_LIBS' => 'libs'] as $key => $value) {
             if ($DIR_NUCLEUS. $value .'/' == $$key) {
                 $newDir[$key] = "\$DIR_NUCLEUS . '{$value}/'";
-            } elseif (0 === strpos($$key, $DIR_NUCLEUS)) {
+            } elseif (str_starts_with($$key, $DIR_NUCLEUS)) {
                 $newDir[$key] = sprintf("\$DIR_NUCLEUS . '%s'", substr($$key, strlen($DIR_NUCLEUS)));
             } else {
                 $newDir[$key] = sprintf("'%s'", $$key);

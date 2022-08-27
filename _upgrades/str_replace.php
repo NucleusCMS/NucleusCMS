@@ -29,7 +29,7 @@ class convert
     {
         global $CONF;
 
-        if (strpos($CONF['IndexURL'], 'https://') === 0) {
+        if (str_starts_with($CONF['IndexURL'], 'https://')) {
             exit('すでにhttps化済です。');
         }
         $tpl           = $this->getTemplate();

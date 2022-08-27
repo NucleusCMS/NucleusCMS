@@ -60,11 +60,11 @@ class COMMENT
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
         if (! empty($comment['userid'])
-             && (strpos($comment['userid'], 'http://') !== 0)
-             && (strpos(
+             && (!str_starts_with($comment['userid'], 'http://'))
+             && (!str_starts_with(
                  $comment['userid'],
                  'https://'
-             ) !== 0)) {
+             ))) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 

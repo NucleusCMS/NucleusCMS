@@ -1472,7 +1472,7 @@ function createLink($type, $params)
 function createBlogLink($url, $params)
 {
     if (confVar('URLMode') === 'normal') {
-        if (strpos($url, '?') === false && is_array($params)) {
+        if (!str_contains($url, '?') && is_array($params)) {
             $fParam = reset($params);
             $fKey   = key($params);
             array_shift($params);
@@ -1745,7 +1745,7 @@ function ticketForPlugin()
     $d_plugins    = str_replace('\\', '/', $DIR_PLUGINS);
 
     // This isn't plugin php file.
-    if (strpos($p_translated, $d_plugins) !== 0) {
+    if (!str_starts_with($p_translated, $d_plugins)) {
         return;
     }
 
@@ -1938,7 +1938,7 @@ function serverStringToArray($str, &$array, &$frontParam)
         $str = '';
     }
     // split front param, e.g. /index.php, and others, e.g. blogid=1&page=2
-    if (strpos($str, "?") !== false) {
+    if (str_contains($str, "?")) {
         list($frontParam, $args) = preg_split("/\?/", $str, 2);
     } else {
         $args       = $str;
@@ -1946,7 +1946,7 @@ function serverStringToArray($str, &$array, &$frontParam)
     }
 
     // If there is no args like blogid=1&page=2, return
-    if (strpos($str, "=") === false && ! strlen($frontParam)) {
+    if (!str_contains($str, "=") && ! strlen($frontParam)) {
         $frontParam = $str;
 
         return;
@@ -1964,7 +1964,7 @@ function arrayToServerString($array, $frontParam, &$str)
     if ($str === null) {
         $str = '';
     }
-    if (strpos($str, "?") !== false) {
+    if (str_contains($str, "?")) {
         $str = $frontParam . "?";
     } else {
         $str = $frontParam;
@@ -1987,7 +1987,7 @@ function sanitizeArray(&$array)
 
     foreach ($array as $k => $v) {
         // split to key and value
-        if (strpos($v, '=') === false) {
+        if (!str_contains($v, '=')) {
             continue;
         }
         list($key, $val) = explode('=', $v, 2);

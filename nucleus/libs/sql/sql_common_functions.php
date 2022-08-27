@@ -90,7 +90,7 @@ function get_charname_from_langname($language_name = 'english-utf8')
 {
     $language_name = strtolower($language_name);
 
-    if (strpos(strtolower($language_name), 'utf8') !== false) {
+    if (str_contains(strtolower($language_name), 'utf8')) {
         return 'utf8';
     }
 
@@ -192,7 +192,7 @@ function treat_char_name($charset = 'utf8mb4')
 function getCharSetFromDB($tableName, $columnName, $dbh = null)
 {
     $collation = getCollationFromDB($tableName, $columnName, $dbh);
-    if (strpos($collation, '_') === false) {
+    if (!str_contains($collation, '_')) {
         $charset = $collation;
     } else {
         list($charset, $dummy) = explode('_', $collation, 2);
@@ -255,7 +255,7 @@ function updateQuery($table_name, $values, $where = '', $extra = [])
         foreach ($values as $key => $value) {
             if ($value === null || strtolower($value) === 'null') {
                 $value = 'NULL';
-            } elseif (strpos($key, ':expr') !== false) {
+            } elseif (str_contains($key, ':expr')) {
                 $key = str_replace(':expr', '', $key);
             } else {
                 $value = sql_quote_string($value);
@@ -282,9 +282,9 @@ function _getFieldsStringFromArray($fields = [])
     foreach ($fields as $k => $v) {
         if (preg_match('@^[0-9]+$@', $k)) {
             $_[] = $v;
-        } elseif (strpos($v, ',') !== false) {
+        } elseif (str_contains($v, ',')) {
             $_[] = $v;
-        } elseif (strpos($v, ' ') !== false) {
+        } elseif (str_contains($v, ' ')) {
             $_[] = $v;
         } elseif ($k !== $v) {
             $_[] = "{$v} as {$k}";

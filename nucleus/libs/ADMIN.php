@@ -6979,7 +6979,7 @@ EOL;
                     }
                     echo "\t<tr>\n";
                     echo "\t\t" . '<td width="50%">' . $k . "</td>\n";
-                    if (strpos($v, "\n") !== false) {
+                    if (str_contains($v, "\n")) {
                         $style = " style='overflow-wrap: anywhere; max-height: 10em; overflow: auto;'";
                         echo "\t\t" . "<td{$style}>" . str_replace("\n", "<br>\n", hsc($v)) . "</td>\n";
                     } else {
@@ -8934,7 +8934,7 @@ EOL;
                 $aFound[] = $fileDesc;
             }
         }
-        if (strpos(str_replace('\\', '/', getcwd()), '/plugins/') === false && @is_writable('../config.php')) {
+        if (!str_contains(str_replace('\\', '/', getcwd()), '/plugins/') && @is_writable('../config.php')) {
             $aFound[] = _ERRORS_CONFIGPHP;
         }
 

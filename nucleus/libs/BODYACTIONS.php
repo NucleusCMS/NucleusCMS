@@ -124,7 +124,7 @@ class BODYACTIONS extends BaseActions
         global $CONF;
 
         // select private collection when no collection given
-        if (strpos($filename, '/') === false) {
+        if (!str_contains($filename, '/')) {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
@@ -164,7 +164,7 @@ class BODYACTIONS extends BaseActions
         global $CONF;
 
         // select private collection when no collection given
-        if (strpos($filename, '/') === false) {
+        if (!str_contains($filename, '/')) {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 
@@ -196,7 +196,7 @@ class BODYACTIONS extends BaseActions
         global $CONF;
 
         // select private collection when no collection given
-        if (strpos($filename, '/') === false) {
+        if (!str_contains($filename, '/')) {
             $filename = $this->currentItem->authorid . '/' . $filename;
         }
 

@@ -81,7 +81,7 @@ class PARSER
 
         list($left, $right) = explode(',', $this->delim);
 
-        if (strpos($content, $left) === false) {
+        if (!str_contains($content, $left)) {
             echo $content;
 
             return;
@@ -89,7 +89,7 @@ class PARSER
 
         $pieces = explode($left, $content);
         foreach ($pieces as $piece) {
-            if (strpos($piece, $right) === false) {
+            if (!str_contains($piece, $right)) {
                 echo $piece;
                 continue;
             }
@@ -149,7 +149,7 @@ class PARSER
              &&
              ! in_array($actionlc, ['else', 'elseif', 'endif', 'ifnot', 'elseifnot'])
              &&
-             strpos($actionlc, 'if') !== 0) {
+             !str_starts_with($actionlc, 'if')) {
             return;
         }
 

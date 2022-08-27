@@ -329,7 +329,7 @@ class Utils
                 return false;
             }
             // %a %A %d %e %j %u %w %U %V %W %b %B %h %m %C %g %G %y %Y %H %k %I %l %M %p %P %r %R %S %T %X %z %Z %c %D %F %s %x %n %t %%
-            if (false === strpos('aAdejuwUVWbBhmCgGyYHkIlMpPrRSTXzZcDFsxnt%', substr($part, 1, 1))) {
+            if (!str_contains('aAdejuwUVWbBhmCgGyYHkIlMpPrRSTXzZcDFsxnt%', substr($part, 1, 1))) {
                 // syntax error;
                 return false;
             }

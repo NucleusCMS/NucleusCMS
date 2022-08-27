@@ -389,18 +389,18 @@ function upgrade_check_plugin_syntax()
         exec("{$php} -l {$arg}", $output, $retval);
         $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
         if (defined('UPGRADE_AUTOFIX_PLUGIN') && UPGRADE_AUTOFIX_PLUGIN) {
-            if (strpos($output, "Parse error: syntax error, unexpected 'new' (T_NEW)") !== false) {
+            if (str_contains($output, "Parse error: syntax error, unexpected 'new' (T_NEW)")) {
                 upgrade_remove_RefNew($file);
                 $output1 = $output;
                 $output  = '';
                 exec("{$php} -l {$arg}", $output, $retval);
                 $output = preg_replace('/\s+/ms', ' ', implode(' ', $output));
-                if (strpos($output, 'No syntax errors detected') !== false) {
+                if (str_contains($output, 'No syntax errors detected')) {
                     $errors[] = sprintf("<li>[auto fixed]%s: <div>%s</div></li>", substr($file, strlen($DIR_PLUGINS)), hsc($output1));
                 }
             }
         }
-        if (strpos($output, 'No syntax errors detected') !== false) {
+        if (str_contains($output, 'No syntax errors detected')) {
             continue;
         }
         if (preg_match('/^[^:]+error:/', $output)) {
@@ -484,7 +484,7 @@ function upgrade_manual_366()
 {
     $row     = [];
     $content = @file_get_contents('../../action.php');
-    if (strpos($content, '=&') === false) {
+    if (!str_contains($content, '=&')) {
         return '';
     }
     $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
@@ -535,7 +535,7 @@ if (!function_exists('parseQuery')) {
         // $ph is placeholders
         $ph['prefix'] = sql_table();
         foreach ($ph as $k => $v) {
-            if (strpos($query, '[@') === false) {
+            if (!str_contains($query, '[@')) {
                 break;
             }
             $k     = '[@'.$k.'@]';
@@ -550,7 +550,7 @@ if (!function_exists('parseHtml')) {
     {
         // $ph is placeholders
         foreach ($ph as $k => $v) {
-            if (strpos($tpl, '{%') === false) {
+            if (!str_contains($tpl, '{%')) {
                 break;
             }
             $k   = '{%'.$k.'%}';

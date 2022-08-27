@@ -395,7 +395,7 @@ class SKIN
     public function getContent($type, $options = [])
     {
         global $DB_DRIVER_NAME, $CONF;
-        if (strpos($type, '/') !== false) {
+        if (str_contains($type, '/')) {
             return '';
         }
         $ph['sdesc'] = $this->id;

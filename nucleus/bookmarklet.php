@@ -177,7 +177,7 @@ function bm_doEditItem()
     $draftid    = intPostVar('draftid');
 
     // create new category if needed (only on edit/changedate)
-    if (strpos($catid, 'newcat') !== false) {
+    if (str_contains($catid, 'newcat')) {
         // get blogid
         list($blogid) = sscanf($catid, "newcat-%d");
 

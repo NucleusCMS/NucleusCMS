@@ -125,7 +125,7 @@ class ITEM
         }
 
         // create new category if needed
-        if (strpos($i_catid, 'newcat') !== false) {
+        if (str_contains($i_catid, 'newcat')) {
             // get blogid
             list($i_blogid) = sscanf($i_catid, "newcat-%d");
 

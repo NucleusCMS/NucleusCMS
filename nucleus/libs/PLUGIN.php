@@ -1038,7 +1038,7 @@ class NucleusPlugin
         $tmpMeta = explode(';', $typeExtra);
         $meta    = [];
         foreach ($tmpMeta as $i => $iValue) {
-            if (($i == 0) && (strpos($tmpMeta[0], '=') === false)) {
+            if (($i == 0) && (!str_contains($tmpMeta[0], '='))) {
                 // we have the select-list
                 $meta['select'] = $tmpMeta[0];
             } else {

@@ -496,7 +496,7 @@ if (confVar('URLMode') === 'pathinfo') {
                     // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
                 case confVar('ArchiveKey'):
                     if (($i + 1) < $total
-                        && strpos($data[$i + 1], '-') === false) {
+                        && !str_contains($data[$i + 1], '-')) {
                         $blogid = (int)$data[++$i];
                     }
                     $i++;

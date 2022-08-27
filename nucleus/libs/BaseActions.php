@@ -105,7 +105,7 @@ class BaseActions
         if (!$skin->isValid && !is_file($file)) {
             return;
         }
-        $contents = strpos($filename, '/') === false ? $skin->getContent($filename) : false;
+        $contents = !str_contains($filename, '/')   ? $skin->getContent($filename) : false;
         if (!$contents) {
             if (!is_file($file)) {
                 return;

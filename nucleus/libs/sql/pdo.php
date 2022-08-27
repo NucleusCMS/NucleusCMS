@@ -46,7 +46,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
 
         try {
-            if (strpos($db_host, ':') === false) {
+            if (!str_contains($db_host, ':')) {
                 $host    = $db_host;
                 $port    = '';
                 $portnum = '';
@@ -138,7 +138,7 @@ if (! function_exists('sql_fetch_assoc')) {
                 if (strlen($db_path) == 0
                     ||
                     ! is_dir($db_path)
-                    || strpos(str_replace("\\", '/', $db_path), '/') === false
+                    || !str_contains(str_replace("\\", '/', $db_path), '/')
                 ) {
                     exit('ERROR : database filename maybe wrong ');
                 }
@@ -741,7 +741,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
 
         $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
-        if (strpos($tablename, '[@prefix@]') !== false) {
+        if (str_contains($tablename, '[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
         if ($drivername === 'sqlite') {
@@ -812,7 +812,7 @@ if (! function_exists('sql_fetch_assoc')) {
             return false;
         }
 
-        if (strpos($tablename, '[@prefix@]') !== false) {
+        if (str_contains($tablename, '[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
 

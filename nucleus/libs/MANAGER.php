@@ -764,7 +764,7 @@ class MANAGER
     public function addTicketToUrl($url)
     {
         $ticketCode = 'ticket=' . $this->_generateTicket();
-        $join       = (strpos($url, '?') !== false) ? '&' : '?';
+        $join       = (str_contains($url, '?')) ? '&' : '?';
 
         return $url . $join . $ticketCode;
     }
