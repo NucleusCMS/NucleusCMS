@@ -2180,7 +2180,7 @@ class ADMIN
                         <td><?php echo _MEMBERS_DISPLAY ?> <?php help('shortnames'); ?>
                             <br /><small><?php echo _MEMBERS_DISPLAY_INFO ?></small>
                         </td>
-                        <td><input tabindex="10010" name="name" size="32" maxlength="32" required autocomplete="off" /></td>
+                        <td><input tabindex="10010" name="name" size="32" maxlength="32" required autocomplete="off" pattern="<?php echo $this->getInputPattern('member.name') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REALNAME ?></td>
@@ -2190,11 +2190,11 @@ class ADMIN
                         <td><?php echo _MEMBERS_PWD ?>
                             <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                         </td>
-                        <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" required autocomplete="off"  pattern="^[\x21-\x7e]{6,}$" /></td>
+                        <td><input name="password" tabindex="10030" size="16" maxlength="40" type="password" required autocomplete="off"  pattern="<?php echo $this->getInputPattern('password') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_REPPWD ?></td>
-                        <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" required pattern="^[\x21-\x7e]{6,}$" /></td>
+                        <td><input name="repeatpassword" tabindex="10035" size="16" maxlength="40" type="password" required pattern="<?php echo $this->getInputPattern('password') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _MEMBERS_EMAIL ?></td>
@@ -2302,7 +2302,7 @@ class ADMIN
                         </td>
                         <td>
                             <?php if ($CONF['AllowLoginEdit'] || $member->isAdmin()) { ?>
-                                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  hsc($mem->getDisplayName()); ?>" required />
+                                <input name="name" tabindex="10" maxlength="32" size="32" value="<?php echo  hsc($mem->getDisplayName()); ?>" required pattern="<?php echo $this->getInputPattern('member.name') ?>" />
                             <?php } else {
                                 echo hsc($member->getDisplayName());
                             }
@@ -2319,11 +2319,11 @@ class ADMIN
                                 <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                                 <input type="password" name="dummy" autocomplete="off" style="display:none;" />
                             </td>
-                            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" pattern="^$|^[\x21-\x7e]{6,}$" /></td>
+                            <td><input type="password" tabindex="30" maxlength="40" size="16" name="password" autocomplete="off" pattern="<?php echo $this->getInputPattern('password') ?>" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _MEMBERS_REPPWD ?></td>
-                            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" pattern="^$|^[\x21-\x7e]{6,}$" /></td>
+                            <td><input type="password" tabindex="35" maxlength="40" size="16" name="repeatpassword" autocomplete="off" pattern="<?php echo $this->getInputPattern('password') ?>" /></td>
                         </tr>
                     <?php } ?>
                     <tr>
@@ -2717,11 +2717,11 @@ class ADMIN
                             <td><?php echo _MEMBERS_PWD ?>
                                 <br /><small><?php echo _MEMBERS_PASSWORD_INFO ?> <?php help('password');?></small>
                             </td>
-                            <td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" /></td>
+                            <td><input type="password" maxlength="40" size="16" name="password" autocomplete="off" pattern="<?php echo $this->getInputPattern('password') ?>" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _MEMBERS_REPPWD ?></td>
-                            <td><input type="password" maxlength="40" size="16" name="repeatpassword" autocomplete="off" /></td>
+                            <td><input type="password" maxlength="40" size="16" name="repeatpassword" autocomplete="off" pattern="<?php echo $this->getInputPattern('password') ?>" /></td>
                             <?php
 
                             global $manager;
@@ -3140,7 +3140,7 @@ class ADMIN
                         <td><?php echo _EBLOG_SHORTNAME ?> <?php help('shortblogname'); ?>
                             <?php echo _EBLOG_SHORTNAME_EXTRA ?>
                         </td>
-                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  hsc($blog->getShortName()) ?>" /></td>
+                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" value="<?php echo  hsc($blog->getShortName()) ?>" required autocomplete="off" pattern="<?php echo $this->getInputPattern('blog.name') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
@@ -4224,7 +4224,7 @@ class ADMIN
                         <td><?php echo _EBLOG_SHORTNAME ?>
                             <?php help('shortblogname'); ?>
                         </td>
-                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" required pattern="^[a-z0-9]+$" /></td>
+                        <td><input name="shortname" tabindex="20" maxlength="15" size="15" required autocomplete="off" pattern="<?php echo $this->getInputPattern('blog.name') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
@@ -4817,7 +4817,7 @@ selector();
                 <table>
                     <tr>
                         <td><?php echo _TEMPLATE_NAME ?> <?php help('shortnames'); ?></td>
-                        <td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
+                        <td><input name="name" tabindex="10010" maxlength="20" size="20" required pattern="<?php echo $this->getInputPattern('template.name') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_DESC ?></td>
@@ -4884,7 +4884,7 @@ selector();
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_NAME ?> <?php help('shortnames'); ?></td>
-                        <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  hsc($templatename) ?>" /></td>
+                        <td><input name="tname" tabindex="4" size="20" maxlength="20" value="<?php echo  hsc($templatename) ?>" required pattern="<?php echo $this->getInputPattern('template.name') ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_DESC ?></td>
@@ -5325,7 +5325,7 @@ selector();
                     <table>
                         <tr>
                             <td><?php echo _SKIN_NAME; ?> <?php help('shortnames'); ?></td>
-                            <td><input name="name" tabindex="10010" maxlength="20" size="20" /></td>
+                            <td><input name="name" tabindex="10010" maxlength="20" size="20" required pattern="<?php echo $this->getInputPattern('skin.name') ?>" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_DESC; ?></td>
@@ -5415,7 +5415,7 @@ selector();
         echo '<form method="get" action="index.php">' . "\r\n";
         echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
         echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
-        echo '<input name="type" tabindex="89" size="20" maxlength="20" />' . "\r\n";
+        echo '<input name="type" tabindex="89" size="20" maxlength="20" required pattern="'.$this->getInputPattern('skin.partspecial').'" />' . "\r\n";
         echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
         echo '</form>' . "\r\n";
 
@@ -5454,7 +5454,7 @@ selector();
         echo '<input type="hidden" name="action" value="skinedittype" />' . "\r\n";
         echo '<input type="hidden" name="skinid" value="' . $skinid . '" />' . "\r\n";
         echo '<input type="hidden" name="partstype" value="specialpage" />' . "\r\n";
-        echo '<input name="type" tabindex="89" size="20" maxlength="20" />' . "\r\n";
+        echo '<input name="type" tabindex="89" size="20" maxlength="20" required pattern="'.$this->getInputPattern('skin.partspecialpage').'" />' . "\r\n";
         echo '<input type="submit" tabindex="140" value="' . _SKIN_CREATE . '" onclick="return checkSubmit();" />' . "\r\n";
         echo '</form>' . "\r\n";
 
@@ -5506,7 +5506,7 @@ selector();
                     <table>
                         <tr>
                             <td><?php echo _SKIN_NAME ?> <?php help('shortnames'); ?></td>
-                            <td><input name="name" tabindex="90" value="<?php echo  hsc($skin->getName()) ?>" maxlength="20" size="20" /></td>
+                            <td><input name="name" tabindex="90" value="<?php echo  hsc($skin->getName()) ?>" maxlength="20" size="20" required pattern="<?php echo $this->getInputPattern('skin.name') ?>" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_DESC ?></td>
@@ -9536,5 +9536,41 @@ EOL;
                 }
             }
         }
+    }
+
+    public function getInputPattern($name)
+    {
+        $pattern = '';
+        switch((string)$name) {
+            case 'member.name': // echo $this->getInputPattern('member.name')
+                // 英字 a～z、 A～Z 数字 0-9  空白（半角）を組み合わせた1～32文字です。ただし、名前の最初や最後に空白を付けることはできません。
+                $pattern = '^([a-zA-Z0-9]|[a-zA-Z0-9][a-zA-Z0-9 ]{0,30}[a-zA-Z0-9])$';
+                break;
+            case 'blog.name':  // echo $this->getInputPattern('blog.name')
+                // 英小文字 a～z 数字 0～9 を組み合わせた1～15文字です。空白は使用できません。
+                $pattern = '^[a-z0-9]{1,15}$';
+                break;
+            case 'skin.name':      // echo $this->getInputPattern('skin.name')
+            case 'template.name':  // echo $this->getInputPattern('template.name')
+                // 英小文字 a～z 数字 0～9 記号 / を組み合わせた1～20文字です。空白は使用できません。
+                // 記号 / は、最初と最後に使ってはいけません。　また連続した // も使えません。
+                $pattern = '^([a-z0-9]|[a-z0-9][a-z0-9/]{0,18}[a-z0-9])$';
+                break;
+            case 'password':  // echo $this->getInputPattern('password')
+                // パスワードは、半角英数記号を組み合わせた6～40文字で、大文字小文字は区別されます。
+                // 英数字 a～z A～Z 0～9
+                // 記号 ! &quot; # $ % &amp; &#039; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~
+                $pattern = '^[\x21-\x7e]{6,40}$';
+                break;
+            case 'skin.partspecial': // isValidSkinPartsName($name)
+                $pattern = 'a-z0-9_\-';
+//                $pattern .= '\u3041-\u3093\u30A1-\u30F6\u30FC\u4E00-\u9FA0'; // 'ぁ-んァ-ヶー一-龠'
+                $pattern = "^[{$pattern}]{1,20}$";
+                break;
+            case 'skin.partspecialpage': // isValidSkinSpecialPageName($name)
+                $pattern = '^[^\?\/#]{1,20}$';
+                break;
+        }
+        return $pattern;
     }
 } // class ADMIN
