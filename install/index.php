@@ -140,11 +140,6 @@ if (version_compare(phpversion(), NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
     showErrorMessages($errors); // exit to instalation
 }
 
-// make sure there's no unnecessary escaping:
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    set_magic_quotes_runtime(0);
-}
-
 // if there are some plugins or skins to import, do not include vars
 // in globalfunctions.php again... so set a flag
 if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
