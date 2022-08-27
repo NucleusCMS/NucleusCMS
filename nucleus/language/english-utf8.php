@@ -151,8 +151,10 @@ try_define('_ADMIN_LOST_PSWD_TEXT_3', "Send Activation Link");
 try_define('_ADMIN_LOST_PSWD_TEXT_USENAME', "Username:");
 try_define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "Email address:");
 
-try_define('_SETTINGS_ENABLE_TIDY', "Enable html auto-formatting by Tidy");
-try_define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: Indent the html tag");
+try_define('_SETTINGS_TIDY_ENABLE', "Enable html auto-formatting by Tidy");
+try_define('_SETTINGS_TIDY_INDENT_ENABLE', "Tidy: Indent the html tag");
+try_define('_SETTINGS_TIDY_HIDE_COMMENT',  "TIDY_HIDE_COMMENT");
+try_define('_SETTINGS_TIDY_HIDE_COMMENT_ADMIN',  "TIDY_HIDE_COMMENT_ADMIN");
 
 try_define('_SYSTEMLOG_TITLE',       "System Log");
 try_define('_SYSTEMLOG_CLEAR_TITLE', "Clear system Log");

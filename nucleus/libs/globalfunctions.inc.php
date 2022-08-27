@@ -3043,15 +3043,18 @@ function tidy_get_default_config($apply_user_conf = true)
         // html5, omit, auto, strict, transitional, user
         'output-xhtml'  => false,
         'char-encoding' => 'utf8',
-        'indent'        => (isset($CONF['tidy_opt_config_indent_enable'])
-                            && $CONF['tidy_opt_config_indent_enable']),
+        'indent'        => CONF::asBool('tidy_opt_config_indent_enable'),
         'indent-spaces' => 2,
         'fix-uri'       => false,
-        'hide-comments' => ! $is_admin,
+        'hide-comments' => CONF::asBool('tidy_opt_config_hide_comment'),
         'tidy-mark'     => $is_admin,
         'wrap'          => false,
         // 200
     ];
+
+    if ($is_admin) {
+        $tidy_config['hide-comments'] = CONF::asBool('tidy_opt_config_hide_comment_admin', false);
+    }
 
     if (_CHARSET !== 'UTF-8') {
         $tidy_config['char-encoding'] = 'raw';
@@ -3060,8 +3063,7 @@ function tidy_get_default_config($apply_user_conf = true)
 //            $tidy_config['language'] = 'ja';
     }
 
-    $doctype = (isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype']
-                    : 'auto');
+    $doctype = CONF::asStr('tidy_opt_config_doctype', 'auto');
 
     $tidy_release = str_replace(['.'], '/', tidy_get_release());
     $tidy_version = (strtotime($tidy_release) >= strtotime('2015/06/30')) ? 5 : 4;
@@ -3070,7 +3072,7 @@ function tidy_get_default_config($apply_user_conf = true)
     if ($tidy_version <= 4) {
         // tidy lib : html4
         if ($doctype === 'html5') {
-            $doctype == 'auto';  // tidy lib is too old.
+            $doctype = 'auto';  // tidy lib is too old.
         }
     }
     if ($doctype === 'html5,strict') {
@@ -3086,7 +3088,7 @@ function tidy_get_default_config($apply_user_conf = true)
 
     if ($apply_user_conf) {
         // tidy_opt_config_text
-        $userconfig = isset($CONF['tidy_opt_config_text']) ? trim((string) $CONF['tidy_opt_config_text']) : '';
+        $userconfig = CONF::asStr('tidy_opt_config_text');
         if (strlen($userconfig) > 0) {
             return array_merge($tidy_config, tidy_parse_config_string($userconfig));
         }

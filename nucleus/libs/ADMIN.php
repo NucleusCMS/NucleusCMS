@@ -6593,10 +6593,9 @@ selector();
         $tidy_loaded = extension_loaded('tidy');
         $s_disable   = sprintf('[%s] ', _ADMIN_SYSTEMOVERVIEW_DISABLE);
 
-        echo sprintf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY);
-        $enable_tidy = isset($CONF['tidy_enable']) && $CONF['tidy_enable'];
+        echo sprintf("<tr><td>%s</td><td>", _SETTINGS_TIDY_ENABLE);
         if ($tidy_loaded) {
-            $this->input_yesno('tidy_enable', $enable_tidy, $tabindex++);
+            $this->input_yesno('tidy_enable', CONF::asInt('tidy_enable', 0), $tabindex++);
         } else {
             echo $s_disable;
         }
@@ -6610,19 +6609,28 @@ selector();
             && (strtotime(str_replace(['.'], '/', tidy_get_release())) >= strtotime('2015/06/30')));
 
         // ENABLE_TIDY_INDENT
-        $enable_tidy_indent = (isset($CONF['tidy_opt_config_indent_enable']) && $CONF['tidy_opt_config_indent_enable']);
-        printf("<tr><td>%s</td><td>", _SETTINGS_ENABLE_TIDY_INDENT);
-        $this->input_yesno('tidy_opt_config_indent_enable', $enable_tidy_indent, $tabindex++);
+        printf("<tr><td>%s</td><td>", _SETTINGS_TIDY_INDENT_ENABLE);
+        $this->input_yesno('tidy_opt_config_indent_enable', CONF::asInt('tidy_opt_config_indent_enable', 0), $tabindex++);
+        echo "</td></tr>\n";
+
+        // _SETTINGS_TIDY_HIDE_COMMENT
+        printf("<tr><td>%s</td><td>", _SETTINGS_TIDY_HIDE_COMMENT);
+        $this->input_yesno('tidy_opt_config_hide_comment', CONF::asInt('tidy_opt_config_hide_comment', 0), $tabindex++);
+        echo "</td></tr>\n";
+
+        // _SETTINGS_TIDY_HIDE_COMMENT_ADMIN
+        printf("<tr><td>%s</td><td>", _SETTINGS_TIDY_HIDE_COMMENT_ADMIN);
+        $this->input_yesno('tidy_opt_config_hide_comment_admin', CONF::asInt('tidy_opt_config_hide_comment_admin', 0), $tabindex++);
         echo "</td></tr>\n";
 
         // doctype
         $doctypes    = [];
-        $def_doctype = isset($CONF['tidy_opt_config_doctype']) ? (string) $CONF['tidy_opt_config_doctype'] : 'auto';
+        $def_doctype = CONF::asStr('tidy_opt_config_doctype', 'auto');
         $doctypes[]  = ['value' => 'html5,strict', 'label' => 'Priority HTML5, HTML4(strict): depending on lib version'];
         if ($isTidy5) {
             $doctypes[] = ['value' => 'html5', 'label' => 'html5: HTML5'];
         } elseif ($def_doctype == 'html5') {
-            $def_doctype == 'auto';
+            $def_doctype = 'auto';
         }
         $doctypes[] = ['value' => 'strict', 'label' => 'strict: HTML4'];
         $doctypes[] = ['value' => 'auto', 'label' => 'auto: Automatic selection by html code : depending on lib version'];
@@ -6634,13 +6642,18 @@ selector();
 
         // todo: make it customizable
         // tidy_opt_config_text
-        $v      = isset($CONF['tidy_opt_config_text']) ? hsc((string) $CONF['tidy_opt_config_text']) : '';
-        $styles = 'max-height:8em';
-        printf("<tr><td>Tidy: config (blog)<br>[example]<br>indent-spaces: 2<br>hide-comments: no</td>\n");
+        $onclick = 'e = document.getElementById("tidy_config_sample"); if (e) { e.style.display = "block"; }';
+        $styles  = 'min-height:3.5em; max-height:8.5em; min-width:10em; width: -moz-available;';
+        printf(
+            "<tr><td>Tidy: config (blog)<br /><br />[example] <span onclick='%s'>[+]</span><div id='tidy_config_sample' style='%s'>%s</div></td>\n",
+            $onclick,
+            'display: none',
+            '<br>indent-spaces: 2<br>//language: ja<br>//indent-with-tabs: yes<br>//tab-size: 4'
+        );
         printf(
             "<td><textarea name='tidy_opt_config_text' style='%s'>%s</textarea></td></tr>\n",
             $styles,
-            $v
+            CONF::asHsc('tidy_opt_config_text')
         );
     }
 
@@ -6718,9 +6731,9 @@ EOL;
         $this->updateConfig('AdminCSS', postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
         if (extension_loaded('tidy')) {
-            $this->updateOrInsertConfig('tidy_enable', (postVar('tidy_enable') ? '1' : '0'));
+            $this->updateOrInsertConfig('tidy_enable', (PostVar::asBool('tidy_enable') ? '1' : '0'));
             // doctype
-            $doctype = (string) postVar('tidy_opt_config_doctype');
+            $doctype = PostVar::asStr('tidy_opt_config_doctype');
             if (!in_array($doctype, ['html5,strict','auto','html5','strict','omit'])) {
                 // [25 March 2009] : auto, omit, strict, loose or <fpi> / strict(HTML4)
                 // [2015/06/30 - ] : html5, omit, auto, strict, transitional, user
@@ -6728,9 +6741,12 @@ EOL;
             }
             $this->updateOrInsertConfig('tidy_opt_config_doctype', $doctype);
             // indent
-            $this->updateOrInsertConfig('tidy_opt_config_indent_enable', (postVar('tidy_opt_config_indent_enable') ? '1' : '0'));
+            $this->updateOrInsertConfig('tidy_opt_config_indent_enable', (PostVar::asBool('tidy_opt_config_indent_enable') ? '1' : '0'));
+            // comment
+            $this->updateOrInsertConfig('tidy_opt_config_hide_comment', (PostVar::asBool('tidy_opt_config_hide_comment') ? '1' : '0'));
+            $this->updateOrInsertConfig('tidy_opt_config_hide_comment_admin', (PostVar::asBool('tidy_opt_config_hide_comment_admin') ? '1' : '0'));
             // config
-            $this->updateOrInsertConfig('tidy_opt_config_text', (string) postVar('tidy_opt_config_text'));
+            $this->updateOrInsertConfig('tidy_opt_config_text', PostVar::asStr('tidy_opt_config_text'));
         }
 
         // load new config and redirect (this way, the new language will be used is necessary)
@@ -6879,7 +6895,7 @@ EOL;
             echo "\t</tr>\n";
             echo "\t<tr>";
             echo "\t\t" . '<td width="50%">Tidy</td>' . "\n";
-            echo sprintf(
+            printf(
                 "\t\t<td>%s</td>\n",
                 extension_loaded('tidy') ?
                     _ADMIN_SYSTEMOVERVIEW_ENABLE :
@@ -6887,13 +6903,14 @@ EOL;
             );
             echo "\t</tr>\n";
             if (function_exists('tidy_get_release')) {
+                $m        = [];
                 $tidy_ver = preg_match('/Tidy Version.+?>\s*([0-9\.]+)\s*</ims', $im, $m) ? $m[1] : '';
                 if ($tidy_ver) {
-                    echo sprintf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
+                    printf("\t\n<tr>\t\t<td>libTidy Version</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc($tidy_ver));
                 }
-                echo sprintf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
+                printf("\t\n<tr>\t\t<td>libTidy Release</td>\n\t\t<td>%s</td>\n\t</tr>\n", hsc(tidy_get_release()));
                 $tidy_support_HTML5 = strtotime(str_replace(['.'], '/', tidy_get_release())) >= strtotime('2015/06/30');
-                echo sprintf(
+                printf(
                     "\t\n<tr>\t\t<td>Support HTML5</td>\n\t\t<td>%s</td>\n\t</tr>\n",
                     $tidy_support_HTML5 ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE
                 );

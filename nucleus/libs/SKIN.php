@@ -869,9 +869,7 @@ class SKIN
 
     private function doTidy(&$data)
     {
-        global $CONF;
-
-        if (! isset($CONF['tidy_enable']) || ! $CONF['tidy_enable']) {
+        if (! CONF::asBool('tidy_enable')) {
             return;
         }
         if (! extension_loaded('tidy') || (_CHARSET !== 'UTF-8')
