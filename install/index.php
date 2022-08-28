@@ -33,6 +33,8 @@ if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
 }
 
+define('INSTALL_EXPIRE_SEC', 10*60); // 10 minutes
+
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
@@ -185,6 +187,14 @@ if ($DB_PHP_MODULE_NAME == 'pdo') {
 // check config.php, v3.80-
 if (@is_file('../config.php')) {
     _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
+}
+
+$mtime = @filemtime(__FILE__);
+if (!$mtime || ($mtime + INSTALL_EXPIRE_SEC < time())) {
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
+    }
+    _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
 }
 
 if (postVar('action') == 'go') {
