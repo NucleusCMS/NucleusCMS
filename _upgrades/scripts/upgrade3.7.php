@@ -6,7 +6,7 @@ function upgrade_do371()
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
 
-    $query = array();
+    $query = [];
     if (!sql_existTableColumnName(sql_table('category'), 'corder')) {
         $query[] = "ADD `corder` int(11) NOT NULL default '100', ADD INDEX `corder` (`corder`)";
     }

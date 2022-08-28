@@ -10,7 +10,7 @@ define('MYSQL_BOTH', 3);
 
 function _mysql_add_admin_warnings($funcname)
 {
-    static $names = array();
+    static $names = [];
     global $SQL_DBH;
     if ($SQL_DBH && is_object($SQL_DBH) && class_exists('SYSTEMLOG')
         && ! in_array($names, $funcname)) {

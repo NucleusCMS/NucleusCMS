@@ -60,11 +60,11 @@ class COMMENT
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
         if (! empty($comment['userid'])
-             && (strpos($comment['userid'], 'http://') !== 0)
-             && (strpos(
+             && (!str_starts_with($comment['userid'], 'http://'))
+             && (!str_starts_with(
                  $comment['userid'],
                  'https://'
-             ) !== 0)) {
+             ))) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 
@@ -99,12 +99,12 @@ class COMMENT
         // create hyperlinks for http:// addresses
         // there's a testcase for this in /build/testcases/urllinking.txt
 
-        $replace_from = array(
+        $replace_from = [
             '/([^:\/\/\w]|^)((https:\/\/)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
             '/([^:\/\/\w]|^)((http:\/\/|www\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
             '/([^:\/\/\w]|^)((ftp:\/\/|ftp\.)([\w\.-]+)([\/\w+\.~%&?@=_:;#,-]+))/i',
             '/([^:\/\/\w]|^)(mailto:(([a-zA-Z\@\%\.\-\+_])+))/i',
-        );
+        ];
         $body = preg_replace_callback($replace_from, self::class . '::prepareBody_cb', $body);
 
         return $body;
@@ -122,7 +122,7 @@ class COMMENT
         // it's possible that $url ends contains entities we don't want,
         // since htmlspecialchars is applied _before_ URL linking
         // move the part of URL, starting from the disallowed entity to the 'post' link part
-        $aBadEntities = array('&quot;', '&gt;', '&lt;');
+        $aBadEntities = ['&quot;', '&gt;', '&lt;'];
         foreach ($aBadEntities as $entity) {
             $pos = strpos($url, $entity);
 

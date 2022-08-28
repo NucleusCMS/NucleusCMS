@@ -63,7 +63,7 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
-$CONF     = array();
+$CONF     = [];
 $DIR_LIBS = '';
 require("../../config.php");    // include Nucleus libs and code
 //include($DIR_LIBS . "xmlrpc.inc.php");
@@ -78,7 +78,7 @@ $xmlrpc_defencoding      = 'UTF-8';
 
 /* definition of available methods */
 
-$functionDefs = array();
+$functionDefs = [];
 
 // load server functions
 include('api_blogger.inc.php');
@@ -234,7 +234,7 @@ function _getUsersBlogs($username, $password)
 
     // 2. Get list of blogs
 
-    $structarray = array();
+    $structarray = [];
     $query       = "SELECT bnumber, bname, burl"
         . ' FROM ' . sql_table('blog') . ', ' . sql_table('team')
         . " WHERE tblog=bnumber and tmember=" . $mem->getID()
@@ -248,11 +248,11 @@ function _getUsersBlogs($username, $password)
             $blogurl = 'http://';
         }
 
-        $newstruct = new xmlrpcval(array(
+        $newstruct = new xmlrpcval([
             "url"      => new xmlrpcval($blogurl, "string"),
             "blogid"   => new xmlrpcval($obj->bnumber, "string"),
             "blogName" => new xmlrpcval($obj->bname, "string")
-        ), 'struct');
+        ], 'struct');
         array_push($structarray, $newstruct);
     }
 
@@ -270,14 +270,14 @@ function _getUserInfo($username, $password)
     // 3. return the info
     // Structure returned has nickname, userid, url, email, lastname, firstname
 
-    $newstruct = new xmlrpcval(array(
+    $newstruct = new xmlrpcval([
         "nickname"  => new xmlrpcval($mem->getDisplayName(), "string"),
         "userid"    => new xmlrpcval($mem->getID(), "string"),
         "url"       => new xmlrpcval($mem->getURL(), "string"),
         "email"     => new xmlrpcval($mem->getEmail(), "string"),
         "lastname"  => new xmlrpcval("", "string"),
         "firstname" => new xmlrpcval($mem->getRealName(), "string")
-    ), 'struct');
+    ], 'struct');
 
     return new xmlrpcresp($newstruct);
 }

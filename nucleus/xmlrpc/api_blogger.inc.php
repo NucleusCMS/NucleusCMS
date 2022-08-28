@@ -21,8 +21,8 @@ if (! isset($member)) {
 }
 
 // blogger.newPost
-$f_blogger_newPost_sig = array(
-    array(
+$f_blogger_newPost_sig = [
+    [
         // return type
         $xmlrpcString,    // itemid of the new item
 
@@ -34,8 +34,8 @@ $f_blogger_newPost_sig = array(
         $xmlrpcString,    // content
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
 
-    )
-);
+    ]
+];
 $f_blogger_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
 function f_blogger_newPost($m)
 {
@@ -53,8 +53,8 @@ function f_blogger_newPost($m)
 }
 
 // blogger.editPost
-$f_blogger_editPost_sig = array(
-    array(
+$f_blogger_editPost_sig = [
+    [
         // return type
         $xmlrpcBoolean,    // true or false
 
@@ -66,8 +66,8 @@ $f_blogger_editPost_sig = array(
         $xmlrpcString,    // content
         $xmlrpcBoolean,    // publish boolean (only considered when dealing with a draft)
 
-    )
-);
+    ]
+];
 $f_blogger_editPost_doc = "Edits an item of a blog";
 function f_blogger_editPost($m)
 {
@@ -116,8 +116,8 @@ function f_blogger_editPost($m)
 }
 
 // blogger.getUsersBlogs
-$f_blogger_getUsersBlogs_sig = array(
-    array(
+$f_blogger_getUsersBlogs_sig = [
+    [
         // return type
         $xmlrpcArray,    // array containing structs containing blog info
 
@@ -125,8 +125,8 @@ $f_blogger_getUsersBlogs_sig = array(
         $xmlrpcString,    // appkey (ignored)
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    )
-);
+    ]
+];
 $f_blogger_getUsersBlogs_doc = "Returns a list of all the blogs where the given member is on the team";
 function f_blogger_getUsersBlogs($m)
 {
@@ -137,8 +137,8 @@ function f_blogger_getUsersBlogs($m)
 }
 
 // blogger.getRecentPosts
-$f_blogger_getRecentPosts_sig = array(
-    array(
+$f_blogger_getRecentPosts_sig = [
+    [
         // return type
         $xmlrpcArray,    // array of strucs (representing items)
 
@@ -148,8 +148,8 @@ $f_blogger_getRecentPosts_sig = array(
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcInt,    // amount of items to return (max = 20)
-    )
-);
+    ]
+];
 $f_blogger_getRecentPosts_doc = "Returns a maximum of 20 recent items";
 function f_blogger_getRecentPosts($m)
 {
@@ -162,8 +162,8 @@ function f_blogger_getRecentPosts($m)
 }
 
 // blogger.getPost
-$f_blogger_getPost_sig = array(
-    array(
+$f_blogger_getPost_sig = [
+    [
         // return type
         $xmlrpcStruct,    // A struct representing the item
 
@@ -172,8 +172,8 @@ $f_blogger_getPost_sig = array(
         $xmlrpcString,    // postid
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    )
-);
+    ]
+];
 $f_blogger_getPost_doc = "Returns an item (only the item body!)";
 function f_blogger_getPost($m)
 {
@@ -185,8 +185,8 @@ function f_blogger_getPost($m)
 }
 
 // blogger.deletePost
-$f_blogger_deletePost_sig = array(
-    array(
+$f_blogger_deletePost_sig = [
+    [
         // return type
         $xmlrpcBoolean,    // boolean (ok or not ok)
 
@@ -196,8 +196,8 @@ $f_blogger_deletePost_sig = array(
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcBoolean,    // publish (ignored)
-    )
-);
+    ]
+];
 $f_blogger_deletePost_doc = "Deletes an item";
 function f_blogger_deletePost($m)
 {
@@ -209,8 +209,8 @@ function f_blogger_deletePost($m)
 }
 
 // blogger.getTemplate
-$f_blogger_getTemplate_sig = array(
-    array(
+$f_blogger_getTemplate_sig = [
+    [
         // return type
         $xmlrpcString,    // the template
 
@@ -220,8 +220,8 @@ $f_blogger_getTemplate_sig = array(
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcString,    // type of template (main/archiveIndex)
-    )
-);
+    ]
+];
 $f_blogger_getTemplate_doc = "Returns the required part of the default skin for the given blog";
 function f_blogger_getTemplate($m)
 {
@@ -243,8 +243,8 @@ function f_blogger_getTemplate($m)
 }
 
 // blogger.setTemplate
-$f_blogger_setTemplate_sig = array(
-    array(
+$f_blogger_setTemplate_sig = [
+    [
         // return type
         $xmlrpcBoolean,    // OK or not OK
 
@@ -255,8 +255,8 @@ $f_blogger_setTemplate_sig = array(
         $xmlrpcString,    // password
         $xmlrpcString,    // template contents
         $xmlrpcString,    // type of template (main/archiveIndex)
-    )
-);
+    ]
+];
 $f_blogger_setTemplate_doc = "Changes a part of the default skin for the selected blog";
 function f_blogger_setTemplate($m)
 {
@@ -279,8 +279,8 @@ function f_blogger_setTemplate($m)
 }
 
 // blogger.getUserInfo
-$f_blogger_getUserInfo_sig = array(
-    array(
+$f_blogger_getUserInfo_sig = [
+    [
         // return type
         $xmlrpcStruct,    // Struct
 
@@ -288,8 +288,8 @@ $f_blogger_getUserInfo_sig = array(
         $xmlrpcString,    // appkey (ignored)
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    )
-);
+    ]
+];
 $f_blogger_getUserInfo_doc = "Returns info on the user";
 function f_blogger_getUserInfo($m)
 {
@@ -330,7 +330,7 @@ function _getRecentItemsBlogger($blogid, $username, $password, $amount)
 
     $blog = new BLOG($blogid);
 
-    $structarray = array();        // the array in which the structs will be stored
+    $structarray = [];        // the array in which the structs will be stored
 
     $query = "SELECT mname, ibody, iauthor, ibody, inumber, ititle as title, itime, cname as category"
         . ' FROM ' . sql_table('item') . ', ' . sql_table('category') . ', ' . sql_table('member')
@@ -347,7 +347,7 @@ function _getRecentItemsBlogger($blogid, $username, $password, $amount)
 
         $content = blogger_specialTags($row) . $row['ibody'];
 
-        $newstruct = new xmlrpcval(array(
+        $newstruct = new xmlrpcval([
             "userid"      => new xmlrpcval($row['iauthor'], "string"),
             "dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])), "dateTime.iso8601"),
             "blogid"      => new xmlrpcval($blogid, "string"),
@@ -355,7 +355,7 @@ function _getRecentItemsBlogger($blogid, $username, $password, $amount)
             "postid"      => new xmlrpcval($row['inumber'], "string"),
             "authorName"  => new xmlrpcval($row['mname'], 'string'),
             "title"       => new xmlrpcval($row['title'], 'string'),
-        ), 'struct');
+        ], 'struct');
         array_push($structarray, $newstruct);
     }
 
@@ -400,12 +400,12 @@ function _getItemBlogger($itemid, $username, $password)
 
     $content = blogger_specialTags($item) . $item['body'];
 
-    $newstruct = new xmlrpcval(array(
+    $newstruct = new xmlrpcval([
         "dateCreated" => new xmlrpcval(iso8601_encode($item['timestamp']), "dateTime.iso8601"),
         "userid"      => new xmlrpcval($item['authorid'], "string"),
         "blogid"      => new xmlrpcval($blogid, "string"),
         "content"     => new xmlrpcval($content, "string")
-    ), 'struct');
+    ], 'struct');
 
     return new xmlrpcresp($newstruct);
 }
@@ -445,60 +445,60 @@ function blogger_specialTags($item)
 
 $functionDefs = array_merge(
     $functionDefs,
-    array(
-        "blogger.getUsersBlogs" => array(
+    [
+        "blogger.getUsersBlogs" => [
                 "function"  => "f_blogger_getUsersBlogs",
                 "signature" => $f_blogger_getUsersBlogs_sig,
                 "docstring" => $f_blogger_getUsersBlogs_doc
-            ),
+            ],
 
-        "blogger.newPost" => array(
+        "blogger.newPost" => [
                 "function"  => "f_blogger_newPost",
                 "signature" => $f_blogger_newPost_sig,
                 "docstring" => $f_blogger_newPost_doc
-            ),
+            ],
 
-        "blogger.editPost" => array(
+        "blogger.editPost" => [
                 "function"  => "f_blogger_editPost",
                 "signature" => $f_blogger_editPost_sig,
                 "docstring" => $f_blogger_editPost_doc
-            ),
+            ],
 
-        "blogger.deletePost" => array(
+        "blogger.deletePost" => [
                 "function"  => "f_blogger_deletePost",
                 "signature" => $f_blogger_deletePost_sig,
                 "docstring" => $f_blogger_deletePost_doc
-            ),
+            ],
 
-        "blogger.getPost" => array(
+        "blogger.getPost" => [
                 "function"  => "f_blogger_getPost",
                 "signature" => $f_blogger_getPost_sig,
                 "docstring" => $f_blogger_getPost_doc
-            ),
+            ],
 
-        "blogger.getRecentPosts" => array(
+        "blogger.getRecentPosts" => [
                 "function"  => "f_blogger_getRecentPosts",
                 "signature" => $f_blogger_getRecentPosts_sig,
                 "docstring" => $f_blogger_getRecentPosts_doc
-            ),
+            ],
 
-        "blogger.getUserInfo" => array(
+        "blogger.getUserInfo" => [
                 "function"  => "f_blogger_getUserInfo",
                 "signature" => $f_blogger_getUserInfo_sig,
                 "docstring" => $f_blogger_getUserInfo_doc
-            ),
+            ],
 
-        "blogger.getTemplate" => array(
+        "blogger.getTemplate" => [
                 "function"  => "f_blogger_getTemplate",
                 "signature" => $f_blogger_getTemplate_sig,
                 "docstring" => $f_blogger_getTemplate_doc
-            ),
+            ],
 
-        "blogger.setTemplate" => array(
+        "blogger.setTemplate" => [
                 "function"  => "f_blogger_setTemplate",
                 "signature" => $f_blogger_setTemplate_sig,
                 "docstring" => $f_blogger_setTemplate_doc
-            )
+            ]
 
-    )
+    ]
 );

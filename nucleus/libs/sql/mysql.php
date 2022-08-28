@@ -400,7 +400,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     {
         global $MYSQL_CONN;
         if (! $MYSQL_CONN) {
-            return array();
+            return [];
         }
 
         if (str_contains($tablename, '[@prefix@]')) {
@@ -409,10 +409,10 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
         $sql    = sprintf('SHOW COLUMNS FROM `%s` ', $tablename);
         $target = 'Field';
 
-        $items = array();
+        $items = [];
         $res   = mysql_query($sql);
         if (! $res) {
-            return array();
+            return [];
         }
         while ($row = mysql_fetch_array($res)) {
             if (isset($row[$target])) {

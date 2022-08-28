@@ -33,6 +33,8 @@ if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
 }
 
+define('INSTALL_EXPIRE_SEC', 10*60); // 10 minutes
+
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
@@ -60,7 +62,7 @@ if (preg_match('#/install$#', $path)) {
 
 if (DEBUG_INSTALL_QUERY) {
     global $CONF;
-    $CONF = array('debug' => 1);
+    $CONF = ['debug' => 1];
 }
 
 include_once('../nucleus/libs/version.php');
@@ -114,18 +116,18 @@ if ($lang != 'en') {
 //
 // example:
 //     array('NP_CKEditor', 'NP_Text')
-$aConfPlugsToInstall = array(
+$aConfPlugsToInstall = [
     'NP_SkinFiles',
 //        'NP_CustomURL',
 //        'NP_CKEditor',
-);
+];
 
 // array with skins to install. skins must be present under the skins/ directory with
 // a subdirectory having the same name that contains a skinbackup.xml file
 //
 // example:
 //     array('base','rsd')
-$aConfSkinsToImport = array('atom','rss2.0','rsd','default');
+$aConfSkinsToImport = ['atom','rss2.0','rsd','default'];
 
 /*
     -- End Of Configurable Part --
@@ -136,13 +138,8 @@ error_reporting(E_ERROR | E_WARNING | E_PARSE);
 
 if (version_compare(phpversion(), NUCLEUS_INSTALL_MINIMUM_PHP_VERSION, '<')) {
     $msg    = sprintf(_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT, NUCLEUS_INSTALL_MINIMUM_PHP_VERSION);
-    $errors = array($msg);
+    $errors = [$msg];
     showErrorMessages($errors); // exit to instalation
-}
-
-// make sure there's no unnecessary escaping:
-if (version_compare(PHP_VERSION, '5.3.0', '<')) {
-    set_magic_quotes_runtime(0);
 }
 
 // if there are some plugins or skins to import, do not include vars
@@ -190,6 +187,14 @@ if ($DB_PHP_MODULE_NAME == 'pdo') {
 // check config.php, v3.80-
 if (@is_file('../config.php')) {
     _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
+}
+
+$mtime = @filemtime(__FILE__);
+if (!$mtime || ($mtime + INSTALL_EXPIRE_SEC < time())) {
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+        _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
+    }
+    _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
 }
 
 if (postVar('action') == 'go') {

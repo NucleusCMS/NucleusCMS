@@ -17,7 +17,7 @@
  */
 
 // bookmarklet is part of admin area (might need XML-RPC)
-$CONF                   = array();
+$CONF                   = [];
 $CONF['UsingAdminArea'] = 1;
 
 // include all classes and config data
@@ -54,7 +54,7 @@ sendContentType('text/html', 'bookmarklet-' . $action);
 // check ticket
 $action = strtolower($action);
 
-$aActionsNotToCheck = array('login', 'add', 'edit');
+$aActionsNotToCheck = ['login', 'add', 'edit'];
 
 if (!in_array($action, $aActionsNotToCheck)) {
     if (!$manager->checkTicket()) {
@@ -129,18 +129,18 @@ EOT;
     $itemid = intRequestVar('itemid');
     $title  = postVar('title');
     $msg    = str_replace(
-        array(
+        [
             '<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>',
             '<%ticket%>',
             '<%itemid%>',
             '<%itemtitle%>'
-        ),
-        array(
+        ],
+        [
             _CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,
             $ticket,
             $itemid,
             $title
-        ),
+        ],
         $msg
     );
     bm_message(_DELETE_CONFIRM_BTN, _DELETE_CONFIRM, $msg, '', 0);
@@ -177,7 +177,7 @@ function bm_doEditItem()
     $draftid    = intPostVar('draftid');
 
     // create new category if needed (only on edit/changedate)
-    if (strpos($catid, 'newcat') !== false) {
+    if (str_contains($catid, 'newcat')) {
         // get blogid
         list($blogid) = sscanf($catid, "newcat-%d");
 
@@ -334,7 +334,7 @@ function bm_doEditForm()
     $item = & $manager->getItem($itemid, 1, 1);
     $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
 
-    $data = array('item' => &$item);
+    $data = ['item' => &$item];
     $manager->notify('PrepareItemForEdit', $data);
 
     if ($blog->convertBreaks()) {

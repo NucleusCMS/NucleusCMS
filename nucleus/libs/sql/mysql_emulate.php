@@ -368,7 +368,7 @@ function convert_mysqlFieldFlags_from_mysqliFieldFlags($flags)
     // php-src/ext/mysql/php_mysql.c :: php_mysql_field_info , case PHP_MYSQL_FIELD_FLAGS:
     // php-src/ext/mysqli/mysqli.c :: column information , MYSQLI_*_FLAG
 
-    $a = array();
+    $a = [];
     // *_FLAG constant min value 1 : mysqlnd_enum_n_def.h
     if ($flags & MYSQLI_NOT_NULL_FLAG) {
         $a[] = "not_null";

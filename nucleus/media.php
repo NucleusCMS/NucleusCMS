@@ -25,7 +25,7 @@
 global $manager, $member;
 include_once 'libs/media.functions.inc.php';
 
-$CONF = array();
+$CONF = [];
 
 // defines how much media items will be shown per page. You can override this
 // in config.php if you like. (changing it in config.php instead of here will
@@ -60,7 +60,7 @@ if ($action == '') {
 }
 
 // check ticket
-if (!in_array($action, array('selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT))) {
+if (!in_array($action, ['selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT])) {
     if (!$manager->checkTicket()) {
         media_doError(_ERROR_BADTICKET);
     }

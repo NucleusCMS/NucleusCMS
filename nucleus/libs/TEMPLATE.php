@@ -97,7 +97,7 @@ class TEMPLATE
             } else {
                 sql_prepare_execute(
                     $sql . '(?, ?, ?)',
-                    array($content, $type, (int)$id)
+                    [$content, $type, (int)$id]
                 );
             }
         }
@@ -126,10 +126,10 @@ class TEMPLATE
     {
         global $manager;
 
-        $param = array(
+        $param = [
             'name'        => &$name,
             'description' => &$desc,
-        );
+        ];
         $manager->notify('PreAddTemplate', $param);
 
         sql_query(sprintf(
@@ -140,11 +140,11 @@ class TEMPLATE
         ));
         $newId = sql_insert_id();
 
-        $param = array(
+        $param = [
             'templateid'  => $newId,
             'name'        => $name,
             'description' => $desc,
-        );
+        ];
         $manager->notify('PostAddTemplate', $param);
 
         return $newId;
@@ -161,16 +161,16 @@ class TEMPLATE
         global $manager;
         static $rs = null;
 
-        $param = array(
+        $param = [
             'template' => &$name,
-        );
+        ];
         $manager->notify('PreTemplateRead', $param);
 
         if (isset($rs[$name])) {
             return $rs[$name];
         }
 
-        $template = array();
+        $template = [];
         $res      = sql_query(sprintf(
             "SELECT tpartname, tcontent FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
             sql_table('template_desc'),

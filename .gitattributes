@@ -21,5 +21,6 @@
 # export-ignore
 .gitignore           export-ignore
 .gitattributes       export-ignore
+.php-cs-fixer.php    export-ignore
 /archives            export-ignore
 /nucleus/language/_*.php    export-ignore

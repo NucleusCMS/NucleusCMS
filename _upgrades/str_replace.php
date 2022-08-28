@@ -29,7 +29,7 @@ class convert
     {
         global $CONF;
 
-        if (strpos($CONF['IndexURL'], 'https://') === 0) {
+        if (str_starts_with($CONF['IndexURL'], 'https://')) {
             exit('すでにhttps化済です。');
         }
         $tpl           = $this->getTemplate();
@@ -73,7 +73,7 @@ class convert
             exit('Nucleusのtableがありません。何もせずに終了します。');
         }
 
-        $srcTableNames = array();
+        $srcTableNames = [];
         while ($row = sql_fetch_array($rs)) {
             $srcTableNames[] = $row[0];
         }
@@ -138,12 +138,12 @@ class convert
         public function getOptions()
         {
             $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
-            $_   = array();
+            $_   = [];
             foreach ($this->collations as $collation) {
                 if ($collation === $this->current_collation) {
                     continue;
                 }
-                $_[] = parseText($tpl, array('collation' => $collation));
+                $_[] = parseText($tpl, ['collation' => $collation]);
             }
             return implode("\n", $_);
         }

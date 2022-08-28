@@ -139,10 +139,10 @@ class ACTION
             } // end if
         } // else, show error message using default skin for blog
         else {
-            return array(
+            return [
                 'message' => $errormessage,
                 'skinid'  => $blog->getDefaultSkin(),
-            );
+            ];
         } // end if
 
         exit;
@@ -158,7 +158,7 @@ class ACTION
         $error = $this->validateMessage();
 
         if ($error != '') {
-            return array('message' => $error);
+            return ['message' => $error];
         }
 
         if (!$member->isLoggedIn()) {
@@ -200,11 +200,11 @@ class ACTION
             if ($CONF['URLMode'] === 'pathinfo') {
                 $url = createLink(
                     'member',
-                    array(
+                    [
                         'memberid' => $tomem->getID()
                     ,
                         'name' => $tomem->getDisplayName(),
-                    )
+                    ]
                 );
             } else {
                 $url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
@@ -240,10 +240,10 @@ class ACTION
         // let plugins do verification (any plugin which thinks the comment is invalid
         // can change 'error' to something other than '')
         $result = '';
-        $param  = array(
+        $param  = [
             'type'  => 'membermail',
             'error' => &$result,
-        );
+        ];
         $manager->notify('ValidateForm', $param);
 
         return $result;
@@ -262,10 +262,10 @@ class ACTION
 
         // evaluate content from FormExtra
         $result = 1;
-        $param  = array(
+        $param  = [
             'type'  => 'membermail',
             'error' => &$result,
-        );
+        ];
         $manager->notify('ValidateForm', $param);
 
         if ($result != 1) {
@@ -298,7 +298,7 @@ class ACTION
         $newmem->readFromName($name);
         $newmem->sendActivationLink('register');
 
-        $param = array('member' => &$newmem);
+        $param = ['member' => &$newmem];
         $manager->notify('PostRegister', $param);
 
         if (postVar('desturl')) {
@@ -398,11 +398,11 @@ class ACTION
         $karma         = & $manager->getKarma($itemid);
         $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR'));
 
-        $params = array(
+        $params = [
             'done'  => false,
             'type'  => $type,
             'allow' => &$isVoteAllowed,
-        );
+        ];
         $manager->notify('PreVote', $params);
 
         // check if not already voted
@@ -427,7 +427,7 @@ class ACTION
                 break;
         }
 
-        $params = array('done' => false, 'type' => $type);
+        $params = ['done' => false, 'type' => $type];
         $manager->notify('PostVote', $params);
 
         //        $blogid = getBlogIDFromItemID($itemid);

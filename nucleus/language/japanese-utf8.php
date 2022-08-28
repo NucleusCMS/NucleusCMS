@@ -151,8 +151,10 @@ define('_ADMIN_LOST_PSWD_TEXT_3', "認証用リンクの送信");
 define('_ADMIN_LOST_PSWD_TEXT_USENAME', "ユーザー名(ログインID)：");
 define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "メールアドレス：");
 
-define('_SETTINGS_ENABLE_TIDY', "Tidyによるhtml自動整形を有効にする");
-define('_SETTINGS_ENABLE_TIDY_INDENT', "Tidy: タグを字下げする(インデント)");
+define('_SETTINGS_TIDY_ENABLE', "Tidyによるhtml自動整形を有効にする");
+define('_SETTINGS_TIDY_INDENT_ENABLE', "Tidy: タグを字下げする(インデント)");
+define('_SETTINGS_TIDY_HIDE_COMMENT',  "Tidy: コメントを隠す(通常コンテンツ、一般ユーザー)");
+define('_SETTINGS_TIDY_HIDE_COMMENT_ADMIN',  "Tidy: コメントを隠す(Adminユーザー)");
 
 define('_SYSTEMLOG_TITLE',       "システムログ");
 define('_SYSTEMLOG_CLEAR_TITLE', "システムログの消去");

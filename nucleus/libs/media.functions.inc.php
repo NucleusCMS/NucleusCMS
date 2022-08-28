@@ -221,7 +221,7 @@ function media_choose()
     ?>
             <br /><br />
             <?php
-    $data = array();
+    $data = [];
     $manager->notify('MediaUploadFormExtras', $data);
     ?>
             <br /><br />

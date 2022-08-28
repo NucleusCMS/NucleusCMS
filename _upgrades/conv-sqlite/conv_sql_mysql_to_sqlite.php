@@ -24,7 +24,7 @@ if (php_sapi_name() != 'cli') {
 
 ob_start();
 $config_php = 'config.php';
-foreach (array('','../','../../../') as $dir) {
+foreach (['','../','../../../'] as $dir) {
     if (is_file("{$dir}config.php")) {
         $config_php = "{$dir}config.php";
         break;
@@ -57,7 +57,7 @@ $obj = new TableConvertor_mysql_to_sqlite();
 
 //var_dump ($obj->base_table_list);
 
-$tables = array();
+$tables = [];
 $result = @sql_query(sprintf("SHOW TABLES LIKE '%s'", sql_table("") . "%"));
 while ($row = @sql_fetch_array($result)) {
     $tables[] = $row[0];
@@ -67,7 +67,7 @@ while ($row = @sql_fetch_array($result)) {
 //define('conv_debug', true);
 
 echo "BEGIN;\n\n";
-$error_messages = array();
+$error_messages = [];
 foreach ($tables as $table) {
     //  echo $table.$obj->get_table_structure($table);
     @$obj->dump_table_structure($table);

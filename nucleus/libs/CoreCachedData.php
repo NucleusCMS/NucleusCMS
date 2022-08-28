@@ -52,7 +52,7 @@ class CoreCachedData
             $sql = "SELECT count(*) FROM `{$tablename}`"
                                 . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
                                 . " AND `cd_name` = ? ";
-            $input_parameters = array($type, $sub_type, $sub_id, $name);
+            $input_parameters = [$type, $sub_type, $sub_id, $name];
             if (! empty($expire_datetime)) {
                 // cd_datetime      : time when data was saved
                 // $expire_datetime : Expired time
@@ -220,7 +220,7 @@ class CoreCachedData
             return $ret;
         }
 
-        return array();
+        return [];
     }
 
     public static function deleteDataEx(

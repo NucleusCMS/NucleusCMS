@@ -25,7 +25,7 @@ class SYSTEMLOG
         return true;
     }
 
-    public static function add($type, $subtype, $message, $options = array())
+    public static function add($type, $subtype, $message, $options = [])
     {
         global $member, $CONF, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 
@@ -43,7 +43,7 @@ class SYSTEMLOG
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash)
             VALUES(:logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash)
 EOL;
-        $ph             = array();
+        $ph             = [];
         $ph[':logyear'] = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
         $ph[':logtype'] = (string)$type;
         $ph[':subtype'] = (string)$subtype;
@@ -101,13 +101,13 @@ EOL;
         $type,
         $subtype,
         $message,
-        $options = array()
+        $options = []
     ) {
         global $DB_PHP_MODULE_NAME;
         $message = (string)((strlen($message) > self::MAX_MSG_LEN)
             ? substr($message, 0, self::MAX_MSG_LEN) : $message);
 
-        $ph                  = array();
+        $ph                  = [];
         $ph[':logtype']      = (string)$type;
         $ph[':subtype']      = (string)$subtype;
         $ph[':message_hash'] = (string)sha1($message);
@@ -206,7 +206,7 @@ EOL;
         if (! sql_existTableName(sql_table('config'))) {
             return;
         }
-        $query          = array();
+        $query          = [];
         $tablename      = sql_table('systemlog');
         $query['mysql'] = <<<EOL
 CREATE TABLE `{$tablename}` (

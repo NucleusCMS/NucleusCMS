@@ -27,7 +27,7 @@ if (!function_exists('each')) { // removed function PHP[ - 7.4]
             return false;
         }
         next($array);
-        return array(1 => $value, 'value' => $value, 0 => $key, 'key' => $key);
+        return [1 => $value, 'value' => $value, 0 => $key, 'key' => $key];
     }
 }
 

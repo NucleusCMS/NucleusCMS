@@ -38,7 +38,7 @@ class COMMENTACTIONS extends BaseActions
 
     public function getDefinedActions()
     {
-        return array(
+        return [
             'blogurl',
             'commentcount',
             'commentword',
@@ -77,7 +77,7 @@ class COMMENTACTIONS extends BaseActions
             'elseif',
             'ifnot',
             'elseifnot',
-        );
+        ];
     }
 
     public function setParser(&$parser)
@@ -119,11 +119,11 @@ class COMMENTACTIONS extends BaseActions
 
             $comment['userlinkraw'] = createLink(
                 'member',
-                array(
+                [
                     'memberid' => $comment['memberid'],
                     'name'     => $mem->getDisplayName(),
                     'extra'    => $this->commentsObj->itemActions->linkparams,
-                )
+                ]
             );
         } // else: non-member comment
         else {
@@ -132,8 +132,8 @@ class COMMENTACTIONS extends BaseActions
             // begin if: comment userid is not empty
             if (! empty($comment['userid'])) {
                 // begin if: comment userid has either "http://" or "https://" at the beginning
-                if ((strpos($comment['userid'], 'http://') === 0)
-                    || (strpos($comment['userid'], 'https://') === 0)) {
+                if ((str_starts_with($comment['userid'], 'http://'))
+                    || (str_starts_with($comment['userid'], 'https://'))) {
                     $comment['userlinkraw'] = $comment['userid'];
                 } // else: prepend the "http://" (backwards compatibility before rev 1471)
                 else {
@@ -289,12 +289,12 @@ class COMMENTACTIONS extends BaseActions
     {
         echo createLink(
             'item',
-            array(
+            [
                 'itemid'    => $this->commentsObj->itemid,
                 'timestamp' => $this->commentsObj->itemActions->currentItem->timestamp,
                 'title'     => $this->commentsObj->itemActions->currentItem->title,
                 'extra'     => $this->commentsObj->itemActions->linkparams,
-            )
+            ]
         );
     }
 
@@ -378,14 +378,14 @@ class COMMENTACTIONS extends BaseActions
         array_shift($params);
 
         // pass info on current item and current comment as well
-        $params = array_merge(array(&$this->currentComment), $params);
+        $params = array_merge([&$this->currentComment], $params);
         $params
                 = array_merge(
-                    array(&$this->commentsObj->itemActions->currentItem),
+                    [&$this->commentsObj->itemActions->currentItem],
                     $params
                 );
 
-        call_user_func_array(array($plugin, 'doTemplateCommentsVar'), $params);
+        call_user_func_array([$plugin, 'doTemplateCommentsVar'], $params);
     }
 
     /**
@@ -796,7 +796,7 @@ class COMMENTACTIONS extends BaseActions
         $params = func_get_args();
         array_shift($params);
 
-        return call_user_func_array(array($plugin, 'doIf'), $params);
+        return call_user_func_array([$plugin, 'doIf'], $params);
     }
 
     public function parse_commentclosed()

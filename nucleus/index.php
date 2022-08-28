@@ -24,7 +24,7 @@ define("LOADED_PRELOAD_ADMIN_CUSTUM_PHP", in_array(realpath($preload_admin_custu
 unset($preload_admin_custum_php);
 
 // we are using admin stuff:
-$CONF                   = array();
+$CONF                   = [];
 $CONF['UsingAdminArea'] = 1;
 
 if (!@is_file('../config.php')) {
@@ -37,7 +37,7 @@ if (!@is_file('../config.php')) {
 require_once('../config.php');
 
 $bNeedsLogin   = false;
-$bIsActivation = in_array($action, array('activate', 'activatesetpwd'));
+$bIsActivation = in_array($action, ['activate', 'activatesetpwd']);
 
 if ($action == 'logout') {
     $bNeedsLogin = true;

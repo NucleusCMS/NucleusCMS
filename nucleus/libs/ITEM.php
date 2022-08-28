@@ -103,7 +103,7 @@ class ITEM
         $i_draftid    = intPostVar('draftid');
 
         if (! $member->canAddItem($i_catid)) {
-            return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
+            return ['status' => 'error', 'message' => _ERROR_DISALLOWED];
         }
 
         if (! $i_actiontype) {
@@ -121,11 +121,11 @@ class ITEM
         }
 
         if (! trim($i_body)) {
-            return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
+            return ['status' => 'error', 'message' => _ERROR_NOEMPTYITEMS];
         }
 
         // create new category if needed
-        if (strpos($i_catid, 'newcat') !== false) {
+        if (str_contains($i_catid, 'newcat')) {
             // get blogid
             list($i_blogid) = sscanf($i_catid, "newcat-%d");
 
@@ -135,10 +135,10 @@ class ITEM
 
             // show error when sth goes wrong
             if (! $i_catid) {
-                return array(
+                return [
                     'status'  => 'error',
                     'message' => _ERROR_CATCREATEFAIL,
-                );
+                ];
             }
         } else {
             // force blogid (must be same as category id)
@@ -189,17 +189,17 @@ class ITEM
         //Setting the itemOptions
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions, $itemid);
-        $param = array(
+        $param = [
             'context' => 'item',
             'itemid'  => $itemid,
-            'item'    => array(
+            'item'    => [
                 'title'  => $i_title,
                 'body'   => $i_body,
                 'more'   => $i_more,
                 'closed' => $i_closed,
                 'catid'  => $i_catid,
-            ),
-        );
+            ],
+        ];
         $manager->notify('PostPluginOptionsUpdate', $param);
 
         if ($i_draftid > 0) {
@@ -209,13 +209,13 @@ class ITEM
 
         // success
         if ($i_catid != intRequestVar('catid')) {
-            return array(
+            return [
                 'status' => 'newcategory',
                 'itemid' => $itemid,
                 'catid'  => $i_catid,
-            );
+            ];
         } else {
-            return array('status' => 'added', 'itemid' => $itemid);
+            return ['status' => 'added', 'itemid' => $itemid];
         }
     }
 
@@ -259,7 +259,7 @@ class ITEM
         }
 
         // call plugins
-        $param = array(
+        $param = [
             'itemid' => $itemid,
             'title'  => &$title,
             'body'   => &$body,
@@ -267,7 +267,7 @@ class ITEM
             'blog'   => &$blog,
             'closed' => &$closed,
             'catid'  => &$catid,
-        );
+        ];
         $manager->notify('PreUpdateItem', $param);
 
         // update item itsself
@@ -331,7 +331,7 @@ class ITEM
         // off we go!
         sql_query($query);
 
-        $param = array('itemid' => $itemid);
+        $param = ['itemid' => $itemid];
         $manager->notify('PostUpdateItem', $param);
 
         // when needed, move item and comments to new blog
@@ -342,17 +342,17 @@ class ITEM
         //update the itemOptions
         $aOptions = requestArray('plugoption');
         NucleusPlugin::_applyPluginOptions($aOptions);
-        $param = array(
+        $param = [
             'context' => 'item',
             'itemid'  => $itemid,
-            'item'    => array(
+            'item'    => [
                 'title'  => $title,
                 'body'   => $body,
                 'more'   => $more,
                 'closed' => $closed,
                 'catid'  => $catid,
-            ),
-        );
+            ],
+        ];
         $manager->notify('PostPluginOptionsUpdate', $param);
     }
 
@@ -459,11 +459,11 @@ class ITEM
 
         $new_blogid = getBlogIDFromCatID($new_catid);
 
-        $param = array(
+        $param = [
             'itemid'     => $itemid,
             'destblogid' => $new_blogid,
             'destcatid'  => $new_catid,
-        );
+        ];
         $manager->notify('PreMoveItem', $param);
 
         // update item table
@@ -487,11 +487,11 @@ class ITEM
             )
         );
 
-        $param = array(
+        $param = [
             'itemid'     => $itemid,
             'destblogid' => $new_blogid,
             'destcatid'  => $new_catid,
-        );
+        ];
         $manager->notify('PostMoveItem', $param);
     }
 
@@ -510,7 +510,7 @@ class ITEM
             return 1;
         }
 
-        $param = array('itemid' => $itemid);
+        $param = ['itemid' => $itemid];
         $manager->notify('PreDeleteItem', $param);
 
         // delete item
@@ -534,7 +534,7 @@ class ITEM
         // delete all associated plugin options
         NucleusPlugin::_deleteOptionValues('item', $itemid);
 
-        $param = array('itemid' => $itemid);
+        $param = ['itemid' => $itemid];
         $manager->notify('PostDeleteItem', $param);
 
         return 0;
@@ -624,11 +624,11 @@ class ITEM
         $i_draftid = intPostVar('draftid');
 
         if (! $member->canAddItem($i_catid)) {
-            return array('status' => 'error', 'message' => _ERROR_DISALLOWED);
+            return ['status' => 'error', 'message' => _ERROR_DISALLOWED];
         }
 
         if (! trim($i_body)) {
-            return array('status' => 'error', 'message' => _ERROR_NOEMPTYITEMS);
+            return ['status' => 'error', 'message' => _ERROR_NOEMPTYITEMS];
         }
 
         // create new category if needed
@@ -672,6 +672,6 @@ class ITEM
         }
 
         // success
-        return array('status' => 'added', 'draftid' => $itemid);
+        return ['status' => 'added', 'draftid' => $itemid];
     }
 }

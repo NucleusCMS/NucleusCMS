@@ -48,7 +48,7 @@ class ITEMACTIONS extends BaseActions
         // extra parameters for created links
         global $catid;
         if ($catid) {
-            $this->linkparams = array('catid' => $catid);
+            $this->linkparams = ['catid' => $catid];
         }
 
         // check if member is blog admin (and thus allowed to edit all items)
@@ -64,7 +64,7 @@ class ITEMACTIONS extends BaseActions
      */
     public function getDefinedActions()
     {
-        return array(
+        return [
             'blogid',
             'title',
             'body',
@@ -112,7 +112,7 @@ class ITEMACTIONS extends BaseActions
             'elseif',
             'ifnot',
             'elseifnot',
-        );
+        ];
     }
 
     public function setLastVisit($lastVisit)
@@ -203,10 +203,10 @@ class ITEMACTIONS extends BaseActions
     {
         echo createLink(
             'category',
-            array(
+            [
                 'catid' => $this->currentItem->catid,
                 'name'  => $this->currentItem->category,
-            )
+            ]
         );
     }
 
@@ -233,11 +233,11 @@ class ITEMACTIONS extends BaseActions
     {
         echo createLink(
             'member',
-            array(
+            [
                 'memberid' => $this->currentItem->authorid,
                 'name'     => $this->currentItem->author,
                 'extra'    => $this->linkparams,
-            )
+            ]
         );
     }
 
@@ -256,12 +256,12 @@ class ITEMACTIONS extends BaseActions
     {
         echo createLink(
             'item',
-            array(
+            [
                 'itemid'    => $this->currentItem->itemid,
                 'title'     => $this->currentItem->title,
                 'timestamp' => $this->currentItem->timestamp,
                 'extra'     => $this->linkparams,
-            )
+            ]
         );
     }
 
@@ -574,9 +574,9 @@ class ITEMACTIONS extends BaseActions
         array_shift($params);
 
         // add item reference (array_unshift didn't work)
-        $params = array_merge(array(&$this->currentItem), $params);
+        $params = array_merge([&$this->currentItem], $params);
 
-        call_user_func_array(array($plugin, 'doTemplateVar'), $params);
+        call_user_func_array([$plugin, 'doTemplateVar'], $params);
     }
 
     /**
@@ -920,7 +920,7 @@ class ITEMACTIONS extends BaseActions
         $params = func_get_args();
         array_shift($params);
 
-        return call_user_func_array(array($plugin, 'doIf'), $params);
+        return call_user_func_array([$plugin, 'doIf'], $params);
     }
 
     public function parse_commentclosed()

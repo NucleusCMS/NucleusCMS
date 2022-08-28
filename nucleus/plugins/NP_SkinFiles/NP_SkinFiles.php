@@ -68,7 +68,7 @@ class NP_SkinFiles extends NucleusPlugin
     }
     public function supportsFeature($feature)
     {
-        return in_array($feature, array('SqlTablePrefix', 'HelpPage'));
+        return in_array($feature, ['SqlTablePrefix', 'HelpPage']);
     }
     public function hasAdminArea()
     {
@@ -99,16 +99,16 @@ class NP_SkinFiles extends NucleusPlugin
 
     public function getEventList()
     {
-        return array(
+        return [
             'QuickMenu',
             'AdminPrePageHead',
             'PrePluginOptionsEdit'
-        );
+        ];
     }
 
     public function init()
     {
-        $language = str_replace(array('\\','/'), '', getLanguageName());
+        $language = str_replace(['\\','/'], '', getLanguageName());
         $lang_dir = $this->getDirectory(). 'language/';
         if (is_file($lang_dir.$language.'.php')) {
             include_once($lang_dir.$language.'.php');
@@ -128,11 +128,11 @@ class NP_SkinFiles extends NucleusPlugin
 
         array_push(
             $data['options'],
-            array(
+            [
                  'title'   => _SKINFILES_TITLE,
                  'url'     => $this->getAdminURL(),
                  'tooltip' => _SKINFILES_TOOLTIP
-            )
+            ]
         );
         return;
     }

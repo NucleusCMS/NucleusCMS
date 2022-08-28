@@ -46,7 +46,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
 
         try {
-            if (strpos($db_host, ':') === false) {
+            if (!str_contains($db_host, ':')) {
                 $host    = $db_host;
                 $port    = '';
                 $portnum = '';
@@ -138,7 +138,7 @@ if (! function_exists('sql_fetch_assoc')) {
                 if (strlen($db_path) == 0
                     ||
                     ! is_dir($db_path)
-                    || strpos(str_replace("\\", '/', $db_path), '/') === false
+                    || !str_contains(str_replace("\\", '/', $db_path), '/')
                 ) {
                     exit('ERROR : database filename maybe wrong ');
                 }
@@ -383,7 +383,7 @@ if (! function_exists('sql_fetch_assoc')) {
         if (is_object($db)) {
             $error = $db->errorInfo();
         } else {
-            $error = array('Handle is not object', '', '');
+            $error = ['Handle is not object', '', ''];
         }
         if ($error[0] != '00000') {
             return $error[0] . '-' . $error[1] . ' ' . $error[2];
@@ -639,7 +639,7 @@ if (! function_exists('sql_fetch_assoc')) {
     function sql_fetch_assoc($res)
     {
         if (! $res) {
-            return array();
+            return [];
         }
 
         return $res->fetch(PDO::FETCH_ASSOC);
@@ -651,7 +651,7 @@ if (! function_exists('sql_fetch_assoc')) {
     function sql_fetch_array($res)
     {
         if (! $res) {
-            return array();
+            return [];
         }
 
         return $res->fetch(PDO::FETCH_BOTH);
@@ -675,7 +675,7 @@ if (! function_exists('sql_fetch_assoc')) {
     function sql_fetch_row($res)
     {
         if (! $res) {
-            return array();
+            return [];
         }
 
         return $res->fetch(PDO::FETCH_NUM);
@@ -737,11 +737,11 @@ if (! function_exists('sql_fetch_assoc')) {
     {
         global $SQL_DBH;
         if (! $SQL_DBH || ! is_string($tablename) || $tablename === '') {
-            return array();
+            return [];
         }
 
         $drivername = $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME);
-        if (strpos($tablename, '[@prefix@]') !== false) {
+        if (str_contains($tablename, '[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
         if ($drivername === 'sqlite') {
@@ -753,8 +753,8 @@ if (! function_exists('sql_fetch_assoc')) {
             $target = 'Field';
         }
 
-        $items = array();
-        $res   = array();
+        $items = [];
+        $res   = [];
         $stmt  = $SQL_DBH->prepare($sql);
         if ($stmt && $stmt->execute()) {
             $res = $stmt->fetchAll();
@@ -812,7 +812,7 @@ if (! function_exists('sql_fetch_assoc')) {
             return false;
         }
 
-        if (strpos($tablename, '[@prefix@]') !== false) {
+        if (str_contains($tablename, '[@prefix@]')) {
             $tablename = parseQuery($tablename);
         }
 
@@ -822,8 +822,8 @@ if (! function_exists('sql_fetch_assoc')) {
         } else { // mysql
             $stmt = $SQL_DBH->prepare('SHOW TABLES LIKE :name ');
         }
-        $res = array();
-        if ($stmt && $stmt->execute(array(':name' => $tablename))) {
+        $res = [];
+        if ($stmt && $stmt->execute([':name' => $tablename])) {
             $res = $stmt->fetch();
         }
 
@@ -1051,7 +1051,7 @@ if (! function_exists('sql_fetch_assoc')) {
         return $res;
     }
 
-    function sql_execute($stmt, $input_parameters = array())
+    function sql_execute($stmt, $input_parameters = [])
     {
         if (! $stmt) {
             return false;
@@ -1072,7 +1072,7 @@ if (! function_exists('sql_fetch_assoc')) {
         return $stmt->execute($input_parameters);
     }
 
-    function sql_prepare_execute($sql, $input_parameters = array())
+    function sql_prepare_execute($sql, $input_parameters = [])
     {
         global $SQL_DBH;
         sql_query_log($sql);
@@ -1088,7 +1088,7 @@ if (! function_exists('sql_fetch_assoc')) {
         return false;
     }
 
-    function sql_direct_getValue_AsInt($sql, $input_parameters = array())
+    function sql_direct_getValue_AsInt($sql, $input_parameters = [])
     {
         if (! is_string($sql)) {
             sql_print_error("error: param1 is not string.");

@@ -1,7 +1,7 @@
 <?php
 
 // This file will generate and return the main page of the site
-$CONF         = array();
+$CONF         = [];
 $CONF['Self'] = 'index.php';
 
 if (!@is_file('./config.php')) {

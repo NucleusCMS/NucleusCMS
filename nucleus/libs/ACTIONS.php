@@ -49,7 +49,7 @@ class ACTIONS extends BaseActions
 
         global $catid;
         if ($catid) {
-            $this->linkparams = array('catid' => $catid);
+            $this->linkparams = ['catid' => $catid];
         }
     }
 
@@ -201,7 +201,7 @@ class ACTIONS extends BaseActions
         $params = func_get_args();
         array_shift($params);
 
-        return call_user_func_array(array($plugin, 'doIf'), $params);
+        return call_user_func_array([$plugin, 'doIf'], $params);
     }
 
     /**
@@ -456,10 +456,10 @@ class ACTIONS extends BaseActions
      */
     private function _preBlogContent($type, &$blog)
     {
-        $param = array(
+        $param = [
             'blog' => &$blog,
             'type' => $type,
-        );
+        ];
         manager()->notify('PreBlogContent', $param);
     }
 
@@ -468,10 +468,10 @@ class ACTIONS extends BaseActions
      */
     private function _postBlogContent($type, &$blog)
     {
-        $param = array(
+        $param = [
             'blog' => &$blog,
             'type' => $type,
-        );
+        ];
         manager()->notify('PostBlogContent', $param);
     }
 
@@ -481,10 +481,10 @@ class ACTIONS extends BaseActions
     public function parse_additemform()
     {
         global $blog, $CONF;
-        $this->formdata = array(
+        $this->formdata = [
             'adminurl' => hsc($CONF['AdminURL']),
             'catid'    => $blog->getDefaultCategory(),
-        );
+        ];
         $blog->InsertJavaScriptInfo();
         $this->doForm('additemform');
     }
@@ -740,7 +740,7 @@ class ACTIONS extends BaseActions
      */
     public function parse_callback($eventName, $type)
     {
-        $param = array('type' => $type);
+        $param = ['type' => $type];
         manager()->notify($eventName, $param);
     }
 
@@ -832,12 +832,12 @@ class ACTIONS extends BaseActions
         if (! $destinationurl) {
             $destinationurl = createLink(
                 'item',
-                array(
+                [
                     'itemid'    => $itemid,
                     'title'     => $item['title'],
                     'timestamp' => $item['timestamp'],
                     'extra'     => $this->linkparams,
-                )
+                ]
             );
         // note: createLink returns an HTML encoded URL
         } else {
@@ -860,7 +860,7 @@ class ACTIONS extends BaseActions
         }
         $body = postVar('body');
 
-        $this->formdata = array(
+        $this->formdata = [
             'destinationurl' => $destinationurl,
             // url is already HTML encoded
             'actionurl'       => hsc($actionurl),
@@ -873,7 +873,7 @@ class ACTIONS extends BaseActions
             'rememberchecked' => cookieVar($CONF['CookiePrefix']
                                            . 'comment_user')
                 ? 'checked="checked"' : '',
-        );
+        ];
 
         if (! $member->isLoggedIn()) {
             $this->doForm('commentform-notloggedin');
@@ -1072,12 +1072,12 @@ class ACTIONS extends BaseActions
         global $member;
         if (! $member->isLoggedIn()) {
             $filename       = 'loginform-notloggedin';
-            $this->formdata = array();
+            $this->formdata = [];
         } else {
             $filename       = 'loginform-loggedin';
-            $this->formdata = array(
+            $this->formdata = [
                 'membername' => $member->getDisplayName(),
-            );
+            ];
         }
         $this->doForm($filename);
     }
@@ -1193,7 +1193,7 @@ class ACTIONS extends BaseActions
         $message  = postVar('message');
         $frommail = postVar('frommail');
 
-        $this->formdata = array(
+        $this->formdata = [
             'url'       => hsc($desturl),
             'actionurl' => hsc($CONF['ActionURL']),
             'memberid'  => $memberid,
@@ -1201,7 +1201,7 @@ class ACTIONS extends BaseActions
             'cols'      => $cols,
             'message'   => hsc($message),
             'frommail'  => hsc($frommail),
-        );
+        ];
         if ($member->isLoggedIn()) {
             $this->doForm('membermailform-loggedin');
         } else {
@@ -1300,11 +1300,11 @@ class ACTIONS extends BaseActions
             }
         }
 
-        $this->formdata = array(
+        $this->formdata = [
             'imgurl'    => $imgurl,
             'imgwidth'  => $imgwidth,
             'imgheight' => $imgheight,
-        );
+        ];
         $this->doForm('nucleusbutton');
     }
 
@@ -1452,7 +1452,7 @@ class ACTIONS extends BaseActions
         // add skin type on front
         array_unshift($params, $this->skintype);
 
-        call_user_func_array(array($plugin, 'doSkinVar'), $params);
+        call_user_func_array([$plugin, 'doSkinVar'], $params);
     }
 
     /**
@@ -1567,10 +1567,10 @@ class ACTIONS extends BaseActions
             global $blog;
         }
         // use default blog when no blog is selected
-        $this->formdata = array(
+        $this->formdata = [
             'id'    => $blog ? $blog->getID() : $CONF['DefaultBlog'],
             'query' => hsc(getVar('query')),
-        );
+        ];
         $this->doForm('searchform');
     }
 
@@ -1722,7 +1722,7 @@ class ACTIONS extends BaseActions
         global $manager;
 
         $itemnumber = (int)$itemnumber;
-        $itemarray  = array($itemnumber);
+        $itemarray  = [$itemnumber];
 
         $b = & $manager->getBlog(getBlogIDFromItemID($itemnumber));
         $this->_preBlogContent('sticky', $b);

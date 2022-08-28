@@ -119,12 +119,12 @@ class MEMBER
         $success        = 0;
         $allowlocal     = 1;
 
-        $param = array(
+        $param = [
             'login'      => &$formv_username,
             'password'   => &$formv_password,
             'success'    => &$success,
             'allowlocal' => &$allowlocal
-        );
+        ];
         $manager->notify('CustomLogin', $param);
 
         if ('' === $formv_username || 32 < strlen($formv_username)) { // mname varchar(32)
@@ -576,13 +576,13 @@ class MEMBER
 
         // fill out variables in text
 
-        $aVars = array(
+        $aVars = [
             'siteName'       => $CONF['SiteName'],
             'siteUrl'        => $CONF['IndexURL'],
             'memberName'     => $this->getDisplayName(),
             'activationUrl'  => $url,
             'activationDays' => $CONF['ActivationDays']
-        );
+        ];
 
         $message = TEMPLATE::fill($message, $aVars);
         $title   = TEMPLATE::fill($title, $aVars);
@@ -607,7 +607,7 @@ class MEMBER
      */
     public function getAdminBlogs()
     {
-        $blogs = array();
+        $blogs = [];
 
         if ($this->isAdmin()) {
             $query = sprintf(
@@ -638,7 +638,7 @@ class MEMBER
     public function getTeamBlogs($incAdmin = 1)
     {
         $incAdmin = (int)$incAdmin;
-        $blogs    = array();
+        $blogs    = [];
 
         if ($this->isAdmin() && $incAdmin) {
             $query = sprintf(

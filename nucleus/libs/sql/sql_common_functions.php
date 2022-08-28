@@ -24,7 +24,7 @@ function startUpError($msg, $title)
     }
     $tpl = file_get_contents(NC_LIBS_PATH
                                          . 'include/startup_error.template');
-    $ph              = array();
+    $ph              = [];
     $ph['lang_code'] = defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en';
     $ph['CHARSET']   = _CHARSET;
     $ph['title']     = hsc($title);
@@ -90,7 +90,7 @@ function get_charname_from_langname($language_name = 'english-utf8')
 {
     $language_name = strtolower($language_name);
 
-    if (strpos(strtolower($language_name), 'utf8') !== false) {
+    if (str_contains(strtolower($language_name), 'utf8')) {
         return 'utf8';
     }
 
@@ -192,7 +192,7 @@ function treat_char_name($charset = 'utf8mb4')
 function getCharSetFromDB($tableName, $columnName, $dbh = null)
 {
     $collation = getCollationFromDB($tableName, $columnName, $dbh);
-    if (strpos($collation, '_') === false) {
+    if (!str_contains($collation, '_')) {
         $charset = $collation;
     } else {
         list($charset, $dummy) = explode('_', $collation, 2);
@@ -218,7 +218,7 @@ function is_sql_result($res)
     return _EXT_MYSQL_EMULATE ? is_object($res) : is_resource($res);
 }
 
-function selectQuery($table_name, $where = '', $fields = '*', $extra = array())
+function selectQuery($table_name, $where = '', $fields = '*', $extra = [])
 {
     if (is_array($table_name)) {
         $table_name = implode(' ', $table_name);
@@ -241,7 +241,7 @@ function selectQuery($table_name, $where = '', $fields = '*', $extra = array())
     return "SELECT {$fields} FROM {$table_name} {$where} {$extra}";
 }
 
-function updateQuery($table_name, $values, $where = '', $extra = array())
+function updateQuery($table_name, $values, $where = '', $extra = [])
 {
     $table_name = parseQuery($table_name);
 
@@ -255,7 +255,7 @@ function updateQuery($table_name, $values, $where = '', $extra = array())
         foreach ($values as $key => $value) {
             if ($value === null || strtolower($value) === 'null') {
                 $value = 'NULL';
-            } elseif (strpos($key, ':expr') !== false) {
+            } elseif (str_contains($key, ':expr')) {
                 $key = str_replace(':expr', '', $key);
             } else {
                 $value = sql_quote_string($value);
@@ -272,19 +272,19 @@ function updateQuery($table_name, $values, $where = '', $extra = array())
     return sql_query("UPDATE {$table_name} SET {$pairs} {$where}");
 }
 
-function _getFieldsStringFromArray($fields = array())
+function _getFieldsStringFromArray($fields = [])
 {
     if (empty($fields)) {
         return '*';
     }
 
-    $_ = array();
+    $_ = [];
     foreach ($fields as $k => $v) {
         if (preg_match('@^[0-9]+$@', $k)) {
             $_[] = $v;
-        } elseif (strpos($v, ',') !== false) {
+        } elseif (str_contains($v, ',')) {
             $_[] = $v;
-        } elseif (strpos($v, ' ') !== false) {
+        } elseif (str_contains($v, ' ')) {
             $_[] = $v;
         } elseif ($k !== $v) {
             $_[] = "{$v} as {$k}";
@@ -334,7 +334,7 @@ function fix_mysql_sqlmode($conn_or_dbh = null)
 
     $options = array_diff(
         explode(',', $sqlmode),
-        array('NO_ZERO_DATE', 'NO_ZERO_IN_DATE')
+        ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE']
     );
     $new_sqlmode = implode(',', $options);
     if (strcmp($sqlmode, $new_sqlmode) != 0) {

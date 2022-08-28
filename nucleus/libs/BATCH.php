@@ -56,39 +56,39 @@ class BATCH extends ENCAPSULATE
             echo _BATCH_WITH_SEL ?>
             <select name="batchaction">
                 <?php
-                $options = array();
+                $options = [];
         switch ($this->type) {
             case 'item':
-                $options = array(
+                $options = [
                     'delete' => _BATCH_ITEM_DELETE,
                     'move'   => _BATCH_ITEM_MOVE,
-                );
+                ];
                 break;
             case 'member':
-                $options = array(
+                $options = [
                     'delete'     => _BATCH_MEMBER_DELETE,
                     'setadmin'   => _BATCH_MEMBER_SET_ADM,
                     'unsetadmin' => _BATCH_MEMBER_UNSET_ADM,
-                );
+                ];
                 break;
             case 'team':
-                $options = array(
+                $options = [
                     'delete'     => _BATCH_TEAM_DELETE,
                     'setadmin'   => _BATCH_TEAM_SET_ADM,
                     'unsetadmin' => _BATCH_TEAM_UNSET_ADM,
-                );
+                ];
                 break;
             case 'category':
-                $options = array(
+                $options = [
                     'change_corder' => _BATCH_CAT_CAHANGE_ORDER,
                     'delete'        => _BATCH_CAT_DELETE,
                     'move'          => _BATCH_CAT_MOVE,
-                );
+                ];
                 break;
             case 'comment':
-                $options = array(
+                $options = [
                     'delete' => _BATCH_COMMENT_DELETE,
-                );
+                ];
                 break;
         }
         foreach ($options as $option => $label) {
@@ -126,7 +126,7 @@ class BATCH extends ENCAPSULATE
     public function showList($query, $type, $template, $errorMessage = _LISTS_NOMORE)
     {
         $call   = 'showlist';
-        $params = array($query, $type, $template);
+        $params = [$query, $type, $template];
 
         return $this->doEncapsulate($call, $params, $errorMessage);
     }

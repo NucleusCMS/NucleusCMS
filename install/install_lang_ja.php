@@ -10,9 +10,10 @@
  * (see nucleus/documentation/index.html#license for more info)
  */
 
-define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');
-define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',  'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
+define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、installフォルダをアップロードし直してください。');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP %s 以上が使えないかどうか、サーバ管理者に確認して下さい。');
+define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');
 
 /*  New for 3.72 */
 define('_INSTALL_TEXT_DATABASE_SELECT' ,     'データベースの選択');

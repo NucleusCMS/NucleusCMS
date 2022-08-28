@@ -52,11 +52,11 @@ class BAN
 
         $blogid = (int)$blogid;
 
-        $param = array(
+        $param = [
             'blogid'  => $blogid,
             'iprange' => &$iprange,
             'reason'  => &$reason,
-        );
+        ];
         $manager->notify('PreAddBan', $param);
 
         $res = sql_query(sprintf(
@@ -67,11 +67,11 @@ class BAN
             sql_real_escape_string($reason)
         ));
 
-        $param = array(
+        $param = [
             'blogid'  => $blogid,
             'iprange' => $iprange,
             'reason'  => $reason,
-        );
+        ];
         $manager->notify('PostAddBan', $param);
 
         return $res ? 1 : 0;
@@ -86,10 +86,10 @@ class BAN
         global $manager;
         $blogid = (int)$blogid;
 
-        $param = array(
+        $param = [
             'blogid' => $blogid,
             'range'  => $iprange,
-        );
+        ];
         $manager->notify('PreDeleteBan', $param);
 
         sql_query(sprintf(
@@ -100,10 +100,10 @@ class BAN
 
         $result = (sql_affected_rows() > 0);
 
-        $param = array(
+        $param = [
             'blogid' => $blogid,
             'range'  => $iprange,
-        );
+        ];
         $manager->notify('PostDeleteBan', $param);
 
         return $result;

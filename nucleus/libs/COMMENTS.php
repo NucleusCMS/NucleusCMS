@@ -125,10 +125,10 @@ class COMMENTS
             $comment['timestamp'] = strtotime($comment['ctime']);
             $actions->setCurrentComment($comment);
             $actions->setHighlight($highlight);
-            $param = array('comment' => &$comment);
+            $param = ['comment' => &$comment];
             $manager->notify('PreComment', $param);
             $parser->parse($template['COMMENTS_BODY']);
-            $param = array('comment' => &$comment);
+            $param = ['comment' => &$comment];
             $manager->notify('PostComment', $param);
         }
 
@@ -223,7 +223,7 @@ class COMMENTS
 
         // spam check
         $continue = false;
-        $plugins  = array();
+        $plugins  = [];
 
         if (isset($manager->subscriptions['ValidateForm'])) {
             $plugins = array_merge(
@@ -253,13 +253,13 @@ class COMMENTS
             $continue = $continue || $p->supportsFeature('handleSpam');
         }
 
-        $spamcheck = array(
+        $spamcheck = [
             'type'   => 'comment',
             'body'   => $comment['body'],
             'id'     => $comment['itemid'],
             'live'   => true,
             'return' => $continue,
-        );
+        ];
 
         // begin if: member logged in
         if ($member->isLoggedIn()) {
@@ -272,7 +272,7 @@ class COMMENTS
             $spamcheck['url']    = $comment['userid'];
         } // end if
 
-        $param = array('spamcheck' => &$spamcheck);
+        $param = ['spamcheck' => &$spamcheck];
         $manager->notify('SpamCheck', $param);
 
         if (! $continue && isset($spamcheck['result'])
@@ -333,10 +333,10 @@ class COMMENTS
 
         $comment = COMMENT::prepare($comment);
 
-        $param = array(
+        $param = [
             'comment'   => &$comment,
             'spamcheck' => &$spamcheck,
-        );
+        ];
         $manager->notify('PreAddComment', $param);
 
         $name      = sql_real_escape_string($comment['user']);
@@ -371,11 +371,11 @@ class COMMENTS
 
         // post add comment
         $commentid = sql_insert_id();
-        $param     = array(
+        $param     = [
             'comment'   => &$comment,
             'commentid' => &$commentid,
             'spamcheck' => &$spamcheck,
-        );
+        ];
         $manager->notify('PostAddComment', $param);
 
         // succeeded !
@@ -431,12 +431,12 @@ class COMMENTS
         // let plugins do verification (any plugin which thinks the comment is invalid
         // can change 'error' to something other than '1')
         $result = 1;
-        $param  = array(
+        $param  = [
             'type'      => 'comment',
             'comment'   => &$comment,
             'error'     => &$result,
             'spamcheck' => &$spamcheck,
-        );
+        ];
         $manager->notify('ValidateForm', $param);
 
         return $result;

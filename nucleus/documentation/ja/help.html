@@ -2,6 +2,9 @@
 <html lang="ja">
 <head>
 <meta charset="UTF-8" />
+<meta http-equiv="Content-Type" content="text/html" />
+<meta http-equiv="Expires" content="1296000" />
+<meta name="robots" content="noindex,noarchive,nofollow" />
 <link rel="index" href="./index.html" />
 <title>Nucleus管理用ヘルプ</title>
 <style type="text/css">
@@ -95,7 +98,6 @@ small{font-size:1em;}
 .comment{text-align:right;padding-right:10px;}
 
 </style>
-<meta http-equiv="Content-Script-Type" content="text/javascript" />
 </head>
 <body>
 
@@ -103,6 +105,7 @@ small{font-size:1em;}
 <h1>Nucleusポップアップ・ヘルプ</h1>
 
 <p>ファイル読み込み中、しばらくお待ちください（ファイルサイズはおよそ180KBです）。</p>
+<p>数秒経過して表示されない場合は、対応するヘルプの記載がありません。</p>
 </div>
 
 <div class="page">
@@ -235,13 +238,13 @@ small{font-size:1em;}
 
 <div class="page">
 <a name="blogtimeoffset"></a>
-<h1>サーバ時刻との時差</h1>
+<h1>サーバー時刻との時差</h1>
 
-<p>もしサーバの時刻とあなたの住んでいる地域の時刻とが一致していなければ、ここにサーバとの時差を入力することで、Nucleus内部の時刻をあなたの住んでいる地域の時刻に合わせることができます（マイナス時差の地域に住んでいる場合は、マイナス記号付きで入力します）。参考のために現在のサーバの時刻が表示されています。</p>
+<p>もしサーバーの時刻とあなたの住んでいる地域の時刻とが一致していなければ、ここにサーバーとの時差を入力することで、Nucleus内部の時刻をあなたの住んでいる地域の時刻に合わせることができます（マイナス時差の地域に住んでいる場合は、マイナス記号付きで入力します）。参考のために現在のサーバーの時刻が表示されています。</p>
 <h2>実例</h2>
-<p>あなたの住んでいる地域の時刻が20:35で、表示されているサーバの時刻が14:35のとき、ブログの時刻を20:35にするためには「サーバ時刻との時差」を6.0に設定します。</p>
+<p>あなたの住んでいる地域の時刻が20:35で、表示されているサーバーの時刻が14:35のとき、ブログの時刻を20:35にするためには「サーバー時刻との時差」を6.0に設定します。</p>
 
-<p class="note"><strong>注意：</strong>30分刻みでの時差のある地域のために、0.5刻みで設定することができます。例えば「サーバ時刻との時差」を<strong>1.5</strong>に設定すると、1時間30分の補正となります。</p>
+<p class="note"><strong>注意：</strong>30分刻みでの時差のある地域のために、0.5刻みで設定することができます。例えば「サーバー時刻との時差」を<strong>1.5</strong>に設定すると、1時間30分の補正となります。</p>
 
 </div>
 
@@ -522,7 +525,7 @@ small{font-size:1em;}
 
 <div class="page">
 <a name="sendping"></a>
-<h1>Pingサーバに更新通知を送信する</h1>
+<h1>Pingサーバーに更新通知を送信する</h1>
 <p>ブログを更新した時に、ブログ検索サイト等が公開しているいくつかのpingサーバーへ更新pingを送信することができます。
 これらのサイﾄは、リクエストに応じて最近更新されたブログのリストを提示し、このデータを利用した新着記事のリスト等のサービスを、多くのウェブサイトが提供していますので、このオプションを「はい」に設定することで、訪問者を増やす事ができるかもしれません。</p>
 
@@ -534,6 +537,7 @@ small{font-size:1em;}
 <a name="shortblogname"></a>
 <h1>Blogの短縮名</h1>
 
+<p>英小文字 a-z 数字 0-9 を組み合わせた1～15文字です。空白は使用できません</p>
 <p>「Blogの短縮名」は主に管理領域で、どのアイテムがどのブログと結びついているのか示すために使われます。</p>
 <p>また、新規ブログを有効にするための代替indexファイルでも用いられます（以下は「Blogの短縮名」が「myshortblogname」の時の呼び出しファイルの例）：</p>
 
@@ -551,11 +555,24 @@ selector(),
 <a name="shortnames"></a>
 <h1>短縮名と表示される名前</h1>
 
-<p>ブログ、テンプレート、そしてスキンは名前や説明の他に短縮名を持たなくてはなりません。</p>
-<p>短縮名はa～zと0～9<strong>のみ</strong>で構成され、スペースを含むことは<strong>できません</strong>。</p>
+<p>メンバーの場合、「表示される名前」はログイン名として使われます。</p>
+<p>ブログ、テンプレート、スキンは名前や説明の他に短縮名を持たなくてはなりません。</p>
 
-<p>訳注：テンプレートの名前には"/"が利用できたりするので、実際にはこの限りではないようです。</p>
-<p>メンバーの場合、「表示される名前」はログイン名として使われます。a～z、 A～Z、0～9とスペース（半角）が使用できます。ただし、名前の最初や最後にスペースを付けることはできません。</p>
+<h2>ログインID</h2>
+<div>英字 a～z、 A～Z 数字 0-9  空白（半角）を組み合わせた1～32文字です。</div>
+<p>ただし、名前の最初や最後に空白を付けることはできません。</p>
+
+<br />
+
+<h2>ブログ</h2>
+<div>英小文字 a～z 数字 0～9 を組み合わせた1～15文字です。空白は使用できません。</div>
+
+<br />
+
+<h2>スキン , テンプレート</h2>
+<div>英小文字 a～z 数字 0～9 記号 / を組み合わせた1～20文字です。空白は使用できません。</div>
+<div>記号 / は、最初と最後に使ってはいけません。</div>
+
 
 </div>
 
@@ -563,6 +580,7 @@ selector(),
 <a name="password"></a>
 <h1>パスワード</h1>
 
+<p>パスワードは、半角英数記号を組み合わせた6～40文字で、大文字小文字は区別されます。</p>
 <p>パスワードに使用できる文字は、</p>
 <p>英数字 a～z A～Z 0～9 </p>
 <p>記号 ! &quot; # $ % &amp; &#039; ( ) * + , - . / : ; &lt; = &gt; ? @ [ \ ] ^ _ ` { | } ~</p>
@@ -1439,7 +1457,7 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 <a name="skinvar-charset"></a>
 <h1>スキン変数：charset</h1>
 
-<p>グローバル設定の既定の言語で設定した言語に基づいたキャラクターセットのコードを挿入します。日本語版では、"UTF-8"か、"EUC-JP"の何れかになります</p>
+<p>グローバル設定の既定の言語で設定した言語に基づいたキャラクターセットのコードを挿入します。<br />日本語版では、"UTF-8"か、"EUC-JP"の何れかになります</p>
 <h2>引数</h2>
 <p>なし</p>
 <h2>スキンタイプ</h2>
@@ -1537,27 +1555,6 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 </div>
 
 <div class="page">
-<a name="skinvar-ifcat"></a>
-<h1>スキン変数：ifcat</h1>
-<p class="deprecated">バージョン2.0以降のNucleusでは使用できません。<a href="#skinvar-if">&lt;%if(category)%&gt;</a>を代わりに使ってください。</p>
-<h2>引数</h2>
-<div>
-なし
-<ul>
-
-<li><em>text</em>：表示するテキスト</li>
-</ul>
-</div>
-<h2>スキンタイプ</h2>
-<p>全て</p>
-<h2>例</h2>
-<pre>
-&lt;%ifcat(Current Category: )%&gt;&lt;%category%&gt;
-</pre>
-
-</div>
-
-<div class="page">
 <a name="skinvar-image"></a>
 <h1>スキン変数：image</h1>
 
@@ -1605,22 +1602,6 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 </div>
 
-<div class="page">
-<a name="skinvar-imagetext"></a>
-<h1>スキン変数：imagetext</h1>
-<p class="deprecated">このスキン変数はNucleusバージョン2.0以降使いません。代わりに<a href="#skinvar-image"><code>&lt;%image(caption)%&gt;</code></a>を使ってください。</p>
-<p>ポップアップ画像に見出しテキストをつける</p>
-<h2>引数</h2>
-<p>なし</p>
-<h2>スキンタイプ</h2>
-
-<p>画像ポップアップウィンドウ</p>
-<h2>例</h2>
-<pre>
-&lt;%imagetext%&gt;
-</pre>
-
-</div>
 
 <div class="page">
 <a name="skinvar-include"></a>
@@ -2237,6 +2218,57 @@ Archive for &lt;%archivedate(en,%B %Y)%&gt;
 
 </div>
 
+<!--
+<div class="page">
+<a name="skinvar-otherblogitemlist"></a>
+<h1>スキン変数：otherblogitemlist</h1>
+
+<p>指定されたブログの、リストを指定されたテンプレートを用いて表示します。タイムスタンプの新しいものから表示されます。</p>
+
+<h2>引数</h2>
+<div>
+<ul>
+<li>必須：
+<table summary="Skin var::Other blog::Require">
+<tr>
+<th abbr="名前">名前</th>
+<th abbr="値">値</th>
+</tr>
+<tr>
+<td><strong>blogname</strong></td>
+<td>表示するブログの短縮名</td>
+
+</tr>
+<tr>
+<td><strong>template</strong></td>
+<td>使用するテンプレート名</td>
+</tr>
+</table>
+</li>
+<li>オプション
+<table summary="Skin var::Other blog::Optional">
+<tr>
+<th abbr="名前">名前</th>
+<th abbr="値">値</th>
+</tr>
+
+<tr>
+<td><strong><em>amount</em></strong></td>
+<td>表示するアイテムの数（デフォルトは10）。何番目のアイテムから始めるかというオフセットを含めることもできます。例えば<code>10(5) </code>と記述すると5番目から始めて10個のアイテムを表示します。</td>
+</tr>
+<tr>
+<td><strong><em>category</em></strong></td>
+<td>表示するカテゴリーの名前</td>
+</tr>
+</table>
+</li>
+</ul>
+<h2>例</h2>
+<pre>
+&lt;%otherblogitemlist(myblog,mytemplate,5)%&gt;
+</pre>
+-->
+
 <div class="page">
 <a name="skinvar-othersearchresults"></a>
 <h1>スキン変数：othersearchresults</h1>
@@ -2529,49 +2561,62 @@ $HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 <li><strong>itemcategory,catid,<em>CategoryId</em></strong>: 現在のアイテムのカテゴリIDが <em>CategoryId</em> と一致するかどうかを返します。</li>
 </ul>
 </li>
+
 <li><strong>itemblogsetting</strong>：テンプレートの「アイテム本体」と「コメント本体」において、現在のアイテムのBlog設定の <em> name</em> 項目の値と <em>value</em> を 比較します。
-
-<ul>
-<li><strong>itemblogsetting,<em>name</em></strong>: 現在のアイテムの属するウェブログの名前が<em>name</em>と一致するかどうかを返します</li>
-<li><strong>itemblogsetting,<em>name,value</em> </strong>： <em> name</em> (SQLテーブル nucleus_blogにあるカラム名）が <em>value</em> と一致するかどうかを返します。</li>
-
-</ul>
+	<ul>
+	<li><strong>itemblogsetting,<em>name</em></strong>: 現在のアイテムの属するウェブログの名前が<em>name</em>と一致するかどうかを返します</li>
+	<li><strong>itemblogsetting,<em>name,value</em> </strong>： <em> name</em> (SQLテーブル nucleus_blogにあるカラム名）が <em>value</em> と一致するかどうかを返します。</li>
+	</ul>
 </li>
+
 <li><strong>author</strong>：テンプレートの「アイテム本体」と「コメント本体」において、現在のアイテムの投稿者について調べます。
-<ul>
-<li><strong>author</strong>：訪問者が現在のアイテムの投稿者かどうかを調べます。</li>
-<li><strong>author,isadmin</strong>：アイテムの投稿者がブログの管理権限、またはsuper-admin権限があるか調べます。</li>
-<li><strong>author,name,<em>AuthorName</em></strong>：アイテムの投稿者のユーザー名が<em>AuthorName</em>と一致するかどうかを返します。</li>
-
-<li><strong>author,isauthor</strong>：テンプレートの「コメント本体」において、コメントの投稿者が、アイテムの投稿者と一致するかどうかを調べます。</li>
-<li><strong>author,isonteam</strong>：テンプレートの「コメント本体」において、コメントの投稿者が、現在のアイテムのブログチームのメンバーであるかどうか調べます。</li>
-<li><strong>loggedin</strong>：訪問者がログインしているか調べます。</li>
-<li><strong>onteam</strong>：訪問者がログインし、現在のブログ、または、<em>name</em> で指示されたブログのチームに入っているか調べます。</li>
-<li><strong>admin</strong>：訪問者がログインし、現在のブログ、または<em>name</em> で指示されたブログの管理権限があるか調べます。</li>
-
-      <li><strong>authorvisible</strong> : 投稿者名の表示許可を確認します。<br>
-        &lt;%if(authorvisible)%&gt;<br>
-        投稿者: &lt;%if(loggedin)%&gt;&lt;a href=&quot;&lt;%authorlink%&gt;&quot; title=&quot;投稿者: &lt;%author%&gt;&quot;&gt;&lt;%author%&gt;&lt;/a&gt;&lt;%endif%&gt;
-        <br>&lt;%endif%&gt;
-      </li>
-      <li><strong>commentclosed </strong> : コメントが締め切られているか調べます。<br>
-        &lt;%if(commentclosed)%&gt;<br>
-        閉鎖中<br>
-        &lt;%else%&gt;<br>
-        ようこそ！<br>
-        &lt;%endif%&gt;<br>
-      </li>
-      <li><strong>hascomment</strong> :  コメントがあるか調べます。<br>
-        &lt;%if(hascomment)%&gt;<br>
-          コメントあり<br>
-        &lt;%else%&gt;<br>
-          コメントなし<br>
-        &lt;%endif%&gt;<br>
-      </li>
-
-</ul>
+	<ul>
+	<li><strong>author</strong>：訪問者が現在のアイテムの投稿者かどうかを調べます。</li>
+	<li><strong>author,isadmin</strong>：アイテムの投稿者がブログの管理権限、またはsuper-admin権限があるか調べます。</li>
+	<li><strong>author,name,<em>AuthorName</em></strong>：アイテムの投稿者のユーザー名が<em>AuthorName</em>と一致するかどうかを返します。</li>
+	<li><strong>author,isauthor</strong>：テンプレートの「コメント本体」において、コメントの投稿者が、アイテムの投稿者と一致するかどうかを調べます。</li>
+	<li><strong>author,isonteam</strong>：テンプレートの「コメント本体」において、コメントの投稿者が、現在のアイテムのブログチームのメンバーであるかどうか調べます。</li>
+	<li><strong>loggedin</strong>：訪問者がログインしているか調べます。</li>
+	<li><strong>onteam</strong>：訪問者がログインし、現在のブログ、または、<em>name</em> で指示されたブログのチームに入っているか調べます。</li>
+	<li><strong>admin</strong>：訪問者がログインし、現在のブログ、または<em>name</em> で指示されたブログの管理権限があるか調べます。</li>
+	</ul>
 </li>
+
+<li><strong>authorvisible</strong> : 投稿者名の表示許可を確認します。<br>
+	&lt;%if(authorvisible)%&gt;<br>
+	投稿者: &lt;%if(loggedin)%&gt;&lt;a href=&quot;&lt;%authorlink%&gt;&quot; title=&quot;投稿者: &lt;%author%&gt;&quot;&gt;&lt;%author%&gt;&lt;/a&gt;&lt;%endif%&gt;
+	<br>&lt;%endif%&gt;
+</li>
+
+<li><strong>commentclosed </strong> : コメントが締め切られているか調べます。<br>
+	&lt;%if(commentclosed)%&gt;<br>
+	閉鎖中<br>
+	&lt;%else%&gt;<br>
+	ようこそ！<br>
+	&lt;%endif%&gt;<br>
+</li>
+
+<li><strong>hascomment</strong> :  コメントがあるか調べます。<br>
+	&lt;%if(hascomment)%&gt;<br>
+	コメントあり<br>
+	&lt;%else%&gt;<br>
+	コメントなし<br>
+	&lt;%endif%&gt;<br>
+</li>
+
+<!--
+<li><strong>ismobile</strong> :  モバイル端末であるか調べます。<br>
+	&lt;%if(ismobile)%&gt;PCモードで表示&lt;%else%&gt;&lt;%endif%&gt;<br>
+	&lt;%ifnot(ismobile)%&gt;PCスタイル&lt;%else%&gt;&lt;%endif%&gt;<br>
+	</li>
+	<li><strong>istablet</strong> :  タブレット端末であるか調べます。<br>
+	&lt;%if(istablet)%&gt;タブレットです&lt;%else%&gt;&lt;%endif%&gt;<br>
+	&lt;%ifnot(istablet)%&gt;タブレットではありません&lt;%else%&gt;&lt;%endif%&gt;<br>
+</li>
+-->
+
 </ul>
+
 </div>
 <h2>スキンタイプ</h2>
 <p>全て</p>
@@ -2585,7 +2630,6 @@ $HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 <p>条件が満たされない時にだけ何らかの表示を行いたい場合は、次のようにすることができます</p>
 
 <pre>&lt;%ifnot(skintype,error)%&gt;&lt;%blogsetting(name)%&gt;&lt;%endif%&gt;</pre>
-
 </div>
 
 <div class="page">
@@ -3062,17 +3106,20 @@ $HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 </div>
 
 <div class="page">
-<a name="skinvar-vars"></a>
-<h1>スキン変数：vars</h1>
-<p class="deprecated">このスキン変数はNucleusバージョン2.0以降使いません。<a href="#skinvar-itemid">スキン変数：itemid</a>を使ってこのHTMLをあなた自身で挿入することはたいした手間ではないでしょう。</p>
-<p>itemid入りの隠しフォームのインプット欄を挿入。</p>
-<code>&lt;input type="hidden" name="itemid" value="<strong>1234</strong>" /&gt;</code>
+<a name="skinvar-ticket_id"></a>
+<h1>スキン変数：ticket_id</h1>
+
+<p>ticket_idを挿入します。 [3.7.0 - ]</p>
+<p>ログインしている必要があります。</p>
 <h2>引数</h2>
-
 <p>なし</p>
-<h2>スキンタイプ</h2>
-<p>個別アイテム</p>
 
+<h2>スキンタイプ</h2>
+<p>全て</p>
+<h2>例</h2>
+<pre>
+&ticket=&lt;%ticket_id%&gt;
+</pre>
 </div>
 
 <div class="page">
@@ -3126,7 +3173,7 @@ $HTTP_RAW_POST_DATA,$HTTP_X_FORWARDED_FOR</p>
 
 <li><strong>%%</strong> - 文字リテラル"%" </li>
 </ul>
-<p>以下はサーバによって対応が異なりますので、参考程度にお試しください。</p>
+<p>以下はサーバーによって対応が異なりますので、参考程度にお試しください。</p>
 <ul>
 <li><strong>%-d</strong>または<strong>%#d</strong> - 日付を10進数で(1から31) </li>
 <li><strong>%-H</strong>または<strong>%#H</strong> - 時間を24時間表示の10進数で(0から23まで)</li>
@@ -3535,7 +3582,6 @@ September 5th 2008 18:51 -
 </ul>
 <h2>例</h2>
 <pre><code>&lt;%itemtitle%&gt;</code></pre>
-
 </div>
 
 <div class="page">
@@ -3653,7 +3699,6 @@ September 5th 2008 18:51 -
 <tr><td>text</td><td>代替テキスト（リンクテキスト。htmlエンティティ変換される）</td>
 </tr>
 </table>
-
 </div>
 
 <div class="page">
@@ -4157,6 +4202,7 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr><td><a href="#templatevar-editpopupcode">editpopupcode</a></td><td>editlink用のウィンドウをポップアップするjavascriptコード</td></tr>
 <tr><td><a href="#skinvar-skinfile">skinfile</a></td><td>インポートされたスキンに属しているファイルへの正確なURLを挿入</td></tr>
 <tr><td><a href="#skinvar-set">set</a></td><td><a href="#parser-properties">パーサーのプロパティ</a>を設定</td></tr>
+<tr><td><a href="#skinvar-ticket_id">ticket_id</a></td><td>ticket_idを挿入</td></tr>
 
 <tr><td><a href="#templatevar-image">image</a></td><td>メディア・ライブラリの画像をインライン表示</td></tr>
 <tr><td><a href="#templatevar-popup">popup</a></td><td>メディア・ディレクトリの画像をポップアップ</td></tr>
@@ -4164,7 +4210,6 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 <tr><td>relevance</td><td>検索結果を表示するテンプレートに「検索関連度」を挿入する（2.5より）</td></tr>
 </table>
 <p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
-
 </div>
 
 <div class="page">
@@ -4283,7 +4328,6 @@ onclick="&lt;%editpopupcode%&gt;"&gt;編集&lt;/a&gt; -
 </table>
 
 <p><a href="#templatevars-overview">テンプレート変数の概略...</a></p>
-
 </div>
 
 <div class="page">

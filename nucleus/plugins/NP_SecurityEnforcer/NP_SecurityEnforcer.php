@@ -41,7 +41,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     }
     public function getTableList()
     {
-        return array(sql_table('plug_securityenforcer'));
+        return [sql_table('plug_securityenforcer')];
     }
     public function hasAdminArea()
     {
@@ -53,14 +53,14 @@ class NP_SecurityEnforcer extends NucleusPlugin
     }
     public function supportsFeature($feature)
     {
-        return in_array($feature, array(
+        return in_array($feature, [
                    'SqlTablePrefix', 'SqlApi', 'SqlApi_sqlite',
                    'pluginadmin'
-                   ));
+                   ]);
     }
     public function getEventList()
     {
-        return array('QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed','PostRegister','PrePluginOptionsEdit');
+        return ['QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed','PostRegister','PrePluginOptionsEdit'];
     }
 
     public function install()
@@ -75,7 +75,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
         $this->createOption('max_failed_login', '_SECURITYENFORCER_OPT_MAX_FAILED_LOGIN', 'text', '5');
         $this->createOption('login_lockout', '_SECURITYENFORCER_OPT_LOGIN_LOCKOUT', 'text', '15');
 
-        $queries = array();
+        $queries = [];
         if (($SQL_DBH) && isset($DB_DRIVER_NAME)
              && (stripos($DB_DRIVER_NAME, 'sqlite') !== false)) { // SQLite
             $queries[] = "CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
@@ -111,7 +111,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     public function init()
     {
-        $language = str_replace(array("\\" ,'/' , DIRECTORY_SEPARATOR ), '', getLanguageName());
+        $language = str_replace(["\\" ,'/' , DIRECTORY_SEPARATOR ], '', getLanguageName());
 
         if (file_exists($this->getDirectory().$language.'.php')) {
             include_once($this->getDirectory().$language.'.php');
@@ -137,10 +137,10 @@ class NP_SecurityEnforcer extends NucleusPlugin
         }
         array_push(
             $data['options'],
-            array('title' => 'Security Enforcer',
+            ['title'      => 'Security Enforcer',
                 'url'     => $this->getAdminURL(),
                 'tooltip' => _SECURITYENFORCER_ADMIN_TOOLTIP
-            )
+            ]
         );
     }
 
@@ -280,8 +280,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
         $lcchars   = "[a-z]";
         $numchars  = "[0-9]";
         $ochars    = "[-~!@#$%^&*()_+=,.<>?:;|]";
-        $chartypes = array($ucchars, $lcchars, $numchars, $ochars);
-        $tot       = array(0,0,0,0);
+        $chartypes = [$ucchars, $lcchars, $numchars, $ochars];
+        $tot       = [0,0,0,0];
         $i         = 0;
         foreach ($chartypes as $value) {
             $tot[$i] = preg_match("/".$value."/", $passwd);
@@ -315,8 +315,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
         $lcchars   = "[a-z]";
         $numchars  = "[0-9]";
         $ochars    = "[-~!@#$%^&*()_+=,.<>?:;|]";
-        $chartypes = array($ucchars, $lcchars, $numchars, $ochars);
-        $tot       = array(0,0,0,0);
+        $chartypes = [$ucchars, $lcchars, $numchars, $ochars];
+        $tot       = [0,0,0,0];
         $i         = 0;
         foreach ($chartypes as $value) {
             $tot[$i] = preg_match("/".$value."/", $passwd);

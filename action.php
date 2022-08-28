@@ -18,7 +18,7 @@
  * @version $Id$
  */
 
-$CONF = array();
+$CONF = [];
 require('./config.php');
 
 // common functions

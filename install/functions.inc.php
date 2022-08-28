@@ -5,15 +5,15 @@ function get_install_lang_defs()
     if (is_array($val)) {
         return $val;
     }
-    $val = array( // Deprecated a language other than UTF-8
-        'en' => array('name' => 'english',  'utf8' => 'english-utf8' ,  'title' => 'English'),
-        'ja' => array('name' => 'japanese', 'utf8' => 'japanese-utf8' , 'title' => '日本語 - Japanese'),
-        'fr' => array('name' => 'french',   'utf8' => 'french-utf8'  ,  'title' => 'French'),
+    $val = [ // Deprecated a language other than UTF-8
+        'en' => ['name' => 'english',  'utf8' => 'english-utf8' ,  'title' => 'English'],
+        'ja' => ['name' => 'japanese', 'utf8' => 'japanese-utf8' , 'title' => '日本語 - Japanese'],
+        'fr' => ['name' => 'french',   'utf8' => 'french-utf8'  ,  'title' => 'French'],
 //        'es' => array('name' => 'spanish',  'utf8'=>'spanish-utf8'  , 'title' => 'Spanish'),
 //        'ko' => array('name' => 'korean-utf',  'title' => '한국어 - Korean'),
 //        'zh_cn' => array('name' => '',  'title' => '中文 - Chinese simplified'),
 //        'zh_tw' => array('name' => 'traditional_chinese' , 'title' => '中文 - Chinese traditional'),
-    );
+    ];
     foreach (array_keys($val) as $key) {
         if (!is_file("./install_lang_{$key}.php")) {
             unset($val[$key]);
@@ -77,7 +77,7 @@ function showInstallForm()
         define('_INSTALL_TEXT_EXPERIMENTAL', 'experimental');
     }
 
-    $ph                          = array();
+    $ph                          = [];
     $ph['_TITLE']                = _TITLE;
     $ph['_INSTALL_TEXT_VERSION'] = sprintf('%s %s', htmlspecialchars(_INSTALL_TEXT_VERSION, ENT_QUOTES, 'UTF-8'), NUCLEUS_VERSION);
     $ph['_HEADER1']              = sprintf('%s', hsc(_HEADER1));
@@ -91,7 +91,7 @@ function showInstallForm()
     $ph['_TEXT_LANG_SELECT1_1_TAB_HEAD']   = _TEXT_LANG_SELECT1_1_TAB_HEAD;
     $ph['_TEXT_LANG_SELECT1_1_TAB_FIELD1'] = _TEXT_LANG_SELECT1_1_TAB_FIELD1;
     $install_lang_defs                     = get_install_lang_defs();
-    $options                               = array();
+    $options                               = [];
     foreach ($install_lang_defs as $k => $v) {
         $selected  = ($k === INSTALL_LANG) ? 'selected' : '';
         $options[] = sprintf(
@@ -278,7 +278,7 @@ function doInstall()
         echo sprintf("Step1(Line:%d)", __LINE__);
     }
     // 1. check all the data
-    $errors = array();
+    $errors = [];
 
     if (!$mysql_database && !$is_install_sqlite) {
         array_push($errors, _ERROR_NO_DBNAME);
@@ -458,7 +458,7 @@ function doInstall()
     if ($is_install_sqlite) {
         $queries = file_get_contents('install-sqlite.sql');
         if (0) {
-            $queries = array($queries);
+            $queries = [$queries];
         } else {
             $queries = preg_replace("#/\*.*?\*/#ims", '', $queries);
             $queries = preg_split("#(;\n|;\r)#m", $queries);
@@ -474,7 +474,7 @@ function doInstall()
         $queries = preg_split("#(;\n|;\r)#m", $queries);
     }
 
-    $aTableNames = array(
+    $aTableNames = [
         'nucleus_actionlog',
         'nucleus_ban',
         'nucleus_blog',
@@ -492,9 +492,9 @@ function doInstall()
         'nucleus_tickets',
         'nucleus_cached_data',
         'nucleus_systemlog'
-        );
+        ];
 
-    $aTableNamesPrefixed = array();
+    $aTableNamesPrefixed = [];
     foreach ($aTableNames as $v) {
         $aTableNamesPrefixed[] = $mysql_prefix . $v;
     }
@@ -510,7 +510,7 @@ function doInstall()
                 $query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
             }
 
-            if ($is_install_mysql && $mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0) {
+            if ($is_install_mysql && $mysql_create != 1 && str_starts_with($query, 'CREATE TABLE')) {
                 $query .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
             }
 
@@ -614,8 +614,8 @@ function doInstall()
     sql_query($query) or _doError(_ERROR21 . ': ' . sql_error());
 
     global $aConfPlugsToInstall, $aConfSkinsToImport;
-    $aSkinErrors = array();
-    $aPlugErrors = array();
+    $aSkinErrors = [];
+    $aPlugErrors = [];
 
     if ($is_install_sqlite) {
         $SQL_DBH->commit(); // sql_query("end");
@@ -785,7 +785,7 @@ function installCustomPlugs(&$manager)
 {
     global $aConfPlugsToInstall, $DIR_LIBS;
 
-    $aErrors = array();
+    $aErrors = [];
 
     if (count($aConfPlugsToInstall) == 0) {
         return $aErrors;
@@ -849,7 +849,7 @@ function installCustomSkins(&$manager)
 {
     global $aConfSkinsToImport, $DIR_LIBS, $DIR_SKINS;
 
-    $aErrors = array();
+    $aErrors = [];
     global $manager;
     if (empty($manager)) {
         $manager = new MANAGER();
@@ -901,8 +901,8 @@ function installCustomSkins(&$manager)
  */
 function doCheckFiles()
 {
-    $missingfiles = array();
-    $files        = array(
+    $missingfiles = [];
+    $files        = [
         'install-mysql.sql',
 //      'install-sqlite.sql',
         '../index.php',
@@ -920,7 +920,7 @@ function doCheckFiles()
         '../nucleus/libs/MEDIA.php',
         '../nucleus/libs/ACTIONLOG.php',
         '../nucleus/media.php'
-        );
+        ];
 
     if (ENABLE_SQLITE_INSTALL) {
         $files[] = 'install-sqlite.sql';
@@ -979,7 +979,7 @@ function endsWithSlash($s)
  */
 function _isValidMailAddress($address)
 {
-    $patterns   = array();
+    $patterns   = [];
     $patterns[] = "#^[a-zA-Z0-9\._-]+@+[A-Za-z0-9\._-]+\.+[A-Za-z]{2,4}$#";
     $patterns[] = "#^[a-zA-Z0-9\._-]+@localhost$#";
     foreach ($patterns as $pattern) {

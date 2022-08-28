@@ -276,10 +276,10 @@ if (requestVar('action') === 'login') {
             $action = $nextaction;
         }
 
-        $param = array(
+        $param = [
             'member'   => &$member,
             'username' => postVar('login'),
-        );
+        ];
         $manager->notify('LoginSuccess', $param);
         $log_message = sprintf(
             "Login successful for %s (sharedpc=%s)",
@@ -314,7 +314,7 @@ if (requestVar('action') === 'login') {
         unset($log_message);
         unset($remote_ip, $remote_host);
     } else {
-        $param = array('username' => postVar('login'));
+        $param = ['username' => postVar('login')];
         $manager->notify('LoginFailed', $param);
         if (! trim((string) postVar('login'))) {
             ACTIONLOG::add(INFO, 'Please enter a username.');
@@ -350,7 +350,7 @@ if (requestVar('action') === 'login') {
         confVar('CookieDomain'),
         confVar('CookieSecure')
     );
-    $param = array('username' => cookieVar(confVar('CookiePrefix') . 'user'));
+    $param = ['username' => cookieVar(confVar('CookiePrefix') . 'user')];
     $manager->notify('Logout', $param);
 } elseif (cookieVar(confVar('CookiePrefix') . 'user')) {
     // Cookie Authentication
@@ -375,7 +375,7 @@ if (requestVar('action') === 'login') {
 }
 
 // login completed
-$param = array('loggedIn' => $member->isLoggedIn());
+$param = ['loggedIn' => $member->isLoggedIn()];
 $manager->notify('PostAuthentication', $param);
 ticketForPlugin();
 
@@ -398,7 +398,7 @@ if (confVar('DisableSite') && ! $member->isAdmin()
     exit;
 }
 
-$param = array();
+$param = [];
 $manager->notify('PreLoadMainLibs', $param);
 
 // load other classes
@@ -449,7 +449,7 @@ $language = getLanguageName();
 // check if valid charset
 if (function_exists('encoding_check')) {
     if (! encoding_check(false, false, _CHARSET)) {
-        foreach (array($_GET, $_POST) as $input) {
+        foreach ([$_GET, $_POST] as $input) {
             array_walk($input, 'encoding_check');
         }
     }
@@ -465,12 +465,12 @@ if (! defined('_ARCHIVETYPE_MONTH')) {
 // decode path_info
 if (confVar('URLMode') === 'pathinfo') {
     $parsed = false;
-    $param  = array(
+    $param  = [
         'type' => basename(serverVar('SCRIPT_NAME')),
         // e.g. item, blog, ...
         'info'     => $virtualpath,
         'complete' => &$parsed,
-    );
+    ];
     $manager->notify('ParseURL', $param);
 
     if (! $parsed) {
@@ -496,7 +496,7 @@ if (confVar('URLMode') === 'pathinfo') {
                     // two possibilities: archive/yyyy-mm or archive/1/yyyy-mm (with blogid)
                 case confVar('ArchiveKey'):
                     if (($i + 1) < $total
-                        && strpos($data[$i + 1], '-') === false) {
+                        && !str_contains($data[$i + 1], '-')) {
                         $blogid = (int)$data[++$i];
                     }
                     $i++;
@@ -548,8 +548,8 @@ if (confVar('URLMode') === 'pathinfo') {
     the values of something like catid or itemid
     New in 3.60
 */
-$param = array(
+$param = [
     'type' => basename(serverVar('SCRIPT_NAME')), // e.g. item, blog, ...
     'info' => $virtualpath,
-);
+];
 $manager->notify('PostParseURL', $param);
