@@ -104,6 +104,10 @@ if (getNucleusPatchLevel() > 0) {
     $nucleus['version'] .= '/' . getNucleusPatchLevel();
 }
 
+if (!defined('DISABLED_BLOG_CLEANITEMS')) {
+    define('DISABLED_BLOG_CLEANITEMS', false);
+}
+
 // Avoid notices
 if (!isset($CONF['installscript'])) {
     $CONF['installscript'] = 0;
