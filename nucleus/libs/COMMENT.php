@@ -125,6 +125,7 @@ class COMMENT
         }
 
         // remove entities at end (&&&&)
+        $matches = array();
         if (preg_match('/(&\w+;)+$/i', $url, $matches)) {
             $post = $matches[0] . $post;    // found entities (1 or more)
             $url  = substr($url, 0, strlen($url) - strlen($post));
@@ -158,6 +159,7 @@ class COMMENT
      */
     public static function prepareBody_cb($match)
     {
+        $protocol = array();
         if (!preg_match('/^[a-z]+/i', $match[2], $protocol)) {
             return $match[0];
         }

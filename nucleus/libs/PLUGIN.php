@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
  * Copyright (C) The Nucleus Group
@@ -17,6 +18,7 @@
  * @license http://nucleuscms.org/license.txt GNU General Public License
  * @copyright Copyright (C) The Nucleus Group
  */
+
 class NucleusPlugin
 {
     // these functions _have_ to be redefined in your plugin
@@ -54,7 +56,7 @@ class NucleusPlugin
     }
     public function getEventList()
     {
-        return array();
+        return $this->_getEventList();
     }
     public function getTableList()
     {
@@ -307,21 +309,21 @@ class NucleusPlugin
     }
 
     /**
-      * Returns the plugin ID
-      *
-      * public
-      */
+     * Returns the plugin ID
+     *
+     * public
+     */
     public function getID()
     {
         return $this->plugid;
     }
 
     /**
-      * Returns the URL of the admin area for this plugin (in case there's
-      * no such area, the returned information is invalid)
-      *
-      * public
-      */
+     * Returns the URL of the admin area for this plugin (in case there's
+     * no such area, the returned information is invalid)
+     *
+     * public
+     */
     public function getAdminURL()
     {
         global $CONF;
@@ -329,11 +331,11 @@ class NucleusPlugin
     }
 
     /**
-      * Returns the directory where the admin directory is located and
-      * where the plugin can maintain his extra files
-      *
-      * public
-      */
+     * Returns the directory where the admin directory is located and
+     * where the plugin can maintain his extra files
+     *
+     * public
+     */
     public function getDirectory()
     {
         global $DIR_PLUGINS;
@@ -341,11 +343,11 @@ class NucleusPlugin
     }
 
     /**
-      * Derives the short name for the plugin from the classname (all
-      * lowercase)
-      *
-      * public
-      */
+     * Derives the short name for the plugin from the classname (all
+     * lowercase)
+     *
+     * public
+     */
     public function getShortName()
     {
         return str_replace('np_', '', strtolower(get_class($this)));
@@ -616,10 +618,31 @@ class NucleusPlugin
         return $aOptions;
     }
 
+    private $event_list;
+
+    final public function _getEventList()
+    {
+        if ($this->event_list !== null) {
+            return $this->event_list;
+        }
+        $this->event_list = array();
+
+        $list = get_class_methods($this);
+        if (!empty($list)) {
+            foreach ($list as $name) {
+                if (strncmp($name, "event_", 6) == 0) {
+                    $this->event_list[] = substr($name, 6);
+                }
+            }
+        }
+        return $this->event_list;
+    }
+
     /**
      * Gets the 'option identifier' that corresponds to a given option name.
-     * When this method is called for the first time, all the OIDs for the plugin
-     * are loaded into memory, to avoid re-doing the same query all over.
+     * When this method is called for the first time, all the OIDs for the
+     * plugin are loaded into memory, to avoid re-doing the same query all
+     * over.
      */
     public function _getOID($context, $name)
     {
@@ -643,9 +666,9 @@ class NucleusPlugin
 
         if (array_key_exists($key, $this->_aOptionToInfo)) {
             return $this->_aOptionToInfo[$key]['oid'];
-        } else {
-            return null;
         }
+
+        return null;
     }
 
     public function _getDefVal($context, $name)
@@ -713,12 +736,14 @@ class NucleusPlugin
     public static function getOptionSelectValues($typeExtra)
     {
         $meta = NucleusPlugin::getOptionMeta($typeExtra);
+
         //the select list must always be the first part
         return $meta['select'];
     }
 
     /**
      * checks if the eventlist in the database is up-to-date
+     *
      * @return bool if it is up-to-date it return true, else false
      * @author TeRanEX
      */
@@ -741,11 +766,14 @@ class NucleusPlugin
     }
 
     /**
-     * @param $aOptions: array ( 'oid' => array( 'contextid' => 'value'))
-     *        (taken from request using requestVar())
-     * @param $newContextid: integer (accepts a contextid when it is for a new
-     *        contextid there was no id available at the moment of writing the
-     *        formcontrols into the page (by ex: itemOptions for new item)
+     * @param $aOptions      : array ( 'oid' => array( 'contextid' => 'value'))
+     *                       (taken from request using requestVar())
+     * @param $newContextid  : integer (accepts a contextid when it is for a
+     *                       new
+     *                       contextid there was no id available at the moment
+     *                       of writing the formcontrols into the page (by ex:
+     *                       itemOptions for new item)
+     *
      * @static
      */
     public static function _applyPluginOptions(&$aOptions, $newContextid = 0)

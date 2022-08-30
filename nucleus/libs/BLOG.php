@@ -644,11 +644,9 @@ class BLOG
       */
     public function showArchiveList($template, $mode = 'month', $limit = 0)
     {
-        global $CONF, $catid, $manager;
+        global $catid, $manager;
 
-        if (!isset($linkparams)) {
-            $linkparams = array();
-        }
+        $linkparams = array();
 
         if ($catid) {
             $linkparams = array('catid' => $catid);

@@ -66,6 +66,9 @@ if ($allow_risky) {
 //        'no_unreachable_default_argument_value'  => true, // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/function_notation/no_unreachable_default_argument_value.rst
         'random_api_migration' => ['replacements'=>['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' => 'mt_srand']], // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/alias/random_api_migration.rst
         'explicit_string_variable' => true, //  "$bar" --> "{$bar}"
+//
+        'modernize_strpos'     => true, // Replace strpos() calls with str_starts_with() or str_contains() if possible.
+//        'no_php4_constructor'  => true, // remove old style class constructor
         ];
     $rules = array_merge($rules, $rules_risky);
 //    $rules = $rules_risky;

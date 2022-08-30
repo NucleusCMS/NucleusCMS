@@ -2210,6 +2210,7 @@ class ADMIN
                        global $DIR_LANG;
         $dirhandle = opendir($DIR_LANG);
         while ($filename = readdir($dirhandle)) {
+            $matches = array();
             if (preg_match('#^(.*)\.php$#', $filename, $matches)) {
                 $name = $matches[1];
 //                        if (!check_abalable_language_name($name))
@@ -5430,6 +5431,7 @@ selector();
         global $DIR_LANG;
         $dirhandle = opendir($DIR_LANG);
         while ($filename = readdir($dirhandle)) {
+            $matches = array();
             if (preg_match('#^(.*)\.php$#', $filename, $matches)) {
                 $name = $matches[1];
 //                        if (!check_abalable_language_name($name))
@@ -5671,7 +5673,7 @@ selector();
         </form>
 
         <?php
-                    echo '<h2>',_PLUGINS_EXTRA,'</h2>';
+                        echo '<h2>',_PLUGINS_EXTRA,'</h2>';
 
         $param = array();
         $manager->notify('GeneralSettingsFormExtras', $param);
@@ -6848,6 +6850,7 @@ selector();
         $dirhandle = opendir($DIR_PLUGINS);
 
         while ($filename = readdir($dirhandle)) {
+            $matches = array();
             if (preg_match('#^NP_(.*)\.php$#', $filename, $matches)) {
                 $name = $matches[1];
                 // only show in list when not yet installed
