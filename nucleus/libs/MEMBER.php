@@ -36,7 +36,7 @@ class MEMBER
     public $autosave = 1;        // if the member use the autosave draft function
 
     private $hasher;
-    
+
     /**
      * Constructor for a member object
      */
@@ -564,7 +564,7 @@ class MEMBER
     {
         global $CONF;
 
-        if (strpos($hash, '$') !== false) {
+        if (str_contains($hash, '$')) {
             $rs = $this->hasher->CheckPassword($formv_password, $hash);
         } else {
             $rs = (md5($formv_password) === $hash);

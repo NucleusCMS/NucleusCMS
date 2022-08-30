@@ -1724,7 +1724,7 @@ function createBlogLink($url, $params)
 {
     global $CONF;
     if ($CONF['URLMode'] == 'normal') {
-        if (strpos($url, '?') === false && is_array($params)) {
+        if (!str_contains($url, '?') && is_array($params)) {
             $fParam = reset($params);
             $fKey   = key($params);
             array_shift($params);
@@ -1959,7 +1959,7 @@ function ticketForPlugin()
     $p_translated = str_replace('\\', '/', $p_translated);
     $d_plugins    = str_replace('\\', '/', $DIR_PLUGINS);
 
-    if (strpos($p_translated, $d_plugins) !== 0) {
+    if (!str_starts_with($p_translated, $d_plugins)) {
         return;// This isn't plugin php file.
     }
 

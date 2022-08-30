@@ -1181,8 +1181,7 @@ class ACTIONS extends BaseActions
         $imgurl = '',
         $imgwidth = '85',
         $imgheight = '31'
-    )
-    {
+    ) {
         global $CONF;
         if ($imgurl == '') {
             $imgurl = $CONF['AdminURL'] . 'nucleus.gif';

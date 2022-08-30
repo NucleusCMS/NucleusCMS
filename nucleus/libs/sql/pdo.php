@@ -60,7 +60,7 @@ if (!function_exists('sql_fetch_assoc')) {
         $DB_DRIVER_NAME = $MYSQL_HANDLER[1];
 
         try {
-            if (strpos($db_host, ':') === false) {
+            if (!str_contains($db_host, ':')) {
                 $host    = $db_host;
                 $port    = '';
                 $portnum = '';
@@ -796,7 +796,7 @@ if (!function_exists('sql_fetch_assoc')) {
     function sql_set_charset($charset, $dbh = null)
     {
         global $MYSQL_HANDLER,$SQL_DBH;
-        if (strpos($MYSQL_HANDLER[1], 'mysql') === 0) {
+        if (str_starts_with($MYSQL_HANDLER[1], 'mysql')) {
             switch(strtolower($charset)) {
                 case 'utf-8':
                 case 'utf8':
@@ -836,13 +836,13 @@ if (!function_exists('sql_fetch_assoc')) {
     {
         switch(strtolower($charset)) {
             case 'utf-8': $charset = 'utf8';
-            break;
+                break;
             case 'euc-jp': $charset = 'ujis';
-            break;
+                break;
             case 'iso-8859-1': $charset = 'latin1';
-            break;
+                break;
             case 'windows-1250': $charset = 'cp1250';
-            break; // cp1250_general_ci
+                break; // cp1250_general_ci
         }
         return $charset;
     }
@@ -851,7 +851,7 @@ if (!function_exists('sql_fetch_assoc')) {
     {
         $language_name = strtolower($language_name);
 
-        if (strpos($language_name, 'utf8') !== false) {
+        if (str_contains($language_name, 'utf8')) {
             return 'utf8';
         }
 
@@ -909,7 +909,7 @@ if (!function_exists('sql_fetch_assoc')) {
     function getCharSetFromDB($tableName, $columnName, $dbh = null)
     {
         $collation = getCollationFromDB($tableName, $columnName, $dbh);
-        if (strpos($collation, '_') === false) {
+        if (!str_contains($collation, '_')) {
             $charset = $collation;
         } else {
             list($charset, $dummy) = explode('_', $collation, 2);

@@ -105,7 +105,7 @@ function _xmlrpcs_methodSignature($server, $m)
     } else {
         $methName = $m;
     }
-    if (strpos($methName, "system.") === 0) {
+    if (str_starts_with($methName, "system.")) {
         $dmap    = $GLOBALS['_xmlrpcs_dmap'];
         $sysCall = 1;
     } else {
@@ -146,7 +146,7 @@ function _xmlrpcs_methodHelp($server, $m)
     } else {
         $methName = $m;
     }
-    if (strpos($methName, "system.") === 0) {
+    if (str_starts_with($methName, "system.")) {
         $dmap    = $GLOBALS['_xmlrpcs_dmap'];
         $sysCall = 1;
     } else {
@@ -581,11 +581,11 @@ class xmlrpc_server
             $php_no_self_compress = !ini_get('zlib.output_compression') && (ini_get('output_handler') != 'ob_gzhandler');
             if ($this->compress_response && function_exists('gzencode') && $resp_encoding != ''
                 && $php_no_self_compress) {
-                if (strpos($resp_encoding, 'gzip') !== false) {
+                if (str_contains($resp_encoding, 'gzip')) {
                     $payload = gzencode($payload);
                     header("Content-Encoding: gzip");
                     header("Vary: Accept-Encoding");
-                } elseif (strpos($resp_encoding, 'deflate') !== false) {
+                } elseif (str_contains($resp_encoding, 'deflate')) {
                     $payload = gzcompress($payload);
                     header("Content-Encoding: deflate");
                     header("Vary: Accept-Encoding");
@@ -749,7 +749,7 @@ class xmlrpc_server
                 $known_charsets = array($GLOBALS['xmlrpc_internalencoding'], 'UTF-8', 'ISO-8859-1', 'US-ASCII');
                 foreach ($known_charsets as $charset) {
                     foreach ($client_accepted_charsets as $accepted) {
-                        if (strpos($accepted, $charset) === 0) {
+                        if (str_starts_with($accepted, $charset)) {
                             $resp_encoding = $charset;
                             break;
                         }
@@ -915,7 +915,7 @@ class xmlrpc_server
         } else {
             $methName = $m;
         }
-        $sysCall = $this->allow_system_funcs && (strpos($methName, "system.") === 0);
+        $sysCall = $this->allow_system_funcs && (str_starts_with($methName, "system."));
         $dmap    = $sysCall ? $GLOBALS['_xmlrpcs_dmap'] : $this->dmap;
 
         if (!isset($dmap[$methName]['function'])) {

@@ -252,7 +252,7 @@ class SKIN
      */
     public function getContent($type)
     {
-        if (strpos($type, '/') !== false) {
+        if (str_contains($type, '/')) {
             return '';
         }
         $query = sprintf("SELECT scontent FROM %s WHERE sdesc=%d and stype='%s'", sql_table('skin'), $this->id, sql_real_escape_string($type));

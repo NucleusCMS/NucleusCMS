@@ -421,7 +421,7 @@ function showInstallForm()
 						<select name="charset" tabindex="10000">
 							<option value="utf8" selected="selected">UTF-8</option>
 <?php  global $lang;
-if ($lang != 'ja') {  ?>
+    if ($lang != 'ja') {  ?>
 							<option value="latin1" >iso-8859-1</option>
 <?php                      }  ?>
 						</select>
@@ -436,27 +436,27 @@ if ($lang != 'ja') {  ?>
 
 <?php
 
-            // no need to this all! dirname(__FILE__) is all we need -- moraes
-            /*
-            // discover full path
-            $fullPath = serverVar('PATH_TRANSLATED');
+                // no need to this all! dirname(__FILE__) is all we need -- moraes
+                /*
+                // discover full path
+                $fullPath = serverVar('PATH_TRANSLATED');
 
-            if ($fullPath == '') {
-                $fullPath = serverVar('SCRIPT_FILENAME');
-            }
+                if ($fullPath == '') {
+                    $fullPath = serverVar('SCRIPT_FILENAME');
+                }
 
-            $basePath = str_replace('install.php', '', $fullPath);
-            $basePath = replaceDoubleBackslash($basePath);
-            $basePath = replaceDoubleBackslash($basePath);
+                $basePath = str_replace('install.php', '', $fullPath);
+                $basePath = replaceDoubleBackslash($basePath);
+                $basePath = replaceDoubleBackslash($basePath);
 
-            // add slash at end if necessary
-            if (!endsWithSlash($basePath) ) {
-                $basePath .= '/';
-            }
-            */
+                // add slash at end if necessary
+                if (!endsWithSlash($basePath) ) {
+                    $basePath .= '/';
+                }
+                */
 
-            $basePath = str_replace('install', '', dirname(__FILE__));
-    $basePath         = replaceDoubleBackslash($basePath);
+                $basePath = str_replace('install', '', dirname(__FILE__));
+    $basePath             = replaceDoubleBackslash($basePath);
     ?>
 
 		<fieldset>
@@ -851,7 +851,7 @@ function doInstall()
                 $query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
             }
 
-            if ($mysql_create != 1 && strpos($query, 'CREATE TABLE') === 0 && version_compare($mySqlVer, '4.1.0', '>=')) {
+            if ($mysql_create != 1 && str_starts_with($query, 'CREATE TABLE') && version_compare($mySqlVer, '4.1.0', '>=')) {
                 $query .= " DEFAULT CHARACTER SET {$charset} COLLATE {$collation}";
             }
 

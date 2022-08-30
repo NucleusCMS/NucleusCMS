@@ -412,7 +412,7 @@ class MEDIA
         $buffer = fread($fp, 200);
         fclose($fp);
 
-        $is_binary = ($buffer !== false) && (strpos($buffer, chr(0)) !== false);
+        $is_binary = ($buffer !== false) && (str_contains($buffer, chr(0)));
         if (!$is_binary && in_array($ext, array_merge($type['image'], $type['movie']))) {
             return false;
         }

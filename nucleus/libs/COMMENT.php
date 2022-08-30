@@ -55,7 +55,7 @@ class COMMENT
         $comment['email']  = trim(strtr($comment['email'], "\'\"\n", '-- '));
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-        if (!empty($comment['userid']) && (strpos($comment['userid'], 'http://') !== 0) && (strpos($comment['userid'], 'https://') !== 0)) {
+        if (!empty($comment['userid']) && (!str_starts_with($comment['userid'], 'http://')) && (!str_starts_with($comment['userid'], 'https://'))) {
             $comment['userid'] = 'http://' . $comment['userid'];
         } // end if
 

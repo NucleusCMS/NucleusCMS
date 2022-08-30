@@ -70,7 +70,7 @@ class MANAGER
     }
 
     public $parserPrefs;
-    
+
     /**
       * The constructor of this class initializes the object caches
       */

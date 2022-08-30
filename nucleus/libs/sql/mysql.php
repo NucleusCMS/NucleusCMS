@@ -536,13 +536,13 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
     {
         switch(strtolower($charset)) {
             case 'utf-8': $charset = 'utf8';
-            break;
+                break;
             case 'euc-jp': $charset = 'ujis';
-            break;
+                break;
             case 'iso-8859-1': $charset = 'latin1';
-            break;
+                break;
             case 'windows-1250': $charset = 'cp1250';
-            break; // cp1250_general_ci
+                break; // cp1250_general_ci
         }
         return $charset;
     }
@@ -551,7 +551,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
     {
         $language_name = strtolower($language_name);
 
-        if (strpos($language_name, 'utf8') !== false) {
+        if (str_contains($language_name, 'utf8')) {
             return 'utf8';
         }
 
@@ -608,7 +608,7 @@ if (function_exists('mysql_query') && !function_exists('sql_fetch_assoc')) {
     function getCharSetFromDB($tableName, $columnName)
     {
         $collation = getCollationFromDB($tableName, $columnName);
-        if (strpos($collation, '_') === false) {
+        if (!str_contains($collation, '_')) {
             $charset = $collation;
         } else {
             list($charset, $dummy) = explode('_', $collation, 2);
