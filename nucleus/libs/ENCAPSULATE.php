@@ -55,10 +55,6 @@ class NAVLIST extends ENCAPSULATE
 {
     public $total = null;
 
-    public function NAVLIST($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid)
-    {
-        $this->__construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid);
-    }
     public function __construct($action, $start, $amount, $minamount, $maxamount, $blogid, $search, $itemid)
     {
         $this->action    = $action;
@@ -306,10 +302,6 @@ class NAVLIST extends ENCAPSULATE
  */
 class BATCH extends ENCAPSULATE
 {
-    public function BATCH($type)
-    {
-        $this->__construct($type);
-    }
     public function __construct($type)
     {
         $this->type = $type;

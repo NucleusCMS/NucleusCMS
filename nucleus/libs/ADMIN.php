@@ -5671,7 +5671,7 @@ selector();
         </form>
 
         <?php
-                echo '<h2>',_PLUGINS_EXTRA,'</h2>';
+                    echo '<h2>',_PLUGINS_EXTRA,'</h2>';
 
         $param = array();
         $manager->notify('GeneralSettingsFormExtras', $param);

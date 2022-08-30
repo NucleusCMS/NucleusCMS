@@ -39,10 +39,6 @@ class SKIN
      * @param $id
      *             id of the skin
      */
-    public function SKIN($id)
-    {
-        $this->__construct($id);
-    }
     public function __construct($id)
     {
         $this->id = intval($id);

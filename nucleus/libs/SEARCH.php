@@ -29,10 +29,6 @@ class SEARCH
     public $blogs;
     private $is_jp_mode;
 
-    public function SEARCH($text)
-    {
-        $this->__construct($text);
-    }
     public function __construct($text)
     {
         global $blogid;

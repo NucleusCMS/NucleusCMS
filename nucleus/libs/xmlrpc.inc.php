@@ -815,10 +815,6 @@ class xmlrpc_client
     * @param integer $port the port the server is listening on, defaults to 80 or 443 depending on protocol used
     * @param string $method the http protocol variant: defaults to 'http', 'https' and 'http11' can be used if CURL is installed
     */
-    public function xmlrpc_client($path, $server = '', $port = '', $method = '')
-    {
-        $this->__construct($path, $server, $port, $method);
-    }
     public function __construct($path, $server = '', $port = '', $method = '')
     {
         // allow user to specify all params in $path

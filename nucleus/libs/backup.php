@@ -22,10 +22,6 @@ class Backup
     /**
      * Constructor
      */
-    public function Backup()
-    {
-        $this->__construct();
-    }
     public function __construct()
     {
         // do nothing

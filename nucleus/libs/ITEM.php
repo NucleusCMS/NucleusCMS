@@ -24,10 +24,6 @@ class ITEM
       *
       * @param integer $itemid id of the item
       */
-    public function ITEM($itemid)
-    {
-        $this->__construct($itemid);
-    }
     public function __construct($itemid)
     {
         $this->itemid = $itemid;

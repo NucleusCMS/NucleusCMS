@@ -42,10 +42,6 @@ class BLOG
      *
      * @param $id blogid
      */
-    public function BLOG($id)
-    {
-        $this->__construct($id);
-    }
     public function __construct($id)
     {
         $this->blogid = intval($id);

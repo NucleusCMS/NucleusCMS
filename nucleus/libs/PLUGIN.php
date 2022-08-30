@@ -377,10 +377,6 @@ class NucleusPlugin
     /**
      * Class constructor: Initializes some internal data
      */
-    public function NucleusPlugin()
-    {
-        $this->__construct();
-    }
     public function __construct()
     {
         $this->_aOptionValues = array();    // oid_contextid => value

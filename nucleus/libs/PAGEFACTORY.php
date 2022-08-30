@@ -37,10 +37,6 @@ class PAGEFACTORY extends BaseActions
     /**
      * creates a new PAGEFACTORY object
      */
-    public function PAGEFACTORY($blogid)
-    {
-        $this->__construct($blogid);
-    }
     public function __construct($blogid)
     {
         // call constructor of superclass first
