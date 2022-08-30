@@ -4,7 +4,10 @@ if (!headers_sent()) {
     header('Content-type: text/html; charset=utf-8');
 }
 
-$http_accept_language_list = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+$http_accept_language_list = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
+        preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY)
+        : []);
+
 if (in_array('ja', $http_accept_language_list)) { // japanese
     echo '<h3>設定がおかしいです。</h3><a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。';
 } else {

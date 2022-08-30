@@ -17,7 +17,9 @@
 if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
+        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
+    ) {
         exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
     }
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");

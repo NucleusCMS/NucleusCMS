@@ -2616,7 +2616,7 @@ function checkBrowserLang($locale)
 
     $check[$locale] = false;
 
-    $items = explode(',', strtolower(serverVar('HTTP_ACCEPT_LANGUAGE')));
+    $items = get_http_accept_primary_languages();
 
     $http_lang      = array_map('substr', $items, [0, 2]);
     $check[$locale] = in_array(strtolower($locale), $http_lang);
@@ -3094,4 +3094,43 @@ function tidy_get_default_config($apply_user_conf = true)
         }
     }
     return $tidy_config;
+}
+
+function get_http_accept_languages()
+{
+    $res = [];
+    if (!defined('INTL_MAX_LOCALE_LEN')) {
+        define('INTL_MAX_LOCALE_LEN', 80);
+    }
+    $s = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? (string)$_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
+    // value 0-9, A-Z, a-z, space or *,-.;=  // https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Accept-Language
+    // language-range   = (1*8ALPHA *("-" 1*8alphanum)) / "*"
+    if (INTL_MAX_LOCALE_LEN < strlen($s)
+        || !preg_match('/^[0-9a-z *,\\-.;=]+$/i', $s)) {
+        return [];
+    }
+    // ja,en-US;q=0.9,en;q=0.8
+    $items = preg_split('/[,]/', $s, -1, PREG_SPLIT_NO_EMPTY);
+    foreach ($items as $item) {
+        $item = preg_replace('/[; ].*$/', '', trim($item));
+        $item = preg_replace('/q=.+$/', '', $item);
+        if (preg_match('/^[a-z]{2}(?:-[a-zA-Z]{1,8})*$/', $item)
+            && !in_array($item, $res)) {
+            $res[] = $item;
+        }
+    }
+    return $res;
+}
+
+function get_http_accept_primary_languages()
+{
+    $res   = [];
+    $items = get_http_accept_languages();
+    foreach ($items as $item) {
+        $item = substr($item, 0, 2);
+        if (!in_array($item, $res)) {
+            $res[] = $item;
+        }
+    }
+    return $res;
 }

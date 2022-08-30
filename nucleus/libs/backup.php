@@ -656,6 +656,7 @@ class Backup
     private function _evenNumberOfQuotes($text)
     {
         // This is the total number of single quotes in the token.
+        $matches      = [];
         $total_quotes = preg_match_all("/'/", $text, $matches);
         // Counts single quotes that are preceded by an odd number of backslashes,
         // which means they're escaped quotes.

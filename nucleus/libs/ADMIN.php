@@ -2370,6 +2370,7 @@ class ADMIN
                             global $DIR_LANG, $DB_DRIVER_NAME;
         $dirhandle = opendir($DIR_LANG);
         while ($filename = readdir($dirhandle)) {
+            $matches     = [];
             $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET != 'UTF-8')) ? '((.*))' : '((.*)-utf8)');
             if (preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches)) {
                 $name          = $matches[2];
@@ -6289,6 +6290,7 @@ selector();
                                 global $DIR_LANG, $DB_DRIVER_NAME;
         $dirhandle = opendir($DIR_LANG);
         while ($filename = readdir($dirhandle)) {
+            $matches     = [];
             $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET != 'UTF-8')) ? '((.*))' : '((.*)-utf8)');
             if (preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches)) {
                 $name          = $matches[2];
@@ -8170,6 +8172,7 @@ EOL;
         global $DIR_PLUGINS;
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        $status  = [];
         $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, true);
                                     //        var_dump(__FUNCTION__, $status, $plugins);
         if ($status['result'] && count($plugins) > 0) {
@@ -9359,6 +9362,7 @@ EOD;
                 //                var_dump($s['header']);
                 // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
                 $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
+                $m       = [];
                 if (!preg_match($pattern, $s['header'], $m)) {
                     break;
                 }
@@ -9430,6 +9434,7 @@ EOD;
         if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern, $s, $m))) {
             // Check plugin's min nucleus version
             /** @var TYPE_NAME $m2 */
+            $m2 = [];
             if (preg_match($pattern2, $s, $m2) && ((int) $m2[1] > CORE_APPLICATION_VERSION_ID)) {
                 return false;
             }
