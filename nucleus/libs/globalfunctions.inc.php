@@ -669,7 +669,7 @@ function _decideSearchSkin($keyword)
     }
 
     if (is_numeric($blogid)) {
-        $blogid = intVal($blogid);
+        $blogid = (int)$blogid;
         //        } elseif(empty($blogid)) {
         //            $blogid = $CONF['DefaultBlog'];
     } else {
@@ -1675,7 +1675,7 @@ function checkVars($aVars)
             || isset($_SESSION[$varName])
             || isset($_FILES[$varName])
         ) {
-            die('Sorry. An error occurred.');
+            exit('Sorry. An error occurred.');
         }
     }
 }

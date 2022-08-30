@@ -1952,7 +1952,7 @@ class xmlrpcresp
                         "</param>\n</params>";
                 } else {
                     /// @todo try to build something serializable?
-                    die('cannot serialize xmlrpcresp objects whose content is native php values');
+                    exit('cannot serialize xmlrpcresp objects whose content is native php values');
                 }
             } else {
                 $result .= "<params>\n<param>\n" .

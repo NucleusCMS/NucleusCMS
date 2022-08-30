@@ -141,7 +141,7 @@ a:hover{text-decoration:underline}
       /* *********************************************** */
       echo "<h2>Getting encoding...</h2>";
       $query="select option_value from ".$prefixwp."options where option_name='blog_charset'";
-      $querywp=mysql_query($query,$linkwp) or die($query);
+      $querywp=mysql_query($query,$linkwp) or exit($query);
       if ($row=mysql_fetch_object($querywp)) 
         $input=$row->option_value;
       else
@@ -158,7 +158,7 @@ a:hover{text-decoration:underline}
       $total_num++;
 
       $query="select cat_ID, cat_name from ".$prefixwp."categories order by cat_ID";
-      $querywp=mysql_query($query,$linkwp) or die($query);
+      $querywp=mysql_query($query,$linkwp) or exit($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
       echo "<p>";
       $i=1;
@@ -169,7 +169,7 @@ a:hover{text-decoration:underline}
           " (catid,cblog,cname,cdesc)  values (".
           intval($total_num).",1,'".encoding($row->cat_name)."','@wordpress')";
         // echo $queryi . "<br/>";
-        $result = mysql_query($query,$linkblogcms) or die($query);
+        $result = mysql_query($query,$linkblogcms) or exit($query);
         $total_num++;
       }
       echo "</p>";
@@ -178,7 +178,7 @@ a:hover{text-decoration:underline}
       echo "<h2>Transfering posts and comments...</h2>";
       mysql_query("delete from " . sql_table('comment') . " where chost='@wordpress'",$linkblogcms);
       $query="select ID,post_date,post_content,post_title from ".$prefixwp."posts where post_status='publish' order by ID";
-      $querywp=mysql_query($query,$linkwp) or die($query);
+      $querywp=mysql_query($query,$linkwp) or exit($query);
       echo "<p>rows to transfer: ".mysql_num_rows($querywp)."</p>";
       echo "<p>";
       $i=1;
@@ -186,7 +186,7 @@ a:hover{text-decoration:underline}
         echo $i++.", ";
         // category id
         $query="select category_id from ".$prefixwp."post2cat where post_id=".$row->ID;
-        $querywp_detail=mysql_query($query,$linkwp) or die($query);
+        $querywp_detail=mysql_query($query,$linkwp) or exit($query);
         if ($row_detail=mysql_fetch_object($querywp_detail)) $cat=intval($row_detail->category_id)+$catdd; else $cat=1;
         // insert post
         $query=
@@ -194,11 +194,11 @@ a:hover{text-decoration:underline}
           "(ititle,ibody,iblog,iauthor,itime,icat) values (".
           "'".addslashes(encoding($row->post_title))."','".addslashes(paragraph(encoding(stripslashes($row->post_content)),false))."',1,1,'".$row->post_date."',$cat)";
         //echo $query . "<br/>";
-        $result = mysql_query($query,$linkblogcms) or die($query);
+        $result = mysql_query($query,$linkblogcms) or exit($query);
         $itemid=mysql_insert_id($linkblogcms);
         // insert comments
         $query="select comment_author,comment_author_email,comment_author_url,comment_author_IP,comment_date,comment_content from ".$prefixwp."comments where comment_post_ID=".$row->ID;
-        $querywp_detail=mysql_query($query,$linkwp) or die($query);
+        $querywp_detail=mysql_query($query,$linkwp) or exit($query);
         while ($row_detail=mysql_fetch_object($querywp_detail)) {
           $url=$row_detail->comment_author_email;
           if (!empty($row_detail->comment_author_url)) $url=$row_detail->comment_author_url;
@@ -214,14 +214,14 @@ a:hover{text-decoration:underline}
               "'".$row_detail->comment_author_IP."',".
               "1,".
               "'@wordpress')";
-          $result = mysql_query($query,$linkblogcms) or die($query);
+          $result = mysql_query($query,$linkblogcms) or exit($query);
         }
       }
       echo "</p>";
 
       // done
       echo "<h2>Done! Enjoy your stay in Nucleus</h2>";
-      die;
+      exit;
     }
 
 	}

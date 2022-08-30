@@ -805,7 +805,7 @@ class BlogImport {
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
 			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 
 		return mysql_insert_id();
 	}
@@ -819,7 +819,7 @@ class BlogImport {
 		$defcat = mysql_insert_id();
 
 		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 		$id = mysql_insert_id();
 
 		// update category row so it links to blog
@@ -843,7 +843,7 @@ class BlogImport {
 			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
 			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 
 		return mysql_insert_id();
 	}
@@ -853,7 +853,7 @@ class BlogImport {
 		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 			   . "VALUES ($memberid, $blogid, $admin)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 
 		return mysql_insert_id();
 	}
@@ -891,7 +891,7 @@ if ($ver > 250)
 		$query = 'INSERT INTO '.sql_table('item').' (ITITLE, IBODY, IMORE, IBLOG, IAUTHOR, ITIME, ICLOSED, IKARMAPOS, IKARMANEG, ICAT) '
 			   . "VALUES ('$title', '$body', '$more', $blogid, $authorid, '$timestamp', $closed, $karmapos, $karmaneg,  $category)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 
 		return mysql_insert_id();
 	}
@@ -907,7 +907,7 @@ if ($ver > 250)
 		$defcat = mysql_insert_id();
 
 		$query = 'INSERT INTO '.sql_table('blog')." (BNAME, BSHORTNAME, BCOMMENTS, BMAXCOMMENTS, BDEFCAT) VALUES ('$name','$shortname',1 ,0, $defcat)";
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 		$id = mysql_insert_id();
 
 		convert_addToTeam($id,$ownerid,1);
@@ -928,7 +928,7 @@ if ($ver > 250)
 			   . ' (CUSER, CMAIL, CMEMBER, CBODY, CITEM, CTIME, CHOST, CBLOG, CIP) '
 			   . "VALUES ('$name', '$url', $memberid, '$body', $itemid, '$timestamp', '$host', $blogid, '$ip')";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 
 		return mysql_insert_id();
 	}
@@ -939,7 +939,7 @@ if ($ver > 250)
 		$query = 'INSERT INTO '.sql_table('team').' (TMEMBER, TBLOG, TADMIN) '
 			   . "VALUES ($memberid, $blogid, $admin)";
 
-		mysql_query($query) or die("Error while executing query: " . $query);
+		mysql_query($query) or exit("Error while executing query: " . $query);
 
 		return mysql_insert_id();
 	}

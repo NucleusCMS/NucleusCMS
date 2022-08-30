@@ -304,8 +304,8 @@ function f_blogger_getUserInfo($m)
  */
 function _getRecentItemsBlogger($blogid, $username, $password, $amount)
 {
-    $blogid = intval($blogid);
-    $amount = intval($amount);
+    $blogid = (int)$blogid;
+    $amount = (int)$amount;
 
     // 1. login
     $mem = new MEMBER();
@@ -320,7 +320,7 @@ function _getRecentItemsBlogger($blogid, $username, $password, $amount)
     if (! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
-    $amount = intval($amount);
+    $amount = (int)$amount;
     if (($amount < 1) or ($amount > 20)) {
         return _error(5, "Amount parameter must be in range 1..20");
     }

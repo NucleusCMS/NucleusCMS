@@ -7089,7 +7089,7 @@ EOL;
             if (!defined('_ADMIN_SQLDIE_QUERYERROR')) {
                 define('_ADMIN_SQLDIE_QUERYERROR', 'Query error: ');
             }
-            die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+            exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
         }
         return sql_insert_id();
     }
@@ -7130,7 +7130,7 @@ EOL;
             $res = sql_query($sql);
         }
 
-        $res or die((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
+        $res or exit((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
         return sql_insert_id();
     }
 

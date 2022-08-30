@@ -17,7 +17,7 @@ class entity
     private static function named_to_numeric_callback($matches)
     {
         $m3 = isset($matches[3]) ? $matches[3] : '';
-        return self::_named($matches[1], $matches[2] . $m3);
+        return self::_named($matches[1], $matches[2]) . $m3;
     }
 
     public static function normalize_numeric($string)

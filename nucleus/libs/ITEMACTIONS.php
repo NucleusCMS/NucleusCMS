@@ -301,23 +301,13 @@ class ITEMACTIONS extends BaseActions
         } elseif (is_object($this->currentItem)) {
             $itemtitle = $this->currentItem->title;
         }
-        switch ($format) {
-            case 'xml':
-                //                echo stringToXML ($this->currentItem->title);
-                echo stringToXML($itemtitle);
-                break;
-            case 'attribute':
-                //                echo stringToAttribute ($this->currentItem->title);
-                echo stringToAttribute($itemtitle);
-                break;
-            case 'raw':
-                //                echo $this->currentItem->title;
-                echo $itemtitle;
-                break;
-            default:
-                //                $this->highlightAndParse($this->currentItem->title);
-                $this->highlightAndParse($itemtitle);
-                break;
+
+        if ($itemtitle !== null) {
+            if (in_array($format, ['xml', 'attribute', 'raw'])) {
+                echo PAGEFACTORY::getFormatedText($itemtitle, $format);
+            } else {
+                $this->highlightAndParse($itemtitle); // by ref
+            }
         }
     }
 

@@ -41,10 +41,10 @@ class CoreCachedData
         global $DB_PHP_MODULE_NAME;
         $tablename = sql_table(self::base_tablename);
 
-        $type     = strval($type);
-        $sub_type = strval($sub_type);
-        $name     = strval($name);
-        $sub_id   = intval($sub_id);
+        $type     = (string)$type;
+        $sub_type = (string)$sub_type;
+        $name     = (string)$name;
+        $sub_id   = (int)$sub_id;
 
         $expire_datetime = (is_null($expire_time) ? ''
             : sql_gmDateTime_from_utime($expire_time));
@@ -95,11 +95,11 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
 
-        $type     = strval($type);
-        $sub_type = strval($sub_type);
-        $name     = strval($name);
-        $value    = strval($value);
-        $sub_id   = intval($sub_id);
+        $type     = (string)$type;
+        $sub_type = (string)$sub_type;
+        $name     = (string)$name;
+        $value    = (string)$value;
+        $sub_id   = (int)$sub_id;
 
         if (isDebugMode()) {
             if (strlen($type) > 50) {
@@ -185,10 +185,10 @@ class CoreCachedData
     ) {
         $tablename = sql_table(self::base_tablename);
 
-        $type     = strval($type);
-        $sub_type = strval($sub_type);
-        $name     = strval($name);
-        $sub_id   = intval($sub_id);
+        $type     = (string)$type;
+        $sub_type = (string)$sub_type;
+        $name     = (string)$name;
+        $sub_id   = (int)$sub_id;
 
         $sql             = "SELECT *, ";
         $expire_datetime = (is_null($expire_time) ? ''
@@ -232,10 +232,10 @@ class CoreCachedData
     ) {
         $tablename = sql_table(self::base_tablename);
 
-        $type     = strval($type);
-        $sub_type = strval($sub_type);
-        $name     = strval($name);
-        $sub_id   = intval($sub_id);
+        $type     = (string)$type;
+        $sub_type = (string)$sub_type;
+        $name     = (string)$name;
+        $sub_id   = (int)$sub_id;
 
         if (! self::existDataEx($type, $sub_type, $sub_id, $name)) {
             return;

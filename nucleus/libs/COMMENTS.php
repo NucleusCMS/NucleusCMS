@@ -40,7 +40,7 @@ class COMMENTS
      */
     public function __construct($itemid)
     {
-        $this->itemid = intval($itemid);
+        $this->itemid = (int)$itemid;
     }
 
     /**

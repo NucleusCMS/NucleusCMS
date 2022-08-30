@@ -349,7 +349,7 @@ function bm_doEditForm()
 function bm_doError($msg)
 {
     bm_message(_ERROR, _ERRORMSG, $msg);
-    die;
+    exit;
 }
 
 function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1)

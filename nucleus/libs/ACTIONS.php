@@ -1048,19 +1048,8 @@ class ACTIONS extends BaseActions
         global $manager, $itemid;
         $item = & $manager->getItem($itemid, 0, 0);
 
-        switch ($format) {
-            case 'xml':
-                echo stringToXML($item['title']);
-                break;
-            case 'attribute':
-                echo stringToAttribute($item['title']);
-                break;
-            case 'raw':
-                echo $item['title'];
-                break;
-            default:
-                echo hsc(strip_tags($item['title']));
-                break;
+        if (isset($item) && isset($item['title']) && $item['title'] !== null) {
+            echo PAGEFACTORY::getFormatedText($item['title'], $format);
         }
     }
 

@@ -528,7 +528,7 @@ function gm_popup($filename, $authorid, $text, $width, $height) {
 	$res = MEDIA::addMediaObject(MEMBER::createFromID($authorid), "$grey_datapath$filename", $filename);
 
 	if ($res != "")
-		die("error copying media files: $res");
+		exit("error copying media files: $res");
 
 	// TODO: copy file to media directory
 	// TODO: create %popup(...)% code instead
