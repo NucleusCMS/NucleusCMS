@@ -297,7 +297,7 @@ class COMMENTACTIONS extends BaseActions
         if (!is_numeric($maxLength) || intval($maxLength) == 0) {
             echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         } else {
-            $this->commentsObj->itemActions->parse_syndicate_title(intval($maxLength));
+            $this->commentsObj->itemActions->parse_syndicate_title((int)$maxLength);
         }
     }
 

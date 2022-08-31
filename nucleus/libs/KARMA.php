@@ -29,14 +29,14 @@ class KARMA
     public function __construct($itemid, $initpos = 0, $initneg = 0, $initread = 0)
     {
         // itemid
-        $this->itemid = intval($itemid);
+        $this->itemid = (int)$itemid;
 
         // have we read the karma info yet?
-        $this->inforead = intval($initread);
+        $this->inforead = (int)$initread;
 
         // number of positive and negative votes
-        $this->karmapos = intval($initpos);
-        $this->karmaneg = intval($initneg);
+        $this->karmapos = (int)$initpos;
+        $this->karmaneg = (int)$initneg;
     }
 
     public function getNbPosVotes()
@@ -70,11 +70,11 @@ class KARMA
 
     public function setNbPosVotes($val)
     {
-        $this->karmapos = intval($val);
+        $this->karmapos = (int)$val;
     }
     public function setNbNegVotes($val)
     {
-        $this->karmaneg = intval($val);
+        $this->karmaneg = (int)$val;
     }
 
     // adds a positive vote

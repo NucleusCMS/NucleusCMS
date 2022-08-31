@@ -321,7 +321,7 @@ class ACTIONS extends BaseActions
     {
         global $CONF, $blog, $query, $amount;
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
-        $startpos = intval($startpos);        // will be 0 when empty.
+        $startpos = (int)$startpos;        // will be 0 when empty.
         $parsed   = parse_url(serverVar('REQUEST_URI'));
         $path     = (isset($parsed['path']) ? $parsed['path'] : '');
         $parsed   = $parsed['query'];
@@ -1569,7 +1569,7 @@ class ACTIONS extends BaseActions
     {
         global $manager;
 
-        $itemnumber = intval($itemnumber);
+        $itemnumber = (int)$itemnumber;
         $itemarray  = array($itemnumber);
 
         $b = & $manager->getBlog(getBlogIDFromItemID($itemnumber));
@@ -1582,7 +1582,7 @@ class ACTIONS extends BaseActions
     {
         global $blog, $itemid, $manager;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
         // if item is closed, show message and do nothing
         $item = & $manager->getItem($itemid, 0, 0);
         if ($item['closed'] || !$blog->commentsEnabled()) {
@@ -1596,7 +1596,7 @@ class ACTIONS extends BaseActions
     {
         global $itemid;
 
-        $itemid  = intval($itemid);
+        $itemid  = (int)$itemid;
         $sqlText = sprintf(
             "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
             sql_table('comment'),

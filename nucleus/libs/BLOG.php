@@ -297,12 +297,12 @@ class BLOG
     {
         global $manager;
 
-        $blogid   = intval($blogid);
-        $authorid = intval($authorid);
+        $blogid   = (int)$blogid;
+        $authorid = (int)$authorid;
         $title    = $title;
         $body     = $body;
         $more     = $more;
-        $catid    = intval($catid);
+        $catid    = (int)$catid;
         $isFuture = 0;
 
         // convert newlines to <br />
@@ -957,7 +957,7 @@ class BLOG
         // (can't use floatval since not available prior to PHP 4.2)
         $offset = $this->getTimeOffset();
         if (!is_float($offset)) {
-            $offset = intval($offset);
+            $offset = (int)$offset;
         }
 
         $query = 'UPDATE '.sql_table('blog')
@@ -1341,8 +1341,8 @@ class BLOG
     {
         global $manager;
 
-        $memberid = intval($memberid);
-        $admin    = intval($admin);
+        $memberid = (int)$memberid;
+        $admin    = (int)$admin;
 
         // check if member is already a member
         $tmem = MEMBER::createFromID($memberid);
@@ -1517,12 +1517,12 @@ class BLOG
         if (!is_array($itemarray)) {
             return '';
         }
-        $showDrafts = intval($showDrafts);
-        $showFuture = intval($showFuture);
+        $showDrafts = (int)$showDrafts;
+        $showFuture = (int)$showFuture;
         $items      = array();
         foreach ($itemarray as $value) {
-            if (intval($value)) {
-                $items[] = intval($value);
+            if ((int)$value) {
+                $items[] = (int)$value;
             }
         }
         if (!count($items)) {

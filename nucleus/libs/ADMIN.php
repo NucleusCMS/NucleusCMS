@@ -498,7 +498,7 @@ class ADMIN
 
         // walk over all itemids and perform action
         foreach ($selected as $itemid) {
-            $itemid = intval($itemid);
+            $itemid = (int)$itemid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONITEM,' <b>', $itemid, '</b>...';
 
             // perform action, display errors if needed
@@ -558,7 +558,7 @@ class ADMIN
 
         // walk over all itemids and perform action
         foreach ($selected as $commentid) {
-            $commentid = intval($commentid);
+            $commentid = (int)$commentid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONCOMMENT,' <b>', $commentid, '</b>...';
 
             // perform action, display errors if needed
@@ -613,7 +613,7 @@ class ADMIN
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
-            $memberid = intval($memberid);
+            $memberid = (int)$memberid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONMEMBER,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
@@ -686,7 +686,7 @@ class ADMIN
 
         // walk over all itemids and perform action
         foreach ($selected as $memberid) {
-            $memberid = intval($memberid);
+            $memberid = (int)$memberid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONTEAM,' <b>', $memberid, '</b>...';
 
             // perform action, display errors if needed
@@ -770,7 +770,7 @@ class ADMIN
 
         // walk over all itemids and perform action
         foreach ($selected as $catid) {
-            $catid = intval($catid);
+            $catid = (int)$catid;
             echo '<li>',_BATCH_EXECUTING,' <b>',hsc($action),'</b> ',_BATCH_ONCATEGORY,' <b>', $catid, '</b>...';
 
             // perform action, display errors if needed
@@ -1014,7 +1014,7 @@ class ADMIN
         // 0. get IDs of blogs to which member can post items (+ forced blog)
         $aBlogIds = array();
         if ($iForcedBlogInclude != -1) {
-            $aBlogIds[] = intval($iForcedBlogInclude);
+            $aBlogIds[] = (int)$iForcedBlogInclude;
         }
 
         if (($member->isAdmin()) && (array_key_exists('ShowAllBlogs', $CONF) && $CONF['ShowAllBlogs'])) {
@@ -1309,7 +1309,7 @@ class ADMIN
         if ($blogid == '') {
             $blogid = intRequestVar('blogid');
         } else {
-            $blogid = intval($blogid);
+            $blogid = (int)$blogid;
         }
 
         $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
@@ -1998,7 +1998,7 @@ class ADMIN
     {
         global $member, $manager;
 
-        $commentid = intval($commentid);
+        $commentid = (int)$commentid;
 
         if (!$member->canAlterComment($commentid)) {
             return _ERROR_DISALLOWED;
@@ -2783,8 +2783,8 @@ class ADMIN
     {
         global $member, $manager;
 
-        $blogid   = intval($blogid);
-        $memberid = intval($memberid);
+        $blogid   = (int)$blogid;
+        $memberid = (int)$memberid;
 
         // check if allowed
         if (!$member->blogAdminRights($blogid)) {
@@ -3113,7 +3113,7 @@ class ADMIN
             if ((!is_null($corder))
               && (is_numeric($corder))
             ) {
-                $corder = intval($corder);
+                $corder = (int)$corder;
             } else {
                 $corder = null;
             }
@@ -3146,12 +3146,12 @@ class ADMIN
         if ($blogid == '') {
             $blogid = intGetVar('blogid');
         } else {
-            $blogid = intval($blogid);
+            $blogid = (int)$blogid;
         }
         if ($catid == '') {
             $catid = intGetVar('catid');
         } else {
-            $catid = intval($catid);
+            $catid = (int)$catid;
         }
 
         $member->blogAdminRights($blogid) or $this->disallow();
@@ -3225,7 +3225,7 @@ class ADMIN
             if ((!is_null($corder))
               && (is_numeric($corder))
             ) {
-                $corder = intval($corder);
+                $corder = (int)$corder;
             } else {
                 $corder = null;
             }
@@ -3348,7 +3348,7 @@ class ADMIN
     {
         global $manager, $member;
 
-        $catid = intval($catid);
+        $catid = (int)$catid;
 
         $blogid = getBlogIDFromCatID($catid);
 
@@ -3403,8 +3403,8 @@ class ADMIN
     {
         global $manager, $member;
 
-        $catid      = intval($catid);
-        $destblogid = intval($destblogid);
+        $catid      = (int)$catid;
+        $destblogid = (int)$destblogid;
 
         $blogid = getBlogIDFromCatID($catid);
 
@@ -3469,8 +3469,8 @@ class ADMIN
     {
         global $manager, $member;
 
-        $catid      = intval($catid);
-        $new_corder = intval($new_corder);
+        $catid      = (int)$catid;
+        $new_corder = (int)$new_corder;
 
         $blogid = intval(getBlogIDFromCatID($catid));
 
@@ -3753,7 +3753,7 @@ class ADMIN
     {
         global $manager;
 
-        $memberid = intval($memberid);
+        $memberid = (int)$memberid;
         $mem      = MEMBER::createFromID($memberid);
 
         if (!$mem->canBeDeleted()) {
@@ -4656,7 +4656,7 @@ selector();
         $partname = sql_real_escape_string($partname);
         $content  = sql_real_escape_string($content);
 
-        $id = intval($id);
+        $id = (int)$id;
 
         // don't add empty parts:
         if (!trim($content)) {
@@ -5341,7 +5341,7 @@ selector();
      */
     public function skinclonetype($skin, $newid, $type)
     {
-        $newid   = intval($newid);
+        $newid   = (int)$newid;
         $content = $skin->getContent($type);
         if ($content) {
             $query = 'INSERT INTO '.sql_table('skin')." (sdesc, scontent, stype) VALUES ({$newid},'". sql_real_escape_string($content)."', '". sql_real_escape_string($type)."')";
@@ -5673,7 +5673,7 @@ selector();
         </form>
 
         <?php
-                        echo '<h2>',_PLUGINS_EXTRA,'</h2>';
+                            echo '<h2>',_PLUGINS_EXTRA,'</h2>';
 
         $param = array();
         $manager->notify('GeneralSettingsFormExtras', $param);
@@ -7119,7 +7119,7 @@ selector();
     {
         global $manager;
 
-        $pid = intval($pid);
+        $pid = (int)$pid;
 
         if (!$manager->pidInstalled($pid)) {
             return _ERROR_NOSUCHPLUGIN;

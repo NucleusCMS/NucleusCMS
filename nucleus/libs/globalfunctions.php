@@ -883,7 +883,7 @@ function getBlogIDFromName($name)
 {
     $res = quickQuery('SELECT bnumber as result FROM ' . sql_table('blog') . ' WHERE bshortname="' . sql_real_escape_string($name) . '"');
     if ($res !== false) {
-        $res = intval($res);
+        $res = (int)$res;
     }
     return $res;
 }
@@ -897,7 +897,7 @@ function getBlogIDFromItemID($itemid)
 {
     $res = quickQuery('SELECT iblog as result FROM ' . sql_table('item') . ' WHERE inumber=' . intval($itemid));
     if ($res !== false) {
-        $res = intval($res);
+        $res = (int)$res;
     }
     return $res;
 }
@@ -906,7 +906,7 @@ function getBlogIDFromCommentID($commentid)
 {
     $res = quickQuery('SELECT cblog as result FROM ' . sql_table('comment') . ' WHERE cnumber=' . intval($commentid));
     if ($res !== false) {
-        $res = intval($res);
+        $res = (int)$res;
     }
     return $res;
 }
@@ -915,7 +915,7 @@ function getBlogIDFromCatID($catid)
 {
     $res = quickQuery('SELECT cblog as result FROM ' . sql_table('category') . ' WHERE catid=' . intval($catid));
     if ($res !== false) {
-        $res = intval($res);
+        $res = (int)$res;
     }
     return $res;
 }
@@ -924,7 +924,7 @@ function getCatIDFromName($name)
 {
     $res = quickQuery('SELECT catid as result FROM ' . sql_table('category') . ' WHERE cname="' . sql_real_escape_string($name) . '"');
     if ($res !== false) {
-        $res = intval($res);
+        $res = (int)$res;
     }
     return $res;
 }
@@ -1131,7 +1131,7 @@ function selector()
         $type = 'archivelist';
 
         if (is_numeric($archivelist)) {
-            $blogid = intVal($archivelist);
+            $blogid = (int)$archivelist;
         } else {
             $blogid = getBlogIDFromName($archivelist);
         }
@@ -1170,7 +1170,7 @@ function selector()
         }
 
         if (is_numeric($blogid)) {
-            $blogid = intVal($blogid);
+            $blogid = (int)$blogid;
         } else {
             $blogid = getBlogIDFromName($blogid);
         }
@@ -1342,7 +1342,7 @@ function removeBreaks($var)
 // at the end (end length is <= $maxlength)
 function shorten($text, $maxlength, $toadd)
 {
-    $maxlength = intval($maxlength);
+    $maxlength = (int)$maxlength;
     // 1. remove entities...
     $trans = get_html_translation_table(HTML_ENTITIES);
 
@@ -1376,7 +1376,7 @@ function mysqldate($timestamp)
 function selectBlog($shortname)
 {
     global $blogid, $archivelist;
-    $blogid = intval($blogid);
+    $blogid = (int)$blogid;
     if (!($blogid > 0)) {
         $blogid = getBlogIDFromName($shortname);
     }
@@ -1401,7 +1401,7 @@ function selectCategory($cat)
 {
     global $catid;
     if (is_numeric($cat)) {
-        $catid = intval($cat);
+        $catid = (int)$cat;
     } else {
         $catid = getCatIDFromName($cat);
     }
@@ -1410,7 +1410,7 @@ function selectCategory($cat)
 function selectItem($id)
 {
     global $itemid;
-    $itemid = intval($id);
+    $itemid = (int)$id;
 }
 
 // force the use of a language file (warning: can cause warnings)

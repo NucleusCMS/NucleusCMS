@@ -367,7 +367,7 @@ class ACTION
         // send email to notification address, if any
         if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
             $mailto_msg = _NOTIFY_KV_MSG . ' ' . $itemid . "\n";
-            $itemLink   = createItemLink(intval($itemid));
+            $itemLink   = createItemLink((int)$itemid);
             $temp       = parse_url($itemLink);
 
             if (!$temp['scheme']) {

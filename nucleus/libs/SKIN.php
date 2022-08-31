@@ -41,7 +41,7 @@ class SKIN
      */
     public function __construct($id)
     {
-        $this->id = intval($id);
+        $this->id = (int)$id;
 
         // read skin name/description/content type
         $res           = sql_query('SELECT * FROM '.sql_table('skin_desc').' WHERE sdnumber=' . $this->id);

@@ -1,6 +1,8 @@
 <?php
 
-$http_accept_language = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? explode(',',$_SERVER['HTTP_ACCEPT_LANGUAGE']) : array());
+$http_accept_language = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
+        preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY)
+        : []);
 
 if (!isset($_SERVER['HTTP_USER_AGENT']) || preg_match('/bot|wget|spider|clawler|https?:/i', $_SERVER['HTTP_USER_AGENT']))
 {

@@ -195,7 +195,7 @@ class NAVLIST extends ENCAPSULATE
 
         $lists          = array();
         $selected       = false;
-        $selected_catid = intval($selected_catid);
+        $selected_catid = (int)$selected_catid;
         // @todo NP_MultipleCategories
         $sql = 'SELECT catid , cname , count(inumber) as count FROM ' . sql_table('category')
               . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
@@ -240,7 +240,7 @@ class NAVLIST extends ENCAPSULATE
 
         $lists          = array();
         $selected       = false;
-        $selected_catid = intval($selected_catid);
+        $selected_catid = (int)$selected_catid;
 
         // blog(bnumber, bname or bshortname) , category(catid,cblog,cname,corder)
         $sql = 'SELECT bname, cblog, catid , cname , count(inumber) as count FROM ' . sql_table('category')

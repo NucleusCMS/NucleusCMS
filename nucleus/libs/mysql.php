@@ -100,7 +100,7 @@ function mysql_result($res, $row, $col = 0)
     if (!$res) {
         return false;
     }
-    $row = intval($row);
+    $row = (int)$row;
     if (($row < 0) || ($col < 0)) {
         return false;
     }
@@ -219,7 +219,7 @@ function convert_mysqlFieldDefObj_from_mysqliFieldDefObj($obj, $offset = 0)
 function mysql_fetch_field($res, $offset = 0)
 {
     if ($res) {
-        $offset = intval($offset);
+        $offset = (int)$offset;
         if (func_num_args() == 1) {
             $finfo = mysqli_fetch_field($res);
         } else {
@@ -383,7 +383,7 @@ function convert_mysqlFieldFlags_from_mysqliFieldFlags($flags)
 
         $unknown_flags = $flags & ~$known_flags;
         if ($unknown_flags)
-            $a[] = strval($unknown_flags);
+            $a[] = (string)$unknown_flags;
     */
     return implode(' ', $a);
 }

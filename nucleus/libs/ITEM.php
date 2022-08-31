@@ -41,7 +41,7 @@ class ITEM
     {
         global $manager;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
 
         $query = 'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
                . ' i.ititle as title, i.ibody as body, m.mname as author, '
@@ -201,7 +201,7 @@ class ITEM
     {
         global $manager;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
 
         // make sure value is 1 or 0
         if ($closed != 1) {
@@ -325,8 +325,8 @@ class ITEM
     {
         global $manager;
 
-        $itemid    = intval($itemid);
-        $new_catid = intval($new_catid);
+        $itemid    = (int)$itemid;
+        $new_catid = (int)$new_catid;
 
         $new_blogid = getBlogIDFromCatID($new_catid);
 
@@ -360,7 +360,7 @@ class ITEM
     {
         global $manager, $member;
 
-        $itemid = intval($itemid);
+        $itemid = (int)$itemid;
 
         // check to ensure only those allow to alter the item can
         // proceed
@@ -397,7 +397,7 @@ class ITEM
     {
         global $manager;
 
-        $id = intval($id);
+        $id = (int)$id;
 
         $sql = 'SELECT count(*) AS result FROM '.sql_table('item').' WHERE inumber='.$id;
         if (!$future) {

@@ -749,7 +749,7 @@ class SKINEXPORT
 
         // contents skins
         foreach ($this->skins as $skinId => $skinName) {
-            $skinId   = intval($skinId);
+            $skinId   = (int)$skinId;
             $skinObj  = new SKIN($skinId);
             $skinName = hsc($skinName, ENT_QUOTES);
             $contentT = hsc($skinObj->getContentType(), ENT_QUOTES);
@@ -787,7 +787,7 @@ class SKINEXPORT
 
         // contents templates
         foreach ($this->templates as $templateId => $templateName) {
-            $templateId   = intval($templateId);
+            $templateId   = (int)$templateId;
             $templateName = hsc($templateName, ENT_QUOTES);
             $templateDesc = hsc(TEMPLATE::getDesc($templateId), ENT_QUOTES);
             if ($has_mb_func && strtoupper(_CHARSET) != 'UTF-8') {

@@ -21,7 +21,7 @@ class TEMPLATE
 
     public function __construct($templateid)
     {
-        $this->id = intval($templateid);
+        $this->id = (int)$templateid;
     }
 
     public function getID()

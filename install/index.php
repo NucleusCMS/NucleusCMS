@@ -318,7 +318,7 @@ function showInstallForm()
             $match = explode('.', $row[1]);
         } else {
             //$output = shell_exec('mysql -V');
-            $output = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
+            $output  = (function_exists('shell_exec')) ? @shell_exec('mysql -V') : '0.0.0';
             $version = array();
             preg_match('#[0-9]+\.[0-9]+\.[0-9]+#', $output, $version);
             $match = explode('.', $version[0]);

@@ -486,7 +486,7 @@ class MEMBER
       */
     public function getTeamBlogs($incAdmin = 1)
     {
-        $incAdmin = intval($incAdmin);
+        $incAdmin = (int)$incAdmin;
         $blogs    = array();
 
         if ($this->isAdmin() && $incAdmin) {
@@ -579,7 +579,7 @@ class MEMBER
 
                 $param[] = sql_table('member');
                 $param[] = sql_real_escape_string($password_hash);
-                $param[] = intval($mnumber);
+                $param[] = (int)$mnumber;
                 $query   = vsprintf("UPDATE %s SET mpassword='%s' WHERE mnumber=%s", $param);
                 $rs      = sql_query($query);
             } else {
@@ -810,8 +810,8 @@ class MEMBER
         $password = sql_real_escape_string($obj->getPassword());
         $email    = sql_real_escape_string($email);
         $url      = sql_real_escape_string($url);
-        $admin    = intval($admin);
-        $canlogin = intval($canlogin);
+        $admin    = (int)$admin;
+        $canlogin = (int)$canlogin;
         $notes    = sql_real_escape_string($notes);
 
 //        if (($admin) && !($canlogin)) {

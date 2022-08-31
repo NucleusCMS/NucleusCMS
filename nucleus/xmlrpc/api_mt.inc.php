@@ -403,8 +403,8 @@ function _mt_categoryList($blogid, $username, $password)
 
 function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
 {
-    $blogid  = intval($blogid);
-    $iAmount = intval($iAmount);
+    $blogid  = (int)$blogid;
+    $iAmount = (int)$iAmount;
 
     // 1. login
     $mem = new MEMBER();
@@ -419,7 +419,7 @@ function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
     if (!$mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
-    $iAmount = intval($iAmount);
+    $iAmount = (int)$iAmount;
     if ($iAmount < 1) {
         return _error(5, "Amount parameter must be positive");
     }

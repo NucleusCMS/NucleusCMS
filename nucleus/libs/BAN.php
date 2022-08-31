@@ -25,7 +25,7 @@ class BAN
       */
     public static function isBanned($blogid, $ip)
     {
-        $blogid = intval($blogid);
+        $blogid = (int)$blogid;
         $query  = 'SELECT * FROM '.sql_table('ban').' WHERE blogid='.$blogid;
         $res    = sql_query($query);
         while ($obj = sql_fetch_object($res)) {
@@ -45,7 +45,7 @@ class BAN
     {
         global $manager;
 
-        $blogid = intval($blogid);
+        $blogid = (int)$blogid;
 
         $param = array(
             'blogid'  => $blogid,
@@ -75,7 +75,7 @@ class BAN
     public static function removeBan($blogid, $iprange)
     {
         global $manager;
-        $blogid = intval($blogid);
+        $blogid = (int)$blogid;
 
         $param = array(
             'blogid' => $blogid,
