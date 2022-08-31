@@ -16,6 +16,10 @@
  * @version $Id: install.php 1227 2007-12-14 16:48:40Z ehui $
  */
 
+/*  New for 3.71-fix */
+define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',  'Your installation has expired. Please re-upload install/index.php with a current timestamp.');
+define('_INSTALL_TEXTCOMFIRM_RETRY_SEND',           '_INSTALL_TEXTCOMFIRM_RETRY_SEND');
+
 /*  New for 3.71 */
 define('_HEADER_LANG_SELECT',			 'Language');
 define('_TEXT_LANG_SELECT1_1_TAB_HEAD',	 'Choose language');

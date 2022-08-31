@@ -11,6 +11,7 @@
  */
 
 /*  New for 3.71-fix */
+define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED', 'インストール有効期限を経過しました。インストールするには、installフォルダを現在のタイムスタンプでアップロードし直してください。');
 define('_INSTALL_TEXTCOMFIRM_RETRY_SEND',  '送信は、１回だけにしてください。本当に、この内容でもう一度送信していいですか？');
 
 /*  New for 3.71 */

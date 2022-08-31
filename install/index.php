@@ -35,6 +35,8 @@ if (version_compare('8.0.0', phpversion(), '<=')) {
         <div>Nucleus CMS version 3.80 or later is required to work with PHP8.0 or later.</div>');
 }
 
+define('INSTALL_EXPIRE_SEC', 10 * 60); // 10 minutes
+
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
 if (preg_match('#/install$#', $path)) {
@@ -187,8 +189,21 @@ include_once('../nucleus/libs/sql/'.$MYSQL_HANDLER[0].'.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
+if ($MYSQL_HANDLER[0] === 'pdo') {
+    if (!extension_loaded('pdo_' . $MYSQL_HANDLER[1])) {
+        doError(_ERROR1);
+    }
+} elseif (!function_exists('mysql_query')) {
+    _doError(_ERROR1);
+}
+
 if (!function_exists('mysql_query')) {
     _doError(_ERROR1);
+}
+
+$mtime = @filemtime(__FILE__);
+if (!$mtime || ($mtime + INSTALL_EXPIRE_SEC < time())) {
+    _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
 }
 
 if (postVar('action') == 'go') {
