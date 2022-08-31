@@ -28,6 +28,7 @@ if (PHP_VERSION_ID >= 90000) {
 }
 
 $nucleus['version']  = 'v'.NUCLEUS_VERSION;
+$nucleus['revision'] = '20220831';
 $nucleus['codename'] = '';
 
 if (!isset($_SERVER['REQUEST_TIME_FLOAT'])) {

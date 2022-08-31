@@ -6116,11 +6116,12 @@ selector();
 
         echo '<br />(';
 
+        $revision = ((strlen(trim($nucleus['revision'])) > 0) ? ' '.$nucleus['revision'] : '');
         $codenamestring = ($nucleus['codename'] != '') ? ' &quot;'.$nucleus['codename'].'&quot;' : '';
 
         if ($member->isLoggedIn() && $member->isAdmin()) {
             $checkURL = sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
-            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $codenamestring . '</a>';
+            echo '<a href="' . $checkURL . '" title="' . _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE . '">Nucleus CMS ' . $nucleus['version'] . $revision . $codenamestring . '</a>';
             $newestVersion = getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE.'">'._ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT.$newestVersion.'</a>';
@@ -6134,7 +6135,8 @@ selector();
                 );
             }
         } else {
-            echo 'Nucleus CMS ' . $nucleus['version'] . $codenamestring;
+            $revision = (isDebugMode() && (strlen(trim($nucleus['revision'])) > 0) ? $nucleus['revision'].' ' : '');
+            echo 'Nucleus CMS ' . $revision . $codenamestring;
         }
         echo ')';
         echo '</div>';
