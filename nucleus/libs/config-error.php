@@ -8,11 +8,17 @@ $http_accept_language_list = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
         preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY)
         : []);
 
+global $CONF;
+$url = './install/index.php';
+if (isset($CONF) && isset($CONF['UsingAdminArea']) && (bool)$CONF['UsingAdminArea']) {
+    $url = '.' . $url;
+}
+
 if (in_array('ja', $http_accept_language_list)) { // japanese
-    echo '<h3>設定がおかしいです。</h3><a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。';
+    printf('<h3>設定がおかしいです。</h3><a href="%s">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。', $url);
 } else {
     echo '<h1>Configuration error</h1>';
-    echo '<p>please run the <a href="./install/index.php">install script</a> or modify config.php</p>';
+    printf('<p>please run the <a href="%s">install script</a> or modify config.php</p>', $url);
 }
 
 exit;

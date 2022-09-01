@@ -297,6 +297,11 @@ class BLOG
                 $old_date = $new_date;
             }
 
+            if (!defined('DISABLED_BLOG_CLEANITEMS') || (bool) constant('DISABLED_BLOG_CLEANITEMS') === false) {
+                // cleaning item
+                $this->cleanItem($item);
+            }
+
             // parse item
             $parser->parse($template['ITEM_HEADER']);
             $param = [
@@ -1390,6 +1395,16 @@ class BLOG
         return $this->getSetting('ballowpast');
     }
 
+    public function allowScriptTagInItem()
+    {
+        return false; // not implemented yet
+    }
+
+    public function allowScriptEventAttributeInItem()
+    {
+        return false; // not implemented yet
+    }
+
     public function getCorrectTime($t = 0)
     {
         if ($t == 0) {
@@ -1927,5 +1942,138 @@ class BLOG
         $res = sql_query($query);
 
         return $res !== false;
+    }
+
+    private function getAllowdTagClean()
+    {
+        return [
+            'a',
+            'b', 'big', 'blockquote', 'br',
+            'caption', 'center', 'cite', 'code', 'col', 'colgroup',
+            'dd', 'div', 'dl', 'dt',  'del', 'details', 'datalist ',
+            'font', 'figure',
+            'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'hr',
+            'i', 'img', 'ins',
+            'label', 'li',
+            'nav',
+            'p', 'pre',
+            'ol', 'option', 'optgroup',
+            'progress',
+            'q',
+            's', 'span', 'summary', 'select', 'section', 'small', 'strong', 'sub', 'sup',
+            'ruby', 'rp', 'rt', 'rtc',
+            'table', 'tbody', 'td', 'tr', 'textarea', 'tfoot', 'th', 'thead', 'time',
+            'u', 'ul',
+            'picture', 'source',
+            'wbr',
+            //
+            'strike',
+        ];
+        // https://developer.mozilla.org/ja/docs/Web/HTML/Element/source
+    }
+
+    public function cleanItem(&$item, $names = [])
+    {
+        // $item : object
+        $alowed_tags = $this->getAllowdTagClean();
+        if ($this->allowScriptTagInItem()) {
+            $alowed_tags[] = 'script';
+        }
+        $lists = ['ititle', 'title', 'body', 'ibody', 'more', 'imore', 'cname', 'category'];
+        if (!empty($names) && is_array($names)) {
+            $lists = array_merge($lists, $names);
+        }
+        // todo: mrealname as authorname
+        // todo: memail as authormail
+        // todo: murl as authorurl
+        // todo: memail as authormail
+
+        foreach ($lists as $name) {
+            if (!property_exists($item, $name)
+                || null === $item->$name
+                || 0 === strlen($item->$name)) {
+                continue;
+            }
+            $xml = new DOMDocument();
+            libxml_use_internal_errors(true);
+            $xml_dec    = '<'.'?xml version="1.0" encoding="UTF-8" ?'.'>';
+            $mark_start = sprintf('@-%s-@', md5('start'.((string)time())));
+            $mark_end   = sprintf('@-%s-@', md5('end'.((string)time())));
+            if (_CHARSET !== 'UTF-8') {
+                // PHP[8.2] Deprecated: mb_convert_encoding(): Handling HTML entities via mbstring
+                $src = mb_convert_encoding(strtr($item->$name, ['<%' => $mark_start, '%>' => $mark_end]), 'HTML-ENTITIES', _CHARSET);
+            } else {
+                $src = $xml_dec . strtr($item->$name, ['<%' => $mark_start, '%>' => $mark_end]);
+            }
+
+            $options = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET | LIBXML_NOWARNING;
+            if ($xml->loadHTML($src, $options)) {
+                $errors   = libxml_get_errors();
+                $modified = (count($errors) > 0) || (preg_match('/[<>]/i', $item->$name));
+
+                foreach ($xml->getElementsByTagName("*") as $tag) {
+                    if (!in_array($tag->tagName, $alowed_tags)) {
+                        $modified = true;
+//                        $tag->parentNode->removeChild($tag);
+                        // escape text
+                        $replacement = $xml->createTextNode($xml->saveHTML($tag));
+                        $tag->parentNode->replaceChild($replacement, $tag);
+                        continue;
+                    }
+                    if (!$this->allowScriptEventAttributeInItem()) {
+                        foreach ($tag->attributes as $attr) {
+                            // remove tags attribute
+                            if (preg_match('/^on/i', strtolower($attr->nodeName))) {
+                                $modified = true;
+                                $tag->removeAttribute($attr->nodeName);
+                            }
+                        }
+                    }
+                }
+
+                if ($modified) {
+                    $item->$name = strtr($xml->saveHTML(), [$mark_start => '<%', $mark_end => '%>']);
+                    // remove XML Declaration tag
+                    $m = [];
+                    if (preg_match('/^<\\?xml\s[^>]+>(.*)$/is', $item->$name, $m)) {
+                        $item->$name = (string)$m[1];
+                    } elseif (str_starts_with($item->$name, $xml_dec)) {
+                        // preg_match bug? sometimes no hit
+                        // retry remove
+                        $item->$name = substr($item->$name, strlen($xml_dec));
+                    }
+                    $item->$name = preg_replace_callback(
+                        '|&#([0-9]+);|',
+                        function ($m) {
+                            $i     = (int)$m[1];
+                            $flags = ENT_SUBSTITUTE;
+                            if ($i === 0) {
+                                return '';
+                            }
+                            if ($i <= 255) {  // < > &
+                                return $m[0]; // do nothing
+                            }
+                            // convert encording and decode htmlentity
+                            $ch = html_entity_decode($m[0], $flags, _CHARSET); //mb_chr($i, 'UTF-8');
+                            if ((false === $ch)
+                                || ($ch === '?' && $i !== ord('?'))
+                                || ($ch === 'U+FFFD' || $ch === ord('&#FFFD;')) // ENT_SUBSTITUTE
+                            ) {
+                                return $m[0]; // do nothing
+                            }
+                            return $ch;
+                        },
+                        $item->$name
+                    );
+                }
+//                var_dump(hsc($item->$name), $item->$name);
+                if (isDebugMode() && ! $this->allowScriptTagInItem() && preg_match('/<\\?xml\s|<script\s/i', $item->$name, $m)) {
+                    $msg = sprintf("%s:Line:%d : %s<br />%s\n", basename(__FILE__), __LINE__, $name, hsc($item->$name));
+                    trigger_error($msg, E_USER_ERROR);
+                }
+            } else {
+                $item->$name = strtr($xml->saveHTML(), ['<' => '&lt;', '>' => '&gt;']);
+            }
+        }
     }
 }

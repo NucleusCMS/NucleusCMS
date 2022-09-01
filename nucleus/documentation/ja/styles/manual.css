@@ -149,10 +149,14 @@ label {
 }
 
 ul {
-	line-height:1.7;
+	line-height:1.8em;
 	margin:0 0 0.5em 40px;
 	padding:0;
 	list-style-image:url(bullet.gif);
+}
+
+li {
+	line-height: 2em;
 }
 
 table#files_index {

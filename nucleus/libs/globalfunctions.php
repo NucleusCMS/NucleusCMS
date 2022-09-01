@@ -76,6 +76,10 @@ if (getNucleusPatchLevel() > 0) {
     $nucleus['version'] .= '/' . getNucleusPatchLevel();
 }
 
+if (!defined('DISABLED_BLOG_CLEANITEMS')) {
+    define('DISABLED_BLOG_CLEANITEMS', false);
+}
+
 // we will use postVar, getVar, ... methods instead of _GET
 
 // sanitize option
