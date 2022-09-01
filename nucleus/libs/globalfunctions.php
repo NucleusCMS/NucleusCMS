@@ -64,7 +64,7 @@ define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version']  = 'v' . NUCLEUS_VERSION;
 $nucleus['codename'] = defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP')
-    ? 'dev' : '';
+    ? constant('NUCLEUS_DEVELOP_TEXT') : '';
 
 _setDefaultUa();
 _setErrorReporting();
