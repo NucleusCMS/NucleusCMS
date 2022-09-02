@@ -346,7 +346,7 @@ if (requestVar('action') === 'login') {
         time() - 2592000,
         confVar('CookiePath'),
         confVar('CookieDomain'),
-        confVar('CookieSecure')
+        (bool)confVar('CookieSecure')
     );
     setcookie(
         confVar('CookiePrefix') . 'loginkey',
@@ -354,7 +354,7 @@ if (requestVar('action') === 'login') {
         time() - 2592000,
         confVar('CookiePath'),
         confVar('CookieDomain'),
-        confVar('CookieSecure')
+        (bool)confVar('CookieSecure')
     );
     $param = ['username' => cookieVar(confVar('CookiePrefix') . 'user')];
     $manager->notify('Logout', $param);
@@ -434,7 +434,7 @@ if (! headers_sent()) {
             time() + 2592000,
             confVar('CookiePath'),
             confVar('CookieDomain'),
-            confVar('CookieSecure')
+            (bool)confVar('CookieSecure')
         );
     } else {
         setcookie(
@@ -443,7 +443,7 @@ if (! headers_sent()) {
             time() - 2592000,
             confVar('CookiePath'),
             confVar('CookieDomain'),
-            confVar('CookieSecure')
+            (bool)confVar('CookieSecure')
         );
     }
 }

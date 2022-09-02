@@ -99,7 +99,7 @@ class ACTION
                 $lifetime,
                 '/',
                 '',
-                0
+                false
             );
             setcookie(
                 $CONF['CookiePrefix'] . 'comment_userid',
@@ -107,7 +107,7 @@ class ACTION
                 $lifetime,
                 '/',
                 '',
-                0
+                false
             );
             setcookie(
                 $CONF['CookiePrefix'] . 'comment_email',
@@ -115,7 +115,7 @@ class ACTION
                 $lifetime,
                 '/',
                 '',
-                0
+                false
             );
         } // end if
 
