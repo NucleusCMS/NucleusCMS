@@ -8238,15 +8238,25 @@ EOL;
             $helpFile = "{$cplugindir}help.php";
         } elseif (is_file("{$cplugindir}help.html")) {
             $helpFile = "{$cplugindir}help.html";
-        } elseif (is_file("{$cplugindir}help/index.php")) {
-            $helpFile = "{$cplugindir}help/index.php";
-        } elseif (is_file("{$cplugindir}help/index.html")) {
-            $helpFile = "{$cplugindir}help/index.html";
+        } else {
+            // help folder
+            $locale = !defined('_LOCALE') ? 'en' : substr(strtolower(_LOCALE), 0, 2);
+            foreach (['index.php', "help-{$locale}.md", 'help.md', 'help-en.md', 'index.html'] as $f) {
+                if (is_file("{$cplugindir}help/{$f}")) {
+                    $helpFile = "{$cplugindir}help/{$f}";
+                    break;
+                }
+            }
         }
 
         if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@is_file($helpFile))) {
             if (substr($helpFile, -4) === '.php') {
                 include_once($helpFile);
+            } elseif (substr($helpFile, -3) === '.md') {
+                $s = parseMarkdownFile($helpFile);
+                if ($s !== false) {
+                    echo $s;
+                }
             } else {
                 @readfile($helpFile);
             }

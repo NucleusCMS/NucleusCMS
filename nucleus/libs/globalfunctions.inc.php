@@ -3134,3 +3134,30 @@ function get_http_accept_primary_languages()
     }
     return $res;
 }
+
+function parseMarkdownFile($filename)
+{
+    if ($filename !== null
+        && str_ends_with((string)$filename, '.md')
+        && @is_file($filename)) {
+        $data = @file_get_contents($filename);
+        if ($data !== false || strlen($data) >= 0) {
+            return parseMarkdown($data);
+        }
+    }
+    return false;
+}
+
+function parseMarkdown($text)
+{
+    static $checked = null;
+    if (!$checked) {
+        include_once(__DIR__ . "/thirdparty/markdown/autoload.php");
+        $checked = true;
+    }
+    if (!class_exists('\cebe\markdown\Markdown')) {
+        return false;
+    }
+    $parser = new \cebe\markdown\GithubMarkdown();
+    return $parser->parse($text);
+}
