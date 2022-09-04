@@ -39,6 +39,7 @@ $rules_array = [
 //    'not_operator_with_successor_space'  => !true, //  (!$bar) --> (! $bar)
     'no_whitespace_in_blank_line' => true,
     'no_extra_blank_lines' => ['tokens' => ['extra']], // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/whitespace/no_extra_blank_lines.rst
+    'no_short_bool_cast'=> true, // !! --> (bool)
 ];
 
 // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/operator/binary_operator_spaces.rst
@@ -67,8 +68,9 @@ if ($allow_risky) {
         'random_api_migration' => ['replacements'=>['getrandmax' => 'mt_getrandmax', 'rand' => 'mt_rand', 'srand' => 'mt_srand']], // https://github.com/FriendsOfPHP/PHP-CS-Fixer/blob/master/doc/rules/alias/random_api_migration.rst
         'explicit_string_variable' => true, //  "$bar" --> "{$bar}"
 //
-        'modernize_strpos'     => true, // Replace strpos() calls with str_starts_with() or str_contains() if possible.
-//        'no_php4_constructor'  => true, // remove old style class constructor
+        'modernize_types_casting' => true, // intval --> (int)
+        'modernize_strpos'        => true, // Replace strpos() calls with str_starts_with() or str_contains() if possible.
+//        'no_php4_constructor'   => true, // remove old style class constructor
         ];
     $rules = array_merge($rules, $rules_risky);
 //    $rules = $rules_risky;
