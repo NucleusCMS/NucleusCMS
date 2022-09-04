@@ -3161,3 +3161,77 @@ function parseMarkdown($text)
     $parser = new \cebe\markdown\GithubMarkdown();
     return $parser->parse($text);
 }
+
+function getNamespaceBladeOne()
+{
+    return 'eftec\bladeone';
+}
+
+function loadLibBladeOne()
+{
+    static $checked = null;
+    if (!$checked) {
+        try_define('NAMESPACE_BLADEONE', 'eftec\bladeone');
+        $checked = true;
+        if (@!is_file(__DIR__ . '/thirdparty/bladeone/autoload.php')) {
+            return false;
+        }
+        $views = dirname(__DIR__) . '/views';
+        $cache = dirname(__DIR__) . '/cache';
+        if (!@is_readable($views)) {
+            trigger_error('Error : blade : $views not readable.', E_USER_WARNING);
+            return false;
+        }
+        if (!@is_readable($cache)) {
+            trigger_error('Error : blade : $cache not readable.', E_USER_WARNING);
+            return false;
+        }
+        if (!@is_writable($cache)) {
+            trigger_error('Error : blade : $cache not writable.', E_USER_WARNING);
+            return false;
+        }
+        if (PHP_VERSION_ID < 50600) {
+            trigger_error('Error : blade template requires php 5.6 or higher.', E_USER_WARNING);
+            return false;
+        }
+        include_once(__DIR__ . '/thirdparty/bladeone/autoload.php');
+    }
+    if (!class_exists(NAMESPACE_BLADEONE . '\BladeOne')) {
+        return false;
+    }
+    return true;
+}
+
+function parseBlade($view, $data)
+{
+    static $loaded = false;
+    if (!$loaded) {
+        $loaded = loadLibBladeOne();
+        if (!$loaded) {
+            return false;
+        }
+    }
+    $views    = dirname(__DIR__) . '/views';
+    $cache    = dirname(__DIR__) . '/cache';
+    $BladeOne = NAMESPACE_BLADEONE.'\\BladeOne';
+    $blade    = new $BladeOne($views, $cache);
+    return $blade->run($view, $data); // it calls {$views}/{$view}.blade.php
+}
+
+function parseBladeString($string, $data)
+{
+    static $loaded = false;
+    if (!$loaded) {
+        $loaded = loadLibBladeOne();
+        if (!$loaded) {
+            return false;
+        }
+    }
+    $views    = dirname(__DIR__) . '/views';
+    $cache    = dirname(__DIR__) . '/cache';
+    $BladeOne = NAMESPACE_BLADEONE.'\\BladeOne';
+    $blade    = new $BladeOne($views, $cache);
+    return $blade->runString((string)$string, (array)$data);
+}
+// test
+// php -r "include('nucleus/libs/globalfunctions.inc.php'); var_dump( parseBladeString('{{$name}}', ['name'=>'namae']) );"
