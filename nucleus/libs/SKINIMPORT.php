@@ -134,10 +134,10 @@ class SKINIMPORT
                 // split up those CDATA sections into multiple ones
                 $tempbuffer = preg_replace_callback(
                     "/(<!\[CDATA\[[^]]*?<!\[CDATA\[[^]]*)((?:\]\].*?<!\[CDATA.*?)*)(\]\])(.*\]\])/ms",
-                    create_function(
-                        '$matches',
-                        'return $matches[1] . preg_replace("/(\]\])(.*?<!\[CDATA)/ms","]]]]><![CDATA[$2",$matches[2])."]]]]><![CDATA[".$matches[4];'
-                    ),
+                    function ($matches)
+                    {
+                        return $matches[1] . preg_replace("/(\]\])(.*?<!\[CDATA)/ms","]]]]><![CDATA[$2",$matches[2])."]]]]><![CDATA[".$matches[4];
+                    },
                     $tempbuffer
                 );
         */

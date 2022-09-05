@@ -27,7 +27,7 @@ function load_upgrade_lang()
 
 function upgrade_checkBrowserLang()
 {
-    $langs = explode(',', strtolower(serverVar('HTTP_ACCEPT_LANGUAGE')));
+    $langs = get_http_accept_primary_languages();
 
     if (!$langs) {
         return 'en';

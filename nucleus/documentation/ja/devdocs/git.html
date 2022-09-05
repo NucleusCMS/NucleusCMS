@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="index" href="./index.html" />
+	<title>gitリポジトリの操作 | Nucleus - 開発者用ドキュメント</title>
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+    <style type="text/css">
+        strong {
+            font-weight: bold;
+        }
+        em {
+            font-style: italic;
+        }
+		li {
+			line-height: 2em;
+		}
+		code {
+			padding: 0.5em;
+			line-height: 1.5em;
+			background-color: #e0ffe0;
+			color: #000;
+			font-weight: bold;
+		}
+    </style>
+	<script src="http://www.google.com/jsapi"></script>
+	<script>
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("javascript/fontsizeChanger.js");
+		});
+	</script>
+</head>
+<body>
+	<div id="fontSizeChanger">
+	<a href="#top" id="f_small">小</a>
+	<a href="#top" id="f_medium">中</a>
+	<a href="#top" id="f_large">大</a>
+	</div>
+<div id="body">
+
+<h1>はじめに</h1>
+
+<p>
+<a href="./index.html">開発者向けドキュメントの目次へ戻る</a>
+</p>
+
+<p>
+このドキュメントは gitリポジトリの操作 についての解説です。
+</p>
+
+<div class="heading">
+
+</div>
+
+<h1>目次</h1>
+
+<ul>
+	<li><a href="#merge">マージ</a>
+		<ul>
+			<li><a href="#merge_to_master">masterブランチへのマージ</a>
+			</li>
+		</ul>
+	</li>
+</ul>
+
+
+<a name="merge"></a>
+<h2>マージ</h2>
+
+<a name="merge_to_master"></a>
+<h3>masterブランチへのマージ</h3>
+
+操作手順
+
+<ol>
+	<li>作業ブランチをmasterブランチにします
+		<div><code>git checkout master</code></div>
+	</li>
+	<li>マージ作業を開始します
+		<div><code>git merge --no-commit --no-ff -X theirs v3.8dev</code></div>
+	</li>
+	<li>競合を解決します
+		<div>TortoiseGit: 競合を解決 : <br />
+		クリックして、移動などで削除されていないファイルを削除を選択します</div>
+	</li>
+	<li>作業フォルダとv3.8devを比較します
+		<div>TortoiseGit: ビジョングラフ,refブラウザ : v3.8dev : [作業ツリーと比較]<br />
+		変更が残っていれば クリックして変更部分を確認し、変更を取り消すなどして 保存します。<br />
+		必要な変更があった場合は、v3.8devへ後ほど適用するかマージを中止するか検討しましょう。</div>
+	</li>
+	<li>コミットします。<br />
+		コマンド、GUIお好きな方法でコミットしてください。
+	</li>
+	<li>最後にもう一度　同一かどうか確認します<br />
+		<div><code>git diff --name-only v3.8dev master</code></div>
+		<div><code>git diff v3.8dev master</code></div>
+	</li>
+</ol>
+
+<br /><br />
+</div>
+</body>
+</html>

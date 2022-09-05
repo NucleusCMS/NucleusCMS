@@ -263,8 +263,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     private function _validate_passwd($passwd, $minlength = 6, $complexity = 0)
     {
-        $minlength  = intval($minlength);
-        $complexity = intval($complexity);
+        $minlength  = (int)$minlength;
+        $complexity = (int)$complexity;
 
         if ($minlength < 6) {
             $minlength = 6;
@@ -297,8 +297,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     private function _validate_and_messsage($passwd, $minlength = 6, $complexity = 0)
     {
-        $minlength  = intval($minlength);
-        $complexity = intval($complexity);
+        $minlength  = (int)$minlength;
+        $complexity = (int)$complexity;
 
         $message = '';
         if ($minlength < 6) {

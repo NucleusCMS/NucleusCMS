@@ -2,3 +2,6 @@
 *.sqlite
 /nbproject/private/
 /config.php
+*.bat
+*.url
+.php-cs-fixer.cache

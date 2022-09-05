@@ -27,13 +27,15 @@
 if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
+        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
+    ) {
         exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
     }
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
 }
 
-define('INSTALL_EXPIRE_SEC', 10*60); // 10 minutes
+define('INSTALL_EXPIRE_SEC', 10 * 60); // 10 minutes
 
 define('NC_MTN_MODE', 'install');
 
@@ -83,13 +85,10 @@ if ($lang != '' && !in_array($lang, $install_lang_keys)) {
     // do nothing
 } else {
     $v         = '';
-    $http_lang = explode(',', @strtolower($_SERVER['HTTP_ACCEPT_LANGUAGE']));
+    $http_lang = get_http_accept_primary_languages();
     foreach ($http_lang as $key) {
         if (!isset($install_lang_defs[$key])) {
-            $key = substr($key, 2);
-            if (!isset($install_lang_defs[$key])) {
-                continue;
-            }
+            continue;
         }
         if ($key != 'en' && in_array($key, $install_lang_keys)
                          && is_file("./install_lang_{$key}.php")) {
@@ -191,9 +190,6 @@ if (@is_file('../config.php')) {
 
 $mtime = @filemtime(__FILE__);
 if (!$mtime || ($mtime + INSTALL_EXPIRE_SEC < time())) {
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
-        _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
-    }
     _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
 }
 

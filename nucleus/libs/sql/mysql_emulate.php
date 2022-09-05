@@ -442,7 +442,7 @@ function convert_mysqlFieldFlags_from_mysqliFieldFlags($flags)
 
         $unknown_flags = $flags & ~$known_flags;
         if ($unknown_flags)
-            $a[] = strval($unknown_flags);
+            $a[] = (string)$unknown_flags;
     */
 
     return implode(' ', $a);

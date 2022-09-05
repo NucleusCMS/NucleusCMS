@@ -669,7 +669,7 @@ function _decideSearchSkin($keyword)
     }
 
     if (is_numeric($blogid)) {
-        $blogid = intVal($blogid);
+        $blogid = (int)$blogid;
         //        } elseif(empty($blogid)) {
         //            $blogid = $CONF['DefaultBlog'];
     } else {
@@ -1675,7 +1675,7 @@ function checkVars($aVars)
             || isset($_SESSION[$varName])
             || isset($_FILES[$varName])
         ) {
-            die('Sorry. An error occurred.');
+            exit('Sorry. An error occurred.');
         }
     }
 }
@@ -2616,7 +2616,7 @@ function checkBrowserLang($locale)
 
     $check[$locale] = false;
 
-    $items = explode(',', strtolower(serverVar('HTTP_ACCEPT_LANGUAGE')));
+    $items = get_http_accept_primary_languages();
 
     $http_lang      = array_map('substr', $items, [0, 2]);
     $check[$locale] = in_array(strtolower($locale), $http_lang);
@@ -3095,3 +3095,143 @@ function tidy_get_default_config($apply_user_conf = true)
     }
     return $tidy_config;
 }
+
+function get_http_accept_languages()
+{
+    $res = [];
+    if (!defined('INTL_MAX_LOCALE_LEN')) {
+        define('INTL_MAX_LOCALE_LEN', 80);
+    }
+    $s = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ? (string)$_SERVER['HTTP_ACCEPT_LANGUAGE'] : '');
+    // value 0-9, A-Z, a-z, space or *,-.;=  // https://developer.mozilla.org/ja/docs/Web/HTTP/Headers/Accept-Language
+    // language-range   = (1*8ALPHA *("-" 1*8alphanum)) / "*"
+    if (INTL_MAX_LOCALE_LEN < strlen($s)
+        || !preg_match('/^[0-9a-z *,\\-.;=]+$/i', $s)) {
+        return [];
+    }
+    // ja,en-US;q=0.9,en;q=0.8
+    $items = preg_split('/[,]/', $s, -1, PREG_SPLIT_NO_EMPTY);
+    foreach ($items as $item) {
+        $item = preg_replace('/[; ].*$/', '', trim($item));
+        $item = preg_replace('/q=.+$/', '', $item);
+        if (preg_match('/^[a-z]{2}(?:-[a-zA-Z]{1,8})*$/', $item)
+            && !in_array($item, $res)) {
+            $res[] = $item;
+        }
+    }
+    return $res;
+}
+
+function get_http_accept_primary_languages()
+{
+    $res   = [];
+    $items = get_http_accept_languages();
+    foreach ($items as $item) {
+        $item = substr($item, 0, 2);
+        if (!in_array($item, $res)) {
+            $res[] = $item;
+        }
+    }
+    return $res;
+}
+
+function parseMarkdownFile($filename)
+{
+    if ($filename !== null
+        && str_ends_with((string)$filename, '.md')
+        && @is_file($filename)) {
+        $data = @file_get_contents($filename);
+        if ($data !== false || strlen($data) >= 0) {
+            return parseMarkdown($data);
+        }
+    }
+    return false;
+}
+
+function parseMarkdown($text)
+{
+    static $checked = null;
+    if (!$checked) {
+        include_once(__DIR__ . "/thirdparty/markdown/autoload.php");
+        $checked = true;
+    }
+    if (!class_exists('\cebe\markdown\Markdown')) {
+        return false;
+    }
+    $parser = new \cebe\markdown\GithubMarkdown();
+    return $parser->parse($text);
+}
+
+function getNamespaceBladeOne()
+{
+    return 'eftec\bladeone';
+}
+
+function loadLibBladeOne()
+{
+    static $checked = null;
+    if (!$checked) {
+        try_define('NAMESPACE_BLADEONE', 'eftec\bladeone');
+        $checked = true;
+        if (@!is_file(__DIR__ . '/thirdparty/bladeone/autoload.php')) {
+            return false;
+        }
+        $views = dirname(__DIR__) . '/views';
+        $cache = dirname(__DIR__) . '/cache';
+        if (!@is_readable($views)) {
+            trigger_error('Error : blade : $views not readable.', E_USER_WARNING);
+            return false;
+        }
+        if (!@is_readable($cache)) {
+            trigger_error('Error : blade : $cache not readable.', E_USER_WARNING);
+            return false;
+        }
+        if (!@is_writable($cache)) {
+            trigger_error('Error : blade : $cache not writable.', E_USER_WARNING);
+            return false;
+        }
+        if (PHP_VERSION_ID < 50600) {
+            trigger_error('Error : blade template requires php 5.6 or higher.', E_USER_WARNING);
+            return false;
+        }
+        include_once(__DIR__ . '/thirdparty/bladeone/autoload.php');
+    }
+    if (!class_exists(NAMESPACE_BLADEONE . '\BladeOne')) {
+        return false;
+    }
+    return true;
+}
+
+function parseBlade($view, $data)
+{
+    static $loaded = false;
+    if (!$loaded) {
+        $loaded = loadLibBladeOne();
+        if (!$loaded) {
+            return false;
+        }
+    }
+    $views    = dirname(__DIR__) . '/views';
+    $cache    = dirname(__DIR__) . '/cache';
+    $BladeOne = NAMESPACE_BLADEONE.'\\BladeOne';
+    $blade    = new $BladeOne($views, $cache);
+    return $blade->run($view, $data); // it calls {$views}/{$view}.blade.php
+}
+
+function parseBladeString($string, $data)
+{
+    static $loaded = false;
+    if (!$loaded) {
+        $loaded = loadLibBladeOne();
+        if (!$loaded) {
+            return false;
+        }
+    }
+    $views    = dirname(__DIR__) . '/views';
+    $cache    = dirname(__DIR__) . '/cache';
+    $BladeOne = NAMESPACE_BLADEONE.'\\BladeOne';
+    $blade    = new $BladeOne($views, $cache);
+    return $blade->runString((string)$string, (array)$data);
+}
+// test
+// php -r "include('nucleus/libs/globalfunctions.inc.php'); var_dump( parseBladeString('{{$name}}', ['name'=>'namae']) );"

@@ -2370,6 +2370,7 @@ class ADMIN
                             global $DIR_LANG, $DB_DRIVER_NAME;
         $dirhandle = opendir($DIR_LANG);
         while ($filename = readdir($dirhandle)) {
+            $matches     = [];
             $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET != 'UTF-8')) ? '((.*))' : '((.*)-utf8)');
             if (preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches)) {
                 $name          = $matches[2];
@@ -6289,6 +6290,7 @@ selector();
                                 global $DIR_LANG, $DB_DRIVER_NAME;
         $dirhandle = opendir($DIR_LANG);
         while ($filename = readdir($dirhandle)) {
+            $matches     = [];
             $sub_pattern = ((($DB_DRIVER_NAME == 'mysql') && (_CHARSET != 'UTF-8')) ? '((.*))' : '((.*)-utf8)');
             if (preg_match('#^' . $sub_pattern . '\.php$#', $filename, $matches)) {
                 $name          = $matches[2];
@@ -7087,7 +7089,7 @@ EOL;
             if (!defined('_ADMIN_SQLDIE_QUERYERROR')) {
                 define('_ADMIN_SQLDIE_QUERYERROR', 'Query error: ');
             }
-            die(_ADMIN_SQLDIE_QUERYERROR . sql_error());
+            exit(_ADMIN_SQLDIE_QUERYERROR . sql_error());
         }
         return sql_insert_id();
     }
@@ -7128,7 +7130,7 @@ EOL;
             $res = sql_query($sql);
         }
 
-        $res or die((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
+        $res or exit((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
         return sql_insert_id();
     }
 
@@ -8170,6 +8172,7 @@ EOL;
         global $DIR_PLUGINS;
 
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        $status  = [];
         $plugins = getPluginListsFromDirName($DIR_PLUGINS, $status, true);
                                     //        var_dump(__FUNCTION__, $status, $plugins);
         if ($status['result'] && count($plugins) > 0) {
@@ -8235,15 +8238,25 @@ EOL;
             $helpFile = "{$cplugindir}help.php";
         } elseif (is_file("{$cplugindir}help.html")) {
             $helpFile = "{$cplugindir}help.html";
-        } elseif (is_file("{$cplugindir}help/index.php")) {
-            $helpFile = "{$cplugindir}help/index.php";
-        } elseif (is_file("{$cplugindir}help/index.html")) {
-            $helpFile = "{$cplugindir}help/index.html";
+        } else {
+            // help folder
+            $locale = !defined('_LOCALE') ? 'en' : substr(strtolower(_LOCALE), 0, 2);
+            foreach (['index.php', "help-{$locale}.md", 'help.md', 'help-en.md', 'index.html'] as $f) {
+                if (is_file("{$cplugindir}help/{$f}")) {
+                    $helpFile = "{$cplugindir}help/{$f}";
+                    break;
+                }
+            }
         }
 
         if (($plug->supportsFeature('HelpPage') > 0) && isset($helpFile) && (@is_file($helpFile))) {
             if (substr($helpFile, -4) === '.php') {
                 include_once($helpFile);
+            } elseif (substr($helpFile, -3) === '.md') {
+                $s = parseMarkdownFile($helpFile);
+                if ($s !== false) {
+                    echo $s;
+                }
             } else {
                 @readfile($helpFile);
             }
@@ -9359,6 +9372,7 @@ EOD;
                 //                var_dump($s['header']);
                 // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
                 $pattern = '#repos\?page=([0-9]+)>; rel="next"#i';
+                $m       = [];
                 if (!preg_match($pattern, $s['header'], $m)) {
                     break;
                 }
@@ -9430,6 +9444,7 @@ EOD;
         if (preg_match($pattern1, $s, $m) || (!empty($extra_pattern) && preg_match($extra_pattern, $s, $m))) {
             // Check plugin's min nucleus version
             /** @var TYPE_NAME $m2 */
+            $m2 = [];
             if (preg_match($pattern2, $s, $m2) && ((int) $m2[1] > CORE_APPLICATION_VERSION_ID)) {
                 return false;
             }

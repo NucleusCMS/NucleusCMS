@@ -516,31 +516,31 @@ class MEMBER
         }
 
         setcookie(
-            $CONF['CookiePrefix'] . 'user',
-            $this->getDisplayName(),
+            (string)$CONF['CookiePrefix'] . 'user',
+            (string)$this->getDisplayName(),
             $lifetime,
-            $CONF['CookiePath'],
-            $CONF['CookieDomain'],
-            $CONF['CookieSecure']
+            (string)$CONF['CookiePath'],
+            (string)$CONF['CookieDomain'],
+            (bool)$CONF['CookieSecure']
         );
         setcookie(
-            $CONF['CookiePrefix'] . 'loginkey',
-            $this->getCookieKey(),
+            (string)$CONF['CookiePrefix'] . 'loginkey',
+            (string)$this->getCookieKey(),
             $lifetime,
-            $CONF['CookiePath'],
-            $CONF['CookieDomain'],
-            $CONF['CookieSecure']
+            (string)$CONF['CookiePath'],
+            (string)$CONF['CookieDomain'],
+            (bool)$CONF['CookieSecure']
         );
 
         // make sure cookies on shared pcs don't get renewed
         if ($shared) {
             setcookie(
-                $CONF['CookiePrefix'] . 'sharedpc',
+                (string)$CONF['CookiePrefix'] . 'sharedpc',
                 '1',
                 $lifetime,
-                $CONF['CookiePath'],
-                $CONF['CookieDomain'],
-                $CONF['CookieSecure']
+                (string)$CONF['CookiePath'],
+                (string)$CONF['CookieDomain'],
+                (bool)$CONF['CookieSecure']
             );
         }
     }

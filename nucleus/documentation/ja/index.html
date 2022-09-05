@@ -88,7 +88,6 @@
 			<li>バックアップが簡単</li>
 			<li>XML-RPC インターフェイス ( <a href="http://plant.blogger.com/api/">Blogger API</a> / <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> / <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a> 採用)</li>
 			<li>XHTML 準拠</li>
-			<li><s>Blogger と GreyMatter blogsからのコンバートツール</s></li>
 			<li>...</li>
 		</ul>
 
@@ -104,6 +103,9 @@
 				&nbsp;&nbsp; バージョン 7 : 7.4, 7.3 , 7.2 , 7.1 , 7.0<br />
 				&nbsp;&nbsp; バージョン 5 : 5.6, 5.5<br />
 				&nbsp;&nbsp; プラグインも使用するPHPに対応している必要があります。
+				<div>PHP7.4の公式サポート期限は 2022/11/28 です。それ以前のバージョンのサポートはすでに終了しています。<br />
+					詳細は、こちらをご覧ください。
+					<a href="https://www.php.net/supported-versions.php" target="_blank">https://www.php.net/supported-versions.php</a></div>
 			</li>
 			<li>データベース<br />
 				下記のうちいづれか１つを選択する必要があります。
@@ -191,6 +193,8 @@
 			</tr><tr>
 				<th>/nucleus/*</th><td>(サイト管理用ファイル)</td>
 			</tr><tr>
+				<th>/nucleus/cache/*</th><td>(キャッシュ - システム用)</td>
+			</tr><tr>
 				<th>/nucleus/documentation/*</th><td>(説明書)</td>
 			</tr><tr>
 				<th>/nucleus/forms/*</th><td>(入力フォーム部品ファイル)</td>
@@ -206,6 +210,8 @@
 				<th>/nucleus/plugins/*</th><td>(プラグインファイル)</td>
 			</tr><tr>
 				<th>/nucleus/styles/*</th><td>(管理エリア専用cssファイル)</td>
+			</tr><tr>
+				<th>/nucleus/views/*</th><td>(管理用テンプレートファイル)</td>
 			</tr><tr>
 				<th>/nucleus/xmlrpc/*</th><td>(XML-RPC インターフェイス用ファイル)</td>
 			</tr><tr>
@@ -450,6 +456,8 @@
 			<li>バックアップ/リストア部分の開発の元にさせていただいた <a href="http://phpbb.sourceforge.net/">phpBB</a> </li>
 			<li>即時プレビューのJavaScript コード の元にさせていただいたコードを書いた <!--<a href="http://www.mijnkopthee.nl/">Mijn Kop Thee</a>-->Mijn Kop Thee氏 <small>(dutch)</small> と <!--<a href="http://www.milov.nl/">milov.nl</a>-->milov.nl氏</li>
 			<li>管理エリアで地球アイコンを使用させていただいている <a href="http://www.matterform.com/qbullets/legend.html">QBullets</a></li>
+			<li><a href="https://github.com/cebe/markdown">cebe/markdown</a> : Licensed MIT</li>
+			<li><a href="https://github.com/EFTEC/BladeOne">BladeOne</a> : Licensed MIT</li>
 		</ul>
 
 		<h2>感謝</h2>

@@ -226,7 +226,7 @@ body { margin: 0px; }
 		<description>Nucleus CMS default index template</description>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><a href="<%itemlink%>" title="<%_(Read entry)%>: <%title(attribute)%>"><%title(raw)%></a></h2>
+<h2><a href="<%itemlink%>" title="<%_(Read entry)%>: <%title(attribute)%>"><%title%></a></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">
@@ -315,7 +315,7 @@ body { margin: 0px; }
 		<description>Nucleus CMS default item template</description>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
-<h2><%title(raw)%></h2>
+<h2><%title%></h2>
 </div>
 <div class="contentitem">
 <div class="contentitem1">

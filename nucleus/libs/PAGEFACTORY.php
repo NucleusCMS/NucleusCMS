@@ -641,7 +641,7 @@ class PAGEFACTORY extends BaseActions
         if (is_string($inc) && strlen($inc) == 0) {
             $inc = 1;
         }
-        $inc = intval($inc);
+        $inc = (int)$inc;
         if (isset($manager->parserPrefs[$name])) {
             $value = intval($manager->getParserProperty($name));
         }
@@ -685,7 +685,7 @@ class PAGEFACTORY extends BaseActions
         }
         $name  = 'tabindex' . $key;
         $value = 0;
-        $inc   = intval($inc);
+        $inc   = (int)$inc;
         if (isset($manager->parserPrefs[$name])) {
             $value = intval($manager->getParserProperty($name));
         }
@@ -716,5 +716,23 @@ class PAGEFACTORY extends BaseActions
     public function _jsbuttonspacer()
     {
         echo '<span class="jsbuttonspacer">&nbsp;</span>';
+    }
+
+    public static function getFormatedText(&$text, $format)
+    {
+        switch ($format) {
+            case 'xml':
+                return stringToXML($text);
+                break;
+            case 'attribute':
+                return stringToAttribute($text);
+                break;
+            case 'raw':
+                return $text;
+                break;
+            default:
+                return hsc(strip_tags($text));
+                break;
+        }
     }
 }

@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+	<meta charset="UTF-8" />
+	<link rel="index" href="./index.html" />
+	<title>Nucleus プラグイン のヘルプページ | Nucleus - 開発者用ドキュメント</title>
+	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
+    <style type="text/css">
+        strong {
+            font-weight: bold;
+        }
+        em {
+            font-style: italic;
+        }
+		li {
+			line-height: 2em;
+		}
+		code {
+			padding: 0.5em;
+			line-height: 1.5em;
+			background-color: #e0ffe0;
+			color: #000;
+			font-weight: bold;
+		}
+    </style>
+	<script src="http://www.google.com/jsapi"></script>
+	<script>
+		google.load("jquery", "1");
+		google.setOnLoadCallback(function() {
+			$.getScript("javascript/fontsizeChanger.js");
+		});
+	</script>
+</head>
+<body>
+	<div id="fontSizeChanger">
+	<a href="#top" id="f_small">小</a>
+	<a href="#top" id="f_medium">中</a>
+	<a href="#top" id="f_large">大</a>
+	</div>
+<div id="body">
+
+<h1>はじめに</h1>
+
+<p>
+<a href="./index.html">開発者向けドキュメントの目次へ戻る</a>
+</p>
+
+<p>
+このドキュメントは Nucleus プラグイン のヘルプページ についての解説です。
+</p>
+
+<div class="heading">
+
+</div>
+
+<h1>目次</h1>
+
+<ul>
+	<li><a href="#type">ヘルプファイルの種類</a>	</li>
+	<li><a href="#markdown">ヘルプファイル - markdown</a>(v3.80 - )</li>
+	<li><a href="#convert_markdown">プラグインwikiからの取り込み</a></li>
+</ul>
+
+&lt;h2&gt;から開始してください
+
+<a name="type"></a>
+<h2>ヘルプファイルの種類</h2>
+
+上から順に最初に見つかったものが適用されます。
+<table>
+	<tr><th>形式</th><th>配置場所</th></tr>
+	<tr><td>php</td> <td>プラグインのフォルダ/help.php</td></tr>
+	<tr><td>html</td><td>プラグインのフォルダ/help.html</td></tr>
+	<tr><td>php</td><td>プラグインのフォルダ/help/index.php</td></tr>
+	<tr><td>markdown</td><td>プラグインのフォルダ/help/help-[ja|en].md<br />[]は 現在のユーザーのローケル</td></tr>
+	<tr><td>markdown</td><td>プラグインのフォルダ/help/help.md</td></tr>
+	<tr><td>markdown</td><td>プラグインのフォルダ/help/help-en.md</td></tr>
+	<tr><td>html</td><td>プラグインのフォルダ/help/index.html</td></tr>
+</table>
+
+<a name="markdown"></a>
+<h3>ヘルプファイル - markdown</h3>
+
+<h4>ファイル名</h4>
+<div>言語を指定しない場合は、プラグイン名/<b>help/help.md</b></div>
+<div>日本語の場合は、プラグイン名/<b>help/help-ja.md</b></div>
+<br />
+<br />
+<a name="convert_markdown"></a>
+<h3>プラグインwikiからの取り込み</h3>
+<br />
+
+<div>Nucleus CMS 日本 プラグイン: <a  href="http://japan.nucleuscms.org/wiki/plugins">http://japan.nucleuscms.org/wiki/plugins</a>
+<br />
+<br />
+</div>
+
+<div>
+<h4>html → markdown</h4>
+<div><code>$ cat help.html | pandoc -f html -t markdown_github</code></div>
+<br />
+
+<h4>dokuwiki → markdown</h4>
+<div><code>$ curl http://japan.nucleuscms.org/wiki/plugins:<i>名称</i>\?do\=export_xhtmlbody | pandoc -f html -t markdown_github</code></div>
+<br />
+<div>例: skinfiles</div>
+<div><code>$ curl http://japan.nucleuscms.org/wiki/plugins:skinfiles\?do\=export_xhtmlbody | pandoc -f html -t markdown_github</code></div>
+<br />
+
+<h4>markdown → dokuwiki</h4>
+<div><code>$ cat filename.md | pandoc -f markdown_github -t dokuwiki</code></div>
+<br />
+
+<h4>pandoc</h4>
+<div>Debian/Ubuntu系のOSで利用できます。<br />Windows: WSL2(Ubuntu)を利用してください。Cygwin用のパッケージはないようです。</div>
+<br />
+<div><code>$ sudo apt install pandoc</code></div>
+
+</div>
+
+
+</div>
+<br /><br />
+</body>
+</html>

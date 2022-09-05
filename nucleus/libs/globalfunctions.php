@@ -24,7 +24,9 @@ if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
     }
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) && in_array('ja', explode(',', @strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE'])))) {
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
+        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
+    ) {
         exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
     }
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
@@ -62,7 +64,7 @@ define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 $nucleus['version']  = 'v' . NUCLEUS_VERSION;
 $nucleus['codename'] = defined('NUCLEUS_DEVELOP') && constant('NUCLEUS_DEVELOP')
-    ? 'dev' : '';
+    ? constant('NUCLEUS_DEVELOP_TEXT') : '';
 
 _setDefaultUa();
 _setErrorReporting();
@@ -72,6 +74,10 @@ setDefaultConf();
 
 if (getNucleusPatchLevel() > 0) {
     $nucleus['version'] .= '/' . getNucleusPatchLevel();
+}
+
+if (!defined('DISABLED_BLOG_CLEANITEMS')) {
+    define('DISABLED_BLOG_CLEANITEMS', false);
 }
 
 // we will use postVar, getVar, ... methods instead of _GET
@@ -340,7 +346,7 @@ if (requestVar('action') === 'login') {
         time() - 2592000,
         confVar('CookiePath'),
         confVar('CookieDomain'),
-        confVar('CookieSecure')
+        (bool)confVar('CookieSecure')
     );
     setcookie(
         confVar('CookiePrefix') . 'loginkey',
@@ -348,7 +354,7 @@ if (requestVar('action') === 'login') {
         time() - 2592000,
         confVar('CookiePath'),
         confVar('CookieDomain'),
-        confVar('CookieSecure')
+        (bool)confVar('CookieSecure')
     );
     $param = ['username' => cookieVar(confVar('CookiePrefix') . 'user')];
     $manager->notify('Logout', $param);
@@ -428,7 +434,7 @@ if (! headers_sent()) {
             time() + 2592000,
             confVar('CookiePath'),
             confVar('CookieDomain'),
-            confVar('CookieSecure')
+            (bool)confVar('CookieSecure')
         );
     } else {
         setcookie(
@@ -437,7 +443,7 @@ if (! headers_sent()) {
             time() - 2592000,
             confVar('CookiePath'),
             confVar('CookieDomain'),
-            confVar('CookieSecure')
+            (bool)confVar('CookieSecure')
         );
     }
 }

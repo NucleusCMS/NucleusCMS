@@ -237,41 +237,39 @@ function bm_doEditItem()
 
 function bm_loginAndPassThrough()
 {
-    $blogid        = intRequestVar('blogid');
-    $log_text      = requestVar('logtext');
-    $log_link      = requestVar('loglink');
-    $log_linktitle = requestVar('loglinktitle');
+    $blogid        = hsc(intRequestVar('blogid'));
+    $log_text      = hsc(requestVar('logtext'));
+    $log_link      = hsc(requestVar('loglink'));
+    $log_linktitle = hsc(requestVar('loglinktitle'));
 
-    ?>
-<!DOCTYPE html>
-<html <?php printf('lang="%s"', _HTML_5_LANG_CODE); ?>>
-<head>
-<meta charset="<?php echo _CHARSET ?>" />
-<title>Nucleus</title>
-    <?php bm_style(); ?>
-</head>
-<body>
-<h1><?php echo _LOGIN_PLEASE ?></h1>
+    $ct_login_please   = _LOGIN_PLEASE;
+    $ct_loginform_name = _LOGINFORM_NAME;
+    $ct_loginform_pwd  = _LOGINFORM_PWD;
+    $ct_login          = _LOGIN;
+    $ct_popup_close    = _POPUP_CLOSE;
+
+    $body = <<< EOT
+<h1>{$ct_login_please}</h1>
 
 <form method="post" action="bookmarklet.php">
     <p>
-        <input name="action" value="login" type="hidden" />
-        <input name="blogid" value="<?php echo hsc($blogid); ?>" type="hidden" />
-        <input name="logtext" value="<?php echo hsc($log_text); ?>" type="hidden" />
-        <input name="loglink" value="<?php echo hsc($log_link); ?>" type="hidden" />
-        <input name="loglinktitle" value="<?php echo hsc($log_linktitle); ?>" type="hidden" />
-        <?php echo _LOGINFORM_NAME ?>:
-        <br /><input name="login" />
-        <br /><?php echo _LOGINFORM_PWD ?>:
-        <br /><input name="password" type="password" />
+        <input name="action"  value="login"       type="hidden" />
+        <input name="blogid"  value="{$blogid}"   type="hidden" />
+        <input name="logtext" value="{$log_text}" type="hidden" />
+        <input name="loglink" value="{$log_link}" type="hidden" />
+        <input name="loglinktitle" value="{$log_linktitle}" type="hidden" />
+        {$ct_loginform_name}:<br />
+        <input name="login" /><br />
+        {$ct_loginform_pwd}:<br />
+        <input name="password" type="password" /><br />
         <br /><br />
-        <br /><input type="submit" value="<?php echo _LOGIN ?>" />
+        <input type="submit" value="{$ct_login}" />
     </p>
 </form>
-<p><a href="bookmarklet.php" onclick="window.close();"><?php echo _POPUP_CLOSE ?></a></p>
-</body>
-</html>
-    <?php
+<p><a href="bookmarklet.php" onclick="window.close();">{$ct_popup_close}</a></p>
+EOT;
+
+    bm_outputHtml('Nucleus', $body);
 }
 
 function bm_doShowForm()
@@ -349,35 +347,45 @@ function bm_doEditForm()
 function bm_doError($msg)
 {
     bm_message(_ERROR, _ERRORMSG, $msg);
-    die;
+    exit;
 }
 
 function bm_message($title, $head, $msg, $extrahead = '', $showClose = 1)
 {
-    ?>
-<!DOCTYPE html>
-<html <?php printf('lang="%s"', _HTML_5_LANG_CODE); ?>>
-<head>
-<meta charset="<?php echo _CHARSET ?>" />
-<title><?php echo $title ?></title>
-    <?php bm_style(); ?>
-    <?php echo $extrahead; ?>
-</head>
-<body>
-<h1><?php echo $head; ?></h1>
-<p><?php echo $msg; ?></p>
-    <?php if ($showClose) :?>
-<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();"><?php echo _POPUP_CLOSE ?></a></p>
-    <?php endif; ?>
-</body>
-</html>
-    <?php
+    $close = $showClose ? '<p><a href="bookmarklet.php" onclick="window.close();window.opener.location.reload();">'._POPUP_CLOSE.'</a></p>'
+             : '';
+
+    $body = <<< EOT
+<h1>{$head}</h1>
+<p>{$msg}</p>
+{$close}
+EOT;
+
+    bm_outputHtml($title, $body, $extrahead);
 }
 
-function bm_style()
+function bm_outputHtml($title, $body, $extrahead = '')
 {
-    echo '<link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />';
-    echo '<link rel="stylesheet" type="text/css" href="styles/addedit.css" />';
+    $lang    = _HTML_5_LANG_CODE;
+    $charset = _CHARSET;
+
+    $html = <<< EOT
+<!DOCTYPE html>
+<html lang="{$lang}">
+<head>
+<meta charset="{$charset}" />
+<title>{$title}</title>
+    <link rel="stylesheet" type="text/css" href="styles/bookmarklet.css" />
+    <link rel="stylesheet" type="text/css" href="styles/addedit.css" />
+    {$extrahead}
+</head>
+<body>
+{$body}
+</body>
+</html>
+EOT;
+
+    echo $html;
 }
 
 function bm_doContextMenuCode()
