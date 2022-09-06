@@ -13,7 +13,7 @@
     <title><%blogsetting(name)%></title>
     <link><%blogsetting(url)%></link>
     <description><%blogsetting(desc)%></description>
-    <language>en-us</language>           
+    <language><%text(_LANG_CODE)%></language>
     <generator><%version%></generator>
     <copyright>&#169;</copyright>
     <category>Weblog</category>

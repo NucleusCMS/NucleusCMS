@@ -734,7 +734,7 @@ define('_SKIN_INCLUDE_PREFIX',				'Includeプリフィックス');
 // global settings
 define('_SETTINGS_BASESKIN',				'基本のスキン');
 define('_SETTINGS_SKINSURL',				'スキンURL');
-define('_SETTINGS_ACTIONSURL',				'「http://」から始まる action.php のURL');
+define('_SETTINGS_ACTIONSURL',				'「https://」「http://」から始まる action.php のURL');
 
 // category moves (batch)
 define('_ERROR_MOVEDEFCATEGORY',			'デフォルトのカテゴリーは移動できません');

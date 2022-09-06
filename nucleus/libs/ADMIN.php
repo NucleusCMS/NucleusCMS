@@ -6262,23 +6262,23 @@ selector();
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_SITEURL ?></td>
-                                <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  hsc($CONF['IndexURL']) ?>" /></td>
+                                <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  hsc($CONF['IndexURL']) ?>" pattern="^https?://.+/$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_ADMINURL ?></td>
-                                <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  hsc($CONF['AdminURL']) ?>" /></td>
+                                <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  hsc($CONF['AdminURL']) ?>" pattern="^https?://.+/$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_PLUGINURL ?> <?php help('pluginurl'); ?></td>
-                                <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  hsc($CONF['PluginURL']) ?>" /></td>
+                                <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  hsc($CONF['PluginURL']) ?>" pattern="^https?://.+$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_SKINSURL ?> <?php help('skinsurl'); ?></td>
-                                <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  hsc($CONF['SkinsURL']) ?>" /></td>
+                                <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  hsc($CONF['SkinsURL']) ?>" pattern="^https?://.+$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_ACTIONSURL ?> <?php help('actionurl'); ?></td>
-                                <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  hsc($CONF['ActionURL']) ?>" /></td>
+                                <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  hsc($CONF['ActionURL']) ?>" pattern="^https?://.+$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_LANGUAGE ?> <?php help('language'); ?>
@@ -6407,7 +6407,10 @@ selector();
                 $CONF['DefaultListSize'] = 10;
             }
         ?>
-                                    <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc(((int) $CONF['DefaultListSize'] < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+                                    <input type="number" name="DefaultListSize" tabindex="10079" size="10em"
+                                           value="<?php echo  hsc(((int) $CONF['DefaultListSize'] < 1 ? '10' : $CONF['DefaultListSize'])) ?>"
+                                           min="0" pattern="^[0-9]+$"
+                                           />
                                 </td>
                             </tr>
                             <tr>
@@ -6482,7 +6485,7 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_MAXUPLOADSIZE ?></td>
                                 <td>
-                                    <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  hsc($CONF['MaxUploadSize']) ?>" />
+                                    <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  hsc($CONF['MaxUploadSize']) ?>" pattern="^[0-9]+$" />
                                 </td>
                             </tr>
                             <tr>
