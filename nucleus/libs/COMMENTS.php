@@ -99,7 +99,7 @@ class COMMENTS
                         . ' ORDER BY c.ctime';
 
             $comments           = sql_query($query);
-            $this->commentcount = intval(quickQuery($query_ct));
+            $this->commentcount = (int) (quickQuery($query_ct));
         }
 
         // if no result was found
@@ -345,7 +345,7 @@ class COMMENTS
         $body      = sql_real_escape_string($comment['body']);
         $host      = sql_real_escape_string($comment['host']);
         $ip        = sql_real_escape_string($comment['ip']);
-        $memberid  = intval($comment['memberid']);
+        $memberid  = (int) ($comment['memberid']);
         $timestamp = date('Y-m-d H:i:s', $comment['timestamp']);
         $itemid    = $this->itemid;
 

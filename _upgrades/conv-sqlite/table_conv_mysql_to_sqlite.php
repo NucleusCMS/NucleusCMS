@@ -95,7 +95,7 @@ class TableConvertor
     {
         ob_start();
         $sql    = sprintf("SELECT COUNT(*) FROM `%s` limit 1", $tablename);
-        $ct     = intval(sql_result(sql_query($sql), 0, 0));
+        $ct     = (int) (sql_result(sql_query($sql), 0, 0));
         $result = sql_query(sprintf("SELECT * FROM `%s`", $tablename));
         ob_end_clean();
 

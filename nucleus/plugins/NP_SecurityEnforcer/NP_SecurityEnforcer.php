@@ -120,10 +120,10 @@ class NP_SecurityEnforcer extends NucleusPlugin
         }
 
         $this->enable_security  = $this->getOption('enable_security');
-        $this->pwd_min_length   = intval($this->getOption('pwd_min_length'));
-        $this->pwd_complexity   = intval($this->getOption('pwd_complexity'));
-        $this->max_failed_login = intval($this->getOption('max_failed_login'));
-        $this->login_lockout    = intval($this->getOption('login_lockout'));
+        $this->pwd_min_length   = (int) ($this->getOption('pwd_min_length'));
+        $this->pwd_complexity   = (int) ($this->getOption('pwd_complexity'));
+        $this->max_failed_login = (int) ($this->getOption('max_failed_login'));
+        $this->login_lockout    = (int) ($this->getOption('login_lockout'));
     }
 
     public function event_QuickMenu(&$data)
@@ -226,7 +226,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
             $ip    = $_SERVER['REMOTE_ADDR'];
 
             $sql   = "SELECT count(*) as result FROM ".sql_table('plug_securityenforcer')." WHERE login=" . sql_quote_string($login);
-            $count = intval(quickQuery($sql));
+            $count = (int) (quickQuery($sql));
             if ($count > 0) {
                 sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login=".sql_quote_string($login));
             } else {
@@ -234,7 +234,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
             }
 
             $sql   = "SELECT count(*) as result FROM ".sql_table('plug_securityenforcer')." WHERE login=".sql_quote_string($ip) ;
-            $count = intval(quickQuery($sql));
+            $count = (int) (quickQuery($sql));
             if ($count > 0) {
                 sql_query("UPDATE ".sql_table('plug_securityenforcer')." SET fails=fails+1, lastfail=".time()." WHERE login=".sql_quote_string($ip));
             } else {

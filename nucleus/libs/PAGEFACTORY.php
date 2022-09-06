@@ -387,7 +387,7 @@ class PAGEFACTORY extends BaseActions
     public function parse_text($which)
     {
         if (defined($which)) {
-            echo strval(constant($which));
+            echo (string) (constant($which));
         } else {
             echo $which;    // this way we see where definitions are missing
         }
@@ -633,7 +633,7 @@ class PAGEFACTORY extends BaseActions
         }
         $inc = (int)$inc;
         if (isset($manager->parserPrefs[$name])) {
-            $value = intval($manager->getParserProperty($name));
+            $value = (int) ($manager->getParserProperty($name));
         }
         printf("%d", $value);
         if ($inc !== 0) {
@@ -648,7 +648,7 @@ class PAGEFACTORY extends BaseActions
             $inc = 1;
         }
         $name  = 'tabindex' . $key;
-        $value = intval($baseindex) + intval($inc);
+        $value = (int) $baseindex + (int) $inc;
         $manager->setParserProperty($name, $value);
     }
 
@@ -662,7 +662,7 @@ class PAGEFACTORY extends BaseActions
         $nameto = 'tabindex' . $keyto;
         $value  = "";
         if (isset($manager->parserPrefs[$namefrom])) {
-            $value = intval($manager->getParserProperty($namefrom));
+            $value = (int) ($manager->getParserProperty($namefrom));
         }
         $manager->setParserProperty($nameto, $value);
     }
@@ -677,7 +677,7 @@ class PAGEFACTORY extends BaseActions
         $value = 0;
         $inc   = (int)$inc;
         if (isset($manager->parserPrefs[$name])) {
-            $value = intval($manager->getParserProperty($name));
+            $value = (int) ($manager->getParserProperty($name));
         }
         if ($inc !== 0) {
             $manager->setParserProperty($name, $value + $inc);

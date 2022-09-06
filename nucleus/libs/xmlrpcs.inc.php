@@ -344,7 +344,7 @@ function _xmlrpcs_errorHandler($errcode, $errstring, $filename = null, $lineno =
     if ($GLOBALS['_xmlrpcs_prev_ehandler'] == '') {
         // The previous error handler was the default: all we should do is log error
         // to the default error log (if level high enough)
-        if (ini_get('log_errors') && (intval(ini_get('error_reporting')) & $errcode)) {
+        if (ini_get('log_errors') && ((int) (ini_get('error_reporting')) & $errcode)) {
             error_log($errstring);
         }
     } else {

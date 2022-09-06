@@ -183,7 +183,7 @@ class SKINEXPORT
                      "SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
                      $suborder2,
                      sql_table('skin'),
-                     intval($skinId)
+                     (int) $skinId
                  );
             $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
             $res = sql_query($sql);

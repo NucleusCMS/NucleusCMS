@@ -135,7 +135,7 @@ function getLatestVersion()
     }
 
     ADMIN::updateConfig('LatestVerText', $ret);
-    ADMIN::updateConfig('LatestVerReqTime', strval(time()));
+    ADMIN::updateConfig('LatestVerReqTime', (string) (time()));
 
     return $ret;
 }

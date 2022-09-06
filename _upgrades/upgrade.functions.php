@@ -59,7 +59,7 @@ function upgrade_checkinstall($version)
             }
             // no break
         default:  // 250 - 380
-            $query   = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%d LIMIT 1", sql_table('config'), intval($version));
+            $query   = sprintf("SELECT * FROM %s WHERE name='DatabaseVersion' and value>=%d LIMIT 1", sql_table('config'), (int) $version);
             $minrows = 1;
             break;
     }

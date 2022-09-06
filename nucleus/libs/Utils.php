@@ -96,7 +96,7 @@ class Utils
                     $locale,
                     $m
                 )) {
-                    $codepage = intval($m[1]);
+                    $codepage = (int) ($m[1]);
                     if (in_array($codepage, [1251, 1252])) {
                         $locale_mbcahrset = "windows-{$m[1]}";
                     } else {

@@ -15,7 +15,7 @@ class sqlite_functions
         $dbh->sqliteCreateFunction(
             'SUBSTRING',
             function () {
-                $st = intval(func_get_arg(1));
+                $st = (int) (func_get_arg(1));
                 if ($st > 0) {
                     $st--;
                 }
