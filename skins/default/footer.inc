@@ -7,8 +7,6 @@
 <div id="footer">
 <div id="copyrights">
 	<span>Copyright | <a href="http://nucleuscms.org"><%version%></a> | 
-	<a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0 Strict</a> | 
-	<a href="http://jigsaw.w3.org/css-validator/">Valid CSS</a> | 
 	<a href="#top"><%_(Back to top)%></a></span>
 </div>
 </div>

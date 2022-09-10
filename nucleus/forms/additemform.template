@@ -16,7 +16,7 @@
 	onclick="storeCaret(this);"
 	onselect="storeCaret(this);" 
 	onkeypress="shortCuts();"			   
-	class="formfield" size="45" value="" />
+	class="formfield" value="" />
    <br />
    <textarea name="body" id="inputbody" class="formfield" cols="45" rows="12" 
 	onkeyup="storeCaret(this); updPreview('body');"

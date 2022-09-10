@@ -188,6 +188,7 @@ class PAGEFACTORY extends BaseActions
         foreach (['itemtime', 'currenttime'] as $stime) {
             $s = [];
             foreach (explode(',', _EDIT_DATE_FORMAT) as $key => $value) {
+                $s[] = '<span style="white-space: nowrap;">';
                 switch ($value) {
                     case 'year':
                         $s[]
@@ -211,32 +212,39 @@ class PAGEFACTORY extends BaseActions
                 if (isset($spa[$key])) {
                     $s[] = $spa[$key];
                 }
+                $s[] = '</span>';
             }
-            $s[]
-                 = '<input id="inputhour" name="hour" tabindex="{%tabindex()%}" size="2" value="{%'
+            $s[] = '<div style="display: inline-block;"><span style="white-space: nowrap;">';
+            $s[] = '<input id="inputhour" name="hour" tabindex="{%tabindex()%}" size="2" value="{%'
                    . $stime
                    . '(hours)%}" onchange="document.forms[0].act_future.checked=true;" />';
             $key = 3;
             if (isset($spa[$key])) {
                 $s[] = $spa[$key];
             }
-            $s[]
-                 = '<input id="inputminutes" name="minutes" tabindex="{%tabindex()%}" size="2" value="{%'
+            $s[] = '</span>';
+
+            $s[] = '<span style="white-space: nowrap;">';
+            $s[] = '<input id="inputminutes" name="minutes" tabindex="{%tabindex()%}" size="2" value="{%'
                    . $stime
                    . '(minutes)%}" onchange="document.forms[0].act_future.checked=true;" />';
             $key = 4;
             if (isset($spa[$key])) {
                 $s[] = $spa[$key];
             }
+            $s[] = '</span></div>';
+
             $s[] = '<br />' . hsc(_ITEM_ADDEDITTEMPLATE_FORMAT)
                    . hsc(_EDIT_DATE_FORMAT_DESC);
 
+            $s[] = '<div style="display: inline-block;">';
             $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
                    . _ADD_DATEINPUTNOW
                    . '" onclick = "document.forms[0].act_future.checked=true;  return edit_form_change_date_now();" />';
             $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
                    . _ADD_DATEINPUTRESET . '" onclick = " return date_' . $stime
                    . '_reset();" />';
+            $s[] = '</div>';
 
             $items[$stime] = &$s;
             unset($s);

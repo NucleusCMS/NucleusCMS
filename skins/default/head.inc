@@ -2,6 +2,7 @@
 <html>
 <head>
 <meta charset="<%charset%>" />
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
 <!-- meta information for search engines -->
 <meta name="name" content="<%if(skintype,error)%><%sitevar(name)%><%else%><%blogsetting(name)%><%endif%>" />
@@ -19,6 +20,8 @@
 <!-- favorite icon -->
 <link rel="shortcut icon" href="<%sitevar(url)%>skins/default/favicon.ico" />
 <link rel="icon" href="<%sitevar(url)%>skins/default/favicon.ico" />
+
+<script src="<%skinfile(menu.js)%>"></script>
 
 <!-- navigation & page titles -->
 <%parsedinclude(navigation.inc)%>

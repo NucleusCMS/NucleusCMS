@@ -3145,7 +3145,7 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
-                        <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  hsc($blog->getDescription()) ?>" /></td>
+                        <td><input name="desc" tabindex="30" maxlength="200" value="<?php echo  hsc($blog->getDescription()) ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_URL ?></td>
@@ -4229,7 +4229,7 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
-                        <td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
+                        <td><input name="desc" tabindex="30" maxlength="200" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DEFSKIN ?>
@@ -4822,7 +4822,7 @@ selector();
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_DESC ?></td>
-                        <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+                        <td><input name="desc" tabindex="10020" maxlength="200" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_CREATE ?></td>
@@ -5330,7 +5330,7 @@ selector();
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_DESC; ?></td>
-                            <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+                            <td><input name="desc" tabindex="10020" maxlength="200" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_CREATE; ?></td>
@@ -5511,7 +5511,7 @@ selector();
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_DESC ?></td>
-                            <td><input name="desc" tabindex="100" value="<?php echo  hsc($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
+                            <td><input name="desc" tabindex="100" value="<?php echo  hsc($skin->getDescription()) ?>" maxlength="200" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_TYPE ?></td>
@@ -7228,6 +7228,7 @@ EOL;
                     <meta charset="<?php echo _CHARSET ?>" />
                     <meta name="robots" content="noindex, nofollow, noarchive" />
                     <title><?php echo hsc($CONF['SiteName']) ?> - Admin</title>
+                    <meta name="viewport" content="width=device-width,initial-scale=1">
                     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl ?>styles/admin_<?php echo $CONF["AdminCSS"] ?>.css" />
                     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl ?>styles/addedit.css" />
                     <style>
@@ -7244,6 +7245,7 @@ EOL;
                     <script type="text/javascript" src="<?php echo $baseUrl ?>javascript/jquery/jquery.cookie.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/edit.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/admin.js"></script>
+                    <script src="<?php echo $baseUrl ?>javascript/admin_menu.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/compatibility.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
                     <script>
