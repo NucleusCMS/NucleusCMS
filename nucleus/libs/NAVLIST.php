@@ -99,7 +99,7 @@ class NAVLIST extends ENCAPSULATE
             ['itemlist', 'browseownitems']
         );
         if ($enable_cat_select) {
-            $catid = isset($_POST['catid']) ? max(0, intval($_POST['catid']))
+            $catid = isset($_POST['catid']) ? max(0, (int) ($_POST['catid']))
                 : 0;
         }
         $view_item_options = isset($_POST['view_item_options'])
@@ -394,7 +394,7 @@ class NAVLIST extends ENCAPSULATE
                                                      $blogid,
                                                      $key
                                                  );
-                $count_cached[$cachekey][$key] = intval(quickQuery($query));
+                $count_cached[$cachekey][$key] = (int) (quickQuery($query));
             }
         }
 
@@ -468,7 +468,7 @@ class NAVLIST extends ENCAPSULATE
         $sql = 'SELECT catid , cname , count(inumber) as count FROM '
                  . sql_table('category')
                  . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
-                 . ' WHERE cblog=' . intval($blogid)
+                 . ' WHERE cblog=' . (int) $blogid
                  . " {$extraQuery} "
                  . ' group BY catid '
                  . ' ORDER BY corder ASC , cname ASC';
@@ -478,14 +478,14 @@ class NAVLIST extends ENCAPSULATE
             while ($row = sql_fetch_assoc($res)) {
                 $lists[] = sprintf(
                     '<option value="%d" %s>',
-                    intval($row['catid']),
-                    (intval($row['catid']) == $selected_catid ? 'selected'
+                    (int) ($row['catid']),
+                    ((int) ($row['catid']) == $selected_catid ? 'selected'
                     : '')
                 )
                            . hsc($row['cname'])
                            . sprintf('(%d)', $row['count']) . '</option>';
                 $total += $row['count'];
-                if (! $selected && intval($row['catid']) == $selected_catid) {
+                if (! $selected && (int) ($row['catid']) == $selected_catid) {
                     $selected = true;
                 }
             }
@@ -537,7 +537,7 @@ class NAVLIST extends ENCAPSULATE
               . sql_table('category')
               . ' LEFT JOIN ' . sql_table('item') . ' ON catid=icat '
               . ' LEFT JOIN ' . sql_table('blog') . ' ON cblog=bnumber '
-              . ' WHERE iauthor=' . intval($member->id)
+              . ' WHERE iauthor=' . (int) ($member->id)
               //              . (($blogid>0) ? sprintf(' cblog=%d', $blogid) : '')
               . " {$extraQuery} "
               . ' group BY catid '
@@ -558,15 +558,15 @@ class NAVLIST extends ENCAPSULATE
 
                 $lists[$b_id][] = sprintf(
                     '<option value="%d"%s>',
-                    intval($row['catid']),
-                    (intval($row['catid']) == $selected_catid ? ' selected'
+                    (int) ($row['catid']),
+                    ((int) ($row['catid']) == $selected_catid ? ' selected'
                     : '')
                 )
                                   . hsc($row['cname'])
                                   . sprintf('(%d)', $row['count'])
                                   . '</option>';
                 $total += $row['count'];
-                if (! $selected && intval($row['catid']) == $selected_catid) {
+                if (! $selected && (int) ($row['catid']) == $selected_catid) {
                     $selected = true;
                 }
             }

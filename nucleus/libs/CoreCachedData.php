@@ -85,7 +85,7 @@ class CoreCachedData
             }
             $res = quickQuery($sql);
 
-            return intval($res) > 0;
+            return (int) $res > 0;
         }
 
         return false;
@@ -215,7 +215,7 @@ class CoreCachedData
             $ret            = array_merge($row);
             $ret['name']    = & $ret['cd_name'];
             $ret['value']   = & $ret['cd_value'];
-            $ret['expired'] = intval($ret['expired']);
+            $ret['expired'] = (int) ($ret['expired']);
 
             return $ret;
         }

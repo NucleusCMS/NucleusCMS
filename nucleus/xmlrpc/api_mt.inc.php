@@ -216,7 +216,7 @@ function f_mt_getCategoryList($m)
 
 function f_mt_publishPost($m)
 {
-    $itemid   = intval(_getScalar($m, 0));
+    $itemid   = (int) (_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -225,7 +225,7 @@ function f_mt_publishPost($m)
 
 function f_mt_getPostCategories($m)
 {
-    $itemid   = intval(_getScalar($m, 0));
+    $itemid   = (int) (_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -234,7 +234,7 @@ function f_mt_getPostCategories($m)
 
 function f_mt_setPostCategories($m)
 {
-    $itemid   = intval(_getScalar($m, 0));
+    $itemid   = (int) (_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
 
@@ -265,10 +265,10 @@ function f_mt_setPostCategories($m)
 
 function f_mt_getRecentPostTitles($m)
 {
-    $blogid   = intval(_getScalar($m, 0));
+    $blogid   = (int) (_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
-    $iAmount  = intval(_getScalar($m, 3));
+    $iAmount  = (int) (_getScalar($m, 3));
 
     return _mt_getRecentPostTitles($blogid, $username, $password, $iAmount);
 }
@@ -277,7 +277,7 @@ function f_mt_getTrackbackPings($m)
 {
     global $manager;
 
-    $itemid = intval(_getScalar($m, 0));
+    $itemid = (int) (_getScalar($m, 0));
 
     $trackbacks = [];
     $tbstruct   = [];
@@ -436,7 +436,7 @@ function _mt_categoryList($blogid, $username, $password)
 
     $query = "SELECT cname, cdesc, catid"
         . ' FROM ' . sql_table('category')
-        . " WHERE cblog=" . intval($blogid)
+        . " WHERE cblog=" . (int) $blogid
         . " ORDER BY cname";
     $r = sql_query($query);
 

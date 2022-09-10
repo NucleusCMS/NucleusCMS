@@ -4,6 +4,18 @@
 	admin area style
 */
 
+@media screen and (max-width: 600px) {
+    #quickmenu, .loginname { position: relative; }
+    #content   { margin: 0; }
+     h1.header  { margin-left: 35px; }
+}
+@media screen and (min-width: 601px) {
+    .loginname { position: absolute; z-index: 100; right: 10px; }
+    #quickmenu { position: absolute; }
+    #content   { margin-left: 163px; }
+    h1.header  { margin: 0 0 5px 135px; }
+}
+
 body {
     background: #fff url(contemporary/background.png) repeat-x;
     color: #333;
@@ -14,6 +26,20 @@ body {
 td, th, textarea, option {
     font-size: inherit;
     font-family: inherit;
+}
+
+input[name="name"], input[name="desc"], input[name="shortname"], input[name="realname"],
+input[name="password"], input[name="repeatpassword"], input[name="email"], input[name="url"],
+input[name="notes"], input[name="type"], input[name="inc_prefix"],    
+input[name="AdminEmail"], input[name="SiteName"], input[name="IndexURL"], input[name="AllowedTypes"],
+input[name="AdminURL"], input[name="PluginURL"], input[name="SkinsURL"], input[name="ActionURL"],
+input[name="DisableSiteURL"], input[name="MediaURL"],
+input[name="CookiePrefix"], input[name="CookiePath"], input[name="CookieDomain"],
+input[name="title"], textarea[name="body"], textarea[name="more"], textarea[name="info"]
+{
+    width: 100%;
+    width: -moz-available;
+    width: -webkit-fill-available;
 }
 
 input[type=submit], input[type=button], input[type=file], button, select {
@@ -88,7 +114,6 @@ h1 {
     letter-spacing: 0.1em;
     /*color: #0001AA;	*/
     color: #596d9d;
-    margin: 0 0 5px 135px;
     height: 35px;
     /*display: none;	hide the header if you don't want it*/
 
@@ -102,7 +127,6 @@ h1 {
 	the top of the quickmenu and the contents will not line up
 */
 #quickmenu {
-    position: absolute;
     overflow: hidden;
 
     top: 10px;
@@ -176,9 +200,6 @@ h1 {
 }
 
 .loginname {
-    position: absolute;
-    z-index: 100;
-    right: 10px;
     text-align: right;
     line-height: normal;
     padding: 9px;
@@ -190,7 +211,6 @@ h1 {
 /* page content */
 #content {
     position: relative;
-    margin-left: 163px;
     text-decoration: none;
     color: #333;
     text-align: justify;

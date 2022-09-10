@@ -232,7 +232,7 @@ function f_nucleus_editItem($m)
 {
     global $manager;
 
-    $itemid   = intval(_getScalar($m, 0));
+    $itemid   = (int) (_getScalar($m, 0));
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
     $title    = _getScalar($m, 3);

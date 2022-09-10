@@ -173,7 +173,7 @@ EOL;
         sql_query($query);
 
         $query = "SELECT COUNT(*) FROM `{$tablename}` WHERE logtype='error'";
-        $ct    = intval(quickQuery($query));
+        $ct    = (int) (quickQuery($query));
         if ($ct < 20) {
             return;
         }

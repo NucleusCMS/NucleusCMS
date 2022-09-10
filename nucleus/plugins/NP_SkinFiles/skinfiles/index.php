@@ -280,7 +280,7 @@ function sfShowDirectory($default = '')
 
     $directory = $default != '' ?
         $default :
-        sfExpandDirectory(trim(strval(requestVar('dir'))));
+        sfExpandDirectory(trim((string) (requestVar('dir'))));
 
     if (!sfValidPath($directory) || !is_dir($directory)) {
         $directory = $rootDirectory;

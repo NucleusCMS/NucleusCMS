@@ -22,7 +22,7 @@ if (isset($CONF['DatabaseName']) && $CONF['DatabaseName'] != 'Nucleus') {
     echo renderPage($content);
     exit;
 }
-if (intval($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID || intGetVar('from') >= NUCLEUS_UPGRADE_VERSION_ID) {
+if ((int) ($CONF['DatabaseVersion']) >= NUCLEUS_UPGRADE_VERSION_ID || intGetVar('from') >= NUCLEUS_UPGRADE_VERSION_ID) {
     $query = "SELECT count(*) as result FROM `[@prefix@]config` WHERE name='DatabaseName' AND value='Nucleus'";
     if (!quickQuery(parseQuery($query))) {
         $content = upgrade_error('It is an incompatible database.');

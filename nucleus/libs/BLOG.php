@@ -1690,7 +1690,7 @@ class BLOG
 
     public function getID()
     {
-        return intVal($this->blogid);
+        return (int) $this->blogid;
     }
 
     /**

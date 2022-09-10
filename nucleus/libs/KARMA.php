@@ -136,7 +136,7 @@ class KARMA
                    sql_real_escape_string($ip)
                );
 
-        return (intval(quickQuery($sql)) == 0);
+        return ((int) (quickQuery($sql)) == 0);
     }
 
     // save IP in database so no multiple votes are possible

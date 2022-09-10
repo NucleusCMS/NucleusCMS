@@ -68,7 +68,7 @@ function media_select()
             <input id="media_filter" type="text" name="filter" value="<?php echo hsc($filter) ?>" />
             <input type="submit" name="action" value="<?php echo hsc(_MEDIA_FILTER_APPLY) ?>" />
             <input type="hidden" name="collection" value="<?php echo hsc($currentCollection) ?>" />
-            <input type="hidden" name="offset" value="<?php echo intval($offset) ?>" />
+            <input type="hidden" name="offset" value="<?php echo (int) $offset ?>" />
         </div>
     </form>
 
@@ -246,7 +246,7 @@ function media_upload()
     $filetype     = $uploadInfo['type'];
     $filesize     = $uploadInfo['size'];
     $filetempname = $uploadInfo['tmp_name'];
-    $fileerror    = intval($uploadInfo['error']);
+    $fileerror    = (int) ($uploadInfo['error']);
 
     // clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
     $filename = cleanFileName($filename);

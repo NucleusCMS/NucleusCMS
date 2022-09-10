@@ -463,7 +463,7 @@ function f_metaWeblog_getRecentPosts($m)
     $blogid   = _getScalar($m, 0);
     $username = _getScalar($m, 1);
     $password = _getScalar($m, 2);
-    $amount   = intval(_getScalar($m, 3));
+    $amount   = (int) (_getScalar($m, 3));
 
     return _getRecentItemsMetaWeblog($blogid, $username, $password, $amount);
 }
@@ -631,7 +631,7 @@ function _categoryList($blogid, $username, $password)
 
     $query = "SELECT cname, cdesc, catid"
         . ' FROM ' . sql_table('category')
-        . " WHERE cblog=" . intval($blogid)
+        . " WHERE cblog=" . (int) $blogid
         . " ORDER BY cname";
     $r = sql_query($query);
 

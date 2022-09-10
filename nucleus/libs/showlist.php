@@ -257,8 +257,8 @@ function listplug_table_teamlist($template, $type)
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             $url = 'index.php?action=teamchangeadmin&memberid='
-                   . intval($current->tmember) . '&blogid='
-                   . intval($current->tblog);
+                   . (int) ($current->tmember) . '&blogid='
+                   . (int) ($current->tblog);
             $url = $manager->addTicketToUrl($url);
             echo "<td><a href='", hsc($url), "' tabindex='"
                                              . $template['tabindex'] . "'>"
@@ -362,7 +362,7 @@ function listplug_table_pluginlist($template, $type)
             }
             echo '<td style="white-space:nowrap;">';
 
-            $baseUrl = 'index.php?plugid=' . intval($current->pid) . '&action=';
+            $baseUrl = 'index.php?plugid=' . (int) ($current->pid) . '&action=';
             $url     = $manager->addTicketToUrl($baseUrl . 'pluginup');
             echo "<a href='", hsc($url), "' tabindex='" . $template['tabindex']
                                          . "'>", _LIST_PLUGS_UP, "</a>";
@@ -627,8 +627,8 @@ function listplug_table_commentlist($template, $type)
                 $show_action_link_itemcommentlist = ($action
                                                      == 'blogcommentlist');
             } else {
-                $current->iauthor = intval($current->iauthor);
-                $current->cmember = intval($current->cmember);
+                $current->iauthor = (int) ($current->iauthor);
+                $current->cmember = (int) ($current->cmember);
                 $show_action_link = ($current->cmember
                                                      == $member->id)
                                                     || ($current->iauthor
@@ -839,7 +839,7 @@ function listplug_table_templatelist($template, $type)
 
             $url
                 = $manager->addTicketToUrl('index.php?action=templateclone&templateid='
-                                           . intval($current->tdnumber));
+                                           . (int) ($current->tdnumber));
             echo "<td style=\"white-space:nowrap\"><a href='", hsc($url), "' tabindex='"
                                                                           . $template['tabindex']
                                                                           . "'>"
@@ -1063,7 +1063,7 @@ function listplug_table_skinlist($template, $type)
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             $url = $manager->addTicketToUrl('index.php?action=skinclone&skinid='
-                                            . intval($current->sdnumber));
+                                            . (int) ($current->sdnumber));
             echo "<td style=\"white-space:nowrap\"><a href='", hsc($url), "' tabindex='"
                                                                           . $template['tabindex']
                                                                           . "'>"
@@ -1149,7 +1149,7 @@ function listplug_table_banlist($template, $type)
 
             echo '<td>', hsc($current->iprange), '</td>';
             echo '<td>', hsc($current->reason), '</td>';
-            echo "<td><a href='index.php?action=banlistdelete&amp;blogid=", intval($current->blogid), "&amp;iprange=", hsc($current->iprange), "'>", _LISTS_DELETE, "</a></td>";
+            echo "<td><a href='index.php?action=banlistdelete&amp;blogid=", (int) ($current->blogid), "&amp;iprange=", hsc($current->iprange), "'>", _LISTS_DELETE, "</a></td>";
             break;
     }
 }

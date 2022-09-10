@@ -188,55 +188,63 @@ class PAGEFACTORY extends BaseActions
         foreach (['itemtime', 'currenttime'] as $stime) {
             $s = [];
             foreach (explode(',', _EDIT_DATE_FORMAT) as $key => $value) {
+                $s[] = '<span style="white-space: nowrap;">';
                 switch ($value) {
                     case 'year':
                         $s[]
-                            = '<input id="inputyear" name="year" tabindex="<%tabindex()%>" size="4" value="<%'
+                            = '<input id="inputyear" name="year" tabindex="{%tabindex()%}" size="4" value="{%'
                               . $stime
-                              . '(year)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                              . '(year)%}" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
                     case 'month':
                         $s[]
-                            = '<input id="inputmonth" name="month" tabindex="<%tabindex()%>" size="2" value="<%'
+                            = '<input id="inputmonth" name="month" tabindex="{%tabindex()%}" size="2" value="{%'
                               . $stime
-                              . '(mon)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                              . '(mon)%}" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
                     case 'day':
                         $s[]
-                            = '<input id="inputday" name="day" tabindex="<%tabindex()%>" size="2" value="<%'
+                            = '<input id="inputday" name="day" tabindex="{%tabindex()%}" size="2" value="{%'
                               . $stime
-                              . '(mday)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                              . '(mday)%}" onchange="document.forms[0].act_future.checked=true;" />';
                         break;
                 }
                 if (isset($spa[$key])) {
                     $s[] = $spa[$key];
                 }
+                $s[] = '</span>';
             }
-            $s[]
-                 = '<input id="inputhour" name="hour" tabindex="<%tabindex()%>" size="2" value="<%'
+            $s[] = '<div style="display: inline-block;"><span style="white-space: nowrap;">';
+            $s[] = '<input id="inputhour" name="hour" tabindex="{%tabindex()%}" size="2" value="{%'
                    . $stime
-                   . '(hours)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                   . '(hours)%}" onchange="document.forms[0].act_future.checked=true;" />';
             $key = 3;
             if (isset($spa[$key])) {
                 $s[] = $spa[$key];
             }
-            $s[]
-                 = '<input id="inputminutes" name="minutes" tabindex="<%tabindex()%>" size="2" value="<%'
+            $s[] = '</span>';
+
+            $s[] = '<span style="white-space: nowrap;">';
+            $s[] = '<input id="inputminutes" name="minutes" tabindex="{%tabindex()%}" size="2" value="{%'
                    . $stime
-                   . '(minutes)%>" onchange="document.forms[0].act_future.checked=true;" />';
+                   . '(minutes)%}" onchange="document.forms[0].act_future.checked=true;" />';
             $key = 4;
             if (isset($spa[$key])) {
                 $s[] = $spa[$key];
             }
+            $s[] = '</span></div>';
+
             $s[] = '<br />' . hsc(_ITEM_ADDEDITTEMPLATE_FORMAT)
                    . hsc(_EDIT_DATE_FORMAT_DESC);
 
-            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'
+            $s[] = '<div style="display: inline-block;">';
+            $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
                    . _ADD_DATEINPUTNOW
                    . '" onclick = "document.forms[0].act_future.checked=true;  return edit_form_change_date_now();" />';
-            $s[] = '<input tabindex="<%tabindex()%>" type="button" value="'
+            $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
                    . _ADD_DATEINPUTRESET . '" onclick = " return date_' . $stime
                    . '_reset();" />';
+            $s[] = '</div>';
 
             $items[$stime] = &$s;
             unset($s);
@@ -251,21 +259,11 @@ class PAGEFACTORY extends BaseActions
             $items['itemtime']
         );
 
-        $data = str_replace(
-            '<%date_time_picker%>',
-            $items['currenttime'],
-            $data
-        );
-        $data = str_replace(
-            '<%date_time_picker(currenttime)%>',
-            $items['currenttime'],
-            $data
-        );
-        $data = str_replace(
-            '<%date_time_picker(itemtime)%>',
-            $items['itemtime'],
-            $data
-        );
+        $data = strtr($data, [
+            '{%date_time_picker%}'              => $items['currenttime'],
+            '{%date_time_picker(currenttime)%}' => $items['currenttime'],
+            '{%date_time_picker(itemtime)%}'    => $items['itemtime'],
+        ]);
     }
 
     // create category dropdown box
@@ -397,7 +395,7 @@ class PAGEFACTORY extends BaseActions
     public function parse_text($which)
     {
         if (defined($which)) {
-            echo strval(constant($which));
+            echo (string) (constant($which));
         } else {
             echo $which;    // this way we see where definitions are missing
         }
@@ -643,7 +641,7 @@ class PAGEFACTORY extends BaseActions
         }
         $inc = (int)$inc;
         if (isset($manager->parserPrefs[$name])) {
-            $value = intval($manager->getParserProperty($name));
+            $value = (int) ($manager->getParserProperty($name));
         }
         printf("%d", $value);
         if ($inc !== 0) {
@@ -658,7 +656,7 @@ class PAGEFACTORY extends BaseActions
             $inc = 1;
         }
         $name  = 'tabindex' . $key;
-        $value = intval($baseindex) + intval($inc);
+        $value = (int) $baseindex + (int) $inc;
         $manager->setParserProperty($name, $value);
     }
 
@@ -672,7 +670,7 @@ class PAGEFACTORY extends BaseActions
         $nameto = 'tabindex' . $keyto;
         $value  = "";
         if (isset($manager->parserPrefs[$namefrom])) {
-            $value = intval($manager->getParserProperty($namefrom));
+            $value = (int) ($manager->getParserProperty($namefrom));
         }
         $manager->setParserProperty($nameto, $value);
     }
@@ -687,7 +685,7 @@ class PAGEFACTORY extends BaseActions
         $value = 0;
         $inc   = (int)$inc;
         if (isset($manager->parserPrefs[$name])) {
-            $value = intval($manager->getParserProperty($name));
+            $value = (int) ($manager->getParserProperty($name));
         }
         if ($inc !== 0) {
             $manager->setParserProperty($name, $value + $inc);

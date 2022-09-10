@@ -155,3 +155,10 @@ ul.nobullets {
 input, textarea, select {
     font: inherit;
 }
+
+input[name="title"], textarea[name="body"], textarea[name="more"]
+{
+    width: 100%;
+    width: -moz-available;
+    width: -webkit-fill-available;
+}

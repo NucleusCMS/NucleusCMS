@@ -4,6 +4,53 @@
   Mods by hcgtv and moraes
 -------------------------------------------------*/
 
+#menu_region {
+    display: none;
+}
+
+@media screen and (max-width: 719px) {
+    .content   { padding: 2em; }
+    #sidebarcontainer {
+        top: 50px;
+        display: none;
+        /*display: block;*/
+    }
+    #menu_region {
+        background-color: rgba(255, 251, 182, 0.2);
+        position: fixed;
+        width: 100%;
+        height: 100%;
+        top: 0;
+        z-index: 100;
+        overflow: scroll;
+        display: none;
+        /*display: block;*/
+    }
+    #menu_btn {
+        display: block;
+        position: fixed; top: 4px; left: 4px; z-index: 100000;
+        width: 24px; height: 30px; padding: 2px;
+        border-radius: 10px;
+        background-color: white;
+    }
+}
+
+@media screen and (min-width: 720px) {
+    #header, #mainwrapper, #wrapper, #container, #footer {
+        width: 704px;
+    }
+    #container { margin-right: -204px; }
+    #wrapper   { background: white url(images/bgcontainer02.gif) repeat-y right; }
+    .content   { margin: 7px 224px 30px 20px; padding: 0; }
+    #sidebarcontainer {
+        display: inline-block !important;
+        position: absolute !important;
+        z-index: unset;
+        top: unset;
+    }
+    #menu_region, #menu_btn { display: none !important; }
+}
+
 /*-------------------------------------------------
   General layout
 -------------------------------------------------*/
@@ -83,7 +130,7 @@ a:hover, a:active
 }
 .clearing
 {
-	width: 704px;
+	width: auto;
 	height: 0;
 	clear: both;
 }
@@ -94,7 +141,6 @@ a:hover, a:active
 #header
 {
 	position: relative;
-	width: 704px;
 	height: 100px;
 	/*height: 168px;*/
 	/* large header image is defined below */
@@ -133,7 +179,6 @@ a:hover, a:active
 -------------------------------------------------*/
 #mainwrapper
 {
-	width: 704px;
 	background: white;
 	border-width: 0 2px;
 	border-style: solid;
@@ -142,8 +187,6 @@ a:hover, a:active
 }
 #wrapper
 {
-	width: 704px;
-	background: white url(images/bgcontainer02.gif) repeat-y right;
 	margin: auto;
 }
 
@@ -152,17 +195,10 @@ a:hover, a:active
 -------------------------------------------------*/
 #container
 {
-	width: 704px;
 	height: 1%;
 	overflow: visible;
 	float: left;
 	padding: 4px 0 0 0;
-	margin-right: -204px;
-}
-.content
-{
-	padding: 0;
-	margin: 7px 224px 30px 20px;
 }
 
 /*-------------------------------------------------
@@ -351,7 +387,6 @@ a:hover, a:active
 {
 	/*background: #FCD21B;*/
 	background: #CAB8D9;
-	width: 704px;
 	text-align: center;
 	padding: 10px 0 10px 0;
 	border-width: 0px 2px 2px 2px;
@@ -459,7 +494,7 @@ a:hover, a:active
 }
 .commentform .formbutton
 {
-	width: 100px;
+	min-width: 100px;
 	height: 22px;
 	font-family: Tahoma, Arial, Trebuchet MS, Verdana, sans-serif;
 }

@@ -303,10 +303,10 @@ class COMMENTACTIONS extends BaseActions
      */
     public function parse_itemtitle($maxLength = 0)
     {
-        if (! is_numeric($maxLength) || intval($maxLength) == 0) {
+        if (! is_numeric($maxLength) || (int) $maxLength == 0) {
             echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         } else {
-            $this->commentsObj->itemActions->parse_syndicate_title(intval($maxLength));
+            $this->commentsObj->itemActions->parse_syndicate_title((int) $maxLength);
         }
     }
 
@@ -618,8 +618,8 @@ class COMMENTACTIONS extends BaseActions
         // when no parameter is defined, just check if item author is current visitor
         if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor'
              && $name != 'isonteam')) {
-            return (intval($member->getID()) > 0
-                    && intval($member->getID()) == intval($citem['authorid']));
+            return ((int) ($member->getID()) > 0
+                    && (int) ($member->getID()) == (int) ($citem['authorid']));
         }
 
         // check comment author name
@@ -635,7 +635,7 @@ class COMMENTACTIONS extends BaseActions
 
         // check if comment author is admin
         if ($name == 'isadmin') {
-            $blogid = intval($b->getID());
+            $blogid = (int) ($b->getID());
             if ($mem->isAdmin()) {
                 return true;
             }
@@ -645,13 +645,13 @@ class COMMENTACTIONS extends BaseActions
 
         // check if comment author is item author
         if ($name == 'isauthor') {
-            return (intval($citem['authorid'])
-                    == intval($this->currentComment['memberid']));
+            return ((int) ($citem['authorid'])
+                    == (int) ($this->currentComment['memberid']));
         }
 
         // check if comment author is on team
         if ($name == 'isonteam') {
-            return $mem->teamRights(intval($b->getID()));
+            return $mem->teamRights((int) ($b->getID()));
         }
 
         return false;
@@ -816,9 +816,9 @@ class COMMENTACTIONS extends BaseActions
              = sprintf(
                  "SELECT COUNT(*) as result FROM %s WHERE citem = %d LIMIT 1",
                  sql_table('comment'),
-                 intval($this->currentItem->itemid)
+                 (int) ($this->currentItem->itemid)
              );
-        $res = intval(quickQuery($sqlText));
+        $res = (int) (quickQuery($sqlText));
 
         return ($res > 0);
     }

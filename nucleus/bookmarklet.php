@@ -277,9 +277,9 @@ function bm_doShowForm()
     global $member;
 
     $blogid        = intRequestVar('blogid');
-    $log_text      = trim(strval(requestVar('logtext')));
-    $log_link      = strval(requestVar('loglink'));
-    $log_linktitle = strval(requestVar('loglinktitle'));
+    $log_text      = trim((string) (requestVar('logtext')));
+    $log_link      = (string) (requestVar('loglink'));
+    $log_linktitle = (string) (requestVar('loglinktitle'));
 
     if (function_exists('mb_convert_encoding')) {
         $log_text      = uniDecode($log_text, _CHARSET);

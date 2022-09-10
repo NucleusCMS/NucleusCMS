@@ -3145,7 +3145,7 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
-                        <td><input name="desc" tabindex="30" maxlength="200" size="40" value="<?php echo  hsc($blog->getDescription()) ?>" /></td>
+                        <td><input name="desc" tabindex="30" maxlength="200" value="<?php echo  hsc($blog->getDescription()) ?>" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_URL ?></td>
@@ -4229,7 +4229,7 @@ class ADMIN
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DESC ?></td>
-                        <td><input name="desc" tabindex="30" maxlength="200" size="40" /></td>
+                        <td><input name="desc" tabindex="30" maxlength="200" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _EBLOG_DEFSKIN ?>
@@ -4822,7 +4822,7 @@ selector();
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_DESC ?></td>
-                        <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+                        <td><input name="desc" tabindex="10020" maxlength="200" /></td>
                     </tr>
                     <tr>
                         <td><?php echo _TEMPLATE_CREATE ?></td>
@@ -5330,7 +5330,7 @@ selector();
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_DESC; ?></td>
-                            <td><input name="desc" tabindex="10020" maxlength="200" size="50" /></td>
+                            <td><input name="desc" tabindex="10020" maxlength="200" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_CREATE; ?></td>
@@ -5511,7 +5511,7 @@ selector();
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_DESC ?></td>
-                            <td><input name="desc" tabindex="100" value="<?php echo  hsc($skin->getDescription()) ?>" maxlength="200" size="50" /></td>
+                            <td><input name="desc" tabindex="100" value="<?php echo  hsc($skin->getDescription()) ?>" maxlength="200" /></td>
                         </tr>
                         <tr>
                             <td><?php echo _SKIN_TYPE ?></td>
@@ -6262,23 +6262,23 @@ selector();
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_SITEURL ?></td>
-                                <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  hsc($CONF['IndexURL']) ?>" /></td>
+                                <td><input name="IndexURL" tabindex="10030" size="40" value="<?php echo  hsc($CONF['IndexURL']) ?>" pattern="^https?://.+/$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_ADMINURL ?></td>
-                                <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  hsc($CONF['AdminURL']) ?>" /></td>
+                                <td><input name="AdminURL" tabindex="10040" size="40" value="<?php echo  hsc($CONF['AdminURL']) ?>" pattern="^https?://.+/$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_PLUGINURL ?> <?php help('pluginurl'); ?></td>
-                                <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  hsc($CONF['PluginURL']) ?>" /></td>
+                                <td><input name="PluginURL" tabindex="10045" size="40" value="<?php echo  hsc($CONF['PluginURL']) ?>" pattern="^https?://.+$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_SKINSURL ?> <?php help('skinsurl'); ?></td>
-                                <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  hsc($CONF['SkinsURL']) ?>" /></td>
+                                <td><input name="SkinsURL" tabindex="10046" size="40" value="<?php echo  hsc($CONF['SkinsURL']) ?>" pattern="^https?://.+$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_ACTIONSURL ?> <?php help('actionurl'); ?></td>
-                                <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  hsc($CONF['ActionURL']) ?>" /></td>
+                                <td><input name="ActionURL" tabindex="10047" size="40" value="<?php echo  hsc($CONF['ActionURL']) ?>" pattern="^https?://.+$" /></td>
                             </tr>
                             <tr>
                                 <td><?php echo _SETTINGS_LANGUAGE ?> <?php help('language'); ?>
@@ -6407,7 +6407,10 @@ selector();
                 $CONF['DefaultListSize'] = 10;
             }
         ?>
-                                    <input name="DefaultListSize" tabindex="10079" size="40" value="<?php echo  hsc(((int) $CONF['DefaultListSize'] < 1 ? '10' : $CONF['DefaultListSize'])) ?>" />
+                                    <input type="number" name="DefaultListSize" tabindex="10079" size="10em"
+                                           value="<?php echo  hsc(((int) $CONF['DefaultListSize'] < 1 ? '10' : $CONF['DefaultListSize'])) ?>"
+                                           min="0" pattern="^[0-9]+$"
+                                           />
                                 </td>
                             </tr>
                             <tr>
@@ -6482,7 +6485,7 @@ selector();
                             <tr>
                                 <td><?php echo _SETTINGS_MAXUPLOADSIZE ?></td>
                                 <td>
-                                    <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  hsc($CONF['MaxUploadSize']) ?>" />
+                                    <input name="MaxUploadSize" tabindex="10105" size="40" value="<?php echo  hsc($CONF['MaxUploadSize']) ?>" pattern="^[0-9]+$" />
                                 </td>
                             </tr>
                             <tr>
@@ -7225,6 +7228,7 @@ EOL;
                     <meta charset="<?php echo _CHARSET ?>" />
                     <meta name="robots" content="noindex, nofollow, noarchive" />
                     <title><?php echo hsc($CONF['SiteName']) ?> - Admin</title>
+                    <meta name="viewport" content="width=device-width,initial-scale=1">
                     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl ?>styles/admin_<?php echo $CONF["AdminCSS"] ?>.css" />
                     <link rel="stylesheet" title="Nucleus Admin Default" type="text/css" href="<?php echo $baseUrl ?>styles/addedit.css" />
                     <style>
@@ -7241,6 +7245,7 @@ EOL;
                     <script type="text/javascript" src="<?php echo $baseUrl ?>javascript/jquery/jquery.cookie.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/edit.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/admin.js"></script>
+                    <script src="<?php echo $baseUrl ?>javascript/admin_menu.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/compatibility.js"></script>
                     <script src="<?php echo $baseUrl ?>javascript/jquery/ui/core_widget_tabs.min.js"></script>
                     <script>

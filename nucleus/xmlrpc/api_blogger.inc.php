@@ -73,7 +73,7 @@ function f_blogger_editPost($m)
 {
     global $manager;
 
-    $itemid   = intval(_getScalar($m, 1));
+    $itemid   = (int) (_getScalar($m, 1));
     $username = _getScalar($m, 2);
     $password = _getScalar($m, 3);
     $content  = _getScalar($m, 4);

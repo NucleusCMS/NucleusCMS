@@ -128,7 +128,7 @@ class ConvertInstaller
     public function showLogin($type)
     {
         $this->printHead($this->_('Login Please'));
-        $name = isset($_POST['login']) ? "value='".hsc(strval($_POST['login']))."' " : '';
+        $name = isset($_POST['login']) ? "value='".hsc((string) ($_POST['login']))."' " : '';
         ?>
         <h1><?php echo $this->_('Login Please'); ?></h1>
         <p><?php echo  $this->_('Enter your data'); ?>:</p>
