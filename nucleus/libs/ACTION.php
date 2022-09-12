@@ -545,17 +545,18 @@ class ACTION
     {
         global $manager;
 
-        if ($manager->checkTicket()) {
-            $manager->loadClass('ITEM');
-            $info = ITEM::createDraftFromRequest();
-
-            if ($info['status'] === 'error') {
-                echo $info['message'];
-            } else {
-                echo $info['draftid'];
-            }
-        } else {
+        if (!$manager->checkTicket()) {
             echo _ERROR . ':' . _ERROR_BADTICKET;
+            return false;
+        }
+
+        $manager->loadClass('ITEM');
+        $info = ITEM::createDraftFromRequest();
+
+        if ($info['status'] === 'error') {
+            echo $info['message'];
+        } else {
+            echo $info['draftid'];
         }
 
         return false;

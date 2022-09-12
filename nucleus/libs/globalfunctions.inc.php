@@ -130,7 +130,7 @@ function getLatestVersion()
         $options
     );
 
-    if (empty($ret) || ! preg_match('@^[0-9\./]+$@ms', $ret)) {
+    if (empty($ret) || ! preg_match('@^[0-9./]+$@ms', $ret)) {
         $ret = '';
     }
 
@@ -145,13 +145,7 @@ function getLatestVersion()
  */
 function sql_table($name = '')
 {
-    global $DB_PREFIX;
-
-    if (strlen($DB_PREFIX) > 0) {
-        return $DB_PREFIX . 'nucleus_' . $name;
-    }
-
-    return 'nucleus_' . $name;
+    return globalVar('DB_PREFIX', '') . 'nucleus_' . $name;
 }
 
 function sendContentType($contenttype, $pagetype = '', $charset = _CHARSET)
@@ -295,25 +289,22 @@ function parseHighlight($query)
 function isValidMailAddress($address)
 {
     // enhancement made in 3.6x based on code by Quandary.
-    if (preg_match(
-        '/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/',
-        $address
-    )) {
-        return 1;
+    $pattern = '/^(?!\\.)(?:\\.?[-a-zA-Z0-9!#$%&\'*+\\/=?^_`{|}~]+)+@(?!\\.)(?:\\.?(?!-)[-a-zA-Z0-9]+(?<!-)){2,}$/';
+    if (!preg_match($pattern, $address)) {
+        return 0;
     }
 
-    return 0;
+    return 1;
 }
 
 // some helper functions
 function getBlogIDFromName($bshortname)
 {
     $ph['bshortname'] = sql_quote_string($bshortname);
-    $res
-                      = parseQuickQuery(
-                          "SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=[@bshortname@]",
-                          $ph
-                      );
+    $res = parseQuickQuery(
+        "SELECT bnumber as result FROM [@prefix@]blog WHERE bshortname=[@bshortname@]",
+        $ph
+    );
     if ($res === false) {
         return false;
     }
@@ -334,11 +325,10 @@ function getBlogNameFromID($bnumber)
 function getBlogIDFromItemID($inumber)
 {
     $ph['inumber'] = (int)$inumber;
-    $res
-                   = parseQuickQuery(
-                       'SELECT iblog as result FROM [@prefix@]item WHERE inumber=[@inumber@]',
-                       $ph
-                   );
+    $res = parseQuickQuery(
+        'SELECT iblog as result FROM [@prefix@]item WHERE inumber=[@inumber@]',
+        $ph
+    );
     if ($res === false) {
         return false;
     }
@@ -349,11 +339,10 @@ function getBlogIDFromItemID($inumber)
 function getBlogIDFromCommentID($cnumber)
 {
     $ph['cnumber'] = (int)$cnumber;
-    $res
-                   = parseQuickQuery(
-                       'SELECT cblog as result FROM [@prefix@]comment WHERE cnumber=[@cnumber@]',
-                       $ph
-                   );
+    $res = parseQuickQuery(
+        'SELECT cblog as result FROM [@prefix@]comment WHERE cnumber=[@cnumber@]',
+        $ph
+    );
     if ($res === false) {
         return false;
     }
@@ -364,11 +353,10 @@ function getBlogIDFromCommentID($cnumber)
 function getBlogIDFromCatID($catid)
 {
     $ph['catid'] = (int)$catid;
-    $res
-                 = parseQuickQuery(
-                     'SELECT cblog as result FROM [@prefix@]category WHERE catid=[@catid@]',
-                     $ph
-                 );
+    $res = parseQuickQuery(
+        'SELECT cblog as result FROM [@prefix@]category WHERE catid=[@catid@]',
+        $ph
+    );
     if ($res === false) {
         return false;
     }
@@ -379,11 +367,10 @@ function getBlogIDFromCatID($catid)
 function getCatIDFromName($cname)
 {
     $ph['cname'] = sql_quote_string($cname);
-    $res
-                 = parseQuickQuery(
-                     "SELECT catid as result FROM [@prefix@]category WHERE cname=[@cname@]",
-                     $ph
-                 );
+    $res = parseQuickQuery(
+        "SELECT catid as result FROM [@prefix@]category WHERE cname=[@cname@]",
+        $ph
+    );
     if ($res === false) {
         return false;
     }
@@ -417,11 +404,12 @@ function quickQuery($sqlText, $cacheClear = false)
 function getPluginNameFromPid($pid)
 {
     $ph['pid'] = (int)$pid;
-    $res
-               = sql_query(parseQuery(
-                   'SELECT pfile FROM `[@prefix@]plugin` WHERE pid=[@pid@]',
-                   $ph
-               ));
+    $res = sql_query(
+        parseQuery(
+            'SELECT pfile FROM `[@prefix@]plugin` WHERE pid=[@pid@]',
+            $ph
+        )
+    );
     if (! $res || ! ($obj = sql_fetch_object($res))) {
         return false;
     }
@@ -2087,8 +2075,9 @@ function stringToAttribute($string)
         $string = entity::numeric_to_utf8($string);
     }
 
-    $string = entity::specialchars($string, 'html');
-    $string = entity::numeric_to_named($string);
+    $string = entity::numeric_to_named(
+        entity::specialchars($string, 'html')
+    );
 
     return $string;
 }
