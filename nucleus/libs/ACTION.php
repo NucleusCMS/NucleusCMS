@@ -34,23 +34,18 @@ class ACTION
         switch ($action) {
             case 'autodraft':
                 return $this->autoDraft();
-                break;
 
             case 'updateticket':
                 return $this->updateTicket();
-                break;
 
             case 'addcomment':
                 return $this->addComment();
-                break;
 
             case 'sendmessage':
                 return $this->sendMessage();
-                break;
 
             case 'createaccount':
                 return $this->createAccount();
-                break;
 
             case 'forgotpassword':
                 $this->forgotPassword();
@@ -119,37 +114,33 @@ class ACTION
             );
         } // end if
 
-        $comments = new COMMENTS($post['itemid']);
-
         $blog_id = getBlogIDFromItemID($post['itemid']);
         $this->checkban($blog_id);
         $blog = & $manager->getBlog($blog_id);
+        $comments = new COMMENTS($post['itemid']);
 
         // note: PreAddComment and PostAddComment gets called somewhere inside addComment
         $errormessage = $comments->addComment($blog->getCorrectTime(), $post);
-
         // begin if:
-        if ($errormessage == '1') {
+        if ($errormessage == 1) {
             // redirect when adding comments succeeded
             if (postVar('url')) {
                 redirect(postVar('url'));
-            } else {
-                $url = createItemLink($post['itemid']);
-                redirect($url);
-            } // end if
-        } // else, show error message using default skin for blog
-        else {
-            return [
-                'message' => $errormessage,
-                'skinid'  => $blog->getDefaultSkin(),
-            ];
-        } // end if
-
-        exit;
+                exit;
+            }
+            $url = createItemLink($post['itemid']);
+            redirect($url); // end if
+            exit;
+        }
+        return [
+            'message' => $errormessage,
+            'skinid' => $blog->getDefaultSkin(),
+        ]; // end if
     }
 
     /**
      *  Sends a message from the current member to the member given as argument
+     * @return array|void
      */
     public function sendMessage()
     {
@@ -161,59 +152,48 @@ class ACTION
             return ['message' => $error];
         }
 
-        if (!$member->isLoggedIn()) {
-            $fromMail = postVar('frommail');
-            $fromName = _MMAIL_FROMANON;
-        } else {
-            $fromMail = $member->getEmail();
-            $fromName = $member->getDisplayName();
-        }
-
         $tomem = new MEMBER();
         $tomem->readFromId(postVar('memberid'));
 
-        $message = sprintf(
-            "%s %s\n(%s %s) \n\n%s \n\n%s",
-            _MMAIL_MSG,
-            $fromName,
-            _MMAIL_FROMNUC,
-            $CONF['IndexURL'],
-            _MMAIL_MAIL,
-            postVar('message')
-        );
-        $message .= getMailFooter();
-
-        $title = _MMAIL_TITLE . ' ' . $fromName;
-
         @Utils::mail(
             $tomem->getEmail(),
-            $title,
-            $message,
-            'From: ' . $fromMail
+            sprintf(
+                "%s %s",
+                _MMAIL_TITLE,
+                $member->isLoggedIn() ? $member->getDisplayName() : _MMAIL_FROMANON
+            ),
+            sprintf(
+                "%s %s\n(%s %s) \n\n%s \n\n%s\n%s",
+                _MMAIL_MSG,
+                $member->isLoggedIn() ? $member->getDisplayName() : _MMAIL_FROMANON,
+                _MMAIL_FROMNUC,
+                $CONF['IndexURL'],
+                _MMAIL_MAIL,
+                postVar('message'),
+                getMailFooter()
+            ),
+            'From: ' . $member->isLoggedIn() ? $member->getEmail() : postVar('frommail')
         );
 
         if (postVar('url')) {
             redirect(postVar('url'));
-        } else {
-            $CONF['MemberURL'] = $CONF['IndexURL'];
+            exit;
+        }
+        $CONF['MemberURL'] = $CONF['IndexURL'];
 
-            if ($CONF['URLMode'] === 'pathinfo') {
-                $url = createLink(
-                    'member',
-                    [
-                        'memberid' => $tomem->getID()
-                    ,
-                        'name' => $tomem->getDisplayName(),
-                    ]
-                );
-            } else {
-                $url = $CONF['IndexURL'] . createMemberLink($tomem->getID());
-            }
-
-            redirect($url);
+        if ($CONF['URLMode'] !== 'pathinfo') {
+            redirect($CONF['IndexURL'] . createMemberLink($tomem->getID()));
+            exit;
         }
 
-        exit;
+        redirect(createLink(
+            'member',
+            [
+                'memberid' => $tomem->getID()
+                ,
+                'name' => $tomem->getDisplayName(),
+            ]
+        ));
     }
 
     /**
@@ -376,8 +356,6 @@ class ACTION
     public function doKarma($type)
     {
         $this->doVote(($type === 'pos' || $type === '+') ? '+' : '-');
-
-        return;
     }
 
     /**
@@ -488,16 +466,7 @@ class ACTION
             );
         }
 
-        $refererUrl = serverVar('HTTP_REFERER');
-
-        if ($refererUrl) {
-            $url = $refererUrl;
-        } else {
-            $url = $itemLink;
-        }
-
-        redirect($url);
-        exit;
+        redirect(serverVar('HTTP_REFERER') ?: $itemLink);
     }
 
     /**
@@ -508,7 +477,6 @@ class ACTION
         global $manager;
 
         $pluginName = 'NP_' . requestVar('name');
-        $actionType = (string) requestVar('type');
 
         // 1: check if plugin is installed
         if (! $manager->pluginInstalled($pluginName)) {
@@ -518,11 +486,10 @@ class ACTION
         // 2: call plugin
         $pluginObject = & $manager->getPlugin($pluginName);
 
-        if ($pluginObject) {
-            $error = $pluginObject->doAction($actionType);
-        } else {
-            $error = 'Could not load plugin (see actionlog)';
-        }
+        $error = $pluginObject
+            ? $pluginObject->doAction((string)requestVar('type'))
+            : 'Could not load plugin (see actionlog)'
+        ;
 
         // doAction returns error when:
         // - an error occurred (duh)
@@ -542,16 +509,17 @@ class ACTION
         // check if banned
         $ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
 
-        if ($ban != 0) {
-            doError(sprintf(
-                '%s%s%s%s%s',
-                _ERROR_BANNED1,
-                $ban->iprange,
-                _ERROR_BANNED2,
-                $ban->message,
-                _ERROR_BANNED3
-            ));
+        if ($ban == 0) {
+            return;
         }
+        doError(sprintf(
+            '%s%s%s%s%s',
+            _ERROR_BANNED1,
+            $ban->iprange,
+            _ERROR_BANNED2,
+            $ban->message,
+            _ERROR_BANNED3
+        ));
     }
 
     /**
