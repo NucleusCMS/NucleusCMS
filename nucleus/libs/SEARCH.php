@@ -78,10 +78,10 @@ class SEARCH
         if (!$long_keywords) {
             return;
         }
-        $long_keywords = $this->add_boolean($long_keywords);
-        $ph['field'] = $this->fields;
-        $ph['keywords'] = sql_quote_string(implode(' ', $long_keywords));
-        $ph['like_score'] = implode(' + ', $score);
+            $long_keywords = $this->add_boolean($long_keywords);
+        $ph['field']       = $this->fields;
+        $ph['keywords']    = sql_quote_string(implode(' ', $long_keywords));
+        $ph['like_score']  = implode(' + ', $score);
 
         return parseQuery(
             '[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ',
@@ -130,8 +130,9 @@ class SEARCH
         if ($row['Engine'] == 'InnoDB') {
             return 3;
         } elseif ($row['Engine'] == 'MyISAM') {
-            $rs  = sql_query("SHOW VARIABLES LIKE 'ft_min_word_len'");
-            $row = sql_fetch_assoc($res);
+            $row = sql_fetch_assoc(
+                sql_query("SHOW VARIABLES LIKE 'ft_min_word_len'")
+            );
             if ($row) {
                 return max($row['Value'], 1);
             }
