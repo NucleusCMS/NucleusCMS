@@ -64,6 +64,7 @@ class SEARCH
 
         $keywords      = explode(' ', $this->keywords);
         $long_keywords = [];
+        $score = [];
         foreach ($keywords as $keyword) {
             if ($this->is_long_word($keyword)) {
                 $long_keywords[] = $keyword;
@@ -74,17 +75,18 @@ class SEARCH
                 );
             }
         }
-        if ($long_keywords) {
-            $long_keywords    = $this->add_boolean($long_keywords);
-            $ph['field']      = $this->fields;
-            $ph['keywords']   = sql_quote_string(implode(' ', $long_keywords));
-            $ph['like_score'] = implode(' + ', $score);
-
-            return parseQuery(
-                '[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ',
-                $ph
-            );
+        if (!$long_keywords) {
+            return;
         }
+        $long_keywords = $this->add_boolean($long_keywords);
+        $ph['field'] = $this->fields;
+        $ph['keywords'] = sql_quote_string(implode(' ', $long_keywords));
+        $ph['like_score'] = implode(' + ', $score);
+
+        return parseQuery(
+            '[@like_score@] + match ([@field@]) against ([@keywords@] IN BOOLEAN MODE) ',
+            $ph
+        );
     }
 
     private function is_long_word($keyword)
@@ -219,46 +221,32 @@ class SEARCH
     {
         $c = substr($keyword, 0, 1);
 
-        $keyword            = sql_real_escape_string(ltrim($keyword, '-+|'));
-        $ph['keyword']      = $keyword;
-        $ph['concat_field'] = $this->fields_concat();
-        if (! preg_match('/[\x80-\xfe]/', $keyword)) {
-            if ($c === '-') {
-                $like = parseQuery(
-                    "[@concat_field@] NOT LIKE '%[@keyword@]%'",
-                    $ph
-                );
-            } else {
-                $like = parseQuery(
-                    "[@concat_field@] LIKE '%[@keyword@]%'",
-                    $ph
-                );
-            }
-        } else {
-            if ($c === '-') {
-                $like
-                    = parseQuery(
-                        "[@concat_field@] NOT LIKE BINARY '%[@keyword@]%'",
-                        $ph
-                    );
-            } else {
-                $like
-                    = parseQuery(
-                        "[@concat_field@] LIKE BINARY '%[@keyword@]%'",
-                        $ph
-                    );
-            }
+        $keyword = sql_real_escape_string(ltrim($keyword, '-+|'));
+        $ph = [
+            'keyword'      => $keyword,
+            'concat_field' => $this->fields_concat()
+        ];
+        if ($c === '-') {
+            return parseQuery(
+                preg_match('/[\x80-\xfe]/', $keyword)
+                    ? "[@concat_field@] NOT LIKE BINARY '%[@keyword@]%'"
+                    : "[@concat_field@] NOT LIKE '%[@keyword@]%'",
+                $ph
+            );
         }
-
-        return $like;
+        return parseQuery(
+            preg_match('/[\x80-\xfe]/', $keyword)
+                ? "[@concat_field@] LIKE BINARY '%[@keyword@]%'"
+                : "[@concat_field@] LIKE '%[@keyword@]%'",
+            $ph
+        );
     }
 
     private function score_for_like_phrase($keyword)
     {
         $fields = explode(',', $this->fields);
         $score  = [];
-        $tpl
-                       = " 0.2*(LENGTH([@field@]) - LENGTH(REPLACE(LOWER([@field@]), LOWER([@keyword@]), '')))/LENGTH([@keyword@]) ";
+        $tpl = " 0.2*(LENGTH([@field@]) - LENGTH(REPLACE(LOWER([@field@]), LOWER([@keyword@]), '')))/LENGTH([@keyword@]) ";
         $ph['keyword'] = sql_quote_string($keyword);
         foreach ($fields as $field) {
             $ph['field'] = $field;

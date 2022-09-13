@@ -147,7 +147,7 @@ class NucleusPlugin
     /**
      * Report a list of plugin that is required to function
      *
-     * @returns an array of names of plugin, an empty array indicates no
+     * @return array // an array of names of plugin, an empty array indicates no
      *          dependency
      */
     public function getPluginDep()
@@ -160,16 +160,16 @@ class NucleusPlugin
     /**
      * Creates a new option for this plugin
      *
-     * @param   name
+     * @param  string  $name
      *        A string uniquely identifying your option. (max. length is 20
      *        characters)
-     * @param   description
+     * @param  string $desc
      *        A description that will show up in the nucleus admin area (max.
      *        length: 255 characters)
-     * @param   type
+     * @param  string $type
      *        Either 'text', 'yesno' or 'password'
      *        This info is used when showing 'edit plugin options' screens
-     * @param   value
+     * @param  string $defValue
      *        Initial value for the option (max. value length is 128
      *        characters)
      */

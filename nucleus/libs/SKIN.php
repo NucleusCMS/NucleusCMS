@@ -33,6 +33,131 @@ class SKIN
     public $includePrefix;
     public $name;
 
+    // some actions that can be performed at any time, from anywhere
+    private static $defaultActions = [
+        'otherblog',
+        'plugin',
+        'version',
+        'nucleusbutton',
+        'include',
+        'phpinclude',
+        'parsedinclude',
+        'loginform',
+        'sitevar',
+        'otherarchivelist',
+        'otherarchivedaylist',
+        'otherarchiveyearlist',
+        'self',
+        'adminurl',
+        'todaylink',
+        'archivelink',
+        'member',
+        'ifcat',                    // deprecated (Nucleus v2.0)
+        'category',
+        'searchform',
+        'referer',
+        'skinname',
+        'skinfile',
+        'set',
+        'if',
+        'else',
+        'endif',
+        'elseif',
+        'ifnot',
+        'elseifnot',
+        'charset',
+        'bloglist',
+        'addlink',
+        'addpopupcode',
+        'sticky',
+    ];
+    private static $extraActions = [
+        'index' => [
+            'blog',
+            'blogsetting',
+            'preview',
+            'additemform',
+            'categorylist',
+            'archivelist',
+            'archivedaylist',
+            'archiveyearlist',
+            'nextlink',
+            'prevlink',
+        ],
+        'archive' => [
+            'blog',
+            'archive',
+            'otherarchive',
+            'categorylist',
+            'archivelist',
+            'archivedaylist',
+            'archiveyearlist',
+            'blogsetting',
+            'archivedate',
+            'nextarchive',
+            'prevarchive',
+            'nextlink',
+            'prevlink',
+            'archivetype',
+        ],
+        'archivelist' => [
+            'blog',
+            'archivelist',
+            'archivedaylist',
+            'archiveyearlist',
+            'categorylist',
+            'blogsetting',
+        ],
+        'search' => [
+            'blog',
+            'archivelist',
+            'archivedaylist',
+            'archiveyearlist',
+            'categorylist',
+            'searchresults',
+            'othersearchresults',
+            'blogsetting',
+            'query',
+            'nextlink',
+            'prevlink',
+        ],
+        'imagepopup' => [
+            'image',
+            'imagetext', // deprecated (Nucleus v2.0)
+        ],
+        'member' => [
+            'membermailform',
+            'blogsetting',
+            'nucleusbutton',
+            'categorylist',
+        ],
+        'item' => [
+            'blog',
+            'item',
+            'comments',
+            'commentform',
+            'vars',
+            'blogsetting',
+            'nextitem',
+            'previtem',
+            'nextlink',
+            'prevlink',
+            'nextitemtitle',
+            'previtemtitle',
+            'categorylist',
+            'archivelist',
+            'archivedaylist',
+            'archiveyearlist',
+            'itemtitle',
+            'itemid',
+            'itemlink',
+        ],
+        'error' => [
+            'errormessage',
+            'categorylist',
+        ]
+    ];
+
     /**
      * Constructor for a new SKIN object
      *
@@ -162,7 +287,7 @@ class SKIN
         }
 
         $sql = sprintf(
-            "SELECT COUNT(*) AS result FROM `%s`  WHERE sdesc=%d ",
+            "SELECT COUNT(*) AS result FROM `%s` WHERE sdesc=%d ",
             sql_table('skin'),
             (int)$skinid
         ) . $exp;
@@ -328,7 +453,6 @@ class SKIN
             if ($spartstype === 'specialpage') {
                 doError(_ERROR_NOSUCHPAGE);
                 echo _ERROR_NOSUCHPAGE;
-
                 return;
             }
             // use base skin if this skin does not have contents
@@ -336,7 +460,6 @@ class SKIN
             $contents = $defskin->getContent($type, $getcontents_options);
             if (! $contents) {
                 echo _ERROR_SKIN;
-
                 return;
             }
         }
@@ -390,7 +513,7 @@ class SKIN
     /**
      * Get content of the skin part from the database
      *
-     * @param $type type of the skin (e.g. index, item, search ...)
+     * @param type $type // type of the skin (e.g. index, item, search ...)
      */
     public function getContent($type, $options = [])
     {
@@ -431,8 +554,8 @@ class SKIN
     /**
      * Updates the contents for one part of the skin in the database
      *
-     * @param $type    type of the skin part (e.g. index, item, search ...)
-     * @param $content new content for this skin part
+     * @param string $type    type of the skin part (e.g. index, item, search ...)
+     * @param string $content new content for this skin part
      */
     public function update($type, $content, $options = [])
     {
@@ -556,57 +679,19 @@ class SKIN
      * Get the allowed actions for a skin type
      * returns an array with the allowed actions
      *
-     * @param $type type of the skin (e.g. index, item, search ...)
+     * @param string $type type of the skin (e.g. index, item, search ...)
      */
     public static function getAllowedActionsForType($type)
     {
-        global $blogid;
-
-        // some actions that can be performed at any time, from anywhere
-        $defaultActions = [
-            'otherblog',
-            'plugin',
-            'version',
-            'nucleusbutton',
-            'include',
-            'phpinclude',
-            'parsedinclude',
-            'loginform',
-            'sitevar',
-            'otherarchivelist',
-            'otherarchivedaylist',
-            'otherarchiveyearlist',
-            'self',
-            'adminurl',
-            'todaylink',
-            'archivelink',
-            'member',
-            'ifcat',                    // deprecated (Nucleus v2.0)
-            'category',
-            'searchform',
-            'referer',
-            'skinname',
-            'skinfile',
-            'set',
-            'if',
-            'else',
-            'endif',
-            'elseif',
-            'ifnot',
-            'elseifnot',
-            'charset',
-            'bloglist',
-            'addlink',
-            'addpopupcode',
-            'sticky',
-        ];
-
         // extra actions specific for a certain skin type
-        $extraActions = [];
-
-        switch ($type) {
-            case 'index':
-                $extraActions = [
+        if(!isset(self::$extraActions[$type])) {
+            global $blogid;
+            if (empty($blogid)) {
+                return self::$defaultActions;
+            }
+            return array_merge(
+                self::$defaultActions,
+                [
                     'blog',
                     'blogsetting',
                     'preview',
@@ -617,116 +702,16 @@ class SKIN
                     'archiveyearlist',
                     'nextlink',
                     'prevlink',
-                ];
-                break;
-            case 'archive':
-                $extraActions = [
-                    'blog',
-                    'archive',
-                    'otherarchive',
-                    'categorylist',
-                    'archivelist',
-                    'archivedaylist',
-                    'archiveyearlist',
-                    'blogsetting',
-                    'archivedate',
-                    'nextarchive',
-                    'prevarchive',
-                    'nextlink',
-                    'prevlink',
-                    'archivetype',
-                ];
-                break;
-            case 'archivelist':
-                $extraActions = [
-                    'blog',
-                    'archivelist',
-                    'archivedaylist',
-                    'archiveyearlist',
-                    'categorylist',
-                    'blogsetting',
-                ];
-                break;
-            case 'search':
-                $extraActions = [
-                    'blog',
-                    'archivelist',
-                    'archivedaylist',
-                    'archiveyearlist',
-                    'categorylist',
-                    'searchresults',
-                    'othersearchresults',
-                    'blogsetting',
-                    'query',
-                    'nextlink',
-                    'prevlink',
-                ];
-                break;
-            case 'imagepopup':
-                $extraActions = [
-                    'image',
-                    'imagetext',                // deprecated (Nucleus v2.0)
-                ];
-                break;
-            case 'member':
-                $extraActions = [
                     'membermailform',
-                    'blogsetting',
                     'nucleusbutton',
                     'categorylist',
-                ];
-                break;
-            case 'item':
-                $extraActions = [
-                    'blog',
-                    'item',
-                    'comments',
-                    'commentform',
-                    'vars',
-                    'blogsetting',
-                    'nextitem',
-                    'previtem',
-                    'nextlink',
-                    'prevlink',
-                    'nextitemtitle',
-                    'previtemtitle',
-                    'categorylist',
-                    'archivelist',
-                    'archivedaylist',
-                    'archiveyearlist',
-                    'itemtitle',
-                    'itemid',
-                    'itemlink',
-                ];
-                break;
-            case 'error':
-                $extraActions = [
-                    'errormessage',
-                    'categorylist',
-                ];
-                break;
-            default:
-                if ($blogid && $blogid > 0) {
-                    $extraActions = [
-                        'blog',
-                        'blogsetting',
-                        'preview',
-                        'additemform',
-                        'categorylist',
-                        'archivelist',
-                        'archivedaylist',
-                        'archiveyearlist',
-                        'nextlink',
-                        'prevlink',
-                        'membermailform',
-                        'nucleusbutton',
-                        'categorylist',
-                    ];
-                }
-                break;
+                ]
+            );
         }
-
-        return array_merge($defaultActions, $extraActions);
+        return array_merge(
+            self::$defaultActions,
+            self::$extraActions[$type]
+        );
     }
 
     public function changeSkinByName($name)

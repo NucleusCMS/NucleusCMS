@@ -89,8 +89,7 @@ class ACTIONS extends BaseActions
         $oldIncludePrefix = PARSER::getProperty('IncludePrefix');
         PARSER::setProperty('IncludeMode', 'normal');
         PARSER::setProperty('IncludePrefix', '');
-        $this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename
-                                   . '.template');
+        $this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
         PARSER::setProperty('IncludeMode', $oldIncludeMode);
         PARSER::setProperty('IncludePrefix', $oldIncludePrefix);
         array_pop($this->parser->actions);        // errordiv
@@ -150,7 +149,7 @@ class ACTIONS extends BaseActions
                 return (serverVar(strtoupper($name)) == $value);
             default:
                 return manager()->pluginInstalled('NP_' . $field)
-                       && $this->_ifPlugin($field, $name, $value);
+                    && $this->_ifPlugin($field, $name, $value);
         }
     }
 
@@ -165,27 +164,23 @@ class ACTIONS extends BaseActions
      */
     private function _ifHasPlugin($name, $value)
     {
-        $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
-        if (manager()->pluginInstalled('NP_' . $name)) {
-            $plugin = & manager()->getPlugin('NP_' . $name);
-            if ($plugin != null) {
-                if ($value == '') {
-                    $condition = true;
-                } else {
-                    list($name2, $value2) = explode('=', $value, 2);
-                    if ($value2 == "" && $plugin->getOption($name2) !== 'no') {
-                        $condition = true;
-                    } else {
-                        if ($plugin->getOption($name2) == $value2) {
-                            $condition = true;
-                        }
-                    }
+        if (!manager()->pluginInstalled('NP_' . $name)) {
+            return false;
+        }
+        $plugin = &manager()->getPlugin('NP_' . $name);
+        if ($plugin == null) {
+            return false;
+        }
+        if ($value != '') {
+            list($name2, $value2) = explode('=', $value, 2);
+            if ($value2 != "" || $plugin->getOption($name2) === 'no') {
+                if ($plugin->getOption($name2) != $value2) {
+                    return false;
                 }
             }
         }
-
-        return $condition;
+        return true;
     }
 
     /**
@@ -329,70 +324,61 @@ class ACTIONS extends BaseActions
         // TODO: Move request uri to linkparams. this is ugly. sorry for that.
         $startpos = (int)$startpos;        // will be 0 when empty.
         $parsed   = parse_url(serverVar('REQUEST_URI'));
-        $path     = (isset($parsed['path']) ? $parsed['path'] : '');
-        $parsed   = $parsed['query'];
         $url      = '';
 
-        switch ($direction) {
-            case 'prev':
-                if ((int)$startpos - (int)$maxresults >= 0) {
-                    $startpos = (int)$startpos - (int)$maxresults;
-                    //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    $i = $this->skintype;
-                    if ($i === 'index') {
-                        $url = $path;
-                    } elseif ($i === 'search') {
-                        $url = $CONF['SearchURL'];
-                    }
-                    $url .= '?' . alterQueryStr($parsed, 'startpos', $startpos);
-                }
-                break;
-            case 'next':
-                global $navigationItems;
-                if (! isset($navigationItems)) {
-                    $navigationItems = 0;
-                }
+        if ($direction === 'prev') {
+            if ((int)$startpos - (int)$maxresults < 0) {
+                return;
+            }
+            $startpos = (int)$startpos - (int)$maxresults;
+            $i = $this->skintype;
+            if ($i === 'index') {
+                $url = $parsed['path'] ?? '';
+            } elseif ($i === 'search') {
+                $url = $CONF['SearchURL'];
+            }
+            $url .= '?' . alterQueryStr($parsed['query'], 'startpos', $startpos);
+            echo $this->_link($url, $linktext);
+            return;
+        }
 
-                if ($recount) {
-                    $iAmountOnPage = 0;
-                } else {
-                    $iAmountOnPage = $this->amountfound;
-                }
+        if ($direction === 'next') {
+            global $navigationItems;
+            if (!isset($navigationItems)) {
+                $navigationItems = 0;
+            }
 
-                if ($navigationItems > 0) {
-                    $iAmountOnPage = (int)$navigationItems - (int)$startpos;
-                } elseif ($iAmountOnPage == 0) {
-                    // [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
-                    // try a count query
-                    $i1 = $this->skintype;
-                    if ($i1 === 'index') {
-                        $sqlquery = $blog->getSqlBlog('', 'count');
-                        $url      = $path;
-                    } elseif ($i1 === 'search') {
-                        $unused_highlight = '';
-                        $sqlquery         = $blog->getSqlSearch(
-                            $query,
-                            $amount,
-                            $unused_highlight,
-                            'count'
-                        );
-                        $url = $CONF['SearchURL'];
-                    }
-                    if ($sqlquery) {
-                        $iAmountOnPage = (int)quickQuery($sqlquery)
-                                         - (int)$startpos;
-                    }
+            $iAmountOnPage = $recount ? 0 : $this->amountfound;
+
+            if ($navigationItems > 0) {
+                $iAmountOnPage = (int)$navigationItems - (int)$startpos;
+            } elseif ($iAmountOnPage == 0) {
+                // [%nextlink%] or [%prevlink%] probably called before [%blog%] or [%searchresults%]
+                // try a count query
+                $i1 = $this->skintype;
+                if ($i1 === 'index') {
+                    $sqlquery = $blog->getSqlBlog('', 'count');
+                    $url = $parsed['path'] ?? '';
+                } elseif ($i1 === 'search') {
+                    $unused_highlight = '';
+                    $sqlquery = $blog->getSqlSearch(
+                        $query,
+                        $amount,
+                        $unused_highlight,
+                        'count'
+                    );
+                    $url = $CONF['SearchURL'];
                 }
-                if ($iAmountOnPage >= (int)$maxresults) {
-                    $startpos = (int)$startpos + (int)$maxresults;
-                    //$url        = $CONF['SearchURL'].'?'.alterQueryStr($parsed,'startpos',$startpos);
-                    $url .= '?' . alterQueryStr($parsed, 'startpos', $startpos);
-                } else {
-                    $url = '';
+                if ($sqlquery) {
+                    $iAmountOnPage = (int)quickQuery($sqlquery)
+                        - (int)$startpos;
                 }
-                break;
-            default:
-                break;
+            }
+            if ($iAmountOnPage < (int)$maxresults) {
+                return;
+            }
+            $startpos = (int)$startpos + (int)$maxresults;
+            $url .= '?' . alterQueryStr($parsed['query'], 'startpos', $startpos);
         } // switch($direction)
 
         if ($url != '') {
@@ -496,12 +482,14 @@ class ACTIONS extends BaseActions
     public function parse_addlink()
     {
         global $CONF, $member, $blog;
-        if (isset($blog) && is_object($blog)) {
-            if ($member->isLoggedIn() && $member->isTeamMember($blog->blogid)) {
-                echo $CONF['AdminURL'] . 'bookmarklet.php?blogid='
-                     . $blog->blogid;
-            }
+        if (!isset($blog) || !is_object($blog)) {
+            return;
         }
+        if (!$member->isLoggedIn() || !$member->isTeamMember($blog->blogid)) {
+            return;
+        }
+        echo $CONF['AdminURL'] . 'bookmarklet.php?blogid='
+            . $blog->blogid;
     }
 
     /**

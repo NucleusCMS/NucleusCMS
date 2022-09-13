@@ -75,7 +75,7 @@ class PluginAdmin
         $ticket = hsc($ticket);
 
         ?>
-        <script type="text/javascript">
+        <script>
             /*<![CDATA[*/
             /* Add tickets for available links (outside blog excluded) */
             for (i = 0; document.links[i]; i++) {
