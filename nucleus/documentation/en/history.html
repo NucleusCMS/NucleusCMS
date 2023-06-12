@@ -32,8 +32,12 @@
 	</li>
 -->
 	<li>
-		<strong>Nucleus v3.80 (20xx//)</strong>
+		<strong>Nucleus v3.80 (pending)</strong>
 		<ul>
+			<li>IMPORTANT: It is now necessary to set installation authentication for new installations.</li>
+			<li>IMPORTANT: Supported php version changed. <br />Check the supported PHP version of the plugin you are using.</li>
+			<li>IMPORTANT: Database: Fully migrated to PDO driver.</li>
+			<li>IMPORTANT,NEW: New global variable $DB_DRIVER_NAME.</li>
 			<li>NEW: Add Database Optimization/Repair</li>
 			<li>NEW: Add member halt(account lock).<br />When you enable members will not be able to various operations, such as login and password issued.</li>
 			<li>NEW: Skin var if authorvisible</li>
@@ -46,7 +50,6 @@
 			<li>CHANGE: If Blog option authorvisible is no, &lt;%author%&gt; is return empty.</li>
 			<li>CHANGE: Change plugin path of (NP_SkinFiles, NP_SecurityEnforcer, NP_Text).<br />Please you remove old files<ul><li>plugins/NP_SkinFiles.php</li><li>plugins/skinfiles/*</li><li>plugins/NP_SecurityEnforcer.php</li><li>plugins/securityenforcer/*</li><li>plugins/NP_Text.php</li></ul></li>
 			<li>ADD: Add Skin Class functions changeSkinByName, changeSkinById, getRootURL, getURL.</li>
-			<li>IMPORTANT,NEW: New global variable $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME.</li>
 			<li>IMPORTANT,CHANGE:  Remove supportsFeature [SqlTablePrefix, SqlApi].</li>
 			<li>IMPORTANT,CHANGE:  The length of the next column has been changed from 20 to 50 : nucleus_plugin_option.oname, nucleus_config.name</li>
 			<li>CHANGE: Installer: It has been changed to be able to use the ~@localhost in the e-mail address.</li>

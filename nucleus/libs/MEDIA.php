@@ -344,7 +344,7 @@ class MEDIA
             if ($len !== false && $len === strlen($data)) {
                 $res = self::addMediaObject($collection, $tmp_filename, $filename);
             }
-        } finally { // PHP[5.5-]  5.5\php -nr "try{}finally{}"
+        } finally {
             if (@is_file($tmp_filename)) {
                 @unlink($tmp_filename);
             }

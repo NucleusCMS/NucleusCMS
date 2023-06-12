@@ -207,6 +207,8 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DefaultListSize',   '10');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('AdminCSS',          'contemporary');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('DisableRSS',          '1');
 
 CREATE TABLE IF NOT EXISTS `nucleus_item` (
   `inumber`   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,

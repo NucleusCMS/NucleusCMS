@@ -80,26 +80,17 @@ class TEMPLATE
             (int)$id
         ));
 
-        global $SQL_DBH;
         // write new thingie
         if (strlen($content) > 0) {
             $sql = sprintf(
                 'INSERT INTO %s(tcontent, tpartname, tdesc) VALUES',
                 sql_table('template')
             );
-            if (! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-                sql_query($sql . sprintf(
-                    "('%s', '%s', %d)",
-                    sql_real_escape_string($content),
-                    sql_real_escape_string($type),
-                    (int)$id
-                ));
-            } else {
-                sql_prepare_execute(
-                    $sql . '(?, ?, ?)',
-                    [$content, $type, (int)$id]
-                );
-            }
+
+            sql_prepare_execute(
+                $sql . '(?, ?, ?)',
+                [$content, $type, (int)$id]
+            );
         }
     }
 

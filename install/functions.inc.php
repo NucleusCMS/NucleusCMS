@@ -274,7 +274,6 @@ function doInstall()
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
         echo sprintf("PHP version : %s<br>\n", PHP_VERSION);
         echo sprintf("\$DB_DRIVER_NAME : %s<br>\n", $DB_DRIVER_NAME);
-        echo sprintf("\$DB_PHP_MODULE_NAME : %s<br>\n", $DB_PHP_MODULE_NAME);
         echo sprintf("Step1(Line:%d)", __LINE__);
     }
     // 1. check all the data
@@ -396,11 +395,9 @@ function doInstall()
         _doError(_ERROR15 . ': ' . sql_error());
     }
 
-    $DB_HANDLE = $MYSQL_CONN;
-    if ($DB_PHP_MODULE_NAME == 'pdo') {
-        $SQL_DBH    = $MYSQL_CONN;
-        $MYSQL_CONN = 0;
-    }
+    $DB_HANDLE  = $MYSQL_CONN;
+    $SQL_DBH    = $MYSQL_CONN;
+    $MYSQL_CONN = 0;
 
     if ($is_install_sqlite) {
         $DB_HANDLE->beginTransaction(); // sql_query("begin");
@@ -696,18 +693,15 @@ function doInstall()
         $config_data .= "\$DB_DATABASE = '" . $DB_DATABASE . "';\n";
         $config_data .= "\$DB_PREFIX = '" . (($db__use_prefix == 1) ? $DB_PREFIX : '') . "';\n";
         $config_data .= "\n";
-        $config_data .= "global \$DB_DRIVER_NAME, \$DB_PHP_MODULE_NAME;\n";
+        $config_data .= "global \$DB_DRIVER_NAME;\n";
 
         $config_data .= "// Database driver settings\n";
         if ($DB_DRIVER_NAME == 'mysql') {
-            $config_data .= "// default is  \$DB_DRIVER_NAME = 'mysql'; \$DB_PHP_MODULE_NAME = 'mysql';\n";
-            $config_data .= "//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'mysql';\n";
-            $config_data .= "//\$DB_DRIVER_NAME = 'mysql';  \$DB_PHP_MODULE_NAME = 'pdo';\n";
+            $config_data .= "// default is  \$DB_DRIVER_NAME = 'mysql';\n";
+            $config_data .= "//\$DB_DRIVER_NAME = 'mysql';\n";
             $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}';\n";
-            $config_data .= "\$DB_PHP_MODULE_NAME = '{$DB_PHP_MODULE_NAME}'; // pdo or mysql\n";
         } elseif ($DB_DRIVER_NAME == 'sqlite') {
             $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}'; // sqlite\n";
-            $config_data .= "\$DB_PHP_MODULE_NAME = '{$DB_PHP_MODULE_NAME}'; // pdo\n";
         }
         $config_data .= "\n";
         $config_data .= "// main nucleus directory\n";

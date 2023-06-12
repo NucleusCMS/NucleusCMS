@@ -49,8 +49,6 @@ class Backup
 
     private function init_do_backup()
     {
-        global $DB_PHP_MODULE_NAME;
-
         $this->mode_en
             = true; // If it is false, the output file may be corrupted.
         ob_start();
@@ -79,15 +77,7 @@ class Backup
                 // else : force utf8 mode
             }
         }
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            sql_query('SET CHARACTER SET ' . $this->export_db_charset);
-        } else {
-            if (function_exists('mysql_set_charset')) {
-                mysql_set_charset($this->export_db_charset);
-            } else {
-                sql_query('SET CHARACTER SET ' . $this->export_db_charset);
-            }
-        }
+        sql_query('SET CHARACTER SET ' . $this->export_db_charset);
         // output text setteing
         if (_CHARSET == 'UTF-8'
             && preg_match('/^utf8/i', $this->export_db_charset)) {

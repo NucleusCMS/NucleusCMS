@@ -276,17 +276,6 @@ class MANAGER
      */
     private function _loadPlugin($NP_Name)
     {
-        if (! HAS_CATCH_ERROR) {
-            $this->_loadPluginRaw($NP_Name);
-
-            return class_exists($NP_Name);
-        }
-
-        return $this->_loadPluginTry($NP_Name);
-    }
-
-    private function _loadPluginTry($NP_Name)
-    {
         $success = false;
         try {
             $this->_loadPluginRaw($NP_Name);
@@ -463,7 +452,7 @@ class MANAGER
 
     private function checkIfOk_supportsFeature_db($NP_Name)
     {
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $DB_DRIVER_NAME;
 
         $tablelist = $this->plugins[$NP_Name]->getTableList();
         if (empty($tablelist)) {
@@ -471,30 +460,28 @@ class MANAGER
         }
 
         // check SqlApi
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            //                         DB       Standard SQL
-            //                        MySQL5  : - SQL:2008
-            //                        SQLite3 : SQL92
-            // unload plugin if using non-mysql handler and plugin does not support it
-            if (('mysql' != $DB_DRIVER_NAME)
-                &&
-                ! (
-                    $this->plugins[$NP_Name]->supportsFeature('SqlApi_'
-                                                             . $DB_DRIVER_NAME)
-                   || $this->plugins[$NP_Name]->supportsFeature('SqlApi_SQL92')
-                )
-            ) {
-                unset($this->plugins[$NP_Name]);
-                $msg = sprintf(
-                    _MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
-                    $NP_Name,
-                    $DB_DRIVER_NAME
-                );
-                SYSTEMLOG::addUnique('error', 'Error', $msg);
+        //    DB       Standard SQL
+        //    MySQL5  : - SQL:2008
+        //    SQLite3 : SQL92
+        // unload plugin if using non-mysql handler and plugin does not support it
+        if (('mysql' != $DB_DRIVER_NAME)
+            &&
+            ! (
+                $this->plugins[$NP_Name]->supportsFeature('SqlApi_'
+                                                         . $DB_DRIVER_NAME)
+               || $this->plugins[$NP_Name]->supportsFeature('SqlApi_SQL92')
+            )
+        ) {
+            unset($this->plugins[$NP_Name]);
+            $msg = sprintf(
+                _MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
+                $NP_Name,
+                $DB_DRIVER_NAME
+            );
+            SYSTEMLOG::addUnique('error', 'Error', $msg);
 
-                return 0;
-            }
-        } // end : plugin uses DB query
+            return 0;
+        }
 
         return true;
     }
@@ -689,12 +676,6 @@ class MANAGER
                                    $this->plugins[$listener],
                                    $event_funcname
                                ));
-            if (! HAS_CATCH_ERROR) {
-                if ($has_plugin) {
-                    $this->plugins[$listener]->$event_funcname($data);
-                }
-                continue;
-            }
 
             try {
                 if ($has_plugin) {
@@ -858,7 +839,7 @@ class MANAGER
         if ($this->currentRequestTicket == '') {
             // generate new ticket (only one ticket will be generated per page request)
             // and store in database
-            global $member, $DB_PHP_MODULE_NAME;
+            global $member;
             // get member id
             if (! $member->isLoggedIn()) {
                 $memberId = -1;
@@ -873,30 +854,17 @@ class MANAGER
                 $ticket = md5(uniqid(mt_rand(), true));
 
                 // add in database as non-active
-                if ($DB_PHP_MODULE_NAME == 'pdo') {
-                    $query = sprintf(
-                        'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)',
-                        sql_table('tickets')
-                    );
-                    $input_parameters = [
-                        (string)$ticket,
-                        (int)$memberId,
-                        date('Y-m-d H:i:s', time()),
-                    ];
-                    if (sql_prepare_execute($query, $input_parameters)) {
-                        break;
-                    }
-                } else {  // mysql driver
-                    $query = sprintf(
-                        "INSERT INTO `%s` (ticket,member,ctime) VALUES ('%s','%s','%s')",
-                        sql_table('tickets'),
-                        sql_real_escape_string($ticket),
-                        (int)$memberId,
-                        date('Y-m-d H:i:s', time())
-                    );
-                    if (sql_query($query)) {
-                        break;
-                    }
+                $query = sprintf(
+                    'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)',
+                    sql_table('tickets')
+                );
+                $input_parameters = [
+                    (string)$ticket,
+                    (int)$memberId,
+                    date('Y-m-d H:i:s', time()),
+                ];
+                if (sql_prepare_execute($query, $input_parameters)) {
+                    break;
                 }
             }
 

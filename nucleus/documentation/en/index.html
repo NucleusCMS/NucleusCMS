@@ -88,10 +88,8 @@ Requirements in order to run Nucleus: <small>(If you don't know if you fit the r
 <ul>
 	<li>Web server</li>
 	<li><a href="http://jp.php.net/manual/ja/">PHP</a><br />
-		&nbsp;&nbsp; Version 8 : 8.2, 8.1 , 8.0<br />
-		&nbsp;&nbsp; Version 7 : 7.4, 7.3 , 7.2 , 7.1 , 7.0<br />
-		&nbsp;&nbsp; Version 5 : 5.6, 5.5<br />
-		<div>PHP official support for PHP7.4 ends on 2022/11/28. Earlier versions are no longer supported.<br />
+		&nbsp;&nbsp; Version 8 : 8.2 , 8.1 , 8.0<br />
+		<div>PHP official support for PHP8.0 ends on 2023/11/26. Earlier versions are no longer supported.<br />
 			Please see here for the detail.
 			<a href="https://www.php.net/supported-versions.php" target="_blank">https://www.php.net/supported-versions.php</a></div>
 	</li>
@@ -121,7 +119,7 @@ If you're just looking for a very simple way to put up a site, or don't know any
 <p>
 Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 <br />
-Copyright (C) 2002-2018 The Nucleus Group
+&copy; 2002 The Nucleus Group
 </p>
 
 <p>This program is free software; you can redistribute it and/or
@@ -178,8 +176,20 @@ Unzip all files to a directory of your computer. Make sure the path names are us
 /media/*                     (media library directory [emtpy])
 </pre>
 
+<h2>2. Creating and Editing install/install-config.php (v3.80 - )</h2>
 
-<h2>2. Upload files</h2>
+<p class='note'>This is a simple measure to prevent site hijacking damage before the installation is complete.</p>
+<p class='note'>Installation work is limited to 30 minutes after transferring install/install-config.php, so if the time has passed or is about to exceed, please re-transfer install/install-config.php.</p>
+<p>
+	(2-1) Rename or copy "install/install-config.sample.php" to create a file named "install/install-config.php".
+</p>
+<p>
+	(2-2) Open the file with Notepad or similar and enter an appropriate user name and password. You will be prompted for this value on first access. <br />
+This value is not used for anything other than installation work.
+</p>
+
+
+<h2>3. Upload files</h2>
 
 <p>
 Upload all files to your server, using your favorite FTP program. Make sure to upload .php files in ASCII mode! It might not work otherwise.
@@ -202,7 +212,7 @@ Upload all files to your server, using your favorite FTP program. Make sure to u
 </ol>
 
 
-<h2>3. Run install/index.php</h2>
+<h2>4. Run install/index.php</h2>
 
 <p>
 Open your web browser open the URL below, where you adapt the <i>yoursite</i> and <i>yourpath</i> parts.
@@ -220,7 +230,7 @@ This install-script will prompt you for some information, and perform most of th
 <b>Note:</b> When you open <i>install/index.php</i> in your browser and you see the text "If you see this text in your browser...", or you are prompted to download 'install.php', then your web server does not support PHP, and you won't be able to run Nucleus there.
 </div>
 
-<h2>4. Done!</h2>
+<h2>5. Done!</h2>
 
 <p>
 You should now be able to visit your site at http://yoursite.com/weblog/ (or whatever URL maps to the location where you uploaded the Nucleus site main files)

@@ -99,11 +99,9 @@
 		<ul>
 			<li>Webサーバー</li>
 			<li><a href="http://jp.php.net/manual/ja/">PHP</a><br />
-				&nbsp;&nbsp; バージョン 8 : 8.2, 8.1 , 8.0<br />
-				&nbsp;&nbsp; バージョン 7 : 7.4, 7.3 , 7.2 , 7.1 , 7.0<br />
-				&nbsp;&nbsp; バージョン 5 : 5.6, 5.5<br />
+				&nbsp;&nbsp; バージョン 8 : 8.2 , 8.1 , 8.0<br />
 				&nbsp;&nbsp; プラグインも使用するPHPに対応している必要があります。
-				<div>PHP7.4の公式サポート期限は 2022/11/28 です。それ以前のバージョンのサポートはすでに終了しています。<br />
+				<div>PHP8.0の公式サポート期限は 2023/11/26 です。それ以前のバージョンのサポートはすでに終了しています。<br />
 					詳細は、こちらをご覧ください。
 					<a href="https://www.php.net/supported-versions.php" target="_blank">https://www.php.net/supported-versions.php</a></div>
 			</li>
@@ -140,7 +138,7 @@
 		<p>
 			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
 			<br />
-			Copyright (C) 2002-2018 The Nucleus Group
+			&copy; 2002 The Nucleus Group
 		</p>
 
 		<p>このプログラムはフリーウェアです。
@@ -228,7 +226,19 @@
 			</ul>
 		</div>
 
-		<h2>2. サーバに転送</h2>
+		<h2>2. install/install-config.php の作成と編集 (v3.80 - )</h2>
+
+		<p class='note'>インストール完了前にサイト乗っ取り被害を防止するための簡易的な対策です。</p>
+		<p class='note'>インストール作業はinstall/install-config.phpを転送してから３０分の制限がありますので、時間を超えた・超えそうな場合はinstall/install-config.phpを再転送してください</p>
+		<p>
+			(2-1) 「install/install-config.sample.php」を名称変更またはコピーして、「install/install-config.php」という名前のファイルを作成してください。
+		</p>
+		<p>
+			(2-2) ファイルをメモ帳などで開き、適当なユーザー名とパスワードを入力してください。インストールページのアクセス可否を決めるためのもので、最初のアクセスでこの値の入力を求められます。<br />
+			この値は、インストール作業以外には使われません。
+		</p>
+
+		<h2>3. サーバに転送</h2>
 
 		<p>
 			FTPソフトを使ってサーバに全部のファイルを転送します。拡張子が.phpのファイルは必ずASCIIモードで転送してください。モードを間違えると動作しません。
@@ -251,7 +261,7 @@
 		</ol>
 
 
-		<h2>3. /install/ディレクトリにアクセス</h2>
+		<h2>4. /install/ディレクトリにアクセス</h2>
 
 		<p>
 			ブラウザを開いてサーバに転送した/install/ディレクトリにアクセスします。URLは下記のようになります。(<i>www.yoursite.com</i> と <i>yourpath</i>の部分は読み替えてください)
@@ -267,7 +277,7 @@
 			<b>注意:</b> <i>/install/</i> ディレクトリにアクセスした際、「If you see this text in your browser...」というテキストが表示されたり、 index.phpのダウンロードが促されたりした場合は、そのサーバではphpスクリプトは動作しません。当然、残念ながらphpスクリプトであるNucleusを運用することができません。
 		</div>
 
-		<h2>4. 完了</h2>
+		<h2>5. 完了</h2>
 
 		<p>
 			インストールが完了したらすぐにトップページにアクセスすることができます。インストール完了画面の一番下にリンクが自動表示されていますのでジャンプして確認してみてください。

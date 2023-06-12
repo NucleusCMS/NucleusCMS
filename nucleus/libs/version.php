@@ -21,5 +21,5 @@ define('NUCLEUS_VERSION_ID', 380); // (int)    390 ..399 , 50000
 define('NUCLEUS_PATCH_LEVEL', 0); // (int)
 define('NUCLEUS_DATABASE_VERSION_ID', 380); // (int) 390..399  , 50000
 
-define('NUCLEUS_DEVELOP', 1); // (bool): true if development version.
+define('NUCLEUS_DEVELOP', 0); // (bool): true if development version.
 define('NUCLEUS_DEVELOP_TEXT', 'rc'); // '' , 'dev' , 'rc'

@@ -624,7 +624,7 @@ class NucleusPlugin
             return false;
         }
 
-        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME, $CONF;
+        global $DB_DRIVER_NAME, $CONF;
         $name_max_len = ((int)$CONF['DatabaseVersion'] >= 380 ? 50 : 20);
         if ((strlen($name) > $name_max_len) && ($DB_DRIVER_NAME !== 'sqlite')) {
             $msg
@@ -633,35 +633,21 @@ class NucleusPlugin
         }
 
         // create in plugin_option_desc
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
-            $sql = sprintf(
-                'INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,?,?,?,?,?,?)',
-                sql_table('plugin_option_desc'),
-                (int)$this->plugid
-            );
-            $params = [
-                $name,
-                $context,
-                $desc,
-                $type,
-                $defValue,
-                $typeExtras,
-            ];
-            sql_prepare_execute($sql, $params);
-        } else {
-            $query = sprintf(
-                "INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,'%s','%s','%s','%s','%s','%s')",
-                sql_table('plugin_option_desc'),
-                (int)$this->plugid,
-                sql_real_escape_string($name),
-                sql_real_escape_string($context),
-                sql_real_escape_string($desc),
-                sql_real_escape_string($type),
-                sql_real_escape_string($defValue),
-                sql_real_escape_string($typeExtras)
-            );
-            sql_query($query);
-        }
+        $sql = sprintf(
+            'INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,?,?,?,?,?,?)',
+            sql_table('plugin_option_desc'),
+            (int)$this->plugid
+        );
+        $params = [
+            $name,
+            $context,
+            $desc,
+            $type,
+            $defValue,
+            $typeExtras,
+        ];
+        sql_prepare_execute($sql, $params);
+
         $oid = sql_insert_id();
 
         $key                        = $context . '_' . $name;
@@ -1272,40 +1258,20 @@ class NucleusPlugin
             );
         }
 
-        global $DB_PHP_MODULE_NAME;
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
-            $sql = parseQuery('UPDATE [@prefix@]plugin_option_desc')
-                . ' SET  odesc=? , otype=? , odef=? , oextra=? '
-                . ' WHERE opid=? AND ocontext=? AND oname=? ';
-            $params = [
-                $desc,
-                $type,
-                $defValue,
-                $typeExtras,
-                (int)$this->plugid,
-                $context,
-                $name,
-            ];
-            $stmt = sql_prepare_execute($sql, $params);
-            //      trigger_error( implode(' : ', $stmt->errorInfo) );
-        } else {
-            $sql = 'UPDATE ' . sql_table('plugin_option_desc')
-                . ' SET '
-                . sprintf(
-                    ' odesc=%s , otype=%s , odef=%s , oextra=%s ',
-                    sql_quote_string($desc),
-                    sql_quote_string($type),
-                    sql_quote_string($defValue),
-                    sql_quote_string($typeExtras)
-                )
-                . sprintf(
-                    ' WHERE opid=%d AND ocontext=%s AND oname=%s ',
-                    (int)$this->plugid,
-                    sql_quote_string($context),
-                    sql_quote_string($name)
-                );
-            sql_query($sql);
-        }
+        $sql = parseQuery('UPDATE [@prefix@]plugin_option_desc')
+            . ' SET  odesc=? , otype=? , odef=? , oextra=? '
+            . ' WHERE opid=? AND ocontext=? AND oname=? ';
+        $params = [
+            $desc,
+            $type,
+            $defValue,
+            $typeExtras,
+            (int)$this->plugid,
+            $context,
+            $name,
+        ];
+        $stmt = sql_prepare_execute($sql, $params);
+        //      trigger_error( implode(' : ', $stmt->errorInfo) );
 
         $oid                        = $this->_getOID($context, $name);
         $key                        = $context . '_' . $name;
@@ -1417,6 +1383,7 @@ class NucleusPlugin
     public function checkRemoteUpdate()
     {
         $ret_val = ['result' => false, 'version' => '', 'download' => ''];
+        return $ret_val;
         //        if (!function_exists('get_called_class'))
         //            return $ret_val;
         $NP_Name = get_class($this); // get_called_class();

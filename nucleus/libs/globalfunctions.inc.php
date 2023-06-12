@@ -382,6 +382,9 @@ function quickQuery($sqlText, $cacheClear = false)
 {
     static $rs = [];
     $key       = md5($sqlText);
+    if (defined('NC_MTN_MODE') || !confVar('EnableQueryCache', false)) {
+        $cacheClear = true;
+    }
     if ($cacheClear && isset($rs[$key])) {
         unset($rs[$key]);
     }
@@ -2538,10 +2541,7 @@ function init_nucleus_compatibility_mysql_handler()
     $MYSQL_DATABASE = @$DB_DATABASE;
 
     global $DB_PHP_MODULE_NAME;
-    if (! isset($DB_PHP_MODULE_NAME)) {
-        $DB_PHP_MODULE_NAME = 'pdo';
-        $DB_PHP_MODULE_NAME = strtolower($DB_PHP_MODULE_NAME);
-    }
+    $DB_PHP_MODULE_NAME = 'pdo';
 
     global $MYSQL_HANDLER, $DB_DRIVER_NAME;
     if (! isset($DB_DRIVER_NAME)) {
@@ -2553,8 +2553,7 @@ function init_nucleus_compatibility_mysql_handler()
                     && (strtolower($MYSQL_HANDLER[0]) === 'mysql'))
             ) {
                 //                trigger_error("Critical Error : not allow mysql_ function. ", E_USER_ERROR);
-                $DB_PHP_MODULE_NAME = 'mysql';
-                $DB_DRIVER_NAME     = 'mysql';
+                $DB_DRIVER_NAME = 'mysql';
             }
 
             if (! isset($DB_DRIVER_NAME)) {
@@ -2570,25 +2569,14 @@ function init_nucleus_compatibility_mysql_handler()
         }
     }
     $DB_DRIVER_NAME = strtolower($DB_DRIVER_NAME);
+
     // check invalid parameter
-    if ($DB_DRIVER_NAME === 'sqlite') {
-        $DB_PHP_MODULE_NAME = 'pdo';
-        //        echo "Error::config , Not implemented yet. Invalid db driver name.";
-        //        exit;
-    }
-    if (! in_array($DB_PHP_MODULE_NAME, ['pdo', 'mysql'])) {
-        $DB_PHP_MODULE_NAME = 'pdo';
-    }
     if (! in_array($DB_DRIVER_NAME, ['mysql', 'sqlite'])) {
         //        $DB_DRIVER_NAME = 'mysql';
         echo "Error::config Invalid db driver name.";
         exit;
     }
-    if ($DB_PHP_MODULE_NAME === 'mysql') {
-        $MYSQL_HANDLER = ['mysql', ''];
-    } else {
-        $MYSQL_HANDLER = [$DB_PHP_MODULE_NAME, $DB_DRIVER_NAME];
-    }
+    $MYSQL_HANDLER = ['pdo', $DB_DRIVER_NAME];
 }
 
 function checkBrowserLang($locale)
@@ -3177,10 +3165,6 @@ function loadLibBladeOne()
         }
         if (!@is_writable($cache)) {
             trigger_error('Error : blade : $cache not writable.', E_USER_WARNING);
-            return false;
-        }
-        if (PHP_VERSION_ID < 50600) {
-            trigger_error('Error : blade template requires php 5.6 or higher.', E_USER_WARNING);
             return false;
         }
         include_once(__DIR__ . '/thirdparty/bladeone/autoload.php');

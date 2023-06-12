@@ -14,7 +14,9 @@
  *
  */
 
-if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+define('NC_MTN_MODE', 'upgrade');
+
+if (version_compare(phpversion(), '8.0.0', '<')) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])

@@ -276,7 +276,7 @@ class SKIN
         $name,
         $spartstype = 'specialpage'
     ) {
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $DB_DRIVER_NAME;
 
         $exp = '';
         if ($spartstype !== '') {
@@ -292,23 +292,15 @@ class SKIN
             (int)$skinid
         ) . $exp;
 
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
-            if (stripos('sqlite', $DB_DRIVER_NAME) !== false) {
-                $sql .= " AND lower(stype) = ?";
-            } else {
-                $sql .= " AND stype = ?";
-            }
+        if (stripos('sqlite', $DB_DRIVER_NAME) !== false) {
+            $sql .= " AND lower(stype) = ?";
         } else {
-            $sql .= " AND stype = " . sql_quote_string($name);
+            $sql .= " AND stype = ?";
         }
 
         $sql .= " LIMIT 1 ";
 
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
-            $res = sql_prepare_execute($sql, [$name]);
-        } else {
-            $res = sql_query($sql);
-        }
+        $res = sql_prepare_execute($sql, [$name]);
 
         if ($res && ($o = sql_fetch_object($res))) {
             return ((int)$o->result > 0);
@@ -576,28 +568,16 @@ class SKIN
             sql_quote_string((string)$spartstype)
         ));
 
-        global $SQL_DBH;
         // write new thingie
         if (strlen($content) > 0) {
             $sql = sprintf(
                 "INSERT INTO %s(scontent, stype, sdesc, spartstype) VALUES",
                 sql_table('skin')
             );
-            if (! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-                $sql .= sprintf(
-                    "('%s', '%s', %d, '%s')",
-                    sql_real_escape_string($content),
-                    sql_real_escape_string($type),
-                    (int)$skinid,
-                    sql_real_escape_string($spartstype)
-                );
-                sql_query($sql);
-            } else {
-                sql_prepare_execute(
-                    $sql . '(?, ?, ?, ?)',
-                    [$content, $type, (int)$skinid, (string)$spartstype]
-                );
-            }
+            sql_prepare_execute(
+                $sql . '(?, ?, ?, ?)',
+                [$content, $type, (int)$skinid, (string)$spartstype]
+            );
         }
 
         global $resultCache, $manager;

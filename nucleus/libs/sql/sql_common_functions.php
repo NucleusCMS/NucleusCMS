@@ -22,6 +22,13 @@ function startUpError($msg, $title)
     if (! defined('_CHARSET')) {
         define('_CHARSET', 'UTF-8');
     }
+    if (!defined('NC_LIBS_PATH')) {
+        if (!headers_sent()) {
+            header("HTTP/1.0 500 Internal Server Error");
+        }
+        printf('<h1>%s</h1><p>%s</p>', $title, $msg);
+        exit;
+    }
     $tpl = file_get_contents(NC_LIBS_PATH
                                          . 'include/startup_error.template');
     $ph              = [];
@@ -332,10 +339,11 @@ function fix_mysql_sqlmode($conn_or_dbh = null)
         return;
     }
 
-    $options = array_diff(
-        explode(',', $sqlmode),
-        ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE']
-    );
+    $op_exclusion = ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE'];
+    if (defined('NC_MTN_MODE') && (NC_MTN_MODE === 'upgrade')) {
+        $op_exclusion += ['STRICT_ALL_TABLES', 'STRICT_TRANS_TABLES'];
+    }
+    $options = array_diff(explode(',', $sqlmode), $op_exclusion);
     $new_sqlmode = implode(',', $options);
     if (strcmp($sqlmode, $new_sqlmode) != 0) {
         sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);

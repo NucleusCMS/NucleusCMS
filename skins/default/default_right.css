@@ -44,7 +44,7 @@
     .content   { margin: 7px 224px 30px 20px; padding: 0; }
     #sidebarcontainer {
         display: inline-block !important;
-        position: absolute !important;
+/*      position: absolute !important; */
         z-index: unset;
         top: unset;
     }

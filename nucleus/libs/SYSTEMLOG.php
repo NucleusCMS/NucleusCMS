@@ -27,7 +27,7 @@ class SYSTEMLOG
 
     public static function add($type, $subtype, $message, $options = [])
     {
-        global $member, $CONF, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $member, $DB_DRIVER_NAME;
 
         if (! self::checkWritable()) {
             return;
@@ -72,18 +72,8 @@ EOL;
 EOL;
         }
 
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $res = sql_prepare_execute($query, $ph);
-        } else {
-            $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
-            foreach (array_keys($ph) as $key) {
-                $new_key      = substr($key, 1);
-                $ph[$new_key] = & $ph[$key];
-                unset($ph[$key]);
-            }
-            $query = parseQuery($query, $ph);
-            $res   = sql_query($query);
-        }
+        $res = sql_prepare_execute($query, $ph);
+
         if (isDebugMode() && $member->isAdmin()) {
             if (empty($res) || sql_affected_rows($res) == 0) {
                 $msg = sprintf(
@@ -103,7 +93,6 @@ EOL;
         $message,
         $options = []
     ) {
-        global $DB_PHP_MODULE_NAME;
         $message = (string)((strlen($message) > self::MAX_MSG_LEN)
             ? substr($message, 0, self::MAX_MSG_LEN) : $message);
 
@@ -117,18 +106,9 @@ EOL;
             DELETE FROM `{$tablename}`
             WHERE logtype=:logtype AND subtype=:subtype AND message_hash=:message_hash
 EOL;
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            sql_prepare_execute($query, $ph);
-        } else {
-            $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
-            foreach (array_keys($ph) as $key) {
-                $new_key      = substr($key, 1);
-                $ph[$new_key] = & $ph[$key];
-                unset($ph[$key]);
-            }
-            $query = parseQuery($query, $ph);
-            sql_query($query);
-        }
+
+        sql_prepare_execute($query, $ph);
+
         self::add($type, $subtype, $message, $options);
     }
 

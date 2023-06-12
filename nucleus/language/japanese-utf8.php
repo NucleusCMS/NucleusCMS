@@ -238,6 +238,8 @@ define('_TEMPLATE_BLOGFOOTER',				'Blog一覧のフッター');
 
 define('_SETTINGS_DEFAULTLISTSIZE',			'一覧の既定の表示数');
 define('_SETTINGS_DEBUGVARS',				'デバッグモードを有効にする');
+define('_SETTINGS_ENABLEQUERYCACHE',		'クエリーのキャッシュを有効にする');
+define('_SETTINGS_ENABLEQUERYCACHE_NOTE',	'※「はい」にすると誤動作することがあります');
 
 define('_CREATE_ACCOUNT_TITLE',				'アカウントの新規作成');
 define('_CREATE_ACCOUNT0',					'アカウントの作成');

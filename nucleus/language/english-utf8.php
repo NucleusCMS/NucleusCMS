@@ -235,7 +235,9 @@ try_define('_TEMPLATE_BLOGITEM',						'Blog List Item');
 try_define('_TEMPLATE_BLOGFOOTER',						'Blog List Footer');
 
 try_define('_SETTINGS_DEFAULTLISTSIZE',					'Default Size of Lists in Admin Area');
-try_define('_SETTINGS_DEBUGVARS',		'Debug Vars');
+try_define('_SETTINGS_DEBUGVARS',						'Debug Vars');
+try_define('_SETTINGS_ENABLEQUERYCACHE',				'Enable query cache');
+try_define('_SETTINGS_ENABLEQUERYCACHE_NOTE',			'');
 
 try_define('_CREATE_ACCOUNT_TITLE',						'Create Member Account');
 try_define('_CREATE_ACCOUNT0',							'Create Account');

@@ -11,7 +11,9 @@
  */
 
 define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
-define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、installフォルダを現在のタイムスタンプでアップロードし直してください。');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     '認証に失敗しました。インストールする権限がありません。インストール設定ファイルのユーザー名とパスワードを確認してください');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'インストールをするには、まず install/install-config.php を有効にしてください。ない場合は、install-config.sample.phpをコピーして編集して使ってください。');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、install/install-config.phpを現在のタイムスタンプでアップロードし直してください。');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP %s 以上が使えないかどうか、サーバ管理者に確認して下さい。');
 define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');
 
@@ -26,7 +28,7 @@ define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'セキュリティ上の�
 
 define('_INSTALL_TEXT_VERSION',	      'バージョン');
 define('_INSTALL_TEXT_SELECT_TEXT',	  'テキストを選択する');
-define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的, テスト中, 対応していないプラグインは使用できません');
+define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的: 対応していないプラグインは使用できません。');
 
 define('_INST_CONF_ERROR1' , '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。');
 

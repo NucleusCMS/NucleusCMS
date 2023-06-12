@@ -17,7 +17,9 @@
  */
 
 try_define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'The config.php file already exists. To reinstall, you need to delete ../config.php.');
-try_define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'Your installation has expired. Please re-upload install/index.php with a current timestamp.');
+try_define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     'Certification failed. You do not have permission to install. Check your username and password in the installation configuration file');
+try_define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'To install, first enable install/install-config.php. If you do not have it, copy install-config.sample.php and edit it.');
+try_define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'Your installation has expired. Please re-upload install/install-config.php with a current timestamp.');
 try_define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  'The version of PHP that is running is outdated and does not meet the required minimum requirements.It will cancel the installation work.Please check with the server administrator whether PHP %s or higher can not be used.');
 try_define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleus root folder (../) is not writable. Nucleus installer  can not write the config.php file.');
 

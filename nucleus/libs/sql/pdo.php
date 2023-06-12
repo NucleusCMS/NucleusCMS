@@ -123,10 +123,6 @@ if (! function_exists('sql_fetch_assoc')) {
                 );
             } elseif ($DB_DRIVER_NAME === 'sqlite') {  // sqlite3
                 ini_set('default_charset', "UTF-8");
-                if (version_compare(PHP_VERSION, '7.1.0', '<')) {
-                    $msg = 'Critical error: PHP 7.1 or higher is required.';
-                    startUpError($msg, 'Connect Error');
-                }
 
                 if (! extension_loaded('PDO_SQLITE')) {
                     $msg = 'Critical error: pdo_sqlite module is not loaded.';
@@ -155,7 +151,7 @@ if (! function_exists('sql_fetch_assoc')) {
                 if ($DBH) {
                     if (! class_exists('sqlite_functions')) {
                         require_once(__DIR__ . '/sqlite_functions.php');
-                    } // __DIR__ : (php5.3-)
+                    }
                     sqlite_functions::pdo_register_user_functions($DBH);
                     // $DBH->beginTransaction();
                 }
@@ -181,13 +177,6 @@ if (! function_exists('sql_fetch_assoc')) {
 
             // for mysql
             if ($DBH && (stripos($DB_DRIVER_NAME, 'mysql') === 0)) {
-                if ($DBH && version_compare(PHP_VERSION, '5.2.0', '<')) {
-                    // HY000-2014 Cannot execute queries while other unbuffered queries are active.
-                    $DBH->setAttribute(
-                        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,
-                        true
-                    );
-                }
                 if (defined('_CHARSET')) {
                     $charset = get_mysql_charset_from_php_charset(_CHARSET);
                 } else {
@@ -217,7 +206,7 @@ if (! function_exists('sql_fetch_assoc')) {
             }
         } catch (PDOException $e) {
             $DBH = null;
-            if (isDebugMode()) {
+            if (isDebugMode() || (defined('NC_MTN_MODE') && NC_MTN_MODE == 'install')) {
                 $msg = '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
             } else {
                 $msg = '<p>a1 Error!: ';
@@ -263,12 +252,7 @@ if (! function_exists('sql_fetch_assoc')) {
         }
         //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
         unset($MYSQL_CONN);
-        if (7 * 10000 + 2 * 100 <= PHP_VERSION_ID) {
-            $MYSQL_CONN = $SQL_DBH; // PHP[5.x - 8.2]
-        } else {
-            $MYSQL_CONN = clone $SQL_DBH; // PHP[5.x - 7.1]
-            // PHP[7.2 - 8.2] Fatal error: Uncaught Error: Trying to clone an uncloneable object of class PDO
-        }
+        $MYSQL_CONN = $SQL_DBH;
 
         return $SQL_DBH;
     }
@@ -562,13 +546,11 @@ if (! function_exists('sql_fetch_assoc')) {
      */
     function sql_insert_id($dbh = null)
     {
-        global $SQL_DBH;
-
-        if ($dbh === null) {
-            return $SQL_DBH->lastInsertId();
+        if ($dbh !== null) {
+            return $dbh?->lastInsertId() ?? false;
         }
-
-        return $dbh->lastInsertId();
+        global $SQL_DBH;
+        return $SQL_DBH?->lastInsertId() ?? false;
     }
 
     /**
@@ -622,7 +604,7 @@ if (! function_exists('sql_fetch_assoc')) {
      */
     function sql_affected_rows($res)
     {
-        return $res->rowCount();
+        return (int) ($res?->rowCount() ?? 0);
     }
 
     /**
@@ -630,19 +612,17 @@ if (! function_exists('sql_fetch_assoc')) {
      */
     function sql_num_fields($res)
     {
-        return $res->columnCount();
+        return (int) ($res?->columnCount() ?? 0);
     }
 
     /**
      * fetches next row of SQL result as an associative array
+     *
+     * @return array / false : if there are no more rows.
      */
     function sql_fetch_assoc($res)
     {
-        if (! $res) {
-            return [];
-        }
-
-        return $res->fetch(PDO::FETCH_ASSOC);
+        return $res?->fetch(PDO::FETCH_ASSOC) ?? false;
     }
 
     /**
@@ -650,58 +630,54 @@ if (! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_array($res)
     {
-        if (! $res) {
-            return [];
-        }
-
-        return $res->fetch(PDO::FETCH_BOTH);
+        return $res?->fetch(PDO::FETCH_BOTH) ?? false;
     }
 
     /**
      * fetches next row of SQL result as an object
+     *
+     * @return object / false
      */
     function sql_fetch_object($res)
     {
-        if (! $res || ! is_object($res)) {
-            return null;
-        }
-
-        return $res->fetchObject();
+        return $res?->fetchObject() ?? false;
     }
 
     /**
      * Get a result row as an enumerated array
+     *
+     * @return array / false : if there are no more rows.
      */
     function sql_fetch_row($res)
     {
-        if (! $res) {
-            return [];
-        }
-
-        return $res->fetch(PDO::FETCH_NUM);
+        return ($res?->fetch(PDO::FETCH_NUM)) ?? false;
     }
 
+    /**
+     * @return array / false : if there are no more rows.
+     */
     function sql_fetch_column($res, $column_number = 0)
     {
-        if (! $res) {
+        if (! $res || ! is_object($res)) {
             return false;
         }
-
         return $res->fetchColumn($column_number);
     }
 
     /**
      * Get column information from a result and return as an object
+     *
+     * @return object / false
      */
     function sql_fetch_field($res, $offset = 0)
     {
         if (is_object($res) && ($res instanceof PDOStatement)) {
-            $results = $res->getColumnMeta($offset);
-            if (is_array($results) && count($results) > 0) {
-                return (object) $results;
+            $result = $res->getColumnMeta($offset);
+            if (is_array($result) && count($result) > 0) {
+                return (object) $result;
             }
         }
-        return null;
+        return false;
     }
 
     /**

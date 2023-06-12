@@ -140,13 +140,14 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DatabaseVersion',   '380'),
     ('DebugVars',         '0'),
     ('DefaultListSize',   '10'),
+    ('DisableRSS',        '1'),
     ('AdminCSS',          'contemporary_jp');
 
 CREATE TABLE `nucleus_item` (
   `inumber`   int(11)      NOT NULL auto_increment,
   `ititle`    varchar(160) NOT NULL default '',
-  `ibody`     mediumtext   NOT NULL,
-  `imore`     mediumtext   NOT NULL,
+  `ibody`     mediumtext   NOT NULL default '',
+  `imore`     mediumtext   NOT NULL default '',
   `iblog`     int(11)      NOT NULL default '0',
   `iauthor`   int(11)      NOT NULL default '0',
   `itime`     datetime     NOT NULL default '00-01-01 00:00:00',

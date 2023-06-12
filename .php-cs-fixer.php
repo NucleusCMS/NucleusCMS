@@ -11,8 +11,7 @@
 
 // --version=3
 $rules = [
-//  '@PSR12'            => true,  // 適用 PHP7.1 以上 // PHP[5-7.0] Class public const で エラーになる
-    '@PSR2'             => true,
+    '@PSR12'            => true,
     'phpdoc_separation' => false,
     'phpdoc_align' => ['align' => 'vertical',], // 垂直揃え
     'multiline_whitespace_before_semicolons' => ['strategy' => 'no_multi_line'],

@@ -195,46 +195,37 @@ class PARSER
             }
             if (in_array('plugin', $this->actions)
                 && $manager->pluginInstalled('NP_' . $action)) {
-                if (! HAS_CATCH_ERROR) {
+                try {
                     $this->doAction(sprintf(
                         'plugin(%s%s%s)',
                         $action,
                         $this->pdelim,
                         implode($this->pdelim, $params)
                     ));
-                } else {
-                    try {
-                        $this->doAction(sprintf(
-                            'plugin(%s%s%s)',
-                            $action,
-                            $this->pdelim,
-                            implode($this->pdelim, $params)
-                        ));
-                    } catch (Error $e) {
-                        global $member;
-                        if ($member && $member->isLoggedIn()
-                            && $member->isAdmin()) {
-                            $msg = sprintf(
-                                'php critical error in plugin(%s):[%s] Line:%d (%s) : ',
-                                'NP_' . $action,
-                                get_class($e),
-                                $e->getLine(),
-                                $e->getFile()
-                            );
-                            if (confVar('DebugVars')) {
-                                var_dump($e->getMessage());
-                            }
-                            SYSTEMLOG::addUnique(
-                                'error',
-                                'Error',
-                                $msg . $e->getMessage()
-                            );
-                            if (get_class($e) !== 'ArgumentCountError') {
-                                throw $e;
-                            }
-                        } else {
+                } catch (Error $e) {
+                    global $member;
+                    if ($member && $member->isLoggedIn()
+                        && $member->isAdmin()) {
+                        $msg = sprintf(
+                            'php critical error in plugin(%s):[%s] Line:%d (%s) : ',
+                            'NP_' . $action,
+                            get_class($e),
+                            $e->getLine(),
+                            $e->getFile()
+                        );
+                        if (confVar('DebugVars')) {
+                            var_dump($e->getMessage());
+                        }
+                        SYSTEMLOG::addUnique(
+                            'error',
+                            'Error',
+                            $msg . $e->getMessage()
+                        );
+                        if (get_class($e) !== 'ArgumentCountError') {
                             throw $e;
                         }
+                    } else {
+                        throw $e;
                     }
                 }
             } elseif (confVar('DebugVars')) {

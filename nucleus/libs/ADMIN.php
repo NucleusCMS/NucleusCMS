@@ -6050,7 +6050,6 @@ selector();
     public function action_skinchangestypeconfirm()
     {
         global $member;
-        global $DB_PHP_MODULE_NAME;
 
         $member->isAdmin() or $this->disallow();
 
@@ -6077,18 +6076,8 @@ selector();
         }
 
         $sql = sprintf("UPDATE `%s` ", sql_table('skin'));
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
-            sql_prepare_execute($sql, [$partstype_to, $skinid, $skintype]);
-        } else {
-            $sql .= sprintf(
-                "SET spartstype = %s WHERE sdesc=%d AND stype=%s",
-                sql_quote_string($partstype_to),
-                $skinid,
-                sql_quote_string($skintype)
-            );
-            sql_query($sql);
-        }
+        $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
+        sql_prepare_execute($sql, [$partstype_to, $skinid, $skintype]);
 
         $this->action_skinedit();
     }
@@ -6326,10 +6315,17 @@ selector();
                                     <i><?php echo _SETTINGS_SEECONFIGPHP ?></i>
                                 </td>
                             </tr>
+
                             <tr>
                                 <td><?php echo _SETTINGS_DBLOGIN ?></td>
                                 <td><i><?php echo _SETTINGS_SEECONFIGPHP ?></i></td>
                             </tr>
+                            <tr>
+                                <td><?php echo _SETTINGS_ENABLEQUERYCACHE ?></td>
+                                <td><i><?php $this->input_yesno('EnableQueryCache', confVar('EnableQueryCache', false), 10073); ?></i><br />
+                                    <?php echo _SETTINGS_ENABLEQUERYCACHE_NOTE ?></td>
+                            </tr>                                   
+
                             <tr>
                                 <td>
                                     <?php
@@ -6753,6 +6749,7 @@ EOL;
             // config
             $this->updateOrInsertConfig('tidy_opt_config_text', PostVar::asStr('tidy_opt_config_text'));
         }
+        $this->updateOrInsertConfig('EnableQueryCache', (PostVar::asBool('EnableQueryCache') ? '1' : '0'));
 
         // load new config and redirect (this way, the new language will be used is necessary)
         // note that when changing cookie settings, this redirect might cause the user
@@ -6769,7 +6766,7 @@ EOL;
     public function action_systemoverview()
     {
         global $member, $nucleus, $CONF;
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $DB_DRIVER_NAME;
 
         $this->pagehead();
 
@@ -6799,13 +6796,7 @@ EOL;
             // Database Driver
             echo "\t<tr>\n";
             echo "\t\t" . '<td>' . (defined('_ADMIN_SYSTEMOVERVIEW_DBDRIVER') ? _ADMIN_SYSTEMOVERVIEW_DBDRIVER : 'Database Driver') . "</td>\n";
-            echo "\t\t" . '<td>';
-            if ($DB_PHP_MODULE_NAME == 'pdo') {
-                echo 'pdo';
-            } else {
-                echo hsc($DB_PHP_MODULE_NAME) . (_EXT_MYSQL_EMULATE ? ' / emulated mysql driver' : '');
-            }
-            echo "</td>\n";
+            echo "\t\t" . "<td>pdo</td>\n";
             echo "\t</tr>";
             // Database charset
             if ($DB_DRIVER_NAME == 'mysql') {
@@ -6825,13 +6816,6 @@ EOL;
             echo "\t\t" . '<th colspan="2">' . _ADMIN_SYSTEMOVERVIEW_SETTINGS . "</th>\n";
             echo "\t</tr>\n";
 
-            if (version_compare(PHP_VERSION, '5.4.0', '<')) {
-                echo "<tr>\n";
-                echo "\t\t" . '<td width="50%">register_globals' . "</td>\n";
-                $rg = ini_get('register_globals') ? 'On' : 'Off';
-                echo "\t\t" . '<td>' . $rg . "</td>\n";
-                echo "\t</tr>";
-            }
             echo "<tr>\n";
             echo "\t\t" . '<td width="50%">default_charset' . "</td>\n";
             $rg = ini_get('default_charset');
@@ -6882,7 +6866,7 @@ EOL;
 
             // PHP extensions
             $extensions = get_loaded_extensions();
-            sort($extensions, SORT_STRING | (defined('SORT_FLAG_CASE') ? SORT_FLAG_CASE : 0)); // SORT_FLAG_CASE : PHP5.4-
+            sort($extensions, SORT_STRING | SORT_FLAG_CASE);
             echo "<table>\n";
             echo "\t<tr>";
             echo "\t\t" . '<th colspan="2">' . 'PHP extensions' . "</th>\n";
@@ -7099,39 +7083,17 @@ EOL;
 
     public static function updateOrInsertConfig($name, $value)
     {
-        global $DB_PHP_MODULE_NAME;
-
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
-            $res = sql_prepare_execute($sql, [(string) $name]);
-            if ($res) {
-                $row = sql_fetch_row($res);
-                if ($row[0] > 0) {
-                    return self::updateConfig($name, $value);
-                }
-            }
-        } else {
-            $rs = parseQuickQuery(
-                "SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name='[@name@]'",
-                ['name' => $name]
-            );
-            if ($rs) {
+        $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
+        $res = sql_prepare_execute($sql, [(string) $name]);
+        if ($res) {
+            $row = sql_fetch_row($res);
+            if ($row[0] > 0) {
                 return self::updateConfig($name, $value);
             }
         }
 
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
-            $res = sql_prepare_execute($sql, [(string) $name, trim((string) $value)]);
-        } else {
-            $sql = sprintf(
-                'INSERT INTO `%s` (name, value) VALUES(%s, %s)',
-                sql_table('config'),
-                sql_quote_string($name),
-                sql_quote_string(trim($value))
-            );
-            $res = sql_query($sql);
-        }
+        $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
+        $res = sql_prepare_execute($sql, [(string) $name, trim((string) $value)]);
 
         $res or exit((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
         return sql_insert_id();
