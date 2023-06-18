@@ -12,12 +12,12 @@ function media_select()
 
     // currently selected collection
     $currentCollection = (string) requestVar('collection');
-    if (!$currentCollection || !@is_dir($DIR_MEDIA . $currentCollection)) {
+    if ( ! $currentCollection || ! @is_dir($DIR_MEDIA . $currentCollection)) {
         $currentCollection = $member->getID();
     }
 
     // avoid directory travarsal and accessing invalid directory
-    if (!MEDIA::isValidCollection($currentCollection)) {
+    if ( ! MEDIA::isValidCollection($currentCollection)) {
         media_doError(_ERROR_DISALLOWED);
     }
 
@@ -115,7 +115,7 @@ function media_select()
             $obj  = $arr[$i];
             $size = @GetImageSize($DIR_MEDIA . $currentCollection . '/' . $obj->filename);
             echo "<tr>";
-            if ($size[2] != 0) { // image (gif/jpg/png/swf)
+            if (0 != $size[2]) { // image (gif/jpg/png/swf)
                 $image_url = $CONF['MediaURL'] . $currentCollection . '/' . $obj->filename;
                 echo sprintf(
                     '<td>%s</td>',
@@ -250,7 +250,7 @@ function media_upload()
 
     // clean filename of characters that may cause trouble in a filename using cleanFileName() function from globalfunctions.php
     $filename = cleanFileName($filename);
-    if ($filename === false) {
+    if (false === $filename) {
         media_doError(_ERROR_BADFILETYPE);
     }
 
@@ -284,11 +284,11 @@ function media_upload()
             $ok = 1;
         }
     }
-    if (!$ok) {
+    if ( ! $ok) {
         media_doError(_ERROR_BADFILETYPE);
     }
 
-    if (!is_uploaded_file($filetempname)) {
+    if ( ! is_uploaded_file($filetempname)) {
         media_doError(_ERROR_BADREQUEST);
     }
 
@@ -301,7 +301,7 @@ function media_upload()
     $collection = requestVar('collection');
     $res        = MEDIA::addMediaObject($collection, $filetempname, $filename);
 
-    if ($res != '') {
+    if ('' != $res) {
         media_doError($res);
     }
 

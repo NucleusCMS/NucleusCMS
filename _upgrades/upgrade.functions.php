@@ -29,7 +29,7 @@ function upgrade_checkBrowserLang()
 {
     $langs = get_http_accept_primary_languages();
 
-    if (!$langs) {
+    if ( ! $langs) {
         return 'en';
     }
 
@@ -48,13 +48,13 @@ function upgrade_checkinstall($version)
     $installed = 0;
     global $DB_DRIVER_NAME;
 
-    if ($DB_DRIVER_NAME == 'sqlite' && $version <= 380) {
+    if ('sqlite' == $DB_DRIVER_NAME && $version <= 380) {
         return true;
     }
 
     switch ($version) {
         case '300':
-            if (!sql_existTableName(sql_table('config'))) { //  < 250
+            if ( ! sql_existTableName(sql_table('config'))) { //  < 250
                 return false;
             }
             // no break
@@ -88,7 +88,7 @@ function upgrade_showLogin($type)
 
 function send_header()
 {
-    if (_CHARSET != 'UTF-8' && !headers_sent()) {
+    if (_CHARSET != 'UTF-8' && ! headers_sent()) {
         header('Content-Type: text/html; charset=UTF-8');
     }
 }
@@ -180,8 +180,8 @@ function upgrade_query($friendly, $query)
 /**
   * Tries to update database version, gives a message when failed
   *
-  * @param $version
-  *     Schema version the database has been upgraded to
+   * @param $version
+   *                  Schema version the database has been upgraded to
   */
 function update_version($version)
 {
@@ -197,9 +197,9 @@ function update_version($version)
 
 /**
  * @param $table
- *        table to check (without prefix)
+ *                   table to check (without prefix)
  * @param $aColumns
- *        array of column names included
+ *                   array of column names included
  */
 function upgrade_checkIfIndexExists($table, $aColumns)
 {
@@ -209,7 +209,7 @@ function upgrade_checkIfIndexExists($table, $aColumns)
     $res      = sql_query(sprintf('show index from %s', sql_table($table)));
     if ($res) {
         while ($o = sql_fetch_object($res)) {
-            if (!$aIndices[$o->Key_name]) {
+            if ( ! $aIndices[$o->Key_name]) {
                 $aIndices[$o->Key_name] = [];
             }
             $aIndices[$o->Key_name][] = $o->Column_name;
@@ -219,7 +219,7 @@ function upgrade_checkIfIndexExists($table, $aColumns)
     // compare each index with parameter
     foreach ($aIndices as $keyName => $aIndexColumns) {
         $aDiff = array_diff($aIndexColumns, $aColumns);
-        if (count($aDiff) == 0) {
+        if (0 == count($aDiff)) {
             return 1;
         }
     }
@@ -230,51 +230,51 @@ function upgrade_checkIfIndexExists($table, $aColumns)
 /**
   * Checks to see if a given table exists
   *
-  * @param $table
-  *     Name of table to check for existance of
-  *     Uses sql_table internally
-  * @return true if table exists, false otherwise.
+   * @param       $table
+   *                     Name of table to check for existance of
+   *                     Uses sql_table internally
+   * @return true if table exists, false otherwise.
   */
 function upgrade_checkIfTableExists($table)
 {
     $res = sql_query(sprintf("SHOW TABLES LIKE '%s'", sql_table($table)));
-    return ($res != 0) && (sql_num_rows($res) == 1);
+    return (0 != $res) && (1 == sql_num_rows($res));
 }
 
 /**
   * Checks to see if a given configuration value exists
   *
-  * @param $name
-  *     Config value to check for existance of.
-  *     Paramater must be MySQL escaped
-  * @return true if configuration value exists, false otherwise.
+   * @param       $name
+   *                    Config value to check for existance of.
+   *                    Paramater must be MySQL escaped
+   * @return true if configuration value exists, false otherwise.
   */
 function upgrade_checkIfCVExists($name)
 {
     $res = sql_query(sprintf("SELECT name from %s WHERE name='%s'", sql_table('config'), $name));
-    return ($res != 0) && (sql_num_rows($res) == 1);
+    return (0 != $res) && (1 == sql_num_rows($res));
 }
 
 /**
   * Checks to see if a given column exists
   *
-  * @param $table
-  *     Name of table to check for column in
-  *     Uses sql_table internally
-  * @param $col
-  *     Name of column to check for existance of
-  * @return true if column exists, false otherwise.
+   * @param       $table
+   *                     Name of table to check for column in
+   *                     Uses sql_table internally
+   * @param       $col
+   *                     Name of column to check for existance of
+   * @return true if column exists, false otherwise.
   */
 function upgrade_checkIfColumnExists($table, $col)
 {
     $res = sql_query(sprintf('DESC `%s` `%s`', sql_table($table), $col));
-    return ($res != 0) && (sql_num_rows($res) == 1);
+    return (0 != $res) && (1 == sql_num_rows($res));
 }
 
 function upgrade_db_optimize()
 {
     global $DB_DRIVER_NAME;
-    if ($DB_DRIVER_NAME == 'mysql') {
+    if ('mysql' == $DB_DRIVER_NAME) {
         upgrade_db_optimize_mysql();
     }
 }
@@ -282,13 +282,13 @@ function upgrade_db_optimize()
 function upgrade_db_optimize_mysql()
 {
     global $DB_DRIVER_NAME;
-    if ($DB_DRIVER_NAME != 'mysql') {
+    if ('mysql' != $DB_DRIVER_NAME) {
         return;
     }
 
     $tables = [];
     $res    = sql_query(sprintf("SHOW TABLE STATUS LIKE '%s%%'", sql_table('')));
-    while ($res && ($row = sql_fetch_assoc($res)) && !empty($row)) {
+    while ($res && ($row = sql_fetch_assoc($res)) && ! empty($row)) {
         $tables[] = $row['Name'];
     }
 
@@ -307,8 +307,8 @@ function upgrade_db_optimize_mysql()
 
 function upgrade_remove_RefNew($filename)
 {
-    if (!is_file($filename)
-       || !($src = file_get_contents($filename))) {
+    if ( ! is_file($filename)
+       || ! ($src = file_get_contents($filename))) {
         return ;
     }
     $pattern = '/(\s*=\s*)&(\s*new\s)/ms';
@@ -337,7 +337,7 @@ function upgrade_find_file($dir, $file_regex_pattern, $subdir_search = true, $li
     if ((int) $limit <= 0) {
         return [];
     }
-    if (strlen($dir) > 0 && substr($dir, -1, 1) != '/') {
+    if (strlen($dir) > 0 && '/' != substr($dir, -1, 1)) {
         $dir .= '/';
     }
     $limit--;
@@ -345,7 +345,7 @@ function upgrade_find_file($dir, $file_regex_pattern, $subdir_search = true, $li
     if (is_dir($dir)) {
         if ($dh = opendir($dir)) {
             while (($file = readdir($dh)) !== false) {
-                if (!in_array($file, ['.','..'])) {
+                if ( ! in_array($file, ['.','..'])) {
                     if (is_dir($dir . $file)) {
                         $child = upgrade_find_file($dir . $file, $file_regex_pattern, $subdir_search, $limit);
                         if (empty($child)) {
@@ -366,7 +366,7 @@ function upgrade_find_file($dir, $file_regex_pattern, $subdir_search = true, $li
 function upgrade_check_plugin_syntax()
 {
     global $DIR_PLUGINS;
-    if (!is_dir($DIR_PLUGINS)) {
+    if ( ! is_dir($DIR_PLUGINS)) {
         return;
     }
     $php = 'php';
@@ -375,13 +375,13 @@ function upgrade_check_plugin_syntax()
         $php = UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX;
     }
     exec("{$php} --version", $output, $retval);
-    if (($retval !== 0) || empty($output) || !preg_match('@^(PHP\s+[\d\.]+)@i', $output[0], $ver)) {
+    if ((0 !== $retval) || empty($output) || ! preg_match('@^(PHP\s+[\d\.]+)@i', $output[0], $ver)) {
         return;
     }
     $ver   = $ver[1];
     $files = upgrade_find_file($DIR_PLUGINS, '/\.php$/i');
     sort($files);
-//    var_dump($output, $retval, $files);
+    //var_dump($output, $retval, $files);
     $errors = [];
     foreach ($files as $file) {
         $output = '';
@@ -407,7 +407,7 @@ function upgrade_check_plugin_syntax()
             $errors[] = sprintf("<li>%s: <div>%s</div></li>", substr($file, strlen($DIR_PLUGINS)), hsc($output));
         }
     }
-    if (!empty($errors)) {
+    if ( ! empty($errors)) {
         return sprintf("<h2>%s</h2>{$ver}<ul>%s</ul>", _UPG_TEXT_WARN_PLUGIN_SYNTAX_ERROR, implode("\n", $errors));
     }
     return '';
@@ -425,7 +425,7 @@ function upgrade_manual_atom1_0()
 
     $messages = [];
     while ($o = sql_fetch_object($res)) {
-        if ($o->sddesc == 'Atom 0.3 weblog syndication') {
+        if ('Atom 0.3 weblog syndication' == $o->sddesc) {
             $messages[] = '<h2>Atom 1.0</h2>';
             $messages[] = '<p>' . _UPG_TEXT_ATOM1_01 . '</p>';
             $messages[] = '<p>' . _UPG_TEXT_ATOM1_02 . '</p>';
@@ -441,14 +441,14 @@ function upgrade_manual_atom1_0()
     if (0 < $tdnumber) {
         $query = sprintf("SELECT tpartname FROM %s WHERE tdesc=%s AND tpartname='BLOGLIST_LISTITEM'", sql_table('template'), $tdnumber);
         $res   = sql_query($query);
-        if (!sql_fetch_object($res)) {
+        if ( ! sql_fetch_object($res)) {
             $messages[] = '<h2>' . _UPG_TEXT_ATOM1_04 . '</h2>';
             $messages[] = '<p>' . _UPG_TEXT_ATOM1_05 . '</p>';
             $messages[] = '<p>' . _UPG_TEXT_ATOM1_06 . '</p>';
             $messages[] = '<p>' . _UPG_TEXT_ATOM1_07 . '</p>';
         }
     }
-    return !empty($messages) ? implode("\n", $messages) : '';
+    return ! empty($messages) ? implode("\n", $messages) : '';
 }
 
 function upgrade_manual_340()
@@ -484,7 +484,7 @@ function upgrade_manual_366()
 {
     $row     = [];
     $content = @file_get_contents('../../action.php');
-    if (!str_contains($content, '=&')) {
+    if ( ! str_contains($content, '=&')) {
         return '';
     }
     $row[] = '<h2>' . _UPG_TEXT_V366_01 . '</h2>';
@@ -498,44 +498,44 @@ function get_current_version()
         return intGetVar('setvar');
     }
 
-    if (!upgrade_checkinstall(310)) {
+    if ( ! upgrade_checkinstall(310)) {
         return 300;
     }
-    if (!upgrade_checkinstall(320)) {
+    if ( ! upgrade_checkinstall(320)) {
         return 310;
     }
-    if (!upgrade_checkinstall(330)) {
+    if ( ! upgrade_checkinstall(330)) {
         return 320;
     }
-    if (!upgrade_checkinstall(340)) {
+    if ( ! upgrade_checkinstall(340)) {
         return 330;
     }
-    if (!upgrade_checkinstall(350)) {
+    if ( ! upgrade_checkinstall(350)) {
         return 340;
     }
-    if (!upgrade_checkinstall(360)) {
+    if ( ! upgrade_checkinstall(360)) {
         return 350;
     }
-    if (!upgrade_checkinstall(370)) {
+    if ( ! upgrade_checkinstall(370)) {
         return 360;
     }
-    if (!upgrade_checkinstall(371)) {
+    if ( ! upgrade_checkinstall(371)) {
         return 370;
     }
-    if (!upgrade_checkinstall(380)) {
+    if ( ! upgrade_checkinstall(380)) {
         return 371;
     }
 
     return NUCLEUS_UPGRADE_VERSION_ID;
 }
 
-if (!function_exists('parseQuery')) {
+if ( ! function_exists('parseQuery')) {
     function parseQuery($query = '', $ph = [])
     {
         // $ph is placeholders
         $ph['prefix'] = sql_table();
         foreach ($ph as $k => $v) {
-            if (!str_contains($query, '[@')) {
+            if ( ! str_contains($query, '[@')) {
                 break;
             }
             $k     = '[@'.$k.'@]';
@@ -545,12 +545,12 @@ if (!function_exists('parseQuery')) {
     }
 }
 
-if (!function_exists('parseHtml')) {
+if ( ! function_exists('parseHtml')) {
     function parseHtml($tpl = '', $ph = [])
     {
         // $ph is placeholders
         foreach ($ph as $k => $v) {
-            if (!str_contains($tpl, '{%')) {
+            if ( ! str_contains($tpl, '{%')) {
                 break;
             }
             $k   = '{%'.$k.'%}';
@@ -562,14 +562,14 @@ if (!function_exists('parseHtml')) {
 function renderPage($content = '')
 {
     $tpl = file_get_contents('tpl/template.tpl');
-    $ph;
+    $ph            = [];
     $ph['title']   = _UPG_TEXT_NUCLEUS_UPGRADE;
     $ph['content'] = $content;
     send_header();
     return parseHtml($tpl, $ph);
 }
 
-if (!function_exists('hsc')) {
+if ( ! function_exists('hsc')) {
     function hsc($str)
     {
         return htmlspecialchars(__DIR__, ENT_COMPAT, _CHARSET);
@@ -592,10 +592,10 @@ function get_default_content()
                          NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION
                      )
                      .'</p>';
-    } elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+    } elseif (NUCLEUS_UPGRADE_VERSION_ID == $current) {
         $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
         $messages[] = '<br />';
-        if (!defined('_ERRORS_UPGRADESDIR')) {
+        if ( ! defined('_ERRORS_UPGRADESDIR')) {
             define('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
         }
         $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, hsc(__DIR__));
@@ -608,7 +608,7 @@ function get_default_content()
     }
 
     $from = intGetVar('from');
-    if (!$from) {
+    if ( ! $from) {
         $from = $current;
     }
 
@@ -632,7 +632,7 @@ function get_default_content()
         if ($sth) {
             $messages[] = '<p>' . _UPG_TEXT_NOTE50_MANUAL_CHANGES_01 .'</p>';
             $messages[] = $sth;
-        } elseif ($current == NUCLEUS_UPGRADE_VERSION_ID) {
+        } elseif (NUCLEUS_UPGRADE_VERSION_ID == $current) {
             $messages[] = '<p>' . _UPG_TEXT_NO_MANUAL_CHANGES_LUCKY_DAY .'</p>';
         }
     }

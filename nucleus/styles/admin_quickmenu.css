@@ -1,0 +1,7 @@
+#quickmenu ul {
+    display: none;
+}
+
+#quickmenu .accordion {
+    cursor: pointer;
+}

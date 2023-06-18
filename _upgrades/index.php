@@ -29,7 +29,7 @@ global $CONF;
 
 include_once('define.php');
 
-if (!is_file('../config.php')) {
+if ( ! is_file('../config.php')) {
     exit('config not found');
 }
 
@@ -39,17 +39,17 @@ include_once('sql.functions.php');
 
 load_upgrade_lang();
 
-if (getVar('mode') === 'exec') {
+if ('exec' === getVar('mode')) {
     include_once('upgrade.php');
     exit;
 }
 
 // check if logged in etc
-if (!$member->isLoggedIn()) {
+if ( ! $member->isLoggedIn()) {
     $content = upgrade_showLogin('./');
-} elseif (!$member->isAdmin()) {
+} elseif ( ! $member->isAdmin()) {
     $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
-} elseif (!upgrade_checkinstall(300)) {
+} elseif ( ! upgrade_checkinstall(300)) {
     $tpl                                     = file_get_contents('tpl/content_beforev2.tpl');
     $ph                                      = [];
     $ph['UPGRADE_ABORTED']                   = _UPG_TEXT_UPGRADE_ABORTED;

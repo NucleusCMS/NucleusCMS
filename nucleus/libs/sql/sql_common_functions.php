@@ -19,11 +19,13 @@
  */
 function startUpError($msg, $title)
 {
-    if (! defined('_CHARSET')) {
+    if ( ! defined('_CHARSET')) {
         define('_CHARSET', 'UTF-8');
     }
-    $tpl = file_get_contents(NC_LIBS_PATH
-                                         . 'include/startup_error.template');
+    if ( ! defined('NC_LIBS_PATH')) {
+        define('NC_LIBS_PATH', dirname(__DIR__) . '/');
+    }
+    $tpl             = file_get_contents(NC_LIBS_PATH . 'include/startup_error.template');
     $ph              = [];
     $ph['lang_code'] = defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en';
     $ph['CHARSET']   = _CHARSET;
@@ -66,7 +68,7 @@ function get_mysql_charset_from_php_charset($charset = 'utf-8')
             break; // cp1250_general_ci
         default:
             global $DB_DRIVER_NAME;
-            if ($DB_DRIVER_NAME === 'mysql'
+            if ('mysql' === $DB_DRIVER_NAME
                 && preg_match('#^iso-8859-(\d+)$#i', $charset, $m)) {
                 $db = sql_get_db();
                 if ($db) { // ISO 8859-  2 8 7 9 13
@@ -147,7 +149,7 @@ function get_charname_from_langname($language_name = 'english-utf8')
 
 function treat_char_name($charset = 'utf8mb4')
 {
-    if ($charset === 'utf8mb4') {
+    if ('utf8mb4' === $charset) {
         return 'utf8mb4';
     }
 
@@ -163,7 +165,7 @@ function treat_char_name($charset = 'utf8mb4')
             break; // cp1250_general_ci
         case 'utf8':
         case 'utf-8':
-            if (getCharSetFromDB(sql_table('item'), 'ibody') === 'utf8mb4') {
+            if ('utf8mb4' === getCharSetFromDB(sql_table('item'), 'ibody')) {
                 $charset = 'utf8mb4';
             } else {
                 $charset = 'utf8';
@@ -192,7 +194,7 @@ function treat_char_name($charset = 'utf8mb4')
 function getCharSetFromDB($tableName, $columnName, $dbh = null)
 {
     $collation = getCollationFromDB($tableName, $columnName, $dbh);
-    if (!str_contains($collation, '_')) {
+    if ( ! str_contains($collation, '_')) {
         $charset = $collation;
     } else {
         list($charset, $dummy) = explode('_', $collation, 2);
@@ -249,11 +251,11 @@ function updateQuery($table_name, $values, $where = '', $extra = [])
         $where = implode(' ', $where);
     }
 
-    if (! is_array($values)) {
+    if ( ! is_array($values)) {
         $pairs = $values;
     } else {
         foreach ($values as $key => $value) {
-            if ($value === null || strtolower($value) === 'null') {
+            if (null === $value || 'null' === strtolower($value)) {
                 $value = 'NULL';
             } elseif (str_contains($key, ':expr')) {
                 $key = str_replace(':expr', '', $key);
@@ -265,7 +267,7 @@ function updateQuery($table_name, $values, $where = '', $extra = [])
         $pairs = implode(',', $pair);
     }
 
-    if ($where != '') {
+    if ('' != $where) {
         $where = "WHERE {$where}";
     }
 
@@ -292,7 +294,7 @@ function _getFieldsStringFromArray($fields = [])
             $_[] = $v;
         }
     }
-    if (stripos($_[0], 'distinct') === 0) {
+    if (0 === stripos($_[0], 'distinct')) {
         $_[0] = preg_replace('@^distinct[, ]*@i', '', $_[0]);
     }
 
@@ -301,7 +303,7 @@ function _getFieldsStringFromArray($fields = [])
 
 function sql_get_server_version($conn_or_dbh = null)
 {
-    $dbh = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+    $dbh = ( ! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
 
     return implode(
         '.',
@@ -311,9 +313,9 @@ function sql_get_server_version($conn_or_dbh = null)
 
 function sql_get_mysql_sqlmode($conn_or_dbh = null)
 {
-    $dbh = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+    $dbh = ( ! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     $q   = sql_query("SELECT @@SESSION.sql_mode;", $dbh);
-    if (! $q) {
+    if ( ! $q) {
         return '';
     }
     $row = sql_fetch_array($q);
@@ -323,21 +325,17 @@ function sql_get_mysql_sqlmode($conn_or_dbh = null)
 
 function fix_mysql_sqlmode($conn_or_dbh = null)
 {
-    $dbh = (! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
+    $dbh = ( ! empty($conn_or_dbh) ? $conn_or_dbh : sql_get_db());
     if (version_compare(sql_get_server_version($dbh), '5.6.0', '<')) {
         return;
     }
-    $sqlmode = sql_get_mysql_sqlmode($dbh);
-    if (empty($sqlmode)) {
-        return;
-    }
-
-    $options = array_diff(
-        explode(',', $sqlmode),
-        ['NO_ZERO_DATE', 'NO_ZERO_IN_DATE']
-    );
+    // MySQL 8.0 : ONLY_FULL_GROUP_BY, STRICT_TRANS_TABLES, NO_ZERO_IN_DATE, NO_ZERO_DATE, ERROR_FOR_DIVISION_BY_ZERO, NO_ENGINE_SUBSTITUTION
+    // Error reporting on forums : ONLY_FULL_GROUP_BY, STRICT_TRANS_TABLES, NO_ZERO_IN_DATE, NO_ZERO_DATE
+    $options = [
+        'PIPES_AS_CONCAT', //  || is string concatenation in standard SQL
+        'ERROR_FOR_DIVISION_BY_ZERO',
+        'NO_ENGINE_SUBSTITUTION',
+    ];
     $new_sqlmode = implode(',', $options);
-    if (strcmp($sqlmode, $new_sqlmode) != 0) {
-        sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);
-    }
+    sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);
 }

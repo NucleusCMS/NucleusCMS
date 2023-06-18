@@ -13,12 +13,12 @@ class CoreCachedData
     public static function existTable()
     {
         static $ret = null;
-        if (! is_null($ret)) {
+        if (null !== $ret) {
             return $ret;
         }
         $tablename = sql_table(self::base_tablename);
         $ret       = sql_existTableName($tablename);
-        if (! $ret) {
+        if ( ! $ret) {
             // force create table
             self::CreateTable();
             $ret = sql_existTableName($tablename);
@@ -41,19 +41,19 @@ class CoreCachedData
         global $DB_PHP_MODULE_NAME;
         $tablename = sql_table(self::base_tablename);
 
-        $type     = (string)$type;
-        $sub_type = (string)$sub_type;
-        $name     = (string)$name;
-        $sub_id   = (int)$sub_id;
+        $type     = (string) $type;
+        $sub_type = (string) $sub_type;
+        $name     = (string) $name;
+        $sub_id   = (int) $sub_id;
 
-        $expire_datetime = (is_null($expire_time) ? ''
+        $expire_datetime = (null === $expire_time ? ''
             : sql_gmDateTime_from_utime($expire_time));
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
+        if ('pdo' == $DB_PHP_MODULE_NAME) {
             $sql = "SELECT count(*) FROM `{$tablename}`"
                                 . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
                                 . " AND `cd_name` = ? ";
             $input_parameters = [$type, $sub_type, $sub_id, $name];
-            if (! empty($expire_datetime)) {
+            if ( ! empty($expire_datetime)) {
                 // cd_datetime      : time when data was saved
                 // $expire_datetime : Expired time
                 //                    $expire_datetime = now - (Effective time)
@@ -76,7 +76,7 @@ class CoreCachedData
                        $sub_id,
                        sql_real_escape_string($name)
                    );
-            if (! empty($expire_datetime)) {
+            if ( ! empty($expire_datetime)) {
                 // check if saved time > $expire_datetime
                 $sql .= sprintf(
                     " AND `cd_datetime` > '%s'",
@@ -95,11 +95,11 @@ class CoreCachedData
     {
         $tablename = sql_table(self::base_tablename);
 
-        $type     = (string)$type;
-        $sub_type = (string)$sub_type;
-        $name     = (string)$name;
-        $value    = (string)$value;
-        $sub_id   = (int)$sub_id;
+        $type     = (string) $type;
+        $sub_type = (string) $sub_type;
+        $name     = (string) $name;
+        $value    = (string) $value;
+        $sub_id   = (int) $sub_id;
 
         if (isDebugMode()) {
             if (strlen($type) > 50) {
@@ -185,13 +185,13 @@ class CoreCachedData
     ) {
         $tablename = sql_table(self::base_tablename);
 
-        $type     = (string)$type;
-        $sub_type = (string)$sub_type;
-        $name     = (string)$name;
-        $sub_id   = (int)$sub_id;
+        $type     = (string) $type;
+        $sub_type = (string) $sub_type;
+        $name     = (string) $name;
+        $sub_id   = (int) $sub_id;
 
         $sql             = "SELECT *, ";
-        $expire_datetime = (is_null($expire_time) ? ''
+        $expire_datetime = (null === $expire_time ? ''
             : sql_gmDateTime_from_utime($expire_time));
         if (empty($expire_datetime)) {
             $sql .= " 0 AS 'expired'";
@@ -232,12 +232,12 @@ class CoreCachedData
     ) {
         $tablename = sql_table(self::base_tablename);
 
-        $type     = (string)$type;
-        $sub_type = (string)$sub_type;
-        $name     = (string)$name;
-        $sub_id   = (int)$sub_id;
+        $type     = (string) $type;
+        $sub_type = (string) $sub_type;
+        $name     = (string) $name;
+        $sub_id   = (int) $sub_id;
 
-        if (! self::existDataEx($type, $sub_type, $sub_id, $name)) {
+        if ( ! self::existDataEx($type, $sub_type, $sub_id, $name)) {
             return;
         }
 
@@ -255,7 +255,7 @@ class CoreCachedData
     private static function CreateTable()
     {
         global $DB_DRIVER_NAME;
-        if ($DB_DRIVER_NAME == 'sqlite') {
+        if ('sqlite' == $DB_DRIVER_NAME) {
             self::CreateTable_sqlite();
         } else {
             self::CreateTable_mysql();

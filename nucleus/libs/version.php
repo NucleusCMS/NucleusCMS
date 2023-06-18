@@ -19,7 +19,7 @@
 define('NUCLEUS_VERSION', '3.80'); // (string) 3.90..3.99, 5.0.0
 define('NUCLEUS_VERSION_ID', 380); // (int)    390 ..399 , 50000
 define('NUCLEUS_PATCH_LEVEL', 0); // (int)
+define('NUCLEUS_RELEASE_IDENTIFIER', 'dev [EOL]'); // '' , 'dev' , 'rc' , 'fix', ... as you like
 define('NUCLEUS_DATABASE_VERSION_ID', 380); // (int) 390..399  , 50000
 
 define('NUCLEUS_DEVELOP', 1); // (bool): true if development version.
-define('NUCLEUS_DEVELOP_TEXT', 'rc'); // '' , 'dev' , 'rc'

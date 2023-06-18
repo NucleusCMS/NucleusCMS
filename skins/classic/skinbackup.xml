@@ -1,14 +1,14 @@
 <nucleusskin>
 	<meta>
-		<skin name="default" />
-		<template name="default/index" />
-		<template name="default/item" />
-		<info><![CDATA[Nucleus CMS Default Skin]]></info>
+		<skin name="classic" />
+		<template name="classic/index" />
+		<template name="classic/item" />
+		<info><![CDATA[Nucleus CMS classic Skin]]></info>
 	</meta>
 
 
-	<skin name="default" type="text/html" includeMode="skindir" includePrefix="default/">
-		<description>Nucleus CMS default skin</description>
+	<skin name="classic" type="text/html" includeMode="skindir" includePrefix="classic/">
+		<description>Nucleus CMS classic skin</description>
 		<part name="archive"><![CDATA[<%parsedinclude(head.inc)%>
 
 <!-- page header -->
@@ -23,7 +23,7 @@
 <%_(You are currently viewing archive for)%> <%archivedate%>
 </div>
 <div class="content">
-<%archive(default/index)%>
+<%archive(classic/index)%>
 </div>
 </div>
 
@@ -49,7 +49,7 @@
 </div>
 <dl>
 <dt><%_(Monthly Archives)%></dt>
-<%archivelist(default/index)%>
+<%archivelist(classic/index)%>
 </dl>
 </div>
 </div>
@@ -113,7 +113,7 @@ body { margin: 0px; }
 <!-- page content -->
 <div id="container">
 <div class="content">
-<%blog(default/index,10)%>
+<%blog(classic/index,10)%>
 </div>
 </div>
 
@@ -134,14 +134,14 @@ body { margin: 0px; }
 <!-- page content -->
 <div id="container">
 <div class="content">
-<%item(default/item)%>
+<%item(classic/item)%>
 </div>
 <div class="content">
 <div class="contenttitle">
 <h2><%_(Comments)%></h2>
 </div>
 <a name="c"></a>
-<%comments(default/item)%>
+<%comments(classic/item)%>
 </div>
 <div class="content">
 <div class="contenttitle">
@@ -206,7 +206,7 @@ body { margin: 0px; }
 <%searchform%>
 </div>
 <div class="content">
-<%searchresults(default/index)%>
+<%searchresults(classic/index)%>
 </div>
 </div>
 
@@ -222,8 +222,8 @@ body { margin: 0px; }
 	</skin>
 
 
-	<template name="default/index">
-		<description>Nucleus CMS default index template</description>
+	<template name="classic/index">
+		<description>Nucleus CMS classic index template</description>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
 <h2><a href="<%itemlink%>" title="<%_(Read entry)%>: <%title(attribute)%>"><%title%></a></h2>
@@ -311,8 +311,8 @@ body { margin: 0px; }
 	</template>
 
 
-	<template name="default/item">
-		<description>Nucleus CMS default item template</description>
+	<template name="classic/item">
+		<description>Nucleus CMS classic item template</description>
 
 		<part name="ITEM"><![CDATA[<div class="contenttitle">
 <h2><%title%></h2>

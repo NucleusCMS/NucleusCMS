@@ -12,6 +12,7 @@
 		(see nucleus/documentation/index.html#license for more info)
 	-->
 	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
 	<link rel="index" href="./index.html" />
 	<title>Nucleus - History</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -23,13 +24,7 @@
 			font-style: italic;
 		}
 	</style>
-	<script type="text/javascript" src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-		google.load("jquery", "1");
-		google.setOnLoadCallback(function() {
-			$.getScript("devdocs/javascript/fontsizeChanger.js");
-		});
-	</script>
+	<script src="common.js" cache-control="max-age=15552000"></script>
 </head>
 <body>
 	<div id="fontSizeChanger">
@@ -47,23 +42,21 @@
 
 <ul>
 	<li>
-		<strong>Nucleus v3.80(?年?月?日)</strong>
+		<strong>Nucleus v3.80 dev [開発版]</strong> (-/-/-)
 		<ul>
-		<li>[重要,変更] NucleusCMS本体のサポートされるPHPのバージョンが変更されました。プラグインも使用するPHPのバージョンに対応している必要あります。</li>
+		<li>[変更] NucleusCMS本体のサポートされるPHPのバージョンが変更されました。プラグインも使用するPHPのバージョンに対応している必要あります。</li>
 		<li>[新機能] データベースの最適化/修復が追加されました。</li>
 		<li>[新機能] メンバーの停止(アカウントロック)が追加されました。<br />有効にするとメンバーはログインやパスワード発行などの各種操作ができなくなります。</li>
 		<li>[新機能] Blogオプション authorvisibleが追加されました。</li>
 		<li>[新機能] 投稿画面に現在時刻を挿入するボタンが追加されました</li>
-		<li>[新機能] PluginOneFolder機能が追加されました。(NP_プラグイン名.phpをショートネームフォルダに入れることができます。)</li>
 		<li>[新機能] データベース MySQL utf8mb4への対応。</li>
 		<li>[新機能] コンテンツの圧縮をサポート(gzip, deflate)</li>
 		<li>[新機能] プラグイン更新通知が追加されました。</li>
 		<li>[新機能] アイテム編集後の移動先を選べるようになりました。</li>
-		<li>[重要,変更] 次のバンドルpluginの場所が変更されました。(NP_SkinFiles, NP_SecurityEnforcer, NP_Text)<br />古いファイルは削除してください<ul><li>plugins/NP_SkinFiles.php</li><li>plugins/skinfiles/*</li><li>plugins/NP_SecurityEnforcer.php</li><li>plugins/securityenforcer/*</li><li>plugins/NP_Text.php</li></ul></li>
 		<li>Skinクラスに関数が追加されました(changeSkinByName, changeSkinById, getRootURL, getURL)。</li>
-		<li>[重要,新規] グローバル変数 $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME が追加されました。</li>
-		<li>[重要,変更] 次のsupportsFeature が廃止されました [SqlTablePrefix, SqlApi](sql_table関数の十分な周知期間が経過したため)。プラグインのロード時に これらのsupportsFeature のチェックは行われなくなりました。</li>
-		<li>[重要,変更] 次の列の長さが(20から50)に変更されました : nucleus_plugin_option.oname, nucleus_config.name</li>
+		<li>[新規] グローバル変数 $DB_DRIVER_NAME が追加されました。現在設定できる値は mysql sqlite です</li>
+		<li>[変更] 次のsupportsFeature が廃止されました [SqlTablePrefix, SqlApi](sql_table関数の十分な周知期間が経過したため)。プラグインのロード時に これらのsupportsFeature のチェックは行われなくなりました。</li>
+		<li>[変更] 次の列の長さが(20から50)に変更されました : nucleus_plugin_option.oname, nucleus_config.name</li>
 		<li>[変更] インストーラー：メールアドレスに ～@localhost を使用できるように変更しました。</li>
 		<li>[変更] スキンテーブルに 列spartstypeを追加しパーツとページを分離しました。</li>
 		<li>[変更] プラグインロード中のエラー発生時に実行が中断されないようにtryエラー処理を追加しました(PHP7以降のみ)。</li>
@@ -74,7 +67,7 @@
 		</ul>
 	</li>
 	<li>
-		<strong>Nucleus v3.71(2016年?月?日)</strong>
+		<strong>Nucleus v3.71</strong> (-/-/-)
 		<ul>
 			<li>[重要] CVE-2011-3760 : Nucleusのシステム情報を取得される脆弱性を修正(重要度・低)</li>
 			<li>[不具合修正] Fatal error: Using $this : MEMBER::create()</li>

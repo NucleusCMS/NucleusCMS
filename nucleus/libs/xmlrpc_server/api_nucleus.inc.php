@@ -20,7 +20,7 @@
 global $xmlrpcString,$xmlrpcBoolean,$xmlrpcInt,$xmlrpcArray,$xmlrpcStruct;
 
 // prevent direct access
-if (! isset($member)) {
+if ( ! isset($member)) {
     exit;
 }
 
@@ -131,7 +131,7 @@ $f_nucleus_deleteItem_sig = [
 ];
 $f_nucleus_deleteItem_doc = "Deletes an item";
 
-if (! isset($functionDefs)) {
+if ( ! isset($functionDefs)) {
     $functionDefs = [];
 }
 $functionDefs = array_merge(
@@ -242,7 +242,7 @@ function f_nucleus_editItem($m)
     $closed   = _getScalar($m, 7);
 
     // get old title and extended part
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
 
@@ -297,23 +297,23 @@ function f_nucleus_deleteItem($m)
  */
 function _getRecentItems($blogid, $username, $password, $amount)
 {
-    $blogid = (int)$blogid;
-    $amount = (int)$amount;
+    $blogid = (int) $blogid;
+    $amount = (int) $amount;
 
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, 'Could not log in');
     }
 
     // 2. check if allowed
-    if (! BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         return _error(2, 'No such blog (' . $blogid . ')');
     }
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, 'Not a team member');
     }
-    $amount = (int)$amount;
+    $amount = (int) $amount;
     if (($amount < 1) or ($amount > 20)) {
         return _error(5, 'Amount parameter must be in range 1..20');
     }
@@ -356,17 +356,17 @@ function _getItem($itemid, $username, $password)
 
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, 'Could not log in');
     }
 
     // 2. check if allowed
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, 'No such item (' . $itemid . ')');
     }
     $blogid = getBlogIDFromItemID($itemid);
 
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, 'Not a team member');
     }
 

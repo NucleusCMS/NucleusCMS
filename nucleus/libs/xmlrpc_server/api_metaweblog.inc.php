@@ -17,7 +17,7 @@
  */
 
 // prevent direct access
-if (! isset($member)) {
+if ( ! isset($member)) {
     exit;
 }
 
@@ -43,101 +43,101 @@ if (! isset($member)) {
 function validateIso8601($date)
 {
     $r = false;
-    if (preg_match(
+    if (1 === preg_match(
         '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4])[0-5][0-9][0-5][0-9]'
             . '$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Basic style datetime without utc symbol, time zone offset
         $r = 'basic';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Extended style datetime without utc symbol, time zone offset
         $r = 'extended';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Mixed style datetime without utc symbol, time zone offset
         //(it violates ISO 8601 standard but Windows Live Writer sends createdDate with this style.)
         $r = 'mixed';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4])[0-5][0-9][0-5][0-9]'
             . 'Z$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Basic style datetime with utc symbol
         $r = 'basic utc';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . 'Z$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Extended style datetime with utc symbol
         $r = 'extended utc';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . 'Z$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Extended style datetime with utc symbol
         $r = 'mixed utc';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4])[0-5][0-9][0-5][0-9]'
             . '((\+|-)([01][0-9]|2[0-4])([0-5][0-9])?)$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Basic style datetime with time zone offset
         $r = 'basic tz';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '((\+|-)([01][0-9]|2[0-4]):?([0-5][0-9])?)$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Extended style datetime with time zone offset
         $r = 'extended tz';
-    } elseif (preg_match(
+    } elseif (1 === preg_match(
         '/^(\d{1,4})(0[1-9]|1[012])(0[1-9]|[12][0-9]|3[01])'
             . 'T'
             . '([0-1][0-9]|2[0-4]):[0-5][0-9]:[0-5][0-9]'
             . '((\+|-)([01][0-9]|2[0-4]):?([0-5][0-9])?)$/',
         $date,
         $matches
-    ) === 1) {
+    )) {
         // Mixed style datetime with extended style time zone offset
         //(it violates ISO 8601 standard but Windows Live Writer sends createdDate with this style.)
         $r = 'mixed tz';
     }
     //check if $matches has valid date & time.
-    if ($r == false) {
+    if (false == $r) {
         return false;
     }
     return checkdate($matches[2], $matches[3], $matches[1]) ? $r : false;
@@ -174,7 +174,7 @@ function f_metaWeblog_newPost($m)
 
     // category is optional (thus: be careful)!
     $catlist = $struct->structmem('categories');
-    if ($catlist && ($catlist->kindOf() == "array") && ($catlist->arraysize() > 0)) {
+    if ($catlist && ("array" == $catlist->kindOf()) && ($catlist->arraysize() > 0)) {
         $category = _getArrayVal($catlist, 0);
     }
 
@@ -187,7 +187,7 @@ function f_metaWeblog_newPost($m)
         // 2 : closed ( comment allowed time has passed. )
         // So $closed must be 1 when mt_allow_comments is 0 or 2, 0 when mt_allow_comments is 1.
         // $closed must be have value of 0 or 1.
-        $closed = (((int)_getStructVal($struct, 'mt_allow_comments')) == 1) ? 0 : 1;
+        $closed = (((int) _getStructVal($struct, 'mt_allow_comments')) == 1) ? 0 : 1;
     }
 
     $publish = _getScalar($m, 4);
@@ -197,10 +197,10 @@ function f_metaWeblog_newPost($m)
     if ($dateCreated) {
         $dateCreated = _getStructVal($struct, 'dateCreated');
         $v           = validateIso8601($dateCreated);
-        if ($v == false) {
+        if (false == $v) {
             return _error(10, 'wrong format dateCreated');
         }
-        if (($v == 'basic') || ($v == 'extended') || ($v == 'mixed')) {
+        if (('basic' == $v) || ('extended' == $v) || ('mixed' == $v)) {
             // if dateCreated has no utc symbol and time offset, treat it as utc datetime.
             // if dateCreated has utc symbol or time zone offset, convert to timestamp directly.
             $dateCreated .= 'Z';
@@ -227,7 +227,7 @@ function f_metaWeblog_newPost($m)
     // Handle trackbacks
     $trackbacks = [];
     $tblist     = $struct->structmem('mt_tb_ping_urls');
-    if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
+    if ($tblist && ("array" == $tblist->kindOf()) && ($tblist->arraysize() > 0)) {
         for ($i = 0; $i < $tblist->arraysize(); $i++) {
             $trackbacks[] = _getArrayVal($tblist, $i);
         }
@@ -319,21 +319,21 @@ function f_metaWeblog_editPost($m)
 
     // category is optional (thus: be careful)!
     $catlist = $struct->structmem('categories');
-    if ($catlist && ($catlist->kindOf() == "array") && ($catlist->arraysize() > 0)) {
+    if ($catlist && ("array" == $catlist->kindOf()) && ($catlist->arraysize() > 0)) {
         $category = _getArrayVal($catlist, 0);
     }
 
     $publish = _getScalar($m, 4);
 
     // get old title and extended part
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
     $blogid = getBlogIDFromItemID($itemid);
 
     $old = & $manager->getItem($itemid, 1, 1);
 
-    if ($category == '') {
+    if ('' == $category) {
         // leave category unchanged when not present
         $catid = $old['catid'];
     } else {
@@ -362,7 +362,7 @@ function f_metaWeblog_editPost($m)
         // 2 : closed ( comment opened time has passed. )
         // So $closed must be 1 when mt_allow_comments is 0 or 2, 0 when mt_allow_comments is 1.
         // $closed must take 0 or 1.
-        $closed = (((int)_getStructVal($struct, 'mt_allow_comments')) == 1) ? 0 : 1;
+        $closed = (((int) _getStructVal($struct, 'mt_allow_comments')) == 1) ? 0 : 1;
     } else {
         $closed = $old['closed'];
     }
@@ -371,10 +371,10 @@ function f_metaWeblog_editPost($m)
     if ($dateCreated) {
         $dateCreated = _getStructVal($struct, 'dateCreated');
         $v           = validateIso8601($dateCreated);
-        if ($v == false) {
+        if (false == $v) {
             return _error(10, 'wrong format dateCreated');
         }
-        if (($v == 'basic') || ($v == 'extended') || ($v == 'mixed')) {
+        if (('basic' == $v) || ('extended' == $v) || ('mixed' == $v)) {
             // if dateCreated has no utc symbol and time zone offset, assume as utc.
             // if dateCreated has utc symbol or time zone offset, convert to timestamp directly.
             $dateCreated .= 'Z';
@@ -401,7 +401,7 @@ function f_metaWeblog_editPost($m)
     // Handle trackbacks
     $trackbacks = [];
     $tblist     = $struct->structmem('mt_tb_ping_urls');
-    if ($tblist && ($tblist->kindOf() == "array") && ($tblist->arraysize() > 0)) {
+    if ($tblist && ("array" == $tblist->kindOf()) && ($tblist->arraysize() > 0)) {
         for ($i = 0; $i < $tblist->arraysize(); $i++) {
             $trackbacks[] = _getArrayVal($tblist, $i);
         }
@@ -470,23 +470,23 @@ function f_metaWeblog_getRecentPosts($m)
 
 function _getRecentItemsMetaWeblog($blogid, $username, $password, $amount)
 {
-    $blogid = (int)$blogid;
-    $amount = (int)$amount;
+    $blogid = (int) $blogid;
+    $amount = (int) $amount;
 
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if (! BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ({$blogid})");
     }
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
-    $amount = (int)$amount;
+    $amount = (int) $amount;
     if (($amount < 1) or ($amount > 20)) {
         return _error(5, "Amount parameter must be in range 1..20");
     }
@@ -546,15 +546,15 @@ function _newMediaObject($blogid, $username, $password, $info)
 
     // - login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, 'Could not log in');
     }
 
     // - check if team member
-    if (! BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ({$blogid})");
     }
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, 'Not a team member');
     }
 
@@ -578,7 +578,7 @@ function _newMediaObject($blogid, $username, $password, $info)
             $ok = 1;
         }
     }
-    if (! $ok) {
+    if ( ! $ok) {
         _error(8, 'Filetype is not allowed');
     }
 
@@ -613,15 +613,15 @@ function _categoryList($blogid, $username, $password)
 {
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if on team and blog exists
-    if (! BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ({$blogid})");
     }
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -657,16 +657,16 @@ function _mw_getPost($itemid, $username, $password)
 
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
     $blogid = getBlogIDFromItemID($itemid);
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 

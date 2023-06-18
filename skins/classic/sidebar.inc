@@ -69,7 +69,7 @@
 <div class="sidebar">
 <dl class="sidebardl">
 <dt><%_(Categories)%></dt>
-<%categorylist(default/index)%>
+<%categorylist(classic/index)%>
 </dl>
 </div>
 <%endif%><%endif%>
@@ -78,7 +78,7 @@
 <div class="sidebar">
 <dl class="sidebardl">
 <dt><%_(Blogs)%></dt>
-<%bloglist(default/index)%>
+<%bloglist(classic/index)%>
 </dl>
 </div>
 

@@ -71,7 +71,7 @@ class NP_Text extends NucleusPlugin
     public function event_PreSkinParse()
     {
         global $member;
-        if (!$member->isLoggedIn() and isset($_GET['lang'])) {
+        if ( ! $member->isLoggedIn() and isset($_GET['lang'])) {
             // 3 months
             setcookie('NP_Text', getVar('lang'), time() + 60 * 60 * 24 * 90);
         }
@@ -81,7 +81,7 @@ class NP_Text extends NucleusPlugin
     {
         global $member, $CONF;
 
-        if ($constant === '') {
+        if ('' === $constant) {
             return ;
         }
         $language       = getLanguageName();
@@ -101,7 +101,7 @@ class NP_Text extends NucleusPlugin
     {
         global $member, $CONF;
 
-        if ($constant === '') {
+        if ('' === $constant) {
             return ;
         }
         $language       = getLanguageName();
@@ -123,12 +123,12 @@ class NP_Text extends NucleusPlugin
 
         $filename = '';
 
-        if ($this->incModePref[0] == "normal") {
+        if ("normal" == $this->incModePref[0]) {
             $filename = $filename.$this->incModePref[1];
             $filename = $filename."language/";
             $filename = $filename.$language;
             $filename = $filename.".php";
-        } elseif ($this->incModePref[0] == "skindir") {
+        } elseif ("skindir" == $this->incModePref[0]) {
             $filename = $filename.$DIR_SKINS;
             $filename = $filename.$this->incModePref[1];
             $filename = $filename."language/";
@@ -159,7 +159,7 @@ class NP_Text extends NucleusPlugin
         $result = sql_query($sql);
         if ($result) {
             $row = sql_fetch_assoc($result);
-            if (!empty($row) && is_array($row)) {
+            if ( ! empty($row) && is_array($row)) {
                 return [$row['sdincmode'], $row['sdincpref']];
             }
         }

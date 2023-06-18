@@ -53,7 +53,7 @@ class ACTION
 
             case 'votenegative':
             case 'votepositive':
-                $this->doVote($action === 'votepositive' ? '+' : '-');
+                $this->doVote('votepositive' === $action ? '+' : '-');
                 break;
 
             case 'plugin':
@@ -86,7 +86,7 @@ class ACTION
         #$remember = intPostVar('remember');
 
         // begin if: "Remember Me" box checked
-        if ($post['remember'] == 1) {
+        if (1 == $post['remember']) {
             $lifetime = time() + 2592000;
             setcookie(
                 $CONF['CookiePrefix'] . 'comment_user',
@@ -116,13 +116,13 @@ class ACTION
 
         $blog_id = getBlogIDFromItemID($post['itemid']);
         $this->checkban($blog_id);
-        $blog = & $manager->getBlog($blog_id);
+        $blog     = & $manager->getBlog($blog_id);
         $comments = new COMMENTS($post['itemid']);
 
         // note: PreAddComment and PostAddComment gets called somewhere inside addComment
         $errormessage = $comments->addComment($blog->getCorrectTime(), $post);
         // begin if:
-        if ($errormessage == 1) {
+        if (1 == $errormessage) {
             // redirect when adding comments succeeded
             if (postVar('url')) {
                 redirect(postVar('url'));
@@ -134,7 +134,7 @@ class ACTION
         }
         return [
             'message' => $errormessage,
-            'skinid' => $blog->getDefaultSkin(),
+            'skinid'  => $blog->getDefaultSkin(),
         ]; // end if
     }
 
@@ -148,7 +148,7 @@ class ACTION
 
         $error = $this->validateMessage();
 
-        if ($error != '') {
+        if ('' != $error) {
             return ['message' => $error];
         }
 
@@ -181,7 +181,7 @@ class ACTION
         }
         $CONF['MemberURL'] = $CONF['IndexURL'];
 
-        if ($CONF['URLMode'] !== 'pathinfo') {
+        if ('pathinfo' !== $CONF['URLMode']) {
             redirect($CONF['IndexURL'] . createMemberLink($tomem->getID()));
             exit;
         }
@@ -204,15 +204,15 @@ class ACTION
     {
         global $CONF, $member, $manager;
 
-        if (! $CONF['AllowMemberMail']) {
+        if ( ! $CONF['AllowMemberMail']) {
             return _ERROR_MEMBERMAILDISABLED;
         }
 
-        if (! $member->isLoggedIn() && ! $CONF['NonmemberMail']) {
+        if ( ! $member->isLoggedIn() && ! $CONF['NonmemberMail']) {
             return _ERROR_DISALLOWED;
         }
 
-        if (! $member->isLoggedIn()
+        if ( ! $member->isLoggedIn()
              && ! isValidMailAddress(postVar('frommail'))) {
             return _ERROR_BADMAILADDRESS;
         }
@@ -236,7 +236,7 @@ class ACTION
     {
         global $CONF, $manager;
 
-        if (! $CONF['AllowMemberCreate']) {
+        if ( ! $CONF['AllowMemberCreate']) {
             doError(_ERROR_MEMBERCREATEDISABLED);
         }
 
@@ -248,12 +248,12 @@ class ACTION
         ];
         $manager->notify('ValidateForm', $param);
 
-        if ($result != 1) {
+        if (1 != $result) {
             return $result;
         }
 
         // even though the member can not log in, set some random initial password. One never knows.
-        mt_srand((float)microtime() * 1000000);
+        mt_srand((float) microtime() * 1000000);
         $initialPwd = md5(uniqid(mt_rand(), true));
 
         // create member (non admin/can not login/no notes/random string as password)
@@ -269,7 +269,7 @@ class ACTION
             ''
         );
 
-        if ($r != 1) {
+        if (1 != $r) {
             return $r;
         }
 
@@ -286,7 +286,7 @@ class ACTION
             exit;
         }
 
-        if (! headers_sent()) {
+        if ( ! headers_sent()) {
             sendContentType('text/html', '', _CHARSET);
         }
         echo _MSG_ACTIVATION_SENT;
@@ -308,7 +308,7 @@ class ACTION
     {
         $membername = trim(postVar('name'));
 
-        if (! MEMBER::exists($membername)) {
+        if ( ! MEMBER::exists($membername)) {
             doError(_ERROR_NOSUCHMEMBER);
         }
 
@@ -325,7 +325,7 @@ class ACTION
         }
 
         // check if e-mail address is correct
-        if (! ($mem->getEmail() == postVar('email'))) {
+        if ( ! ($mem->getEmail() == postVar('email'))) {
             doError(_ERROR_INCORRECTEMAIL);
         }
 
@@ -355,7 +355,7 @@ class ACTION
      */
     public function doKarma($type)
     {
-        $this->doVote(($type === 'pos' || $type === '+') ? '+' : '-');
+        $this->doVote(('pos' === $type || '+' === $type) ? '+' : '-');
     }
 
     /**
@@ -366,7 +366,7 @@ class ACTION
         global $itemid, $member, $CONF, $manager;
 
         // check if itemid exists
-        if (! $manager->existsItem($itemid, 0, 0)) {
+        if ( ! $manager->existsItem($itemid, 0, 0)) {
             doError(_ERROR_NOSUCHITEM);
         }
 
@@ -384,7 +384,7 @@ class ACTION
         $manager->notify('PreVote', $params);
 
         // check if not already voted
-        if (! $isVoteAllowed) {
+        if ( ! $isVoteAllowed) {
             doError(_ERROR_VOTEDBEFORE);
         }
 
@@ -418,10 +418,10 @@ class ACTION
                 _NOTIFY_KV_MSG,
                 $itemid
             );
-            $itemLink = createItemLink((int)$itemid);
+            $itemLink = createItemLink((int) $itemid);
             $temp     = parse_url($itemLink);
 
-            if (! $temp['scheme']) {
+            if ( ! $temp['scheme']) {
                 $itemLink = $CONF['IndexURL'] . $itemLink;
             }
 
@@ -479,7 +479,7 @@ class ACTION
         $pluginName = 'NP_' . requestVar('name');
 
         // 1: check if plugin is installed
-        if (! $manager->pluginInstalled($pluginName)) {
+        if ( ! $manager->pluginInstalled($pluginName)) {
             doError(_ERROR_NOSUCHPLUGIN);
         }
 
@@ -487,9 +487,8 @@ class ACTION
         $pluginObject = & $manager->getPlugin($pluginName);
 
         $error = $pluginObject
-            ? $pluginObject->doAction((string)requestVar('type'))
-            : 'Could not load plugin (see actionlog)'
-        ;
+            ? $pluginObject->doAction((string) requestVar('type'))
+            : 'Could not load plugin (see actionlog)';
 
         // doAction returns error when:
         // - an error occurred (duh)
@@ -507,17 +506,17 @@ class ACTION
     public function checkban($blogid)
     {
         // check if banned
-        $ban = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
+        $baninfo = BAN::isBanned($blogid, serverVar('REMOTE_ADDR'));
 
-        if ($ban == 0) {
+        if (false === $baninfo) {
             return;
         }
         doError(sprintf(
             '%s%s%s%s%s',
             _ERROR_BANNED1,
-            $ban->iprange,
+            $baninfo->iprange,
             _ERROR_BANNED2,
-            $ban->message,
+            $baninfo->message,
             _ERROR_BANNED3
         ));
     }
@@ -545,7 +544,7 @@ class ACTION
     {
         global $manager;
 
-        if (!$manager->checkTicket()) {
+        if ( ! $manager->checkTicket()) {
             echo _ERROR . ':' . _ERROR_BADTICKET;
             return false;
         }
@@ -553,7 +552,7 @@ class ACTION
         $manager->loadClass('ITEM');
         $info = ITEM::createDraftFromRequest();
 
-        if ($info['status'] === 'error') {
+        if ('error' === $info['status']) {
             echo $info['message'];
         } else {
             echo $info['draftid'];

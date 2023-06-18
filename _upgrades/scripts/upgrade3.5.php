@@ -25,7 +25,7 @@ function upgrade_do350_modfield_mname()
 function upgrade_do350_dropfield_bsendping()
 {
     // changing the blog table to remove bsendping flag
-    if (!upgrade_checkIfColumnExists('blog', 'bsendping')) {
+    if ( ! upgrade_checkIfColumnExists('blog', 'bsendping')) {
         return;
     }
 

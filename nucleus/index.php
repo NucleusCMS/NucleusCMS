@@ -27,8 +27,8 @@ unset($preload_admin_custum_php);
 $CONF                   = [];
 $CONF['UsingAdminArea'] = 1;
 
-if (!@is_file('../config.php')) {
-    if (@is_file('../install/index.php') && !headers_sent()) {
+if ( ! @is_file('../config.php')) {
+    if (@is_file('../install/index.php') && ! headers_sent()) {
         header('Location: ../install/');
         exit;
     }
@@ -39,7 +39,7 @@ require_once('../config.php');
 $bNeedsLogin   = false;
 $bIsActivation = in_array($action, ['activate', 'activatesetpwd']);
 
-if ($action == 'logout') {
+if ('logout' == $action) {
     $bNeedsLogin = true;
 }
 
@@ -48,17 +48,17 @@ if ($member->isHalt()) {
     $bNeedsLogin = true;
 }
 
-if (!$member->isLoggedIn() && !$bIsActivation) {
+if ( ! $member->isLoggedIn() && ! $bIsActivation) {
     $bNeedsLogin = true;
 }
 
 // show error if member cannot login to admin
-if ($member->isLoggedIn() && !$member->canLogin() && !$bIsActivation) {
+if ($member->isLoggedIn() && ! $member->canLogin() && ! $bIsActivation) {
     $error       = _ERROR_LOGINDISALLOWED;
     $bNeedsLogin = true;
 }
 
-if ($action == 'lost_pwd' && (strcasecmp($_SERVER['REQUEST_METHOD'], 'GET') == 0)) {
+if ('lost_pwd' == $action && (0 == strcasecmp($_SERVER['REQUEST_METHOD'], 'GET'))) {
     $bNeedsLogin = false;
 }
 

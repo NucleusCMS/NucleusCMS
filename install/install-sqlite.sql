@@ -53,7 +53,7 @@ INSERT INTO `nucleus_blog` VALUES (
     '',                    /* bnotify */
     'http://localhost/',   /* burl */
     '',                    /* bupdate */
-    5,                     /* bdefskin */
+    4,                     /* bdefskin */
     0,                     /* bpublic */
     1,                     /* bconvertbreaks */
     1,                     /* bdefcat */
@@ -190,7 +190,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('ProtectMemNames',   '1');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('BaseSkin',          '5');
+    ('BaseSkin',          '4');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('SkinsURL',          'http://localhost/skins/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
@@ -207,6 +207,8 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DefaultListSize',   '10');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('AdminCSS',          'contemporary');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('DisableRSS',          '1');
 
 CREATE TABLE IF NOT EXISTS `nucleus_item` (
   `inumber`   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,

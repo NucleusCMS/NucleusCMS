@@ -12,15 +12,10 @@
 			(see nucleus/documentation/index.html#license for more info)
 		-->
 		<meta charset="UTF-8" />
+		<meta name="robots" content="noindex,noarchive,nofollow" />
 		<title>Nucleus CMS マニュアル</title>
 		<link rel="stylesheet" type="text/css" href="styles/manual.css" />
-		<script src="http://www.google.com/jsapi"></script>
-		<script type="text/javascript">
-			google.load("jquery", "1");
-			google.setOnLoadCallback(function() {
-				$.getScript("devdocs/javascript/fontsizeChanger.js");
-			});
-		</script>
+		<script src="common.js" cache-control="max-age=15552000"></script>
 	</head>
 	<body>
 		<div id="fontSizeChanger">
@@ -33,7 +28,32 @@
 
 		<div class="heading">
 			Nucleus CMS マニュアル
-			<i>(v3.80)</i>
+			<i>(v3.80 dev [EOL]) 開発版</i>
+		</div>
+
+		<div class="note"><span style="color: red; font-weight: bold; font-size: x-large">警告</span>
+			<div style="margin-left: 2em;  font-size: large">このバージョンはセキュリティサポート期限が切れています。最新のバージョンをダウンロードしてお使いください。</div>
+		</div>
+		<br />
+		<div class="note"><span style="color: red; font-weight: bold; font-size: x-large">警告</span>
+			<div style="margin-left: 2em;  font-size: large">このバージョンは開発版です。
+			<ul>
+				<li>開発版をパブリックサイトで利用しないでください。</li>
+				<li>軽微なエラーでもエラーを吐き出し停止することがあります。</li>
+				<li>エラーなどの問題が発生しても誰も手助けはしてもらえません。自分で問題に向き合って自身で対応してください。</li>
+				<li>突然、仕様が変更されたり削除されることがあります。</li>
+				<li>実装されていない機能が表示されることがあります。</li>
+				<li>開発が中断・終了してもお知らせなどは一切ありません。</li>
+			</ul>
+			</div>
+		</div>
+		<br />
+		<div class="note">
+			<b>ご利用前に</b>
+			<ul>
+				<li>このマニュアルはかなり昔に整備され、記載内容が古く実際の仕様と食い違うことがあります。</li>
+				<li>最新の動作・仕様について確認したい場合はソースコードを直接確認してください。</li>
+			</ul>
 		</div>
 
 		<div class="note">
@@ -47,7 +67,7 @@
 		<h1><a name="toc"></a>目次</h1>
 
 		<ul>
-			<li><a href="#about">Nucleus CMS とは</a></li>
+			<li><a href="#about">Nucleus CMS とは</a><ul><li><a href="#operating_environment">動作環境</a></li></ul></li>
 			<li><a href="#license">ライセンスについて</a></li>
 			<li><a href="#installation">インストールガイド</a></li>
 			<li><a href="skins.html">スキンとテンプレートの編集(ページデザイン)</a> (別ファイル)</li>
@@ -86,12 +106,10 @@
 			<li>RSS 自動作成</li>
 			<li>インストールが簡単</li>
 			<li>バックアップが簡単</li>
-			<li>XML-RPC インターフェイス ( <a href="http://plant.blogger.com/api/">Blogger API</a> / <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a> / <a href="http://www.movabletype.org/docs/mtmanual_programmatic.html#xmlrpc%20api">Movable Type API</a> 採用)</li>
-			<li>XHTML 準拠</li>
 			<li>...</li>
 		</ul>
 
-		<h2>動作環境</h2>
+		<h2>動作環境<a name="operating_environment" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h2>
 		<p>
 			Nucleusのインストールには以下の環境が必要です: <small>(不明な点はサーバ管理者にお尋ね下さい)</small>
 		</p>
@@ -101,19 +119,18 @@
 			<li><a href="http://jp.php.net/manual/ja/">PHP</a><br />
 				&nbsp;&nbsp; バージョン 8 : 8.2, 8.1 , 8.0<br />
 				&nbsp;&nbsp; バージョン 7 : 7.4, 7.3 , 7.2 , 7.1 , 7.0<br />
-				&nbsp;&nbsp; バージョン 5 : 5.6, 5.5<br />
 				&nbsp;&nbsp; プラグインも使用するPHPに対応している必要があります。
-				<div>PHP7.4の公式サポート期限は 2022/11/28 です。それ以前のバージョンのサポートはすでに終了しています。<br />
+				<div>PHP8.0の公式サポート期限は 2023/11/26 です。それ以前のバージョンのサポートはすでに終了しています。<br />
 					詳細は、こちらをご覧ください。
 					<a href="https://www.php.net/supported-versions.php" target="_blank">https://www.php.net/supported-versions.php</a></div>
 			</li>
 			<li>データベース<br />
-				下記のうちいづれか１つを選択する必要があります。
+				下記のうちいずれか１つを選択する必要があります。
 				<ul><li>MySQL系のデータベース
 					<ul>
 					<li><a href="https://mariadb.org/">MariaDB</a> (バージョン 5.5, 10.0 以降)</li>
 					<li><a href="http://dev.mysql.com/doc/">MySQL</a> データベース (バージョン 5.5 以降)</li>
-					</ul>
+					</ul>※ バージョン5.5以下はデータベースサーバーの応答動作速度がかなり遅いため、バージョン5.6以降を推奨します。
 				</li>
 				</ul>
 			</li>
@@ -212,8 +229,6 @@
 				<th>/nucleus/styles/*</th><td>(管理エリア専用cssファイル)</td>
 			</tr><tr>
 				<th>/nucleus/views/*</th><td>(管理用テンプレートファイル)</td>
-			</tr><tr>
-				<th>/nucleus/xmlrpc/*</th><td>(XML-RPC インターフェイス用ファイル)</td>
 			</tr><tr>
 				<th>/skins/*</th><td>(スキンファイル [読込み時にも使用])</td>
 
@@ -344,11 +359,10 @@
 
 
 
-
-
 		<h1>XML-RPC インターフェイス <a name="xmlrpc" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 		<div class="note">
-			※この機能はメンテナンスされていません。
+			※この機能はメンテナンスされていません。<br >
+			extraフォルダに移動しました。
 		</div>
 
 		<div class="note">

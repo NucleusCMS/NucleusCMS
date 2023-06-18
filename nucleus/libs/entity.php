@@ -113,7 +113,7 @@ class entity
 
     public static function specialchars($string, $type = 'xml')
     {
-        $apos         = $type === 'xml' ? '&apos;' : '&#39;';
+        $apos         = 'xml' === $type ? '&apos;' : '&#39;';
         $specialchars = [
             '&quot;' => '&quot;',
             '&amp;'  => '&amp;',
@@ -173,7 +173,7 @@ class entity
     {
         global $_entities;
 
-        if ($extra === '=') {
+        if ('=' === $extra) {
             return $entity . '=';
         }
 
@@ -190,7 +190,7 @@ class entity
             $length--;
         }
 
-        return $entity . ($extra === ';' ? ';' : '');
+        return $entity . (';' === $extra ? ';' : '');
     }
 }
 

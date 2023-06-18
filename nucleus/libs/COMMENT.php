@@ -29,7 +29,7 @@ class COMMENT
             "SELECT `cnumber` AS commentid, `cbody` AS body, `cuser` AS user, `cmail` AS userid, `cemail` AS email, `cmember` AS memberid, `ctime`, `chost` AS host, `mname` AS member, `cip` AS ip, `cblog` AS blogid FROM %s LEFT OUTER JOIN %s ON `cmember`=`mnumber` WHERE `cnumber`=%s",
             sql_table('comment'),
             sql_table('member'),
-            (int)$commentid
+            (int) $commentid
         );
         $comments = sql_query($query);
 
@@ -59,9 +59,9 @@ class COMMENT
         $comment['email']  = trim(strtr($comment['email'], "\'\"\n", '-- '));
 
         // begin if: a comment userid is supplied, but does not have an "http://" or "https://" at the beginning - prepend an "http://"
-        if (! empty($comment['userid'])
-             && (!str_starts_with($comment['userid'], 'http://'))
-             && (!str_starts_with(
+        if ( ! empty($comment['userid'])
+             && ( ! str_starts_with($comment['userid'], 'http://'))
+             && ( ! str_starts_with(
                  $comment['userid'],
                  'https://'
              ))) {
@@ -140,19 +140,19 @@ class COMMENT
         }
 
         // move ending comma from url to 'post' part
-        if (substr($url, strlen($url) - 1) == ',') {
+        if (',' == substr($url, strlen($url) - 1)) {
             $url  = substr($url, 0, strlen($url) - 1);
             $post = ',' . $post;
         }
 
-        if (! preg_match('#^' . $protocol . '://#', $url)) {
-            $linkedUrl = $protocol . (($protocol == 'mailto') ? ':' : '://')
+        if ( ! preg_match('#^' . $protocol . '://#', $url)) {
+            $linkedUrl = $protocol . (('mailto' == $protocol) ? ':' : '://')
                          . $url;
         } else {
             $linkedUrl = $url;
         }
 
-        if ($protocol != 'mailto') {
+        if ('mailto' != $protocol) {
             $displayedUrl = $linkedUrl;
         } else {
             $displayedUrl = $url;
@@ -176,7 +176,7 @@ class COMMENT
     public static function prepareBody_cb($match)
     {
         $protocol = [];
-        if (! preg_match('/^[a-z]+/i', $match[2], $protocol)) {
+        if ( ! preg_match('/^[a-z]+/i', $match[2], $protocol)) {
             return $match[0];
         }
 

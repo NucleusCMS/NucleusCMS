@@ -113,7 +113,7 @@ class PasswordHash
 
         $id = substr($setting, 0, 3);
         # We use "$P$", phpBB3 uses "$H$" for the same thing
-        if ($id != '$P$' && $id != '$H$') {
+        if ('$P$' != $id && '$H$' != $id) {
             return $output;
         }
 
@@ -125,7 +125,7 @@ class PasswordHash
         $count = 1 << $count_log2;
 
         $salt = substr($setting, 4, 8);
-        if (strlen($salt) != 8) {
+        if (8 != strlen($salt)) {
             return $output;
         }
 
@@ -214,7 +214,7 @@ class PasswordHash
         if (CRYPT_BLOWFISH == 1 && ! $this->portable_hashes) {
             $random = $this->get_random_bytes(16);
             $hash   = crypt($password, $this->gensalt_blowfish($random));
-            if (strlen($hash) == 60) {
+            if (60 == strlen($hash)) {
                 return $hash;
             }
         }
@@ -224,7 +224,7 @@ class PasswordHash
                 $random = $this->get_random_bytes(3);
             }
             $hash = crypt($password, $this->gensalt_extended($random));
-            if (strlen($hash) == 20) {
+            if (20 == strlen($hash)) {
                 return $hash;
             }
         }
@@ -236,7 +236,7 @@ class PasswordHash
             $password,
             $this->gensalt_private($random)
         );
-        if (strlen($hash) == 34) {
+        if (34 == strlen($hash)) {
             return $hash;
         }
 
@@ -249,7 +249,7 @@ class PasswordHash
     public function CheckPassword($password, $stored_hash)
     {
         $hash = $this->crypt_private($password, $stored_hash);
-        if (substr($hash, 0, 1) === '*') {
+        if ('*' === substr($hash, 0, 1)) {
             $hash = crypt($password, $stored_hash);
         }
 

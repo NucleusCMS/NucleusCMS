@@ -69,7 +69,7 @@ class convert
         @set_time_limit(0);
 
         $rs = sql_query("SHOW TABLES LIKE '{$currentPrefix}%'");
-        if (!$rs) {
+        if ( ! $rs) {
             exit('Nucleusのtableがありません。何もせずに終了します。');
         }
 
@@ -88,9 +88,9 @@ class convert
         //header('Location:convert.php?complete');
     }
 
-        public function getMainContent()
-        {
-            $tpl = '
+    public function getMainContent()
+    {
+        $tpl = '
     <h1>コレーションコンバータ</h1>
     <p>各テーブルのコレーション(照合順序)を変更します。旧テーブルは別名をつけてバックアップします。</p>
     <p>iPhoneの絵文字や異体字などを扱いたい場合は文字コードとしてutf8mb4を、半角・全角・ひらがな・カタカナ・濁音・半濁音を同一扱いするなど曖昧検索が必要な場合は言語名としてunicodeを選んでください。<br />
@@ -105,12 +105,12 @@ class convert
     </form>
     </div>
 ';
-            return $tpl;
-        }
+        return $tpl;
+    }
 
-        public function getTemplate()
-        {
-            $tpl = '
+    public function getTemplate()
+    {
+        $tpl = '
 <html>
 <head>
     <title>Convert</title>
@@ -132,19 +132,19 @@ class convert
 </body>
 </html>
 ';
-            return $tpl;
-        }
+        return $tpl;
+    }
 
-        public function getOptions()
-        {
-            $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
-            $_   = [];
-            foreach ($this->collations as $collation) {
-                if ($collation === $this->current_collation) {
-                    continue;
-                }
-                $_[] = parseText($tpl, ['collation' => $collation]);
+    public function getOptions()
+    {
+        $tpl = '<option value="<%collation%>"><%collation%>に変換</option>';
+        $_   = [];
+        foreach ($this->collations as $collation) {
+            if ($collation === $this->current_collation) {
+                continue;
             }
-            return implode("\n", $_);
+            $_[] = parseText($tpl, ['collation' => $collation]);
         }
+        return implode("\n", $_);
+    }
 }

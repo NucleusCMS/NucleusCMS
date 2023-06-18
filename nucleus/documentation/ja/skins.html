@@ -12,15 +12,10 @@
 		(see nucleus/documentation/index.html#license for more info)
 	-->
 	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
 	<title>Nucleus - スキンとテンプレートについて</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
-	<script src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-		google.load("jquery", "1");
-		google.setOnLoadCallback(function() {
-			$.getScript("devdocs/javascript/fontsizeChanger.js");
-		});
-	</script>
+	<script src="common.js" cache-control="max-age=15552000"></script>
 </head>
 <body>
 	<div id="fontSizeChanger">
@@ -79,28 +74,6 @@
 	<li><a href="http://hotwired.lycos.com/webmonkey/authoring/stylesheets/">Webmonkey: Stylesheets</a></li>
 	<li><a href="http://diveintoaccessibility.org">Dive Into Accessibility</a>: Online book, not really about HTML, but about accessibility and how to make your site more accessible.</li>
 </ul>
-
-
-
-
-
-
-
-<h1>「grey」スキンについて <a id="defaultskin" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
-
-<p>このセクションでは、同梱の「grey」スキンが使用しているファイルと、編集の注意点を説明します。(新規インストール時にはgreyスキン/テンプレートはインストールされていません。「読み込み」を行ってください。)</p>
-
-<p>「grey」スキンは以下のファイルを使用しています:</p>
-<ol>
-	<li><tt>grey.css</tt>: ページのデザインを定義するCSS(カスケーディング・スタイルシート)ファイル。色指定やレイアウト指定などを定義します。</li>
-	<li><tt>atom3.png</tt>: ページの左上に表示されるロゴ。</li>
-	<li><tt>nucleus.png</tt>: Nucleus ロゴ。</li>
-	<li><tt>pagefoot.inc , pagehead.inc</tt>: スキンの一部に置き換えられるインクルードファイル(後述します)。</li>
-</ol>
-
-<p>CSSファイル (<tt>grey.css</tt>) には、標準のスキン／テンプレートを使用した際のページ構成(ブロック構造)を書き入れています。 基本的には<tt>.contents</tt>、 <tt>.logo</tt>、<tt>.menu</tt>の3つのdivブロックとなっています。</p>
-
-<p><tt>grey.css</tt>を編集するにあたっては、テキストエディタを使用してください。 例えばWindowsに標準添付されている「Notepad」やemacs や TextPadなどです。「WordPad」、「Word」、「OpenOffice Writer」などは余計なデータが混入しますので、<strong>絶対に使用しないでください</strong>。</p>
 
 
 

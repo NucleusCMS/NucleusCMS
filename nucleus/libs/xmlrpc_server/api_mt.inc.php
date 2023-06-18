@@ -21,7 +21,7 @@
 global $xmlrpcArray, $xmlrpcString, $xmlrpcBoolean, $xmlrpcInt, $functionDefs;
 
 // prevent direct access
-if (! isset($member)) {
+if ( ! isset($member)) {
     exit;
 }
 
@@ -248,7 +248,7 @@ function f_mt_setPostCategories($m)
         if ($bPrimary) {
             $bPrimary = $bPrimary->scalarval();
         } else {
-            if (! $category) {
+            if ( ! $category) {
                 $bPrimary = 1;
             }
         }    // "Using isPrimary to set the primary category is optional--
@@ -308,19 +308,19 @@ function _mt_setPostCategories($itemid, $username, $password, $category)
 
     // login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if item exists
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
 
     $blogid = getBlogIDFromItemID($itemid);
     $blog   = new BLOG($blogid);
 
-    if (! $mem->canAlterItem($itemid)) {
+    if ( ! $mem->canAlterItem($itemid)) {
         return _error(7, "Not allowed to alter item");
     }
 
@@ -356,19 +356,19 @@ function _mt_getPostCategories($itemid, $username, $password)
 
     // login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if item exists
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
 
     $blogid = getBlogIDFromItemID($itemid);
     $blog   = new BLOG($blogid);
 
-    if (! $mem->canAlterItem($itemid)) {
+    if ( ! $mem->canAlterItem($itemid)) {
         return _error(7, 'You are not allowed to request this information');
     }
 
@@ -391,7 +391,7 @@ function _mt_publishPost($itemid, $username, $password)
 {
     global $manager;
 
-    if (! $manager->existsItem($itemid, 1, 1)) {
+    if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
 
@@ -418,15 +418,15 @@ function _mt_categoryList($blogid, $username, $password)
 {
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // check if on team and blog exists
-    if (! BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ({$blogid})");
     }
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
 
@@ -455,23 +455,23 @@ function _mt_categoryList($blogid, $username, $password)
 
 function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
 {
-    $blogid  = (int)$blogid;
-    $iAmount = (int)$iAmount;
+    $blogid  = (int) $blogid;
+    $iAmount = (int) $iAmount;
 
     // 1. login
     $mem = new MEMBER();
-    if (! $mem->login($username, $password)) {
+    if ( ! $mem->login($username, $password)) {
         return _error(1, "Could not log in");
     }
 
     // 2. check if allowed
-    if (! BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         return _error(2, "No such blog ({$blogid})");
     }
-    if (! $mem->teamRights($blogid)) {
+    if ( ! $mem->teamRights($blogid)) {
         return _error(3, "Not a team member");
     }
-    $iAmount = (int)$iAmount;
+    $iAmount = (int) $iAmount;
     if ($iAmount < 1) {
         return _error(5, "Amount parameter must be positive");
     }

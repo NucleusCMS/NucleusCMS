@@ -15,7 +15,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if (! function_exists('requestVar')) {
+if ( ! function_exists('requestVar')) {
     exit;
 }
 require_once __DIR__ . '/BaseActions.php';
@@ -47,7 +47,7 @@ class PARSER
      *
      * @param $allowedActions array
      * @param $handler        class object with functions for each action
-     *                        (reference)
+     *                         (reference)
      * @param $delim          optional delimiter
      * @param $paramdelim     optional parameterdelimiter
      */
@@ -70,10 +70,10 @@ class PARSER
      */
     public function parse(&$content)
     {
-        if (is_null($content)) {
+        if (null === $content) {
             return;
         }
-        if (! str_contains($this->delim, ',')) {
+        if ( ! str_contains($this->delim, ',')) {
             $this->legacyParse($content);
 
             return;
@@ -81,7 +81,7 @@ class PARSER
 
         list($left, $right) = explode(',', $this->delim);
 
-        if (!str_contains($content, $left)) {
+        if ( ! str_contains($content, $left)) {
             echo $content;
 
             return;
@@ -89,7 +89,7 @@ class PARSER
 
         $pieces = explode($left, $content);
         foreach ($pieces as $piece) {
-            if (!str_contains($piece, $right)) {
+            if ( ! str_contains($piece, $right)) {
                 echo $piece;
                 continue;
             }
@@ -121,14 +121,14 @@ class PARSER
     {
         global $manager;
 
-        if (! $action) {
+        if ( ! $action) {
             return;
         }
 
         // split into action name + arguments
         if (str_contains($action, '(')) {
             list($action, $paramText) = explode('(', $action, 2);
-            if (substr($paramText, -1) === ')') {
+            if (')' === substr($paramText, -1)) {
                 $paramText = substr($paramText, 0, -1);
             }
             $params = explode($this->pdelim, $paramText);
@@ -145,11 +145,11 @@ class PARSER
         $actionlc = strtolower($action);
 
         // skip execution of skinvars while inside an if condition which hides this part of the page
-        if (! $this->handler->if_currentlevel
+        if ( ! $this->handler->if_currentlevel
              &&
              ! in_array($actionlc, ['else', 'elseif', 'endif', 'ifnot', 'elseifnot'])
              &&
-             !str_starts_with($actionlc, 'if')) {
+             ! str_starts_with($actionlc, 'if')) {
             return;
         }
 
@@ -158,7 +158,7 @@ class PARSER
                 [$this->handler, 'parse_' . $actionlc],
                 $params
             );
-        } elseif ($action === '_') {
+        } elseif ('_' === $action) {
             // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
             global $manager;
             $paramText = trim($paramText);
@@ -185,9 +185,9 @@ class PARSER
         } else {
             // redirect to plugin action if possible
             //            define(DISABLE_PARSE_NP_PLUGIN, TRUE);
-            if (! defined('DISABLE_PARSE_NP_PLUGIN')
+            if ( ! defined('DISABLE_PARSE_NP_PLUGIN')
                  || ! DISABLE_PARSE_NP_PLUGIN) {
-                if ((strncmp($actionlc, 'np_', 3) == 0)
+                if ((0 == strncmp($actionlc, 'np_', 3))
                     && in_array('plugin', $this->actions)
                     && ($manager->pluginInstalled($actionlc))) {
                     $action = substr($action, 3);
@@ -195,7 +195,7 @@ class PARSER
             }
             if (in_array('plugin', $this->actions)
                 && $manager->pluginInstalled('NP_' . $action)) {
-                if (! HAS_CATCH_ERROR) {
+                if ( ! HAS_CATCH_ERROR) {
                     $this->doAction(sprintf(
                         'plugin(%s%s%s)',
                         $action,
@@ -229,7 +229,7 @@ class PARSER
                                 'Error',
                                 $msg . $e->getMessage()
                             );
-                            if (get_class($e) !== 'ArgumentCountError') {
+                            if ('ArgumentCountError' !== get_class($e)) {
                                 throw $e;
                             }
                         } else {
@@ -250,7 +250,7 @@ class PARSER
      * Set a property of the parser in the manager
      *
      * @param $property additional parser property (e.g. include prefix of the
-     *                  skin)
+     *                   skin)
      */
     public static function setProperty($property, $value)
     {

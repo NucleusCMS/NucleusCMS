@@ -7,11 +7,11 @@ function upgrade_do371()
     }
 
     $query = [];
-    if (!sql_existTableColumnName(sql_table('category'), 'corder')) {
+    if ( ! sql_existTableColumnName(sql_table('category'), 'corder')) {
         $query[] = "ADD `corder` int(11) NOT NULL default '100', ADD INDEX `corder` (`corder`)";
     }
     $q = sql_query(parseQuery("show index from `[@prefix@]category` WHERE Column_name = 'cblog'"));
-    if (!$q || !sql_num_rows($q)) {
+    if ( ! $q || ! sql_num_rows($q)) {
         $query[] = "ADD INDEX `cblog` (`cblog`)";
     }
     unset($q);

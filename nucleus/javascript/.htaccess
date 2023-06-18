@@ -1,0 +1,6 @@
+DirectoryIndex index.php index.html index.htm .ht
+
+<IfModule mod_expires.c>
+  ExpiresActive On
+  ExpiresByType application/javascript "access plus 30 days"
+</IfModule>

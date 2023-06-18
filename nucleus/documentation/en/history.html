@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
 	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
 	<link rel="index" href="./index.html" />
 	<title>Nucleus - History</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -32,35 +33,33 @@
 	</li>
 -->
 	<li>
-		<strong>Nucleus v3.80 (20xx//)</strong>
+		<strong>Nucleus v3.80 dev [develop]</strong> (pending)
 		<ul>
 			<li>NEW: Add Database Optimization/Repair</li>
 			<li>NEW: Add member halt(account lock).<br />When you enable members will not be able to various operations, such as login and password issued.</li>
 			<li>NEW: Skin var if authorvisible</li>
 			<li>NEW: Add now button into edit item page</li>
-			<li>NEW: New feature PluginOneFolder.</li>
 			<li>NEW: Support for MySQL utf8mb4.</li>
 			<li>NEW: Support for compressed content(gzip and deflate)</li>
 			<li>NEW: Add view for update notification of plugin.</li>
-			<li>ADD: Blog option dislay item author</li>
+			<li>ADD: Blog option display item author</li>
 			<li>CHANGE: If Blog option authorvisible is no, &lt;%author%&gt; is return empty.</li>
-			<li>CHANGE: Change plugin path of (NP_SkinFiles, NP_SecurityEnforcer, NP_Text).<br />Please you remove old files<ul><li>plugins/NP_SkinFiles.php</li><li>plugins/skinfiles/*</li><li>plugins/NP_SecurityEnforcer.php</li><li>plugins/securityenforcer/*</li><li>plugins/NP_Text.php</li></ul></li>
 			<li>ADD: Add Skin Class functions changeSkinByName, changeSkinById, getRootURL, getURL.</li>
-			<li>IMPORTANT,NEW: New global variable $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME.</li>
-			<li>IMPORTANT,CHANGE:  Remove supportsFeature [SqlTablePrefix, SqlApi].</li>
-			<li>IMPORTANT,CHANGE:  The length of the next column has been changed from 20 to 50 : nucleus_plugin_option.oname, nucleus_config.name</li>
+			<li>NEW: New global variable $DB_DRIVER_NAME.</li>
+			<li>CHANGE: The length of the next column has been changed from 20 to 50 : nucleus_plugin_option.oname, nucleus_config.name</li>
 			<li>CHANGE: Installer: It has been changed to be able to use the ~@localhost in the e-mail address.</li>
 			<li>CHANGE: Split special skin into pages and parts..</li>
 			<li>CHANGE: Added try error handling so that execution will not be interrupted when an error occurs during plugin loading (PHP 7 and later only).</li>
 			<li>CHANGE: Add $CONF['DisableRSS'] , enable or disable rss ( xml-rss2.php , rsd.php , atom.php )</li>
-			<li>CHANGE: Remove nucleus/forgotpassword.html</li>
 			<li>CHANGE: <%NP_PluginName(parameters)%> has been added to skin / template variable</li>
 			<li>CHANGE: The getEventList function of plug-in class is no longer required.The event_* function of the plugin is acquired automatically by the _getEventList function of the parent class.</li>
+			<li>CHANGE: Remove nucleus/forgotpassword.html</li>
+			<li>CHANGE: Remove supportsFeature [SqlTablePrefix, SqlApi].</li>
 		</ul>
 
 	</li>
 	<li>
-		<strong>Nucleus v3.71 (2016/?/?)</strong>
+		<strong>Nucleus v3.71</strong> (pending)
 		<ul>
 			<li>FIX: VCE-2011-3760</li>
 			<li>FIX: Fatal error: Using $this : MEMBER::create()</li>

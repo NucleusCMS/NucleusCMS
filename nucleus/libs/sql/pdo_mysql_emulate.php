@@ -13,7 +13,7 @@ function _mysql_add_admin_warnings($funcname)
     static $names = [];
     global $SQL_DBH;
     if ($SQL_DBH && is_object($SQL_DBH) && class_exists('SYSTEMLOG')
-        && ! in_array($names, $funcname)) {
+        && ! in_array($funcname, $names)) {
         $names[] = $funcname;
         $message
                  = sprintf(
@@ -44,8 +44,8 @@ function mysql_error($dblink = null)
     $o = ($dblink ? $dblink : $SQL_DBH);
     if ($o && is_object($o) && method_exists($o, 'errorInfo ')) {
         $msg = $o->errorInfo();
-        if (! empty($msg[2])) {
-            return (string)$msg[2];
+        if ( ! empty($msg[2])) {
+            return (string) $msg[2];
         }
     }
 
@@ -85,10 +85,10 @@ function mysql_fetch_assoc($res)
 function mysql_fetch_array($res, $result_type = MYSQL_BOTH)
 {
     _mysql_add_admin_warnings(__FUNCTION__);
-    if ($result_type == MYSQL_ASSOC) {
+    if (MYSQL_ASSOC == $result_type) {
         $p = PDO::FETCH_ASSOC;
     } else {
-        if ($result_type == MYSQL_NUM) {
+        if (MYSQL_NUM == $result_type) {
             $p = PDO::FETCH_NUM;
         } else {
             $p = PDO::FETCH_BOTH;

@@ -32,26 +32,26 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 
     $upgrade_msg = parseQuery("Altering TABLE `[@prefix@]skin` ");
 
-    if ($DB_DRIVER_NAME == 'mysql') {
+    if ('mysql' == $DB_DRIVER_NAME) {
         $sql = parseQuery("ALTER TABLE `[@prefix@]skin` ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts'");
         upgrade_query($upgrade_msg, $sql);
         return;
     }
 
-    if ($DB_DRIVER_NAME !== 'sqlite') {
+    if ('sqlite' !== $DB_DRIVER_NAME) {
         return;
     }
 
     $dbh = sql_get_db();
 
-    if (!$dbh->beginTransaction()) {
+    if ( ! $dbh->beginTransaction()) {
         upgrade_query($upgrade_msg, 'Failure');
         return;
     }
 
     // table
     $rs = $dbh->query(parseQuery("ALTER TABLE `[@prefix@]skin` RENAME TO `[@prefix@]old_skin`"));
-    if (!$rs) {
+    if ( ! $rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -64,7 +64,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
                       `spartstype`  varchar(20) NOT NULL default 'parts' ,
                       PRIMARY KEY  (`sdesc`,`stype`))");
     $rs = $dbh->query($sql);
-    if (!$rs) {
+    if ( ! $rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -73,7 +73,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     $sql = parseQuery("INSERT INTO `[@prefix@]skin` (`sdesc`, `stype`, `scontent`, `spartstype`) 
         SELECT `sdesc`, `stype`, `scontent`, 'parts' AS `spartstype` FROM `[@prefix@]old_skin`");
     $rs = $dbh->exec($sql);
-    if ($rs === false) {
+    if (false === $rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -91,7 +91,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 
 function fix_do380_Skin_ColumnSpartstype()
 {
-    if (!sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype')) {
+    if ( ! sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype')) {
         return;
     }
 
@@ -99,7 +99,7 @@ function fix_do380_Skin_ColumnSpartstype()
     $sql .= " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
     $sql .= " AND spartstype='parts'";
 
-    if (!quickQuery(parseQuery($sql))) {
+    if ( ! quickQuery(parseQuery($sql))) {
         return;
     }
 
@@ -143,7 +143,7 @@ function upgrade_do380_modfield_ballowpast()
 {
     global $DB_DRIVER_NAME;
 
-    if ($DB_DRIVER_NAME === 'sqlite') {
+    if ('sqlite' === $DB_DRIVER_NAME) {
         return;
     }
 
@@ -193,7 +193,7 @@ function upgrade_do380_addtable_memberoption()
     if (sql_existTableName(sql_table('member_option'))) {
         return;
     }
-    if ($DB_DRIVER_NAME === 'sqlite') {
+    if ('sqlite' === $DB_DRIVER_NAME) {
         return;
     }
     $query = parseQuery("

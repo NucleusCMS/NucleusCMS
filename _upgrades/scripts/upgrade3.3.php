@@ -68,6 +68,9 @@ function upgrade_do330_addfield_bfuturepost()
 
 function upgrade_do330_shownotice_sendping()
 {
+    if ( ! sql_existTableColumnName(sql_table('blog'), 'bsendping')) {
+        return;
+    }
     // check to see if user turn on Weblogs.com ping, if so, suggest to install the plugin
     $query = parseQuery("SELECT bsendping FROM [@prefix@]blog WHERE bsendping='1'");
     $res   = sql_query($query);

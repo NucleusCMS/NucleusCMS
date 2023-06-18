@@ -77,7 +77,7 @@ class convert
         @set_time_limit(0);
 
         $rs = sql_query("SHOW TABLES LIKE '{$currentPrefix}%'");
-        if (!$rs) {
+        if ( ! $rs) {
             exit('Nucleusのtableがありません。何もせずに終了します。');
         }
 
@@ -117,7 +117,7 @@ class convert
             $output[] = sprintf('%s のデータを%sに変換しました。<br />', $srcTableName, $new_charset);
         }
 
-        if ($this->current_charset === 'ujis') {
+        if ('ujis' === $this->current_charset) {
             sql_query(sprintf("UPDATE %s SET `value`='japanese-utf8' WHERE `name`='Language'", sql_table('config')));
         }
         return implode("\n", $output) . '<p>変換を完了しました。 <a href="convert.php">戻る</a></p>';
@@ -130,16 +130,16 @@ class convert
         $i = 0;
         while ($i < 5) {
             $i++;
-            if ($i == 1) {
+            if (1 == $i) {
                 $bkPrefix = 'bak_';
             } else {
                 $bkPrefix = sprintf('bak%s_', $i);
             }
             $rs = sql_query("SHOW TABLES LIKE '{$bkPrefix}%'");
-            if (!sql_num_rows($rs)) {
+            if ( ! sql_num_rows($rs)) {
                 break;
             }
-            if ($i == 5) {
+            if (5 == $i) {
                 exit('バックアップを作成できません。終了します。');
             }
         }

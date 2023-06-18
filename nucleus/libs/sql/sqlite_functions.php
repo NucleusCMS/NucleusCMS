@@ -45,8 +45,8 @@ class sqlite_functions
                 return preg_match("/(" . str_replace(
                     "/",
                     "\\/",
-                    (string)$pattern
-                ) . ")/im", (string)$Text) ? 1 : 0;
+                    (string) $pattern
+                ) . ")/im", (string) $Text) ? 1 : 0;
             },
             2
         );

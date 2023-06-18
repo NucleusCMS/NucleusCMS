@@ -22,12 +22,12 @@ class TEMPLATE
 
     public function __construct($templateid)
     {
-        $this->id = (int)$templateid;
+        $this->id = (int) $templateid;
     }
 
     public function getID()
     {
-        return (int)$this->id;
+        return (int) $this->id;
     }
 
     // (static)
@@ -77,7 +77,7 @@ class TEMPLATE
             "DELETE FROM %s WHERE tpartname='%s' and tdesc=%d",
             sql_table('template'),
             sql_real_escape_string($type),
-            (int)$id
+            (int) $id
         ));
 
         global $SQL_DBH;
@@ -87,17 +87,17 @@ class TEMPLATE
                 'INSERT INTO %s(tcontent, tpartname, tdesc) VALUES',
                 sql_table('template')
             );
-            if (! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
+            if ( ! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
                 sql_query($sql . sprintf(
                     "('%s', '%s', %d)",
                     sql_real_escape_string($content),
                     sql_real_escape_string($type),
-                    (int)$id
+                    (int) $id
                 ));
             } else {
                 sql_prepare_execute(
                     $sql . '(?, ?, ?)',
-                    [$content, $type, (int)$id]
+                    [$content, $type, (int) $id]
                 );
             }
         }
@@ -198,16 +198,16 @@ class TEMPLATE
      * (static)
      *
      * @param $template
-     *        Template to be used
+     *                   Template to be used
      * @param $values
-     *        Array of all the values
+     *                   Array of all the values
      */
     public static function fill($template, $values)
     {
-        if (is_null($template)) {
+        if (null === $template) {
             return '';
         }
-        if (count($values) != 0) {
+        if (0 != count($values)) {
             // go through all the values
             for (reset($values); $key = key($values); next($values)) {
                 $template = str_replace("<%{$key}%>", $values[$key], $template);
@@ -228,7 +228,7 @@ class TEMPLATE
             sql_real_escape_string($name)
         ));
 
-        return ((int)$res > 0);
+        return ((int) $res > 0);
     }
 
     // returns true if there is a template with the given ID
@@ -238,10 +238,10 @@ class TEMPLATE
         $res = quickQuery(sprintf(
             'select count(*) as result FROM %s WHERE tdnumber=%d limit 1',
             sql_table('template_desc'),
-            (int)$id
+            (int) $id
         ));
 
-        return ((int)$res > 0);
+        return ((int) $res > 0);
     }
 
     // (static)
@@ -251,7 +251,7 @@ class TEMPLATE
             sprintf(
                 'SELECT tdname as result FROM %s WHERE tdnumber=%d',
                 sql_table('template_desc'),
-                (int)$id
+                (int) $id
             ),
             'cacheClear'
         );
@@ -263,7 +263,7 @@ class TEMPLATE
         $res = sql_query(sprintf(
             'SELECT tddesc FROM %s WHERE tdnumber=%d',
             sql_table('template_desc'),
-            (int)$id
+            (int) $id
         ));
         $obj = sql_fetch_object($res);
 

@@ -25,27 +25,27 @@ include('../config.php');
 
 $action = requestVar('action');
 
-if ($action === 'contextmenucode') {
+if ('contextmenucode' === $action) {
     bm_doContextMenuCode();
     exit;
 }
 
-if (!$member->isLoggedIn()) {
+if ( ! $member->isLoggedIn()) {
     bm_loginAndPassThrough();
     exit;
 }
 
 // on successfull login
-if (($action === 'login') && ($member->isLoggedIn())) {
+if (('login' === $action) && ($member->isLoggedIn())) {
     $action = requestVar('nextaction');
 }
 
-if ($action == '') {
+if ('' == $action) {
     $action = 'add';
 }
 
 $actiontype = postVar('actiontype');
-if ($actiontype === 'delete' || $actiontype === 'itemdeleteconfirm') {
+if ('delete' === $actiontype || 'itemdeleteconfirm' === $actiontype) {
     $action = $actiontype;
 }
 
@@ -56,24 +56,24 @@ $action = strtolower($action);
 
 $aActionsNotToCheck = ['login', 'add', 'edit'];
 
-if (!in_array($action, $aActionsNotToCheck)) {
-    if (!$manager->checkTicket()) {
+if ( ! in_array($action, $aActionsNotToCheck)) {
+    if ( ! $manager->checkTicket()) {
         bm_doError(_ERROR_BADTICKET);
     }
 }
 
 // find out what to do
-if ($action === 'additem') {
+if ('additem' === $action) {
     bm_doAddItem();
-} elseif ($action === 'edit') {
+} elseif ('edit' === $action) {
     bm_doEditForm();
-} elseif ($action === 'edititem') {
+} elseif ('edititem' === $action) {
     bm_doEditItem();
-} elseif ($action === 'delete') {
+} elseif ('delete' === $action) {
     bm_doDeleteItem();
-} elseif ($action === 'itemdeleteconfirm') {
+} elseif ('itemdeleteconfirm' === $action) {
     bm_doDeleteItemComplete();
-} elseif ($action === 'login') {
+} elseif ('login' === $action) {
     bm_doError(_BOOKMARKLET_ERROR_SOMETHINGWRONG);
 } else {
     bm_doShowForm();
@@ -86,14 +86,14 @@ function bm_doAddItem()
     $manager->loadClass('ITEM');
     $result = ITEM::createFromRequest();
 
-    if ($result['status'] === 'error') {
+    if ('error' === $result['status']) {
         bm_doError($result['message']);
     }
 
     $blogid = getBlogIDFromItemID($result['itemid']);
     $blog   = & $manager->getBlog($blogid);
 
-    if ($result['status'] !== 'newcategory') {
+    if ('newcategory' !== $result['status']) {
         bm_message(_ITEM_ADDED, _ITEM_ADDED, _ITEM_ADDED, '');
         return;
     }
@@ -165,7 +165,7 @@ function bm_doEditItem()
     $catid  = postVar('catid');
 
     // only allow if user is allowed to alter item
-    if (!$member->canUpdateItem($itemid, $catid)) {
+    if ( ! $member->canUpdateItem($itemid, $catid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 
@@ -186,7 +186,7 @@ function bm_doEditItem()
         $catid = $blog->createNewCategory();
 
         // show error when sth goes wrong
-        if (!$catid) {
+        if ( ! $catid) {
             bm_doError(_BOOKMARKLET_ERROR_COULDNTNEWCAT);
         }
     }
@@ -286,11 +286,11 @@ function bm_doShowForm()
         $log_linktitle = uniDecode($log_linktitle, _CHARSET);
     }
 
-    if (!BLOG::existsID($blogid)) {
+    if ( ! BLOG::existsID($blogid)) {
         bm_doError(_ERROR_NOSUCHBLOG);
     }
 
-    if (!$member->isTeamMember($blogid)) {
+    if ( ! $member->isTeamMember($blogid)) {
         bm_doError(_ERROR_NOTONTEAM);
     }
 
@@ -300,7 +300,7 @@ function bm_doShowForm()
         $logje .= '<blockquote><div>"' . hsc($log_text) . '"</div></blockquote>' . "\n";
     }
 
-    if (!$log_linktitle) {
+    if ( ! $log_linktitle) {
         $log_linktitle = $log_link;
     }
 
@@ -321,11 +321,11 @@ function bm_doEditForm()
 
     $itemid = intRequestVar('itemid');
 
-    if (!$manager->existsItem($itemid, 0, 0)) {
+    if ( ! $manager->existsItem($itemid, 0, 0)) {
         bm_doError(_ERROR_NOSUCHITEM);
     }
 
-    if (!$member->canAlterItem($itemid)) {
+    if ( ! $member->canAlterItem($itemid)) {
         bm_doError(_ERROR_DISALLOWED);
     }
 

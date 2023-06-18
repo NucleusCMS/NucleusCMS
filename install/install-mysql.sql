@@ -54,7 +54,7 @@ INSERT INTO `nucleus_blog` VALUES (
     '',                                 /* bnotify */
     'http://localhost:8080/nucleus/',   /* burl */
     '',                                 /* bupdate */
-    5,                                  /* bdefskin */
+    4,                                  /* bdefskin */
     0,                                  /* bpublic */
     1,                                  /* bconvertbreaks */
     1,                                  /* bdefcat */
@@ -132,7 +132,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('NonmemberMail',     ''),
     ('PluginURL',         'http://localhost/nucleus/plugins/'),
     ('ProtectMemNames',   '1'),
-    ('BaseSkin',          '5'),
+    ('BaseSkin',          '4'),
     ('SkinsURL',          'http://localhost/skins/'),
     ('ActionURL',         'http://localhost/action.php'),
     ('URLMode',           'normal'),
@@ -140,6 +140,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DatabaseVersion',   '380'),
     ('DebugVars',         '0'),
     ('DefaultListSize',   '10'),
+    ('DisableRSS',        '1'),
     ('AdminCSS',          'contemporary_jp');
 
 CREATE TABLE `nucleus_item` (
@@ -215,8 +216,7 @@ CREATE TABLE `nucleus_member_option` (
   `ocontext` varchar(20)  NOT NULL default '',
   `name`     varchar(100) NOT NULL,
   `value`    varchar(255) NOT NULL default '',
-  PRIMARY KEY (`omember`),
-  UNIQUE  KEY (`omember`, `name`, `ocontext`)
+  PRIMARY KEY (`omember`, `name`, `ocontext`)
 ) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_plugin` (

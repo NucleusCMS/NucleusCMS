@@ -24,9 +24,9 @@ trait BaseGlobalVar
 
     public static function setValue($name, $value)
     {
-        if (($name !== null) && defined('self::varname')) {
+        if ((null !== $name) && defined('self::varname')) {
             $varname = constant('self::varname');
-            if (!defined('self::readonly') || !constant('self::readonly')) {
+            if ( ! defined('self::readonly') || ! constant('self::readonly')) {
                 trigger_error(sprintf('Error: %s : %s is readonly', self::class, $varname), E_USER_WARNING);
                 return false;
             }
@@ -40,12 +40,12 @@ trait BaseGlobalVar
 
     public static function searchValidKey($name)
     {
-        if (($name === null)) {
+        if ((null === $name)) {
             return false;
         }
 
         $VAR = & self::getGlobalVar();
-        if (empty($VAR) || !is_array($VAR)) {
+        if (empty($VAR) || ! is_array($VAR)) {
             return false;
         }
 
@@ -55,13 +55,13 @@ trait BaseGlobalVar
 
         $casecmp = true;
         if (defined('self::casecmp')) {
-            $casecmp = (bool)constant('self::casecmp');
+            $casecmp = (bool) constant('self::casecmp');
         }
 
         if ($casecmp) {
             foreach ($VAR as $k => $v) {
-                if (strcasecmp((string)$k, (string)$name) == 0) {
-                    return (string)$k;
+                if (0 == strcasecmp((string) $k, (string) $name)) {
+                    return (string) $k;
                 }
             }
         }
@@ -76,12 +76,12 @@ trait BaseGlobalVar
 
     public static function getValue($name, $default = null)
     {
-        if (($name === null) || !defined('self::varname')) {
+        if ((null === $name) || ! defined('self::varname')) {
             return false;
         }
 
         $VAR = & self::getGlobalVar();
-        if (empty($VAR) || !is_array($VAR)) {
+        if (empty($VAR) || ! is_array($VAR)) {
             return false;
         }
 
@@ -99,29 +99,29 @@ trait BaseGlobalVar
 
     public static function valueAsInt($name, $default = 0)
     {
-        if (!self::existName($name)) {
-            return (int)$default;
+        if ( ! self::existName($name)) {
+            return (int) $default;
         }
 
-        return (int)self::value($name, $default);
+        return (int) self::value($name, $default);
     }
 
     public static function valueAsString($name, $default = '')
     {
-        if (!self::existName($name)) {
-            return (string)$default;
+        if ( ! self::existName($name)) {
+            return (string) $default;
         }
 
-        return (string)self::value($name, $default);
+        return (string) self::value($name, $default);
     }
 
     public static function valueAsBool($name, $default = false)
     {
-        if (!self::existName($name)) {
-            return (bool)$default;
+        if ( ! self::existName($name)) {
+            return (bool) $default;
         }
 
-        return (bool)self::value($name, $default);
+        return (bool) self::value($name, $default);
     }
 
     public static function isStr($name)
@@ -143,7 +143,7 @@ trait BaseGlobalVar
 
     public static function asBool($name, $default = false)
     {
-        return (bool)self::valueAsBool($name, $default);
+        return (bool) self::valueAsBool($name, $default);
     }
 
     public static function asStr($name, $default = '')
@@ -153,29 +153,29 @@ trait BaseGlobalVar
 
     public static function asHtmlEscaped($name, $default = '', $flags = ENT_QUOTES)
     {
-        return self::asHsc($name, $default, (int)$flags);
+        return self::asHsc($name, $default, (int) $flags);
     }
 
     public static function asHsc($name, $default = '', $flags = ENT_QUOTES)
     {
         // hsc : HtmlSpecialChars
-        return htmlspecialchars(self::valueAsString($name, $default), (int)$flags, _CHARSET);
+        return htmlspecialchars(self::valueAsString($name, $default), (int) $flags, _CHARSET);
     }
 
     public static function asHscTrimed($name, $default = '', $flags = ENT_QUOTES)
     {
-        return htmlspecialchars(trim(self::valueAsString($name, $default)), (int)$flags, _CHARSET);
+        return htmlspecialchars(trim(self::valueAsString($name, $default)), (int) $flags, _CHARSET);
     }
 
     public static function asHscWithPathSlash($name, $default = '', $flags = ENT_QUOTES)
     {
-        return htmlspecialchars(self::asStrWithPathSlash($name, $default), (int)$flags, _CHARSET);
+        return htmlspecialchars(self::asStrWithPathSlash($name, $default), (int) $flags, _CHARSET);
     }
 
     public static function asStrWithPathSlash($name, $default = '')
     {
         $v = str_replace('\\', '/', trim(self::valueAsString($name, $default)));
-        if ((strlen($v) > 0) && !str_ends_with($v, '/')) {
+        if ((strlen($v) > 0) && ! str_ends_with($v, '/')) {
             $v .= '/';
         }
         return $v;
@@ -189,7 +189,7 @@ trait BaseGlobalVar
     public static function setValueWithPathSlash($name, $value)
     {
         $v = str_replace('\\', '/', trim($value));
-        if ((strlen($v) > 0) && !str_ends_with($v, '/')) {
+        if ((strlen($v) > 0) && ! str_ends_with($v, '/')) {
             $v .= '/';
         }
         return self::setValue($name, $value);
@@ -229,13 +229,13 @@ class CONF
 
     public static function setDbValue($name, $value)
     {
-        $key = trim((string)$name);
-        if (strlen($key) == 0) {
+        $key = trim((string) $name);
+        if (0 == strlen($key)) {
             trigger_error('Invalid $name length:0 : CONF::setValue', E_USER_ERROR);
             return false;
         }
-        if (strlen($key) != strlen((string)$name)) {
-            trigger_error('Invalid $name : CONF::setValue : $name contains space `%s`', E_USER_WARNING, (string)$name);
+        if (strlen($key) != strlen((string) $name)) {
+            trigger_error('Invalid $name : CONF::setValue : $name contains space `%s`', E_USER_WARNING, (string) $name);
         }
         return Admin::updateOrInsertConfig($key, $value);
     }

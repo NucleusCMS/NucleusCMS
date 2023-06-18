@@ -16,7 +16,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if (! function_exists('requestVar')) {
+if ( ! function_exists('requestVar')) {
     exit;
 }
 require_once __DIR__ . '/COMMENTACTIONS.php';
@@ -36,18 +36,18 @@ class COMMENTS
      * Creates a new COMMENTS object for the given blog and item
      *
      * @param $itemid
-     *        id of the item
+     *                 id of the item
      */
     public function __construct($itemid)
     {
-        $this->itemid = (int)$itemid;
+        $this->itemid = (int) $itemid;
     }
 
     /**
      * Used when parsing comments
      *
      * @param $itemActions
-     *        itemActions object, that will take care of the parsing
+     *                      itemActions object, that will take care of the parsing
      */
     public function setItemActions(&$itemActions)
     {
@@ -85,7 +85,7 @@ class COMMENTS
         $actions->setTemplate($template);
         $actions->setParser($parser);
 
-        if ($maxToShow == 0) {
+        if (0 == $maxToShow) {
             $this->commentcount = $this->amountComments();
         } else {
             $query
@@ -103,7 +103,7 @@ class COMMENTS
         }
 
         // if no result was found
-        if ($this->commentcount == 0) {
+        if (0 == $this->commentcount) {
             // note: when no reactions, COMMENTS_HEADER and COMMENTS_FOOTER are _NOT_ used
             if ($showNone) {
                 $parser->parse($template['COMMENTS_NONE']);
@@ -113,7 +113,7 @@ class COMMENTS
         }
 
         // if too many comments to show
-        if (($maxToShow != -1) && ($this->commentcount > $maxToShow)) {
+        if ((-1 != $maxToShow) && ($this->commentcount > $maxToShow)) {
             $parser->parse($template['COMMENTS_TOOMUCH']);
 
             return 0;
@@ -171,12 +171,12 @@ class COMMENTS
         $settings->readSettings();
 
         // begin if: comments disabled
-        if (! $settings->commentsEnabled()) {
+        if ( ! $settings->commentsEnabled()) {
             return _ERROR_COMMENTS_DISABLED;
         } // end if
 
         // begin if: public cannot comment
-        if (! $settings->isPublic() && ! $member->isLoggedIn()) {
+        if ( ! $settings->isPublic() && ! $member->isLoggedIn()) {
             return _ERROR_COMMENTS_NONPUBLIC;
         } // end if
 
@@ -187,7 +187,7 @@ class COMMENTS
         } // end if
 
         // begin if: email required, but missing (doesn't apply to members)
-        if ($settings->emailRequired() && strlen($comment['email']) == 0
+        if ($settings->emailRequired() && 0 == strlen($comment['email'])
             && ! $member->isLoggedIn()) {
             return _ERROR_EMAIL_REQUIRED;
         } // end if
@@ -275,15 +275,15 @@ class COMMENTS
         $param = ['spamcheck' => &$spamcheck];
         $manager->notify('SpamCheck', $param);
 
-        if (! $continue && isset($spamcheck['result'])
-             && $spamcheck['result'] == true) {
+        if ( ! $continue && isset($spamcheck['result'])
+             && true == $spamcheck['result']) {
             return _ERROR_COMMENTS_SPAM;
         }
 
         // isValidComment returns either "1" or an error message
         $isvalid = $this->isValidComment($comment, $spamcheck);
 
-        if ($isvalid != 1) {
+        if (1 != $isvalid) {
             return $isvalid;
         }
 
@@ -299,8 +299,8 @@ class COMMENTS
                 // Todo:
                 $tempurl = $settings->getURL();
 
-                if (substr($tempurl, -1) == '/'
-                    || substr($tempurl, -4) == '.php') {
+                if ('/' == substr($tempurl, -1)
+                    || '.php' == substr($tempurl, -4)) {
                     $mailto_msg .= $tempurl . '?itemid=' . $this->itemid
                                    . "\n\n";
                 } else {
@@ -309,7 +309,7 @@ class COMMENTS
                 }
             }
 
-            if ($comment['memberid'] == 0) {
+            if (0 == $comment['memberid']) {
                 $mailto_msg .= _NOTIFY_USER . ' ' . $comment['user'] . "\n";
                 $mailto_msg .= _NOTIFY_USERID . ' ' . $comment['userid'] . "\n";
             } else {
@@ -357,7 +357,7 @@ class COMMENTS
                   . " AND cbody   = '{$body}'"
                   . " AND citem   = '{$itemid}'"
                   . " AND cblog   = '{$blogid}'";
-        $result = (int)quickQuery($qSql);
+        $result = (int) quickQuery($qSql);
 
         if ($result > 0) {
             return _ERROR_BADACTION;
@@ -393,7 +393,7 @@ class COMMENTS
         // check if there exists a item for this date
         $item = & $manager->getItem($this->itemid, 0, 0);
 
-        if (! $item) {
+        if ( ! $item) {
             return _ERROR_NOSUCHITEM;
         }
 
@@ -402,8 +402,8 @@ class COMMENTS
         }
 
         // don't allow words that are too long
-        if (preg_match('/[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}/', $comment['body'])
-            != 0) {
+        if (0
+            != preg_match('/[a-zA-Z0-9|\.,;:!\?=\/\\\\]{90,90}/', $comment['body'])) {
             return _ERROR_COMMENT_LONGWORD;
         }
 
@@ -417,13 +417,13 @@ class COMMENTS
         }
 
         // only check username if no member logged in
-        if (! $member->isLoggedIn()) {
+        if ( ! $member->isLoggedIn()) {
             if (strlen($comment['user']) < 2) {
                 return _ERROR_COMMENT_NOUSERNAME;
             }
         }
 
-        if ((strlen($comment['email']) != 0)
+        if ((0 != strlen($comment['email']))
             && ! (isValidMailAddress(trim($comment['email'])))) {
             return _ERROR_BADMAILADDRESS;
         }

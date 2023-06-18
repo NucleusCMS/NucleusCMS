@@ -54,22 +54,22 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
             return $MYSQL_CONN;
         }
 
-        if (! $DB_HOST || ! $DB_USER) {
+        if ( ! $DB_HOST || ! $DB_USER) {
             exit('sql_connect error. Empty connect information.');
         }
 
-        if (substr(PHP_OS, 0, 3) === 'WIN' && $DB_HOST === 'localhost') {
+        if ('WIN' === substr(PHP_OS, 0, 3) && 'localhost' === $DB_HOST) {
             $MYSQL_HOST = '127.0.0.1';
         }
         $MYSQL_CONN = @mysql_connect($DB_HOST, $DB_USER, $DB_PASSWORD);
-        if (! $MYSQL_CONN) {
+        if ( ! $MYSQL_CONN) {
             startUpError(
                 '<p>Could not connect to MySQL database.</p>',
                 'Connect Error'
             );
         }
 
-        if (! sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
+        if ( ! sql_select_db($DB_DATABASE, $MYSQL_CONN)) {
             @mysql_close($MYSQL_CONN);
             $MYSQL_CONN = null;
             $msg        = '';
@@ -92,7 +92,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
                 sql_table('config')
             );
             $res = sql_query($query);
-            if (! $res) {
+            if ( ! $res) {
                 exit('Language name fetch error');
             }
             $obj         = sql_fetch_object($res);
@@ -103,8 +103,8 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
                 'name',
                 $MYSQL_CONN
             );
-            if ((stripos($charset, 'utf') !== false)
-                && (stripos($charsetOfDB, 'utf8') !== false)) {
+            if ((false !== stripos($charset, 'utf'))
+                && (false !== stripos($charsetOfDB, 'utf8'))) {
                 $charset = $charsetOfDB;
             } // work around for utf8mb4_general_ci
             else {
@@ -160,7 +160,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_query($query, $conn = false)
     {
         global $SQLCount, $MYSQL_CONN, $CONF;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
         $SQLCount++;
@@ -168,7 +168,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
             $query = implode("\n", $query);
         }
         $res = mysql_query($query, $conn);
-        if (! $res && isDebugMode()) {
+        if ( ! $res && isDebugMode()) {
             echo sprintf(
                 "mySQL error with query <b>%s</b> : %s<p />",
                 $query,
@@ -187,7 +187,10 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_error($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
+            if (empty($MYSQL_CONN)) {
+                return mysql_error();
+            }
             $conn = $MYSQL_CONN;
         }
 
@@ -200,7 +203,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_select_db($db, $conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -213,7 +216,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_real_escape_string($val, $conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -226,7 +229,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_quote_string($val, $conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -239,7 +242,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_insert_id($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -251,7 +254,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_result($res, $row = 0, $col = 0)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -263,7 +266,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_free_result($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -275,7 +278,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_num_rows($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -288,7 +291,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_affected_rows($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -300,7 +303,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_num_fields($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -312,7 +315,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_assoc($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -324,7 +327,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_array($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -336,7 +339,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_object($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -348,7 +351,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_row($res)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -360,7 +363,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_field($res, $offset = 0)
     {
-        if (! is_sql_result($res)) {
+        if ( ! is_sql_result($res)) {
             return false;
         }
 
@@ -373,7 +376,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_stat($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -386,7 +389,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_client_encoding($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -399,7 +402,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_getTableColumnNames($tablename)
     {
         global $MYSQL_CONN;
-        if (! $MYSQL_CONN) {
+        if ( ! $MYSQL_CONN) {
             return [];
         }
 
@@ -411,7 +414,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
 
         $items = [];
         $res   = mysql_query($sql);
-        if (! $res) {
+        if ( ! $res) {
             return [];
         }
         while ($row = mysql_fetch_array($res)) {
@@ -437,7 +440,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     ) {
         $names = sql_getTableColumnNames($tablename);
 
-        if (! count($names)) {
+        if ( ! count($names)) {
             return false;
         }
         if ($casesensitive) {
@@ -445,7 +448,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
         }
 
         foreach ($names as $v) {
-            if (strcasecmp($ColumnName, $v) != 0) {
+            if (0 != strcasecmp($ColumnName, $v)) {
                 continue;
             }
 
@@ -461,7 +464,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_existTableName($tablename)
     {
         global $MYSQL_CONN;
-        if (! $MYSQL_CONN) {
+        if ( ! $MYSQL_CONN) {
             return false;
         }
 
@@ -499,7 +502,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_get_server_info($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -512,7 +515,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_get_host_info($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -525,7 +528,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     function sql_get_proto_info($conn = false)
     {
         global $MYSQL_CONN;
-        if (! $conn) {
+        if ( ! $conn) {
             $conn = $MYSQL_CONN;
         }
 
@@ -601,18 +604,18 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
             } else {
                 $res = sql_query("SET CHARACTER SET {$charset}", $conn);
             }
-        } elseif ($charset === 'utf8mb4') {
+        } elseif ('utf8mb4' === $charset) {
             $res = sql_query("SET NAMES 'utf8mb4'", $conn);
-        } elseif ($charset === 'utf8' && $_CHARSET === 'utf-8') {
+        } elseif ('utf8' === $charset && 'utf-8' === $_CHARSET) {
             $res = sql_query("SET NAMES 'utf8'", $conn);
-        } elseif ($charset === 'ujis' && $_CHARSET === 'euc-jp') {
+        } elseif ('ujis' === $charset && 'euc-jp' === $_CHARSET) {
             $res = sql_query("SET NAMES 'ujis'", $conn);
         }
 
         // retry : workaround for Can't initialize character set utf8mb4
-        if (($res === false)
-            && $charset
-               === 'utf8mb4') {  // utf8mb4 : mysql_version 5.5 or higher
+        if ((false === $res)
+            && 'utf8mb4'
+               === $charset) {  // utf8mb4 : mysql_version 5.5 or higher
             $res = sql_set_charset('utf8', $conn);
             if ($res) {
                 if (function_exists('mysql_set_charset')) {
@@ -620,7 +623,7 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
                 } else {
                     $res = sql_query("SET CHARACTER SET {$charset}", $conn);
                 }
-                if (! $res) {
+                if ( ! $res) {
                     $res = sql_query("SET CHARACTER SET {$charset}", $conn);
                 }
             }
@@ -633,10 +636,10 @@ if (function_exists('mysql_query') && ! function_exists('sql_fetch_assoc')) {
     {
         global $DB_DRIVER_NAME, $MYSQL_CONN;
         $conn = ($conn ? $conn : sql_get_db());
-        if ($DB_DRIVER_NAME == 'mysql') {
+        if ('mysql' == $DB_DRIVER_NAME) {
             $charsetOfDB = getCharSetFromDB(sql_table('config'), 'name', $conn);
-            if ((stripos($charset, 'utf') !== false)
-                && (stripos($charsetOfDB, 'utf8') !== false)) {
+            if ((false !== stripos($charset, 'utf'))
+                && (false !== stripos($charsetOfDB, 'utf8'))) {
                 $charset = $charsetOfDB;
             } // work around for utf8mb4_general_ci
 

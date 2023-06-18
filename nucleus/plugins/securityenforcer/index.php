@@ -6,9 +6,9 @@ Admin area for NP_SecurityEnforcer
 
 */
 
-if (!isset($member)) {
+if ( ! isset($member)) {
     $p = explode(DIRECTORY_SEPARATOR, __DIR__);
-    while ($p && array_pop($p) && !empty($p)) {
+    while ($p && array_pop($p) && ! empty($p)) {
         $strRel = implode(DIRECTORY_SEPARATOR, $p) . DIRECTORY_SEPARATOR;
         if (@is_file($strRel . 'config.php')) {
             break;
@@ -18,13 +18,13 @@ if (!isset($member)) {
     // edit this variable to point to your site directory
     // (where config.php is)
     //  $strRel = '../../../';
-    if (@!is_file($strRel . 'config.php')) {
+    if (@ ! is_file($strRel . 'config.php')) {
         exit('Error: config file not found.');
     }
     require($strRel . 'config.php');
 }
 
-if (!isset($member) || !$member->isAdmin()) {
+if ( ! isset($member) || ! $member->isAdmin()) {
     doError('Insufficient Permissions.');
 }
 
@@ -46,8 +46,8 @@ $oPluginAdmin->start('');
 
 $message = '';
 // if form to unlock is posted
-if (postVar('plaction') == 'unlock') {
-    if (!$manager->checkTicket()) {
+if ('unlock' == postVar('plaction')) {
+    if ( ! $manager->checkTicket()) {
         doError('Invalid Ticket');
     }
     $logins = postVar('unlock');
@@ -90,7 +90,7 @@ if ($result) {
         echo '</tr>';
     }
 }
-if ($nums == 0) {
+if (0 == $nums) {
     echo '<tr><td colspan="2"><strong>'._SECURITYENFORCER_ADMIN_NONE_LOCKED.'</strong></td></tr>';
 }
 echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';

@@ -77,7 +77,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
         $queries = [];
         if (($SQL_DBH) && isset($DB_DRIVER_NAME)
-             && (stripos($DB_DRIVER_NAME, 'sqlite') !== false)) { // SQLite
+             && (false !== stripos($DB_DRIVER_NAME, 'sqlite'))) { // SQLite
             $queries[] = "CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
                     " (
 					`login` varchar(255),
@@ -104,7 +104,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     public function unInstall()
     {
-        if ($this->getOption('del_uninstall_data') == 'yes') {
+        if ('yes' == $this->getOption('del_uninstall_data')) {
             sql_query('DROP TABLE '.sql_table('plug_securityenforcer'));
         }
     }
@@ -129,10 +129,10 @@ class NP_SecurityEnforcer extends NucleusPlugin
     public function event_QuickMenu(&$data)
     {
         global $member;
-        if ($this->getOption('quickmenu') != 'yes' || !$member->isAdmin()) {
+        if ('yes' != $this->getOption('quickmenu') || ! $member->isAdmin()) {
             return;
         }
-        if (!($member->isLoggedIn())) {
+        if ( ! ($member->isLoggedIn())) {
             return;
         }
         array_push(
@@ -147,16 +147,16 @@ class NP_SecurityEnforcer extends NucleusPlugin
     public function event_PrePasswordSet(&$data)
     {
         //password, errormessage, valid
-        if ($this->enable_security == 'yes') {
+        if ('yes' == $this->enable_security) {
             $password = $data['password'];
 
             // conditional below not needed in 3.60 or higher. Used to keep from setting off error when password not being changed
-            if (postVar('action') == 'changemembersettings') {
+            if ('changemembersettings' == postVar('action')) {
                 $emptyAllowed = true;
             } else {
                 $emptyAllowed = false;
             }
-            if ((!$emptyAllowed) || $password) {
+            if (( ! $emptyAllowed) || $password) {
                 $message = $this->_validate_and_messsage($password, $this->pwd_min_length, $this->pwd_complexity);
                 if ($message) {
                     $data['errormessage'] = _SECURITYENFORCER_INSUFFICIENT_COMPLEXITY . $message. "<br /><br />\n";
@@ -168,9 +168,9 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     public function event_PostRegister(&$data)
     {
-        if ($this->enable_security == 'yes') {
+        if ('yes' == $this->enable_security) {
             $password = postVar('password');
-            if (postVar('action') == 'memberadd') {
+            if ('memberadd' == postVar('action')) {
                 $message = $this->_validate_and_messsage($password, $this->pwd_min_length, $this->pwd_complexity);
                 if ($message) {
                     $errormessage = _SECURITYENFORCER_ACCOUNT_CREATED. $message. "<br /><br />\n";
@@ -184,7 +184,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     public function event_CustomLogin(&$data)
     {
         //login,password,success,allowlocal
-        if ($this->enable_security == 'yes' && $this->max_failed_login > 0) {
+        if ('yes' == $this->enable_security && $this->max_failed_login > 0) {
             global $_SERVER;
             $login = $data['login'];
             $ip    = $_SERVER['REMOTE_ADDR'];
@@ -198,7 +198,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
             if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
                 $data['success']    = 0;
                 $data['allowlocal'] = 0;
-                if (!defined('_CHARSET')) {
+                if ( ! defined('_CHARSET')) {
                     define('_CHARSET', 'UTF-8');
                 }
                 $info = sprintf(_SECURITYENFORCER_LOGIN_DISALLOWED, htmlspecialchars($login, ENT_QUOTES, _CHARSET), htmlspecialchars($ip, ENT_QUOTES, _CHARSET));
@@ -209,7 +209,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     public function event_LoginSuccess(&$data)
     {
-        if ($this->enable_security == 'yes' && $this->max_failed_login > 0) {
+        if ('yes' == $this->enable_security && $this->max_failed_login > 0) {
             global $_SERVER;
             $login = $data['username'];
             $ip    = $_SERVER['REMOTE_ADDR'];
@@ -220,7 +220,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     public function event_LoginFailed(&$data)
     {
-        if ($this->enable_security == 'yes' && $this->max_failed_login > 0) {
+        if ('yes' == $this->enable_security && $this->max_failed_login > 0) {
             global $_SERVER;
             $login = $data['username'];
             $ip    = $_SERVER['REMOTE_ADDR'];
@@ -252,7 +252,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
                 if (defined($value['description'])) {
                     $data['options'][$key]['description'] = constant($value['description']);
                 }
-                if (!strcmp($value['type'], 'select') && defined($value['typeinfo'])) {
+                if ( ! strcmp($value['type'], 'select') && defined($value['typeinfo'])) {
                     $data['options'][$key]['typeinfo'] = constant($value['typeinfo']);
                 }
             }
@@ -263,8 +263,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     private function _validate_passwd($passwd, $minlength = 6, $complexity = 0)
     {
-        $minlength  = (int)$minlength;
-        $complexity = (int)$complexity;
+        $minlength  = (int) $minlength;
+        $complexity = (int) $complexity;
 
         if ($minlength < 6) {
             $minlength = 6;
@@ -297,8 +297,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
 
     private function _validate_and_messsage($passwd, $minlength = 6, $complexity = 0)
     {
-        $minlength  = (int)$minlength;
-        $complexity = (int)$complexity;
+        $minlength  = (int) $minlength;
+        $complexity = (int) $complexity;
 
         $message = '';
         if ($minlength < 6) {

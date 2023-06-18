@@ -17,7 +17,9 @@
  */
 
 try_define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'The config.php file already exists. To reinstall, you need to delete ../config.php.');
-try_define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'Your installation has expired. Please re-upload install/index.php with a current timestamp.');
+try_define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     'Certification failed. You do not have permission to install. Check your username and password in the installation configuration file');
+try_define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'To install, first enable install/install-config.php. If you do not have it, copy install-config.sample.php and edit it.');
+try_define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'Your installation has expired. Please re-upload install/install-config.php with a current timestamp.');
 try_define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  'The version of PHP that is running is outdated and does not meet the required minimum requirements.It will cancel the installation work.Please check with the server administrator whether PHP %s or higher can not be used.');
 try_define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleus root folder (../) is not writable. Nucleus installer  can not write the config.php file.');
 
@@ -183,7 +185,7 @@ try_define('_BUTTON1',	'Install Nucleus');
 try_define('_GENERALCAT_NAME',		'general');
 
 try_define('_1ST_POST_TITLE',	'Welcome to Nucleus CMS Version %s');
-try_define('_1ST_POST',	'This is the first post on your Nucleus CMS. You can edit this page.');
-try_define('_1ST_POST2',	'');
+try_define('_1ST_POST',			'This is the first post on your Nucleus CMS. You can edit this page.');
+try_define('_1ST_POST2',		'The building blocks are here to help you create a web presence. Be it a blog, a family page, a hobby site or maybe you just don\'t have any idea.\r<br />\n\r<br />\nWell you came to the right place, cause we didn\'t know what you wanted either.');
 
 try_define('_CONFIRM_RETRY_SEND_FORM',		'Would you like to retry submitting the form?');

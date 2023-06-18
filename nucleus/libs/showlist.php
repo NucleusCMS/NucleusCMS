@@ -27,7 +27,7 @@ function showlist($data, $type, $template)
 
 function showlist_by_array($query, $type, $template)
 {
-    if (count($query) == 0) {
+    if (0 == count($query)) {
         return 0;
     }
 
@@ -36,7 +36,7 @@ function showlist_by_array($query, $type, $template)
     foreach ($query as $currentObj) {
         $template['current'] = $currentObj;
         if (isset($template['current']->burl)
-            && strlen($template['current']->burl) == 0
+            && 0 == strlen($template['current']->burl)
             && isset($template['current']->bnumber)) {
             $template['current']->burl
                 = createBlogidLink($template['current']->bnumber);
@@ -53,8 +53,11 @@ function showlist_by_query($query, $type, $template)
 {
     $res = sql_query($query);
 
-    if (! $res) {
+    if ( ! $res) {
         return 0;
+    }
+    if (isset($template['tabindex'])) {
+        ADMIN::getTabIndex(max(0, (int) $template['tabindex'] - 1));
     }
 
     // don't do anything if there are no results
@@ -65,10 +68,16 @@ function showlist_by_query($query, $type, $template)
     while ($template['current'] = sql_fetch_object($res)) {
         $numrows++;
         if (isset($template['current']->burl)
-            && strlen($template['current']->burl) == 0
+            && 0 == strlen($template['current']->burl)
             && isset($template['current']->bnumber)) {
             $template['current']->burl
                 = createBlogidLink($template['current']->bnumber);
+        }
+        // unset values : Protect password ...
+        foreach (['mpassword', 'mcookiekey','mtoken'] as $key) {
+            if (property_exists($template['current'], $key)) {
+                unset($template['current']->$key);
+            }
         }
         call_user_func("listplug_{$type}", $template, 'BODY');
     }
@@ -83,7 +92,7 @@ function showlist_by_query($query, $type, $template)
 
 function listplug_select($template, $type)
 {
-    if ($type == 'HEAD') {
+    if ('HEAD' == $type) {
         $ph['name']       = ifset($template['name']);
         $ph['tabindex']   = ifset($template['tabindex']);
         $ph['javascript'] = ifset($template['javascript']);
@@ -100,7 +109,7 @@ function listplug_select($template, $type)
                 $ph
             );
         }
-    } elseif ($type == 'BODY') {
+    } elseif ('BODY' == $type) {
         $current        = $template['current'];
         $ph             = [];
         $ph['value']    = $current->value;
@@ -122,7 +131,7 @@ function listplug_select($template, $type)
             '<option value="{%value:hsc%}" {%selected%} title="{%title:hsc%}">{%text:hsc%}</option>',
             $ph
         );
-    } elseif ($type == 'FOOT') {
+    } elseif ('FOOT' == $type) {
         echo '</select>';
     }
 }
@@ -172,7 +181,7 @@ function listplug_table_memberlist($template, $type)
 {
     global $member;
 
-    if ($type == 'HEAD') {
+    if ('HEAD' == $type) {
         $tpl
                         = '<th>{%name%}</th><th>{%rname%}</th><th>{%url%}</th><th>{%admin%}{%help%}</th><th>{%login%}{%canlogin%}</th><th colspan="3">{%actions%}</th>';
         $ph['name']     = _LIST_MEMBER_NAME;
@@ -185,9 +194,9 @@ function listplug_table_memberlist($template, $type)
         $ph['actions']  = _LISTS_ACTIONS;
 
         return parseHtml($tpl, $ph);
-    } elseif ($type == 'BODY') {
+    } elseif ('BODY' == $type) {
         $current          = $template['current'];
-        $ph               = (array)$template['current'];
+        $ph               = (array) $template['current'];
         $ph['id']         = listplug_nextBatchId();
         $ph['tabindex']   = $template['tabindex'];
         $ph['madmin?']    = $current->madmin ? _YES : _NO;
@@ -278,40 +287,72 @@ function listplug_table_pluginlist($template, $type)
         case 'BODY':
             $current = $template['current'];
 
-            $plug = & $manager->getPlugin($current->pfile);
+            $np_name = $current->pfile;
+            // [Note] : Waking up a buggy plugin may cause a hang
+            $plug = & $manager->getPlugin($np_name);
             if ($plug) {
+                $canRemoteDownload = ADMIN::canRemoteDownload($np_name);
                 echo '<td>';
                 echo '<strong>', hsc($plug->getName()), '</strong><br />';
-                if ($plug->getAuthor() !== 'Undefined') {
+                if ('Undefined' !== $plug->getAuthor()) {
                     echo _LIST_PLUGS_AUTHOR, ' ', hsc($plug->getAuthor()), '<br />';
                 }
                 echo _LIST_PLUGS_VER, ' ', hsc($plug->getVersion()), '<br />';
-                if ($plug->getURL() && $plug->getURL() !== 'Undefined') {
-                    echo '<a href="', hsc($plug->getURL()), '" tabindex="'
-                                                            . $template['tabindex']
-                                                            . '">', _LIST_PLUGS_SITE, '</a>';
+                $getURL = $canRemoteDownload ? 'https://github.com/NucleusCMS/' . $np_name : $plug->getURL();
+                if ($getURL && 'Undefined' !== $getURL) {
+                    printf('<a href="%s" tabindex="%d"', hsc($getURL), $template['tabindex']);
+                    printf(' target="_blank" rel="noreferrer">%s</a>', _LIST_PLUGS_SITE);
                 }
                 echo '</td>';
+
                 echo '<td>';
+                // check plugin dir
+                global $DIR_PLUGINS;
+                if (2 === $plug->plugin_dir_type
+                   && (@is_file("{$DIR_PLUGINS}{$np_name}.php") || @is_dir($DIR_PLUGINS.$np_name))
+                ) {
+                    echo "<div style='float: left'><strong style='color: red'>"
+                         . escapeHTML(_ADMIN_TEXT_CONFLICT_DELETE_OLD_PLUGIN)
+                         . "</strong><br /><ul>";
+                    if (@is_file("{$DIR_PLUGINS}{$np_name}.php")) {
+                        printf("<li>%s<br />(%s)</li>", escapeHTML("{$np_name}.php"), escapeHTML($DIR_PLUGINS.$np_name.'php'));
+                    }
+                    if (@is_dir($DIR_PLUGINS.$np_name)) {
+                        printf("<li>%s<br />(%s)</li>", escapeHTML($np_name), escapeHTML($DIR_PLUGINS.$np_name));
+                    }
+
+                    echo "</ul></div>";
+                }
                 // plugin update check
                 $update_info = $plug->checkRemoteUpdate();
                 if ($update_info['result']) {
-                    $dl_url = $update_info['download'];
-                    echo "<strong style='color: red'>"
+                    echo "<div style='float: left'><strong style='color: red'>"
                          . hsc(_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE)
                          . "</strong><br />";
                     echo "Latest version: " . hsc($update_info['version'])
-                         . "<br />";
-                    if (! empty($update_info['download'])) {
-                        printf(
-                            'Get URL : <a href="%s" target="_blank">%s</a><br />',
-                            hsc($update_info['download']),
-                            hsc($update_info['download'])
-                        );
+                         . "<br /></div>";
+                    if (class_exists('ZipArchive') && $canRemoteDownload) {
+                        // リモートからダウンロード
+                        echo "<form method='post' action='index.php'><div style='float: right'>\n";
+                        echo "  <input type='hidden' name='action' value='plugindownload' />\n";
+                        printf("  <input type='hidden' name='pluginname' value='%s' />\n", escapeHTML($np_name));
+                        echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
+                        echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _ADMIN_TEXT_REMOTE_AUTO_UPDATE);
+                        echo "</div></form>\n";
+                    } else {
+                        if ( ! empty($update_info['download'])) {
+                            echo '<div style="float: left; padding: 1.5em 1em;">Get URL : ';
+                            printf(
+                                '<a href="%s" target="_blank" rel="noreferrer">%s</a></div><br />',
+                                hsc($update_info['download']),
+                                hsc($update_info['download'])
+                            );
+                        }
                     }
-                    echo "<br />";
+                    echo "<br style='clear:both' /><br />";
                 }
                 // plugin Description
+                echo "<div style='float: left;'>";
                 echo hsc($plug->getDescription());
                 $pl_event_list = $plug->_getEventList();
                 if (count($pl_event_list) > 0) {
@@ -321,7 +362,7 @@ function listplug_table_pluginlist($template, $type)
                     ));
                     // check the database to see if it is up-to-date and notice the user if not
                 }
-                if (! $plug->subscribtionListIsUptodate()) {
+                if ( ! $plug->subscribtionListIsUptodate()) {
                     echo '<br /><br /><strong>', _LIST_PLUG_SUBS_NEEDUPDATE, '</strong>';
                 }
                 if (count($plug->getPluginDep()) > 0) {
@@ -353,7 +394,7 @@ function listplug_table_pluginlist($template, $type)
                     echo "</p>\n";
                 }
                 // </add by shizuki>
-                echo '</td>';
+                echo '</div></td>';
             } else {
                 echo '<td colspan="2">' . sprintf(
                     _PLUGINFILE_COULDNT_BELOADED,
@@ -440,7 +481,7 @@ function listplug_plugOptionRow($current)
     $meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
 
     // only if it is not a hidden option write the controls to the page
-    if (! array_key_exists('access', $meta) || $meta['access'] != 'hidden') {
+    if ( ! array_key_exists('access', $meta) || 'hidden' != $meta['access']) {
         echo '<td>', hsc($current['description'] ? $current['description']
             : $current['name']), '</td>';
         echo '<td>';
@@ -469,7 +510,7 @@ function listplug_plugOptionRow($current)
                 //$meta = NucleusPlugin::getOptionMeta($current['typeinfo']);
                 echo '<textarea class="pluginoption" cols="30" rows="5" name="', hsc($varname), '"';
                 if (array_key_exists('access', $meta)
-                    && $meta['access'] == 'readonly') {
+                    && 'readonly' == $meta['access']) {
                     echo ' readonly="readonly"';
                 }
                 echo '>', hsc($current['value']), '</textarea>';
@@ -480,11 +521,11 @@ function listplug_plugOptionRow($current)
 
                 echo '<input type="text" size="40" maxlength="128" name="', hsc($varname), '" value="', hsc($current['value']), '"';
                 if (array_key_exists('datatype', $meta)
-                    && $meta['datatype'] == 'numerical') {
+                    && 'numerical' == $meta['datatype']) {
                     echo ' onkeyup="checkNumeric(this)" onblur="checkNumeric(this)"';
                 }
                 if (array_key_exists('access', $meta)
-                    && $meta['access'] == 'readonly') {
+                    && 'readonly' == $meta['access']) {
                     echo ' readonly="readonly"';
                 }
                 echo ' />';
@@ -515,7 +556,7 @@ function listplug_table_itemlist($template, $type)
                 $current->itime = 0;
             }
 
-            if ($current->idraft == 1) {
+            if (1 == $current->idraft) {
                 $cssclass = "class='draft'";
             }
 
@@ -525,15 +566,15 @@ function listplug_table_itemlist($template, $type)
             }
 
             $action = requestVar('action');
-            $style  = ($action !== 'pluginlist') ? 'style="white-space:nowrap"'
+            $style  = ('pluginlist' !== $action) ? 'style="white-space:nowrap"'
                 : '';
             echo "<td {$cssclass} {$style}>";
-            if ($action !== 'itemlist') {
+            if ('itemlist' !== $action) {
                 echo _LIST_ITEM_BLOG . ' ' . hsc($current->bshortname)
                      . '<br />';
             }
             echo _LIST_ITEM_CAT . ' ' . hsc($current->cname) . '<br />';
-            if ($action !== 'browseownitems') {
+            if ('browseownitems' !== $action) {
                 echo _LIST_ITEM_AUTHOR . ' ' . hsc($current->mname) . '<br />';
             }
             if ($current->itime) {
@@ -607,7 +648,7 @@ function listplug_table_commentlist($template, $type)
     global $action;
 
     $colspan = 3;
-    if ($action == 'blogcommentlist') {
+    if ('blogcommentlist' == $action) {
         $colspan++;
     }
 
@@ -622,10 +663,10 @@ function listplug_table_commentlist($template, $type)
             $current = $template['current'];
             $current->ctime
                      = strtotime($current->ctime);    // string -> unix timestamp
-            if (! isset($current->is_badmin) || $current->is_badmin) {
+            if ( ! isset($current->is_badmin) || $current->is_badmin) {
                 $show_action_link                 = 1;
-                $show_action_link_itemcommentlist = ($action
-                                                     == 'blogcommentlist');
+                $show_action_link_itemcommentlist = ('blogcommentlist'
+                                                     == $action);
             } else {
                 $current->iauthor = (int) ($current->iauthor);
                 $current->cmember = (int) ($current->cmember);
@@ -633,8 +674,8 @@ function listplug_table_commentlist($template, $type)
                                                      == $member->id)
                                                     || ($current->iauthor
                                                         == $member->id);
-                $show_action_link_itemcommentlist = ($action
-                                                     == 'blogcommentlist')
+                $show_action_link_itemcommentlist = ('blogcommentlist'
+                                                     == $action)
                                                     && ($current->iauthor
                                                         == $member->id);
             }
@@ -647,11 +688,11 @@ function listplug_table_commentlist($template, $type)
             } else {
                 echo hsc($current->cuser);
             }
-            if ($current->cmail != '') {
+            if ('' != $current->cmail) {
                 echo '<br />';
                 echo hsc($current->cmail);
             }
-            if (isset($current->cemail) && ($current->cemail != '')) {
+            if (isset($current->cemail) && ('' != $current->cemail)) {
                 echo '<br />';
                 echo hsc($current->cemail);
             }
@@ -686,9 +727,9 @@ function listplug_table_commentlist($template, $type)
             }
 
             // add link
-            if ($action == 'blogcommentlist') {
+            if ('blogcommentlist' == $action) {
                 if ($show_action_link_itemcommentlist) {
-                    if (! isset($amountComments[$current->citem])) {
+                    if ( ! isset($amountComments[$current->citem])) {
                         $COMMENTS = new COMMENTS($current->citem);
                         $amountComments[$current->citem]
                                   = $COMMENTS->amountComments();
@@ -737,7 +778,7 @@ function listplug_table_bloglist($template, $type)
                  . _BLOGLIST_TT_COMMENTS . "'>" . _BLOGLIST_COMMENTS
                  . "</a></td>";
 
-            if ($current->tadmin == 1) {
+            if (1 == $current->tadmin) {
                 echo "<td><a href='index.php?action=blogsettings&amp;blogid={$current->bnumber}' title='"
                      . _BLOGLIST_TT_SETTINGS . "'>" . _BLOGLIST_SETTINGS
                      . "</a></td>";
@@ -874,8 +915,8 @@ function listplug_table_skinlist($template, $type)
 
             echo '<br /><br />';
             echo _LISTS_TYPE, ': ', hsc($current->sdtype);
-            echo '<br />', _LIST_SKINS_INCMODE, ' ', (($current->sdincmode
-                                                       == 'skindir')
+            echo '<br />', _LIST_SKINS_INCMODE, ' ', (('skindir'
+                                                       == $current->sdincmode)
                 ? _PARSER_INCMODE_SKINDIR : _PARSER_INCMODE_NORMAL);
             if ($current->sdincpref) {
                 echo '<br />', _LIST_SKINS_INCPREFIX, ' ', hsc($current->sdincpref);
@@ -922,7 +963,7 @@ function listplug_table_skinlist($template, $type)
             echo "<td>", hsc($current->sddesc);
             echo '<div style="height: auto; width: 100%; overflow: auto; max-height: 250px;">';
             // show list of defined parts
-            if ($DB_DRIVER_NAME == 'mysql') {
+            if ('mysql' == $DB_DRIVER_NAME) {
                 $order
                     = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
             } else {

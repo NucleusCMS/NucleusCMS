@@ -9,10 +9,9 @@
  * of the License, or (at your option) any later version.
  * (see nucleus/documentation/index.html#license for more info)
  *
+ */
+/**
  * PHP class responsible for ban-management.
- *
- * @license http://nucleuscms.org/license.txt GNU General Public License
- * @copyright Copyright (C) The Nucleus Group
  */
 
 class BAN
@@ -20,27 +19,27 @@ class BAN
     /**
      * Checks if a given IP is banned from commenting/voting
      *
-     * Returns 0 when not banned, or a BANINFO object containing the
+     * Returns false when not banned, or a BANINFO object containing the
      * message and other information of the ban
      */
     public static function isBanned($blogid, $ip)
     {
-        $blogid = (int)$blogid;
+        $blogid = (int) $blogid;
         $query  = sprintf(
-            'SELECT * FROM %s WHERE blogid=%d',
+            'SELECT * FROM `%s` WHERE blogid=%d',
             sql_table('ban'),
             $blogid
         );
-        $res = sql_query($query);
-        while ($obj = sql_fetch_object($res)) {
-            $found = ! strncmp($ip, $obj->iprange, strlen($obj->iprange));
-            if (! ($found === false)) {
-                // found a match!
-                return new BANINFO($obj->iprange, $obj->reason);
+        if ($res = sql_query($query)) {
+            while ($obj = sql_fetch_object($res)) {
+                $found = (0 === strncmp($ip, $obj->iprange, strlen($obj->iprange)));
+                if ( ! (false === $found)) {
+                    // found a match!
+                    return new BANINFO($obj->iprange, $obj->reason);
+                }
             }
         }
-
-        return 0;
+        return false;
     }
 
     /**
@@ -50,7 +49,7 @@ class BAN
     {
         global $manager;
 
-        $blogid = (int)$blogid;
+        $blogid = (int) $blogid;
 
         $param = [
             'blogid'  => $blogid,
@@ -84,7 +83,7 @@ class BAN
     public static function removeBan($blogid, $iprange)
     {
         global $manager;
-        $blogid = (int)$blogid;
+        $blogid = (int) $blogid;
 
         $param = [
             'blogid' => $blogid,

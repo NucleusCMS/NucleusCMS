@@ -42,15 +42,15 @@ class ACTIONLOG
             'Y-m-d H:i:s',
             $_SERVER['REQUEST_TIME']
         );    // format timestamp
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
+        if ('pdo' === $DB_PHP_MODULE_NAME) {
             sql_prepare_execute(
                 sprintf(
                     'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)',
                     sql_table('actionlog')
                 ),
                 [
-                    (string)$timestamp,
-                    (string)$message,
+                    (string) $timestamp,
+                    (string) $message,
                 ]
             );
         } else {
@@ -84,12 +84,12 @@ class ACTIONLOG
             $msg = "[" . $member->getDisplayName() . "] " . $msg;
         }
 
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
+        if ('pdo' === $DB_PHP_MODULE_NAME) {
             $query = sprintf(
                 "DELETE FROM `%s` WHERE message=?",
                 sql_table('actionlog')
             );
-            sql_prepare_execute($query, [(string)$msg]);
+            sql_prepare_execute($query, [(string) $msg]);
         } else {
             $query = sprintf(
                 "DELETE FROM `%s` WHERE message=%s",

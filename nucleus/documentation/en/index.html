@@ -20,8 +20,26 @@
 
 <div class="heading">
 Nucleus CMS Manual
-<i>(v3.80)</i>
+<i>(v3.80 dev [EOL]) development version</i>
 </div>
+
+<div class="note"><span style="color: red; font-weight: bold; font-size: x-large">Warning</span>
+	<div style="margin-left: 2em;  font-size: large">This version has expired security support. Please download the latest version.</div>
+</div>
+<br />
+<div class="note"><span style="color: red; font-weight: bold; font-size: x-large">Warning</span>
+	<div style="margin-left: 2em;  font-size: large">This version is a development version.
+	<ul>
+		<li>Please do not use the development version on public sites.</li>
+		<li>Even minor errors can cause it to spit out an error and stop.</li>
+		<li>No one can help you with errors or other problems. Face the problem yourself and deal with it yourself.</li>
+		<li>Specifications may be changed or removed without notice.</li>
+		<li>You may see features that are not implemented.</li>
+		<li>Even if the development is interrupted or terminated, there will be no notices.</li>
+	</ul>
+	</div>
+</div>
+<br />
 
 <div class="note">
 <b>Notes:</b>
@@ -34,7 +52,7 @@ Nucleus CMS Manual
 <h1><a name="toc"></a>Table Of Contents</h1>
 
 <ul>
-	<li><a href="#about">About Nucleus CMS</a></li>
+	<li><a href="#about">About Nucleus CMS</a><ul><li><a href="#operating_environment">Operating environment</a></li></ul></li>
 	<li><a href="#license">License</a></li>
 	<li><a href="#installation">Installation</a></li>
 	<li><a href="skins.html">Modifying skins and templates</a> (separate file)</li>
@@ -75,12 +93,10 @@ Nucleus is a Content Management System (CMS): a powerful set of PHP scripts that
 	<li>RSS syndication</li>
 	<li>Easy installation</li>
 	<li>Easy backups</li>
-	<li>XML-RPC interface (implementing the <a href="http://plant.blogger.com/api/">Blogger API</a> and <a href="http://www.xmlrpc.com/metaWeblogApi">metaWeblog API</a>)</li>
-	<li>XHTML-ready</li>
 	<li>...</li>
 </ul>
 
-<h2>Operating environment</h2>
+<h2>Operating environment<a name="operating_environment" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h2>
 <p>
 Requirements in order to run Nucleus: <small>(If you don't know if you fit the requirements, ask your system administrator)</small>
 </p>
@@ -90,8 +106,7 @@ Requirements in order to run Nucleus: <small>(If you don't know if you fit the r
 	<li><a href="http://jp.php.net/manual/ja/">PHP</a><br />
 		&nbsp;&nbsp; Version 8 : 8.2, 8.1 , 8.0<br />
 		&nbsp;&nbsp; Version 7 : 7.4, 7.3 , 7.2 , 7.1 , 7.0<br />
-		&nbsp;&nbsp; Version 5 : 5.6, 5.5<br />
-		<div>PHP official support for PHP7.4 ends on 2022/11/28. Earlier versions are no longer supported.<br />
+		<div>PHP official support for PHP8.0 ends on 2023/11/26. Earlier versions are no longer supported.<br />
 			Please see here for the detail.
 			<a href="https://www.php.net/supported-versions.php" target="_blank">https://www.php.net/supported-versions.php</a></div>
 	</li>
@@ -169,7 +184,6 @@ Unzip all files to a directory of your computer. Make sure the path names are us
 /nucleus/libs/*              (Nucleus core libs)
 /nucleus/language/*          (definitions of languages)
 /nucleus/plugins/*           (plugin-dir)
-/nucleus/xmlrpc/*            (XML-RPC interface)
 /nucleus/documentation/*     (Documentation + admin-area help)
 /nucleus/styles/*            (stylesheets for docs &amp; admin-area)
 /nucleus/forms/*             (skeletons for commentforms etc)

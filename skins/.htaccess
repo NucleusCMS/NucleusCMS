@@ -1,8 +1,19 @@
-<FilesMatch "\.(php|inc)$">
-Order allow,deny
-Deny from all
-</FilesMatch>
-<FilesMatch "^skintext\.xml$">
-Order allow,deny
-Deny from all
-</FilesMatch>
+<IfModule mod_authz_core.c>
+    <FilesMatch "\.(php|inc)$">
+    Require all denied
+    </FilesMatch>
+    <FilesMatch "^skintext\.xml$">
+    Require all denied
+    </FilesMatch>
+</IfModule>
+
+<IfModule !mod_authz_core.c>
+    <FilesMatch "\.(php|inc)$">
+    Order allow,deny
+    Deny from all
+    </FilesMatch>
+    <FilesMatch "^skintext\.xml$">
+    Order allow,deny
+    Deny from all
+    </FilesMatch>
+</IfModule>

@@ -102,7 +102,7 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         // begin if: member comment
-        if ($comment['memberid'] != 0) {
+        if (0 != $comment['memberid']) {
             $comment['authtext'] = (isset($this->template['COMMENTS_AUTH'])
                 ? $this->template['COMMENTS_AUTH'] : '');
 
@@ -130,7 +130,7 @@ class COMMENTACTIONS extends BaseActions
             // create smart links
 
             // begin if: comment userid is not empty
-            if (! empty($comment['userid'])) {
+            if ( ! empty($comment['userid'])) {
                 // begin if: comment userid has either "http://" or "https://" at the beginning
                 if ((str_starts_with($comment['userid'], 'http://'))
                     || (str_starts_with($comment['userid'], 'https://'))) {
@@ -164,7 +164,7 @@ class COMMENTACTIONS extends BaseActions
      */
     public function parse_authtext()
     {
-        if ($this->currentComment['memberid'] != 0) {
+        if (0 != $this->currentComment['memberid']) {
             $this->parser->parse($this->template['COMMENTS_AUTH']);
         }
     }
@@ -217,7 +217,7 @@ class COMMENTACTIONS extends BaseActions
      */
     public function parse_commentword()
     {
-        if ($this->commentsObj->commentcount == 1) {
+        if (1 == $this->commentsObj->commentcount) {
             echo isset($this->template['COMMENTS_ONE'])
                 ? $this->template['COMMENTS_ONE'] : '';
         } else {
@@ -303,7 +303,7 @@ class COMMENTACTIONS extends BaseActions
      */
     public function parse_itemtitle($maxLength = 0)
     {
-        if (! is_numeric($maxLength) || (int) $maxLength == 0) {
+        if ( ! is_numeric($maxLength) || 0 == (int) $maxLength) {
             echo hsc(strip_tags($this->commentsObj->itemActions->currentItem->title));
         } else {
             $this->commentsObj->itemActions->parse_syndicate_title((int) $maxLength);
@@ -337,7 +337,7 @@ class COMMENTACTIONS extends BaseActions
     public function parse_time($format = '')
     {
         echo Utils::strftime(
-            ($format == '') ? $this->template['FORMAT_TIME'] : $format,
+            ('' == $format) ? $this->template['FORMAT_TIME'] : $format,
             $this->currentComment['timestamp']
         );
     }
@@ -362,12 +362,12 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         // only continue when the plugin is really installed
-        if (! $manager->pluginInstalled('NP_' . $pluginName)) {
+        if ( ! $manager->pluginInstalled('NP_' . $pluginName)) {
             return;
         }
 
         $plugin = & $manager->getPlugin('NP_' . $pluginName);
-        if (! $plugin) {
+        if ( ! $plugin) {
             return;
         }
 
@@ -397,7 +397,7 @@ class COMMENTACTIONS extends BaseActions
     {
         global $manager;
 
-        if ($mode == 'realname' && $this->currentComment['memberid'] > 0) {
+        if ('realname' == $mode && $this->currentComment['memberid'] > 0) {
             $member = & $manager->getMember($this->currentComment['memberid']);
             echo hsc($member->getRealName());
         } else {
@@ -414,7 +414,7 @@ class COMMENTACTIONS extends BaseActions
         if ($this->currentComment['memberid'] > 0) {
             $member = & $manager->getMember($this->currentComment['memberid']);
 
-            if ($member->email != '') {
+            if ('' != $member->email) {
                 echo hsc($member->email);
             }
         } else {
@@ -464,7 +464,7 @@ class COMMENTACTIONS extends BaseActions
      */
     public function parse_userwebsite()
     {
-        if (! isset($this->currentComment['userlinkraw'])) {
+        if ( ! isset($this->currentComment['userlinkraw'])) {
             return;
         }
         if (preg_match(
@@ -579,12 +579,12 @@ class COMMENTACTIONS extends BaseActions
         global $blog, $catid;
 
         // when no parameter is defined, just check if a category is selected
-        if (($name != 'catname' && $name != 'catid') || ($value == '')) {
+        if (('catname' != $name && 'catid' != $name) || ('' == $value)) {
             return $blog->isValidCategory($catid);
         }
 
         // check category name
-        if ($name == 'catname') {
+        if ('catname' == $name) {
             $value = $blog->getCategoryIdFromName($value);
             if ($value == $catid) {
                 return $blog->isValidCategory($catid);
@@ -592,7 +592,7 @@ class COMMENTACTIONS extends BaseActions
         }
 
         // check category id
-        if (($name == 'catid') && ($value == $catid)) {
+        if (('catid' == $name) && ($value == $catid)) {
             return $blog->isValidCategory($catid);
         }
 
@@ -606,7 +606,7 @@ class COMMENTACTIONS extends BaseActions
     {
         global $member, $manager;
 
-        if ($this->currentComment['memberid'] == 0) {
+        if (0 == $this->currentComment['memberid']) {
             return false;
         }
 
@@ -616,16 +616,16 @@ class COMMENTACTIONS extends BaseActions
         $citem = & $manager->getItem($this->currentComment['itemid'], 1, 1);
 
         // when no parameter is defined, just check if item author is current visitor
-        if (($name != 'isadmin' && $name != 'name' && $name != 'isauthor'
-             && $name != 'isonteam')) {
+        if (('isadmin' != $name && 'name' != $name && 'isauthor' != $name
+             && 'isonteam' != $name)) {
             return ((int) ($member->getID()) > 0
                     && (int) ($member->getID()) == (int) ($citem['authorid']));
         }
 
         // check comment author name
-        if ($name == 'name') {
+        if ('name' == $name) {
             $value = trim(strtolower($value));
-            if ($value == '') {
+            if ('' == $value) {
                 return false;
             }
             if ($value == strtolower($mem->getDisplayName())) {
@@ -634,7 +634,7 @@ class COMMENTACTIONS extends BaseActions
         }
 
         // check if comment author is admin
-        if ($name == 'isadmin') {
+        if ('isadmin' == $name) {
             $blogid = (int) ($b->getID());
             if ($mem->isAdmin()) {
                 return true;
@@ -644,13 +644,13 @@ class COMMENTACTIONS extends BaseActions
         }
 
         // check if comment author is item author
-        if ($name == 'isauthor') {
+        if ('isauthor' == $name) {
             return ((int) ($citem['authorid'])
                     == (int) ($this->currentComment['memberid']));
         }
 
         // check if comment author is on team
-        if ($name == 'isonteam') {
+        if ('isonteam' == $name) {
             return $mem->teamRights((int) ($b->getID()));
         }
 
@@ -670,12 +670,12 @@ class COMMENTACTIONS extends BaseActions
         $icatid = $citem['catid'];
 
         // when no parameter is defined, just check if a category is selected
-        if (($name != 'catname' && $name != 'catid') || ($value == '')) {
+        if (('catname' != $name && 'catid' != $name) || ('' == $value)) {
             return $b->isValidCategory($icatid);
         }
 
         // check category name
-        if ($name == 'catname') {
+        if ('catname' == $name) {
             $value = $b->getCategoryIdFromName($value);
             if ($value == $icatid) {
                 return $b->isValidCategory($icatid);
@@ -683,7 +683,7 @@ class COMMENTACTIONS extends BaseActions
         }
 
         // check category id
-        if (($name == 'catid') && ($value == $icatid)) {
+        if (('catid' == $name) && ($value == $icatid)) {
             return $b->isValidCategory($icatid);
         }
 
@@ -701,16 +701,16 @@ class COMMENTACTIONS extends BaseActions
             = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
         // when no blog found
-        if (($blogName == '') && (! is_object($b))) {
+        if (('' == $blogName) && ( ! is_object($b))) {
             return 0;
         }
 
         // explicit blog selection
-        if ($blogName != '') {
+        if ('' != $blogName) {
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '')
+        if (('' == $blogName)
             || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $b->getID();
         }
@@ -729,16 +729,16 @@ class COMMENTACTIONS extends BaseActions
             = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
         // when no blog found
-        if (($blogName == '') && (! is_object($b))) {
+        if (('' == $blogName) && ( ! is_object($b))) {
             return 0;
         }
 
         // explicit blog selection
-        if ($blogName != '') {
+        if ('' != $blogName) {
             $blogid = getBlogIDFromName($blogName);
         }
 
-        if (($blogName == '')
+        if (('' == $blogName)
             || ! $manager->existsBlogID($blogid)) { // use current blog
             $blogid = $b->getID();
         }
@@ -762,12 +762,12 @@ class COMMENTACTIONS extends BaseActions
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_' . $name)) {
             $plugin = & $manager->getPlugin('NP_' . $name);
-            if ($plugin != null) {
-                if ($value == "") {
+            if (null != $plugin) {
+                if ("" == $value) {
                     $condition = true;
                 } else {
                     list($name2, $value2) = explode('=', $value, 2);
-                    if ($value2 == "" && $plugin->getOption($name2) != 'no') {
+                    if ("" == $value2 && 'no' != $plugin->getOption($name2)) {
                         $condition = true;
                     } else {
                         if ($plugin->getOption($name2) == $value2) {
@@ -789,7 +789,7 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         $plugin = & $manager->getPlugin('NP_' . $name);
-        if (! $plugin) {
+        if ( ! $plugin) {
             return;
         }
 

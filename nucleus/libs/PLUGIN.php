@@ -134,10 +134,10 @@ class NucleusPlugin
      * @returns 1 if the feature is reported, 0 if not
      *
      * @param $feature
-     *            Name of the feature. See plugin documentation for more info
-     *            'HelpPage' -> if the plugin provides a helppage
-     *            'SqlApi'   -> if the plugin uses the complete sql_* api (must
-     *            also require nucleuscms 3.5)
+     *                  Name of the feature. See plugin documentation for more info
+     *                  'HelpPage' -> if the plugin provides a helppage
+     *                  'SqlApi'   -> if the plugin uses the complete sql_* api (must
+     *                  also require nucleuscms 3.5)
      */
     public function supportsFeature($feature)
     {
@@ -148,7 +148,7 @@ class NucleusPlugin
      * Report a list of plugin that is required to function
      *
      * @return array // an array of names of plugin, an empty array indicates no
-     *          dependency
+     *               dependency
      */
     public function getPluginDep()
     {
@@ -160,18 +160,18 @@ class NucleusPlugin
     /**
      * Creates a new option for this plugin
      *
-     * @param  string  $name
-     *        A string uniquely identifying your option. (max. length is 20
-     *        characters)
-     * @param  string $desc
-     *        A description that will show up in the nucleus admin area (max.
-     *        length: 255 characters)
-     * @param  string $type
-     *        Either 'text', 'yesno' or 'password'
-     *        This info is used when showing 'edit plugin options' screens
-     * @param  string $defValue
-     *        Initial value for the option (max. value length is 128
-     *        characters)
+     * @param string $name
+     *                         A string uniquely identifying your option. (max. length is 20
+     *                         characters)
+     * @param string $desc
+     *                         A description that will show up in the nucleus admin area (max.
+     *                         length: 255 characters)
+     * @param string $type
+     *                         Either 'text', 'yesno' or 'password'
+     *                         This info is used when showing 'edit plugin options' screens
+     * @param string $defValue
+     *                         Initial value for the option (max. value length is 128
+     *                         characters)
      */
     public function createOption($name, $desc, $type, $defValue = '', $typeExtras = '')
     {
@@ -326,9 +326,9 @@ class NucleusPlugin
 
         // only request the options the very first time. On subsequent requests
         // the static collection is used to save SQL queries.
-        if ($this->plugin_options == 0) {
+        if (0 == $this->plugin_options) {
             $this->plugin_options = [];
-            $ph['opid']           = (int)$this->getID();
+            $ph['opid']           = (int) $this->getID();
             $sql                  = "SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value  FROM [@prefix@]plugin_option_desc d  LEFT JOIN [@prefix@]plugin_option o ON d.oid=o.oid AND o.ocontextid=0 WHERE d.opid=[@opid@] AND d.ocontext='global' AND o.ocontextid=0 group by d.oid";
             if ($res = sql_query(parseQuery($sql, $ph))) {
                 while ($row = sql_fetch_object($res)) {
@@ -456,7 +456,7 @@ class NucleusPlugin
     {
         global $DIR_PLUGINS;
 
-        if (!$path) {
+        if ( ! $path) {
             $path = $DIR_PLUGINS . get_class($this);
         }
 
@@ -568,13 +568,13 @@ class NucleusPlugin
             return $rs[$rkey];
         }
 
-        if (($sort !== 'desc') && ($sort !== 'asc')) {
+        if (('desc' !== $sort) && ('asc' !== $sort)) {
             $sort = 'desc';
         }
 
         $oid = $this->_getOID($context, $name);
 
-        $ph = ['oid' => $oid, 'amount' => (int)$amount, 'sort' => $sort];
+        $ph = ['oid' => $oid, 'amount' => (int) $amount, 'sort' => $sort];
 
         // retrieve the data and return
         $query = sql_query(parseQuery(
@@ -585,7 +585,7 @@ class NucleusPlugin
         $o = sql_fetch_array($query);
 
         if (($this->optionCanBeNumeric($o['otype']))
-            && ($o['oextra'] === 'number')
+            && ('number' === $o['oextra'])
         ) {
             $ph['orderby'] = 'CAST(ovalue AS SIGNED)';
         } else {
@@ -625,19 +625,19 @@ class NucleusPlugin
         }
 
         global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME, $CONF;
-        $name_max_len = ((int)$CONF['DatabaseVersion'] >= 380 ? 50 : 20);
-        if ((strlen($name) > $name_max_len) && ($DB_DRIVER_NAME !== 'sqlite')) {
+        $name_max_len = ((int) $CONF['DatabaseVersion'] >= 380 ? 50 : 20);
+        if ((strlen($name) > $name_max_len) && ('sqlite' !== $DB_DRIVER_NAME)) {
             $msg
                 = "Maximum number of characters exceeded : name : createOption[{$context}] {$name} ";
             SYSTEMLOG::addUnique('error', 'Error', $msg);
         }
 
         // create in plugin_option_desc
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
+        if ('pdo' === $DB_PHP_MODULE_NAME) {
             $sql = sprintf(
                 'INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,?,?,?,?,?,?)',
                 sql_table('plugin_option_desc'),
-                (int)$this->plugid
+                (int) $this->plugid
             );
             $params = [
                 $name,
@@ -652,7 +652,7 @@ class NucleusPlugin
             $query = sprintf(
                 "INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,'%s','%s','%s','%s','%s','%s')",
                 sql_table('plugin_option_desc'),
-                (int)$this->plugid,
+                (int) $this->plugid,
                 sql_real_escape_string($name),
                 sql_real_escape_string($context),
                 sql_real_escape_string($desc),
@@ -682,7 +682,7 @@ class NucleusPlugin
     public function _deleteOption($context, $name)
     {
         $oid = $this->_getOID($context, $name);
-        if (!$oid) {
+        if ( ! $oid) {
             return 0;
         } // no such option
 
@@ -717,34 +717,34 @@ class NucleusPlugin
         global $manager;
 
         $oid = $this->_getOID($context, $name);
-        if (!$oid) {
+        if ( ! $oid) {
             return 0;
         }
 
         // check if context id exists
         switch ($context) {
             case 'member':
-                if (!MEMBER::existsID($contextid)) {
+                if ( ! MEMBER::existsID($contextid)) {
                     return 0;
                 }
                 break;
             case 'blog':
-                if (!$manager->existsBlogID($contextid)) {
+                if ( ! $manager->existsBlogID($contextid)) {
                     return 0;
                 }
                 break;
             case 'category':
-                if (!$manager->existsCategory($contextid)) {
+                if ( ! $manager->existsCategory($contextid)) {
                     return 0;
                 }
                 break;
             case 'item':
-                if (!$manager->existsItem($contextid, true, true)) {
+                if ( ! $manager->existsItem($contextid, true, true)) {
                     return 0;
                 }
                 break;
             case 'global':
-                if ($contextid != 0) {
+                if (0 != $contextid) {
                     return 0;
                 }
                 break;
@@ -752,8 +752,8 @@ class NucleusPlugin
 
         // update plugin_option
         $ph               = [];
-        $ph['oid']        = (int)$oid;
-        $ph['ocontextid'] = (int)$contextid;
+        $ph['oid']        = (int) $oid;
+        $ph['ocontextid'] = (int) $contextid;
         $ph['ovalue']     = sql_real_escape_string($value);
         sql_query(parseQuery(
             "DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]",
@@ -790,7 +790,7 @@ class NucleusPlugin
         }
 
         $oid = $this->_getOID($context, $name);
-        if (!$oid) {
+        if ( ! $oid) {
             return '';
         }
 
@@ -802,17 +802,17 @@ class NucleusPlugin
 
         // get from DB
         $ph               = [];
-        $ph['oid']        = (int)$oid;
-        $ph['ocontextid'] = (int)$contextid;
+        $ph['oid']        = (int) $oid;
+        $ph['ocontextid'] = (int) $contextid;
         $has_ovalue       = sql_query(parseQuery(
             'SELECT ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]',
             $ph
         ));
-        $has_row = (int)parseQuickQuery(
+        $has_row = (int) parseQuickQuery(
             'SELECT count(*) FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@] LIMIT 1',
             $ph
         );
-        if (!$has_ovalue || ($has_row == 0)) {
+        if ( ! $has_ovalue || (0 == $has_row)) {
             $this->_aOptionValues[$key] = $this->_getDefVal($context, $name);
             // fill DB with default value
             $ph['defVal'] = sql_real_escape_string($this->_aOptionValues[$key]);
@@ -848,7 +848,7 @@ class NucleusPlugin
         }
 
         $oid = $this->_getOID($context, $name);
-        if (!$oid) {
+        if ( ! $oid) {
             $rs[$key] = [];
 
             return [];
@@ -863,7 +863,7 @@ class NucleusPlugin
             }
         }
 
-        $ph  = ['oid' => (int)$oid];
+        $ph  = ['oid' => (int) $oid];
         $res = sql_query(parseQuery(
             'SELECT ocontextid, ovalue FROM [@prefix@]plugin_option WHERE oid=[@oid@]',
             $ph
@@ -908,7 +908,7 @@ class NucleusPlugin
                 break;
         }
 
-        if (!$rs) {
+        if ( ! $rs) {
             return false;
         }
 
@@ -923,15 +923,15 @@ class NucleusPlugin
 
     final public function _getEventList()
     {
-        if ($this->event_list !== null) {
+        if (null !== $this->event_list) {
             return $this->event_list;
         }
         $this->event_list = [];
 
         $list = get_class_methods($this);
-        if (!empty($list)) {
+        if ( ! empty($list)) {
             foreach ($list as $name) {
-                if (strncmp($name, "event_", 6) == 0) {
+                if (0 == strncmp($name, "event_", 6)) {
                     $this->event_list[] = substr($name, 6);
                 }
             }
@@ -957,7 +957,7 @@ class NucleusPlugin
 
         // load all OIDs for this plugin from the database
         $this->_aOptionToInfo = [];
-        $ph                   = ['opid' => (int)$this->plugid];
+        $ph                   = ['opid' => (int) $this->plugid];
         $res                  = sql_query(parseQuery(
             'SELECT oid, oname, ocontext, odef FROM [@prefix@]plugin_option_desc WHERE opid=[@opid@]',
             $ph
@@ -1013,7 +1013,7 @@ class NucleusPlugin
         if (count($aOIDs) > 0) {
             $ph = [
                 'aOIDs'      => implode(',', $aOIDs),
-                'ocontextid' => (int)$contextid,
+                'ocontextid' => (int) $contextid,
             ];
             sql_query(parseQuery(
                 'DELETE FROM [@prefix@]plugin_option WHERE oid in ([@aOIDs@]) AND ocontextid=[@ocontextid@]',
@@ -1038,7 +1038,7 @@ class NucleusPlugin
         $tmpMeta = explode(';', $typeExtra);
         $meta    = [];
         foreach ($tmpMeta as $i => $iValue) {
-            if (($i == 0) && (!str_contains($tmpMeta[0], '='))) {
+            if ((0 == $i) && ( ! str_contains($tmpMeta[0], '='))) {
                 // we have the select-list
                 $meta['select'] = $tmpMeta[0];
             } else {
@@ -1090,13 +1090,13 @@ class NucleusPlugin
         }
         $d = array_diff($ev, $pl_event_list);
 
-        return !(count($d) > 0);
+        return ! (count($d) > 0);
     }
 
     /**
-     * @param $aOptions      : array ( 'oid' => array( 'contextid' => 'value'))
+     * @param $aOptions     : array ( 'oid' => array( 'contextid' => 'value'))
      *                       (taken from request using requestVar())
-     * @param $newContextid  : integer (accepts a contextid when it is for a
+     * @param $newContextid : integer (accepts a contextid when it is for a
      *                       new
      *                       contextid there was no id available at the moment
      *                       of writing the formcontrols into the page (by ex:
@@ -1107,13 +1107,13 @@ class NucleusPlugin
     public static function _applyPluginOptions(&$aOptions, $newContextid = 0)
     {
         global $manager;
-        if (!is_array($aOptions)) {
+        if ( ! is_array($aOptions)) {
             return;
         }
 
         foreach ($aOptions as $oid => $values) {
             // get option type info
-            $ph  = ['oid' => (int)$oid];
+            $ph  = ['oid' => (int) $oid];
             $res = sql_query(parseQuery(
                 'SELECT opid, oname, ocontext, otype, oextra, odef FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',
                 $ph
@@ -1127,16 +1127,16 @@ class NucleusPlugin
                     $meta = NucleusPlugin::getOptionMeta($o->oextra);
 
                     // if the option is readonly or hidden it may not be saved
-                    if (!array_key_exists(
+                    if ( ! array_key_exists(
                         'access',
                         $meta
                     )
-                        || (($meta['access'] !== 'readonly')
-                            && ($meta['access'] !== 'hidden'))
+                        || (('readonly' !== $meta['access'])
+                            && ('hidden' !== $meta['access']))
                     ) {
                         switch ($o->otype) {
                             case 'yesno':
-                                if (($value !== 'yes') && ($value !== 'no')) {
+                                if (('yes' !== $value) && ('no' !== $value)) {
                                     $value = 'no';
                                 }
                                 break;
@@ -1149,8 +1149,8 @@ class NucleusPlugin
                             'datatype',
                             $meta
                         )
-                            && ($meta['datatype'] === 'numerical')
-                            && (!is_numeric($value))
+                            && ('numerical' === $meta['datatype'])
+                            && ( ! is_numeric($value))
                         ) {
                             //the option must be numeric, but the it isn't
                             //use the default for this option
@@ -1158,7 +1158,7 @@ class NucleusPlugin
                         }
 
                         // decide wether we are using the contextid of newContextid
-                        if ($newContextid != 0) {
+                        if (0 != $newContextid) {
                             $contextid = $newContextid;
                         }
 
@@ -1174,7 +1174,7 @@ class NucleusPlugin
                         $manager->notify('PrePluginOptionsUpdate', $param);
 
                         // delete the old value for the option
-                        $ph['ocontextid'] = (int)$contextid;
+                        $ph['ocontextid'] = (int) $contextid;
                         $ph['value']      = sql_real_escape_string($value);
                         sql_query(parseQuery(
                             'DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]',
@@ -1252,16 +1252,16 @@ class NucleusPlugin
         $defValue,
         $typeExtras = ''
     ) {
-        $context    = (string)$context;
-        $name       = (string)$name;
-        $desc       = (string)$desc;
-        $type       = (string)$type;
-        $defValue   = (string)$defValue;
-        $typeExtras = (string)$typeExtras;
+        $context    = (string) $context;
+        $name       = (string) $name;
+        $desc       = (string) $desc;
+        $type       = (string) $type;
+        $defValue   = (string) $defValue;
+        $typeExtras = (string) $typeExtras;
 
         $e = $this->_existOptionDesc($context, $name);
         // create in plugin_option_desc
-        if (!$e) {
+        if ( ! $e) {
             return $this->_createOption(
                 $context,
                 $name,
@@ -1273,7 +1273,7 @@ class NucleusPlugin
         }
 
         global $DB_PHP_MODULE_NAME;
-        if ($DB_PHP_MODULE_NAME === 'pdo') {
+        if ('pdo' === $DB_PHP_MODULE_NAME) {
             $sql = parseQuery('UPDATE [@prefix@]plugin_option_desc')
                 . ' SET  odesc=? , otype=? , odef=? , oextra=? '
                 . ' WHERE opid=? AND ocontext=? AND oname=? ';
@@ -1282,7 +1282,7 @@ class NucleusPlugin
                 $type,
                 $defValue,
                 $typeExtras,
-                (int)$this->plugid,
+                (int) $this->plugid,
                 $context,
                 $name,
             ];
@@ -1300,7 +1300,7 @@ class NucleusPlugin
                 )
                 . sprintf(
                     ' WHERE opid=%d AND ocontext=%s AND oname=%s ',
-                    (int)$this->plugid,
+                    (int) $this->plugid,
                     sql_quote_string($context),
                     sql_quote_string($name)
                 );
@@ -1416,11 +1416,15 @@ class NucleusPlugin
 
     public function checkRemoteUpdate()
     {
+        global $CONF;
         $ret_val = ['result' => false, 'version' => '', 'download' => ''];
+        if (! isset($CONF['enable_remote_update']) || ! (bool) $CONF['enable_remote_update']) {
+            return $ret_val; // do nothing
+        }
         //        if (!function_exists('get_called_class'))
         //            return $ret_val;
         $NP_Name = get_class($this); // get_called_class();
-        if (!CoreCachedData::existTable()) {
+        if ( ! CoreCachedData::existTable()) {
             return $ret_val;
         }
 
@@ -1442,12 +1446,12 @@ class NucleusPlugin
             $col_name,
             $expired_time
         );
-        if (!empty($data) && !$data['expired']) {
+        if ( ! empty($data) && ! $data['expired']) {
             $use_cache = true;
             $ver2      = $data['value'];
         }
 
-        if (!$use_cache) {
+        if ( ! $use_cache) {
             // get latest
             $ver2 = $this->getRemoteVersion();
             if (empty($ver2)) {
@@ -1463,7 +1467,7 @@ class NucleusPlugin
             );
         }
 
-        if (empty($ver2) || $ver2 == '-') {
+        if (empty($ver2) || '-' == $ver2) {
             return $ret_val;
         }
         // compare version
