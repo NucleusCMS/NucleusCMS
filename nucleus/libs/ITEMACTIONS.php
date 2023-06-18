@@ -123,13 +123,13 @@ class ITEMACTIONS extends BaseActions
     public function setParser(&$parser)
     {
         unset($this->parser);
-        $this->parser = & $parser;
+        $this->parser = &$parser;
     }
 
     public function setCurrentItem(&$item)
     {
         unset($this->currentItem);
-        $this->currentItem = & $item;
+        $this->currentItem = &$item;
         global $currentitemid;
         if (is_array($this->currentItem)) {
             $currentitemid = $this->currentItem['itemid'];
@@ -141,12 +141,12 @@ class ITEMACTIONS extends BaseActions
     public function setBlog(&$blog)
     {
         unset($this->blog);
-        $this->blog = & $blog;
+        $this->blog = &$blog;
     }
 
     public function setTemplate($template)
     {
-        $this->template = & $template;
+        $this->template = &$template;
     }
 
     public function setShowComments($val)
@@ -319,7 +319,7 @@ class ITEMACTIONS extends BaseActions
         global $manager;
 
         // get karma object
-        $karma = & $manager->getKarma($this->currentItem->itemid);
+        $karma = &$manager->getKarma($this->currentItem->itemid);
 
         switch ($type) {
             case 'pos':
@@ -552,7 +552,7 @@ class ITEMACTIONS extends BaseActions
         /*if (!$manager->pluginInstalled('NP_' . $pluginName))
             return;*/
 
-        $plugin = & $manager->getPlugin('NP_' . $pluginName);
+        $plugin = &$manager->getPlugin('NP_' . $pluginName);
         if ( ! $plugin) {
             return;
         }
@@ -655,7 +655,7 @@ class ITEMACTIONS extends BaseActions
                 break;
             case 'itemblogsetting':
                 $b
-                           = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+                           = &$manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
                 $condition = ($b && ($b->getSetting($name) == $value));
                 break;
             case 'loggedin':
@@ -742,7 +742,7 @@ class ITEMACTIONS extends BaseActions
         global $member, $manager;
 
         $b
-            = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+            = &$manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
         if (('isadmin' != $name && 'name' != $name)
@@ -765,7 +765,7 @@ class ITEMACTIONS extends BaseActions
         if (('isadmin' == $name)) {
             $aid     = (int) $this->currentItem->authorid;
             $blogid  = (int) $b->getID();
-            $amember = & $manager->getMember($aid);
+            $amember = &$manager->getMember($aid);
             if ($amember->isAdmin()) {
                 return true;
             }
@@ -784,7 +784,7 @@ class ITEMACTIONS extends BaseActions
         global $catid, $manager;
 
         $b
-            = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+            = &$manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
         if (('catname' != $name && 'catid' != $name) || ('' == $value)) {
@@ -875,12 +875,12 @@ class ITEMACTIONS extends BaseActions
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_' . $name)) {
-            $plugin = & $manager->getPlugin('NP_' . $name);
+            $plugin = &$manager->getPlugin('NP_' . $name);
             if (null != $plugin) {
                 if ("" == $value) {
                     $condition = true;
                 } else {
-                    list($name2, $value2) = explode('=', $value, 2);
+                    [$name2, $value2] = explode('=', $value, 2);
                     if ("" == $value2 && 'no' != $plugin->getOption($name2)) {
                         $condition = true;
                     } else {
@@ -902,7 +902,7 @@ class ITEMACTIONS extends BaseActions
     {
         global $manager;
 
-        $plugin = & $manager->getPlugin('NP_' . $name);
+        $plugin = &$manager->getPlugin('NP_' . $name);
         if ( ! $plugin) {
             return;
         }

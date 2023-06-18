@@ -14,6 +14,12 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
+// prevent direct access
+if ( ! defined('NC_MTN_MODE')) {
+    header('Location: ./');
+    exit;
+}
+
 global $CONF;
 
 // [start] Reject a forked project database incompatible with Nucleus

@@ -155,14 +155,14 @@ class SKIN
         'error' => [
             'errormessage',
             'categorylist',
-        ]
+        ],
     ];
 
     /**
      * Constructor for a new SKIN object
      *
      * @param $id
-     *             id of the skin
+     *            id of the skin
      */
     public function __construct($id)
     {
@@ -276,7 +276,7 @@ class SKIN
         $name,
         $spartstype = 'specialpage'
     ) {
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $DB_DRIVER_NAME;
 
         $exp = '';
         if ('' !== $spartstype) {
@@ -292,23 +292,15 @@ class SKIN
             (int) $skinid
         ) . $exp;
 
-        if ('pdo' === $DB_PHP_MODULE_NAME) {
-            if (false !== stripos('sqlite', $DB_DRIVER_NAME)) {
-                $sql .= " AND lower(stype) = ?";
-            } else {
-                $sql .= " AND stype = ?";
-            }
+        if (false !== stripos('sqlite', $DB_DRIVER_NAME)) {
+            $sql .= " AND lower(stype) = ?";
         } else {
-            $sql .= " AND stype = " . sql_quote_string($name);
+            $sql .= " AND stype = ?";
         }
 
         $sql .= " LIMIT 1 ";
 
-        if ('pdo' === $DB_PHP_MODULE_NAME) {
-            $res = sql_prepare_execute($sql, [$name]);
-        } else {
-            $res = sql_query($sql);
-        }
+        $res = sql_prepare_execute($sql, [$name]);
 
         if ($res && ($o = sql_fetch_object($res))) {
             return ((int) $o->result > 0);
@@ -393,14 +385,10 @@ class SKIN
         sql_query(parseQuery(
             "INSERT INTO [@prefix@]skin_desc (sdname,sddesc,sdtype,sdincmode,sdincpref) VALUES ('[@sdname@]','[@sddesc@]','[@sdtype@]','[@sdincmode@]','[@sdincpref@]')",
             [
-                'sdname' => sql_real_escape_string($name)
-            ,
-                'sddesc' => sql_real_escape_string($desc)
-            ,
-                'sdtype' => sql_real_escape_string($type)
-            ,
-                'sdincmode' => sql_real_escape_string($includeMode)
-            ,
+                'sdname'    => sql_real_escape_string($name),
+                'sddesc'    => sql_real_escape_string($desc),
+                'sdtype'    => sql_real_escape_string($type),
+                'sdincmode' => sql_real_escape_string($includeMode),
                 'sdincpref' => sql_real_escape_string($includePrefix),
             ]
         ));
@@ -428,8 +416,7 @@ class SKIN
     {
         global $manager, $CONF, $skinid;
 
-        $spartstype = (isset($options['spartstype']) ? $options['spartstype']
-            : 'parts');
+        $spartstype = ($options['spartstype'] ?? 'parts');
 
         $notify_data = [
             'skin'      => &$this,
@@ -576,28 +563,16 @@ class SKIN
             sql_quote_string((string) $spartstype)
         ));
 
-        global $SQL_DBH;
         // write new thingie
         if (strlen($content) > 0) {
             $sql = sprintf(
                 "INSERT INTO %s(scontent, stype, sdesc, spartstype) VALUES",
                 sql_table('skin')
             );
-            if ( ! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-                $sql .= sprintf(
-                    "('%s', '%s', %d, '%s')",
-                    sql_real_escape_string($content),
-                    sql_real_escape_string($type),
-                    (int) $skinid,
-                    sql_real_escape_string($spartstype)
-                );
-                sql_query($sql);
-            } else {
-                sql_prepare_execute(
-                    $sql . '(?, ?, ?, ?)',
-                    [$content, $type, (int) $skinid, (string) $spartstype]
-                );
-            }
+            sql_prepare_execute(
+                $sql . '(?, ?, ?, ?)',
+                [$content, $type, (int) $skinid, (string) $spartstype]
+            );
         }
 
         global $resultCache, $manager;
@@ -664,9 +639,12 @@ class SKIN
         ];
 
         $query = sprintf(
-            "SELECT stype FROM %s WHERE stype NOT IN ('index','item','error','search','archive','archivelist','imagepopup','member') AND spartstype='parts'",
+            "SELECT stype FROM %s WHERE stype NOT IN ('index','item','error','search','archive','archivelist','imagepopup','member')",
             sql_table('skin')
         );
+        if (sql_existTableColumnName(sql_table('skin'), 'spartstype')) {
+            $query .= " AND spartstype='parts'";
+        }
         $res = sql_query($query);
         while ($row = sql_fetch_array($res)) {
             $skintypes[strtolower($row['stype'])] = $row['stype'];

@@ -29,7 +29,7 @@ function mysql_query($query, $dblink = null)
 {
     _mysql_add_admin_warnings(__FUNCTION__);
     global $SQL_DBH;
-    $o = ($dblink ? $dblink : $SQL_DBH);
+    $o = $dblink ?? $SQL_DBH;
     if ($o && is_object($o) && method_exists($o, 'query')) {
         return $o->query($query);
     }
@@ -41,7 +41,7 @@ function mysql_error($dblink = null)
 {
     _mysql_add_admin_warnings(__FUNCTION__);
     global $SQL_DBH;
-    $o = ($dblink ? $dblink : $SQL_DBH);
+    $o = $dblink ?? $SQL_DBH;
     if ($o && is_object($o) && method_exists($o, 'errorInfo ')) {
         $msg = $o->errorInfo();
         if ( ! empty($msg[2])) {

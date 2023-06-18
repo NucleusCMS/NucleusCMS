@@ -28,13 +28,18 @@ if ( ! isset($member) || ! $member->isAdmin()) {
     doError('Insufficient Permissions.');
 }
 
+if ( ! $member->isLoggedIn()) {
+    doError('You\'re not logged in.');
+}
+
 include_libs('PLUGINADMIN.php');
 
 // some functions
 
 function SE_unlockLogin($login)
 {
-    sql_query("DELETE FROM ".sql_table('plug_securityenforcer')." WHERE login=".sql_quote_string($login));
+    $sql = sprintf('DELETE FROM `%s` WHERE login=?', sql_table('plug_securityenforcer'));
+    sql_prepare_execute($sql, [$login]);
 }
 
 // checks
@@ -79,7 +84,8 @@ echo '<table>';
 echo '<tr><th>'._SECURITYENFORCER_ENTITY.'</th><th>'._SECURITYENFORCER_UNLOCK.'?</th></tr>';
 echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
 // do query to get all entries, loop
-$result = sql_query("SELECT * FROM ".sql_table("plug_securityenforcer")." WHERE fails >= ".$plug->max_failed_login);
+$sql    = sprintf("SELECT * FROM `%s` WHERE fails >= ? ", sql_table("plug_securityenforcer"));
+$result = sql_prepare_execute($sql, [$plug->max_failed_login]);
 $nums   = 0;
 if ($result) {
     while ($row = sql_fetch_assoc($result)) {

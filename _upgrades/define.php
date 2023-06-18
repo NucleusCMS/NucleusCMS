@@ -1,8 +1,20 @@
 <?php
 
-define('NUCLEUS_UPGRADE_VERSION', '3.80');  // (string) , format : dot separated
-define('NUCLEUS_UPGRADE_VERSION_ID', 380);    // (int)
-define('NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION', '5.5.0'); // (string) , format : dot separated
+define('NUCLEUS_UPGRADE_MAJOR_VERSION', 3);   // (int)
+define('NUCLEUS_UPGRADE_MINOR_VERSION', 8);   // (int)
+define('NUCLEUS_UPGRADE_RELEASE_VERSION', 0);   // (int)
+
+/*
+ * string Major.MinorRelease
+ */
+define('NUCLEUS_UPGRADE_VERSION', NUCLEUS_UPGRADE_MAJOR_VERSION.'.'.NUCLEUS_UPGRADE_MINOR_VERSION.NUCLEUS_UPGRADE_RELEASE_VERSION);
+
+/* int
+ * Major * 100 + Minor * 10 + Release
+*/
+define('NUCLEUS_UPGRADE_VERSION_ID', NUCLEUS_UPGRADE_MAJOR_VERSION * 100 + NUCLEUS_UPGRADE_MINOR_VERSION * 10 + NUCLEUS_UPGRADE_RELEASE_VERSION);
+
+define('NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION', '8.1.0'); // (string) , format : dot separated
 
 //define('UPGRADE_CHECK_PLUGIN_SYNTAX', 1); // plugin/*.php : php syntax check
 //define('UPGRADE_PHP_BIN_FOR_CHECK_SYNTAX', 'pathto/php');

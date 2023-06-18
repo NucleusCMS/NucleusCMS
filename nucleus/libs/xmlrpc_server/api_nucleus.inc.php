@@ -38,7 +38,7 @@ $f_nucleus_addItem_sig = [
         $xmlrpcString,    // extended part
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
         $xmlrpcBoolean,    // closed boolean (set to true to disable comments)
-    ]
+    ],
 ];
 $f_nucleus_addItem_doc = 'Adds a new item to the given blog. Adds it as a draft when publish is false';
 
@@ -56,8 +56,8 @@ $f_nucleus_addDatedItem_sig = [
         $xmlrpcString,    // extended part
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
         $xmlrpcBoolean,    // closed boolean (set to true to disable comments)
-        $xmlrpcInt    // item time (unix timestamp)
-    ]
+        $xmlrpcInt,    // item time (unix timestamp)
+    ],
 ];
 $f_nucleus_addDatedItem_doc = 'Adds a new item to the given blog. Adds it as a draft when publish is false. The timestamp of the item needs to be given as a Unix timestamp';
 
@@ -75,7 +75,7 @@ $f_nucleus_editItem_sig = [
         $xmlrpcString,    // extended part
         $xmlrpcBoolean,    // publish boolean (set to false if you want a draft to stay draft)
         $xmlrpcBoolean,    // closed boolean (set to true to disable comments)
-    ]
+    ],
 ];
 $f_nucleus_editItem_doc = "Edits an item of a blog";
 
@@ -87,7 +87,7 @@ $f_nucleus_getUsersBlogs_sig = [
         // params:
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    ]
+    ],
 ];
 $f_nucleus_getUsersBlogs_doc = 'Returns a list of all the blogs where the given member is on the team';
 
@@ -101,7 +101,7 @@ $f_nucleus_getRecentItems_sig = [
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcInt,    // amount of items to return (max = 20)
-    ]
+    ],
 ];
 $f_nucleus_getRecentItems_doc = "Returns a maximum of 20 recent items for a given webblog";
 
@@ -114,7 +114,7 @@ $f_nucleus_getItem_sig = [
         $xmlrpcString,    // itemid
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    ]
+    ],
 ];
 $f_nucleus_getItem_doc = "Returns an item";
 
@@ -127,7 +127,7 @@ $f_nucleus_deleteItem_sig = [
         $xmlrpcString,    // itemid
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    ]
+    ],
 ];
 $f_nucleus_deleteItem_doc = "Deletes an item";
 
@@ -140,44 +140,44 @@ $functionDefs = array_merge(
         'nucleus.addItem' => [
                 'function'  => 'f_nucleus_addItem',
                 'signature' => $f_nucleus_addItem_sig,
-                'docstring' => $f_nucleus_addItem_doc
+                'docstring' => $f_nucleus_addItem_doc,
             ],
 
         'nucleus.editItem' => [
                 'function'  => 'f_nucleus_editItem',
                 'signature' => $f_nucleus_editItem_sig,
-                'docstring' => $f_nucleus_editItem_doc
+                'docstring' => $f_nucleus_editItem_doc,
             ],
 
         "nucleus.addDatedItem" => [
                 'function'  => 'f_nucleus_addDatedItem',
                 'signature' => $f_nucleus_addDatedItem_sig,
-                'docstring' => $f_nucleus_addDatedItem_doc
+                'docstring' => $f_nucleus_addDatedItem_doc,
             ],
 
         'nucleus.deleteItem' => [
                 'function'  => 'f_nucleus_deleteItem',
                 'signature' => $f_nucleus_deleteItem_sig,
-                'docstring' => $f_nucleus_deleteItem_doc
+                'docstring' => $f_nucleus_deleteItem_doc,
             ],
 
         "nucleus.getUsersBlogs" => [
                 'function'  => 'f_nucleus_getUsersBlogs',
                 'signature' => $f_nucleus_getUsersBlogs_sig,
-                'docstring' => $f_nucleus_getUsersBlogs_doc
+                'docstring' => $f_nucleus_getUsersBlogs_doc,
             ],
 
         'nucleus.getRecentItems' => [
                 'function'  => 'f_nucleus_getRecentItems',
                 'signature' => $f_nucleus_getRecentItems_sig,
-                'docstring' => $f_nucleus_getRecentItems_doc
+                'docstring' => $f_nucleus_getRecentItems_doc,
             ],
 
         'nucleus.getItem' => [
                 'function'  => 'f_nucleus_getItem',
                 'signature' => $f_nucleus_getItem_sig,
-                'docstring' => $f_nucleus_getItem_doc
-            ]
+                'docstring' => $f_nucleus_getItem_doc,
+            ],
     ]
 );
 
@@ -246,7 +246,7 @@ function f_nucleus_editItem($m)
         return _error(6, "No such item ({$itemid})");
     }
 
-    $old      = & $manager->getItem($itemid, 1, 1);
+    $old      = &$manager->getItem($itemid, 1, 1);
     $wasdraft = ($old['draft']) ? 1 : 0;
 
     return _edititem(
@@ -373,7 +373,7 @@ function _getItem($itemid, $username, $password)
     // 3. return the item
     // Structure returned has dateCreated, userid, blogid and content
 
-    $item = & $manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
+    $item = &$manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
 
     $blog = new BLOG($blogid);
     if ($blog->convertBreaks()) {

@@ -27,13 +27,16 @@ try_define('_HTML_5_LANG_CODE', 'en');
 /********************************************
  *        Admin Links Settings                *
  ********************************************/
-try_define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
+try_define('_MANAGE_LINKS_ITEMS', '<li><a href="https://github.com/NucleusCMS?q=NP_&type=all&language=&sort=" title="Nucleus CMS Plugins (github)">Nucleus CMS Plugins</a></li>
+<!--
+<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
 <li><a href="http://nucleuscms.org/forum/" title="Nucleus CMS Support Forum">nucleuscms.org/forum/</a></li>
 <li><a href="http://nucleuscms.org/docs/" title="Nucleus CMS Documentation">nucleuscms.org/docs/</a></li>
 <li><a href="http://nucleuscms.org/wiki/" title="Nucleus CMS Wiki">nucleuscms.org/wiki/</a></li>
 <li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
 <li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS Plugins">nucleuscms.org/wiki/doku.php/plugin</a></li>
 <li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
+-->
 ');
 
 /********************************************
@@ -1532,3 +1535,5 @@ try_define('_ADMIN_TEXT_CONFLICT_DELETE_OLD_PLUGIN', 'There are mixed old-style 
 try_define('_ADMIN_TEXT_DOWNLOAD_PL_FOLDER', 'Download to plugin folder');
 try_define('_ADMIN_TEXT_REMOTE_AUTO_UPDATE', 'Download and auto-update');
 try_define('_ADMIN_TEXT_REMOTE_DOWNLOAD', 'Download from remote');
+try_define('_ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS', 'Update notifications and downloads');
+try_define('_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS', 'Don\'t use update notifications and downloads');

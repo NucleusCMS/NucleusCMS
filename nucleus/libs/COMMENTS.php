@@ -36,7 +36,7 @@ class COMMENTS
      * Creates a new COMMENTS object for the given blog and item
      *
      * @param $itemid
-     *                 id of the item
+     *                id of the item
      */
     public function __construct($itemid)
     {
@@ -47,12 +47,12 @@ class COMMENTS
      * Used when parsing comments
      *
      * @param $itemActions
-     *                      itemActions object, that will take care of the parsing
+     *                     itemActions object, that will take care of the parsing
      */
     public function setItemActions(&$itemActions)
     {
         unset($this->itemActions);
-        $this->itemActions = & $itemActions;
+        $this->itemActions = &$itemActions;
     }
 
     /**
@@ -167,7 +167,7 @@ class COMMENTS
 
         $blogid = getBlogIDFromItemID($this->itemid);
 
-        $settings = & $manager->getBlog($blogid);
+        $settings = &$manager->getBlog($blogid);
         $settings->readSettings();
 
         // begin if: comments disabled
@@ -321,7 +321,7 @@ class COMMENTS
             $mailto_msg .= _NOTIFY_COMMENT . "\n " . $comment['body'] . "\n";
             $mailto_msg .= getMailFooter();
 
-            $item         = & $manager->getItem($this->itemid, 0, 0);
+            $item         = &$manager->getItem($this->itemid, 0, 0);
             $mailto_title = _NOTIFY_NC_TITLE . ' ' . strip_tags($item['title'])
                             . ' (' . $this->itemid . ')';
 
@@ -391,7 +391,7 @@ class COMMENTS
         global $member, $manager;
 
         // check if there exists a item for this date
-        $item = & $manager->getItem($this->itemid, 0, 0);
+        $item = &$manager->getItem($this->itemid, 0, 0);
 
         if ( ! $item) {
             return _ERROR_NOSUCHITEM;

@@ -28,7 +28,7 @@ class ACTIONLOG
      */
     public static function add($level, $message)
     {
-        global $member, $CONF, $DB_PHP_MODULE_NAME;
+        global $member, $CONF;
 
         if ($CONF['LogLevel'] < $level) {
             return;
@@ -42,27 +42,16 @@ class ACTIONLOG
             'Y-m-d H:i:s',
             $_SERVER['REQUEST_TIME']
         );    // format timestamp
-        if ('pdo' === $DB_PHP_MODULE_NAME) {
-            sql_prepare_execute(
-                sprintf(
-                    'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)',
-                    sql_table('actionlog')
-                ),
-                [
-                    (string) $timestamp,
-                    (string) $message,
-                ]
-            );
-        } else {
-            $message = sql_quote_string($message);        // add slashes
-            $query   = sprintf(
-                "INSERT INTO `%s` (timestamp, message) VALUES ('%s', %s)",
-                sql_table('actionlog'),
-                $timestamp,
-                $message
-            );
-            sql_query($query);
-        }
+        sql_prepare_execute(
+            sprintf(
+                'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)',
+                sql_table('actionlog')
+            ),
+            [
+                (string) $timestamp,
+                (string) $message,
+            ]
+        );
 
         ACTIONLOG::trimLog();
     }
@@ -73,7 +62,7 @@ class ACTIONLOG
      */
     public static function addUnique($level, $message)
     {
-        global $member, $CONF, $DB_PHP_MODULE_NAME;
+        global $member, $CONF;
 
         if ($CONF['LogLevel'] < $level) {
             return;
@@ -84,20 +73,11 @@ class ACTIONLOG
             $msg = "[" . $member->getDisplayName() . "] " . $msg;
         }
 
-        if ('pdo' === $DB_PHP_MODULE_NAME) {
-            $query = sprintf(
-                "DELETE FROM `%s` WHERE message=?",
-                sql_table('actionlog')
-            );
-            sql_prepare_execute($query, [(string) $msg]);
-        } else {
-            $query = sprintf(
-                "DELETE FROM `%s` WHERE message=%s",
-                sql_table('actionlog'),
-                sql_quote_string($msg)
-            );
-            sql_query($query);
-        }
+        $query = sprintf(
+            "DELETE FROM `%s` WHERE message=?",
+            sql_table('actionlog')
+        );
+        sql_prepare_execute($query, [(string) $msg]);
 
         ACTIONLOG::add($level, $message);
     }

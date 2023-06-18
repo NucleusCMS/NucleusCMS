@@ -31,7 +31,7 @@ function startUpError($msg, $title)
     $ph['CHARSET']   = _CHARSET;
     $ph['title']     = hsc($title);
     $ph['msg']       = $msg;
-    sendContentType('text/html', '', _CHARSET);
+    sendContentTypeEx('text/html', ['http_code' => '503']);
     echo parseHtml($tpl, $ph);
     exit;
 }
@@ -197,7 +197,7 @@ function getCharSetFromDB($tableName, $columnName, $dbh = null)
     if ( ! str_contains($collation, '_')) {
         $charset = $collation;
     } else {
-        list($charset, $dummy) = explode('_', $collation, 2);
+        [$charset, $dummy] = explode('_', $collation, 2);
     }
 
     return $charset;
@@ -212,7 +212,7 @@ function getCollationFromDB($tableName, $columnName, $dbh = null)
             );
     $column = sql_fetch_object($columns);
 
-    return isset($column->Collation) ? $column->Collation : false;
+    return $column->Collation ?? false;
 }
 
 function is_sql_result($res)

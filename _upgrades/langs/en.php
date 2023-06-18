@@ -53,7 +53,6 @@ try_define('_UPG_TEXT_NOTE02',             'When upgrading from an older Nucleus
 
 
 try_define('_UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED', 'No automatic upgrades required! The database tables have already been updated to the latest version of Nucleus.');
-try_define('_UPG_TEXT_WARN_DEPRECATED_PHP4_STOP',    'Nucleus does not work with PHP4. It aborts the upgrade work, and whether we can use the PHP5 or more, check with your server administrator.');
 try_define('_UPG_TEXT_WARN_MINIMUM_PHP_STOP',        'Nucleus %s minimum requirement is PHP %s. It aborts the upgrade work, and whether we can use the PHP %s or more, check with your server administrator.');
 
 try_define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',        'Click here to upgrade the database to Nucleus v%s');
@@ -85,3 +84,5 @@ try_define('_UPG_TEXT_ATOM1_05', 'Nucleus 3.3 has become a CSS change of some fo
 try_define('_UPG_TEXT_ATOM1_06', 'Open the administrator screen, to open the "Import/Export" of skin in the management home. Select the default from there, please overwrite installation by pressing the read button.');
 try_define('_UPG_TEXT_ATOM1_07', 'If you have changed the default skins and templates, export the existing contents to a file (which is file is created that skinbackup.xml), /skins/default/skinbackup.xml is compared (this is a new file) and , we will update this new file. Then, please overwrite installation in the same way as described above from the administrator screen to open the "Import/Export" of skin.');
 
+try_define('_UPG_TEXT_COLLATION_CONVERT', 'Collation conversion');
+try_define('_UPG_TEXT_COLLATION_CONVERT_DESC', 'If you need collation conversion, click here');

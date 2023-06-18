@@ -69,9 +69,9 @@ class MEDIA
      * Returns an array of MEDIAOBJECT objects for a certain collection
      *
      * @param $collection
-     *                     name of the collection
+     *                    name of the collection
      * @param $filter
-     *                     filter on filename (defaults to none)
+     *                    filter on filename (defaults to none)
      */
     public static function getMediaListByCollection($collection, $filter = '')
     {
@@ -189,7 +189,7 @@ class MEDIA
            || ! @is_dir($mediadir)
         ) {
             return _ERROR_DISALLOWED;
-            //            return __ERROR.': '._SETTINGS_MEDIADIR;
+            //return __ERROR.': '._SETTINGS_MEDIADIR;
         }
         $DIR_MEDIA = $mediadir . '/';
 
@@ -212,8 +212,8 @@ class MEDIA
 
         // try to create new private media directories if needed
         if ( ! @is_dir($mediadir) && is_numeric($collection)) {
-            $oldumask = umask(0000);
-            if ( ! mkdir($mediadir, 0777) && ! is_dir($mediadir)) {
+            $oldumask = umask(0);
+            if ( ! mkdir($mediadir, 0o777) && ! is_dir($mediadir)) {
                 return _ERROR_BADPERMISSIONS;
             }
             umask($oldumask);
@@ -251,8 +251,8 @@ class MEDIA
         }
 
         // chmod uploaded file
-        $oldumask = umask(0000);
-        @chmod($mediadir . $filename, 0644);
+        $oldumask = umask(0);
+        @chmod($mediadir . $filename, 0o644);
         umask($oldumask);
 
         $param = [
@@ -269,12 +269,12 @@ class MEDIA
      * Adds an uploaded file to the media dir.
      *
      * @param $collection
-     *                     collection to use
+     *                    collection to use
      * @param $filename
-     *                     the filename that should be used to save the file as
-     *                     (date prefix should be already added here)
+     *                    the filename that should be used to save the file as
+     *                    (date prefix should be already added here)
      * @param &$data
-     *                     File data (binary)
+     *                    File data (binary)
      *
      * NOTE: does not check if $collection is valid.
      */
@@ -297,7 +297,7 @@ class MEDIA
            || ! @is_dir($mediadir)
         ) {
             return _ERROR_DISALLOWED;
-            //            return __ERROR.': '._SETTINGS_MEDIADIR;
+            //return __ERROR.': '._SETTINGS_MEDIADIR;
         }
 
         // create tmpdir
@@ -344,7 +344,7 @@ class MEDIA
             if (false !== $len && $len === strlen($data)) {
                 $res = self::addMediaObject($collection, $tmp_filename, $filename);
             }
-        } finally { // PHP[5.5-]  5.5\php -nr "try{}finally{}"
+        } finally {
             if (@is_file($tmp_filename)) {
                 @unlink($tmp_filename);
             }
@@ -427,10 +427,10 @@ class MEDIA
             if (false === $image_type) {
                 return false;
             }
-            //            if ($image_type == IMAGETYPE_JPEG) {
-            //                // IMAGETYPE_JPEG
-            //                // Todo: jpeg : remove exif GPS tag
-            //            }
+            //if ($image_type == IMAGETYPE_JPEG) {
+            //    // IMAGETYPE_JPEG
+            //    // Todo: jpeg : remove exif GPS tag
+            //}
         }
 
         return true;

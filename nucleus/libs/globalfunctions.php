@@ -16,7 +16,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if (version_compare(phpversion(), '7.0.0', '<') || 90000 <= PHP_VERSION_ID) {
+if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
     if ( ! headers_sent()) {
         header("HTTP/1.0 503 Service Unavailable");
         header("Cache-Control: no-cache, must-revalidate");
@@ -50,7 +50,7 @@ global $nucleus, $CONF, $manager, $member;
 
 //if(is_file(NC_CORE_PATH.'autoload.php')) include_once(NC_CORE_PATH.'autoload.php');
 
-define('HAS_CATCH_ERROR', version_compare('7.0.0', PHP_VERSION, '<='));
+define('HAS_CATCH_ERROR', true); // deprecated - HAS_CATCH_ERROR
 
 include_once(NC_LIBS_PATH . 'version.php');
 include_once(NC_LIBS_PATH . 'phpfunctions.php');
@@ -60,9 +60,12 @@ include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
 // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_NAME', 'Nucleus CMS');
 define('CORE_APPLICATION_VERSION', NUCLEUS_VERSION);
+define('CORE_APPLICATION_VERSION_DOT', NUCLEUS_VERSION_DOT);
 define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
+define('CORE_APPLICATION_VERSION_DISPLAY', CORE_APPLICATION_VERSION . ' (' . CORE_APPLICATION_VERSION_DOT . (empty(NUCLEUS_RELEASE_IDENTIFIER) ? '' : NUCLEUS_RELEASE_IDENTIFIER). ')');
 define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
-$nucleus['version']  = 'v' . NUCLEUS_VERSION;
+try_define('CORE_DEFAULT_LANGUAGE', 'ja');
+$nucleus['version']  = NUCLEUS_VERSION;
 $nucleus['codename'] = '';
 
 _setDefaultUa();
@@ -119,13 +122,9 @@ init_nucleus_compatibility_mysql_handler(); // compatible for mysql_handler glob
 global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
 // deprecated method
 // include core classes that are needed for login & plugin handling
+$DB_PHP_MODULE_NAME = 'pdo';
 if (('mysql' === $DB_DRIVER_NAME) && ! function_exists('mysql_query')) {
-    // For PHP 7
-    if ('pdo' === $DB_PHP_MODULE_NAME) {
-        include_once(NC_LIBS_PATH . 'sql/pdo_mysql_emulate.php');
-    } else {
-        include_once(NC_LIBS_PATH . 'sql/mysql_emulate.php');
-    }
+    include_once(NC_LIBS_PATH . 'sql/pdo_mysql_emulate.php');
 } else {
     // installer define this value.
     if ( ! defined('_EXT_MYSQL_EMULATE')) {
@@ -133,7 +132,7 @@ if (('mysql' === $DB_DRIVER_NAME) && ! function_exists('mysql_query')) {
     }
 }
 
-include_once(NC_LIBS_PATH . 'sql/' . $DB_PHP_MODULE_NAME . '.php');
+include_once(NC_LIBS_PATH . 'sql/pdo.php');
 include_once(NC_LIBS_PATH . 'MEMBER.php');
 include_once(NC_LIBS_PATH . 'ACTIONLOG.php');
 include_once(NC_LIBS_PATH . 'MANAGER.php');
@@ -141,7 +140,7 @@ include_once(NC_LIBS_PATH . 'PLUGIN.php');
 include_once(NC_LIBS_PATH . 'SYSTEMLOG.php');
 include_once(NC_LIBS_PATH . 'Utils.php');
 
-$manager = & MANAGER::instance();
+$manager = &MANAGER::instance();
 
 // only needed when updating logs
 if (confVar('UsingAdminArea')) {
@@ -171,6 +170,30 @@ register_shutdown_function('sql_disconnect');
 // read config
 getConfig();
 setUrlKeys();
+
+// check upgrade task
+if ( ! empty($CONF['DatabaseVersion']) &&
+    ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) &&
+    ( ! defined('NC_MTN_MODE') || empty(NC_MTN_MODE))
+) {
+    header("HTTP/1.1 503 Service Unavailable");
+    header("Cache-Control: no-cache, must-revalidate");
+    header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
+
+    //var_dump(NUCLEUS_VERSION, NUCLEUS_VERSION_ID, NUCLEUS_DATABASE_VERSION_ID, $CONF['DatabaseVersion']);
+    $message = "<h1>Under maintenance</h1><div></div>";
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
+        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
+    ) {
+        $message = "<h1>お知らせ</h1><div>ただいまサーバーのメンテナンスを実施しております。 ご不便をおかけいたしますが、再開まで今しばらくお待ちください。</div>";
+    }
+    if (empty($CONF['UsingAdminArea'])) {
+        if ( ! empty($CONF['DisableSite']) && ! empty($CONF['DisableSiteURL'])) {
+            redirect($CONF['DisableSite']);
+        }
+        exit($message);
+    }
+}
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
 if ( ! isset($CONF['Self'])) {
@@ -401,6 +424,22 @@ if (confVar('DisableSite') && ! $member->isAdmin()
         echo "<html><head><title>{$title}</title></head><body><h1>{$title}</h1>{$msg}</body></html>";
     }
     exit;
+}
+
+// check upgrade task
+if ( ! empty($CONF['DatabaseVersion']) &&
+    ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) &&
+    ( ! defined('NC_MTN_MODE') || empty(NC_MTN_MODE))
+) {
+    if ( ! empty($member) && $member->isLoggedIn()) {
+        if ($member->isAdmin()) {
+            $UpgradeURL = $CONF['AdminURL'] . '../_upgrades/';
+            //redirect($UpgradeURL);
+        } else {
+            redirect($CONF['AdminURL'] .'?action=logout');
+            exit();
+        }
+    }
 }
 
 $param = [];

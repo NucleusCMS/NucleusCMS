@@ -24,17 +24,11 @@
 </p>
 
 <ul>
-<!--
 	<li>
-		<strong>Nucleus v (? ?, )</strong>
+		<strong>Nucleus 3.80 (3.8.0)</strong> (pending)
 		<ul>
-		<li>NEW: </li>
-		</ul>
-	</li>
--->
-	<li>
-		<strong>Nucleus v3.80 dev [develop]</strong> (pending)
-		<ul>
+			<li>NEW: It is now necessary to set installation authentication for new installations.</li>
+			<li>CHANGE: Database: Remove connection via mysqli module driver</li>
 			<li>NEW: Add Database Optimization/Repair</li>
 			<li>NEW: Add member halt(account lock).<br />When you enable members will not be able to various operations, such as login and password issued.</li>
 			<li>NEW: Skin var if authorvisible</li>
@@ -49,7 +43,7 @@
 			<li>CHANGE: The length of the next column has been changed from 20 to 50 : nucleus_plugin_option.oname, nucleus_config.name</li>
 			<li>CHANGE: Installer: It has been changed to be able to use the ~@localhost in the e-mail address.</li>
 			<li>CHANGE: Split special skin into pages and parts..</li>
-			<li>CHANGE: Added try error handling so that execution will not be interrupted when an error occurs during plugin loading (PHP 7 and later only).</li>
+			<li>CHANGE: Added try error handling so that execution will not be interrupted when an error occurs during plugin loading.</li>
 			<li>CHANGE: Add $CONF['DisableRSS'] , enable or disable rss ( xml-rss2.php , rsd.php , atom.php )</li>
 			<li>CHANGE: <%NP_PluginName(parameters)%> has been added to skin / template variable</li>
 			<li>CHANGE: The getEventList function of plug-in class is no longer required.The event_* function of the plugin is acquired automatically by the _getEventList function of the parent class.</li>

@@ -34,7 +34,7 @@ $f_blogger_newPost_sig = [
         $xmlrpcString,    // content
         $xmlrpcBoolean,    // publish boolean (set to false to create draft)
 
-    ]
+    ],
 ];
 $f_blogger_newPost_doc = "Adds a new item to the given blog. Adds it as a draft when publish is false";
 function f_blogger_newPost($m)
@@ -66,7 +66,7 @@ $f_blogger_editPost_sig = [
         $xmlrpcString,    // content
         $xmlrpcBoolean,    // publish boolean (only considered when dealing with a draft)
 
-    ]
+    ],
 ];
 $f_blogger_editPost_doc = "Edits an item of a blog";
 function f_blogger_editPost($m)
@@ -87,7 +87,7 @@ function f_blogger_editPost($m)
     if ( ! $manager->existsItem($itemid, 1, 1)) {
         return _error(6, "No such item ({$itemid})");
     }
-    $old = & $manager->getItem($itemid, 1, 1);
+    $old = &$manager->getItem($itemid, 1, 1);
 
     $blogid = getBlogIDFromItemID($itemid);
 
@@ -125,7 +125,7 @@ $f_blogger_getUsersBlogs_sig = [
         $xmlrpcString,    // appkey (ignored)
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    ]
+    ],
 ];
 $f_blogger_getUsersBlogs_doc = "Returns a list of all the blogs where the given member is on the team";
 function f_blogger_getUsersBlogs($m)
@@ -148,7 +148,7 @@ $f_blogger_getRecentPosts_sig = [
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcInt,    // amount of items to return (max = 20)
-    ]
+    ],
 ];
 $f_blogger_getRecentPosts_doc = "Returns a maximum of 20 recent items";
 function f_blogger_getRecentPosts($m)
@@ -172,7 +172,7 @@ $f_blogger_getPost_sig = [
         $xmlrpcString,    // postid
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    ]
+    ],
 ];
 $f_blogger_getPost_doc = "Returns an item (only the item body!)";
 function f_blogger_getPost($m)
@@ -196,7 +196,7 @@ $f_blogger_deletePost_sig = [
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcBoolean,    // publish (ignored)
-    ]
+    ],
 ];
 $f_blogger_deletePost_doc = "Deletes an item";
 function f_blogger_deletePost($m)
@@ -220,7 +220,7 @@ $f_blogger_getTemplate_sig = [
         $xmlrpcString,    // username
         $xmlrpcString,    // password
         $xmlrpcString,    // type of template (main/archiveIndex)
-    ]
+    ],
 ];
 $f_blogger_getTemplate_doc = "Returns the required part of the default skin for the given blog";
 function f_blogger_getTemplate($m)
@@ -255,7 +255,7 @@ $f_blogger_setTemplate_sig = [
         $xmlrpcString,    // password
         $xmlrpcString,    // template contents
         $xmlrpcString,    // type of template (main/archiveIndex)
-    ]
+    ],
 ];
 $f_blogger_setTemplate_doc = "Changes a part of the default skin for the selected blog";
 function f_blogger_setTemplate($m)
@@ -288,7 +288,7 @@ $f_blogger_getUserInfo_sig = [
         $xmlrpcString,    // appkey (ignored)
         $xmlrpcString,    // username
         $xmlrpcString,    // password
-    ]
+    ],
 ];
 $f_blogger_getUserInfo_doc = "Returns info on the user";
 function f_blogger_getUserInfo($m)
@@ -387,7 +387,7 @@ function _getItemBlogger($itemid, $username, $password)
     // 3. return the item
     // Structure returned has dateCreated, userid, blogid and content
 
-    $item = & $manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
+    $item = &$manager->getItem($itemid, 1, 1); // (also allow drafts and future items)
     $blog = new BLOG($blogid);
 
     // get category
@@ -404,7 +404,7 @@ function _getItemBlogger($itemid, $username, $password)
         "dateCreated" => new xmlrpcval(iso8601_encode($item['timestamp']), "dateTime.iso8601"),
         "userid"      => new xmlrpcval($item['authorid'], "string"),
         "blogid"      => new xmlrpcval($blogid, "string"),
-        "content"     => new xmlrpcval($content, "string")
+        "content"     => new xmlrpcval($content, "string"),
     ], 'struct');
 
     return new xmlrpcresp($newstruct);
@@ -449,56 +449,56 @@ $functionDefs = array_merge(
         "blogger.getUsersBlogs" => [
                 "function"  => "f_blogger_getUsersBlogs",
                 "signature" => $f_blogger_getUsersBlogs_sig,
-                "docstring" => $f_blogger_getUsersBlogs_doc
+                "docstring" => $f_blogger_getUsersBlogs_doc,
             ],
 
         "blogger.newPost" => [
                 "function"  => "f_blogger_newPost",
                 "signature" => $f_blogger_newPost_sig,
-                "docstring" => $f_blogger_newPost_doc
+                "docstring" => $f_blogger_newPost_doc,
             ],
 
         "blogger.editPost" => [
                 "function"  => "f_blogger_editPost",
                 "signature" => $f_blogger_editPost_sig,
-                "docstring" => $f_blogger_editPost_doc
+                "docstring" => $f_blogger_editPost_doc,
             ],
 
         "blogger.deletePost" => [
                 "function"  => "f_blogger_deletePost",
                 "signature" => $f_blogger_deletePost_sig,
-                "docstring" => $f_blogger_deletePost_doc
+                "docstring" => $f_blogger_deletePost_doc,
             ],
 
         "blogger.getPost" => [
                 "function"  => "f_blogger_getPost",
                 "signature" => $f_blogger_getPost_sig,
-                "docstring" => $f_blogger_getPost_doc
+                "docstring" => $f_blogger_getPost_doc,
             ],
 
         "blogger.getRecentPosts" => [
                 "function"  => "f_blogger_getRecentPosts",
                 "signature" => $f_blogger_getRecentPosts_sig,
-                "docstring" => $f_blogger_getRecentPosts_doc
+                "docstring" => $f_blogger_getRecentPosts_doc,
             ],
 
         "blogger.getUserInfo" => [
                 "function"  => "f_blogger_getUserInfo",
                 "signature" => $f_blogger_getUserInfo_sig,
-                "docstring" => $f_blogger_getUserInfo_doc
+                "docstring" => $f_blogger_getUserInfo_doc,
             ],
 
         "blogger.getTemplate" => [
                 "function"  => "f_blogger_getTemplate",
                 "signature" => $f_blogger_getTemplate_sig,
-                "docstring" => $f_blogger_getTemplate_doc
+                "docstring" => $f_blogger_getTemplate_doc,
             ],
 
         "blogger.setTemplate" => [
                 "function"  => "f_blogger_setTemplate",
                 "signature" => $f_blogger_setTemplate_sig,
-                "docstring" => $f_blogger_setTemplate_doc
-            ]
+                "docstring" => $f_blogger_setTemplate_doc,
+            ],
 
     ]
 );

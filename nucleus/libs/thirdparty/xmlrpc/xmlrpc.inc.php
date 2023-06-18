@@ -66,7 +66,7 @@ $GLOBALS['xmlrpcTypes'] = [
     $GLOBALS['xmlrpcDateTime'] => 1,
     $GLOBALS['xmlrpcBase64']   => 1,
     $GLOBALS['xmlrpcArray']    => 2,
-    $GLOBALS['xmlrpcStruct']   => 3
+    $GLOBALS['xmlrpcStruct']   => 3,
 ];
 
 $GLOBALS['xmlrpc_valid_parents'] = [
@@ -88,7 +88,7 @@ $GLOBALS['xmlrpc_valid_parents'] = [
     'PARAMS'           => ['METHODCALL', 'METHODRESPONSE'],
     'FAULT'            => ['METHODRESPONSE'],
     'NIL'              => ['VALUE'], // only used when extension activated
-    'EX:NIL'           => ['VALUE'] // only used when extension activated
+    'EX:NIL'           => ['VALUE'], // only used when extension activated
 ];
 
 // define extra types for supporting NULL (useful for json or <NIL/>)
@@ -102,7 +102,7 @@ $GLOBALS['xmlEntities'] = [
     'quot' => '"',
     'lt'   => '<',
     'gt'   => '>',
-    'apos' => "'"
+    'apos' => "'",
 ];
 
 // tables used for transcoding different charsets into us-ascii xml
@@ -164,7 +164,7 @@ $GLOBALS['xmlrpcerr'] = [
 'decompress_fail'          => 104,
 'dechunk_fail'             => 105,
 'server_cannot_decompress' => 106,
-'server_decompress_fail'   => 107
+'server_decompress_fail'   => 107,
 ];
 
 $GLOBALS['xmlrpcstr'] = [
@@ -191,7 +191,7 @@ $GLOBALS['xmlrpcstr'] = [
 'decompress_fail'          => 'Received from server invalid compressed HTTP',
 'dechunk_fail'             => 'Received from server invalid chunked HTTP',
 'server_cannot_decompress' => 'Received from client compressed HTTP request and cannot decompress',
-'server_decompress_fail'   => 'Received from client invalid compressed HTTP request'
+'server_decompress_fail'   => 'Received from client invalid compressed HTTP request',
 ];
 
 // The charset encoding used by the server for received messages and
@@ -821,7 +821,7 @@ class xmlrpc_client
         if ('' == $server and '' == $port and '' == $method) {
             $parts  = parse_url($path);
             $server = $parts['host'];
-            $path   = isset($parts['path']) ? $parts['path'] : '';
+            $path   = $parts['path'] ?? '';
             if (isset($parts['query'])) {
                 $path .= '?'.$parts['query'];
             }
@@ -1497,7 +1497,7 @@ class xmlrpc_client
             }
         }
         // extra headers
-        $headers = ['Content-Type: ' . $msg->content_type , 'Accept-Charset: ' . implode(',', $this->accepted_charset_encodings)];
+        $headers = ['Content-Type: ' . $msg->content_type, 'Accept-Charset: ' . implode(',', $this->accepted_charset_encodings)];
         // if no keepalive is wanted, let the server know it in advance
         if ( ! $keepalive) {
             $headers[] = 'Connection: close';
@@ -3021,9 +3021,9 @@ function iso8601_encode($timet, $utc = 0)
 
 /**
 * Given an ISO8601 date string, return a timet in the localtime, or UTC
- * @param  string         $idate
- * @param  int            $utc   either 0 or 1
- * @return int (datetime)
+ * @param  string $idate
+ * @param  int    $utc   either 0 or 1
+ * @return int    (datetime)
 */
 function iso8601_decode($idate, $utc = 0)
 {
@@ -3113,13 +3113,13 @@ function php_xmlrpc_decode($xmlrpc_val, $options = [])
             if (in_array('decode_php_objs', $options) && '' != $xmlrpc_val->_php_class
                 && class_exists($xmlrpc_val->_php_class)) {
                 $obj = @new $xmlrpc_val->_php_class();
-                while (list($key, $value) = $xmlrpc_val->structeach()) {
+                while ([$key, $value] = $xmlrpc_val->structeach()) {
                     $obj->$key = php_xmlrpc_decode($value, $options);
                 }
                 return $obj;
             } else {
                 $arr = [];
-                while (list($key, $value) = $xmlrpc_val->structeach()) {
+                while ([$key, $value] = $xmlrpc_val->structeach()) {
                     $arr[$key] = php_xmlrpc_decode($value, $options);
                 }
                 return $arr;
@@ -3220,7 +3220,7 @@ function php_xmlrpc_encode($php_val, $options = [])
                 if (in_array('encode_php_objs', $options)) {
                     // let's save original class name into xmlrpcval:
                     // might be useful later on...
-                    $xmlrpc_val->_php_class = get_class($php_val);
+                    $xmlrpc_val->_php_class = $php_val::class;
                 }
             }
             break;
@@ -3530,7 +3530,7 @@ function is_valid_charset($encoding, $validlist)
             'ISO-8859-5', 'ISO-8859-6', 'ISO-8859-7', 'ISO-8859-8',
             'ISO-8859-9', 'ISO-8859-10', 'ISO-8859-11', 'ISO-8859-12',
             'ISO-8859-13', 'ISO-8859-14', 'ISO-8859-15', 'UTF-8',
-            'EUC-JP', 'EUC-', 'EUC-KR', 'EUC-CN']
+            'EUC-JP', 'EUC-', 'EUC-KR', 'EUC-CN'],
     ];
     if (is_string($validlist)) {
         $validlist = explode(',', $validlist);

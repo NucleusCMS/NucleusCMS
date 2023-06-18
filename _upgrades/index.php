@@ -14,7 +14,9 @@
  *
  */
 
-if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+define('NC_MTN_MODE', 'upgrade');
+
+if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
@@ -48,7 +50,7 @@ if ('exec' === getVar('mode')) {
 if ( ! $member->isLoggedIn()) {
     $content = upgrade_showLogin('./');
 } elseif ( ! $member->isAdmin()) {
-    $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
+    $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN) . '<br >' . upgrade_showLogin('./');
 } elseif ( ! upgrade_checkinstall(300)) {
     $tpl                                     = file_get_contents('tpl/content_beforev2.tpl');
     $ph                                      = [];

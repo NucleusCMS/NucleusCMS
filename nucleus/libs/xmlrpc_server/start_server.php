@@ -251,7 +251,7 @@ function _getUsersBlogs($username, $password)
         $newstruct = new xmlrpcval([
             "url"      => new xmlrpcval($blogurl, "string"),
             "blogid"   => new xmlrpcval($obj->bnumber, "string"),
-            "blogName" => new xmlrpcval($obj->bname, "string")
+            "blogName" => new xmlrpcval($obj->bname, "string"),
         ], 'struct');
         array_push($structarray, $newstruct);
     }
@@ -276,7 +276,7 @@ function _getUserInfo($username, $password)
         "url"       => new xmlrpcval($mem->getURL(), "string"),
         "email"     => new xmlrpcval($mem->getEmail(), "string"),
         "lastname"  => new xmlrpcval("", "string"),
-        "firstname" => new xmlrpcval($mem->getRealName(), "string")
+        "firstname" => new xmlrpcval($mem->getRealName(), "string"),
     ], 'struct');
 
     return new xmlrpcresp($newstruct);

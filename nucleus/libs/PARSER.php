@@ -47,7 +47,7 @@ class PARSER
      *
      * @param $allowedActions array
      * @param $handler        class object with functions for each action
-     *                         (reference)
+     *                        (reference)
      * @param $delim          optional delimiter
      * @param $paramdelim     optional parameterdelimiter
      */
@@ -58,7 +58,7 @@ class PARSER
         $pdelim = ','
     ) {
         $this->actions = $allowedActions;
-        $this->handler = & $handler;
+        $this->handler = &$handler;
         $this->delim   = $delim;
         $this->pdelim  = $pdelim;
         $this->norestrictions
@@ -79,7 +79,7 @@ class PARSER
             return;
         }
 
-        list($left, $right) = explode(',', $this->delim);
+        [$left, $right] = explode(',', $this->delim);
 
         if ( ! str_contains($content, $left)) {
             echo $content;
@@ -93,7 +93,7 @@ class PARSER
                 echo $piece;
                 continue;
             }
-            list($action, $html) = explode($right, $piece, 2);
+            [$action, $html] = explode($right, $piece, 2);
             $this->doAction($action);
             echo preg_replace('@^\n@', '', $html);
         }
@@ -127,7 +127,7 @@ class PARSER
 
         // split into action name + arguments
         if (str_contains($action, '(')) {
-            list($action, $paramText) = explode('(', $action, 2);
+            [$action, $paramText] = explode('(', $action, 2);
             if (')' === substr($paramText, -1)) {
                 $paramText = substr($paramText, 0, -1);
             }
@@ -180,7 +180,7 @@ class PARSER
             ]
         )
                   && isset($params[0])) {
-            $default = isset($params[1]) ? $params[1] : '';
+            $default = $params[1] ?? '';
             echo hsc($actionlc($params[0], $default));
         } else {
             // redirect to plugin action if possible
@@ -195,46 +195,37 @@ class PARSER
             }
             if (in_array('plugin', $this->actions)
                 && $manager->pluginInstalled('NP_' . $action)) {
-                if ( ! HAS_CATCH_ERROR) {
+                try {
                     $this->doAction(sprintf(
                         'plugin(%s%s%s)',
                         $action,
                         $this->pdelim,
                         implode($this->pdelim, $params)
                     ));
-                } else {
-                    try {
-                        $this->doAction(sprintf(
-                            'plugin(%s%s%s)',
-                            $action,
-                            $this->pdelim,
-                            implode($this->pdelim, $params)
-                        ));
-                    } catch (Error $e) {
-                        global $member;
-                        if ($member && $member->isLoggedIn()
-                            && $member->isAdmin()) {
-                            $msg = sprintf(
-                                'php critical error in plugin(%s):[%s] Line:%d (%s) : ',
-                                'NP_' . $action,
-                                get_class($e),
-                                $e->getLine(),
-                                $e->getFile()
-                            );
-                            if (confVar('DebugVars')) {
-                                var_dump($e->getMessage());
-                            }
-                            SYSTEMLOG::addUnique(
-                                'error',
-                                'Error',
-                                $msg . $e->getMessage()
-                            );
-                            if ('ArgumentCountError' !== get_class($e)) {
-                                throw $e;
-                            }
-                        } else {
+                } catch (Error $e) {
+                    global $member;
+                    if ($member && $member->isLoggedIn()
+                        && $member->isAdmin()) {
+                        $msg = sprintf(
+                            'php critical error in plugin(%s):[%s] Line:%d (%s) : ',
+                            'NP_' . $action,
+                            $e::class,
+                            $e->getLine(),
+                            $e->getFile()
+                        );
+                        if (confVar('DebugVars')) {
+                            var_dump($e->getMessage());
+                        }
+                        SYSTEMLOG::addUnique(
+                            'error',
+                            'Error',
+                            $msg . $e->getMessage()
+                        );
+                        if ('ArgumentCountError' !== $e::class) {
                             throw $e;
                         }
+                    } else {
+                        throw $e;
                     }
                 }
             } elseif (confVar('DebugVars')) {
@@ -250,7 +241,7 @@ class PARSER
      * Set a property of the parser in the manager
      *
      * @param $property additional parser property (e.g. include prefix of the
-     *                   skin)
+     *                  skin)
      */
     public static function setProperty($property, $value)
     {

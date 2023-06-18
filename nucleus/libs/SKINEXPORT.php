@@ -87,8 +87,8 @@ class SKINEXPORT
      * Outputs the XML contents of the export file
      *
      * @param $setHeaders
-     *                     set to 0 if you don't want to send out headers
-     *                     (optional, default 1)
+     *                    set to 0 if you don't want to send out headers
+     *                    (optional, default 1)
      */
     public function export($setHeaders = 1)
     {

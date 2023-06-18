@@ -117,26 +117,6 @@
 
     </fieldset>
     </div>
-
-    <h1>{%_HEADER1_2%}</h1>
-    
-    {%_TEXT1_2%}
-    
-    <fieldset>
-        <legend>{%_TEXT1_2_TAB_HEAD%}</legend>
-        <table>
-            <tr>
-                <td>{%_TEXT1_2_TAB_FIELD1%}</td>
-                <td>
-                    <select name="charset" id="charset" tabindex="10000">
-                        <option value="utf8" selected>UTF-8</option>
-                        {%euc_option%}
-                        <option value="latin1" >ISO-8859-1</option>
-                    </select>
-                </td>
-            </tr>
-        </table>
-    </fieldset>
     
     <h1>{%_HEADER5%}</h1>
 

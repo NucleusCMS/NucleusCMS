@@ -98,8 +98,8 @@ CREATE TABLE `nucleus_comment` (
 ) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_config` (
-  `name`  varchar(50)  NOT NULL default '',
-  `value` varchar(128)          default NULL,
+  `name`  varchar(200)  NOT NULL default '',
+  `value` varchar(255)          default NULL,
   PRIMARY KEY  (`name`)
 ) ENGINE=MyISAM;
 
@@ -141,11 +141,13 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DebugVars',         '0'),
     ('DefaultListSize',   '10'),
     ('DisableRSS',        '1'),
+    ('ENABLE_PLUGIN_ADMIN_V1', '1'),
+    ('ENABLE_PLUGIN_UPDATE_CHECK', '1'),
     ('AdminCSS',          'contemporary_jp');
 
 CREATE TABLE `nucleus_item` (
   `inumber`   int(11)      NOT NULL auto_increment,
-  `ititle`    varchar(160) NOT NULL default '',
+  `ititle`    varchar(160) NOT NULL,
   `ibody`     mediumtext   NOT NULL,
   `imore`     mediumtext   NOT NULL,
   `iblog`     int(11)      NOT NULL default '0',
@@ -185,8 +187,10 @@ CREATE TABLE `nucleus_member` (
   `mautosave`  tinyint(2)   NOT NULL default '0',
   `mhalt`      tinyint(2)   NOT NULL default '0',
   `mhalt_reason`  varchar(100) NOT NULL default '',
+  `mtoken`     varchar(100)          default NULL,
   PRIMARY KEY         (`mnumber`),
-  UNIQUE  KEY `mname` (`mname`)
+  UNIQUE  KEY `mname` (`mname`),
+  INDEX `mhalt` (`mhalt`)
 ) ENGINE=MyISAM;
 
 INSERT INTO `nucleus_member` (
@@ -243,7 +247,7 @@ CREATE TABLE `nucleus_plugin_option` (
 CREATE TABLE `nucleus_plugin_option_desc` (
   `oid`      int(11)     NOT NULL auto_increment,
   `opid`     int(11)     NOT NULL default '0',
-  `oname`    varchar(50) NOT NULL default '',
+  `oname`    varchar(200) NOT NULL default '',
   `ocontext` varchar(20) NOT NULL default '',
   `odesc`    varchar(255)         default NULL,
   `otype`    varchar(20)          default NULL,
@@ -269,7 +273,7 @@ CREATE TABLE `nucleus_skin` (
   `stype`    varchar(20) NOT NULL default '',
   `scontent` text        NOT NULL,
   `spartstype`  varchar(20) NOT NULL default 'parts' ,
-  PRIMARY KEY  (`sdesc`,`stype`)
+  PRIMARY KEY  (`sdesc`,`stype`,`spartstype`)
 ) ENGINE=MyISAM;
 
 CREATE TABLE `nucleus_skin_desc` (
@@ -290,7 +294,7 @@ CREATE TABLE `nucleus_systemlog` (
   `subtype`        varchar(30)  NOT NULL default '',
   `mnumber`        varchar(30)  NOT NULL default '0',
   `timestamp_utc`  datetime     NOT NULL,
-  `message`        MEDIUMTEXT   NOT NULL,
+  `message`        MEDIUMTEXT   NOT NULL default '',
   `message_hash`   varchar(64)  NOT NULL,
   PRIMARY KEY  (`logyear`, `logid`),
   INDEX `logtype` (`logtype`)

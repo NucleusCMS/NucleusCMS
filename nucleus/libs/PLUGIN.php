@@ -21,15 +21,22 @@
 
 class NucleusPlugin
 {
-    public $is_db_sqlite = false;
-    public $is_db_mysql  = false;
-    public $plugin_dir_type;
-    public $plugin_admin_dir;
-    public $plugin_admin_url_prefix;
+    public bool $is_db_sqlite = false;
+    public bool $is_db_mysql  = false;
+    public int $plugin_dir_type;
+    public string $plugin_admin_dir;
+    public string $plugin_admin_url;
+    private string $_root_own_dir_path = '';
+    private string $_root_own_dir_url  = '';
 
     // these functions _have_ to be redefined in your plugin
 
     public function getName()
+    {
+        return get_class($this);
+    }
+
+    final public function getClassName()
     {
         return get_class($this);
     }
@@ -134,10 +141,10 @@ class NucleusPlugin
      * @returns 1 if the feature is reported, 0 if not
      *
      * @param $feature
-     *                  Name of the feature. See plugin documentation for more info
-     *                  'HelpPage' -> if the plugin provides a helppage
-     *                  'SqlApi'   -> if the plugin uses the complete sql_* api (must
-     *                  also require nucleuscms 3.5)
+     *                 Name of the feature. See plugin documentation for more info
+     *                 'HelpPage' -> if the plugin provides a helppage
+     *                 'SqlApi'   -> if the plugin uses the complete sql_* api (must
+     *                 also require nucleuscms 3.5)
      */
     public function supportsFeature($feature)
     {
@@ -418,7 +425,7 @@ class NucleusPlugin
      *
      * public
      */
-    public function getID()
+    final public function getID()
     {
         return $this->plugid;
     }
@@ -429,46 +436,21 @@ class NucleusPlugin
      *
      * public
      */
-    public function getAdminURL()
+    final public function getAdminURL()
     {
-        global $CONF, $manager, $DIR_PLUGINS;
+        global $manager;
 
+        // NOTE: MARKER_PLUGINS_PLUGINADMIN_FUEATURE
         if ($this->supportsFeature('pluginadmin')) {
-            return $manager->addTicketToUrl('index.php?plugid=' . $this->getID()
-                . '&action=pluginadmin');
+            $id = $this->getID();
+            return $manager->addTicketToUrl("index.php?plugid={$id}&action=pluginadmin");
         }
-        $dirPrefix = isset($this->plugin_admin_url_prefix)
-            ? $this->plugin_admin_url_prefix : '';
-        $path = $DIR_PLUGINS . $dirPrefix . get_class($this);
-        if (is_dir($path)) {
-            return $CONF['PluginURL'] . $dirPrefix . get_class($this) . '/';
-        }
-
-        return $CONF['PluginURL'] . $dirPrefix . $this->getShortName() . '/';
+        return $this->plugin_admin_url;
     }
 
-    public function getAdminDir()
+    final public function getAdminDir()
     {
-        return $this->getDirectory();
-    }
-
-    public function setDirectory($path = '')
-    {
-        global $DIR_PLUGINS;
-
-        if ( ! $path) {
-            $path = $DIR_PLUGINS . get_class($this);
-        }
-
-        if (is_dir($path)) {
-            $path = rtrim($path, '/') . '/';
-        } else {
-            $path = $this->getDirectory();
-        }
-
-        $this->plugin_admin_dir = $path;
-
-        return $path;
+        return $this->plugin_admin_dir;
     }
 
     /**
@@ -477,24 +459,40 @@ class NucleusPlugin
      *
      * public
      */
-    public function getDirectory()
+    final public function getDirectory(): string
     {
-        global $DIR_PLUGINS, $CONF;
-        if (isset($this->plugin_admin_dir)) {
-            return $this->plugin_admin_dir;
-        }
+        return $this->getAdminDir();
+    }
 
-        $path = $CONF['PluginURL'] . get_class($this);
-        if (is_dir($path)) {
-            return $path . '/';
+    public function setRootOwnDirPath($abs_path)
+    {
+        if ('' === $this->_root_own_dir_path) {
+            $this->_root_own_dir_path = $abs_path;
         }
+    }
 
-        $path = $path . '/' . $this->getShortName();
-        if (is_dir($path)) {
-            return $path . '/';
+    public function setRootOwnDirURL($url)
+    {
+        if ('' === $this->_root_own_dir_url) {
+            $this->_root_own_dir_url = $url;
         }
+    }
 
-        return $DIR_PLUGINS . $this->getShortName() . '/';
+    public function getRootOwnDirPath()
+    {
+        global $DIR_PLUGINS;
+        if ('' === $this->_root_own_dir_path) {
+            $this->_root_own_dir_path = sprintf('%s/%s/', rtrim($DIR_PLUGINS, '/'), $this->getShortName());
+        }
+        return $this->_root_own_dir_path;
+    }
+
+    public function getRootOwnDirURL()
+    {
+        if ('' === $this->_root_own_dir_url) {
+            $this->_root_own_dir_url = sprintf('%s%s/', CONF::asStrWithPathSlash('PluginURL'), $this->getShortName());
+        }
+        return $this->_root_own_dir_url;
     }
 
     /**
@@ -503,9 +501,9 @@ class NucleusPlugin
      *
      * public
      */
-    public function getShortName()
+    final public function getShortName()
     {
-        return str_replace('np_', '', strtolower(get_class($this)));
+        return preg_replace('#^np_#', '', strtolower(get_class($this)));
     }
 
     /**
@@ -624,7 +622,7 @@ class NucleusPlugin
             return false;
         }
 
-        global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME, $CONF;
+        global $DB_DRIVER_NAME, $CONF;
         $name_max_len = ((int) $CONF['DatabaseVersion'] >= 380 ? 50 : 20);
         if ((strlen($name) > $name_max_len) && ('sqlite' !== $DB_DRIVER_NAME)) {
             $msg
@@ -633,35 +631,21 @@ class NucleusPlugin
         }
 
         // create in plugin_option_desc
-        if ('pdo' === $DB_PHP_MODULE_NAME) {
-            $sql = sprintf(
-                'INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,?,?,?,?,?,?)',
-                sql_table('plugin_option_desc'),
-                (int) $this->plugid
-            );
-            $params = [
-                $name,
-                $context,
-                $desc,
-                $type,
-                $defValue,
-                $typeExtras,
-            ];
-            sql_prepare_execute($sql, $params);
-        } else {
-            $query = sprintf(
-                "INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,'%s','%s','%s','%s','%s','%s')",
-                sql_table('plugin_option_desc'),
-                (int) $this->plugid,
-                sql_real_escape_string($name),
-                sql_real_escape_string($context),
-                sql_real_escape_string($desc),
-                sql_real_escape_string($type),
-                sql_real_escape_string($defValue),
-                sql_real_escape_string($typeExtras)
-            );
-            sql_query($query);
-        }
+        $sql = sprintf(
+            'INSERT INTO %s (opid,oname,ocontext,odesc,otype,odef,oextra) VALUES (%d,?,?,?,?,?,?)',
+            sql_table('plugin_option_desc'),
+            (int) $this->plugid
+        );
+        $params = [
+            $name,
+            $context,
+            $desc,
+            $type,
+            $defValue,
+            $typeExtras,
+        ];
+        sql_prepare_execute($sql, $params);
+
         $oid = sql_insert_id();
 
         $key                        = $context . '_' . $name;
@@ -751,18 +735,11 @@ class NucleusPlugin
         }
 
         // update plugin_option
-        $ph               = [];
-        $ph['oid']        = (int) $oid;
-        $ph['ocontextid'] = (int) $contextid;
-        $ph['ovalue']     = sql_real_escape_string($value);
-        sql_query(parseQuery(
-            "DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]",
-            $ph
-        ));
-        sql_query(parseQuery(
-            "INSERT INTO [@prefix@]plugin_option (ovalue, oid, ocontextid) VALUES ('[@ovalue@]', [@oid@], [@ocontextid@])",
-            $ph
-        ));
+        $sql = sprintf('DELETE FROM `%s` WHERE oid=:oid AND ocontextid=:ocontextid', sql_table('plugin_option'));
+        sql_prepare_execute($sql, [':oid' => (int) $oid, ':ocontextid' => (int) $contextid]);
+        $sql = sprintf('INSERT INTO `%s`', sql_table('plugin_option'))
+             . ' (ovalue, oid, ocontextid) VALUES (:ovalue, :oid, :ocontextid)';
+        sql_prepare_execute($sql, [':ovalue' => $value, ':oid' => (int) $oid, ':ocontextid' => (int) $contextid]);
 
         // update cache
         $this->_aOptionValues[$oid . '_' . $contextid] = $value;
@@ -838,7 +815,7 @@ class NucleusPlugin
      *
      * private
      */
-    public function _getAllOptions($context, $name)
+    private function _getAllOptions($context, $name)
     {
         $rs = &$this->data_getalloptions;
 
@@ -1000,25 +977,21 @@ class NucleusPlugin
         // delete all associated plugin options
         $aOIDs = [];
         // find ids
-        $ph  = ['ocontext' => sql_real_escape_string($context)];
-        $res = sql_query(parseQuery(
-            "SELECT oid FROM [@prefix@]plugin_option_desc WHERE ocontext='[@ocontext@]'",
-            $ph
-        ));
-        while ($o = sql_fetch_object($res)) {
+        $sql = sprintf(
+            'SELECT t1.oid FROM `%s` as t1, `%s` as t2',
+            sql_table('plugin_option_desc'),
+            sql_table('plugin_option')
+        )
+             . ' WHERE ocontext=? AND t1.oid=t2.oid AND t2.ocontextid=?';
+        $res = sql_prepare_execute($sql, [ $context, $contextid ]);
+        while ($res && ($o = sql_fetch_object($res))) {
             $aOIDs[] = $o->oid;
         }
         sql_free_result($res);
-        // delete those options. go go go
+        // delete those options.
         if (count($aOIDs) > 0) {
-            $ph = [
-                'aOIDs'      => implode(',', $aOIDs),
-                'ocontextid' => (int) $contextid,
-            ];
-            sql_query(parseQuery(
-                'DELETE FROM [@prefix@]plugin_option WHERE oid in ([@aOIDs@]) AND ocontextid=[@ocontextid@]',
-                $ph
-            ));
+            $query = 'DELETE FROM ' . sql_table('plugin_option') . ' WHERE oid in ('.implode(',', $aOIDs).') and ocontextid=' . (int) $contextid;
+            sql_query($query);
         }
     }
 
@@ -1075,12 +1048,9 @@ class NucleusPlugin
      */
     public function subscribtionListIsUptodate()
     {
-        $ph  = ['pid' => $this->getID()];
-        $res = sql_query(parseQuery(
-            'SELECT event FROM [@prefix@]plugin_event WHERE pid = [@pid@]',
-            $ph
-        ));
-        $ev = [];
+        $sql = sprintf('SELECT event FROM `%s` WHERE pid = ?', sql_table('plugin_event'));
+        $res = sql_prepare_execute($sql, [$this->getID()]);
+        $ev  = [];
         while ($a = sql_fetch_array($res)) {
             $ev[] = $a['event'];
         }
@@ -1089,18 +1059,21 @@ class NucleusPlugin
             return false;
         }
         $d = array_diff($ev, $pl_event_list);
-
-        return ! (count($d) > 0);
+        if (count($d) > 0) {
+            // there are differences so the db is not up-to-date
+            return false;
+        }
+        return true;
     }
 
     /**
      * @param $aOptions     : array ( 'oid' => array( 'contextid' => 'value'))
-     *                       (taken from request using requestVar())
+     *                      (taken from request using requestVar())
      * @param $newContextid : integer (accepts a contextid when it is for a
-     *                       new
-     *                       contextid there was no id available at the moment
-     *                       of writing the formcontrols into the page (by ex:
-     *                       itemOptions for new item)
+     *                      new
+     *                      contextid there was no id available at the moment
+     *                      of writing the formcontrols into the page (by ex:
+     *                      itemOptions for new item)
      *
      * @static
      */
@@ -1113,11 +1086,8 @@ class NucleusPlugin
 
         foreach ($aOptions as $oid => $values) {
             // get option type info
-            $ph  = ['oid' => (int) $oid];
-            $res = sql_query(parseQuery(
-                'SELECT opid, oname, ocontext, otype, oextra, odef FROM [@prefix@]plugin_option_desc WHERE oid=[@oid@]',
-                $ph
-            ));
+            $query = sprintf('SELECT opid, oname, ocontext, otype, oextra, odef FROM `%s`  WHERE oid=?', sql_table('plugin_option_desc'));
+            $res   = sql_prepare_execute($query, [(int) $oid]);
             if ($o = sql_fetch_object($res)) {
                 foreach ($values as $key => $value) {
                     // avoid overriding the key used by foreach statement
@@ -1174,16 +1144,13 @@ class NucleusPlugin
                         $manager->notify('PrePluginOptionsUpdate', $param);
 
                         // delete the old value for the option
-                        $ph['ocontextid'] = (int) $contextid;
-                        $ph['value']      = sql_real_escape_string($value);
-                        sql_query(parseQuery(
-                            'DELETE FROM [@prefix@]plugin_option WHERE oid=[@oid@] AND ocontextid=[@ocontextid@]',
-                            $ph
-                        ));
-                        sql_query(parseQuery(
-                            "INSERT INTO [@prefix@]plugin_option (oid, ocontextid, ovalue) VALUES ([@oid@],[@ocontextid@],'[@value@]')",
-                            $ph
-                        ));
+                        $sql = sprintf('DELETE FROM `%s`', sql_table('plugin_option'))
+                             . ' WHERE oid=? AND ocontextid=?';
+                        sql_prepare_execute($sql, [ (int) $oid, (int) $contextid ]);
+
+                        $sql = sprintf('INSERT INTO `%s`', sql_table('plugin_option'))
+                             . ' (oid, ocontextid, ovalue) VALUES (?, ?, ?)';
+                        sql_prepare_execute($sql, [ (int) $oid, (int) $contextid, $value ]);
                     }
                 }
             }
@@ -1219,32 +1186,32 @@ class NucleusPlugin
         //        return intval(quickQuery($sql)) > 0;
     }
 
-    public function existOptionDesc($name)
+    final public function existOptionDesc($name)
     {
         return $this->_existOptionDesc('global', $name);
     }
 
-    public function existBlogOptionDesc($name)
+    final public function existBlogOptionDesc($name)
     {
         return $this->_existOptionDesc('blog', $name);
     }
 
-    public function existCategoryOptionDesc($name)
+    final public function existCategoryOptionDesc($name)
     {
         return $this->_existOptionDesc('category', $name);
     }
 
-    public function existItemOptionDesc($name)
+    final public function existItemOptionDesc($name)
     {
         return $this->_existOptionDesc('item', $name);
     }
 
-    public function existMemberOptionDesc($name)
+    final public function existMemberOptionDesc($name)
     {
         return $this->_existOptionDesc('member', $name);
     }
 
-    public function _updateOptionDesc(
+    final public function _updateOptionDesc(
         $context,
         $name,
         $desc,
@@ -1272,40 +1239,13 @@ class NucleusPlugin
             );
         }
 
-        global $DB_PHP_MODULE_NAME;
-        if ('pdo' === $DB_PHP_MODULE_NAME) {
-            $sql = parseQuery('UPDATE [@prefix@]plugin_option_desc')
-                . ' SET  odesc=? , otype=? , odef=? , oextra=? '
-                . ' WHERE opid=? AND ocontext=? AND oname=? ';
-            $params = [
-                $desc,
-                $type,
-                $defValue,
-                $typeExtras,
-                (int) $this->plugid,
-                $context,
-                $name,
-            ];
-            $stmt = sql_prepare_execute($sql, $params);
-            //      trigger_error( implode(' : ', $stmt->errorInfo) );
-        } else {
-            $sql = 'UPDATE ' . sql_table('plugin_option_desc')
-                . ' SET '
-                . sprintf(
-                    ' odesc=%s , otype=%s , odef=%s , oextra=%s ',
-                    sql_quote_string($desc),
-                    sql_quote_string($type),
-                    sql_quote_string($defValue),
-                    sql_quote_string($typeExtras)
-                )
-                . sprintf(
-                    ' WHERE opid=%d AND ocontext=%s AND oname=%s ',
-                    (int) $this->plugid,
-                    sql_quote_string($context),
-                    sql_quote_string($name)
-                );
-            sql_query($sql);
-        }
+        $sql = sprintf('UPDATE `%s`', sql_table('plugin_option_desc'))
+               . ' SET '
+               . ' odesc=? , otype=? , odef=? , oextra=? '
+               . ' WHERE opid=? AND ocontext=? AND oname=? ' ;
+        $params = [ $desc, $type, $defValue, $typeExtras, (int) ($this->plugid), $context, $name];
+        $stmt   = sql_prepare_execute($sql, $params);
+        //      trigger_error( implode(' : ', $stmt->errorInfo) );
 
         $oid                        = $this->_getOID($context, $name);
         $key                        = $context . '_' . $name;
@@ -1317,7 +1257,7 @@ class NucleusPlugin
         return true;
     }
 
-    public function updateOptionDesc($name, $desc, $type, $defValue, $typeExtras = '')
+    final public function updateOptionDesc($name, $desc, $type, $defValue, $typeExtras = '')
     {
         return $this->_updateOptionDesc(
             'global',
@@ -1329,7 +1269,7 @@ class NucleusPlugin
         );
     }
 
-    public function updateBlogOptionDesc(
+    final public function updateBlogOptionDesc(
         $context,
         $name,
         $desc,
@@ -1347,7 +1287,7 @@ class NucleusPlugin
         );
     }
 
-    public function updateCategoryOptionDesc(
+    final public function updateCategoryOptionDesc(
         $context,
         $name,
         $desc,
@@ -1365,7 +1305,7 @@ class NucleusPlugin
         );
     }
 
-    public function updateItemOptionDesc(
+    final public function updateItemOptionDesc(
         $context,
         $name,
         $desc,
@@ -1383,7 +1323,7 @@ class NucleusPlugin
         );
     }
 
-    public function updateMemberOptionDesc(
+    final public function updateMemberOptionDesc(
         $context,
         $name,
         $desc,
@@ -1401,12 +1341,12 @@ class NucleusPlugin
         );
     }
 
-    public function getRemoteVersion()
+    final public function getRemoteVersion()
     {
         $NP_Name = get_class($this); // get_called_class();
         if (in_array(
             $NP_Name,
-            ['NP_SkinFiles', 'NP_SecurityEnforcer', 'NP_Text']
+            ['NP_SecurityEnforcer']
         )) {
             return false;
         }  // bundled plugins
@@ -1414,12 +1354,12 @@ class NucleusPlugin
         return ADMIN::getRemotePluginVersion($NP_Name, true);
     }
 
-    public function checkRemoteUpdate()
+    final public function checkRemoteUpdate()
     {
-        global $CONF;
         $ret_val = ['result' => false, 'version' => '', 'download' => ''];
-        if (! isset($CONF['enable_remote_update']) || ! (bool) $CONF['enable_remote_update']) {
-            return $ret_val; // do nothing
+        if ( ! CONF::asBool('ENABLE_PLUGIN_UPDATE_CHECK')) {
+            // Todo: Admin.php : Enable/Disable option
+            return $ret_val;
         }
         //        if (!function_exists('get_called_class'))
         //            return $ret_val;

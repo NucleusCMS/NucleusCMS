@@ -16,7 +16,7 @@ trait BaseGlobalVar
         if (defined('self::varname')) {
             $varname = constant('self::varname');
             if (isset($GLOBALS[$varname])) {
-                $res = & $GLOBALS[$varname];
+                $res = &$GLOBALS[$varname];
             }
         }
         return $res;
@@ -44,7 +44,7 @@ trait BaseGlobalVar
             return false;
         }
 
-        $VAR = & self::getGlobalVar();
+        $VAR = &self::getGlobalVar();
         if (empty($VAR) || ! is_array($VAR)) {
             return false;
         }
@@ -80,7 +80,7 @@ trait BaseGlobalVar
             return false;
         }
 
-        $VAR = & self::getGlobalVar();
+        $VAR = &self::getGlobalVar();
         if (empty($VAR) || ! is_array($VAR)) {
             return false;
         }
@@ -186,6 +186,11 @@ trait BaseGlobalVar
         return trim(self::valueAsString($name, $default));
     }
 
+    public static function asStrTrimedStriptags($name, $default = '')
+    {
+        return trim(strip_tags(self::valueAsString($name, $default)));
+    }
+
     public static function setValueWithPathSlash($name, $value)
     {
         $v = str_replace('\\', '/', trim($value));
@@ -205,27 +210,27 @@ class PostVar
 {
     use BaseGlobalVar;
 
-    const varname  = '_POST';
-    const casecmp  = false;
-    const readonly = true;
+    public const varname  = '_POST';
+    public const casecmp  = false;
+    public const readonly = true;
 }
 
 class GetVar
 {
     use BaseGlobalVar;
 
-    const varname  = '_GET';
-    const casecmp  = false;
-    const readonly = true;
+    public const varname  = '_GET';
+    public const casecmp  = false;
+    public const readonly = true;
 }
 
 class CONF
 {
     use BaseGlobalVar;
 
-    const varname  = 'CONF';
-    const casecmp  = true;
-    const readonly = false;
+    public const varname  = 'CONF';
+    public const casecmp  = true;
+    public const readonly = false;
 
     public static function setDbValue($name, $value)
     {

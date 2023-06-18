@@ -3,6 +3,7 @@
 namespace eftec\bladeone;
 
 use Redis;
+
 use function class_exists;
 use function file_put_contents;
 use function filemtime;

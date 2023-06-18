@@ -40,11 +40,6 @@ define('_TEXT_LANG_SELECT1_1',	'表示する言語を選択します。');
 
 /*   */
 
-define('_HEADER1_2',			'キャラクタセット');
-define('_TEXT1_2',				'使用するキャラクタセットを選択します。UTF-8を推奨します。');
-define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');
-define('_TEXT1_2_TAB_FIELD1',	'キャラクタセット');
-
 define('_ERROR1',				'使用中のPHPはMySQLをサポートしていません :(');
 define('_ERROR_NO_DBNAME',		'データベース名が見つかりません');
 define('_ERROR3',				'｢データベースプリフィックスを使用する｣が選択されていますが、プリフィックスが設定されていません。');

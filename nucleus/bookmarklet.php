@@ -91,7 +91,7 @@ function bm_doAddItem()
     }
 
     $blogid = getBlogIDFromItemID($result['itemid']);
-    $blog   = & $manager->getBlog($blogid);
+    $blog   = &$manager->getBlog($blogid);
 
     if ('newcategory' !== $result['status']) {
         bm_message(_ITEM_ADDED, _ITEM_ADDED, _ITEM_ADDED, '');
@@ -133,13 +133,13 @@ EOT;
             '<%_CONFIRMTXT_ITEM%>','<%_DELETE_CONFIRM_BTN%>',
             '<%ticket%>',
             '<%itemid%>',
-            '<%itemtitle%>'
+            '<%itemtitle%>',
         ],
         [
             _CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,
             $ticket,
             $itemid,
-            $title
+            $title,
         ],
         $msg
     );
@@ -179,10 +179,10 @@ function bm_doEditItem()
     // create new category if needed (only on edit/changedate)
     if (str_contains($catid, 'newcat')) {
         // get blogid
-        list($blogid) = sscanf($catid, "newcat-%d");
+        [$blogid] = sscanf($catid, "newcat-%d");
 
         // create
-        $blog  = & $manager->getBlog($blogid);
+        $blog  = &$manager->getBlog($blogid);
         $catid = $blog->createNewCategory();
 
         // show error when sth goes wrong
@@ -329,8 +329,8 @@ function bm_doEditForm()
         bm_doError(_ERROR_DISALLOWED);
     }
 
-    $item = & $manager->getItem($itemid, 1, 1);
-    $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
+    $item = &$manager->getItem($itemid, 1, 1);
+    $blog = &$manager->getBlog(getBlogIDFromItemID($itemid));
 
     $data = ['item' => &$item];
     $manager->notify('PrepareItemForEdit', $data);

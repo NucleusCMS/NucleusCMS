@@ -301,12 +301,9 @@ class NAVLIST extends ENCAPSULATE
     public static function getValidViewItemOption($name, $default = 'all')
     {
         $list = [
-            'all'
-        ,
-            'normal'
-        ,
-            'normal_term_future'
-        ,
+            'all',
+            'normal',
+            'normal_term_future',
             'draft',
         ];
         foreach ($list as $key) {
@@ -327,12 +324,9 @@ class NAVLIST extends ENCAPSULATE
     ) {
         global $CONF;
         $list = [
-            'all'
-        ,
-            'normal'
-        ,
-            'normal_term_future'
-        ,
+            'all',
+            'normal',
+            'normal_term_future',
             'draft',
         ];
         if ( ! in_array($in_value, $list)) {
@@ -410,8 +404,7 @@ class NAVLIST extends ENCAPSULATE
             $selected = ($key == $in_value ? ' selected' : '');
             $title    = '_LISTS_FORM_SELECT_ITEM_OPTION_' . strtoupper($key);
             $title    = hsc(defined($title) ? constant($title) : $key);
-            $title .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key])
-                ? $count_cached[$cachekey][$key] : 0));
+            $title .= sprintf(' (%d)', ($count_cached[$cachekey][$key] ?? 0));
             $s .= "\n\t\t" . sprintf(
                 '<option value="%s"%s>%s</option>',
                 $key,

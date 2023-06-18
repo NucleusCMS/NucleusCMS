@@ -29,8 +29,8 @@ if ( ! isset($member)) {
 $f_mt_supportedMethods_sig = [
     [
         // return type
-        $xmlrpcArray // array of strings
-    ]
+        $xmlrpcArray, // array of strings
+    ],
 ];
 $f_mt_supportedMethods_doc = 'returns an array of supported methods';
 
@@ -38,8 +38,8 @@ $f_mt_supportedMethods_doc = 'returns an array of supported methods';
 $f_mt_supportedTextFilters_sig = [
     [
         // return type
-        $xmlrpcArray    // array of structs
-    ]
+        $xmlrpcArray,    // array of structs
+    ],
 ];
 $f_mt_supportedTextFilters_doc = 'returns the supported text filters';
 
@@ -52,9 +52,9 @@ $f_mt_getCategoryList_sig = [
         // params
         $xmlrpcString,        // blogid
         $xmlrpcString,        // username
-        $xmlrpcString        // password
+        $xmlrpcString,        // password
 
-    ]
+    ],
 ];
 $f_mt_getCategoryList_doc = 'Returns a list of all categories defined in the weblog';
 
@@ -67,8 +67,8 @@ $f_mt_publishPost_sig = [
         // params
         $xmlrpcString,        // itemid
         $xmlrpcString,        // username
-        $xmlrpcString        // password
-    ]
+        $xmlrpcString,        // password
+    ],
 ];
 $f_mt_publishPost_doc = 'Transfers an item from the "draft" state to the "published" state. For items that were published earlier, does nothing.';
 
@@ -80,8 +80,8 @@ $f_mt_getPostCategories_sig = [
         // parameters
         $xmlrpcString,        // itemid
         $xmlrpcString,        // username
-        $xmlrpcString        // password
-    ]
+        $xmlrpcString,        // password
+    ],
 ];
 $f_mt_getPostCategories_doc = 'Returns a list of all categories to which the post is assigned.';
 
@@ -94,8 +94,8 @@ $f_mt_setPostCategories_sig = [
         $xmlrpcString,        // itemid
         $xmlrpcString,        // username
         $xmlrpcString,        // password
-        $xmlrpcArray        // categories
-    ]
+        $xmlrpcArray,        // categories
+    ],
 ];
 $f_mt_setPostCategories_doc = 'Sets the categories for a post. Only the primary category will be stored';
 
@@ -108,8 +108,8 @@ $f_mt_getRecentPostTitles_sig = [
         $xmlrpcString,        // blogid
         $xmlrpcString,        // userid
         $xmlrpcString,        // password,
-        $xmlrpcInt            // number of posts
-    ]
+        $xmlrpcInt,            // number of posts
+    ],
 ];
 $f_mt_getRecentPostTitles_doc = 'Returns a bandwidth-friendly list of the most recent posts in the system.';
 
@@ -119,8 +119,8 @@ $f_mt_getTrackbackPings_sig = [
         // return
         $xmlrpcArray,        // array of structs
         // params
-        $xmlrpcString        // postid
-    ]
+        $xmlrpcString,        // postid
+    ],
 ];
 $f_mt_getTrackbackPings_doc = '(this is currently just a placeholder. It returns an empty array.)';
 
@@ -130,50 +130,50 @@ $functionDefs = array_merge(
         "mt.supportedMethods" => [
                 "function"  => "f_mt_supportedMethods",
                 "signature" => $f_mt_supportedMethods_sig,
-                "docstring" => $f_mt_supportedMethods_doc
+                "docstring" => $f_mt_supportedMethods_doc,
             ],
 
         "mt.supportedTextFilters" => [
                 "function"  => "f_mt_supportedTextFilters",
                 "signature" => $f_mt_supportedTextFilters_sig,
-                "docstring" => $f_mt_supportedTextFilters_doc
+                "docstring" => $f_mt_supportedTextFilters_doc,
             ],
 
         "mt.getCategoryList" => [
                 "function"  => "f_mt_getCategoryList",
                 "signature" => $f_mt_getCategoryList_sig,
-                "docstring" => $f_mt_getCategoryList_doc
+                "docstring" => $f_mt_getCategoryList_doc,
             ],
 
         "mt.publishPost" => [
                 "function"  => "f_mt_publishPost",
                 "signature" => $f_mt_publishPost_sig,
-                "docstring" => $f_mt_publishPost_doc
+                "docstring" => $f_mt_publishPost_doc,
             ],
 
         "mt.getPostCategories" => [
                 "function"  => "f_mt_getPostCategories",
                 "signature" => $f_mt_getPostCategories_sig,
-                "docstring" => $f_mt_getPostCategories_doc
+                "docstring" => $f_mt_getPostCategories_doc,
             ],
 
         "mt.setPostCategories" => [
                 "function"  => "f_mt_setPostCategories",
                 "signature" => $f_mt_setPostCategories_sig,
-                "docstring" => $f_mt_setPostCategories_doc
+                "docstring" => $f_mt_setPostCategories_doc,
             ],
 
         "mt.getRecentPostTitles" => [
                 "function"  => "f_mt_getRecentPostTitles",
                 "signature" => $f_mt_getRecentPostTitles_sig,
-                "docstring" => $f_mt_getRecentPostTitles_doc
+                "docstring" => $f_mt_getRecentPostTitles_doc,
             ],
 
         "mt.getTrackbackPings" => [
                 "function"  => "f_mt_getTrackbackPings",
                 "signature" => $f_mt_getTrackbackPings_sig,
-                "docstring" => $f_mt_getTrackbackPings_doc
-            ]
+                "docstring" => $f_mt_getTrackbackPings_doc,
+            ],
     ]
 );
 
@@ -284,7 +284,7 @@ function f_mt_getTrackbackPings($m)
 
     $data = [
         'tb_id'      => $itemid,
-        'trackbacks' => & $trackbacks
+        'trackbacks' => &$trackbacks,
     ];
     $manager->notify('RetrieveTrackback', $data);
 
@@ -293,7 +293,7 @@ function f_mt_getTrackbackPings($m)
             [
                 "pingTitle" => new xmlrpcval($v['title'], "string"),
                 "pingURL"   => new xmlrpcval($v['url'], "string"),
-                "pingIP"    => new xmlrpcval($v['ip'], "string")
+                "pingIP"    => new xmlrpcval($v['ip'], "string"),
             ],
             'struct'
         );
@@ -324,7 +324,7 @@ function _mt_setPostCategories($itemid, $username, $password, $category)
         return _error(7, "Not allowed to alter item");
     }
 
-    $old = & $manager->getItem($itemid, 1, 1);
+    $old = &$manager->getItem($itemid, 1, 1);
 
     $catid = $blog->getCategoryIdFromName($category);
 
@@ -372,14 +372,14 @@ function _mt_getPostCategories($itemid, $username, $password)
         return _error(7, 'You are not allowed to request this information');
     }
 
-    $info    = & $manager->getItem($itemid, 1, 1);
+    $info    = &$manager->getItem($itemid, 1, 1);
     $catName = $blog->getCategoryName($info['catid']);
 
     $struct = new xmlrpcval(
         [
             'categoryId'   => new xmlrpcval($catName, 'string'),
             'categoryName' => new xmlrpcval($catName, 'string'),
-            'isPrimary'    => new xmlrpcval(1, 'boolean')
+            'isPrimary'    => new xmlrpcval(1, 'boolean'),
         ],
         'struct'
     );
@@ -398,7 +398,7 @@ function _mt_publishPost($itemid, $username, $password)
     // get item data
     $blogid = getBlogIDFromItemID($itemid);
     $blog   = new BLOG($blogid);
-    $old    = & $manager->getItem($itemid, 1, 1);
+    $old    = &$manager->getItem($itemid, 1, 1);
 
     return _edititem(
         $itemid,
@@ -444,7 +444,7 @@ function _mt_categoryList($blogid, $username, $password)
         $categorystruct[] = new xmlrpcval(
             [
                 "categoryName" => new xmlrpcval($obj->cname, "string"),
-                "categoryId"   => new xmlrpcval($obj->cname, "string")
+                "categoryId"   => new xmlrpcval($obj->cname, "string"),
             ],
             'struct'
         );
@@ -495,7 +495,7 @@ function _mt_getRecentPostTitles($blogid, $username, $password, $iAmount)
             "dateCreated" => new xmlrpcval(iso8601_encode(strtotime($row['itime'])), "dateTime.iso8601"),
             "postid"      => new xmlrpcval($row['inumber'], "string"),
             "title"       => new xmlrpcval($row['title'], "string"),
-            "userid"      => new xmlrpcval($row['iauthor'], "string")
+            "userid"      => new xmlrpcval($row['iauthor'], "string"),
         ], 'struct');
 
         array_push($structarray, $newstruct);

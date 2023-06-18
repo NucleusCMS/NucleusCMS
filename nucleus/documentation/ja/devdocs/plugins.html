@@ -2101,6 +2101,23 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <h1>データベース・テーブル<a id="tables" name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
+<h2>重要：テーブルへのアクセス</h2>
+<div>
+<p>データベースのアクセスがPDOドライバに変更されました。</p>
+<p>次のいずれかを利用してください。</p>
+<ul>
+	<li>PDOドライバーとしてアクセスする(推奨)<br />
+		接続中のPDOドライバーハンドルの取得方法は２種類あります。<br />
+		global $SQL_DBH;<br />
+		または<br />
+		＄dbh = sql_get_db();<br /></li>
+	<li>sql_*関数を利用する<br />
+	これは、既存コードのmysq_*関数からの移行の手間を減らすためものです。新しく書き始める場合は、PDOドライバー関数の利用を検討して下さい。</li>
+</ul>
+</div>
+<p>セキュリティ向上や動作速度を上げるために「疑問符プレースホルダ」「名前付けされたプレースホルダ」にパラメータをバインドするようにしてください。</p>
+
+
 <h2>Nucleusテーブルへのアクセス</h2>
 
 <p>sql_table('テーブル名')の他に、3.80から parseQuery関数を通して、[@prefix@]が利用できるようになりました。

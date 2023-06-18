@@ -83,18 +83,18 @@ class COMMENTACTIONS extends BaseActions
     public function setParser(&$parser)
     {
         unset($this->parser);
-        $this->parser = & $parser;
+        $this->parser = &$parser;
     }
 
     public function setCommentsObj(&$commentsObj)
     {
         unset($this->commentsObj);
-        $this->commentsObj = & $commentsObj;
+        $this->commentsObj = &$commentsObj;
     }
 
     public function setTemplate($template)
     {
-        $this->template = & $template;
+        $this->template = &$template;
     }
 
     public function setCurrentComment(&$comment)
@@ -103,10 +103,9 @@ class COMMENTACTIONS extends BaseActions
 
         // begin if: member comment
         if (0 != $comment['memberid']) {
-            $comment['authtext'] = (isset($this->template['COMMENTS_AUTH'])
-                ? $this->template['COMMENTS_AUTH'] : '');
+            $comment['authtext'] = ($this->template['COMMENTS_AUTH'] ?? '');
 
-            $mem             = & $manager->getMember($comment['memberid']);
+            $mem             = &$manager->getMember($comment['memberid']);
             $comment['user'] = $mem->getDisplayName();
 
             // begin if: member URL exists, set it as the userid
@@ -153,7 +152,7 @@ class COMMENTACTIONS extends BaseActions
             } // end if
         } // end if
 
-        $this->currentComment = & $comment;
+        $this->currentComment = &$comment;
         global $currentcommentid, $currentcommentarray;
         $currentcommentid    = $comment['commentid'];
         $currentcommentarray = $comment;
@@ -184,7 +183,7 @@ class COMMENTACTIONS extends BaseActions
     {
         global $manager;
         $blogid = getBlogIDFromItemID($this->commentsObj->itemid);
-        $blog   = & $manager->getBlog($blogid);
+        $blog   = &$manager->getBlog($blogid);
         echo $blog->getRealURL();
     }
 
@@ -218,11 +217,9 @@ class COMMENTACTIONS extends BaseActions
     public function parse_commentword()
     {
         if (1 == $this->commentsObj->commentcount) {
-            echo isset($this->template['COMMENTS_ONE'])
-                ? $this->template['COMMENTS_ONE'] : '';
+            echo $this->template['COMMENTS_ONE'] ?? '';
         } else {
-            echo isset($this->template['COMMENTS_MANY'])
-                ? $this->template['COMMENTS_MANY'] : '';
+            echo $this->template['COMMENTS_MANY'] ?? '';
         }
     }
 
@@ -366,7 +363,7 @@ class COMMENTACTIONS extends BaseActions
             return;
         }
 
-        $plugin = & $manager->getPlugin('NP_' . $pluginName);
+        $plugin = &$manager->getPlugin('NP_' . $pluginName);
         if ( ! $plugin) {
             return;
         }
@@ -398,7 +395,7 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         if ('realname' == $mode && $this->currentComment['memberid'] > 0) {
-            $member = & $manager->getMember($this->currentComment['memberid']);
+            $member = &$manager->getMember($this->currentComment['memberid']);
             echo hsc($member->getRealName());
         } else {
             echo hsc($this->currentComment['user']);
@@ -412,7 +409,7 @@ class COMMENTACTIONS extends BaseActions
     {
         global $manager;
         if ($this->currentComment['memberid'] > 0) {
-            $member = & $manager->getMember($this->currentComment['memberid']);
+            $member = &$manager->getMember($this->currentComment['memberid']);
 
             if ('' != $member->email) {
                 echo hsc($member->email);
@@ -520,7 +517,7 @@ class COMMENTACTIONS extends BaseActions
                 break;
             case 'itemblogsetting':
                 $b
-                           = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+                           = &$manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
                 $condition = ($b && ($b->getSetting($name) == $value));
                 break;
             case 'loggedin':
@@ -610,10 +607,10 @@ class COMMENTACTIONS extends BaseActions
             return false;
         }
 
-        $mem = & $manager->getMember($this->currentComment['memberid']);
+        $mem = &$manager->getMember($this->currentComment['memberid']);
         $b
-               = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-        $citem = & $manager->getItem($this->currentComment['itemid'], 1, 1);
+               = &$manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+        $citem = &$manager->getItem($this->currentComment['itemid'], 1, 1);
 
         // when no parameter is defined, just check if item author is current visitor
         if (('isadmin' != $name && 'name' != $name && 'isauthor' != $name
@@ -665,8 +662,8 @@ class COMMENTACTIONS extends BaseActions
         global $manager;
 
         $b
-                = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
-        $citem  = & $manager->getItem($this->currentComment['itemid'], 1, 1);
+                = &$manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+        $citem  = &$manager->getItem($this->currentComment['itemid'], 1, 1);
         $icatid = $citem['catid'];
 
         // when no parameter is defined, just check if a category is selected
@@ -698,7 +695,7 @@ class COMMENTACTIONS extends BaseActions
         global $member, $manager;
 
         $b
-            = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+            = &$manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
         // when no blog found
         if (('' == $blogName) && ( ! is_object($b))) {
@@ -726,7 +723,7 @@ class COMMENTACTIONS extends BaseActions
         global $member, $manager;
 
         $b
-            = & $manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
+            = &$manager->getBlog(getBlogIDFromItemID($this->currentComment['itemid']));
 
         // when no blog found
         if (('' == $blogName) && ( ! is_object($b))) {
@@ -761,12 +758,12 @@ class COMMENTACTIONS extends BaseActions
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_' . $name)) {
-            $plugin = & $manager->getPlugin('NP_' . $name);
+            $plugin = &$manager->getPlugin('NP_' . $name);
             if (null != $plugin) {
                 if ("" == $value) {
                     $condition = true;
                 } else {
-                    list($name2, $value2) = explode('=', $value, 2);
+                    [$name2, $value2] = explode('=', $value, 2);
                     if ("" == $value2 && 'no' != $plugin->getOption($name2)) {
                         $condition = true;
                     } else {
@@ -788,7 +785,7 @@ class COMMENTACTIONS extends BaseActions
     {
         global $manager;
 
-        $plugin = & $manager->getPlugin('NP_' . $name);
+        $plugin = &$manager->getPlugin('NP_' . $name);
         if ( ! $plugin) {
             return;
         }

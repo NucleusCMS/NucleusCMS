@@ -105,7 +105,7 @@ class BaseActions
         if ( ! $skin->isValid && ! is_file($file)) {
             return;
         }
-        $contents = ! str_contains($filename, '/')   ? $skin->getContent($filename) : false;
+        $contents = ! str_contains($filename, '/') ? $skin->getContent($filename) : false;
         if ( ! $contents) {
             if ( ! is_file($file)) {
                 return;
@@ -231,7 +231,7 @@ class BaseActions
      * Sets the search terms to be highlighted
      *
      * @param $highlight
-     *                    A series of search terms
+     *                   A series of search terms
      */
     public function setHighlight($highlight)
     {
@@ -245,7 +245,7 @@ class BaseActions
      * Applies the highlight to the given piece of text
      *
      * @param &$data
-     *                Data that needs to be highlighted
+     *               Data that needs to be highlighted
      *
      * @see setHighlight
      */

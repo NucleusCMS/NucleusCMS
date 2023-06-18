@@ -32,11 +32,11 @@ class BODYACTIONS extends BaseActions
      * Set the current item
      *
      * @param &$item
-     *                reference to the current item
+     *               reference to the current item
      */
     public function setCurrentItem(&$item)
     {
-        $this->currentItem = & $item;
+        $this->currentItem = &$item;
         global $currentitemid;
         $currentitemid = $this->currentItem->itemid;
     }
@@ -45,11 +45,11 @@ class BODYACTIONS extends BaseActions
      * Set the current template
      *
      * @param $template
-     *                   Template to be used
+     *                  Template to be used
      */
     public function setTemplate($template)
     {
-        $this->template = & $template;
+        $this->template = &$template;
     }
 
     /**
@@ -87,7 +87,7 @@ class BODYACTIONS extends BaseActions
             return;
         }*/
 
-        $plugin = & $manager->getPlugin('NP_' . $pluginName);
+        $plugin = &$manager->getPlugin('NP_' . $pluginName);
         if ( ! $plugin) {
             return;
         }
@@ -262,7 +262,7 @@ class BODYACTIONS extends BaseActions
                 break;
             case 'itemblogsetting':
                 $b
-                           = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+                           = &$manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
                 $condition = ($b && ($b->getSetting($name) == $value));
                 break;
             case 'loggedin':
@@ -349,7 +349,7 @@ class BODYACTIONS extends BaseActions
         global $member, $manager;
 
         $b
-            = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+            = &$manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if author is current visitor
         if (('isadmin' !== $name && 'name' !== $name)
@@ -372,7 +372,7 @@ class BODYACTIONS extends BaseActions
         if (('isadmin' === $name)) {
             $aid     = (int) $this->currentItem->authorid;
             $blogid  = (int) $b->getID();
-            $amember = & $manager->getMember($aid);
+            $amember = &$manager->getMember($aid);
             if ($amember->isAdmin()) {
                 return true;
             }
@@ -391,7 +391,7 @@ class BODYACTIONS extends BaseActions
         global $catid, $manager;
 
         $b
-            = & $manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
+            = &$manager->getBlog(getBlogIDFromItemID($this->currentItem->itemid));
 
         // when no parameter is defined, just check if a category is selected
         if (('catname' !== $name && 'catid' !== $name) || ('' == $value)) {
@@ -482,12 +482,12 @@ class BODYACTIONS extends BaseActions
         $condition = false;
         // (pluginInstalled method won't write a message in the actionlog on failure)
         if ($manager->pluginInstalled('NP_' . $name)) {
-            $plugin = & $manager->getPlugin('NP_' . $name);
+            $plugin = &$manager->getPlugin('NP_' . $name);
             if (null != $plugin) {
                 if ("" == $value) {
                     $condition = true;
                 } else {
-                    list($name2, $value2) = explode('=', $value, 2);
+                    [$name2, $value2] = explode('=', $value, 2);
                     if ("" == $value2 && 'no' != $plugin->getOption($name2)) {
                         $condition = true;
                     } else {
@@ -509,7 +509,7 @@ class BODYACTIONS extends BaseActions
     {
         global $manager;
 
-        $plugin = & $manager->getPlugin('NP_' . $name);
+        $plugin = &$manager->getPlugin('NP_' . $name);
         if ( ! $plugin) {
             return false;
         }

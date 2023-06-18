@@ -26,27 +26,23 @@ try_define('_HTML_5_LANG_CODE', 'ja');
  *        Admin Links Settings                *
  ********************************************/
 try_define('_MANAGE_LINKS_ITEMS', '<li>プラグイン<ul>
-    <li><a href="https://github.com/NucleusCMS?q=NP_&type=all&language=&sort=" title="Nucleus github">github.com/NucleusCMS プラグイン</a></li>
-    <li><a href="http://japan.nucleuscms.org/wiki/plugins" title="Nucleus CMS 日本 プラグイン japan.nucleuscms.org/wiki/plugins">[wiki] Nucleus CMS 日本 プラグイン</a></li>
+    <li><a href="https://github.com/NucleusCMS?q=NP_&type=all&language=&sort=" title="NucleusCMS プラグイン github.com/NucleusCMS">NucleusCMS プラグイン [github.com/NucleusCMS]</a></li>
+    <li><a href="http://japan.nucleuscms.org/wiki/plugins" title="Nucleus CMS 日本 プラグイン japan.nucleuscms.org/wiki/plugins">[wiki] Nucleus CMS プラグイン(日本語)</a></li>
 </ul></li>
-<li>ダウンロード<ul>
+<li>スキン<ul>
+    <li><a href="http://japan.nucleuscms.org/wiki/skins" title="Nucleus CMS 日本 スキン japan.nucleuscms.org/wiki/skins">[wiki] Nucleus CMS スキン(日本語)</a></li>
+    <li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">[wiki] Nucleus CMS スキン</a></li>
+</ul></li>
+<!--
+<li>アーカイブ(ダウンロード)<ul>
     <li><a href="http://japan.nucleuscms.org/download.php" title="Nucleus CMS 日本 japan.nucleuscms.org">Nucleus CMS 日本 最新版</a></li>
     <li><a href="https://github.com/NucleusCMS/NucleusCMS/tags" title="Nucleus CMS 過去のリリース">Nucleus CMS 過去のリリース</a></li>
 </ul></li>
-<li>スキン<ul>
-    <li><a href="http://japan.nucleuscms.org/wiki/skins" title="Nucleus CMS 日本 スキン japan.nucleuscms.org/wiki/skins">[wiki] Nucleus CMS 日本 スキン</a></li>
-</ul></li>
 <li>その他<ul>
-    <li><a href="http://japan.nucleuscms.org/forum/" title="サポートフォーラム japan.nucleuscms.org/forum/">Nucleus CMS 日本 サポートフォーラム</a></li>
-    <li><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki japan.nucleuscms.org/wiki/">[wiki] Nucleus CMS 日本 Wiki</a></li>
+    <li><a href="http://japan.nucleuscms.org/forum/" title="サポートフォーラム japan.nucleuscms.org/forum/">Nucleus CMS サポートフォーラム(日本語)</a></li>
+    <li><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki japan.nucleuscms.org/wiki/">[wiki] Nucleus CMS Wiki(日本語)</a></li>
 </ul></li>
-<li>英語サイト<ul>
-<li><a href="https://github.com/NucleusCMS" title="Nucleus github">github.com/NucleusCMS</a></li>
-<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
-<li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
-<li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS Plugins">[wiki] nucleuscms.org/wiki/doku.php/plugin</a></li>
-<li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
-</ul></li>
+-->
 ');
 
 /********************************************
@@ -102,6 +98,10 @@ try_define('_ADMIN_TEXT_CONFLICT_DELETE_OLD_PLUGIN', '古い形式のプラグ�
 try_define('_ADMIN_TEXT_DOWNLOAD_PL_FOLDER', 'プラグインフォルダへダウンロード');
 try_define('_ADMIN_TEXT_REMOTE_AUTO_UPDATE', 'ダウンロード自動更新する');
 try_define('_ADMIN_TEXT_REMOTE_DOWNLOAD', 'リモートからダウンロード');
+
+try_define('_ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS', '更新通知とダウンロード'); // Update notifications and downloads
+try_define('_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS', '更新通知とダウンロードは利用しない'); // Don't use update notifications and downloads
+
 
 /********************************************
  *        Start New for 3.80                *
@@ -218,8 +218,6 @@ try_define('_SYSTEMLOG_TITLE',       "システムログ");
 try_define('_SYSTEMLOG_CLEAR_TITLE', "システムログの消去");
 try_define('_SYSTEMLOG_CLEAR_TEXT',  "システムログを今すぐ消去");
 try_define('_MSG_SYSTEMLOGCLEARED',  "システムログが消去されました");
-
-try_define('ERROR_PASSWORD_INVALID_CHARACTERS',  'パスワードに使えない文字が含まれています');
 
 /********************************************
  *        Start New for 3.71                *

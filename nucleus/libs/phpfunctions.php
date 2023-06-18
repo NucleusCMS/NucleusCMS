@@ -5,14 +5,14 @@ if ( ! defined('_PHPFUNCTIONS_PHP_')) {
 }
 
 if ( ! function_exists('get_magic_quotes_gpc')) {  // removed function PHP[ - 7.4]
-    function get_magic_quotes_gpc()
+    function get_magic_quotes_gpc(): bool
     {
         return false;
     }
 }
 
-if ( ! function_exists('get_magic_quotes_runtime')) {
-    function get_magic_quotes_runtime()
+if ( ! function_exists('get_magic_quotes_runtime')) { // removed function
+    function get_magic_quotes_runtime(): bool
     {
         return false;
     }
@@ -33,9 +33,9 @@ if ( ! function_exists('each')) { // removed function PHP[ - 7.4]
 
 define('USER_FUNCTION_STRFTIME', ! function_exists('strftime'));
 if (USER_FUNCTION_STRFTIME) {
-    // strftime : deprecated PHP[8.1-] / removed? PHP9.0
+    // strftime : deprecated PHP[8.1-] / removed from PHP9.0 ?
     // strftime(string $format, ?int $timestamp = null): string|false
-    function strftime($format, $timestamp = null)
+    function strftime(string $format, ?int $timestamp = null): string|false
     {
         static $checked = false;
         if ( ! $checked && ! class_exists('Utils')) {
@@ -43,51 +43,5 @@ if (USER_FUNCTION_STRFTIME) {
             $checked = true;
         }
         return Utils::date_with_strftime_format($format, $timestamp);
-    }
-}
-
-if ( ! function_exists('str_contains')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c php_memnstr
-    // Note: This function returns true if the needle string is empty.
-    function str_contains($haystack, $needle)
-    {
-        return false !== strpos($haystack, $needle); // don't localize
-        // result = bool(true)  : php -nr "var_dump(str_contains('',''));"
-        // result = bool(true)  : php -nr "var_dump(str_contains('0',''));"
-        // result = bool(false) : php -nr "var_dump(str_contains('','0'));"
-        // result = bool(true)  : php -nr "$haystack='';$needle='';var_dump(strpos($haystack, $needle) !== false);"
-        // result = bool(true)  : php -nr "$haystack='0';$needle='';var_dump(strpos($haystack, $needle) !== false);"
-        // result = bool(false) : php -nr "$haystack='';$needle='0';var_dump(strpos($haystack, $needle) !== false);"
-    }
-}
-
-if ( ! function_exists('str_starts_with')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c zend_string_starts_with
-    // Note: This function returns true if the needle string is empty.
-    function str_starts_with($haystack, $needle)
-    {
-        return 0 === strncmp($haystack, $needle, strlen($needle)); // don't localize
-        // result = bool(true)  : php -nr "var_dump(str_starts_with('',''));"
-        // result = bool(true)  : php -nr "var_dump(str_starts_with('0',''));"
-        // result = bool(false) : php -nr "var_dump(str_starts_with('','0'));"
-        // result = bool(true)  : php -nr "var_dump(strncmp('','', 0) === 0);"
-        // result = bool(true)  : php -nr "var_dump(strncmp('0','', 0) === 0);"
-        // result = bool(false) : php -nr "var_dump(strncmp('','0', 1) === 0);"
-    }
-}
-
-if ( ! function_exists('str_ends_with')) {
-    // str_contains [PHP8 - ] : for PHP5, PHP7 / ext/standard/string.c if len , memcmp
-    // Note: This function returns true if the needle string is empty.
-    function str_ends_with($haystack, $needle)
-    {
-        if (strlen($needle) > strlen($haystack)) {
-            return false; // don't localize
-        }
-        return 0 === strlen($needle) || substr($haystack, -strlen($needle)) === $needle;
-        // result = bool(true)  : php -nr "var_dump(str_ends_with('',''));"
-        // result = bool(true)  : php -nr "var_dump(str_ends_with('0',''));"
-        // result = bool(true)  : php -nr "var_dump(str_ends_with('1',''));"
-        // result = bool(false) : php -nr "var_dump(str_ends_with('','0'));"
     }
 }

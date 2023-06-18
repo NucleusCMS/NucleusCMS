@@ -16,7 +16,7 @@ class entity
 
     private static function named_to_numeric_callback($matches)
     {
-        $m3 = isset($matches[3]) ? $matches[3] : '';
+        $m3 = $matches[3] ?? '';
         return self::_named($matches[1], $matches[2]) . $m3;
     }
 
@@ -48,8 +48,8 @@ class entity
 
     private static function normalize_numeric_callback2($matches)
     {
-        $m2 = isset($matches[2]) ? $matches[2] : '';
-        $m4 = isset($matches[4]) ? $matches[4] : '';
+        $m2 = $matches[2] ?? '';
+        $m4 = $matches[4] ?? '';
         return '&#x' . strtoupper($m2) . ';' . $m4;
     }
 
@@ -84,7 +84,7 @@ class entity
 
     private static function numeric_to_utf8_callback2($matches)
     {
-        $m4 = isset($matches[4]) ? $matches[4] : '';
+        $m4 = $matches[4] ?? '';
         return '&#x' . strtoupper($matches[2]) . ';' . $m4;
     }
 

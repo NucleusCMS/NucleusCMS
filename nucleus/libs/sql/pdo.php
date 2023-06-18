@@ -34,13 +34,12 @@ if ( ! function_exists('sql_fetch_assoc')) {
         $db_password = '',
         $db_name = ''
     ) {
-        global $CONF, $DB_DRIVER_NAME;
+        global $DB_DRIVER_NAME;
+
+        ini_set('default_charset', "UTF-8");
 
         if ( ! class_exists('PDO')) {
             exit('Critical error. pdo module is not loaded.');
-        }
-        if ( ! (defined('PDO::ATTR_SERVER_VERSION'))) {
-            exit('The php of server does not meet the execution minimum requirement.');
         }
 
         $supported_drivers = ['mysql','sqlite'];
@@ -53,13 +52,21 @@ if ( ! function_exists('sql_fetch_assoc')) {
             exit('Critical error: Invalid driver name. Check the config file.');
         }
 
+        $options = [
+             PDO::ATTR_ERRMODE          => PDO::ERRMODE_SILENT,
+             PDO::ATTR_EMULATE_PREPARES => false,
+        ];
+        if (isDebugMode() || ! defined('NUCLEUS_DEVELOP') || NUCLEUS_DEVELOP) {
+            $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
+        }
+
         try {
             if ( ! str_contains($db_host, ':')) {
                 $host    = $db_host;
                 $port    = '';
                 $portnum = '';
             } else {
-                list($host, $port) = explode(":", $db_host);
+                [$host, $port] = explode(":", $db_host);
                 if (isset($port)) {
                     $portnum = $port;
                     $port    = ';port=' . trim($port);
@@ -69,177 +76,78 @@ if ( ! function_exists('sql_fetch_assoc')) {
                 }
             }
 
-            if ('sybase' === $DB_DRIVER_NAME || 'dblib' === $DB_DRIVER_NAME) {
-                $DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ':' . (int) $portnum : '',
-                        $db_name
-                    ),
-                    $db_user,
-                    $db_password
-                );
-            } elseif ('mssql' === $DB_DRIVER_NAME) {
-                $DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ',' . (int) $portnum : '',
-                        $db_name
-                    ),
-                    $db_user,
-                    $db_password
-                );
-            } elseif ('oci' === $DB_DRIVER_NAME) {
-                $DBH = new PDO(
-                    sprintf(
-                        '%s:dbname=//%s%s/%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ':' . (int) $portnum : '',
-                        $db_name
-                    ),
-                    $db_user,
-                    $db_password
-                );
-            } elseif ('odbc' === $DB_DRIVER_NAME) {
-                $DBH = new PDO(
-                    sprintf(
-                        "%s:DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME=%s%s;DATABASE=%s;PROTOCOL=TCPIP;UID=%s;PWD=%s",
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ';PORT=' . (int) $portnum : '',
-                        $db_name,
-                        $db_user,
-                        $db_password
-                    )
-                );
-            } elseif ('pgsql' === $DB_DRIVER_NAME) {
-                $DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ';port=' . (int) $portnum : '',
-                        $db_name
-                    ),
-                    $db_user,
-                    $db_password
-                );
-            } elseif ('sqlite' === $DB_DRIVER_NAME) {  // sqlite3
-                ini_set('default_charset', "UTF-8");
-                if (version_compare(PHP_VERSION, '7.1.0', '<')) {
-                    $msg = 'Critical error: PHP 7.1 or higher is required.';
-                    startUpError($msg, 'Connect Error');
-                }
+            switch ($DB_DRIVER_NAME) {
+                case 'sqlite':
+                    if ( ! extension_loaded('PDO_SQLITE')) {
+                        $msg = 'Critical error: pdo_sqlite module is not loaded.';
+                        startUpError($msg, 'Connect Error');
+                    }
 
-                if ( ! extension_loaded('PDO_SQLITE')) {
-                    $msg = 'Critical error: pdo_sqlite module is not loaded.';
-                    startUpError($msg, 'Connect Error');
-                }
+                    // check file path
+                    $db_path = trim(dirname($db_name));
+                    if (
+                        (0 == strlen($db_path)) || ! is_dir($db_path)
+                        || ( ! str_contains(str_replace("\\", '/', $db_path), '/'))
+                    ) {
+                        exit('ERROR : database filename maybe wrong ');
+                    }
 
-                // check file path
-                $db_path = trim(dirname($db_name));
-                if (0 == strlen($db_path)
-                    ||
-                    ! is_dir($db_path)
-                    || ! str_contains(str_replace("\\", '/', $db_path), '/')
-                ) {
-                    exit('ERROR : database filename maybe wrong ');
-                }
-
-                $DBH = new PDO(
-                    sprintf(
+                    $dsn = sprintf(
                         '%s:%s',
                         $DB_DRIVER_NAME,
                         $db_name
-                    ),
-                    $db_user,
-                    $db_password
-                );
-                if ($DBH) {
-                    if ( ! class_exists('sqlite_functions')) {
-                        require_once(__DIR__ . '/sqlite_functions.php');
-                    } // __DIR__ : (php5.3-)
-                    sqlite_functions::pdo_register_user_functions($DBH);
-                    // $DBH->beginTransaction();
-                }
-            } elseif ('sqlite2' === $DB_DRIVER_NAME) {
-                // PDO::sqliteCreateFunction does not support SQLite2
-                //// trigger_error("Critical Error : sqlite2 driver is not suported. ", E_USER_ERROR);
-                $msg = '<p>a1 Error!: sqlite2 driver is not supportted.</p>';
-                startUpError($msg, 'Connect Error');
-            } else {
-                //mysql
-                $DBH = new PDO(
-                    sprintf(
+                    );
+                    $DBH = new PDO($dsn, $db_user, $db_password, $options);
+                    if ($DBH) {
+                        if ( ! class_exists('sqlite_functions')) {
+                            require_once(__DIR__ . '/sqlite_functions.php');
+                        }
+                        sqlite_functions::pdo_register_user_functions($DBH);
+                        // $DBH->beginTransaction();
+                    }
+                    break;
+                case 'mysql':
+                    //mysql
+                    $dsn = sprintf(
                         '%s:host=%s%s;dbname=%s',
                         $DB_DRIVER_NAME,
                         $host,
                         $port,
                         $db_name
-                    ),
-                    $db_user,
-                    $db_password
-                );
+                    );
+                    $DBH = new PDO($dsn, $db_user, $db_password, $options);
+                    break;
+                default:
+                    $msg = sprintf("<h1>Critical Error</h1><p>%s driver is not suported.</p>", escapeHTML($DB_DRIVER_NAME))
+                                . "<p>Please check whether there is misspelling. Supported are 'mysql', 'sqlite'.</p>";
+                    trigger_error($msg, E_USER_ERROR);
+                    break;
             }
 
             // for mysql
             if ($DBH && (0 === stripos($DB_DRIVER_NAME, 'mysql'))) {
-                if ($DBH && version_compare(PHP_VERSION, '5.2.0', '<')) {
-                    // HY000-2014 Cannot execute queries while other unbuffered queries are active.
-                    $DBH->setAttribute(
-                        PDO::MYSQL_ATTR_USE_BUFFERED_QUERY,
-                        true
-                    );
-                }
-                if (defined('_CHARSET')) {
-                    $charset = get_mysql_charset_from_php_charset(_CHARSET);
-                } else {
-                    $query = sprintf(
-                        "SELECT * FROM %s WHERE name='Language'",
-                        sql_table('config')
-                    );
-                    $res = sql_query($query, $DBH);
-                    if ( ! $res) {
-                        exit('Language name fetch error');
-                    }
-                    $obj         = sql_fetch_object($res);
-                    $Language    = $obj->value;
-                    $charset     = get_charname_from_langname($Language);
-                    $charsetOfDB = getCharSetFromDB(
-                        sql_table('config'),
-                        'name',
-                        $DBH
-                    );
-                    if ((false !== stripos($charset, 'utf'))
-                        && (false !== stripos($charsetOfDB, 'utf8'))) {
-                        $charset = $charsetOfDB;
-                    } // work around for utf8mb4_general_ci
+                $charset = 'utf8';
+                if (
+                    version_compare('5.5.0', sql_get_server_version($DBH), '<=')
+                    && sql_query("SHOW CHARACTER SET LIKE 'utf8mb4'")
+                ) {
+                    $charset = 'utf8mb4';
                 }
                 sql_set_charset($charset, $DBH);
                 fix_mysql_sqlmode($DBH);
             }
         } catch (PDOException $e) {
-            $DBH = null;
-            if (isDebugMode()) {
-                $msg = '<p>a1 Error!: ' . hsc($e->getMessage()) . '</p>';
-            } else {
-                $msg = '<p>a1 Error!: ';
-                $pattern
-                     = '/(Access denied for user|Unknown database|could not find driver)/i';
-                if (preg_match($pattern, $e->getMessage(), $m)) {
-                    $msg .= $m[1];
+            $DBH = $m = null;
+            $msg = '<b>Could not connect to database.</b>';
+            if (isDebugMode() || (defined('NC_MTN_MODE') && NC_MTN_MODE == 'install')) {
+                if (preg_match('#^(SQLSTATE[^\'\"]+[^:\'\"/]+)#', $e->getMessage(), $m)) {
+                    $msg .= sprintf("<br />%s\n", escapeHTML($m[1]));
                 }
-                $msg .= '</p>';
             }
-            startUpError($msg, 'Connect Error');
+            startUpError('<div>'. $msg . '</div>', 'Error');
+            exit;
         }
 
-        //echo '<hr />DBH: '.print_r($DBH,true).'<hr />';
         return $DBH;
     }
 
@@ -249,7 +157,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_connect()
     {
         global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
-        global $MYSQL_CONN, $SQL_DBH;
+        global $SQL_DBH;
 
         $SQL_DBH = sql_connect_args(
             $DB_HOST,
@@ -258,26 +166,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
             $DB_DATABASE
         );
         if ( ! $SQL_DBH) {
-            $title = 'Connect Error';
-            $msg   = '<p>Error : Database Connection</p>';
-            $msg .= sprintf(
-                '<br><p><a href="%s">%s</a></p>',
-                $_SERVER['REQUEST_URI'],
-                'URL'
-            );
-
+            $title = 'Error';
+            $msg   = '<div><b>Could not connect to database.</b></div>';
             startUpError($msg, $title);
             exit;
         }
-        //        echo '<hr />DBH: '.print_r($SQL_DBH,true).'<hr />';
-        unset($MYSQL_CONN);
-        if (7 * 10000 + 2 * 100 <= PHP_VERSION_ID) {
-            $MYSQL_CONN = $SQL_DBH; // PHP[5.x - 8.2]
-        } else {
-            $MYSQL_CONN = clone $SQL_DBH; // PHP[5.x - 7.1]
-            // PHP[7.2 - 8.2] Fatal error: Uncaught Error: Trying to clone an uncloneable object of class PDO
-        }
-
         return $SQL_DBH;
     }
 
@@ -304,31 +197,37 @@ if ( ! function_exists('sql_fetch_assoc')) {
         }
     }
 
-    function sql_connected()
+    /**
+     * return Database connection flag true or false
+     */
+    function sql_connected(): bool
     {
         global $SQL_DBH;
-
-        return is_object($SQL_DBH) ? true : false;
+        if (
+            ! isset($SQL_DBH) || ! $SQL_DBH
+            || ! is_object($SQL_DBH)
+            || ! ($SQL_DBH instanceof PDO)
+        ) {
+            return false;
+        }
+        return true;
     }
 
     /**
      * executes an SQL query
      */
-    function sql_query($query, $dbh = null)
+    function sql_query(?string $query, $dbh = null): PDOStatement|false
     {
-        global $CONF, $SQLCount, $SQL_DBH;
+        global $SQLCount, $SQL_DBH;
         $SQLCount++;
-        $debug = isDebugMode();
-        $db    = (null !== $dbh ? $dbh : $SQL_DBH);
-        if (is_array($query)) {
-            $query = implode("\n", $query);
+        $db = $dbh ?? $SQL_DBH;
+        if ( ! $db || ! is_object($db) || ! ($db instanceof PDO) || empty($query)) {
+            return false;
         }
-        if (is_object($db) && ($db instanceof PDO)) {
-            $res = $db->query($query);
-        } else {
-            $res = false;
-        }
-        if ( ! $debug) {
+
+        $res = $db->query($query);
+
+        if ( ! \isDebugMode()) {
             return $res;
         }
 
@@ -387,7 +286,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_error($dbh = null)
     {
         global $SQL_DBH;
-        $db = (null !== $dbh ? $dbh : $SQL_DBH);
+        $db = ($dbh ?? $SQL_DBH);
         if (is_object($db)) {
             $error = $db->errorInfo();
         } else {
@@ -402,149 +301,39 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     /**
      * executes an SQL db select
+     * @param  string $db_name database name
+     * @param  object $dbh     PDO object
+     * @return bool
      */
-    function sql_select_db($db, &$dbh = null)
+    function sql_select_db($db_name, &$dbh = null)
     {
-        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DRIVER_NAME;
-        global $CONF, $SQL_DBH;
-        //echo '<hr />'.print_r($dbh,true).'<hr />';
-        //exit;
-        if (null !== $dbh) {
-            if (false !== $dbh->exec(sprintf('USE `%s`', (string) $db))) {
-                return 1;
-            }
+        // Deprecated: unused in core
+        global $SQL_DBH, $DB_DRIVER_NAME;
 
-            return 0;
+        if ( ! is_object($dbh) && ! is_object($SQL_DBH)) {
+            return false;
         }
 
-        try {
-            $SQL_DBH           = null;
-            list($host, $port) = explode(':', $DB_HOST);
-            if (isset($port)) {
-                $portnum = $port;
-                $port    = ';port=' . trim($port);
-            } else {
-                $port    = '';
-                $portnum = '';
-            }
-            //$SQL_DBH = new PDO($DB_DRIVER_NAME.':host='.trim($host).$port.';dbname='.$db, $DB_USER, $DB_PASSWORD));
-            //$SQL_DBH = sql_connect();
-            if ('sybase' === $DB_DRIVER_NAME || 'dblib' === $DB_DRIVER_NAME) {
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ':' . (int) $portnum : '',
-                        $db
-                    ),
-                    $DB_USER,
-                    $DB_PASSWORD
-                );
-            } elseif ('mssql' === $DB_DRIVER_NAME) {
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ',' . (int) $portnum : '',
-                        $db
-                    ),
-                    $DB_USER,
-                    $DB_PASSWORD
-                );
-            } elseif ('oci' === $DB_DRIVER_NAME) {
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:dbname=//%s%s/%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ':' . (int) $portnum : '',
-                        $db
-                    ),
-                    $DB_USER,
-                    $DB_PASSWORD
-                );
-            } elseif ('odbc' === $DB_DRIVER_NAME) {
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:DRIVER={IBM DB2 ODBC DRIVER};HOSTNAME=%s%s;DATABASE=%s;PROTOCOL=TCPIP;UID=%s;PWD=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ';PORT=' . (int) $portnum : '',
-                        $db,
-                        $DB_USER,
-                        $DB_PASSWORD
-                    )
-                );
-            } elseif ('pgsql' === $DB_DRIVER_NAME) {
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        is_numeric($portnum) ? ';port=' . (int) $portnum : '',
-                        $db
-                    ),
-                    $DB_USER,
-                    $DB_PASSWORD
-                );
-            } elseif ('sqlite' === $DB_DRIVER_NAME) {
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:%s',
-                        $DB_DRIVER_NAME,
-                        $db
-                    ),
-                    $DB_USER,
-                    $DB_PASSWORD
-                );
-            } elseif ('sqlite2' === $DB_DRIVER_NAME) {
-                trigger_error(
-                    "Critical Error : sqlite2 driver is not suported. ",
-                    E_USER_ERROR
-                );
-            } else {
-                //mysql
-                $SQL_DBH = new PDO(
-                    sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        $port,
-                        $db
-                    ),
-                    $DB_USER,
-                    $DB_PASSWORD
-                );
-            }
-
-            return 1;
-        } catch (PDOException $e) {
-            if (isDebugMode()) {
-                $msg = '<p>a3 Error!: ' . $e->getMessage() . '</p>';
-            } else {
-                $msg = '<p>a3 Error!: ';
-                if (preg_match(
-                    '/(Access denied for user|Unknown database)/i',
-                    $e->getMessage(),
-                    $m
-                )) {
-                    $msg .= $m[1];
-                }
-                $msg .= '</p>';
-            }
-            startUpError($msg, 'Connect Error');
-
-            return 0;
+        if ('sqlite' === $DB_DRIVER_NAME) {
+            // Cannot allow its use as it can cause serious security issues. It involves changing the actual file.
+            return false;
         }
+
+        $sql = sprintf('USE %s', (string) sql_quote_identifier($db_name));
+        if (($dbh ?? $SQL_DBH)->exec($sql) !== false) {
+            return true;
+        }
+        return false;
     }
 
     /**
      * executes an SQL real escape
      */
-    function sql_real_escape_string($val, $dbh = null)
+    function sql_real_escape_string(?string $val, $dbh = null): string
     {
+        if (null === $val || '' === $val) {
+            return '';
+        }
         $s = sql_quote_string($val, $dbh);
 
         return (string) substr($s, 1, -1);
@@ -554,35 +343,25 @@ if ( ! function_exists('sql_fetch_assoc')) {
     /**
      * executes an PDO::quote() like escape, ie adds quotes arround the string and escapes chars as needed
      */
-    function sql_quote_string($val, $dbh = null)
+    function sql_quote_string(?string $val, $dbh = null): string
     {
         global $SQL_DBH;
-
-        if (null === $dbh) {
-            return $SQL_DBH->quote((string) $val);
-        }
-
-        return $dbh->quote($val);
+        return ($dbh ?? $SQL_DBH)?->quote((string) $val) ?? "''";
     }
 
     /**
      * executes an SQL insert id
      */
-    function sql_insert_id($dbh = null)
+    function sql_insert_id($dbh = null): string|false
     {
         global $SQL_DBH;
-
-        if (null === $dbh) {
-            return $SQL_DBH->lastInsertId();
-        }
-
-        return $dbh->lastInsertId();
+        return ($dbh ?? $SQL_DBH)?->lastInsertId() ?? false;
     }
 
     /**
      * executes an SQL result request
      */
-    function sql_result($res, $row = 0, $col = 0)
+    function sql_result($res, int $row = 0, int|string $col = 0)
     {
         if ((int) $row < 1) {
             $results = $res->fetch(PDO::FETCH_BOTH);
@@ -630,7 +409,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_affected_rows($res)
     {
-        return $res->rowCount();
+        return (int) ($res?->rowCount() ?? 0);
     }
 
     /**
@@ -638,19 +417,17 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_num_fields($res)
     {
-        return $res->columnCount();
+        return (int) ($res?->columnCount() ?? 0);
     }
 
     /**
      * fetches next row of SQL result as an associative array
+     *
+     * @return array / false : if there are no more rows.
      */
     function sql_fetch_assoc($res)
     {
-        if ( ! $res) {
-            return [];
-        }
-
-        return $res->fetch(PDO::FETCH_ASSOC);
+        return $res?->fetch(PDO::FETCH_ASSOC) ?? false;
     }
 
     /**
@@ -658,58 +435,51 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_array($res)
     {
-        if ( ! $res) {
-            return [];
-        }
-
-        return $res->fetch(PDO::FETCH_BOTH);
+        return $res?->fetch(PDO::FETCH_BOTH) ?? false;
     }
 
     /**
      * fetches next row of SQL result as an object
+     *
+     * @return object / false
      */
     function sql_fetch_object($res)
     {
-        if ( ! $res || ! is_object($res)) {
-            return null;
-        }
-
-        return $res->fetchObject();
+        return $res?->fetchObject() ?? false;
     }
 
     /**
      * Get a result row as an enumerated array
+     *
+     * @return array / false : if there are no more rows.
      */
     function sql_fetch_row($res)
     {
-        if ( ! $res) {
-            return [];
-        }
-
-        return $res->fetch(PDO::FETCH_NUM);
+        return ($res?->fetch(PDO::FETCH_NUM)) ?? false;
     }
 
+    /**
+     * @return array / false : if there are no more rows.
+     */
     function sql_fetch_column($res, $column_number = 0)
     {
-        if ( ! $res) {
-            return false;
-        }
-
-        return $res->fetchColumn($column_number);
+        return ($res?->fetchColumn($column_number)) ?? false;
     }
 
     /**
      * Get column information from a result and return as an object
+     *
+     * @return object / false
      */
     function sql_fetch_field($res, $offset = 0)
     {
         if (is_object($res) && ($res instanceof PDOStatement)) {
-            $results = $res->getColumnMeta($offset);
-            if (is_array($results) && count($results) > 0) {
-                return (object) $results;
+            $result = $res->getColumnMeta($offset);
+            if (is_array($result) && count($result) > 0) {
+                return (object) $result;
             }
         }
-        return null;
+        return false;
     }
 
     /**
@@ -721,7 +491,6 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if (null === $dbh) {
             return '';
         }
-
         return '';
     }
 
@@ -734,7 +503,6 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if (null === $dbh) {
             return '';
         }
-
         return '';
     }
 
@@ -776,24 +544,20 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if (count($items) > 0) {
             sort($items);
         }
-
         return $items;
     }
 
     /**
      * Returns the boolean value that column name of the table exist or not
      */
-    function sql_existTableColumnName(
-        $tablename,
-        $ColumnName,
-        $casesensitive = false
-    ) {
+    function sql_existTableColumnName($tablename, $ColumnName, $casesensitive = false): bool
+    {
         if ( ! is_string($tablename) || '' === $tablename) {
             return false;
         }
         $names = sql_getTableColumnNames($tablename);
 
-        if ( ! $names) {
+        if (empty($names)) {
             return false;
         }
 
@@ -806,14 +570,13 @@ if ( ! function_exists('sql_fetch_assoc')) {
                 return true;
             }
         }
-
         return false;
     }
 
     /**
      * Returns the boolean value that column name of the table exist or not
      */
-    function sql_existTableName($tablename)
+    function sql_existTableName($tablename): bool
     {
         global $SQL_DBH;
         if ( ! $SQL_DBH || ! is_string($tablename) || '' === $tablename) {
@@ -824,18 +587,20 @@ if ( ! function_exists('sql_fetch_assoc')) {
             $tablename = parseQuery($tablename);
         }
 
+        $params = [':name' => $tablename];
         if ('sqlite' === $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME)) {
-            $stmt
-                = $SQL_DBH->prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = :name");
+            $stmt = $SQL_DBH->prepare("SELECT name FROM sqlite_master WHERE type='table' AND name = :name");
         } else { // mysql
-            $stmt = $SQL_DBH->prepare('SHOW TABLES LIKE :name ');
+            if ($SQL_DBH->getAttribute(PDO::ATTR_EMULATE_PREPARES)) {
+                $stmt = $SQL_DBH->prepare('SHOW TABLES LIKE :name'); // Only when emulation mode is true
+                // Error : PDO::ATTR_EMULATE_PREPARES => false : You have an error in your SQL syntax;  near '?'
+            } else { // PDO::ATTR_EMULATE_PREPARES : false
+                $stmt   = $SQL_DBH->prepare('SHOW TABLES LIKE ' . sql_quote_string($tablename));
+                $params = null;
+            }
         }
-        $res = [];
-        if ($stmt && $stmt->execute([':name' => $tablename])) {
-            $res = $stmt->fetch();
-        }
-
-        return $res && count($res) > 0;
+        $res = $stmt?->execute($params) ? $stmt?->fetch(PDO::FETCH_NUM) : false;
+        return ! empty($res) && (count($res) > 0);
     }
 
     /**
@@ -844,14 +609,12 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_get_client_info()
     {
         global $SQL_DBH;
-
         return $SQL_DBH->getAttribute(constant("PDO::ATTR_CLIENT_VERSION"));
     }
 
     function sql_get_db()
     {
         global $SQL_DBH;
-
         return $SQL_DBH;
     }
 
@@ -861,11 +624,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_get_server_info($dbh = null)
     {
         global $SQL_DBH;
-        if (null === $dbh) {
-            return $SQL_DBH->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
-        }
-
-        return $dbh->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
+        return ($dbh ?? $SQL_DBH)->getAttribute(constant("PDO::ATTR_SERVER_VERSION"));
     }
 
     /**
@@ -1080,7 +839,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         return $stmt->execute($input_parameters);
     }
 
-    function sql_prepare_execute($sql, $input_parameters = [])
+    function sql_prepare_execute($sql, $input_parameters = []): PDOStatement|false
     {
         global $SQL_DBH;
         sql_query_log($sql);
@@ -1096,7 +855,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         return false;
     }
 
-    function sql_direct_getValue_AsInt($sql, $input_parameters = [])
+    function sql_direct_getValue_AsInt($sql, $input_parameters = []): int
     {
         if ( ! is_string($sql)) {
             sql_print_error("error: param1 is not string.");

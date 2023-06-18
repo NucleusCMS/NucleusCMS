@@ -216,7 +216,7 @@ class Utils
                                 'body'   => &$body,
                             ];
                         } else {
-                            $ret = & $body;
+                            $ret = &$body;
                         }
                     }
                 }
@@ -294,7 +294,7 @@ class Utils
         return false;
     }
 
-    public static function date_with_strftime_format($format, $timestamp = null)
+    public static function date_with_strftime_format(string $format, ?int $timestamp = null): string|false
     {
         $fmt = self::convertDateformatFromStrftimeformat($format);
         if (false !== $fmt) {
@@ -383,12 +383,12 @@ class Utils
                 // Not implemented yet.
                 if ($force) {
                     // todo: ? or do nothing or as it is
-                    //                   $res[] = '?';
-                    //                   $res[] = $part;
+                    //$res[] = '?';
+                    //$res[] = $part;
                     continue;
                 }
                 return false;
-                //              continue;
+                //continue;
             }
             $res[] = $new;
         }

@@ -97,13 +97,13 @@ class SKINIMPORT
      * Reads an XML file into memory
      *
      * @param $filename
-     *                   Which file to read
+     *                  Which file to read
      * @param $metaOnly
-     *                   Set to 1 when only the metadata needs to be read
-     *                   (optional, default 0)
-     *                   [2016/05/11]    Modified by piyoyo
-     *                   xml_parse : parce error occured from PHP 7.0.3(to
-     *                   7.0.6) and later add readFileWithSimpleXML function
+     *                  Set to 1 when only the metadata needs to be read
+     *                  (optional, default 0)
+     *                  [2016/05/11]    Modified by piyoyo
+     *                  xml_parse : parce error occured from PHP 7.0.3(to
+     *                  7.0.6) and later add readFileWithSimpleXML function
      *
      * @return string
      */
@@ -205,9 +205,9 @@ class SKINIMPORT
      * Writes the skins and templates to the database
      *
      * @param $allowOverwrite
-     *                         set to 1 when allowed to overwrite existing skins with the same
-     *                         name
-     *                         (default = 0)
+     *                        set to 1 when allowed to overwrite existing skins with the same
+     *                        name
+     *                        (default = 0)
      */
     public function writeToDatabase($allowOverwrite = 0)
     {
@@ -609,7 +609,7 @@ class SKINIMPORT
                         if ('info' === $name) {
                             $data[$parent][$name]
                                         = $this->convValue((string) $child);
-                            $this->info = & $data[$parent][$name];
+                            $this->info = &$data[$parent][$name];
                         } else { // skin template
                             foreach ($child->attributes() as $k => $v) {
                                 if ('name' === $k) {
@@ -679,7 +679,7 @@ class SKINIMPORT
 
                 //
                 foreach (['type', 'includeMode', 'includePrefix'] as $a) {
-                    $item[$a] = isset($attributes[$a]) ? $attributes[$a] : '';
+                    $item[$a] = $attributes[$a] ?? '';
                 }
 
                 $data[$parent][$current_name] = $item;
@@ -688,10 +688,10 @@ class SKINIMPORT
 
         if ( ! $metaOnly) {
             if (isset($data['skin'])) {
-                $this->skins = & $data['skin'];
+                $this->skins = &$data['skin'];
             }
             if (isset($data['template'])) {
-                $this->templates = & $data['template'];
+                $this->templates = &$data['template'];
             }
         }
         if (is_array($this->skins)) {

@@ -42,19 +42,19 @@ $GLOBALS['xmlrpcs_capabilities'] = [
     // xmlrpc spec: always supported
     'xmlrpc' => new xmlrpcval([
         'specUrl'     => new xmlrpcval('http://www.xmlrpc.com/spec', 'string'),
-        'specVersion' => new xmlrpcval(1, 'int')
+        'specVersion' => new xmlrpcval(1, 'int'),
     ], 'struct'),
     // if we support system.xxx functions, we always support multicall, too...
     // Note that, as of 2006/09/17, the following URL does not respond anymore
     'system.multicall' => new xmlrpcval([
         'specUrl'     => new xmlrpcval('http://www.xmlrpc.com/discuss/msgReader$1208', 'string'),
-        'specVersion' => new xmlrpcval(1, 'int')
+        'specVersion' => new xmlrpcval(1, 'int'),
     ], 'struct'),
     // introspection: version 2! we support 'mixed', too
     'introspection' => new xmlrpcval([
         'specUrl'     => new xmlrpcval('http://phpxmlrpc.sourceforge.net/doc-2/ch10.html', 'string'),
-        'specVersion' => new xmlrpcval(2, 'int')
-    ], 'struct')
+        'specVersion' => new xmlrpcval(2, 'int'),
+    ], 'struct'),
 ];
 
 /* Functions that implement system.XXX methods of xmlrpc servers */
@@ -68,7 +68,7 @@ function _xmlrpcs_getCapabilities($server, $m = null)
     if ($GLOBALS['xmlrpc_null_extension']) {
         $outAr['nil'] = new xmlrpcval([
             'specUrl'     => new xmlrpcval('http://www.ontosys.com/xml-rpc/extensions.php', 'string'),
-            'specVersion' => new xmlrpcval(1, 'int')
+            'specVersion' => new xmlrpcval(1, 'int'),
         ], 'struct');
     }
     return new xmlrpcresp(new xmlrpcval($outAr, 'struct'));
@@ -313,7 +313,7 @@ $GLOBALS['_xmlrpcs_dmap'] = [
         'function'       => '_xmlrpcs_getCapabilities',
         'signature'      => $_xmlrpcs_getCapabilities_sig,
         'docstring'      => $_xmlrpcs_getCapabilities_doc,
-        'signature_docs' => $_xmlrpcs_getCapabilities_sdoc]
+        'signature_docs' => $_xmlrpcs_getCapabilities_sdoc],
 ];
 
 $GLOBALS['_xmlrpcs_occurred_errors'] = '';
@@ -628,7 +628,7 @@ class xmlrpc_server
     {
         $this->dmap[$methodname] = [
             'function'  => $function,
-            'docstring' => $doc
+            'docstring' => $doc,
         ];
         if ($sig) {
             $this->dmap[$methodname]['signature'] = $sig;
@@ -780,7 +780,7 @@ class xmlrpc_server
         // 'guestimate' request encoding
         /// @todo check if mbstring is enabled and automagic input conversion is on: it might mingle with this check???
         $req_encoding = guess_encoding(
-            isset($_SERVER['CONTENT_TYPE']) ? $_SERVER['CONTENT_TYPE'] : '',
+            $_SERVER['CONTENT_TYPE'] ?? '',
             $data
         );
 
@@ -800,7 +800,7 @@ class xmlrpc_server
         // 2005/05/07 commented and moved into caller function code
         //if($data=='')
         //{
-        //  $data=$GLOBALS['HTTP_RAW_POST_DATA'];
+        //    $data=$GLOBALS['HTTP_RAW_POST_DATA'];
         //}
 
         // G. Giunta 2005/02/13: we do NOT expect to receive html entities
@@ -939,9 +939,9 @@ class xmlrpc_server
         if (isset($dmap[$methName]['signature'])) {
             $sig = $dmap[$methName]['signature'];
             if (is_object($m)) {
-                list($ok, $errstr) = $this->verifySignature($m, $sig);
+                [$ok, $errstr] = $this->verifySignature($m, $sig);
             } else {
-                list($ok, $errstr) = $this->verifySignature($paramtypes, $sig);
+                [$ok, $errstr] = $this->verifySignature($paramtypes, $sig);
             }
             if ( ! $ok) {
                 // Didn't match.

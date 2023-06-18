@@ -33,13 +33,13 @@ class MANAGER
      * The $items, $blogs, ... arrays map an id to an object (for plugins, the
      * name is used rather than an ID)
      */
-    public $items;
-    public $blogs;
-    public $plugins;
-    public $karma;
-    public $templates;
-    public $members;
-    protected $parserPrefs;
+    public array $items;
+    public array $blogs;
+    public array $plugins;
+    public array $karma;
+    public array $templates;
+    public array $members;
+    protected array $parserPrefs;
 
     /**
      * cachedInfo to avoid repeated SQL queries (see
@@ -47,7 +47,7 @@ class MANAGER
      *
      * $cachedInfo['installedPlugins'] = array($pid -> $name)
      */
-    public $cachedInfo;
+    public array $cachedInfo;
 
     /**
      * The plugin subscriptionlist
@@ -94,7 +94,7 @@ class MANAGER
      */
     public function &getItem($itemid, $allowdraft, $allowfuture)
     {
-        $item = & $this->items[$itemid];
+        $item = &$this->items[$itemid];
 
         // check the draft and future rules if the item was already cached
         if ($item) {
@@ -102,7 +102,7 @@ class MANAGER
                 return 0;
             }
 
-            $blog = & $this->getBlog(getBlogIDFromItemID($itemid));
+            $blog = &$this->getBlog(getBlogIDFromItemID($itemid));
             if (( ! $allowfuture)
                 && ($item['timestamp'] > $blog->getCorrectTime())) {
                 return 0;
@@ -126,81 +126,118 @@ class MANAGER
     /**
      * Loads a class if it has not yet been loaded
      */
-    public function loadClass($name)
+    public static function loadClass($name)
     {
-        $this->_loadClass($name, $name . '.php');
+        self::_loadClass($name, $name . '.php');
     }
 
     /**
      * Checks if an item exists
      */
-    public function existsItem($id, $future, $draft)
+    public static function existsItem(?int $id, $future, $draft)
     {
-        $this->_loadClass('ITEM', 'ITEM.php');
-
-        return ITEM::exists($id, $future, $draft);
+        if ($id) {
+            self::_loadClass('ITEM', 'ITEM.php');
+            return ITEM::exists($id, $future, $draft);
+        }
+        return false;
     }
 
     /**
      * Checks if a category exists
      */
-    public function existsCategory($id)
+    public function existsCategory(?int $id)
     {
-        return (quickQuery('SELECT COUNT(*) as result FROM '
-                           . sql_table('category') . ' WHERE catid=' . (int) $id)
-                > 0);
+        if ($id) {
+            return (quickQuery('SELECT COUNT(*) as result FROM '
+                               . sql_table('category') . ' WHERE catid=' . (int) $id)
+                    > 0);
+        }
+        return false;
     }
 
     /**
-     * Returns the blog object for a given blogid
+     * @param  int    $blogid
+     * @return object Returns the blog object for a given blogid
      */
-    public function &getBlog($blogid)
+    public function &getBlog(?int $blogid): object
     {
-        $blog = & $this->blogs[$blogid];
-
-        if ( ! $blog) {
+        if ( ! empty($this->blogs[$blogid])) {
+            $blog = &$this->blogs[$blogid];
+        }
+        if (empty($blog)) {
             // load class if needed
             $this->_loadClass('BLOG', 'BLOG.php');
             // load blog object
             $blog                 = new BLOG($blogid);
-            $this->blogs[$blogid] = & $blog;
+            $this->blogs[$blogid] = &$blog;
+        }
+        return $blog;
+    }
+
+    public function &getBlogByBlogName($blogname)
+    {
+        static $lists = [];
+        // name => id
+        if (isset($lists[$blogname])) {
+            if ( ! $lists[$blogname]) {
+                return $lists[$blogname];
+            }
+            $bid = $lists[$blogname];
+            return $this->blogs[$bid];
         }
 
+        $lists[$blogname] = false;
+        $bid              = getBlogIDFromName($blogname);
+        if ( ! $bid) {
+            return $lists[$blogname];
+        }
+        if ($bid && isset($this->blogs[$bid])) {
+            $lists[$blogname] = $bid;
+            return $this->blogs[$bid];
+        }
+        // load class if needed
+        $this->_loadClass('BLOG', 'BLOG.php');
+        // load blog object
+        $blog              = new BLOG($bid);
+        $this->blogs[$bid] = &$blog;
         return $blog;
     }
 
     /**
      * Checks if a blog exists
      */
-    public function existsBlog($name)
+    public function existsBlog(?string $name): bool
     {
+        if (empty($name)) {
+            return false;
+        }
         $this->_loadClass('BLOG', 'BLOG.php');
-
         return BLOG::exists($name);
     }
 
     /**
      * Checks if a blog id exists
      */
-    public function existsBlogID($id)
+    public function existsBlogID(?int $id): bool
     {
-        $this->_loadClass('BLOG', 'BLOG.php');
-
-        return BLOG::existsID($id);
+        if ($id) {
+            $this->_loadClass('BLOG', 'BLOG.php');
+            return BLOG::existsID($id);
+        }
+        return false;
     }
 
     /**
      * Returns a previously read template
      */
-    public function &getTemplate($templateName)
+    public function &getTemplate(string $templateName): array
     {
-        $template = & $this->templates[$templateName];
-
+        $template = &$this->templates[$templateName];
         if ( ! $template) {
             $template                       = TEMPLATE::read($templateName);
-            $this->templates[$templateName] = & $template;
+            $this->templates[$templateName] = &$template;
         }
-
         return $template;
     }
 
@@ -209,16 +246,14 @@ class MANAGER
      */
     public function &getKarma($itemid)
     {
-        $karma = & $this->karma[$itemid];
-
+        $karma = &$this->karma[$itemid];
         if ( ! $karma) {
             // load class if needed
-            $this->_loadClass('KARMA', 'KARMA.php');
+            self::_loadClass('KARMA', 'KARMA.php');
             // create KARMA object
             $karma                = new KARMA($itemid);
-            $this->karma[$itemid] = & $karma;
+            $this->karma[$itemid] = &$karma;
         }
-
         return $karma;
     }
 
@@ -227,16 +262,14 @@ class MANAGER
      */
     public function &getMember($memberid)
     {
-        $mem = & $this->members[$memberid];
-
+        $mem = &$this->members[$memberid];
         if ( ! $mem) {
             // load class if needed
             $this->_loadClass('MEMBER', 'MEMBER.php');
             // create MEMBER object
-            $mem                      = & MEMBER::createFromID($memberid);
-            $this->members[$memberid] = & $mem;
+            $mem                      = &MEMBER::createFromID($memberid);
+            $this->members[$memberid] = &$mem;
         }
-
         return $mem;
     }
 
@@ -261,7 +294,7 @@ class MANAGER
      *
      * private
      */
-    public function _loadClass($name, $filename)
+    public static function _loadClass($name, $filename)
     {
         if ( ! class_exists($name)) {
             global $DIR_LIBS;
@@ -276,17 +309,7 @@ class MANAGER
      */
     private function _loadPlugin($NP_Name)
     {
-        if ( ! HAS_CATCH_ERROR) {
-            $this->_loadPluginRaw($NP_Name);
-
-            return class_exists($NP_Name);
-        }
-
-        return $this->_loadPluginTry($NP_Name);
-    }
-
-    private function _loadPluginTry($NP_Name)
-    {
+        $NP_Name = preg_replace('#[^a-z0-9_]+#i', '', $NP_Name);
         $success = false;
         try {
             $this->_loadPluginRaw($NP_Name);
@@ -294,14 +317,13 @@ class MANAGER
         } catch (Error $e) {
             global $member, $CONF;
             if ($member && $member->isLoggedIn() && $member->isAdmin()) {
-                $msg
-                    = sprintf(
-                        "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
-                        $NP_Name,
-                        get_class($e),
-                        $e->getLine(),
-                        $e->getFile()
-                    );
+                $msg = sprintf(
+                    "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
+                    $NP_Name,
+                    $e::class,
+                    $e->getLine(),
+                    $e->getFile()
+                );
                 if ($CONF['DebugVars']) {
                     var_dump($e->getMessage());
                     // $e->getTraceAsString
@@ -309,7 +331,6 @@ class MANAGER
                 SYSTEMLOG::addUnique('error', 'Error', $msg . $e->getMessage());
             }
         }
-
         return $success;
     }
 
@@ -376,6 +397,8 @@ class MANAGER
             $o_plugin->plugin_dir_type  = $plugin_dir_type;
             $o_plugin->plugin_admin_dir = "{$DIR_PLUGINS}{$shortname}/";
             $o_plugin->plugin_admin_url = CONF::asStrWithPathSlash('PluginURL') . "{$shortname}/";
+            $o_plugin->setRootOwnDirPath("{$DIR_PLUGINS}{$shortname}/");
+            $o_plugin->setRootOwnDirURL($o_plugin->plugin_admin_url);
         }
 
         if ( ! $this->checkIfOk_supportsFeature_onLoadPlugin($NP_Name)) {
@@ -447,7 +470,7 @@ class MANAGER
     }
 
     // valid ok true, not false
-    public function checkifValidPluginBeforeLoad($NP_File)
+    public function checkifValidPluginBeforeLoad(string $NP_File): bool
     {
         global $DB_DRIVER_NAME;
         if (empty($NP_File) || ! @is_file($NP_File)) {
@@ -462,6 +485,21 @@ class MANAGER
         ) {
             return false;
         }
+        $NP_Name = explode('.', basename($NP_File))[0];
+        if (in_array($NP_Name, ['NP_StickyIt'])) {
+            if (preg_match('#\s+do(?:Skin|Template)Var\(([^\)]+)\)#is', $src, $m)
+                && substr_count($m[1], '$') > 1
+            ) {
+                $m = preg_replace('#[^\$,=]+#', '', $m[1]);
+                $m = str_replace('$=', '', $m);
+                $m = str_replace(',', '', $m);
+                if (substr_count($m, '$') > 1) {
+                    //var_dump(basename($NP_File), $m);
+                    return false;
+                }
+            }
+        }
+
         if ( ! str_contains($src, 'getTableList')) {
             return true;
         }
@@ -499,7 +537,7 @@ class MANAGER
 
     private function checkIfOk_supportsFeature_db($NP_Name)
     {
-        global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $DB_DRIVER_NAME;
 
         $tablelist = $this->plugins[$NP_Name]->getTableList();
         if (empty($tablelist)) {
@@ -507,30 +545,28 @@ class MANAGER
         }
 
         // check SqlApi
-        if ('pdo' == $DB_PHP_MODULE_NAME) {
-            //                         DB       Standard SQL
-            //                        MySQL5  : - SQL:2008
-            //                        SQLite3 : SQL92
-            // unload plugin if using non-mysql handler and plugin does not support it
-            if (('mysql' != $DB_DRIVER_NAME)
-                &&
-                ! (
-                    $this->plugins[$NP_Name]->supportsFeature('SqlApi_'
-                                                             . $DB_DRIVER_NAME)
-                   || $this->plugins[$NP_Name]->supportsFeature('SqlApi_SQL92')
-                )
-            ) {
-                unset($this->plugins[$NP_Name]);
-                $msg = sprintf(
-                    _MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
-                    $NP_Name,
-                    $DB_DRIVER_NAME
-                );
-                SYSTEMLOG::addUnique('error', 'Error', $msg);
+        //    DB       Standard SQL
+        //    MySQL5  : - SQL:2008
+        //    SQLite3 : SQL92
+        // unload plugin if using non-mysql handler and plugin does not support it
+        if (('mysql' != $DB_DRIVER_NAME)
+            &&
+            ! (
+                $this->plugins[$NP_Name]->supportsFeature('SqlApi_'
+                                                         . $DB_DRIVER_NAME)
+               || $this->plugins[$NP_Name]->supportsFeature('SqlApi_SQL92')
+            )
+        ) {
+            unset($this->plugins[$NP_Name]);
+            $msg = sprintf(
+                _MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
+                $NP_Name,
+                $DB_DRIVER_NAME
+            );
+            SYSTEMLOG::addUnique('error', 'Error', $msg);
 
-                return 0;
-            }
-        } // end : plugin uses DB query
+            return 0;
+        }
 
         return true;
     }
@@ -543,21 +579,18 @@ class MANAGER
         // retrieve the name of the plugin in the right capitalisation
         $name = $this->getUpperCaseName($name);
         // get the plugin
-        $plugin = & $this->plugins[$name];
-
+        $plugin = &$this->plugins[$name];
         if ( ! $plugin) {
             // load class if needed
             $this->_loadPlugin($name);
-            $plugin = & $this->plugins[$name];
+            $plugin = &$this->plugins[$name];
         }
-
         return $plugin;
     }
 
     public function &getPluginFromPid($pid)
     {
         $name = getPluginNameFromPid($pid);
-
         return $this->getPlugin((is_string($name) ? $name : ''));
     }
 
@@ -566,8 +599,7 @@ class MANAGER
      */
     public function &pluginLoaded($name)
     {
-        $plugin = & $this->plugins[$name];
-
+        $plugin = &$this->plugins[$name];
         return $plugin;
     }
 
@@ -578,7 +610,6 @@ class MANAGER
             if ($pid != $plugin->getId()) {
                 continue;
             }
-
             return $plugin;
         }
         $plugin = false;
@@ -592,14 +623,12 @@ class MANAGER
     public function pluginInstalled($name)
     {
         $this->_initCacheInfo('installedPlugins');
-
         return (-1 != $this->getPidFromName($name));
     }
 
     public function pidInstalled($pid)
     {
         $this->_initCacheInfo('installedPlugins');
-
         return ('' != $this->cachedInfo['installedPlugins'][$pid]);
     }
 
@@ -611,7 +640,6 @@ class MANAGER
                 return $pid;
             }
         }
-
         return -1;
     }
 
@@ -626,7 +654,6 @@ class MANAGER
                 return $pfile;
             }
         }
-
         return -1;
     }
 
@@ -679,6 +706,7 @@ class MANAGER
                     $res->closeCursor();
                 }
                 unset($res);
+
                 break;
         }
     }
@@ -690,11 +718,11 @@ class MANAGER
      * The plugins itsself will only get loaded when they are first needed
      *
      * @param $eventName
-     *                    Name of the event (method to be called on plugins)
+     *                   Name of the event (method to be called on plugins)
      * @param $data
-     *                    Can contain any type of data, depending on the event type. Usually
-     *                    this is an itemid, blogid, ... but it can also be an array
-     *                    containing multiple values
+     *                   Can contain any type of data, depending on the event type. Usually
+     *                   this is an itemid, blogid, ... but it can also be an array
+     *                   containing multiple values
      */
     public function notify($eventName, &$data)
     {
@@ -725,12 +753,6 @@ class MANAGER
                                    $this->plugins[$listener],
                                    $event_funcname
                                ));
-            if ( ! HAS_CATCH_ERROR) {
-                if ($has_plugin) {
-                    $this->plugins[$listener]->$event_funcname($data);
-                }
-                continue;
-            }
 
             try {
                 if ($has_plugin) {
@@ -745,9 +767,9 @@ class MANAGER
                     }
                     $msg = sprintf(
                         'php error in plugin %s::%s:[%s] Line:%d (%s) : %s',
-                        $this->plugins[$listener]->getName(),
+                        $this->plugins[$listener]->getClassName(),
                         $event_funcname,
-                        get_class($e),
+                        $e::class,
                         $e->getLine(),
                         $e->getFile(),
                         $e->getMessage()
@@ -830,7 +852,6 @@ class MANAGER
     public function getNewTicket()
     {
         $this->currentRequestTicket = '';
-
         return $this->_generateTicket();
     }
 
@@ -840,10 +861,8 @@ class MANAGER
     public function checkTicket()
     {
         global $member;
-
         // get ticket from request
         $ticket = requestVar('ticket');
-
         // no ticket -> don't allow
         if ('' == $ticket) {
             return false;
@@ -851,7 +870,6 @@ class MANAGER
 
         // remove expired tickets first
         $this->_cleanUpExpiredTickets();
-
         // get member id
         if ( ! $member->isLoggedIn()) {
             $memberId = -1;
@@ -875,26 +893,25 @@ class MANAGER
      */
     public function _cleanUpExpiredTickets()
     {
-        // remove tickets older than 1 hour
-        $oldTime = time() - 60 * 60;
-        $query   = sprintf(
-            "DELETE FROM %s WHERE ctime < '%s'",
-            sql_table('tickets'),
-            date('Y-m-d H:i:s', $oldTime)
-        );
+        // remove tickets older than 24 hour
+        $oldTime    = time() - 60 * 60 * 1;
+        $oldTimeMem = time() - 60 * 60 * 24;
+        $table      = sql_table('tickets');
+        $query      = "DELETE FROM `{$table}` WHERE "
+                . sprintf(" (member <= 0 AND ctime < '%s')", gmdate('Y-m-d H:i:s', $oldTime))
+                . sprintf(" OR (member > 0 AND ctime < '%s')", gmdate('Y-m-d H:i:s', $oldTimeMem));
         sql_query($query);
     }
 
     /**
-     * (internal method) Generates/returns a ticket (one ticket per page
-     * request)
+     * (internal method) Generates/returns a ticket (one ticket per page request)
      */
     public function _generateTicket()
     {
         if ('' == $this->currentRequestTicket) {
             // generate new ticket (only one ticket will be generated per page request)
             // and store in database
-            global $member, $DB_PHP_MODULE_NAME;
+            global $member;
             // get member id
             if ( ! $member->isLoggedIn()) {
                 $memberId = -1;
@@ -902,43 +919,27 @@ class MANAGER
                 $memberId = $member->getID();
             }
 
-            $ok = false;
-            while ( ! $ok) {
+            $max_try = 3;
+            // max times for try save data .
+            while ($max_try > 0) {
+                $max_try--;
                 // generate a random token
                 mt_srand((int) ((float) microtime() * 1000000));
-                $ticket = md5(uniqid(mt_rand(), true));
-
+                $ticket = md5(uniqid((string) mt_rand(), true));
                 // add in database as non-active
-                if ('pdo' == $DB_PHP_MODULE_NAME) {
-                    $query = sprintf(
-                        'INSERT INTO `%s` (ticket,member,ctime) VALUES (?,?,?)',
-                        sql_table('tickets')
-                    );
-                    $input_parameters = [
-                        (string) $ticket,
-                        (int) $memberId,
-                        date('Y-m-d H:i:s', time()),
-                    ];
-                    if (sql_prepare_execute($query, $input_parameters)) {
-                        break;
-                    }
-                } else {  // mysql driver
-                    $query = sprintf(
-                        "INSERT INTO `%s` (ticket,member,ctime) VALUES ('%s','%s','%s')",
-                        sql_table('tickets'),
-                        sql_real_escape_string($ticket),
-                        (int) $memberId,
-                        date('Y-m-d H:i:s', time())
-                    );
-                    if (sql_query($query)) {
-                        break;
-                    }
+                $query = 'INSERT INTO ' . sql_quote_identifier(sql_table('tickets'))
+                        . ' (ticket, member, ctime) '
+                        . "VALUES (? , ? , ?);";
+                $params = [ $ticket, $memberId, gmdate('Y-m-d H:i:s', time()) ];
+                $stmt   = sql_prepare_execute($query, $params);
+                if ($stmt) {
+                    unset($stmt);
+                    break;
                 }
+                unset($stmt);
             }
-
             $this->currentRequestTicket = $ticket;
         }
-
         return $this->currentRequestTicket;
     }
 

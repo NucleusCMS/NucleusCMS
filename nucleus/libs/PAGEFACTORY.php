@@ -45,7 +45,7 @@ class PAGEFACTORY extends BaseActions
         parent::__construct();
 
         global $manager;
-        $this->blog = & $manager->getBlog($blogid);
+        $this->blog = &$manager->getBlog($blogid);
 
         // TODO: move the definition of actions to the createXForm
         // methods

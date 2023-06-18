@@ -48,12 +48,14 @@ function upgrade_checkinstall($version)
     $installed = 0;
     global $DB_DRIVER_NAME;
 
-    if ('sqlite' == $DB_DRIVER_NAME && $version <= 380) {
+    $version = (int) $version;
+
+    if (('sqlite' === $DB_DRIVER_NAME) && ($version <= 380)) {
         return true;
     }
 
     switch ($version) {
-        case '300':
+        case 300:
             if ( ! sql_existTableName(sql_table('config'))) { //  < 250
                 return false;
             }
@@ -70,6 +72,19 @@ function upgrade_checkinstall($version)
         $count++;
     }
     $installed = ($res && ($count >= $minrows));
+
+    // 欠損チェック
+    if ($installed) {
+        switch ($version) {
+            case 371:
+                $installed = sql_existTableColumnName(sql_table('category'), 'corder');
+                break;
+            case 380:
+                $installed = CONF::existName('ENABLE_PLUGIN_UPDATE_CHECK');
+                break;
+        }
+    }
+
     return $installed;
 }
 
@@ -181,7 +196,7 @@ function upgrade_query($friendly, $query)
   * Tries to update database version, gives a message when failed
   *
    * @param $version
-   *                  Schema version the database has been upgraded to
+   *                 Schema version the database has been upgraded to
   */
 function update_version($version)
 {
@@ -197,9 +212,9 @@ function update_version($version)
 
 /**
  * @param $table
- *                   table to check (without prefix)
+ *                  table to check (without prefix)
  * @param $aColumns
- *                   array of column names included
+ *                  array of column names included
  */
 function upgrade_checkIfIndexExists($table, $aColumns)
 {
@@ -231,8 +246,8 @@ function upgrade_checkIfIndexExists($table, $aColumns)
   * Checks to see if a given table exists
   *
    * @param       $table
-   *                     Name of table to check for existance of
-   *                     Uses sql_table internally
+   *                    Name of table to check for existance of
+   *                    Uses sql_table internally
    * @return true if table exists, false otherwise.
   */
 function upgrade_checkIfTableExists($table)
@@ -245,8 +260,8 @@ function upgrade_checkIfTableExists($table)
   * Checks to see if a given configuration value exists
   *
    * @param       $name
-   *                    Config value to check for existance of.
-   *                    Paramater must be MySQL escaped
+   *                   Config value to check for existance of.
+   *                   Paramater must be MySQL escaped
    * @return true if configuration value exists, false otherwise.
   */
 function upgrade_checkIfCVExists($name)
@@ -259,10 +274,10 @@ function upgrade_checkIfCVExists($name)
   * Checks to see if a given column exists
   *
    * @param       $table
-   *                     Name of table to check for column in
-   *                     Uses sql_table internally
+   *                    Name of table to check for column in
+   *                    Uses sql_table internally
    * @param       $col
-   *                     Name of column to check for existance of
+   *                    Name of column to check for existance of
    * @return true if column exists, false otherwise.
   */
 function upgrade_checkIfColumnExists($table, $col)
@@ -561,7 +576,7 @@ if ( ! function_exists('parseHtml')) {
 }
 function renderPage($content = '')
 {
-    $tpl = file_get_contents('tpl/template.tpl');
+    $tpl           = file_get_contents('tpl/template.tpl');
     $ph            = [];
     $ph['title']   = _UPG_TEXT_NUCLEUS_UPGRADE;
     $ph['content'] = $content;
@@ -581,9 +596,7 @@ function get_default_content()
     $current  = get_current_version();
     $messages = [];
 
-    if (version_compare(phpversion(), '5.0.0', '<')) {
-        $messages[] = '<p class="deprecated">' . _UPG_TEXT_WARN_DEPRECATED_PHP4_STOP .'</p>';
-    } elseif (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<')) {
+    if (version_compare(phpversion(), NUCLEUS_UPGRADE_MINIMUM_PHP_VERSION, '<')) {
         $messages[] = '<p class="deprecated">'
                      . sprintf(
                          _UPG_TEXT_WARN_MINIMUM_PHP_STOP,
@@ -593,12 +606,21 @@ function get_default_content()
                      )
                      .'</p>';
     } elseif (NUCLEUS_UPGRADE_VERSION_ID == $current) {
+        global $DB_DRIVER_NAME;
         $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
         $messages[] = '<br />';
         if ( ! defined('_ERRORS_UPGRADESDIR')) {
             define('_ERRORS_UPGRADESDIR', '_upgrades directory should be deleted');
         }
-        $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></li></div>', _ERRORS_UPGRADESDIR, hsc(__DIR__));
+        if ('mysql' === $DB_DRIVER_NAME && 'utf8mb4_general_ci' !== getCollationFromDB(sql_table('config'), 'name')) {
+            $messages[] = sprintf(
+                '<div class="note">%s: %s<br />%s : <a href="./convert.php" target="_blank">convert</a></div><br />',
+                _UPG_TEXT_COLLATION_CONVERT,
+                hsc(getCollationFromDB(sql_table('config'), 'name')),
+                _UPG_TEXT_COLLATION_CONVERT_DESC
+            );
+        }
+        $messages[] = sprintf('<div class="note">%s<br /><ul><li>%s</li></ul></div>', _ERRORS_UPGRADESDIR, hsc(__DIR__));
     } else {
         $tmp_title  = sprintf(_UPG_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_UPGRADE_VERSION);
         $messages[] = sprintf('<p class="warning"><a href="?mode=exec&from=%s&db_optimize=1">%s</a></p>', $current, $tmp_title);
@@ -706,4 +728,17 @@ function do_upgrade()
     upgrade_end(_UPG_TEXT_UPGRADE_COMPLETED);
 
     return ob_get_clean();
+}
+
+function upgrade_config_insertOrIgnor($name, $value)
+{
+    $query = parseQuery("SELECT count(*) AS result FROM `[@prefix@]config` WHERE ")
+           . sprintf("name = %s", sql_quote_string($name));
+    if (quickQuery($query)) {
+        return;
+    }
+
+    $query = parseQuery("INSERT INTO `[@prefix@]config` (name, value)")
+           . sprintf(" VALUES(%s, %s)", sql_quote_string($name), sql_quote_string($value));
+    upgrade_query('Updating [@prefix@]config ', $query);
 }

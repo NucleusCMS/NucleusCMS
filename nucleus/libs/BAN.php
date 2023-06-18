@@ -17,12 +17,12 @@
 class BAN
 {
     /**
-     * Checks if a given IP is banned from commenting/voting
-     *
-     * Returns false when not banned, or a BANINFO object containing the
-     * message and other information of the ban
-     */
-    public static function isBanned($blogid, $ip)
+      * Checks if a given IP is banned from commenting/voting
+      *
+      * Returns false when not banned, or a BANINFO object containing the
+      * message and other information of the ban
+      */
+    public static function isBanned($blogid, $ip): object|false
     {
         $blogid = (int) $blogid;
         $query  = sprintf(
@@ -43,67 +43,61 @@ class BAN
     }
 
     /**
-     * Adds a new ban to the banlist. Returns 1 on success, 0 on error
-     */
+      * Adds a new ban to the banlist. Returns 1 on success, 0 on error
+      */
     public static function addBan($blogid, $iprange, $reason)
     {
         global $manager;
-
         $blogid = (int) $blogid;
 
-        $param = [
-            'blogid'  => $blogid,
-            'iprange' => &$iprange,
-            'reason'  => &$reason,
-        ];
-        $manager->notify('PreAddBan', $param);
+        $notify_data = [
+                'blogid'  => $blogid,
+                'iprange' => &$iprange,
+                'reason'  => &$reason,
+            ];
+        $manager->notify('PreAddBan', $notify_data);
 
-        $res = sql_query(sprintf(
-            "INSERT INTO %s (blogid, iprange, reason) VALUES (%d,'%s','%s')",
+        $query = sprintf(
+            'INSERT INTO `%s` (blogid, iprange, reason) VALUES( %d , ? , ? ) ',
             sql_table('ban'),
-            $blogid,
-            sql_real_escape_string($iprange),
-            sql_real_escape_string($reason)
-        ));
+            $blogid
+        );
+        $res = sql_prepare_execute($query, [$iprange, $reason]);
 
-        $param = [
-            'blogid'  => $blogid,
-            'iprange' => $iprange,
-            'reason'  => $reason,
-        ];
-        $manager->notify('PostAddBan', $param);
+        $notify_data = [
+                'blogid'  => $blogid,
+                'iprange' => $iprange,
+                'reason'  => $reason,
+            ];
+        $manager->notify('PostAddBan', $notify_data);
 
         return $res ? 1 : 0;
     }
 
     /**
-     * Removes a ban from the banlist (correct iprange is needed as argument)
-     * Returns 1 on success, 0 on error
-     */
+      * Removes a ban from the banlist (correct iprange is needed as argument)
+      * Returns 1 on success, 0 on error
+      */
     public static function removeBan($blogid, $iprange)
     {
         global $manager;
         $blogid = (int) $blogid;
 
-        $param = [
+        $notify_data = [
             'blogid' => $blogid,
             'range'  => $iprange,
         ];
-        $manager->notify('PreDeleteBan', $param);
+        $manager->notify('PreDeleteBan', $notify_data);
 
-        sql_query(sprintf(
-            "DELETE FROM %s WHERE blogid={$blogid} and iprange='%s'",
-            sql_table('ban'),
-            sql_real_escape_string($iprange)
-        ));
+        $sql    = sprintf('DELETE FROM `%s` WHERE blogid=:blogid AND iprange=:iprange', sql_table('ban'));
+        $res    = sql_prepare_execute($sql, [':blogid' => $blogid, ':iprange' => $iprange]);
+        $result = (sql_affected_rows($res) > 0);
 
-        $result = (sql_affected_rows() > 0);
-
-        $param = [
+        $notify_data = [
             'blogid' => $blogid,
             'range'  => $iprange,
         ];
-        $manager->notify('PostDeleteBan', $param);
+        $manager->notify('PostDeleteBan', $notify_data);
 
         return $result;
     }

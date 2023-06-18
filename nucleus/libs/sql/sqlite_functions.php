@@ -19,22 +19,17 @@ class sqlite_functions
                 if ($st > 0) {
                     $st--;
                 }
-
                 return mb_substr(func_get_arg(0), $st, func_get_arg(2), 'utf-8');
             },
             3
         );
         $dbh->sqliteCreateFunction(
             'CHAR_LENGTH',
-            function () {
-                return mb_strlen(func_get_arg(0), 'utf-8');
-            },
+            fn () => mb_strlen(func_get_arg(0), 'utf-8'),
             1
         );
         $dbh->sqliteCreateFunction('UNIX_TIMESTAMP', 'strtotime', 1);
-        $dbh->sqliteCreateFunction('NOW', function () {
-            return date("Y-m-d H:i:s", time());
-        }, 0); // local time
+        $dbh->sqliteCreateFunction('NOW', fn () => date("Y-m-d H:i:s", time()), 0); // local time
         // SQL non-standard : REGEXP (mysql , sqlite) , src_exp ~ pattern_text (postgreSQL)
         //                    --- src_exp like pattern_text  ,  %  _
         // src_exp REGEXP pattern_text
@@ -50,12 +45,8 @@ class sqlite_functions
             },
             2
         );
-        $dbh->sqliteCreateFunction('CONCAT', function () {
-            return implode("", func_get_args());
-        }, -1);
-        $dbh->sqliteCreateFunction('FIND_IN_SET', function ($k, $v) {
-            return in_array($k, explode($v)) ? 1 : 0;
-        }, 2);
+        $dbh->sqliteCreateFunction('CONCAT', fn () => implode("", func_get_args()), -1);
+        $dbh->sqliteCreateFunction('FIND_IN_SET', fn ($k, $v) => in_array($k, explode($v)) ? 1 : 0, 2);
         $dbh->sqliteCreateFunction('md5', 'md5', 1);
     }
 }

@@ -225,7 +225,7 @@ class SEARCH
         $keyword = sql_real_escape_string(ltrim($keyword, '-+|'));
         $ph      = [
             'keyword'      => $keyword,
-            'concat_field' => $this->fields_concat()
+            'concat_field' => $this->fields_concat(),
         ];
         if ('-' === $c) {
             return parseQuery(

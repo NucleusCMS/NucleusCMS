@@ -24,7 +24,7 @@
     -- Start Of Configurable Part --
 */
 
-if (version_compare(phpversion(), '7.0.0', '<') || 90000 <= PHP_VERSION_ID) {
+if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
@@ -35,11 +35,12 @@ if (version_compare(phpversion(), '7.0.0', '<') || 90000 <= PHP_VERSION_ID) {
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
 }
 
-define('INSTALL_EXPIRE_SEC', 10 * 60); // 10 minutes
+define('INSTALL_EXPIRE_SEC', 30 * 60); // 30 minutes
 
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
+include_once('../nucleus/libs/version.php');
 include_once('../nucleus/libs/phpfunctions.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
 include_once('../nucleus/libs/helpers.php');
@@ -47,11 +48,10 @@ include_once('../nucleus/libs/helpers.php');
 define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
 
-define('ENABLE_SQLITE_INSTALL', @is_file('ENABLE_SQLITE_INSTALL')); // allow sqlite install , boolean  PHP[7.1-] , QA test not conducted , move to v3.90dev
-define('INSTALL_PRIORITY_MYSQL_MODULE', PHP_VERSION_ID <= 70000 ? 1 : 0); // mode , 0: pdo mysql , 1: mysql module
+define('ENABLE_SQLITE_INSTALL', NUCLEUS_DEVELOP || @is_file('ENABLE_SQLITE_INSTALL')); // allow sqlite install , boolean , QA test not conducted
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
-define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '5.5.0'); // (string) , format : dot separated
+define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '8.1.0'); // (string) , format : dot separated
 
 define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
 
@@ -66,8 +66,6 @@ if (DEBUG_INSTALL_QUERY) {
     global $CONF;
     $CONF = ['debug' => 1];
 }
-
-include_once('../nucleus/libs/version.php');
 
 $install_lang_defs = get_install_lang_defs();
 $install_lang_keys = get_install_lang_keys();
@@ -114,9 +112,9 @@ if ('en' != $lang) {
 // directory.
 //
 $aConfPlugsToInstall = [
-//        'NP_SkinFiles',
-//        'NP_CKEditor',
-//        'NP_CustomURL',
+//    'NP_SkinFiles',
+//    'NP_CKEditor',
+//    'NP_CustomURL',
 ];
 
 // array with skins to install. skins must be present under the skins/ directory with
@@ -147,38 +145,26 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
 }
 
 // include core classes that are needed for login & plugin handling
-if ( ! function_exists('mysql_query')) {
-    include_once('../nucleus/libs/sql/mysql_emulate.php');
-} else {
-    define('_EXT_MYSQL_EMULATE', 0);
-}
+define('_EXT_MYSQL_EMULATE', 0);
 
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
+$DB_PHP_MODULE_NAME = 'pdo';
+
+// sqlite
 if (ENABLE_SQLITE_INSTALL && ('sqlite' == postVar('install_db_type'))) {
-    $DB_DRIVER_NAME     = 'sqlite';
-    $DB_PHP_MODULE_NAME = 'pdo';
+    $DB_DRIVER_NAME = 'sqlite';
 }
 
 //set the handler if different from mysql (or mysqli)
 if ( ! isset($DB_DRIVER_NAME) || 0 == strlen($DB_DRIVER_NAME)) {
-    $mode1 = INSTALL_PRIORITY_MYSQL_MODULE && (extension_loaded('mysql') || extension_loaded('mysqli'));
-    if ($mode1) {
-        $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
-    } else {
-        $DB_PHP_MODULE_NAME = 'pdo';
-        $DB_DRIVER_NAME     = 'mysql';
-    }
+    $DB_DRIVER_NAME = 'mysql';
 }
-include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');
+include_once('../nucleus/libs/sql/pdo.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
-if ('pdo' == $DB_PHP_MODULE_NAME) {
-    if ( ! extension_loaded('pdo_' . $DB_DRIVER_NAME)) {
-        doError(_ERROR1);
-    }
-} elseif ( ! function_exists('mysql_query')) {
-    _doError(_ERROR1);
+if ( ! extension_loaded('pdo_' . $DB_DRIVER_NAME)) {
+    doError(_ERROR1);
 }
 
 // check config.php, v3.80-

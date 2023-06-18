@@ -25,7 +25,7 @@ require_once __DIR__ . '/ITEMACTIONS.php';
 class BLOG
 {
     // blog id
-    public $blogid;
+    public int $blogid;
 
     // ID of currently selected category
     public $selectedcatid;
@@ -57,12 +57,12 @@ class BLOG
      * Shows the given amount of items for this blog
      *
      * @param $template
-     *                        String representing the template _NAME_ (!)
+     *                       String representing the template _NAME_ (!)
      * @param $amountEntries
-     *                        amount of entries to show
+     *                       amount of entries to show
      * @param $startpos
-     *                        offset from where items should be shown (e.g. 5 = start at fifth
-     *                        item)
+     *                       offset from where items should be shown (e.g. 5 = start at fifth
+     *                       item)
      *
      * @returns int
      *      amount of items shown
@@ -85,11 +85,11 @@ class BLOG
      * Shows an archive for a given month
      *
      * @param $year
-     *                   year
+     *                  year
      * @param $month
-     *                   month
+     *                  month
      * @param $template
-     *                   String representing the template name to be used
+     *                  String representing the template name to be used
      */
     public function showArchive($templatename, $year, $month = 0, $day = 0)
     {
@@ -157,19 +157,19 @@ class BLOG
      * Shows the given amount of items for this blog
      *
      * @param $template
-     *                        String representing the template _NAME_ (!)
+     *                       String representing the template _NAME_ (!)
      * @param $amountEntries
-     *                        amount of entries to show (0 = no limit)
+     *                       amount of entries to show (0 = no limit)
      * @param $extraQuery
-     *                        extra conditions to be added to the query
+     *                       extra conditions to be added to the query
      * @param $highlight
-     *                        contains a query that should be highlighted
+     *                       contains a query that should be highlighted
      * @param $comments
-     *                        1=show comments 0=don't show comments
+     *                       1=show comments 0=don't show comments
      * @param $dateheads
-     *                        1=show dateheads 0=don't show dateheads
+     *                       1=show dateheads 0=don't show dateheads
      * @param $offset
-     *                        offset
+     *                       offset
      *
      * @returns int
      *      amount of items shown
@@ -223,7 +223,7 @@ class BLOG
         global $currentTemplateName;
         $currentTemplateName = $templateName;
 
-        $template = & $manager->getTemplate($templateName);
+        $template = &$manager->getTemplate($templateName);
 
         // create parser object & action handler
         $actions = new ITEMACTIONS($this);
@@ -263,8 +263,7 @@ class BLOG
                         $manager->notify('PreDateFoot', $param);
                         $tmp_footer
                             = Utils::strftime(
-                                isset($template['DATE_FOOTER'])
-                                ? $template['DATE_FOOTER'] : '',
+                                $template['DATE_FOOTER'] ?? '',
                                 $oldTS
                             );
                         $parser->parse($tmp_footer);
@@ -283,8 +282,7 @@ class BLOG
                     // order to be preserved by strftime
                     $tmp_header
                         = Utils::strftime(
-                            (isset($template['DATE_HEADER'])
-                            ? $template['DATE_HEADER'] : null),
+                            $template['DATE_HEADER'] ?? null,
                             $timestamp
                         );
                     $parser->parse($tmp_header);
@@ -443,11 +441,11 @@ class BLOG
      * Send a new item notification to the notification list
      *
      * @param $itemid
-     *                 ID of the item
+     *                ID of the item
      * @param $title
-     *                 title of the item
+     *                title of the item
      * @param $body
-     *                 body of the item
+     *                body of the item
      */
     public function sendNewItemNotification($itemid, $title, $body)
     {
@@ -487,11 +485,11 @@ class BLOG
      * Creates a new category for this blog
      *
      * @param $catName
-     *                         name of the new category. When empty, a name is generated
-     *                         automatically
-     *                         (starting with newcat)
+     *                        name of the new category. When empty, a name is generated
+     *                        automatically
+     *                        (starting with newcat)
      * @param $catDescription
-     *                         description of the new category. Defaults to 'New Category'
+     *                        description of the new category. Defaults to 'New Category'
      *
      * @returns
      *        the new category-id in case of success.
@@ -572,15 +570,15 @@ class BLOG
      * Searches all months of this blog for the given query
      *
      * @param $keywords
-     *                       search query
+     *                      search query
      * @param $template
-     *                       template to be used (__NAME__ of the template)
+     *                      template to be used (__NAME__ of the template)
      * @param $amountMonths
-     *                       max amount of months to be search (0 = all)
+     *                      max amount of months to be search (0 = all)
      * @param $maxresults
-     *                       max number of results to show
+     *                      max number of results to show
      * @param $startpos
-     *                       offset
+     *                      offset
      *
      * @returns
      *      amount of hits found
@@ -621,7 +619,7 @@ class BLOG
 
             // when no results were found, show a message
             if (0 == $amountfound) {
-                $template = & $manager->getTemplate($template);
+                $template = &$manager->getTemplate($template);
                 $vars     = [
                     'query'  => hsc($keywords),
                     'blogid' => $this->getID(),
@@ -637,14 +635,14 @@ class BLOG
      * Returns an SQL query to use for a search query
      *
      * @param $keywords
-     *                       search query
+     *                      search query
      * @param $amountMonths
-     *                       amount of months to search back. Default = 0 = unlimited
+     *                      amount of months to search back. Default = 0 = unlimited
      * @returns $highlight
      *      words to highlight (out parameter)
      * @param $mode
-     *               either empty, or 'count'. In this case, the query will be a SELECT
-     *               COUNT(*) query
+     *              either empty, or 'count'. In this case, the query will be a SELECT
+     *              COUNT(*) query
      *
      * @returns
      *      either a full SQL query, or an empty string (if querystring empty)
@@ -749,8 +747,8 @@ class BLOG
      * the index type skins
      *
      * @param $mode
-     *               either empty, or 'count'. In this case, the query will be a SELECT
-     *               COUNT(*) query
+     *              either empty, or 'count'. In this case, the query will be a SELECT
+     *              COUNT(*) query
      *
      * @returns
      *      either a full SQL query, or an empty string
@@ -835,7 +833,7 @@ class BLOG
             $linkparams = ['catid' => $catid];
         }
 
-        $template           = & $manager->getTemplate($template);
+        $template           = &$manager->getTemplate($template);
         $archdata           = [];
         $archdata['blogid'] = $this->getID();
 
@@ -921,8 +919,7 @@ class BLOG
 
         sql_free_result($res);
 
-        $tplt = isset($template['ARCHIVELIST_FOOTER'])
-            ? $template['ARCHIVELIST_FOOTER'] : '';
+        $tplt = $template['ARCHIVELIST_FOOTER'] ?? '';
         echo TEMPLATE::fill($tplt, $archdata);
     }
 
@@ -962,7 +959,7 @@ class BLOG
         //$blogurl = $this->getURL() . $qargs;
         //$blogurl = createBlogLink($this->getURL(), $linkparams);
 
-        $template = & $manager->getTemplate($template);
+        $template = &$manager->getTemplate($template);
 
         // Note: ArchiveList is not parced. parcer not called.
         // MARKER_FEATURE_LOCALIZATION_SKIN_TEXT
@@ -977,8 +974,7 @@ class BLOG
         }
 
         echo TEMPLATE::fill(
-            (isset($template['CATLIST_HEADER'])
-            ? $template['CATLIST_HEADER'] : null),
+            $template['CATLIST_HEADER'] ?? null,
             [
                 'blogid'  => $this->getID(),
                 'blogurl' => $blogurl,
@@ -1030,7 +1026,7 @@ class BLOG
             } else {
                 global $itemid;
                 if ((int) $itemid && $manager->existsItem((int) $itemid, 0, 0)) {
-                    $iobj = & $manager->getItem((int) $itemid, 0, 0);
+                    $iobj = &$manager->getItem((int) $itemid, 0, 0);
                     $cid  = $iobj['catid'];
                     if ($cid == $catdata['catid']) {
                         $catdata['catiscurrent'] = 'yes';
@@ -1047,8 +1043,7 @@ class BLOG
             $manager->notify('PreCategoryListItem', $param);
 
             echo TEMPLATE::fill(
-                (isset($template['CATLIST_LISTITEM'])
-                ? $template['CATLIST_LISTITEM'] : null),
+                $template['CATLIST_LISTITEM'] ?? null,
                 $catdata
             );
             //$temp = TEMPLATE::fill((isset($template['CATLIST_LISTITEM']) ? $template['CATLIST_LISTITEM'] : null), $catdata);
@@ -1058,8 +1053,7 @@ class BLOG
         sql_free_result($res);
 
         echo TEMPLATE::fill(
-            (isset($template['CATLIST_FOOTER'])
-            ? $template['CATLIST_FOOTER'] : null),
+            $template['CATLIST_FOOTER'] ?? null,
             [
                 'blogid'  => $this->getID(),
                 'blogurl' => $blogurl,
@@ -1084,11 +1078,10 @@ class BLOG
     ) {
         global $CONF, $manager;
 
-        $template = & $manager->getTemplate($template);
+        $template = &$manager->getTemplate($template);
 
         echo TEMPLATE::fill(
-            (isset($template['BLOGLIST_HEADER'])
-            ? $template['BLOGLIST_HEADER'] : null),
+            $template['BLOGLIST_HEADER'] ?? null,
             [
                 'sitename' => $CONF['SiteName'],
                 'siteurl'  => $CONF['IndexURL'],
@@ -1139,8 +1132,7 @@ class BLOG
                 $manager->notify('PreBlogListItem', $param);
 
                 echo TEMPLATE::fill(
-                    (isset($template['BLOGLIST_LISTITEM'])
-                    ? $template['BLOGLIST_LISTITEM'] : null),
+                    $template['BLOGLIST_LISTITEM'] ?? null,
                     $list
                 );
             }
@@ -1148,8 +1140,7 @@ class BLOG
         }
 
         echo TEMPLATE::fill(
-            (isset($template['BLOGLIST_FOOTER'])
-            ? $template['BLOGLIST_FOOTER'] : null),
+            $template['BLOGLIST_FOOTER'] ?? null,
             [
                 'sitename' => $CONF['SiteName'],
                 'siteurl'  => $CONF['IndexURL'],
@@ -1229,7 +1220,7 @@ class BLOG
      * Check if a category with a given catid is valid
      *
      * @param $catid
-     *                category id
+     *               category id
      */
     public function isValidCategory($catid)
     {
@@ -1251,7 +1242,7 @@ class BLOG
      * Get the category name for a given catid
      *
      * @param $catid
-     *                category id
+     *               category id
      */
     public function getCategoryName($catid)
     {
@@ -1273,7 +1264,7 @@ class BLOG
      * Get the category description for a given catid
      *
      * @param $catid
-     *                category id
+     *               category id
      */
     public function getCategoryDesc($catid)
     {
@@ -1311,7 +1302,7 @@ class BLOG
      * Get the category id for a given category name
      *
      * @param $name
-     *               category name
+     *              category name
      */
     public function getCategoryIdFromName($name)
     {
@@ -1343,7 +1334,7 @@ class BLOG
      * Set the the setting for the line break handling
      *
      * @param $val
-     *              new value for bconvertbreaks
+     *             new value for bconvertbreaks
      */
     public function setConvertBreaks($val)
     {
@@ -1355,7 +1346,7 @@ class BLOG
      * of an author:  ConvertBreaks, MediaUrl and AuthorId
      *
      * @param $authorid
-     *                   id of the author
+     *                  id of the author
      */
     public function insertJavaScriptInfo($authorid = '')
     {
@@ -1379,7 +1370,7 @@ class BLOG
      * Set the the setting for allowing to publish postings in the past
      *
      * @param $val
-     *              new value for ballowpast
+     *             new value for ballowpast
      */
     public function setAllowPastPosting($val)
     {
@@ -1697,10 +1688,9 @@ class BLOG
      * Checks if a blog with a given shortname exists
      * Returns true if there is a blog with the given shortname (static)
      *
-     * @param $name
-     *               blog shortname
+     * @param $name blog shortname
      */
-    public static function exists($name)
+    public static function exists(string $name): bool
     {
         $ph['bshortname'] = sql_quote_string($name);
         $query
@@ -1716,19 +1706,20 @@ class BLOG
      * Checks if a blog with a given id exists
      * Returns true if there is a blog with the given ID (static)
      *
-     * @param $id
-     *             blog id
+     * @param $bnumber blog id
      */
-    public static function existsID($bnumber)
+    public static function existsID(?int $bnumber): bool
     {
-        $ph['bnumber'] = (int) $bnumber;
-        $query
-                       = parseQuery(
-                           'SELECT count(*) AS result FROM [@prefix@]blog WHERE bnumber=[@bnumber@] LIMIT 1',
-                           $ph
-                       );
-
-        return (int) quickQuery($query) > 0;
+        $bnumber = (int) $bnumber;
+        if ($bnumber < 0) {
+            return false;
+        }
+        $res = sql_direct_getValue_AsInt(sprintf(
+            'SELECT count(*) AS result FROM `%s` WHERE bnumber=%d LIMIT 1',
+            sql_table('blog'),
+            $bnumber
+        ));
+        return $res > 0;
     }
 
     /**
@@ -1807,19 +1798,19 @@ class BLOG
      * Shows the given list of items for this blog
      *
      * @param $itemarray
-     *                     array of item numbers to be displayed
+     *                    array of item numbers to be displayed
      * @param $template
-     *                     String representing the template _NAME_ (!)
+     *                    String representing the template _NAME_ (!)
      * @param $highlight
-     *                     contains a query that should be highlighted
+     *                    contains a query that should be highlighted
      * @param $comments
-     *                     1=show comments 0=don't show comments
+     *                    1=show comments 0=don't show comments
      * @param $dateheads
-     *                     1=show dateheads 0=don't show dateheads
+     *                    1=show dateheads 0=don't show dateheads
      * @param $showDrafts
-     *                     0=do not show drafts 1=show drafts
+     *                    0=do not show drafts 1=show drafts
      * @param $showFuture
-     *                     0=do not show future posts 1=show future posts
+     *                    0=do not show future posts 1=show future posts
      *
      * @returns int
      *      amount of items shown
@@ -1848,11 +1839,11 @@ class BLOG
      * Returns the SQL query used to fill out templates for a list of items
      *
      * @param $itemarray
-     *                     an array holding the item numbers of the items to be displayed
+     *                    an array holding the item numbers of the items to be displayed
      * @param $showDrafts
-     *                     0=do not show drafts 1=show drafts
+     *                    0=do not show drafts 1=show drafts
      * @param $showFuture
-     *                     0=do not show future posts 1=show future posts
+     *                    0=do not show future posts 1=show future posts
      *
      * @returns
      *      either a full SQL query, or an empty string
@@ -1979,42 +1970,57 @@ class BLOG
         if ($this->allowScriptTagInItem()) {
             $alowed_tags[] = 'script';
         }
+        $list1 = [
+                'mrealname', 'authorname', 'memail', 'authormail',
+                'murl', 'authorurl', 'memail', 'authormail',
+        ];
         $lists = ['ititle', 'title', 'body', 'ibody', 'more', 'imore', 'cname', 'category'];
         if ( ! empty($names) && is_array($names)) {
             $lists = array_merge($lists, $names);
         }
-        // todo: mrealname as authorname
-        // todo: memail as authormail
-        // todo: murl as authorurl
-        // todo: memail as authormail
+        $lists = array_merge($lists, $list1);
 
         foreach ($lists as $name) {
-            if ( ! property_exists($item, $name)
+            if ( ! property_exists($item, $name) // property_exists : (PHP 5 >= 5.1.0, PHP 7, PHP 8)
                 || null === $item->$name
                 || 0 === strlen($item->$name)) {
                 continue;
             }
-            $xml = new DOMDocument();
+            // no tag
+            $no_tags = ! str_contains($item->$name, '<') && ! str_contains($item->$name, '>');
+            if ($no_tags || str_contains($item->$name, chr(0))) {
+                $item->$name = strip_tags($item->$name); // strip null byte etc.
+                continue;
+            }
+
+            if ( ! in_array($name, ['body', 'ibody', 'more', 'imore'])) {
+                $item->$name = hsc($item->$name);
+                continue;
+            }
+
+            // ibody, imore
+
             libxml_use_internal_errors(true);
+            $xml        = new DOMDocument();
             $xml_dec    = '<'.'?xml version="1.0" encoding="UTF-8" ?'.'>';
             $mark_start = sprintf('@-%s-@', md5('start'.((string) time())));
             $mark_end   = sprintf('@-%s-@', md5('end'.((string) time())));
-            if (_CHARSET !== 'UTF-8') {
-                // PHP[8.2] Deprecated: mb_convert_encoding(): Handling HTML entities via mbstring
-                $src = mb_convert_encoding(strtr($item->$name, ['<%' => $mark_start, '%>' => $mark_end]), 'HTML-ENTITIES', _CHARSET);
-            } else {
-                $src = $xml_dec . strtr($item->$name, ['<%' => $mark_start, '%>' => $mark_end]);
-            }
+            $src        = $xml_dec . strtr($item->$name, ['<%' => $mark_start, '%>' => $mark_end]);
 
-            $options = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET | LIBXML_NOWARNING;
-            if ($xml->loadHTML($src, $options)) {
+            $xml_options = LIBXML_HTML_NOIMPLIED | LIBXML_HTML_NODEFDTD | LIBXML_NONET | LIBXML_NOWARNING;
+            $success     = @$xml->loadHTML($src, $xml_options);
+            if ($success) {
                 $errors   = libxml_get_errors();
                 $modified = (count($errors) > 0) || (preg_match('/[<>]/i', $item->$name));
+
+                if ('xml' == $xml->firstChild->nodeName) {
+                    $xml->removeChild($xml->firstChild);
+                }
 
                 foreach ($xml->getElementsByTagName("*") as $tag) {
                     if ( ! in_array($tag->tagName, $alowed_tags)) {
                         $modified = true;
-                        //                        $tag->parentNode->removeChild($tag);
+                        //  $tag->parentNode->removeChild($tag);
                         // escape text
                         $replacement = $xml->createTextNode($xml->saveHTML($tag));
                         $tag->parentNode->replaceChild($replacement, $tag);
@@ -2032,48 +2038,53 @@ class BLOG
                 }
 
                 if ($modified) {
-                    $item->$name = strtr($xml->saveHTML(), [$mark_start => '<%', $mark_end => '%>']);
-                    // remove XML Declaration tag
+                    $new_value = strtr($xml->saveHTML(), [$mark_start => '<%', $mark_end => '%>']);
+
                     $m = [];
-                    if (preg_match('/^<\\?xml\s[^>]+>(.*)$/is', $item->$name, $m)) {
-                        $item->$name = (string) $m[1];
-                    } elseif (str_starts_with($item->$name, $xml_dec)) {
+                    // remove XML Declaration tag
+                    if (preg_match('/^<\\?xml\s[^>]+>(.*)$/is', $new_value, $m)) {
+                        $new_value = (string) $m[1];
+                    } elseif (str_starts_with($new_value, $xml_dec)) {
                         // preg_match bug? sometimes no hit
                         // retry remove
-                        $item->$name = substr($item->$name, strlen($xml_dec));
+                        $new_value = substr($new_value, strlen($xml_dec));
                     }
-                    $item->$name = preg_replace_callback(
+
+                    $new_value = preg_replace_callback(
                         '|&#([0-9]+);|',
-                        function ($m) {
-                            $i     = (int) $m[1];
-                            $flags = ENT_SUBSTITUTE;
-                            if (0 === $i) {
-                                return '';
-                            }
-                            if ($i <= 255) {  // < > &
-                                return $m[0]; // do nothing
-                            }
-                            // convert encording and decode htmlentity
-                            $ch = html_entity_decode($m[0], $flags, _CHARSET); //mb_chr($i, 'UTF-8');
-                            if ((false === $ch)
-                                || ('?' === $ch && $i !== ord('?'))
-                                || ('U+FFFD' === $ch || $ch === ord('&#FFFD;')) // ENT_SUBSTITUTE
-                            ) {
-                                return $m[0]; // do nothing
-                            }
-                            return $ch;
-                        },
-                        $item->$name
+                        [$this, 'callback_cleanItem'],
+                        $new_value
                     );
-                }
-                //                var_dump(hsc($item->$name), $item->$name);
-                if (isDebugMode() && ! $this->allowScriptTagInItem() && preg_match('/<\\?xml\s|<script\s/i', $item->$name, $m)) {
-                    $msg = sprintf("%s:Line:%d : %s<br />%s\n", basename(__FILE__), __LINE__, $name, hsc($item->$name));
-                    trigger_error($msg, E_USER_ERROR);
-                }
+                    $item->$name = $new_value;
+
+                    if (isDebugMode() && ! $this->allowScriptTagInItem() && preg_match('/<\\?xml\s|<script\s/i', $new_value, $m)) {
+                        $msg = sprintf("%s:Line:%d : %s<br />%s\n", basename(__FILE__), __LINE__, $name, hsc($new_value));
+                        trigger_error($msg, E_USER_ERROR);
+                    }
+                } // if ($modified)
             } else {
-                $item->$name = strtr($xml->saveHTML(), ['<' => '&lt;', '>' => '&gt;']);
+                $item->$name = strip_tags(strtr($item->$name, ['<' => '&lt;', '>' => '&gt;']));
             }
         }
+    }
+    public function callback_cleanItem($m)
+    {
+        $i     = (int) $m[1];
+        $flags = ENT_SUBSTITUTE;
+        if (0 === $i) {
+            return '';
+        }
+        if ($i <= 255) {  // < > &
+            return $m[0]; // do nothing
+        }
+        // convert encording and decode htmlentity
+        $ch = html_entity_decode($m[0], $flags, _CHARSET); //mb_chr($i, 'UTF-8');
+        if ((false === $ch)
+            || ('?' === $ch && $i !== ord('?'))
+            || ('U+FFFD' === $ch || $ch === ord('&#FFFD;')) // ENT_SUBSTITUTE
+        ) {
+            return $m[0]; // do nothing
+        }
+        return $ch;
     }
 }

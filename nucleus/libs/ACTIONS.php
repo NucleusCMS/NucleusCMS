@@ -59,7 +59,7 @@ class ACTIONS extends BaseActions
     public function setSkin(&$skin)
     {
         unset($this->skin);
-        $this->skin = & $skin;
+        $this->skin = &$skin;
     }
 
     /**
@@ -68,7 +68,7 @@ class ACTIONS extends BaseActions
     public function setParser(&$parser)
     {
         unset($this->parser);
-        $this->parser = & $parser;
+        $this->parser = &$parser;
     }
 
     /**
@@ -173,7 +173,7 @@ class ACTIONS extends BaseActions
             return false;
         }
         if ('' != $value) {
-            list($name2, $value2) = explode('=', $value, 2);
+            [$name2, $value2] = explode('=', $value, 2);
             if ("" != $value2 || 'no' === $plugin->getOption($name2)) {
                 if ($plugin->getOption($name2) != $value2) {
                     return false;
@@ -188,7 +188,7 @@ class ACTIONS extends BaseActions
      */
     private function _ifPlugin($name, $key = '', $value = '')
     {
-        $plugin = & manager()->getPlugin('NP_' . $name);
+        $plugin = &manager()->getPlugin('NP_' . $name);
         if ( ! $plugin) {
             return false;
         }
@@ -304,14 +304,14 @@ class ACTIONS extends BaseActions
      * Outputs a next/prev link
      *
      * @param $maxresults
-     *                     The maximum amount of items shown per page (e.g. 10)
+     *                    The maximum amount of items shown per page (e.g. 10)
      * @param $startpos
-     *                     Current start position (requestVar('startpos'))
+     *                    Current start position (requestVar('startpos'))
      * @param $direction
-     *                     either 'prev' or 'next'
+     *                    either 'prev' or 'next'
      * @param $linktext
-     *                     When present, the output will be a full <a href...> link. When
-     *                     empty, only a raw link will be outputted
+     *                    When present, the output will be a full <a href...> link. When
+     *                    empty, only a raw link will be outputted
      */
     private function _searchlink(
         $maxresults,
@@ -333,7 +333,7 @@ class ACTIONS extends BaseActions
             $startpos = (int) $startpos - (int) $maxresults;
             $i        = $this->skintype;
             if ('index' === $i) {
-                $url = isset($parsed['path']) ? $parsed['path'] : '';
+                $url = $parsed['path'] ?? '';
             } elseif ('search' === $i) {
                 $url = $CONF['SearchURL'];
             }
@@ -358,7 +358,7 @@ class ACTIONS extends BaseActions
                 $i1 = $this->skintype;
                 if ('index' === $i1) {
                     $sqlquery = $blog->getSqlBlog('', 'count');
-                    $url      = isset($parsed['path']) ? $parsed['path'] : '';
+                    $url      = $parsed['path'] ?? '';
                 } elseif ('search' === $i1) {
                     $unused_highlight = '';
                     $sqlquery         = $blog->getSqlSearch(
@@ -422,10 +422,10 @@ class ACTIONS extends BaseActions
      * Helper function that sets the category that a blog will need to use
      *
      * @param $blog
-     *                  An object of the blog class, passed by reference (we want to make
-     *                  changes to it)
+     *                 An object of the blog class, passed by reference (we want to make
+     *                 changes to it)
      * @param $catname
-     *                  The name of the category to use
+     *                 The name of the category to use
      */
     private function _setBlogCategory($blog, $catname)
     {
@@ -545,7 +545,7 @@ class ACTIONS extends BaseActions
             global $currentTemplateName;
             if (isset($currentTemplateName)
                 && TEMPLATE::exists($currentTemplateName)) {
-                $template = & manager()->getTemplate($currentTemplateName);
+                $template = &manager()->getTemplate($currentTemplateName);
                 if (isset($template['LOCALE'])
                     && preg_match($pattern, $template['LOCALE'])) {
                     setlocale(LC_TIME, $template['LOCALE']);
@@ -664,7 +664,7 @@ class ACTIONS extends BaseActions
     {
         global $blog, $startpos;
 
-        list($limit, $offset) = sscanf($amount, '%d(%d)');
+        [$limit, $offset] = sscanf($amount, '%d(%d)');
         $this->_setBlogCategory($blog, $category);
         $this->_preBlogContent('blog', $blog);
         $this->amountfound = $blog->readLog(
@@ -772,7 +772,7 @@ class ACTIONS extends BaseActions
             $blog->showCategoryList($template);
             $this->_postBlogContent('categorylist', $blog);
         } else {
-            $b = & manager()->getBlog(getBlogIDFromName($blogname));
+            $b = &manager()->getBlog(getBlogIDFromName($blogname));
             $this->_preBlogContent('categorylist', $b);
             $b->showCategoryList($template);
             $this->_postBlogContent('categorylist', $b);
@@ -804,7 +804,7 @@ class ACTIONS extends BaseActions
         $actionurl = $CONF['ActionURL'];
 
         // if item is closed, show message and do nothing
-        $item = & $manager->getItem($itemid, 0, 0);
+        $item = &$manager->getItem($itemid, 0, 0);
         if ($item['closed'] || ! $blog->commentsEnabled()) {
             $this->doForm('commentform-closed');
 
@@ -877,7 +877,7 @@ class ACTIONS extends BaseActions
     public function parse_comments($template)
     {
         global $itemid, $manager, $blog, $highlight;
-        $template = & $manager->getTemplate($template);
+        $template = &$manager->getTemplate($template);
 
         // create parser object & action handler
         $actions = new ITEMACTIONS($blog);
@@ -1034,7 +1034,7 @@ class ACTIONS extends BaseActions
     public function parse_itemtitle($format = '')
     {
         global $manager, $itemid;
-        $item = & $manager->getItem($itemid, 0, 0);
+        $item = &$manager->getItem($itemid, 0, 0);
 
         if (isset($item) && isset($item['title']) && null !== $item['title']) {
             echo PAGEFACTORY::getFormatedText($item['title'], $format);
@@ -1293,7 +1293,7 @@ class ACTIONS extends BaseActions
         global $archive, $manager;
         $y = $m = $d = 0;
         sscanf($archive, '%d-%d-%d', $y, $m, $d);
-        $b = & $manager->getBlog(getBlogIDFromName($blogname));
+        $b = &$manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
         $this->_preBlogContent('otherachive', $b);
         $b->showArchive($template, $y, $m, $d);
@@ -1313,7 +1313,7 @@ class ACTIONS extends BaseActions
         if ('all' == $category) {
             $category = '';
         }
-        $b = & $manager->getBlog(getBlogIDFromName($blogname));
+        $b = &$manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
         $this->_preBlogContent('otherarchivelist', $b);
         $b->showArchiveList($template, 'day', $limit);
@@ -1333,7 +1333,7 @@ class ACTIONS extends BaseActions
         if ('all' == $category) {
             $category = '';
         }
-        $b = & $manager->getBlog(getBlogIDFromName($blogname));
+        $b = &$manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
         $this->_preBlogContent('otherarchivelist', $b);
         $b->showArchiveList($template, 'month', $limit);
@@ -1353,7 +1353,7 @@ class ACTIONS extends BaseActions
         if ('all' == $category) {
             $category = '';
         }
-        $b = & $manager->getBlog(getBlogIDFromName($blogname));
+        $b = &$manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
         $this->_preBlogContent('otherarchivelist', $b);
         $b->showArchiveList($template, 'year', $limit);
@@ -1371,9 +1371,9 @@ class ACTIONS extends BaseActions
     ) {
         global $manager;
 
-        list($limit, $offset) = sscanf($amount, '%d(%d)');
+        [$limit, $offset] = sscanf($amount, '%d(%d)');
 
-        $b = & $manager->getBlog(getBlogIDFromName($blogname));
+        $b = &$manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory($b, $category);
         $this->_preBlogContent('otherblog', $b);
         $this->amountfound = $b->readLog($template, $limit, $offset);
@@ -1389,7 +1389,7 @@ class ACTIONS extends BaseActions
         $maxresults = 50
     ) {
         global $query, $amount, $manager, $startpos;
-        $b = & $manager->getBlog(getBlogIDFromName($blogname));
+        $b = &$manager->getBlog(getBlogIDFromName($blogname));
         $this->_setBlogCategory(
             $b,
             ''
@@ -1415,7 +1415,7 @@ class ACTIONS extends BaseActions
         /*if (!$manager->pluginInstalled('NP_' . $pluginName))
             return;*/
 
-        $plugin = & $manager->getPlugin('NP_' . $pluginName);
+        $plugin = &$manager->getPlugin('NP_' . $pluginName);
         if ( ! $plugin) {
             return;
         }
@@ -1448,7 +1448,7 @@ class ACTIONS extends BaseActions
     {
         global $blog, $manager;
 
-        $template        = & $manager->getTemplate($template);
+        $template        = &$manager->getTemplate($template);
         $row['body']     = '<span id="prevbody"></span>';
         $row['title']    = '<span id="prevtitle"></span>';
         $row['more']     = '<span id="prevmore"></span>';
@@ -1539,7 +1539,7 @@ class ACTIONS extends BaseActions
     {
         global $CONF, $manager;
         if ($blogname) {
-            $blog = & $manager->getBlog(getBlogIDFromName($blogname));
+            $blog = &$manager->getBlog(getBlogIDFromName($blogname));
         } else {
             global $blog;
         }
@@ -1701,7 +1701,7 @@ class ACTIONS extends BaseActions
         $itemnumber = (int) $itemnumber;
         $itemarray  = [$itemnumber];
 
-        $b = & $manager->getBlog(getBlogIDFromItemID($itemnumber));
+        $b = &$manager->getBlog(getBlogIDFromItemID($itemnumber));
         $this->_preBlogContent('sticky', $b);
         $this->amountfound = $b->readLogFromList($itemarray, $template);
         $this->_postBlogContent('sticky', $b);
@@ -1713,7 +1713,7 @@ class ACTIONS extends BaseActions
 
         $itemid = (int) $itemid;
         // if item is closed, show message and do nothing
-        $item = & $manager->getItem($itemid, 0, 0);
+        $item = &$manager->getItem($itemid, 0, 0);
 
         return $item['closed'] || ! $blog->commentsEnabled();
     }

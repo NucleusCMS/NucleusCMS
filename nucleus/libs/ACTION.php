@@ -116,7 +116,7 @@ class ACTION
 
         $blog_id = getBlogIDFromItemID($post['itemid']);
         $this->checkban($blog_id);
-        $blog     = & $manager->getBlog($blog_id);
+        $blog     = &$manager->getBlog($blog_id);
         $comments = new COMMENTS($post['itemid']);
 
         // note: PreAddComment and PostAddComment gets called somewhere inside addComment
@@ -189,9 +189,8 @@ class ACTION
         redirect(createLink(
             'member',
             [
-                'memberid' => $tomem->getID()
-                ,
-                'name' => $tomem->getDisplayName(),
+                'memberid' => $tomem->getID(),
+                'name'     => $tomem->getDisplayName(),
             ]
         ));
     }
@@ -373,7 +372,7 @@ class ACTION
         $blogid = getBlogIDFromItemID($itemid);
         $this->checkban($blogid);
 
-        $karma         = & $manager->getKarma($itemid);
+        $karma         = &$manager->getKarma($itemid);
         $isVoteAllowed = $karma->isVoteAllowed(serverVar('REMOTE_ADDR'));
 
         $params = [
@@ -389,7 +388,7 @@ class ACTION
         }
 
         // check if item does allow voting
-        $item = & $manager->getItem($itemid, 0, 0);
+        $item = &$manager->getItem($itemid, 0, 0);
 
         if ($item['closed']) {
             doError(_ERROR_ITEMCLOSED);
@@ -409,7 +408,7 @@ class ACTION
         $manager->notify('PostVote', $params);
 
         //        $blogid = getBlogIDFromItemID($itemid);
-        $blog = & $manager->getBlog($blogid);
+        $blog = &$manager->getBlog($blogid);
 
         // send email to notification address, if any
         if ($blog->getNotifyAddress() && $blog->notifyOnVote()) {
@@ -484,7 +483,7 @@ class ACTION
         }
 
         // 2: call plugin
-        $pluginObject = & $manager->getPlugin($pluginName);
+        $pluginObject = &$manager->getPlugin($pluginName);
 
         $error = $pluginObject
             ? $pluginObject->doAction((string) requestVar('type'))

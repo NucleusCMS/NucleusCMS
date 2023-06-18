@@ -4,7 +4,7 @@
 
 class CoreCachedData
 {
-    const base_tablename = 'cached_data';
+    public const base_tablename = 'cached_data';
 
     public function __construct()
     {
@@ -38,7 +38,6 @@ class CoreCachedData
         $name,
         $expire_time = null
     ) {
-        global $DB_PHP_MODULE_NAME;
         $tablename = sql_table(self::base_tablename);
 
         $type     = (string) $type;
@@ -48,44 +47,24 @@ class CoreCachedData
 
         $expire_datetime = (null === $expire_time ? ''
             : sql_gmDateTime_from_utime($expire_time));
-        if ('pdo' == $DB_PHP_MODULE_NAME) {
-            $sql = "SELECT count(*) FROM `{$tablename}`"
-                                . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
-                                . " AND `cd_name` = ? ";
-            $input_parameters = [$type, $sub_type, $sub_id, $name];
-            if ( ! empty($expire_datetime)) {
-                // cd_datetime      : time when data was saved
-                // $expire_datetime : Expired time
-                //                    $expire_datetime = now - (Effective time)
-                //                    If it is larger than cd_datetime, data expired
-                // check if saved time > $expire_datetime
-                $sql .= " AND `cd_datetime` > ?";
-                $input_parameters[] = $expire_datetime;
-            }
-            $sql .= " LIMIT 1";
-            $res = sql_prepare_execute($sql, $input_parameters);
-            if ($res && ($row = sql_fetch_row($res))) {
-                return ($row[0] > 0);
-            }
-        } else {
-            $sql = "SELECT count(*) as result FROM `{$tablename}`"
-                   . sprintf(
-                       " WHERE `cd_type` = '%s' AND `cd_sub_type` = '%s' AND `cd_sub_id` = %d AND `cd_name` = '%s' ",
-                       sql_real_escape_string($type),
-                       sql_real_escape_string($sub_type),
-                       $sub_id,
-                       sql_real_escape_string($name)
-                   );
-            if ( ! empty($expire_datetime)) {
-                // check if saved time > $expire_datetime
-                $sql .= sprintf(
-                    " AND `cd_datetime` > '%s'",
-                    sql_real_escape_string($expire_datetime)
-                );
-            }
-            $res = quickQuery($sql);
 
-            return (int) $res > 0;
+        $sql = "SELECT count(*) FROM `{$tablename}`"
+                            . " WHERE `cd_type` = ? AND `cd_sub_type` = ? AND `cd_sub_id` = ? "
+                            . " AND `cd_name` = ? ";
+        $input_parameters = [$type, $sub_type, $sub_id, $name];
+        if ( ! empty($expire_datetime)) {
+            // cd_datetime      : time when data was saved
+            // $expire_datetime : Expired time
+            //                    $expire_datetime = now - (Effective time)
+            //                    If it is larger than cd_datetime, data expired
+            // check if saved time > $expire_datetime
+            $sql .= " AND `cd_datetime` > ?";
+            $input_parameters[] = $expire_datetime;
+        }
+        $sql .= " LIMIT 1";
+        $res = sql_prepare_execute($sql, $input_parameters);
+        if ($res && ($row = sql_fetch_row($res))) {
+            return ($row[0] > 0);
         }
 
         return false;
@@ -213,8 +192,8 @@ class CoreCachedData
         $res = sql_query($sql);
         if ($res && ($row = sql_fetch_assoc($res))) {
             $ret            = array_merge($row);
-            $ret['name']    = & $ret['cd_name'];
-            $ret['value']   = & $ret['cd_value'];
+            $ret['name']    = &$ret['cd_name'];
+            $ret['value']   = &$ret['cd_value'];
             $ret['expired'] = (int) ($ret['expired']);
 
             return $ret;
