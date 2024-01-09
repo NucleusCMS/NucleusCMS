@@ -18,32 +18,60 @@
 
 class PluginAdmin
 {
-    public $strFullName;        // NP_SomeThing
+    public $strFullName;       // NP_SomeThing
     public $plugin;            // ref. to plugin object
     public $bValid;            // evaluates to true when object is considered valid
-    public $admin;                // ref to an admin object
+    public $admin;             // ref to an admin object
 
     public function __construct($pluginName)
     {
-        global $manager, $DIR_LIBS;
+        global $manager, $DIR_LIBS, $member;
         include_once($DIR_LIBS . 'ADMIN.php');
 
         $this->strFullName = 'NP_' . $pluginName;
 
-        // check if plugin exists and is installed
-        if (!$manager->pluginInstalled($this->strFullName)) {
-            doError(_ERROR_INVALID_PLUGIN);
+        if (empty($member) || ! $member?->isLoggedIn() || ! $member?->isAdmin()) {
+            // Unauthorized access
+            $this->BAN();
         }
 
-        $this->plugin = & $manager->getPlugin($this->strFullName);
+        if ( ! defined('ENABLE_PLUGIN_ADMIN_V2') || ! constant('ENABLE_PLUGIN_ADMIN_V2')) {
+            $allow = ( ! defined('PLUGIN_ADMIN_BASE_URL') && CONF::asBool('ENABLE_PLUGIN_ADMIN_V1', true));
+            if ( ! $allow) {
+                $this->Error(_ERROR_PLUGIN_NOSUCHACTION);
+            }
+        }
+
+        // check if plugin exists and is installed
+        if ( ! $manager->pluginInstalled($this->strFullName)) {
+            $this->Error(_ERROR_NOSUCHPLUGIN);
+        }
+
+        $this->plugin = &$manager->getPlugin($this->strFullName);
         $this->bValid = $this->plugin;
 
-        if (!$this->bValid) {
-            doError(_ERROR_INVALID_PLUGIN);
+        if ( ! $this->bValid) {
+            $this->Error(_ERROR_INVALID_PLUGIN);
         }
 
         $this->admin         = new ADMIN();
         $this->admin->action = 'plugin_' . $pluginName;
+    }
+
+    private function Error($msg): void
+    {
+        if ( ! defined('PLUGIN_ADMIN_BASE_URL')) {
+            doError($msg);
+        }
+        $this->admin ??= new ADMIN();
+        $this?->admin?->error($msg);
+        exit;
+    }
+
+    private function BAN(): void
+    {
+        // not implemented yet
+        exit;
     }
 
     public function start($extraHead = '')
@@ -68,11 +96,11 @@ class PluginAdmin
     public function _AddTicketByJS()
     {
         global $CONF, $ticketforplugin;
-        if (!($ticket = $ticketforplugin['ticket'])) {
+        if ( ! ($ticket = $ticketforplugin['ticket'])) {
             //echo "\n<!--TicketForPlugin skipped-->\n";
             return;
         }
-        $ticket = hsc($ticket);
+        $ticket = escapeHTML($ticket);
 
         ?>
         <script>

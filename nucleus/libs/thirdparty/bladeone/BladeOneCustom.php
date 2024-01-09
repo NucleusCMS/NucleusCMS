@@ -23,7 +23,7 @@ trait BladeOneCustom
     /**
      * Usage @panel('title',true,true).....@endpanel()
      *
-     * @param $expression
+     * @param         $expression
      * @return string
      */
     protected function compilePanel($expression)

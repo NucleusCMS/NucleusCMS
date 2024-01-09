@@ -2,7 +2,7 @@
 
 // Extract names of Nucleus constants and save to ./lang_const_keys.json
 
-$files = array('japanese-utf8.php', 'english-utf8.php');
+$files = ['japanese-utf8.php', 'english-utf8.php'];
 
 $orig = get_defined_constants();
 foreach ($files as $filename) {
@@ -13,7 +13,7 @@ foreach ($files as $filename) {
 }
 $new = get_defined_constants();
 
-$keys = array();
+$keys         = [];
 $keys['lang'] = array_diff(array_keys($new), array_keys($orig));
 natsort($keys['lang']);
 
@@ -27,7 +27,7 @@ printf("lang    : %d\n", count($keys['lang']));
 
 function try_define($name, $value)
 {
-    if (!defined($name)) {
+    if ( ! defined($name)) {
         define($name, $value);
     }
 }

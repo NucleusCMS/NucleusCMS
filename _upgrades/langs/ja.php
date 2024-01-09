@@ -53,7 +53,6 @@ define('_UPG_TEXT_NOTE02',             'Nucleus CMSはバージョンアップ�
 
 
 define('_UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED', '自動でできるアップグレードはありません。データベースは既に最新の Nucleus 用にアップデートされています。');
-define('_UPG_TEXT_WARN_DEPRECATED_PHP4_STOP',    'NucleusはPHP4では動作しません。アップグレード作業を中止して、PHP5以上が使えるかどうか、サーバ管理者に確認して下さい。');
 define('_UPG_TEXT_WARN_MINIMUM_PHP_STOP',        'Nucleus %s の動作にはPHP %s 以降が必要です。アップグレード作業を中止して、PHP %s 以降が使えるかどうか、サーバ管理者に確認して下さい。');
 
 define('_UPG_TEXT_CLICK_HERE_TO_UPGRADE',        'ここをクリックしてデータベースを Nucleus v%s 用にアップグレードします');
@@ -85,3 +84,5 @@ define('_UPG_TEXT_ATOM1_05', 'Nucleus 3.3(2007年5月1日リリース) からい
 define('_UPG_TEXT_ATOM1_06', '管理者画面を開き、管理ホームにあるスキンの「読込/書出」を開きます。そこから default を選択し、読み込みボタンを押して上書きインストールしてください。');
 define('_UPG_TEXT_ATOM1_07', 'もし default のスキンやテンプレートを変更している場合は、既存の内容をファイルに書き出して（skinbackup.xml というファイルが作成されます）、/skins/default/skinbackup.xml （これが新しいファイル）と比較し、この新しいファイルを更新します。その後、前述の通り管理者画面からスキンの「読込/書出」を開いて同様にして上書きインストールして下さい。');
 
+define('_UPG_TEXT_COLLATION_CONVERT', '照合順序の変換');
+define('_UPG_TEXT_COLLATION_CONVERT_DESC', '照合順序の変換が必要な場合は こちら');

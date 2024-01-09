@@ -16,7 +16,7 @@
 
 function getVar($name, $default = null)
 {
-    if (! isset($_GET[$name])) {
+    if ( ! isset($_GET[$name])) {
         return $default;
     }
 
@@ -25,7 +25,7 @@ function getVar($name, $default = null)
 
 function postVar($name, $default = null)
 {
-    if (! isset($_POST[$name])) {
+    if ( ! isset($_POST[$name])) {
         return $default;
     }
 
@@ -34,7 +34,7 @@ function postVar($name, $default = null)
 
 function cookieVar($name, $default = null)
 {
-    if (! isset($_COOKIE[$name])) {
+    if ( ! isset($_COOKIE[$name])) {
         return $default;
     }
 
@@ -59,7 +59,7 @@ function requestVar($name, $default = null)
 function serverVar($name, $default = null)
 {
     $name = strtoupper($name);
-    if (! isset($_SERVER[$name])) {
+    if ( ! isset($_SERVER[$name])) {
         return $default;
     }
 
@@ -68,7 +68,7 @@ function serverVar($name, $default = null)
 
 function globalVar($name, $default = null)
 {
-    if (! isset($GLOBALS[$name])) {
+    if ( ! isset($GLOBALS[$name])) {
         return $default;
     }
 
@@ -78,7 +78,7 @@ function globalVar($name, $default = null)
 function confVar($name, $default = null)
 {
     global $CONF;
-    if (! isset($CONF[$name])) {
+    if ( ! isset($CONF[$name])) {
         return $default;
     }
 
@@ -97,7 +97,7 @@ function stripslashes_array($data)
 // integer array from request
 function requestIntArray($name, $default = null)
 {
-    if (! isset($_REQUEST[$name])) {
+    if ( ! isset($_REQUEST[$name])) {
         return $default;
     }
 
@@ -107,7 +107,7 @@ function requestIntArray($name, $default = null)
 // array from request. Be sure to call undoMagic on the strings inside
 function requestArray($name, $default = null)
 {
-    if (! isset($_REQUEST[$name])) {
+    if ( ! isset($_REQUEST[$name])) {
         return $default;
     }
 
@@ -119,16 +119,16 @@ function requestArray($name, $default = null)
 function passRequestVars()
 {
     foreach ($_REQUEST as $key => $value) {
-        if ($key === 'action' && ($value != requestVar('nextaction'))) {
+        if ('action' === $key && ($value != requestVar('nextaction'))) {
             $key = 'nextaction';
         }
 
         // a nextaction of 'showlogin' makes no sense
-        if (($key === 'nextaction') && ($value === 'showlogin')) {
+        if (('nextaction' === $key) && ('showlogin' === $value)) {
             continue;
         }
 
-        if ($key !== 'login' && $key !== 'password') {
+        if ('login' !== $key && 'password' !== $key) {
             passVar($key, $value);
         }
     }
@@ -136,7 +136,7 @@ function passRequestVars()
 
 function postFileInfo($name, $default = null)
 {
-    if (! isset($_FILES[$name])) {
+    if ( ! isset($_FILES[$name])) {
         return $default;
     }
 
@@ -159,10 +159,10 @@ function undoMagic($data)
         'Function ' . __FUNCTION__ . '() is deperecated',
         defined('E_USER_DEPRECATED') ? E_USER_DEPRECATED : E_USER_NOTICE
     );
-    if (! get_magic_quotes_gpc()) {
+    if ( ! get_magic_quotes_gpc()) {
         return $data;
     }
-    if (ini_get('magic_quotes_sybase') != 1) {
+    if (1 != ini_get('magic_quotes_sybase')) {
         return stripslashes_array($data);
     }
 

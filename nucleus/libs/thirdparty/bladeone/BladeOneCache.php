@@ -7,6 +7,7 @@
 namespace eftec\bladeone;
 
 use Exception;
+
 use function fclose;
 use function file_put_contents;
 use function filemtime;
@@ -91,7 +92,7 @@ trait BladeOneCache
             $txt = print_r($txt, true);
         }
         // Rewrite file if more than 100000 bytes
-        $mode = ($fz > 100000) ? 'w':'a';
+        $mode = ($fz > 100000) ? 'w' : 'a';
         $fp   = fopen($this->cacheLog, $mode);
         if ($fp === false) {
             return;
@@ -165,7 +166,7 @@ trait BladeOneCache
             }
             $r = serialize($copy);
         }
-        return $serialize === true ? md5($r): $r;
+        return $serialize === true ? md5($r) : $r;
     }
 
     public function compileCache($expression): string
@@ -311,7 +312,7 @@ trait BladeOneCache
     public function cacheEnd($txt = null): void
     {
         if (!$this->cacheRunning) {
-            $txt = $txt ?? substr(ob_get_contents(), $this->curCachePosition);
+            $txt ??= substr(ob_get_contents(), $this->curCachePosition);
             if ($this->cachePageRunning) {
                 $compiledFile = $this->getCompiledFileCache($this->fileName);
             } else {

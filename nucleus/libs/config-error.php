@@ -1,6 +1,6 @@
 <?php
 
-if (!headers_sent()) {
+if ( ! headers_sent()) {
     header('Content-type: text/html; charset=utf-8');
 }
 
@@ -10,7 +10,7 @@ $http_accept_language_list = (isset($_SERVER['HTTP_ACCEPT_LANGUAGE']) ?
 
 global $CONF;
 $url = './install/index.php';
-if (isset($CONF) && isset($CONF['UsingAdminArea']) && (bool)$CONF['UsingAdminArea']) {
+if (isset($CONF) && isset($CONF['UsingAdminArea']) && (bool) $CONF['UsingAdminArea']) {
     $url = '.' . $url;
 }
 

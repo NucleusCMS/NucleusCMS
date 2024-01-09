@@ -14,7 +14,9 @@
  *
  */
 
-if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+define('NC_MTN_MODE', 'upgrade');
+
+if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
@@ -29,7 +31,7 @@ global $CONF;
 
 include_once('define.php');
 
-if (!is_file('../config.php')) {
+if ( ! is_file('../config.php')) {
     exit('config not found');
 }
 
@@ -39,17 +41,17 @@ include_once('sql.functions.php');
 
 load_upgrade_lang();
 
-if (getVar('mode') === 'exec') {
+if ('exec' === getVar('mode')) {
     include_once('upgrade.php');
     exit;
 }
 
 // check if logged in etc
-if (!$member->isLoggedIn()) {
+if ( ! $member->isLoggedIn()) {
     $content = upgrade_showLogin('./');
-} elseif (!$member->isAdmin()) {
-    $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN);
-} elseif (!upgrade_checkinstall(300)) {
+} elseif ( ! $member->isAdmin()) {
+    $content = upgrade_error(_UPG_TEXT_ONLY_SUPER_ADMIN) . '<br >' . upgrade_showLogin('./');
+} elseif ( ! upgrade_checkinstall(300)) {
     $tpl                                     = file_get_contents('tpl/content_beforev2.tpl');
     $ph                                      = [];
     $ph['UPGRADE_ABORTED']                   = _UPG_TEXT_UPGRADE_ABORTED;

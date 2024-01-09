@@ -97,13 +97,13 @@ class SKINIMPORT
      * Reads an XML file into memory
      *
      * @param $filename
-     *                     Which file to read
+     *                  Which file to read
      * @param $metaOnly
-     *                     Set to 1 when only the metadata needs to be read
-     *                     (optional, default 0)
-     *                     [2016/05/11]    Modified by piyoyo
-     *                     xml_parse : parce error occured from PHP 7.0.3(to
-     *                     7.0.6) and later add readFileWithSimpleXML function
+     *                  Set to 1 when only the metadata needs to be read
+     *                  (optional, default 0)
+     *                  [2016/05/11]    Modified by piyoyo
+     *                  xml_parse : parce error occured from PHP 7.0.3(to
+     *                  7.0.6) and later add readFileWithSimpleXML function
      *
      * @return string
      */
@@ -118,7 +118,7 @@ class SKINIMPORT
 
         // open file
         $tempbuffer = @file_get_contents($filename);
-        if ($tempbuffer === false) {
+        if (false === $tempbuffer) {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
         // here we go!
@@ -143,7 +143,7 @@ class SKINIMPORT
         */
         $has_mb_func = function_exists('mb_convert_encoding');
 
-        if ($has_mb_func && (strtoupper(_CHARSET) !== 'ISO-8859-1')) {
+        if ($has_mb_func && ('ISO-8859-1' !== strtoupper(_CHARSET))) {
             mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
             $temp_encode = mb_detect_encoding($tempbuffer);
         } else {
@@ -155,14 +155,14 @@ class SKINIMPORT
         rewind($temp);
 
         while (($buffer = fread($temp, 4096))
-               && (! $metaOnly
+               && ( ! $metaOnly
                     || ($metaOnly
                         && ! $this->metaDataRead))) {
-            if ($temp_encode && $temp_encode !== 'UTF-8' && $has_mb_func) {
+            if ($temp_encode && 'UTF-8' !== $temp_encode && $has_mb_func) {
                 $buffer = mb_convert_encoding($buffer, 'UTF-8', $temp_encode);
             }
             $err = xml_parse($this->parser, $buffer, feof($temp));
-            if (! $err && $this->debug) {
+            if ( ! $err && $this->debug) {
                 printf(
                     'ERROR: %s<br />',
                     xml_error_string(xml_get_error_code($this->parser))
@@ -205,9 +205,9 @@ class SKINIMPORT
      * Writes the skins and templates to the database
      *
      * @param $allowOverwrite
-     *        set to 1 when allowed to overwrite existing skins with the same
-     *        name
-     *        (default = 0)
+     *                        set to 1 when allowed to overwrite existing skins with the same
+     *                        name
+     *                        (default = 0)
      */
     public function writeToDatabase($allowOverwrite = 0)
     {
@@ -215,7 +215,7 @@ class SKINIMPORT
         $existingTemplates = $this->checkTemplateNameClashes();
 
         // if not allowed to overwrite, check if any nameclashes exists
-        if (! $allowOverwrite) {
+        if ( ! $allowOverwrite) {
             if ((count($existingSkins) > 0)
                 || (count($existingTemplates) > 0)) {
                 return _SKINIE_NAME_CLASHES_DETECTED;
@@ -262,7 +262,7 @@ class SKINIMPORT
                     $skinObj->update(
                         $pageName,
                         (isset($pageData['content'])
-                        ? (string)$pageData['content'] : ''),
+                        ? (string) $pageData['content'] : ''),
                         $options
                     );
                 }
@@ -360,7 +360,7 @@ class SKINIMPORT
                 // no action needed
                 break;
             case 'skin':
-                if (! $this->inMeta) {
+                if ( ! $this->inMeta) {
                     $this->inSkin = 1;
                     $this->currentName
                                                               = $attrs['name'];
@@ -377,7 +377,7 @@ class SKINIMPORT
                 }
                 break;
             case 'template':
-                if (! $this->inMeta) {
+                if ( ! $this->inMeta) {
                     $this->inTemplate = 1;
                     $this->currentName
                                                                   = $attrs['name'];
@@ -426,12 +426,12 @@ class SKINIMPORT
                 $this->info = $this->getCharacterData();
                 break;
             case 'skin':
-                if (! $this->inMeta) {
+                if ( ! $this->inMeta) {
                     $this->inSkin = 0;
                 }
                 break;
             case 'template':
-                if (! $this->inMeta) {
+                if ( ! $this->inMeta) {
                     $this->inTemplate = 0;
                 }
                 break;
@@ -483,9 +483,9 @@ class SKINIMPORT
      */
     public function getCharacterData()
     {
-        if ((strtoupper(_CHARSET) === 'UTF-8')
-            or (strtoupper(_CHARSET) === 'ISO-8859-1')
-            or (! function_exists('mb_convert_encoding'))) {
+        if (('UTF-8' === strtoupper(_CHARSET))
+            or ('ISO-8859-1' === strtoupper(_CHARSET))
+            or ( ! function_exists('mb_convert_encoding'))) {
             return $this->cdata;
         }
 
@@ -532,23 +532,23 @@ class SKINIMPORT
     public function convValue($text)
     {
         static $flag = -1;
-        if ($flag == 0) {
-            return (string)$text;
+        if (0 == $flag) {
+            return (string) $text;
         }
-        if ($flag == -1) {
-            if ((strtoupper(_CHARSET) === 'UTF-8')
-                or (strtoupper(_CHARSET) === 'ISO-8859-1')
-                or (! function_exists('mb_convert_encoding'))) {
+        if (-1 == $flag) {
+            if (('UTF-8' === strtoupper(_CHARSET))
+                or ('ISO-8859-1' === strtoupper(_CHARSET))
+                or ( ! function_exists('mb_convert_encoding'))) {
                 $flag = 0;
             } else {
                 $flag = 1;
             }
         }
-        if ($flag == 1) {
-            return mb_convert_encoding((string)$text, _CHARSET, 'UTF-8');
+        if (1 == $flag) {
+            return mb_convert_encoding((string) $text, _CHARSET, 'UTF-8');
         }
 
-        return (string)$text;
+        return (string) $text;
     }
 
     private function readFileWithSimpleXML($filename, $metaOnly = 0)
@@ -558,12 +558,12 @@ class SKINIMPORT
         $this->templates = [];
 
         $src_text = @file_get_contents($filename);
-        if ($src_text === false) {
+        if (false === $src_text) {
             return _SKINIE_ERROR_FAILEDOPEN_FILEURL;
         }
 
         if (function_exists('mb_convert_encoding')
-            && (strtoupper(_CHARSET) !== 'ISO-8859-1')) {
+            && ('ISO-8859-1' !== strtoupper(_CHARSET))) {
             mb_detect_order("ASCII, EUC-JP, UTF-8, JIS, SJIS, EUC-CN, ISO-8859-1");
             $temp_encode = mb_detect_encoding($src_text);
         } else {
@@ -571,9 +571,9 @@ class SKINIMPORT
         }
 
         if (empty($temp_encode)
-            or (strtoupper($temp_encode) === 'UTF-8')
-            or (strtoupper($temp_encode) === 'ISO-8859-1')
-            or (! function_exists('mb_convert_encoding'))) {
+            or ('UTF-8' === strtoupper($temp_encode))
+            or ('ISO-8859-1' === strtoupper($temp_encode))
+            or ( ! function_exists('mb_convert_encoding'))) {
             $xml = simplexml_load_string($src_text);
         } else {
             $xml = simplexml_load_string(mb_convert_encoding(
@@ -584,7 +584,7 @@ class SKINIMPORT
         }
         unset($src_text);
 
-        if ($xml === false) {
+        if (false === $xml) {
             return _SKINIE_ERROR_FAILEDLOAD_XML;
         }
 
@@ -608,12 +608,12 @@ class SKINIMPORT
                         $name = $child->getName();
                         if ('info' === $name) {
                             $data[$parent][$name]
-                                        = $this->convValue((string )$child);
-                            $this->info = & $data[$parent][$name];
+                                        = $this->convValue((string) $child);
+                            $this->info = &$data[$parent][$name];
                         } else { // skin template
                             foreach ($child->attributes() as $k => $v) {
                                 if ('name' === $k) {
-                                    $data[$parent][$name][] = (string )$v;
+                                    $data[$parent][$name][] = (string) $v;
                                 }
                             }
                         }
@@ -635,7 +635,7 @@ class SKINIMPORT
             }
             // skin template
             $xml_first = $xml->xpath('/nucleusskin/' . $parent);
-            if (! $xml_first) {
+            if ( ! $xml_first) {
                 continue;
             }
             foreach ($xml_first as $child) {
@@ -643,24 +643,24 @@ class SKINIMPORT
                 $name       = $child->getName(); // skin template
                 $attributes = [];
                 foreach ($child->attributes() as $k => $v) {
-                    $attributes[$k] = (string )$v;
+                    $attributes[$k] = (string) $v;
                 }
                 $current_name = @$attributes['name'];
 
                 $description         = $child->xpath('description');
                 $item['description'] = ($description
-                    ? $this->convValue((string )$description[0]) : '');
+                    ? $this->convValue((string) $description[0]) : '');
 
                 // parts
                 $parts = $child->xpath('part');
                 foreach ($parts as $part) {
                     $attr = [];
                     foreach ($part->attributes() as $k => $v) {
-                        $attr[$k] = (string )$v;
+                        $attr[$k] = (string) $v;
                     }
                     $part_name = @$attr['name'];
                     $item['parts'][$part_name]
-                               = $this->convValue((string )$part);
+                               = $this->convValue((string) $part);
                 }
                 // specialpage
                 //  spartstype = 'specialpage'
@@ -668,30 +668,30 @@ class SKINIMPORT
                 foreach ($xml_pages as $xml_page) {
                     $attr = [];
                     foreach ($xml_page->attributes() as $k => $v) {
-                        $attr[$k] = (string )$v;
+                        $attr[$k] = (string) $v;
                     }
                     $part_name = @$attr['name'];
                     $page_data = array_merge($attr);
                     $page_data['content']
-                                                     = $this->convValue((string )$xml_page);
+                                                     = $this->convValue((string) $xml_page);
                     $item['specialpage'][$part_name] = $page_data;
                 }
 
                 //
                 foreach (['type', 'includeMode', 'includePrefix'] as $a) {
-                    $item[$a] = isset($attributes[$a]) ? $attributes[$a] : '';
+                    $item[$a] = $attributes[$a] ?? '';
                 }
 
                 $data[$parent][$current_name] = $item;
             }
         }
 
-        if (! $metaOnly) {
+        if ( ! $metaOnly) {
             if (isset($data['skin'])) {
-                $this->skins = & $data['skin'];
+                $this->skins = &$data['skin'];
             }
             if (isset($data['template'])) {
-                $this->templates = & $data['template'];
+                $this->templates = &$data['template'];
             }
         }
         if (is_array($this->skins)) {

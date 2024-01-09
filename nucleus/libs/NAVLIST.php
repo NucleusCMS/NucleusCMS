@@ -282,11 +282,11 @@ class NAVLIST extends ENCAPSULATE
                                 <input type="hidden" name="start" value="0"/>
                                 <?php
                         echo $this->getFormSelectViewItemOptions(
-                                 $action,
-                                 $blogid,
-                                 $catid,
-                                 $view_item_options
-                             ); ?>
+                            $action,
+                            $blogid,
+                            $catid,
+                            $view_item_options
+                        ); ?>
                             </form>
                         </div>
                         </div>
@@ -301,12 +301,9 @@ class NAVLIST extends ENCAPSULATE
     public static function getValidViewItemOption($name, $default = 'all')
     {
         $list = [
-            'all'
-        ,
-            'normal'
-        ,
-            'normal_term_future'
-        ,
+            'all',
+            'normal',
+            'normal_term_future',
             'draft',
         ];
         foreach ($list as $key) {
@@ -327,26 +324,23 @@ class NAVLIST extends ENCAPSULATE
     ) {
         global $CONF;
         $list = [
-            'all'
-        ,
-            'normal'
-        ,
-            'normal_term_future'
-        ,
+            'all',
+            'normal',
+            'normal_term_future',
             'draft',
         ];
-        if (! in_array($in_value, $list)) {
+        if ( ! in_array($in_value, $list)) {
             $in_value = 'all';
         }
 
         // calc count
         static $count_cached = [];
         $cachekey            = sprintf('%d_%d', $blogid, $selected_catid);
-        if (! isset($count_cached[$cachekey])) {
+        if ( ! isset($count_cached[$cachekey])) {
             global $member;
             $count_cached[$cachekey] = [];
             foreach ($list as $key) {
-                if ($action == 'browseownitems') {
+                if ('browseownitems' == $action) {
                     $sql = sprintf(
                         "SELECT count(*) as result FROM `%s` as i ",
                         sql_table('item')
@@ -403,15 +397,14 @@ class NAVLIST extends ENCAPSULATE
             htmlentities($input_name, ENT_COMPAT, _CHARSET)
         );
         foreach ($list as $key) {
-            if ($key != 'all' && isset($count_cached[$cachekey][$key])
-                && ($count_cached[$cachekey][$key] == 0)) {
+            if ('all' != $key && isset($count_cached[$cachekey][$key])
+                && (0 == $count_cached[$cachekey][$key])) {
                 continue;
             }
             $selected = ($key == $in_value ? ' selected' : '');
             $title    = '_LISTS_FORM_SELECT_ITEM_OPTION_' . strtoupper($key);
             $title    = hsc(defined($title) ? constant($title) : $key);
-            $title .= sprintf(' (%d)', (isset($count_cached[$cachekey][$key])
-                ? $count_cached[$cachekey][$key] : 0));
+            $title .= sprintf(' (%d)', ($count_cached[$cachekey][$key] ?? 0));
             $s .= "\n\t\t" . sprintf(
                 '<option value="%s"%s>%s</option>',
                 $key,
@@ -433,7 +426,7 @@ class NAVLIST extends ENCAPSULATE
     ) {
         global $member;
 
-        if ($action == 'browseownitems') {
+        if ('browseownitems' == $action) {
             return $this->getFormSelectCategoryOwn(
                 $blogid,
                 $selected_catid,
@@ -442,10 +435,10 @@ class NAVLIST extends ENCAPSULATE
             );
         }
 
-        if (! $blogid) {
+        if ( ! $blogid) {
             return '';
         }
-        if (! $member->teamRights($blogid) && ! $member->isAdmin()) {
+        if ( ! $member->teamRights($blogid) && ! $member->isAdmin()) {
             return '';
         }
 
@@ -463,7 +456,7 @@ class NAVLIST extends ENCAPSULATE
 
         $lists          = [];
         $selected       = false;
-        $selected_catid = (int)$selected_catid;
+        $selected_catid = (int) $selected_catid;
         // @todo NP_MultipleCategories
         $sql = 'SELECT catid , cname , count(inumber) as count FROM '
                  . sql_table('category')
@@ -485,7 +478,7 @@ class NAVLIST extends ENCAPSULATE
                            . hsc($row['cname'])
                            . sprintf('(%d)', $row['count']) . '</option>';
                 $total += $row['count'];
-                if (! $selected && (int) ($row['catid']) == $selected_catid) {
+                if ( ! $selected && (int) ($row['catid']) == $selected_catid) {
                     $selected = true;
                 }
             }
@@ -529,7 +522,7 @@ class NAVLIST extends ENCAPSULATE
 
         $lists          = [];
         $selected       = false;
-        $selected_catid = (int)$selected_catid;
+        $selected_catid = (int) $selected_catid;
 
         // blog(bnumber, bname or bshortname) , category(catid,cblog,cname,corder)
         $sql
@@ -549,10 +542,10 @@ class NAVLIST extends ENCAPSULATE
         if ($res) {
             while ($row = sql_fetch_assoc($res)) {
                 $b_id = $row['cblog'];
-                if (! isset($blog_titles[$b_id])) {
+                if ( ! isset($blog_titles[$b_id])) {
                     $blog_titles[$b_id] = $row['bname'];
                 }
-                if (! isset($lists[$b_id])) {
+                if ( ! isset($lists[$b_id])) {
                     $lists[$b_id] = [];
                 }
 
@@ -566,7 +559,7 @@ class NAVLIST extends ENCAPSULATE
                                   . sprintf('(%d)', $row['count'])
                                   . '</option>';
                 $total += $row['count'];
-                if (! $selected && (int) ($row['catid']) == $selected_catid) {
+                if ( ! $selected && (int) ($row['catid']) == $selected_catid) {
                     $selected = true;
                 }
             }

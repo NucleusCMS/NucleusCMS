@@ -27,17 +27,20 @@ try_define('_HTML_5_LANG_CODE', 'en');
 /********************************************
  *        Admin Links Settings                *
  ********************************************/
-try_define('_MANAGE_LINKS_ITEMS', '<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
+try_define('_MANAGE_LINKS_ITEMS', '<li><a href="https://github.com/NucleusCMS?q=NP_&type=all&language=&sort=" title="Nucleus CMS Plugins (github)">Nucleus CMS Plugins</a></li>
+<!--
+<li><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></li>
 <li><a href="http://nucleuscms.org/forum/" title="Nucleus CMS Support Forum">nucleuscms.org/forum/</a></li>
 <li><a href="http://nucleuscms.org/docs/" title="Nucleus CMS Documentation">nucleuscms.org/docs/</a></li>
 <li><a href="http://nucleuscms.org/wiki/" title="Nucleus CMS Wiki">nucleuscms.org/wiki/</a></li>
 <li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">nucleuscms.org/skins/</a></li>
 <li><a href="http://nucleuscms.org/wiki/doku.php/plugin" title="Nucleus CMS Plugins">nucleuscms.org/wiki/doku.php/plugin</a></li>
 <li><a href="http://nucleuscms.org/dev/" title="Nucleus Developer Network">nucleuscms.org/dev/</a></li>
+-->
 ');
 
 /********************************************
- *        Start New for                     *
+ *        Common constants                  *
  ********************************************/
 
 /********************************************
@@ -1491,3 +1494,46 @@ try_define('_EDITC_NONMEMBER',			'non member');
 // move item
 try_define('_MOVE_TITLE',				'Move to which blog?');
 try_define('_MOVE_BTN',					'Move Item');
+
+/********************************************
+ *        Common constants                  *
+ ********************************************/
+
+try_define('_ADMIN_DEVELOP_VERSION', 'Development version');
+try_define('_ADMIN_ITEMCLONE_TEXT_BODY', 'Content');
+try_define('_ADMIN_ITEMCLONE_TEXT_DATETIME', 'Date and time');
+try_define('_ADMIN_ITEMCLONE_TEXT_EXECUTE', 'Execute duplication');
+try_define('_ADMIN_ITEMCLONE_TEXT_TITLE', 'TITLE');
+try_define('_ADMIN_ITEMCLONE_TEXT1', 'Please confirm the duplication');
+try_define('_ADMIN_ITEMCLONE_TEXT2', 'You are trying to duplicate the following item. The duplicated one will be saved as a draft.');
+try_define('_ADMIN_MEMBER_SETTINGSAVE_SELECTPAGE_BACKHOME', 'Back to home');
+try_define('_ADMIN_MEMBER_SETTINGSAVE_SELECTPAGE_SAMEPAGE', 'Go back to member editing');
+try_define('_ADMIN_MEMBER_SETTINGSAVE_SELECTPAGE_TITLE', 'The page that will be displayed after saving member editing');
+try_define('_ADMIN_TEXT_BTN_CANCEL', 'CANCEL');
+try_define('_ADMIN_TEXT_BTN_EXECUTE', 'EXECUTE');
+try_define('_BACK_USER_HOME', 'Back to your home');
+try_define('_BACK_YR_HOME', 'Back to your home');
+try_define('_ERROR_INVALID_ACCESS', 'Invalid access.');
+try_define('_ERROR_NO_CHANGED_PASSWORD', 'There was no password change');
+try_define('_ERROR_NOT_MATCH_CURRENT_PASSWORD', 'The current password did not match');
+try_define('_MEMBERS_CHANGE_PASSWORD', 'Change password');
+try_define('_MEMBERS_CHANGED_PASSWORD', 'Password changed');
+try_define('_MEMBERS_CURRENT_PASSWORD', 'Current password');
+try_define('_MEMBERS_INVALID_PASSWORD_CHARACTERS', 'The password contains invalid characters');
+try_define('_MEMBERS_NEW_PASSWORD', 'New password');
+try_define('_OVERVIEW_USER_PASSWORD', 'Password change');
+try_define('_OVERVIEW_YR_MEMBER_SETTINGS', 'Your settings');
+try_define('_QMENU_ABOUT', 'About this app');
+try_define('_QMENU_BACK_USER_HOME', 'Back to your home');
+try_define('_QMENU_HELP', 'Help');
+try_define('_QMENU_MANUAL', 'user\'s guide');
+try_define('_QMENU_USER_HOME', 'Your home');
+try_define('_QMENU_USER_MEMBER_SETTINGS', 'Member settings');
+try_define('_QMENU_USER_PASSWORD', 'Change password');
+try_define('_USER_HOME', 'Home');
+try_define('_ADMIN_TEXT_CONFLICT_DELETE_OLD_PLUGIN', 'There are mixed old-style plugins. Please delete the old-style plugins.');
+try_define('_ADMIN_TEXT_DOWNLOAD_PL_FOLDER', 'Download to plugin folder');
+try_define('_ADMIN_TEXT_REMOTE_AUTO_UPDATE', 'Download and auto-update');
+try_define('_ADMIN_TEXT_REMOTE_DOWNLOAD', 'Download from remote');
+try_define('_ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS', 'Update notifications and downloads');
+try_define('_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS', 'Don\'t use update notifications and downloads');

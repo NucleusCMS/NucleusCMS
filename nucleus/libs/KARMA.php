@@ -31,19 +31,19 @@ class KARMA
     public function __construct($itemid, $initpos = 0, $initneg = 0, $initread = 0)
     {
         // itemid
-        $this->itemid = (int)$itemid;
+        $this->itemid = (int) $itemid;
 
         // have we read the karma info yet?
-        $this->inforead = (int)$initread;
+        $this->inforead = (int) $initread;
 
         // number of positive and negative votes
-        $this->karmapos = (int)$initpos;
-        $this->karmaneg = (int)$initneg;
+        $this->karmapos = (int) $initpos;
+        $this->karmaneg = (int) $initneg;
     }
 
     public function getNbPosVotes()
     {
-        if (! $this->inforead) {
+        if ( ! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -52,7 +52,7 @@ class KARMA
 
     public function getNbNegVotes()
     {
-        if (! $this->inforead) {
+        if ( ! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -61,7 +61,7 @@ class KARMA
 
     public function getNbOfVotes()
     {
-        if (! $this->inforead) {
+        if ( ! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -70,7 +70,7 @@ class KARMA
 
     public function getTotalScore()
     {
-        if (! $this->inforead) {
+        if ( ! $this->inforead) {
             $this->readFromDatabase();
         }
 
@@ -79,12 +79,12 @@ class KARMA
 
     public function setNbPosVotes($val)
     {
-        $this->karmapos = (int)$val;
+        $this->karmapos = (int) $val;
     }
 
     public function setNbNegVotes($val)
     {
-        $this->karmaneg = (int)$val;
+        $this->karmaneg = (int) $val;
     }
 
     // adds a positive vote
@@ -136,7 +136,7 @@ class KARMA
                    sql_real_escape_string($ip)
                );
 
-        return ((int) (quickQuery($sql)) == 0);
+        return (0 == (int) (quickQuery($sql)));
     }
 
     // save IP in database so no multiple votes are possible

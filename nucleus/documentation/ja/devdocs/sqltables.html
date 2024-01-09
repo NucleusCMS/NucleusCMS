@@ -12,6 +12,7 @@
 		(see nucleus/documentation/index.html#license for more info)
 	-->
     <meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
     <link rel="index" href="./index.html" />
 	<title>Nucleus - SQL テーブル構造</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -66,13 +67,7 @@
 
 
 	</style>
-	<script src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-		google.load("jquery", "1");
-		google.setOnLoadCallback(function() {
-			$.getScript("javascript/fontsizeChanger.js");
-		});
-	</script>
+	<script src="../common.js" cache-control="max-age=15552000"></script>
 </head>
 <body>
 	<div id="fontSizeChanger">
@@ -606,7 +601,14 @@
 	<td>varchar(20)</td>
 	<td>''</td>
 	<td>このメンバー用の言語ファイルを指定する</td>
-</tr></table>
+</tr>
+	<tr>
+		<td class="notnull">mimage</td>
+		<td>varchar(500)</td>
+		<td>''</td>
+		<td>Not documented</td>
+	</tr>
+</table>
 
 
 
@@ -785,7 +787,7 @@
 
 </tr><tr>
 	<td class="notnull primary">oname</td>
-	<td>varchar(50)</td>
+	<td>varchar(200)</td>
 	<td>(空白)</td>
 	<td>オプションの名前</td>
 
@@ -1055,13 +1057,13 @@
 	<th class="description" abbr="データの説明">説明</th>
 </tr><tr>
 	<td class="notnull primary">name</td>
-	<td>varchar(50)</td>
+	<td>varchar(200)</td>
 	<td>(空白)</td>
 	<td>オプションの名前</td>
 
 </tr><tr>
 	<td>value</td>
-	<td>varchar(128)</td>
+	<td>varchar(255)</td>
 	<td>NULL</td>
 	<td>オプションの値</td>
 </tr></table>

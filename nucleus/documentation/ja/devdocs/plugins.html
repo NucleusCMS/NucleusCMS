@@ -12,6 +12,7 @@
 		(see nucleus/documentation/index.html#license for more info)
 	-->
     <meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
     <link rel="index" href="./index.html" />
     <title>Nucleus - プラグイン API</title>
     <link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -48,14 +49,13 @@
             padding:0;
             margin:0;
         }
+		.topleft { text-align: left; vertical-align: top; }
+		.centermiddle { text-align: center; vertical-align: middle; }
+		.plugin_description { text-align: left; }
+		.plugin_description tr th:nth-of-type(1) { white-space: nowrap; }
+
     </style>
-	<script src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-		google.load("jquery", "1");
-		google.setOnLoadCallback(function() {
-			$.getScript("javascript/fontsizeChanger.js");
-		});
-	</script>
+	<script src="../common.js" cache-control="max-age=15552000"></script>
 </head>
 <body>
 	<div id="fontSizeChanger">
@@ -137,60 +137,40 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 </ul>
 
 <p>
-すべてのプラグインファイルは <code>config.php</code> に記述されたディレクトリに置く必要があります。一般的に、それは <code>/your/path/nucleus/plugins/</code>  になるでしょう。プラグインファイル名は <code>NP<em>_name</em>.php</code> という形式を用いることにより認識されます。プラグインによっては、追加ファイルを格納する同名のサブディレクトリや、管理エリアを必要とします。
+すべてのプラグインファイルは <code>config.php</code> に記述されたディレクトリに置く必要があります。
+一般的に、それは <code>/your/path/nucleus/plugins/</code>  になるでしょう。
+各プラグインは <code>/your/path/nucleus/plugins/NP_プラグイン名</code> に配置します。
+プラグインファイル名は <code>NP<em>_name</em>.php</code> という形式を用いることにより認識されます。プラグインによっては、追加ファイルを格納する同名のサブディレクトリや、管理エリアを必要とします。
 </p>
 
-<div class="note">
-<strong>注：</strong> プラグイン名は大文字・小文字を識別しますので、<code>Np_</code> や <code>np_</code> ではなく、<code>NP_</code> で始まることに気をつけてください。またプラグインがサブディレクトリを使用する場合は、サブディレクトリの名称は<em>すべて小文字にします</em>。
-</div>
-
-<p> (v3.80)から<code>NP_プラグイン名.php</code>を プラグイン名(小文字) または NP_プラグイン名 のフォルダに配置できるようになりました(既存のプラグンの場合は、修正が必要です)。<br />
-</p>
-<p> (v3.80)から<code>/your/path/nucleus/plugins/</code>の代わりに、<br />
-	個別フォルダ<br /><code>/your/path/nucleus/plugins/<b>NP_プラグイン名/</b></code><br />にプラグイン一式を配置できるようになりました。</p>
-<table border="1" cellspacing="2" cellpadding="2">
+<div>プラグイン構成<br />
+<table border="1" cellspacing="2" cellpadding="2" class="plugin_description">
 <tbody>
 	<tr>
-		<th colspan="1" rowspan="2" style="text-align: center; vertical-align: middle;">Type</th>
-		<th colspan="1" rowspan="2" style="text-align: center; vertical-align: middle;">ver</th>
-		<th colspan="2" rowspan="1" >場所 /your/path/nucleus/plugins/</th>
-	</tr>
-	<tr><th>プラグインファイル名</th><th>サブディレクトリ</th></tr>
-	<tr>
-		<td style="text-align: center; vertical-align: middle;">1</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">all</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名.php<br /> NP_Sample.php</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/<br /> sample/</td>
+		<th>プラグインの親フォルダ</th>
+		<td><code>/your/path/nucleus/plugins/</code></td>
 	</tr>
 	<tr>
-		<td style="text-align: center; vertical-align: middle;">2</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/NP_プラグイン名.php<br /> sample/NP_Sample.php</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/<br /> sample/</td>
+		<th>プラグインの個別フォルダ</th>
+		<td><code>/your/path/nucleus/plugins/プラグイン名(小文字)</code></td>
 	</tr>
 	<tr>
-		<td style="text-align: center; vertical-align: middle;">3</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/NP_プラグイン名.php<br /> sample/NP_Sample.php</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">プラグイン名(小文字)/プラグイン名(小文字)/<br /> sample/sample/</td>
+		<th>プラグインのNP_プラグイン名.php</th>
+		<td><code>/your/path/nucleus/plugins/プラグイン名(小文字)/NP_プラグイン名.php</code>
+			<br />( - 3.70)
+			<code>/your/path/nucleus/plugins/NP_プラグイン名.php</code></td>
 	</tr>
 	<tr>
-		<td style="text-align: center; vertical-align: middle;">4</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/NP_プラグイン名.php<br /> NP_Sample/NP_Sample.php</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/プラグイン名(小文字)/<br /> NP_Sample/sample/</td>
-	</tr>
-	<tr>
-		<td style="text-align: center; vertical-align: middle;">5</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">(v3.80)<br /></td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/NP_プラグイン名.php<br /> NP_Sample/NP_Sample.php</td>
-		<td style="text-align: left; vertical-align: top; white-space: nowrap;">NP_プラグイン名/<br /> NP_Sample/</td>
+		<th>プラグインの管理エリアファイル</th>
+		<td><code>/your/path/nucleus/plugins/プラグイン名(小文字)/index.php</code></td>
 	</tr>
 </tbody>
 </table>
+</div>
+
+
 <div class="note">
-<strong>注：</strong> 複数存在した場合は、Type番号の小さいものが使われます。<br />
-<strong>参考：</strong> $this->getDirectory() , $this->getAdminURL()<br />
+<strong>注：</strong> プラグイン名は大文字・小文字を識別しますので、<code>Np_</code> や <code>np_</code> ではなく、<code>NP_</code> で始まることに気をつけてください。またプラグインがサブディレクトリを使用する場合は、サブディレクトリの名称は<em>すべて小文字にします</em>。
 </div>
 
 <h1>NucleusPluginクラスのプロパティ(メンバ変数) 予約語一覧<a id="reserved_plugin_var" name="reserved_plugin_var" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
@@ -200,7 +180,7 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 <strong>注：</strong>予約語一覧: NucleusPluginクラス プロパティ<br />
 _aOptionValues , _aOptionToInfo<br />
 plugid , plugin_options<br />
-(v3.80): plugin_admin_dir , plugin_admin_url_prefix , plugin_dir_type<br />
+(v3.80): plugin_admin_dir , plugin_admin_url , plugin_dir_type<br />
 </div>
 
 
@@ -239,7 +219,6 @@ class NP_HelloWorld extends NucleusPlugin
         return in_array($feature, array(
 //            'SqlTablePrefix',  // v3.80で廃止
 //            'SqlApi',          // v3.80で廃止
-//            'SqlApi_SQL92',    // (v3.80-) : データベースがMySQL以外の場合で、プラグインがテーブルを持っている場合に必要
 //            'HelpPage',
 //            'pluginadmin',
 //            'handleSpam',
@@ -1726,7 +1705,7 @@ Nucleusプラグインはなにか重要なことが起きたときに発生す�
 			<dt class="ro">type</dt>
 			<dd>生成するURLのタイプ(item, blog, ...)</dd>
 			<dt class="ro">info</dt>
-			<dd>解決される前のURL(この名前は以前の変数名である<code>pathinfo</code>から来ています).</dd>).</dd>
+			<dd>解決される前のURL(この名前は以前の変数名である<code>pathinfo</code>から来ています).</dd>
 		</dl></td>
 	</tr>
 
@@ -2122,12 +2101,36 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <h1>データベース・テーブル<a id="tables" name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
+<h2>重要：テーブルへのアクセス</h2>
+<div>
+<p>データベースのアクセスがPDOドライバに変更されました。</p>
+<p>次のいずれかを利用してください。</p>
+<ul>
+	<li>PDOドライバーとしてアクセスする(推奨)<br />
+		接続中のPDOドライバーハンドルの取得方法は２種類あります。<br />
+		global $SQL_DBH;<br />
+		または<br />
+		＄dbh = sql_get_db();<br /></li>
+	<li>sql_*関数を利用する<br />
+	これは、既存コードのmysq_*関数からの移行の手間を減らすためものです。新しく書き始める場合は、PDOドライバー関数の利用を検討して下さい。</li>
+</ul>
+</div>
+<p>セキュリティ向上や動作速度を上げるために「疑問符プレースホルダ」「名前付けされたプレースホルダ」にパラメータをバインドするようにしてください。</p>
+
+
 <h2>Nucleusテーブルへのアクセス</h2>
+
+<p>sql_table('テーブル名')の他に、3.80から parseQuery関数を通して、[@prefix@]が利用できるようになりました。
+	<code>$sql = sprintf('SELECT ... FROM `%s` ...', sql_table('テーブル名'));</code><br />
+	<code>$sql = parseQuery('SELECT ... FROM `[@prefix@]テーブル名` ...');</code>
+</p>
+
+
 
 <p>v3.5でNucleusはPDO等MySQL以外のデータベースハンドラのサポートをするようになりました。この機能はベータ実装ではありますが、プラグイン開発者はデータベースの呼び出しに使用する関数の「sql_*」への書き換えを始めてください。
 基本的に、使用している全ての「mysql_*」関数を「sql_*」に置き換える必要があります。たとえば<code>mysql_fetch_assoc($result)</code>は<code>sql_fetch_assoc($result)</code> に置き換えになります。
-全ての関数を書き換えたら、Sql APIが無い古いバージョンのNucleusインストールできないように、次に示すコードをプラグイン内に記述して、インストールに必要な最低バージョンを350に指定する必要があります。<br />
-<pre class="example"><code>function getMinNucleusVersion() { return '350'; }</code></pre></p>
+全ての関数を書き換えたら、Sql APIが無い古いバージョンのNucleusインストールできないように、次に示すコードをプラグイン内に記述して、インストールに必要な最低バージョンを350に指定する必要があります。<br /></p>
+<pre class="example"><code>function getMinNucleusVersion() { return '350'; }</code></pre>
 
 <ol>
     <li>カスタム・テーブル名を利用できるため、注意が必要です。<code>nucleus_item</code> などの固定されたテーブル名の代わりに、テーブル名のプレフィックスを生成するために <code>sql_table('item') </code>というグローバルファンクションを利用します。</li>

@@ -53,7 +53,7 @@ INSERT INTO `nucleus_blog` VALUES (
     '',                    /* bnotify */
     'http://localhost/',   /* burl */
     '',                    /* bupdate */
-    5,                     /* bdefskin */
+    4,                     /* bdefskin */
     0,                     /* bpublic */
     1,                     /* bconvertbreaks */
     1,                     /* bdefcat */
@@ -128,8 +128,8 @@ CREATE INDEX IF NOT EXISTS `nucleus_comment_idx_cblog` on `nucleus_comment` (`cb
   CREATE INDEX IF NOT EXISTS `nucleus_comment_idx_cbody` on `nucleus_comment` (`cbody`);
 
 CREATE TABLE IF NOT EXISTS `nucleus_config` (
-  `name`  varchar(50)  NOT NULL default '' COLLATE NOCASE ,
-  `value` varchar(128)          default NULL COLLATE NOCASE ,
+  `name`  varchar(200)  NOT NULL default '' COLLATE NOCASE ,
+  `value` varchar(255)          default NULL COLLATE NOCASE ,
   PRIMARY KEY  (`name`)
 );
 
@@ -190,7 +190,7 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('ProtectMemNames',   '1');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
-    ('BaseSkin',          '5');
+    ('BaseSkin',          '4');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('SkinsURL',          'http://localhost/skins/');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
@@ -207,6 +207,12 @@ INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('DefaultListSize',   '10');
 INSERT INTO `nucleus_config` (`name`, `value`) VALUES
     ('AdminCSS',          'contemporary');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('DisableRSS',          '1');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('ENABLE_PLUGIN_ADMIN_V1', '1');
+INSERT INTO `nucleus_config` (`name`, `value`) VALUES
+    ('ENABLE_PLUGIN_UPDATE_CHECK', '1');
 
 CREATE TABLE IF NOT EXISTS `nucleus_item` (
   `inumber`   INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,
@@ -281,6 +287,7 @@ CREATE TABLE IF NOT EXISTS `nucleus_member` (
   `mautosave`  tinyint(2)   NOT NULL default '1',
   `mhalt`      tinyint(2)   NOT NULL default '0',
   `mhalt_reason`  varchar(100) NOT NULL default '' COLLATE NOCASE ,
+  `mtoken`     varchar(100)          default NULL,
   UNIQUE (`mname`)
 );
 
@@ -337,7 +344,7 @@ CREATE INDEX IF NOT EXISTS `nucleus_plugin_option_idx_ocontextid` on `nucleus_pl
 CREATE TABLE IF NOT EXISTS `nucleus_plugin_option_desc` (
   `oid`      INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL ,
   `opid`     int(11)     NOT NULL default '0',
-  `oname`    varchar(50) NOT NULL default '' COLLATE NOCASE ,
+  `oname`    varchar(200) NOT NULL default '' COLLATE NOCASE ,
   `ocontext` varchar(20) NOT NULL default '' COLLATE NOCASE ,
   `odesc`    varchar(255)         default NULL COLLATE NOCASE ,
   `otype`    varchar(20)          default NULL COLLATE NOCASE ,
@@ -362,7 +369,7 @@ CREATE TABLE IF NOT EXISTS `nucleus_skin` (
   `stype`    varchar(20) NOT NULL default '' COLLATE NOCASE ,
   `scontent` text        NOT NULL ,
   `spartstype`  varchar(20) NOT NULL default 'parts' ,
-  PRIMARY KEY  (`sdesc`,`stype`)
+  PRIMARY KEY  (`sdesc`,`stype`,`spartstype`)
 );
 
 CREATE TABLE IF NOT EXISTS `nucleus_skin_desc` (

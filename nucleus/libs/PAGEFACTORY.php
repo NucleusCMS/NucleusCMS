@@ -45,7 +45,7 @@ class PAGEFACTORY extends BaseActions
         parent::__construct();
 
         global $manager;
-        $this->blog = & $manager->getBlog($blogid);
+        $this->blog = &$manager->getBlog($blogid);
 
         // TODO: move the definition of actions to the createXForm
         // methods
@@ -100,7 +100,7 @@ class PAGEFACTORY extends BaseActions
      */
     public function createAddForm($type, $contents = [])
     {
-        if (! in_array($type, $this->allowedTypes)) {
+        if ( ! in_array($type, $this->allowedTypes)) {
             return;
         }
         $this->type   = $type;
@@ -128,7 +128,7 @@ class PAGEFACTORY extends BaseActions
      */
     public function createEditForm($type, $contents)
     {
-        if (! in_array($type, $this->allowedTypes)) {
+        if ( ! in_array($type, $this->allowedTypes)) {
             return;
         }
         $this->type   = $type;
@@ -162,13 +162,13 @@ class PAGEFACTORY extends BaseActions
 
         $filename = "{$DIR_LIBS}include/{$this->type}-{$this->method}.template";
 
-        if (! is_file($filename)) {
+        if ( ! is_file($filename)) {
             return '';
         }
 
         $contents = file_get_contents($filename);
 
-        if (($contents !== false)
+        if ((false !== $contents)
             && preg_match("#^(admin|bookmarklet)$#", $this->type)
             && preg_match(
                 "#^(add|edit)$#",
@@ -178,7 +178,7 @@ class PAGEFACTORY extends BaseActions
             $this->replace_date_time_picker($contents);
         }
 
-        return ($contents !== false ? $contents : '');
+        return (false !== $contents ? $contents : '');
     }
 
     private function replace_date_time_picker(&$data)
@@ -338,7 +338,7 @@ class PAGEFACTORY extends BaseActions
     {
         $flag = false;
         if (defined($name) && isset($value)) {
-            $flag = (strcasecmp(constant($name), $value) == 0);
+            $flag = (0 == strcasecmp(constant($name), $value));
         }
         $this->_addIfCondition($flag);
     }
@@ -371,7 +371,7 @@ class PAGEFACTORY extends BaseActions
     // some init stuff for all forms
     public function parse_init()
     {
-        $authorid = ($this->method == 'edit') ? $this->variables['authorid']
+        $authorid = ('edit' == $this->method) ? $this->variables['authorid']
             : '';
         $this->blog->insertJavaScriptInfo($authorid);
     }
@@ -403,7 +403,7 @@ class PAGEFACTORY extends BaseActions
 
     public function parse_contents($which)
     {
-        if (! isset($this->variables[$which])) {
+        if ( ! isset($this->variables[$which])) {
             $this->variables[$which] = '';
         }
         echo hsc($this->variables[$which]);
@@ -411,7 +411,7 @@ class PAGEFACTORY extends BaseActions
 
     public function parse_checkedonval($value, $name)
     {
-        if (! isset($this->variables[$name])) {
+        if ( ! isset($this->variables[$name])) {
             $this->variables[$name] = '';
         }
         if ($this->variables[$name] == $value) {
@@ -421,10 +421,10 @@ class PAGEFACTORY extends BaseActions
 
     public function parse_checked_valtext($name, $value)
     {
-        if (! isset($this->variables[$name])) {
+        if ( ! isset($this->variables[$name])) {
             $this->variables[$name] = '';
         }
-        if (strcasecmp($this->variables[$name], $value) == 0) {
+        if (0 == strcasecmp($this->variables[$name], $value)) {
             echo "checked='checked'";
         }
     }
@@ -437,7 +437,7 @@ class PAGEFACTORY extends BaseActions
         $attributes = " name=\"{$which}\"";
         $attributes .= " id=\"input{$which}\"";
 
-        if ($CONF['DisableJsTools'] != 1) {
+        if (1 != $CONF['DisableJsTools']) {
             $attributes .= ' onclick="storeCaret(this);"';
             $attributes .= ' onselect="storeCaret(this);"';
             if ($member->getAutosave()) {
@@ -446,7 +446,7 @@ class PAGEFACTORY extends BaseActions
                 $attributes .= " onkeyup=\"storeCaret(this); updPreview('{$which}');\"";
             }
         } else {
-            if ($CONF['DisableJsTools'] == 0) {
+            if (0 == $CONF['DisableJsTools']) {
                 $attributes .= ' onkeypress="shortCuts();"';
             }
             if ($member->getAutosave()) {
@@ -636,15 +636,15 @@ class PAGEFACTORY extends BaseActions
         global $manager;
         $name  = 'tabindex' . $key;
         $value = 0;
-        if (is_string($inc) && strlen($inc) == 0) {
+        if (is_string($inc) && 0 == strlen($inc)) {
             $inc = 1;
         }
-        $inc = (int)$inc;
+        $inc = (int) $inc;
         if (isset($manager->parserPrefs[$name])) {
             $value = (int) ($manager->getParserProperty($name));
         }
         printf("%d", $value);
-        if ($inc !== 0) {
+        if (0 !== $inc) {
             $manager->setParserProperty($name, $value + $inc);
         }
     }
@@ -652,7 +652,7 @@ class PAGEFACTORY extends BaseActions
     public function parse_settabindex($baseindex, $inc = 0, $key = "")
     {
         global $manager;
-        if (is_string($inc) && strlen($inc) == 0) {
+        if (is_string($inc) && 0 == strlen($inc)) {
             $inc = 1;
         }
         $name  = 'tabindex' . $key;
@@ -664,7 +664,7 @@ class PAGEFACTORY extends BaseActions
     {
         global $manager;
         $namefrom = 'tabindex' . $keyfrom;
-        if (is_string($keyto) && strlen($keyto) == 0) {
+        if (is_string($keyto) && 0 == strlen($keyto)) {
             $keyto = "0";
         }
         $nameto = 'tabindex' . $keyto;
@@ -678,16 +678,16 @@ class PAGEFACTORY extends BaseActions
     public function parse_inctabindex($inc = 1, $key = "")
     {
         global $manager;
-        if (is_string($inc) && strlen($inc) == 0) {
+        if (is_string($inc) && 0 == strlen($inc)) {
             $inc = 1;
         }
         $name  = 'tabindex' . $key;
         $value = 0;
-        $inc   = (int)$inc;
+        $inc   = (int) $inc;
         if (isset($manager->parserPrefs[$name])) {
             $value = (int) ($manager->getParserProperty($name));
         }
-        if ($inc !== 0) {
+        if (0 !== $inc) {
             $manager->setParserProperty($name, $value + $inc);
         }
     }

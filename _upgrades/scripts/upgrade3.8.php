@@ -6,7 +6,7 @@ function upgrade_do380()
         return _UPG_TEXT_ALREADY_INSTALLED;
     }
 
-    upgrade_do380_addconfig();
+    upgrade_do380_config();
 
     upgrade_do380_addfield_bauthorvisible();
     upgrade_do380_addfield_mhalt();
@@ -16,6 +16,7 @@ function upgrade_do380()
     upgrade_do380_addfield_mimage();
     fix_do380_Skin_ColumnSpartstype();
     upgrade_do380_addtable_memberoption();
+    upgrade_do380_plugin_option_desc();
 
     //  -> 3.80
     // update database version
@@ -32,26 +33,26 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 
     $upgrade_msg = parseQuery("Altering TABLE `[@prefix@]skin` ");
 
-    if ($DB_DRIVER_NAME == 'mysql') {
+    if ('mysql' == $DB_DRIVER_NAME) {
         $sql = parseQuery("ALTER TABLE `[@prefix@]skin` ADD COLUMN `spartstype` varchar(20) NOT NULL default 'parts'");
         upgrade_query($upgrade_msg, $sql);
         return;
     }
 
-    if ($DB_DRIVER_NAME !== 'sqlite') {
+    if ('sqlite' !== $DB_DRIVER_NAME) {
         return;
     }
 
     $dbh = sql_get_db();
 
-    if (!$dbh->beginTransaction()) {
+    if ( ! $dbh->beginTransaction()) {
         upgrade_query($upgrade_msg, 'Failure');
         return;
     }
 
     // table
     $rs = $dbh->query(parseQuery("ALTER TABLE `[@prefix@]skin` RENAME TO `[@prefix@]old_skin`"));
-    if (!$rs) {
+    if ( ! $rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -64,7 +65,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
                       `spartstype`  varchar(20) NOT NULL default 'parts' ,
                       PRIMARY KEY  (`sdesc`,`stype`))");
     $rs = $dbh->query($sql);
-    if (!$rs) {
+    if ( ! $rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -73,7 +74,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
     $sql = parseQuery("INSERT INTO `[@prefix@]skin` (`sdesc`, `stype`, `scontent`, `spartstype`) 
         SELECT `sdesc`, `stype`, `scontent`, 'parts' AS `spartstype` FROM `[@prefix@]old_skin`");
     $rs = $dbh->exec($sql);
-    if ($rs === false) {
+    if (false === $rs) {
         $dbh->rollBack();
         upgrade_query($upgrade_msg, 'Failure');
         return;
@@ -91,7 +92,7 @@ function upgrade_do380_Skin_UpgardeAddColumnSpartstype()
 
 function fix_do380_Skin_ColumnSpartstype()
 {
-    if (!sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype')) {
+    if ( ! sql_existTableColumnName(parseQuery('[@prefix@]skin'), 'spartstype')) {
         return;
     }
 
@@ -99,7 +100,7 @@ function fix_do380_Skin_ColumnSpartstype()
     $sql .= " WHERE stype NOT IN ('index', 'item', 'error', 'search', 'archive', 'archivelist', 'imagepopup', 'member')";
     $sql .= " AND spartstype='parts'";
 
-    if (!quickQuery(parseQuery($sql))) {
+    if ( ! quickQuery(parseQuery($sql))) {
         return;
     }
 
@@ -143,7 +144,7 @@ function upgrade_do380_modfield_ballowpast()
 {
     global $DB_DRIVER_NAME;
 
-    if ($DB_DRIVER_NAME === 'sqlite') {
+    if ('sqlite' === $DB_DRIVER_NAME) {
         return;
     }
 
@@ -152,29 +153,11 @@ function upgrade_do380_modfield_ballowpast()
     $query = parseQuery("ALTER TABLE `[@prefix@]blog` [@mode@] COLUMN `ballowpast` tinyint(2)   NOT NULL default '1'", ['mode' => $mode]);
     upgrade_query('Altering [@prefix@]blog table', $query);
 
-    $query = parseQuery("ALTER TABLE `[@prefix@]item`
-                MODIFY COLUMN `ititle` varchar(160)  NOT NULL default '',
-                MODIFY COLUMN `ibody`  mediumtext    NOT NULL default '',
-                MODIFY COLUMN `imore`  mediumtext    NOT NULL default ''");
-
-    upgrade_query('Altering [@prefix@]item table', $query);
-
     $query = parseQuery("ALTER TABLE `[@prefix@]config` MODIFY COLUMN `name` varchar(50)  NOT NULL default ''");
     upgrade_query('Altering [@prefix@]config table', $query);
 
     $query = parseQuery("ALTER TABLE `[@prefix@]plugin_option_desc` MODIFY COLUMN `oname` varchar(50) NOT NULL default ''");
     upgrade_query('Altering [@prefix@]plugin_option_desc table', $query);
-}
-
-function upgrade_do380_addconfig()
-{
-    $query = parseQuery("SELECT count(*) as result FROM `[@prefix@]config` WHERE name='DatabaseName'");
-    if (quickQuery($query)) {
-        return;
-    }
-
-    $query = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES('DatabaseName', 'Nucleus')");
-    upgrade_query('Updating [@prefix@]config ', $query);
 }
 
 function upgrade_do380_addfield_mimage()
@@ -193,7 +176,7 @@ function upgrade_do380_addtable_memberoption()
     if (sql_existTableName(sql_table('member_option'))) {
         return;
     }
-    if ($DB_DRIVER_NAME === 'sqlite') {
+    if ('sqlite' === $DB_DRIVER_NAME) {
         return;
     }
     $query = parseQuery("
@@ -202,8 +185,41 @@ function upgrade_do380_addtable_memberoption()
           `ocontext` varchar(20)  NOT NULL default '',
           `name`     varchar(100) NOT NULL,
           `value`    varchar(255) NOT NULL default '',
-          PRIMARY KEY (`omember`),
-          UNIQUE  KEY (`omember`, `ocontext`, `name`)
+          PRIMARY KEY (`omember`, `ocontext`, `name`)
         ) ENGINE=MyISAM;");
     upgrade_query('Add [@prefix@]member table', $query);
+}
+
+function upgrade_do380_config()
+{
+    global $DB_DRIVER_NAME;
+
+    upgrade_config_insertOrIgnor('DatabaseName', 'Nucleus');
+    upgrade_config_insertOrIgnor('ENABLE_PLUGIN_ADMIN_V1', '1');
+    upgrade_config_insertOrIgnor('ENABLE_PLUGIN_UPDATE_CHECK', '1');
+
+    $cols = [
+      'name'  => "varchar(200)  NOT NULL default ''",
+      'value' => "varchar(255)           default NULL",
+    ];
+    foreach ($cols as $colname => $value) {
+        if ('sqlite' === $DB_DRIVER_NAME) {
+            $value .= ' COLLATE NOCASE';
+            return; // SQLSTATE[HY000]: General error: near "MODIFY": syntax error
+        }
+        $query = parseQuery("ALTER TABLE `[@prefix@]config` MODIFY `{$colname}` {$value}");
+        upgrade_query('Altering [@prefix@]config table', $query);
+    }
+}
+
+function upgrade_do380_plugin_option_desc()
+{
+    global $DB_DRIVER_NAME;
+
+    $query = parseQuery("ALTER TABLE `[@prefix@]plugin_option_desc` MODIFY `oname` varchar(200) NOT NULL default ''");
+    if ('sqlite' === $DB_DRIVER_NAME) {
+        $query .= ' COLLATE NOCASE';
+        return; // SQLSTATE[HY000]: General error: near "MODIFY": syntax error
+    }
+    upgrade_query('Altering [@prefix@]plugin_option_desc table', $query);
 }

@@ -11,7 +11,9 @@
  */
 
 define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
-define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、installフォルダを現在のタイムスタンプでアップロードし直してください。');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     '認証に失敗しました。インストールする権限がありません。インストール設定ファイルのユーザー名とパスワードを確認してください');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'インストールをするには、まず install/install-config.php を有効にしてください。ない場合は、install-config.sample.phpをコピーして編集して使ってください。');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、install/install-config.phpを現在のタイムスタンプでアップロードし直してください。');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP %s 以上が使えないかどうか、サーバ管理者に確認して下さい。');
 define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');
 
@@ -26,7 +28,7 @@ define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'セキュリティ上の�
 
 define('_INSTALL_TEXT_VERSION',	      'バージョン');
 define('_INSTALL_TEXT_SELECT_TEXT',	  'テキストを選択する');
-define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的, テスト中, 対応していないプラグインは使用できません');
+define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的: 対応していないプラグインは使用できません。');
 
 define('_INST_CONF_ERROR1' , '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。');
 
@@ -37,11 +39,6 @@ define('_TEXT_LANG_SELECT1_1_TAB_FIELD1',	'言語');
 define('_TEXT_LANG_SELECT1_1',	'表示する言語を選択します。');
 
 /*   */
-
-define('_HEADER1_2',			'キャラクタセット');
-define('_TEXT1_2',				'使用するキャラクタセットを選択します。UTF-8を推奨します。');
-define('_TEXT1_2_TAB_HEAD',		'キャラクタセットの選択');
-define('_TEXT1_2_TAB_FIELD1',	'キャラクタセット');
 
 define('_ERROR1',				'使用中のPHPはMySQLをサポートしていません :(');
 define('_ERROR_NO_DBNAME',		'データベース名が見つかりません');
@@ -185,6 +182,7 @@ define('_GENERALCAT_NAME',		'総合');
 define('_GENERALCAT_DESC',		'投稿した記事に合うカテゴリが無い時にこのカテゴリを使用すると良いでしょう');
 define('_1ST_POST_TITLE',		'Nucleus CMS バージョン%sへようこそ');
 define('_1ST_POST',				'これは、最初のページです。そのまま内容を編集して使うことができます。');
-define('_1ST_POST2',			'');
+define('_1ST_POST2',			'ウェブサイトの作成を補助する積み木がここにあります。それは心躍るブログになるかもしれませんし、見る人を和ませる家族のサイトになるかもしれませんし、実り多い趣味のサイトになるかもしれません。あるいは現在のあなたには想像がつかないものになることだってあるでしょう。<br />
+<br />用途が思いつきませんでしたか？ それならここへ来て正解です。なぜならあなた同様私たちにもわからないのですから。');
 
 define('_CONFIRM_RETRY_SEND_FORM',		'フォームを再送信しますか？');

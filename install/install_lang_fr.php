@@ -63,11 +63,6 @@ define('_TITLE5',	'Lutte contre les spams');
 define('_HEADER1', 	'Installer Nucleus');
 define('_TEXT1',	'<p>Ce script va voius assister pour l\'installation de Nucleus. Il va c&eacute;n&eacute;rer votre basse de donn&eacute;es MySQL et demander ou donner les informations n&eacute;cessaires &agrave; <i>config.php</i>. Afin de r&eacute;ussir cela, vous devrez fournir quelques informations.</p><p>Toutes les entr&eacute;es sont n&eacute;cessaires. Les informations optionnelles peuvent &ecirc;tre cr&eacute;&eacute;es apr&egrave;s l\'installation, depuis la zone d\'administration de Nucleus.</p>');
 
-define('_HEADER1_2',			'Jeu de caract&egrave;res');
-define('_TEXT1_2',				'Choisir le jeu de caract&egrave;res par d&eacute;faut. Recommand&eacute;: UTF-8.');
-define('_TEXT1_2_TAB_HEAD',		'Choisir le jeu de caract&egrave;res');
-define('_TEXT1_2_TAB_FIELD1',	'Jeu de caract&egrave;res');
-
 define('_HEADER2',	'Versions PHP &amp; MySQL');
 define('_TEXT2',	'<p>Ci-dessous figurent les num&eacute;ros de version de l\'interpr&eacute;teur PHP et du serveur MySQL de votre serveur. En rapportant des probl&egrave;mes sur le forum d\'aide de Nucleus, merci de fuornir ces indications.</p>');
 define('_TEXT2_WARN',	'ATTENTION&nbsp;: Nucleus requiert au minimum PHP ');

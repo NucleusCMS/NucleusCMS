@@ -33,13 +33,13 @@ function upgrade_do340_modfield_tdname()
 function upgrade_do340_addconfig()
 {
     // create DebugVars setting
-    if (!upgrade_checkIfCVExists('DebugVars')) {
+    if ( ! upgrade_checkIfCVExists('DebugVars')) {
         $query = parseQuery("INSERT INTO [@prefix@]config VALUES ('DebugVars',0)");
         upgrade_query('Creating DebugVars config value', $query);
     }
 
     // create DefaultListSize setting
-    if (!upgrade_checkIfCVExists('DefaultListSize')) {
+    if ( ! upgrade_checkIfCVExists('DefaultListSize')) {
         $query = parseQuery("INSERT INTO [@prefix@]config VALUES ('DefaultListSize',10)");
         upgrade_query('Creating DefaultListSize config value', $query);
     }

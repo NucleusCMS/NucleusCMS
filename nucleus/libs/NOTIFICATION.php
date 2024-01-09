@@ -38,7 +38,7 @@ class NOTIFICATION
     public function validAddresses()
     {
         foreach ($this->addresses as $address) {
-            if (!isValidMailAddress(trim($address))) {
+            if ( ! isValidMailAddress(trim($address))) {
                 return 0;
             }
         }
@@ -55,7 +55,7 @@ class NOTIFICATION
         foreach ($this->addresses as $address) {
             $address = trim($address);
 
-            if (!$address) {
+            if ( ! $address) {
                 continue;
             }
 

@@ -12,6 +12,7 @@
 		(see nucleus/documentation/index.html#license for more info)
 	-->
 	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
     <link rel="index" href="./index.html" />
 	<title>Nucleus - 便利な使い方のヒントの紹介</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
@@ -23,11 +24,9 @@
             font-style: italic;
         }
     </style>
-	<script src="http://www.google.com/jsapi"></script>
-	<script type="text/javascript">
-		google.load("jquery", "1", {uncompressed:true});
-		google.setOnLoadCallback(function() {
-			$.getScript("devdocs/javascript/fontsizeChanger.js");
+	<script src="common.js" cache-control="max-age=15552000"></script>
+	<script>
+		document.addEventListener('DOMContentLoaded', function() {
 			var prm = 0;
 			$("#txtTotal").val("000");
 			$("input[type='checkbox']").click(function() {

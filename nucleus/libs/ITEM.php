@@ -18,14 +18,14 @@
 
 class ITEM
 {
-    public $itemid;
+    public int $itemid;
 
     /**
      * Constructor of an ITEM object
      *
      * @param integer $itemid id of the item
      */
-    public function __construct($itemid)
+    public function __construct(int $itemid)
     {
         $this->itemid = $itemid;
     }
@@ -39,26 +39,31 @@ class ITEM
      *
      * @static
      */
-    public static function getitem($itemid, $allowdraft, $allowfuture)
+    public static function getitem($itemid, $allowdraft, $allowfuture): array|false
     {
         global $manager;
 
-        $itemid = (int)$itemid;
+        $itemid = (int) $itemid;
 
-        $query = sprintf(
-            'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, i.ititle as title, i.ibody as body, m.mname as author,  i.iauthor as authorid, i.itime, i.imore as more, i.ikarmapos as karmapos,  i.ikarmaneg as karmaneg, i.icat as catid, i.iblog as blogid FROM %s as i, %s as m, %s as b  WHERE i.inumber=%d and i.iauthor=m.mnumber and i.iblog=b.bnumber',
-            sql_table('item'),
-            sql_table('member'),
-            sql_table('blog'),
-            $itemid
-        );
+        $query = 'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
+               . 'i.ititle as title, i.ibody as body, m.mname as author,  i.iauthor as authorid, '
+               . 'i.itime, i.imore as more, '
+               . 'i.ikarmapos as karmapos,  i.ikarmaneg as karmaneg, '
+               . 'i.icat as catid, i.iblog as blogid '
+               . sprintf(
+                   ' FROM %s as i, %s as m, %s as b  WHERE i.inumber=%d and i.iauthor=m.mnumber and i.iblog=b.bnumber',
+                   sql_table('item'),
+                   sql_table('member'),
+                   sql_table('blog'),
+                   $itemid
+               );
 
-        if (! $allowdraft) {
+        if ( ! $allowdraft) {
             $query .= ' and i.idraft=0';
         }
 
-        if (! $allowfuture) {
-            $blog = & $manager->getBlog(getBlogIDFromItemID($itemid));
+        if ( ! $allowfuture) {
+            $blog = &$manager->getBlog(getBlogIDFromItemID($itemid));
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
         }
 
@@ -69,10 +74,15 @@ class ITEM
         if ($res && ($aItemInfo = sql_fetch_assoc($res))) {
             $aItemInfo['timestamp'] = strtotime($aItemInfo['itime']);
 
+            foreach (['draft', 'itemid', 'closed', 'authorid', 'catid', 'blogid'] as $name) {
+                if (isset($aItemInfo[$name]) && is_string($aItemInfo[$name])) {
+                    $aItemInfo[$name] = (int) $aItemInfo[$name];
+                }
+            }
             return $aItemInfo;
         }
 
-        return 0;
+        return false;
     }
 
     /**
@@ -102,11 +112,11 @@ class ITEM
         $i_catid      = postVar('catid');
         $i_draftid    = intPostVar('draftid');
 
-        if (! $member->canAddItem($i_catid)) {
+        if ( ! $member->canAddItem($i_catid)) {
             return ['status' => 'error', 'message' => _ERROR_DISALLOWED];
         }
 
-        if (! $i_actiontype) {
+        if ( ! $i_actiontype) {
             $i_actiontype = 'addnow';
         }
 
@@ -120,21 +130,21 @@ class ITEM
                 $i_draft = 0;
         }
 
-        if (! trim($i_body)) {
+        if (0 == strlen(trim($i_body))) {
             return ['status' => 'error', 'message' => _ERROR_NOEMPTYITEMS];
         }
 
         // create new category if needed
         if (str_contains($i_catid, 'newcat')) {
             // get blogid
-            list($i_blogid) = sscanf($i_catid, "newcat-%d");
+            [$i_blogid] = sscanf($i_catid, "newcat-%d");
 
             // create
-            $blog    = & $manager->getBlog($i_blogid);
+            $blog    = &$manager->getBlog($i_blogid);
             $i_catid = $blog->createNewCategory();
 
             // show error when sth goes wrong
-            if (! $i_catid) {
+            if ( ! $i_catid) {
                 return [
                     'status'  => 'error',
                     'message' => _ERROR_CATCREATEFAIL,
@@ -143,10 +153,10 @@ class ITEM
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);
-            $blog     = & $manager->getBlog($i_blogid);
+            $blog     = &$manager->getBlog($i_blogid);
         }
 
-        if ($i_actiontype === 'addfuture') {
+        if ('addfuture' === $i_actiontype) {
             $posttime = mktime(
                 $i_hour,
                 $i_minutes,
@@ -157,7 +167,7 @@ class ITEM
             );
 
             // make sure the date is in the future, unless we allow past dates
-            if ((! $blog->allowPastPosting())
+            if (( ! $blog->allowPastPosting())
                 && ($posttime < $blog->getCorrectTime())) {
                 $posttime = $blog->getCorrectTime();
             }
@@ -237,10 +247,10 @@ class ITEM
     ) {
         global $manager;
 
-        $itemid = (int)$itemid;
+        $itemid = (int) $itemid;
 
         // make sure value is 1 or 0
-        if ($closed != 1) {
+        if (1 != $closed) {
             $closed = 0;
         }
 
@@ -252,7 +262,7 @@ class ITEM
         $moveNeeded = (($new_blogid != $old_blogid) ? 1 : 0);
 
         // add <br /> before newlines
-        $blog = & $manager->getBlog($new_blogid);
+        $blog = &$manager->getBlog($new_blogid);
         if ($blog->convertBreaks()) {
             $body = addBreaks($body);
             $more = addBreaks($more);
@@ -277,13 +287,13 @@ class ITEM
             sql_real_escape_string($body),
             sql_real_escape_string($title),
             sql_real_escape_string($more),
-            (int)$closed,
-            (int)$catid
+            (int) $closed,
+            (int) $catid
         );
 
         // if we received an updated timestamp in the past, but past posting is not allowed,
         // reject that date change (timestamp = 0 will make sure the current date is kept)
-        if ((! $blog->allowPastPosting())
+        if (( ! $blog->allowPastPosting())
             && ($timestamp < $blog->getCorrectTime())) {
             $timestamp = 0;
         }
@@ -302,26 +312,26 @@ class ITEM
             // don't allow timestamps in the past (unless otherwise defined in blogsettings)
             $query .= ', idraft=0';
 
-            if ($timestamp == 0) {
+            if (0 == $timestamp) {
                 $timestamp = $blog->getCorrectTime();
             }
 
             // send new item notification
-            if (! $isFuture && $blog->getNotifyAddress()
+            if ( ! $isFuture && $blog->getNotifyAddress()
                  && $blog->notifyOnNewItem()) {
                 $blog->sendNewItemNotification($itemid, $title, $body);
             }
         }
 
         // save back to drafts
-        if (! $wasdraft && ! $publish) {
+        if ( ! $wasdraft && ! $publish) {
             $query .= ', idraft=1';
             // set timestamp back to zero for a draft
             $query .= ", itime=" . mysqldate($timestamp);
         }
 
         // update timestamp when needed
-        if ($timestamp != 0) {
+        if (0 != $timestamp) {
             $query .= ", itime=" . mysqldate($timestamp);
         }
 
@@ -364,8 +374,8 @@ class ITEM
      */
     public static function cloneItem($itemid, $new_catid = 0)
     {
-        $itemid    = (int)$itemid;
-        $new_catid = (int)$new_catid;
+        $itemid    = (int) $itemid;
+        $new_catid = (int) $new_catid;
 
         $query = sprintf(
             'SELECT iblog,icat FROM %s WHERE inumber=%d',
@@ -374,8 +384,8 @@ class ITEM
         );
         $res = sql_query($query);
         if ($res = (sql_query($query) && ($obj = sql_fetch_object($res)))) {
-            $src_blogid = (int)$obj->iblog;
-            $src_catid  = (int)$obj->icat;
+            $src_blogid = (int) $obj->iblog;
+            $src_catid  = (int) $obj->icat;
         } else {
             return false; // unkown error,  invalid inumber ?
         }
@@ -386,9 +396,9 @@ class ITEM
         }
         $is_same_cat = ($src_catid == $new_catid);
 
-        if (! $is_same_cat) {
+        if ( ! $is_same_cat) {
             $new_blogid = getBlogIDFromCatID($new_catid);
-            if (! $new_blogid) {
+            if ( ! $new_blogid) {
                 return false;
             } // unkown error,  invalid catid ?
         } else {
@@ -454,8 +464,8 @@ class ITEM
     {
         global $manager;
 
-        $itemid    = (int)$itemid;
-        $new_catid = (int)$new_catid;
+        $itemid    = (int) $itemid;
+        $new_catid = (int) $new_catid;
 
         $new_blogid = getBlogIDFromCatID($new_catid);
 
@@ -502,11 +512,11 @@ class ITEM
     {
         global $manager, $member;
 
-        $itemid = (int)$itemid;
+        $itemid = (int) $itemid;
 
         // check to ensure only those allow to alter the item can
         // proceed
-        if (! $member->canAlterItem($itemid)) {
+        if ( ! $member->canAlterItem($itemid)) {
             return 1;
         }
 
@@ -549,27 +559,27 @@ class ITEM
     {
         global $manager;
 
-        $id = (int)$id;
+        $id = (int) $id;
 
         $sql = sprintf(
             'SELECT count(*) AS result FROM %s WHERE inumber=%d',
             sql_table('item'),
             $id
         );
-        if (! $future) {
+        if ( ! $future) {
             $bid = getBlogIDFromItemID($id);
-            if (! $bid) {
+            if ( ! $bid) {
                 return 0;
             }
-            $b = & $manager->getBlog($bid);
+            $b = &$manager->getBlog($bid);
             $sql .= ' AND itime<=' . mysqldate($b->getCorrectTime());
         }
-        if (! $draft) {
+        if ( ! $draft) {
             $sql .= ' AND idraft=0';
         }
         $sql .= ' LIMIT 1';
 
-        return ((int)quickQuery($sql) > 0);
+        return ((int) quickQuery($sql) > 0);
     }
 
     /**
@@ -592,20 +602,6 @@ class ITEM
         $i_title  = postVar('title');
         $i_more   = postVar('more');
 
-        if ((strtoupper(_CHARSET) !== 'UTF-8')
-            && (($mb = function_exists('mb_convert_encoding'))
-                || function_exists('iconv'))
-        ) {
-            if ($mb) {
-                $i_body  = mb_convert_encoding($i_body, _CHARSET, "UTF-8");
-                $i_title = mb_convert_encoding($i_title, _CHARSET, "UTF-8");
-                $i_more  = mb_convert_encoding($i_more, _CHARSET, "UTF-8");
-            } else {
-                $i_body  = iconv("UTF-8", _CHARSET, $i_body);
-                $i_title = iconv("UTF-8", _CHARSET, $i_title);
-                $i_more  = iconv("UTF-8", _CHARSET, $i_more);
-            }
-        }
         //$i_actiontype = postVar('actiontype');
         $i_closed = intPostVar('closed');
         //$i_hour = intPostVar('hour');
@@ -616,30 +612,30 @@ class ITEM
         $i_catid = postVar('catid');
         $i_draft = 1;
         $type    = postVar('type');
-        if ($type === 'edit') {
+        if ('edit' === $type) {
             $i_blogid = getBlogIDFromItemID(intPostVar('itemid'));
         } else {
             $i_blogid = intPostVar('blogid');
         }
         $i_draftid = intPostVar('draftid');
 
-        if (! $member->canAddItem($i_catid)) {
+        if ( ! $member->canAddItem($i_catid)) {
             return ['status' => 'error', 'message' => _ERROR_DISALLOWED];
         }
 
-        if (! trim($i_body)) {
+        if ( ! trim($i_body)) {
             return ['status' => 'error', 'message' => _ERROR_NOEMPTYITEMS];
         }
 
         // create new category if needed
         if (str_contains($i_catid, 'newcat')) {
             // Set in default category
-            $blog    = & $manager->getBlog($i_blogid);
+            $blog    = &$manager->getBlog($i_blogid);
             $i_catid = $blog->getDefaultCategory();
         } else {
             // force blogid (must be same as category id)
             $i_blogid = getBlogIDFromCatID($i_catid);
-            $blog     = & $manager->getBlog($i_blogid);
+            $blog     = &$manager->getBlog($i_blogid);
         }
 
         $posttime = 0;

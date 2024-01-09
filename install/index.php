@@ -24,7 +24,7 @@
     -- Start Of Configurable Part --
 */
 
-if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
+if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
@@ -35,11 +35,12 @@ if (version_compare(phpversion(), '5.5.0', '<') || 90000 <= PHP_VERSION_ID) {
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
 }
 
-define('INSTALL_EXPIRE_SEC', 10 * 60); // 10 minutes
+define('INSTALL_EXPIRE_SEC', 30 * 60); // 30 minutes
 
 define('NC_MTN_MODE', 'install');
 
 include_once('functions.inc.php');
+include_once('../nucleus/libs/version.php');
 include_once('../nucleus/libs/phpfunctions.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
 include_once('../nucleus/libs/helpers.php');
@@ -47,11 +48,10 @@ include_once('../nucleus/libs/helpers.php');
 define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
 
-define('ENABLE_SQLITE_INSTALL', 0); // allow sqlite install , boolean  PHP[7.1-] , QA test not conducted , move to v3.90dev
-define('INSTALL_PRIORITY_MYSQL_MODULE', PHP_VERSION_ID <= 70000 ? 1 : 0); // mode , 0: pdo mysql , 1: mysql module
+define('ENABLE_SQLITE_INSTALL', NUCLEUS_DEVELOP || @is_file('ENABLE_SQLITE_INSTALL')); // allow sqlite install , boolean , QA test not conducted
 define('DEBUG_INSTALL_QUERY', 0); // debug query
 define('DEBUG_INSTALL_STEPS', 0); // debug
-define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '5.5.0'); // (string) , format : dot separated
+define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '8.1.0'); // (string) , format : dot separated
 
 define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
 
@@ -67,8 +67,6 @@ if (DEBUG_INSTALL_QUERY) {
     $CONF = ['debug' => 1];
 }
 
-include_once('../nucleus/libs/version.php');
-
 $install_lang_defs = get_install_lang_defs();
 $install_lang_keys = get_install_lang_keys();
 
@@ -79,24 +77,24 @@ if (isset($_POST['lang'])) {
     $lang = strtolower($_GET['lang']);
 }
 
-if ($lang != '' && !in_array($lang, $install_lang_keys)) {
+if ('' != $lang && ! in_array($lang, $install_lang_keys)) {
     $lang = 'en';
-} elseif ($lang != '' && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php")) {
+} elseif ('' != $lang && in_array($lang, $install_lang_keys) && is_file("./install_lang_{$lang}.php")) {
     // do nothing
 } else {
     $v         = '';
     $http_lang = get_http_accept_primary_languages();
     foreach ($http_lang as $key) {
-        if (!isset($install_lang_defs[$key])) {
+        if ( ! isset($install_lang_defs[$key])) {
             continue;
         }
-        if ($key != 'en' && in_array($key, $install_lang_keys)
+        if ('en' != $key && in_array($key, $install_lang_keys)
                          && is_file("./install_lang_{$key}.php")) {
             $v = $lang = $key;
             break;
         }
     }
-    if (!$v) {
+    if ( ! $v) {
         $lang = 'en';
     }
 }
@@ -104,7 +102,7 @@ if ($lang != '' && !in_array($lang, $install_lang_keys)) {
 define('INSTALL_LANG', $lang);
 include_once("./install_lang_{$lang}.php");
 
-if ($lang != 'en') {
+if ('en' != $lang) {
     ob_start();
     include_once("./install_lang_en.php");
     ob_end_clean();
@@ -113,12 +111,10 @@ if ($lang != 'en') {
 // array with names of plugins to install. Plugin files must be present in the nucleus/plugin/
 // directory.
 //
-// example:
-//     array('NP_CKEditor', 'NP_Text')
 $aConfPlugsToInstall = [
-    'NP_SkinFiles',
-//        'NP_CustomURL',
-//        'NP_CKEditor',
+//    'NP_SkinFiles',
+//    'NP_CKEditor',
+//    'NP_CustomURL',
 ];
 
 // array with skins to install. skins must be present under the skins/ directory with
@@ -126,7 +122,7 @@ $aConfPlugsToInstall = [
 //
 // example:
 //     array('base','rsd')
-$aConfSkinsToImport = ['atom','rss2.0','rsd','default'];
+$aConfSkinsToImport = ['atom','rss2.0','rsd','classic'];
 
 /*
     -- End Of Configurable Part --
@@ -149,38 +145,26 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
 }
 
 // include core classes that are needed for login & plugin handling
-if (!function_exists('mysql_query')) {
-    include_once('../nucleus/libs/sql/mysql_emulate.php');
-} else {
-    define('_EXT_MYSQL_EMULATE', 0);
-}
+define('_EXT_MYSQL_EMULATE', 0);
 
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
-if (ENABLE_SQLITE_INSTALL && (postVar('install_db_type') == 'sqlite')) {
-    $DB_DRIVER_NAME     = 'sqlite';
-    $DB_PHP_MODULE_NAME = 'pdo';
+$DB_PHP_MODULE_NAME = 'pdo';
+
+// sqlite
+if (ENABLE_SQLITE_INSTALL && ('sqlite' == postVar('install_db_type'))) {
+    $DB_DRIVER_NAME = 'sqlite';
 }
 
 //set the handler if different from mysql (or mysqli)
-if (!isset($DB_DRIVER_NAME) || strlen($DB_DRIVER_NAME) == 0) {
-    $mode1 = INSTALL_PRIORITY_MYSQL_MODULE && (extension_loaded('mysql') || extension_loaded('mysqli'));
-    if ($mode1) {
-        $DB_DRIVER_NAME = $DB_PHP_MODULE_NAME = 'mysql';
-    } else {
-        $DB_PHP_MODULE_NAME = 'pdo';
-        $DB_DRIVER_NAME     = 'mysql';
-    }
+if ( ! isset($DB_DRIVER_NAME) || 0 == strlen($DB_DRIVER_NAME)) {
+    $DB_DRIVER_NAME = 'mysql';
 }
-include_once('../nucleus/libs/sql/'.$DB_PHP_MODULE_NAME.'.php');
+include_once('../nucleus/libs/sql/pdo.php');
 
 // check if mysql support is installed
 // this check may not make sense, as is, in a version past 3.5x
-if ($DB_PHP_MODULE_NAME == 'pdo') {
-    if (!extension_loaded('pdo_' . $DB_DRIVER_NAME)) {
-        doError(_ERROR1);
-    }
-} elseif (!function_exists('mysql_query')) {
-    _doError(_ERROR1);
+if ( ! extension_loaded('pdo_' . $DB_DRIVER_NAME)) {
+    doError(_ERROR1);
 }
 
 // check config.php, v3.80-
@@ -188,12 +172,29 @@ if (@is_file('../config.php')) {
     _doError(_INSTALL_TEXT_ERROR_CONFIG_EXIST);
 }
 
-$mtime = @filemtime(__FILE__);
-if (!$mtime || ($mtime + INSTALL_EXPIRE_SEC < time())) {
+if ( ! @file_exists(__DIR__ . '/install-config.php')) {
+    _doError(_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE);
+} else {
+    // basic auth
+    // $INSTALL_AUTH_USER, $INSTALL_AUTH_PW
+    include_once(__DIR__ . '/install-config.php');
+    if (( ! isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']))
+        || ( ! isset($INSTALL_AUTH_USER, $INSTALL_AUTH_PW))
+        || (empty(trim($INSTALL_AUTH_USER)) || empty(trim($INSTALL_AUTH_PW)))
+        || ($_SERVER['PHP_AUTH_USER'] !== $INSTALL_AUTH_USER)
+        || ($_SERVER['PHP_AUTH_PW'] !== $INSTALL_AUTH_PW)
+    ) {
+        header('WWW-Authenticate: Basic realm="Enter username and password."');
+        _doError(_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED);
+    }
+}
+
+$mtime = @filemtime(__DIR__ . '/install-config.php');
+if ( ! $mtime || ($mtime + INSTALL_EXPIRE_SEC < time())) {
     _doError(_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED);
 }
 
-if (postVar('action') == 'go') {
+if ('go' == postVar('action')) {
     doInstall();
 } else {
     showInstallForm();

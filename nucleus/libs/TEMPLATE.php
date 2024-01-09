@@ -22,12 +22,12 @@ class TEMPLATE
 
     public function __construct($templateid)
     {
-        $this->id = (int)$templateid;
+        $this->id = (int) $templateid;
     }
 
     public function getID()
     {
-        return (int)$this->id;
+        return (int) $this->id;
     }
 
     // (static)
@@ -77,29 +77,20 @@ class TEMPLATE
             "DELETE FROM %s WHERE tpartname='%s' and tdesc=%d",
             sql_table('template'),
             sql_real_escape_string($type),
-            (int)$id
+            (int) $id
         ));
 
-        global $SQL_DBH;
         // write new thingie
         if (strlen($content) > 0) {
             $sql = sprintf(
                 'INSERT INTO %s(tcontent, tpartname, tdesc) VALUES',
                 sql_table('template')
             );
-            if (! $SQL_DBH) { // $MYSQL_CONN && $DB_PHP_MODULE_NAME != 'pdo'
-                sql_query($sql . sprintf(
-                    "('%s', '%s', %d)",
-                    sql_real_escape_string($content),
-                    sql_real_escape_string($type),
-                    (int)$id
-                ));
-            } else {
-                sql_prepare_execute(
-                    $sql . '(?, ?, ?)',
-                    [$content, $type, (int)$id]
-                );
-            }
+
+            sql_prepare_execute(
+                $sql . '(?, ?, ?)',
+                [$content, $type, (int) $id]
+            );
         }
     }
 
@@ -156,7 +147,7 @@ class TEMPLATE
      *
      * @param $name name of the template file
      */
-    public static function read($name)
+    public static function read(string $name): array
     {
         global $manager;
         static $rs = null;
@@ -198,16 +189,16 @@ class TEMPLATE
      * (static)
      *
      * @param $template
-     *        Template to be used
+     *                  Template to be used
      * @param $values
-     *        Array of all the values
+     *                  Array of all the values
      */
     public static function fill($template, $values)
     {
-        if (is_null($template)) {
+        if (null === $template) {
             return '';
         }
-        if (count($values) != 0) {
+        if (0 != count($values)) {
             // go through all the values
             for (reset($values); $key = key($values); next($values)) {
                 $template = str_replace("<%{$key}%>", $values[$key], $template);
@@ -220,53 +211,55 @@ class TEMPLATE
 
     // returns true if there is a template with the given shortname
     // (static)
-    public static function exists($name)
+    public static function exists(string $name): bool
     {
-        $res = quickQuery(sprintf(
+        $res = sql_direct_getValue_AsInt(sprintf(
             "select count(*) as result FROM %s WHERE tdname='%s' limit 1",
             sql_table('template_desc'),
             sql_real_escape_string($name)
         ));
-
-        return ((int)$res > 0);
+        return ((int) $res > 0);
     }
 
     // returns true if there is a template with the given ID
     // (static)
-    public static function existsID($id)
+    public static function existsID(int $id): bool
     {
-        $res = quickQuery(sprintf(
-            'select count(*) as result FROM %s WHERE tdnumber=%d limit 1',
+        $res = sql_direct_getValue_AsInt(sprintf(
+            'SELECT count(*) AS result FROM %s WHERE tdnumber=%d LIMIT 1',
             sql_table('template_desc'),
-            (int)$id
+            (int) $id
         ));
-
-        return ((int)$res > 0);
+        return ((int) $res > 0);
     }
 
     // (static)
-    public static function getNameFromId($id)
+    public static function getNameFromId(int $id): string|false
     {
-        return quickQuery(
-            sprintf(
-                'SELECT tdname as result FROM %s WHERE tdnumber=%d',
-                sql_table('template_desc'),
-                (int)$id
-            ),
-            'cacheClear'
+        $sql = sprintf(
+            'SELECT tdname AS result FROM %s WHERE tdnumber=%d LIMIT 1',
+            sql_table('template_desc'),
+            (int) $id
         );
+        $sth = sql_get_db()?->prepare($sql);
+        if ($sth && $sth->execute() && ($res = $sth->fetch(PDO::FETCH_NUM))) {
+            return (string) $res[0];
+        }
+        return false;
     }
 
     // (static)
-    public static function getDesc($id)
+    public static function getDesc(int $id): string|false
     {
-        $res = sql_query(sprintf(
-            'SELECT tddesc FROM %s WHERE tdnumber=%d',
+        $sql = sprintf(
+            'SELECT tddesc FROM %s WHERE tdnumber=%d LIMIT 1',
             sql_table('template_desc'),
-            (int)$id
-        ));
-        $obj = sql_fetch_object($res);
-
-        return $obj->tddesc;
+            (int) $id
+        );
+        $sth = sql_get_db()?->prepare($sql);
+        if ($sth && $sth->execute() && ($res = $sth->fetch(PDO::FETCH_NUM))) {
+            return $res[0];
+        }
+        return false;
     }
 }

@@ -2,23 +2,23 @@
 
 class SYSTEMLOG
 {
-    const MAX_MSG_LEN = 1000000;
+    public const MAX_MSG_LEN = 1000000;
 
     public static function checkWritable()
     {
         static $table_exists = null;
         global $CONF;
         // no table
-        if (is_null($table_exists)) {
+        if (null === $table_exists) {
             if (empty($CONF['DatabaseVersion'])
-                || ((int)$CONF['DatabaseVersion'] < 380)) {
+                || ((int) $CONF['DatabaseVersion'] < 380)) {
                 $table_exists = false;
             } else {
                 self::checkAndCreateTable();
                 $table_exists = sql_existTableName(sql_table('systemlog'));
             }
         }
-        if (! $table_exists) {
+        if ( ! $table_exists) {
             return false;
         }
 
@@ -27,14 +27,14 @@ class SYSTEMLOG
 
     public static function add($type, $subtype, $message, $options = [])
     {
-        global $member, $CONF, $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME;
+        global $member, $DB_DRIVER_NAME;
 
-        if (! self::checkWritable()) {
+        if ( ! self::checkWritable()) {
             return;
         }
 
         if (is_string($message)) {
-            $message = (string)$message;
+            $message = (string) $message;
         }
 
         $tablename = sql_table('systemlog');
@@ -44,26 +44,26 @@ class SYSTEMLOG
             VALUES(:logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash)
 EOL;
         $ph             = [];
-        $ph[':logyear'] = (int)gmdate('Y', $_SERVER['REQUEST_TIME']);
-        $ph[':logtype'] = (string)$type;
-        $ph[':subtype'] = (string)$subtype;
-        $ph[':mnumber'] = (int)max(
+        $ph[':logyear'] = (int) gmdate('Y', $_SERVER['REQUEST_TIME']);
+        $ph[':logtype'] = (string) $type;
+        $ph[':subtype'] = (string) $subtype;
+        $ph[':mnumber'] = (int) max(
             0,
-            empty($options['mnumber']) ? 0 : (int)$options['mnumber']
+            empty($options['mnumber']) ? 0 : (int) $options['mnumber']
         );
-        $ph[':timestamp_utc'] = (string)gmdate(
+        $ph[':timestamp_utc'] = (string) gmdate(
             'Y-m-d H:i:s',
             $_SERVER['REQUEST_TIME']
         );
-        $ph[':message'] = (string)((strlen($message) > self::MAX_MSG_LEN)
+        $ph[':message'] = (string) ((strlen($message) > self::MAX_MSG_LEN)
             ? substr(
                 $message,
                 0,
                 self::MAX_MSG_LEN
             ) : $message);
-        $ph[':message_hash'] = (string)sha1($ph[':message']);
+        $ph[':message_hash'] = (string) sha1($ph[':message']);
 
-        if ($DB_DRIVER_NAME == 'sqlite') {
+        if ('sqlite' == $DB_DRIVER_NAME) {
             $query = <<< EOL
             INSERT INTO `{$tablename}`
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash, logid)
@@ -72,20 +72,10 @@ EOL;
 EOL;
         }
 
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            $res = sql_prepare_execute($query, $ph);
-        } else {
-            $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
-            foreach (array_keys($ph) as $key) {
-                $new_key      = substr($key, 1);
-                $ph[$new_key] = & $ph[$key];
-                unset($ph[$key]);
-            }
-            $query = parseQuery($query, $ph);
-            $res   = sql_query($query);
-        }
+        $res = sql_prepare_execute($query, $ph);
+
         if (isDebugMode() && $member->isAdmin()) {
-            if (empty($res) || sql_affected_rows($res) == 0) {
+            if (empty($res) || 0 == sql_affected_rows($res)) {
                 $msg = sprintf(
                     'SYSTEMLOG::add query error: %s : %s',
                     hsc(sql_error()),
@@ -103,42 +93,36 @@ EOL;
         $message,
         $options = []
     ) {
-        global $DB_PHP_MODULE_NAME;
-        $message = (string)((strlen($message) > self::MAX_MSG_LEN)
+        if ( ! self::checkWritable()) {
+            return;
+        }
+
+        $message = (string) ((strlen($message) > self::MAX_MSG_LEN)
             ? substr($message, 0, self::MAX_MSG_LEN) : $message);
 
         $ph                  = [];
-        $ph[':logtype']      = (string)$type;
-        $ph[':subtype']      = (string)$subtype;
-        $ph[':message_hash'] = (string)sha1($message);
+        $ph[':logtype']      = (string) $type;
+        $ph[':subtype']      = (string) $subtype;
+        $ph[':message_hash'] = (string) sha1($message);
 
         $tablename = sql_table('systemlog');
         $query     = <<< EOL
             DELETE FROM `{$tablename}`
             WHERE logtype=:logtype AND subtype=:subtype AND message_hash=:message_hash
 EOL;
-        if ($DB_PHP_MODULE_NAME == 'pdo') {
-            sql_prepare_execute($query, $ph);
-        } else {
-            $query = preg_replace("/:(\w+)/ims", "'[@\\1@]'", $query);
-            foreach (array_keys($ph) as $key) {
-                $new_key      = substr($key, 1);
-                $ph[$new_key] = & $ph[$key];
-                unset($ph[$key]);
-            }
-            $query = parseQuery($query, $ph);
-            sql_query($query);
-        }
+
+        sql_prepare_execute($query, $ph);
+
         self::add($type, $subtype, $message, $options);
     }
 
     public static function clearAll()
     {
         global $DB_DRIVER_NAME;
-        if (! self::checkWritable()) {
+        if ( ! self::checkWritable()) {
             return;
         }
-        if ($DB_DRIVER_NAME == 'mysql') {
+        if ('mysql' == $DB_DRIVER_NAME) {
             $query = 'TRUNCATE TABLE ' . sql_table('systemlog');
         } else {
             $query = 'DELETE FROM ' . sql_table('systemlog');
@@ -155,7 +139,7 @@ EOL;
     {
         static $checked = false;
         global $DB_DRIVER_NAME;
-        if (! self::checkWritable() || $checked) {
+        if ( ! self::checkWritable() || $checked) {
             return;
         }
         $checked = true;
@@ -203,7 +187,7 @@ EOL;
         if (sql_existTableName(sql_table('systemlog'))) {
             return;
         }
-        if (! sql_existTableName(sql_table('config'))) {
+        if ( ! sql_existTableName(sql_table('config'))) {
             return;
         }
         $query          = [];
@@ -239,7 +223,7 @@ CREATE INDEX IF NOT EXISTS `{$tablename}_idx_logtype` on `{$tablename}` (`logtyp
 EOL;
 
         global $DB_DRIVER_NAME;
-        if ($DB_DRIVER_NAME == 'sqlite') {
+        if ('sqlite' == $DB_DRIVER_NAME) {
             $items = explode(';', $query['sqlite']);
             foreach ($items as $query) {
                 sql_query($query);

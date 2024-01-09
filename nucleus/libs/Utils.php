@@ -6,7 +6,7 @@
 // Utils::strlen
 // Utils::httpGet
 
-if (! defined('_HAS_MBSTRING')) {
+if ( ! defined('_HAS_MBSTRING')) {
     define('_HAS_MBSTRING', extension_loaded('mbstring'));
 }
 
@@ -24,9 +24,9 @@ class Utils
         // bool mb_send_mail ( string $to , string $subject , string $message [, string $additional_headers = NULL [, string $additional_parameter = NULL ]] )
         // bool         mail ( string $to , string $subject , string $message [, string $additional_headers [, string $additional_parameters ]] )
 
-        if (! _HAS_MBSTRING || ('iso-8859-1' == strtolower(_CHARSET))) {
+        if ( ! _HAS_MBSTRING || ('iso-8859-1' == strtolower(_CHARSET))) {
             if ('utf-8' == strtolower(_CHARSET)
-                && (! isset($args[3])
+                && ( ! isset($args[3])
                      || (false === stripos($args[3], 'utf-8')))) {
                 $additional_headers = 'Content-Type: text/plain; charset=utf-8';
                 if (isset($args[3])) {
@@ -45,7 +45,7 @@ class Utils
                     '',
                     getLanguageName()
                 ));
-                if (stripos('japanese', $lang) !== false) {
+                if (false !== stripos('japanese', $lang)) {
                     $mb_lang = 'ja';
                 }
                 //                else if ('iso-8859-1' == strtolower(_CHARSET))
@@ -66,16 +66,16 @@ class Utils
         // PHP bug: manual : defaults to the current local time if timestamp is null
         //                   actual result : null treat as int 0
 
-        if (! is_string($format) || (strlen($format) == 0)) {
+        if ( ! is_string($format) || (0 == strlen($format))) {
             return '';
         }
-        if ((func_num_args() == 1)) {
+        if ((1 == func_num_args())) {
             $timestamp = time();
         }
         if (90000 <= PHP_VERSION_ID && USER_FUNCTION_STRFTIME) {
             return self::date_with_strftime_format($format, $timestamp);
         }
-        if (! _HAS_MBSTRING) {
+        if ( ! _HAS_MBSTRING) {
             return @strftime($format, $timestamp);
         }
         $old_locale = setlocale(
@@ -84,7 +84,7 @@ class Utils
         ); // backup locale : maintained per process, not thread
         $locale = setlocale(LC_CTYPE, '');
         try {
-            if (strncasecmp(PHP_OS, 'WIN', 3) == 0) {
+            if (0 == strncasecmp(PHP_OS, 'WIN', 3)) {
                 $locale_mbcahrset = false;
                 // PHP not support wcsftime, so format cannot contain unicode charactors.
                 // curl http://php.net/manual/ja/mbstring.supported-encodings.php | grep -Po CP[0-9]+ | grep -Po [0-9]+ | sort -n | uniq | xargs -IXXX echo "XXX|" | paste -s | tr -d "[:space:]"
@@ -100,7 +100,7 @@ class Utils
                     if (in_array($codepage, [1251, 1252])) {
                         $locale_mbcahrset = "windows-{$m[1]}";
                     } else {
-                        if ($codepage == 932) {
+                        if (932 == $codepage) {
                             $locale_mbcahrset = 'SJIS-win';
                         } else {
                             $locale_mbcahrset = "CP{$codepage}";
@@ -148,7 +148,7 @@ class Utils
 
     public static function strlen($string)
     {
-        if (is_null($string)) {
+        if (null === $string) {
             return 0;
         }
         if (_HAS_MBSTRING) {
@@ -163,7 +163,7 @@ class Utils
         $options = ['connecttimeout' => 3]
     ) {
         static $enable_curl = null;
-        if (is_null($enable_curl)) {
+        if (null === $enable_curl) {
             $enable_curl = (function_exists('curl_init'));
         }
         $timeout = ((isset($options['timeout'])
@@ -199,11 +199,11 @@ class Utils
             }
             // request
             $res = curl_exec($crl);
-            if ($res !== false) {
+            if (false !== $res) {
                 $info = curl_getinfo($crl);
-                if (! empty($info) && isset($info["header_size"])) {
+                if ( ! empty($info) && isset($info["header_size"])) {
                     if (isset($info["http_code"])
-                        && $info["http_code"] == 200) {
+                        && 200 == $info["http_code"]) {
                         $header = rtrim(substr($res, 0, $info["header_size"]));
                         if (0 == max(0, strlen($res) - $info["header_size"])) {
                             $body = '';
@@ -216,7 +216,7 @@ class Utils
                                 'body'   => &$body,
                             ];
                         } else {
-                            $ret = & $body;
+                            $ret = &$body;
                         }
                     }
                 }
@@ -257,13 +257,13 @@ class Utils
                     $timeout > 0 ? $timeout - ceil(microtime(true) - $start)
                     : 1
                 );
-                if (! stream_select($stR, $stW, $stW, $tv_sec)) {
+                if ( ! stream_select($stR, $stW, $stW, $tv_sec)) {
                     fclose($c);
 
                     return false; // Timeout
                 }
                 $str = fgets($c, 500);
-                if ($str !== false) {
+                if (false !== $str) {
                     $data .= $str;
                 }
 
@@ -281,9 +281,9 @@ class Utils
                 }
             }
             fclose($c);
-            if (! empty($meta) && isset($meta['wrapper_data'])) {
+            if ( ! empty($meta) && isset($meta['wrapper_data'])) {
                 return [
-                    'header' => (string)implode("\n", $meta['wrapper_data']),
+                    'header' => (string) implode("\n", $meta['wrapper_data']),
                     'body'   => &$data,
                 ];
             }
@@ -294,11 +294,11 @@ class Utils
         return false;
     }
 
-    public static function date_with_strftime_format($format, $timestamp = null)
+    public static function date_with_strftime_format(string $format, ?int $timestamp = null): string|false
     {
         $fmt = self::convertDateformatFromStrftimeformat($format);
-        if ($fmt !== false) {
-            if ((func_num_args() == 1)) {
+        if (false !== $fmt) {
+            if ((1 == func_num_args())) {
                 return date($fmt);
             } else {
                 return date($fmt, $timestamp);
@@ -315,12 +315,12 @@ class Utils
         $res   = [];
 
         foreach ($parts as $part) {
-            if (substr($part, 0, 1) !== '%') {
+            if ('%' !== substr($part, 0, 1)) {
                 // normal string
                 $res[] = preg_replace('|([a-z])|i', '\\\\${1}', $part);
                 continue;
             }
-            if (strlen($part) != 2) {
+            if (2 != strlen($part)) {
                 // syntax error;
                 if ($force) {
                     $res[] = '%';
@@ -329,7 +329,7 @@ class Utils
                 return false;
             }
             // %a %A %d %e %j %u %w %U %V %W %b %B %h %m %C %g %G %y %Y %H %k %I %l %M %p %P %r %R %S %T %X %z %Z %c %D %F %s %x %n %t %%
-            if (!str_contains('aAdejuwUVWbBhmCgGyYHkIlMpPrRSTXzZcDFsxnt%', substr($part, 1, 1))) {
+            if ( ! str_contains('aAdejuwUVWbBhmCgGyYHkIlMpPrRSTXzZcDFsxnt%', substr($part, 1, 1))) {
                 // syntax error;
                 return false;
             }
@@ -379,16 +379,16 @@ class Utils
 //                '%x' => '',
             ];
             $new = strtr($part, $pairs);
-            if (strcmp($new, $part) === 0) {
+            if (0 === strcmp($new, $part)) {
                 // Not implemented yet.
                 if ($force) {
                     // todo: ? or do nothing or as it is
-//                   $res[] = '?';
-//                   $res[] = $part;
+                    //$res[] = '?';
+                    //$res[] = $part;
                     continue;
                 }
                 return false;
-//              continue;
+                //continue;
             }
             $res[] = $new;
         }

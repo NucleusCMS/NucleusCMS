@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+	<meta charset="UTF-8" />
+	<meta name="robots" content="noindex,noarchive,nofollow" />
 	<title>Nucleus - Plugin API</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 	<style type="text/css">
@@ -103,7 +105,7 @@ All plugin files should be placed in the directory that is listed in <code>confi
 <div class="note">
 _aOptionValues , _aOptionToInfo<br />
 plugid , plugin_options<br />
-(v3.80): plugin_admin_dir , plugin_admin_url_prefix , plugin_dir_type<br />
+(v3.80): plugin_admin_dir , plugin_admin_url , plugin_dir_type<br />
 </div>
 
 
@@ -1974,6 +1976,29 @@ $this->createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonly',
 </div>
 
 <h1>Database tables <a name="tables" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
+
+<h2>Important: Accessing Tables</h2>
+<div>
+<p>Database access has been changed to PDO driver. </p>
+<p>Use one of the following. </p>
+<ul>
+<li>Access as PDO driver (recommended)<br />
+There are two ways to get the connected PDO driver handle. <br />
+global $SQL_DBH;<br />
+or<br />
+＄dbh = sql_get_db();<br /></li>
+<li>Using sql_* functions<br />
+This is to reduce the effort of migrating existing code from the mysq_* functions. Consider using the PDO driver functions when starting from scratch. </li>
+</ul>
+</div>
+<p>Please bind parameters to "question mark placeholders" and "named placeholders" to improve security and speed. </p>
+
+<h2>Nucleus Table Access</h2>
+
+<p>In addition to sql_table('table name'), [@prefix@] can be used from 3.80 through the parseQuery function.
+<code>$sql = sprintf('SELECT ... FROM `%s` ...', sql_table('table name'));</code><br />
+<code>$sql = parseQuery('SELECT ... FROM `[@prefix@]tablename` ...');</code>
+</p>
 
 <h2>Access to Nucleus tables</h2>
 

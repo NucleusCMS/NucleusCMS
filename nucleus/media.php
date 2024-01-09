@@ -41,27 +41,27 @@ include_libs('MEDIA.php', false, false);
 //sendContentType('application/xhtml+xml', 'media');
 
 // user needs to be logged in to use this
-if (!$member->isLoggedIn()) {
+if ( ! $member->isLoggedIn()) {
     media_loginAndPassThrough();
     exit;
 }
 
 // check if member is on at least one teamlist
 $query          = 'SELECT count(*) as result FROM ' . sql_table('team'). ' WHERE tmember=' . $member->getID();
-$is_belong_team = ((int)quickQuery($query) > 0);
-if (!$is_belong_team && !$member->isAdmin()) {
+$is_belong_team = ((int) quickQuery($query) > 0);
+if ( ! $is_belong_team && ! $member->isAdmin()) {
     media_doError(_ERROR_DISALLOWEDUPLOAD);
 }
 
 // get action
 $action = requestVar('action');
-if ($action == '') {
+if ('' == $action) {
     $action = 'selectmedia';
 }
 
 // check ticket
-if (!in_array($action, ['selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT])) {
-    if (!$manager->checkTicket()) {
+if ( ! in_array($action, ['selectmedia', _MEDIA_FILTER_APPLY, _MEDIA_COLLECTION_SELECT])) {
+    if ( ! $manager->checkTicket()) {
         media_doError(_ERROR_BADTICKET);
     }
 }
@@ -70,14 +70,14 @@ switch ($action) {
     case 'chooseupload':
     case _MEDIA_UPLOAD_TO:
     case _MEDIA_UPLOAD_NEW:
-        if (!MEDIA::checkMemberHasUploadRights()) {
+        if ( ! MEDIA::checkMemberHasUploadRights()) {
             media_doError(_ERROR_DISALLOWED);
         } else {
             media_choose();
         }
         break;
     case 'uploadfile':
-        if (!MEDIA::checkMemberHasUploadRights()) {
+        if ( ! MEDIA::checkMemberHasUploadRights()) {
             media_doError(_ERROR_DISALLOWED);
         } else {
             media_upload();
