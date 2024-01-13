@@ -136,12 +136,12 @@ function doMonitor() {
 function checkMonitor() {
 	if (xmlhttprequest[0].readyState == 4) {
 		if (xmlhttprequest[0].responseText) {
-			if (xmlhttprequest[0].responseText.substr(0, 4) == 'err:') {
-				goal.innerHTML = xmlhttprequest[0].responseText.substr(4) + ' (' + formattedDate() + ')';
-			}
-			else {
-				addform.draftid.value = xmlhttprequest[0].responseText;
-				goal.innerHTML = lastsavedtext + ' ' + formattedDate();
+			var res = JSON.parse(xmlhttprequest[0].responseText);
+			if (!res.success || !res.value) {
+				goal.textContent = (!res.value ? 'Error' : res.value) + ' (' + formattedDate() + ')';
+			} else {
+				addform.draftid.value = res.value;
+				goal.textContent = lastsavedtext + ' ' + formattedDate();
 			}
 		}
 	}
@@ -153,11 +153,11 @@ function checkMonitor() {
 function updateTicket() {
 	if (xmlhttprequest[1].readyState == 4) {
 		if (xmlhttprequest[1].responseText) {
-			if (xmlhttprequest[1].responseText.substr(0, 4) == 'err:') {
-				goal.innerHTML = xmlhttprequest[1].responseText.substr(4) + ' (' + formattedDate() + ')';
-			}
-			else {
-				addform.ticket.value = xmlhttprequest[1].responseText;
+			var res = JSON.parse(xmlhttprequest[1].responseText);
+			if (!res.success || !res.value) {
+				goal.textContent = (!res.value ? 'Error' : res.value) + ' (' + formattedDate() + ')';
+			} else {
+				addform.ticket.value = res.value;
 			}
 		}
 	}

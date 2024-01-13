@@ -528,9 +528,9 @@ class ACTION
         global $manager;
 
         if ($manager->checkTicket()) {
-            echo $manager->getNewTicket();
+            echo json_encode(["success" => true, "value" => $manager->getNewTicket()]);
         } else {
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+            echo json_encode(["success" => false, "value" => _ERROR . ':' . _ERROR_BADTICKET]);
         }
 
         return false;
@@ -544,7 +544,7 @@ class ACTION
         global $manager;
 
         if ( ! $manager->checkTicket()) {
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+            echo json_encode(["success" => false, "value" => _ERROR . ':' . _ERROR_BADTICKET]);
             return false;
         }
 
@@ -552,9 +552,9 @@ class ACTION
         $info = ITEM::createDraftFromRequest();
 
         if ('error' === $info['status']) {
-            echo $info['message'];
+            echo json_encode(["success" => false, "value" => _ERROR . ':' . $info['message']]);
         } else {
-            echo $info['draftid'];
+            echo json_encode(["success" => true, "value" => $info['draftid']]);
         }
 
         return false;
