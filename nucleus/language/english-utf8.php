@@ -1568,3 +1568,10 @@ try_define('_ADMIN_ISTATE_PERIOD_INVALID', 'Invalid');
 try_define('_ADMIN_ISTATE_PERIOD_START',   'Start');
 try_define('_ADMIN_ISTATE_RESERVATION',    'Reservation');
 try_define('_ADMIN_ISTATE_STATE',          'State');
+
+try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'Save and options');
+try_define('_ADMIN_EDIT_OPERATIONS',  "OPERATIONS");
+try_define('_ADMIN_TEXT_DELETE',  "DELETE");
+try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "COMFIRM DELETE");
+
+try_define('_TEXT_VIEW',						'View');

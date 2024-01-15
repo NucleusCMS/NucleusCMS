@@ -86,6 +86,7 @@ class PAGEFACTORY extends BaseActions
             'tabindex',
             'settabindex',
             'publictime',
+            'itemlink',
         ];
 
         // TODO: maybe add 'skin' later on?
@@ -381,6 +382,14 @@ class PAGEFACTORY extends BaseActions
     {
         echo '<a href="' . hsc($this->blog->getRealURL()) . '">'
              . hsc($this->blog->getName()) . '</a>';
+    }
+
+    public function parse_itemlink()
+    {
+        if ( ! isset($this->variables['itemid'])) {
+            return;
+        }
+        echo createItemLink($this->variables['itemid']); // url , not htmltag
     }
 
     public function parse_authorname()

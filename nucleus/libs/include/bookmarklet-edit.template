@@ -16,7 +16,14 @@
 		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
 {%endif%}
 		<script type="text/javascript" src="javascript/jquery/jquery.min.js"></script>
-		<script type="text/javascript" src="javascript/jquery/ui/core_widget_tabs.min.js"></script>
+		<script src="javascript/jquery/jquery-ui.min.js"></script>
+		<script src="javascript/edit_public_date.js"></script>
+		<link rel="stylesheet" href="styles/jquery-ui/jquery-ui.theme.min.css">
+		<link rel="stylesheet" href="styles/jquery-ui/jquery-ui.structure.min.css">
+{%iftext(_LOCALE,ja_JP)%}
+        <link rel="stylesheet" href="styles/jquery-ui/ui.datepicker-ja.css">
+        <script src="javascript/jquery/i18n/jquery.ui.datepicker-ja.js"></script>
+{%endif%}
 {%init%}
 {%extrahead%}
 	</head>

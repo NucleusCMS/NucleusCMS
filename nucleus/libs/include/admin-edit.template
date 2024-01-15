@@ -1,4 +1,4 @@
-<h2>{%text(_EDIT_ITEM)%}</h2>
+<h2>{%text(_EDIT_ITEM)%} : (ID:{%contents(itemid)%}) : <a href="{%itemlink%}" target="_blank">({%text(_TEXT_VIEW)%})</a></h2>
 
 {%init%}
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
@@ -6,14 +6,39 @@
 <script type="text/javascript" src="javascript/edit_state.js"></script>
 {%ifautosave()%}<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>{%endif%}
 
+<form id="deleteform" name="deleteform" method="post" action="index.php"
+	style="float: right; padding: 0.5em" >
+	<input type="hidden" name="action" value="itemdelete" />
+	<input type="hidden" name="itemid" value="{%contents(itemid)%}" />
+<!-- index.php?action=itemdelete&itemid=
+	<input type="hidden" name="draftid" value="0" />
+-->
+	{%ticket%}
+</form>
+
 <form id="editform" method="post" action="index.php">
-<div>
+	<input type="hidden" name="action" value="itemupdate" />
+	<input name="itemid" value="{%contents(itemid)%}" type="hidden" />
+	<input type="hidden" name="draftid" value="0" />
+	{%ticket%}
+	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
+		<div style="display: inline-block; float: right">
+			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}"
+				onclick="return checkSubmit();" />
+			{%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+				onclick="autoSaveDraft();" />{%endif%}
+		</div>
+	</div>
 
-<input type="hidden" name="action" value="itemupdate" />
-<input name="itemid" value="{%contents(itemid)%}" type="hidden" />
-<input type="hidden" name="draftid" value="0" />
-{%ticket%}
+<div id="tabs">
+	<ul>
+		<li><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
+		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
+		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
+		<li><a href="#tab_operations" tabindex="330">{%text(_ADMIN_EDIT_OPERATIONS)%}</a></li>
+	</ul>
 
+	<div id="tab_body" class="contentblock">
 <table><tr>
 	<th colspan="2">{%text(_EDIT_ITEM)%}</th>
 </tr>
@@ -29,7 +54,15 @@
 			value="{%contents(title)%}"
 			/>
 	</td>
-</tr><tr class="body">
+</tr>
+<tr>
+	<td>{%text(_ADD_CATEGORY)%}</td>
+	<td>{%categories(40)%}</td>
+</tr>
+</table>
+
+<table>
+<tr class="body">
 	<td>
 		{%text(_ADD_BODY)%} {%helplink(additem)%}
 	</td>
@@ -42,6 +75,10 @@
 			rows="15">{%contents(body)%}</textarea>
 	</td>
 </tr>
+</table>
+</div>
+	<div id="tab_more" class="contentblock">
+		<table>
 <tr class="more">
 	<td>{%text(_ADD_MORE)%} {%helplink(extended)%}
 	</td>
@@ -58,19 +95,10 @@
 		<a href="#" id="openmore" onclick="return false;">{%text(_EDITTEMPLATE_EMPTY)%}</a>
 	</td>
 </tr>
-<tr id="edit" style="display:none;">
-	<td>{%text(_ADD_PREVIEW)%}</td>
-	<td><div><b><span id="prevtitle">&#160;</span></b></div>
-		<div id="prevbody">&#160;</div>
-		<div id="prevmore">&#160;</div>
-	</td>
-</tr>
-
-<tr>
-	<td>{%text(_ADD_CATEGORY)%}</td>
-	<td>{%categories(40)%}</td>
-</tr>
-
+		</table>
+	</div>
+	<div id="tab_options" class="contentblock">
+		<table>
 <tr>
     <td>{%text(_ADD_PUBLIC)%}</td>
     <td>{%settabindex(41)%}
@@ -158,7 +186,12 @@
 	</td>	
 </tr>
 			{%itemoptions%}	
-<tr>
+		</table>
+	</div>
+
+<div id="tab_operations" class="contentblock">
+		<table summary="item body" class="bookmarklet">
+	<tr>
 		<td>{%text(_SUBMIT)%}</td>
 		<td>
 			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}" 
@@ -166,13 +199,46 @@
 			{%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
 				onclick="autoSaveDraft();" />{%endif%}
 		</td>
-	
-</tr></table>
+	</tr>
+			<tr>
+				<td style="width:20%">{%text(_ADMIN_TEXT_DELETE)%}</td>
+				<td>
+					<input id="deleteButton" type="button" value="{%text(_ADMIN_TEXT_DELETE)%}" tabindex="200" onclick=" if (window.confirm('{%text(_ADMIN_COMFIRM_GO_DELETE_BTN)%}')) { document.deleteform.submit(); } " />
+				</td>
+			</tr>
+</table>
 
+	<div id="tab_preview" class="contentblock" style="display:none;">
+		<table>
+			<tr id="edit" style="display:none;">
+				<td>{%text(_ADD_PREVIEW)%}</td>
+				<td><div><b><span id="prevtitle">&#160;</span></b></div>
+					<div id="prevbody">&#160;</div>
+					<div id="prevmore">&#160;</div>
+				</td>
+			</tr>
+		</table>
+	</div>
 </div>
 </form>
-{%ifautosave()%}
-<script type="text/javascript">
+
+<script>
+// workaround for ui-tabs bug : if a <base> tag is present in the <head> section, local tabs load the content of the base URL, instead of the content of the referred div.
+// https://bugs.jqueryui.com/ticket/8637  https://bugs.jqueryui.com/ticket/4941
+if ($('base')[0] && $('base')[0].href) {
+	$('#tabs ul li a').each(function () {
+		var url = document.location.href.split('#');
+		if ($(this).attr('href').match(/^#/)) {
+			$(this).attr('href', url[0] + $(this).attr('href'));
+		}
+	});
+}
+// end workaround ui-tabs bug
+	$( "#tabs" ).tabs();
+</script>
+
+
+{%ifautosave()%}<script type="text/javascript">
 	var xmlhttprequest = new Array();
 	xmlhttprequest[0] = createHTTPHandler(); // AutoDraft handler
 	xmlhttprequest[1] = createHTTPHandler(); // UpdateTicket handler

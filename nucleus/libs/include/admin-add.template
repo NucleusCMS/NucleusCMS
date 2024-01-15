@@ -8,27 +8,51 @@
 
 <form id="addform" method="post" action="index.php" >
 
-<div>
+	<input type="hidden" name="action" value="additem" />
+	<input name="blogid" value="{%blogid%}" type="hidden" />
+	<input type="hidden" name="draftid" value="0" />
+	{%ticket%}
 
-<input type="hidden" name="action" value="additem" />
-<input name="blogid" value="{%blogid%}" type="hidden" />
-<input type="hidden" name="draftid" value="0" />
-{%ticket%}
+	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_ADD_CREATENEW)%}</h3></div>
+		<div style="display: inline-block; float: right">
+			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_ADD_ADDITEM)%}"
+				onclick="return checkSubmit();" />
+			{%ifautosave()%}
+			<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+				onclick="autoSaveDraft();" />
+			{%endif%}
+		</div>
+	</div>
 
-<table>
-	<tr>
-		<th colspan="2">{%text(_ADD_CREATENEW)%}</th>
-	</tr>
-	<tr>
-		<td>{%text(_ADD_TITLE)%}</td>
-		<td><input 
-			{%jsinput(title)%}
-			tabindex="10"
-			maxlength="160" 
-			value="{%contents(title)%}"
-			/>
-	</td>
-	</tr><tr class="body">
+<div id="tabs">
+	<ul>
+		<li><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
+		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
+		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
+	</ul>
+
+	<div id="tab_body" class="contentblock">
+	<table>
+		<tr>
+			<th colspan="2">{%text(_ADD_CREATENEW)%}</th>
+		</tr>
+
+		<tr>
+			<td>{%text(_ADD_TITLE)%}</td>
+			<td><input 
+				{%jsinput(title)%}
+				tabindex="10"
+				maxlength="160" 
+				value="{%contents(title)%}"
+				/>
+            </td>
+    	</tr>
+        <tr>
+            <td>{%text(_ADD_CATEGORY)%}</td>
+            <td>{%categories(40)%}</td>
+        </tr>
+
+	<tr class="body">
 		<td>
 			{%text(_ADD_BODY)%} {%helplink(additem)%}
 		</td>
@@ -41,6 +65,12 @@
 				rows="15">{%contents(body)%}</textarea>
 		</td>
 	</tr>
+		</table>
+	</div>
+
+	<div id="tab_more" class="contentblock">
+		<table>
+
 	<tr class="more">
 		<td>{%text(_ADD_MORE)%} {%helplink(extended)%}
 		</td>
@@ -57,19 +87,16 @@
 		<a href="#" id="openmore" onclick="return false;">{%text(_EDITTEMPLATE_EMPTY)%}</a>
 		</td>
 	</tr>
-	<tr id="edit" style="display:none;">
-		<td>{%text(_ADD_PREVIEW)%}</td>
-		<td><b><span id="prevtitle">&#160;</span></b><br />
-			<span id="prevbody">&#160;</span><br />
-			<span id="prevmore">&#160;</span><br />
-		</td>
-	</tr>
-	
-<tr>
-		<td>{%text(_ADD_CATEGORY)%}</td>
-		<td>{%categories(40)%}</td>
-</tr>
+		</table>
+	</div>
 
+	<div id="tab_options" class="contentblock">
+		<table>
+	{%ifautosave()%}
+	<tr>
+		<td>{%text(_AUTOSAVEDRAFT)%}</td>
+		<td><span id="info">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span></td>
+	</tr>{%endif%}
     <tr>
         <td>{%text(_ADD_PUBLIC)%}</td>
         <td>{%settabindex(41)%}
@@ -111,19 +138,14 @@
              onclick="checked_act_draft(true, this);" /><label for="act_draft">{%text(_ADD_ADDDRAFT)%}</label> {%helplink(draft)%}
 		</td>
 	</tr>
-	{%ifautosave()%}
-	<tr>
-		<td>{%text(_AUTOSAVEDRAFT)%}</td>
-		<td><span id="info">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span></td>
-	</tr>{%endif%}
 {%ifblogsetting(bcomments)%}
-<tr>
+    <tr>
 		<td>{%text(_ADD_DISABLE_COMMENTS)%}</td>
 		<td>
 			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes">{%text(_YES)%}</label>
 			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no">{%text(_NO)%}</label>
 		</td>
-</tr>
+    </tr>
 {%endif%}
 	<tr>
 		<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
@@ -144,9 +166,38 @@
 		</td>
 	</tr>
 </table>
+	</div>
+
+	<div id="tab_preview" class="contentblock" style="display:none;">
+		<table>
+		<tr id="edit" style="display:none;">
+			<td>{%text(_ADD_PREVIEW)%}</td>
+			<td><b><span id="prevtitle">&#160;</span></b><br />
+				<span id="prevbody">&#160;</span><br />
+				<span id="prevmore">&#160;</span><br />
+			</td>
+		</tr>
+		</table>
+	</div>
 
 </div>
 </form>
+
+<script>
+// workaround for ui-tabs bug : if a <base> tag is present in the <head> section, local tabs load the content of the base URL, instead of the content of the referred div.
+// https://bugs.jqueryui.com/ticket/8637  https://bugs.jqueryui.com/ticket/4941
+if ($('base')[0] && $('base')[0].href) {
+	$('#tabs ul li a').each(function () {
+		var url = document.location.href.split('#');
+		if ($(this).attr('href').match(/^#/)) {
+			$(this).attr('href', url[0] + $(this).attr('href'));
+		}
+	});
+}
+// end workaround ui-tabs bug
+	$( "#tabs" ).tabs();
+</script>
+
 {%ifautosave()%}
 <script type="text/javascript">
 	var xmlhttprequest = new Array();
