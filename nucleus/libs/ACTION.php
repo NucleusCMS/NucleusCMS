@@ -33,11 +33,11 @@ class ACTION
     {
         switch ($action) {
             case 'autodraft':
-                return $this->autoDraft();
-
+                $this->autoDraft();
+                break;
             case 'updateticket':
-                return $this->updateTicket();
-
+                $this->updateTicket();
+                break;
             case 'addcomment':
                 return $this->addComment();
 
@@ -523,7 +523,7 @@ class ACTION
     /**
      * Gets a new ticket
      */
-    public function updateTicket()
+    public function updateTicket(): void
     {
         global $manager;
 
@@ -532,20 +532,18 @@ class ACTION
         } else {
             echo json_encode(["success" => false, "value" => _ERROR . ':' . _ERROR_BADTICKET]);
         }
-
-        return false;
     }
 
     /**
      * Handles AutoSaveDraft
      */
-    public function autoDraft()
+    public function autoDraft(): void
     {
         global $manager;
 
         if ( ! $manager->checkTicket()) {
             echo json_encode(["success" => false, "value" => _ERROR . ':' . _ERROR_BADTICKET]);
-            return false;
+            return;
         }
 
         $manager->loadClass('ITEM');
@@ -556,7 +554,5 @@ class ACTION
         } else {
             echo json_encode(["success" => true, "value" => $info['draftid']]);
         }
-
-        return false;
     }
 }
