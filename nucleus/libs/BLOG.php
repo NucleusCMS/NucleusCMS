@@ -358,7 +358,7 @@ class BLOG
     /**
      * Adds an item to this blog
      */
-    public function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted = '1', $options = [])
+    public function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted = 1, $options = [])
     {
         global $manager;
 
@@ -379,12 +379,10 @@ class BLOG
             $more = addBreaks($more);
         }
 
-        if ('1' != $closed) {
-            $closed = '0';
-        }
-        if ('0' != $draft) {
-            $draft = '1';
-        }
+        // make sure value is 1 or 0
+        $closed = ($closed ? 1 : 0);
+        $draft  = ($draft ? 1 : 0);
+        $posted = ($posted ? 1 : 0);
 
         if ( ! $this->isValidCategory($catid)) {
             $catid = $this->getDefaultCategory();
@@ -424,6 +422,10 @@ class BLOG
                 'catid'     => &$catid,
                 ];
         $manager->notify('PreAddItem', $notify_data);
+
+        // make sure value is 1 or 0
+        $closed = ($closed ? 1 : 0);
+        $draft  = ($draft ? 1 : 0);
 
         $colNamesText  = "ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted";
         $colValuesText = "?, ?, ?, ?, ?, ?, ?, ?, ?, ?";

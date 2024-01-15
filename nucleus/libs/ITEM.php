@@ -133,7 +133,7 @@ class ITEM
         $i_title      = postVar('title');
         $i_more       = postVar('more');
         $i_actiontype = postVar('actiontype');
-        $i_closed     = intPostVar('closed');
+        $i_closed     = (intPostVar('closed') ? 1 : 0);
         $i_hour       = intPostVar('hour');
         $i_minutes    = intPostVar('minutes');
         $i_month      = intPostVar('month');
@@ -300,9 +300,7 @@ class ITEM
         $itemid = (int) $itemid;
 
         // make sure value is 1 or 0
-        if (1 != $closed) {
-            $closed = 0;
-        }
+        $closed = ($closed ? 1 : 0);
 
         // get destination blogid
         $new_blogid = getBlogIDFromCatID($catid);
@@ -329,6 +327,9 @@ class ITEM
             'catid'  => &$catid,
         ];
         $manager->notify('PreUpdateItem', $param);
+
+        // make sure value is 1 or 0
+        $closed = ($closed ? 1 : 0);
 
         // update item itsself
         $query = 'UPDATE ' . sql_table('item')
@@ -664,7 +665,7 @@ class ITEM
         $i_more   = postVar('more');
 
         //$i_actiontype = postVar('actiontype');
-        $i_closed = intPostVar('closed');
+        $i_closed = (intPostVar('closed') ? 1 : 0);
         //$i_hour = intPostVar('hour');
         //$i_minutes = intPostVar('minutes');
         //$i_month = intPostVar('month');
