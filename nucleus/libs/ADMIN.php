@@ -1017,6 +1017,9 @@ class ADMIN
                 <?php
         // insert selected item numbers
         $idx = 0;
+        $ids = array_map(fn ($value): int => (int) $value, $ids);
+        array_unique($ids, SORT_NUMERIC);
+
         foreach ($ids as $id) {
             echo '<input type="hidden" name="batch[', ($idx++), ']" value="', (int) $id, '" />';
         }
@@ -1034,6 +1037,38 @@ class ADMIN
             </div>
         </form>
         <?php
+        $sql    = '';
+        $fields = [];
+        switch($type) {
+            case 'blog':
+                $fields = ['ID', _EBLOG_SHORTNAME, _EBLOG_NAME];
+                $sql    = sprintf('SELECT bnumber, bshortname, bname FROM %s WHERE bnumber IN', sql_table('blog'));
+                break;
+            case 'item':
+                $fields = ['ID', _LISTS_TITLE];
+                $sql    = sprintf('SELECT inumber, SUBSTRING(ititle, 1, 20) as ititle FROM %s WHERE inumber IN', sql_table('item'));
+                break;
+        }
+        if ($sql) {
+            $sql .= sprintf(' (%s)', implode(', ', $ids));
+            $sth = sql_prepare_execute($sql);
+            if ($sth) {
+                echo "<table><tr>";
+                foreach ($fields as $field) {
+                    printf("<th>%s</th>", hsc($field));
+                }
+                echo "</tr>";
+                while ($row = sql_fetch_row($sth)) {
+                    echo "<tr>";
+                    foreach ($row as $col) {
+                        printf("<td>%s</td>", hsc($col));
+                    }
+                    echo "</tr>";
+                }
+                echo "</table>";
+            }
+        }
+
         $this->pagefoot();
         exit;
     }
