@@ -81,19 +81,23 @@ class NAVLIST extends ENCAPSULATE
     public function showNavigation()
     {
         $action    = $this->action;
-        $start     = $this->start;
-        $amount    = $this->amount;
+        $start     = (int) $this->start;
+        $amount    = (int) $this->amount;
         $minamount = $this->minamount;
         $maxamount = $this->maxamount;
         $blogid    = $this->blogid;
         $search    = hsc($this->search);
         $itemid    = $this->itemid;
 
+        // Todo: Page navigation
+
         $prev = $start - $amount;
+        //$prev = max(0, ($current_page - 2)) * $amount;
         if ($prev < $minamount) {
             $prev = $minamount;
         }
 
+        //$next = max(0, min($current_page, $total_pages) * $amount);
         $enable_cat_select = in_array(
             $action,
             ['itemlist', 'browseownitems']
@@ -300,12 +304,7 @@ class NAVLIST extends ENCAPSULATE
 
     public static function getValidViewItemOption($name, $default = 'all')
     {
-        $list = [
-            'all',
-            'normal',
-            'normal_term_future',
-            'draft',
-        ];
+        $list = self::getFormSelectViewItemOptionLists();
         foreach ($list as $key) {
             if ($key == $name) {
                 return $key;
@@ -313,6 +312,28 @@ class NAVLIST extends ENCAPSULATE
         }
 
         return $default;
+    }
+
+    public static function getFormSelectViewItemOptionLists()
+    {
+        $items = [
+             'all','normal','normal_term','normal_term_future', 'normal_term_expired',
+            'non_draft_term_expired','non_public_publishable','non_public_term_before',
+            'non_public_term_during','non_public_expired',
+            'term_invalid',
+            'non_public',
+            'draft',
+            'draft_public',
+            'draft_non_public',
+        ];
+        // non_publicは除外する
+        $res = [];
+        foreach ($items as $value) {
+            if ( ! str_contains($value, 'non_public') && ! str_contains($value, 'non_draft_term_expired')) {
+                $res[] = $value;
+            }
+        }
+        return $res;
     }
 
     protected function getFormSelectViewItemOptions(
@@ -323,12 +344,11 @@ class NAVLIST extends ENCAPSULATE
         $input_name = 'view_item_options'
     ) {
         global $CONF;
-        $list = [
-            'all',
-            'normal',
-            'normal_term_future',
-            'draft',
-        ];
+        $list = self::getFormSelectViewItemOptionLists();
+        if ( ! ITEM::existCol_ipublic()) {
+            $list = ['all','normal','draft'];
+        }
+
         if ( ! in_array($in_value, $list)) {
             $in_value = 'all';
         }
@@ -341,23 +361,11 @@ class NAVLIST extends ENCAPSULATE
             $count_cached[$cachekey] = [];
             foreach ($list as $key) {
                 if ('browseownitems' == $action) {
-                    $sql = sprintf(
-                        "SELECT count(*) as result FROM `%s` as i ",
-                        sql_table('item')
-                    )
-                           . sprintf(
-                               " LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ",
-                               sql_table('member')
-                           )
-                           . sprintf(
-                               " LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ",
-                               sql_table('team')
-                           )
-                           . sprintf(" WHERE i.iauthor=%d ", $member->getID())
-                           . ($selected_catid > 0 ? sprintf(
-                               ' AND i.icat=%d',
-                               $selected_catid
-                           ) : '');
+                    $sql = sprintf("SELECT count(*) FROM `%s` as i ", sql_table('item'))
+                          . sprintf(" LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ", sql_table('member'))
+                          . sprintf(" LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_table('team'))
+                          . sprintf(" WHERE i.iauthor=%d ", $member->getID())
+                          . ($selected_catid > 0 ? sprintf(' AND i.icat=%d', $selected_catid) : '');
                 } else {
                     // show one blog
                     $sql = sprintf(

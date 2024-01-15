@@ -537,6 +537,17 @@ class ADMIN
                 case 'move':
                     $error = $this->moveOneItem($itemid, $destCatid);
                     break;
+                    /*
+                    case 'draft':
+                        $error = $this->chageDraftOneItem($itemid, 1);
+                        break;
+                    case 'public':
+                        $error = $this->chagePublicOneItem($itemid, 1);
+                        break;
+                    case 'unpublic':
+                        $error = $this->chagePublicOneItem($itemid, 0);
+                        break;
+                    */
                 default:
                     $error = _BATCH_UNKNOWN . hsc($action);
             }
@@ -1497,7 +1508,7 @@ class ADMIN
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
-        $item = &$manager->getItem($itemid, 1, 1);
+        $item = &$manager->getItemEx($itemid, 1, 1, 0);
         if (empty($item)) {
             $this->error(_ERROR_NOSUCHITEM);
         }
@@ -1546,8 +1557,40 @@ class ADMIN
         $closed  = intPostVar('closed');
         $draftid = intPostVar('draftid');
 
-        // todo: write code and wait for debugging
-        // item: Publication period
+        $act_state = postVar('act_state'); // unsafe value
+        $ipublic   = ('public' == $act_state ? 1 : 0);
+        $idraft    = ('draft' == $act_state ? 1 : 0);
+
+        if ($idraft || 'adddraft' == $actiontype || 'backtodrafts' == $actiontype) {
+            $actiontype = 'adddraft';
+            $idraft     = 1;
+            $ipublic    = 0;
+        }
+
+        $blog = $manager->getBlog($itemid);
+
+        $update_options = ['extraColValue' => []];
+        // value for public
+        $update_options['extraColValue']['ipublic']                   = $ipublic;
+        $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
+        $update_options['extraColValue']['ipublic_enable_term_end']   = (intPostVar('public_enable_term_end') ? 1 : 0);
+        foreach (['start', 'end'] as $section) {
+            /*
+            *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
+           *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+             */
+            $y  = min(9999, max(0, intPostVar('year_public_term_' . $section)));
+            $mo = min(99, max(0, intPostVar('month_public_term_' . $section)));
+            $d  = min(99, max(0, intPostVar('day_public_term_' . $section)));
+            $h  = min(99, max(0, intPostVar('hour_public_term_' . $section)));
+            $mi = min(99, max(0, intPostVar('minute_public_term_' . $section)));
+            if ($y < 2000) {
+                $y  = 2000;
+                $mo = $d = 1;
+                $h  = $mi = 0;
+            }
+            $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+        }
 
         // default action = add now
         if ( ! $actiontype) {
@@ -1594,7 +1637,7 @@ class ADMIN
         }
 
         // edit the item for real
-        ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+        ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp, $update_options);
 
         $this->updateFuturePosted($blogid);
 
@@ -1622,7 +1665,8 @@ class ADMIN
                     $url_redirect = $CONF['AdminURL'] . '?action=itemlist&blogid=' . $blogid;
                     break;
                 case 'list_with_category' :
-                    $this->action_itemlist(getBlogIDFromItemID($itemid)); // list : Filter by the same category as item
+                    // list : Filter by the same category as item
+                    $this->action_itemlist(getBlogIDFromItemID($itemid));
                     exit;
                     break;
                 default:
@@ -1650,7 +1694,7 @@ class ADMIN
             $this->error(_ERROR_NOSUCHITEM);
         }
 
-        $item  = &$manager->getItem($itemid, 1, 1);
+        $item  = &$manager->getItemEx($itemid, 1, 1, 0);
         $title = hsc(strip_tags($item['title']));
         $body  = strip_tags($item['body']);
         $body  = hsc(shorten($body, 300, '...'));
@@ -1762,7 +1806,7 @@ class ADMIN
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
-        $item = &$manager->getItem($itemid, 1, 1);
+        $item = &$manager->getItemEx($itemid, 1, 1, 0);
 
         $this->pagehead();
         ?>
@@ -1795,7 +1839,7 @@ class ADMIN
         $itemid = intRequestVar('itemid');
         $member->canCloneItem($itemid) or $this->disallow();
 
-        $idata = ITEM::getitem($itemid, 1, 1, 0);
+        $idata = ITEM::getItemEx($itemid, 1, 1, 0);
 
         $this->pagehead();
         ?>
@@ -1944,6 +1988,43 @@ class ADMIN
         ITEM::move($itemid, $destCatid);
     }
 
+    public function chageDraftOneItem($itemid, $draft = true)
+    {
+        global $member, $manager;
+
+        // item does not exists -> NOK
+        if ( ! $manager->existsItem($itemid, 1, 1)) {
+            return _ERROR_DISALLOWED;
+        }
+
+        // cannot alter item -> NOK
+        if ( ! $member->canAlterItem($itemid)) {
+            return _ERROR_DISALLOWED;
+        }
+
+        $sql = sprintf("UPDATE `%s` SET idraft=1 , ipublic=0 WHERE inumber=%d", sql_table('item'), $itemid);
+        sql_query($sql);
+    }
+
+    public function chagePublicOneItem($itemid, $public)
+    {
+        global $member, $manager;
+
+        // item does not exists -> NOK
+        if ( ! $manager->existsItem($itemid, 1, 1)) {
+            return _ERROR_DISALLOWED;
+        }
+
+        // cannot alter item -> NOK
+        if ( ! $member->canAlterItem($itemid)) {
+            return _ERROR_DISALLOWED;
+        }
+        // ipublic idraft
+        $sql = sprintf("UPDATE `%s` SET ipublic=%d ", sql_table('item'), ($public ? 1 : 0));
+        $sql .= sprintf(" WHERE inumber=%d", $itemid);
+        sql_query($sql);
+    }
+
     /**
      * Adds a item to the chosen blog
      */
@@ -1965,7 +2046,7 @@ class ADMIN
         $blogid     = getBlogIDFromItemID($result['itemid']);
         $blog       = &$manager->getBlog($blogid);
         $btimestamp = $blog->getCorrectTime();
-        $item       = $manager->getItem((int) $result['itemid'], 1, 1);
+        $item       = $manager->getItemEx((int) $result['itemid'], 1, 1, 0);
 
         if ('newcategory' == $result['status']) {
             $distURI = $manager->addTicketToUrl($CONF['AdminURL'] . 'index.php?action=itemList&blogid=' . (int) $blogid);
@@ -9123,10 +9204,11 @@ EOD;
         $where = '';
         $t     = time(); // Nucleus does not save UTC time zone,  use blog settings time zone
         switch ($v) {
-            case 'all':
-            case 'draft':
-                break;
-            default:
+            //case 'all':
+            //case 'draft':
+            //    break;
+            //default:
+            case 'normal_term_end':
                 if ($bid) {
                     if (is_object($bid)) {
                         $t = $bid->getCorrectTime();
@@ -9139,10 +9221,10 @@ EOD;
                     }
                 } else {
                     global $member, $manager;
-                    $sql = 'SELECT tblog as result FROM `' . sql_table('team') . '` WHERE tmember=' . $member->getID() . ' LIMIT 1';
-                    $res = (int) quickQuery($sql);
+                    $sql = sprintf('SELECT tblog as result FROM `%s` WHERE tmember=%d LIMIT 1', sql_table('team'), $member->getID());
+                    $res = (int) (quickQuery($sql));
                     if ( ! $res) {
-                        $sql = 'SELECT bnumber as result FROM `' . sql_table('blog') . '` LIMIT 1';
+                        $sql = sprintf('SELECT bnumber as result FROM `%s` LIMIT 1', sql_table('blog'));
                     }
                     if ($res > 0) {
                         $o = $manager->getBlog($res);
@@ -9151,31 +9233,159 @@ EOD;
                         }
                     }
                 }
+
                 break;
         }
-        $common_normal_filter              = "idraft=0";
+
+        $common_public_filter              = "ipublic=1";
+        $common_normal_filter              = "idraft=0 AND " . $common_public_filter;
         $common_normal_duringperiod_filter = $common_normal_filter
-            . sprintf(" AND itime <= %s", sqldate($t));
+                        . sprintf(" AND itime <= %s", sqldate($t))
+                        . ' AND ( ipublic_enable_term_start=0 OR'
+                        . sprintf(' ( ipublic_enable_term_start=1 AND ipublic_term_start <= %s)', sqldate($t))
+                        . '     )'
+                        . ' AND ( ipublic_enable_term_end=0 OR'
+                        . sprintf(' ( ipublic_enable_term_end=1 AND ipublic_term_end > %s)', sqldate($t))
+                        . '     )';
         $common_nondraft_filter = "idraft=0";
         $common_draft_filter    = "idraft=1";
+        $common_term_filter     = ['start' => [], 'end' => []];
+        foreach (['start','end'] as $key) {
+            // past  future
+            // $common_term_filter['start'][0]
+            $common_term_filter[$key][0]           = "ipublic_enable_term_{$key}=0 ";
+            $common_term_filter[$key][1]           = [];
+            $common_term_filter[$key][1]['future'] = "ipublic_enable_term_{$key}=1 "
+                                                  . " AND ipublic_term_{$key} > " . sqldate($t);
+            $common_term_filter[$key][1]['past'] = "ipublic_enable_term_{$key}=1 "
+                                                  . " AND ipublic_term_{$key} <= " . sqldate($t);
+        }
+        $common_term_filter['future'] = sprintf(
+            '((%s) OR (%s))',
+            'itime > ' . sqldate($t),
+            $common_term_filter['start'][1]['future']
+        );
+        $common_term_filter['past'] = sprintf(
+            '((%s) AND (%s OR (%s)))',
+            'itime <= ' . sqldate($t),
+            $common_term_filter['start'][0],
+            $common_term_filter['start'][1]['past']
+        );
+        $common_term_filter['expired'] = "ipublic_enable_term_end=1 "
+                                        . " AND ipublic_term_end <= " . sqldate($t);
+        $common_term_filter['invalid'] = '(ipublic_enable_term_start=1 '
+                                        . ' AND ipublic_enable_term_end=1 '
+                                        . ' AND ipublic_term_start>ipublic_term_end)';
+        $common_normal_filter .= sprintf(" AND NOT (%s)", $common_term_filter['invalid']);
+        if ( ! ITEM::existCol_ipublic()) {
+            $common_normal_filter = "idraft=0";
+            $common_draft_filter  = "idraft=1";
+        }
         switch ($v) {
             case 'all':
                 break;
-            case 'draft':
-                $where .= $common_draft_filter;
+            case 'public':
+                $where .= 'ipublic=1';
+
+                break;
+            case 'non_public':
+                $where .= 'ipublic=0';
+
                 break;
             case 'non_draft':
                 $where .= $common_nondraft_filter;
+
                 break;
-            case 'normal':
-                $where .= $common_normal_duringperiod_filter;
+            case 'draft':
+                $where .= $common_draft_filter;
+
                 break;
-            case 'normal_term_only':
-                $where .= $common_normal_duringperiod_filter;
+            case 'normal': //  一般公開中(公開+下書きでない)
+                $where .= sprintf(
+                    "%s AND NOT(%s) AND NOT (%s)",
+                    $common_normal_filter,
+                    $common_term_filter['expired'],
+                    $common_term_filter['future']
+                );
+
                 break;
-            case 'normal_term_future':
+            case 'draft_public':
+                $where .= $common_draft_filter . ' AND ipublic=1';
+
+                break;
+            case 'draft_non_public':
+                $where .= $common_draft_filter . ' AND ipublic=0';
+
+                break;
+            case 'normal_term': // 一般公開中(終了期限付き)
+                $where .= sprintf(
+                    "%s AND NOT(%s) AND NOT (%s)",
+                    $common_normal_filter,
+                    $common_term_filter['expired'],
+                    $common_term_filter['future']
+                );
+                $where .= " AND ipublic_enable_term_end=1 ";
+
+                break;
+            case 'normal_term_future': // checked : 一般公開-開始前
                 $where .= $common_normal_filter
-                    . sprintf(" AND itime > %s", sqldate($t));
+                        . ' AND ' . $common_term_filter['future'];
+
+                break;
+            case 'normal_term_expired':  // 一般公開-期限切れ(公開+下書きでない+期限付き)
+                $where .= $common_normal_filter
+                        . ' AND ' . $common_term_filter['expired'];
+
+                break;
+            case 'non_draft_term_expired':   // 期限切れ(下書きでない+期限付き)
+                $where .= $common_nondraft_filter
+                        . ' AND ' . $common_term_filter['expired'];
+
+                break;
+            case 'non_public_publishable':  // 非公開-公開可能(下書きでない)')
+                $where .= sprintf(
+                    "(NOT(%s) AND %s AND NOT (%s))",
+                    $common_public_filter,
+                    $common_nondraft_filter,
+                    $common_term_filter['expired']
+                );
+
+                break;
+            case 'non_public_term_before': // '非公開-期限付き-開始前(下書きでない)'
+                $where .= sprintf(
+                    "(NOT(%s) AND %s AND NOT (%s) AND %s)",
+                    $common_public_filter,
+                    $common_nondraft_filter,
+                    $common_term_filter['expired'],
+                    $common_term_filter['future']
+                );
+
+                break;
+            case 'non_public_term_during': // '非公開-期限付き-期間中(下書きでない)'
+                $where .= sprintf(
+                    "(NOT(%s) AND %s AND NOT (%s) AND NOT(%s))",
+                    $common_public_filter,
+                    $common_nondraft_filter,
+                    $common_term_filter['expired'],
+                    $common_term_filter['future']
+                );
+
+                break;
+            case 'non_public_expired':     // '非公開-期限切れ(下書きでない)'
+                $where .= sprintf(
+                    "(NOT(%s) AND %s AND %s)",
+                    $common_public_filter,
+                    $common_nondraft_filter,
+                    $common_term_filter['expired']
+                );
+
+                break;
+            case 'term_invalid':
+                $where .= $common_nondraft_filter
+                        . ' AND ipublic_enable_term_start=1 '
+                        . ' AND ipublic_enable_term_end=1 '
+                        . ' AND ipublic_term_start>ipublic_term_end ';
+
                 break;
             default: // invalid $mode
                 $where .= '1=0'; //

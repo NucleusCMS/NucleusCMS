@@ -73,10 +73,34 @@ try_define('_ADMIN_TEXT_UPGRADE_REQUIRED',       'Database upgrade is required.'
 try_define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'Click here to upgrade the database to Nucleus v%s');
 
 try_define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'Filter');
-try_define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'All');
-try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              'Normal published');
-try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  'Normal future');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                  'All');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',               'Normal(Public + Non-Draft)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM',          'Normal(Public + Non-Draft + has-period)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',   'Normal future(Public +  Non-Draft + has-period)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_EXPIRED',  'Normal expired(Public +  Non-Draft + has-period)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_EXPIRED',  'Expired(Non-Draft + has-period)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_PUBLISHABLE',  'Unpublic : publishable(Non-Draft)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_TERM_BEFORE',  'Unpublic : before period(Non-Draft)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_TERM_DURING',  'Unpublic : during period(Non-Draft)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_EXPIRED',      'Unpublic : expired(Non-Draft)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_TERM_INVALID',      'Invalid period');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',            'Public');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC',        'Unpublic');
 try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',             'Draft');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_PUBLIC',      'Draft+Public');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  'Draft+Unpublic');
+
+try_define('_ADD_PUBLIC',             'Public');
+try_define('_ADD_UNPUBLIC',           'Unpublic');
+try_define('_ADD_DRAFT',              'Draft');
+try_define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
+try_define('_ADD_PUBLIC_TERM_DESC',   'Check if enable the expiration period');
+try_define('_ADD_PUBLIC_TERM_START',  'The date time of beginning');
+try_define('_ADD_PUBLIC_TERM_END',    'The date time of ending');
+
+try_define('_ADD_PUBLIC_DATE_FORMAT',           'day,month,year');
+try_define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
+try_define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(dd/mm/yyyy hh:mm)');
 
 try_define('_EDIT_DATE_FORMAT',           'day,month,year');
 try_define('_EDIT_DATE_FORMAT_SEPARATOR', '/,/,at,:,');
@@ -1450,7 +1474,7 @@ try_define('_LISTS_DESC',				'Description');
 try_define('_LISTS_TIME',				'Time');
 try_define('_LISTS_COMMENTS',			'Comments');
 try_define('_LISTS_TYPE',				'Type');
-
+try_define('_LISTS_VIEW_ITEM',			'Show item');
 
 // member list
 try_define('_LIST_MEMBER_NAME',			'Display Name');
@@ -1537,3 +1561,10 @@ try_define('_ADMIN_TEXT_REMOTE_AUTO_UPDATE', 'Download and auto-update');
 try_define('_ADMIN_TEXT_REMOTE_DOWNLOAD', 'Download from remote');
 try_define('_ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS', 'Update notifications and downloads');
 try_define('_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS', 'Don\'t use update notifications and downloads');
+
+try_define('_ADMIN_ISTATE_PERIOD_END',     'End');
+try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', 'Expired');
+try_define('_ADMIN_ISTATE_PERIOD_INVALID', 'Invalid');
+try_define('_ADMIN_ISTATE_PERIOD_START',   'Start');
+try_define('_ADMIN_ISTATE_RESERVATION',    'Reservation');
+try_define('_ADMIN_ISTATE_STATE',          'State');

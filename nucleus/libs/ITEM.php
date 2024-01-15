@@ -25,9 +25,9 @@ class ITEM
      *
      * @param integer $itemid id of the item
      */
-    public function __construct(int $itemid)
+    public function __construct($itemid)
     {
-        $this->itemid = $itemid;
+        $this->itemid = (int) $itemid;
     }
 
     /**
@@ -41,22 +41,46 @@ class ITEM
      */
     public static function getitem($itemid, $allowdraft, $allowfuture): array|false
     {
+        return self::getitemEx($itemid, $allowdraft, $allowfuture, 1);
+    }
+
+    /**
+     * Returns one item with the specific itemid
+     * Version [3.8 - ]
+     *
+     * @param integer $itemid         id of the item
+     * @param boolean $allowdraft
+     * @param boolean $allowfuture
+     * @param boolean $enableitemterm
+     *
+     * @static
+     */
+    public static function getItemEx($itemid, $allowdraft, $allowfuture, $enableitemterm = 0): array|false
+    {
         global $manager;
 
         $itemid = (int) $itemid;
 
         $query = 'SELECT i.idraft as draft, i.inumber as itemid, i.iclosed as closed, '
-               . 'i.ititle as title, i.ibody as body, m.mname as author,  i.iauthor as authorid, '
-               . 'i.itime, i.imore as more, '
-               . 'i.ikarmapos as karmapos,  i.ikarmaneg as karmaneg, '
-               . 'i.icat as catid, i.iblog as blogid '
+               . ' i.ititle as title, i.ibody as body, m.mname as author, i.iauthor as authorid, '
+               . ' i.itime, i.imore as more, '
+               . ' i.ikarmapos as karmapos, i.ikarmaneg as karmaneg, '
+               . ' i.icat as catid, i.iblog as blogid,'
+               . ' i.ipublic as public, '
+               .  " CASE WHEN i.idraft=1 THEN 'draft' WHEN ipublic=1 THEN 'public' ELSE 'unpublic' END AS status,"
+               . ' i.ipublic_enable_term_start as public_enable_term_start,'
+               . ' i.ipublic_enable_term_end as public_enable_term_end,'
+               . ' i.ipublic_term_start as public_term_start,'
+               . ' i.ipublic_term_end as public_term_end'
                . sprintf(
-                   ' FROM %s as i, %s as m, %s as b  WHERE i.inumber=%d and i.iauthor=m.mnumber and i.iblog=b.bnumber',
+                   ' FROM %s as i, %s as m, %s as b ',
                    sql_table('item'),
                    sql_table('member'),
-                   sql_table('blog'),
-                   $itemid
-               );
+                   sql_table('blog')
+               )
+               . sprintf(' WHERE i.inumber=%d', $itemid)
+               . ' and i.iauthor=m.mnumber '
+               . ' and i.iblog=b.bnumber';
 
         if ( ! $allowdraft) {
             $query .= ' and i.idraft=0';
@@ -65,6 +89,9 @@ class ITEM
         if ( ! $allowfuture) {
             $blog = &$manager->getBlog(getBlogIDFromItemID($itemid));
             $query .= ' and i.itime <=' . mysqldate($blog->getCorrectTime());
+        }
+        if ($enableitemterm) {
+            ITEM::addShowQueryFilter($query);
         }
 
         $query .= ' LIMIT 1';
@@ -98,6 +125,9 @@ class ITEM
     {
         global $member, $manager;
 
+        $new_options = ['otherCols' => []];
+        $otherCols   = & $new_options['otherCols'];
+
         $i_author     = $member->getID();
         $i_body       = postVar('body');
         $i_title      = postVar('title');
@@ -116,6 +146,14 @@ class ITEM
             return ['status' => 'error', 'message' => _ERROR_DISALLOWED];
         }
 
+        $act_state = postVar('act_state'); // unsafe value
+        $ipublic   = ('public' === $act_state ? 1 : 0);
+        $idraft    = ('draft' === $act_state ? 1 : 0);
+
+        if ($idraft || ('adddraft' === $i_actiontype) || ('backtodrafts' === $i_actiontype)) {
+            $i_actiontype = 'adddraft';
+        }
+
         if ( ! $i_actiontype) {
             $i_actiontype = 'addnow';
         }
@@ -123,6 +161,7 @@ class ITEM
         switch ($i_actiontype) {
             case 'adddraft':
                 $i_draft = 1;
+                $ipublic = 0;
                 break;
             case 'addfuture':
             case 'addnow':
@@ -183,18 +222,28 @@ class ITEM
             $posted = 1;
         }
 
-        $itemid = $blog->additem(
-            $i_catid,
-            $i_title,
-            $i_body,
-            $i_more,
-            $i_blogid,
-            $i_author,
-            $posttime,
-            $i_closed,
-            $i_draft,
-            $posted
-        );
+        $otherCols['ipublic']                   = $ipublic;
+        $otherCols['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
+        $otherCols['ipublic_enable_term_end']   = (intPostVar('public_enable_term_end') ? 1 : 0);
+        foreach (['start', 'end'] as $section) {
+            /*
+             *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
+             *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+             */
+            $y  = min(9999, max(0, intPostVar('year_public_term_' . $section)));
+            $mo = min(99, max(0, intPostVar('month_public_term_' . $section)));
+            $d  = min(99, max(0, intPostVar('day_public_term_' . $section)));
+            $h  = min(99, max(0, intPostVar('hour_public_term_' . $section)));
+            $mi = min(99, max(0, intPostVar('minute_public_term_' . $section)));
+            if ($y < 2000) {
+                $y  = 2000;
+                $mo = $d = 1;
+                $h  = $mi = 0;
+            }
+            $otherCols['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+        }
+
+        $itemid = $blog->additem($i_catid, $i_title, $i_body, $i_more, $i_blogid, $i_author, $posttime, $i_closed, $i_draft, $posted, $new_options);
 
         //Setting the itemOptions
         $aOptions = requestArray('plugoption');
@@ -243,7 +292,8 @@ class ITEM
         $closed,
         $wasdraft,
         $publish,
-        $timestamp = 0
+        $timestamp = 0,
+        $options = []
     ) {
         global $manager;
 
@@ -281,15 +331,19 @@ class ITEM
         $manager->notify('PreUpdateItem', $param);
 
         // update item itsself
-        $query = sprintf(
-            "UPDATE %s SET ibody='%s', ititle='%s', imore='%s', iclosed=%d, icat=%d",
-            sql_table('item'),
-            sql_real_escape_string($body),
-            sql_real_escape_string($title),
-            sql_real_escape_string($more),
-            (int) $closed,
-            (int) $catid
-        );
+        $query = 'UPDATE ' . sql_table('item')
+               . ' SET'
+               . " ibody=?, ititle=?, imore=?, iclosed=?, icat=? ";
+        $params = [
+                    &$body,&$title, &$more, (int) $closed, (int) $catid,
+            ];
+
+        if (isset($options['extraColValue']) && is_array($options['extraColValue'])) {
+            foreach ($options['extraColValue'] as $key => $value) {
+                $query .= sprintf(', %s = ?', $key);
+                $params[] = $value;
+            }
+        }
 
         // if we received an updated timestamp in the past, but past posting is not allowed,
         // reject that date change (timestamp = 0 will make sure the current date is kept)
@@ -324,22 +378,22 @@ class ITEM
         }
 
         // save back to drafts
-        if ( ! $wasdraft && ! $publish) {
+        if ( ! $publish) {
             $query .= ', idraft=1';
             // set timestamp back to zero for a draft
-            $query .= ", itime=" . mysqldate($timestamp);
+            $query .= ", itime=" . sqldate($timestamp);
         }
 
         // update timestamp when needed
         if (0 != $timestamp) {
-            $query .= ", itime=" . mysqldate($timestamp);
+            $query .= ", itime=" . sqldate($timestamp);
         }
 
         // make sure the correct item is updated
         $query .= ' WHERE inumber=' . $itemid;
 
         // off we go!
-        sql_query($query);
+        sql_prepare_execute($query, $params);
 
         $param = ['itemid' => $itemid];
         $manager->notify('PostUpdateItem', $param);
@@ -557,12 +611,12 @@ class ITEM
      */
     public static function exists($id, $future, $draft)
     {
-        global $manager;
+        global $manager, $CONF;
 
         $id = (int) $id;
 
         $sql = sprintf(
-            'SELECT count(*) AS result FROM %s WHERE inumber=%d',
+            'select count(*) FROM %s WHERE inumber=%d',
             sql_table('item'),
             $id
         );
@@ -577,9 +631,17 @@ class ITEM
         if ( ! $draft) {
             $sql .= ' AND idraft=0';
         }
-        $sql .= ' LIMIT 1';
 
-        return ((int) quickQuery($sql) > 0);
+        if ( ! isset($CONF['UsingAdminArea']) || 1 != $CONF['UsingAdminArea']) {
+            self::addShowQueryFilter($sql);
+        }
+
+        $res = sql_query($sql . ' LIMIT 1');
+
+        if ( ! $res) {
+            return false;
+        }
+        return ((int) (sql_result($res, 0, 0)) > 0);
     }
 
     /**
@@ -669,5 +731,54 @@ class ITEM
 
         // success
         return ['status' => 'added', 'draftid' => $itemid];
+    }
+
+    public static function existCol_ipublic()
+    {
+        static $res = null;
+        if (is_null($res)) {
+            $res = sql_existTableColumnName(sql_table('item'), 'ipublic');
+        }
+        if ( ! defined('_ENABLE_ITEM_PUBLIC_FEATURE')) {
+            define('_ENABLE_ITEM_PUBLIC_FEATURE', ($res ? 1 : 0));
+        }
+        return $res;
+    }
+
+    public static function addShowQueryFilter(&$query, $table_alias = "")
+    {
+        $query .= self::getShowQueryFilter($table_alias);
+    }
+
+    public static function getShowQueryFilter($table_alias = "")
+    {
+        return self::getShowQueryFilterForPublicFeature($table_alias);
+    }
+
+    public static function addShowQueryFilterForPublicFeature(&$query, $table_alias = "")
+    {
+        $query .= self::getShowQueryFilterForPublicFeature($table_alias);
+    }
+
+    public static function getShowQueryFilterForPublicFeature($table_alias = "")
+    {
+        if ( ! self::existCol_ipublic()) {
+            return '';  // needs upgrade database
+        }
+
+        $now    = sqldate(time());
+        $al     = (0 == strlen(trim($table_alias)) ? '' : trim($table_alias) . '.');
+        $expr   = [];
+        $expr[] = "{$al}ipublic_enable_term_start=0 AND {$al}ipublic_enable_term_end=0";
+        $expr[] = "{$al}ipublic_enable_term_start=1 AND {$al}ipublic_enable_term_end=0"
+                . sprintf(" AND {$al}ipublic_term_start<=%s", $now);
+        $expr[] = "{$al}ipublic_enable_term_start=0 AND {$al}ipublic_enable_term_end=1"
+                . sprintf(" AND {$al}ipublic_term_end>%s", $now);
+        $expr[] = "{$al}ipublic_enable_term_start=1 AND {$al}ipublic_enable_term_end=1"
+                . sprintf(" AND {$al}ipublic_term_start<=%s AND {$al}ipublic_term_end>%s", $now, $now);
+        // combine each value with 'or condition'
+        $expr  = '(' . implode(') OR (', $expr) . ')';
+        $query = " AND ({$al}ipublic = 1 AND ( {$expr} )) ";
+        return $query;
     }
 }

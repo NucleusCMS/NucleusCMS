@@ -94,6 +94,22 @@ class MANAGER
      */
     public function &getItem($itemid, $allowdraft, $allowfuture)
     {
+        return $this->getItemEx($itemid, $allowdraft, $allowfuture, 1);
+    }
+
+    /**
+     * Returns one item with the specific itemid
+     * Version [3.8 - ]
+     *
+     * @param integer $itemid         id of the item
+     * @param boolean $allowdraft
+     * @param boolean $allowfuture
+     * @param boolean $enableitemterm
+     *
+     * @static
+     */
+    public function &getItemEx($itemid, $allowdraft, $allowfuture, $enableitemterm = 0)
+    {
         $item = &$this->items[$itemid];
 
         // check the draft and future rules if the item was already cached
@@ -112,10 +128,11 @@ class MANAGER
             // load class if needed
             $this->loadClass('ITEM');
             // load item object
-            $item = ITEM::getitem(
+            $item = ITEM::getitemEx(
                 $itemid,
                 $allowdraft,
-                $allowfuture
+                $allowfuture,
+                $enableitemterm
             );
             $this->items[$itemid] = $item;
         }

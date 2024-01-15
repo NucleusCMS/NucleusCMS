@@ -80,7 +80,7 @@ function upgrade_checkinstall($version)
                 $installed = sql_existTableColumnName(sql_table('category'), 'corder');
                 break;
             case 380:
-                $installed = CONF::existName('ENABLE_PLUGIN_UPDATE_CHECK');
+                $installed = sql_existTableColumnName(sql_table('item'), 'ipublic_term_start');
                 break;
         }
     }

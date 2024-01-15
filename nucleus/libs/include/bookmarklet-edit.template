@@ -10,6 +10,7 @@
 		<script type="text/javascript" src="javascript/bookmarklet.js"></script>
 		<script type="text/javascript" src="javascript/edit.js"></script>
 		<script type="text/javascript" src="javascript/edit_date.js"></script>
+		<script type="text/javascript" src="javascript/edit_state.js"></script>
 		<script type="text/javascript" src="javascript/numbercheck.js"></script>
 {%ifautosave()%}
 		<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>
@@ -101,20 +102,41 @@
 							</td>
 						</tr>
 {%endif%}
+
+                        <tr>
+                            <td>{%text(_ADD_PUBLIC)%}</td>
+                            <td>{%settabindex(41)%}
+                                <input name="act_state" type="radio" id="state_public"   value="public"   {%checkedonval(1,public)%} tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_public">{%text(_ADD_PUBLIC)%}</label>
+                                <span style="display:none">
+                                <input name="act_state" type="radio" id="state_unpublic" value="unpublic" {%checkedonval(0,public)%} tabindex="{%tabindex()%}" onclick="checked_act_draft(false, this);" /><label for="state_unpublic">{%text(_ADD_UNPUBLIC)%}</label>
+                                </span>
+                                <input name="act_state" type="radio" id="state_draft"    value="draft"       {%checkedonval(1,draft)%} tabindex="{%tabindex()%}" onclick="checked_act_draft(true, this);" /><label for="state_draft">{%text(_ADD_DRAFT)%}</label>
+                                <div style="padding-top: 6px;">{%text(_ADD_PUBLIC_TERM)%}
+                                    <div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1"
+                                                         {%checkedonval(1,public_enable_term_start)%} tabindex="{%tabindex()%}" />
+                                                        <label for="public_enable_term_start">{%text(_ADD_PUBLIC_TERM_START)%}</label> : {%public_date_time_picker1%}</div>
+                                    <div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1"
+                                                         {%checkedonval(1,public_enable_term_end)%} tabindex="{%tabindex()%}" />
+                                                        <label for="public_enable_term_end">{%text(_ADD_PUBLIC_TERM_END)%}</label> : {%public_date_time_picker2%}</div>
+                                    <div class="indent">{%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%}{%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%}</div>
+                                    <div class="indent">{%text(_ADD_PUBLIC_TERM_DESC)%}</div>
+                                </div>
+                            </td>
+                        </tr>
+
 						<!-- The only actiontypes are 'edit', 'changedate' (no draft items can be edited) and 'delete' -->
 						<tr>
 							<td style="width:20%">{%text(_EDIT_SUBMIT)%}</td>
 							<td>
 								<ul class="nobullets">
 									<li>
-										<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60" /><label for="act_edit">{%text(_BMLET_EDIT)%}</label>
+										<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60"
+										 onclick="checked_act_draft(false, this);" /><label for="act_edit">{%text(_BMLET_EDIT)%}</label>
 									</li>
-									<li>
-										<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
-										</li>
 {%ifblogsetting(ballowpast)%}
 									<li>
-										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60" /><label for="act_changedate">{%text(_BMLET_CHANGEDATE)%}</label> {%helplink(changedate)%}
+										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60"
+										 onclick="checked_act_draft(false, this);" /><label for="act_changedate">{%text(_BMLET_CHANGEDATE)%}</label> {%helplink(changedate)%}
 										<div class="indent">
 											{%text(_ADD_PLACE_ON)%}
 											{%date_time_picker(itemtime)%}
@@ -122,7 +144,11 @@
 									</li>
 {%endif%}
 									<li>
-										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
+										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60"
+										 onclick="checked_act_draft(true, this);" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
+									</li>
+									<li>
+										<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
 									</li>
 									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" tabindex="120" /><label for="dosendping">{%text(_UPDATEDPING_GOSENDPING)%}</label></li -->
 								</ul>

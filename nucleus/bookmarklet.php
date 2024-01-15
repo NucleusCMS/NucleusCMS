@@ -124,6 +124,8 @@ function bm_doDeleteItem()
 <input type="hidden" name="itemid" value="<%itemid%>" />
 <input type="submit" value="<%_DELETE_CONFIRM_BTN%>"  tabindex="10" />
 </div></form>
+<br /><br />
+<input type="button" onclick="javascript:history.back();" value="<%_ADMIN_TEXT_BTN_CANCEL%>" />
 EOT;
     $ticket = $manager->getNewTicket();
     $itemid = intRequestVar('itemid');
@@ -134,12 +136,14 @@ EOT;
             '<%ticket%>',
             '<%itemid%>',
             '<%itemtitle%>',
+            '<%_ADMIN_TEXT_BTN_CANCEL%>',
         ],
         [
             _CONFIRMTXT_ITEM,_DELETE_CONFIRM_BTN,
             $ticket,
             $itemid,
             $title,
+            _ADMIN_TEXT_BTN_CANCEL,
         ],
         $msg
     );
@@ -175,6 +179,43 @@ function bm_doEditItem()
     $closed     = intPostVar('closed');
     $actiontype = postVar('actiontype');
     $draftid    = intPostVar('draftid');
+
+    $act_state = postVar('act_state'); // unsafe value
+    $ipublic   = ('public' == $act_state ? 1 : 0);
+    $idraft    = ('draft' == $act_state ? 1 : 0);
+
+    if ($idraft || 'adddraft' === $actiontype || 'backtodrafts' === $actiontype) {
+        $actiontype = 'backtodrafts';
+        $idraft     = 1;
+    }
+
+    $blog = $manager->getBlog($itemid);
+
+    $update_options = [];
+    if (0 === $draftid) {
+        $update_options = ['extraColValue' => []];
+        // value for public
+        $update_options['extraColValue']['ipublic']                   = $ipublic;
+        $update_options['extraColValue']['ipublic_enable_term_start'] = (intPostVar('public_enable_term_start') ? 1 : 0);
+        $update_options['extraColValue']['ipublic_enable_term_end']   = (intPostVar('public_enable_term_end') ? 1 : 0);
+        foreach (['start', 'end'] as $section) {
+            /*
+             *  MySQL retrieves and displays DATE values in 'YYYY-MM-DD' format. The supported range is '1000-01-01' to '9999-12-31'.
+             *  TIMESTAMP has a range of '1970-01-01 00:00:01' UTC to '2038-01-19 03:14:07' UTC.
+             */
+            $y  = min(9999, max(0, intPostVar('year_public_term_' . $section)));
+            $mo = min(99, max(0, intPostVar('month_public_term_' . $section)));
+            $d  = min(99, max(0, intPostVar('day_public_term_' . $section)));
+            $h  = min(99, max(0, intPostVar('hour_public_term_' . $section)));
+            $mi = min(99, max(0, intPostVar('minute_public_term_' . $section)));
+            if ($y < 2000) {
+                $y  = 2000;
+                $mo = $d = 1;
+                $h  = $mi = 0;
+            }
+            $update_options['extraColValue']['ipublic_term_' . $section] = sprintf("%04d-%02d-%02d %02d:%02d:00", $y, $mo, $d, $h, $mi);
+        }
+    }
 
     // create new category if needed (only on edit/changedate)
     if (str_contains($catid, 'newcat')) {
@@ -213,7 +254,7 @@ function bm_doEditItem()
     }
 
     // update item for real
-    ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp);
+    ITEM::update($itemid, $catid, $title, $body, $more, $closed, $wasdraft, $publish, $timestamp, $update_options);
 
     if ($draftid > 0) {
         ITEM::delete($draftid);

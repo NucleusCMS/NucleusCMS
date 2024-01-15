@@ -490,9 +490,9 @@ function listplug_table_itemlist($template, $type)
                  . _LISTS_ACTIONS . "</th>";
             break;
         case 'BODY':
-            $current = $template['current'];
-            $current->itime
-                     = strtotime($current->itime);    // string -> unix timestamp
+            $current        = $template['current'];
+            $current->itime = strtotime($current->itime);
+            // string -> unix timestamp
             if ($current->itime < 0) {
                 $current->itime = 0;
             }
@@ -526,6 +526,64 @@ function listplug_table_itemlist($template, $type)
             } else {
                 echo '0000-00-00 00:00';
             }
+
+            $parts_flag = '';
+            $sql        = "SELECT iblog, ipublic, idraft, ipublic_enable_term_start, ipublic_enable_term_end, ipublic_term_start, ipublic_term_end"
+                  . sprintf(" FROM `%s` WHERE inumber=%d", sql_table('item'), $current->inumber);
+            $res = sql_query($sql);
+            if ($res) {
+                global $manager;
+                while ($row = sql_fetch_assoc($res)) {
+                    $tmp_blog         = $manager->getBlog($row['iblog']);
+                    $tmp_current_time = $tmp_blog->getCorrectTime();
+                    $flags            = [];
+                    if ($row['idraft']) {
+                        $flags[] = _LISTS_FORM_SELECT_ITEM_OPTION_DRAFT;
+                    }
+                    if ( ! $row['ipublic']) {
+                        $flags[] = _LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC;
+                    }
+                    $isPublic  = ( ! $row['idraft'] && $row['ipublic']);
+                    $isFuture  = ($current->itime > $tmp_current_time);
+                    $isExpired = false;
+                    if ($row['ipublic_enable_term_start']) {
+                        $flags[] = sprintf("(%s: %s)", _ADMIN_ISTATE_PERIOD_START, $row['ipublic_term_start']);
+                        if (strcasecmp($row['ipublic_term_start'], date('Y-m-d H:i:s', $tmp_current_time)) > 0) {
+                            $isFuture = true;
+                        }
+                    }
+                    if ($row['ipublic_enable_term_end']) {
+                        $flags[] = sprintf("(%s: %s)", _ADMIN_ISTATE_PERIOD_END, $row['ipublic_term_end']);
+                        if (strcasecmp($row['ipublic_term_end'], date('Y-m-d H:i:s', $tmp_current_time)) <= 0) {
+                            $isExpired = true;
+                        }
+                    }
+
+                    if (
+                        $row['ipublic_enable_term_start'] && $row['ipublic_enable_term_end']
+                        && (strcasecmp($row['ipublic_term_start'], $row['ipublic_term_end']) >= 0)
+                    ) {
+                        array_unshift($flags, sprintf("<b>%s</b>", _ADMIN_ISTATE_PERIOD_INVALID));
+                    } elseif ($isExpired) {
+                        array_unshift($flags, sprintf("<b>%s</b>", _ADMIN_ISTATE_PERIOD_EXPIRED));
+                    } elseif ($isFuture && ! $isExpired && ! $row['idraft'] && $row['ipublic']) {
+                        array_unshift($flags, sprintf("<b>%s</b>", _ADMIN_ISTATE_RESERVATION));
+                    }
+
+                    if ( ! empty($flags)) {
+                        $parts_flag .= '<div style="border-color: #b7ffcf; border-style: double; padding: 4px; white-space: normal;">';
+                        $parts_flag .= _ADMIN_ISTATE_STATE . ": ";
+                        $span = '<span style="white-space: nowrap; display: inline-block">';
+                        $parts_flag .= $span . implode("</span> ".$span, $flags) . "</span>";
+                        $parts_flag .= "</div>";
+                    }
+                }
+            }
+
+            if ( ! empty($parts_flag)) {
+                echo $parts_flag;
+            }
+
             echo "</td>";
 
             // Title and Body

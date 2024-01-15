@@ -124,6 +124,8 @@ class BLOG
             mysqldate($timestamp_end)
         );
 
+        ITEM::addShowQueryFilter($extra_query);
+
         $this->readLogAmount($templatename, 0, $extra_query, '', 1, 1);
     }
 
@@ -356,82 +358,110 @@ class BLOG
     /**
      * Adds an item to this blog
      */
-    public function additem(
-        $icat,
-        $ititle,
-        $ibody,
-        $imore,
-        $iblog,
-        $iauthor,
-        $itime,
-        $iclosed,
-        $idraft,
-        $iposted = '1'
-    ) {
+    public function additem($catid, $title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $posted = '1', $options = [])
+    {
         global $manager;
 
-        $iblog    = (int) $iblog;
-        $iauthor  = (int) $iauthor;
-        $icat     = (int) $icat;
-        $isFuture = 0;
+        $blogid    = (int) $blogid;
+        $authorid  = (int) $authorid;
+        $title     = $title;
+        $body      = $body;
+        $more      = $more;
+        $catid     = (int) $catid;
+        $isFuture  = false;
+        $otherCols = ((isset($options['otherCols']) && is_array($options['otherCols'])) ? $options['otherCols'] : []);
+
+        $extraNameValues = [];
 
         // convert newlines to <br />
         if ($this->convertBreaks()) {
-            $ibody = addBreaks($ibody);
-            $imore = addBreaks($imore);
+            $body = addBreaks($body);
+            $more = addBreaks($more);
         }
 
-        if (1 != $iclosed) {
-            $iclosed = '0';
+        if ('1' != $closed) {
+            $closed = '0';
         }
-        if (0 != $idraft) {
-            $idraft = '1';
-        }
-
-        if ( ! $this->isValidCategory($icat)) {
-            $icat = $this->getDefaultCategory();
+        if ('0' != $draft) {
+            $draft = '1';
         }
 
-        if ($itime > $this->getCorrectTime()) {
-            $isFuture = 1;
+        if ( ! $this->isValidCategory($catid)) {
+            $catid = $this->getDefaultCategory();
         }
 
-        $itime = date('Y-m-d H:i:s', $itime);
+        if ($timestamp > $this->getCorrectTime()) {
+            $isFuture = true;
+        }
 
-        $param = [
-            'title'     => &$ititle,
-            'body'      => &$ibody,
-            'more'      => &$imore,
-            'blog'      => &$this,
-            'authorid'  => &$iauthor,
-            'timestamp' => &$itime,
-            'closed'    => &$iclosed,
-            'draft'     => &$idraft,
-            'catid'     => &$icat,
-        ];
-        $manager->notify('PreAddItem', $param);
+        $timestamp = date('Y-m-d H:i:s', $timestamp);
 
-        $ititle = sql_quote_string($ititle);
-        $ibody  = sql_quote_string($ibody);
-        $imore  = sql_quote_string($imore);
+        if ( ! empty($otherCols)) {
+            foreach (['ipublic','ipublic_enable_term_start', 'ipublic_enable_term_end'] as $key) {
+                if (isset($otherCols[$key])) {
+                    $extraNameValues[$key] = (0 != (int) ($otherCols[$key]) ? 1 : 0);
+                }
+            }
+            foreach (['ipublic_term_start', 'ipublic_term_end'] as $key) {
+                if (isset($otherCols[$key])) {
+                    $extraNameValues[$key] = (string) ($otherCols[$key]);
+                }
+            }
+        }
 
-        $query = parseQuery(
-            "INSERT INTO [@prefix@]item (ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted) VALUES ({$ititle}, {$ibody}, {$imore}, {$iblog}, {$iauthor}, '{$itime}', {$iclosed}, {$idraft}, {$icat}, {$iposted})"
+        $notify_data = [
+                'title'     => &$title,
+                'body'      => &$body,
+                'more'      => &$more,
+                'blog'      => &$this,
+                'authorid'  => &$authorid,
+                'timestamp' => &$timestamp,
+                'closed'    => &$closed,
+                'draft'     => &$draft,
+                'catid'     => &$catid,
+                ];
+        $manager->notify('PreAddItem', $notify_data);
+
+        $colNamesText  = "ititle, ibody, imore, iblog, iauthor, itime, iclosed, idraft, icat, iposted";
+        $colValuesText = "?, ?, ?, ?, ?, ?, ?, ?, ?, ?";
+        $params        = [$title, $body, $more, $blogid, $authorid, $timestamp, $closed, $draft, $catid, $posted];
+
+        if (sql_existTableColumnName(sql_table('item'), 'ikarmapos')) {
+            foreach (['ikarmapos','ikarmaneg'] as $key) {
+                $colNamesText .= ',' . $key;
+                $colValuesText .= ',?';
+                $params[] = 0;
+            }
+        }
+
+        $extraparams = [];
+        foreach ($extraNameValues as $key => $value) {
+            $colNamesText .= ',' . $key;
+            $colValuesText .= ',?';
+            $params[] = $value;
+        }
+
+        $query = sprintf(
+            'INSERT INTO %s (%s) VALUES(%s)',
+            sql_quote_identifier(sql_table('item')),
+            $colNamesText,
+            $colValuesText
         );
-        sql_query($query);
+        sql_prepare_execute($query, $params);
         $itemid = sql_insert_id();
 
-        $param = ['itemid' => $itemid];
-        $manager->notify('PostAddItem', $param);
+        // todo: error itemid = 0
 
-        if ( ! $idraft) {
+        $notify_data = ['itemid' => $itemid];
+        $manager->notify('PostAddItem', $notify_data);
+
+        if ( ! $draft) {
             $this->updateUpdateFile();
         }
 
         // send notification mail
-        if ( ! $idraft && ! $isFuture && $this->getNotifyAddress()
-             && $this->notifyOnNewItem()) {
-            $this->sendNewItemNotification($itemid, $ititle, $ibody);
+        if ( ! $draft && ! $isFuture && $this->getNotifyAddress() && $this->notifyOnNewItem()) {
+            $this->sendNewItemNotification($itemid, $title, $body);
         }
 
         return $itemid;
@@ -717,6 +747,9 @@ class BLOG
             $where[] = 'AND i.itime>' . mysqldate($timestamp_start);
         }
 
+        $where = implode(' ', $where);
+        ITEM::addShowQueryFilter($where);
+
         if ('' == $mode) {
             if ($score) {
                 $extra = ' ORDER BY score DESC';
@@ -775,6 +808,8 @@ class BLOG
         if ($this->getSelectedCategory()) {
             $query .= ' and i.icat=' . $this->getSelectedCategory() . ' ';
         }
+
+        ITEM::addShowQueryFilter($query);
 
         $query .= $extraQuery;
 
@@ -858,6 +893,8 @@ class BLOG
         if ($catid) {
             $query .= ' AND icat=' . (int) $catid;
         }
+
+        ITEM::addShowQueryFilter($query);
 
         $query .= ' GROUP BY Year';
         if ('month' === $mode || 'day' === $mode) {
@@ -1752,7 +1789,7 @@ class BLOG
     {
         global $manager;
 
-        if (1 != $this->settings['bfuturepost']) {
+        if (1 !== $this->settings['bfuturepost']) {
             return;
         }
 
@@ -1762,6 +1799,7 @@ class BLOG
                          'SELECT count(*) AS result FROM [@prefix@]item WHERE iposted=0 AND iblog=[@iblog@] AND itime<NOW() LIMIT 1',
                          $ph
                      );
+        ITEM::addShowQueryFilter($sql);
         if ( ! (int) quickQuery($sql)) {
             return;
         }
@@ -1899,6 +1937,7 @@ class BLOG
             if ( ! $showFuture) {
                 $query .= ' and i.itime<=' . mysqldate($this->getCorrectTime());
             } // don't show future items
+            ITEM::addShowQueryFilter($query);
 
             //$query .= ' and i.inumber IN ('.$itemlist.')';
             $query .= ' and i.inumber=' . (int) $inumber;
