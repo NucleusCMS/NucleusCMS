@@ -360,15 +360,14 @@ class ITEM
             $query .= ', iposted=1';
         }
 
+        if ($wasdraft && (0 === $timestamp)) {
+            $timestamp = $blog->getCorrectTime();
+        }
         if ($wasdraft && $publish) {
             // set timestamp to current date only if it's not a future item
             // draft items have timestamp == 0
             // don't allow timestamps in the past (unless otherwise defined in blogsettings)
             $query .= ', idraft=0';
-
-            if (0 == $timestamp) {
-                $timestamp = $blog->getCorrectTime();
-            }
 
             // send new item notification
             if ( ! $isFuture && $blog->getNotifyAddress()
@@ -710,9 +709,9 @@ class ITEM
                 $i_body,
                 $i_more,
                 $i_closed,
-                1,
-                0,
-                0
+                1, // $wasdraft
+                0, // $publish
+                0 // $timestamp
             );
             $itemid = $i_draftid;
         } else {

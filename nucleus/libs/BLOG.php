@@ -390,6 +390,9 @@ class BLOG
             $catid = $this->getDefaultCategory();
         }
 
+        if ($draft && (0 === $timestamp)) {
+            $timestamp = $this->getCorrectTime();
+        }
         if ($timestamp > $this->getCorrectTime()) {
             $isFuture = true;
         }
