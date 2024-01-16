@@ -1573,5 +1573,6 @@ try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'Save and options');
 try_define('_ADMIN_EDIT_OPERATIONS',  "OPERATIONS");
 try_define('_ADMIN_TEXT_DELETE',  "DELETE");
 try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "COMFIRM DELETE");
+try_define('_ADMIN_TEXT_PLG_CHECK_PRELOAD', 'check plugin before loading');
 
 try_define('_TEXT_VIEW',						'View');

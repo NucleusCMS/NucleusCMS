@@ -1600,5 +1600,6 @@ try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'保存とオプション');
 try_define('_ADMIN_EDIT_OPERATIONS',  "操作");
 try_define('_ADMIN_TEXT_DELETE',  "削除");
 try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "アイテム削除画面へ移動します。現在編集している変更内容は失われます。削除画面へ移動してもよろしいですか？");
+try_define('_ADMIN_TEXT_PLG_CHECK_PRELOAD', 'ロード前のプラグインチェックをする');
 
 try_define('_TEXT_VIEW',						'表示');

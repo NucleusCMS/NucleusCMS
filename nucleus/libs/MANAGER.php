@@ -487,11 +487,14 @@ class MANAGER
     }
 
     // valid ok true, not false
-    public function checkifValidPluginBeforeLoad(string $NP_File): bool
+    public function checkifValidPluginBeforeLoad(string $NP_File, $noskip = false): bool
     {
         global $DB_DRIVER_NAME;
         if (empty($NP_File) || ! @is_file($NP_File)) {
             return false;
+        }
+        if ( ! $noskip && ! CONF::asBool('enable_plg_check_preload')) {
+            return true;
         }
         $src = @file_get_contents($NP_File);
         if (false === $src
@@ -522,9 +525,6 @@ class MANAGER
         }
 
         // db check
-        if (str_contains($src, '@prefix@')) {
-            return false;
-        }
         if ('sqlite' === $DB_DRIVER_NAME) {
             if ( ! str_contains($src, 'SqlApi_') && ! str_contains($src, 'sqlite')) {
                 return false;

@@ -7789,12 +7789,24 @@ EOL;
 
     public function action_settings_remote_update()
     {
-        global $member, $manager;
+        global $member;
 
         // check if allowed
         $member->isAdmin() or $this->disallow();
 
         $member->updateOption('system', 'enable_remote_update', '0');
+        redirect(CONF::asStr('AdminURL') . '?action=pluginlist');
+    }
+
+    public function action_settings_enable_plg_check_preload()
+    {
+        global $member;
+
+        // check if allowed
+        $member->isAdmin() or $this->disallow();
+
+        $enable = ( ! empty(intRequestVar('pl_check_value')) ? '1' : '0');
+        $this->updateOrInsertConfig('enable_plg_check_preload', $enable);
         redirect(CONF::asStr('AdminURL') . '?action=pluginlist');
     }
 
@@ -7815,6 +7827,25 @@ EOL;
         echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
 
         echo '<h2>', _PLUGS_TITLE_MANAGE, ' ', help('plugins'), '</h2>';
+
+        //
+        echo '<h3>' . _ADMIN_TEXT_PLG_CHECK_PRELOAD . '</h3>';
+        $enable_plg_check_preload = CONF::asBool('enable_plg_check_preload');
+        $check1                   = $enable_plg_check_preload ? 'checked' : '';
+        $check0                   = ! $enable_plg_check_preload ? 'checked' : '';
+        ?>
+            <form method="post" action="index.php">
+               <div>
+                   <input type="hidden" name="action" value="settings_enable_plg_check_preload" />
+                   <input type="radio" id="pl_check_value1" name="pl_check_value" value="1" <?php echo $check1; ?> />
+                   <label for="pl_check_value1"><?php echo _YES; ?></label>
+                   <input type="radio" id="pl_check_value0" name="pl_check_value" value="0" <?php echo $check0; ?> />
+                   <label for="pl_check_value0"><?php echo _NO; ?></label>
+                   <?php $manager->addTicketHidden() ?>
+                   <input type="submit" value="<?php echo escapeHTML(_SUBMIT) ?>" tabindex="21" />
+               </div>
+           </form>
+        <?php
 
         echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
@@ -7890,11 +7921,12 @@ EOL;
                 if ( ! @is_file($file)) {
                     $file = $file1;
                 }
-                $isvalid = $manager->checkifValidPluginBeforeLoad($file);
+                $isvalid = $manager->checkifValidPluginBeforeLoad($file, true);
                 if ($isvalid) {
                     $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
                 } else {
-                    $options[] = sprintf('  <option value="NP_%s" disabled><red>[&#10060;]</red> %s</option>', $name, hsc($name));
+                    $disabled  = (CONF::asBool('enable_plg_check_preload') ? 'disabled' : '');
+                    $options[] = sprintf('  <option value="NP_%s" %s><red>[&#10060;]</red> %s</option>', $name, $disabled, hsc($name));
                 }
             }
             $options_tag = implode("\n  ", $options);
@@ -7911,6 +7943,7 @@ EOL;
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
 
+        //
         if ($enable_remote_update && class_exists('ZipArchive')) {
             // リモートからダウンロード
             echo '<h3>' . _ADMIN_TEXT_REMOTE_DOWNLOAD . '</h3>';
@@ -7944,9 +7977,11 @@ EOL;
                 $item['state'] = 2;
                 $fullfilename  = $DIR_PLUGINS.sprintf("%s/NP_%s.php", strtolower($name), $name);
                 //if ( ! @is_file($fullfilename)) {
-                if ( ! $manager->checkifValidPluginBeforeLoad($fullfilename)) {
-                    $item['icon']  = '[&#x1F6A8;] ';
-                    $item['state'] = 3;
+                if ( ! $manager->checkifValidPluginBeforeLoad($fullfilename, true)) {
+                    $item['icon'] = '[&#x1F6A8;] ';
+                    if (CONF::asBool('enable_plg_check_preload')) {
+                        $item['state'] = 3;
+                    }
                     //⚠️ - &#x26A0;
                     //🛑 - &#x1F6D1;
                     //🚨 - &#x1F6A8;
