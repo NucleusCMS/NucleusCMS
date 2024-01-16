@@ -17,6 +17,7 @@ function upgrade_do380()
     fix_do380_Skin_ColumnSpartstype();
     upgrade_do380_addtable_memberoption();
     upgrade_do380_plugin_option_desc();
+    upgrade_do380_item();
 
     //  -> 3.80
     // update database version
@@ -222,4 +223,32 @@ function upgrade_do380_plugin_option_desc()
         return; // SQLSTATE[HY000]: General error: near "MODIFY": syntax error
     }
     upgrade_query('Altering [@prefix@]plugin_option_desc table', $query);
+}
+
+function upgrade_do380_item()
+{
+    global $DB_DRIVER_NAME;
+
+    $cols = [
+        'ipublic'                   => "tinyint(2)   NOT NULL default '1'",
+        'ipublic_enable_term_start' => "tinyint(2)   NOT NULL default '0'",
+        'ipublic_enable_term_end'   => "tinyint(2)   NOT NULL default '0'",
+        'ipublic_term_start'        => "datetime    NOT NULL default '2000-01-01 00:00:00'",
+        'ipublic_term_end'          => "datetime    NOT NULL default '2099-01-01 00:00:00'",
+    ];
+
+    foreach ($cols as $colname => $value) {
+        if ( ! sql_existTableColumnName(parseQuery('[@prefix@]item'), $colname)) {
+            $query = parseQuery("ALTER TABLE `[@prefix@]item` ADD COLUMN `{$colname}` {$value}");
+            upgrade_query('Altering [@prefix@]item table', $query);
+        }
+
+        // create index
+        if ('sqlite' === $DB_DRIVER_NAME) {
+            $query = parseQuery("CREATE INDEX IF NOT EXISTS `[@prefix@]item_idx_{$colname}` on `[@prefix@]item` (`{$colname}`);");
+        } else {
+            $query = parseQuery("ALTER TABLE `[@prefix@]item` ADD INDEX `{$colname}` (`{$colname}`)");
+        }
+        upgrade_query('Altering [@prefix@]item table', $query);
+    }
 }

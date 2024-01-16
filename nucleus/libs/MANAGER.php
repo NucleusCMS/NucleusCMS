@@ -94,6 +94,22 @@ class MANAGER
      */
     public function &getItem($itemid, $allowdraft, $allowfuture)
     {
+        return $this->getItemEx($itemid, $allowdraft, $allowfuture, 1);
+    }
+
+    /**
+     * Returns one item with the specific itemid
+     * Version [3.8 - ]
+     *
+     * @param integer $itemid         id of the item
+     * @param boolean $allowdraft
+     * @param boolean $allowfuture
+     * @param boolean $enableitemterm
+     *
+     * @static
+     */
+    public function &getItemEx($itemid, $allowdraft, $allowfuture, $enableitemterm = 0)
+    {
         $item = &$this->items[$itemid];
 
         // check the draft and future rules if the item was already cached
@@ -112,10 +128,11 @@ class MANAGER
             // load class if needed
             $this->loadClass('ITEM');
             // load item object
-            $item = ITEM::getitem(
+            $item = ITEM::getitemEx(
                 $itemid,
                 $allowdraft,
-                $allowfuture
+                $allowfuture,
+                $enableitemterm
             );
             $this->items[$itemid] = $item;
         }
@@ -470,11 +487,14 @@ class MANAGER
     }
 
     // valid ok true, not false
-    public function checkifValidPluginBeforeLoad(string $NP_File): bool
+    public function checkifValidPluginBeforeLoad(string $NP_File, $noskip = false): bool
     {
         global $DB_DRIVER_NAME;
         if (empty($NP_File) || ! @is_file($NP_File)) {
             return false;
+        }
+        if ( ! $noskip && ! CONF::asBool('enable_plg_check_preload')) {
+            return true;
         }
         $src = @file_get_contents($NP_File);
         if (false === $src
@@ -505,9 +525,6 @@ class MANAGER
         }
 
         // db check
-        if (str_contains($src, '@prefix@')) {
-            return false;
-        }
         if ('sqlite' === $DB_DRIVER_NAME) {
             if ( ! str_contains($src, 'SqlApi_') && ! str_contains($src, 'sqlite')) {
                 return false;

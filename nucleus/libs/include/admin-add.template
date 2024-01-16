@@ -3,31 +3,56 @@
 {%init%}
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
 <script type="text/javascript" src="javascript/edit_date.js"></script>
+<script type="text/javascript" src="javascript/edit_state.js"></script>
 {%ifautosave()%}<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>{%endif%}
 
 <form id="addform" method="post" action="index.php" >
 
-<div>
+	<input type="hidden" name="action" value="additem" />
+	<input name="blogid" value="{%blogid%}" type="hidden" />
+	<input type="hidden" name="draftid" value="0" />
+	{%ticket%}
 
-<input type="hidden" name="action" value="additem" />
-<input name="blogid" value="{%blogid%}" type="hidden" />
-<input type="hidden" name="draftid" value="0" />
-{%ticket%}
+	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_ADD_CREATENEW)%}</h3></div>
+		<div style="display: inline-block; float: right">
+			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_ADD_ADDITEM)%}"
+				onclick="return checkSubmit();" />
+			{%ifautosave()%}
+			<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+				onclick="autoSaveDraft();" />
+			{%endif%}
+		</div>
+	</div>
 
-<table>
-	<tr>
-		<th colspan="2">{%text(_ADD_CREATENEW)%}</th>
-	</tr>
-	<tr>
-		<td>{%text(_ADD_TITLE)%}</td>
-		<td><input 
-			{%jsinput(title)%}
-			tabindex="10"
-			maxlength="160" 
-			value="{%contents(title)%}"
-			/>
-	</td>
-	</tr><tr class="body">
+<div id="tabs">
+	<ul>
+		<li><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
+		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
+		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
+	</ul>
+
+	<div id="tab_body" class="contentblock">
+	<table>
+		<tr>
+			<th colspan="2">{%text(_ADD_CREATENEW)%}</th>
+		</tr>
+
+		<tr>
+			<td>{%text(_ADD_TITLE)%}</td>
+			<td><input 
+				{%jsinput(title)%}
+				tabindex="10"
+				maxlength="160" 
+				value="{%contents(title)%}"
+				/>
+            </td>
+    	</tr>
+        <tr>
+            <td>{%text(_ADD_CATEGORY)%}</td>
+            <td>{%categories(40)%}</td>
+        </tr>
+
+	<tr class="body">
 		<td>
 			{%text(_ADD_BODY)%} {%helplink(additem)%}
 		</td>
@@ -40,6 +65,12 @@
 				rows="15">{%contents(body)%}</textarea>
 		</td>
 	</tr>
+		</table>
+	</div>
+
+	<div id="tab_more" class="contentblock">
+		<table>
+
 	<tr class="more">
 		<td>{%text(_ADD_MORE)%} {%helplink(extended)%}
 		</td>
@@ -56,25 +87,45 @@
 		<a href="#" id="openmore" onclick="return false;">{%text(_EDITTEMPLATE_EMPTY)%}</a>
 		</td>
 	</tr>
-	<tr id="edit" style="display:none;">
-		<td>{%text(_ADD_PREVIEW)%}</td>
-		<td><b><span id="prevtitle">&#160;</span></b><br />
-			<span id="prevbody">&#160;</span><br />
-			<span id="prevmore">&#160;</span><br />
-		</td>
-	</tr>
-	
-<tr>
-		<td>{%text(_ADD_CATEGORY)%}</td>
-		<td>{%categories(40)%}</td>
-</tr>
+		</table>
+	</div>
+
+	<div id="tab_options" class="contentblock">
+		<table>
+	{%ifautosave()%}
+	<tr>
+		<td>{%text(_AUTOSAVEDRAFT)%}</td>
+		<td><span id="info">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span></td>
+	</tr>{%endif%}
+    <tr>
+        <td>{%text(_ADD_PUBLIC)%}</td>
+        <td>{%settabindex(41)%}
+            <input name="act_state" type="radio" id="state_public"   value="public"   checked='checked' tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_public">{%text(_ADD_PUBLIC)%}</label>
+            <span style="display:none">
+            <input name="act_state" type="radio" id="state_unpublic" value="unpublic" tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_unpublic" >{%text(_ADD_UNPUBLIC)%}</label>
+            </span>
+            <input name="act_state" type="radio" id="state_draft"    value="draft"       tabindex="{%tabindex(0)%}" onclick="checked_act_draft(true, this);" /><label for="state_draft" >{%text(_ADD_DRAFT)%}</label>
+            <div style="padding-top: 6px">{%text(_ADD_PUBLIC_TERM)%}
+                <div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1" tabindex="{%tabindex()%}" />
+                                    <label for="public_enable_term_start">{%text(_ADD_PUBLIC_TERM_START)%}</label> : {%public_date_time_picker1%}</div>
+                <div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1" tabindex="{%tabindex()%}" />
+                                    <label for="public_enable_term_end">{%text(_ADD_PUBLIC_TERM_END)%}</label> : {%public_date_time_picker2%}</div>
+                <div class="indent">{%text(_ITEM_ADDEDITTEMPLATE_FORMAT)%}{%text(_ADD_PUBLIC_DATE_FORMAT_DESC)%}</div>
+                <div class="indent">{%text(_ADD_PUBLIC_TERM_DESC)%}</div>
+            </div>
+        </td>
+    </tr>
+
+
 	<tr>
 		<td>{%text(_SUBMIT)%}</td>
 		<td>{%copytabindex(,1)%}
-			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="{%tabindex(0,0)%}" /><label for="act_now">{%text(_ADD_ADDNOW)%}</label>
+			<input name="actiontype" value="addnow" type="radio" checked='checked' id="act_now" tabindex="{%tabindex(0,0)%}"
+             onclick="checked_act_draft(false, this);" /><label for="act_now">{%text(_ADD_ADDNOW)%}</label>
 {%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
 			<br />
-			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="{%tabindex(0,0)%}" /><label for="act_future" >{%text(_ADD_ADDLATER)%}</label> {%helplink(future)%}
+			<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="{%tabindex(0,0)%}"
+             onclick="checked_act_draft(false, this);" /><label for="act_future" >{%text(_ADD_ADDLATER)%}</label> {%helplink(future)%}
 			<div class="indent">
 				{%text(_ADD_PLACE_ON)%}
 				{%date_time_picker%}
@@ -83,24 +134,20 @@
 					{%text(_ADD_NOPASTDATES)%}
 				{%endif%}
 			</div>
-			<input name="actiontype" tabindex="{%tabindex(0,0)%}" value="adddraft" type="radio" id="act_draft" /><label for="act_draft">{%text(_ADD_ADDDRAFT)%}</label> {%helplink(draft)%}
+			<input name="actiontype" tabindex="{%tabindex(0,0)%}" value="adddraft" type="radio" id="act_draft"
+             onclick="checked_act_draft(true, this);" /><label for="act_draft">{%text(_ADD_ADDDRAFT)%}</label> {%helplink(draft)%}
 		</td>
 	</tr>
-	{%ifautosave()%}
-	<tr>
-		<td>{%text(_AUTOSAVEDRAFT)%}</td>
-		<td><span id="info">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span></td>
-	</tr>{%endif%}
 {%ifblogsetting(bcomments)%}
-<tr>
+    <tr>
 		<td>{%text(_ADD_DISABLE_COMMENTS)%}</td>
 		<td>
 			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes">{%text(_YES)%}</label>
 			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no">{%text(_NO)%}</label>
 		</td>
-</tr>
+    </tr>
 {%endif%}
-<tr>
+	<tr>
 		<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
 		<td>
 			{%pluginextras%}
@@ -119,9 +166,38 @@
 		</td>
 	</tr>
 </table>
+	</div>
+
+	<div id="tab_preview" class="contentblock" style="display:none;">
+		<table>
+		<tr id="edit" style="display:none;">
+			<td>{%text(_ADD_PREVIEW)%}</td>
+			<td><b><span id="prevtitle">&#160;</span></b><br />
+				<span id="prevbody">&#160;</span><br />
+				<span id="prevmore">&#160;</span><br />
+			</td>
+		</tr>
+		</table>
+	</div>
 
 </div>
 </form>
+
+<script>
+// workaround for ui-tabs bug : if a <base> tag is present in the <head> section, local tabs load the content of the base URL, instead of the content of the referred div.
+// https://bugs.jqueryui.com/ticket/8637  https://bugs.jqueryui.com/ticket/4941
+if ($('base')[0] && $('base')[0].href) {
+	$('#tabs ul li a').each(function () {
+		var url = document.location.href.split('#');
+		if ($(this).attr('href').match(/^#/)) {
+			$(this).attr('href', url[0] + $(this).attr('href'));
+		}
+	});
+}
+// end workaround ui-tabs bug
+	$( "#tabs" ).tabs();
+</script>
+
 {%ifautosave()%}
 <script type="text/javascript">
 	var xmlhttprequest = new Array();

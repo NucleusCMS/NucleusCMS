@@ -6,7 +6,7 @@
 	<link rel="index" href="./index.html" />
 	<title>Nucleus - History</title>
 	<link rel="stylesheet" type="text/css" href="styles/manual.css" />
-	<style type="text/css">
+	<style>
 		strong {
 			font-weight: bold;
 		}
@@ -17,30 +17,28 @@
 	<script src="common.js" cache-control="max-age=15552000"></script>
 </head>
 <body>
-	<div id="fontSizeChanger">
+<div id="fontSizeChanger">
 	<a href="#top" id="f_small">小</a>
 	<a href="#top" id="f_medium">中</a>
 	<a href="#top" id="f_large">大</a>
-	</div>
+</div>
 <div id="body">
 
 <h1>更新履歴</h1>
 
-<p>
-	<a href="index.html">Nucleusマニュアルに戻る</a>
-</p>
+<div><a href="index.html">Nucleusマニュアルに戻る</a></div>
 
 <ul>
-
 	<li>
 		<strong>Nucleus 3.80 (3.8.0)</strong> (未定)
 		<ul>
 		<li>[変更] NucleusCMS本体のサポートされるPHPのバージョンが変更されました。プラグインも使用するPHPのバージョンに対応している必要あります。</li>
 		<li>[変更] データベース：PDOドライバーへ完全移行しました。</li>
 		<li>[新規] 新規インストールの際にインストール認証の設定が必要になりました。</li>
+		<li>[新規] 「プラグイン更新通知」「プラグインダウンロード」が追加されました。</li>
+		<li>[新規] 「アイテムの表示期限」が追加されました。</li>
 		<li>[廃止] EUC-JPを含む文字コードの扱いを終了しました。</li>
 		<li>[廃止] mysql mysqliドライバーでの接続サポートを終了しました。</li>
-		<li>[新規] 「プラグイン更新通知」「プラグインダウンロード」が追加されました。</li>
 		</ul>
 		<ul>
 		<li>[新規] データベースの最適化/修復が追加されました。</li>
@@ -63,36 +61,18 @@
 		<li>[変更] プラグインクラスのgetEventList関数が不要になりました。プラグインのevent_*関数は親クラスの_getEventList関数により自動的に取得されます。</li>
 		</ul>
 	</li>
-	<li>
-		<strong>Nucleus v3.71</strong> (-/-/-)
-		<ul>
-			<li>[重要] CVE-2011-3760 : Nucleusのシステム情報を取得される脆弱性を修正(重要度・低)</li>
-			<li>[不具合修正] Fatal error: Using $this : MEMBER::create()</li>
-			<li>[新機能] PHP7対応(インストーラ調整・mysql関数のラッパー組み込みなど)</li>
-			<li>[新機能] アイテム一覧画面にアイテム複製機能を追加</li>
-			<li>[新機能] カテゴリの並べ替え機能(categoryテーブルにcorderを追加)</li>
-			<li>[変更] 更新 - xmlrpc.inc.php 2.2 から 3.0.1 に変更しました</li>
-			<li>[変更] NP_Ping プラグインがパッケージから削除されました。</li>
-			<li>[変更] ルートフォルダのbenchmark.incを削除</li>
-			<li>[変更] Nucleus version 3.4以降から更新されていない言語ファイルの整理.</li>
-			<li>[追加] Utils.php , version.php を nucleus/libs/ フォルダに追加しました。</li>
-			<li>[追加] nucleus_version_compare 関数が追加されました。</li>
-			<li>[その他] 不具合修正、関数追加など</li>
-		</ul>
-	</li>
 </ul>
 
 <hr />
 <ul>
 	<li>
-		<strong>Nucleus v3.70以前の履歴  </strong><br />
+		<strong>Nucleus v3.80以前の履歴  </strong><br />
 		<ul><li><a href="../en/history.html">../en/history.html</a></li></ul>
 	</li>
 	<li>
 		<strong>Nucleus 日本語版の履歴</strong>
 		<ul><li>Gitリポジトリ <a href="https://github.com/NucleusCMS/NucleusCMS-ja">nucleus-jp</a>、 hosted in <a href="https://github.com/">GitHub</a>.</li></ul>
 	</li>
-
 </ul>
 
 </div>

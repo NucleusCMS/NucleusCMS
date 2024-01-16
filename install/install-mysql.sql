@@ -159,11 +159,21 @@ CREATE TABLE `nucleus_item` (
   `icat`      int(11)               default NULL,
   `ikarmaneg` int(11)      NOT NULL default '0',
   `iposted`   tinyint(2)   NOT NULL default '1',
+  `ipublic`   tinyint(2)   NOT NULL default '1',
+  `ipublic_enable_term_start`  tinyint(2)   NOT NULL default '0',
+  `ipublic_enable_term_end`    tinyint(2)   NOT NULL default '0',
+  `ipublic_term_start`         datetime     NOT NULL default '2000-01-01 00:00:00',
+  `ipublic_term_end`           datetime     NOT NULL default '2099-01-01 00:00:00',
   PRIMARY KEY  (`inumber`),
   KEY `itime` (`itime`),
   INDEX `iblog` (`iblog`),
   INDEX `idraft` (`idraft`),
   INDEX `icat` (`icat`),
+  INDEX `ipublic` (`ipublic`),
+  INDEX `ipublic_enable_term_start` (`ipublic_enable_term_start`),
+  INDEX `ipublic_enable_term_end` (`ipublic_enable_term_end`),
+  INDEX `ipublic_term_start`  (`ipublic_term_start`),
+  INDEX `ipublic_term_end`    (`ipublic_term_end`),
   FULLTEXT KEY `ibody` (`ibody`, `ititle`, `imore`)
 ) ENGINE=MyISAM PACK_KEYS=0;
 

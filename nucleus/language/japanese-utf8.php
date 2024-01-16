@@ -129,9 +129,33 @@ try_define('_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE',  'ここをクリックしてデ
 
 try_define('_LISTS_FORM_SELECT_ITEM_FILTER',                     'フィルター');
 try_define('_LISTS_FORM_SELECT_ITEM_OPTION_ALL',                 'すべて');
-try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',              '一般公開中');
-try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',  '一般公開-開始前');
-try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',               '下書き');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL',               '一般公開中');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM',          '一般公開中(終了期限付き)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_FUTURE',   '一般公開-開始前');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NORMAL_TERM_EXPIRED',  '一般公開-期限切れ(終了期限付き)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_DRAFT_TERM_EXPIRED',   '期限切れ(下書きでない+期限付き)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_PUBLISHABLE',  '非公開-公開可能(下書きでない)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_TERM_BEFORE',  '非公開-期限付き-開始前(下書きでない)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_TERM_DURING',  '非公開-期限付き-期間中(下書きでない)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC_EXPIRED',      '非公開-期限切れ(下書きでない)');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_TERM_INVALID',      '無効な期限指定');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_PUBLIC',            '公開');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC',        '非公開');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT',             '下書き');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_PUBLIC',      '下書き+公開');
+try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  '下書き+非公開');
+
+try_define('_ADD_PUBLIC',             '公開');
+try_define('_ADD_UNPUBLIC',           '非公開');
+try_define('_ADD_DRAFT',              '下書き');
+try_define('_ADD_PUBLIC_TERM',        '公開期限の設定');
+try_define('_ADD_PUBLIC_TERM_DESC',   '期限を有効にするにはチェックをつけてください。どちらもチェックがない場合は、期限なしとなります');
+try_define('_ADD_PUBLIC_TERM_START',  '公開開始日時');
+try_define('_ADD_PUBLIC_TERM_END',    '公開終了日時');
+
+try_define('_ADD_PUBLIC_DATE_FORMAT_DESC',      '(yyyy)年(mm)月(dd)日 (hh)時(mm)分');
+try_define('_ADD_PUBLIC_DATE_FORMAT',           'year,month,day');
+try_define('_ADD_PUBLIC_DATE_FORMAT_SEPARATOR', '年,月,日,時,分');
 
 try_define('_EDIT_DATE_FORMAT',                 'year,month,day');
 try_define('_EDIT_DATE_FORMAT_SEPARATOR',       '年,月,日,時,分');
@@ -1519,6 +1543,7 @@ try_define('_LISTS_DESC',								'説明');
 try_define('_LISTS_TIME',								'時間');
 try_define('_LISTS_COMMENTS',							'コメント');
 try_define('_LISTS_TYPE',								'タイプ');
+try_define('_LISTS_VIEW_ITEM',							'表示');
 
 
 // member list
@@ -1564,3 +1589,17 @@ try_define('_EDITC_NONMEMBER',							'非メンバー');
 try_define('_MOVE_TITLE',								'どのBlogに移動しますか？');
 try_define('_MOVE_BTN',									'アイテムを移動する');
 
+try_define('_ADMIN_ISTATE_PERIOD_END',     '終了');
+try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', '期限切れ');
+try_define('_ADMIN_ISTATE_PERIOD_INVALID', '無効な期限');
+try_define('_ADMIN_ISTATE_PERIOD_START',   '開始');
+try_define('_ADMIN_ISTATE_RESERVATION',    '予約投稿');
+try_define('_ADMIN_ISTATE_STATE',          '状態');
+
+try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'保存とオプション');
+try_define('_ADMIN_EDIT_OPERATIONS',  "操作");
+try_define('_ADMIN_TEXT_DELETE',  "削除");
+try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "アイテム削除画面へ移動します。現在編集している変更内容は失われます。削除画面へ移動してもよろしいですか？");
+try_define('_ADMIN_TEXT_PLG_CHECK_PRELOAD', 'ロード前のプラグインチェックをする');
+
+try_define('_TEXT_VIEW',						'表示');

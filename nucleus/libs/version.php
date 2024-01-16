@@ -32,7 +32,7 @@ define('NUCLEUS_VERSION_DOT', NUCLEUS_MAJOR_VERSION . '.' . NUCLEUS_MINOR_VERSIO
 define('NUCLEUS_VERSION_ID', NUCLEUS_MAJOR_VERSION * 100 + NUCLEUS_MINOR_VERSION * 10 + NUCLEUS_RELEASE_VERSION);
 
 define('NUCLEUS_PATCH_LEVEL', 0); // [Deprecated] (int)
-define('NUCLEUS_RELEASE_IDENTIFIER', 'rc-202401'); // '' , 'dev' , 'rc', 'rc2' , 'fix', ... as you like
+define('NUCLEUS_RELEASE_IDENTIFIER', 'rc-202401-2'); // '' , 'dev' , 'rc', 'rc2' , 'fix', ... as you like
 
 /* int
  * Major * 100 + Minor * 10

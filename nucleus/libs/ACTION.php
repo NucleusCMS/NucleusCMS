@@ -33,11 +33,11 @@ class ACTION
     {
         switch ($action) {
             case 'autodraft':
-                return $this->autoDraft();
-
+                $this->autoDraft();
+                break;
             case 'updateticket':
-                return $this->updateTicket();
-
+                $this->updateTicket();
+                break;
             case 'addcomment':
                 return $this->addComment();
 
@@ -523,40 +523,36 @@ class ACTION
     /**
      * Gets a new ticket
      */
-    public function updateTicket()
+    public function updateTicket(): void
     {
         global $manager;
 
         if ($manager->checkTicket()) {
-            echo $manager->getNewTicket();
+            echo json_encode(["success" => true, "value" => $manager->getNewTicket()]);
         } else {
-            echo _ERROR . ':' . _ERROR_BADTICKET;
+            echo json_encode(["success" => false, "value" => _ERROR . ':' . _ERROR_BADTICKET]);
         }
-
-        return false;
     }
 
     /**
      * Handles AutoSaveDraft
      */
-    public function autoDraft()
+    public function autoDraft(): void
     {
         global $manager;
 
         if ( ! $manager->checkTicket()) {
-            echo _ERROR . ':' . _ERROR_BADTICKET;
-            return false;
+            echo json_encode(["success" => false, "value" => _ERROR . ':' . _ERROR_BADTICKET]);
+            return;
         }
 
         $manager->loadClass('ITEM');
         $info = ITEM::createDraftFromRequest();
 
         if ('error' === $info['status']) {
-            echo $info['message'];
+            echo json_encode(["success" => false, "value" => _ERROR . ':' . $info['message']]);
         } else {
-            echo $info['draftid'];
+            echo json_encode(["success" => true, "value" => $info['draftid']]);
         }
-
-        return false;
     }
 }
