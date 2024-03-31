@@ -611,8 +611,9 @@ function get_default_content()
     } elseif (NUCLEUS_UPGRADE_VERSION_ID == $current) {
         global $DB_DRIVER_NAME;
         // データベースバージョンを更新する
+        $IntType = ('mysql' === $DB_DRIVER_NAME ? 'SIGNED INTEGER' : 'INTEGER');
         $sql = sprintf("UPDATE %s SET value = :value WHERE name = :name ", sql_table('config'))
-              . ' AND CAST(value AS UNSIGNED) < CAST(:value AS UNSIGNED)';
+              . " AND CAST(value AS {$IntType}) < CAST(:value AS {$IntType})";
         sql_prepare_execute($sql, ['name' => 'DatabaseVersion', 'value' => NUCLEUS_UPGRADE_VERSION_ID]);
 
         $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
