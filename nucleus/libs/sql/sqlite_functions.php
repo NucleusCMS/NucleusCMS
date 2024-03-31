@@ -48,5 +48,16 @@ class sqlite_functions
         $dbh->sqliteCreateFunction('CONCAT', fn () => implode("", func_get_args()), -1);
         $dbh->sqliteCreateFunction('FIND_IN_SET', fn ($k, $v) => in_array($k, explode($v)) ? 1 : 0, 2);
         $dbh->sqliteCreateFunction('md5', 'md5', 1);
+
+        // DATE_FORMAT
+        // Deprecated: Function strftime()
+        $dbh->sqliteCreateFunction(
+            'DATE_FORMAT',
+            function () {
+                $t = @strtotime(func_get_arg(0));
+                return @strftime(func_get_arg(1), $t);
+            },
+            2
+        );
     }
 }

@@ -191,8 +191,7 @@ class BLOG
         if ($amountEntries > 0) {
             // $offset zou moeten worden:
             // (($startpos / $amountentries) + 1) * $offset ... later testen ...
-            $query .= ' LIMIT ' . (int) ($startpos + $offset) . ','
-                      . (int) $amountEntries;
+            $query .= sprintf(' LIMIT %d OFFSET %d', (int) $amountEntries, (int) ($startpos + $offset));
         }
 
         return $this->showUsingQuery(
@@ -461,6 +460,7 @@ class BLOG
         $manager->notify('PostAddItem', $notify_data);
 
         if ( ! $draft) {
+            BLOG::UpdateLastModyfied($blogid);
             $this->updateUpdateFile();
         }
 
@@ -620,6 +620,16 @@ class BLOG
      */
     public function search($keywords, $template, $amountMonths, $maxresults, $startpos)
     {
+        global $DB_DRIVER_NAME;
+        if ('mysql' !== $DB_DRIVER_NAME) {
+            // Not implemented
+            $key = urlencode($keywords);
+            $site = urlencode($this->getRealURL());
+            $url = "https://www.google.com/search?q={$key}&as_sitesearch={$site}";
+            redirect($url);
+            return 0;
+        }
+        
         global $manager;
 
         $highlight = '';
@@ -889,77 +899,79 @@ class BLOG
         echo TEMPLATE::fill($tplt, $archdata);
 
         $ph['iblog'] = $this->getID();
-        $ph['itime']
-                     = mysqldate($this->getCorrectTime()); // don't show future items!
-        $query
-                     = 'SELECT itime, SUBSTRING(itime,1,4) AS Year, SUBSTRING(itime,6,2) AS Month, SUBSTRING(itime,9,2) as Day FROM [@prefix@]item'
-                       . ' WHERE iblog=[@iblog@] AND itime <=[@itime@] AND idraft=0';
+        $ph['itime'] = mysqldate($this->getCorrectTime()); // don't show future items!
+        // mysql,sqlite: SUBSTRING(current_timestamp,1,4) AS Year
+        //               DATE_FORMAT , YEAR()
+        // pgsql : to_char(current_timestamp, 'YYYY') 'YYYY/MM/DD HH24:MI:SS'
 
+        $qb = getOrmQueryBuilder();
+        if (getOrmConnection()->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+            if ('day' === $mode) {
+                $qb->addSelect("to_char(itime, 'YYYY-MM-DD') as result");
+            } elseif ('month' === $mode) {
+                $qb->addSelect("to_char(itime, 'YYYY-MM') as result");
+            } else {
+                $qb->addSelect("to_char(itime, 'YYYY') as result");
+            }
+        } else {
+            // 1234567890
+            // 20xx-xx-xx
+            if ('day' === $mode) {
+                $qb->addSelect("SUBSTRING(itime, 1, 10) as result");
+            } elseif ('month' === $mode) {
+                $qb->addSelect("SUBSTRING(itime, 1, 7) as result");
+            } else {
+                $qb->addSelect("SUBSTRING(itime, 1, 4) as result");
+            }
+        }
+        $qb->from(sql_table('item'))
+           ->where('iblog = :iblog AND itime <= CURRENT_TIMESTAMP AND idraft = :idraft')
+           ->setParameter('iblog', $this->getID())
+           //->setParameter('itime', $value) // mysqldate($this->getCorrectTime()
+           ->setParameter('idraft', 0);
         if ($catid) {
-            $query .= ' AND icat=' . (int) $catid;
+            $qb->andWhere('icat = :icat')
+               ->setParameter('icat', (int) $catid);
         }
+        $qb->groupBy('result')
+           ->orderBy('result DESC');
 
-        ITEM::addShowQueryFilter($query);
-
-        $query .= ' GROUP BY Year';
-        if ('month' === $mode || 'day' === $mode) {
-            $query .= ', Month';
-        }
-        if ('day' === $mode) {
-            $query .= ', Day';
-        }
-
-        $query .= ' ORDER BY itime DESC';
+        //ITEM::addShowQueryFilter($query);
 
         if ($limit > 0) {
-            $query .= ' LIMIT ' . (int) $limit;
+            $qb->setMaxResults((int) $limit); // $query .= ' LIMIT ' . (int) $limit;
         }
 
-        $res = sql_query(parseQuery($query, $ph));
+        //echo hsc($qb->getSQL());
+        $rows = $qb->executeQuery()?->fetchAllAssociative();
+        if ( ! empty($rows)) {
+            foreach ($rows as $row) {
+                $archivedate       = $row['result'];
+                $a                 = explode('-', $archivedate);
+                $archdata['year']  = $a[0] ?? '';
+                $archdata['month'] = $a[1] ?? '';
+                $archdata['day']   = $a[2] ?? '';
 
-        while ($current = sql_fetch_object($res)) {
-            $current->itime
-                = strtotime($current->itime);    // string time -> unix timestamp
+                $archdata['archivelink'] = createArchiveLink(
+                    $this->getID(),
+                    $archivedate,
+                    $linkparams
+                );
 
-            if ('day' === $mode) {
-                $archivedate       = date('Y-m-d', $current->itime);
-                $archive['day']    = date('d', $current->itime);
-                $archdata['day']   = date('d', $current->itime);
-                $archdata['month'] = date('m', $current->itime);
-                $archive['month']  = $archdata['month'];
-            } elseif ('year' === $mode) {
-                $archivedate       = date('Y', $current->itime);
-                $archdata['day']   = '';
-                $archdata['month'] = '';
-                $archive['day']    = '';
-                $archive['month']  = '';
-            } else {
-                $archivedate       = date('Y-m', $current->itime);
-                $archdata['month'] = date('m', $current->itime);
-                $archive['month']  = $archdata['month'];
-                $archdata['day']   = '';
-                $archive['day']    = '';
+                $param = ['listitem' => &$archdata];
+                $manager->notify('PreArchiveListItem', $param);
+
+                $temp = TEMPLATE::fill(
+                    $template['ARCHIVELIST_LISTITEM'],
+                    $archdata
+                );
+                if (str_contains($temp, '%')) {
+                    echo @Utils::strftime($temp, strtotime($archivedate));
+                } else {
+                    echo $temp;
+                }
             }
-
-            $archdata['year']        = date('Y', $current->itime);
-            $archive['year']         = $archdata['year'];
-            $archdata['archivelink'] = createArchiveLink(
-                $this->getID(),
-                $archivedate,
-                $linkparams
-            );
-
-            $param = ['listitem' => &$archdata];
-            $manager->notify('PreArchiveListItem', $param);
-
-            $temp = TEMPLATE::fill(
-                $template['ARCHIVELIST_LISTITEM'],
-                $archdata
-            );
-            echo Utils::strftime($temp, $current->itime);
         }
-
-        sql_free_result($res);
 
         $tplt = $template['ARCHIVELIST_FOOTER'] ?? '';
         echo TEMPLATE::fill($tplt, $archdata);
@@ -1756,12 +1768,13 @@ class BLOG
         if ($bnumber < 0) {
             return false;
         }
-        $res = sql_direct_getValue_AsInt(sprintf(
-            'SELECT count(*) AS result FROM `%s` WHERE bnumber=%d LIMIT 1',
-            sql_table('blog'),
-            $bnumber
-        ));
-        return $res > 0;
+        $query = getOrmQueryBuilder()
+                ->select('COUNT(*)')
+                ->from(sql_table('blog'))
+                ->where('bnumber = :bnumber  LIMIT 1')
+                ->setParameter('bnumber', $bnumber)
+                ->executeQuery();
+        return ($query && (0 < (int) $query->fetchOne()));
     }
 
     /**
@@ -1966,17 +1979,44 @@ class BLOG
         $this->setSetting('bauthorvisible', ($val ? 1 : 0));
     }
 
-    public static function UpgardeAddColumnAuthorVisible()
+    public static function UpgardeAddLastModyfied()
     {
-        if (sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')) {
+        static $once = null;
+        if (null !== $once) {
             return;
         }
+        $once = true;
 
-        $query
-             = parseQuery('ALTER TABLE `[@prefix@]blog` ADD COLUMN `bauthorvisible` tinyint(2) NOT NULL default 1');
-        $res = sql_query($query);
+        $p = getOrmConnection()->getDatabasePlatform();
+        if ( ! (getOrmConnection()->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\MySQLPlatform)) {
+            return ;
+        }
+        $tablename = sql_table('blog');
+        $TableOld  = getOrmSchemaManager()->introspectTable($tablename);
+        if ( ! $TableOld->hasColumn('blast_modyfied')) {
+            $tableNew = getOrmSchemaManager()->introspectTable($tablename);
+            $tableNew->addColumn('blast_modyfied', 'datetime', ['Notnull' => true, 'Default' => 'CURRENT_TIMESTAMP']);
+            // make TableDiff
+            $cr        = new \Doctrine\DBAL\Schema\Comparator(getOrmConnection()->getDatabasePlatform());
+            $tableDiff = $cr->compareTables($TableOld, $tableNew);
+            // 変更を適用
+            getOrmSchemaManager()->alterTable($tableDiff);
+        }
+        //if ( ! sql_existTableColumnName(sql_table('blog'), 'blast_modyfied')) {
+        //    $sql = sprintf("ALTER TABLE %s ADD COLUMN `blast_modyfied` datetime NOT NULL default '1970-01-01 00:00:00';", sql_table('blog'));
+        //    $res = sql_query($sql);
+        //    return false !== $res;
+        //}
+    }
 
-        return false !== $res;
+    public static function UpdateLastModyfied($id)
+    {
+        if ( ! self::existsID($id)) {
+            return;
+        }
+        self::UpgardeAddLastModyfied();
+        $sql = sprintf("UPDATE %s SET blast_modyfied = ? WHERE bnumber = ?", sql_table('blog'));
+        sql_prepare_execute($sql, [date('Y-m-d H:i:s'), (int) $id]);
     }
 
     private function getAllowdTagClean()

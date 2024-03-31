@@ -29,7 +29,7 @@ class ACTIONS extends BaseActions
     // reference to the skin object for which a part is being parsed
     public $skin;
 
-    // used when including templated forms from the include/ dir. The $formdata var
+    // used when including templated forms from the template/ dir. The $formdata var
     // contains the values to fill out in there (assoc array name -> value)
     public $formdata;
 
@@ -76,7 +76,7 @@ class ACTIONS extends BaseActions
      */
     public function doForm($filename)
     {
-        global $DIR_NUCLEUS;
+        global $DIR_NUCLEUS, $DIR_LIBS;
         array_push(
             $this->parser->actions,
             'formdata',
@@ -89,7 +89,11 @@ class ACTIONS extends BaseActions
         $oldIncludePrefix = PARSER::getProperty('IncludePrefix');
         PARSER::setProperty('IncludeMode', 'normal');
         PARSER::setProperty('IncludePrefix', '');
-        $this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
+        if (@is_file($DIR_NUCLEUS . 'forms/' . $filename . '.template')) {
+            $this->parse_parsedinclude($DIR_NUCLEUS . 'forms/' . $filename . '.template');
+        } else {
+            $this->parse_parsedinclude($DIR_LIBS . 'template/forms/' . $filename . '.template');
+        }
         PARSER::setProperty('IncludeMode', $oldIncludeMode);
         PARSER::setProperty('IncludePrefix', $oldIncludePrefix);
         array_pop($this->parser->actions);        // errordiv
@@ -1687,8 +1691,13 @@ class ACTIONS extends BaseActions
         echo sprintf(
             '%s %s',
             hsc(CORE_APPLICATION_NAME),
-            CORE_APPLICATION_VERSION
+            NUCLEUS_VERSION_TEXT
         );
+    }
+
+    public function parse_phpversion()
+    {
+        printf('PHP %d.%d', PHP_MAJOR_VERSION, PHP_MINOR_VERSION);
     }
 
     /**

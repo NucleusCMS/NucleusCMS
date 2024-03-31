@@ -167,8 +167,7 @@ Nucleusプラグインによって、誰もがNucleusの提供する機能を、
 </tbody>
 </table>
 </div>
-
-
+<div><br /></div>
 <div class="note">
 <strong>注：</strong> プラグイン名は大文字・小文字を識別しますので、<code>Np_</code> や <code>np_</code> ではなく、<code>NP_</code> で始まることに気をつけてください。またプラグインがサブディレクトリを使用する場合は、サブディレクトリの名称は<em>すべて小文字にします</em>。
 </div>
@@ -2120,13 +2119,105 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 
 <h2>Nucleusテーブルへのアクセス</h2>
 
-<p>sql_table('テーブル名')の他に、3.80から parseQuery関数を通して、[@prefix@]が利用できるようになりました。
+<h3>データベース利用にあたっての注意</h3>
+<div class="note">
+<strong>注：</strong>データベース利用にあたっての注意<br />
+<ul>
+	<li>テーブルの定義は、ormの関数で作成する。<br />
+	将来的にユーザーがMySQL以外のデータベース(SQLite, PostgreSQL等)を選択できるようにするための処置です。</li>
+	<li>MySQL言語特有の関数等は使用禁止とします</li>
+</ul>
+</div>
+
+型とオプション
+<ul>
+	<li>nucleus/libs/vendor/doctrine/dbal/src/Types/Types.php</li>
+	<li>nucleus/libs/vendor/doctrine/dbal/src/Schema/Column.php</li>
+</ul>
+
+<div>よく使われる型</div>
+<pre class="note">boolean
+blob, binary, 
+datetime, date, time
+integer, bigint, smallint
+string, text
+float
+</pre>
+
+<div>(参考) 対照表 initializeDoctrineTypeMappings で検索</div>
+<pre class="note">
+vendor/doctrine/dbal/src/Platforms/AbstractMySQLPlatform.php
+vendor/doctrine/dbal/src/Platforms/SQLitePlatform.php
+vendor/doctrine/dbal/src/Platforms/PostgreSQLPlatform.php
+</pre>
+
+<div>よく使われるオプション</div>
+<div class="note">default, notnull, length, precision, unsigned, autoincrement
+</div><br />
+
+<div>作成例</div>
+<pre class="note">$table = sql_table('テーブル名');
+$TableSchema = new \Doctrine\DBAL\Schema\Table($table);
+$TableSchema->addColumn('id', 'integer', ['Notnull' => true, 'Autoincrement' => true]);
+$TableSchema->addColumn('name', 'string', ['Length' => 255]); // 大文字小文字を区別しない
+$TableSchema->addColumn('age', 'integer', ['Notnull' => true, 'Default' => 0]);
+$TableSchema->addColumn('mtime', 'bigint', ['Notnull' => true, 'Default' => 0]);
+$TableSchema->addUniqueIndex(['name']);
+if (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\MySQLSchemaManager) {
+    //$TableSchema->addOption('engine', "InnoDB"); // InnoDB, MyISAM(非推奨)
+    $TableSchema->getColumn('name')->setPlatformOption('collation', 'utf8mb4_general_ci');
+}
+if (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\SQLiteSchemaManager) {
+    // COLLATE NOCASE
+    $TableSchema->getColumn('name')->setPlatformOption('collation', 'NOCASE');
+}
+getOrmSchemaManager()->createTable($TableSchema);
+</pre>
+
+<div>(参考) MySQLの最大インデックスサイズ</div>
+<div class="note">
+・プライマリーキー、ユニークキーは制約あり<br />
+MyISAM(枯れた古い仕様)<br />
+[8.0] 1000バイト , utf8mb4の場合最大4バイトなので、1000/4=varchar(250文字)まで<br />
+[5.6-] 767バイト , utf8mb4の場合最大4バイトなので、767/4=191 = varchar(191文字)まで<br />
+<br />
+特に理由がない場合は、InnoDBを推奨。(サーバー設定でinnodb_large_prefix)
+</div>
+
+
+<div>大文字小文字を区別しない</div>
+<div class="note">COLLATE句がデータベースによってまちまちです。意図しない思わぬ結果が返ってきます。<br />
+大文字小文字を区別したくない場合は、LOWER関数を使用したり代入時に小文字に統一するなどの工夫をしましましょう。<br />
+<code>LOWER(name) = LOWER(:name)</code><br />
+<code>name = LOWER(:name)</code><br />
+</div>
+<table>
+	<tr><td>MySQL</td><td>name COLLATE utf8mb4_general_ci = :name<br />name COLLATE utf8_general_ci = :name</td></tr>
+	<tr><td>SQLite</td><td>name COLLATE NOCASE = :name</td></tr>
+</table>
+<br />
+<div>定義済み関数 [3.80 - ]</div>
+<ul>
+	<li>getOrmConnection()<br />
+		接続中のDoctrine\DBAL\Connectionオブジェクトを返します<br />
+	</li>
+	<li>getOrmSchemaManager<br />
+		次のコードと同義です<br />
+		<code class="note">getOrmConnection()?->createSchemaManager();</code></li>
+	<li>getOrmQueryBuilder<br />
+		次のコードと同義です<br />
+		<code class="note">getOrmConnection()?->createQueryBuilder();</code></li>
+</ul>
+
+		
+<h3>parseQuery関数、parseQuickQuery関数 [3.80 - ]</h3>
+<p>sql_table('テーブル名')の他に、3.80から parseQuery関数を通して、[@prefix@]が利用できるようになりました。</p>
+<div class="note">
 	<code>$sql = sprintf('SELECT ... FROM `%s` ...', sql_table('テーブル名'));</code><br />
 	<code>$sql = parseQuery('SELECT ... FROM `[@prefix@]テーブル名` ...');</code>
-</p>
+</div>
 
-
-
+<h3>sql_関数 [3.50 - ]</h3>
 <p>v3.5でNucleusはPDO等MySQL以外のデータベースハンドラのサポートをするようになりました。この機能はベータ実装ではありますが、プラグイン開発者はデータベースの呼び出しに使用する関数の「sql_*」への書き換えを始めてください。
 基本的に、使用している全ての「mysql_*」関数を「sql_*」に置き換える必要があります。たとえば<code>mysql_fetch_assoc($result)</code>は<code>sql_fetch_assoc($result)</code> に置き換えになります。
 全ての関数を書き換えたら、Sql APIが無い古いバージョンのNucleusインストールできないように、次に示すコードをプラグイン内に記述して、インストールに必要な最低バージョンを350に指定する必要があります。<br /></p>
@@ -2166,6 +2257,37 @@ $this-&gt;createOption('FooBar', 'foobar', 'textarea', 'This textarea is readonl
 }</code></pre></li>
 </ul>
 
+<pre class="example"><code>
+    public function getMinNucleusVersion() { return '380'; }
+    public function supportsFeature($feature)
+    {
+        return in_array($feature, [
+                   'orm', 'SqlApi_sqlite',
+                   //'pluginadmin',
+                   ]);
+    }
+    public function init()
+    {
+        $this->loadLanguage();
+    }
+
+    public function install()
+    {
+        $this->loadLanguage();
+        $this->installOptions();
+        $this->installTable();
+    }
+
+    private function loadLanguage()
+    {
+        if (\defined('_NP_LANG_...')) {
+            return ;
+        }
+        // code ..
+    }
+    private function installOptions() { }
+    private function installTable() { }
+</code></pre>
 
 
 <h1>プラグイン管理エリア<a id="admin" name="admin" href="#top" class="toplink"><img src="../icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>

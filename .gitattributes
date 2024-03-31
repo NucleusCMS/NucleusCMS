@@ -1,3 +1,11 @@
+#[upgrade]
+#/extra           export-ignore
+#/install         export-ignore
+#/media           export-ignore
+#/skins           export-ignore
+#/robots.txt      export-ignore
+#[/upgrade]
+#
 # Auto detect text files and perform LF normalization
 * text=auto
 
@@ -17,6 +25,7 @@
 *.PDF	 diff=astextplain
 *.rtf	 diff=astextplain
 *.RTF	 diff=astextplain
+*.bat	 diff=astextplain
 
 # export-ignore
 .gitignore           export-ignore

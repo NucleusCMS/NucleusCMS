@@ -1,0 +1,6 @@
+{
+    "require": {
+        "php-minversion": "8.2",
+        "minversion": "380"
+    }
+}

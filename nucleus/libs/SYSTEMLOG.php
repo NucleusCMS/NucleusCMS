@@ -37,9 +37,9 @@ class SYSTEMLOG
             $message = (string) $message;
         }
 
-        $tablename = sql_table('systemlog');
+        $tablename = sql_tableQuote('systemlog');
         $query     = <<< EOL
-            INSERT INTO `{$tablename}`
+            INSERT INTO {$tablename}
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash)
             VALUES(:logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash)
 EOL;
@@ -65,10 +65,10 @@ EOL;
 
         if ('sqlite' == $DB_DRIVER_NAME) {
             $query = <<< EOL
-            INSERT INTO `{$tablename}`
+            INSERT INTO {$tablename}
             (logyear, logtype, subtype, mnumber, timestamp_utc, message, message_hash, logid)
             SELECT :logyear , :logtype, :subtype, :mnumber, :timestamp_utc, :message, :message_hash
-                    , ifnull((SELECT MAX(logid) FROM `{$tablename}` WHERE logyear=:logyear),0)+1
+                    , ifnull((SELECT MAX(logid) FROM {$tablename} WHERE logyear=:logyear),0)+1
 EOL;
         }
 
@@ -163,7 +163,7 @@ EOL;
         }
         $query = <<<EOL
             SELECT timestamp_utc FROM `{$tablename}` WHERE logtype='error'
-            ORDER BY timestamp_utc DESC LIMIT 19,1
+            ORDER BY timestamp_utc DESC LIMIT 19 offset 1
 EOL;
         $res = sql_query($query);
         if ($res && ($obj = sql_fetch_object($res))) {
@@ -184,6 +184,12 @@ EOL;
             return;
         }
         $checked = true;
+
+        global $DB_DRIVER_NAME;
+        if ('mysql' !== $DB_DRIVER_NAME) {
+            return;
+        }
+
         if (sql_existTableName(sql_table('systemlog'))) {
             return;
         }
@@ -195,7 +201,7 @@ EOL;
         $query['mysql'] = <<<EOL
 CREATE TABLE `{$tablename}` (
   `logyear`        SMALLINT     NOT NULL,
-  `logid`          BIGINT       NOT NULL AUTO_INCREMENT,
+  `logid`          BIGINT       NOT NULL,
   `logtype`        varchar(30)  NOT NULL,
   `subtype`        varchar(30)  NOT NULL default '',
   `mnumber`        varchar(30)  NOT NULL default '0',
@@ -204,7 +210,7 @@ CREATE TABLE `{$tablename}` (
   `message_hash`   varchar(64)  NOT NULL,
    PRIMARY KEY  (`logyear`, `logid`),
    INDEX `logtype` (`logtype`)
-) ENGINE=MyISAM;
+) ENGINE=InnoDB;
 EOL;
 
         $query['sqlite'] = <<<EOL

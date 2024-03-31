@@ -447,8 +447,8 @@ class MEDIA
                 return false;
             }
             $ct = (int) quickQuery(sprintf(
-                'SELECT count(*) AS result FROM `%s` WHERE tmember=%d LIMIT 1',
-                sql_table('team'),
+                'SELECT count(*) AS result FROM %s WHERE tmember=%d LIMIT 1',
+                sql_tableQuote('team'),
                 $member->getID()
             ));
             if (0 == $ct) {

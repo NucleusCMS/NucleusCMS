@@ -9,6 +9,7 @@
 
 /nucleus/cache/*
 !/nucleus/cache/.htaccess
+/nucleus/libs/vendor
 
 /nucleus/plugins/*
 !/nucleus/plugins/config.php

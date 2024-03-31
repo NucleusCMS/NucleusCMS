@@ -16,7 +16,7 @@
  * @copyright Copyright (C) The Nucleus Group
  */
 
-if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
+if (version_compare(phpversion(), '8.1.0', '<') || (80400 <= PHP_VERSION_ID)) {
     if ( ! headers_sent()) {
         header("HTTP/1.0 503 Service Unavailable");
         header("Cache-Control: no-cache, must-revalidate");
@@ -51,32 +51,29 @@ global $nucleus, $CONF, $manager, $member;
 //if(is_file(NC_CORE_PATH.'autoload.php')) include_once(NC_CORE_PATH.'autoload.php');
 
 define('HAS_CATCH_ERROR', true); // deprecated - HAS_CATCH_ERROR
+@define('ENABLE_FEATURE_ITEM_TERM', false);
+@define('ENABLE_FEATURE_TIDY', false);
 
 include_once(NC_LIBS_PATH . 'version.php');
 include_once(NC_LIBS_PATH . 'phpfunctions.php');
 include_once(NC_LIBS_PATH . 'helpers.php');
+include_once(NC_LIBS_PATH . 'ComposerCmd.php');
+include_once(NC_LIBS_PATH . 'vendor/autoload.php');
 include_once(NC_LIBS_PATH . 'globalfunctions.inc.php');
 
 // if you forked product, you can easy to change cms name.
 define('CORE_APPLICATION_NAME', 'Nucleus CMS');
-define('CORE_APPLICATION_VERSION', NUCLEUS_VERSION);
-define('CORE_APPLICATION_VERSION_DOT', NUCLEUS_VERSION_DOT);
-define('CORE_APPLICATION_VERSION_ID', NUCLEUS_VERSION_ID);
-define('CORE_APPLICATION_VERSION_DISPLAY', CORE_APPLICATION_VERSION . ' (' . CORE_APPLICATION_VERSION_DOT . (empty(NUCLEUS_RELEASE_IDENTIFIER) ? '' : NUCLEUS_RELEASE_IDENTIFIER). ')');
-define('CORE_APPLICATION_DATABASE_VERSION_ID', NUCLEUS_DATABASE_VERSION_ID);
 try_define('CORE_DEFAULT_LANGUAGE', 'ja');
-$nucleus['version']  = NUCLEUS_VERSION;
+$nucleus['version']  = NUCLEUS_VERSION_TEXT;
 $nucleus['codename'] = '';
+
+define('_ADMINPAGEFOOT_OFFICIALURL', 'https://nucleuscms.github.io/');
 
 _setDefaultUa();
 _setErrorReporting();
 _setTimezone();
 
 setDefaultConf();
-
-if (getNucleusPatchLevel() > 0) {
-    $nucleus['version'] .= '/' . getNucleusPatchLevel();
-}
 
 if ( ! defined('DISABLED_BLOG_CLEANITEMS')) {
     define('DISABLED_BLOG_CLEANITEMS', false);
@@ -144,7 +141,6 @@ $manager = &MANAGER::instance();
 
 // only needed when updating logs
 if (confVar('UsingAdminArea')) {
-    include_once(NC_LIBS_PATH . 'thirdparty/xmlrpc/xmlrpc.inc.php');  // XML-RPC client classes
     include_once(NC_LIBS_PATH . 'ADMIN.php');
 }
 
@@ -169,6 +165,11 @@ register_shutdown_function('sql_disconnect');
 
 // read config
 getConfig();
+if ( ! \defined('NC_MTN_MODE') || (('upgrade' !== NC_MTN_MODE) && ('install' !== NC_MTN_MODE))) {
+    if (@((int) $CONF['DatabaseVersion'] < (int) NUCLEUS_DATABASE_VERSION_ID)) {
+        include_once(__DIR__ . '/db/UpgradeDB.php'); // auto update database
+    }
+}
 setUrlKeys();
 
 // check upgrade task
@@ -176,23 +177,7 @@ if ( ! empty($CONF['DatabaseVersion']) &&
     ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) &&
     ( ! defined('NC_MTN_MODE') || empty(NC_MTN_MODE))
 ) {
-    header("HTTP/1.1 503 Service Unavailable");
-    header("Cache-Control: no-cache, must-revalidate");
-    header("Expires: Mon, 01 Jan 2018 00:00:00 GMT");
-
-    //var_dump(NUCLEUS_VERSION, NUCLEUS_VERSION_ID, NUCLEUS_DATABASE_VERSION_ID, $CONF['DatabaseVersion']);
-    $message = "<h1>Under maintenance</h1><div></div>";
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
-        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
-    ) {
-        $message = "<h1>お知らせ</h1><div>ただいまサーバーのメンテナンスを実施しております。 ご不便をおかけいたしますが、再開まで今しばらくお待ちください。</div>";
-    }
-    if (empty($CONF['UsingAdminArea'])) {
-        if ( ! empty($CONF['DisableSite']) && ! empty($CONF['DisableSiteURL'])) {
-            redirect($CONF['DisableSite']);
-        }
-        exit($message);
-    }
+    ExitUnderMaintenance();
 }
 
 // Properly set $CONF['Self'] and others if it's not set... usually when we are access from admin menu
@@ -459,7 +444,6 @@ include_once(NC_LIBS_PATH . 'BAN.php');
 include_once(NC_LIBS_PATH . 'PAGEFACTORY.php');
 include_once(NC_LIBS_PATH . 'SEARCH.php');
 include_once(NC_LIBS_PATH . 'entity.php');
-include_once(NC_LIBS_PATH . 'CoreCachedData.php');
 
 spl_autoload_register('loadCoreClassFor_spl');
 

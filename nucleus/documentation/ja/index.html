@@ -17,7 +17,8 @@
 		<link rel="stylesheet" type="text/css" href="styles/manual.css" />
 		<script src="common.js" cache-control="max-age=15552000"></script>
 		<style>
-			.notedev, .noteeol { display: none }
+			.noteeol { display: none }
+			/*.notedev, .noteeol { display: none }*/
 		</style>
 	</head>
 	<body>
@@ -31,7 +32,7 @@
 
 		<div class="heading">
 			Nucleus CMS マニュアル
-			<i>(3.80)</i>
+			<!--<i>(3.80)</i>-->
 		</div>
 
 		<div class="note noteeol"><span style="color: red; font-weight: bold; font-size: x-large">警告</span>
@@ -156,7 +157,7 @@
 		<h1>ライセンスについて <a name="copyright" href="#top" class="toplink"><img src="icon-up.gif" width="15" height="15" alt="back to top" /></a></h1>
 
 		<p>
-			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/)
+			Nucleus: PHP/MySQL Weblog CMS (http://nucleuscms.org/ , https://nucleuscms.github.io/)
 			<br />
 			Copyright (C) 2002 The Nucleus Group
 		</p>
@@ -441,6 +442,25 @@
 			<div class="answer"><ul>
 				<li>データベースのオーバーヘッドが増したり、インデックスが破損したりしている可能性がありますので、データベース管理ツールで、テーブルの「修復」および「最適化」を実行してください。</li>
 				<li>レンタルサーバーをお使いの場合は、サーバーのメンテナンス情報などで何らかのアップグレードがなかったか確認をしてください。</li>
+			</ul></div>
+		</div>
+
+		<div class="faq">
+			<div class="question">nucleus/libs/vendorを更新したい</div>
+			<div class="answer"><ul>
+				<li>nucleus/libs/フォルダで下記を実行してください。<br />
+				Windows:
+				<div style="padding-left: 2em; background-color: #000; color: white">
+				<code>set COMPOSER_HOME=%CD%\composer</code><br />
+				<code>set COMPOSER_VENDOR_DIR=%CD%\vendor</code><br />
+				<code>php composer.phar update</code><br />
+				</div>
+				それ例外:<br />
+				<div style="padding-left: 2em; background-color: #000; color: white">
+				<code>export COMPOSER_HOME=$PWD/composer;</code><br />
+				<code>export COMPOSER_VENDOR_DIR=$PWD/vendor;</code><br />
+				<code>php composer.phar update</code>
+				</div></li>
 			</ul></div>
 		</div>
 

@@ -418,6 +418,7 @@ class ITEM
             ],
         ];
         $manager->notify('PostPluginOptionsUpdate', $param);
+        BLOG::UpdateLastModyfied($new_blogid);
     }
 
     /**
@@ -557,6 +558,7 @@ class ITEM
             'destcatid'  => $new_catid,
         ];
         $manager->notify('PostMoveItem', $param);
+        BLOG::UpdateLastModyfied($new_blogid);
     }
 
     /**
@@ -747,7 +749,9 @@ class ITEM
 
     public static function addShowQueryFilter(&$query, $table_alias = "")
     {
-        $query .= self::getShowQueryFilter($table_alias);
+        if (ENABLE_FEATURE_ITEM_TERM) {
+            $query .= self::getShowQueryFilter($table_alias);
+        }
     }
 
     public static function getShowQueryFilter($table_alias = "")

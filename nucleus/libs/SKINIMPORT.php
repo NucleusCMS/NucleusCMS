@@ -101,9 +101,6 @@ class SKINIMPORT
      * @param $metaOnly
      *                  Set to 1 when only the metadata needs to be read
      *                  (optional, default 0)
-     *                  [2016/05/11]    Modified by piyoyo
-     *                  xml_parse : parce error occured from PHP 7.0.3(to
-     *                  7.0.6) and later add readFileWithSimpleXML function
      *
      * @return string
      */

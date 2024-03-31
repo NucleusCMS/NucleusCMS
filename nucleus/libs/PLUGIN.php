@@ -21,8 +21,9 @@
 
 class NucleusPlugin
 {
-    public bool $is_db_sqlite = false;
-    public bool $is_db_mysql  = false;
+    public bool $is_db_sqlite     = false;
+    public bool $is_db_mysql      = false;
+    public bool $is_db_postgresql = false;
     public int $plugin_dir_type;
     public string $plugin_admin_dir;
     public string $plugin_admin_url;
@@ -65,7 +66,7 @@ class NucleusPlugin
 
     public function getMinNucleusVersion()
     {
-        return 350;
+        return 380;
     }
 
     public function getMinNucleusPatchLevel()
@@ -143,8 +144,6 @@ class NucleusPlugin
      * @param $feature
      *                 Name of the feature. See plugin documentation for more info
      *                 'HelpPage' -> if the plugin provides a helppage
-     *                 'SqlApi'   -> if the plugin uses the complete sql_* api (must
-     *                 also require nucleuscms 3.5)
      */
     public function supportsFeature($feature)
     {
@@ -336,7 +335,13 @@ class NucleusPlugin
         if (0 == $this->plugin_options) {
             $this->plugin_options = [];
             $ph['opid']           = (int) $this->getID();
-            $sql                  = "SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value  FROM [@prefix@]plugin_option_desc d  LEFT JOIN [@prefix@]plugin_option o ON d.oid=o.oid AND o.ocontextid=0 WHERE d.opid=[@opid@] AND d.ocontext='global' AND o.ocontextid=0 group by d.oid";
+            // SQLSTATE[42803]: Grouping error: 7 ERROR: 列"d.oname"はGROUP BY句で指定するか、集約関数内で使用しなければなりません
+            // ERROR: 列"o.ovalue"はGROUP BY句で指定するか、集約関数内で使用しなければなりません
+            $sql = "
+                SELECT d.oname as name, CASE WHEN o.ovalue is null THEN d.odef ELSE o.ovalue END as value
+                FROM [@prefix@]plugin_option_desc d  LEFT JOIN [@prefix@]plugin_option o ON d.oid=o.oid AND o.ocontextid=0
+                WHERE d.opid=[@opid@] AND d.ocontext='global' AND o.ocontextid=0
+                group by d.oid, name, value";
             if ($res = sql_query(parseQuery($sql, $ph))) {
                 while ($row = sql_fetch_object($res)) {
                     $this->plugin_options[strtolower($row->name)] = $row->value;
@@ -735,9 +740,9 @@ class NucleusPlugin
         }
 
         // update plugin_option
-        $sql = sprintf('DELETE FROM `%s` WHERE oid=:oid AND ocontextid=:ocontextid', sql_table('plugin_option'));
+        $sql = sprintf('DELETE FROM %s WHERE oid=:oid AND ocontextid=:ocontextid', sql_tableQuote('plugin_option'));
         sql_prepare_execute($sql, [':oid' => (int) $oid, ':ocontextid' => (int) $contextid]);
-        $sql = sprintf('INSERT INTO `%s`', sql_table('plugin_option'))
+        $sql = sprintf('INSERT INTO %s', sql_tableQuote('plugin_option'))
              . ' (ovalue, oid, ocontextid) VALUES (:ovalue, :oid, :ocontextid)';
         sql_prepare_execute($sql, [':ovalue' => $value, ':oid' => (int) $oid, ':ocontextid' => (int) $contextid]);
 
@@ -978,9 +983,9 @@ class NucleusPlugin
         $aOIDs = [];
         // find ids
         $sql = sprintf(
-            'SELECT t1.oid FROM `%s` as t1, `%s` as t2',
-            sql_table('plugin_option_desc'),
-            sql_table('plugin_option')
+            'SELECT t1.oid FROM %s as t1, %s as t2',
+            sql_tableQuote('plugin_option_desc'),
+            sql_tableQuote('plugin_option')
         )
              . ' WHERE ocontext=? AND t1.oid=t2.oid AND t2.ocontextid=?';
         $res = sql_prepare_execute($sql, [ $context, $contextid ]);
@@ -1048,12 +1053,19 @@ class NucleusPlugin
      */
     public function subscribtionListIsUptodate()
     {
-        $sql = sprintf('SELECT event FROM `%s` WHERE pid = ?', sql_table('plugin_event'));
-        $res = sql_prepare_execute($sql, [$this->getID()]);
-        $ev  = [];
-        while ($a = sql_fetch_array($res)) {
-            $ev[] = $a['event'];
+        $qb = getOrmQueryBuilder()
+                ->select('event')
+                ->from(sql_table('plugin_event'))
+                ->where('pid = :pid')
+                ->setParameter('pid', $this->getID());
+        $query = $qb->executeQuery();
+        $ev    = []; // $ev[] = $a['event'];
+        // fetch all first column
+        if ( ! $query || ! ($ev = $query->fetchAllAssociative())) {
+            return false;
         }
+        $ev = array_map(function ($a) { return $a['event']; }, $ev);
+
         $pl_event_list = $this->_getEventList();
         if (count($ev) != count($pl_event_list)) {
             return false;
@@ -1086,7 +1098,7 @@ class NucleusPlugin
 
         foreach ($aOptions as $oid => $values) {
             // get option type info
-            $query = sprintf('SELECT opid, oname, ocontext, otype, oextra, odef FROM `%s`  WHERE oid=?', sql_table('plugin_option_desc'));
+            $query = sprintf('SELECT opid, oname, ocontext, otype, oextra, odef FROM %s WHERE oid=?', sql_tableQuote('plugin_option_desc'));
             $res   = sql_prepare_execute($query, [(int) $oid]);
             if ($o = sql_fetch_object($res)) {
                 foreach ($values as $key => $value) {
@@ -1144,11 +1156,11 @@ class NucleusPlugin
                         $manager->notify('PrePluginOptionsUpdate', $param);
 
                         // delete the old value for the option
-                        $sql = sprintf('DELETE FROM `%s`', sql_table('plugin_option'))
+                        $sql = sprintf('DELETE FROM %s', sql_tableQuote('plugin_option'))
                              . ' WHERE oid=? AND ocontextid=?';
                         sql_prepare_execute($sql, [ (int) $oid, (int) $contextid ]);
 
-                        $sql = sprintf('INSERT INTO `%s`', sql_table('plugin_option'))
+                        $sql = sprintf('INSERT INTO %s', sql_tableQuote('plugin_option'))
                              . ' (oid, ocontextid, ovalue) VALUES (?, ?, ?)';
                         sql_prepare_execute($sql, [ (int) $oid, (int) $contextid, $value ]);
                     }
@@ -1166,13 +1178,13 @@ class NucleusPlugin
 
     private function init_driver_flag()
     {
-        global $DB_DRIVER_NAME;
-        switch (strtolower($DB_DRIVER_NAME)) {
-            case 'sqlite':
-                $this->is_db_sqlite = true;
-                break;
-            default:
-                $this->is_db_mysql = true;
+        $SchemaManager = getOrmSchemaManager();
+        if ($SchemaManager instanceof \Doctrine\DBAL\Schema\MySQLSchemaManager) {
+            $this->is_db_mysql = true;
+        } elseif ($SchemaManager instanceof \Doctrine\DBAL\Schema\SQLiteSchemaManager) {
+            $this->is_db_sqlite = true;
+        } elseif ($SchemaManager instanceof \Doctrine\DBAL\Schema\PostgreSQLSchemaManager) {
+            $this->is_db_postgresql = true;
         }
     }
 
@@ -1239,7 +1251,7 @@ class NucleusPlugin
             );
         }
 
-        $sql = sprintf('UPDATE `%s`', sql_table('plugin_option_desc'))
+        $sql = sprintf('UPDATE %s', sql_tableQuote('plugin_option_desc'))
                . ' SET '
                . ' odesc=? , otype=? , odef=? , oextra=? '
                . ' WHERE opid=? AND ocontext=? AND oname=? ' ;
@@ -1339,90 +1351,5 @@ class NucleusPlugin
             $defValue,
             $typeExtras
         );
-    }
-
-    final public function getRemoteVersion()
-    {
-        $NP_Name = get_class($this); // get_called_class();
-        if (in_array(
-            $NP_Name,
-            ['NP_SecurityEnforcer']
-        )) {
-            return false;
-        }  // bundled plugins
-
-        return ADMIN::getRemotePluginVersion($NP_Name, true);
-    }
-
-    final public function checkRemoteUpdate()
-    {
-        $ret_val = ['result' => false, 'version' => '', 'download' => ''];
-        if ( ! CONF::asBool('ENABLE_PLUGIN_UPDATE_CHECK')) {
-            // Todo: Admin.php : Enable/Disable option
-            return $ret_val;
-        }
-        //        if (!function_exists('get_called_class'))
-        //            return $ret_val;
-        $NP_Name = get_class($this); // get_called_class();
-        if ( ! CoreCachedData::existTable()) {
-            return $ret_val;
-        }
-
-        $use_cache    = false;
-        $exist_cache  = false;
-        $offset       = 60 * 60 * 24 * 3; // cache expired time 3days
-        $expired_time = time() - $offset;
-
-        $col_type     = 'plugin_remote_latest_version';
-        $col_sub_type = 'text';
-        $col_name     = 'github';
-        $col_sub_id   = $this->getID();
-
-        // check cache data
-        $data = CoreCachedData::getDataEx(
-            $col_type,
-            $col_sub_type,
-            $col_sub_id,
-            $col_name,
-            $expired_time
-        );
-        if ( ! empty($data) && ! $data['expired']) {
-            $use_cache = true;
-            $ver2      = $data['value'];
-        }
-
-        if ( ! $use_cache) {
-            // get latest
-            $ver2 = $this->getRemoteVersion();
-            if (empty($ver2)) {
-                $ver2 = '-';
-            }
-            // save db
-            CoreCachedData::setDataEx(
-                $col_type,
-                $col_sub_type,
-                $col_sub_id,
-                $col_name,
-                $ver2
-            );
-        }
-
-        if (empty($ver2) || '-' == $ver2) {
-            return $ret_val;
-        }
-        // compare version
-        $ver1 = $this->getVersion();
-
-        if (version_compare($ver1, $ver2, '<')) {
-            $ret_val['result']  = true;
-            $ret_val['version'] = $ver2;
-            $ret_val['download']
-                = sprintf(
-                    "https://github.com/NucleusCMS/%s/archive/master.zip",
-                    $NP_Name
-                );
-        }
-
-        return $ret_val;
     }
 } // end class

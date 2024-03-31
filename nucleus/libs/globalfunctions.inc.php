@@ -39,7 +39,7 @@ function include_libs($file, $once = true, $require = true)
 function include_thirdparty($file, $once = true, $require = true)
 {
     if (in_array($file, ['xmlrpc.inc.php', 'xmlrpcs.inc.php'])) {
-        include_libs('thirdparty/xmlrpc/' . $file, $once, $require);
+        // do nothing
     } else {
         include_libs('thirdparty/' . $file, $once, $require);
     }
@@ -94,6 +94,7 @@ function getNucleusVersion(): int
  * power users can install patches in between nucleus releases. These patches
  * usually add new functionality in the plugin API and allow those to
  * be tested without having to install CVS.
+ * [Deprecated]
  */
 function getNucleusPatchLevel()
 {
@@ -108,45 +109,7 @@ function getNucleusPatchLevel()
  */
 function getLatestVersion()
 {
-    global $CONF;
-
-    // response version text ,  last request time
-    foreach (['LatestVerText', 'LatestVerReqTime'] as $name) {
-        if (isset($CONF[$name])) {
-            continue;
-        }
-        $ph['name'] = $name;
-        sql_query(parseQuery(
-            "INSERT INTO [@prefix@]config (name,value) VALUES ('[@name@]','')",
-            $ph
-        ));
-        $CONF[$name] = '';
-    }
-
-    $t = ( ! empty($CONF['LatestVerReqTime'])
-        ? (int) $CONF['LatestVerReqTime'] : 0);
-    $l_ver = ( ! empty($CONF['LatestVerText']) ? $CONF['LatestVerText']
-        : '');
-    $elapsed_time = time() - $t;
-    // cache 180 minutes ,
-    if ($t > 0 && ($elapsed_time > -60) && ($elapsed_time < 60 * 180)) {
-        return $l_ver;
-    }
-
-    $options = ['timeout' => 2, 'connecttimeout' => 1];
-    $ret     = @Utils::httpGet(
-        'http://nucleuscms.org/version_check.php',
-        $options
-    );
-
-    if (empty($ret) || ! preg_match('@^[0-9./]+$@ms', $ret)) {
-        $ret = '';
-    }
-
-    ADMIN::updateConfig('LatestVerText', $ret);
-    ADMIN::updateConfig('LatestVerReqTime', (string) (time()));
-
-    return $ret;
+    return NUCLEUS_VERSION_ID;
 }
 
 /**
@@ -155,6 +118,11 @@ function getLatestVersion()
 function sql_table(string $name = ''): string
 {
     return globalVar('DB_PREFIX', '') . 'nucleus_' . $name;
+}
+
+function sql_tableQuote(string $name = ''): string
+{
+    return getOrmConnection()->quoteIdentifier(sql_table($name));
 }
 
 function sendContentTypeEx(string $contenttype, ?array $options = [])
@@ -452,18 +420,11 @@ function quickQuery(string $sqlText, bool $cacheClear = false)
 
 function getPluginNameFromPid($pid)
 {
-    $ph['pid'] = (int) $pid;
-    $res       = sql_query(
-        parseQuery(
-            'SELECT pfile FROM `[@prefix@]plugin` WHERE pid=[@pid@]',
-            $ph
-        )
-    );
-    if ( ! $res || ! ($obj = sql_fetch_object($res))) {
-        return false;
-    }
-
-    return $obj->pfile;
+    $res = getOrmQueryBuilder()
+            ?->select('pfile')->from(sql_table('plugin'))->where('pid = :pid')
+            ->setParameter('pid', (int) $pid)
+            ->executeQuery()?->fetchOne();
+    return (is_string($res) ? $res : false);
 }
 
 function _execOtherAction()
@@ -615,16 +576,21 @@ function _decideArchiveSkin($archive)
     // get next and prev month links ...
     global $archivenext, $archiveprev, $archivetype, $archivenextexists, $archiveprevexists;
 
+    if (getOrmConnection()->getDatabasePlatform() instanceof \Doctrine\DBAL\Platforms\PostgreSQLPlatform) {
+        $col = 'extract(epoch FROM itime)'; // pgsql:  extract(epoch FROM itime)
+    } else {
+        $col = 'UNIX_TIMESTAMP(itime)';
+    }
+    $qb = getOrmQueryBuilder()
+                ->select($col)->from(sql_table('item'))
+                ->where('idraft = 0 AND iblog = :iblog')
+                ->setParameter('iblog', (int) ($blogid > 0 ? $blogid : $CONF['DefaultBlog']));
     // sql queries for the timestamp of the first and the last published item
-    $ph          = [];
-    $ph['iblog'] = (int) ($blogid > 0 ? $blogid : $CONF['DefaultBlog']);
-    $query       = parseQuery(
-        "SELECT UNIX_TIMESTAMP(itime) as result FROM [@prefix@]item WHERE idraft=0 AND iblog='[@iblog@]'",
-        $ph
-    );
 
-    $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
-    $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
+    $first_timestamp = $qb->orderBy('itime ASC')->executeQuery()->fetchOne();
+    $last_timestamp  = $qb->orderBy('itime DESC')->executeQuery()->fetchOne();
+    //    $first_timestamp = quickQuery($query . ' ORDER BY itime ASC LIMIT 1');
+    //    $last_timestamp  = quickQuery($query . ' ORDER BY itime DESC LIMIT 1');
 
     $y = $m = $d = 0;
     sscanf($archive, '%d-%d-%d', $y, $m, $d);
@@ -904,15 +870,21 @@ function getConfig()
 {
     global $CONF;
 
-    $res = sql_query(parseQuery('SELECT * FROM `[@prefix@]config`'));
-
-    if ( ! $res) {
+    $qb = getOrmQueryBuilder()
+            ?->select('*')
+            ->from(sql_table('config'));
+    if ( ! $qb || ! ($rows = $qb?->executeQuery()?->fetchAllAssociative())) {
         return;
     }
+    foreach ($rows as $row) {
+        if ( ! isset($CONF[$row['name']])) {
+            $CONF[$row['name']] = $row['value'];
+        }
+    }
 
-    while ($obj = sql_fetch_object($res)) {
-        if ( ! isset($CONF[$obj->name])) {
-            $CONF[$obj->name] = $obj->value;
+    if (empty($CONF['DatabaseVersion']) || (371 > (int) $CONF['DatabaseVersion'])) {
+        if ( ! defined('NC_MTN_MODE') || ('upgrade' !== NC_MTN_MODE)) {
+            ExitDbTooOldGoto371();
         }
     }
 }
@@ -1195,7 +1167,7 @@ function getMailFooter()
 {
     $message = "\n\n-----------------------------";
     $message .= "\n   Powered by Nucleus CMS";
-    $message .= "\n(http://www.nucleuscms.org/)";
+    $message .= "\n(https://nucleuscms.github.io/)";
 
     return $message;
 }
@@ -1863,14 +1835,17 @@ function ticketForPlugin()
 
     /* Solve the plugin name. */
     $plugins = [];
-    $res     = sql_query(parseQuery('SELECT `pfile` FROM [@prefix@]plugin'));
+    $rows    = getOrmQueryBuilder()
+            ?->select('pfile')
+            ->from(sql_table('plugin'))
+            ->executeQuery()
+            ?->fetchAllAssociative();
 
-    if ($res) {
-        while ($row = sql_fetch_row($res)) {
-            $name                       = substr($row[0], 3);
+    if ( ! empty($rows)) {
+        foreach ($rows as $row) {
+            $name                       = substr($row['pfile'], 3);
             $plugins[strtolower($name)] = $name;
         }
-        sql_free_result($res);
     }
 
     if ($plugins[$unsecure_plugin_name_short]) {
@@ -2306,12 +2281,8 @@ function ifset(&$var)
  */
 function numberOfEventSubscriber($event)
 {
-    $ph['event'] = $event;
-    $res
-                 = sql_query(parseQuery(
-                     "SELECT COUNT(*) as count FROM `[@prefix@]plugin_event` WHERE event='[@event@]'",
-                     $ph
-                 ));
+    $sql = sprintf("SELECT COUNT(*) as count FROM %s WHERE event = :event", sql_tableQuote('plugin_event'));
+    $res = sql_prepare_execute($sql, ['event' => $event]);
     if ($res && ($obj = sql_fetch_object($res))) {
         return $obj->count;
     }
@@ -2624,9 +2595,9 @@ function init_nucleus_compatibility_mysql_handler()
     $DB_DRIVER_NAME = trim(strtolower($DB_DRIVER_NAME));
 
     // check invalid parameter
-    if ( ! in_array($DB_DRIVER_NAME, ['mysql', 'sqlite'])) {
+    if ( ! in_array($DB_DRIVER_NAME, ['mysql', 'sqlite', 'pgsql'])) {
         //        $DB_DRIVER_NAME = 'mysql';
-        echo "Error::config Invalid db driver name.";
+        printf("Error::config Invalid db driver name. [%s]", hsc($DB_DRIVER_NAME));
         exit;
     }
     $MYSQL_HANDLER = ['pdo', $DB_DRIVER_NAME];
@@ -2753,6 +2724,8 @@ function parseQuery($query = '', $ph = [])
 
     if (is_array($query)) {
         $query = implode("\n", $query);
+    } elseif (null === $query) {
+        $query = '';
     }
 
     if ( ! is_array($ph)) {
@@ -2764,7 +2737,7 @@ function parseQuery($query = '', $ph = [])
     }
     $esc = md5($_SERVER['REQUEST_TIME_FLOAT'] . mt_rand());
     foreach ($ph as $k => $v) {
-        if ( ! str_contains($query, '[@')) {
+        if ( ! str_contains((string) $query, '[@')) {
             break;
         }
 
@@ -2772,18 +2745,18 @@ function parseQuery($query = '', $ph = [])
             $v = str_replace('[@', "[{$esc}@", $v);
         }
         $query = str_replace("[@{$k}@]", $v, $query);
-        if (str_contains($query, "[@{$k}:escape@]")) {
+        if (str_contains((string) $query, "[@{$k}:escape@]")) {
             $query = str_replace(
                 "[@{$k}:escape@]",
                 sql_real_escape_string($v),
                 $query
             );
         }
-        if (str_contains($query, "[@{$k}:int@]")) {
+        if (str_contains((string) $query, "[@{$k}:int@]")) {
             $query = str_replace("[@{$k}:int@]", (int) $v, $query);
         }
     }
-    if (str_contains($query, "[{$esc}@")) {
+    if (str_contains((string) $query, "[{$esc}@")) {
         $query = str_replace("[{$esc}@", '[@', $query);
     }
 
@@ -2883,16 +2856,13 @@ function _setErrorReporting()
     if (isDebugMode()) {
         error_reporting(E_ALL); // report all errors!
         ini_set('display_errors', 1);
-    } else {
-        if ( ! isset($CONF['UsingAdminArea'])
-             || empty($CONF['UsingAdminArea'])) {
-            ini_set('display_errors', '0');
-        }
-        if ( ! defined('E_DEPRECATED')) {
-            define('E_DEPRECATED', 8192);
-        }
-        error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
+        return;
     }
+    if ( ! isset($CONF['UsingAdminArea'])
+         || empty($CONF['UsingAdminArea'])) {
+        ini_set('display_errors', '0');
+    }
+    error_reporting(E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED);
 }
 
 function _setTimezone()
@@ -3185,11 +3155,6 @@ function parseMarkdownFile($filename)
 
 function parseMarkdown($text)
 {
-    static $checked = null;
-    if ( ! $checked) {
-        include_once(__DIR__ . "/thirdparty/markdown/autoload.php");
-        $checked = true;
-    }
     if ( ! class_exists('\cebe\markdown\Markdown')) {
         return false;
     }
@@ -3202,17 +3167,32 @@ function getNamespaceBladeOne()
     return 'eftec\bladeone';
 }
 
+function getBladeOneCacheDir()
+{
+    static $path = false;
+    if (false !== $path) {
+        return $path;
+    }
+    global $DIR_NUCLEUS;
+    $p = false;
+    if ( ! empty($DIR_NUCLEUS) && @is_dir($DIR_NUCLEUS)) {
+        $p = realpath($DIR_NUCLEUS);
+    }
+    if (false === $p) {
+        $p = dirname(__DIR__);
+    }
+    $path = str_replace("\\", '/', $p) . '/cache/blade.cache';
+    return $path;
+}
+
 function loadLibBladeOne()
 {
     static $checked = null;
     if ( ! $checked) {
         try_define('NAMESPACE_BLADEONE', 'eftec\bladeone');
         $checked = true;
-        if (@ ! is_file(__DIR__ . '/thirdparty/bladeone/autoload.php')) {
-            return false;
-        }
-        $views = dirname(__DIR__) . '/views';
-        $cache = dirname(__DIR__) . '/cache';
+        $views   = dirname(__DIR__) . '/views';
+        $cache   = getBladeOneCacheDir();
         if ( ! @is_readable($views)) {
             trigger_error('Error : blade : $views not readable.', E_USER_WARNING);
             return false;
@@ -3225,10 +3205,6 @@ function loadLibBladeOne()
             trigger_error('Error : blade : $cache not writable.', E_USER_WARNING);
             return false;
         }
-        include_once(__DIR__ . '/thirdparty/bladeone/autoload.php');
-    }
-    if ( ! class_exists(NAMESPACE_BLADEONE . '\BladeOne')) {
-        return false;
     }
     return true;
 }
@@ -3243,7 +3219,7 @@ function parseBlade($view, $data)
         }
     }
     $views    = dirname(__DIR__) . '/views';
-    $cache    = dirname(__DIR__) . '/cache';
+    $cache    = getBladeOneCacheDir();
     $BladeOne = NAMESPACE_BLADEONE.'\\BladeOne';
     $blade    = new $BladeOne($views, $cache);
     return $blade->run($view, $data); // it calls {$views}/{$view}.blade.php
@@ -3259,10 +3235,85 @@ function parseBladeString($string, $data)
         }
     }
     $views    = dirname(__DIR__) . '/views';
-    $cache    = dirname(__DIR__) . '/cache';
+    $cache    = getBladeOneCacheDir();
     $BladeOne = NAMESPACE_BLADEONE.'\\BladeOne';
     $blade    = new $BladeOne($views, $cache);
     return $blade->runString((string) $string, (array) $data);
 }
 // test
 // php -r "include('nucleus/libs/globalfunctions.inc.php'); var_dump( parseBladeString('{{$name}}', ['name'=>'namae']) );"
+
+function ExitUnderMaintenance()
+{
+    global $CONF;
+    if ( ! headers_sent()) {
+        header("HTTP/1.1 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2024 00:00:00 GMT");
+    }
+    //var_dump(NUCLEUS_VERSION, NUCLEUS_VERSION_ID, NUCLEUS_DATABASE_VERSION_ID, $CONF['DatabaseVersion']);
+    $message = "<h1>Under maintenance</h1><div></div>";
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
+        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
+    ) {
+        $message = "<h1>お知らせ</h1><div>ただいまサーバーのメンテナンスを実施しております。 ご不便をおかけいたしますが、再開まで今しばらくお待ちください。</div>";
+    }
+    if (empty($CONF['UsingAdminArea'])) {
+        if ( ! empty($CONF['DisableSite']) && ! empty($CONF['DisableSiteURL'])) {
+            redirect($CONF['DisableSite']);
+        }
+        exit($message);
+    }
+    if ( ! defined('NC_MTN_MODE')) {
+        exit($message);
+    }
+}
+
+function ExitDbTooOldGoto371()
+{
+    global $CONF;
+    if ( ! headers_sent()) {
+        header("HTTP/1.1 503 Service Unavailable");
+        header("Cache-Control: no-cache, must-revalidate");
+        header("Expires: Mon, 01 Jan 2024 00:00:00 GMT");
+    }
+    $message  = "<h1>Under maintenance</h1><div></div>";
+    $message2 = "<h1>First, go to 3.71 version</h1><div></div>";
+    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
+        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
+    ) {
+        $message  = "<h1>お知らせ</h1><div>ただいまサーバーのメンテナンスを実施しております。 ご不便をおかけいたしますが、再開まで今しばらくお待ちください。</div>";
+        $message2 = "<h1>お知らせ</h1><div>まずは3.71バージョンへ。🔙</div>";
+    }
+    if (empty($CONF['UsingAdminArea'])) {
+        if ( ! empty($CONF['DisableSite']) && ! empty($CONF['DisableSiteURL'])) {
+            redirect($CONF['DisableSite']);
+        }
+        exit($message);
+    }
+    if (defined('NC_MTN_MODE') || ! empty($CONF['UsingAdminArea'])) {
+        exit($message2);
+    } else {
+        exit($message);
+    }
+}
+
+function ToggleAutoUpdating(bool $OnOff)
+{
+    global $CONF;
+    $CONF['AutoUpdating'] = 0;
+    getOrmQueryBuilder()
+            ->delete(sql_table('config'))
+            ->where('name = :name')
+            ->setParameter('name', 'AutoUpdating')
+            ->executeStatement();
+    if ($OnOff) {
+        $CONF['AutoUpdating'] = time();
+        getOrmQueryBuilder()
+                ->insert(sql_table('config'))
+                ->values(['name' => ':name', 'value' => ':value'])
+                ->setParameter('name', 'AutoUpdating')
+                ->setParameter('value', $CONF['AutoUpdating'])
+                ->executeStatement();
+    }
+}

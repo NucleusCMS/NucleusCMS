@@ -20,13 +20,14 @@
 
 $MYSQL_CONN = 0;
 global $SQL_DBH;
-$SQL_DBH = null;
+$SQL_DBH  = null;
+$ORM_CONN = null;
 
 if ( ! function_exists('sql_fetch_assoc')) {
     include(__DIR__ . '/sql_common_functions.php');
 
     /**
-     * Connects to mysql server
+     * Connects to Database server
      */
     function sql_connect_args(
         $db_host = 'localhost',
@@ -34,143 +35,17 @@ if ( ! function_exists('sql_fetch_assoc')) {
         $db_password = '',
         $db_name = ''
     ) {
-        global $DB_DRIVER_NAME;
-
-        ini_set('default_charset', "UTF-8");
-
-        if ( ! class_exists('PDO')) {
-            exit('Critical error. pdo module is not loaded.');
-        }
-
-        $supported_drivers = ['mysql','sqlite'];
-        //  $supported_drivers[] = 'drivername'; // for debug
-
-        if (
-            empty($DB_DRIVER_NAME) ||
-            ! in_array(strtolower($DB_DRIVER_NAME), $supported_drivers)
-        ) {
-            exit('Critical error: Invalid driver name. Check the config file.');
-        }
-
-        $options = [
-             PDO::ATTR_ERRMODE          => PDO::ERRMODE_SILENT,
-             PDO::ATTR_EMULATE_PREPARES => false,
-        ];
-        if (isDebugMode() || ! defined('NUCLEUS_DEVELOP') || NUCLEUS_DEVELOP) {
-            $options[PDO::ATTR_ERRMODE] = PDO::ERRMODE_EXCEPTION;
-        }
-
-        try {
-            if ( ! str_contains($db_host, ':')) {
-                $host    = $db_host;
-                $port    = '';
-                $portnum = '';
-            } else {
-                [$host, $port] = explode(":", $db_host);
-                if (isset($port)) {
-                    $portnum = $port;
-                    $port    = ';port=' . trim($port);
-                } else {
-                    $port    = '';
-                    $portnum = '';
-                }
-            }
-
-            switch ($DB_DRIVER_NAME) {
-                case 'sqlite':
-                    if ( ! extension_loaded('PDO_SQLITE')) {
-                        $msg = 'Critical error: pdo_sqlite module is not loaded.';
-                        startUpError($msg, 'Connect Error');
-                    }
-
-                    // check file path
-                    $db_path = trim(dirname($db_name));
-                    if (
-                        (0 == strlen($db_path)) || ! is_dir($db_path)
-                        || ( ! str_contains(str_replace("\\", '/', $db_path), '/'))
-                    ) {
-                        exit('ERROR : database filename maybe wrong ');
-                    }
-
-                    $dsn = sprintf(
-                        '%s:%s',
-                        $DB_DRIVER_NAME,
-                        $db_name
-                    );
-                    $DBH = new PDO($dsn, $db_user, $db_password, $options);
-                    if ($DBH) {
-                        if ( ! class_exists('sqlite_functions')) {
-                            require_once(__DIR__ . '/sqlite_functions.php');
-                        }
-                        sqlite_functions::pdo_register_user_functions($DBH);
-                        // $DBH->beginTransaction();
-                    }
-                    break;
-                case 'mysql':
-                    //mysql
-                    $dsn = sprintf(
-                        '%s:host=%s%s;dbname=%s',
-                        $DB_DRIVER_NAME,
-                        $host,
-                        $port,
-                        $db_name
-                    );
-                    $DBH = new PDO($dsn, $db_user, $db_password, $options);
-                    break;
-                default:
-                    $msg = sprintf("<h1>Critical Error</h1><p>%s driver is not suported.</p>", escapeHTML($DB_DRIVER_NAME))
-                                . "<p>Please check whether there is misspelling. Supported are 'mysql', 'sqlite'.</p>";
-                    trigger_error($msg, E_USER_ERROR);
-                    break;
-            }
-
-            // for mysql
-            if ($DBH && (0 === stripos($DB_DRIVER_NAME, 'mysql'))) {
-                $charset = 'utf8';
-                if (
-                    version_compare('5.5.0', sql_get_server_version($DBH), '<=')
-                    && sql_query("SHOW CHARACTER SET LIKE 'utf8mb4'")
-                ) {
-                    $charset = 'utf8mb4';
-                }
-                sql_set_charset($charset, $DBH);
-                fix_mysql_sqlmode($DBH);
-            }
-        } catch (PDOException $e) {
-            $DBH = $m = null;
-            $msg = '<b>Could not connect to database.</b>';
-            if (isDebugMode() || (defined('NC_MTN_MODE') && NC_MTN_MODE == 'install')) {
-                if (preg_match('#^(SQLSTATE[^\'\"]+[^:\'\"/]+)#', $e->getMessage(), $m)) {
-                    $msg .= sprintf("<br />%s\n", escapeHTML($m[1]));
-                }
-            }
-            startUpError('<div>'. $msg . '</div>', 'Error');
-            exit;
-        }
-
-        return $DBH;
+        $conn = orm_connect_args($db_host, $db_user, $db_password, $db_name);
+        return ($conn ? $conn->getNativeConnection() : false);
     }
 
     /**
-     * Connects to mysql server
+     * Connects to Database server
      */
     function sql_connect()
     {
-        global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
         global $SQL_DBH;
-
-        $SQL_DBH = sql_connect_args(
-            $DB_HOST,
-            $DB_USER,
-            $DB_PASSWORD,
-            $DB_DATABASE
-        );
-        if ( ! $SQL_DBH) {
-            $title = 'Error';
-            $msg   = '<div><b>Could not connect to database.</b></div>';
-            startUpError($msg, $title);
-            exit;
-        }
+        orm_connect();
         return $SQL_DBH;
     }
 
@@ -179,9 +54,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_disconnect(&$dbh = null)
     {
-        global $SQL_DBH;
+        global $SQL_DBH, $ORM_CONN;
         if (null === $dbh) {
-            $SQL_DBH = null;
+            $SQL_DBH  = null;
+            $ORM_CONN = null;
         } else {
             $dbh = null;
         }
@@ -189,9 +65,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     function sql_close(&$dbh = null)
     {
-        global $SQL_DBH;
+        global $SQL_DBH, $ORM_CONN;
         if (null === $dbh) {
-            $SQL_DBH = null;
+            $SQL_DBH  = null;
+            $ORM_CONN = null;
         } else {
             $dbh = null;
         }
@@ -555,16 +432,21 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if ( ! is_string($tablename) || '' === $tablename) {
             return false;
         }
-        $names = sql_getTableColumnNames($tablename);
 
-        if (empty($names)) {
+        $sm = getOrmSchemaManager();
+        if ( ! $sm?->tableExists($tablename)) {
+            return false;
+        } elseif ($sm->introspectTable($tablename)?->hasColumn($ColumnName)) {
+            return true;
+        }
+        if ($casesensitive) {
             return false;
         }
 
-        if ($casesensitive) {
-            return in_array($ColumnName, $names);
+        $names = $sm->listTableColumns($tablename);
+        if (empty($names)) {
+            return false;
         }
-
         foreach ($names as $v) {
             if (0 == strcasecmp($ColumnName, $v)) {
                 return true;
@@ -582,6 +464,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if ( ! $SQL_DBH || ! is_string($tablename) || '' === $tablename) {
             return false;
         }
+        return getOrmSchemaManager()->tableExists($tablename);
 
         if (str_contains($tablename, '[@prefix@]')) {
             $tablename = parseQuery($tablename);
@@ -792,13 +675,14 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     function sql_quote_identifier($text)
     {
-        global $DB_DRIVER_NAME;
-        if ('sqlite' === $DB_DRIVER_NAME) {
-            return '`' . str_replace("`", "``", $text) . '`';
-        }
-
-        // mysql
-        return '`' . sql_real_escape_string($text) . '`';
+        $res = getOrmConnection()?->quoteIdentifier($text);
+        return (null === $res ? false : $res);
+        //        global $DB_DRIVER_NAME;
+        //        if ('sqlite' === $DB_DRIVER_NAME) {
+        //            return '`' . str_replace("`", "``", $text) . '`';
+        //        }
+        //        // mysql
+        //        return '`' . sql_real_escape_string($text) . '`';
     }
 
     function sql_prepare($sql)
@@ -846,6 +730,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
         if ( ! $SQL_DBH) {
             return false;
+        }
+        //if ($SQL_DBH instanceof PDO_PGSQL) { // ORM軽油は PDOで来るので不可
+        if ('pgsql' === $SQL_DBH?->getAttribute(PDO::ATTR_DRIVER_NAME)) {
+            //            $sql = str_replace('`', '"', $sql);
         }
         $stmt = $SQL_DBH->prepare((string) $sql);
         if ($stmt && $stmt->execute($input_parameters)) {

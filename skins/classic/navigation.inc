@@ -24,7 +24,7 @@
 <!-- index: page title and extra navigational links -->
 <%if(skintype,index)%>
 <title><%blogsetting(name)%></title>
-<link rel="bookmark" title="Nucleus" href="http://nucleuscms.org/" />
+<link rel="bookmark" title="Nucleus" href="https://nucleuscms.github.io/" />
 <link rel="archives" title="<%_(Archives)%>" href="<%archivelink%>" />
 <link rel="top" title="<%_(Today)%>" href="<%todaylink%>" />
 <%endif%>

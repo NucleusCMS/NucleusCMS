@@ -33,7 +33,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     } // https://github.com/NucleusCMS/NP_SecurityEnforcer
     public function getVersion()
     {
-        return '1.03';
+        return '3.80.0';
     }
     public function getDescription()
     {
@@ -49,12 +49,11 @@ class NP_SecurityEnforcer extends NucleusPlugin
     }
     public function getMinNucleusVersion()
     {
-        return 390;
+        return 380;
     }
     public function supportsFeature($feature)
     {
         return in_array($feature, [
-                   'SqlTablePrefix', 'SqlApi', 'SqlApi_sqlite',
                    'pluginadmin',
                    ]);
     }
@@ -63,9 +62,20 @@ class NP_SecurityEnforcer extends NucleusPlugin
         return ['QuickMenu','PrePasswordSet','CustomLogin','LoginSuccess','LoginFailed','PostRegister','PrePluginOptionsEdit'];
     }
 
+    public function getTablenameMain(): string
+    {
+        return sql_table('plug_securityenforcer');
+    }
+
     public function install()
     {
-        global $SQL_DBH, $DB_DRIVER_NAME;
+        $this->loadLanguage();
+        $this->installOptions();
+        $this->installTable();
+    }
+
+    private function installOptions()
+    {
         $this->createOption('quickmenu', '_SECURITYENFORCER_OPT_QUICKMENU', 'yesno', 'yes');
         $this->createOption('del_uninstall_data', '_SECURITYENFORCER_OPT_DEL_UNINSTALL_DATA', 'yesno', 'no');
         $this->createOption('enable_security', '_SECURITYENFORCER_OPT_ENABLE', 'yesno', 'yes');
@@ -74,43 +84,53 @@ class NP_SecurityEnforcer extends NucleusPlugin
         $this->createOption('pwd_complexity', '_SECURITYENFORCER_OPT_PWD_COMPLEXITY', 'select', '0', '_SECURITYENFORCER_OPT_SELECT');
         $this->createOption('max_failed_login', '_SECURITYENFORCER_OPT_MAX_FAILED_LOGIN', 'text', '5');
         $this->createOption('login_lockout', '_SECURITYENFORCER_OPT_LOGIN_LOCKOUT', 'text', '15');
+    }
 
-        $queries = [];
-        if (($SQL_DBH) && isset($DB_DRIVER_NAME)
-             && (false !== stripos($DB_DRIVER_NAME, 'sqlite'))) { // SQLite
-            $queries[] = "CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
-                    " (
-					`login` varchar(255),
-					`fails` int(11) NOT NULL default '0',
-					`lastfail` bigint NOT NULL default '0' )";
-            $queries[] = sprintf(
-                "CREATE INDEX IF NOT EXISTS `%s` ON `%s` (`%s`) ",
-                sql_table('plug_securityenforcer_idx_login'),
-                sql_table('plug_securityenforcer'),
-                'login'
-            );
-        } else { // MySQL
-            $queries[] = "CREATE TABLE IF NOT EXISTS ". sql_table('plug_securityenforcer').
-                    " (
-					`login` varchar(255),
-					`fails` int(11) NOT NULL default '0',
-					`lastfail` bigint NOT NULL default '0',
-					KEY `login` (`login`)) ENGINE=MyISAM";
+    private function installTable()
+    {
+        $table = $this->getTablenameMain();
+        if (getOrmSchemaManager()?->tableExists($table)) {
+            return ;
         }
-        foreach ($queries as $query) {
-            sql_query($query);
-        }
+
+        //  login       varchar(255),
+        //  fails       int(11)  NOT NULL default '0',
+        //  lastfail    bigint   NOT NULL default '0',
+        //  PRIMARY KEY login (login));
+        $TableSchema = new \Doctrine\DBAL\Schema\Table($table);
+        // name, Doctrine\DBAL\Types\Types, options
+        $TableSchema->addColumn('login', 'string', ['Length' => 255]);
+        $TableSchema->addColumn('fails', 'integer', ['Notnull' => true, 'Default' => 0]);
+        $TableSchema->addColumn('lastfail', 'bigint', ['Notnull' => true, 'Default' => 0]);
+        $TableSchema->setPrimaryKey(['login']);
+        //if (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\MySQLSchemaManager) {
+        //}
+        //if (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\PostgreSQLSchemaManager) {
+        //}
+        //if (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\SQLiteSchemaManager) {
+        //}
+        // Create Table
+        ormCreateTable($TableSchema);
+
+        // Debug
+        // sqlite3 db_nucleus.sqlite ".schema nucleus_plug_securityenforcer"
     }
 
     public function unInstall()
     {
         if ('yes' == $this->getOption('del_uninstall_data')) {
-            sql_query('DROP TABLE '.sql_table('plug_securityenforcer'));
+            $Schema = getOrmSchemaManager();
+            if ($Schema?->tableExists($this->getTablenameMain())) {
+                $Schema->dropTable($this->getTablenameMain());
+            }
         }
     }
 
-    public function init()
+    private function loadLanguage()
     {
+        if (defined('_SECURITYENFORCER_OPT_QUICKMENU')) {
+            return ;
+        }
         $language = str_replace(["\\",'/', DIRECTORY_SEPARATOR ], '', getLanguageName());
 
         if (file_exists($this->getDirectory().$language.'.php')) {
@@ -118,12 +138,33 @@ class NP_SecurityEnforcer extends NucleusPlugin
         } else {
             include_once($this->getDirectory().'english-utf8.php');
         }
+    }
+
+    public function init()
+    {
+        $this->loadLanguage();
 
         $this->enable_security  = $this->getOption('enable_security');
         $this->pwd_min_length   = (int) ($this->getOption('pwd_min_length'));
         $this->pwd_complexity   = (int) ($this->getOption('pwd_complexity'));
         $this->max_failed_login = (int) ($this->getOption('max_failed_login'));
         $this->login_lockout    = (int) ($this->getOption('login_lockout'));
+
+        // debug
+        if (CONF::asBool('debug')) {
+            //$this->test();
+        }
+    }
+
+    protected function test()
+    {
+        //        $data = ['login' => '::1'];
+        $data = ['login' => '127.0.0.1'];
+        foreach (['127.0.0.1','::1',$_SERVER['REMOTE_ADDR']] as $ip) {
+            $sql = sprintf('Insert into %s (login,fails) Values(?,?)', $this->getTablenameMain());
+            sql_prepare_execute($sql, [$ip, 100]);
+        }
+        $this->event_CustomLogin($data);
     }
 
     public function event_QuickMenu(&$data)
@@ -186,15 +227,23 @@ class NP_SecurityEnforcer extends NucleusPlugin
         //login,password,success,allowlocal
         if ('yes' == $this->enable_security && $this->max_failed_login > 0) {
             global $_SERVER;
-            $login = $data['login'];
-            $ip    = $_SERVER['REMOTE_ADDR'];
-            // Clear
-            $sql = sprintf("DELETE FROM `%s` WHERE lastfail < ?", sql_table('plug_securityenforcer'));
-            sql_prepare_execute($sql, [time() - ($this->login_lockout * 60)]);
+            $login = strtolower((string) $data['login']);
+            $ip    = strtolower((string) $_SERVER['REMOTE_ADDR']);
 
-            $sql    = sprintf("SELECT fails as result FROM `%s` WHERE login = ?", sql_table('plug_securityenforcer'));
-            $flogin = sql_direct_getValue_AsInt($sql, [$login]);
-            $fip    = sql_direct_getValue_AsInt($sql, [$ip]);
+            // Clear
+            getOrmQueryBuilder()
+                    ?->delete($this->getTablenameMain())
+                    ->where('lastfail < :lastfail')
+                    ->setParameter('lastfail', time() - ($this->login_lockout * 60))
+                    ->executeStatement();
+
+            $qb = getOrmQueryBuilder()
+                    ?->select('fails')
+                    ->from($this->getTablenameMain())
+                    ->where('login = :login');
+            $flogin = (int) $qb?->setParameters(['login' => $login])->executeQuery()->fetchOne();
+            $fip    = (int) $qb?->setParameters(['login' => $ip])->executeQuery()->fetchOne();
+
             if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
                 $data['success']    = 0;
                 $data['allowlocal'] = 0;
@@ -211,11 +260,10 @@ class NP_SecurityEnforcer extends NucleusPlugin
     {
         if ('yes' == $this->enable_security && $this->max_failed_login > 0) {
             global $_SERVER;
-            $login = $data['username'];
-            $ip    = $_SERVER['REMOTE_ADDR'];
-            $sql   = sprintf("DELETE FROM `%s` WHERE login=?", sql_table('plug_securityenforcer'));
-            sql_prepare_execute($sql, [$login]);
-            sql_prepare_execute($sql, [$ip]);
+            $login = strtolower((string) $data['username']);
+            $ip    = strtolower((string) $_SERVER['REMOTE_ADDR']);
+            $sql   = sprintf("DELETE FROM %s WHERE login=? or login=?", sql_tableQuote('plug_securityenforcer'));
+            sql_prepare_execute($sql, [$login, $ip]);
         }
     }
 
@@ -223,24 +271,24 @@ class NP_SecurityEnforcer extends NucleusPlugin
     {
         if ('yes' == $this->enable_security && $this->max_failed_login > 0) {
             global $_SERVER;
-            $login = $data['username'];
-            $ip    = $_SERVER['REMOTE_ADDR'];
+            $login = strtolower((string) $data['username']);
+            $ip    = strtolower((string) $_SERVER['REMOTE_ADDR']);
 
-            $sql   = sprintf("SELECT count(*) AS result FROM `%s` WHERE login=?", sql_table('plug_securityenforcer'));
+            $sql   = sprintf("SELECT count(*) AS result FROM %s WHERE login=?", sql_tableQuote('plug_securityenforcer'));
             $count = (int) (sql_direct_getValue_AsInt($sql, [$login]));
             if ($count > 0) {
-                $sql = sprintf("UPDATE `%s` SET fails=fails+1, lastfail=:lastfail WHERE login=:login", sql_table('plug_securityenforcer'));
+                $sql = sprintf("UPDATE %s SET fails=fails+1, lastfail=:lastfail WHERE login=:login", sql_tableQuote('plug_securityenforcer'));
             } else {
-                $sql = sprintf("INSERT INTO `%s` (login,fails,lastfail) VALUES (:login,1,:lastfail)", sql_table('plug_securityenforcer'));
+                $sql = sprintf("INSERT INTO %s (login,fails,lastfail) VALUES (:login,1,:lastfail)", sql_tableQuote('plug_securityenforcer'));
             }
             sql_prepare_execute($sql, [':lastfail' => time(), ':login' => $login]);
 
-            $sql   = sprintf("SELECT count(*) AS result FROM `%s` WHERE login=?", sql_table('plug_securityenforcer'));
+            $sql   = sprintf("SELECT count(*) AS result FROM %s WHERE login=?", sql_tableQuote('plug_securityenforcer'));
             $count = (int) (sql_direct_getValue_AsInt($sql, [$ip]));
             if ($count > 0) {
-                $sql = sprintf("UPDATE `%s` SET fails=fails+1, lastfail=:lastfail WHERE login=:login", sql_table('plug_securityenforcer'));
+                $sql = sprintf("UPDATE %s SET fails=fails+1, lastfail=:lastfail WHERE login=:login", sql_tableQuote('plug_securityenforcer'));
             } else {
-                $sql = sprintf("INSERT INTO `%s` (login,fails,lastfail) VALUES (:login,1,:lastfail)", sql_table('plug_securityenforcer'));
+                $sql = sprintf("INSERT INTO %s (login,fails,lastfail) VALUES (:login,1,:lastfail)", sql_tableQuote('plug_securityenforcer'));
             }
             sql_prepare_execute($sql, [':lastfail' => time(), ':login' => $ip]);
         }

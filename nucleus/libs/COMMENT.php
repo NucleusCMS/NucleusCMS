@@ -31,6 +31,9 @@ class COMMENT
             sql_table('member'),
             (int) $commentid
         );
+        if ('pgsql' === getOrmConnection()->getNativeConnection()->getAttribute(PDO::ATTR_DRIVER_NAME)) {
+            $query = str_replace('`', '"', $query);
+        }
         $comments = sql_query($query);
 
         $aCommentInfo = sql_fetch_assoc($comments);

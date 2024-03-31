@@ -316,7 +316,6 @@ try_define('_BLOGCREATED_ADVANCEDWAY2',					"Méthode 2 : Appeler le blog depuis
 try_define('_BLOGCREATED_ADVANCEDWAY3',					"Pour finir le processus de création du blog, entrez simplement l'URL final de votre blog : (peut être la même qu'un blog existant)");
 
 // Donate!
-try_define('_ADMINPAGEFOOT_OFFICIALURL',				'http://nucleuscms.org/');
 try_define('_ADMINPAGEFOOT_DONATEURL',					'http://nucleuscms.org/donate.php');
 try_define('_ADMINPAGEFOOT_DONATE',						'Faire un don !');
 try_define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
@@ -437,7 +436,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Niveau de patch de Nucleu
 try_define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'Paramètres importants');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'Rechercher une nouvelle version');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'Vérifie sur nucleuscms.org si une nouvelle version est disponible : ');
-try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
+try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'Recherche une mise à jour');
 try_define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"Vous n'avez pas les droit nécessaires pour voir les informations systèmes.");
 

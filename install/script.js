@@ -4,6 +4,7 @@ var submitcount = 0;
 function db_change(db_type) {
   var elm_sqlite = document.getElementById("install_db_type_sqlite");
   var elm_mysql  = document.getElementById("install_db_type_mysql");
+  var elm_pgsql  = document.getElementById("install_db_type_pgsql");
 
   var elm_install_db_host = document.getElementById("install_db_host");
   var elm_install_db_create  = document.getElementById("install_db_create");
@@ -11,27 +12,22 @@ function db_change(db_type) {
   var elm_install_db_password  = document.getElementById("install_db_password");
   var elm_install_db_user  = document.getElementById("install_db_user");
   var elm_install_db_use_prefix  = document.getElementById("install_db_use_prefix");
-  var elm_charset  = document.getElementById("charset");
 
   if (!elm_mysql) {
 //    return ;
   }
-  
-  if (elm_mysql.checked) {
-	 document.getElementById("db_login_data").style.display = "block";
-	 document.getElementById("db_login_data_sqlite").style.display = "none";
-	 elm_install_db_host.style.display = "block";
-	 elm_install_db_user.style.display = "block";
-	 elm_install_db_password.style.display = "block";
-     elm_charset.disabled = 0;
-  } else {
+  if (elm_sqlite.checked) {
 	 document.getElementById("db_login_data_sqlite").style.display = "block";
 	 document.getElementById("db_login_data").style.display = "none";
 	 elm_install_db_host.style.display = "none";
 	 elm_install_db_user.style.display = "none";
 	 elm_install_db_password.style.display = "none";
-     elm_charset.selectedIndex = 0;
-     elm_charset.disabled = 1;
+  } else {
+	 document.getElementById("db_login_data").style.display = "block";
+	 document.getElementById("db_login_data_sqlite").style.display = "none";
+	 elm_install_db_host.style.display = "block";
+	 elm_install_db_user.style.display = "block";
+	 elm_install_db_password.style.display = "block";
   }
 }
 

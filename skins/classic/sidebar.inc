@@ -102,8 +102,7 @@
 <div class="sidebar">
 <dl class="sidebardl">
 <dt><%_(Links)%></dt>
-<dd><a href="http://nucleuscms.org" title="Nucleus CMS Home">nucleuscms.org</a></dd>
-<dd><a href="http://japan.nucleuscms.org" title="Nucleus CMS Home Japanease">japan.nucleuscms.org</a></dd>
+<dd><a href="https://nucleuscms.github.io/" title="Nucleus CMS Home">Nucleus CMS Home</a></dd>
 </dl>
 </div>
 

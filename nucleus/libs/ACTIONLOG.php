@@ -44,8 +44,8 @@ class ACTIONLOG
         );    // format timestamp
         sql_prepare_execute(
             sprintf(
-                'INSERT INTO `%s` (timestamp, message) VALUES (?, ?)',
-                sql_table('actionlog')
+                'INSERT INTO %s (timestamp, message) VALUES (?, ?)',
+                sql_tableQuote('actionlog')
             ),
             [
                 (string) $timestamp,
@@ -73,11 +73,11 @@ class ACTIONLOG
             $msg = "[" . $member->getDisplayName() . "] " . $msg;
         }
 
-        $query = sprintf(
-            "DELETE FROM `%s` WHERE message=?",
-            sql_table('actionlog')
-        );
-        sql_prepare_execute($query, [(string) $msg]);
+        getOrmQueryBuilder()
+                ->delete(sql_table('actionlog'))
+                ->where('message = :message')
+                ->setParameter('message', (string) $msg)
+                ->executeStatement();
 
         ACTIONLOG::add($level, $message);
     }
@@ -122,7 +122,7 @@ class ACTIONLOG
         if ($iTotal > $iMaxSize) {
             $tsChop = quickQuery(
                 sprintf(
-                    'SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d,1',
+                    'SELECT timestamp as result FROM %s ORDER BY timestamp DESC LIMIT %d OFFSET 1',
                     sql_table('actionlog'),
                     $iDropSize
                 )

@@ -42,7 +42,11 @@ function add_last_directory_separator($dirname)
 
 function getSiteUrl()
 {
-    $url = 'http://' . serverVar('HTTP_HOST') . serverVar('PHP_SELF');
+    $url = 'http://';
+    if ( ! empty($_SERVER['HTTPS']) || ! empty($_SERVER['REDIRECT_HTTPS'])) {
+        $url = 'https://';
+    }
+    $url .= serverVar('HTTP_HOST') . serverVar('PHP_SELF');
     $url = str_replace('install/index.php', '', $url);
     return rtrim($url, '/').'/';
 }
@@ -105,7 +109,7 @@ function showInstallForm()
     $ph['lang_options']     = implode("\n", $options);
     $ph['_HEADER2']         = _HEADER2;
     $ph['_TEXT2']           = _TEXT2;
-    $ph['phpversion']       = phpversion();
+    $ph['phpversion']       = sprintf('%s (%s)', phpversion(), php_sapi_name());
     if (is_file('../config.php') && ! is_writable('../config.php')) {
         $ph['configPermMsg'] = '<h1>' . _HEADER3 . '</h1>' . _TEXT3;
     } else {
@@ -113,16 +117,26 @@ function showInstallForm()
     }
     $ph['_INSTALL_TEXT_DATABASE_SELECT'] = _INSTALL_TEXT_DATABASE_SELECT;
 
-    $_ = '';
-    if (extension_loaded('pdo_mysql')) {
-        $_ .= '<input type="radio" id="install_db_type_mysql" name="install_db_type" tabindex="10020" value="mysql" checked  onclick="db_change();" />';
-        $_ .= '<label for="install_db_type_mysql">mysql</label>';
+    if ( ! defined('_INSTALL_TEXT_NOTE_PLUGIN')) {
+        define('_INSTALL_TEXT_NOTE_PLUGIN', 'Note: Unsupported plug-ins cannot be used.');
     }
-    if (extension_loaded('pdo_sqlite') && ENABLE_SQLITE_INSTALL) {
-        $_ .= '<br /><br />';
-        $_ .= '<input type="radio" id="install_db_type_sqlite" name="install_db_type" tabindex="10021" value="sqlite" onclick="db_change();" />';
-        $_ .= '<label for="install_db_type_sqlite">sqlite(' . _INSTALL_TEXT_EXPERIMENTAL . ')</label>';
+    $_     = '';
+    $radio = [
+        'mysql'  => [extension_loaded('pdo_mysql') && ENABLE_MYSQL_INSTALL, 'MySQL/MariaDB'],
+        'sqlite' => [extension_loaded('pdo_sqlite') && ENABLE_SQLITE_INSTALL, 'SQLite3(' . _INSTALL_TEXT_EXPERIMENTAL . ')'],
+        'pgsql'  => [extension_loaded('pdo_pgsql') && ENABLE_POSTGRESQL_INSTALL, 'PostgreSQL(' . _INSTALL_TEXT_EXPERIMENTAL . ')'],
+    ];
+    $tabindex = 10020;
+    foreach ($radio as $k => $row) {
+        $enable = $row[0] ? '' : 'disabled';
+        $style  = $row[0] ? '' : 'background-color: lightgray;';
+        $_ .= "<div style='line-height: 2em;{$style}'>";
+        $_ .= "<input type='radio' id='install_db_type_{$k}' name='install_db_type' {$enable} tabindex='{$tabindex}' value='{$k}' onclick='db_change();' />";
+        $_ .= "<label for='install_db_type_{$k}'>{$row[1]}</label>";
+        $_ .= "</div>";
+        $tabindex++;
     }
+    $_ .= '<div class="note">' . _INSTALL_TEXT_NOTE_PLUGIN . '</div>';
     $ph['selDB']                             = $_;
     $ph['_INSTALL_TEXT_DATABASE_LOGIN_INFO'] = _INSTALL_TEXT_DATABASE_LOGIN_INFO;
     $ph['_TEXT4_TAB_HEAD']                   = _TEXT4_TAB_HEAD;
@@ -200,41 +214,48 @@ function doInstall()
     global $lang;
 
     // 0. put all POST-vars into vars
-    $mysql_host        = postVar('install_db_host', 'localhost');
-    $mysql_user        = postVar('install_db_user', 'root');
-    $mysql_password    = postVar('install_db_password', '');
-    $mysql_database    = trim((string) postVar('install_db_database'));
-    $mysql_create      = (int) postVar('install_db_create') ? 1 : 0;
-    $mysql_use_prefix  = (int) postVar('install_db_use_prefix') ? 1 : 0;
-    $mysql_prefix      = trim((string) postVar('install_db_tablePrefix'));
-    $config_indexurl   = postVar('IndexURL');
-    $config_adminurl   = postVar('AdminURL');
-    $config_adminpath  = postVar('AdminPath');
-    $config_mediaurl   = postVar('MediaURL');
-    $config_skinsurl   = postVar('SkinsURL');
-    $config_pluginurl  = postVar('PluginURL');
-    $config_actionurl  = postVar('ActionURL');
-    $config_mediapath  = postVar('MediaPath');
-    $config_skinspath  = postVar('SkinsPath');
-    $user_name         = postVar('User_name');
-    $user_realname     = postVar('User_realname');
-    $user_password     = postVar('User_password');
-    $user_password2    = postVar('User_password2');
-    $user_email        = postVar('User_email');
-    $blog_name         = postVar('Blog_name');
-    $blog_shortname    = postVar('Blog_shortname');
-    $config_adminemail = $user_email;
-    $config_sitename   = $blog_name;
+    $mysql_host          = postVar('install_db_host', 'localhost');
+    $mysql_user          = postVar('install_db_user', 'root');
+    $mysql_password      = postVar('install_db_password', '');
+    $install_db_database = trim((string) postVar('install_db_database'));
+    $install_db_create   = (int) postVar('install_db_create') ? 1 : 0;
+    $mysql_use_prefix    = (int) postVar('install_db_use_prefix') ? 1 : 0;
+    $mysql_prefix        = trim((string) postVar('install_db_tablePrefix'));
+    $config_indexurl     = postVar('IndexURL');
+    $config_adminurl     = postVar('AdminURL');
+    $config_adminpath    = postVar('AdminPath');
+    $config_mediaurl     = postVar('MediaURL');
+    $config_skinsurl     = postVar('SkinsURL');
+    $config_pluginurl    = postVar('PluginURL');
+    $config_actionurl    = postVar('ActionURL');
+    $config_mediapath    = postVar('MediaPath');
+    $config_skinspath    = postVar('SkinsPath');
+    $user_name           = postVar('User_name');
+    $user_realname       = postVar('User_realname');
+    $user_password       = postVar('User_password');
+    $user_password2      = postVar('User_password2');
+    $user_email          = postVar('User_email');
+    $blog_name           = postVar('Blog_name');
+    $blog_shortname      = postVar('Blog_shortname');
+    $config_adminemail   = $user_email;
+    $config_sitename     = $blog_name;
 
     $install_db_type = postVar('install_db_type');
 
     $charset = 'utf8';
 
-    if ('sqlite' != $install_db_type || ! ENABLE_SQLITE_INSTALL) {
+    if ('sqlite' === $install_db_type && ENABLE_SQLITE_INSTALL) {
+        $install_db_type = 'sqlite';
+    } elseif ('pgsql' === $install_db_type && ENABLE_POSTGRESQL_INSTALL) {
+        $install_db_type = 'pgsql';
+    } elseif ('mysql' === $install_db_type && ENABLE_MYSQL_INSTALL) {
         $install_db_type = 'mysql';
+    } else {
+        exit('Unkown error. $install_db_type');
     }
-    $is_install_mysql  = ('mysql' == $install_db_type);
-    $is_install_sqlite = ('sqlite' == $install_db_type);
+    $is_install_mysql  = ('mysql' === $install_db_type);
+    $is_install_sqlite = ('sqlite' === $install_db_type);
+    $is_install_pgsql  = ('pgsql' === $install_db_type);
 
     if ('sqlite' === $install_db_type) {
         $mysql_host     = '';
@@ -270,7 +291,7 @@ function doInstall()
     // 1. check all the data
     $errors = [];
 
-    if ( ! $mysql_database && ! $is_install_sqlite) {
+    if ( ! $install_db_database && ! $is_install_sqlite) {
         array_push($errors, _ERROR_NO_DBNAME);
     }
     if ((1 == $mysql_use_prefix) && (0 == strlen($mysql_prefix))) {
@@ -328,14 +349,16 @@ function doInstall()
     // 2. try to log in to mySQL
     $db_host = $mysql_host;
 
-    global $DB_PHP_MODULE_NAME, $SQL_DBH, $MYSQL_CONN;
-    // this will need to be changed if we ever allow
+    global $DB_PHP_MODULE_NAME, $SQL_DBH, $ORM_CONN;
+    $ORM_CONN           = $SQL_DBH = null;
+    $DB_PHP_MODULE_NAME = 'pdo';
+
     if ($is_install_sqlite) {
         global $DB_DRIVER_NAME;
-        $DB_DRIVER_NAME = 'sqlite';
-        $sqlite_db_dir  = @realpath(__DIR__ . '/../settings');
-        $sqlite_db_name = $sqlite_db_dir . '/db_nucleus.sqlite';
-        $mysql_database = $sqlite_db_name;
+        $DB_DRIVER_NAME      = 'sqlite';
+        $sqlite_db_dir       = @realpath(__DIR__ . '/../settings');
+        $sqlite_db_name      = $sqlite_db_dir . '/db_nucleus.sqlite';
+        $install_db_database = $sqlite_db_name;
 
         if (( ! $sqlite_db_dir) || ! is_dir($sqlite_db_dir)) {
             $msg = sprintf("<p>not found: %s</p><p>%s</p>", _INSTALL_TEXT_SETTINGS_NOEXSIT, htmlspecialchars($sqlite_db_dir, null, _CHARSET));
@@ -353,24 +376,33 @@ function doInstall()
         }
         $db_name = $sqlite_db_name;
 
-        $mysql_create       = 0;
-        $mysql_use_prefix   = 0;
-        $MYSQL_CONN         = @sql_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
-        $SQL_DBH            = $MYSQL_CONN;
-        $DB_PHP_MODULE_NAME = 'pdo';
+        $install_db_create = 0;
+        $mysql_use_prefix  = 0;
+        try {
+            $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
+            $SQL_DBH  = $ORM_CONN?->getNativeConnection();
+        } catch (Exception $exc) {
+        }
     }
 
-    if ($is_install_mysql) {
-        $MYSQL_CONN = @sql_connect_args($db_host, $mysql_user, $mysql_password);
+    if ( ! $is_install_sqlite) {
+        try {
+            if (empty($install_db_create)) {
+                $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password, $install_db_database);
+            } else {
+                // データベースを作成するので、未入力
+                $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password);
+            }
+            $SQL_DBH = $ORM_CONN?->getNativeConnection();
+        } catch (Exception $exc) {
+        }
     }
 
-    if (false == $MYSQL_CONN) {
+    if (empty($SQL_DBH)) {
         _doError(_ERROR15 . ': ' . sql_error());
     }
 
-    $DB_HANDLE  = $MYSQL_CONN;
-    $SQL_DBH    = $MYSQL_CONN;
-    $MYSQL_CONN = 0;
+    $DB_HANDLE = $SQL_DBH;
 
     if ($is_install_sqlite) {
         $DB_HANDLE->beginTransaction(); // sql_query("begin");
@@ -388,10 +420,20 @@ function doInstall()
             $collation          = 'utf8mb4_general_ci';
         }
 
-        if (1 == $mysql_create) {
-            $sql = "CREATE DATABASE `{$mysql_database}`";
+        if (1 == $install_db_create) {
+            $sql = "CREATE DATABASE `{$install_db_database}`";
             $sql .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
             sql_query($sql) or _doError(_ERROR16 . ': ' . sql_error());
+        }
+    } elseif ($is_install_pgsql) {
+        try {
+            if (1 == $install_db_create) {
+                getOrmConnection()->createSchemaManager()->createDatabase($install_db_database);
+            }
+        } catch (Exception $ex) {
+            $msg = mb_convert_encoding($ex->getMessage(), 'UTF-8', 'AUTO,UTF-8,SJIS-WIN,EUC-JP');
+            $msg = htmlspecialchars($msg, ENT_QUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED);
+            _doError(_ERROR16 . ': ' . $msg);
         }
     }
 
@@ -403,8 +445,8 @@ function doInstall()
         echo sprintf("Step4(Line:%d)", __LINE__);
     }
     // 4. try to select database
-    if ($is_install_mysql) {
-        sql_select_db($mysql_database, $DB_HANDLE) or _doError(_ERROR17);
+    if ($is_install_mysql && ! empty($install_db_create)) {
+        sql_select_db($install_db_database, $DB_HANDLE) or _doError(_ERROR17);
     }
 
     /*
@@ -433,8 +475,20 @@ function doInstall()
                 }
             }
         }
+    } elseif ($is_install_pgsql) {
+        //        getOrmSchemaManager()->dropDatabase($install_db_database);
+        //        getOrmSchemaManager()->createDatabase($install_db_database);
+
+        $queries = @file_get_contents('install-pgsql.sql');
+        if (false === $queries) {
+            throw  new Exception('install-pgsql.sql');
+        }
+        $queries = preg_split("#(;\n|;\r)#m", $queries);
     } else { // mysql
-        $queries = file_get_contents('install-mysql.sql');
+        $queries = @file_get_contents('install-mysql.sql');
+        if (false === $queries) {
+            throw  new Exception('install-mysql.sql');
+        }
         $queries = preg_split("#(;\n|;\r)#m", $queries);
     }
 
@@ -454,7 +508,6 @@ function doInstall()
         'nucleus_team',
         'nucleus_activation',
         'nucleus_tickets',
-        'nucleus_cached_data',
         'nucleus_systemlog',
         ];
 
@@ -474,7 +527,7 @@ function doInstall()
                 $query = str_replace($aTableNames, $aTableNamesPrefixed, $query);
             }
 
-            if ($is_install_mysql && 1 != $mysql_create && str_starts_with($query, 'CREATE TABLE')) {
+            if ($is_install_mysql && 1 != $install_db_create && str_starts_with($query, 'CREATE TABLE')) {
                 $query .= " DEFAULT CHARACTER SET {$install_db_charset} COLLATE {$collation}";
             }
 
@@ -484,24 +537,40 @@ function doInstall()
 
     // 5a make first post
     // UTF-8
-    $itm_title = sprintf(_1ST_POST_TITLE, NUCLEUS_VERSION);
+    $itm_title = sprintf(_1ST_POST_TITLE, NUCLEUS_VERSION_DOT);
     $itm_body  = _1ST_POST;
     $itm_more  = _1ST_POST2;
 
-    $newpost = sprintf(
-        "INSERT INTO %s (`inumber`, `ititle`, `ibody`, `imore`,`iblog`, `iauthor`, `itime`,`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`) VALUES (1, %s,%s,%s, 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1)",
-        tableName('nucleus_item'),
-        sql_quote_string($itm_title),
-        sql_quote_string($itm_body),
-        sql_quote_string($itm_more)
-    );
-    sql_query($newpost) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost, ENT_QUOTES, _CHARSET) . '): ' . sql_error());
+    $itm_tableName = tableName('nucleus_item');
+    $newpost       = "INSERT INTO {$itm_tableName} (`inumber`, `ititle`, `ibody`, `imore`,`iblog`, `iauthor`, `itime`,`iclosed`, `idraft`, `ikarmapos`, `icat`, `ikarmaneg`, `iposted`)"
+         . " VALUES (:inumber, :ititle, :ibody, :imore, :iblog, :iauthor, :itime, :iclosed, :idraft, :ikarmapos, :icat, :ikarmaneg, :iposted)";
+    //         . " VALUES (1, %s,%s,%s, 1, 1, '2005-08-15 11:04:26', 0, 0, 0, 1, 0, 1)";
+    $params = [
+        'inumber'   => 1,
+        'ititle'    => $itm_title,
+        'ibody'     => $itm_body,
+        'imore'     => $itm_more,
+        'iblog'     => 1,
+        'iauthor'   => 1,
+        'itime'     => '2005-08-15 11:04:26',
+        'iclosed'   => 0,
+        'idraft'    => 0,
+        'ikarmapos' => 0,
+        'icat'      => 1,
+        'ikarmaneg' => 0,
+        'iposted'   => 1,
+    ];
+    if ($is_install_pgsql) {
+        $newpost = str_replace('`', '"', $newpost);
+    }
+    sql_prepare_execute($newpost, $params) or _doError(_ERROR18 . ' (' . htmlspecialchars($newpost, ENT_QUOTES, _CHARSET) . '): ' . sql_error());
 
     if (DEBUG_INSTALL_STEPS) {
         echo sprintf("Step6(Line:%d)", __LINE__);
     }
     // 6. update global settings
     updateConfig('DatabaseVersion', NUCLEUS_DATABASE_VERSION_ID);
+    updateConfig('debug', (empty(NUCLEUS_RELEASE_IDENTIFIER) || preg_match('#^p[0-9]*$#', NUCLEUS_RELEASE_IDENTIFIER)) ? 0 : 1);
     updateConfig('IndexURL', $config_indexurl);
     updateConfig('BaseURL', getBaseUrl());
     updateConfig('AdminURL', $config_adminurl);
@@ -512,6 +581,9 @@ function doInstall()
     updateConfig('AdminEmail', $config_adminemail);
     updateConfig('SiteName', $config_sitename);
     updateConfig('CookiePath', getBaseUrl());
+    if (isset($_COOKIE['user'])) {
+        updateConfig('CookiePrefix', substr(hash('sha256', (string) time()), 0, 6));
+    }
 
     $install_lang_defs = get_install_lang_defs();
     if (isset($install_lang_defs[$lang]['utf8'])) {
@@ -523,18 +595,25 @@ function doInstall()
     if (DEBUG_INSTALL_STEPS) {
         echo sprintf("Step7(%d)", __LINE__);
     }
-    // 7. update GOD member
-    $query = 'UPDATE ' . tableName('nucleus_member')
-            . " SET mname='" . sql_real_escape_string($user_name) . "',"
-            . " mrealname='" . sql_real_escape_string($user_realname) . "',"
-            . " mpassword='" . md5(addslashes($user_password)) . "',"
-            . " murl='"      . sql_real_escape_string($config_indexurl) . "',"
-            . " memail='"    . sql_real_escape_string($user_email) . "',"
-            . " madmin=1,"
-            . " mcanlogin=1"
-            . " WHERE mnumber=1";
-
-    sql_query($query) or _doError(_ERROR19 . ': ' . sql_error());
+    // 7. update administrator member
+    $values = [
+        'mname'     => $user_name,
+        'mrealname' => $user_realname,
+        'mpassword' => md5(addslashes($user_password)),
+        'murl'      => $config_indexurl,
+        'memail'    => $user_email,
+        'madmin'    => '1',
+        'mcanlogin' => '1',
+        ];
+    $set = [];
+    foreach (array_keys($values) as $k) {
+        $set[] = "$k = :$k";
+    }
+    $set    = implode(', ', $set);
+    $qtable = getOrmConnection()->quoteIdentifier(tableName('nucleus_member'));
+    $sql    = "UPDATE {$qtable} SET {$set}"
+            . " WHERE mnumber = 1";
+    getOrmConnection()->executeStatement($sql, $values) or _doError(_ERROR19 . ': ' . sql_error());
 
     if (DEBUG_INSTALL_STEPS) {
         echo sprintf("Step8(%d)", __LINE__);
@@ -555,7 +634,7 @@ function doInstall()
         . " SET cname  = '" . $cat_name . "',"
         . " cdesc	  = '" . $cat_desc . "'"
         . " WHERE"
-        . " catid	  = 1";
+        . " catid	  = '1'";
     //  . " SET cname = '{$cat_name}', cdesc = '{$cat_desc}' WHERE catid = 1");
 
     sql_query($query) or _doError(_ERROR20 . ': ' . sql_error());
@@ -591,7 +670,7 @@ function doInstall()
         $DB_HOST        = $mysql_host;
         $DB_USER        = $mysql_user;
         $DB_PASSWORD    = $mysql_password;
-        $DB_DATABASE    = $mysql_database;
+        $DB_DATABASE    = $install_db_database;
         $DB_PREFIX      = (1 == $db__use_prefix) ? $mysql_prefix : '';
 
         global $DIR_NUCLEUS, $DIR_MEDIA, $DIR_SKINS, $DIR_PLUGINS, $DIR_LANG, $DIR_LIBS;
@@ -612,17 +691,17 @@ function doInstall()
         // 11. install custom skins
         $aSkinErrors = installCustomSkins($manager);
         $defskinQue  = sprintf(
-            "SELECT `sdnumber` as result FROM %s WHERE `sdname` = 'classic'",
+            "SELECT sdnumber as result FROM %s WHERE sdname = 'classic'",
             sql_table('skin_desc')
         );
         $defSkinID   = quickQuery($defskinQue);
         $updateQuery = sprintf(
-            "UPDATE %s SET `bdefskin` = %d WHERE `bnumber` = 1",
+            "UPDATE %s SET bdefskin = %d WHERE bnumber = 1",
             sql_table('blog'),
             (int) $defSkinID
         );
         sql_query($updateQuery);
-        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET `value` = ' . (int) $defSkinID . ' WHERE `name` = "BaseSkin"';
+        $updateQuery = 'UPDATE ' . sql_table('config') . ' SET value = ' . (int) $defSkinID . " WHERE name = 'BaseSkin'";
         sql_query($updateQuery);
 
         if (DEBUG_INSTALL_STEPS) {
@@ -645,24 +724,24 @@ function doInstall()
         global $DB_DRIVER_NAME, $DB_PHP_MODULE_NAME, $MYSQL_HANDLER;
         $indent      = str_repeat(' ', 4);
         $config_data = '<' . '?php' . "\n\n";
+        $config_data .= "//\$CONF['PHP_BIN'] = '/usr/local/bin/php';\n";
+        $config_data .= "\n";
+        $config_data .= "//\$CONF['alertOnSecurityRisk'] = 0;\n";
+        $config_data .= "//\$CONF['debug']               = 1;\n";
+        $config_data .= "\n";
         //$config_data .= "\n"; (extraneous, just added extra \n to previous line
         $config_data .= "// database connection information\n";
-        $config_data .= "\$DB_HOST = '" . $DB_HOST . "';\n";
-        $config_data .= "\$DB_USER = '" . $DB_USER . "';\n";
+        $config_data .= "\$DB_HOST     = '" . $DB_HOST . "';\n";
+        $config_data .= "\$DB_USER     = '" . $DB_USER . "';\n";
         $config_data .= "\$DB_PASSWORD = '" . $DB_PASSWORD . "';\n";
         $config_data .= "\$DB_DATABASE = '" . $DB_DATABASE . "';\n";
-        $config_data .= "\$DB_PREFIX = '" . ((1 == $db__use_prefix) ? $DB_PREFIX : '') . "';\n";
+        $config_data .= "\$DB_PREFIX   = '" . ((1 == $db__use_prefix) ? $DB_PREFIX : '') . "';\n";
         $config_data .= "\n";
         $config_data .= "global \$DB_DRIVER_NAME;\n";
 
         $config_data .= "// Database driver settings\n";
-        if ('mysql' == $DB_DRIVER_NAME) {
-            $config_data .= "// default is  \$DB_DRIVER_NAME = 'mysql';\n";
-            $config_data .= "//\$DB_DRIVER_NAME = 'mysql';\n";
-            $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}';\n";
-        } elseif ('sqlite' == $DB_DRIVER_NAME) {
-            $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}'; // sqlite\n";
-        }
+        $config_data .= "// default is  \$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}';\n";
+        $config_data .= "\$DB_DRIVER_NAME = '{$DB_DRIVER_NAME}';\n";
         $config_data .= "\n";
         $config_data .= "// main nucleus directory\n";
         $config_data .= "\$DIR_NUCLEUS = '" . $config_adminpath . "';\n";
@@ -676,8 +755,8 @@ function doInstall()
         $config_data .= "// these dirs are normally sub dirs of the nucleus dir, but \n";
         $config_data .= "// you can redefine them if you wish\n";
         $config_data .= "\$DIR_PLUGINS = \$DIR_NUCLEUS . 'plugins/';\n";
-        $config_data .= "\$DIR_LANG = \$DIR_NUCLEUS . 'language/';\n";
-        $config_data .= "\$DIR_LIBS = \$DIR_NUCLEUS . 'libs/';\n";
+        $config_data .= "\$DIR_LANG    = \$DIR_NUCLEUS . 'language/';\n";
+        $config_data .= "\$DIR_LIBS    = \$DIR_NUCLEUS . 'libs/';\n";
         $config_data .= "\n";
         $config_data .= "// include libs\n";
         $config_data .= "include(\$DIR_LIBS.'globalfunctions.php');\n";
@@ -858,7 +937,8 @@ function doCheckFiles()
     $missingfiles = [];
     $files        = [
         'install-mysql.sql',
-//      'install-sqlite.sql',
+        'install-pgsql.sql',
+        'install-sqlite.sql',
         '../index.php',
         '../action.php',
         '../nucleus/index.php',
@@ -876,8 +956,9 @@ function doCheckFiles()
         '../nucleus/media.php',
         ];
 
+    if (ENABLE_POSTGRESQL_INSTALL) {
+    }
     if (ENABLE_SQLITE_INSTALL) {
-        $files[] = 'install-sqlite.sql';
     }
 
     $count = count($files);
@@ -901,17 +982,21 @@ function doCheckFiles()
  * @param $val
  *              new value of the config var
  */
-function updateConfig($name, $val)
+function updateConfig($name, $val): void
 {
-    $query = sprintf(
-        "UPDATE %s SET value='%s' WHERE name='%s'",
-        tableName('nucleus_config'),
-        sql_real_escape_string(trim($val)),
-        sql_real_escape_string($name)
-    );
-
-    sql_query($query) or _doError(_ERROR26 . ': ' . sql_error());
-    return sql_insert_id();
+    $table = tableName('nucleus_config');
+    if ( ! sql_existTableName($table)) {
+        _doError(_ERROR26);
+    }
+    $params = ['name' => $name, 'value' => trim($val)];
+    $qtable = sql_quote_identifier($table);
+    if (sql_direct_getValue_AsInt("SELECT COUNT(*) FROM {$qtable} WHERE name = :name", ['name' => $name])) {
+        $res = getOrmConnection()->executeQuery("UPDATE {$qtable} SET value = :value WHERE name = :name", $params);
+    } else {
+        $res = getOrmConnection()->executeQuery("INSERT INTO {$qtable} (name, value) VALUES(:name, :value);", $params);
+    }
+    $res or _doError(_ERROR26 . ': ' . sql_error());
+    //return getOrmConnection()->lastInsertId();
 }
 
 /**
@@ -996,6 +1081,7 @@ function _doError($msg)
 </head>
 <body>
     <div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+    <h1 class="note" style="text-align: right"><?php @printf('REMOTE_ADDR : [%s]', htmlspecialchars((string) $_SERVER['REMOTE_ADDR'])) ?></h1>
     <h1><?php echo _ERROR27; ?></h1>
 
     <p><?php echo _ERROR28; ?></p>
@@ -1028,6 +1114,7 @@ function showErrorMessages($errors)
 </head>
 <body>
     <div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<?php echo _ALT_NUCLEUS_CMS_LOGO; ?>" /></div> <!-- Nucleus logo -->
+    <h1 class="note" style="text-align: right"><?php @printf('REMOTE_ADDR : [%s]', htmlspecialchars((string) $_SERVER['REMOTE_ADDR'])) ?></h1>
     <h1><?php echo _ERROR27; ?></h1>
 
     <p><?php echo _ERROR29; ?>:</p>

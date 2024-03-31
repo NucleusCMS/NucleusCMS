@@ -1,4 +1,4 @@
-NucleusCMS 3.80 (3.8.0)
+NucleusCMS 3.80
 ==========
 
 # About
@@ -11,7 +11,7 @@ Nucleus is a Content Management System (CMS)
 
 * PHP: 8.1 - 8.3
 
-* Database: MySQL / MariDB
+* Database: MySQL / MariaDB
 
 
 # Documentation
@@ -28,38 +28,6 @@ Initial settings are required. Please read the documentation first.
 It will remain under maintenance until the upgrade is complete.
 
 Please read the documentation first. Please access the upgrade URL.
-
-
-# Download
-
-<br>
-
-# Old Archives
-
-* https://github.com/NucleusCMS/NucleusCMS/tags
-
-* https://sourceforge.net/projects/nucleuscms/files/
-
-|NucleusCMS|Status|
-|:---:|:---:|
-| - 3.7x|EOL|
-
-
-# Old Archives [ja] 日本語版
-
-* https://github.com/NucleusCMS/NucleusCMS-ja/tags
-
-|NucleusCMS|PHP|Status|
-|---|---|:---:|
-|3.71(ja) fix|5.2 - 8.3|EOL|
-
-
-# Development
-
-## Repository site
-
-* https://nucleuscms.github.io/
-
 
 <br>
 

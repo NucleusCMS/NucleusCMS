@@ -30,18 +30,3 @@ if ( ! function_exists('each')) { // removed function PHP[ - 7.4]
         return [1 => $value, 'value' => $value, 0 => $key, 'key' => $key];
     }
 }
-
-define('USER_FUNCTION_STRFTIME', ! function_exists('strftime'));
-if (USER_FUNCTION_STRFTIME) {
-    // strftime : deprecated PHP[8.1-] / removed from PHP9.0 ?
-    // strftime(string $format, ?int $timestamp = null): string|false
-    function strftime(string $format, ?int $timestamp = null): string|false
-    {
-        static $checked = false;
-        if ( ! $checked && ! class_exists('Utils')) {
-            include_once(__DIR__ . '/Utils.php');
-            $checked = true;
-        }
-        return Utils::date_with_strftime_format($format, $timestamp);
-    }
-}
