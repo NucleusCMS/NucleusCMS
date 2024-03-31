@@ -3,7 +3,7 @@ NucleusCMS
 
 # Nucleus とは
 
-コンテンツマネジメントシステム(Contents Management System : 略してCMS)ツールです。PHPで書かれてります。
+コンテンツマネジメントシステム(Contents Management System : 略してCMS)ツールです。
 
 詳しくはマニュアルをお読みください。
 
@@ -14,8 +14,17 @@ NucleusCMS
 
 * PHP: 8.1 - 8.3
 
-* Database: MySQL / MariDB
+* Database:
 
+・ MySQL / MariaDB
+
+・ SQLite3
+
+・ PostgreSQL
+
+NOTE: プラグインは使用するデータベースに対応している必要があります。
+
+※ PostgreSQLはMySQLのSQLに互換性がないため、バージョン 3.80.0 以前のプラグイン仕様ではエラーが発生し停止することがあります。
 
 # マニュアル
 
@@ -31,31 +40,6 @@ nucleus/documentation/index.html
 アップグレードが完了するまで、メンテナンス中に切り替わります。
 
 まずドキュメントをお読みください。アップグレードURLにアクセスしてください。
-
-
-# Download
-
-<br>
-
-# Old Archives
-
-* https://github.com/NucleusCMS/NucleusCMS/tags
-
-* https://sourceforge.net/projects/nucleuscms/files/
-
-
-# Old Archives [ja] 日本語版
-
-* https://github.com/NucleusCMS/NucleusCMS-ja/tags
-
-NucleusCMS [ ～ 3.7] : EOL
-NucleusCMS 3.71(ja) fix [EOL] : PHP[5.2 - 8.3]
-
-# Development
-
-## Repository site
-
-* https://nucleuscms.github.io/
 
 
 # License / ライセンス

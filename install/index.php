@@ -24,7 +24,7 @@
     -- Start Of Configurable Part --
 */
 
-if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
+if (version_compare(phpversion(), '8.1.0', '<') || (80400 <= PHP_VERSION_ID)) {
     $ver = explode('.', phpversion());
     $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
     if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
@@ -35,7 +35,7 @@ if (version_compare(phpversion(), '8.1.0', '<') || (90000 <= PHP_VERSION_ID)) {
     exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
 }
 
-define('INSTALL_EXPIRE_SEC', 30 * 60); // 30 minutes
+define('INSTALL_EXPIRE_SEC', 60 * 60); // 60 minutes
 
 define('NC_MTN_MODE', 'install');
 
@@ -45,15 +45,26 @@ include_once('../nucleus/libs/phpfunctions.php');
 include_once('../nucleus/libs/globalfunctions.inc.php');
 include_once('../nucleus/libs/helpers.php');
 
+// Install Composer
+if ( ! @is_file('../nucleus/libs/vendor/autoload.php')) {
+    include_once('../nucleus/libs/ComposerCmd.php');
+    if ( ! @is_file('../nucleus/libs/vendor/autoload.php')) {
+        exit('エラー：初期設定を自動実行できません。マニュアルを読み、手動で nucleus/libs フォルダでcomposerコマンドを実行してください');
+    }
+    redirect('./');
+}
+include_once('../nucleus/libs/vendor/autoload.php');
+
 define('NC_BASE_PATH', str_replace('\\', '/', dirname(__DIR__)).'/');
 define('NC_SITE_URL', getSiteUrl());
 
-define('ENABLE_SQLITE_INSTALL', NUCLEUS_DEVELOP || @is_file('ENABLE_SQLITE_INSTALL')); // allow sqlite install , boolean , QA test not conducted
-define('DEBUG_INSTALL_QUERY', 0); // debug query
-define('DEBUG_INSTALL_STEPS', 0); // debug
+define('ENABLE_MYSQL_INSTALL', extension_loaded('pdo_mysql')); // (bool) allow install
+define('ENABLE_SQLITE_INSTALL', extension_loaded('pdo_sqlite')); // (bool) allow install
+define('ENABLE_POSTGRESQL_INSTALL', extension_loaded('pdo_pgsql')); // (bool) allow install
 define('NUCLEUS_INSTALL_MINIMUM_PHP_VERSION', '8.1.0'); // (string) , format : dot separated
 
-define('ENABLE_INSTALL_LANG_EUCJP', 1); // allow Jpanase euc-jp install , boolean
+define('DEBUG_INSTALL_QUERY', 10); // debug query
+define('DEBUG_INSTALL_STEPS', 10); // debug
 
 $path = @preg_split('/[\?#]/', $_SERVER["REQUEST_URI"]);
 $path = $path[0];
@@ -154,6 +165,10 @@ $DB_PHP_MODULE_NAME = 'pdo';
 if (ENABLE_SQLITE_INSTALL && ('sqlite' == postVar('install_db_type'))) {
     $DB_DRIVER_NAME = 'sqlite';
 }
+// PostgreSQL
+if (ENABLE_POSTGRESQL_INSTALL && ('pgsql' == postVar('install_db_type'))) {
+    $DB_DRIVER_NAME = 'pgsql';
+}
 
 //set the handler if different from mysql (or mysqli)
 if ( ! isset($DB_DRIVER_NAME) || 0 == strlen($DB_DRIVER_NAME)) {
@@ -178,14 +193,31 @@ if ( ! @file_exists(__DIR__ . '/install-config.php')) {
     // basic auth
     // $INSTALL_AUTH_USER, $INSTALL_AUTH_PW
     include_once(__DIR__ . '/install-config.php');
-    if (( ! isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']))
-        || ( ! isset($INSTALL_AUTH_USER, $INSTALL_AUTH_PW))
-        || (empty(trim($INSTALL_AUTH_USER)) || empty(trim($INSTALL_AUTH_PW)))
-        || ($_SERVER['PHP_AUTH_USER'] !== $INSTALL_AUTH_USER)
-        || ($_SERVER['PHP_AUTH_PW'] !== $INSTALL_AUTH_PW)
-    ) {
-        header('WWW-Authenticate: Basic realm="Enter username and password."');
+    $mode = 'basic';
+    if ( ! empty($INSTALL_MODE) && is_string($INSTALL_MODE) && ('ip' === strtolower($INSTALL_MODE))) {
+        $mode = 'ip';
+    }
+    if (isset($INSTALL_ALLOW_IP) && ! is_string($INSTALL_ALLOW_IP)) {
         _doError(_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED);
+    }
+    if (('basic' === $mode) && empty($INSTALL_ALLOW_IP)) {
+        // skip ip check
+    } else {
+        $isAllowedIP = (0 === @strcmp((string) $INSTALL_ALLOW_IP, (string) $_SERVER['REMOTE_ADDR']));
+        if ( ! $isAllowedIP || empty($_SERVER['REMOTE_ADDR'])) {
+            _doError(_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED);
+        }
+    }
+    if ('basic' === $mode) {
+        if (( ! isset($_SERVER['PHP_AUTH_USER'], $_SERVER['PHP_AUTH_PW']))
+            || ( ! isset($INSTALL_AUTH_USER, $INSTALL_AUTH_PW))
+            || (empty(trim($INSTALL_AUTH_USER)) || empty(trim($INSTALL_AUTH_PW)))
+            || ($_SERVER['PHP_AUTH_USER'] !== $INSTALL_AUTH_USER)
+            || ($_SERVER['PHP_AUTH_PW'] !== $INSTALL_AUTH_PW)
+        ) {
+            header('WWW-Authenticate: Basic realm="Enter username and password."');
+            _doError(_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED);
+        }
     }
 }
 

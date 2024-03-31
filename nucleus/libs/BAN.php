@@ -25,20 +25,26 @@ class BAN
     public static function isBanned($blogid, $ip): object|false
     {
         $blogid = (int) $blogid;
-        $query  = sprintf(
-            'SELECT * FROM `%s` WHERE blogid=%d',
-            sql_table('ban'),
-            $blogid
-        );
-        if ($res = sql_query($query)) {
-            while ($obj = sql_fetch_object($res)) {
-                $found = (0 === strncmp($ip, $obj->iprange, strlen($obj->iprange)));
-                if ( ! (false === $found)) {
-                    // found a match!
-                    return new BANINFO($obj->iprange, $obj->reason);
-                }
+
+        $qb = getOrmQueryBuilder()
+                ->select('*')
+                ->from(sql_table('ban'))
+                ->where('blogid = :blogid')
+                ->setParameter('blogid', $blogid);
+
+        if ( ! $qb->executeQuery()) {
+            return false;
+        }
+
+        foreach ($qb->fetchAllAssociative() as $row) {
+            $obj   = (object) $row;
+            $found = (0 === strncmp($ip, $obj->iprange, strlen($obj->iprange)));
+            if ( ! (false === $found)) {
+                // found a match!
+                return new BANINFO($obj->iprange, $obj->reason);
             }
         }
+
         return false;
     }
 
@@ -57,12 +63,14 @@ class BAN
             ];
         $manager->notify('PreAddBan', $notify_data);
 
-        $query = sprintf(
-            'INSERT INTO `%s` (blogid, iprange, reason) VALUES( %d , ? , ? ) ',
-            sql_table('ban'),
-            $blogid
-        );
-        $res = sql_prepare_execute($query, [$iprange, $reason]);
+        $res = getOrmQueryBuilder()
+                ->insert(sql_table('ban'))
+                ->values([
+                    'blogid'  => $blogid,
+                    'iprange' => $iprange,
+                    'reason'  => $reason,
+                ])
+                ->executeStatement();
 
         $notify_data = [
                 'blogid'  => $blogid,
@@ -89,8 +97,17 @@ class BAN
         ];
         $manager->notify('PreDeleteBan', $notify_data);
 
-        $sql    = sprintf('DELETE FROM `%s` WHERE blogid=:blogid AND iprange=:iprange', sql_table('ban'));
-        $res    = sql_prepare_execute($sql, [':blogid' => $blogid, ':iprange' => $iprange]);
+        $res = 0;
+        try {
+            $res = getOrmQueryBuilder()
+                ->delete(sql_table('ban'))
+                ->where('blogid=:blogid AND iprange=:iprange')
+                ->setParameter('blogid', $blogid)
+                ->setParameter('iprange', $iprange)
+                ->executeStatement(); // int|numeric-string The number of affected rows.
+        } catch (Exception $exc) {
+        }
+
         $result = (sql_affected_rows($res) > 0);
 
         $notify_data = [

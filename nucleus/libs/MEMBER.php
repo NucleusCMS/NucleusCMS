@@ -155,14 +155,18 @@ class MEMBER
             $this->loggedin = 0;
         }
 
-        if ($this->loggedin && sql_existTableColumnName(sql_table('member'), 'mtoken')) {
+        if ($this->loggedin && getOrmSchemaManager()->introspectTable(sql_table('member'))->hasColumn('mtoken')) {
             $token = self::randomToken();
-            $sql   = sprintf(
-                "UPDATE `%s` SET mtoken = ? WHERE mnumber=%d",
-                sql_table('member'),
-                $this->getID()
-            );
-            $res = sql_prepare_execute($sql, [$token]);
+            try {
+                $res = getOrmQueryBuilder()
+                        ->update(sql_table('member'))
+                        ->set('mtoken', ':mtoken')
+                        ->where('mnumber = :mnumber')
+                        ->executeStatement(['mtoken' => $token, 'mnumber' => $this->getID()]);
+            } catch (Exception $exc) {
+                $res = false;
+            }
+
             if ($res) {
                 $this->token = $token;
             }
@@ -299,10 +303,14 @@ class MEMBER
     {
         global $manager;
 
+        if ((null === $catid) || ('' === $catid)) {
+            return false;
+        }
+
         // if this is a 'newcat' style newcat
         // no blog admin of destination blog -> NOK
         // blog admin of destination blog -> OK
-        if (str_contains($catid, 'newcat')) {
+        if (is_string($catid) && str_contains($catid, 'newcat')) {
             // get blogid
             [$blogid] = sscanf($catid, "newcat-%d");
 
@@ -735,7 +743,7 @@ class MEMBER
             'mautosave' => (int) (int) ($this->getAutosave()),
             'mhalt'     => (int) (int) ($this->halt),
         ];
-        $sql = sprintf("UPDATE `%s` SET", sql_table('member'));
+        $sql = sprintf("UPDATE %s SET", sql_tableQuote('member'));
         foreach (array_keys($values) as $key) {
             $sql .= (count($input_parameters) > 0 ? ',' : '')
                     . sprintf(' %s=?', $key);
@@ -751,8 +759,8 @@ class MEMBER
     public function writeCookieKey()
     {
         $sql = sprintf(
-            "UPDATE `%s` SET mcookiekey=? WHERE mnumber=%d",
-            sql_table('member'),
+            "UPDATE %s SET mcookiekey=? WHERE mnumber=%d",
+            sql_tableQuote('member'),
             $this->getID()
         );
         sql_prepare_execute($sql, [$this->getCookieKey()]);
@@ -1358,26 +1366,8 @@ class MEMBER
         return self::checkIfValidSyntax_password($password);
     }
 
-    public static function existOptionTable()
-    {
-        static $res = null;
-        if (null === $res) {
-            global $CONF;
-            $res = sql_existTableName(sql_table('member_option'));
-            if ( ! $res && NUCLEUS_DEVELOP && 380 == $CONF['DatabaseVersion']) {
-                // v3.8dev : force upgrade
-                self::createOptionTable();
-                $res = sql_existTableName(sql_table('member_option'));
-            }
-        }
-        return $res;
-    }
-
     public function getOption($context, $name, $default = '')
     {
-        if ( ! self::existOptionTable()) {
-            return $default;
-        }
         $res = quickQuery(sprintf(
             "SELECT value AS result FROM %s WHERE omember=%d AND ocontext='%s' AND name='%s';",
             sql_table('member_option'),
@@ -1393,9 +1383,6 @@ class MEMBER
 
     public function updateOption($context, $name, $value)
     {
-        if ( ! self::existOptionTable()) {
-            return false;
-        }
         $ct = (int) quickQuery(sprintf(
             "SELECT count(*) FROM %s WHERE omember=%d AND ocontext='%s' AND name='%s' limit 1;",
             sql_table('member_option'),
@@ -1426,26 +1413,6 @@ class MEMBER
         sql_query($query);
     }
 
-    public static function createOptionTable()
-    {
-        if (self::existOptionTable()) {
-            return;
-        }
-        global $DB_DRIVER_NAME;
-        if ('sqlite' === $DB_DRIVER_NAME) {
-            return;
-        }
-        $query = parseQuery("
-            CREATE TABLE `[@prefix@]member_option` (
-              `omember`  int(11)      NOT NULL,
-              `ocontext` varchar(20)  NOT NULL default '',
-              `name`     varchar(100) NOT NULL,
-              `value`    varchar(255) NOT NULL default '',
-              PRIMARY KEY (`omember`, `ocontext`, `name`)
-            ) ENGINE=MyISAM;");
-        sql_query($query);
-    }
-
     public static function existMemberColumn($ColumnName)
     {
         return sql_existTableColumnName(sql_table('member'), $ColumnName);
@@ -1456,8 +1423,7 @@ class MEMBER
         if (self::existMemberColumn('mtoken')) {
             return;
         }
-        // mysql, sqlite
-        $query = parseQuery("ALTER TABLE `[@prefix@]member` ADD COLUMN `mtoken` varchar(100) default NULL");
+        $query = sprintf("ALTER TABLE %s ADD COLUMN mtoken varchar(100) default NULL", sql_tableQuote('member'));
         sql_query($query);
     }
 

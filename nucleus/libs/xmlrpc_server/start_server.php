@@ -70,9 +70,6 @@
 
 ini_set('display_errors', '0');
 
-include_thirdparty('xmlrpc.inc.php', false, false);
-include_thirdparty('xmlrpcs.inc.php', false, false);
-
 /* define xmlrpc settings */
 //$xmlrpc_internalencoding = _CHARSET;
 $xmlrpc_internalencoding = 'UTF-8';

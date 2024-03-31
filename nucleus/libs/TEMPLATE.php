@@ -39,15 +39,15 @@ class TEMPLATE
     // (static)
     public static function getIdFromName($name)
     {
-        $query = sprintf(
-            "SELECT tdnumber FROM `%s` WHERE tdname='%s'",
-            sql_table('template_desc'),
-            sql_real_escape_string($name)
-        );
-        if (($res = sql_query($query)) && ($obj = sql_fetch_object($res))) {
-            return $obj->tdnumber;
+        $query = getOrmQueryBuilder()
+                    ->select('tdnumber')
+                    ->from(sql_table('template_desc'))
+                    ->where('tdname = :tdname')
+                    ->setParameter('tdname', $name)
+                    ->executeQuery();
+        if ($query && ($res = $query->fetchNumeric())) {
+            return $res[0];
         }
-
         return 0;
     }
 
@@ -162,14 +162,17 @@ class TEMPLATE
         }
 
         $template = [];
-        $res      = sql_query(sprintf(
-            "SELECT tpartname, tcontent FROM `%s`, `%s` WHERE tdesc=tdnumber AND tdname='%s'",
-            sql_table('template_desc'),
-            sql_table('template'),
-            sql_real_escape_string($name)
-        ));
-        while ($obj = sql_fetch_object($res)) {
-            $template[$obj->tpartname] = $obj->tcontent;
+        $query    = getOrmQueryBuilder()
+                    ->select('tpartname', 'tcontent')
+                    ->from(sql_table('template_desc'))
+                    ->from(sql_table('template'))
+                    ->where('tdesc = tdnumber AND tdname = :tdname')
+                    ->setParameter('tdname', $name)
+                    ->executeQuery();
+        if ($query) {
+            while ($row = $query->fetchNumeric()) {
+                $template[$row[0]] = $row[1];
+            }
         }
 
         // set locale according to template:

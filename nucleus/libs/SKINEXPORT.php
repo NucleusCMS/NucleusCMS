@@ -180,9 +180,9 @@ class SKINEXPORT
 
             $sql
                  = sprintf(
-                     "SELECT stype, scontent, spartstype, %s FROM `%s` WHERE sdesc = %d",
+                     "SELECT stype, scontent, spartstype, %s FROM %s WHERE sdesc = %d",
                      $suborder2,
-                     sql_table('skin'),
+                     sql_tableQuote('skin'),
                      (int) $skinId
                  );
             $sql .= " ORDER BY spartstype ASC, suborder2 ASC, stype ASC";
@@ -228,8 +228,8 @@ class SKINEXPORT
 
             $que
                  = sprintf(
-                     'SELECT tpartname, tcontent FROM `%s` WHERE tdesc=%d',
-                     sql_table('template'),
+                     'SELECT tpartname, tcontent FROM %s WHERE tdesc=%d',
+                     sql_tableQuote('template'),
                      $templateId
                  );
             $res = sql_query($que);

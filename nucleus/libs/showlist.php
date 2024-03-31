@@ -229,14 +229,13 @@ function listplug_table_pluginlist($template, $type)
             // [Note] : Waking up a buggy plugin may cause a hang
             $plug = & $manager->getPlugin($np_name);
             if ($plug) {
-                $canRemoteDownload = $enable_remote_update && ADMIN::canRemoteDownload($np_name);
                 echo '<td>';
                 echo '<strong>', hsc($plug->getName()), '</strong><br />';
                 if ('Undefined' !== $plug->getAuthor()) {
                     echo _LIST_PLUGS_AUTHOR, ' ', hsc($plug->getAuthor()), '<br />';
                 }
                 echo _LIST_PLUGS_VER, ' ', hsc($plug->getVersion()), '<br />';
-                $getURL = $canRemoteDownload ? 'https://github.com/NucleusCMS/' . $plug->getClassName() : $plug->getURL();
+                $getURL = $plug->getURL();
                 if ($getURL && 'Undefined' !== $getURL) {
                     printf('<a href="%s" tabindex="%d"', hsc($getURL), $template['tabindex']);
                     printf(' target="_blank" rel="noreferrer">%s</a>', _LIST_PLUGS_SITE);
@@ -260,36 +259,6 @@ function listplug_table_pluginlist($template, $type)
                     }
 
                     echo "</ul></div>";
-                }
-                if ($enable_remote_update) {
-                    // plugin update check
-                    $update_info = $plug->checkRemoteUpdate();
-                    if ($update_info['result']) {
-                        echo "<div style='float: left'><strong style='color: red'>"
-                             . hsc(_ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE)
-                             . "</strong><br />";
-                        echo "Latest version: " . hsc($update_info['version'])
-                             . "<br /></div>";
-                        if (class_exists('ZipArchive') && $canRemoteDownload) {
-                            // リモートからダウンロード
-                            echo "<form method='post' action='index.php'><div style='float: right'>\n";
-                            echo "  <input type='hidden' name='action' value='plugindownload' />\n";
-                            printf("  <input type='hidden' name='pluginname' value='%s' />\n", escapeHTML($np_name));
-                            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
-                            echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _ADMIN_TEXT_REMOTE_AUTO_UPDATE);
-                            echo "</div></form>\n";
-                        } else {
-                            if ( ! empty($update_info['download'])) {
-                                echo '<div style="float: left; padding: 1.5em 1em;">Get URL : ';
-                                printf(
-                                    '<a href="%s" target="_blank" rel="noreferrer">%s</a></div><br />',
-                                    hsc($update_info['download']),
-                                    hsc($update_info['download'])
-                                );
-                            }
-                        }
-                        echo "<br style='clear:both' /><br />";
-                    }
                 }
                 // plugin Description
                 echo "<div style='float: left;'>";
@@ -529,7 +498,7 @@ function listplug_table_itemlist($template, $type)
 
             $parts_flag = '';
             $sql        = "SELECT iblog, ipublic, idraft, ipublic_enable_term_start, ipublic_enable_term_end, ipublic_term_start, ipublic_term_end"
-                  . sprintf(" FROM `%s` WHERE inumber=%d", sql_table('item'), $current->inumber);
+                  . sprintf(" FROM %s WHERE inumber=%d", sql_table('item'), $current->inumber);
             $res = sql_query($sql);
             if ($res) {
                 global $manager;
@@ -1060,7 +1029,7 @@ function listplug_table_skinlist($template, $type)
                 'spartstype'
             );
             $sql = sprintf(
-                "SELECT stype FROM `%s` WHERE sdesc=%d ",
+                "SELECT stype FROM %s WHERE sdesc=%d ",
                 sql_table('skin'),
                 $current->sdnumber
             );
@@ -1124,7 +1093,7 @@ function listplug_table_skinlist($template, $type)
             // skin page
             $sql
                 = sprintf(
-                    "SELECT stype FROM `%s` WHERE sdesc=%d AND spartstype='specialpage' ",
+                    "SELECT stype FROM %s WHERE sdesc=%d AND spartstype='specialpage' ",
                     sql_table('skin'),
                     $current->sdnumber
                 ) . $order;

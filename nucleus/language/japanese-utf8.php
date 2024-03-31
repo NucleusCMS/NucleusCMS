@@ -25,24 +25,8 @@ try_define('_HTML_5_LANG_CODE', 'ja');
 /********************************************
  *        Admin Links Settings                *
  ********************************************/
-try_define('_MANAGE_LINKS_ITEMS', '<li>プラグイン<ul>
-    <li><a href="https://github.com/NucleusCMS?q=NP_&type=all&language=&sort=" title="NucleusCMS プラグイン github.com/NucleusCMS">NucleusCMS プラグイン [github.com/NucleusCMS]</a></li>
-    <li><a href="http://japan.nucleuscms.org/wiki/plugins" title="Nucleus CMS 日本 プラグイン japan.nucleuscms.org/wiki/plugins">[wiki] Nucleus CMS プラグイン(日本語)</a></li>
-</ul></li>
-<li>スキン<ul>
-    <li><a href="http://japan.nucleuscms.org/wiki/skins" title="Nucleus CMS 日本 スキン japan.nucleuscms.org/wiki/skins">[wiki] Nucleus CMS スキン(日本語)</a></li>
-    <li><a href="http://nucleuscms.org/skins/" title="Nucleus CMS Skins">[wiki] Nucleus CMS スキン</a></li>
-</ul></li>
-<!--
-<li>アーカイブ(ダウンロード)<ul>
-    <li><a href="http://japan.nucleuscms.org/download.php" title="Nucleus CMS 日本 japan.nucleuscms.org">Nucleus CMS 日本 最新版</a></li>
-    <li><a href="https://github.com/NucleusCMS/NucleusCMS/tags" title="Nucleus CMS 過去のリリース">Nucleus CMS 過去のリリース</a></li>
-</ul></li>
-<li>その他<ul>
-    <li><a href="http://japan.nucleuscms.org/forum/" title="サポートフォーラム japan.nucleuscms.org/forum/">Nucleus CMS サポートフォーラム(日本語)</a></li>
-    <li><a href="http://japan.nucleuscms.org/wiki/" title="Nucleus CMS Wiki japan.nucleuscms.org/wiki/">[wiki] Nucleus CMS Wiki(日本語)</a></li>
-</ul></li>
--->
+try_define('_MANAGE_LINKS_ITEMS', '
+    <li><a href="https://github.com/NucleusCMS?q=NP_&type=all&language=&sort=" title="NucleusCMS プラグイン github.com/NucleusCMS">プラグイン [NucleusCMS : github.com/NucleusCMS]</a></li>
 ');
 
 /********************************************
@@ -95,13 +79,6 @@ try_define('_ADMIN_TEXT_ALLOW_PLUGINADMIN_OLD', '古い形式のプラグイン�
 try_define('_ERROR_INVALID_ACCESS', '無効なアクセスです.');
 
 try_define('_ADMIN_TEXT_CONFLICT_DELETE_OLD_PLUGIN', '古い形式のプラグインが混在しています。古い形式のプラグインを削除してください。');
-try_define('_ADMIN_TEXT_DOWNLOAD_PL_FOLDER', 'プラグインフォルダへダウンロード');
-try_define('_ADMIN_TEXT_REMOTE_AUTO_UPDATE', 'ダウンロード自動更新する');
-try_define('_ADMIN_TEXT_REMOTE_DOWNLOAD', 'リモートからダウンロード');
-
-try_define('_ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS', '更新通知とダウンロード'); // Update notifications and downloads
-try_define('_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS', '更新通知とダウンロードは利用しない'); // Don't use update notifications and downloads
-
 
 /********************************************
  *        Start New for 3.80                *
@@ -414,7 +391,6 @@ try_define('_BLOGCREATED_ADVANCEDWAY2',					'方法 2 :高度な方法: 現在�
 try_define('_BLOGCREATED_ADVANCEDWAY3',					'新しいblogの作成を完了するためにURLを入力してください。(ほとんどの場合既存blogと同じURLになります)');
 
 // Donate!
-try_define('_ADMINPAGEFOOT_OFFICIALURL',				'http://japan.nucleuscms.org/');
 try_define('_ADMINPAGEFOOT_DONATEURL',					'http://japan.nucleuscms.org/donate.php');
 try_define('_ADMINPAGEFOOT_DONATE',						'寄付について');
 try_define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group &amp; Nucleus CMS Japanチーム');
@@ -534,7 +510,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus のパッチレ�
 try_define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'重要な設定');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'バージョンチェック');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'より新しいバージョンのリリースが無いか、公式サイトでチェックできます: ');
-try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://japan.nucleuscms.org/version.php?v=%d&amp;pl=%d');
+try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'最新のバージョンをチェック');
 try_define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'この画面を閲覧する権限がありません');
 
@@ -868,6 +844,7 @@ try_define('_ADD_PLUGIN_EXTRAS',				'追加プラグインオプション');
 // errors
 try_define('_ERROR_CATCREATEFAIL',				'新しいカテゴリーを作成できません');
 try_define('_ERROR_NUCLEUSVERSIONREQ',			'このプラグインを使用するには、新しいバージョンの Nucleus が必要です: ');
+try_define('_ERROR_PLUGINVERSIONREQ',			'このプラグインを使用するには、新しいプラグインが必要です: ');
 
 // backlinks
 try_define('_BACK_TO_BLOGSETTINGS',				'Blogの設定に戻る');
@@ -1600,6 +1577,5 @@ try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'保存とオプション');
 try_define('_ADMIN_EDIT_OPERATIONS',  "操作");
 try_define('_ADMIN_TEXT_DELETE',  "削除");
 try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "アイテム削除画面へ移動します。現在編集している変更内容は失われます。削除画面へ移動してもよろしいですか？");
-try_define('_ADMIN_TEXT_PLG_CHECK_PRELOAD', 'ロード前のプラグインチェックをする');
 
 try_define('_TEXT_VIEW',						'表示');

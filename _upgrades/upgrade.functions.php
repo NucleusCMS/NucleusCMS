@@ -45,12 +45,11 @@ function upgrade_checkBrowserLang()
 
 function upgrade_checkinstall($version)
 {
+    $version   = (int) $version;
     $installed = 0;
     global $DB_DRIVER_NAME;
 
-    $version = (int) $version;
-
-    if (('sqlite' === $DB_DRIVER_NAME) && ($version <= 380)) {
+    if (('mysql' !== $DB_DRIVER_NAME) && (380 >= (int) $version)) {
         return true;
     }
 
@@ -80,7 +79,7 @@ function upgrade_checkinstall($version)
                 $installed = sql_existTableColumnName(sql_table('category'), 'corder');
                 break;
             case 380:
-                $installed = sql_existTableColumnName(sql_table('item'), 'ipublic_term_start');
+                $installed = sql_existTableColumnName(sql_table('blog'), 'blast_modyfied');
                 break;
         }
     }
@@ -180,7 +179,11 @@ function upgrade_query($friendly, $query)
     global $upgrade_failures;
 
     echo sprintf('<li>%s ... ', parseQuery($friendly));
-    $res = sql_query(parseQuery($query));
+    try {
+        $res = sql_query(parseQuery($query));
+    } catch (Exception $exc) {
+        $res = false;
+    }
     if ($res) {
         echo '<span style="color:green">' . _UPG_TEXT_SUCCESS . "</span><br />\n";
     } else {
@@ -607,6 +610,12 @@ function get_default_content()
                      .'</p>';
     } elseif (NUCLEUS_UPGRADE_VERSION_ID == $current) {
         global $DB_DRIVER_NAME;
+        // データベースバージョンを更新する
+        $IntType = ('mysql' === $DB_DRIVER_NAME ? 'SIGNED INTEGER' : 'INTEGER');
+        $sql = sprintf("UPDATE %s SET value = :value WHERE name = :name ", sql_table('config'))
+              . " AND CAST(value AS {$IntType}) < CAST(:value AS {$IntType})";
+        sql_prepare_execute($sql, ['name' => 'DatabaseVersion', 'value' => NUCLEUS_UPGRADE_VERSION_ID]);
+
         $messages[] = '<p class="ok">' . _UPG_TEXT_NO_AUTOMATIC_UPGRADES_REQUIRED . '</p>';
         $messages[] = '<br />';
         if ( ! defined('_ERRORS_UPGRADESDIR')) {
@@ -670,10 +679,10 @@ function get_default_content()
 
 function do_upgrade()
 {
-    if (preg_match('@^3[0-9][0-9]$@', intGetVar('from'))) {
-        $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
-        sql_query(parseQuery($query, ['version' => intGetVar('from')]));
-    }
+    //    if (preg_match('@^3[0-9][0-9]$@', intGetVar('from'))) {
+    //        $query = "UPDATE [@prefix@]config SET value='[@version@]' WHERE name='DatabaseVersion'";
+    //        sql_query(parseQuery($query, ['version' => intGetVar('from')]));
+    //    }
 
     ob_start();
     echo '<h1>' . _UPG_TEXT_EXECUTING_UPGRADES . "</h1>\n<ul>\n";

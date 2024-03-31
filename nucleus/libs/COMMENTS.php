@@ -89,14 +89,15 @@ class COMMENTS
             $this->commentcount = $this->amountComments();
         } else {
             $query
-                      = 'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body, c.cuser as user, c.cmail as userid, c.cemail as email, c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
+                      = 'SELECT c.citem as itemid, c.cnumber as commentid, c.cbody as body,
+                          c.cuser as user, c.cmail as userid, c.cemail as email,
+                          c.cmember as memberid, c.ctime, c.chost as host, c.cip as ip, c.cblog as blogid'
                         . ' FROM ' . sql_table('comment') . ' as c'
                         . ' WHERE c.citem=' . $this->itemid
                         . ' ORDER BY c.ctime';
             $query_ct = 'SELECT count(*) AS result'
                         . ' FROM ' . sql_table('comment') . ' as c'
-                        . ' WHERE c.citem=' . $this->itemid
-                        . ' ORDER BY c.ctime';
+                        . ' WHERE c.citem=' . $this->itemid;
 
             $comments           = sql_query($query);
             $this->commentcount = (int) (quickQuery($query_ct));

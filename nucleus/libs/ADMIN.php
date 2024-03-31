@@ -50,8 +50,7 @@ class ADMIN
 
         //$this->check_admin_vars();
         $this->checkSecurityRisk();
-        //$this->initCheckUpgarde();
-        // todo: write code and wait for debugging
+        $this->initCheckUpgarde();
     }
 
     private function check_admin_vars()
@@ -61,7 +60,7 @@ class ADMIN
 
     private function initCheckUpgarde()
     {
-        // todo: write code and wait for debugging
+        BLOG::UpgardeAddLastModyfied();
     }
 
     public static function checkInvalidBrowser()
@@ -233,11 +232,11 @@ class ADMIN
         if ($isShowAll && $member->isAdmin()) {
             // Super-Admins have access to all blogs! (no add item support though)
             $query = 'SELECT bnumber, bname, 1 as tadmin, burl, bshortname';
-            $query .= ' FROM [@prefix@]blog ORDER BY bname';
+            $query .= ' FROM [@prefix@]blog ORDER BY ' . self::getSqlOrderBlog();
         } else {
             $query = 'SELECT bnumber, bname, tadmin, burl, bshortname';
             $query .= ' FROM [@prefix@]blog, [@prefix@]team';
-            $query .= ' WHERE tblog=bnumber and tmember=[@tmember@] ORDER BY bname';
+            $query .= ' WHERE tblog=bnumber and tmember=[@tmember@] ORDER BY '. self::getSqlOrderBlog();
             $ph['tmember'] = $member->getID();
         }
         $query                  = parseQuery($query, $ph);
@@ -262,19 +261,34 @@ class ADMIN
             echo sprintf('<h2>%s</h2>', _OVERVIEW_YRDRAFTS);
 
             // Todo display author
-            $query = parseQuery(
-                'SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY bnumber ASC',
-                ['iauthor' => $member->getID()]
-            );
+            $param = ['iauthor' => $member->getID(), 'idraft' => 1];
+            $query = getOrmQueryBuilder()
+                    //->select('bnumber', 'count(*)', 'sum(iauthor=:iauthor)') // sum(iauthor=:iauthor) / Undefined function: 7 ERROR: 関数sum(boolean)は存在しません
+                    ->select('bnumber', 'count(*)', 'sum(CASE WHEN iauthor=:iauthor THEN 1 ELSE 0 END)')
+                    ->from(sql_table('item'))
+                    ->from(sql_table('blog'))
+                    ->where('iblog=bnumber AND idraft=:idraft')
+                    ->groupBy('bnumber')
+                    ->orderBy(self::getSqlOrderBlog())
+                    ->setParameters($param);
 
             $items = [];
-            $rs    = sql_query($query);
-            if ($rs) {
-                while ($row = sql_fetch_row($rs)) {
-                    $items[] = array_merge($row);
-                }
-                sql_free_result($rs);
+            foreach ($query->executeQuery($param)->fetchAllAssociative() as $row) {
+                $items[] = array_merge($row);
             }
+
+            //            $query = parseQuery(
+            //                'SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog '
+            //               . ' WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY ' . ,
+            //                ['iauthor' => $member->getID()]
+            //            );
+            //            $rs    = sql_query($query);
+            //            if ($rs) {
+            //                while ($row = sql_fetch_row($rs)) {
+            //                    $items[] = array_merge($row);
+            //                }
+            //                sql_free_result($rs);
+            //            }
 
             $has_hidden_items = 0;
             $amountdrafts     = 0;
@@ -467,7 +481,7 @@ class ADMIN
         $total = (int) quickQuery('SELECT COUNT(*) as result ' . $query);
 
         $query .= ' ORDER BY idraft ASC, itime DESC, inumber DESC'
-            . " LIMIT {$start},{$amount}";
+            . " LIMIT {$amount} offset {$start}";
 
         $query_view .= $query;
 
@@ -1144,10 +1158,11 @@ class ADMIN
         }
 
         if (($member->isAdmin()) && (array_key_exists('ShowAllBlogs', $CONF) && $CONF['ShowAllBlogs'])) {
-            $queryBlogs = sprintf("SELECT bnumber FROM %s ORDER BY bname", sql_table('blog'));
+            $queryBlogs = sprintf("SELECT bnumber FROM %s ", sql_table('blog'));
         } else {
             $queryBlogs = sprintf("SELECT bnumber FROM %s, %s WHERE tblog=bnumber and tmember=%s", sql_table('blog'), sql_table('team'), $member->getID());
         }
+        $queryBlogs .= ' ORDER BY ' . self::getSqlOrderBlog();
         $rblogids = sql_query($queryBlogs);
         while ($o = sql_fetch_object($rblogids)) {
             if ($o->bnumber != $iForcedBlogInclude) {
@@ -1163,9 +1178,10 @@ class ADMIN
 
         // 1. select blogs (we'll create optiongroups)
         // (only select those blogs that have the user on the team)
-        $queryBlogs       = sprintf("%s WHERE bnumber in (%s) ORDER BY bname", sql_table('blog'), implode(',', $aBlogIds));
+        $order            = sprintf("ORDER BY %s", self::getSqlOrderBlog());
+        $queryBlogs       = sprintf("%s WHERE bnumber in (%s)", sql_table('blog'), implode(',', $aBlogIds));
         $queryBlogs_count = sprintf("SELECT count(*) as result FROM %s", $queryBlogs);
-        $queryBlogs       = sprintf("SELECT bnumber, bname FROM %s", $queryBlogs);
+        $queryBlogs       = sprintf("SELECT bnumber, bname FROM %s ", $queryBlogs, self::getSqlOrderBlog()). $order;
         $blogs            = sql_query($queryBlogs);
         if ('category' == $mode) {
             $multipleBlogs = (int) quickQuery($queryBlogs_count) > 1;
@@ -1266,7 +1282,7 @@ class ADMIN
         $total = (int) quickQuery('SELECT COUNT(*) as result ' . $query);
 
         $query .= ' ORDER BY idraft ASC, itime DESC, inumber DESC'
-            . " LIMIT {$start},{$amount}";
+            . " LIMIT {$amount} offset {$start}";
 
         $query_view .= $query;
 
@@ -1357,7 +1373,7 @@ class ADMIN
         $total = (int) quickQuery('SELECT COUNT(*) as result ' . $query);
 
         $query .= ' ORDER BY ctime ASC'
-            . " LIMIT {$start},{$amount}";
+            . " LIMIT {$amount} offset {$start}";
 
         $query_view .= $query;
 
@@ -1408,7 +1424,7 @@ class ADMIN
         $total = (int) quickQuery('SELECT COUNT(*) as result ' . $query);
 
         $query .= ' ORDER BY ctime DESC'
-            . " LIMIT {$start},{$amount}";
+            . " LIMIT {$amount} offset {$start}";
 
         $query_view = 'SELECT cbody, cuser, cmail, mname, ctime, chost, cnumber, cip, citem';
         $query_view .= $query;
@@ -1487,7 +1503,7 @@ class ADMIN
         $total = (int) quickQuery('SELECT COUNT(*) as result ' . $query);
 
         $query .= ' ORDER BY ctime DESC'
-            . " LIMIT {$start},{$amount}";
+            . " LIMIT {$amount} offset {$start}";
 
         $query_view .= $query;
 
@@ -1917,7 +1933,7 @@ class ADMIN
         $member->isLoggedIn() or $this->disallow();
 
         $itemid   = intRequestVar('itemid');
-        $tbl_item = sql_table('item');
+        $tbl_item = sql_tableQuote('item');
 
         // only allow if user have valid clone privileges
         $member->canCloneItem($itemid) or $this->disallow();
@@ -1928,7 +1944,7 @@ class ADMIN
         $dist    = 'ititle,ibody,imore,iblog,iauthor,itime,iclosed,idraft,ikarmapos,icat,ikarmaneg,iposted';
         $src     = "ititle,ibody,imore,iblog,iauthor,itime,iclosed,'1' AS idraft,ikarmapos,icat,ikarmaneg,iposted";
         $inumber = (int) $itemid;
-        $query   = "INSERT INTO `{$tbl_item}` ({$dist}) SELECT {$src} FROM `{$tbl_item}` WHERE inumber={$inumber}";
+        $query   = "INSERT INTO {$tbl_item} ({$dist}) SELECT {$src} FROM {$tbl_item} WHERE inumber={$inumber}";
 
         try {
             if (sql_query($query)) {
@@ -2037,7 +2053,7 @@ class ADMIN
             return _ERROR_DISALLOWED;
         }
 
-        $sql = sprintf("UPDATE `%s` SET idraft=1 , ipublic=0 WHERE inumber=%d", sql_table('item'), $itemid);
+        $sql = sprintf("UPDATE %s SET idraft=1 , ipublic=0 WHERE inumber=%d", sql_tableQuote('item'), $itemid);
         sql_query($sql);
     }
 
@@ -2055,7 +2071,7 @@ class ADMIN
             return _ERROR_DISALLOWED;
         }
         // ipublic idraft
-        $sql = sprintf("UPDATE `%s` SET ipublic=%d ", sql_table('item'), ($public ? 1 : 0));
+        $sql = sprintf("UPDATE %s SET ipublic=%d ", sql_tableQuote('item'), ($public ? 1 : 0));
         $sql .= sprintf(" WHERE inumber=%d", $itemid);
         sql_query($sql);
     }
@@ -2168,13 +2184,13 @@ class ADMIN
                 ':cbody'   => $body,
                 ':cnumber' => $commentid,
             ];
-        $sql = sprintf('UPDATE `%s`', sql_table('comment'))
+        $sql = sprintf('UPDATE %s', sql_tableQuote('comment'))
                . ' SET cmail = :cmail, cemail = :cemail, cbody = :cbody'
                . ' WHERE cnumber=:cnumber';
         sql_prepare_execute($sql, $db_params);
 
         // get itemid
-        $sql = sprintf('SELECT citem FROM `%s`', sql_table('comment'))
+        $sql = sprintf('SELECT citem FROM %s', sql_tableQuote('comment'))
              . ' WHERE cnumber=?';
         $res    = sql_prepare_execute($sql, [ $commentid ]);
         $o      = sql_fetch_object($res);
@@ -2489,12 +2505,6 @@ class ADMIN
                         <td><?php echo _MEMBERS_CANLOGIN ?> <?php help('canlogin'); ?></td>
                         <td><?php $this->input_yesno('canlogin', $mem->canLogin(), 70, 1, 0, _YES, _NO, $mem->isAdmin()); ?></td>
                     </tr>
-        <?php if ($member->isAdmin()) { ?>
-                    <tr>
-                        <td><?php echo _ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS ?></td>
-                        <td><?php $this->input_yesno('enable_remote_update', (int) $mem->getOption('system', 'enable_remote_update', '1'), 70); ?></td>
-                    </tr>
-        <?php } ?>
                     <tr>
                         <td><?php echo _ADMIN_MEMBER_HALT_TITLE ?> <?php help('halt'); ?></td>
                         <td><?php if ($member->id != $mem->id) {
@@ -2546,7 +2556,7 @@ class ADMIN
                     <?php
 
         // Which page does current member want to select after saving the item?
-        if (MEMBER::existOptionTable()) {
+        if (1) {
             $select_page_after_save = $member->getOption('item', 'select_page_after_save', '');
             printf("<tr><td>%s</td><td>\n", hsc(_ADMIN_MEMBER_ITEMSAVE_SELECTPAGE_TITLE));
             echo "<select name='select_page_after_save' tabindex='88'>";
@@ -2708,7 +2718,7 @@ class ADMIN
         $mem->write();
 
         // Which page does current member want to select after saving the item?
-        if (MEMBER::existOptionTable()) {
+        if (1) {
             $select_page_after_save = (string) postVar('select_page_after_save');
             if ( ! in_array($select_page_after_save, ['','list','list_with_category','back_home'])) {
                 $select_page_after_save = '';
@@ -3300,14 +3310,6 @@ class ADMIN
 
                         </td>
                     </tr>
-                    <?php
-                    if ( ! $blog->existsSetting('bauthorvisible')
-                        && ! sql_existTableColumnName(sql_table('blog'), 'bauthorvisible')
-                    ) {
-                        // Force Upgrade
-                        BLOG::UpgardeAddColumnAuthorVisible();
-                    }
-        ?>
                     <tr>
                         <td><?php echo _EBLOG_VISIBLE_ITEM_AUTHOR; ?> <?php help('authorvisible'); ?>
                         </td>
@@ -4259,7 +4261,7 @@ class ADMIN
         sql_query($query);
 
         // delete member_option
-        if (MEMBER::existOptionTable()) {
+        if (1) {
             $query = 'DELETE FROM ' . sql_table('member_option') . ' WHERE omember=' . $memberid;
             sql_query($query);
         }
@@ -6108,7 +6110,7 @@ selector();
             $this->error(_ERROR_SKIN_PARTS_SPECIAL_STYPE_CHANGE);
         }
 
-        $sql = sprintf("UPDATE `%s` ", sql_table('skin'));
+        $sql = sprintf("UPDATE %s ", sql_tableQuote('skin'));
         $sql .= 'SET spartstype = ? WHERE sdesc=? AND stype=?';
         sql_prepare_execute($sql, [$partstype_to, $skinid, $skintype]);
 
@@ -6421,14 +6423,6 @@ selector();
                             </tr>
 
                             <tr>
-                                <td><?php echo _ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS; ?></td>
-                                <td><?php
-        $this->input_yesno('ENABLE_PLUGIN_UPDATE_CHECK', CONF::asBool('ENABLE_PLUGIN_UPDATE_CHECK', false), 10077);
-        ?>
-                                </td>
-                            </tr>
-
-                            <tr>
                                 <td><?php echo _SETTINGS_DEBUGVARS ?> <?php help('debugvars'); ?></td>
                                 <td><?php
 
@@ -6633,6 +6627,9 @@ selector();
         ) {
             return;
         }
+        if (empty(ENABLE_FEATURE_TIDY)) {
+            return;
+        }
 
         // ENABLE_TIDY
         $tidy_loaded = extension_loaded('tidy');
@@ -6708,16 +6705,16 @@ selector();
         if ('mysql' != $DB_DRIVER_NAME) {
             return;
         }
-        $tablename = sql_table('config');
-        $query     = sprintf("SHOW COLUMNS FROM `{$tablename}` LIKE 'name'");
+        $tablename = sql_tableQuote('config');
+        $query     = sprintf("SHOW COLUMNS FROM {$tablename} LIKE 'name'");
         $res       = sql_query($query);
         if ($res && ($row = sql_fetch_assoc($res))
             && ! empty($row['Type']) && ('varchar(20)' == $row['Type'])
         ) {
             // force upgrade config table
             $query = <<<EOL
-                ALTER TABLE `{$tablename}`
-                MODIFY COLUMN `name` varchar(50)  NOT NULL default ''
+                ALTER TABLE {$tablename}
+                MODIFY COLUMN name varchar(50)  NOT NULL default ''
 EOL;
             sql_query($query);
         }
@@ -6776,8 +6773,7 @@ EOL;
         $this->updateConfig('AdminCSS', postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
         $this->updateOrInsertConfig('ENABLE_PLUGIN_ADMIN_V1', PostVar::asBool('ENABLE_PLUGIN_ADMIN_V1') ? '1' : '0');
-        $this->updateOrInsertConfig('ENABLE_PLUGIN_UPDATE_CHECK', PostVar::asBool('ENABLE_PLUGIN_UPDATE_CHECK') ? '1' : '0');
-        if (extension_loaded('tidy')) {
+        if ( ! empty(ENABLE_FEATURE_TIDY) && extension_loaded('tidy')) {
             $this->updateOrInsertConfig('tidy_enable', (PostVar::asBool('tidy_enable') ? '1' : '0'));
             // doctype
             $doctype = PostVar::asStr('tidy_opt_config_doctype');
@@ -6821,13 +6817,11 @@ EOL;
         printf("<h2>%s</h2>\n", _ADMIN_SYSTEMOVERVIEW_HEADING);
 
         if ($member->isLoggedIn() && $member->isAdmin()) {
-            $checkURL = self::getVersionCheckWebPageURL();
             // output pagehead
             $blade_params = [
                'manager'          => $manager,
                'oAdmin'           => $this,
                'DB_DRIVER_NAME'   => $DB_DRIVER_NAME,
-               'checkURL'         => $checkURL,
                'CONF'             => $CONF,
                'SiteName'         => CONF::asStr('SiteName'),
                'db_charset'       => 'mysql' === $DB_DRIVER_NAME ? getCollationFromDB(\sql_table('config'), 'name') : 'utf-8',
@@ -6922,8 +6916,9 @@ EOL;
 
     public static function updateOrInsertConfig($name, $value)
     {
-        $sql = parseQuery('SELECT COUNT(*) AS result FROM `[@prefix@]config` WHERE name = ?');
-        $res = sql_prepare_execute($sql, [(string) $name]);
+        $tablename = sql_tableQuote('config');
+        $sql       = "SELECT COUNT(*) AS result FROM {$tablename} WHERE name = ?";
+        $res       = sql_prepare_execute($sql, [(string) $name]);
         if ($res) {
             $row = sql_fetch_row($res);
             if ($row[0] > 0) {
@@ -6931,7 +6926,7 @@ EOL;
             }
         }
 
-        $sql = parseQuery("INSERT INTO `[@prefix@]config` (name, value) VALUES(?, ?)");
+        $sql = "INSERT INTO {$tablename} (name, value) VALUES(?, ?)";
         $res = sql_prepare_execute($sql, [(string) $name, trim((string) $value)]);
 
         $res or exit((defined('_ADMIN_SQLDIE_QUERYERROR') ? _ADMIN_SQLDIE_QUERYERROR : "Query error: ") . sql_error());
@@ -6991,9 +6986,14 @@ EOL;
             $extrahead .= implode("\n", $this->extrahead);
         }
 
+        if ( ! empty($_SERVER['HTTPS']) || ! empty($_SERVER['REDIRECT_HTTPS'])) {
+            $CONF['AdminURL'] = preg_replace('#^http://#', 'https://', $CONF['AdminURL']);
+        }
+
         $baseUrl = hsc($CONF['AdminURL']);
+
         if ( ! array_key_exists('AdminCSS', $CONF)) {
-            $sql = sprintf("INSERT INTO `%s` VALUES ('AdminCSS', '%s')", sql_table('config'), self::default_admin_css);
+            $sql = sprintf("INSERT INTO %s VALUES ('AdminCSS', '%s')", sql_tableQuote('config'), self::default_admin_css);
             sql_query($sql);
             $CONF['AdminCSS'] = self::default_admin_css;
         }
@@ -7063,15 +7063,15 @@ EOL;
         }
         echo '<br />(';
 
-        $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME), CORE_APPLICATION_VERSION);
+        $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME), NUCLEUS_VERSION_DOT);
         if ($member->isLoggedIn() && $member->isAdmin()) {
             echo self::getAboutHtmlTag();
-            $newestVersion = getLatestVersion();
-            if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION, '>')) {
+            $newestVersion = 370; //getLatestVersion();
+            if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION_ID, '>')) {
                 echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
             }
 
-            if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
+            if ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) {
                 echo sprintf(
                     ')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
                     $CONF['IndexURL'] . '_upgrades/',
@@ -7282,8 +7282,8 @@ EOL;
         echo '<h2>' . _ACTIONLOG_TITLE . '</h2>';
 
         // cut big message
-        $colmessage = "CASE WHEN CHAR_LENGTH(`message`) < 2000 THEN `message`
-                       ELSE CONCAT(SUBSTRING(`message`, 1, 2000), ' ...') END as 'message' ";
+        $colmessage = "CASE WHEN CHAR_LENGTH(message) < 2000 THEN message
+                       ELSE CONCAT(SUBSTRING(message, 1, 2000), ' ...') END as 'message' ";
         $query = sprintf(
             "SELECT timestamp, %s FROM %s ORDER BY timestamp DESC",
             $colmessage,
@@ -7828,41 +7828,7 @@ EOL;
 
         echo '<h2>', _PLUGS_TITLE_MANAGE, ' ', help('plugins'), '</h2>';
 
-        //
-        echo '<h3>' . _ADMIN_TEXT_PLG_CHECK_PRELOAD . '</h3>';
-        $enable_plg_check_preload = CONF::asBool('enable_plg_check_preload');
-        $check1                   = $enable_plg_check_preload ? 'checked' : '';
-        $check0                   = ! $enable_plg_check_preload ? 'checked' : '';
-        ?>
-            <form method="post" action="index.php">
-               <div>
-                   <input type="hidden" name="action" value="settings_enable_plg_check_preload" />
-                   <input type="radio" id="pl_check_value1" name="pl_check_value" value="1" <?php echo $check1; ?> />
-                   <label for="pl_check_value1"><?php echo _YES; ?></label>
-                   <input type="radio" id="pl_check_value0" name="pl_check_value" value="0" <?php echo $check0; ?> />
-                   <label for="pl_check_value0"><?php echo _NO; ?></label>
-                   <?php $manager->addTicketHidden() ?>
-                   <input type="submit" value="<?php echo escapeHTML(_SUBMIT) ?>" tabindex="21" />
-               </div>
-           </form>
-        <?php
-
         echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
-
-        $enable_remote_update = CONF::asBool('ENABLE_PLUGIN_UPDATE_CHECK') && (int) $member->getOption('system', 'enable_remote_update', '1');
-        if ( ! class_exists('ZipArchive')) {
-            printf('<div class="note" style="float: right">%s</div><br /><br />', 'Not Installed PHP:ZipArchive');
-        } elseif ($enable_remote_update) {
-            echo '<div style="float: right">';
-            ?>       <form method="post" action="index.php">
-                        <div>
-                            <input type="hidden" name="action" value="settings_remote_update" />
-                            <?php $manager->addTicketHidden() ?>
-                            <input type="submit" value="<?php echo escapeHTML(_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS) ?>" tabindex="20" />
-                        </div>
-                    </form></div>
-            <?php
-        }
 
         $query = sprintf("SELECT * FROM %s ORDER BY porder ASC", sql_table('plugin'));
 
@@ -7921,13 +7887,7 @@ EOL;
                 if ( ! @is_file($file)) {
                     $file = $file1;
                 }
-                $isvalid = $manager->checkifValidPluginBeforeLoad($file, true);
-                if ($isvalid) {
-                    $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
-                } else {
-                    $disabled  = (CONF::asBool('enable_plg_check_preload') ? 'disabled' : '');
-                    $options[] = sprintf('  <option value="NP_%s" %s><red>[&#10060;]</red> %s</option>', $name, $disabled, hsc($name));
-                }
+                $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
             }
             $options_tag = implode("\n  ", $options);
 
@@ -7943,295 +7903,8 @@ EOL;
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
 
-        //
-        if ($enable_remote_update && class_exists('ZipArchive')) {
-            // リモートからダウンロード
-            echo '<h3>' . _ADMIN_TEXT_REMOTE_DOWNLOAD . '</h3>';
-            echo "<form method='post' action='index.php'><div>\n";
-            echo "  <input type='hidden' name='action' value='plugindownload' />\n";
-            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
-            $options = [];
-            foreach ($this->getSortedDownloadList($list_installed_PluginName) as $item) {
-                $options[] = sprintf('  <option value="NP_%s">%s</option>', $item['name'], $item['icon'] . hsc($item['name']));
-            }
-            $options_tag = implode("\n  ", $options);
-            echo '  <select name="pluginname" tabindex="30">' . $options_tag . "</select>\n";
-            echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _ADMIN_TEXT_DOWNLOAD_PL_FOLDER);
-            echo "</div></form>\n";
-        }
-
         echo "\n";
         $this->pagefoot();
-    }
-
-    private function getSortedDownloadList(&$lc_np_name_installedlist = null)
-    {
-        global $DIR_PLUGINS, $manager;
-        $lists = [];
-        // 💻: &#x1F4BB;
-        // 📁: &#x1F4C1;
-        foreach (self::getPickupDownloadList() as $i => $name) {
-            $item = ['name' => $name, 'icon' => '', 'order0' => $i, 'state' => 0];
-            if (in_array('np_'.strtolower($name), (array) $lc_np_name_installedlist)) {
-                $item['icon']  = '[&#x1F4BB;] ';
-                $item['state'] = 2;
-                $fullfilename  = $DIR_PLUGINS.sprintf("%s/NP_%s.php", strtolower($name), $name);
-                //if ( ! @is_file($fullfilename)) {
-                if ( ! $manager->checkifValidPluginBeforeLoad($fullfilename, true)) {
-                    $item['icon'] = '[&#x1F6A8;] ';
-                    if (CONF::asBool('enable_plg_check_preload')) {
-                        $item['state'] = 3;
-                    }
-                    //⚠️ - &#x26A0;
-                    //🛑 - &#x1F6D1;
-                    //🚨 - &#x1F6A8;
-                }
-            } elseif (@is_file($DIR_PLUGINS.sprintf("%s/NP_%s.php", strtolower($name), $name))) {
-                $item['icon']  = '[&#x1F4C1;] ';
-                $item['state'] = 1;
-            }
-            $lists[] = $item;
-        }
-        // sort
-        uasort($lists, function ($a, $b) {
-            $res = $a['order0'] > $b['order0'] ? 1 : -1;
-            if ($a['state'] && $b['state']) {
-                if ($a['state'] === $b['state']) {
-                    return $res;
-                }
-                return $a['state'] > $b['state'] ? -1 : 1;
-            }
-            if ($a['state']) {
-                return -1;
-            }
-            if ($b['state']) {
-                return 1;
-            }
-            return $res;
-        });
-        return $lists;
-    }
-
-    public static function canRemoteDownload($name): bool
-    {
-        $lists = self::get_remote_plugin_list();
-
-        if (str_starts_with(strtolower($name), 'np_')) {
-            $lc_np_name = strtolower($name);
-        } else {
-            $lc_np_name = 'np_'.strtolower($name);
-        }
-        if (empty($lists) || ! isset($lists[$lc_np_name])) {
-            return false;
-        }
-        $a = self::getDisallowDownloadList();
-        foreach ($a as $v) {
-            $lc = 'np_'.strtolower($v);
-            if ($lc_np_name === $lc) {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    public static function getPickupDownloadList()
-    {
-        $a = [
-            'CKEditor',    // Editor
-            'CustomURL',  // not work, broken
-            'ExtraSkinJP',
-            'ImpExp',     // not work, broken / Export to MT file
-            'LinkCounter',
-            'MultipleCategories',
-            'StickyIt',
-            'znBackupNeo', //'znMCList',
-        ];
-        $b = self::get_remote_plugin_list();
-        $c = array_map(fn ($s) => 'np_'.strtolower($s), self::getDisallowDownloadList());
-        if ( ! empty($b)) {
-            foreach ($b as $lc_np_name => $item) {
-                if ( ! in_array($lc_np_name, $c)
-                        && isset($item['name'])
-                        && preg_match('#^NP_(.+)$#', $item['name'], $m)
-                        && ! in_array($m[1], $a)
-                ) {
-                    $a[] = $m[1];
-                }
-            }
-        }
-
-        return $a;
-    }
-
-    public static function getDisallowPluginList()
-    {
-        return [
-           'Analyze',    // dangerous plugin, be seriously injured
-        ];
-    }
-
-    public static function getDisallowDownloadList()
-    {
-        $list = [
-           'TinyMCE',    // not work, broken
-           'TinyMCE4',    // not work, broken
-        ];
-        $list = array_merge($list, self::getDisallowPluginList());
-        sort($list);
-        return $list;
-    }
-
-    public function action_plugindownload()
-    {
-        global $member;
-
-        // check if allowed
-        $member->isAdmin() or $this->disallow();
-
-        $np_name = preg_replace('#[^0-9a-z_]+#i', '', PostVar::asStr('pluginname'));
-
-        $allow = self::getPickupDownloadList();
-        if ( ! preg_match('#^NP_(.+)$#', $np_name, $m)
-            || ! self::canRemoteDownload($np_name)
-//            || ! in_array($m[1], $allow)
-            || in_array($m[1], self::getDisallowDownloadList())
-        ) {
-            redirect('?action=pluginlist');
-        }
-
-        // Download plugin
-        $success = self::download_plugin($np_name);
-
-        if ($success) {
-            // check exists
-            $sql = sprintf(
-                'SELECT count(*) FROM `%s` WHERE lower(pfile) = %s',
-                sql_table('plugin'),
-                sql_quote_string(strtolower($np_name))
-            );
-            if ((int) quickQuery($sql)) {
-                // update all events
-                $this->action_pluginupdate();
-            }
-        }
-
-        redirect('?action=pluginlist');
-    }
-
-    public static function download_plugin($np_name): bool
-    {
-        global $DIR_NUCLEUS, $DIR_PLUGINS;
-        $np_name    = preg_replace('#[^0-9a-z_]+#i', '', $np_name);
-        $lc_np_name = strtolower($np_name);
-        $shortname  = substr($lc_np_name, 3);
-        if ( ! class_exists('ZipArchive') || ! str_starts_with($np_name, 'NP_')
-            || empty($shortname)
-            || in_array(substr($np_name, 3), self::getDisallowPluginList())) {
-            return false;
-        }
-        $extract_dir = $DIR_PLUGINS . $shortname;
-        $cache_dir   = $DIR_NUCLEUS . 'cache';
-        if ( ! @is_dir($DIR_PLUGINS) || ! @is_writable($DIR_PLUGINS)
-            || ! @is_dir($cache_dir) || ! @is_writable($cache_dir)) {
-            return false;
-        }
-
-        $branch = 'master';
-        $lists  = self::get_remote_plugin_list();
-        if ( ! empty($lists) && isset($lists[$lc_np_name]) && isset($lists[$lc_np_name]['default_branch'])) {
-            $branch = $lists[$lc_np_name]['default_branch'] ?? 'master';
-        }
-
-        $options = [
-            'useragent' => DEFAULT_USER_AGENT,
-        ];
-        $url        = sprintf('https://github.com/NucleusCMS/%s/archive/refs/heads/%s.zip', $np_name, $branch);
-        $zip_memory = file_get_contents($url); //Utils::httpGet($url, $options);
-        if (false === $zip_memory) {
-            return false;
-        }
-        $tmpfile = tempnam($cache_dir, 'tmp');
-        if (false === $tmpfile) {
-            return false;
-        }
-        $result = false;
-        try {
-            if (false !== @file_put_contents($tmpfile, $zip_memory)) {
-                $np_files = [];
-                $zip      = new ZipArchive();
-                if ($zip && true === $zip->open($tmpfile)) {
-                    // check filename and rename
-                    try {
-                        $rm_list = [
-                            '.editorconfig',
-                        ];
-                        // search NP_ file
-                        for ($i = 0; $i < $zip->numFiles; $i++) {
-                            $filename = $zip->getNameIndex($i);
-                            if ("{$np_name}.php" === $filename || str_ends_with($filename, "/{$np_name}.php")) {
-                                $np_files[] = $filename;
-                            }
-                        }
-                        if (empty($np_files)) {
-                            return false;
-                        }
-                        sort($np_files);
-                        $path      = dirname($np_files[0]) . '/';
-                        $childpath = $path . $shortname . '/';
-                        // Remove Files , drop layer
-                        $i = $zip->numFiles;
-                        while ($i > 0) {
-                            $i--;
-                            $filename = $zip->getNameIndex($i);
-                            if ( ! str_starts_with($filename, $path)) {
-                                $zip->deleteIndex($i);
-                            } elseif (str_starts_with($filename, $childpath)) {
-                                $newname = substr($filename, strlen($childpath));
-                                if ('' === $newname || in_array(basename($newname), $rm_list)) {
-                                    $zip->deleteIndex($i);
-                                } else {
-                                    $zip->renameIndex($i, $newname);
-                                }
-                            } else {
-                                $newname = substr($filename, strlen($path));
-                                if ('' === $newname || in_array(basename($newname), $rm_list)) {
-                                    $zip->deleteIndex($i);
-                                } else {
-                                    $zip->renameIndex($i, $newname);
-                                }
-                            }
-                        }
-                    } finally {
-                        $zip->close();
-                    }
-                    if ( ! @is_dir($extract_dir)) {
-                        // move type1 --> type2
-                        $shortname = substr($lc_np_name, 3);
-                        if (@is_file($DIR_PLUGINS . $np_name . '.php') || @is_dir($DIR_PLUGINS . $shortname)) {
-                            if (@mkdir($extract_dir)) {
-                                if (@is_file($DIR_PLUGINS . $np_name . '.php')) {
-                                    @rename($DIR_PLUGINS . $np_name . '.php', "{$extract_dir}/{$np_name}.php");
-                                }
-                                if (@is_dir($DIR_PLUGINS . $shortname)) {
-                                    @rename($DIR_PLUGINS . $shortname, "{$extract_dir}/{$shortname}");
-                                }
-                            }
-                        }
-                    }
-                    if ( ! empty($np_files) && true === $zip->open($tmpfile)) {
-                        try {
-                            $success = @$zip->extractTo($extract_dir);
-                            $result  = $success ? true : false;
-                        } finally {
-                            $zip->close();
-                        }
-                    }
-                }
-            }
-        } finally {
-            @unlink($tmpfile); // Delete tmp file
-        }
-        return $result;
     }
 
     /**
@@ -8345,6 +8018,15 @@ EOL;
             sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid=' . (int) $iPid);
             $manager->clearCachedInfo('installedPlugins');
             $this->error(_ERROR_PLUGIN_LOAD);
+        }
+
+        if (350 > $plugin->getMinNucleusVersion()) {
+            // sql_関数 [350 - ]
+            // uninstall plugin again...
+            $this->deleteOnePlugin($plugin->getID());
+
+            // ...and show error
+            @$this->error(_ERROR_PLUGINVERSIONREQ . hsc($plugin->getMinNucleusVersion()));
         }
 
         // check if plugin needs a newer Nucleus version
@@ -8547,15 +8229,6 @@ EOL;
 
         // delete row
         sql_query('DELETE FROM ' . sql_table('plugin') . ' WHERE pid=' . $pid);
-
-        // delete cached_data
-        if (CoreCachedData::existTable()) {
-            sql_query(sprintf(
-                "DELETE FROM `%s` WHERE `cd_type` = 'plugin_remote_latest_version' AND `cd_sub_id` = %d",
-                sql_table('cached_data'),
-                $pid
-            ));
-        }
 
         $manager->clearCachedInfo('installedPlugins');
         $param = ['plugid' => $pid];
@@ -8990,7 +8663,7 @@ EOL;
         $title = _ERRORS_STARTUPERROR3;
         $msg   = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
         // check core upgrade
-        if ((int) $CONF['DatabaseVersion'] < CORE_APPLICATION_DATABASE_VERSION_ID) {
+        if ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) {
             $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
             $msg        = sprintf('<h2>%s</h2>', hsc(_ADMIN_TEXT_UPGRADE_REQUIRED)) .
                 sprintf(
@@ -9468,192 +9141,6 @@ EOD;
         return sprintf(' AND( %s ) ', $where);
     }
 
-    public static function get_remote_plugin_list()
-    {
-        static $cached = null;
-        if ( ! function_exists('json_decode')) { // PHP 5 >= 5.2.0
-            return false;
-        }
-
-        $expired_time = time() - 60 * 60 * 6; // cache expired time 6 hour
-
-        if (false === $cached) {
-            return false;
-        }
-
-        $col_type     = 'plugin_remote_list';
-        $col_sub_type = 'json';
-        $col_name     = 'github';
-
-        if (null === $cached) {
-            if ( ! CoreCachedData::existTable()) {
-                $cached = false;
-                return false;
-            }
-            $cached = CoreCachedData::getDataEx($col_type, $col_sub_type, 0, $col_name, $expired_time);
-        }
-
-        $http_options = ['connecttimeout' => 5, 'timeout' => 5];
-        if (empty($cached) || ! isset($cached['expired']) || $cached['expired']) {
-            $http_raw_options = array_merge($http_options, ['reply_response' => 1]);
-            if ( ! is_array($cached)) {
-                $cached = ['value' => ''];
-            }
-            $url = "https://api.github.com/users/NucleusCMS/repos?per_page=100";
-            ini_set('user_agent', DEFAULT_USER_AGENT);
-            $count   = 0;
-            $data    = [];
-            $nexturl = $url;
-            while ($count < 100 && ($s = Utils::httpGet($nexturl, $http_raw_options))) {
-                $count++;
-                if ( ! is_array($s)) {
-                    $s = ['body' => $s];
-                }
-                if (isset($s['header'])) {
-                    if (false === stripos($s['header'], "\nContent-Type: application/json")) {
-                        break;
-                    }
-                    // !preg_match('#HTTP.+? 200#i', $s['header'])
-                }
-                if ( ! empty($s['body']) && ('[' == substr(ltrim($s['body']), 0, 1))) {
-                    $lists = json_decode($s['body'], true);
-                    if ( ! empty($lists) && is_array($lists)) {
-                        $data = array_merge($data, $lists);
-                    }
-                    // save cache folder
-                    if (isDebugMode()) {
-                        global $DIR_NUCLEUS;
-                        $tmp = $DIR_NUCLEUS . 'cache/' . sprintf('tmp-github-plugin-page-%d', $count);
-                        if (@is_dir(dirname($tmp))) {
-                            @file_put_contents($tmp, $s['body']);
-                        }
-                    }
-                }
-                if ( ! isset($s['header']) || empty($s['header'])) {
-                    break;
-                }
-                //                var_dump($s['header']);
-                //  次のページの URL の後には rel="next" が続きます。
-                // Link: <https://api.github.com/user/[0-9]+/repos?page=2>; rel="next"
-                $pattern = '#repos\?.*?page=([0-9]+)>; rel="next"#i';
-                $m       = [];
-                if ( ! preg_match($pattern, $s['header'], $m)) {
-                    break;
-                }
-                $nextpage = (int) $m[1];
-                if (($count + 1) != $nextpage) {
-                    break;
-                }
-                $nexturl = $url . '&page=' . $nextpage;
-            }
-            if ( ! empty($data)) {
-                foreach ($data as $k => $v) {
-                    if ( ! isset($v['name']) || ! preg_match('#^NP_#', $v['name'])) {
-                        unset($data[$k]);
-                    }
-                }
-            }
-            if (empty($data)) {
-                $cached = false;
-                return false;
-            }
-            usort($data, fn ($a, $b) => strcasecmp($a['name'], $b['name']));
-
-            $cached['list'] = [];
-            foreach ($data as $value) {
-                $name                  = strtolower($value['name']);
-                $cached['list'][$name] = $value;
-            }
-            $cached['value'] = json_encode($data);
-            CoreCachedData::setDataEx($col_type, $col_sub_type, 0, $col_name, $cached['value']);
-        }
-
-        if ( ! empty($cached['value']) && ! isset($cached['list'])) {
-            $cached['list'] = [];
-            $data           = json_decode($cached['value'], true);
-            foreach ($data as $value) {
-                $name                  = strtolower($value['name']);
-                $cached['list'][$name] = $value;
-            }
-        }
-
-        if ( ! empty($cached['list'])) {
-            return $cached['list'];
-        }
-        return false;
-    }
-
-    public static function getRemotePluginVersion($NP_Name, $trim = false)
-    {
-        static $cached = [];
-
-        if (false === $cached || ! function_exists('json_decode')) {
-            return false;
-        }
-
-        $lc_name = strtolower($NP_Name);
-        if (isset($cached[$lc_name])) {
-            return $cached[$lc_name];
-        }
-        $expired_time = time() - 60 * 60 * 6; // cache expired time 6 hour
-
-        $lists = self::get_remote_plugin_list();
-
-        if (empty($lists)) {
-            $cached = false;
-            return false;
-        }
-        if ( ! isset($lists[$lc_name]) || (isset($cached[$lc_name]) && false === $cached[$lc_name])) {
-            $cached[$lc_name] = false;
-            return false;
-        }
-
-        $current_data = &$lists[$lc_name];
-        $branch       = $current_data['default_branch'] ?? 'master';
-        $rooturl      = "https://raw.githubusercontent.com/NucleusCMS/{$NP_Name}/{$branch}/";
-        $url          = $rooturl . "{$NP_Name}.php";
-
-        $retry_url     = false;
-        $extra_pattern = false;
-
-        switch ($lc_name) { // Workaround for unusual repositories
-            case 'np_extraskinjp':
-                $retry_url = $url;
-                $url       = $rooturl . "plugins/{$NP_Name}.php";
-                break;
-        }
-
-        $s = Utils::httpGet($url, ['connecttimeout' => 2, 'timeout' => 2]);
-        if (empty($s) && ! empty($retry_url)) {
-            $s = Utils::httpGet($retry_url, ['connecttimeout' => 2, 'timeout' => 2]);
-        }
-        if (empty($s)) {
-            $s = file_get_contents($url);
-        }
-
-        $pattern0 = '\s*\([^"\']+?return\s+["\']([^"\']+?)["\']';
-        $pattern1 = "/getVersion{$pattern0}/im";
-        $pattern2 = "/getMinNucleusVersion{$pattern0}/im";
-
-        if (preg_match('@^//\s+min-php-version\s*:\s*([0-9\.]+)@ms', $s, $m) && version_compare(PHP_VERSION, $m[1], '<')) {
-            return false;
-        }
-
-        if (preg_match($pattern1, $s, $m) || ( ! empty($extra_pattern) && preg_match($extra_pattern, $s, $m))) {
-            // Check plugin's min nucleus version
-            /** @var TYPE_NAME $m2 */
-            $m2 = [];
-            if (preg_match($pattern2, $s, $m2) && ((int) $m2[1] > CORE_APPLICATION_VERSION_ID)) {
-                return false;
-            }
-            if ($trim) {
-                return preg_replace('#[^0-9\.\-\_]+.+?$#', '', $m[1]);
-            }
-            return $m[1];
-        }
-        return false;
-    }
-
     public static function createActionLink($action_name, $params = '')
     {
         if (is_array($params)) {
@@ -9766,8 +9253,8 @@ EOD;
 
         $member->setPassword($new_password);
         $sql = sprintf(
-            "UPDATE `%s` SET mpassword=? WHERE mnumber=%d",
-            sql_table('member'),
+            "UPDATE %s SET mpassword=? WHERE mnumber=%d",
+            sql_tableQuote('member'),
             $member->getID()
         );
         $res   = sql_prepare_execute($sql, [$member->getPassword()]);
@@ -9830,6 +9317,9 @@ EOD;
 
     public static function doTidy(&$data)
     {
+        if (empty(ENABLE_FEATURE_TIDY)) {
+            return;
+        }
         if ( ! extension_loaded('tidy') || _CHARSET !== 'UTF-8') {
             return;
         }
@@ -9921,36 +9411,18 @@ EOD;
 
     public static function getVersionCheckWebPageURL(): string
     {
-        if (CORE_APPLICATION_NAME !== 'Nucleus CMS') {
-            return '';
-        }
-        $versioncheck_url = 'http://nucleuscms.org/version.php?v=%d&amp;pl=%d';
-        return sprintf($versioncheck_url, getNucleusVersion(), getNucleusPatchLevel());
-        //return sprintf(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL, getNucleusVersion(), getNucleusPatchLevel());
+        \trigger_error("[Deprecated] : _ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL ", E_USER_DEPRECATED);
+        return '';
     }
 
     public static function getAppNameFullVersionText(): string
     {
-        $version_text = sprintf('%s %s', CORE_APPLICATION_NAME, CORE_APPLICATION_VERSION);
-        if (NUCLEUS_RELEASE_IDENTIFIER !== '') {
-            $version_text .= ' ' . NUCLEUS_RELEASE_IDENTIFIER;
-        }
-        return strip_tags($version_text);
+        return strip_tags(sprintf('%s %s', CORE_APPLICATION_NAME, NUCLEUS_VERSION_TEXT));
     }
 
     public static function getAboutHtmlTag(): string
     {
-        $checkURL = self::getVersionCheckWebPageURL();
-        if (empty($checkURL)) {
-            return hsc(self::getAppNameFullVersionText());
-        } else {
-            return sprintf(
-                '<a href="%s" title="%s" target="_blank" rel="noreferrer">%s</a>',
-                $checkURL,
-                hsc(_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE),
-                hsc(self::getAppNameFullVersionText())
-            );
-        }
+        return hsc(self::getAppNameFullVersionText());
     }
 
     public static function getTabIndex(?int $idx = null)
@@ -9966,5 +9438,13 @@ EOD;
     {
         $url = CONF::asStrWithPathSlash('AdminURL', '/nucleus/');
         return parse_url($url, PHP_URL_PATH);
+    }
+
+    public static function getSqlOrderBlog(string $aliasname = ''): string
+    {
+        if ( ! empty($aliasname)) {
+            $aliasname .= '.';
+        }
+        return " {$aliasname}blast_modyfied DESC, {$aliasname}bname ASC ";
     }
 } // class ADMIN

@@ -162,7 +162,7 @@ class PAGEFACTORY extends BaseActions
     {
         global $DIR_LIBS;
 
-        $filename = "{$DIR_LIBS}include/{$this->type}-{$this->method}.template";
+        $filename = "{$DIR_LIBS}template/{$this->type}-{$this->method}.template";
 
         if ( ! is_file($filename)) {
             return '';

@@ -25,7 +25,7 @@ function startUpError($msg, $title)
     if ( ! defined('NC_LIBS_PATH')) {
         define('NC_LIBS_PATH', dirname(__DIR__) . '/');
     }
-    $tpl             = file_get_contents(NC_LIBS_PATH . 'include/startup_error.template');
+    $tpl             = file_get_contents(NC_LIBS_PATH . 'template/startup_error.template');
     $ph              = [];
     $ph['lang_code'] = defined('_HTML_5_LANG_CODE') ? _HTML_5_LANG_CODE : 'en';
     $ph['CHARSET']   = _CHARSET;
@@ -243,35 +243,23 @@ function selectQuery($table_name, $where = '', $fields = '*', $extra = [])
     return "SELECT {$fields} FROM {$table_name} {$where} {$extra}";
 }
 
-function updateQuery($table_name, $values, $where = '', $extra = [])
+function updateQuery(string $table_name, array $values, string|array $where = '', array $extra = [])
 {
-    $table_name = parseQuery($table_name);
-
     if (is_array($where)) {
         $where = implode(' ', $where);
     }
-
-    if ( ! is_array($values)) {
-        $pairs = $values;
-    } else {
-        foreach ($values as $key => $value) {
-            if (null === $value || 'null' === strtolower($value)) {
-                $value = 'NULL';
-            } elseif (str_contains($key, ':expr')) {
-                $key = str_replace(':expr', '', $key);
-            } else {
-                $value = sql_quote_string($value);
-            }
-            $pair[$key] = "`{$key}`={$value}";
+    // $extra : not implemented
+    $qb = getOrmQueryBuilder()
+            ->update(parseQuery($table_name));
+    foreach (array_keys($values) as $key) {
+        if (str_starts_with($key, ':')) {
+            $key = substr($key, 1);
         }
-        $pairs = implode(',', $pair);
+        $qb->set($key, ":{$key}");
     }
-
-    if ('' != $where) {
-        $where = "WHERE {$where}";
-    }
-
-    return sql_query("UPDATE {$table_name} SET {$pairs} {$where}");
+    $qb->setParameters($values)
+       ->where($where)
+       ->executeStatement();
 }
 
 function _getFieldsStringFromArray($fields = [])
@@ -338,4 +326,263 @@ function fix_mysql_sqlmode($conn_or_dbh = null)
     ];
     $new_sqlmode = implode(',', $options);
     sql_query(sprintf("SET SESSION sql_mode = '%s';", $new_sqlmode), $dbh);
+}
+
+/**
+ * Doctrine\DBAL\DriverManager::getConnection
+ */
+function getOrmConnection(): ?\Doctrine\DBAL\Connection
+{
+    global $ORM_CONN;
+    return $ORM_CONN ? $ORM_CONN : null;
+}
+
+/**
+ *
+ */
+function getOrmSchemaManager(): ?\Doctrine\DBAL\Schema\AbstractSchemaManager
+{
+    return getOrmConnection()?->createSchemaManager();
+}
+
+/**
+ *
+ */
+function getOrmQueryBuilder(): ?\Doctrine\DBAL\Query\QueryBuilder
+{
+    return getOrmConnection()?->createQueryBuilder();
+}
+
+/**
+ * Connects to Database server
+ */
+function orm_connect_args(
+    $db_host = 'localhost',
+    $db_user = '',
+    $db_password = '',
+    $db_name = ''
+) {
+    global $DB_DRIVER_NAME;
+    if ( ! class_exists('Doctrine\DBAL\DriverManager')) {
+        require_once __DIR__ . '/../vendor/autoload.php';
+    }
+
+    ini_set('default_charset', "UTF-8");
+
+    if ( ! class_exists('PDO')) {
+        exit('Critical error. pdo module is not loaded.');
+    }
+
+    $supported_drivers = ['mysql', 'sqlite', 'pgsql'];
+    //  $supported_drivers[] = 'drivername'; // for debug
+
+    if (
+        empty($DB_DRIVER_NAME) ||
+        ! in_array(strtolower($DB_DRIVER_NAME), $supported_drivers)
+    ) {
+        exit('Critical error: Invalid driver name. Check the config file.');
+    }
+    if (null === $db_name) {
+        $db_name = '';
+    }
+    if (null === $db_password) {
+        $db_password = '';
+    }
+
+    $options = [
+         PDO::ATTR_ERRMODE          => PDO::ERRMODE_SILENT,
+         PDO::ATTR_EMULATE_PREPARES => false,
+         //PDO::ATTR_ERRMODE => PDO::ERRMODE_SILENT,
+//           PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    ];
+
+    $conn = null;
+    try {
+        if ( ! str_contains($db_host, ':')) {
+            $host    = $db_host;
+            $port    = '';
+            $portnum = '';
+        } else {
+            [$host, $port] = explode(":", $db_host);
+            if (isset($port)) {
+                $portnum = $port;
+                $port    = ';port=' . trim($port);
+            } else {
+                $port    = '';
+                $portnum = '';
+            }
+        }
+
+        switch (strtolower($DB_DRIVER_NAME)) {
+            case 'sqlite':
+                if ( ! extension_loaded('PDO_SQLITE')) {
+                    $msg = 'Critical error: pdo_sqlite module is not loaded.';
+                    startUpError($msg, 'Connect Error');
+                }
+
+                // check file path
+                $db_path = trim(dirname($db_name));
+                if (':memory:' !== $db_name) {
+                    if (
+                        (0 == strlen($db_path)) || ! is_dir($db_path)
+                        || ( ! str_contains(str_replace("\\", '/', $db_path), '/'))
+                    ) {
+                        exit('ERROR : database filename maybe wrong ');
+                    }
+                }
+                $connectionParams = [
+                    'driver' => 'pdo_sqlite',
+//                        'user' => $db_user,
+//                        'password' => $db_password,
+                    'path' => $db_name,
+//                        'memory' => ':memory:' === $db_name,
+                  ];
+                break;
+            case 'mysql':
+                $connectionParams = [
+                    'driver'   => 'pdo_mysql',
+                    'user'     => $db_user,
+                    'password' => $db_password,
+                    'host'     => $db_host,
+                    'dbname'   => $db_name,
+                    'charset'  => 'utf8',
+                  ];
+                if ('' !== $portnum) {
+                    $connectionParams['port'] = (int) $portnum;
+                }
+                break;
+            case 'pgsql':
+                $connectionParams = [
+                    'driver'   => 'pdo_pgsql',
+                    'user'     => $db_user,
+                    'password' => $db_password,
+                    'host'     => $db_host,
+                    'dbname'   => $db_name,
+                    'charset'  => 'utf8',
+                  ];
+                if ('' !== $portnum) {
+                    $connectionParams['port'] = (int) $portnum;
+                }
+                // [Error] An exception occurred in the driver: SQLSTATE[08006] [7] FATAL: データベース"ユーザー名"は存在しません
+                // データベース名: 未指定の場合はログインユーザー名のデータベースに接続する仕様
+                // データベース指定しない場合は、postgresに接続しておく
+                if (('' === $db_name) && isset($connectionParams['dbname'])) {
+                    $connectionParams['dbname'] = 'postgres';
+                }
+                break;
+            default:
+                $msg = sprintf("<h1>Critical Error</h1><p>%s driver is not suported.</p>", escapeHTML($DB_DRIVER_NAME))
+                            . "<p>Please check whether there is misspelling. Supported are 'mysql', 'sqlite', 'pgsql'.</p>";
+                trigger_error($msg, E_USER_ERROR);
+                break;
+        }
+
+        $conn   = null;
+        $config = new Doctrine\DBAL\Configuration($options);
+        try {
+            $old_display_errors = ini_get('display_errors');
+            ini_set('display_errors', 0);
+            $conn = Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
+            $DBH  = $conn?->getNativeConnection();
+        } catch (Exception $exc) {
+            //echo $exc->getTraceAsString();
+            $conn = null;
+            $DBH  = null;
+            throw $exc;
+        } finally {
+            ini_set('display_errors', $old_display_errors);
+        }
+        if ($conn && $DBH) {
+            switch (strtolower($DB_DRIVER_NAME)) {
+                case 'mysql':
+                    $charset = 'utf8';
+                    if (
+                        version_compare('5.5.0', sql_get_server_version($DBH), '<=')
+                        && sql_query("SHOW CHARACTER SET LIKE 'utf8mb4'", $DBH)
+                    ) {
+                        $charset = 'utf8mb4';
+                    }
+                    sql_set_charset($charset, $DBH);
+                    fix_mysql_sqlmode($DBH);
+                    break;
+                case 'sqlite':
+                    if ( ! class_exists('sqlite_functions')) {
+                        require_once(__DIR__ . '/sqlite_functions.php');
+                    }
+                    sqlite_functions::pdo_register_user_functions($DBH);
+                    break;
+            }
+        }
+    } catch (Exception $e) {
+        $conn = null;
+        $DBH  = $m = null;
+        unset($conn);
+        $msg = '<b>Could not connect to database.</b>';
+        if (($e instanceof \Doctrine\DBAL\Exception\ConnectionException)
+         || ($e instanceof PDOException)
+        ) {
+            if (defined('NC_MTN_MODE') && (NC_MTN_MODE === 'install')) {
+                $m = trim($e->getMessage());
+                if ( ! empty($m)) {
+                    $m = mb_convert_encoding($m, 'UTF-8', 'AUTO,UTF-8,SJIS-WIN,EUC-JP');
+                    $msg .= sprintf("<br />%s\n", htmlspecialchars($m, ENT_QUOTES | ENT_SUBSTITUTE | ENT_DISALLOWED));
+                }
+            } elseif (isDebugMode()) {
+                if (preg_match('#^(SQLSTATE[^\'\"]+[^:\'\"/]+)#', $e->getMessage(), $m)) {
+                    $msg .= sprintf("<br />%s\n", escapeHTML($m[1]));
+                }
+            }
+        }
+        startUpError('<div>'. $msg . '</div>', 'Error');
+        exit;
+    }
+
+    return $conn;
+}
+
+/**
+ * Connects to Database server
+ */
+function orm_connect()
+{
+    global $DB_HOST, $DB_USER, $DB_PASSWORD, $DB_DATABASE;
+    global $SQL_DBH, $ORM_CONN;
+
+    $ORM_CONN = null;
+    try {
+        // 失敗すると接続情報吐き出すので tryで保護する
+        $conn = orm_connect_args(
+            $DB_HOST,
+            $DB_USER,
+            $DB_PASSWORD,
+            $DB_DATABASE
+        );
+    } catch (Exception $exc) {
+        //echo $exc->getTraceAsString();
+    }
+    if (empty($conn)) {
+        $title = 'Error';
+        $msg   = '<div><b>Could not connect to database.</b></div>';
+        startUpError($msg, $title);
+        exit;
+    }
+    $SQL_DBH  = $conn->getNativeConnection();
+    $ORM_CONN = $conn;
+    return $ORM_CONN;
+}
+
+/**
+ *
+ */
+function ormCreateTable(\Doctrine\DBAL\Schema\Table $table): void
+{
+    $schemamanager = getOrmSchemaManager();
+    if ($schemamanager instanceof \Doctrine\DBAL\Schema\MySQLSchemaManager) {
+        if (empty($table->getOption('engine'))) {
+            $table->addOption('engine', "InnoDB");
+        }
+    } elseif (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\PostgreSQLSchemaManager) {
+    } elseif (getOrmSchemaManager() instanceof \Doctrine\DBAL\Schema\SQLiteSchemaManager) {
+    }
+    $schemamanager->createTable($table);
 }

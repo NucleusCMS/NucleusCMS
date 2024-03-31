@@ -18,6 +18,7 @@ function upgrade_do380()
     upgrade_do380_addtable_memberoption();
     upgrade_do380_plugin_option_desc();
     upgrade_do380_item();
+    upgrade_do380_innodb();
 
     //  -> 3.80
     // update database version
@@ -241,14 +242,43 @@ function upgrade_do380_item()
         if ( ! sql_existTableColumnName(parseQuery('[@prefix@]item'), $colname)) {
             $query = parseQuery("ALTER TABLE `[@prefix@]item` ADD COLUMN `{$colname}` {$value}");
             upgrade_query('Altering [@prefix@]item table', $query);
-        }
 
-        // create index
-        if ('sqlite' === $DB_DRIVER_NAME) {
-            $query = parseQuery("CREATE INDEX IF NOT EXISTS `[@prefix@]item_idx_{$colname}` on `[@prefix@]item` (`{$colname}`);");
-        } else {
-            $query = parseQuery("ALTER TABLE `[@prefix@]item` ADD INDEX `{$colname}` (`{$colname}`)");
+            // create index
+            if ('sqlite' === $DB_DRIVER_NAME) {
+                $query = parseQuery("CREATE INDEX IF NOT EXISTS `[@prefix@]item_idx_{$colname}` on `[@prefix@]item` (`{$colname}`);");
+            } else {
+                $query = parseQuery("ALTER TABLE `[@prefix@]item` ADD INDEX `{$colname}` (`{$colname}`)");
+            }
+            upgrade_query('Altering [@prefix@]item table', $query);
         }
-        upgrade_query('Altering [@prefix@]item table', $query);
     }
+}
+
+// upgrade_do380_innodb();
+function upgrade_do380_innodb()
+{
+    global $DB_DATABASE;
+    $obj = new Backup();
+    //$obj->convert_to_innodb();
+
+    $sql = 'SELECT count(*) FROM INFORMATION_SCHEMA.TABLES'
+          . ' WHERE TABLE_SCHEMA = :databasename '
+          . " AND ENGINE <> 'InnoDB'"
+          . " AND TABLE_NAME = :tablename";
+    $param = ['databasename' => $DB_DATABASE];
+    foreach ($obj->getTablenameLists() as $tablename) {
+        $param['tablename'] = $tablename;
+        if ($tablename === sql_table('systemlog')) {
+            $query = "ALTER TABLE `{$tablename}` MODIFY `logid` BIGINT NOT NULL";
+            upgrade_query("Altering {$tablename} table :`logid` ", $query);
+        }
+        if (sql_direct_getValue_AsInt($sql, $param)) {
+            // table Engine is not innodb
+            $query = 'ALTER TABLE '.sql_quote_identifier($tablename) . ' ENGINE=InnoDB;';
+            upgrade_query("Altering {$tablename} table : ENGINE=InnoDB ", $query);
+        }
+    }
+    // nucleus_systemlog
+    // Fatal error: Uncaught PDOException: SQLSTATE[42000]: Syntax error or access violation: 1075 Incorrect table definition; there can be only one auto column and it must be defined as a key
+    unset($obj);
 }

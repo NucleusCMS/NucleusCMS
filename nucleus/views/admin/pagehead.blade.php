@@ -12,7 +12,7 @@
     <script src="{{ $baseUrl }}javascript/jquery/jquery-migrate.min.js"></script>
     <script type="text/javascript" src="{{ $baseUrl }}javascript/jquery/jquery.cookie.js"></script>
     <script src="{{ $baseUrl }}javascript/edit.js"></script>
-    @if ('createitem' == $oAdmin->action || 'itemedit' == $oAdmin->action)
+    @if ('createitem' == $oAdmin->action || 'itemedit' == $oAdmin->action || 'systemoverview' == $oAdmin->action)
         <link rel="stylesheet" href="{{ $baseUrl }}styles/jquery-ui/jquery-ui.theme.min.css">
         <link rel="stylesheet" href="{{ $baseUrl }}styles/jquery-ui/jquery-ui.structure.min.css">
         @if (_LOCALE == 'ja_JP')

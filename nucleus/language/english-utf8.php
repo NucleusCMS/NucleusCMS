@@ -359,7 +359,6 @@ try_define('_BLOGCREATED_ADVANCEDWAY2',					"Method 2: Call the weblog from exis
 try_define('_BLOGCREATED_ADVANCEDWAY3',					"To finish the weblog creation process, simply please fill out the final URL for your weblog: (might be the same as another already existing weblog)");
 
 // Donate!
-try_define('_ADMINPAGEFOOT_OFFICIALURL',				'http://nucleuscms.org/');
 try_define('_ADMINPAGEFOOT_DONATEURL',					'http://nucleuscms.org/donate.php');
 try_define('_ADMINPAGEFOOT_DONATE',						'Donate!');
 try_define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
@@ -479,7 +478,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus CMS patch level')
 try_define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'Important settings');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'Check for a new version');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'Check on nucleuscms.org if a new version is available: ');
-try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
+try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'');
 try_define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'Check for upgrade');
 try_define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"You haven't enough rights to see the system informations.");
 
@@ -1556,11 +1555,6 @@ try_define('_QMENU_USER_MEMBER_SETTINGS', 'Member settings');
 try_define('_QMENU_USER_PASSWORD', 'Change password');
 try_define('_USER_HOME', 'Home');
 try_define('_ADMIN_TEXT_CONFLICT_DELETE_OLD_PLUGIN', 'There are mixed old-style plugins. Please delete the old-style plugins.');
-try_define('_ADMIN_TEXT_DOWNLOAD_PL_FOLDER', 'Download to plugin folder');
-try_define('_ADMIN_TEXT_REMOTE_AUTO_UPDATE', 'Download and auto-update');
-try_define('_ADMIN_TEXT_REMOTE_DOWNLOAD', 'Download from remote');
-try_define('_ADMIN_TEXT_UPDATENOTIFICATIONSANDDOWNLOADS', 'Update notifications and downloads');
-try_define('_ADMIN_TEXT_DONOTUSEUPDATENOTIFICATIONSANDDOWNLOADS', 'Don\'t use update notifications and downloads');
 
 try_define('_ADMIN_ISTATE_PERIOD_END',     'End');
 try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', 'Expired');
@@ -1573,6 +1567,5 @@ try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'Save and options');
 try_define('_ADMIN_EDIT_OPERATIONS',  "OPERATIONS");
 try_define('_ADMIN_TEXT_DELETE',  "DELETE");
 try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "COMFIRM DELETE");
-try_define('_ADMIN_TEXT_PLG_CHECK_PRELOAD', 'check plugin before loading');
 
 try_define('_TEXT_VIEW',						'View');

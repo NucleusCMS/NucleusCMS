@@ -38,6 +38,7 @@ class SKIN
         'otherblog',
         'plugin',
         'version',
+        'phpversion',
         'nucleusbutton',
         'include',
         'phpinclude',
@@ -276,34 +277,24 @@ class SKIN
         $name,
         $spartstype = 'specialpage'
     ) {
-        global $DB_DRIVER_NAME;
+        $params = [
+            'stype' => $name,
+            'sdesc' => (int) $skinid,
+        ];
+        $qb = getOrmQueryBuilder()
+                ->select('COUNT(*)')
+                ->from(sql_table('skin'))
+                ->where('sdesc = :sdesc');
 
-        $exp = '';
         if ('' !== $spartstype) {
-            $exp = sprintf(
-                " AND spartstype = '%s'",
-                ('specialpage' === $spartstype ? 'specialpage' : 'parts')
-            );
+            $qb->andWhere('spartstype = :spartstype');
+            $params['spartstype'] = ('specialpage' === $spartstype ? 'specialpage' : 'parts');
         }
+        $qb->andWhere('lower(stype) = lower(:stype) LIMIT 1');
 
-        $sql = sprintf(
-            "SELECT COUNT(*) AS result FROM `%s` WHERE sdesc=%d ",
-            sql_table('skin'),
-            (int) $skinid
-        ) . $exp;
-
-        if (false !== stripos('sqlite', $DB_DRIVER_NAME)) {
-            $sql .= " AND lower(stype) = ?";
-        } else {
-            $sql .= " AND stype = ?";
-        }
-
-        $sql .= " LIMIT 1 ";
-
-        $res = sql_prepare_execute($sql, [$name]);
-
-        if ($res && ($o = sql_fetch_object($res))) {
-            return ((int) $o->result > 0);
+        $query = $qb->setParameters($params)->executeQuery();
+        if ($query && ($row = $query->fetchNumeric())) {
+            return ((int) $row[0] > 0);
         }
 
         return false;
@@ -832,6 +823,9 @@ class SKIN
 
     private function doTidy(&$data)
     {
+        if (empty(ENABLE_FEATURE_TIDY)) {
+            return;
+        }
         if ( ! CONF::asBool('tidy_enable')) {
             return;
         }

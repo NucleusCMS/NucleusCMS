@@ -38,7 +38,7 @@ include_libs('PLUGINADMIN.php');
 
 function SE_unlockLogin($login)
 {
-    $sql = sprintf('DELETE FROM `%s` WHERE login=?', sql_table('plug_securityenforcer'));
+    $sql = sprintf('DELETE FROM %s WHERE login=?', sql_tableQuote('plug_securityenforcer'));
     sql_prepare_execute($sql, [$login]);
 }
 
@@ -84,7 +84,7 @@ echo '<table>';
 echo '<tr><th>'._SECURITYENFORCER_ENTITY.'</th><th>'._SECURITYENFORCER_UNLOCK.'?</th></tr>';
 echo '<tr><td colspan="2" class="submit"><input type="submit" value="'._SECURITYENFORCER_UNLOCK.'" /></td></tr>';
 // do query to get all entries, loop
-$sql    = sprintf("SELECT * FROM `%s` WHERE fails >= ? ", sql_table("plug_securityenforcer"));
+$sql    = sprintf("SELECT * FROM %s WHERE fails >= ? ", sql_tableQuote("plug_securityenforcer"));
 $result = sql_prepare_execute($sql, [$plug->max_failed_login]);
 $nums   = 0;
 if ($result) {

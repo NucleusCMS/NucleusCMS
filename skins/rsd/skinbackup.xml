@@ -10,7 +10,7 @@
 <rsd version="1.0">
     <service>
         <engineName><%version%></engineName>
-        <engineLink>http://nucleuscms.org/</engineLink>
+        <engineLink>https://nucleuscms.github.io/</engineLink>
         <homepageLink><%sitevar(url)%></homepageLink>
         <apis>
             <api name="MetaWeblog" preferred="true" apiLink="<%adminurl%>xmlrpc/server.php" blogID="<%blogsetting(id)%>">

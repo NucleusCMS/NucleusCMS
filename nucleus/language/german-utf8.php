@@ -126,7 +126,6 @@ define('_QMENU_MANAGE_SYSTEM',						'System info');
 define('_ADMINPAGEFOOT_COPYRIGHT',					'The Nucleus Group');
 define('_ADMINPAGEFOOT_DONATE',						'Spenden f&uuml;r Nucleus CMS!');
 define('_ADMINPAGEFOOT_DONATEURL',					'http://nucleuscms.org/donate.php');
-define('_ADMINPAGEFOOT_OFFICIALURL',				'http://nucleuscms.org/');
 define('_LIST_SKIN_README_TXT',						'Weitere Informationen lesen');
 define('_SKINEDIT_ALLOWEDBLOGS',					'Erlaubte Blog Namen');
 define('_SKINEDIT_ALLOWEDTEMPLATESS',				'Erlaubte Template Namen');
@@ -177,7 +176,7 @@ define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSPATCHLEVEL',	'Nucleus CMS patch level');
 define('_ADMIN_SYSTEMOVERVIEW_NUCLEUSSETTINGS',		'Wichtige Einstellungen');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK',		'Pr&uuml;fen ob eine neue Version erh&auml;ltlich ist');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TXT',	'Pr&uuml;fen, ob eine neue Version erh&auml;ltlich ist: ');
-define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'http://nucleuscms.org/version.php?v=%d&amp;pl=%d');
+define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'Pr&uuml;fen ob eine neue Version/Uprgrade erh&auml;ltlich ist');
 define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"Sie haben nicht gen&uuml;gend Rechte, um die System informationen einzusehen.");
 

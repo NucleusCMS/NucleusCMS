@@ -3,6 +3,10 @@
 // This file contains variables with the locations of the data dirs
 // and basic functions that every page can use
 
+//$CONF['PHP_BIN'] = '/usr/local/bin/php';
+//$CONF['alertOnSecurityRisk'] = 0;
+//$CONF['debug'] = 1;
+
 // Database connection information
 $DB_HOST = 'hostname';
 $DB_USER = 'username';

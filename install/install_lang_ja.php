@@ -11,7 +11,7 @@
  */
 
 define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
-define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     '認証に失敗しました。インストールする権限がありません。インストール設定ファイルのユーザー名とパスワードを確認してください');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     '認証に失敗しました。インストールする権限がありません。インストール設定ファイルを確認してください');
 define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'インストールをするには、まず install/install-config.php を有効にしてください。ない場合は、install-config.sample.phpをコピーして編集して使ってください。');
 define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、install/install-config.phpを現在のタイムスタンプでアップロードし直してください。');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP %s 以上が使えないかどうか、サーバ管理者に確認して下さい。');
@@ -28,7 +28,8 @@ define('_INSTALL_TEXT_ERROR_SQLITE_SETTINGS_EXSIT_2',	'セキュリティ上の�
 
 define('_INSTALL_TEXT_VERSION',	      'バージョン');
 define('_INSTALL_TEXT_SELECT_TEXT',	  'テキストを選択する');
-define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的: 対応していないプラグインは使用できません。');
+define('_INSTALL_TEXT_EXPERIMENTAL',  '実験的');
+define('_INSTALL_TEXT_NOTE_PLUGIN',  'ノート: 対応していないプラグインは使用できません。');
 
 define('_INST_CONF_ERROR1' , '設定がおかしいです。<a href="./install/index.php">インストール用スクリプト</a>を起動するか、config.phpの設定値を変更して下さい。');
 
@@ -57,7 +58,7 @@ define('_ERROR11',				'｢表示される名前｣に使用できない文字が
 define('_ERROR12',				'パスワードが入力されていません。');
 define('_ERROR13',				'入力された二つのパスワードが一致しません。');
 define('_ERROR14',				'｢ブログの短縮名(略称)｣に使用できない文字が含まれています。(使用できる文字：a-z と 0-9。空白は使用できません)');
-define('_ERROR15',				'mySQL serverに接続できませんでした。');
+define('_ERROR15',				'データベース serverに接続できませんでした。');
 define('_ERROR16',				'データベースを作成できませんでした。作成の権限があるかどうか確認してください。SQL エラーの内容');
 define('_ERROR17',				'データベースを見つけられませんでした。データベースが存在するか確認してください。');
 define('_ERROR18',				'次のクエリの実行中にエラーが発生しました');

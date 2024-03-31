@@ -1,10 +1,17 @@
 <?php
 
-// Utils::convert_encoding()
+/*
+ * license GNU General Public License
+ * Copyright (C) 2017 torisanbird
+ */
+
 // Utils::mail()
 // Utils::strftime
 // Utils::strlen
-// Utils::httpGet
+
+if ( ! extension_loaded('mbstring')) {
+    @trigger_error('Error: mbstring module not loaded', E_USER_ERROR);
+}
 
 if ( ! defined('_HAS_MBSTRING')) {
     define('_HAS_MBSTRING', extension_loaded('mbstring'));
@@ -71,9 +78,6 @@ class Utils
         }
         if ((1 == func_num_args())) {
             $timestamp = time();
-        }
-        if (90000 <= PHP_VERSION_ID && USER_FUNCTION_STRFTIME) {
-            return self::date_with_strftime_format($format, $timestamp);
         }
         if ( ! _HAS_MBSTRING) {
             return @strftime($format, $timestamp);
@@ -156,268 +160,5 @@ class Utils
         }
 
         return strlen($string);
-    }
-
-    public static function httpGet(
-        $url,
-        $options = ['connecttimeout' => 3]
-    ) {
-        static $enable_curl = null;
-        if (null === $enable_curl) {
-            $enable_curl = (function_exists('curl_init'));
-        }
-        $timeout = ((isset($options['timeout'])
-                            && $options['timeout'] > 0) ? $options['timeout']
-            : 0);
-        $connecttimeout = ((isset($options['connecttimeout'])
-                            && $options['connecttimeout'] > 0)
-            ? $options['connecttimeout'] : 0);
-        $start          = microtime(true);
-        $reply_response = (isset($options['reply_response'])
-                           && $options['reply_response']);
-
-        if ($enable_curl) {
-            $ret = false;
-            $crl = curl_init();
-            curl_setopt($crl, CURLOPT_URL, $url);
-            curl_setopt($crl, CURLOPT_RETURNTRANSFER, 1);
-            curl_setopt($crl, CURLOPT_HEADER, 1);
-            if ($timeout > 0) {
-                curl_setopt($crl, CURLOPT_TIMEOUT, $timeout);
-            }
-            if ($connecttimeout > 0) {
-                curl_setopt($crl, CURLOPT_CONNECTTIMEOUT, $connecttimeout);
-            }
-            if (preg_match('#^https://#', $url)) {
-                curl_setopt($crl, CURLOPT_SSL_VERIFYPEER, false);
-            }
-            if (isset($options['useragent'])
-                && ! empty($options['useragent'])) {
-                curl_setopt($crl, CURLOPT_USERAGENT, $options['useragent']);
-            } else {
-                curl_setopt($crl, CURLOPT_USERAGENT, DEFAULT_USER_AGENT);
-            }
-            // request
-            $res = curl_exec($crl);
-            if (false !== $res) {
-                $info = curl_getinfo($crl);
-                if ( ! empty($info) && isset($info["header_size"])) {
-                    if (isset($info["http_code"])
-                        && 200 == $info["http_code"]) {
-                        $header = rtrim(substr($res, 0, $info["header_size"]));
-                        if (0 == max(0, strlen($res) - $info["header_size"])) {
-                            $body = '';
-                        } else {
-                            $body = substr($res, $info["header_size"]);
-                        }
-                        if ($reply_response) {
-                            $ret = [
-                                'header' => &$header,
-                                'body'   => &$body,
-                            ];
-                        } else {
-                            $ret = &$body;
-                        }
-                    }
-                }
-            }
-            curl_close($crl);
-
-            return $ret;
-        } // end curl
-
-        if ($connecttimeout > 0
-            && version_compare(PHP_VERSION, '5.2.1', '>=')) {
-            $opts
-                = ['http' => ['timeout' => $connecttimeout]]; // php-5.2.1 Added timeout.  default_socket_timeout
-            $sc = stream_context_create($opts);
-            $c  = @fopen($url, "r", false, $sc);
-        } else {
-            $c = @fopen($url, "r");
-        }
-        if ($c) {
-            $meta = [];
-            if ($reply_response) {
-                $meta = stream_get_meta_data($c);
-            }
-            if ($timeout > 0 && (microtime(true) - $start > $timeout)) {
-                fclose($c);
-
-                return false; // Timeout
-            }
-            if ($timeout > 0) {
-                stream_set_timeout($c, $timeout);
-            }
-            $data = '';
-            $stR  = [$c];
-            $stW  = null;
-            while (is_resource($c) && ! feof($c)) {
-                $tv_sec = max(
-                    1,
-                    $timeout > 0 ? $timeout - ceil(microtime(true) - $start)
-                    : 1
-                );
-                if ( ! stream_select($stR, $stW, $stW, $tv_sec)) {
-                    fclose($c);
-
-                    return false; // Timeout
-                }
-                $str = fgets($c, 500);
-                if (false !== $str) {
-                    $data .= $str;
-                }
-
-                // Handling of "traditional" timeout
-                $info = stream_get_meta_data($c);
-                if ($info['timed_out']) {
-                    fclose($c);
-
-                    return false; // Timeout
-                }
-                if ($timeout > 0 && (microtime(true) - $start > $timeout)) {
-                    fclose($c);
-
-                    return false; // Timeout
-                }
-            }
-            fclose($c);
-            if ( ! empty($meta) && isset($meta['wrapper_data'])) {
-                return [
-                    'header' => (string) implode("\n", $meta['wrapper_data']),
-                    'body'   => &$data,
-                ];
-            }
-
-            return $data;
-        }
-
-        return false;
-    }
-
-    public static function date_with_strftime_format(string $format, ?int $timestamp = null): string|false
-    {
-        $fmt = self::convertDateformatFromStrftimeformat($format);
-        if (false !== $fmt) {
-            if ((1 == func_num_args())) {
-                return date($fmt);
-            } else {
-                return date($fmt, $timestamp);
-            }
-        }
-        return false;
-    }
-
-    public static function convertDateformatFromStrftimeformat($format)
-    {
-        // Todo: ignore error option
-        $force = true;
-        $parts = preg_split('|(%[%a-z])|i', $format, -1, PREG_SPLIT_NO_EMPTY | PREG_SPLIT_DELIM_CAPTURE);
-        $res   = [];
-
-        foreach ($parts as $part) {
-            if ('%' !== substr($part, 0, 1)) {
-                // normal string
-                $res[] = preg_replace('|([a-z])|i', '\\\\${1}', $part);
-                continue;
-            }
-            if (2 != strlen($part)) {
-                // syntax error;
-                if ($force) {
-                    $res[] = '%';
-                    continue;
-                }
-                return false;
-            }
-            // %a %A %d %e %j %u %w %U %V %W %b %B %h %m %C %g %G %y %Y %H %k %I %l %M %p %P %r %R %S %T %X %z %Z %c %D %F %s %x %n %t %%
-            if ( ! str_contains('aAdejuwUVWbBhmCgGyYHkIlMpPrRSTXzZcDFsxnt%', substr($part, 1, 1))) {
-                // syntax error;
-                return false;
-            }
-            $pairs = [
-                '%%' => '%',
-                '%y' => 'y',
-                '%Y' => 'Y',
-                '%m' => 'm',
-                '%d' => 'd',
-                '%H' => 'H',
-                '%M' => 'i',
-                '%S' => 's',
-                '%s' => 'U',
-                '%w' => 'w',
-                '%W' => 'W',
-                '%z' => 'O',
-                '%Z' => 'T',
-                '%T' => 'H:i:s', // %T "%H:%M:%S"
-                '%p' => 'A', // AM PM
-                '%P' => 'a', // am pm
-                '%I' => 'h',  // 01-12 (hour)
-                '%a' => 'D',  // Mon - Sun
-                '%A' => 'l',  // Monday - Sunday
-//                '%j' => 'z',  // %j 001-366  / z 0 - 365
-                '%u' => 'N',  // week number
-                '%h' => 'M',  // Jan - Dec
-                '%b' => 'M',
-                '%B' => 'F',  // January - December
-                '%n' => "\n",
-                '%t' => "\t",
-                '%F' => 'Y-m-d', // %F "%Y-%m-%d"
-                '%D' => 'm/d/y', // %D "%m/%d/%y"
-                //
-//                '%e' => '',
-//                '%u' => '',
-//                '%U' => '',
-//                '%V' => '',
-//                '%C' => '',
-//                '%g' => '',
-//                '%G' => '',
-//                '%k' => '',
-//                '%l' => '',
-//                '%r' => '',
-//                '%R' => '',
-//                '%X' => '',
-//                '%c' => '',
-//                '%x' => '',
-            ];
-            $new = strtr($part, $pairs);
-            if (0 === strcmp($new, $part)) {
-                // Not implemented yet.
-                if ($force) {
-                    // todo: ? or do nothing or as it is
-                    //$res[] = '?';
-                    //$res[] = $part;
-                    continue;
-                }
-                return false;
-                //continue;
-            }
-            $res[] = $new;
-        }
-        return implode('', $res);
-    }
-
-    public static function test_date_with_strftime_format()
-    {
-        $t = null;
-        //  php -r "include('Utils.php'); Utils::test_date_with_strftime_format();"
-        $list = [
-            '%Y-%m-%d %H:%M:%S',
-            '%W %w %s',
-            'text : ok?',
-            '%z %Z %T %P %p %I %j',
-            '%u %a %A %h %b %B',
-            '%F %D %y',
-        ];
-        foreach ($list as $format) {
-            $date_fmt = self::convertDateformatFromStrftimeformat($format);
-            printf("format                        : %s\n", $format);
-            printf("  date fmt convert            : %s\n", $date_fmt);
-            printf("  strftime(\$format)           : %s\n", strftime($format));
-            printf("  date_with_strftime_format() : %s\n", self::date_with_strftime_format($format));
-            printf("  date()                      : %s\n", date($date_fmt));
-            echo "\n";
-            printf("  strftime(\$format, \$t)       : %s\n", strftime($format, $t));
-            printf("  date_with_strftime_format() : %s\n", self::date_with_strftime_format($format, $t));
-            printf("  date()                      : %s\n", date($date_fmt, $t));
-        }
     }
 }

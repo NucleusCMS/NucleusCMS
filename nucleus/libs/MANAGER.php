@@ -379,9 +379,6 @@ class MANAGER
         $plugin_dir_type = $res['type'];
         $plugin_path     = $res['path'];
 
-        if ( ! $this->checkifValidPluginBeforeLoad($plugin_path)) {
-            return 0;
-        }
         // load plugin
         include_once($plugin_path);
 
@@ -416,10 +413,6 @@ class MANAGER
             $o_plugin->plugin_admin_url = CONF::asStrWithPathSlash('PluginURL') . "{$shortname}/";
             $o_plugin->setRootOwnDirPath("{$DIR_PLUGINS}{$shortname}/");
             $o_plugin->setRootOwnDirURL($o_plugin->plugin_admin_url);
-        }
-
-        if ( ! $this->checkIfOk_supportsFeature_onLoadPlugin($NP_Name)) {
-            return 0;
         }
 
         // call init method
@@ -484,108 +477,6 @@ class MANAGER
             return false;
         }
         return ['type' => $plugin_dir_type, 'path' => $plugin_path];
-    }
-
-    // valid ok true, not false
-    public function checkifValidPluginBeforeLoad(string $NP_File, $noskip = false): bool
-    {
-        global $DB_DRIVER_NAME;
-        if (empty($NP_File) || ! @is_file($NP_File)) {
-            return false;
-        }
-        if ( ! $noskip && ! CONF::asBool('enable_plg_check_preload')) {
-            return true;
-        }
-        $src = @file_get_contents($NP_File);
-        if (false === $src
-            || strlen($src) < 100
-            || ! preg_match('#class\sNP_#', $src)
-            || preg_match('#=\s*&\s*new\s+#is', $src)
-            || preg_match('#\$[0-9\w_]+?\{[\d]+\}#is', $src)
-        ) {
-            return false;
-        }
-        $NP_Name = explode('.', basename($NP_File))[0];
-        if (in_array($NP_Name, ['NP_StickyIt'])) {
-            if (preg_match('#\s+do(?:Skin|Template)Var\(([^\)]+)\)#is', $src, $m)
-                && substr_count($m[1], '$') > 1
-            ) {
-                $m = preg_replace('#[^\$,=]+#', '', $m[1]);
-                $m = str_replace('$=', '', $m);
-                $m = str_replace(',', '', $m);
-                if (substr_count($m, '$') > 1) {
-                    //var_dump(basename($NP_File), $m);
-                    return false;
-                }
-            }
-        }
-
-        if ( ! str_contains($src, 'getTableList')) {
-            return true;
-        }
-
-        // db check
-        if ('sqlite' === $DB_DRIVER_NAME) {
-            if ( ! str_contains($src, 'SqlApi_') && ! str_contains($src, 'sqlite')) {
-                return false;
-            }
-            return true;
-        }
-        if (str_contains($src, 'SqlApi')) {
-            return true;
-        }
-        //if (preg_match('#\s+mysql_[^\s]+\s*\(#', $src)) {
-        //    return false;
-        //}
-
-        return true;
-    }
-
-    private function checkIfOk_supportsFeature_onLoadPlugin($NP_Name)
-    {
-        global $DB_DRIVER_NAME;
-        $flag = true;
-        if ('mysql' != $DB_DRIVER_NAME) {
-            $flag = $this->checkIfOk_supportsFeature_db($NP_Name);
-        }
-
-        return $flag;
-    }
-
-    private function checkIfOk_supportsFeature_db($NP_Name)
-    {
-        global $DB_DRIVER_NAME;
-
-        $tablelist = $this->plugins[$NP_Name]->getTableList();
-        if (empty($tablelist)) {
-            return true;
-        }
-
-        // check SqlApi
-        //    DB       Standard SQL
-        //    MySQL5  : - SQL:2008
-        //    SQLite3 : SQL92
-        // unload plugin if using non-mysql handler and plugin does not support it
-        if (('mysql' != $DB_DRIVER_NAME)
-            &&
-            ! (
-                $this->plugins[$NP_Name]->supportsFeature('SqlApi_'
-                                                         . $DB_DRIVER_NAME)
-               || $this->plugins[$NP_Name]->supportsFeature('SqlApi_SQL92')
-            )
-        ) {
-            unset($this->plugins[$NP_Name]);
-            $msg = sprintf(
-                _MANAGER_PLUGINSQLAPI_DRIVER_NOTSUPPORT,
-                $NP_Name,
-                $DB_DRIVER_NAME
-            );
-            SYSTEMLOG::addUnique('error', 'Error', $msg);
-
-            return 0;
-        }
-
-        return true;
     }
 
     /**
@@ -913,11 +804,13 @@ class MANAGER
         // remove tickets older than 24 hour
         $oldTime    = time() - 60 * 60 * 1;
         $oldTimeMem = time() - 60 * 60 * 24;
-        $table      = sql_table('tickets');
-        $query      = "DELETE FROM `{$table}` WHERE "
-                . sprintf(" (member <= 0 AND ctime < '%s')", gmdate('Y-m-d H:i:s', $oldTime))
-                . sprintf(" OR (member > 0 AND ctime < '%s')", gmdate('Y-m-d H:i:s', $oldTimeMem));
-        sql_query($query);
+        getOrmQueryBuilder()
+                ->delete(sql_table('tickets'))
+                ->where('(member <= 0 AND ctime < :ctime1)')
+                ->orWhere('(member > 0 AND ctime < :ctime2)')
+                ->setParameter('ctime1', gmdate('Y-m-d H:i:s', $oldTime))
+                ->setParameter('ctime2', gmdate('Y-m-d H:i:s', $oldTimeMem))
+                ->executeStatement();
     }
 
     /**

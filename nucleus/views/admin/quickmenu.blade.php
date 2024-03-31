@@ -17,9 +17,9 @@
             $showAll = \requestVar('showall');
             if (($member->isAdmin()) && ('yes' == $showAll)) {
                 // Super-Admins have access to all blogs! (no add item support though)
-                $query = sprintf("SELECT bnumber as value, bname as text FROM %s ORDER BY bname", sql_table('blog'));
+                $query = sprintf("SELECT bnumber as value, bname as text FROM %s ORDER BY %s", sql_table('blog'), ADMIN::getSqlOrderBlog());
             } else {
-                $query = sprintf("SELECT bnumber as value, bname as text FROM %s, %s WHERE tblog=bnumber and tmember=%s ORDER BY bname", sql_table('blog'), sql_table('team'), $member->getID());
+                $query = sprintf("SELECT bnumber as value, bname as text FROM %s, %s WHERE tblog=bnumber and tmember=%s ORDER BY %s", sql_table('blog'), sql_table('team'), $member->getID(), ADMIN::getSqlOrderBlog());
             }
             $template['name']       = 'blogid';
             $template['tabindex']   = 15000;

@@ -361,29 +361,29 @@ class NAVLIST extends ENCAPSULATE
             $count_cached[$cachekey] = [];
             foreach ($list as $key) {
                 if ('browseownitems' == $action) {
-                    $sql = sprintf("SELECT count(*) FROM `%s` as i ", sql_table('item'))
-                          . sprintf(" LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ", sql_table('member'))
-                          . sprintf(" LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_table('team'))
+                    $sql = sprintf("SELECT count(*) FROM %s as i ", sql_tableQuote('item'))
+                          . sprintf(" LEFT JOIN %s as m ON i.iauthor=m.mnumber ", sql_tableQuote('member'))
+                          . sprintf(" LEFT JOIN %s as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ", sql_tableQuote('team'))
                           . sprintf(" WHERE i.iauthor=%d ", $member->getID())
                           . ($selected_catid > 0 ? sprintf(' AND i.icat=%d', $selected_catid) : '');
                 } else {
                     // show one blog
                     $sql = sprintf(
-                        "SELECT count(*) as result FROM `%s` as i ",
-                        sql_table('item')
+                        "SELECT count(*) as result FROM %s as i ",
+                        sql_tableQuote('item')
                     )
                            . sprintf(
-                               " LEFT JOIN `%s` as m ON i.iauthor=m.mnumber ",
-                               sql_table('member')
+                               " LEFT JOIN %s as m ON i.iauthor=m.mnumber ",
+                               sql_tableQuote('member')
                            )
                            . sprintf(
-                               " LEFT JOIN `%s` as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ",
-                               sql_table('team')
+                               " LEFT JOIN %s as t ON i.iauthor=t.tmember AND i.iblog=t.tblog ",
+                               sql_tableQuote('team')
                            )
                            . ' WHERE '
                            . sprintf(" i.iblog=%d ", $blogid)
                            . sprintf(
-                               " AND (m.madmin=1 OR t.tadmin=1 OR i.iauthor=%d)",
+                               " AND (m.madmin='1' OR t.tadmin='1' OR i.iauthor=%d)",
                                $member->getID()
                            )
                            . ($selected_catid > 0 ? sprintf(
@@ -468,7 +468,7 @@ class NAVLIST extends ENCAPSULATE
         // @todo NP_MultipleCategories
         $sql = 'SELECT catid , cname , count(inumber) as count FROM '
                  . sql_table('category')
-                 . ' LEFT JOIN `' . sql_table('item') . '` ON catid=icat '
+                 . ' LEFT JOIN ' . sql_tableQuote('item') . ' ON catid=icat '
                  . ' WHERE cblog=' . (int) $blogid
                  . " {$extraQuery} "
                  . ' group BY catid '
@@ -541,7 +541,7 @@ class NAVLIST extends ENCAPSULATE
               . ' WHERE iauthor=' . (int) ($member->id)
               //              . (($blogid>0) ? sprintf(' cblog=%d', $blogid) : '')
               . " {$extraQuery} "
-              . ' group BY catid '
+              . ' group BY catid, bname ' // ERROR: 列"nucleus_blog.bname"はGROUP BY句で指定するか、集約関数内で使用しなければなりません
               . ' ORDER BY corder ASC , cname ASC';
 
         $total       = 0;
