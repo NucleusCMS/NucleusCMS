@@ -29,7 +29,7 @@
     <h1>{%_HEADER1%}</h1>
     {%_TEXT1%}
     
-    <form method="post" action="index.php?lang={%lang%}">
+    <form method="post" action="./?lang={%lang%}">
     <h1>{%_HEADER_LANG_SELECT%}</h1>
 
     {%_TEXT_LANG_SELECT1_1%}
@@ -41,7 +41,7 @@
                 <td>{%_TEXT_LANG_SELECT1_1_TAB_FIELD1%}</td>
                 <td>{%dispINSTALL_LANG%}</td>
                 <td>
-                    <select id="lang" name="lang" tabindex="10000" onChange="location.href='index.php?lang='+this.value;">
+                    <select id="lang" name="lang" tabindex="10000" onChange="location.href='./?lang='+this.value;">
                     {%lang_options%}
                     </select>
                 </td>
@@ -50,7 +50,7 @@
     </fieldset>
     </form>
 
-    <form method="post" action="index.php?lang={%lang%}">
+    <form method="post" action="./?lang={%lang%}">
 
     <h1>{%_HEADER2%}</h1>
 
@@ -109,7 +109,7 @@
             <tr>
                 <td><input name="install_db_use_prefix" value="1" type="checkbox" id="install_db_use_prefix" />
                     <label for="install_db_use_prefix">{%_TEXT4_TAB2_FIELD%}:</label></td>
-                <td><input name="install_db_tablePrefix" value="" /></td>
+                <td><input name="install_db_tablePrefix" value="" pattern="^(|[a-zA-Z][0-9a-zA-Z_]*)$" /><br />ASCII: a-z A-Z 0-9 _ </td>
             </tr>
         </table>
 

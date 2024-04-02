@@ -40,7 +40,7 @@ class ComposerCmd
     {
         $composer = __DIR__.'/composer.phar';
         if (@( ! is_file($composer) || (60 * 60 * 24 <= time() - (int) filemtime($composer)))) {
-            @copy('https://getcomposer.org/composer.phar', $composer);
+            @copy('https://getcomposer.org/download/latest-2.x/composer.phar', $composer);
         }
         if (@ ! is_file($composer)) {
             return;
@@ -59,8 +59,10 @@ class ComposerCmd
         }
         $cmd[] = escapeshellarg($php)." -d memory_limit=512M {$composer} {$param} 2>&1";
         $cmd   = implode('&&', $cmd);
+        $out   = null;
         @exec($cmd, $out);
         //var_dump($cmd, implode("<br>\n", $out));
+        return $out;
     }
 
     public static function GetPathPHP()

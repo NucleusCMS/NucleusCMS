@@ -1,3 +1,12 @@
+DirectoryIndex index.php .ht
+
 RewriteEngine On
+
 RewriteCond %{HTTP:Authorization} ^(.*)
 RewriteRule ^(.*) - [E=HTTP_AUTHORIZATION:%1]
+
+RewriteRule "^$" - [L]
+RewriteRule "^.*\.js$" - [L]
+#RewriteRule "^index\.php$" - [L]
+
+RewriteRule "^(.*)$" - [R=404,L]

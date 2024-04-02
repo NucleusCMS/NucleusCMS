@@ -6,7 +6,7 @@
         "symfony/cache": "^6||^7",
         "cebe/markdown": "^1",
         "phpxmlrpc/phpxmlrpc": "^4",
-        "eftec/bladeone": "^4.12"
+        "eftec/bladeone": "^4"
     },
     "autoload": {
         "psr-0": {"": "src/"}

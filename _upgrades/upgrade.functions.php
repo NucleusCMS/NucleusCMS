@@ -612,7 +612,7 @@ function get_default_content()
         global $DB_DRIVER_NAME;
         // データベースバージョンを更新する
         $IntType = ('mysql' === $DB_DRIVER_NAME ? 'SIGNED INTEGER' : 'INTEGER');
-        $sql = sprintf("UPDATE %s SET value = :value WHERE name = :name ", sql_table('config'))
+        $sql     = sprintf("UPDATE %s SET value = :value WHERE name = :name ", sql_table('config'))
               . " AND CAST(value AS {$IntType}) < CAST(:value AS {$IntType})";
         sql_prepare_execute($sql, ['name' => 'DatabaseVersion', 'value' => NUCLEUS_UPGRADE_VERSION_ID]);
 

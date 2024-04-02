@@ -176,6 +176,9 @@ class NP_SecurityEnforcer extends NucleusPlugin
         if ( ! ($member->isLoggedIn())) {
             return;
         }
+
+        $this->loadLanguage();
+
         array_push(
             $data['options'],
             [ 'title'   => 'Security Enforcer',

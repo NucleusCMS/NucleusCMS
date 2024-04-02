@@ -10,6 +10,9 @@
 /nucleus/cache/*
 !/nucleus/cache/.htaccess
 /nucleus/libs/vendor
+/nucleus/libs/composer
+composer.phar
+composer.lock
 
 /nucleus/plugins/*
 !/nucleus/plugins/config.php

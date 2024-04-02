@@ -20,7 +20,7 @@ define('NUCLEUS_MAJOR_VERSION', 3);   // (int)
 define('NUCLEUS_MINOR_VERSION', 8);   // (int) [0 - 9]
 define('NUCLEUS_RELEASE_VERSION', 0); // (int) [0 - 9]
 
-define('NUCLEUS_RELEASE_IDENTIFIER', 'dev202403'); // '' , 'dev',  'RC' , 'RC1' .... ,  'p' , 'p1' ....
+define('NUCLEUS_RELEASE_IDENTIFIER', 'dev202404'); // '' , 'dev',  'RC' , 'RC1' .... ,  'p' , 'p1' ....
 // https://getcomposer.org/doc/04-schema.md#version
 
 define('NUCLEUS_DEVELOP', false); // (bool): true (developer mode)

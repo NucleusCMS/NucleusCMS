@@ -51,13 +51,41 @@
 <h1>目次</h1>
 
 <ul>
+	<li><a href="#zip_diff">zip 差分エクスポート</a></li>
 	<li><a href="#merge">マージ</a>
 		<ul>
-			<li><a href="#merge_to_master">masterブランチへのマージ</a>
-			</li>
+			<li><a href="#merge_to_master">masterブランチへのマージ</a></li>
 		</ul>
 	</li>
 </ul>
+
+<a name="zip_diff"></a>
+<h2>zip 差分エクスポート</h2>
+
+コミットAからコミットB(master)までの変更のあったファイルだけを抽出する
+
+<h2>nucleus-update.zip</h2>
+<div>
+	<code>git archive --prefix=nucleus-update/ master `git diff --name-only コミットA master --diff-filter=d | grep ^nucleus` -o nucleus-update.zip</code>
+</div>
+
+<h2>nucleus-upgrade-script.zip</h2>
+<div>
+	<code>git archive --prefix=nucleus_upgrades/ master `git ls-tree -r --name-only master | grep "^_upg"` -o nucleus-upgrade-script.zip</code>
+</div>
+
+<h2>フルパッケージ</h2>
+<div>
+	<code>git archive --prefix=nucleus/ master -o nucleus-master.zip</code>
+</div>
+
+<h2>3.8</h2>
+<div>
+	<code>git archive --prefix=nucleus-update/ v3.8dev `git diff --name-only v3.71-ja v3.8dev --diff-filter=d | grep ^nucleus` -o nucleus-v3_71-3_80-update.zip</code>
+	<br /><br />
+	<code>git archive --prefix=nucleus/ v3.8dev -o nucleus-v3_80.zip</code>
+</div>
+
 
 
 <a name="merge"></a>

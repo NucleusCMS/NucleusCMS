@@ -107,7 +107,7 @@ EOL;
 
         $tablename = sql_table('systemlog');
         $query     = <<< EOL
-            DELETE FROM `{$tablename}`
+            DELETE FROM {$tablename}
             WHERE logtype=:logtype AND subtype=:subtype AND message_hash=:message_hash
 EOL;
 
@@ -156,13 +156,13 @@ EOL;
                  . " AND logtype='error'";
         sql_query($query);
 
-        $query = "SELECT COUNT(*) FROM `{$tablename}` WHERE logtype='error'";
+        $query = "SELECT COUNT(*) FROM {$tablename} WHERE logtype='error'";
         $ct    = (int) (quickQuery($query));
         if ($ct < 20) {
             return;
         }
         $query = <<<EOL
-            SELECT timestamp_utc FROM `{$tablename}` WHERE logtype='error'
+            SELECT timestamp_utc FROM {$tablename} WHERE logtype='error'
             ORDER BY timestamp_utc DESC LIMIT 19 offset 1
 EOL;
         $res = sql_query($query);
@@ -196,9 +196,9 @@ EOL;
         if ( ! sql_existTableName(sql_table('config'))) {
             return;
         }
-        $query          = [];
-        $tablename      = sql_table('systemlog');
-        $query['mysql'] = <<<EOL
+        $query     = [];
+        $tablename = sql_table('systemlog');
+        $query     = <<<EOL
 CREATE TABLE `{$tablename}` (
   `logyear`        SMALLINT     NOT NULL,
   `logid`          BIGINT       NOT NULL,
@@ -213,29 +213,6 @@ CREATE TABLE `{$tablename}` (
 ) ENGINE=InnoDB;
 EOL;
 
-        $query['sqlite'] = <<<EOL
-CREATE TABLE `{$tablename}` (
-  `logyear`        SMALLINT     NOT NULL,
-  `logid`          BIGINT       NOT NULL,
-  `logtype`        varchar(30)  NOT NULL,
-  `subtype`        varchar(30)  NOT NULL default '',
-  `mnumber`        varchar(30)  NOT NULL default '0',
-  `timestamp_utc`  datetime     NOT NULL,
-  `message`        MEDIUMTEXT   NOT NULL default '',
-  `message_hash`   varchar(64)  NOT NULL,
-   PRIMARY KEY  (`logyear`, `logid`)
-);
-CREATE INDEX IF NOT EXISTS `{$tablename}_idx_logtype` on `{$tablename}` (`logtype`)
-EOL;
-
-        global $DB_DRIVER_NAME;
-        if ('sqlite' == $DB_DRIVER_NAME) {
-            $items = explode(';', $query['sqlite']);
-            foreach ($items as $query) {
-                sql_query($query);
-            }
-        } else {
-            sql_query($query['mysql']);
-        }
+        sql_query($query);
     }
 }
