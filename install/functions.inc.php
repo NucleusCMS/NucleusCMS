@@ -127,14 +127,18 @@ function showInstallForm()
         'pgsql'  => [extension_loaded('pdo_pgsql') && ENABLE_POSTGRESQL_INSTALL, 'PostgreSQL(' . _INSTALL_TEXT_EXPERIMENTAL . ')'],
     ];
     $tabindex = 10020;
+    $checked  = 'checked';
     foreach ($radio as $k => $row) {
         $enable = $row[0] ? '' : 'disabled';
         $style  = $row[0] ? '' : 'background-color: lightgray;';
         $_ .= "<div style='line-height: 2em;{$style}'>";
-        $_ .= "<input type='radio' id='install_db_type_{$k}' name='install_db_type' {$enable} tabindex='{$tabindex}' value='{$k}' onclick='db_change();' />";
+        $_ .= "<input type='radio' id='install_db_type_{$k}' name='install_db_type' {$enable} {$checked} tabindex='{$tabindex}' value='{$k}' onclick='db_change();' />";
         $_ .= "<label for='install_db_type_{$k}'>{$row[1]}</label>";
         $_ .= "</div>";
         $tabindex++;
+        if ($row[0]) {
+            $checked = '';
+        }
     }
     $_ .= '<div class="note">' . _INSTALL_TEXT_NOTE_PLUGIN . '</div>';
     $ph['selDB']                             = $_;

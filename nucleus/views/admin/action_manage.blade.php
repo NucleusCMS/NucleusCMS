@@ -16,6 +16,7 @@
         <li><a href="index.php?action=systemoverview">{{ _QMENU_MANAGE_SYSTEM }}</a></li>
         <li><a href="index.php?action=actionlog">{{ _OVERVIEW_VIEWLOG }}</a></li>
         <li><a href="index.php?action=systemlog">{{ _SYSTEMLOG_TITLE }}</a></li>
+        <li><a href="index.php?action=composeroverview">{{ _OVERVIEW_COMPOSER }}</a></li>
     </ul>
 </div>
 

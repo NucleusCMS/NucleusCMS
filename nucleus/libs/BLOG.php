@@ -623,13 +623,13 @@ class BLOG
         global $DB_DRIVER_NAME;
         if ('mysql' !== $DB_DRIVER_NAME) {
             // Not implemented
-            $key = urlencode($keywords);
+            $key  = urlencode($keywords);
             $site = urlencode($this->getRealURL());
-            $url = "https://www.google.com/search?q={$key}&as_sitesearch={$site}";
+            $url  = "https://www.google.com/search?q={$key}&as_sitesearch={$site}";
             redirect($url);
             return 0;
         }
-        
+
         global $manager;
 
         $highlight = '';

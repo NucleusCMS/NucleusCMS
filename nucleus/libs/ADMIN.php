@@ -113,6 +113,7 @@ class ADMIN
             'categoryedit',
             'commentdelete',
             'commentedit',
+            'composeroverview',
             'createitem',
             'createnewlog',
             'deleteblog',
@@ -1751,32 +1752,15 @@ class ADMIN
         $body  = hsc(shorten($body, 300, '...'));
 
         $this->pagehead();
-        ?>
-        <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-        <p><?php echo _CONFIRMTXT_ITEM ?></p>
+        $params = [
+           'manager' => $manager,
+           'title'   => $title,
+           'body'    => $body,
+           'itemid'  => $itemid,
+        ];
+        echo \parseBlade('admin.action_itemdelete', $params), "\n";
 
-        <div>
-            <div class="note">
-                <b>"<?php echo  $title ?>"</b>
-                <br />
-                <?php echo $body ?>
-            </div>
-        </div>
-        <div>
-            <form method="post" action="index.php">
-                <input type="hidden" name="action" value="itemdeleteconfirm" />
-                <?php $manager->addTicketHidden(); ?>
-                <input type="hidden" name="itemid" value="<?php echo  $itemid; ?>" />
-                <div class="confirm">
-                    <input type="submit" value="<?php echo _ADMIN_TEXT_BTN_EXECUTE ?>" tabindex="10" />
-                </div>
-            </form>
-            <div class="confirm">
-                <input type="button" onclick="history.back();" value="<?php echo _ADMIN_TEXT_BTN_CANCEL ?>">
-            </div>
-        </div>
-        <?php
         $this->pagefoot();
     }
 
@@ -3092,27 +3076,18 @@ class ADMIN
         // check if allowed
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $teammem = MEMBER::createFromID($memberid);
-        $blog    = &$manager->getBlog($blogid);
-
         $this->pagehead();
-        ?>
-        <h2><?php echo _DELETE_CONFIRM ?></h2>
 
-        <p><?php echo _CONFIRMTXT_TEAM1 ?><b><?php echo  hsc($teammem->getDisplayName()) ?></b><?php echo _CONFIRMTXT_TEAM2 ?><b><?php echo  hsc(strip_tags($blog->getName())) ?></b>
-        </p>
+        $params = [
+            'blog'     => $manager->getBlog($blogid),
+            'manager'  => $manager,
+            'teammem'  => MEMBER::createFromID($memberid),
+            'memberid' => $memberid,
+            'blogid'   => $blogid,
+        ];
 
+        echo \parseBlade('admin.action_teamdelete', $params), "\n";
 
-        <form method="post" action="index.php">
-            <div>
-                <input type="hidden" name="action" value="teamdeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
-                <input type="hidden" name="memberid" value="<?php echo  $memberid; ?>" />
-                <input type="hidden" name="blogid" value="<?php echo  $blogid; ?>" />
-                <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
-            </div>
-        </form>
-        <?php
         $this->pagefoot();
     }
 
@@ -5837,26 +5812,16 @@ selector();
         $this->pagehead();
 
         $skin = new SKIN($skinid);
-        $name = $skin->getName();
-        $desc = $skin->getDescription();
 
-        ?>
-                <h2><?php echo _DELETE_CONFIRM ?></h2>
+        $params = [
+           'manager' => $manager,
+           'name'    => $skin->getName(),
+           'desc'    => $skin->getDescription(),
+           'skinid'  => $skinid,
+        ];
+        echo \parseBlade('admin.action_skindelete', $params), "\n";
 
-                <p>
-            <?php echo _CONFIRMTXT_SKIN ?><b><?php echo hsc($name) ?></b> (<?php echo  hsc($desc) ?>)
-                </p>
-
-                <form method="post" action="index.php">
-                    <div>
-                        <input type="hidden" name="action" value="skindeleteconfirm" />
-                <?php $manager->addTicketHidden() ?>
-                        <input type="hidden" name="skinid" value="<?php echo  $skinid ?>" />
-                        <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
-                    </div>
-                </form>
-            <?php
-            $this->pagefoot();
+        $this->pagefoot();
     }
 
     /**
@@ -5932,31 +5897,21 @@ selector();
         $this->pagehead();
 
         $skin = new SKIN($skinid);
-        $name = $skin->getName();
-        $desc = $skin->getDescription();
 
-        ?>
-                <h2><?php echo _DELETE_CONFIRM ?></h2>
+        $params = [
+           'manager'       => $manager,
+           'confirm_title' => $confirm_title,
+           'skintype'      => $skintype,
+           'name'          => $skin->getName(),
+           'desc'          => $skin->getDescription(),
+           'skinid'        => $skinid,
+           'spartstype'    => $spartstype,
+           'skintype'      => $skintype,
+        ];
 
-                <p>
-            <?php echo $confirm_title; ?>
-                </p>
-                <p>
-                    <b><?php echo escapeHTML($skintype); ?> (<?php echo escapeHTML($name); ?>)</b> (<?php echo  escapeHTML($desc) ?>)
-                </p>
+        echo \parseBlade('admin.action_skinremovetype', $params), "\n";
 
-                <form method="post" action="index.php">
-                    <div>
-                        <input type="hidden" name="action" value="skinremovetypeconfirm" />
-                <?php $manager->addTicketHidden() ?>
-                        <input type="hidden" name="skinid" value="<?php echo $skinid; ?>" />
-                        <input type="hidden" name="partstype" value="<?php echo $spartstype; ?>" />
-                        <input type="hidden" name="type" value="<?php echo escapeHTML($skintype); ?>" />
-                        <input type="submit" tabindex="10" value="<?php echo _DELETE_CONFIRM_BTN ?>" />
-                    </div>
-                </form>
-            <?php
-            $this->pagefoot();
+        $this->pagefoot();
     }
 
     /**
@@ -7489,75 +7444,20 @@ EOL;
             $blogid = intRequestVar('blogid');
         }
 
-        $ip = requestVar('ip');
-
         $member->blogAdminRights($blogid) or $this->disallow();
 
         $blog = &$manager->getBlog($blogid);
 
         $this->pagehead();
-        ?>
-                <h2><?php echo _BAN_ADD_TITLE ?></h2>
 
+        $params = [
+           'manager' => $manager,
+           'blog'    => $blog,
+           'blogid'  => $blogid,
+           'ip'      => (string) requestVar('ip'),
+        ];
+        echo \parseBlade('admin.action_banlistnew', $params), "\n";
 
-                <form method="post" action="index.php">
-
-                    <h3><?php echo _BAN_IPRANGE ?></h3>
-
-                    <p><?php echo _BAN_IPRANGE_TEXT ?></p>
-
-                    <div class="note">
-                        <strong><?php echo _BAN_EXAMPLE_TITLE ?></strong>
-        <?php echo _BAN_EXAMPLE_TEXT ?>
-                    </div>
-
-                    <div>
-        <?php
-        if ($ip) {
-            $iprangeVal = hsc($ip);
-            ?>
-                            <input name="iprange" type="radio" value="<?php echo $iprangeVal ?>" checked="checked" id="ip_fixed" />
-                            <label for="ip_fixed"><?php echo $iprangeVal ?></label>
-                            <br />
-                            <input name="iprange" type="radio" value="custom" id="ip_custom" />
-                            <label for="ip_custom"><?php echo _BAN_IP_CUSTOM ?></label>
-                            <input name='customiprange' value='<?php echo $iprangeVal ?>' maxlength='15' size='15' />
-                                        <?php
-        } else {
-            echo "<input name='iprange' value='custom' type='hidden' />";
-            echo "<input name='customiprange' value='' maxlength='15' size='15' />";
-        }
-        ?>
-                    </div>
-
-                    <h3><?php echo _BAN_BLOGS ?></h3>
-
-                    <p><?php echo _BAN_BLOGS_TEXT ?></p>
-
-                    <div>
-                        <input type="hidden" name="blogid" value="<?php echo $blogid ?>" />
-                        <input name="allblogs" type="radio" value="0" id="allblogs_one" /><label for="allblogs_one">'<?php echo hsc($blog->getName()) ?>'</label>
-                        <br />
-                        <input name="allblogs" type="radio" value="1" checked="checked" id="allblogs_all" /><label for="allblogs_all"><?php echo _BAN_ALLBLOGS ?></label>
-                    </div>
-
-                    <h3><?php echo _BAN_REASON_TITLE ?></h3>
-
-                    <p><?php echo _BAN_REASON_TEXT ?></p>
-
-                    <div><textarea name="reason" cols="40" rows="5"></textarea></div>
-
-                    <h3><?php echo _BAN_ADD_TITLE ?></h3>
-
-                    <div>
-                        <input name="action" type="hidden" value="banlistadd" />
-                        <?php $manager->addTicketHidden() ?>
-                        <input type="submit" value="<?php echo _BAN_ADD_BTN ?>" />
-                    </div>
-
-                </form>
-
-            <?php
         $this->pagefoot();
     }
 
@@ -8675,6 +8575,21 @@ EOL;
                 . '</div><br /><hr />' . $msg;
         }
         startUpError($msg, $title);
+    }
+
+    public function action_composeroverview()
+    {
+        global $member;
+
+        if ( ! $member->isAdmin()) {
+            $this->disallow();
+        }
+
+        $this->pagehead();
+
+        echo \parseBlade('admin.action_composeroverview', []), "\n";
+
+        $this->pagefoot();
     }
 
     /**

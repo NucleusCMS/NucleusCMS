@@ -447,7 +447,13 @@
 
 		<div class="faq">
 			<div class="question">nucleus/libs/vendorを更新したい</div>
-			<div class="answer"><ul>
+			<div class="answer">
+			管理画面「Composer管理」から更新できます。<br />
+			動作しない場合は、config.phpにphpのパスを記載してください。<br />
+			<code>$CONF['PHP_BIN'] = '/usr/local/bin/php';</code><br />
+			<br />
+			それでも動作しない場合は手動で対応してください。
+			<ul>
 				<li>nucleus/libs/フォルダで下記を実行してください。<br />
 				Windows:
 				<div style="padding-left: 2em; background-color: #000; color: white">
