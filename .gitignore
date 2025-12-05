@@ -1,7 +1,7 @@
 /.htaccess
 /config.php
-/install/ENABLE_SQLITE_INSTALL
 /install/install-config.php
+/install/ENABLE_SQLITE_INSTALL
 
 /nbproject/*
 #!/nbproject/project.xml

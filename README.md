@@ -21,21 +21,27 @@ Nucleus is a Content Management System (CMS)
 
 # Install
 
-Initial settings are required. Please read the documentation first.
+The installer is protected by Basic Authentication. **Before running the installer, copy `install/install-config.sample.php` to `install/install-config.php` and set your own username and password** for the installer prompt. Keep these credentials secure and change them after installation if you no longer need the protection.
 
-# Docker
+# Docker (local install)
 
-You can run NucleusCMS locally with Docker for development or testing.
+You can run NucleusCMS locally with Docker to install and try the CMS quickly.
 
-1. Use the provided `compose.yaml` file to build and start the stack:
+1. Prepare installer credentials (copy the sample if the file does not exist):
+
+   ```sh
+   cp install/install-config.sample.php install/install-config.php
+   ```
+
+2. Build and start the stack with the bundled `compose.yaml`:
 
    ```sh
    docker compose up --build
    ```
 
-2. Open the installer at [http://localhost/install](http://localhost/install) and follow the setup steps.
+3. In your browser, open [http://localhost/install](http://localhost/install). When the Basic Auth prompt appears, enter the username and password you set in `install/install-config.php`.
 
-3. When prompted for database credentials, use the values below (the MySQL container listens as `db` on the internal network):
+4. In the installer, enter the following database settings (the MySQL container listens as `db` on the internal network):
 
    * Host: `db`
    * Database: `nucleus`
@@ -44,16 +50,13 @@ You can run NucleusCMS locally with Docker for development or testing.
 
    The MySQL root password is `nucleus-root` if you need it for administration.
 
-4. The `db_data` volume keeps database files between restarts, and your working directory is mounted into the web container for easy edits.
+5. The `db_data` volume keeps database files between restarts, and your working directory is mounted into the web container for easy edits.
 
-# Composer dependencies
+If the installer reports a connection error, make sure the database credentials entered in Step 3 match the values in `compose.yaml`. When reusing an old `db_data` volume with different credentials, reset it with `docker compose down -v` and start again.
 
-NucleusCMS uses Composer for some libraries, but end users do not need to run Composer themselves if you ship a packaged build. To bundle the dependencies:
+# Developer guide
 
-1. On a development machine with Composer installed, run `composer install --no-dev --optimize-autoloader` in the project root.
-2. Keep the generated `composer.lock` under version control so the exact dependency versions are tracked.
-3. Include the resulting `vendor/` directory in your release archive or installer so users who cannot use Composer still receive the required libraries.
-4. Rebuild the `vendor/` directory whenever `composer.json` or `composer.lock` changes to keep shipped libraries in sync.
+For Composer packaging steps and other developer-oriented notes, see [DEVELOPER.md](./DEVELOPER.md).
 
 # Upgrade
 

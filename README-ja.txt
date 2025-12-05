@@ -33,21 +33,27 @@ nucleus/documentation/index.html
 
 # インストール
 
-初期設定が必要です。まずドキュメントをお読みください。
+インストーラは Basic 認証で保護されています。**実行前に `install/install-config.sample.php` を `install/install-config.php` にコピーし、インストーラ用のユーザー名とパスワードを必ず設定してください。** インストール完了後は不要になったら変更・削除するなど、資格情報の管理にご注意ください。
 
-# Docker
+# Docker（ローカルインストール）
 
-開発やテストのために Docker 環境を用意しています。
+Docker を使うと手軽に NucleusCMS を試せます。
 
-1. 同梱の `compose.yaml` を使い、次のコマンドでコンテナをビルド・起動します。
+1. `install/install-config.php` が存在しない場合はサンプルをコピーし、インストーラ用の資格情報を準備します。
+
+   ```sh
+   cp install/install-config.sample.php install/install-config.php
+   ```
+
+2. 同梱の `compose.yaml` を使い、次のコマンドでコンテナをビルド・起動します。
 
    ```sh
    docker compose up --build
    ```
 
-2. ブラウザで [http://localhost/install](http://localhost/install) にアクセスし、インストーラの案内に従って設定してください。
+3. ブラウザで [http://localhost/install](http://localhost/install) にアクセスします。Basic 認証が表示されたら、`install/install-config.php` で設定したユーザー名とパスワードを入力してください。
 
-3. インストーラでデータベース情報を求められた場合は、以下の値を入力します（内部ネットワーク上で MySQL コンテナは `db` として待ち受けます）。
+4. インストーラでデータベース情報を求められた場合は、以下の値を入力します（内部ネットワーク上で MySQL コンテナは `db` として待ち受けます）。
 
    * ホスト: `db`
    * データベース: `nucleus`
@@ -56,16 +62,13 @@ nucleus/documentation/index.html
 
    管理用に MySQL の root パスワードは `nucleus-root` です。
 
-4. `db_data` ボリュームにデータベースが保持され、作業ディレクトリは Web コンテナにマウントされるためそのまま編集できます。
+5. `db_data` ボリュームにデータベースが保持され、作業ディレクトリは Web コンテナにマウントされるためそのまま編集できます。
 
-# Composer 依存ライブラリの同梱方法
+インストーラで接続エラーが出る場合は、ステップ3で入力したDB認証情報が `compose.yaml` の値と一致しているか確認してください。別の認証情報で使っていた `db_data` ボリュームを再利用する場合は、`docker compose down -v` でリセットしてからやり直してください。
 
-一部のライブラリは Composer で管理していますが、エンドユーザーが Composer を実行できなくても配布パッケージに同梱できます。以下の手順で準備してください。
+# 開発者向けドキュメント
 
-1. Composer が利用できる開発環境でプロジェクトルートに移動し、`composer install --no-dev --optimize-autoloader` を実行します。
-2. 生成された `composer.lock` は依存バージョンを固定するためバージョン管理に含めてください。
-3. 実行結果として作成された `vendor/` ディレクトリを、配布用アーカイブやインストーラに同梱します。これにより Composer を使えないユーザーにも必要なライブラリを提供できます。
-4. `composer.json` または `composer.lock` を更新した場合は、必ず再度 `vendor/` を作り直して同梱内容を最新化してください。
+Composer を使ったライブラリ同梱手順などの開発者向け情報は [DEVELOPER-ja.txt](./DEVELOPER-ja.txt) を参照してください。
 
 # アップグレード
 
