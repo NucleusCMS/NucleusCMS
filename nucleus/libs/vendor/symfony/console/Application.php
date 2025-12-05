@@ -551,16 +551,6 @@ class Application implements ResetInterface
     }
 
     /**
-     * @deprecated since Symfony 7.4, use Application::addCommand() instead
-     */
-    public function add(Command $command): ?Command
-    {
-        trigger_deprecation('symfony/console', '7.4', 'The "%s()" method is deprecated and will be removed in Symfony 8.0, use "%s::addCommand()" instead.', __METHOD__, self::class);
-
-        return $this->addCommand($command);
-    }
-
-    /**
      * Adds a command object.
      *
      * If a command with the same name already exists, it will be overridden.
@@ -802,9 +792,9 @@ class Application implements ResetInterface
             }
         }
 
-        $command = $commands ? $this->get(reset($commands)) : null;
+        $command = $this->get(reset($commands));
 
-        if (!$command || $command->isHidden()) {
+        if ($command->isHidden()) {
             throw new CommandNotFoundException(\sprintf('The command "%s" does not exist.', $name));
         }
 
@@ -1336,14 +1326,8 @@ class Application implements ResetInterface
         }
         $this->initialized = true;
 
-        if ((new \ReflectionMethod($this, 'add'))->getDeclaringClass()->getName() !== (new \ReflectionMethod($this, 'addCommand'))->getDeclaringClass()->getName()) {
-            $adder = $this->add(...);
-        } else {
-            $adder = $this->addCommand(...);
-        }
-
         foreach ($this->getDefaultCommands() as $command) {
-            $adder($command);
+            $this->addCommand($command);
         }
     }
 }

@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '1fcbfbfed2c0671b14194886e1a51cfb6db2e85a',
+        'pretty_version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+        'version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+        'reference' => '7a3408ebfad310a72c7974f82a30771aaf4a31a1',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '1fcbfbfed2c0671b14194886e1a51cfb6db2e85a',
+            'pretty_version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+            'version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+            'reference' => '7a3408ebfad310a72c7974f82a30771aaf4a31a1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -136,12 +136,6 @@
             'aliases' => array(),
             'dev_requirement' => false,
         ),
-        'psr/cache-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '2.0|3.0',
-            ),
-        ),
         'psr/container' => array(
             'pretty_version' => '2.0.2',
             'version' => '2.0.2.0',
@@ -166,40 +160,10 @@
                 0 => '1.0|2.0|3.0',
             ),
         ),
-        'psr/simple-cache-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.0|2.0|3.0',
-            ),
-        ),
-        'symfony/cache' => array(
-            'pretty_version' => 'v7.4.0',
-            'version' => '7.4.0.0',
-            'reference' => 'a7a1325a5de2e54ddb45fda002ff528162e48293',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/cache',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/cache-contracts' => array(
-            'pretty_version' => 'v3.6.0',
-            'version' => '3.6.0.0',
-            'reference' => '5d68a57d66910405e5c0b63d6f0af941e66fc868',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../symfony/cache-contracts',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'symfony/cache-implementation' => array(
-            'dev_requirement' => false,
-            'provided' => array(
-                0 => '1.1|2.0|3.0',
-            ),
-        ),
         'symfony/console' => array(
-            'pretty_version' => 'v7.4.0',
-            'version' => '7.4.0.0',
-            'reference' => '0bc0f45254b99c58d45a8fbf9fb955d46cbd1bb8',
+            'pretty_version' => 'v8.0.0',
+            'version' => '8.0.0.0',
+            'reference' => '307d3cf852f5ead3618ac60ecbedbdd512c348b1',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/console',
             'aliases' => array(),
@@ -269,18 +233,18 @@
             'dev_requirement' => false,
         ),
         'symfony/string' => array(
-            'pretty_version' => 'v7.4.0',
-            'version' => '7.4.0.0',
-            'reference' => 'd50e862cb0a0e0886f73ca1f31b865efbb795003',
+            'pretty_version' => 'v8.0.0',
+            'version' => '8.0.0.0',
+            'reference' => 'f929eccf09531078c243df72398560e32fa4cf4f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/string',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
         'symfony/var-exporter' => array(
-            'pretty_version' => 'v7.4.0',
-            'version' => '7.4.0.0',
-            'reference' => '03a60f169c79a28513a78c967316fbc8bf17816f',
+            'pretty_version' => 'v8.0.0',
+            'version' => '8.0.0.0',
+            'reference' => '7345f46c251f2eb27c7b3ebdb5bb076b3ffcae04',
             'type' => 'library',
             'install_path' => __DIR__ . '/../symfony/var-exporter',
             'aliases' => array(),

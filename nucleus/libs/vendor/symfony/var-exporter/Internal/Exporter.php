@@ -145,7 +145,7 @@ class Exporter
                         $p = $parent->hasProperty($n) ? $parent->getProperty($n) : null;
                     } while (!$p && $parent = $parent->getParentClass());
 
-                    $c = $p && (!$p->isPublic() || (\PHP_VERSION_ID >= 80400 ? $p->isProtectedSet() || $p->isPrivateSet() : $p->isReadOnly())) ? $p->class : 'stdClass';
+                    $c = $p && (!$p->isPublic() || $p->isProtectedSet() || $p->isPrivateSet()) ? $p->class : 'stdClass';
                 } elseif ('*' === $n[1]) {
                     $n = substr($n, 3);
                     $c = $reflector->getProperty($n)->class;
