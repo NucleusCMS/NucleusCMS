@@ -722,6 +722,7 @@ function doInstall()
     $bConfigWritten = 0;
 
     $configFilename = dirname(__DIR__) . '/config.php';
+    $config_data    = '';
     if ( ! @is_file($configFilename)
         //  || (@is_file($configFilename) && is_writable($configFilename))
     ) {
@@ -778,6 +779,13 @@ function doInstall()
         //   apache config : DocumentRoot
     }
 
+    if ( ! defined('_TITLE_CONFIGPHP_MANUAL')) {
+        define('_TITLE_CONFIGPHP_MANUAL', 'config.php');
+    }
+    if ( ! defined('_TEXT_CONFIGPHP_MANUAL')) {
+        define('_TEXT_CONFIGPHP_MANUAL', 'config.php could not be created automatically. Copy the contents below into a new config.php file at the Nucleus root.');
+    }
+
     if (DEBUG_INSTALL_STEPS) {
         echo sprintf("Step end(%d)", __LINE__);
     }
@@ -809,6 +817,17 @@ function doInstall()
     $ph['_TEXT16_L1']      = _TEXT16_L1;
     $ph['config_indexurl'] = $config_indexurl;
     $ph['_TEXT16_L2']      = _TEXT16_L2;
+
+    if ($bConfigWritten) {
+        $ph['config_php_manual'] = '';
+    } else {
+        $ph['config_php_manual'] = sprintf(
+            '<h1>%s</h1><p>%s</p><textarea cols="80" rows="25" readonly="readonly" style="width:100%%;">%s</textarea>',
+            hsc(_TITLE_CONFIGPHP_MANUAL),
+            _TEXT_CONFIGPHP_MANUAL,
+            hsc($config_data)
+        );
+    }
 
     $tpl = file_get_contents('result.tpl');
 
