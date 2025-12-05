@@ -20,7 +20,13 @@ services:
     volumes:
       - db_data:/var/lib/mysql
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p\"$MYSQL_ROOT_PASSWORD\" --silent"]
+      test: >-
+        CMD-SHELL
+        if [ -n "$MYSQL_ROOT_PASSWORD" ]; then
+          mysqladmin ping -h 127.0.0.1 -uroot -p"$MYSQL_ROOT_PASSWORD" --silent;
+        else
+          mysqladmin ping -h 127.0.0.1 -uroot --silent;
+        fi
       interval: 2s
       timeout: 3s
       retries: 5
