@@ -187,3 +187,5 @@ define('_1ST_POST2',			'ウェブサイトの作成を補助する積み木が�
 <br />用途が思いつきませんでしたか？ それならここへ来て正解です。なぜならあなた同様私たちにもわからないのですから。');
 
 define('_CONFIRM_RETRY_SEND_FORM',		'フォームを再送信しますか？');
+try_define('_TITLE_CONFIGPHP_MANUAL', 'config.phpの手動作成');
+try_define('_TEXT_CONFIGPHP_MANUAL', 'config.phpを自動作成できませんでした。以下の内容を Nucleus のルートに新しい config.php として保存してください。');

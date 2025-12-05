@@ -10,12 +10,14 @@
 	<div style="text-align:center"><img src="../nucleus/styles/logo.gif" alt="<%_ALT_NUCLEUS_CMS_LOGO%>" /></div>
 	<%_TITLE2%>
 	<%AllErrors%>
-	<h1><%_TITLE4%></h1>
-	<%_TEXT13%>
+        <h1><%_TITLE4%></h1>
+        <%_TEXT13%>
+
+        <%config_php_manual%>
 
 
-	<h1><%_TITLE5%></h1>
-	<%_TEXT14%>
+        <h1><%_TITLE5%></h1>
+        <%_TEXT14%>
 
 	<ul>
 		<li><%_TEXT14_L1%></li>
