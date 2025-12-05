@@ -2,11 +2,21 @@
 
 // Nucleus CMS
 
+if (defined('_EXT_MYSQL_EMULATE') && _EXT_MYSQL_EMULATE) {
+    return;
+}
+
 define('_EXT_MYSQL_EMULATE', 1);
 
-define('MYSQL_ASSOC', 1);
-define('MYSQL_NUM', 2);
-define('MYSQL_BOTH', 3);
+if ( ! defined('MYSQL_ASSOC')) {
+    define('MYSQL_ASSOC', 1);
+}
+if ( ! defined('MYSQL_NUM')) {
+    define('MYSQL_NUM', 2);
+}
+if ( ! defined('MYSQL_BOTH')) {
+    define('MYSQL_BOTH', 3);
+}
 
 function _mysql_add_admin_warnings($funcname)
 {

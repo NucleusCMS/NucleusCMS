@@ -155,9 +155,6 @@ if ((count($aConfPlugsToInstall) > 0) || (count($aConfSkinsToImport) > 0)) {
     $CONF['installscript'] = 1;
 }
 
-// include core classes that are needed for login & plugin handling
-define('_EXT_MYSQL_EMULATE', 0);
-
 global $DB_PHP_MODULE_NAME, $DB_DRIVER_NAME;
 $DB_PHP_MODULE_NAME = 'pdo';
 

@@ -184,3 +184,5 @@ try_define('_1ST_POST',			'This is the first post on your Nucleus CMS. You can e
 try_define('_1ST_POST2',		'The building blocks are here to help you create a web presence. Be it a blog, a family page, a hobby site or maybe you just don\'t have any idea.\r<br />\n\r<br />\nWell you came to the right place, cause we didn\'t know what you wanted either.');
 
 try_define('_CONFIRM_RETRY_SEND_FORM',		'Would you like to retry submitting the form?');
+try_define('_TITLE_CONFIGPHP_MANUAL', 'Manual <i>config.php</i> Creation');
+try_define('_TEXT_CONFIGPHP_MANUAL', 'config.php could not be created automatically. Copy the contents below into a new config.php file at the Nucleus root.');
