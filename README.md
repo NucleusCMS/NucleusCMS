@@ -23,6 +23,15 @@ Nucleus is a Content Management System (CMS)
 
 Initial settings are required. Please read the documentation first.
 
+# Composer dependencies
+
+NucleusCMS uses Composer for some libraries, but end users do not need to run Composer themselves if you ship a packaged build. To bundle the dependencies:
+
+1. On a development machine with Composer installed, run `composer install --no-dev --optimize-autoloader` in the project root.
+2. Keep the generated `composer.lock` under version control so the exact dependency versions are tracked.
+3. Include the resulting `vendor/` directory in your release archive or installer so users who cannot use Composer still receive the required libraries.
+4. Rebuild the `vendor/` directory whenever `composer.json` or `composer.lock` changes to keep shipped libraries in sync.
+
 # Upgrade
 
 It will remain under maintenance until the upgrade is complete.
