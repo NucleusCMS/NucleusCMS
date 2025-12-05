@@ -33,7 +33,7 @@ You can run NucleusCMS locally with Docker for development or testing.
    docker compose up --build
    ```
 
-2. Open the installer at [http://localhost:8080/install](http://localhost:8080/install) and follow the setup steps.
+2. Open the installer at [http://localhost/install](http://localhost/install) and follow the setup steps.
 
 3. When prompted for database credentials, use the values below (the MySQL container listens as `db` on the internal network):
 

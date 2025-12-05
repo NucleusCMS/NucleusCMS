@@ -45,7 +45,7 @@ nucleus/documentation/index.html
    docker compose up --build
    ```
 
-2. ブラウザで [http://localhost:8080/install](http://localhost:8080/install) にアクセスし、インストーラの案内に従って設定してください。
+2. ブラウザで [http://localhost/install](http://localhost/install) にアクセスし、インストーラの案内に従って設定してください。
 
 3. インストーラでデータベース情報を求められた場合は、以下の値を入力します（内部ネットワーク上で MySQL コンテナは `db` として待ち受けます）。
 
