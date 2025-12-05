@@ -21,10 +21,10 @@ services:
       - db_data:/var/lib/mysql
     healthcheck:
       test: ["CMD-SHELL", "mysqladmin ping --protocol=socket --socket=/run/mysqld/mysqld.sock --silent"]
-      interval: 5s
-      timeout: 5s
-      retries: 15
-      start_period: 40s
+      interval: 2s
+      timeout: 3s
+      retries: 5
+      start_period: 10s
 
 volumes:
   db_data:
