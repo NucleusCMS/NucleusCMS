@@ -9,7 +9,6 @@
 
 /nucleus/cache/*
 !/nucleus/cache/.htaccess
-/nucleus/libs/vendor
 /nucleus/libs/composer
 composer.phar
 composer.lock
