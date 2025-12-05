@@ -35,6 +35,29 @@ nucleus/documentation/index.html
 
 初期設定が必要です。まずドキュメントをお読みください。
 
+# Docker
+
+開発やテストのために Docker 環境を用意しています。
+
+1. 同梱の `compose.yaml` を使い、次のコマンドでコンテナをビルド・起動します。
+
+   ```sh
+   docker compose up --build
+   ```
+
+2. ブラウザで [http://localhost:8080/install](http://localhost:8080/install) にアクセスし、インストーラの案内に従って設定してください。
+
+3. インストーラでデータベース情報を求められた場合は、以下の値を入力します（内部ネットワーク上で MySQL コンテナは `db` として待ち受けます）。
+
+   * ホスト: `db`
+   * データベース: `nucleus`
+   * ユーザー名: `nucleus`
+   * パスワード: `nucleus`
+
+   管理用に MySQL の root パスワードは `nucleus-root` です。
+
+4. `db_data` ボリュームにデータベースが保持され、作業ディレクトリは Web コンテナにマウントされるためそのまま編集できます。
+
 # Composer 依存ライブラリの同梱方法
 
 一部のライブラリは Composer で管理していますが、エンドユーザーが Composer を実行できなくても配布パッケージに同梱できます。以下の手順で準備してください。

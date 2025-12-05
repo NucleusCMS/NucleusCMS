@@ -23,6 +23,29 @@ Nucleus is a Content Management System (CMS)
 
 Initial settings are required. Please read the documentation first.
 
+# Docker
+
+You can run NucleusCMS locally with Docker for development or testing.
+
+1. Use the provided `compose.yaml` file to build and start the stack:
+
+   ```sh
+   docker compose up --build
+   ```
+
+2. Open the installer at [http://localhost:8080/install](http://localhost:8080/install) and follow the setup steps.
+
+3. When prompted for database credentials, use the values below (the MySQL container listens as `db` on the internal network):
+
+   * Host: `db`
+   * Database: `nucleus`
+   * Username: `nucleus`
+   * Password: `nucleus`
+
+   The MySQL root password is `nucleus-root` if you need it for administration.
+
+4. The `db_data` volume keeps database files between restarts, and your working directory is mounted into the web container for easy edits.
+
 # Composer dependencies
 
 NucleusCMS uses Composer for some libraries, but end users do not need to run Composer themselves if you ship a packaged build. To bundle the dependencies:
