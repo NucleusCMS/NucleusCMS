@@ -11,10 +11,6 @@ class ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca
         array (
             'eftec\\bladeone\\' => 15,
         ),
-        'c' => 
-        array (
-            'cebe\\markdown\\' => 14,
-        ),
         'P' => 
         array (
             'Psr\\Log\\' => 8,
@@ -32,10 +28,6 @@ class ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca
         array (
             0 => __DIR__ . '/..' . '/eftec/bladeone/lib',
         ),
-        'cebe\\markdown\\' => 
-        array (
-            0 => __DIR__ . '/..' . '/cebe/markdown',
-        ),
         'Psr\\Log\\' => 
         array (
             0 => __DIR__ . '/..' . '/psr/log/src',
@@ -51,6 +43,16 @@ class ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca
         'Doctrine\\DBAL\\' => 
         array (
             0 => __DIR__ . '/..' . '/doctrine/dbal/src',
+        ),
+    );
+
+    public static $prefixesPsr0 = array (
+        'P' => 
+        array (
+            'Parsedown' => 
+            array (
+                0 => __DIR__ . '/..' . '/erusev/parsedown',
+            ),
         ),
     );
 
@@ -494,6 +496,7 @@ class ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca
         'Doctrine\\DBAL\\Types\\VarDateTimeType' => __DIR__ . '/..' . '/doctrine/dbal/src/Types/VarDateTimeType.php',
         'Doctrine\\Deprecations\\Deprecation' => __DIR__ . '/..' . '/doctrine/deprecations/src/Deprecation.php',
         'Doctrine\\Deprecations\\PHPUnit\\VerifyDeprecations' => __DIR__ . '/..' . '/doctrine/deprecations/src/PHPUnit/VerifyDeprecations.php',
+        'Parsedown' => __DIR__ . '/..' . '/erusev/parsedown/Parsedown.php',
         'Psr\\Cache\\CacheException' => __DIR__ . '/..' . '/psr/cache/src/CacheException.php',
         'Psr\\Cache\\CacheItemInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemInterface.php',
         'Psr\\Cache\\CacheItemPoolInterface' => __DIR__ . '/..' . '/psr/cache/src/CacheItemPoolInterface.php',
@@ -506,23 +509,6 @@ class ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca
         'Psr\\Log\\LoggerInterface' => __DIR__ . '/..' . '/psr/log/src/LoggerInterface.php',
         'Psr\\Log\\LoggerTrait' => __DIR__ . '/..' . '/psr/log/src/LoggerTrait.php',
         'Psr\\Log\\NullLogger' => __DIR__ . '/..' . '/psr/log/src/NullLogger.php',
-        'cebe\\markdown\\GithubMarkdown' => __DIR__ . '/..' . '/cebe/markdown/GithubMarkdown.php',
-        'cebe\\markdown\\Markdown' => __DIR__ . '/..' . '/cebe/markdown/Markdown.php',
-        'cebe\\markdown\\MarkdownExtra' => __DIR__ . '/..' . '/cebe/markdown/MarkdownExtra.php',
-        'cebe\\markdown\\Parser' => __DIR__ . '/..' . '/cebe/markdown/Parser.php',
-        'cebe\\markdown\\block\\CodeTrait' => __DIR__ . '/..' . '/cebe/markdown/block/CodeTrait.php',
-        'cebe\\markdown\\block\\FencedCodeTrait' => __DIR__ . '/..' . '/cebe/markdown/block/FencedCodeTrait.php',
-        'cebe\\markdown\\block\\HeadlineTrait' => __DIR__ . '/..' . '/cebe/markdown/block/HeadlineTrait.php',
-        'cebe\\markdown\\block\\HtmlTrait' => __DIR__ . '/..' . '/cebe/markdown/block/HtmlTrait.php',
-        'cebe\\markdown\\block\\ListTrait' => __DIR__ . '/..' . '/cebe/markdown/block/ListTrait.php',
-        'cebe\\markdown\\block\\QuoteTrait' => __DIR__ . '/..' . '/cebe/markdown/block/QuoteTrait.php',
-        'cebe\\markdown\\block\\RuleTrait' => __DIR__ . '/..' . '/cebe/markdown/block/RuleTrait.php',
-        'cebe\\markdown\\block\\TableTrait' => __DIR__ . '/..' . '/cebe/markdown/block/TableTrait.php',
-        'cebe\\markdown\\inline\\CodeTrait' => __DIR__ . '/..' . '/cebe/markdown/inline/CodeTrait.php',
-        'cebe\\markdown\\inline\\EmphStrongTrait' => __DIR__ . '/..' . '/cebe/markdown/inline/EmphStrongTrait.php',
-        'cebe\\markdown\\inline\\LinkTrait' => __DIR__ . '/..' . '/cebe/markdown/inline/LinkTrait.php',
-        'cebe\\markdown\\inline\\StrikeoutTrait' => __DIR__ . '/..' . '/cebe/markdown/inline/StrikeoutTrait.php',
-        'cebe\\markdown\\inline\\UrlLinkTrait' => __DIR__ . '/..' . '/cebe/markdown/inline/UrlLinkTrait.php',
         'eftec\\bladeone\\BladeOne' => __DIR__ . '/..' . '/eftec/bladeone/lib/BladeOne.php',
         'eftec\\bladeone\\BladeOneCache' => __DIR__ . '/..' . '/eftec/bladeone/lib/BladeOneCache.php',
         'eftec\\bladeone\\BladeOneCacheRedis' => __DIR__ . '/..' . '/eftec/bladeone/lib/BladeOneCacheRedis.php',
@@ -534,6 +520,7 @@ class ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca
         return \Closure::bind(function () use ($loader) {
             $loader->prefixLengthsPsr4 = ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca::$prefixLengthsPsr4;
             $loader->prefixDirsPsr4 = ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca::$prefixDirsPsr4;
+            $loader->prefixesPsr0 = ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca::$prefixesPsr0;
             $loader->fallbackDirsPsr0 = ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca::$fallbackDirsPsr0;
             $loader->classMap = ComposerStaticInitd751998920d2f70d4ba9b76cf18994ca::$classMap;
 
