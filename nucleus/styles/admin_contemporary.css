@@ -461,6 +461,56 @@ label {
 .warning { background: rgba(183, 121, 31, 0.08); border: 1px solid rgba(183, 121, 31, 0.18); color: #8c5d10; }
 .error { background: rgba(196, 54, 54, 0.08); border: 1px solid rgba(196, 54, 54, 0.18); color: #9f1f1f; }
 
+#tabs .ui-widget-header {
+    background: var(--panel-muted);
+    border: 1px solid var(--border);
+    border-bottom: none;
+    border-radius: 14px 14px 0 0;
+    padding: 6px 8px 0;
+}
+
+#tabs .ui-tabs-nav li {
+    margin: 0 6px 0 0;
+    padding: 0;
+    border: 1px solid transparent;
+    border-radius: 10px 10px 0 0;
+    background: transparent;
+}
+
+#tabs .ui-tabs-nav li a {
+    padding: 10px 14px;
+    color: var(--accent-strong);
+    font-weight: 700;
+    background: transparent;
+    border-radius: 10px 10px 0 0;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+#tabs .ui-tabs-nav li.ui-state-hover a,
+#tabs .ui-tabs-nav li.ui-state-focus a {
+    background: #e7ebf3;
+    color: #2f3847;
+}
+
+#tabs .ui-tabs-nav li.ui-state-active a {
+    background: linear-gradient(135deg, #4d5a73, #394355);
+    color: #fff;
+}
+
+#tabs .ui-tabs-nav li.ui-state-active,
+#tabs .ui-tabs-nav li.ui-state-hover,
+#tabs .ui-tabs-nav li.ui-state-default {
+    background: transparent;
+    border-color: transparent;
+}
+
+#tabs .ui-widget-content {
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 0 0 14px 14px;
+    padding: 16px;
+}
+
 .app-footer {
     margin: 0 24px 24px;
     background: var(--panel);
