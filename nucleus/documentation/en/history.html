@@ -28,6 +28,8 @@
 		<strong>Nucleus 3.80</strong> (pending)
 		<ul>
 			<li>NEW: It is now necessary to set installation authentication for new installations.</li>
+			<li>NEW: Added support for SQLite and PostgreSQL databases (in addition to MySQL/MariaDB).</li>
+			<li><strong>REMOVED: XML-RPC API functionality (Blogger API, MetaWeblog API, Movable Type API).</strong><br />Remote blog posting via desktop/mobile apps is no longer supported. If you need this feature, use v3.7.x instead.</li>
 			<li>CHANGE: Database: Remove connection via mysqli module driver</li>
 			<li>NEW: Add Database Optimization/Repair</li>
 			<li>NEW: Add member halt(account lock).<br />When you enable members will not be able to various operations, such as login and password issued.</li>
@@ -39,7 +41,18 @@
 			<li>ADD: Blog option display item author</li>
 			<li>CHANGE: If Blog option authorvisible is no, &lt;%author%&gt; is return empty.</li>
 			<li>ADD: Add Skin Class functions changeSkinByName, changeSkinById, getRootURL, getURL.</li>
-			<li>NEW: New global variable $DB_DRIVER_NAME.</li>
+			<li>NEW: New global variable $DB_DRIVER_NAME (possible values: mysql, sqlite, postgresql).</li>
+			<li><strong>OPTIMIZATION: Optimized Composer dependency packages.</strong><br />
+				<ul>
+				<li>Removed unused symfony/cache package</li>
+				<li>Removed doctrine/orm, using only doctrine/dbal (ORM features were not being used)</li>
+				<li>Removed phpxmlrpc/phpxmlrpc package (related to XML-RPC API removal)</li>
+				<li>Replaced cebe/markdown with erusev/parsedown (lighter Markdown parser)</li>
+				<li>Removed development files (tests, docs) from vendor directory</li>
+				<li>Optimized Composer autoloader (classmap method, performance improvement)</li>
+				</ul>
+			</li>
+			<li>CHANGE: Improved installation instruction messages with detailed step-by-step guide for non-technical users.</li>
 			<li>CHANGE: The length of the next column has been changed from 20 to 50 : nucleus_plugin_option.oname, nucleus_config.name</li>
 			<li>CHANGE: Installer: It has been changed to be able to use the ~@localhost in the e-mail address.</li>
 			<li>CHANGE: Split special skin into pages and parts..</li>
@@ -48,6 +61,7 @@
 			<li>CHANGE: <%NP_PluginName(parameters)%> has been added to skin / template variable</li>
 			<li>CHANGE: The getEventList function of plug-in class is no longer required.The event_* function of the plugin is acquired automatically by the _getEventList function of the parent class.</li>
 			<li>CHANGE: Remove nucleus/forgotpassword.html</li>
+			<li>CHANGE: Remove extra/xmlrpc/ and nucleus/libs/xmlrpc_server/ directories (related to XML-RPC API removal).</li>
 			<li>CHANGE: Remove supportsFeature [SqlTablePrefix, SqlApi].</li>
 		</ul>
 

@@ -3148,11 +3148,11 @@ function parseMarkdownFile($filename)
 
 function parseMarkdown($text)
 {
-    if ( ! class_exists('\cebe\markdown\Markdown')) {
+    if ( ! class_exists('\Parsedown')) {
         return false;
     }
-    $parser = new \cebe\markdown\GithubMarkdown();
-    return $parser->parse($text);
+    $parser = new \Parsedown();
+    return $parser->text($text);
 }
 
 function getNamespaceBladeOne()

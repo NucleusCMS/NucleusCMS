@@ -1,16 +1,136 @@
-# Developer guide
+# Developer Guide
 
-This document collects notes that are primarily relevant to developers and package maintainers.
+This document is for developers and package maintainers working with NucleusCMS source code.
 
-## Composer dependencies
+## Getting Started
 
-NucleusCMS uses Composer for some libraries, but end users do not need to run Composer themselves if you ship a packaged build. To bundle the dependencies:
+### Installing from Git
 
-1. On a development machine with Composer installed, run `composer install --no-dev --optimize-autoloader` in the project root.
-2. Keep the generated `composer.lock` under version control so the exact dependency versions are tracked.
-3. Include the resulting `vendor/` directory in your release archive or installer so users who cannot use Composer still receive the required libraries.
-4. Rebuild the `vendor/` directory whenever `composer.json` or `composer.lock` changes to keep shipped libraries in sync.
+1. **Clone the repository**:
+   ```sh
+   git clone https://github.com/NucleusCMS/NucleusCMS.git
+   cd NucleusCMS
+   ```
 
-## Installer access for local development
+2. **Install Composer dependencies**:
+   ```sh
+   cd nucleus/libs
+   composer install --no-dev
+   composer dump-autoload --optimize --classmap-authoritative --no-dev
+   cd ../..
+   ```
 
-The installer uses Basic Authentication. For local work, set a username and password in `install/install-config.php` before running the installer. Avoid committing real credentials to version control and rotate them after use.
+3. **Configure installer** (see README.md)
+
+4. **Run installer** via web browser
+
+## Composer Dependencies
+
+NucleusCMS uses Composer to manage PHP libraries. The dependencies are:
+
+* **doctrine/dbal** (^4): Database abstraction layer (MySQL, MariaDB, SQLite, PostgreSQL)
+* **eftec/bladeone** (^4): Template engine for admin interface
+* **erusev/parsedown** (^1.7): Markdown parser for plugin help files
+
+### Managing Dependencies
+
+**Adding a package**:
+```sh
+cd nucleus/libs
+composer require vendor/package-name
+composer dump-autoload --optimize --classmap-authoritative --no-dev
+```
+
+**Removing a package**:
+```sh
+cd nucleus/libs
+composer remove vendor/package-name
+composer dump-autoload --optimize --classmap-authoritative --no-dev
+```
+
+**Updating packages**:
+```sh
+cd nucleus/libs
+composer update --no-dev
+composer dump-autoload --optimize --classmap-authoritative --no-dev
+```
+
+### Autoloader Optimization
+
+Always regenerate the optimized autoloader after changing dependencies:
+```sh
+cd nucleus/libs
+composer dump-autoload --optimize --classmap-authoritative --no-dev
+```
+
+This creates a classmap for all classes, eliminating filesystem lookups and improving performance.
+
+## Creating Release Packages
+
+### For End Users (Complete Package with vendor)
+
+1. **Ensure dependencies are installed and optimized**:
+   ```sh
+   cd nucleus/libs
+   composer install --no-dev
+   composer dump-autoload --optimize --classmap-authoritative --no-dev
+   cd ../..
+   ```
+
+2. **Create the release archive**:
+   ```sh
+   # From project root
+   zip -r NucleusCMS-3.8.0-complete.zip . \
+     -x "*.git*" \
+     -x "*.DS_Store" \
+     -x "*node_modules*" \
+     -x "archives/*"
+   ```
+
+3. **Upload to GitHub Releases** as `NucleusCMS-x.x.x-complete.zip`
+
+**Important**: End users need the vendor directory included. The complete package should contain all dependencies.
+
+### For Developers (Source Code Only)
+
+GitHub automatically creates source archives from tags. These archives exclude:
+- `nucleus/libs/vendor/` (via `.gitattributes`)
+- `nucleus/libs/composer.lock` (via `.gitattributes`)
+
+Developers cloning or downloading source code must run `composer install` themselves.
+
+## Package Size Optimization
+
+The vendor directory has been heavily optimized:
+
+- **Size**: 2.2MB (reduced from 8.5MB, 74% smaller)
+- **Optimizations applied**:
+  - Removed unused dependencies (symfony/cache, doctrine/orm, phpxmlrpc)
+  - Removed test directories and documentation files from vendor packages
+  - Optimized autoloader with classmap
+  - Replaced cebe/markdown with lighter erusev/parsedown
+
+## Development Workflow
+
+### Local Development Setup
+
+1. Clone repository
+2. Install dependencies: `composer install --no-dev`
+3. Configure `install/install-config.php`
+4. Use Docker (see README.md) or configure local Apache/PHP/MySQL
+5. Run installer
+
+### Before Committing
+
+- Test your changes
+- Ensure code follows project standards
+- Do NOT commit `vendor/` directory (it's in `.gitignore`)
+- Do NOT commit real credentials in `install/install-config.php`
+
+### Installer Access for Local Development
+
+The installer uses Basic Authentication. For local work:
+1. Copy `install/install-config.sample.php` to `install/install-config.php`
+2. Set a username and password
+3. **Never commit** this file with real credentials
+4. Change credentials after installation if needed

@@ -2,7 +2,7 @@
     "require": {
         "php": "^8.1||^8.2||^8.3",
         "doctrine/dbal": "^4",
-        "cebe/markdown": "^1",
+        "erusev/parsedown": "^1.7",
         "eftec/bladeone": "^4"
     },
     "autoload": {
