@@ -216,7 +216,6 @@ h3 { font-size: 1.05rem; }
 
 .quickmenu-form select,
 .quickmenu-form input,
-.quickmenu-form button,
 input,
 select,
 textarea {
@@ -349,6 +348,12 @@ button,
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.12s ease;
     box-shadow: 0 8px 18px rgba(47, 70, 100, 0.18);
+    width: auto;
+    min-width: 110px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
 }
 
 input[type="submit"]:hover,
