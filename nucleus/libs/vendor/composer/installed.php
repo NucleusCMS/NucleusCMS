@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-master',
-        'version' => 'dev-master',
-        'reference' => '874c4084335f50cd904123edfa0346e4a918282f',
+        'pretty_version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+        'version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+        'reference' => '995694e45280318e4069d8d6d13bffd5963b1590',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-master',
-            'version' => 'dev-master',
-            'reference' => '874c4084335f50cd904123edfa0346e4a918282f',
+            'pretty_version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+            'version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
+            'reference' => '995694e45280318e4069d8d6d13bffd5963b1590',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
@@ -52,15 +52,6 @@
             'reference' => 'a22f6471c01c26fea5f6a0d0aca9b5674fc999be',
             'type' => 'library',
             'install_path' => __DIR__ . '/../eftec/bladeone',
-            'aliases' => array(),
-            'dev_requirement' => false,
-        ),
-        'phpxmlrpc/phpxmlrpc' => array(
-            'pretty_version' => '4.11.5',
-            'version' => '4.11.5.0',
-            'reference' => 'ad6df5f9e296a9ea76e58a7cb634b88a8e324dc4',
-            'type' => 'library',
-            'install_path' => __DIR__ . '/../phpxmlrpc/phpxmlrpc',
             'aliases' => array(),
             'dev_requirement' => false,
         ),
