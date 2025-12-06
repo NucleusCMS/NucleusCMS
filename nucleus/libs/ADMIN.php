@@ -50,7 +50,23 @@ class ADMIN
 
         //$this->check_admin_vars();
         $this->checkSecurityRisk();
+        $this->appendInstallDirWarning();
         $this->initCheckUpgarde();
+    }
+
+    public function addSystemInfoMessage($level, $message)
+    {
+        $this->system_info_messages[] = [$level, $message];
+    }
+
+    public function hasSystemInfoMessages()
+    {
+        return count($this->system_info_messages) > 0;
+    }
+
+    public function getSystemInfoMessages()
+    {
+        return $this->system_info_messages;
     }
 
     private function check_admin_vars()
@@ -8538,7 +8554,6 @@ EOL;
         ];
         $RiskDirs = [
             'convert'      => _ERRORS_CONVERTDIR,  // don't localized, old version
-            '../install'   => _ERRORS_INSTALLDIR,  // current version
             '../_upgrades' => _ERRORS_UPGRADESDIR,  // current version
         ];
         $aFound = [];
@@ -8575,6 +8590,23 @@ EOL;
                 . '</div><br /><hr />' . $msg;
         }
         startUpError($msg, $title);
+    }
+
+    private function appendInstallDirWarning()
+    {
+        global $member, $CONF;
+
+        if ( ! $CONF['alertOnSecurityRisk']) {
+            return;
+        }
+
+        if ( ! isset($member) || ! is_object($member) || ! $member->isLoggedIn()) {
+            return;
+        }
+
+        if (@is_dir('../install')) {
+            $this->addSystemInfoMessage('warning', _ERRORS_INSTALLDIR);
+        }
     }
 
     public function action_composeroverview()

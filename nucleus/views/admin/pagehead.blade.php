@@ -37,3 +37,10 @@
         <div id="container">
             <div id="content">
                 @php $oAdmin->loginname(); @endphp
+                @if ($oAdmin->hasSystemInfoMessages())
+                    <div class="system-info-messages">
+                        @foreach ($oAdmin->getSystemInfoMessages() as $info)
+                            <div class="system-info-message system-info-{{ $info[0] }}">{{ $info[1] }}</div>
+                        @endforeach
+                    </div>
+                @endif
