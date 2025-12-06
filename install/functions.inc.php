@@ -851,7 +851,6 @@ function doInstall()
         $config_data = '<' . '?php' . "\n\n";
         $config_data .= "//\$CONF['PHP_BIN'] = '/usr/local/bin/php';\n";
         $config_data .= "\n";
-        $config_data .= "//\$CONF['alertOnSecurityRisk'] = 0;\n";
         $config_data .= "//\$CONF['debug']               = 1;\n";
         $config_data .= "\n";
         //$config_data .= "\n"; (extraneous, just added extra \n to previous line
