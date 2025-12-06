@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => '__root__',
-        'pretty_version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
-        'version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
-        'reference' => 'd5fc284a0c5c4b54c241eb1c7f3d10d011b540f9',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
+        'reference' => '874c4084335f50cd904123edfa0346e4a918282f',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -11,9 +11,9 @@
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
-            'version' => 'dev-claude/optimize-composer-deps-012HvQoFQsVAzseWk9KDxzyc',
-            'reference' => 'd5fc284a0c5c4b54c241eb1c7f3d10d011b540f9',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
+            'reference' => '874c4084335f50cd904123edfa0346e4a918282f',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
