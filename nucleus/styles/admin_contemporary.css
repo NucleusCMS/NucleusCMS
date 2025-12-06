@@ -4,13 +4,13 @@
     --panel-muted: #f2f4f8;
     --text: #0f172a;
     --muted: #4b5563;
-    --accent: #505d75;
-    --accent-strong: #3d475c;
+    --accent: #5a6372;
+    --accent-strong: #404856;
     --border: #e4e7ee;
     --shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     --radius: 14px;
-    --sidebar: #1a2332;
-    --sidebar-border: #252f42;
+    --sidebar: #222834;
+    --sidebar-border: #2b3240;
     --sidebar-width: 280px;
     --warning: #b7791f;
     --success: #1f8a50;
@@ -118,7 +118,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-header {
-    background: linear-gradient(135deg, #1c2433, #242f44 58%, #2b3850);
+    background: linear-gradient(135deg, #242a34, #2e3441 58%, #353d4c);
     color: #f8fafc;
     padding: 18px 28px;
     display: flex;
@@ -140,7 +140,7 @@ h3 { font-size: 1.05rem; }
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #243048, #313e57);
+    background: linear-gradient(135deg, #2b3240, #374051);
     color: #f8fafc;
     display: grid;
     place-items: center;
@@ -156,7 +156,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .brand-subtitle {
-    color: #94a3b8;
+    color: #9aa6b8;
     font-size: 0.9rem;
 }
 
@@ -169,7 +169,7 @@ h3 { font-size: 1.05rem; }
 .loginname {
     background: rgba(255, 255, 255, 0.06);
     border: 1px solid rgba(148, 163, 184, 0.28);
-    color: #e2e8f0;
+    color: #e5eaf2;
     padding: 10px 12px;
     border-radius: 12px;
     line-height: 1.4;
@@ -186,7 +186,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-sidebar {
-    background: linear-gradient(180deg, #1c2535, #19212f 58%, #161d29);
+    background: linear-gradient(180deg, #232a36, #1f2631 58%, #1b222c);
     border-right: 1px solid var(--sidebar-border);
     border-radius: 0;
     box-shadow: none;
@@ -203,21 +203,21 @@ h3 { font-size: 1.05rem; }
 }
 
 .quickmenu {
-    color: #e2e8f0;
+    color: #e5eaf2;
 }
 
 .quickmenu-banner {
-    background: linear-gradient(135deg, rgba(80, 93, 117, 0.14), rgba(80, 93, 117, 0.05));
-    border: 1px solid rgba(80, 93, 117, 0.2);
+    background: linear-gradient(135deg, rgba(90, 99, 114, 0.16), rgba(90, 99, 114, 0.06));
+    border: 1px solid rgba(90, 99, 114, 0.24);
     border-radius: 12px;
     padding: 14px 16px;
     margin-bottom: 14px;
-    color: #e2e8f0;
+    color: #e5eaf2;
 }
 
 .quickmenu-banner p {
     margin: 0;
-    color: #d7dce5;
+    color: #dfe4ec;
     font-size: 0.95rem;
 }
 
@@ -229,7 +229,7 @@ h3 { font-size: 1.05rem; }
 .section-heading {
     font-size: 0.95rem;
     font-weight: 600;
-    color: #f8fafc;
+    color: #f6f7fb;
     margin-bottom: 6px;
     letter-spacing: 0.02em;
     text-transform: uppercase;
@@ -249,7 +249,7 @@ h3 { font-size: 1.05rem; }
     align-items: center;
     justify-content: space-between;
     border-radius: 8px;
-    color: #e2e8f0;
+    color: #e7ebf3;
     font-weight: 500;
     transition: color 0.12s ease, background 0.12s ease;
 }
@@ -257,7 +257,7 @@ h3 { font-size: 1.05rem; }
 .quickmenu-links a:hover {
     background: rgba(255, 255, 255, 0.04);
     text-decoration: none;
-    color: #f8fafc;
+    color: #ffffff;
 }
 
 
@@ -392,15 +392,15 @@ input[type="submit"],
 input[type="button"],
 button,
 .button {
-    background: linear-gradient(135deg, #4d5a73, #394355);
-    border: 1px solid #394355;
+    background: linear-gradient(135deg, #5b6475, #434b5a);
+    border: 1px solid #434b5a;
     color: #fff;
     padding: 9px 14px;
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.12s ease, background 0.12s ease;
-    box-shadow: 0 8px 18px rgba(57, 67, 85, 0.18);
+    box-shadow: 0 8px 18px rgba(67, 76, 92, 0.18);
     width: auto;
     min-width: 110px;
     min-height: 36px;
@@ -415,8 +415,8 @@ input[type="button"]:hover,
 button:hover,
 .button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(57, 67, 85, 0.2);
-    background: linear-gradient(135deg, #56637c, #404a60);
+    box-shadow: 0 10px 22px rgba(67, 76, 92, 0.2);
+    background: linear-gradient(135deg, #616a7c, #495164);
 }
 
 input[type="submit"]:disabled,
@@ -429,13 +429,13 @@ button:disabled,
 }
 
 .button-primary {
-    background: linear-gradient(135deg, #4d5a73, #394355);
-    border-color: #394355;
+    background: linear-gradient(135deg, #5b6475, #434b5a);
+    border-color: #434b5a;
     color: #fff;
 }
 
 .button-ghost {
-    background: #f5f7fb;
+    background: #f7f9fc;
     border: 1px solid var(--border);
     color: var(--accent-strong);
     box-shadow: none;
@@ -493,7 +493,7 @@ label {
 }
 
 #tabs .ui-tabs-nav li.ui-state-active a {
-    background: linear-gradient(135deg, #4d5a73, #394355);
+    background: linear-gradient(135deg, #5b6475, #434b5a);
     color: #fff;
 }
 
