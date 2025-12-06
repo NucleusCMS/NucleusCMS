@@ -402,8 +402,6 @@ button,
     transition: transform 0.1s ease, box-shadow 0.12s ease, background 0.12s ease;
     box-shadow: 0 8px 18px rgba(67, 76, 92, 0.18);
     width: auto;
-    min-width: 110px;
-    min-height: 36px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
