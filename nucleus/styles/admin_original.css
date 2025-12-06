@@ -23,6 +23,31 @@ body {
     font-family: "Trebuchet MS", "Bitstream Vera Sans", Meiryo, "Hiragino Kaku Gothic Pro", lucida, Arial, "Helvetica Neue", Helvetica, sans-serif;
 }
 
+.system-info-messages {
+    margin: 10px 0;
+}
+
+.system-info-message {
+    background: #fff8e5;
+    border: 1px solid #f0b429;
+    border-radius: 4px;
+    color: #5c3a00;
+    line-height: 1.5;
+    margin: 0 0 8px;
+    padding: 8px 10px;
+}
+
+.system-info-warning {
+    background: #fff1d6;
+    border-color: #e69a00;
+}
+
+.system-info-normal {
+    background: #f6f8fa;
+    border-color: #d0d7de;
+    color: #24292f;
+}
+
 td, th, textarea, option {
     font-size: inherit;
     font-family: inherit;
