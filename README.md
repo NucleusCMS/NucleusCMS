@@ -5,23 +5,42 @@ NucleusCMS 3.80
 
 Nucleus is a Content Management System (CMS)
 
-# Operating environment
+# System Requirements
 
 * Web server: Apache2
-
 * PHP: 8.1 - 8.3
-
-* Database: MySQL / MariaDB
-
+* Database: MySQL / MariaDB / SQLite / PostgreSQL
 
 # Documentation
 
 [nucleus/documentation/index.html](./nucleus/documentation/index.html)
 
+# Installation
 
-# Install
+## For Users
 
-The installer is protected by Basic Authentication. **Before running the installer, copy `install/install-config.sample.php` to `install/install-config.php` and set your own username and password** for the installer prompt. Keep these credentials secure and change them after installation if you no longer need the protection.
+1. **Download** the complete package from [Releases](https://github.com/NucleusCMS/NucleusCMS/releases)
+   - Download `NucleusCMS-x.x.x-complete.zip` (includes all dependencies)
+
+2. **Extract** the zip file on your computer
+
+3. **Upload** all files to your web server via FTP
+
+4. **Configure installer authentication**:
+   - Rename `install/install-config.sample.php` to `install/install-config.php`
+   - Edit the file and set your username and password
+   - Choose authentication mode (BASIC or IP)
+
+5. **Run installer**:
+   - Access `http://yoursite.com/install/` in your browser
+   - Enter the username/password you set in step 4
+   - Follow the on-screen instructions
+
+**No command-line or Composer knowledge required!**
+
+## For Developers
+
+If you're developing NucleusCMS or installing from Git, see [DEVELOPER.md](./DEVELOPER.md).
 
 # Docker (local install)
 

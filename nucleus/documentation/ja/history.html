@@ -35,8 +35,10 @@
 		<li>[変更] NucleusCMS本体のサポートされるPHPのバージョンが変更されました。プラグインも使用するPHPのバージョンに対応している必要あります。</li>
 		<li>[変更] データベース：PDOドライバーへ完全移行しました。</li>
 		<li>[新規] 新規インストールの際にインストール認証の設定が必要になりました。</li>
+		<li>[新規] SQLiteとPostgreSQLのデータベースサポートを追加しました。</li>
 		<li>[廃止] EUC-JPを含む文字コードの扱いを終了しました。</li>
 		<li>[廃止] mysql mysqliドライバーでの接続サポートを終了しました。</li>
+		<li><strong>[廃止] XML-RPC API機能を削除しました（Blogger API、MetaWeblog API、Movable Type API）。</strong><br />デスクトップ/モバイルアプリからのリモート投稿機能は利用できなくなりました。この機能が必要な場合はv3.7.xをご利用ください。</li>
 		</ul>
 		<ul>
 		<li>[新規] データベースの最適化/修復が追加されました。</li>
@@ -47,7 +49,18 @@
 		<li>[新規] コンテンツの圧縮をサポート(gzip, deflate)</li>
 		<li>[新規] アイテム編集後の移動先を選べるようになりました。</li>
 		<li>[新規] Skinクラスに関数が追加されました(changeSkinByName, changeSkinById, getRootURL, getURL)。</li>
-		<li>[新規] グローバル変数 $DB_DRIVER_NAME が追加されました。現在設定できる値は mysql sqlite です</li>
+		<li>[新規] グローバル変数 $DB_DRIVER_NAME が追加されました。現在設定できる値は mysql sqlite postgresql です</li>
+		<li><strong>[最適化] Composer依存パッケージを最適化しました。</strong><br />
+			<ul>
+			<li>未使用のsymfony/cacheパッケージを削除</li>
+			<li>doctrine/ormを削除しdoctrine/dbalのみ使用（ORM機能は使用していなかったため）</li>
+			<li>phpxmlrpc/phpxmlrpcパッケージを削除（XML-RPC API削除に伴う）</li>
+			<li>cebe/markdownをerusev/parsedownに置き換え（より軽量なMarkdownパーサー）</li>
+			<li>vendorディレクトリから開発用ファイル（テスト、ドキュメント）を除外</li>
+			<li>Composerオートローダーを最適化（クラスマップ方式、パフォーマンス向上）</li>
+			</ul>
+		</li>
+		<li>[変更] インストール手順メッセージを改善しました。手順を具体的に記載し、非技術者にも分かりやすくしました。</li>
 		<li>[廃止] 次のsupportsFeature が廃止されました [SqlTablePrefix, SqlApi](sql_table関数の十分な周知期間が経過したため)。プラグインのロード時に これらのsupportsFeature のチェックは行われなくなりました。</li>
 		<li>[変更] 次の列の長さが(20から50)に変更されました : nucleus_plugin_option.oname, nucleus_config.name</li>
 		<li>[変更] インストーラー：メールアドレスに ～@localhost を使用できるように変更しました。</li>
@@ -55,6 +68,7 @@
 		<li>[変更] プラグインロード中のエラー発生時に実行が中断されないようにtryエラー処理を追加しました。</li>
 		<li>[変更] $CONF['DisableRSS'] が追加されました。グローバル設定: RSSの出力を有効にする ( xml-rss2.php , rsd.php , atom.php )。出力をしない場合は、関連ファイルの更新が必要です。</li>
 		<li>[廃止] nucleus/forgotpassword.htmlが削除されました。</li>
+		<li>[廃止] extra/xmlrpc/ディレクトリとnucleus/libs/xmlrpc_server/ディレクトリが削除されました（XML-RPC API機能の削除に伴う）。</li>
 		<li>[変更] スキン/テンプレート変数に <%NP_PluginName(parameters)%> が追加されました。</li>
 		<li>[変更] プラグインクラスのgetEventList関数が不要になりました。プラグインのevent_*関数は親クラスの_getEventList関数により自動的に取得されます。</li>
 		</ul>
