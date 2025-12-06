@@ -42,6 +42,34 @@ body {
     border: 0;
 }
 
+.admin-inline-block { display: inline-block; }
+.admin-inline-nowrap { display: inline-block; white-space: nowrap; }
+.admin-nowrap { white-space: nowrap; }
+.admin-float-left { float: left; }
+.admin-delete-form { float: right; padding: 0.5em; }
+.admin-form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+    flex-wrap: wrap;
+}
+.admin-form-title { display: flex; align-items: center; gap: 8px; }
+.admin-form-heading { margin: 0; }
+.admin-form-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+.navlist-filter-block { margin: 2px 2px 2px 0; padding-top: 5px; }
+.admin-state-flag { border-color: #b7ffcf; border-style: double; padding: 4px; white-space: normal; }
+.admin-action-block { float: left; display: inline-block; padding: 0.5em; }
+.admin-action-block--nowrap { white-space: nowrap; }
+.admin-action-block--break { word-break: break-all; }
+
 a {
     color: var(--accent);
     text-decoration: none;

@@ -257,17 +257,15 @@ class NAVLIST extends ENCAPSULATE
                         <?php
                         $s = '_LISTS_FORM_SELECT_ITEM_OPTION_'
                                   . strtoupper($view_item_options);
-                $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
                 printf(
-                    '<div style="%s"><span class="filter">%s</span>',
-                    $style1,
+                    '<div class="navlist-filter-block"><span class="filter">%s</span>',
                     hsc(defined($s) ? constant($s) : $s)
                 );
                 echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
                 ?>
-                        <div style="display: inline-block">
+                        <div class="admin-inline-block">
                             <form method="post" action="index.php"
-                                  style="display: inline-block">
+                                  class="admin-inline-block">
                                 <input type="submit" value="<?php
                         echo _LISTS_CHANGE; ?>"/>
                                 <input type="hidden" name="blogid" value="<?php

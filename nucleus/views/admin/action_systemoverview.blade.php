@@ -1,5 +1,5 @@
-<div style="display: inline-block;">
- <div id="tabs" style="float: left;">
+<div class="admin-inline-block">
+ <div id="tabs" class="admin-float-left">
 	<ul>
 		<li><a href="#tab_php_database" tabindex="300">{{ _ADMIN_SYSTEMOVERVIEW_PHPANDDB }}</a></li>
 		<li><a href="#tab_core" tabindex="310">{{ _ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM }}</a></li>

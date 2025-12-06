@@ -540,9 +540,9 @@ function listplug_table_itemlist($template, $type)
                     }
 
                     if ( ! empty($flags)) {
-                        $parts_flag .= '<div style="border-color: #b7ffcf; border-style: double; padding: 4px; white-space: normal;">';
+                        $parts_flag .= '<div class="admin-state-flag">';
                         $parts_flag .= _ADMIN_ISTATE_STATE . ": ";
-                        $span = '<span style="white-space: nowrap; display: inline-block">';
+                        $span = '<span class="admin-inline-nowrap">';
                         $parts_flag .= $span . implode("</span> ".$span, $flags) . "</span>";
                         $parts_flag .= "</div>";
                     }
@@ -572,9 +572,8 @@ function listplug_table_itemlist($template, $type)
             $COMMENTS = new COMMENTS($current->inumber);
             echo "{$current->ibody}</td>";
 
-            $style0 = 'float:left; display: inline-block; padding: 0.5em;';
-            $style1 = "white-space:nowrap; {$style0}";
-            $style2 = "word-break: break-all; {$style0}";
+            $actionBlockClass      = 'class="admin-action-block admin-action-block--nowrap"';
+            $actionBlockBreakClass = 'class="admin-action-block admin-action-block--break"';
 
             // [Action]
             echo "<td {$cssclass}>";
@@ -608,20 +607,19 @@ function listplug_table_itemlist($template, $type)
 
             // Output
             foreach ($elements as $element) {
-                $style = $style1;
+                $style = $actionBlockClass;
                 if (empty($element[0])) {
-                    $style = $style2;
-                    printf('<div style="%s">%s</div>', $style, escapeHTML($element[1]));
+                    printf('<div %s>%s</div>', $actionBlockBreakClass, escapeHTML($element[1]));
                     continue;
                 }
                 if (str_contains($element[0], 'itemcommentlist')) {
-                    $style = $style2;
+                    $style = $actionBlockBreakClass;
                 }
                 if (_LISTS_VIEW === $element[1]) {
                     echo "<br style='clear: both;' />";
-                    printf('<div style="%s"><a href="%s" target="_blank">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
+                    printf('<div %s><a href="%s" target="_blank">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
                 } else {
-                    printf('<div style="%s"><a href="%s">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
+                    printf('<div %s><a href="%s">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
                 }
             }
 
@@ -695,7 +693,7 @@ function listplug_table_commentlist($template, $type)
             $current->cbody = strip_tags($current->cbody);
             $current->cbody = hsc(shorten($current->cbody, 300, '...'));
 
-            echo '<td><div style="display: inline-block;white-space: nowrap;">';
+            echo '<td><div class="admin-inline-nowrap">';
             $id = listplug_nextBatchId();
             if ($show_action_link) {
                 echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" />';
@@ -708,17 +706,16 @@ function listplug_table_commentlist($template, $type)
             echo '</div></td>';
 
             echo '<td><div>';
-            $style0 = 'float:left; display: inline-block; padding: 0.5em;';
-            $style1 = "white-space:nowrap; {$style0}";
-            $style2 = "word-break: break-all; {$style0}";
+            $actionBlockClass      = 'class="admin-action-block admin-action-block--nowrap"';
+            $actionBlockBreakClass = 'class="admin-action-block admin-action-block--break"';
             if ($show_action_link) {
-                echo "<div style=\"{$style1}\"><a href='index.php?action=commentedit&amp;commentid={$current->cnumber}'>"
+                echo "<div {$actionBlockClass}><a href='index.php?action=commentedit&amp;commentid={$current->cnumber}'>"
                      . _LISTS_EDIT . "</a></div>";
-                echo "<div style=\"{$style1}\"><a href='index.php?action=commentdelete&amp;commentid={$current->cnumber}'>"
+                echo "<div {$actionBlockClass}><a href='index.php?action=commentdelete&amp;commentid={$current->cnumber}'>"
                      . _LISTS_DELETE . "</a></div>";
             }
             if ($template['canAddBan']) {
-                echo "<div style=\"{$style1}\"><a href='index.php?action=banlistnewfromitem&amp;itemid={$current->citem}&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"
+                echo "<div {$actionBlockClass}><a href='index.php?action=banlistnewfromitem&amp;itemid={$current->citem}&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"
                     . _LIST_COMMENT_BANIP
                     . "</a></div>";
             }
@@ -733,7 +730,7 @@ function listplug_table_commentlist($template, $type)
                                   = $COMMENTS->amountComments();
                     }
                     echo "<br style='clear: both;' /><hr style='border-style: dashed;'>";
-                    echo "<div style=\"{$style2}\">";
+                    echo "<div {$actionBlockBreakClass}>";
                     printf(
                         '<a href="index.php?action=itemcommentlist&itemid=%d">%s</a> (%d) ',
                         $current->citem,
@@ -742,7 +739,7 @@ function listplug_table_commentlist($template, $type)
                     );
                     echo '</div>';
                     echo "<br style='clear: both;' />";
-                    echo "<div style=\"{$style2}\">";
+                    echo "<div {$actionBlockBreakClass}>";
                     $item = & $manager->getItem($current->citem, 1, 1);
                     printf(
                         ' %s: %s<br />',

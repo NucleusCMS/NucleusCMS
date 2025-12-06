@@ -7,7 +7,7 @@
 {%ifautosave()%}<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>{%endif%}
 
 <form id="deleteform" name="deleteform" method="post" action="index.php"
-	style="float: right; padding: 0.5em" >
+        class="admin-delete-form" >
 	<input type="hidden" name="action" value="itemdelete" />
 	<input type="hidden" name="itemid" value="{%contents(itemid)%}" />
 <!-- index.php?action=itemdelete&itemid=
@@ -21,8 +21,9 @@
 	<input name="itemid" value="{%contents(itemid)%}" type="hidden" />
 	<input type="hidden" name="draftid" value="0" />
 	{%ticket%}
-	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
-		<div style="display: inline-block; float: right">
+        <div class="admin-form-header">
+                <div class="admin-form-title"><h3 class="admin-form-heading">{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
+                <div class="admin-form-actions">
 			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}"
 				onclick="return checkSubmit();" />
 			{%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"

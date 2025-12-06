@@ -217,7 +217,7 @@ class PAGEFACTORY extends BaseActions
                 }
                 $s[] = '</span>';
             }
-            $s[] = '<div style="display: inline-block;"><span style="white-space: nowrap;">';
+            $s[] = '<div class="admin-inline-block"><span class="admin-inline-nowrap">';
             $s[] = '<input id="inputhour" name="hour" tabindex="{%tabindex()%}" size="2" value="{%'
                    . $stime
                    . '(hours)%}" onchange="document.forms[0].act_future.checked=true;" />';
@@ -227,7 +227,7 @@ class PAGEFACTORY extends BaseActions
             }
             $s[] = '</span>';
 
-            $s[] = '<span style="white-space: nowrap;">';
+            $s[] = '<span class="admin-nowrap">';
             $s[] = '<input id="inputminutes" name="minutes" tabindex="{%tabindex()%}" size="2" value="{%'
                    . $stime
                    . '(minutes)%}" onchange="document.forms[0].act_future.checked=true;" />';
@@ -240,7 +240,7 @@ class PAGEFACTORY extends BaseActions
             $s[] = '<br />' . hsc(_ITEM_ADDEDITTEMPLATE_FORMAT)
                    . hsc(_EDIT_DATE_FORMAT_DESC);
 
-            $s[] = '<div style="display: inline-block;">';
+            $s[] = '<div class="admin-inline-block">';
             $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
                    . _ADD_DATEINPUTNOW
                    . '" onclick = "document.forms[0].act_future.checked=true;  return edit_form_change_date_now();" />';
@@ -281,7 +281,7 @@ class PAGEFACTORY extends BaseActions
                     $items[$stime] = [];
                 }
                 foreach (explode(',', _ADD_PUBLIC_DATE_FORMAT) as $key => $value) {
-                    $s[] = '<span style="white-space: nowrap;">';
+                    $s[] = '<span class="admin-nowrap">';
                     switch ($value) {
                         case 'year':
                             $s[] = sprintf('<input id="inputyear_%s" name="year_%s" tabindex="{%%tabindex()%%}" size="4"', $sterm, $sterm)
@@ -311,7 +311,7 @@ class PAGEFACTORY extends BaseActions
                     $s[] = '</span>';
                 }
 
-                $s[] = '<div style="display: inline-block;"><span style="white-space: nowrap;">';
+                $s[] = '<div class="admin-inline-block"><span class="admin-inline-nowrap">';
                 $s[] = sprintf('<input id="inputhour_%s" name="hour_%s" tabindex="{%%tabindex()%%}" size="2"', $sterm, $sterm)
                 . sprintf(' value="{%%publictime(%s,%s,hour)%%}"', $section, $stime)
                             . ' type="number" maxlength=2 min=0 max=23 style="ime-mode:disabled; width: 3em"'
@@ -322,7 +322,7 @@ class PAGEFACTORY extends BaseActions
                 }
                 $s[] = '</span>';
 
-                $s[] = '<span style="white-space: nowrap;">';
+                $s[] = '<span class="admin-nowrap">';
                 $s[] = sprintf('<input id="inputminute_%s" name="minute_%s" tabindex="{%%tabindex()%%}" size="2"', $sterm, $sterm)
                 . sprintf(' value="{%%publictime(%s,%s,minute)%%}"', $section, $stime)
                             . ' type="number" maxlength=2 min=0 max=59 style="ime-mode:disabled; width: 3em"'
