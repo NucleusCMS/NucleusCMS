@@ -14,8 +14,6 @@
 <!-- page header -->
 <%parsedinclude(header.inc)%>
 
-<%parsedinclude(wrapper_start.inc)%>
-
 <!-- page content -->
 <div id="container">
 <div class="content">
@@ -35,8 +33,6 @@
 <%parsedinclude(sidebar.inc)%>
 </div>
 
-<%parsedinclude(wrapper_end.inc)%>
-
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
@@ -44,8 +40,6 @@
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
-
-<%parsedinclude(wrapper_start.inc)%>
 
 <!-- page content -->
 <div id="container">
@@ -66,8 +60,6 @@
 <%parsedinclude(sidebar.inc)%>
 </div>
 
-<%parsedinclude(wrapper_end.inc)%>
-
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
@@ -75,8 +67,6 @@
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
-
-<%parsedinclude(wrapper_start.inc)%>
 
 <!-- page content -->
 <div id="container">
@@ -94,8 +84,6 @@
 <div id="sidebarcontainer">
 <%parsedinclude(sidebar.inc)%>
 </div>
-
-<%parsedinclude(wrapper_end.inc)%>
 
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
@@ -122,8 +110,6 @@ body { margin: 0px; }
 <!-- page header -->
 <%parsedinclude(header.inc)%>
 
-<%parsedinclude(wrapper_start.inc)%>
-
 <!-- page content -->
 <div id="container">
 <div class="content">
@@ -137,8 +123,6 @@ body { margin: 0px; }
 <%parsedinclude(sidebar.inc)%>
 </div>
 
-<%parsedinclude(wrapper_end.inc)%>
-
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
@@ -146,8 +130,6 @@ body { margin: 0px; }
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
-
-<%parsedinclude(wrapper_start.inc)%>
 
 <!-- page content -->
 <div id="container">
@@ -175,8 +157,6 @@ body { margin: 0px; }
 <%parsedinclude(sidebar.inc)%>
 </div>
 
-<%parsedinclude(wrapper_end.inc)%>
-
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
@@ -184,8 +164,6 @@ body { margin: 0px; }
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
-
-<%parsedinclude(wrapper_start.inc)%>
 
 <!-- page content -->
 <div id="container">
@@ -211,8 +189,6 @@ body { margin: 0px; }
 <%parsedinclude(sidebar.inc)%>
 </div>
 
-<%parsedinclude(wrapper_end.inc)%>
-
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>
 
@@ -220,8 +196,6 @@ body { margin: 0px; }
 
 <!-- page header -->
 <%parsedinclude(header.inc)%>
-
-<%parsedinclude(wrapper_start.inc)%>
 
 <!-- page content -->
 <div id="container">
@@ -241,8 +215,6 @@ body { margin: 0px; }
 <div id="sidebarcontainer">
 <%parsedinclude(sidebar.inc)%>
 </div>
-
-<%parsedinclude(wrapper_end.inc)%>
 
 <!-- page footer -->
 <%parsedinclude(footer.inc)%>]]></part>

@@ -1,3 +1,8 @@
+<div class="clearing">&nbsp;</div>
+</div>
+</div>
+<!-- end wrapper divs -->
+
 <!-- page footer, copyrights, etc. -->
 <div id="footer">
 <div id="copyrights">

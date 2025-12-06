@@ -14,4 +14,6 @@
 </h1>
 </div>
 
-<!-- wrapper divs are opened in wrapper_start.inc -->
+<!-- begin wrapper divs -->
+<div id="mainwrapper">
+<div id="wrapper">
