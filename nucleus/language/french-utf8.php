@@ -382,7 +382,7 @@ try_define('_ERRORS_UPGRADESDIR',						'le répertoire nucleus/upgrades devrait 
 try_define('_ERRORS_CONVERTDIR',						'le répertoire nucleus/convert devrait être supprimé');
 try_define('_ERRORS_CONFIGPHP',							'config.php devrait être en lecture seule (chmod 444)');
 try_define('_ERRORS_STARTUPERROR1',						'<p>Certains fichiers d\'installation de Nucleus sont toujours présent sur le serveur web ou sont modifiables.</p><p>Vous devriez retirer ces fichiers ou modifier leur permissions. Voici les fichiers trouvés par Nucleus</p> <ul><li>');
-try_define('_ERRORS_STARTUPERROR2',						'</li></ul><p>Si vous ne voulez plus voir ce message sans résoudre le problème, définissez <code>$CONF[\'alertOnSecurityRisk\']</code> dans <code>globalfunctions.php</code> à <code>0</code> ou bien faites le à la fin de <code>config.php</code>.</p>');
+try_define('_ERRORS_STARTUPERROR2',                                             '</li></ul><p>Ces avertissements disparaîtront après la suppression ou la sécurisation des fichiers indiqués ci-dessus.</p>');
 try_define('_ERRORS_STARTUPERROR3',						'Problème de sécurité');
 
 // PluginAdmin tickets by javascript

@@ -8542,10 +8542,6 @@ EOL;
     {
         global $CONF, $member;
 
-        if ( ! $CONF['alertOnSecurityRisk']) {
-            return;
-        }
-
         if ( ! isset($member) || ! is_object($member) || ! $member->isLoggedIn()) {
             return;
         }
