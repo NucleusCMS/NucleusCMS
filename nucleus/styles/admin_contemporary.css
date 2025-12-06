@@ -4,8 +4,8 @@
     --panel-muted: #f2f4f8;
     --text: #0f172a;
     --muted: #4b5563;
-    --accent: #3b67c2;
-    --accent-strong: #2f57ad;
+    --accent: #3c587c;
+    --accent-strong: #2f4664;
     --border: #e4e7ee;
     --shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     --radius: 14px;
@@ -25,7 +25,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Helvetica Neue', Arial, 'Noto Sans JP', 'Segoe UI', system-ui, -apple-system, sans-serif;
-    background: linear-gradient(135deg, rgba(59, 103, 194, 0.04), rgba(59, 103, 194, 0)), var(--bg);
+    background: linear-gradient(135deg, rgba(60, 88, 124, 0.04), rgba(60, 88, 124, 0)), var(--bg);
     color: var(--text);
     line-height: 1.6;
 }
@@ -59,7 +59,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-header {
-    background: linear-gradient(135deg, #101826, #0f1824 60%, #162134);
+    background: linear-gradient(135deg, #0f1726, #111c2f 58%, #18253c);
     color: #f8fafc;
     padding: 18px 28px;
     display: flex;
@@ -81,7 +81,7 @@ h3 { font-size: 1.05rem; }
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #3b67c2, #5f8ccf);
+    background: linear-gradient(135deg, #1f2f48, #304a6e);
     color: #f8fafc;
     display: grid;
     place-items: center;
@@ -93,7 +93,7 @@ h3 { font-size: 1.05rem; }
 .brand-name {
     font-size: 1.3rem;
     font-weight: 700;
-    color: #e2e8f0;
+    color: #e7edf5;
 }
 
 .brand-subtitle {
@@ -118,7 +118,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .loginname a {
-    color: #93c5fd;
+    color: #b7c9e5;
 }
 
 .app-body {
@@ -148,8 +148,8 @@ h3 { font-size: 1.05rem; }
 }
 
 .quickmenu-banner {
-    background: linear-gradient(135deg, rgba(59, 103, 194, 0.14), rgba(95, 140, 207, 0.08));
-    border: 1px solid rgba(59, 103, 194, 0.25);
+    background: linear-gradient(135deg, rgba(60, 88, 124, 0.16), rgba(60, 88, 124, 0.06));
+    border: 1px solid rgba(60, 88, 124, 0.22);
     border-radius: 12px;
     padding: 14px 16px;
     margin-bottom: 14px;
@@ -158,7 +158,7 @@ h3 { font-size: 1.05rem; }
 
 .quickmenu-banner p {
     margin: 0;
-    color: #cbd5e1;
+    color: #d7dce5;
     font-size: 0.95rem;
 }
 
@@ -203,8 +203,8 @@ h3 { font-size: 1.05rem; }
 }
 
 .quickmenu-links a:hover {
-    background: rgba(59, 103, 194, 0.14);
-    border-color: rgba(59, 103, 194, 0.3);
+    background: rgba(60, 88, 124, 0.14);
+    border-color: rgba(60, 88, 124, 0.3);
     text-decoration: none;
     transform: translateX(2px);
 }
@@ -233,7 +233,7 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(59, 103, 194, 0.12);
+    box-shadow: 0 0 0 3px rgba(60, 88, 124, 0.14);
 }
 
 .quickmenu-form {
@@ -343,7 +343,7 @@ button,
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.1s ease, box-shadow 0.12s ease;
-    box-shadow: 0 8px 18px rgba(59, 103, 194, 0.18);
+    box-shadow: 0 8px 18px rgba(47, 70, 100, 0.18);
 }
 
 input[type="submit"]:hover,
@@ -351,7 +351,7 @@ input[type="button"]:hover,
 button:hover,
 .button:hover {
     transform: translateY(-1px);
-    box-shadow: 0 10px 22px rgba(59, 103, 194, 0.22);
+    box-shadow: 0 10px 22px rgba(47, 70, 100, 0.2);
 }
 
 input[type="submit"]:disabled,
@@ -374,7 +374,7 @@ label {
     margin: 10px 0;
 }
 
-.note { background: rgba(59, 103, 194, 0.08); border: 1px solid rgba(59, 103, 194, 0.18); color: #2f57ad; }
+.note { background: rgba(60, 88, 124, 0.08); border: 1px solid rgba(60, 88, 124, 0.18); color: #2f4664; }
 .warning { background: rgba(183, 121, 31, 0.08); border: 1px solid rgba(183, 121, 31, 0.18); color: #8c5d10; }
 .error { background: rgba(196, 54, 54, 0.08); border: 1px solid rgba(196, 54, 54, 0.18); color: #9f1f1f; }
 
