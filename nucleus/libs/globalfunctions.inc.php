@@ -2886,18 +2886,11 @@ function setDefaultConf()
             been sent out to early. This usually indicates an error in either a
             configuration file or a language file, and could cause Nucleus to
             malfunction
-        alertOnSecurityRisk
-            Displays an error only when visiting the admin area, and when one or
-            more of the installation files (install.php, install.sql, _upgrades/
-            directory) are still on the server.
     */
 
     if ( ! isset($CONF['alertOnHeadersSent'])
          || empty($CONF['alertOnHeadersSent'])) {
         $CONF['alertOnHeadersSent'] = 1;
-    }
-    if ( ! isset($CONF['alertOnSecurityRisk'])) {
-        $CONF['alertOnSecurityRisk'] = 1;
     }
 
     /*

@@ -424,8 +424,8 @@ try_define('_ERRORS_INSTALLPHP',						'install.php should be deleted');
 try_define('_ERRORS_UPGRADESDIR',						'_upgrades directory should be deleted');
 try_define('_ERRORS_CONVERTDIR',						'nucleus/convert directory should be deleted');
 try_define('_ERRORS_CONFIGPHP',							'config.php should be non-writable (chmod to 444)');
-try_define('_ERRORS_STARTUPERROR1',						'<p>One or more of the Nucleus installation files are still present on the webserver, or are writable.</p><p>You should remove these files or change their permissions to ensure security. Here are the files that were found by Nucleus</p> <ul><li>');
-try_define('_ERRORS_STARTUPERROR2',						'</li></ul><p>If you don\'t want to see this error message again, without solving the problem, set <code>$CONF[\'alertOnSecurityRisk\']</code> in <code>globalfunctions.php</code> to <code>0</code>, or do this at the end of <code>config.php</code>.</p>');
+try_define('_ERRORS_STARTUPERROR1',						'<p>One or more Nucleus installation or upgrade files are still present on the webserver.</p><p>Delete them to secure your site. Examples of files found:</p> <ul><li>');
+try_define('_ERRORS_STARTUPERROR2',                                             '</li></ul><p>Delete the files above to stop this warning.</p>');
 try_define('_ERRORS_STARTUPERROR3',						'Security Risk');
 
 // PluginAdmin tickets by javascript

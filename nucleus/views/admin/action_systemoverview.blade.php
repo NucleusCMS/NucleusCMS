@@ -184,7 +184,7 @@
             @php
                 ksort($CONF);
                 $items            = ['Self', 'ItemURL', 'alertOnHeadersSent', 'debug', 'AdminEmail'];
-                $items_warn_false = ['alertOnSecurityRisk'];
+                $items_warn_false = [];
                 $items_warn_true  = [];
             @endphp
             @foreach ($CONF as $k => $v)
