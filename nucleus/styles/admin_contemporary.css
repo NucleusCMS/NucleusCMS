@@ -163,20 +163,15 @@ h3 { font-size: 1.05rem; }
 }
 
 .quickmenu-section {
-    border: 1px solid rgba(255, 255, 255, 0.05);
-    border-radius: 12px;
-    padding: 12px 14px;
-    background: rgba(255, 255, 255, 0.02);
-    backdrop-filter: blur(6px);
-    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.03);
-    margin-bottom: 12px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
 }
 
 .section-heading {
     font-size: 0.95rem;
-    font-weight: 700;
+    font-weight: 600;
     color: #f8fafc;
-    margin-bottom: 8px;
+    margin-bottom: 6px;
     letter-spacing: 0.02em;
     text-transform: uppercase;
 }
@@ -187,26 +182,24 @@ h3 { font-size: 1.05rem; }
     margin: 0;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 6px;
 }
 
 .quickmenu-links a {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 10px 12px;
-    border-radius: 10px;
-    background: rgba(255, 255, 255, 0.02);
-    border: 1px solid rgba(148, 163, 184, 0.14);
+    padding: 6px 10px;
+    border-radius: 8px;
     color: #e2e8f0;
-    transition: all 0.15s ease;
+    font-weight: 500;
+    transition: color 0.12s ease, background 0.12s ease;
 }
 
 .quickmenu-links a:hover {
-    background: rgba(60, 88, 124, 0.14);
-    border-color: rgba(60, 88, 124, 0.3);
+    background: rgba(255, 255, 255, 0.04);
     text-decoration: none;
-    transform: translateX(2px);
+    color: #f8fafc;
 }
 
 .quickmenu-form select,
