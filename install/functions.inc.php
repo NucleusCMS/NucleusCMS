@@ -40,6 +40,98 @@ function add_last_directory_separator($dirname)
     return $dirname;
 }
 
+function installDefault($key, $default = '')
+{
+    global $INSTALL_DEFAULTS;
+
+    if (isset($INSTALL_DEFAULTS) && is_array($INSTALL_DEFAULTS) && array_key_exists($key, $INSTALL_DEFAULTS)) {
+        return $INSTALL_DEFAULTS[$key];
+    }
+
+    return $default;
+}
+
+function installDefaultBool($key, $default = false)
+{
+    $val = installDefault($key, $default);
+
+    return (bool) $val;
+}
+
+function ensureInstallWritableDirectory($dir)
+{
+    if (is_file($dir)) {
+        return false;
+    }
+
+    if ( ! is_dir($dir)) {
+        if ( ! @mkdir($dir, 0o775, true)) {
+            return false;
+        }
+    }
+
+    if (@is_writable($dir)) {
+        return true;
+    }
+
+    @chmod($dir, 0o775);
+    if (@is_writable($dir)) {
+        return true;
+    }
+
+    @chmod($dir, 0o777);
+
+    return @is_writable($dir);
+}
+
+function ensureBladeCacheWritable($adminPath, &$warnings)
+{
+    $cacheBaseDir  = rtrim($adminPath, '/\\');
+    $bladeCacheDir = $cacheBaseDir . '/cache/blade.cache';
+    $paths         = [dirname($bladeCacheDir), $bladeCacheDir];
+
+    foreach ($paths as $path) {
+        if (ensureInstallWritableDirectory($path)) {
+            continue;
+        }
+
+        $warnings[] = sprintf(_INSTALL_TEXT_BLADE_CACHE_PERMISSION, $path);
+
+        return;
+    }
+}
+
+function canWriteConfigFile(&$reason = '')
+{
+    $configFilename = dirname(__DIR__) . '/config.php';
+
+    if (is_file($configFilename)) {
+        if (is_writable($configFilename)) {
+            return true;
+        }
+
+        $reason = _INSTALL_TEXT_CONFIG_WRITE_REASON_FILE_PERMISSION;
+        return false;
+    }
+
+    $configDir = dirname($configFilename);
+
+    if ( ! is_dir($configDir) || ! is_writable($configDir)) {
+        $reason = _INSTALL_TEXT_CONFIG_WRITE_REASON_FOLDER_PERMISSION;
+        return false;
+    }
+
+    $tmpFile = @tempnam($configDir, 'ncw');
+    if (false === $tmpFile) {
+        $reason = _INSTALL_TEXT_CONFIG_WRITE_REASON_FOLDER_PERMISSION;
+        return false;
+    }
+
+    @unlink($tmpFile);
+
+    return true;
+}
+
 function getSiteUrl()
 {
     $url = 'http://';
@@ -87,7 +179,7 @@ function showInstallForm()
     $ph['_HEADER1']              = sprintf('%s', hsc(_HEADER1));
     $ph['_TEXT1']                = _TEXT1;
     if ( ! @is_writable('../')) {
-        $ph['_TEXT1'] .= sprintf('<p class="note">%s</p>', _INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE);
+        $ph['_TEXT1'] .= sprintf('<div class="install-warning">%s</div>', _INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE);
     }
     $ph['lang']                            = $lang;
     $ph['_HEADER_LANG_SELECT']             = _HEADER_LANG_SELECT;
@@ -110,6 +202,14 @@ function showInstallForm()
     $ph['_HEADER2']         = _HEADER2;
     $ph['_TEXT2']           = _TEXT2;
     $ph['phpversion']       = sprintf('%s (%s)', phpversion(), php_sapi_name());
+    $ph['config_write_warning'] = '';
+    $configWriteReason          = '';
+    if ( ! canWriteConfigFile($configWriteReason)) {
+        $ph['config_write_warning'] = sprintf(
+            '<div class="install-warning">%s</div>',
+            sprintf(_INSTALL_TEXT_CONFIG_WRITE_WARNING, $configWriteReason)
+        );
+    }
     if (is_file('../config.php') && ! is_writable('../config.php')) {
         $ph['configPermMsg'] = '<h1>' . _HEADER3 . '</h1>' . _TEXT3;
     } else {
@@ -148,22 +248,34 @@ function showInstallForm()
     $ph['_TEXT4']                            = _TEXT4;
     $ph['_TEXT4_TAB_HEAD']                   = _TEXT4_TAB_HEAD;
     $ph['_TEXT4_TAB_FIELD1']                 = _TEXT4_TAB_FIELD1;
-    $ph['install_db_host_value']             = hsc(@ini_get('mysql.default_host'));
+    $ph['install_db_host_value']             = hsc(installDefault('db_host', @ini_get('mysql.default_host')));
     $ph['_TEXT4_TAB_FIELD2']                 = _TEXT4_TAB_FIELD2;
+    $ph['install_db_user_value']             = hsc(installDefault('db_user', ''));
     $ph['_TEXT4_TAB_FIELD3']                 = _TEXT4_TAB_FIELD3;
+    $ph['install_db_password_value']         = hsc(installDefault('db_password', ''));
     $ph['_TEXT4_TAB_FIELD4']                 = _TEXT4_TAB_FIELD4;
+    $ph['install_db_database_value']         = hsc(installDefault('db_database', ''));
+    $ph['install_db_create_checked']         = installDefaultBool('db_create') ? 'checked' : '';
     $ph['_TEXT4_TAB_FIELD4_ADD']             = _TEXT4_TAB_FIELD4_ADD;
     $ph['_TEXT4_TAB2_HEAD']                  = _TEXT4_TAB2_HEAD;
     $ph['_TEXT4_TAB2_FIELD']                 = _TEXT4_TAB2_FIELD;
+    $ph['install_db_use_prefix_checked']     = installDefaultBool('db_use_prefix') ? 'checked' : '';
+    $ph['install_db_tablePrefix_value']      = hsc(installDefault('db_table_prefix', ''));
     $ph['_TEXT4_TAB2_ADD']                   = _TEXT4_TAB2_ADD;
     $ph['_HEADER5']                          = _HEADER5;
     $ph['_TEXT5']                            = _TEXT5;
     $ph['_TEXT5_TAB_HEAD']                   = _TEXT5_TAB_HEAD;
     $ph['_TEXT5_TAB_FIELD1']                 = _TEXT5_TAB_FIELD1;
-    $ph['NC_SITE_URL']                       = NC_SITE_URL;
-    $ph['NC_BASE_PATH']                      = NC_BASE_PATH;
+    $ph['IndexURL_value']                    = hsc(installDefault('index_url', NC_SITE_URL));
+    $ph['AdminURL_value']                    = hsc(installDefault('admin_url', NC_SITE_URL . 'nucleus/'));
+    $ph['AdminPath_value']                   = hsc(installDefault('admin_path', NC_BASE_PATH . 'nucleus/'));
+    $ph['MediaURL_value']                    = hsc(installDefault('media_url', NC_SITE_URL . 'media/'));
+    $ph['MediaPath_value']                   = hsc(installDefault('media_path', NC_BASE_PATH . 'media/'));
+    $ph['SkinsURL_value']                    = hsc(installDefault('skins_url', NC_SITE_URL . 'skins/'));
+    $ph['SkinsPath_value']                   = hsc(installDefault('skins_path', NC_BASE_PATH . 'skins/'));
+    $ph['PluginURL_value']                   = hsc(installDefault('plugin_url', NC_SITE_URL . 'nucleus/plugins/'));
+    $ph['ActionURL_value']                   = hsc(installDefault('action_url', NC_SITE_URL . 'action.php'));
     $ph['_TEXT5_TAB_FIELD2']                 = _TEXT5_TAB_FIELD2;
-    $ph['NC_SITE_URL']                       = NC_SITE_URL;
     $ph['_TEXT5_TAB_FIELD3']                 = _TEXT5_TAB_FIELD3;
     $ph['_TEXT5_TAB_FIELD4']                 = _TEXT5_TAB_FIELD4;
     $ph['_TEXT5_TAB_FIELD5']                 = _TEXT5_TAB_FIELD5;
@@ -179,17 +291,24 @@ function showInstallForm()
     $ph['_TEXT6']                            = _TEXT6;
     $ph['_TEXT6_TAB_HEAD']                   = _TEXT6_TAB_HEAD;
     $ph['_TEXT6_TAB_FIELD1']                 = _TEXT6_TAB_FIELD1;
+    $ph['User_name_value']                   = hsc(installDefault('user_name', ''));
     $ph['_TEXT6_TAB_FIELD1_2']               = _TEXT6_TAB_FIELD1_2;
     $ph['_TEXT6_TAB_FIELD2']                 = _TEXT6_TAB_FIELD2;
+    $ph['User_realname_value']               = hsc(installDefault('user_realname', ''));
     $ph['_TEXT6_TAB_FIELD3']                 = _TEXT6_TAB_FIELD3;
+    $ph['User_password_value']               = hsc(installDefault('user_password', ''));
     $ph['_TEXT6_TAB_FIELD4']                 = _TEXT6_TAB_FIELD4;
+    $ph['User_password2_value']              = hsc(installDefault('user_password', ''));
     $ph['_TEXT6_TAB_FIELD5']                 = _TEXT6_TAB_FIELD5;
+    $ph['User_email_value']                  = hsc(installDefault('user_email', ''));
     $ph['_TEXT6_TAB_FIELD5_2']               = _TEXT6_TAB_FIELD5_2;
     $ph['_HEADER7']                          = _HEADER7;
     $ph['_TEXT7']                            = _TEXT7;
     $ph['_TEXT7_TAB_HEAD']                   = _TEXT7_TAB_HEAD;
     $ph['_TEXT7_TAB_FIELD1']                 = _TEXT7_TAB_FIELD1;
+    $ph['Blog_name_value']                   = hsc(installDefault('blog_name', 'My Nucleus CMS'));
     $ph['_TEXT7_TAB_FIELD2']                 = _TEXT7_TAB_FIELD2;
+    $ph['Blog_shortname_value']              = hsc(installDefault('blog_shortname', 'mynucleuscms'));
     $ph['_TEXT7_TAB_FIELD2_2']               = _TEXT7_TAB_FIELD2_2;
     $ph['_HEADER9']                          = _HEADER9;
     $ph['_TEXT9']                            = _TEXT9;
@@ -218,26 +337,26 @@ function doInstall()
     global $lang;
 
     // 0. put all POST-vars into vars
-    $mysql_host          = postVar('install_db_host', 'localhost');
-    $mysql_user          = postVar('install_db_user', 'root');
-    $mysql_password      = postVar('install_db_password', '');
-    $install_db_database = trim((string) postVar('install_db_database'));
-    $install_db_create   = (int) postVar('install_db_create') ? 1 : 0;
-    $mysql_use_prefix    = (int) postVar('install_db_use_prefix') ? 1 : 0;
-    $mysql_prefix        = trim((string) postVar('install_db_tablePrefix'));
-    $config_indexurl     = postVar('IndexURL');
-    $config_adminurl     = postVar('AdminURL');
-    $config_adminpath    = postVar('AdminPath');
-    $config_mediaurl     = postVar('MediaURL');
-    $config_skinsurl     = postVar('SkinsURL');
-    $config_pluginurl    = postVar('PluginURL');
-    $config_actionurl    = postVar('ActionURL');
-    $config_mediapath    = postVar('MediaPath');
-    $config_skinspath    = postVar('SkinsPath');
-    $user_name           = postVar('User_name');
-    $user_realname       = postVar('User_realname');
-    $user_password       = postVar('User_password');
-    $user_password2      = postVar('User_password2');
+    $mysql_host          = postVar('install_db_host', installDefault('db_host', 'localhost'));
+    $mysql_user          = postVar('install_db_user', installDefault('db_user', 'root'));
+    $mysql_password      = postVar('install_db_password', installDefault('db_password', ''));
+    $install_db_database = trim((string) postVar('install_db_database', installDefault('db_database', '')));
+    $install_db_create   = (int) postVar('install_db_create', installDefaultBool('db_create', 0)) ? 1 : 0;
+    $mysql_use_prefix    = (int) postVar('install_db_use_prefix', installDefaultBool('db_use_prefix', 0)) ? 1 : 0;
+    $mysql_prefix        = trim((string) postVar('install_db_tablePrefix', installDefault('db_table_prefix', '')));
+    $config_indexurl     = postVar('IndexURL', installDefault('index_url', NC_SITE_URL));
+    $config_adminurl     = postVar('AdminURL', installDefault('admin_url', NC_SITE_URL . 'nucleus/'));
+    $config_adminpath    = postVar('AdminPath', installDefault('admin_path', NC_BASE_PATH . 'nucleus/'));
+    $config_mediaurl     = postVar('MediaURL', installDefault('media_url', NC_SITE_URL . 'media/'));
+    $config_skinsurl     = postVar('SkinsURL', installDefault('skins_url', NC_SITE_URL . 'skins/'));
+    $config_pluginurl    = postVar('PluginURL', installDefault('plugin_url', NC_SITE_URL . 'nucleus/plugins/'));
+    $config_actionurl    = postVar('ActionURL', installDefault('action_url', NC_SITE_URL . 'action.php'));
+    $config_mediapath    = postVar('MediaPath', installDefault('media_path', NC_BASE_PATH . 'media/'));
+    $config_skinspath    = postVar('SkinsPath', installDefault('skins_path', NC_BASE_PATH . 'skins/'));
+    $user_name           = postVar('User_name', installDefault('user_name', ''));
+    $user_realname       = postVar('User_realname', installDefault('user_realname', ''));
+    $user_password       = postVar('User_password', installDefault('user_password', ''));
+    $user_password2      = postVar('User_password2', installDefault('user_password', ''));
     $user_email          = postVar('User_email');
     $blog_name           = postVar('Blog_name');
     $blog_shortname      = postVar('Blog_shortname');
@@ -654,7 +773,8 @@ function doInstall()
     sql_query($query) or _doError(_ERROR21 . ': ' . sql_error());
 
     global $aConfPlugsToInstall, $aConfSkinsToImport;
-    $aSkinErrors = [];
+    $aSkinErrors        = [];
+    $permissionWarnings = [];
     $aPlugErrors = [];
 
     if ($is_install_sqlite) {
@@ -779,6 +899,8 @@ function doInstall()
         //   apache config : DocumentRoot
     }
 
+    ensureBladeCacheWritable($config_adminpath, $permissionWarnings);
+
     if ( ! defined('_TITLE_CONFIGPHP_MANUAL')) {
         define('_TITLE_CONFIGPHP_MANUAL', 'config.php');
     }
@@ -791,7 +913,7 @@ function doInstall()
     }
     $ph['_TITLE']                = _TITLE;
     $ph['_ALT_NUCLEUS_CMS_LOGO'] = _ALT_NUCLEUS_CMS_LOGO;
-    $aAllErrors                  = array_merge($aSkinErrors, $aPlugErrors);
+    $aAllErrors                  = array_merge($aSkinErrors, $aPlugErrors, $permissionWarnings);
     if (count($aAllErrors) > 0) {
         $ph['_TITLE2']   = '<h1>' . _TITLE2 . '</h1>';
         $ph['AllErrors'] = '<ul><li>' . implode('</li><li>', $aAllErrors) . '</li></ul>';
