@@ -11,6 +11,7 @@
     --radius: 14px;
     --sidebar: #111a2b;
     --sidebar-border: #1c2435;
+    --sidebar-width: 280px;
     --warning: #b7791f;
     --success: #1f8a50;
     --danger: #c43636;
@@ -54,6 +55,7 @@ h3 { font-size: 1.05rem; }
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    padding-left: var(--sidebar-width);
 }
 
 .app-header {
@@ -120,25 +122,25 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-body {
-    display: grid;
-    grid-template-columns: 280px 1fr;
-    gap: 1.5rem;
     padding: 22px 24px 28px;
     flex: 1;
 }
 
 .app-sidebar {
     background: var(--sidebar);
-    border: 1px solid var(--sidebar-border);
-    border-radius: var(--radius);
-    box-shadow: var(--shadow);
-    position: sticky;
-    top: 88px;
-    height: fit-content;
+    border-right: 1px solid var(--sidebar-border);
+    border-radius: 0;
+    box-shadow: none;
+    position: fixed;
+    inset: 0 auto 0 0;
+    width: var(--sidebar-width);
+    z-index: 15;
 }
 
 .sidebar-inner {
-    padding: 18px 18px 12px;
+    padding: 24px 18px 18px;
+    height: 100%;
+    overflow-y: auto;
 }
 
 .quickmenu {
@@ -394,12 +396,26 @@ label {
 .clear { clear: both; }
 
 @media (max-width: 1024px) {
+    .app-shell {
+        padding-left: 0;
+    }
+
     .app-body {
-        grid-template-columns: 1fr;
+        padding: 18px 18px 22px;
     }
 
     .app-sidebar {
         position: relative;
-        top: 0;
+        width: auto;
+        inset: unset;
+        border-radius: var(--radius);
+        border: 1px solid var(--sidebar-border);
+        box-shadow: var(--shadow);
+    }
+
+    .sidebar-inner {
+        height: auto;
+        overflow: visible;
+        padding: 18px 18px 12px;
     }
 }
