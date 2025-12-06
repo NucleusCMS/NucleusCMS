@@ -4,13 +4,13 @@
     --panel-muted: #f2f4f8;
     --text: #0f172a;
     --muted: #4b5563;
-    --accent: #4d5a73;
-    --accent-strong: #394355;
+    --accent: #505d75;
+    --accent-strong: #3d475c;
     --border: #e4e7ee;
     --shadow: 0 10px 24px rgba(15, 23, 42, 0.06);
     --radius: 14px;
-    --sidebar: #111a2b;
-    --sidebar-border: #1c2435;
+    --sidebar: #1a2332;
+    --sidebar-border: #252f42;
     --sidebar-width: 280px;
     --warning: #b7791f;
     --success: #1f8a50;
@@ -25,7 +25,7 @@ body {
     margin: 0;
     padding: 0;
     font-family: 'Segoe UI', 'Helvetica Neue', Arial, 'Noto Sans JP', 'Hiragino Sans', 'Meiryo', sans-serif;
-    background: linear-gradient(135deg, rgba(77, 90, 115, 0.04), rgba(77, 90, 115, 0)), var(--bg);
+    background: linear-gradient(135deg, rgba(80, 93, 117, 0.04), rgba(80, 93, 117, 0)), var(--bg);
     color: var(--text);
     line-height: 1.6;
 }
@@ -118,7 +118,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-header {
-    background: linear-gradient(135deg, #0f1420, #131b29 58%, #192234);
+    background: linear-gradient(135deg, #1c2433, #242f44 58%, #2b3850);
     color: #f8fafc;
     padding: 18px 28px;
     display: flex;
@@ -140,7 +140,7 @@ h3 { font-size: 1.05rem; }
     width: 40px;
     height: 40px;
     border-radius: 12px;
-    background: linear-gradient(135deg, #1b2433, #263247);
+    background: linear-gradient(135deg, #243048, #313e57);
     color: #f8fafc;
     display: grid;
     place-items: center;
@@ -167,8 +167,8 @@ h3 { font-size: 1.05rem; }
 }
 
 .loginname {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(148, 163, 184, 0.25);
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(148, 163, 184, 0.28);
     color: #e2e8f0;
     padding: 10px 12px;
     border-radius: 12px;
@@ -186,7 +186,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-sidebar {
-    background: var(--sidebar);
+    background: linear-gradient(180deg, #1c2535, #19212f 58%, #161d29);
     border-right: 1px solid var(--sidebar-border);
     border-radius: 0;
     box-shadow: none;
@@ -207,8 +207,8 @@ h3 { font-size: 1.05rem; }
 }
 
 .quickmenu-banner {
-    background: linear-gradient(135deg, rgba(77, 90, 115, 0.16), rgba(77, 90, 115, 0.06));
-    border: 1px solid rgba(77, 90, 115, 0.22);
+    background: linear-gradient(135deg, rgba(80, 93, 117, 0.14), rgba(80, 93, 117, 0.05));
+    border: 1px solid rgba(80, 93, 117, 0.2);
     border-radius: 12px;
     padding: 14px 16px;
     margin-bottom: 14px;
