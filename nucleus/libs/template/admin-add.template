@@ -13,16 +13,19 @@
 	<input type="hidden" name="draftid" value="0" />
 	{%ticket%}
 
-	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_ADD_CREATENEW)%}</h3></div>
-		<div style="display: inline-block; float: right">
-			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_ADD_ADDITEM)%}"
-				onclick="return checkSubmit();" />
-			{%ifautosave()%}
-			<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
-				onclick="autoSaveDraft();" />
-			{%endif%}
-		</div>
-	</div>
+        <div class="content-header">
+            <div class="content-title">
+                <h3>{%text(_ADD_CREATENEW)%}</h3>
+            </div>
+            <div class="content-actions">
+                <input class="button-primary" tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_ADD_ADDITEM)%}"
+                        onclick="return checkSubmit();" />
+                {%ifautosave()%}
+                <input class="button-ghost" tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+                        onclick="autoSaveDraft();" />
+                {%endif%}
+            </div>
+        </div>
 
 <div id="tabs">
 	<ul>
