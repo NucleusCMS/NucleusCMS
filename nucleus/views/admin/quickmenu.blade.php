@@ -13,7 +13,7 @@
 
 @if($IsLoggedinMenu)
     <section class="quickmenu-section">
-        <div class="section-heading">{{ _QMENU_HOME }}</div>
+        <div class="section-heading sr-only">{{ _QMENU_HOME }}</div>
         <ul class="quickmenu-links">
             <li><a href="index.php?action=overview">{{ _QMENU_HOME }}</a></li>
         </ul>
