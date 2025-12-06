@@ -33,3 +33,5 @@
 .php-cs-fixer.php    export-ignore
 /archives            export-ignore
 /nucleus/language/_*.php    export-ignore
+/nucleus/libs/vendor export-ignore
+/nucleus/libs/composer.lock export-ignore
