@@ -28,7 +28,8 @@
     <div class="wrap">
     <h1>{%_HEADER1%}</h1>
     {%_TEXT1%}
-    
+    {%config_write_warning%}
+
     <form method="post" action="./?lang={%lang%}">
     <h1>{%_HEADER_LANG_SELECT%}</h1>
 
@@ -88,17 +89,17 @@
             </tr>
             <tr>
                 <td><label for="install_db_user">{%_TEXT4_TAB_FIELD2%}:</label></td>
-                <td><input id="install_db_user" name="install_db_user"
+                <td><input id="install_db_user" name="install_db_user" value="{%install_db_user_value%}"
                 placeholder="root" /></td>
             </tr>
             <tr>
                 <td><label for="install_db_password">{%_TEXT4_TAB_FIELD3%}:</label></td>
-                <td><input id="install_db_password" name="install_db_password" type="password" /></td>
+                <td><input id="install_db_password" name="install_db_password" type="password" value="{%install_db_password_value%}" /></td>
             </tr>
             <tr>
                 <td><label for="install_db_database">{%_TEXT4_TAB_FIELD4%}:</label></td>
-                <td><input id="install_db_database" name="install_db_database"
-                           pattern="^[a-zA-Z\$_\u0080-\uFFFF][0-9a-zA-Z\$_\u0080-\uFFFF]+$" /> ASCII: a-z A-Z 0-9 $ _ <br>U+0080 .. U+FFFF(<input name="install_db_create" value="1" type="checkbox" id="install_db_create" /><label for="install_db_create">{%_TEXT4_TAB_FIELD4_ADD%}</label>)</td>
+                <td><input id="install_db_database" name="install_db_database" value="{%install_db_database_value%}"
+                           pattern="^[a-zA-Z\$_\u0080-\uFFFF][0-9a-zA-Z\$_\u0080-\uFFFF]+$" /> ASCII: a-z A-Z 0-9 $ _ <br>U+0080 .. U+FFFF(<input name="install_db_create" value="1" type="checkbox" id="install_db_create" {%install_db_create_checked%} /><label for="install_db_create">{%_TEXT4_TAB_FIELD4_ADD%}</label>)</td>
             </tr>
         </table>
     </fieldset>
@@ -107,9 +108,9 @@
         <legend>{%_TEXT4_TAB2_HEAD%}</legend>
         <table>
             <tr>
-                <td><input name="install_db_use_prefix" value="1" type="checkbox" id="install_db_use_prefix" />
+                <td><input name="install_db_use_prefix" value="1" type="checkbox" id="install_db_use_prefix" {%install_db_use_prefix_checked%} />
                     <label for="install_db_use_prefix">{%_TEXT4_TAB2_FIELD%}:</label></td>
-                <td><input name="install_db_tablePrefix" value="" pattern="^(|[a-zA-Z][0-9a-zA-Z_]*)$" /><br />ASCII: a-z A-Z 0-9 _ </td>
+                <td><input name="install_db_tablePrefix" value="{%install_db_tablePrefix_value%}" pattern="^(|[a-zA-Z][0-9a-zA-Z_]*)$" /><br />ASCII: a-z A-Z 0-9 _ </td>
             </tr>
         </table>
 
@@ -128,43 +129,43 @@
         <table>
             <tr>
                 <td><label for="if_IndexURL">{%_TEXT5_TAB_FIELD1%}:</label></td>
-                <td><input id="if_IndexURL" name="IndexURL" size="60" value="{%NC_SITE_URL%}" tabindex="10080" /></td>
+                <td><input id="if_IndexURL" name="IndexURL" size="60" value="{%IndexURL_value%}" tabindex="10080" /></td>
             </tr>
             <tr>
                 <td><label for="if_AdminURL">{%_TEXT5_TAB_FIELD2%}:</label></td>
-                <td><input id="if_AdminURL" name="AdminURL" size="60" value="{%NC_SITE_URL%}nucleus/" tabindex="10090" /></td>
+                <td><input id="if_AdminURL" name="AdminURL" size="60" value="{%AdminURL_value%}" tabindex="10090" /></td>
             </tr>
             <tr>
                 <td><label for="if_AdminPath">{%_TEXT5_TAB_FIELD3%}:</label></td>
-                <td><input id="if_AdminPath" name="AdminPath" size="60" value="{%NC_BASE_PATH%}nucleus/" tabindex="10100" /></td>
+                <td><input id="if_AdminPath" name="AdminPath" size="60" value="{%AdminPath_value%}" tabindex="10100" /></td>
             </tr>
             <tr>
                 <td><label for="if_MediaURL">{%_TEXT5_TAB_FIELD4%}:</label></td>
-                <td><input id="if_MediaURL" name="MediaURL" size="60" value="{%NC_SITE_URL%}media/" tabindex="10110" /></td>
+                <td><input id="if_MediaURL" name="MediaURL" size="60" value="{%MediaURL_value%}" tabindex="10110" /></td>
             </tr>
             <tr>
                 <td><label for="if_MediaPath">{%_TEXT5_TAB_FIELD5%}:</label></td>
-                <td><input id="if_MediaPath" name="MediaPath" size="60" value="{%NC_BASE_PATH%}media/" tabindex="10120" /></td>
+                <td><input id="if_MediaPath" name="MediaPath" size="60" value="{%MediaPath_value%}" tabindex="10120" /></td>
             </tr>
             <tr>
                 <td><label for="if_SkinsURL">{%_TEXT5_TAB_FIELD6%}:</label></td>
-                <td><input id="if_SkinsURL" name="SkinsURL" size="60" value="{%NC_SITE_URL%}skins/" tabindex="10130" />
+                <td><input id="if_SkinsURL" name="SkinsURL" size="60" value="{%SkinsURL_value%}" tabindex="10130" />
                     <br />({%_TEXT5_TAB_FIELD7_2%})
                 </td>
             </tr>
             <tr>
                 <td><label for="if_SkinsPath">{%_TEXT5_TAB_FIELD7%}:</label></td>
-                <td><input id="if_SkinsPath" name="SkinsPath" size="60" value="{%NC_BASE_PATH%}skins/" tabindex="10140" />
+                <td><input id="if_SkinsPath" name="SkinsPath" size="60" value="{%SkinsPath_value%}" tabindex="10140" />
                     <br />({%_TEXT5_TAB_FIELD7_2%})
                 </td>
             </tr>
             <tr>
                 <td><label for="if_PluginURL">{%_TEXT5_TAB_FIELD8%}:</label></td>
-                <td><input id="if_PluginURL" name="PluginURL" size="60" value="{%NC_SITE_URL%}nucleus/plugins/" tabindex="10150" /></td>
+                <td><input id="if_PluginURL" name="PluginURL" size="60" value="{%PluginURL_value%}" tabindex="10150" /></td>
             </tr>
             <tr>
                 <td><label for="if_ActionURL">{%_TEXT5_TAB_FIELD9%}:</label></td>
-                <td><input id="if_ActionURL" name="ActionURL" size="60" value="{%NC_SITE_URL%}action.php" tabindex="10160" />
+                <td><input id="if_ActionURL" name="ActionURL" size="60" value="{%ActionURL_value%}" tabindex="10160" />
                     <br />({%_TEXT5_TAB_FIELD9_2%})
                 </td>
             </tr>
@@ -181,23 +182,23 @@
         <table>
             <tr>
                 <td><label for="if_User_name">{%_TEXT6_TAB_FIELD1%}:</label></td>
-                <td><input id="if_User_name" name="User_name" value="" tabindex="10170" /> <small>({%_TEXT6_TAB_FIELD1_2%})</small></td>
+                <td><input id="if_User_name" name="User_name" value="{%User_name_value%}" tabindex="10170" /> <small>({%_TEXT6_TAB_FIELD1_2%})</small></td>
             </tr>
             <tr>
                 <td><label for="if_User_realname">{%_TEXT6_TAB_FIELD2%}:</label></td>
-                <td><input id="if_User_realname" name="User_realname" value="" tabindex="10180" /></td>
+                <td><input id="if_User_realname" name="User_realname" value="{%User_realname_value%}" tabindex="10180" /></td>
             </tr>
             <tr>
                 <td><label for="if_User_password">{%_TEXT6_TAB_FIELD3%}:</label></td>
-                <td><input id="if_User_password" name="User_password" type="password" value="" tabindex="10190" /></td>
+                <td><input id="if_User_password" name="User_password" type="password" value="{%User_password_value%}" tabindex="10190" /></td>
             </tr>
             <tr>
                 <td><label for="if_User_password2">{%_TEXT6_TAB_FIELD4%}:</label></td>
-                <td><input id="if_User_password2" name="User_password2" type="password" value="" tabindex="10200" /></td>
+                <td><input id="if_User_password2" name="User_password2" type="password" value="{%User_password2_value%}" tabindex="10200" /></td>
             </tr>
             <tr>
                 <td><label for="if_User_email">{%_TEXT6_TAB_FIELD5%}:</label></td>
-                <td><input id="if_User_email" name="User_email" value="" tabindex="10210" /> <small>({%_TEXT6_TAB_FIELD5_2%})</small></td>
+                <td><input id="if_User_email" name="User_email" value="{%User_email_value%}" tabindex="10210" /> <small>({%_TEXT6_TAB_FIELD5_2%})</small></td>
             </tr>
         </table>
     </fieldset>
@@ -210,11 +211,11 @@
         <table>
             <tr>
                 <td><label for="if_Blog_name">{%_TEXT7_TAB_FIELD1%}:</label></td>
-                <td><input id="if_Blog_name" name="Blog_name" size="60" value="My Nucleus CMS" /></td>
+                <td><input id="if_Blog_name" name="Blog_name" size="60" value="{%Blog_name_value%}" /></td>
             </tr>
             <tr>
                 <td><label for="if_Blog_shortname">{%_TEXT7_TAB_FIELD2%}:</label></td>
-                <td><input id="if_Blog_shortname" name="Blog_shortname" value="mynucleuscms" /> <small>({%_TEXT7_TAB_FIELD2_2%})</small></td>
+                <td><input id="if_Blog_shortname" name="Blog_shortname" value="{%Blog_shortname_value%}" /> <small>({%_TEXT7_TAB_FIELD2_2%})</small></td>
             </tr>
         </table>
     </fieldset>
