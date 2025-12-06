@@ -158,9 +158,9 @@ a:hover, a:active
 	line-height: 80px;
 
     /* #FCC800 #F3A68C #CAB8D9 #C0DCC0  */
-    background: #314A7E linear-gradient(top center, #F7FAFF 0%, #314A7E 100%);
-    background: #314A7E -moz-linear-gradient(top center, #F7FAFF 0%, #314A7E 100%);
-    background: #314A7E -webkit-gradient(linear, center top, center bottom, from(#F7FAFF), to(#314A7E));
+    background: #314A7E linear-gradient(top center, #314A7E 0%, #F7FAFF 100%);
+    background: #314A7E -moz-linear-gradient(top center, #314A7E 0%, #F7FAFF 100%);
+    background: #314A7E -webkit-gradient(linear, center top, center bottom, from(#314A7E), to(#F7FAFF));
 
 	/* small header image specific lines */
 /*	height: 168px;
