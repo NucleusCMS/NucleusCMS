@@ -65,6 +65,20 @@ body {
     justify-content: flex-end;
 }
 .navlist-filter-block { margin: 2px 2px 2px 0; padding-top: 5px; }
+.navigation form > div {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 8px;
+}
+
+.navigation select,
+.navigation input[type="text"],
+.navigation input[type="submit"],
+.navigation input[type="button"],
+.navigation button {
+    height: 38px;
+    padding: 0 12px;
+}
 .admin-state-flag { border-color: #b7ffcf; border-style: double; padding: 4px; white-space: normal; }
 .admin-action-block { float: left; display: inline-block; padding: 0.5em; }
 .admin-action-block--nowrap { white-space: nowrap; }
