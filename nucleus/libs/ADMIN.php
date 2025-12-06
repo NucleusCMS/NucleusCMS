@@ -50,7 +50,6 @@ class ADMIN
 
         //$this->check_admin_vars();
         $this->checkSecurityRisk();
-        $this->appendInstallDirWarning();
         $this->initCheckUpgarde();
     }
 
@@ -8541,9 +8540,13 @@ EOL;
 
     public function checkSecurityRisk()
     {
-        global $CONF;
+        global $CONF, $member;
 
         if ( ! $CONF['alertOnSecurityRisk']) {
+            return;
+        }
+
+        if ( ! isset($member) || ! is_object($member) || ! $member->isLoggedIn()) {
             return;
         }
 
@@ -8553,6 +8556,7 @@ EOL;
             '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
         ];
         $RiskDirs = [
+            '../install'   => _ERRORS_INSTALLDIR,
             'convert'      => _ERRORS_CONVERTDIR,  // don't localized, old version
             '../_upgrades' => _ERRORS_UPGRADESDIR,  // current version
         ];
@@ -8575,8 +8579,7 @@ EOL;
             return;
         }
 
-        $title = _ERRORS_STARTUPERROR3;
-        $msg   = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
+        $msg = _ERRORS_STARTUPERROR1 . implode('</li><li>', $aFound) . _ERRORS_STARTUPERROR2;
         // check core upgrade
         if ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) {
             $link_title = sprintf(_ADMIN_TEXT_CLICK_HERE_TO_UPGRADE, NUCLEUS_VERSION);
@@ -8589,24 +8592,8 @@ EOL;
                 )
                 . '</div><br /><hr />' . $msg;
         }
-        startUpError($msg, $title);
-    }
 
-    private function appendInstallDirWarning()
-    {
-        global $member, $CONF;
-
-        if ( ! $CONF['alertOnSecurityRisk']) {
-            return;
-        }
-
-        if ( ! isset($member) || ! is_object($member) || ! $member->isLoggedIn()) {
-            return;
-        }
-
-        if (@is_dir('../install')) {
-            $this->addSystemInfoMessage('warning', _ERRORS_INSTALLDIR);
-        }
+        $this->addSystemInfoMessage('warning', sprintf('<strong>%s</strong><br />%s', _ERRORS_STARTUPERROR3, $msg));
     }
 
     public function action_composeroverview()
