@@ -12,7 +12,7 @@
 
 define('_INSTALL_TEXT_ERROR_CONFIG_EXIST',             'config.phpファイルはすでにあります。再インストールするには、../config.phpを削除する必要があります');
 define('_INSTALL_TEXT_ERROR_INSTALLATION_AUTH_FAILED',     '認証に失敗しました。インストールする権限がありません。インストール設定ファイルを確認してください');
-define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'インストールをするには、まず install/install-config.php を有効にしてください。ない場合は、install-config.sample.phpをコピーして編集して使ってください。');
+define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'インストールを開始するには、以下の手順を実行してください：<ol><li><strong>install-config.sample.php</strong> を <strong>install-config.php</strong> にリネーム（またはコピー）</li><li><strong>install-config.php</strong> を編集して、認証設定を行う：<ul><li><strong>BASICモード</strong>：ユーザー名とパスワードを設定（$INSTALL_AUTH_USER、$INSTALL_AUTH_PW）</li><li><strong>IPモード</strong>：許可するIPアドレスを設定（$INSTALL_MODE = \'IP\'、$INSTALL_ALLOW_IP）</li></ul></li><li>このページをリロード</li></ol>認証設定により、不正なインストールを防止できます。');
 define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、install/install-config.phpを現在のタイムスタンプでアップロードし直してください。');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP %s 以上が使えないかどうか、サーバ管理者に確認して下さい。');
 define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');

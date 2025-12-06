@@ -1,9 +1,7 @@
 {
     "require": {
         "php": "^8.1||^8.2||^8.3",
-        "doctrine/orm": "^3",
         "doctrine/dbal": "^4",
-        "symfony/cache": "^6||^7",
         "cebe/markdown": "^1",
         "phpxmlrpc/phpxmlrpc": "^4",
         "eftec/bladeone": "^4"
