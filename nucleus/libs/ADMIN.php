@@ -7020,7 +7020,15 @@ EOL;
         }
 
         $contentHtml = ob_get_clean();
-        echo ($this->layoutHeadHtml ?? '') . $contentHtml;
+        $footHtml    = $this->renderPageFoot();
+
+        echo \parseBlade('admin.layout', [
+            'head'     => $this->layoutHeadHtml ?? '',
+            'content'  => $contentHtml,
+            'foot'     => $footHtml,
+            'oAdmin'   => $this,
+            'SiteName' => CONF::asStr('SiteName'),
+        ]);
 
         $this->layoutBufferFlushed = true;
         $this->layoutBuffering     = false;
@@ -7088,6 +7096,42 @@ EOL;
         ];
         $manager->notify('AdminPrePageFoot', $notify_data);
 
+        $footHtml = $this->renderPageFoot();
+
+        if ($this->layoutBuffering && is_string($this->layoutHeadHtml)) {
+            $contentHtml = ob_get_clean();
+            echo \parseBlade('admin.layout', [
+               'head'     => $this->layoutHeadHtml,
+               'content'  => $contentHtml,
+               'foot'     => $footHtml,
+               'oAdmin'   => $this,
+               'SiteName' => CONF::asStr('SiteName'),
+            ]);
+            $this->layoutBuffering     = false;
+            $this->layoutBufferFlushed = true;
+            $this->layoutHeadHtml      = null;
+            return;
+        }
+
+        $contentHtml = $this->layoutBuffering ? ob_get_clean() : '';
+
+        echo \parseBlade('admin.layout', [
+            'head'     => $this->layoutHeadHtml ?? '',
+            'content'  => $contentHtml,
+            'foot'     => $footHtml,
+            'oAdmin'   => $this,
+            'SiteName' => CONF::asStr('SiteName'),
+        ]);
+
+        $this->layoutBuffering     = false;
+        $this->layoutBufferFlushed = true;
+        $this->layoutHeadHtml      = null;
+    }
+
+    private function renderPageFoot()
+    {
+        global $manager;
+
         $blade_params = [
            'manager'  => $manager,
            'oAdmin'   => $this,
@@ -7096,23 +7140,7 @@ EOL;
            'app_copy' => defined('CORE_APPLICATION_COPYRIGHT') ? ' / ' . escapeHTML(CORE_APPLICATION_COPYRIGHT) : '',
         ];
 
-        $footHtml = \parseBlade('admin.pagefoot', $blade_params);
-
-        if ($this->layoutBuffering && is_string($this->layoutHeadHtml)) {
-            $contentHtml = ob_get_clean();
-            echo \parseBlade('admin.layout', [
-               'head'    => $this->layoutHeadHtml,
-               'content' => $contentHtml,
-               'foot'    => $footHtml,
-            ]);
-            $this->layoutBuffering     = false;
-            $this->layoutBufferFlushed = true;
-            $this->layoutHeadHtml      = null;
-            return;
-        }
-
-        echo $this->layoutHeadHtml ?? '';
-        echo $footHtml;
+        return \parseBlade('admin.pagefoot', $blade_params);
     }
 
     public function quickmenu()
