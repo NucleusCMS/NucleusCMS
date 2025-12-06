@@ -22,6 +22,12 @@ try_define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'To start the ins
 try_define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'Your installation has expired. Please re-upload install/install-config.php with a current timestamp.');
 try_define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  'The version of PHP that is running is outdated and does not meet the required minimum requirements.It will cancel the installation work.Please check with the server administrator whether PHP %s or higher can not be used.');
 try_define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleus root folder (../) is not writable. Nucleus installer  can not write the config.php file.');
+try_define('_INSTALL_TEXT_CONFIG_WRITE_WARNING',           'config.php might not be created automatically (%s). Please adjust permissions before continuing.');
+try_define('_INSTALL_TEXT_CONFIG_WRITE_REASON_FILE_PERMISSION', 'config.php is not writable.');
+try_define('_INSTALL_TEXT_CONFIG_WRITE_REASON_FOLDER_PERMISSION', 'The Nucleus root folder is not writable.');
+try_define('_INSTALL_TEXT_BLADE_CACHE_PERMISSION', 'Could not make the Blade cache directory writable (%s). Please adjust permissions so the admin interface can render.');
+
+
 
 /*  New for 3.72 */
 try_define('_INSTALL_TEXT_DATABASE_SELECT' , 'Select Database');
