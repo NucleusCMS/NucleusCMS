@@ -16,6 +16,12 @@ define('_INSTALL_TEXT_ERROR_INSTALLATION_NO_CONFIG_FILE',  'インストール�
 define('_INSTALL_TEXT_ERROR_INSTALLATION_EXPIRED',     'インストール有効期限を経過しました。インストールするには、install/install-config.phpを現在のタイムスタンプでアップロードし直してください。');
 define('_INSTALL_TEXT_ERROR_PHP_MINIMUM_REQUIREMENT',  '動作しているPHPのバージョンが古く、必要な最低要件を満たしていません。インストール作業を中止します。PHP %s 以上が使えないかどうか、サーバ管理者に確認して下さい。');
 define('_INSTALL_TEXT_ERROR_ROOT_CONFIGFOLDER_NOT_WRITABLE',  'Nucleusのルートフォルダ(../)が書き込み可能になっていません。config.phpファイルを書き込むことができません。');
+define('_INSTALL_TEXT_CONFIG_WRITE_WARNING',           'config.phpを自動作成できない可能性があります（%s）。続行する前にパーミッションを確認してください。');
+define('_INSTALL_TEXT_CONFIG_WRITE_REASON_FILE_PERMISSION', 'config.phpに書き込みできません。');
+define('_INSTALL_TEXT_CONFIG_WRITE_REASON_FOLDER_PERMISSION', 'Nucleusのルートフォルダ(../)に書き込み権限がありません。');
+define('_INSTALL_TEXT_BLADE_CACHE_PERMISSION', 'Bladeテンプレートのキャッシュディレクトリ(%s)のパーミッションを自動で設定できませんでした。管理画面でエラーが出ないように手動で書き込み権限を確認してください。');
+
+
 
 /*  New for 3.72 */
 define('_INSTALL_TEXT_DATABASE_SELECT' ,     'データベースの選択');
