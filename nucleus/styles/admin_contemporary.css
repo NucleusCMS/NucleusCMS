@@ -214,19 +214,26 @@ h3 { font-size: 1.05rem; }
     color: #f8fafc;
 }
 
+
 .quickmenu-form select,
 .quickmenu-form input,
+.quickmenu-form textarea {
+    width: 100%;
+}
+
 input,
 select,
 textarea {
-    width: 100%;
-    padding: 10px 12px;
+    width: auto;
+    max-width: 100%;
+    padding: 8px 12px;
     border-radius: 10px;
     border: 1px solid var(--border);
     background: var(--panel);
     color: var(--text);
     font-size: 0.95rem;
     transition: border-color 0.12s ease, box-shadow 0.12s ease;
+    min-height: 36px;
 }
 
 .quickmenu-form select:focus,
@@ -342,7 +349,7 @@ button,
     background: var(--accent);
     border: none;
     color: #fff;
-    padding: 10px 14px;
+    padding: 8px 12px;
     border-radius: 10px;
     font-weight: 700;
     cursor: pointer;
@@ -350,6 +357,7 @@ button,
     box-shadow: 0 8px 18px rgba(47, 70, 100, 0.18);
     width: auto;
     min-width: 110px;
+    min-height: 36px;
     display: inline-flex;
     align-items: center;
     justify-content: center;
