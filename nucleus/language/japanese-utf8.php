@@ -456,8 +456,8 @@ try_define('_ERRORS_INSTALLPHP',						'｢install.php｣ファイルを削除し
 try_define('_ERRORS_UPGRADESDIR',						'｢_upgrades｣ディレクトリを削除してください');
 try_define('_ERRORS_CONVERTDIR',						'｢nucleus/convert｣ディレクトリを削除してください');
 try_define('_ERRORS_CONFIGPHP',							'｢config.php｣ファイルを読み取り専用(｢chmod 444｣等)にしてください');
-try_define('_ERRORS_STARTUPERROR1',						'<p>一つ、またはそれ以上のNucleusCMSのインストール(アップグレード)用ファイルがサーバ上に残っています。</p><p>削除してセキュリティを確保してください。見つかったファイルの例を次に示します。</p> <ul><li>');
-try_define('_ERRORS_STARTUPERROR2',						'</li></ul><p>上記のファイルを削除すると、警告は表示されなくなります。</p>');
+try_define('_ERRORS_STARTUPERROR1',						'<p>インストール(アップグレード)用ファイルがサーバ上に残っています。</p><ul><li>');
+try_define('_ERRORS_STARTUPERROR2',						'</li></ul><p>これらのファイルを削除すると、警告は表示されなくなります。</p>');
 try_define('_ERRORS_STARTUPERROR3',						'セキュリティ リスクの警告');
 
 // PluginAdmin tickets by javascript
