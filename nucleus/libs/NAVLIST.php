@@ -29,6 +29,7 @@ class NAVLIST extends ENCAPSULATE
     public $search;
     public $itemid;
     public $total = null;
+    protected $batch = null;
 
     public function __construct(
         $action,
@@ -57,8 +58,8 @@ class NAVLIST extends ENCAPSULATE
         $template,
         $errorMessage = _LISTS_NOMORE
     ) {
-        $batch  = new BATCH($batchtype);
-        $call   = [$batch, 'showlist'];
+        $this->batch = new BATCH($batchtype);
+        $call   = [$this->batch, 'showlist'];
         $params = [&$query, $type, $template];
         $this->doEncapsulate($call, $params, $errorMessage);
     }
@@ -74,6 +75,9 @@ class NAVLIST extends ENCAPSULATE
     {
         if ($this->isFootNavigation) {
             $this->showNavigation();
+        }
+        if ($this->batch && method_exists($this->batch, 'showOperationList')) {
+            $this->batch->showOperationList();
         }
     }
 
