@@ -8587,7 +8587,7 @@ EOL;
         }
 
         $aFound = [];
-        $installConfigPath = __DIR__ . '/../install/install-config.php';
+        $installConfigPath = dirname(__DIR__, 2) . '/install/install-config.php';
 
         if (@is_file($installConfigPath)) {
             $aFound[] = defined('_ERRORS_INSTALLCONFIG') ? _ERRORS_INSTALLCONFIG : 'install/install-config.php';
