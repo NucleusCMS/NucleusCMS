@@ -1241,6 +1241,15 @@ try_define('_EBLOG_CAT_CREATE',			'Create New Category');
 try_define('_EBLOG_CAT_UPDATE',			'Update Category');
 try_define('_EBLOG_CAT_UPDATE_BTN',		'Update Category');
 
+// blogsettings tabs
+try_define('_BLOGSETTINGS_TAB_BLOG',	'Blog Settings');
+try_define('_BLOGSETTINGS_TAB_TEAM',	'Team Settings');
+try_define('_BLOGSETTINGS_TAB_CATEGORY','Categories');
+try_define('_BLOGSETTINGS_TAB_PLUGIN',	'Plugin Settings');
+try_define('_BLOGSETTINGS_TAB_BAN',		'IP Restrictions');
+try_define('_BLOGSETTINGS_TAB_OTHER',	'Other');
+
+
 // templates
 try_define('_TEMPLATE_TITLE',			'Edit Templates');
 try_define('_TEMPLATE_AVAILABLE_TITLE',	'Available Templates');

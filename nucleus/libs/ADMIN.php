@@ -2995,75 +2995,16 @@ class ADMIN
      */
     public function action_manageteam()
     {
-        global $member, $manager;
+        global $member;
 
         $blogid = intRequestVar('blogid');
 
         // check if allowed
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $this->pagehead();
-
-        echo "<p><a href='index.php?action=blogsettings&amp;blogid={$blogid}'>(", _BACK_TO_BLOGSETTINGS, ")</a></p>";
-
-        echo '<h2>' . _TEAM_TITLE . hsc(getBlogNameFromID($blogid)) . '</h2>';
-
-        echo '<h3>' . _TEAM_CURRENT . '</h3>';
-
-        $query = sprintf("SELECT tblog, tmember, mname, mrealname, memail, tadmin FROM %s, %s WHERE tmember=mnumber and tblog=%s", sql_table('member'), sql_table('team'), $blogid);
-
-        $template['content']  = 'teamlist';
-        $template['tabindex'] = 10;
-
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new BATCH('team');
-        $batch->showList($query, 'table', $template);
-
-        ?>
-        <h3><?php echo _TEAM_ADDNEW ?></h3>
-        <?php
-        // TODO: try to make it so only non-team-members are listed
-        // From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
-        $ph['tblog']            = $blogid;
-        $from_where             = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=[@tblog@])', $ph);
-        $query                  = "SELECT mname as text, mnumber as value" . $from_where;
-        $count_non_team_members = (int) quickQuery("SELECT count(*) AS result " . $from_where);
-
-        if (0 == $count_non_team_members) {
-            echo _TEAM_NO_SELECTABLE_MEMBERS;
-        } else {
-            ?>
-            <form method='post' action='index.php'>
-                <div>
-
-                    <input type='hidden' name='action' value='teamaddmember' />
-                    <input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
-                    <?php $manager->addTicketHidden() ?>
-
-                    <table>
-                        <tr>
-                            <td><?php echo _TEAM_CHOOSEMEMBER; ?></td>
-                            <td><?php
-                                $template['name'] = 'memberid';
-            $template['tabindex']                 = 10000;
-            showlist_by_query($query, 'select', $template);
-            ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php echo _TEAM_ADMIN ?><?php help('teamadmin'); ?></td>
-                            <td><?php $this->input_yesno('admin', 0, 10020); ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php echo _TEAM_ADD ?></td>
-                            <td><input type='submit' value='<?php echo _TEAM_ADD_BTN ?>' tabindex="10030" /></td>
-                        </tr>
-                    </table>
-
-                </div>
-            </form>
-            <?php
-        } // end $count_non_team_members > 0
-        $this->pagefoot();
+        // Redirect to blogsettings with team tab
+        header('Location: index.php?action=blogsettings&blogid=' . $blogid . '#tab-team');
+        exit;
     }
 
     /**
@@ -3087,7 +3028,9 @@ class ADMIN
             }
         }
 
-        $this->action_manageteam();
+        // Redirect to blogsettings with team tab
+        header('Location: index.php?action=blogsettings&blogid=' . $blogid . '#tab-team');
+        exit;
     }
 
     /**
@@ -3236,6 +3179,8 @@ class ADMIN
         $blog = &$manager->getBlog($blogid);
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/blogsettings-tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/blogsettings-tabs.js"></script>';
         $this->pagehead($extrahead);
 
         echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
@@ -3245,32 +3190,23 @@ class ADMIN
             echo sprintf('<div class="ok">%s</div>', $message);
         } ?>
 
-        <h3><?php echo _EBLOG_TEAM_TITLE ?></h3>
+        <!-- Tab Navigation -->
+        <div class="blog-settings-tabs">
+            <ul class="tab-nav">
+                <li class="active"><a href="#tab-blog"><?php echo _BLOGSETTINGS_TAB_BLOG ?></a></li>
+                <li><a href="#tab-team"><?php echo _BLOGSETTINGS_TAB_TEAM ?></a></li>
+                <li><a href="#tab-category"><?php echo _BLOGSETTINGS_TAB_CATEGORY ?></a></li>
+                <li><a href="#tab-plugin"><?php echo _BLOGSETTINGS_TAB_PLUGIN ?></a></li>
+                <li><a href="#tab-ban"><?php echo _BLOGSETTINGS_TAB_BAN ?></a></li>
+                <?php if ($member->isAdmin()) { ?>
+                <li><a href="#tab-other"><?php echo _BLOGSETTINGS_TAB_OTHER ?></a></li>
+                <?php } ?>
+            </ul>
 
-        <p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
-            <?php
-            $res      = sql_query(sprintf("SELECT mname, mrealname FROM %s,%s WHERE mnumber=tmember AND tblog=%s", sql_table('member'), sql_table('team'), (int) $blogid));
-        $aMemberNames = [];
-        if ($res) {
-            while ($o = sql_fetch_object($res)) {
-                $aMemberNames[] = hsc($o->mname) . ' (' . hsc($o->mrealname) . ')';
-            }
-        }
-        echo implode(',', $aMemberNames);
-        ?>
-        </p>
-
-
-
-        <div>
-            <form action="index.php" method="GET">
-                <input type="hidden" name="action" value="manageteam" />
-                <input type="hidden" name="blogid" value="<?php echo $blogid; ?>" />
-                <input type="submit" value="<?php echo _EBLOG_TEAM_TEXT; ?>" />
-            </form>
-        </div>
-
-        <h3><?php echo _EBLOG_SETTINGS_TITLE ?></h3>
+            <div class="tab-content">
+                <!-- Blog Settings Tab -->
+                <div id="tab-blog" class="tab-pane active">
+                    <h3><?php echo _EBLOG_SETTINGS_TITLE ?></h3>
 
         <form method="post" action="index.php">
             <div>
@@ -3407,7 +3343,68 @@ class ADMIN
                 <div><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN ?>" onclick="return checkSubmit();" /></div>
             </div>
         </form>
+                </div><!-- #tab-blog -->
 
+                <!-- Team Settings Tab -->
+                <div id="tab-team" class="tab-pane">
+                    <h3><?php echo _TEAM_TITLE . hsc(getBlogNameFromID($blogid)) ?></h3>
+                    <?php
+                    // Display team management content (from action_manageteam)
+                    echo '<h4>' . _TEAM_CURRENT . '</h4>';
+
+                    $query = sprintf("SELECT tblog, tmember, mname, mrealname, memail, tadmin FROM %s, %s WHERE tmember=mnumber and tblog=%s", sql_table('member'), sql_table('team'), $blogid);
+
+                    $template['content']  = 'teamlist';
+                    $template['tabindex'] = 10;
+
+                    $manager->loadClass("ENCAPSULATE");
+                    $batch = new BATCH('team');
+                    $batch->showList($query, 'table', $template);
+                    ?>
+                    <h4><?php echo _TEAM_ADDNEW ?></h4>
+                    <?php
+                    $ph['tblog']            = $blogid;
+                    $from_where             = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=[@tblog@])', $ph);
+                    $query                  = "SELECT mname as text, mnumber as value" . $from_where;
+                    $count_non_team_members = (int) quickQuery("SELECT count(*) AS result " . $from_where);
+
+                    if (0 == $count_non_team_members) {
+                        echo _TEAM_NO_SELECTABLE_MEMBERS;
+                    } else {
+                    ?>
+                    <form method='post' action='index.php'>
+                        <div>
+                            <input type='hidden' name='action' value='teamaddmember' />
+                            <input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
+                            <?php $manager->addTicketHidden() ?>
+
+                            <table>
+                                <tr>
+                                    <td><?php echo _TEAM_CHOOSEMEMBER; ?></td>
+                                    <td><?php
+                                        $template['name'] = 'memberid';
+                                        $template['tabindex']                 = 10000;
+                                        showlist_by_query($query, 'select', $template);
+                                    ?></td>
+                                </tr>
+                                <tr>
+                                    <td><?php echo _TEAM_ADMIN ?><?php help('teamadmin'); ?></td>
+                                    <td><?php $this->input_yesno('admin', 0, 10020); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><?php echo _TEAM_ADD ?></td>
+                                    <td><input type='submit' value='<?php echo _TEAM_ADD_BTN ?>' tabindex="10030" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                    <?php
+                    } // end $count_non_team_members > 0
+                    ?>
+                </div><!-- #tab-team -->
+
+                <!-- Category Tab -->
+                <div id="tab-category" class="tab-pane">
         <h3><?php echo _EBLOG_CAT_TITLE ?></h3>
 
 
@@ -3454,14 +3451,22 @@ class ADMIN
 
             </div>
         </form>
+                </div><!-- #tab-category -->
 
+                <!-- Plugin Settings Tab -->
+                <div id="tab-plugin" class="tab-pane">
         <?php
 
         echo '<h3>', _PLUGINS_EXTRA, '</h3>';
 
         $param = ['blog' => &$blog];
         $manager->notify('BlogSettingsFormExtras', $param);
+        ?>
+                </div><!-- #tab-plugin -->
 
+                <!-- IP Address Restriction Tab -->
+                <div id="tab-ban" class="tab-pane">
+        <?php
         // アクセス制限セクション
         echo '<h3>' . _BAN_TITLE . " '" . $this->bloglink($blog) . "'</h3>";
 
@@ -3474,15 +3479,25 @@ class ADMIN
         }
 
         echo '<p><a href="index.php?action=banlistnew&amp;blogid=' . $blogid . '">' . _BAN_NEW_TEXT . '</a></p>';
+        ?>
+                </div><!-- #tab-ban -->
 
+                <?php if ($member->isAdmin()) { ?>
+                <!-- Other Tab -->
+                <div id="tab-other" class="tab-pane">
+        <?php
         // ブログ削除セクション（スーパー管理者のみ）
-        if ($member->isAdmin()) {
-            echo '<h3>' . _BLOGLIST_DELETE_THIS_BLOG . '</h3>';
-            echo '<p style="color: #c00;">' . _BLOGLIST_DELETE_THIS_BLOG_WARNING . '</p>';
-            echo '<p><a href="index.php?action=deleteblog&amp;blogid=' . $blogid . '" style="color: #c00; font-weight: bold;">' . _BLOGLIST_DELETE_THIS_BLOG_LINK . '</a></p>';
-        }
+        echo '<h3>' . _BLOGLIST_DELETE_THIS_BLOG . '</h3>';
+        echo '<p style="color: #c00;">' . _BLOGLIST_DELETE_THIS_BLOG_WARNING . '</p>';
+        echo '<p><a href="index.php?action=deleteblog&amp;blogid=' . $blogid . '" style="color: #c00; font-weight: bold;">' . _BLOGLIST_DELETE_THIS_BLOG_LINK . '</a></p>';
+        ?>
+                </div><!-- #tab-other -->
+                <?php } ?>
 
+            </div><!-- .tab-content -->
+        </div><!-- .blog-settings-tabs -->
 
+        <?php
         $this->pagefoot();
     }
 

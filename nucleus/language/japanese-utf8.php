@@ -1281,12 +1281,21 @@ try_define('_EBLOG_CREATE_TITLE',				'新しいBlogの作成');
 try_define('_EBLOG_CREATE_TEXT',				'新しいBlogを作成するために以下のフォームを埋めてください。<br /><br /> <b>注意:</b> 必要なオプションのみが表示されています。追加のオプションを設定したい場合はBlogを作成した後、Blog設定ページで設定してください。');
 try_define('_EBLOG_CREATE',						'作成！');
 try_define('_EBLOG_CREATE_BTN',					'Blogを作成');
-try_define('_EBLOG_CAT_TITLE',					'カテゴリー');
+try_define('_EBLOG_CAT_TITLE',				'カテゴリー');
 try_define('_EBLOG_CAT_NAME',					'カテゴリー名');
 try_define('_EBLOG_CAT_DESC',					'カテゴリーの説明');
 try_define('_EBLOG_CAT_CREATE',					'新しいカテゴリーを作る');
 try_define('_EBLOG_CAT_UPDATE',					'カテゴリーの更新');
 try_define('_EBLOG_CAT_UPDATE_BTN',				'カテゴリーを更新');
+
+// blogsettings tabs
+try_define('_BLOGSETTINGS_TAB_BLOG',			'Blog設定');
+try_define('_BLOGSETTINGS_TAB_TEAM',			'チーム設定');
+try_define('_BLOGSETTINGS_TAB_CATEGORY',		'カテゴリー');
+try_define('_BLOGSETTINGS_TAB_PLUGIN',			'プラグイン設定');
+try_define('_BLOGSETTINGS_TAB_BAN',				'IPアドレス制限');
+try_define('_BLOGSETTINGS_TAB_OTHER',			'その他');
+
 
 // templates
 try_define('_TEMPLATE_TITLE',					'テンプレートの編集');
