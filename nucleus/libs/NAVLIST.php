@@ -127,37 +127,6 @@ class NAVLIST extends ENCAPSULATE
                 <td>
                     <form method="post" action="index.php">
                         <div>
-                            <input type="submit" <?php
-                            if ($start <= 0) {
-                                echo 'disabled';
-                            } ?> value="&lt;&lt; <?php
-                            echo _LISTS_PREV; ?>"/>
-                            <input type="hidden" name="blogid" value="<?php
-                            echo $blogid; ?>"/>
-                            <input type="hidden" name="itemid" value="<?php
-                            echo $itemid; ?>"/>
-                            <?php
-                            if ($enable_cat_select) {
-                                echo '<input type="hidden" name="catid" value="'
-                                     . $catid . '" />';
-                            } ?>
-                            <input type="hidden" name="action" value="<?php
-                            echo $action; ?>"/>
-                            <input type="hidden" name="amount" value="<?php
-                            echo $amount; ?>"/>
-                            <input type="hidden" name="search" value="<?php
-                            echo $search; ?>"/>
-                            <input type="hidden" name="start" value="<?php
-                            echo $prev; ?>"/>
-                            <input type="hidden" name="view_item_options"
-                                   value="<?php
-                                    echo $view_item_options; ?>"/>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="index.php">
-                        <div>
                             <input type="hidden" name="blogid" value="<?php
                             echo $blogid; ?>"/>
                             <input type="hidden" name="itemid" value="<?php
@@ -212,12 +181,43 @@ class NAVLIST extends ENCAPSULATE
                             echo $amount; ?>"/>
                             <input type="hidden" name="start" value="0"/>
                             <input type="text" name="search" value="<?php
-                            echo $search; ?>" size="16"/>
+                            echo $search; ?>" size="16" placeholder="キーワード"/>
                             <input type="hidden" name="view_item_options"
                                    value="<?php
                                     echo $view_item_options; ?>"/>
                             <input type="submit" value="&gt; <?php
                             echo _LISTS_SEARCH ?>"/>
+                        </div>
+                    </form>
+                </td>
+                <td>
+                    <form method="post" action="index.php">
+                        <div>
+                            <input type="submit" <?php
+                            if ($start <= 0) {
+                                echo 'disabled';
+                            } ?> value="&lt;&lt; <?php
+                            echo _LISTS_PREV; ?>"/>
+                            <input type="hidden" name="blogid" value="<?php
+                            echo $blogid; ?>"/>
+                            <input type="hidden" name="itemid" value="<?php
+                            echo $itemid; ?>"/>
+                            <?php
+                            if ($enable_cat_select) {
+                                echo '<input type="hidden" name="catid" value="'
+                                     . $catid . '" />';
+                            } ?>
+                            <input type="hidden" name="action" value="<?php
+                            echo $action; ?>"/>
+                            <input type="hidden" name="amount" value="<?php
+                            echo $amount; ?>"/>
+                            <input type="hidden" name="search" value="<?php
+                            echo $search; ?>"/>
+                            <input type="hidden" name="start" value="<?php
+                            echo $prev; ?>"/>
+                            <input type="hidden" name="view_item_options"
+                                   value="<?php
+                                    echo $view_item_options; ?>"/>
                         </div>
                     </form>
                 </td>
