@@ -270,6 +270,11 @@ textarea {
     color: var(--text);
     font-size: 0.95rem;
     transition: border-color 0.12s ease, box-shadow 0.12s ease;
+}
+
+input:not([type="checkbox"]):not([type="radio"]),
+select,
+textarea {
     min-height: 36px;
 }
 

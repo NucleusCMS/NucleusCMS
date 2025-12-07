@@ -38,9 +38,10 @@ function batchSelectAll(what) {
         var i = 0;
         var el;
         while (el = document.getElementById('batch' + i)) {
-                el.checked = what?'checked':'';
+                el.checked = what ? true : false;
                 i++;
         }
+        batchUpdateToggleCheckbox();
         return false;
 }
 function batchInvertSelection() {
@@ -50,15 +51,48 @@ function batchInvertSelection() {
                 el.checked = !el.checked;
                 i++;
         }
+        batchUpdateToggleCheckbox();
         return false;
 }
 function batchToggleSelect(toggle) {
         if (!toggle) return false;
 
-        batchSelectAll(toggle.checked ? 1 : 0);
-        toggle.indeterminate = false;
+        // 現在の状態を確認して反転
+        var allChecked = batchIsAllChecked();
+        batchSelectAll(allChecked ? 0 : 1);
+        toggle.checked = !allChecked;
 
         return false;
+}
+function batchIsAllChecked() {
+        var i = 0;
+        var el;
+        var hasItems = false;
+        while (el = document.getElementById('batch' + i)) {
+                hasItems = true;
+                if (!el.checked) {
+                        return false;
+                }
+                i++;
+        }
+        return hasItems;
+}
+function batchUpdateToggleCheckbox() {
+        var toggleCheckbox = document.getElementById('batch-toggle-all');
+        if (toggleCheckbox) {
+                var allChecked = batchIsAllChecked();
+                toggleCheckbox.checked = allChecked;
+        }
+}
+function batchOnItemCheckboxChange() {
+        batchUpdateToggleCheckbox();
+}
+
+// ページ読み込み後に初期状態を設定
+if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', batchUpdateToggleCheckbox);
+} else {
+        batchUpdateToggleCheckbox();
 }
 function selectCanLogin(flag) {
         if (flag) {

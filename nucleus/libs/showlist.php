@@ -187,7 +187,7 @@ function listplug_table_teamlist($template, $type)
 
             echo '<td>';
             $id = listplug_nextBatchId();
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->tmember, '" />';
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->tmember, '" onchange="batchOnItemCheckboxChange()" />';
             echo '<label for="batch', $id, '">';
             echo "<a href='mailto:", hsc($current->memail), "' tabindex='"
                                                             . $template['tabindex']
@@ -455,7 +455,7 @@ function listplug_table_itemlist($template, $type)
     switch ($type) {
         case 'HEAD':
             echo '<th class="batch-checkbox">'
-                 . '<input type="checkbox" aria-label="' . _BATCH_SELECTALL
+                 . '<input type="checkbox" id="batch-toggle-all" aria-label="' . _BATCH_SELECTALL
                  . '" onclick="return batchToggleSelect(this);" />'
                  . '</th>';
             echo "<th>" . _LIST_ITEM_INFO . "</th><th>" . _LIST_ITEM_CONTENT
@@ -494,7 +494,7 @@ function listplug_table_itemlist($template, $type)
 
             echo "<td {$checkboxClass}>";
             echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
-                 '" aria-label="', $title, '" />';
+                 '" aria-label="', $title, '" onchange="batchOnItemCheckboxChange()" />';
             echo "</td>";
 
             echo "<td{$infoClassAttr}>";
@@ -659,7 +659,7 @@ function listplug_table_commentlist($template, $type)
     switch ($type) {
         case 'HEAD':
             printf(
-                '<th class="batch-checkbox"><input type="checkbox" aria-label="%s" onclick="return batchToggleSelect(this);" /></th><th>%s</th><th class="comment-body-column">%s</th><th class="list-actions-header">%s</th>',
+                '<th class="batch-checkbox"><input type="checkbox" id="batch-toggle-all" aria-label="%s" onclick="return batchToggleSelect(this);" /></th><th>%s</th><th class="comment-body-column">%s</th><th class="list-actions-header">%s</th>',
                 _BATCH_SELECTALL,
                 _LISTS_INFO,
                 _LIST_COMMENT,
@@ -692,7 +692,7 @@ function listplug_table_commentlist($template, $type)
 
             echo '<td class="batch-checkbox">';
             if ($show_action_link) {
-                echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" />';
+                echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" onchange="batchOnItemCheckboxChange()" />';
             }
             echo '</td>';
 
@@ -929,7 +929,7 @@ function listplug_table_categorylist($template, $type)
 
             echo '<td>';
             $id = listplug_nextBatchId();
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->catid, '" />';
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->catid, '" onchange="batchOnItemCheckboxChange()" />';
             echo '<label for="batch', $id, '">';
             echo hsc($current->cname);
             echo '</label>';
