@@ -227,13 +227,27 @@ h3 { font-size: 1.05rem; }
 .quickmenu-links a {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    gap: 10px;
     line-height: 1;
     border-radius: 7px;
     color: #e2e8f0;
     font-weight: 500;
     padding: 6px 8px;
     transition: color 0.12s ease, background 0.12s ease;
+}
+
+.quickmenu-links a .menu-icon {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: opacity 0.12s ease;
+}
+
+.quickmenu-links a:hover .menu-icon {
+    opacity: 1;
+}
+
+.quickmenu-links a span {
+    flex: 1;
 }
 
 .quickmenu-links a:hover {
