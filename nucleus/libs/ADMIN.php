@@ -8586,29 +8586,11 @@ EOL;
             return;
         }
 
-        // check if files exist and generate an error if so
-        $RiskFiles = [
-            '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
-            '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
-        ];
-        $RiskDirs = [
-            '../install'   => _ERRORS_INSTALLDIR,
-            'convert'      => _ERRORS_CONVERTDIR,  // don't localized, old version
-            '../_upgrades' => _ERRORS_UPGRADESDIR,  // current version
-        ];
         $aFound = [];
-        foreach ($RiskFiles as $fileName => $fileDesc) {
-            if (@is_file($fileName)) {
-                $aFound[] = $fileDesc;
-            }
-        }
-        foreach ($RiskDirs as $fileName => $fileDesc) {
-            if (@is_dir($fileName)) {
-                $aFound[] = $fileDesc;
-            }
-        }
-        if ( ! str_contains(str_replace('\\', '/', getcwd()), '/plugins/') && @is_writable('../config.php')) {
-            $aFound[] = _ERRORS_CONFIGPHP;
+        $installConfigPath = __DIR__ . '/../install/install-config.php';
+
+        if (@is_file($installConfigPath)) {
+            $aFound[] = defined('_ERRORS_INSTALLCONFIG') ? _ERRORS_INSTALLCONFIG : 'install/install-config.php';
         }
 
         if (count($aFound) <= 0) {
