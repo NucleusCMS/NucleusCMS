@@ -103,12 +103,11 @@ class NAVLIST extends ENCAPSULATE
             ['itemlist', 'browseownitems']
         );
         if ($enable_cat_select) {
-            $catid = isset($_POST['catid']) ? max(0, (int) ($_POST['catid']))
-                : 0;
+            $catid = max(0, intRequestVar('catid'));
         }
-        $view_item_options = isset($_POST['view_item_options'])
-            ? postVar('view_item_options') : 'all';
-        $view_item_options = self::getValidViewItemOption($view_item_options);
+        $view_item_options = self::getValidViewItemOption(
+            (string) requestVar('view_item_options', 'all')
+        );
 
         if (isset($this->total)) {
             $maxamount = $this->total - 1;
@@ -125,7 +124,7 @@ class NAVLIST extends ENCAPSULATE
         <table class="navigation">
             <tr>
                 <td>
-                    <form method="post" action="index.php">
+                    <form method="get" action="index.php">
                         <div>
                             <input type="hidden" name="blogid" value="<?php
                             echo $blogid; ?>"/>
@@ -170,7 +169,7 @@ class NAVLIST extends ENCAPSULATE
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="index.php">
+                    <form method="get" action="index.php">
                         <div>
                             <?php
                             if ($enable_cat_select) {
@@ -207,7 +206,7 @@ class NAVLIST extends ENCAPSULATE
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="index.php">
+                    <form method="get" action="index.php">
                         <div>
                             <input type="submit" <?php
                             if ($start <= 0) {
@@ -238,7 +237,7 @@ class NAVLIST extends ENCAPSULATE
                     </form>
                 </td>
                 <td>
-                    <form method="post" action="index.php">
+                    <form method="get" action="index.php">
                         <div>
                             <input type="submit" value="<?php
                             echo _LISTS_NEXT ?> &gt; &gt;"/>
@@ -282,7 +281,7 @@ class NAVLIST extends ENCAPSULATE
                 echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
                 ?>
                         <div style="display: inline-block">
-                            <form method="post" action="index.php"
+                            <form method="get" action="index.php"
                                   style="display: inline-block">
                                 <input type="submit" value="<?php
                         echo _LISTS_CHANGE; ?>"/>
