@@ -601,10 +601,15 @@ try_define('_LANGUAGEFILES_SPANISH',					'スペイン語 - Espa&ntilde;ol (iso-
  ********************************************/
 
 // START changed/added after 3.3 START
-try_define('_AUTOSAVEDRAFT',					'ドラフト保存状況');
-try_define('_AUTOSAVEDRAFT_LASTSAVED',			'最終ドラフト保存日時: ');
-try_define('_AUTOSAVEDRAFT_NOTYETSAVED',		'保存されていません');
+try_define('_AUTOSAVEDRAFT',					'自動保存');
+try_define('_AUTOSAVEDRAFT_LASTSAVED',			'最終保存: ');
+try_define('_AUTOSAVEDRAFT_NOTYETSAVED',		'まだ保存されていません');
 try_define('_AUTOSAVEDRAFT_NOW',				'ドラフト保存');
+
+// Auto save UI
+try_define('_AUTOSAVE_SECTION_TITLE',			'自動保存');
+try_define('_AUTOSAVE_ENABLE',					'有効にする');
+try_define('_AUTOSAVE_SAVE_NOW',				'今すぐ保存');
 try_define('_SKIN_PARTS_SPECIAL',				'スペシャルスキンパーツ');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',	'英数字以外の文字は使えません');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',	'このスキンパーツを削除できません');
@@ -1112,6 +1117,20 @@ try_define('_EDIT_SUBMIT',						'保存');
 try_define('_EDIT_ORIG_AUTHOR',					'原作者');
 try_define('_EDIT_BACKTODRAFTS',				'再度ドラフトとして保存');
 try_define('_EDIT_COMMENTSNOTE',				'(注意: コメントの非表示は以前に追加されたコメントを隠しはしません)');
+
+// edit item form - section headers
+try_define('_EDIT_SECTION_PUBLIC_STATE',		'公開状態');
+try_define('_EDIT_SECTION_TIMESTAMP',			'日時設定');
+try_define('_EDIT_KEEP_DRAFT',					'下書きのまま保存');
+try_define('_EDIT_PUBLISH_NOW',					'今すぐ公開');
+try_define('_EDIT_PUBLISH_SCHEDULED',			'日時を指定して公開');
+try_define('_EDIT_KEEP_PUBLISHED',				'公開状態を維持');
+
+// edit item form - header buttons
+try_define('_EDIT_BTN_SAVE_DRAFT',				'下書きを保存');
+try_define('_EDIT_BTN_PUBLISH',					'公開する');
+try_define('_EDIT_BTN_UPDATE',					'更新');
+try_define('_EDIT_BTN_UNPUBLISH',				'下書きに戻す');
 
 // used on delete screens
 try_define('_DELETE_CONFIRM',					'削除の確認をしてください');

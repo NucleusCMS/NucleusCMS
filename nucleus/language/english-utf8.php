@@ -569,10 +569,15 @@ try_define('_LANGUAGEFILES_SPANISH',					'Spanish - Espa&ntilde;ol (iso-8859-1)'
  ********************************************/
 
 // START changed/added after 3.3 START
-try_define('_AUTOSAVEDRAFT',		'Auto save draft');
+try_define('_AUTOSAVEDRAFT',		'Auto Save');
 try_define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
-try_define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
+try_define('_AUTOSAVEDRAFT_NOTYETSAVED',	'Not saved yet');
 try_define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
+
+// Auto save UI
+try_define('_AUTOSAVE_SECTION_TITLE',		'Auto Save');
+try_define('_AUTOSAVE_ENABLE',				'Enable');
+try_define('_AUTOSAVE_SAVE_NOW',			'Save Now');
 try_define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'Can\'t delete this skin part');
@@ -1065,6 +1070,20 @@ try_define('_EDIT_SUBMIT',				'Edit Item');
 try_define('_EDIT_ORIG_AUTHOR',			'Original author');
 try_define('_EDIT_BACKTODRAFTS',		'Add back to drafts');
 try_define('_EDIT_COMMENTSNOTE',		'(note: disabling comments will _not_ hide previously added comments)');
+
+// edit item form - section headers
+try_define('_EDIT_SECTION_PUBLIC_STATE',		'Publication Status');
+try_define('_EDIT_SECTION_TIMESTAMP',			'Date/Time Settings');
+try_define('_EDIT_KEEP_DRAFT',					'Keep as draft');
+try_define('_EDIT_PUBLISH_NOW',					'Publish now');
+try_define('_EDIT_PUBLISH_SCHEDULED',			'Schedule publication');
+try_define('_EDIT_KEEP_PUBLISHED',				'Keep published');
+
+// edit item form - header buttons
+try_define('_EDIT_BTN_SAVE_DRAFT',				'Save Draft');
+try_define('_EDIT_BTN_PUBLISH',					'Publish');
+try_define('_EDIT_BTN_UPDATE',					'Update');
+try_define('_EDIT_BTN_UNPUBLISH',				'Unpublish');
 
 // used on delete screens
 try_define('_DELETE_CONFIRM',			'Please confirm deletion');
