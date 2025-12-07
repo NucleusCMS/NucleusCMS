@@ -65,14 +65,13 @@ class NAVLIST extends ENCAPSULATE
 
     public function showHead()
     {
-        $this->showNavigation();
+        if ($this->isFootNavigation) {
+            $this->showNavigation();
+        }
     }
 
     public function showFoot()
     {
-        if ($this->isFootNavigation) {
-            $this->showNavigation();
-        }
     }
 
     /**
@@ -103,12 +102,11 @@ class NAVLIST extends ENCAPSULATE
             ['itemlist', 'browseownitems']
         );
         if ($enable_cat_select) {
-            $catid = isset($_POST['catid']) ? max(0, (int) ($_POST['catid']))
-                : 0;
+            $catid = max(0, intRequestVar('catid'));
         }
-        $view_item_options = isset($_POST['view_item_options'])
-            ? postVar('view_item_options') : 'all';
-        $view_item_options = self::getValidViewItemOption($view_item_options);
+        $view_item_options = self::getValidViewItemOption(
+            (string) requestVar('view_item_options', 'all')
+        );
 
         if (isset($this->total)) {
             $maxamount = $this->total - 1;
@@ -122,183 +120,76 @@ class NAVLIST extends ENCAPSULATE
         }
 
         ?>
-        <table class="navigation">
-            <tr>
-                <td>
-                    <form method="post" action="index.php">
-                        <div>
-                            <input type="hidden" name="blogid" value="<?php
-                            echo $blogid; ?>"/>
-                            <input type="hidden" name="itemid" value="<?php
-                            echo $itemid; ?>"/>
-                            <?php
-                            if ($enable_cat_select) {
-                                echo '<input type="hidden" name="catid" value="'
-                                     . $catid . '" />';
-                            } ?>
-                            <input type="hidden" name="action" value="<?php
-                            echo $action; ?>"/>
-                            <input name="amount" size="3" value="<?php
-                            echo $amount; ?>"/> <?php
-                            echo _LISTS_PERPAGE ?>
-                            <input type="hidden" name="start" value="<?php
-                            echo $start; ?>"/>
-                            <input type="hidden" name="search" value="<?php
-                            echo $search; ?>"/>
-                            <input type="hidden" name="view_item_options"
-                                   value="<?php
-                                    echo $view_item_options; ?>"/>
-                            <input type="submit" value="&gt; <?php
-                            echo _LISTS_CHANGE ?>"/>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="index.php">
-                        <div>
-                            <?php
-                            if ($enable_cat_select) {
-                                $query_extra
-                                    = ADMIN::getQueryFilterForItemlist01(
-                                        $blogid,
-                                        $view_item_options
-                                    );
-                                echo $this->getFormSelectCategoryBlog(
-                                    $action,
-                                    $blogid,
-                                    $catid,
-                                    'catid',
-                                    $query_extra
-                                );
-                            } ?>
-                            <input type="hidden" name="blogid" value="<?php
-                            echo $blogid; ?>"/>
-                            <input type="hidden" name="itemid" value="<?php
-                            echo $itemid; ?>"/>
-                            <input type="hidden" name="action" value="<?php
-                            echo $action; ?>"/>
-                            <input type="hidden" name="amount" value="<?php
-                            echo $amount; ?>"/>
-                            <input type="hidden" name="start" value="0"/>
-                            <input type="text" name="search" value="<?php
-                            echo $search; ?>" size="16" placeholder="キーワード"/>
-                            <input type="hidden" name="view_item_options"
-                                   value="<?php
-                                    echo $view_item_options; ?>"/>
-                            <input type="submit" value="&gt; <?php
-                            echo _LISTS_SEARCH ?>"/>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="index.php">
-                        <div>
-                            <input type="submit" <?php
-                            if ($start <= 0) {
-                                echo 'disabled';
-                            } ?> value="&lt;&lt; <?php
-                            echo _LISTS_PREV; ?>"/>
-                            <input type="hidden" name="blogid" value="<?php
-                            echo $blogid; ?>"/>
-                            <input type="hidden" name="itemid" value="<?php
-                            echo $itemid; ?>"/>
-                            <?php
-                            if ($enable_cat_select) {
-                                echo '<input type="hidden" name="catid" value="'
-                                     . $catid . '" />';
-                            } ?>
-                            <input type="hidden" name="action" value="<?php
-                            echo $action; ?>"/>
-                            <input type="hidden" name="amount" value="<?php
-                            echo $amount; ?>"/>
-                            <input type="hidden" name="search" value="<?php
-                            echo $search; ?>"/>
-                            <input type="hidden" name="start" value="<?php
-                            echo $prev; ?>"/>
-                            <input type="hidden" name="view_item_options"
-                                   value="<?php
-                                    echo $view_item_options; ?>"/>
-                        </div>
-                    </form>
-                </td>
-                <td>
-                    <form method="post" action="index.php">
-                        <div>
-                            <input type="submit" value="<?php
-                            echo _LISTS_NEXT ?> &gt; &gt;"/>
-                            <input type="hidden" name="search" value="<?php
-                            echo $search; ?>"/>
-                            <input type="hidden" name="blogid" value="<?php
-                            echo $blogid; ?>"/>
-                            <input type="hidden" name="itemid" value="<?php
-                            echo $itemid; ?>"/>
-                            <?php
-                            if ($enable_cat_select) {
-                                echo '<input type="hidden" name="catid" value="'
-                                     . $catid . '" />';
-                            } ?>
-                            <input type="hidden" name="action" value="<?php
-                            echo $action; ?>"/>
-                            <input type="hidden" name="amount" value="<?php
-                            echo $amount; ?>"/>
-                            <input type="hidden" name="start" value="<?php
-                            echo $next; ?>"/>
-                            <input type="hidden" name="view_item_options"
-                                   value="<?php
-                                    echo $view_item_options; ?>"/>
-                        </div>
-                    </form>
-                </td>
-            </tr>
-            <?php
-            if ($enable_cat_select) { ?>
-                <tr>
-                    <td colspan="4">
-                        <?php
-                        $s = '_LISTS_FORM_SELECT_ITEM_OPTION_'
-                                  . strtoupper($view_item_options);
-                $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
-                printf(
-                    '<div style="%s"><span class="filter">%s</span>',
-                    $style1,
-                    hsc(defined($s) ? constant($s) : $s)
-                );
-                echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
-                ?>
-                        <div style="display: inline-block">
-                            <form method="post" action="index.php"
-                                  style="display: inline-block">
-                                <input type="submit" value="<?php
-                        echo _LISTS_CHANGE; ?>"/>
-                                <input type="hidden" name="blogid" value="<?php
-                        echo $blogid; ?>"/>
-                                <input type="hidden" name="itemid" value="<?php
-                        echo $itemid; ?>"/>
-                                <?php
-                        echo '<input type="hidden" name="catid" value="'
-                             . $catid . '" />'; ?>
-                                <input type="hidden" name="action" value="<?php
-                        echo $action; ?>"/>
-                                <input type="hidden" name="amount" value="<?php
-                        echo $amount; ?>"/>
-                                <input type="hidden" name="search" value="<?php
-                        echo $search; ?>"/>
-                                <input type="hidden" name="start" value="0"/>
-                                <?php
+        <form method="get" action="index.php" class="navigation">
+            <input type="hidden" name="blogid" value="<?php echo $blogid; ?>"/>
+            <input type="hidden" name="itemid" value="<?php echo $itemid; ?>"/>
+            <input type="hidden" name="action" value="<?php echo $action; ?>"/>
+            <input type="hidden" name="start" value="0"/>
+            <div class="nav-controls">
+                <div class="nav-left">
+                    <div class="nav-group">
+                        <input type="text" name="search" value="<?php echo $search; ?>" size="16" placeholder="キーワード"/>
+                        <input type="submit" value="<?php echo _LISTS_SEARCH ?>"/>
+                    </div>
+
+                    <?php
+                    if ($enable_cat_select) {
+                        $query_extra = ADMIN::getQueryFilterForItemlist01(
+                            $blogid,
+                            $view_item_options
+                        );
+                        echo $this->getFormSelectCategoryBlog(
+                            $action,
+                            $blogid,
+                            $catid,
+                            'catid',
+                            $query_extra
+                        );
                         echo $this->getFormSelectViewItemOptions(
                             $action,
                             $blogid,
                             $catid,
                             $view_item_options
-                        ); ?>
-                            </form>
-                        </div>
-                        </div>
-                    </td>
-                </tr>
-                <?php
-            } /* end if */ ?>
-        </table>
+                        );
+                    } else {
+                        echo '<input type="hidden" name="view_item_options" value="'
+                            . $view_item_options . '" />';
+                    }
+
+                    $perpageOptions = [10, 20, 50, 100];
+                    if (!in_array($amount, $perpageOptions, true)) {
+                        $perpageOptions[] = $amount;
+                    }
+                    sort($perpageOptions, SORT_NUMERIC);
+                    ?>
+                    <label class="nav-group">
+                        <span class="sr-only"><?php echo _LISTS_PERPAGE; ?></span>
+                        <select name="amount" onchange="this.form.submit()">
+                            <?php
+                            foreach ($perpageOptions as $perpageOption) {
+                                $selected = ($perpageOption === $amount) ? ' selected' : '';
+                                printf(
+                                    '<option value="%d"%s>%d</option>',
+                                    $perpageOption,
+                                    $selected,
+                                    $perpageOption
+                                );
+                            }
+                            ?>
+                        </select>
+                        <span class="nav-label"><?php echo _LISTS_PERPAGE; ?></span>
+                    </label>
+                </div>
+
+                <div class="nav-actions">
+                    <button type="submit" name="start" value="<?php echo $prev; ?>" <?php
+                    if ($start <= 0) {
+                        echo 'disabled';
+                    } ?>>&lt; <?php echo _LISTS_PREV; ?></button>
+                    <button type="submit" name="start" value="<?php echo $next; ?>"><?php echo _LISTS_NEXT; ?> &gt;</button>
+                </div>
+            </div>
+        </form>
         <?php
     }
 

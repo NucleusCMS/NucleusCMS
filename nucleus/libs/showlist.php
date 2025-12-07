@@ -560,10 +560,12 @@ function listplug_table_itemlist($template, $type)
 
             $id = listplug_nextBatchId();
 
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber, '" />';
-            echo '<label for="batch', $id, '">';
-            echo "<b>" . hsc(strip_tags($current->ititle)) . "</b>";
-            echo '</label>';
+            $title   = hsc(strip_tags($current->ititle));
+            $editUrl = sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber);
+
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
+                 '" aria-label="', $title, '" />';
+            printf('<a href="%s"><b>%s</b></a>', $editUrl, $title);
             echo "<br />";
 
             $current->ibody = strip_tags($current->ibody);

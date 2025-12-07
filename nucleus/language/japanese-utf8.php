@@ -37,17 +37,17 @@ try_define('_ADMIN_DEVELOP_VERSION' , '開発版');
 
 
 // USER HOME
-try_define('_USER_HOME',                       'あなたのホーム');
-try_define('_BACK_USER_HOME',                  'あなたのホームに戻る');
-try_define('_OVERVIEW_YR_MEMBER_SETTINGS',     'あなたの設定');
-try_define('_BACK_YR_HOME',                    'あなたのホームに戻る');
+try_define('_USER_HOME',                       'ブログ一覧');
+try_define('_BACK_USER_HOME',                  'ブログ一覧に戻る');
+try_define('_OVERVIEW_YR_MEMBER_SETTINGS',     '設定');
+try_define('_BACK_YR_HOME',                    'ブログ一覧に戻る');
 
 // _QMENU
 try_define('_QMENU_ABOUT',                 'このアプリ について');
-try_define('_QMENU_BACK_USER_HOME',        'あなたのホームに戻る');
+try_define('_QMENU_BACK_USER_HOME',        'ブログ一覧に戻る');
 try_define('_QMENU_HELP',                  'ヘルプ');
 try_define('_QMENU_MANUAL',                'ユーザーガイド');
-try_define('_QMENU_USER_HOME',             'あなたのホーム');
+try_define('_QMENU_USER_HOME',             'ブログ一覧');
 try_define('_QMENU_USER_MEMBER_SETTINGS',  'メンバー設定');
 
 
@@ -705,9 +705,9 @@ try_define('_BATCH_EXEC',						'実行');
 try_define('_QMENU_HOME',						'管理ホーム');
 try_define('_QMENU_ADD',						'アイテム追加');
 try_define('_QMENU_ADD_SELECT',					'- blog選択 -');
-try_define('_QMENU_USER_SETTINGS',				'あなたの設定');
-try_define('_QMENU_USER_ITEMS',					'あなたのアイテム');
-try_define('_QMENU_USER_COMMENTS',				'あなたのコメント');
+try_define('_QMENU_USER_SETTINGS',                              '設定');
+try_define('_QMENU_USER_ITEMS',                                 'アイテム一覧');
+try_define('_QMENU_USER_COMMENTS',                              'コメント一覧');
 try_define('_QMENU_MANAGE',						'サイト管理');
 try_define('_QMENU_MANAGE_LOG',					'管理操作履歴');
 try_define('_QMENU_MANAGE_SETTINGS',			'グローバル設定');
@@ -1480,9 +1480,9 @@ try_define('_OVERVIEW_YRSETTINGS',				'設定');
 try_define('_OVERVIEW_GSETTINGS',				'基本設定');
 try_define('_OVERVIEW_NOBLOGS',					'あなたはどのBlogチームリストにも入っていません');
 try_define('_OVERVIEW_NODRAFTS',				'ドラフト(下書き中)の記事はありません');
-try_define('_OVERVIEW_EDITSETTINGS',			'あなたの設定');
-try_define('_OVERVIEW_BROWSEITEMS',				'あなたのアイテム');
-try_define('_OVERVIEW_BROWSECOMM',				'あなたのコメント');
+try_define('_OVERVIEW_EDITSETTINGS',                    '設定');
+try_define('_OVERVIEW_BROWSEITEMS',                             'アイテム一覧');
+try_define('_OVERVIEW_BROWSECOMM',                              'コメント一覧');
 try_define('_OVERVIEW_VIEWLOG',					'管理操作履歴');
 try_define('_OVERVIEW_MEMBERS',					'メンバー管理');
 try_define('_OVERVIEW_NEWLOG',					'新規Blog作成');
@@ -1493,7 +1493,7 @@ try_define('_OVERVIEW_BACKUP',					'DB保存/復元');
 
 // ITEMLIST
 try_define('_ITEMLIST_BLOG',							'Blogアイテムの編集: ');
-try_define('_ITEMLIST_YOUR',							'あなたのアイテム');
+try_define('_ITEMLIST_YOUR',                                                    'アイテム一覧');
 
 // Comments
 try_define('_COMMENTS',									'コメント');

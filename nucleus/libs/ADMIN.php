@@ -449,41 +449,36 @@ class ADMIN
         printf('<h2>%s %s</h2>', _ITEMLIST_BLOG, $this->bloglink($blog));
 
         // start index
-        if (postVar('start')) {
-            $start = intPostVar('start');
-        } else {
-            $start = 0;
-        }
+        $start = intRequestVar('start');
 
         if (0 == $start) {
             printf('<p><a href="index.php?action=createitem&amp;blogid=%s">%s</a></p>', $blogid, _ITEMLIST_ADDNEW);
         }
 
         // amount of items to show
-        if (postVar('amount')) {
-            $amount = intPostVar('amount');
-        } else {
+        $amount = intRequestVar('amount');
+        if ($amount < 1) {
             $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1) {
                 $amount = 10;
             }
         }
 
-        $search = postVar('search');    // search through items
+        $search = requestVar('search');    // search through items
 
         $query_view  = 'SELECT bshortname, cname, mname, ititle, ibody, inumber, idraft, itime, bnumber, catid';
         $ph['iblog'] = $blogid;
         $query       = parseQuery(' FROM [@prefix@]item, [@prefix@]blog, [@prefix@]member, [@prefix@]category'
             . ' WHERE iblog=bnumber and iauthor=mnumber and icat=catid and iblog=[@iblog@]', $ph);
 
-        $request_catid = isset($_POST['catid']) ? max(0, (int) $_POST['catid']) : 0;
+        $request_catid = isset($_REQUEST['catid']) ? max(0, (int) $_REQUEST['catid']) : 0;
         if ($request_catid > 0) {
             //  @todo NP_MultipleCategories
             $query .= ' and icat= ' . $request_catid;
         }
 
-        if (postVar('view_item_options')) {
-            $v = (string) postVar('view_item_options');
+        if (requestVar('view_item_options')) {
+            $v = (string) requestVar('view_item_options');
             $query .= $this->getQueryFilterForItemlist01((int) $blogid, $v);
         }
 
@@ -1259,35 +1254,30 @@ class ADMIN
         echo '<h2>' . _ITEMLIST_YOUR . '</h2>';
 
         // start index
-        if (postVar('start')) {
-            $start = intPostVar('start');
-        } else {
-            $start = 0;
-        }
+        $start = intRequestVar('start');
 
         // amount of items to show
-        if (postVar('amount')) {
-            $amount = intPostVar('amount');
-        } else {
+        $amount = intRequestVar('amount');
+        if ($amount < 1) {
             $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1) {
                 $amount = 10;
             }
         }
 
-        $search = postVar('search');    // search through items
+        $search = requestVar('search');    // search through items
 
         $query_view    = 'SELECT bshortname, cname, mname, ititle, ibody, idraft, inumber, itime';
         $ph['iauthor'] = $member->getID();
         $query         = parseQuery(' FROM [@prefix@]item, [@prefix@]blog, [@prefix@]member, [@prefix@]category'
             . ' WHERE iauthor=[@iauthor@] and iauthor=mnumber and iblog=bnumber and icat=catid', $ph);
 
-        if (postVar('view_item_options')) {
-            $v = (string) postVar('view_item_options');
+        if (requestVar('view_item_options')) {
+            $v = (string) requestVar('view_item_options');
             $query .= $this->getQueryFilterForItemlist01(0, $v);
         }
 
-        $request_catid = isset($_POST['catid']) ? max(0, (int) $_POST['catid']) : 0;
+        $request_catid = isset($_REQUEST['catid']) ? max(0, (int) $_REQUEST['catid']) : 0;
         if ($request_catid > 0) {
             $query .= ' and icat= ' . $request_catid;
         }
@@ -1337,16 +1327,11 @@ class ADMIN
         $this->pagehead();
 
         // start index
-        if (postVar('start')) {
-            $start = intPostVar('start');
-        } else {
-            $start = 0;
-        }
+        $start = intRequestVar('start');
 
         // amount of items to show
-        if (postVar('amount')) {
-            $amount = intPostVar('amount');
-        } else {
+        $amount = intRequestVar('amount');
+        if ($amount < 1) {
             $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1) {
                 $amount = 10;
@@ -1378,7 +1363,7 @@ class ADMIN
             hsc(shorten(strip_tags($item["body"]), 100, '...')) . '<br />'
         );
 
-        $search = postVar('search');
+        $search = requestVar('search');
 
         echo '<h2>', _COMMENTS, '</h2>';
 
@@ -1415,23 +1400,18 @@ class ADMIN
         global $member, $manager, $CONF;
 
         // start index
-        if (postVar('start')) {
-            $start = intPostVar('start');
-        } else {
-            $start = 0;
-        }
+        $start = intRequestVar('start');
 
         // amount of items to show
-        if (postVar('amount')) {
-            $amount = intPostVar('amount');
-        } else {
+        $amount = intRequestVar('amount');
+        if ($amount < 1) {
             $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1) {
                 $amount = 10;
             }
         }
 
-        $search = postVar('search');
+        $search = requestVar('search');
 
         $ph['cmember'] = $member->getID();
         $query         = parseQuery(' FROM [@prefix@]comment LEFT OUTER JOIN [@prefix@]member ON mnumber=cmember WHERE cmember=[@cmember@]', $ph);
@@ -1482,23 +1462,18 @@ class ADMIN
         $member->teamRights($blogid) or $member->isAdmin() or $this->disallow();
 
         // start index
-        if (postVar('start')) {
-            $start = intPostVar('start');
-        } else {
-            $start = 0;
-        }
+        $start = intRequestVar('start');
 
         // amount of items to show
-        if (postVar('amount')) {
-            $amount = intPostVar('amount');
-        } else {
+        $amount = intRequestVar('amount');
+        if ($amount < 1) {
             $amount = (int) $CONF['DefaultListSize'];
             if ($amount < 1) {
                 $amount = 10;
             }
         }
 
-        $search = postVar('search');        // search through comments
+        $search = requestVar('search');        // search through comments
 
         $this->pagehead();
 
