@@ -9,8 +9,8 @@
     --border: #e3e6ec;
     --shadow: 0 4px 12px rgba(15, 23, 42, 0.05);
     --radius: 10px;
-    --sidebar: #182033;
-    --sidebar-border: #202a3e;
+    --sidebar: #222d44;
+    --sidebar-border: #27314b;
     --sidebar-width: 260px;
     --warning: #b7791f;
     --success: #1f8a50;
@@ -71,7 +71,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-header {
-    background: #1c2536;
+    background: #243145;
     color: #f8fafc;
     padding: 14px 22px;
     display: flex;
