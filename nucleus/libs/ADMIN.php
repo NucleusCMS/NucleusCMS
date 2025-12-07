@@ -265,6 +265,11 @@ class ADMIN
         $amount = showlist_by_query($query, 'table', $template);
         echo '</div>';
 
+        // Super-Admins can create new blogs
+        if ($member->isAdmin()) {
+            echo sprintf('<p><a class="btn-add-item" href="index.php?action=createnewlog">%s</a></p>', _OVERVIEW_NEWLOG);
+        }
+
         if ( ! $isShowAll && $member->isAdmin()) {
             $total = quickQuery(parseQuery('SELECT COUNT(*) as result FROM [@prefix@]blog'));
             if ($total > $amount) {
@@ -7044,7 +7049,7 @@ EOL;
                 <?php
                 $adminrooturi = ADMIN::getAdminRootURI();
         if ($member->isLoggedIn()) {
-            echo _LOGGEDINAS . ' ' . $member->getDisplayName()
+            echo _LOGGEDINAS . ' ' . "<a href='{$adminrooturi}index.php?action=editmembersettings'>" . $member->getDisplayName() . "</a>"
                 . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a><br />";
         } else {
             printf(

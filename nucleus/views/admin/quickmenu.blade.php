@@ -25,7 +25,6 @@
             <li><a href="{{ ADMIN::getAdminRootURI() }}index.php?action=overview">{{ _QMENU_USER_HOME }}</a></li>
             <li><a href="index.php?action=browseownitems">{{ _QMENU_USER_ITEMS }}</a></li>
             <li><a href="index.php?action=browseowncomments">{{ _QMENU_USER_COMMENTS }}</a></li>
-            <li><a href="index.php?action=editmembersettings">{{ _QMENU_USER_SETTINGS }}</a></li>
         </ul>
     </section>
 

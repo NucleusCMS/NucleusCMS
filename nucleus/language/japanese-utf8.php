@@ -1573,6 +1573,7 @@ try_define('_ADMIN_ISTATE_PERIOD_END',     '終了');
 try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', '期限切れ');
 try_define('_ADMIN_ISTATE_PERIOD_INVALID', '無効な期限');
 try_define('_ADMIN_ISTATE_PERIOD_START',   '開始');
+try_define('_ADMIN_ISTATE_PUBLISHED',      '公開中');
 try_define('_ADMIN_ISTATE_RESERVATION',    '予約投稿');
 try_define('_ADMIN_ISTATE_STATE',          '状態');
 

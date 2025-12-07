@@ -110,7 +110,7 @@ h3 { font-size: 1.05rem; }
         radial-gradient(ellipse 80% 100% at 85% 50%, rgba(70, 90, 130, 0.25) 0%, transparent 50%),
         linear-gradient(to right, var(--sidebar) 40%, #2f3d5a 100%);
     color: #f8fafc;
-    padding: 14px 22px;
+    padding: 14px 22px 14px 0;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -547,6 +547,54 @@ button:disabled,
     gap: 0;
 }
 
+.list-actions--icons {
+    gap: 4px;
+}
+
+.list-actions--icons .list-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    padding: 6px;
+    border-radius: 4px;
+    color: #555;
+    transition: background-color 0.15s, color 0.15s;
+}
+
+.list-actions--icons .list-action:hover {
+    background-color: #e8f0fe;
+    color: #1a73e8;
+}
+
+.list-actions--icons .list-action--disabled {
+    color: #aaa;
+    cursor: default;
+}
+
+.list-actions--icons .list-action--delete {
+    color: #b35555;
+}
+
+.list-actions--icons .list-action--delete:hover {
+    background-color: #fef2f2;
+    color: #dc2626;
+}
+
+.list-actions--icons .list-action svg {
+    display: block;
+    flex-shrink: 0;
+}
+
+.list-action-count {
+    font-size: 12px;
+    margin-left: 2px;
+    font-weight: 500;
+}
+
+.list-actions--icons .list-action-break {
+    margin-left: auto;
+}
+
 .list-action {
     display: inline-block;
     padding: 0.5em;
@@ -579,6 +627,63 @@ button:disabled,
 .item-flag {
     white-space: nowrap;
     display: inline-block;
+}
+
+/* Item state styles */
+.item-states {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.item-state {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 4px;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.item-state--published {
+    background-color: #e8f5e9;
+    color: #2e7d32;
+}
+
+.item-state--draft {
+    background-color: #fff3e0;
+    color: #e65100;
+}
+
+.item-state--private {
+    background-color: #fce4ec;
+    color: #c2185b;
+}
+
+.item-state--scheduled {
+    background-color: #e3f2fd;
+    color: #1565c0;
+}
+
+.item-state--period {
+    background-color: #f3e5f5;
+    color: #7b1fa2;
+    font-size: 11px;
+}
+
+.item-state--expired {
+    background-color: #ffebee;
+    color: #c62828;
+}
+
+.item-state--error {
+    background-color: #ffcdd2;
+    color: #b71c1c;
+}
+
+.item-info-label {
+    color: #666;
+    font-size: 11px;
 }
 
 .comment-body-column {

@@ -1563,6 +1563,7 @@ try_define('_ADMIN_ISTATE_PERIOD_END',     'End');
 try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', 'Expired');
 try_define('_ADMIN_ISTATE_PERIOD_INVALID', 'Invalid');
 try_define('_ADMIN_ISTATE_PERIOD_START',   'Start');
+try_define('_ADMIN_ISTATE_PUBLISHED',      'Published');
 try_define('_ADMIN_ISTATE_RESERVATION',    'Reservation');
 try_define('_ADMIN_ISTATE_STATE',          'State');
 
