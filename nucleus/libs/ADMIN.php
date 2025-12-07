@@ -451,14 +451,17 @@ class ADMIN
         $blog = &$manager->getBlog($blogid);
 
         echo '<p><a href="index.php?action=overview">(', _BACK_YR_HOME, ')</a></p>';
-        printf('<h2>%s %s</h2>', _ITEMLIST_BLOG, $this->bloglink($blog));
+        echo '<div class="list-heading">';
+        printf('<h2>%sのアイテム一覧</h2>', $this->bloglink($blog));
+        $addUrl = sprintf(
+            'index.php?action=createitem&amp;blogid=%s',
+            $blogid
+        );
+        echo '<a class="btn-add-item" href="', $addUrl, '">', _ITEMLIST_ADDNEW, '</a>';
+        echo '</div>';
 
         // start index
         $start = intRequestVar('start');
-
-        if (0 == $start) {
-            printf('<p><a href="index.php?action=createitem&amp;blogid=%s">%s</a></p>', $blogid, _ITEMLIST_ADDNEW);
-        }
 
         // amount of items to show
         $amount = intRequestVar('amount');
