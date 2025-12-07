@@ -283,8 +283,6 @@ class NAVLIST extends ENCAPSULATE
                         <div style="display: inline-block">
                             <form method="get" action="index.php"
                                   style="display: inline-block">
-                                <input type="submit" value="<?php
-                        echo _LISTS_CHANGE; ?>"/>
                                 <input type="hidden" name="blogid" value="<?php
                         echo $blogid; ?>"/>
                                 <input type="hidden" name="itemid" value="<?php
