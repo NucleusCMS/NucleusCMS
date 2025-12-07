@@ -1,6 +1,8 @@
 <h2>{%text(_ADD_ADDTO)%} '{%bloglink%}'</h2>
 
 {%init%}
+<link rel="stylesheet" type="text/css" href="styles/tabs.css" />
+<script type="text/javascript" src="javascript/tabs.js"></script>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
 <script type="text/javascript" src="javascript/edit_date.js"></script>
 <script type="text/javascript" src="javascript/edit_state.js"></script>
@@ -35,14 +37,15 @@
                 />
         </div>
 
-<div id="tabs">
-	<ul>
-		<li><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
+<div class="item-add-tabs">
+	<ul class="tab-nav">
+		<li class="active"><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
 		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
 		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
 	</ul>
 
-	<div id="tab_body" class="contentblock">
+	<div class="tab-content">
+	<div id="tab_body" class="tab-pane active">
 
 	<table>
 	<tr class="body">
@@ -61,7 +64,7 @@
 		</table>
 	</div>
 
-	<div id="tab_more" class="contentblock">
+	<div id="tab_more" class="tab-pane">
 		<table>
 
 	<tr class="more">
@@ -83,7 +86,7 @@
 		</table>
 	</div>
 
-	<div id="tab_options" class="contentblock">
+	<div id="tab_options" class="tab-pane">
 		<table>
 	<tr>
 		<th colspan="2">{%text(_ADD_CREATENEW)%}</th>
@@ -189,24 +192,11 @@
 		</tr>
 		</table>
 	</div>
-
-</div>
+	</div><!-- .tab-content -->
+</div><!-- .item-add-tabs -->
 </form>
 
-<script>
-// workaround for ui-tabs bug : if a <base> tag is present in the <head> section, local tabs load the content of the base URL, instead of the content of the referred div.
-// https://bugs.jqueryui.com/ticket/8637  https://bugs.jqueryui.com/ticket/4941
-if ($('base')[0] && $('base')[0].href) {
-	$('#tabs ul li a').each(function () {
-		var url = document.location.href.split('#');
-		if ($(this).attr('href').match(/^#/)) {
-			$(this).attr('href', url[0] + $(this).attr('href'));
-		}
-	});
-}
-// end workaround ui-tabs bug
-	$( "#tabs" ).tabs();
-</script>
+
 
 {%ifautosave()%}
 <script type="text/javascript">
