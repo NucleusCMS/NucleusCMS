@@ -37,7 +37,9 @@ class BATCH extends ENCAPSULATE
 
     public function showFoot()
     {
-        $this->showOperationList();
+        if (method_exists($this, 'showOperationList')) {
+            $this->showOperationList();
+        }
         ?>
         </form>
         <?php
