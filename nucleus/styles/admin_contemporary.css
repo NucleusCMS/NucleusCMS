@@ -202,6 +202,7 @@ h3 { font-size: 1.05rem; }
     display: flex;
     align-items: center;
     justify-content: space-between;
+    line-height: 1;
     border-radius: 7px;
     color: #e2e8f0;
     font-weight: 500;
