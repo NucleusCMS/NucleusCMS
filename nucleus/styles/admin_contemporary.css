@@ -106,7 +106,9 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-header {
-    background: #243145;
+    background: 
+        radial-gradient(ellipse 80% 100% at 85% 50%, rgba(70, 90, 130, 0.25) 0%, transparent 50%),
+        linear-gradient(to right, var(--sidebar) 40%, #2f3d5a 100%);
     color: #f8fafc;
     padding: 14px 22px;
     display: flex;
@@ -175,7 +177,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .app-sidebar {
-    background: var(--sidebar);
+    background: linear-gradient(to bottom, var(--sidebar) 50%, #516387 100%);
     border-right: 1px solid var(--sidebar-border);
     border-radius: 0;
     box-shadow: none;
@@ -196,9 +198,6 @@ h3 { font-size: 1.05rem; }
 }
 
 .quickmenu-banner {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.06);
-    border-radius: 9px;
     padding: 12px 14px;
     margin-bottom: 12px;
     color: #e5ecf5;
@@ -218,7 +217,7 @@ h3 { font-size: 1.05rem; }
 .section-heading {
     font-size: 0.92rem;
     font-weight: 600;
-    color: #f8fafc;
+    color: #c5cfdd;
     margin-bottom: 6px;
     letter-spacing: 0.02em;
     text-transform: uppercase;
