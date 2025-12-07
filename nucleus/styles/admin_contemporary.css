@@ -320,15 +320,24 @@ th, td {
 .navigation {
     display: block;
     width: 100%;
-    background: var(--panel);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 8px 10px;
-    margin: 0 0 14px;
+    background: none;
+    border: none;
+    border-radius: 0;
+    padding: 0;
+    margin: 0 0 12px;
 }
 
 .navigation .nav-controls {
     display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 8px;
+}
+
+.navigation .nav-left {
+    display: inline-flex;
+    flex: 1 1 auto;
     flex-wrap: wrap;
     align-items: center;
     gap: 8px;
@@ -348,6 +357,7 @@ th, td {
 .navigation .nav-actions {
     display: inline-flex;
     gap: 6px;
+    margin-left: auto;
 }
 
 .navigation input[type="submit"],

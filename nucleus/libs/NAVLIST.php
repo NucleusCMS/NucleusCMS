@@ -122,62 +122,64 @@ class NAVLIST extends ENCAPSULATE
 
         ?>
         <form method="get" action="index.php" class="navigation">
+            <input type="hidden" name="blogid" value="<?php echo $blogid; ?>"/>
+            <input type="hidden" name="itemid" value="<?php echo $itemid; ?>"/>
+            <input type="hidden" name="action" value="<?php echo $action; ?>"/>
+            <input type="hidden" name="start" value="0"/>
             <div class="nav-controls">
-                <input type="hidden" name="blogid" value="<?php echo $blogid; ?>"/>
-                <input type="hidden" name="itemid" value="<?php echo $itemid; ?>"/>
-                <input type="hidden" name="action" value="<?php echo $action; ?>"/>
-                <input type="hidden" name="start" value="0"/>
-                <?php
-                if ($enable_cat_select) {
-                    $query_extra = ADMIN::getQueryFilterForItemlist01(
-                        $blogid,
-                        $view_item_options
-                    );
-                    echo $this->getFormSelectCategoryBlog(
-                        $action,
-                        $blogid,
-                        $catid,
-                        'catid',
-                        $query_extra
-                    );
-                    echo $this->getFormSelectViewItemOptions(
-                        $action,
-                        $blogid,
-                        $catid,
-                        $view_item_options
-                    );
-                } else {
-                    echo '<input type="hidden" name="view_item_options" value="'
-                        . $view_item_options . '" />';
-                }
+                <div class="nav-left">
+                    <div class="nav-group">
+                        <input type="text" name="search" value="<?php echo $search; ?>" size="16" placeholder="キーワード"/>
+                        <input type="submit" value="<?php echo _LISTS_SEARCH ?>"/>
+                    </div>
 
-                $perpageOptions = [10, 20, 50, 100];
-                if (!in_array($amount, $perpageOptions, true)) {
-                    $perpageOptions[] = $amount;
-                }
-                sort($perpageOptions, SORT_NUMERIC);
-                ?>
-                <label class="nav-group">
-                    <span class="sr-only"><?php echo _LISTS_PERPAGE; ?></span>
-                    <select name="amount" onchange="this.form.submit()">
-                        <?php
-                        foreach ($perpageOptions as $perpageOption) {
-                            $selected = ($perpageOption === $amount) ? ' selected' : '';
-                            printf(
-                                '<option value="%d"%s>%d</option>',
-                                $perpageOption,
-                                $selected,
-                                $perpageOption
-                            );
-                        }
-                        ?>
-                    </select>
-                    <span class="nav-label"><?php echo _LISTS_PERPAGE; ?></span>
-                </label>
+                    <?php
+                    if ($enable_cat_select) {
+                        $query_extra = ADMIN::getQueryFilterForItemlist01(
+                            $blogid,
+                            $view_item_options
+                        );
+                        echo $this->getFormSelectCategoryBlog(
+                            $action,
+                            $blogid,
+                            $catid,
+                            'catid',
+                            $query_extra
+                        );
+                        echo $this->getFormSelectViewItemOptions(
+                            $action,
+                            $blogid,
+                            $catid,
+                            $view_item_options
+                        );
+                    } else {
+                        echo '<input type="hidden" name="view_item_options" value="'
+                            . $view_item_options . '" />';
+                    }
 
-                <div class="nav-group">
-                    <input type="text" name="search" value="<?php echo $search; ?>" size="16" placeholder="キーワード"/>
-                    <input type="submit" value="<?php echo _LISTS_SEARCH ?>"/>
+                    $perpageOptions = [10, 20, 50, 100];
+                    if (!in_array($amount, $perpageOptions, true)) {
+                        $perpageOptions[] = $amount;
+                    }
+                    sort($perpageOptions, SORT_NUMERIC);
+                    ?>
+                    <label class="nav-group">
+                        <span class="sr-only"><?php echo _LISTS_PERPAGE; ?></span>
+                        <select name="amount" onchange="this.form.submit()">
+                            <?php
+                            foreach ($perpageOptions as $perpageOption) {
+                                $selected = ($perpageOption === $amount) ? ' selected' : '';
+                                printf(
+                                    '<option value="%d"%s>%d</option>',
+                                    $perpageOption,
+                                    $selected,
+                                    $perpageOption
+                                );
+                            }
+                            ?>
+                        </select>
+                        <span class="nav-label"><?php echo _LISTS_PERPAGE; ?></span>
+                    </label>
                 </div>
 
                 <div class="nav-actions">
