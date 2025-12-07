@@ -21,11 +21,10 @@
 	<input type="hidden" name="draftid" value="0" />
 	{%ticket%}
         <div class="form-header">
-                <div class="form-header-title"><h3>{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
                 <div class="form-header-actions">
 {%ifitemproperty(draft)%}
                         <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_BTN_SAVE_DRAFT)%}"
-                                onclick="return checkSubmit();" />
+                                class="btn-secondary" onclick="return checkSubmit();" />
                         <input tabindex="{%tabindex(1,1)%}" type="submit" name="actiontype" value="{%text(_EDIT_BTN_PUBLISH)%}"
                                 onclick="document.getElementById('state_public').checked=true; return checkSubmit();" formaction="index.php?quickpublish=1" />
 {%endif%}
@@ -33,9 +32,20 @@
                         <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_BTN_UPDATE)%}"
                                 onclick="return checkSubmit();" />
                         <input tabindex="{%tabindex(1,1)%}" type="submit" name="actiontype" value="{%text(_EDIT_BTN_UNPUBLISH)%}"
-                                onclick="document.getElementById('state_draft').checked=true; return checkSubmit();" />
+                                class="btn-secondary" onclick="document.getElementById('state_draft').checked=true; return checkSubmit();" />
 {%endif%}
                 </div>
+        </div>
+
+        <div class="title-input-wrapper">
+                <input 
+                        {%jsinput(title)%}
+                        tabindex="10"
+                        maxlength="160"
+                        value="{%contents(title)%}"
+                        placeholder="{%text(_ADD_TITLE)%}"
+                        class="input-title"
+                />
         </div>
 
 <div id="tabs">
@@ -46,27 +56,6 @@
 	</ul>
 
 	<div id="tab_body" class="contentblock">
-<table><tr>
-	<th colspan="2">{%text(_EDIT_ITEM)%}</th>
-</tr>
-<tr>
-	<td>{%text(_EDIT_ORIG_AUTHOR)%}</td>
-	<td>{%contents(author)%}</td>
-</tr><tr>
-	<td>{%text(_ADD_TITLE)%}</td>
-	<td><input 
-			{%jsinput(title)%}
-			tabindex="10"
-			maxlength="160"
-			value="{%contents(title)%}"
-			/>
-	</td>
-</tr>
-<tr>
-	<td>{%text(_ADD_CATEGORY)%}</td>
-	<td>{%categories(40)%}</td>
-</tr>
-</table>
 
 <table>
 <tr class="body">
@@ -107,10 +96,22 @@
 	<div id="tab_options" class="contentblock">
 		<table>
 <tr>
+	<th colspan="2">{%text(_EDIT_ITEM)%}</th>
+</tr>
+<tr>
+	<td>{%text(_EDIT_ORIG_AUTHOR)%}</td>
+	<td>{%contents(author)%}</td>
+</tr>
+<tr>
+	<td>{%text(_ADD_CATEGORY)%}</td>
+	<td>{%categories(40)%}</td>
+</tr>
+
+<tr>
     <th colspan="2">{%text(_EDIT_SECTION_PUBLIC_STATE)%}</th>
 </tr>
 <tr>
-    <td>{%text(_ADD_PUBLIC)%}</td>
+    <td>{%text(_ADD_STATUS)%}</td>
     <td>{%settabindex(41)%}
         <input name="act_state" type="radio" id="state_public"   value="public"   {%checkedonval(1,public)%} tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_public">{%text(_ADD_PUBLIC)%}</label>
         <span class="is-hidden">
@@ -131,12 +132,8 @@
 {%endif%}
     </td>
 </tr>
-
 <tr>
-    <th colspan="2">{%text(_EDIT_SECTION_TIMESTAMP)%}</th>
-</tr>
-<tr>
-	<td>{%text(_EDIT_SUBMIT)%}</td>
+	<td>{%text(_ADD_DATETIME)%}</td>
 	<td>
 {%copytabindex(,1)%}
 {%ifitemproperty(draft)%}{%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
@@ -147,7 +144,6 @@
 		<br />
 		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="{%tabindex(0,0)%}" onclick="checked_act_draft(false, this);" /><label for="act_future">{%text(_EDIT_PUBLISH_SCHEDULED)%}</label> {%helplink(future)%}
 		<div class="indent">
-			{%text(_ADD_PLACE_ON)%}
 			{%date_time_picker(currenttime)%}
 			{%ifblogsetting(ballowpast,0)%}
 				<br />
@@ -161,7 +157,6 @@
 	<input name="actiontype" value="changedate" type="hidden" id="act_actiontype" />
 	{%ifblogsetting(ballowpast)%}
 			<div class="indent">
-				{%text(_ADD_PLACE_ON)%}
 				{%date_time_picker(itemtime)%}
 			</div>
 	{%endif%}

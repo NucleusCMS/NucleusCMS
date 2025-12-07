@@ -93,6 +93,7 @@ try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  'Draft+Unpublic')
 try_define('_ADD_PUBLIC',             'Public');
 try_define('_ADD_UNPUBLIC',           'Unpublic');
 try_define('_ADD_DRAFT',              'Draft');
+try_define('_ADD_STATUS',             'Status');
 try_define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
 try_define('_ADD_PUBLIC_TERM_DESC',   'Check if enable the expiration period');
 try_define('_ADD_PUBLIC_TERM_START',  'The date time of beginning');
@@ -1054,6 +1055,7 @@ try_define('_ADD_DRAFTNFUTURE',			'Draft &amp; Future Items');
 try_define('_ADD_ADDITEM',				'Add Item');
 try_define('_ADD_ADDNOW',				'Add Now');
 try_define('_ADD_PLACE_ON',				'Place on');
+try_define('_ADD_DATETIME',				'Date/Time');
 try_define('_ADD_ADDDRAFT',				'Add to drafts');
 try_define('_ADD_NOPASTDATES',			'(dates and times in the past are NOT valid, the current time will be used in that case)');
 try_define('_ADD_BOLD_TT',				'Bold');

@@ -70,7 +70,7 @@ h3 { font-size: 1.05rem; }
 .form-header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-end;
     gap: 12px;
     padding: 4px 0;
 }
@@ -83,6 +83,7 @@ h3 { font-size: 1.05rem; }
     display: inline-flex;
     align-items: center;
     gap: 8px;
+    flex-shrink: 0;
 }
 
 .form-inline-tools {
@@ -462,6 +463,26 @@ button:disabled,
     box-shadow: none;
 }
 
+/* Secondary button style - less prominent than primary */
+input[type="submit"].btn-secondary,
+input[type="button"].btn-secondary,
+button.btn-secondary,
+.btn-secondary {
+    background: transparent;
+    color: var(--accent);
+    border: 2px solid var(--accent);
+    box-shadow: none;
+}
+
+input[type="submit"].btn-secondary:hover,
+input[type="button"].btn-secondary:hover,
+button.btn-secondary:hover,
+.btn-secondary:hover {
+    background: var(--accent);
+    color: #fff;
+    box-shadow: 0 4px 10px rgba(36, 54, 76, 0.12);
+}
+
 .required-mark {
     color: var(--danger);
     font-size: 0.9em;
@@ -827,6 +848,34 @@ label {
 .btn-danger:hover {
     background-color: #c82333;
     border-color: #bd2130;
+}
+
+/* Title input for item add/edit */
+.title-input-wrapper {
+    margin: 16px 0 20px;
+}
+
+.input-title {
+    width: 100%;
+    font-size: 1.25rem;
+    font-weight: 600;
+    padding: 10px 14px;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--panel);
+    color: var(--text);
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.input-title:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(49, 72, 100, 0.15);
+}
+
+.input-title::placeholder {
+    color: var(--muted);
+    font-weight: 400;
 }
 
 @media (max-width: 1024px) {

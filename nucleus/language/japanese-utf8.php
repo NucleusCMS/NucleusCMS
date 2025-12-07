@@ -125,6 +125,7 @@ try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  '下書き+非公
 try_define('_ADD_PUBLIC',             '公開');
 try_define('_ADD_UNPUBLIC',           '非公開');
 try_define('_ADD_DRAFT',              '下書き');
+try_define('_ADD_STATUS',             'ステータス');
 try_define('_ADD_PUBLIC_TERM',        '公開期限の設定');
 try_define('_ADD_PUBLIC_TERM_DESC',   '期限を有効にするにはチェックをつけてください。どちらもチェックがない場合は、期限なしとなります');
 try_define('_ADD_PUBLIC_TERM_START',  '公開開始日時');
@@ -1101,6 +1102,7 @@ try_define('_ADD_DRAFTNFUTURE',					'ドラフトと未来の記事');
 try_define('_ADD_ADDITEM',						'アイテムを追加');
 try_define('_ADD_ADDNOW',						'今すぐ追加');
 try_define('_ADD_PLACE_ON',						'日時:');
+try_define('_ADD_DATETIME',						'日時');
 try_define('_ADD_ADDDRAFT',						'ドラフトに追加');
 try_define('_ADD_NOPASTDATES',					'(過去の日時は指定できません。指定された場合は現在の日時が使用されます)');
 try_define('_ADD_BOLD_TT',						'太字');
