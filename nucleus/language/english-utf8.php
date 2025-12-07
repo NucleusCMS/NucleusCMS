@@ -278,8 +278,7 @@ try_define('_CREATE_ACCOUNT_EMAIL2',					'(must be valid, because an activation 
 try_define('_CREATE_ACCOUNT_URL',						'URL:');
 try_define('_CREATE_ACCOUNT_SUBMIT',					'Create Account');
 
-try_define('_BMLET_BACKTODRAFTS',		'Move back to drafts');
-try_define('_BMLET_CANCEL',				'Cancel');
+
 
 try_define('_LIST_ITEM_NOCONTENT',						'No Comment');
 try_define('_LIST_ITEM_COMMENTS',						'%d Comments');
@@ -718,7 +717,7 @@ try_define('_ERROR_UPLOADFAILED',		'Upload failed');
 // posting to the past/edit timestamps
 try_define('_EBLOG_ALLOWPASTPOSTING',	'Allow posting to the past');
 try_define('_ADD_CHANGEDATE',			'Update timestamp');
-try_define('_BMLET_CHANGEDATE',			'Update timestamp');
+
 
 // skin import/export
 try_define('_OVERVIEW_SKINIMPORT',		'Skin import/export...');
@@ -873,18 +872,11 @@ try_define('_MMAIL_MAIL',				'Message:');
 
 // START introduced after v1.1 START
 
-// bookmarklet buttons
-try_define('_BMLET_ADD',				'Add Item');
-try_define('_BMLET_EDIT',				'Edit Item');
-try_define('_BMLET_DELETE',				'Delete Item');
-try_define('_BMLET_BODY',				'Body');
-try_define('_BMLET_MORE',				'Extended');
-try_define('_BMLET_OPTIONS',			'Options');
-try_define('_BMLET_PREVIEW',			'Preview');
+// edit tab labels
+try_define('_EDIT_TAB_BODY',			'Body');
+try_define('_EDIT_TAB_MORE',			'Extended');
 
-// used in bookmarklet
-try_define('_ITEM_UPDATED',				'Item was updated');
-try_define('_ITEM_DELETED',				'Item was deleted');
+
 
 // plugins
 try_define('_CONFIRMTXT_PLUGIN',		'Are you sure you want to delete the plugin named');

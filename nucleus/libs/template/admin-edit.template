@@ -52,8 +52,8 @@
 
 <div class="item-edit-tabs">
 	<ul class="tab-nav">
-		<li class="active"><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
-		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
+		<li class="active"><a href="#tab_body" tabindex="300">{%text(_EDIT_TAB_BODY)%}</a></li>
+		<li><a href="#tab_more" tabindex="310">{%text(_EDIT_TAB_MORE)%}</a></li>
 		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
 	</ul>
 

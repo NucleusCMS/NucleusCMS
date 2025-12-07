@@ -14,7 +14,7 @@
  * @copyright Copyright (C) The Nucleus Group
 
  * The formfactory class can be used to insert add/edit item forms into
- * admin area, bookmarklet, skins or any other places where such a form
+ * admin area, skins or any other places where such a form
  * might be needed
  */
 
@@ -26,7 +26,7 @@ class PAGEFACTORY extends BaseActions
     // allowed actions (for parser)
     public $actions;
 
-    // allowed types of forms (bookmarklet/admin)
+    // allowed types of forms (admin)
     public $allowedTypes;
     public $type;        // one of the types in $allowedTypes
 
@@ -91,14 +91,14 @@ class PAGEFACTORY extends BaseActions
 
         // TODO: maybe add 'skin' later on?
         // TODO: maybe add other pages from admin area
-        $this->allowedTypes = ['bookmarklet', 'admin'];
+        $this->allowedTypes = ['admin'];
     }
 
     /**
      * creates a "add item" form for a given type of page
      *
      * @param   type
-     *        'admin' or 'bookmarklet'
+     *        'admin'
      */
     public function createAddForm($type, $contents = [])
     {
@@ -122,7 +122,7 @@ class PAGEFACTORY extends BaseActions
      * creates a "add item" form for a given type of page
      *
      * @param   type
-     *            'admin' or 'bookmarklet'
+     *            'admin'
      * @param   contents
      *            An associative array
      *            'author' => author
@@ -171,7 +171,7 @@ class PAGEFACTORY extends BaseActions
         $contents = file_get_contents($filename);
 
         if ((false !== $contents)
-            && preg_match("#^(admin|bookmarklet)$#", $this->type)
+            && preg_match("#^admin$#", $this->type)
             && preg_match(
                 "#^(add|edit)$#",
                 $this->method,
@@ -515,20 +515,7 @@ class PAGEFACTORY extends BaseActions
         $this->blog->insertJavaScriptInfo($authorid);
     }
 
-    // on bookmarklets only: insert extra html header information (by plugins)
-    public function parse_extrahead()
-    {
-        global $manager;
 
-        $extrahead = '';
-
-        $param = [
-            'extrahead' => &$extrahead,
-        ];
-        $manager->notify('BookmarkletExtraHead', $param);
-
-        echo $extrahead;
-    }
 
     // inserts some localized text
     public function parse_text($which)

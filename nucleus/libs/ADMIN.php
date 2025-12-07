@@ -124,7 +124,6 @@ class ADMIN
             'banlistnewfromitem',
             'blogcommentlist',
             'blogsettings',
-            'bookmarklet',
             'browseowncomments',
             'browseownitems',
             'categorydelete',
@@ -7167,130 +7166,6 @@ EOL;
         echo \parseBlade('admin.quickmenu', $params), "\n";
     }
 
-    /**
-     * @todo document this
-     */
-    public function action_regfile()
-    {
-        global $member, $CONF, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $this->disallow();
-
-        if ( ! function_exists('mb_convert_encoding')) {
-            $this->disallow();
-        }
-
-        if ( ! BLOG::existsID($blogid)) {
-            $this->disallow();
-        }
-
-        $utf8BlogName = getBlogNameFromID($blogid);
-        $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
-        $utf8BlogName = str_replace(["\r", "\n"], '', $utf8BlogName); // remove cr lf
-        $format       = _WINREGFILE_TEXT;
-        $reg_key_name = sprintf($format, $utf8BlogName);
-
-        $blog            = $manager->getBlog($blogid);
-        $output_filename = sprintf("nucleus-%s.reg", str_replace('\\', '', $blog->getShortName()));
-
-        $lines   = [];
-        $lines[] = "Windows Registry Editor Version 5.00";
-        $lines[] = "";
-        $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
-        $url     = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=" . (int) $blogid;
-        $lines[] = sprintf('@="%s"', $url);
-        $lines[] = '"contexts"=hex:31';      // https://msdn.microsoft.com/ja-jp/library/aa753589(v=vs.85).aspx
-
-        // UTF16-little endian
-        $data = "\xFF\xFE" . mb_convert_encoding(implode("\r\n", $lines), 'UTF-16LE', 'UTF-8');
-
-        header('Content-Type: application/octetstream');
-        header(sprintf('Content-Disposition: filename="%s"', $output_filename));
-        header(sprintf('Content-Length: %d', strlen($data)));
-        header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: no-cache'); // HTTP/1.0
-        header('Expires: Sun, 01 Jan 2017 00:00:00 GMT');   // Date in the past
-
-        echo $data; // output data
-        exit;
-    }
-
-    /**
-     * @todo document this
-     */
-    public function action_bookmarklet()
-    {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $this->disallow();
-
-        $blog = &$manager->getBlog($blogid);
-        $bm   = getBookmarklet($blogid);
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
-
-        ?>
-
-                <h2><?php echo _BOOKMARKLET_TITLE ?></h2>
-
-                <p>
-        <?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
-                </p>
-
-                <h3><?php echo _BOOKMARKLET_BOOKARKLET ?></h3>
-                <p>
-        <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
-                    <br />
-                    <br />
-        <?php echo '<a href="' . hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
-                </p>
-
-                <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
-                <p>
-        <?php
-                                    $url = 'index.php?action=regfile&blogid=' . (int) $blogid;
-        $url                             = $manager->addTicketToUrl($url);
-        ?><?php
-if ('Japanese_Japan.932' == setlocale(LC_CTYPE, 0)) {
-    $tmpurl = hsc($url, ENT_QUOTES, "SJIS");
-} else {
-    $tmpurl = hsc($url);
-}
-        echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . $tmpurl . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2;
-        ?>
-                </p>
-
-                <p>
-                    <?php echo _BOOKMARKLET_RIGHTTEXT3 ?>
-                </p>
-
-                <h3><?php echo _BOOKMARKLET_UNINSTALLTT ?></h3>
-                <p>
-        <?php echo _BOOKMARKLET_DELETEBAR ?>
-                </p>
-
-                <p>
-        <?php echo _BOOKMARKLET_DELETERIGHTT ?>
-                </p>
-
-                <ol>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT1 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT2 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT3 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT4 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT5 ?></li>
-                </ol>
-
-            <?php
-
-        $this->pagefoot();
-    }
 
     /**
      * @todo document this

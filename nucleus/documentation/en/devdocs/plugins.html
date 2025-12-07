@@ -866,7 +866,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 	</tr>
 	<tr>
 		<td>PreAddItemForm</td>
-		<td>(v2.0b) Immediately before an add item form (bookmarklet or admin area) is created.</td>
+		<td>(v2.0b) Immediately before an add item form (admin area) is created.</td>
 		<td><dl>
 			<dt class="ref">contents</dt>
 			<dd>reference to an associative array, in which the values 'title', 'body' and 'more' can be filled with initial values for the formfields. To avoid multiple plugins to alter these values, set the 'hasBeenSet' value to 1 when you're done (and check for it before starting)</dd>
@@ -876,7 +876,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 	</tr>
 	<tr>
 		<td>AddItemFormExtras</td>
-		<td>(v2.0b) Somewhere inside the add item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
+		<td>(v2.0b) Somewhere inside the add item page. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.</td>
 		<td><dl>
 			<dt class="ref obj">blog</dt>
 			<dd>reference to a <code>BLOG</code> object</dd>
@@ -885,7 +885,7 @@ Below is an example of how a plugin subscribes to the <code>PreAddComment</code>
 	<tr>
 		<td>EditItemFormExtras</td>
 		<td>
-			(v2.0b) Somewhere inside the edit item page or bookmarklet. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
+			(v2.0b) Somewhere inside the edit item page. Here, plugins can add their custom fields without having to alter one of the <code>.template</code> files.
 			<br /><br />
 			Don't add too much data, and please generate <strong>valid XHTML</strong>, looking like this:
 <pre class="example"><code>&lt;h3&gt;plugin name&lt;/h3&gt;
@@ -1396,7 +1396,7 @@ your stuff
 			<dt class="ref">charset</dt>
 			<dd>Character set</dd>
 			<dt class="ro">pageType</dt>
-			<dd>String indicating which type of page we're displaying: <code>skin</code> (skinparts), <code>media</code> (media library), <code>admin-<em>action</em></code> (admin area), <code>bookmarklet-<em>action</em></code> (bookmarklet)</dd>
+			<dd>String indicating which type of page we're displaying: <code>skin</code> (skinparts), <code>media</code> (media library), <code>admin-<em>action</em></code> (admin area)</dd>
 		</dl></td>
 	</tr>
 	<tr>
@@ -1409,7 +1409,7 @@ your stuff
 	</tr>
 	<tr>
 		<td>BookmarkletExtraHead</td>
-		<td>(v2.5) Somewhere inside the <code>head</code> section of the bookmarklet XHTML code.</td>
+
 		<td><dl>
 			<dt class="ref">extrahead</dt>
 			<dd>Information to be included in the <code>head</code> section of the XHTML code. Add your extras here.</dd>

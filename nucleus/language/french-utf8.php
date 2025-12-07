@@ -234,8 +234,7 @@ try_define('_CREATE_ACCOUNT_EMAIL2',					'(doit être vlide, parce qu\'un lien d
 try_define('_CREATE_ACCOUNT_URL',						'URL:');
 try_define('_CREATE_ACCOUNT_SUBMIT',					'Créer le compte');
 
-try_define('_BMLET_BACKTODRAFTS',		'Déplacer vers les brouillons');
-try_define('_BMLET_CANCEL',				'Annuler');
+
 
 try_define('_LIST_ITEM_NOCONTENT',						'Aucun commentaire');
 try_define('_LIST_ITEM_COMMENTS',						'%d commentaires');
@@ -256,7 +255,6 @@ try_define('_LOGIN_NAME',				'Nom :');
 try_define('_LOGIN_PASSWORD',			'Mot de passe :');
 
 // changed from _BOOKMARLET_BMARKLFOLLOW
-try_define('_BOOKMARKLET_BMARKFOLLOW',					' (Fonctionne avec presque tous les navigateurs)');
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -269,11 +267,6 @@ try_define('_ADMIN_SIMPLE_WAY',							"<strong>Simple :</strong> Créer une copi
 try_define('_ADMIN_ADVANCED_WAY',						"<strong>Avancé :</strong> Insérer le contenu du blog dans vos skins actuels en utilisant des variables comme <code>&lt;%otherblog()&gt;</code>. De cette façon, vous pouvez placer plusieurs blogs sur la même page.");
 try_define('_ADMIN_HOW_TO_CREATE',						'Créer un blog');
 
-
-try_define('_BOOKMARKLET_NEW_CATEGORY',					'L\'élément a été ajouté et une nouvelle catégorie a été crée.');
-try_define('_BOOKMARKLET_NEW_CATEGORY_EDIT',			'Cliquez ici pour modifier le nom et la description de la catégorie.');
-try_define('_BOOKMARKLET_NEW_WINDOW',					'S\'ouvre dans une nouvelle fenêtre.');
-try_define('_BOOKMARKLET_SEND_PING',					'L\'élément a ajouté avec succès. Maintenant, ping de weblogs.com. Veuillez patienter... (peut prendre longtemps.'); // NOTE: This string is no longer in used
 
 // END merge UTF-8 and EUC-JP
 
@@ -325,34 +318,6 @@ try_define('_QMENU_MANAGE_SYSTEM',						'Informations système');
 
 // REG file
 try_define('_WINREGFILE_TEXT',							'Poster dans &Nucleus (%s)');
-
-// Bookmarklet
-try_define('_BOOKMARKLET_TITLE',						'Bookmarklet<!-- et menu clic droit -->');
-try_define('_BOOKMARKLET_DESC1',						'Les bookmarklets permettent d\'ajouter des billets à votre blog en un seul clic. ');
-try_define('_BOOKMARKLET_DESC2',						'Après avoir installé ces bookmarklets, vous pourrez cliquer sur le bouton \'ajouter au blog\' de la barre d\'outils de votre navigateur ');
-try_define('_BOOKMARKLET_DESC3',						'et une fenêtre d\'ajout de billet apparaitra, ');
-try_define('_BOOKMARKLET_DESC4',						'contenant les titre et lien de la page que vous visitiez, ');
-try_define('_BOOKMARKLET_DESC5',						'ainsi que le texte sélectionné.');
-try_define('_BOOKMARKLET_BOOKARKLET',					'bookmarklet');
-try_define('_BOOKMARKLET_ANCHOR',						'Ajouter à %s');
-try_define('_BOOKMARKLET_BMARKTEXT',					'Vous pouvez glisser le lien suivant vers vos favoris ou la barre d\'outils de votre navigateur : ');
-try_define('_BOOKMARKLET_BMARKTEST',					'(si vous voulez d\'abord tester le bookmarklet, cliquez sur le lien)');
-try_define('_BOOKMARKLET_RIGHTCLICK',					'Accès au menu clic droit (IE &amp; Windows)');
-try_define('_BOOKMARKLET_RIGHTLABEL',					'élément du menu clic droit');
-try_define('_BOOKMARKLET_RIGHTTEXT1',					'Ou vous pouvez installer le ');
-try_define('_BOOKMARKLET_RIGHTTEXT2',					' (choisissez \'ouvrir un fichier\' et ajoutez le au registre)');
-try_define('_BOOKMARKLET_RIGHTTEXT3',					'Vous devrez redémarrer Internet Explorer pour que l\'option s\'affiche dans le menu contextuel.');
-try_define('_BOOKMARKLET_UNINSTALLTT',					'Désinstallation');
-try_define('_BOOKMARKLET_DELETEBAR',					'Pour le bookmarklet, vous pouvez simplement le supprimer.');
-try_define('_BOOKMARKLET_DELETERIGHTT',					'Pour l\'élément du menu clic droit, suivez la procédure ci-dessous :');
-try_define('_BOOKMARKLET_DELETERIGHT1',					'Sélectionnez "Lancer..." dans le menu Démarrer');
-try_define('_BOOKMARKLET_DELETERIGHT2',					'Tapez : "regedit"');
-try_define('_BOOKMARKLET_DELETERIGHT3',					'Cliquez sur "OK"');
-try_define('_BOOKMARKLET_DELETERIGHT4',					'Recherchez "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" dans l\'arbre');
-try_define('_BOOKMARKLET_DELETERIGHT5',					'Supprimez l\'élément "add to \'Votre blog\'"');
-
-try_define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'Quelque chose n\'a pas fonctionné');
-try_define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'Impossible de créer une nouvelle catégorie');
 
 // BAN
 try_define('_BAN_EXAMPLE_TITLE',						'Un exemple');
@@ -705,7 +670,7 @@ try_define('_ERROR_UPLOADFAILED',		'Echec du téléchargement');
 // posting to the past/edit timestamps
 try_define('_EBLOG_ALLOWPASTPOSTING',	'Permettre d\'antidater');
 try_define('_ADD_CHANGEDATE',		'Mise à  jour  de la date');
-try_define('_BMLET_CHANGEDATE',		'Mise à  jour de la date');
+
 
 // skin import/export
 try_define('_OVERVIEW_SKINIMPORT',		'Habillage import/export...');
@@ -858,18 +823,11 @@ try_define('_MMAIL_MAIL',			'Message:');
 
 // START introduced after v1.1 START
 
-// bookmarklet buttons
-try_define('_BMLET_ADD',			'Ajouter un  billet');
-try_define('_BMLET_EDIT',			'Modifier un billet');
-try_define('_BMLET_DELETE',			'Effacer un billet');
-try_define('_BMLET_BODY',			'Corps');
-try_define('_BMLET_MORE',			'Développement');
-try_define('_BMLET_OPTIONS',		'Options');
-try_define('_BMLET_PREVIEW',		'Prévisualisation');
+// edit tab labels
+try_define('_EDIT_TAB_BODY',			'Corps');
+try_define('_EDIT_TAB_MORE',			'Développement');
 
-// used in bookmarklet
-try_define('_ITEM_UPDATED',			'Billet mis à jour');
-try_define('_ITEM_DELETED',			'Billet effacé');
+
 
 // plugins
 try_define('_CONFIRMTXT_PLUGIN',		'Etes-vous sur de vouloir supprimer ce module?');

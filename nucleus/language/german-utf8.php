@@ -116,9 +116,6 @@ define('_CREATE_ACCOUNT_URL',						'URL:');
 define('_CREATE_ACCOUNT_SUBMIT',					'Konto erstellen');
 
 // START additional added for the german translation of Nucleus CMS 3.40
-define('_BMLET_BACKTODRAFTS',						'Zur&uuml;ck zu den Entw&uuml;rfen verschieben');
-define('_BMLET_CANCEL',								'Abbrechen');
-
 define('_LIST_ITEM_NOCONTENT',						'Kein Kommentar');
 define('_LIST_ITEM_COMMENTS',						'%d Kommentar');
 
@@ -145,10 +142,7 @@ define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the blog c
 define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
 
 
-define('_BOOKMARKLET_NEW_CATEGORY',					'Item was added, and a new category was created. ');
-define('_BOOKMARKLET_NEW_CATEGORY_EDIT',			'Click here to edit the name and description of the category.');
-define('_BOOKMARKLET_NEW_WINDOW',					'Opens in new window');
-define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)');
+
 
 // END merge UTF-8 and EUC-JP
 
@@ -337,7 +331,7 @@ define('_ERROR_UPLOADFAILED',		'Upload nicht erfolgreich');
 // posting to the past/edit timestamps
 define('_EBLOG_ALLOWPASTPOSTING',	'Posten zu vergangenem Datum erlauben');
 define('_ADD_CHANGEDATE',			'Zeitstempel &auml;ndern');
-define('_BMLET_CHANGEDATE',			'Zeitstempel &auml;ndern');
+
 
 // skin import/export
 define('_OVERVIEW_SKINIMPORT',		'Designvorlage importieren/exportieren...');
@@ -488,20 +482,12 @@ define('_MMAIL_MAIL',				'Nachricht:');
 // END introduced after v1.5 END
 
 
-// START introduced after v1.1 START
+// edit tab labels
+define('_EDIT_TAB_BODY',				'Einf&uuml;hrung');
+define('_EDIT_TAB_MORE',				'Erweitert');
 
-// bookmarklet buttons
-define('_BMLET_ADD',				'Hinzuf&uuml;gen');
-define('_BMLET_EDIT',				'Bearbeiten');
-define('_BMLET_DELETE',				'L&ouml;schen');
-define('_BMLET_BODY',				'Einf&uuml;hrung');
-define('_BMLET_MORE',				'Erweitert');
-define('_BMLET_OPTIONS',			'Optionen');
-define('_BMLET_PREVIEW',			'Vorschau');
 
-// used in bookmarklet
-define('_ITEM_UPDATED',				'Bookmarklet wurde aktualisiert');
-define('_ITEM_DELETED',				'Bookmarklet wurde gel&ouml;scht');
+
 
 // plugins
 define('_CONFIRMTXT_PLUGIN',		'Plugin wirklich l&ouml;schen');

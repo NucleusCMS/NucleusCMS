@@ -310,8 +310,7 @@ try_define('_CREATE_ACCOUNT_EMAIL2',			'(アクティベーション用のリン
 try_define('_CREATE_ACCOUNT_URL',				'(もしあれば)自分のサイトのURL：');
 try_define('_CREATE_ACCOUNT_SUBMIT',			'アカウントの作成');
 
-try_define('_BMLET_BACKTODRAFTS',				'ドラフトに戻す');
-try_define('_BMLET_CANCEL',						'キャンセル');
+
 
 try_define('_LIST_ITEM_NOCONTENT',						'コメントはありません');
 try_define('_LIST_ITEM_COMMENTS',						'コメント(%d)件');
@@ -753,7 +752,7 @@ try_define('_ERROR_UPLOADFAILED',				'アップロードに失敗しました');
 // posting to the past/edit timestamps
 try_define('_EBLOG_ALLOWPASTPOSTING',			'過去の日時での投稿を許可する');
 try_define('_ADD_CHANGEDATE',					'タイムスタンプを更新');
-try_define('_BMLET_CHANGEDATE',					'タイムスタンプを更新');
+
 
 // skin import/export
 try_define('_OVERVIEW_SKINIMPORT',				'読込/書出');
@@ -909,18 +908,13 @@ try_define('_MMAIL_MAIL',						'メッセージ:');
 
 // START introduced after v1.1 START
 
-// bookmarklet buttons
-try_define('_BMLET_ADD',						'アイテムの追加');
-try_define('_BMLET_EDIT',						'保存');
-try_define('_BMLET_DELETE',						'アイテムの削除');
-try_define('_BMLET_BODY',						'本文');
-try_define('_BMLET_MORE',						'続き');
-try_define('_BMLET_OPTIONS',					'オプション');
-try_define('_BMLET_PREVIEW',					'プレビュー');
 
-// used in bookmarklet
-try_define('_ITEM_UPDATED',						'アイテムが更新されました');
-try_define('_ITEM_DELETED',						'アイテムが削除されました');
+// edit tab labels
+try_define('_EDIT_TAB_BODY',			'本文');
+try_define('_EDIT_TAB_MORE',			'続き');
+
+
+
 
 // plugins
 try_define('_CONFIRMTXT_PLUGIN',				'このプラグインを削除しますか？');
