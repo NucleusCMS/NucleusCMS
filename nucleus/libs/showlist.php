@@ -869,12 +869,8 @@ function listplug_table_bloglist($template, $type)
 
             if (1 == $current->tadmin) {
                 $elements[] = [sprintf("index.php?action=blogsettings&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_SETTINGS, _BLOGLIST_SETTINGS]];
-                $elements[] = [sprintf("index.php?action=banlist&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_BANS, _BLOGLIST_BANS]];
             }
 
-            if ($template['superadmin']) {
-                $elements[] = [sprintf("index.php?action=deleteblog&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_DELETE, _BLOGLIST_DELETE]];
-            }
             $Groups[] = $elements;
 
             foreach ($Groups as $elements) {

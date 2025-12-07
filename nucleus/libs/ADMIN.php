@@ -3461,6 +3461,27 @@ class ADMIN
 
         $param = ['blog' => &$blog];
         $manager->notify('BlogSettingsFormExtras', $param);
+
+        // アクセス制限セクション
+        echo '<h3>' . _BAN_TITLE . " '" . $this->bloglink($blog) . "'</h3>";
+
+        $query               = sprintf("SELECT * FROM %s WHERE blogid=%s ORDER BY iprange", sql_table('ban'), $blogid);
+        $template['content'] = 'banlist';
+        $amount              = showlist_by_query($query, 'table', $template);
+
+        if (0 == $amount) {
+            echo '<p>' . _BAN_NONE . '</p>';
+        }
+
+        echo '<p><a href="index.php?action=banlistnew&amp;blogid=' . $blogid . '">' . _BAN_NEW_TEXT . '</a></p>';
+
+        // ブログ削除セクション（スーパー管理者のみ）
+        if ($member->isAdmin()) {
+            echo '<h3>' . _BLOGLIST_DELETE_THIS_BLOG . '</h3>';
+            echo '<p style="color: #c00;">' . _BLOGLIST_DELETE_THIS_BLOG_WARNING . '</p>';
+            echo '<p><a href="index.php?action=deleteblog&amp;blogid=' . $blogid . '" style="color: #c00; font-weight: bold;">' . _BLOGLIST_DELETE_THIS_BLOG_LINK . '</a></p>';
+        }
+
         echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
         echo '<form action="index.php" method="GET">';
         echo '<input type="hidden" name="action" value="bookmarklet" />';

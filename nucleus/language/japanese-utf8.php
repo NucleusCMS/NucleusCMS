@@ -1500,6 +1500,9 @@ try_define('_BLOGLIST_BANS',					'アクセス制限');
 try_define('_BLOGLIST_TT_BANS',					'アクセス制限の確認/追加/削除');
 try_define('_BLOGLIST_DELETE',					'全て削除');
 try_define('_BLOGLIST_TT_DELETE',				'このBlogを削除');
+try_define('_BLOGLIST_DELETE_THIS_BLOG',		'このブログを削除');
+try_define('_BLOGLIST_DELETE_THIS_BLOG_WARNING','警告: ブログを削除すると、すべてのアイテム、コメント、カテゴリーが完全に削除されます。この操作は取り消せません。');
+try_define('_BLOGLIST_DELETE_THIS_BLOG_LINK',	'このブログを削除する');
 
 // OVERVIEW screen
 try_define('_OVERVIEW_YRBLOGS',					'あなたのBlog');
