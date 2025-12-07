@@ -11,7 +11,6 @@
     <link rel="stylesheet" href="{{ $baseUrl }}styles/jquery-ui/jquery-ui.theme.min.css">
     <link rel="stylesheet" href="{{ $baseUrl }}styles/jquery-ui/jquery-ui.structure.min.css">
     @if (_LOCALE == 'ja_JP')
-        <link rel="stylesheet" href="{{ $baseUrl }}styles/jquery-ui/ui.datepicker-ja.css">
         <script src="{{ $baseUrl }}javascript/jquery/i18n/jquery.ui.datepicker-ja.js"></script>
     @endif
     <script src="{{ $baseUrl }}javascript/jquery/jquery-ui.min.js"></script>
