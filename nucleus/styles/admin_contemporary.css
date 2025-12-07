@@ -814,6 +814,21 @@ label {
 
 .clear { clear: both; }
 
+/* Delete button style */
+.btn-danger {
+    background-color: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
+
 @media (max-width: 1024px) {
     .app-shell {
         padding-left: 0;

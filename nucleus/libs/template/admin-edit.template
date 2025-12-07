@@ -43,7 +43,6 @@
 		<li><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
 		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
 		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
-		<li><a href="#tab_operations" tabindex="330">{%text(_ADMIN_EDIT_OPERATIONS)%}</a></li>
 	</ul>
 
 	<div id="tab_body" class="contentblock">
@@ -205,36 +204,18 @@
 		{%pluginextras%}
 	</td>	
 </tr>
-			{%itemoptions%}	
+			{%itemoptions%}
+<tr>
+    <th colspan="2">{%text(_ADMIN_EDIT_SECTION_DELETE)%}</th>
+</tr>
+<tr>
+    <td class="col-narrow">{%text(_ADMIN_TEXT_DELETE)%}</td>
+    <td>
+        <input id="deleteButton" class="btn-danger" type="button" value="{%text(_ADMIN_TEXT_DELETE)%}" tabindex="200" onclick=" if (window.confirm('{%text(_ADMIN_COMFIRM_GO_DELETE_BTN)%}')) { document.deleteform.submit(); } " />
+    </td>
+</tr>
 		</table>
 	</div>
-
-<div id="tab_operations" class="contentblock">
-		<table summary="item body" class="bookmarklet">
-	<tr>
-		<td>{%text(_SUBMIT)%}</td>
-		<td>
-{%ifitemproperty(draft)%}
-			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_BTN_SAVE_DRAFT)%}" 
-				onclick="return checkSubmit();" />
-			<input tabindex="{%tabindex(1,1)%}" type="submit" name="actiontype" value="{%text(_EDIT_BTN_PUBLISH)%}"
-				onclick="document.getElementById('state_public').checked=true; return checkSubmit();" />
-{%endif%}
-{%ifitemproperty(draft,0)%}
-			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_BTN_UPDATE)%}" 
-				onclick="return checkSubmit();" />
-			<input tabindex="{%tabindex(1,1)%}" type="submit" name="actiontype" value="{%text(_EDIT_BTN_UNPUBLISH)%}"
-				onclick="document.getElementById('state_draft').checked=true; return checkSubmit();" />
-{%endif%}
-		</td>
-	</tr>
-			<tr>
-                                <td class="col-narrow">{%text(_ADMIN_TEXT_DELETE)%}</td>
-				<td>
-					<input id="deleteButton" type="button" value="{%text(_ADMIN_TEXT_DELETE)%}" tabindex="200" onclick=" if (window.confirm('{%text(_ADMIN_COMFIRM_GO_DELETE_BTN)%}')) { document.deleteform.submit(); } " />
-				</td>
-			</tr>
-</table>
 
         <div id="tab_preview" class="contentblock is-hidden">
                 <table>

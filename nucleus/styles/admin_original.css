@@ -560,3 +560,18 @@ table.navigation, table.navigation td, table.navigation th {
 .comment-body-text {
     display: inline-block;
 }
+
+/* Delete button style */
+.btn-danger {
+    background-color: #dc3545;
+    border: 1px solid #dc3545;
+    color: #fff;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.btn-danger:hover {
+    background-color: #c82333;
+    border-color: #bd2130;
+}
