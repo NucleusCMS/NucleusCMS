@@ -459,7 +459,7 @@ function listplug_table_itemlist($template, $type)
                  . '" onclick="return batchToggleSelect(this);" />'
                  . '</th>';
             echo "<th>" . _LIST_ITEM_INFO . "</th><th>" . _LIST_ITEM_CONTENT
-                 . "</th><th style=\"white-space:nowrap\" colspan='1'>"
+                 . "</th><th class=\"list-actions-header\" colspan='1'>"
                  . _LISTS_ACTIONS . "</th>";
             break;
         case 'BODY':
@@ -480,19 +480,24 @@ function listplug_table_itemlist($template, $type)
             }
 
             $action        = requestVar('action');
-            $style         = ('pluginlist' !== $action) ? 'style="white-space:nowrap"'
-                : '';
             $title         = hsc(strip_tags($current->ititle));
             $id            = listplug_nextBatchId();
             $checkboxClass = 'class="batch-checkbox' . ($cssclass ? " {$cssclass}" : '') . '"';
             $cssclass      = $cssclass ? " class=\"{$cssclass}\"" : '';
+
+            $infoClasses = $cssclass ? [trim($cssclass, ' class=""')] : [];
+            if ('pluginlist' !== $action) {
+                $infoClasses[] = 'item-info';
+            }
+            $infoClassAttr = $infoClasses ? ' class="' . implode(' ', $infoClasses) . '"' : '';
+            $cellClassAttr = $cssclass;
 
             echo "<td {$checkboxClass}>";
             echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
                  '" aria-label="', $title, '" />';
             echo "</td>";
 
-            echo "<td{$cssclass} {$style}>";
+            echo "<td{$infoClassAttr}>";
             if ('itemlist' !== $action) {
                 echo _LIST_ITEM_BLOG . ' ' . hsc($current->bshortname)
                      . '<br />';
@@ -554,10 +559,9 @@ function listplug_table_itemlist($template, $type)
                     }
 
                     if ( ! empty($flags)) {
-                        $parts_flag .= '<div style="border-color: #b7ffcf; border-style: double; padding: 4px; white-space: normal;">';
+                        $parts_flag .= '<div class="item-flags">';
                         $parts_flag .= _ADMIN_ISTATE_STATE . ": ";
-                        $span = '<span style="white-space: nowrap; display: inline-block">';
-                        $parts_flag .= $span . implode("</span> ".$span, $flags) . "</span>";
+                        $parts_flag .= '<span class="item-flag">' . implode('</span> <span class="item-flag">', $flags) . '</span>';
                         $parts_flag .= "</div>";
                     }
                 }
@@ -570,7 +574,7 @@ function listplug_table_itemlist($template, $type)
             echo "</td>";
 
             // Title and Body
-            echo "<td{$cssclass}>";
+            echo "<td{$cellClassAttr}>";
 
             $editUrl = sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber);
 
@@ -583,13 +587,8 @@ function listplug_table_itemlist($template, $type)
             $COMMENTS = new COMMENTS($current->inumber);
             echo "{$current->ibody}</td>";
 
-            $style0 = 'float:left; display: inline-block; padding: 0.5em;';
-            $style1 = "white-space:nowrap; {$style0}";
-            $style2 = "word-break: break-all; {$style0}";
-
             // [Action]
-            echo "<td{$cssclass}>";
-            // echo "<td  style=\"white-space:nowrap\" {$cssclass}>";
+            echo "<td{$cellClassAttr}>";
 
             $elements   = [];
             $elements[] = [sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber), _LISTS_EDIT];
@@ -618,23 +617,26 @@ function listplug_table_itemlist($template, $type)
             }
 
             // Output
+            echo '<div class="list-actions">';
             foreach ($elements as $element) {
-                $style = $style1;
+                $actionClass = 'list-action';
+                if (empty($element[0]) || str_contains($element[0], 'itemcommentlist')) {
+                    $actionClass .= ' list-action-break';
+                }
+
+                if (_LISTS_VIEW === $element[1]) {
+                    echo '<div class="list-actions__spacer" aria-hidden="true"></div>';
+                }
+
                 if (empty($element[0])) {
-                    $style = $style2;
-                    printf('<div style="%s">%s</div>', $style, escapeHTML($element[1]));
+                    printf('<div class="%s">%s</div>', $actionClass, escapeHTML($element[1]));
                     continue;
                 }
-                if (str_contains($element[0], 'itemcommentlist')) {
-                    $style = $style2;
-                }
-                if (_LISTS_VIEW === $element[1]) {
-                    echo "<br style='clear: both;' />";
-                    printf('<div style="%s"><a href="%s" target="_blank">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
-                } else {
-                    printf('<div style="%s"><a href="%s">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
-                }
+
+                $target = (_LISTS_VIEW === $element[1]) ? ' target="_blank"' : '';
+                printf('<div class="%s"><a href="%s"%s>%s</a></div>', $actionClass, hsc($element[0]), $target, escapeHTML($element[1]));
             }
+            echo '</div>';
 
             echo "</td>";
             break;
@@ -657,7 +659,7 @@ function listplug_table_commentlist($template, $type)
     switch ($type) {
         case 'HEAD':
             printf(
-                '<th class="batch-checkbox"><input type="checkbox" aria-label="%s" onclick="return batchToggleSelect(this);" /></th><th>%s</th><th style="min-width: 30%%">%s</th><th>%s</th>',
+                '<th class="batch-checkbox"><input type="checkbox" aria-label="%s" onclick="return batchToggleSelect(this);" /></th><th>%s</th><th class="comment-body-column">%s</th><th class="list-actions-header">%s</th>',
                 _BATCH_SELECTALL,
                 _LISTS_INFO,
                 _LIST_COMMENT,
@@ -715,7 +717,8 @@ function listplug_table_commentlist($template, $type)
             $current->cbody = strip_tags($current->cbody);
             $current->cbody = hsc(shorten($current->cbody, 300, '...'));
 
-            echo '<td><div style="display: inline-block;white-space: nowrap;">';
+            echo '<td class="comment-body-column">';
+            echo '<div class="comment-body-meta">';
             if ($show_action_link) {
                 echo '<label for="batch', $id, '">';
                 printf(' ID[%d]<br />', $current->cnumber);
@@ -723,57 +726,83 @@ function listplug_table_commentlist($template, $type)
             } else {
                 printf('ID[%d]<br />', $current->cnumber);
             }
-            echo '</div><div>';
+            echo '</div>';
+            echo '<div class="comment-body-text">';
             echo $current->cbody;
             echo '</div></td>';
 
-            echo '<td><div>';
-            $style0 = 'float:left; display: inline-block; padding: 0.5em;';
-            $style1 = "white-space:nowrap; {$style0}";
-            $style2 = "word-break: break-all; {$style0}";
+            echo '<td><div class="list-actions">';
+            $actions = [];
+
             if ($show_action_link) {
-                echo "<div style=\"{$style1}\"><a href='index.php?action=commentedit&amp;commentid={$current->cnumber}'>"
-                     . _LISTS_EDIT . "</a></div>";
-                echo "<div style=\"{$style1}\"><a href='index.php?action=commentdelete&amp;commentid={$current->cnumber}'>"
-                     . _LISTS_DELETE . "</a></div>";
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=commentedit&amp;commentid=%d', $current->cnumber),
+                    'label' => _LISTS_EDIT,
+                ];
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=commentdelete&amp;commentid=%d', $current->cnumber),
+                    'label' => _LISTS_DELETE,
+                ];
             }
             if ($template['canAddBan']) {
-                echo "<div style=\"{$style1}\"><a href='index.php?action=banlistnewfromitem&amp;itemid={$current->citem}&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"
-                    . _LIST_COMMENT_BANIP
-                    . "</a></div>";
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=banlistnewfromitem&amp;itemid=%d&amp;ip=%s', $current->citem, hsc($current->cip)),
+                    'label' => _LIST_COMMENT_BANIP,
+                    'title' => hsc($current->chost),
+                ];
             }
 
             // add link
-            if ('blogcommentlist' == $action) {
-                if ($show_action_link_itemcommentlist) {
-                    global $manager;
-                    if ( ! isset($amountComments[$current->citem])) {
-                        $COMMENTS = new COMMENTS($current->citem);
-                        $amountComments[$current->citem]
-                                  = $COMMENTS->amountComments();
-                    }
-                    echo "<br style='clear: both;' /><hr style='border-style: dashed;'>";
-                    echo "<div style=\"{$style2}\">";
-                    printf(
-                        '<a href="index.php?action=itemcommentlist&itemid=%d">%s</a> (%d) ',
-                        $current->citem,
-                        escapeHTML(sprintf(_LIST_BACK_TO, _LIST_COMMENT_LIST_FOR_ITEM)),
-                        $amountComments[$current->citem]
-                    );
-                    echo '</div>';
-                    echo "<br style='clear: both;' />";
-                    echo "<div style=\"{$style2}\">";
-                    $item = & $manager->getItem($current->citem, 1, 1);
-                    printf(
-                        ' %s: %s<br />',
-                        escapeHTML(_LISTS_TITLE),
-                        escapeHTML($item['title'])
-                    );
-                    echo '</div>';
-                    unset($item);
+            if ('blogcommentlist' == $action && $show_action_link_itemcommentlist) {
+                global $manager;
+                if ( ! isset($amountComments[$current->citem])) {
+                    $COMMENTS = new COMMENTS($current->citem);
+                    $amountComments[$current->citem]
+                              = $COMMENTS->amountComments();
                 }
+                $actions[] = ['divider' => true];
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=itemcommentlist&itemid=%d', $current->citem),
+                    'label' => sprintf(_LIST_BACK_TO, _LIST_COMMENT_LIST_FOR_ITEM) . sprintf(' (%d)', $amountComments[$current->citem]),
+                    'break' => true,
+                ];
+
+                $item = & $manager->getItem($current->citem, 1, 1);
+                $actions[] = [
+                    'url'   => '',
+                    'label' => sprintf(' %s: %s', _LISTS_TITLE, $item['title']),
+                    'break' => true,
+                ];
+                unset($item);
             }
-            // end link
+
+            foreach ($actions as $actionElement) {
+                if ( ! empty($actionElement['divider'])) {
+                    echo '<div class="list-actions__divider" aria-hidden="true"></div>';
+                    continue;
+                }
+
+                $actionClass = 'list-action';
+                if ( ! empty($actionElement['break'])) {
+                    $actionClass .= ' list-action-break';
+                }
+
+                $label = escapeHTML($actionElement['label']);
+
+                if (empty($actionElement['url'])) {
+                    printf('<div class="%s">%s</div>', $actionClass, $label);
+                    continue;
+                }
+
+                $titleAttr = empty($actionElement['title']) ? '' : ' title="' . $actionElement['title'] . '"';
+                printf(
+                    '<div class="%s"><a href="%s"%s>%s</a></div>',
+                    $actionClass,
+                    hsc($actionElement['url']),
+                    $titleAttr,
+                    $label
+                );
+            }
             echo '</div></td>';
 
             break;

@@ -55,18 +55,8 @@ function batchInvertSelection() {
 function batchToggleSelect(toggle) {
         if (!toggle) return false;
 
-        var mode = toggle.getAttribute('data-mode') || 'all';
-        if (mode === 'all') {
-                batchSelectAll(1);
-                toggle.checked = true;
-                toggle.indeterminate = false;
-                toggle.setAttribute('data-mode', 'invert');
-        } else {
-                batchInvertSelection();
-                toggle.checked = false;
-                toggle.indeterminate = true;
-                toggle.setAttribute('data-mode', 'all');
-        }
+        batchSelectAll(toggle.checked ? 1 : 0);
+        toggle.indeterminate = false;
 
         return false;
 }

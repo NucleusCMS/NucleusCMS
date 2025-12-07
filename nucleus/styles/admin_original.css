@@ -364,3 +364,69 @@ table.navigation, table.navigation td, table.navigation th {
     padding: 4px;
     background-color: #ddd;
 }
+.item-info {
+    white-space: nowrap;
+}
+
+.itemlist .draft {
+    background-color: #f5f7ff;
+}
+
+.list-actions-header {
+    white-space: nowrap;
+}
+
+.list-actions {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0;
+}
+
+.list-action {
+    display: inline-block;
+    padding: 0.5em;
+    white-space: nowrap;
+}
+
+.list-action-break {
+    word-break: break-all;
+    white-space: normal;
+}
+
+.list-actions__spacer,
+.list-actions__divider {
+    flex-basis: 100%;
+}
+
+.list-actions__divider {
+    border-top: 1px dashed #ccc;
+    margin: 4px 0;
+    height: 0;
+}
+
+.item-flags {
+    border: 1px double #b7ffcf;
+    padding: 4px;
+    white-space: normal;
+    margin-top: 4px;
+}
+
+.item-flag {
+    white-space: nowrap;
+    display: inline-block;
+}
+
+.comment-body-column {
+    min-width: 30%;
+}
+
+.comment-body-meta {
+    display: inline-block;
+    white-space: nowrap;
+    margin-right: 6px;
+}
+
+.comment-body-text {
+    display: inline-block;
+}
