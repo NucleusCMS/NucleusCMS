@@ -318,14 +318,14 @@ th, td {
 }
 
 table.navigation td {
-    padding: 6px;
+    padding: 4px;
 }
 
 table.navigation input[type="submit"],
 table.navigation input[type="button"],
 table.navigation .button {
     min-width: unset;
-    padding: 8px 10px;
+    padding: 6px 8px;
 }
 
 th {

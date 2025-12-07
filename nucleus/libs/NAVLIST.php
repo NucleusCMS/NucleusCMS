@@ -200,7 +200,7 @@ class NAVLIST extends ENCAPSULATE
                             <input type="hidden" name="view_item_options"
                                    value="<?php
                                     echo $view_item_options; ?>"/>
-                            <input type="submit" value="&gt; <?php
+                            <input type="submit" value="<?php
                             echo _LISTS_SEARCH ?>"/>
                         </div>
                     </form>
@@ -211,7 +211,7 @@ class NAVLIST extends ENCAPSULATE
                             <input type="submit" <?php
                             if ($start <= 0) {
                                 echo 'disabled';
-                            } ?> value="&lt;&lt; <?php
+                            } ?> value="&lt; <?php
                             echo _LISTS_PREV; ?>"/>
                             <input type="hidden" name="blogid" value="<?php
                             echo $blogid; ?>"/>
@@ -240,7 +240,7 @@ class NAVLIST extends ENCAPSULATE
                     <form method="get" action="index.php">
                         <div>
                             <input type="submit" value="<?php
-                            echo _LISTS_NEXT ?> &gt; &gt;"/>
+                            echo _LISTS_NEXT ?> &gt;"/>
                             <input type="hidden" name="search" value="<?php
                             echo $search; ?>"/>
                             <input type="hidden" name="blogid" value="<?php
