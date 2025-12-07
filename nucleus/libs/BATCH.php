@@ -34,13 +34,14 @@ class BATCH extends ENCAPSULATE
         ?>
         <form method="post" action="index.php">
         <?php
+        if (method_exists($this, 'showOperationList')) {
+            $this->showOperationList();
+        }
+        <?php
     }
 
     public function showFoot()
     {
-        if (method_exists($this, 'showOperationList')) {
-            $this->showOperationList();
-        }
         ?>
         </form>
         <?php

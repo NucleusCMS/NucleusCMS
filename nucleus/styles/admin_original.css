@@ -372,6 +372,31 @@ table.navigation, table.navigation td, table.navigation th {
     background-color: #f5f7ff;
 }
 
+.list-heading {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.list-heading h2 {
+    margin: 0;
+}
+
+.btn-add-item {
+    margin-left: auto;
+    display: inline-block;
+    padding: 8px 12px;
+    background: #1e3a5f;
+    color: #fff;
+    border-radius: 6px;
+    text-decoration: none;
+}
+
+.btn-add-item:hover {
+    background: #162c49;
+}
+
 .list-actions-header {
     white-space: nowrap;
 }

@@ -293,7 +293,7 @@ class ADMIN
 
             $items = [];
             foreach ($query->executeQuery($param)->fetchAllAssociative() as $row) {
-                $items[] = array_merge($row);
+                $items[] = array_values($row);
             }
 
             //            $query = parseQuery(
@@ -1251,7 +1251,17 @@ class ADMIN
         $this->pagehead();
 
         echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
+        echo '<div class="list-heading">';
         echo '<h2>' . _ITEMLIST_YOUR . '</h2>';
+        if ($member->getTeamBlogs()) {
+            $firstBlogId = (int) reset($member->getTeamBlogs());
+            $addUrl      = sprintf(
+                'index.php?action=createitem&amp;blogid=%d',
+                $firstBlogId
+            );
+            echo '<a class="btn-add-item" href="', $addUrl, '">', _ITEMLIST_ADDNEW, '</a>';
+        }
+        echo '</div>';
 
         // start index
         $start = intRequestVar('start');
@@ -1264,29 +1274,7 @@ class ADMIN
             }
         }
 
-        if (!empty($teamBlogs)) {
-            $selectedBlogId = intRequestVar('blogid');
-            if (!array_key_exists($selectedBlogId, $teamBlogs)) {
-                reset($teamBlogs);
-                $selectedBlogId = (int) key($teamBlogs);
-            }
-
-            echo '<form method="get" action="index.php" class="navigation createitem-selector">';
-            echo '<input type="hidden" name="action" value="createitem" />';
-            echo '<div class="nav-controls">';
-            echo '<label class="nav-group" for="createitem-blogid">';
-            echo '<span class="nav-label">' . _ITEMLIST_ADD_TARGET . '</span>';
-            echo '<select name="blogid" id="createitem-blogid">';
-            foreach ($teamBlogs as $blogid => $blog) {
-                $selected = ($blogid == $selectedBlogId) ? ' selected' : '';
-                echo '<option value="', $blogid, '"', $selected, '>', hsc($blog->getName()), '</option>';
-            }
-            echo '</select>';
-            echo '</label>';
-            echo '<button type="submit">' . _ITEMLIST_ADDNEW . '</button>';
-            echo '</div>';
-            echo '</form>';
-        } else {
+        if (empty($teamBlogs)) {
             echo '<p class="note">' . _ITEMLIST_ADD_NONE . '</p>';
         }
 

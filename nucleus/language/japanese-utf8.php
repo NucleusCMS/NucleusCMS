@@ -456,7 +456,7 @@ try_define('_ERRORS_INSTALLPHP',						'｢install.php｣ファイルを削除し
 try_define('_ERRORS_UPGRADESDIR',						'｢_upgrades｣ディレクトリを削除してください');
 try_define('_ERRORS_CONVERTDIR',						'｢nucleus/convert｣ディレクトリを削除してください');
 try_define('_ERRORS_CONFIGPHP',							'｢config.php｣ファイルを読み取り専用(｢chmod 444｣等)にしてください');
-try_define('_ERRORS_INSTALLCONFIG',                                            'インストール用認証ファイル（install/install-config.php）を使用後に削除してください');
+try_define('_ERRORS_INSTALLCONFIG',                                            'インストール用認証ファイル（install/install-config.php）を削除してください');
 try_define('_ERRORS_STARTUPERROR1',						'<p>インストール(アップグレード)用ファイルがサーバ上に残っています。</p><ul><li>');
 try_define('_ERRORS_STARTUPERROR2',						'</li></ul><p>これらのファイルを削除すると、警告は表示されなくなります。</p>');
 try_define('_ERRORS_STARTUPERROR3',						'セキュリティ リスクの警告');

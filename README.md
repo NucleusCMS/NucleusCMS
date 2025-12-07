@@ -36,7 +36,7 @@ Nucleus is a Content Management System (CMS)
    - Enter the username/password you set in step 4
    - Follow the on-screen instructions
 
-> Security note: The admin area now only warns about the installer auth file `install/install-config.php` being left on the server. Remove it (or rotate the credentials) after completing installation or upgrade.
+> Security note: The admin area now only warns about the installer auth file `install/install-config.php` being left on the server. Remove it (or rotate the credentials) when installation or upgrade is complete.
 
 **No command-line or Composer knowledge required!**
 
