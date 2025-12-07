@@ -33,7 +33,7 @@ class ADMIN
     public array $extrahead            = [];
     public array $system_info_messages = []; // [0] warn notice error , [1] msg
     public string $upgrade_message     = '';
-    public const default_admin_css     = 'contemporary';
+
     private ?string $layoutHeadHtml    = null;
     private bool $layoutBuffering      = false;
     private bool $layoutBufferFlushed  = false;
@@ -6426,29 +6426,6 @@ selector();
                                            />
                                 </td>
                             </tr>
-                            <tr>
-                                <td><?php echo _SETTINGS_ADMINCSS ?>
-                                </td>
-                                <td>
-                                    <select name="AdminCSS" tabindex="10080">
-                                <?php        // show a dropdown list of all available admin css files
-                                global $DIR_NUCLEUS;
-        $dirhandle = opendir($DIR_NUCLEUS . "styles/");
-        while ($filename = readdir($dirhandle)) {
-            if (preg_match('#^admin_(.*)\.css$#', $filename, $matches)) {
-                $name = $matches[1];
-                echo "<option value=\"{$name}\"";
-                if ($name == $CONF['AdminCSS']) {
-                    echo " selected=\"selected\"";
-                }
-                echo ">{$name}</option>";
-            }
-        }
-        closedir($dirhandle);
-        ?>
-                                    </select>
-                                </td>
-                            </tr>
 
         <?php
         // Tidy
@@ -6749,7 +6726,6 @@ EOL;
         $this->updateConfig('CookiePrefix', trim(postVar('CookiePrefix')));
         $this->updateConfig('DebugVars', postVar('DebugVars'));
         $this->updateConfig('DefaultListSize', postVar('DefaultListSize'));
-        $this->updateConfig('AdminCSS', postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
         $this->updateOrInsertConfig('ENABLE_PLUGIN_ADMIN_V1', PostVar::asBool('ENABLE_PLUGIN_ADMIN_V1') ? '1' : '0');
         if ( ! empty(ENABLE_FEATURE_TIDY) && extension_loaded('tidy')) {
@@ -6971,20 +6947,7 @@ EOL;
 
         $baseUrl = hsc($CONF['AdminURL']);
 
-        if ( ! array_key_exists('AdminCSS', $CONF)) {
-            $sql = sprintf("INSERT INTO %s VALUES ('AdminCSS', '%s')", sql_tableQuote('config'), self::default_admin_css);
-            sql_query($sql);
-            $CONF['AdminCSS'] = self::default_admin_css;
-        }
-        foreach ([$CONF['AdminCSS'], 'contemporary', 'original'] as $name) {
-            $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', remove_all_directory_separator($name));
-            if (@is_file($fname)) {
-                if ($CONF['AdminCSS'] != $name) {
-                    $CONF['AdminCSS'] = $name;
-                }
-                break;
-            }
-        }
+
 
         // Tidy
         if (_CHARSET === 'UTF-8'
@@ -7008,7 +6971,6 @@ EOL;
            'oAdmin'    => $this,
            'baseUrl'   => $baseUrl,
            'extrahead' => $extrahead,
-           'AdminCSS'  => CONF::asStr('AdminCSS'),
            'SiteName'  => CONF::asStr('SiteName'),
         ];
 

@@ -67,7 +67,7 @@ function check_menu_target()
   if ($list) {
     for(var i = 0; i < $list.length; i++) {
       var e = $list[i];
-      if (e.href && e.href.toString().match("/styles/admin_(original|contemporary).css$")) {
+      if (e.href && e.href.toString().match("/styles/admin.css$")) {
         res = true;
         break;
       }

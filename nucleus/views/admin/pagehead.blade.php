@@ -2,7 +2,7 @@
 <meta name="robots" content="noindex, nofollow, noarchive" />
 <title>{{ $SiteName }} - Admin</title>
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<link rel="stylesheet" title="Nucleus Admin" type="text/css" href="{{ $baseUrl }}styles/admin_{{ $AdminCSS }}.css" />
+<link rel="stylesheet" title="Nucleus Admin" type="text/css" href="{{ $baseUrl }}styles/admin.css" />
 <script src="{{ $baseUrl }}javascript/jquery/jquery.min.js"></script>
 <script src="{{ $baseUrl }}javascript/jquery/jquery-migrate.min.js"></script>
 <script type="text/javascript" src="{{ $baseUrl }}javascript/jquery/jquery.cookie.js"></script>
