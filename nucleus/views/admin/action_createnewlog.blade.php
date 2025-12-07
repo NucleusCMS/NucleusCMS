@@ -21,7 +21,7 @@
     <div>
         <input type="hidden" name="action" value="addnewlog" />
         @php $manager->addTicketHidden(); @endphp
-        <table style="table-layout: fixed">
+        <table class="table-fixed">
             <tr>
                 <td>{{ _EBLOG_NAME }}</td>
                 <td><input name="name" tabindex="10" size="40" maxlength="60" /></td>

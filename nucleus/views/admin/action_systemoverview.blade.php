@@ -1,5 +1,5 @@
-<div style="display: inline-block;">
- <div id="tabs" style="float: left;">
+<div class="systemoverview-wrapper">
+ <div id="tabs" class="systemoverview-tabs">
 	<ul>
 		<li><a href="#tab_php_database" tabindex="300">{{ _ADMIN_SYSTEMOVERVIEW_PHPANDDB }}</a></li>
 		<li><a href="#tab_core" tabindex="310">{{ _ADMIN_SYSTEMOVERVIEW_CORE_SYSTEM }}</a></li>
@@ -155,10 +155,10 @@
         </table>
 
         <!-- Important settings of the installation -->
-        <div style='height: 15.5em; overflow: auto' id='div_imp1'>
+        <div class='systemoverview-config' id='div_imp1'>
         <table>
             <tr>
-                <th colspan="2" style="position:sticky;top:0;left:0;">{{ _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS }}
+                <th colspan="2" class="systemoverview-sticky-header">{{ _ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS }}
                     {!! sprintf("<span onclick='%s'> [+]</span>", 'this.style.display = "none";  document.getElementById("div_imp1").style.height = "auto";') !!}
                 </th>
             </tr>
@@ -169,14 +169,14 @@
             $items[] = ["\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE)];
             $items[] = [
                 "\$CONF['debug'], isDebugMode()", (isDebugMode() ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
-                (isDebugMode() ? 'color:red' : ''),
+                (isDebugMode() ? 'systemoverview-highlight' : ''),
             ];
         @endphp
         @foreach ($items as $item)
             <tr>
                 <td width="50%">{{ $item[0] }}</td>
-                @php $style = (isset($item[2]) && strlen($item[2]) > 0) ? " style='{$item[2]}'" : ''; @endphp
-                <td{!! $style !!}>{{ $item[1] }}</td>
+                @php $class = (isset($item[2]) && strlen($item[2]) > 0) ? " class='{$item[2]}'" : ''; @endphp
+                <td{!! $class !!}>{{ $item[1] }}</td>
             </tr>
         @endforeach
 
@@ -190,22 +190,24 @@
             @foreach ($CONF as $k => $v)
                 @if ( ! in_array($k, $items))
                 @php
-                    $style = '';
+                    $cellClasses = [];
                     if ((in_array($k, $items_warn_true) && $v)
                         ||
                         (in_array($k, $items_warn_false) && ! $v)
                     ) {
-                        $style = " style='color:red'";
+                        $cellClasses[] = 'systemoverview-highlight';
                     }
                     $v_escaped = hsc($v);
+                    $valueCell = $v_escaped;
                     if (str_contains((string)$v, "\n")) {
-                        $style = " style='overflow-wrap: anywhere; max-height: 10em; overflow: auto;'";
-                        $v_scaped = str_replace("\n", "<br>\n", $v_escaped);
+                        $cellClasses[] = 'systemoverview-multiline';
+                        $valueCell = str_replace("\n", "<br>\n", $v_escaped);
                     }
+                    $classAttr = $cellClasses ? ' class="' . implode(' ', $cellClasses) . '"' : '';
                 @endphp
                 <tr>
                     <td width="50%">{{ $k }}</td>
-                    <td{{ $style }}>{!! $v_escaped !!}</td>
+                    <td{!! $classAttr !!}>{!! $valueCell !!}</td>
                 </tr>
                 @endif
             @endforeach

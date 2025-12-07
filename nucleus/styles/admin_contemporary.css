@@ -380,6 +380,76 @@ button:disabled,
     box-shadow: none;
 }
 
+.required-mark {
+    color: var(--danger);
+    font-size: 0.9em;
+    vertical-align: text-bottom;
+}
+
+.login-input {
+    width: 95%;
+    max-width: 15em;
+}
+
+.table-fixed {
+    table-layout: fixed;
+}
+
+.composer-command-form {
+    display: inline-block;
+}
+
+.composer-output {
+    overflow: auto;
+}
+
+.memberlist-cell {
+    vertical-align: middle;
+}
+
+.memberlist-inline {
+    float: left;
+    display: inline-block;
+    padding: 0.5em;
+}
+
+.memberlist-nowrap {
+    white-space: nowrap;
+}
+
+.memberlist-break {
+    word-break: break-all;
+}
+
+.systemoverview-wrapper {
+    display: inline-block;
+}
+
+.systemoverview-tabs {
+    float: left;
+}
+
+.systemoverview-config {
+    height: 15.5em;
+    overflow: auto;
+}
+
+.systemoverview-sticky-header {
+    position: sticky;
+    top: 0;
+    left: 0;
+}
+
+.systemoverview-highlight {
+    color: var(--danger);
+}
+
+.systemoverview-multiline {
+    overflow-wrap: anywhere;
+    max-height: 10em;
+    overflow: auto;
+}
+
 label {
     font-weight: 600;
     color: var(--muted);

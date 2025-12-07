@@ -16,7 +16,7 @@
 @endphp
 
 @foreach ($cmdlist as $items)
-    <form method='post' action='index.php' style='display: inline-block;'><p>
+    <form method='post' action='index.php' class="composer-command-form"><p>
     <input type='hidden' name='action' value='composeroverview' />
     <input type='hidden' name='mode'   value='{{ $items[1] }}' />
     <input type='submit' value='{{ $items[0] }}' tabindex='{{ $tidx++ }}' />
@@ -36,7 +36,7 @@ if (isset($_POST['mode'])) {
 }
 
 if ( ! empty($cmd)) {
-    echo '<pre style="overflow: auto;">';
+    echo '<pre class="composer-output">';
     $o = ComposerCmd::RunComposer($cmd);
     if (is_array($o)) {
         echo implode("\n", $o);
