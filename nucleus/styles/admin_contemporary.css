@@ -63,6 +63,41 @@ h1 { font-size: 1.6rem; }
 h2 { font-size: 1.2rem; margin-bottom: 0.35rem; }
 h3 { font-size: 1.05rem; }
 
+.is-hidden {
+    display: none;
+}
+
+.form-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    padding: 4px 0;
+}
+
+.form-header h3 {
+    margin: 0;
+}
+
+.form-header-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.form-inline-tools {
+    float: right;
+    padding: 0.5em;
+}
+
+.field-note {
+    padding-top: 6px;
+}
+
+.col-narrow {
+    width: 20%;
+}
+
 .app-shell {
     min-height: 100vh;
     display: flex;

@@ -13,16 +13,17 @@
 	<input type="hidden" name="draftid" value="0" />
 	{%ticket%}
 
-	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_ADD_CREATENEW)%}</h3></div>
-		<div style="display: inline-block; float: right">
-			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_ADD_ADDITEM)%}"
-				onclick="return checkSubmit();" />
-			{%ifautosave()%}
-			<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
-				onclick="autoSaveDraft();" />
-			{%endif%}
-		</div>
-	</div>
+        <div class="form-header">
+                <div class="form-header-title"><h3>{%text(_ADD_CREATENEW)%}</h3></div>
+                <div class="form-header-actions">
+                        <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_ADD_ADDITEM)%}"
+                                onclick="return checkSubmit();" />
+                        {%ifautosave()%}
+                        <input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+                                onclick="autoSaveDraft();" />
+                        {%endif%}
+                </div>
+        </div>
 
 <div id="tabs">
 	<ul>
@@ -101,12 +102,12 @@
         <td>{%text(_ADD_PUBLIC)%}</td>
         <td>{%settabindex(41)%}
             <input name="act_state" type="radio" id="state_public"   value="public"   checked='checked' tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_public">{%text(_ADD_PUBLIC)%}</label>
-            <span style="display:none">
+            <span class="is-hidden">
             <input name="act_state" type="radio" id="state_unpublic" value="unpublic" tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_unpublic" >{%text(_ADD_UNPUBLIC)%}</label>
             </span>
             <input name="act_state" type="radio" id="state_draft"    value="draft"       tabindex="{%tabindex(0)%}" onclick="checked_act_draft(true, this);" /><label for="state_draft" >{%text(_ADD_DRAFT)%}</label>
 {%iftext(_ENABLE_FEATURE_ITEM_TERM, 1)%}
-            <div style="padding-top: 6px">{%text(_ADD_PUBLIC_TERM)%}
+            <div class="field-note">{%text(_ADD_PUBLIC_TERM)%}
                 <div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1" tabindex="{%tabindex()%}" />
                                     <label for="public_enable_term_start">{%text(_ADD_PUBLIC_TERM_START)%}</label> : {%public_date_time_picker1%}</div>
                 <div class="indent"><input name="public_enable_term_end" type="checkbox" id="public_enable_term_end" value="1" tabindex="{%tabindex()%}" />
@@ -170,12 +171,12 @@
 </table>
 	</div>
 
-	<div id="tab_preview" class="contentblock" style="display:none;">
-		<table>
-		<tr id="edit" style="display:none;">
-			<td>{%text(_ADD_PREVIEW)%}</td>
-			<td><b><span id="prevtitle">&#160;</span></b><br />
-				<span id="prevbody">&#160;</span><br />
+        <div id="tab_preview" class="contentblock is-hidden">
+                <table>
+                <tr id="edit" class="is-hidden">
+                        <td>{%text(_ADD_PREVIEW)%}</td>
+                        <td><b><span id="prevtitle">&#160;</span></b><br />
+                                <span id="prevbody">&#160;</span><br />
 				<span id="prevmore">&#160;</span><br />
 			</td>
 		</tr>

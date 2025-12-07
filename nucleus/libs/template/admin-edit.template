@@ -6,14 +6,13 @@
 <script type="text/javascript" src="javascript/edit_state.js"></script>
 {%ifautosave()%}<script type="text/javascript" src="javascript/xmlhttprequest.js"></script>{%endif%}
 
-<form id="deleteform" name="deleteform" method="post" action="index.php"
-	style="float: right; padding: 0.5em" >
-	<input type="hidden" name="action" value="itemdelete" />
-	<input type="hidden" name="itemid" value="{%contents(itemid)%}" />
+<form id="deleteform" name="deleteform" method="post" action="index.php" class="form-inline-tools">
+        <input type="hidden" name="action" value="itemdelete" />
+        <input type="hidden" name="itemid" value="{%contents(itemid)%}" />
 <!-- index.php?action=itemdelete&itemid=
-	<input type="hidden" name="draftid" value="0" />
+        <input type="hidden" name="draftid" value="0" />
 -->
-	{%ticket%}
+        {%ticket%}
 </form>
 
 <form id="editform" method="post" action="index.php">
@@ -21,14 +20,15 @@
 	<input name="itemid" value="{%contents(itemid)%}" type="hidden" />
 	<input type="hidden" name="draftid" value="0" />
 	{%ticket%}
-	<div style="padding: 4px"><div style="display: inline-block;"><h3 style="margin: 0px">{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
-		<div style="display: inline-block; float: right">
-			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}"
-				onclick="return checkSubmit();" />
-			{%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
-				onclick="autoSaveDraft();" />{%endif%}
-		</div>
-	</div>
+        <div class="form-header">
+                <div class="form-header-title"><h3>{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
+                <div class="form-header-actions">
+                        <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}"
+                                onclick="return checkSubmit();" />
+                        {%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
+                                onclick="autoSaveDraft();" />{%endif%}
+                </div>
+        </div>
 
 <div id="tabs">
 	<ul>
@@ -103,12 +103,12 @@
     <td>{%text(_ADD_PUBLIC)%}</td>
     <td>{%settabindex(41)%}
         <input name="act_state" type="radio" id="state_public"   value="public"   {%checkedonval(1,public)%} tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_public">{%text(_ADD_PUBLIC)%}</label>
-        <span style="display:none">
+        <span class="is-hidden">
         <input name="act_state" type="radio" id="state_unpublic" value="unpublic" {%checkedonval(0,public)%} tabindex="{%tabindex()%}" onclick="checked_act_draft(false, this);" /><label for="state_unpublic">{%text(_ADD_UNPUBLIC)%}</label>
         </span>
         <input name="act_state" type="radio" id="state_draft"    value="draft"       {%checkedonval(1,draft)%} tabindex="{%tabindex()%}" onclick="checked_act_draft(true, this);" /><label for="state_draft">{%text(_ADD_DRAFT)%}</label>
 {%iftext(_ENABLE_FEATURE_ITEM_TERM, 1)%}
-        <div style="padding-top: 6px;">{%text(_ADD_PUBLIC_TERM)%}
+        <div class="field-note">{%text(_ADD_PUBLIC_TERM)%}
             <div class="indent"><input name="public_enable_term_start" type="checkbox" id="public_enable_term_start" value="1"
                                  {%checkedonval(1,public_enable_term_start)%} tabindex="{%tabindex()%}" />
                                 <label for="public_enable_term_start">{%text(_ADD_PUBLIC_TERM_START)%}</label> : {%public_date_time_picker1%}</div>
@@ -203,19 +203,19 @@
 		</td>
 	</tr>
 			<tr>
-				<td style="width:20%">{%text(_ADMIN_TEXT_DELETE)%}</td>
+                                <td class="col-narrow">{%text(_ADMIN_TEXT_DELETE)%}</td>
 				<td>
 					<input id="deleteButton" type="button" value="{%text(_ADMIN_TEXT_DELETE)%}" tabindex="200" onclick=" if (window.confirm('{%text(_ADMIN_COMFIRM_GO_DELETE_BTN)%}')) { document.deleteform.submit(); } " />
 				</td>
 			</tr>
 </table>
 
-	<div id="tab_preview" class="contentblock" style="display:none;">
-		<table>
-			<tr id="edit" style="display:none;">
-				<td>{%text(_ADD_PREVIEW)%}</td>
-				<td><div><b><span id="prevtitle">&#160;</span></b></div>
-					<div id="prevbody">&#160;</div>
+        <div id="tab_preview" class="contentblock is-hidden">
+                <table>
+                        <tr id="edit" class="is-hidden">
+                                <td>{%text(_ADD_PREVIEW)%}</td>
+                                <td><div><b><span id="prevtitle">&#160;</span></b></div>
+                                        <div id="prevbody">&#160;</div>
 					<div id="prevmore">&#160;</div>
 				</td>
 			</tr>
