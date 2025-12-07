@@ -517,6 +517,59 @@ label {
 .warning { background: rgba(183, 121, 31, 0.06); border: 1px solid rgba(183, 121, 31, 0.15); color: #8c5d10; }
 .error { background: rgba(196, 54, 54, 0.06); border: 1px solid rgba(196, 54, 54, 0.15); color: #9f1f1f; }
 
+/* jQuery UI overrides */
+#tabs.ui-tabs {
+    padding: 0;
+    border: none;
+}
+
+#tabs .ui-tabs-nav {
+    display: flex;
+    gap: 6px;
+    padding: 0 0 10px;
+    margin: 0;
+    border: none;
+    background: transparent;
+}
+
+#tabs .ui-tabs-nav li {
+    float: none;
+    border: none;
+    background: transparent;
+    margin: 0;
+    padding: 0;
+}
+
+#tabs .ui-tabs-nav li a {
+    display: inline-block;
+    background: var(--panel-muted);
+    border-radius: 8px;
+    color: var(--muted);
+    font-weight: 700;
+    padding: 8px 14px;
+    border: 1px solid var(--border);
+}
+
+#tabs .ui-tabs-nav li.ui-state-active a,
+#tabs .ui-tabs-nav li.ui-state-active a:link,
+#tabs .ui-tabs-nav li.ui-state-active a:visited {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+}
+
+#tabs .ui-tabs-nav li.ui-state-hover a,
+#tabs .ui-tabs-nav li.ui-state-focus a {
+    background: rgba(49, 72, 100, 0.12);
+    color: var(--accent-strong);
+}
+
+#tabs .ui-tabs-panel {
+    padding: 0;
+    border: none;
+    background: transparent;
+}
+
 .app-footer {
     margin: 0 24px 24px;
     background: var(--panel);
