@@ -528,10 +528,6 @@ button.btn-secondary:hover,
     white-space: nowrap;
 }
 
-.itemlist .draft {
-    background-color: #f5f7ff;
-}
-
 .list-heading {
     display: flex;
     align-items: center;
@@ -684,6 +680,17 @@ button.btn-secondary:hover,
 .item-state--scheduled {
     background-color: #e3f2fd;
     color: #1565c0;
+}
+
+/* Item row background colors for different states */
+.item-row--scheduled,
+.item-row--scheduled td {
+    background-color: #f0f7ff;
+}
+
+.item-row--draft,
+.item-row--draft td {
+    background-color: #fff8f0;
 }
 
 .item-state--period {

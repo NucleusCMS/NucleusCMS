@@ -147,8 +147,14 @@ function listplug_table($template, $type)
             echo "</tr></thead><tbody>";
             break;
         case 'BODY':
-            echo '<tr onmouseover="focusRow(this);" onmouseout="blurRow(this);">';
+            // First call the function to populate content and possibly set row class
+            ob_start();
             echo call_user_func($func_name, $template, $type) ?? '';
+            $bodyContent = ob_get_clean();
+            
+            $rowClass = !empty($GLOBALS['listplug_rowClass']) ? ' class="' . hsc($GLOBALS['listplug_rowClass']) . '"' : '';
+            echo '<tr' . $rowClass . ' onmouseover="focusRow(this);" onmouseout="blurRow(this);">';
+            echo $bodyContent;
             echo "</tr>";
             break;
         case 'FOOT':
@@ -531,6 +537,7 @@ function listplug_table_itemlist($template, $type)
 
             // State column
             $stateFlags = [];
+            $GLOBALS['listplug_rowClass'] = '';
             $sql        = "SELECT iblog, ipublic, idraft, ipublic_enable_term_start, ipublic_enable_term_end, ipublic_term_start, ipublic_term_end"
                   . sprintf(" FROM %s WHERE inumber=%d", sql_table('item'), $current->inumber);
             $res = sql_query($sql);
@@ -541,6 +548,7 @@ function listplug_table_itemlist($template, $type)
                     $tmp_current_time = $tmp_blog->getCorrectTime();
                     if ($row['idraft']) {
                         $stateFlags[] = ['label' => _LISTS_FORM_SELECT_ITEM_OPTION_DRAFT, 'class' => 'item-state--draft'];
+                        $GLOBALS['listplug_rowClass'] = 'item-row--draft';
                     }
                     if ( ! $row['ipublic']) {
                         $stateFlags[] = ['label' => _LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC, 'class' => 'item-state--private'];
@@ -570,6 +578,7 @@ function listplug_table_itemlist($template, $type)
                         array_unshift($stateFlags, ['label' => _ADMIN_ISTATE_PERIOD_EXPIRED, 'class' => 'item-state--expired']);
                     } elseif ($isFuture && ! $isExpired && ! $row['idraft'] && $row['ipublic']) {
                         array_unshift($stateFlags, ['label' => _ADMIN_ISTATE_RESERVATION, 'class' => 'item-state--scheduled']);
+                        $GLOBALS['listplug_rowClass'] = 'item-row--scheduled';
                     }
                 }
             }
