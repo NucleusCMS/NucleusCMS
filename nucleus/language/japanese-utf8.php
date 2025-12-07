@@ -331,8 +331,7 @@ try_define('_ADD_ADDLATER',						'日時を指定して追加');	// <mod by shiz
 try_define('_LOGIN_NAME',						'ログインID:');
 try_define('_LOGIN_PASSWORD',					'パスワード:');
 
-// changed from _BOOKMARLET_BMARKLFOLLOW
-try_define('_BOOKMARKLET_BMARKFOLLOW',					' (ほとんどのブラウザで動作します)');
+
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -346,10 +345,7 @@ try_define('_ADMIN_ADVANCED_WAY',				'<strong>高度な方法:</strong> 現在�
 try_define('_ADMIN_HOW_TO_CREATE',				'Blogの作成');
 
 
-try_define('_BOOKMARKLET_NEW_CATEGORY',			'アイテムは追加され、新しいカテゴリが作成されました。');
-try_define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'ここをクリックしてカテゴリーの名前と説明を編集してください。');
-try_define('_BOOKMARKLET_NEW_WINDOW',			'新しいウィンドウが開きます');
-try_define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サービスに更新pingを送信します。'); // NOTE: This string is no longer in used
+
 
 // END merge UTF-8 and EUC-JP
 
@@ -402,33 +398,7 @@ try_define('_QMENU_MANAGE_SYSTEM',						'システム環境');
 // REG file
 try_define('_WINREGFILE_TEXT',							'「%s」に記事を投稿');
 
-// Bookmarklet
-try_define('_BOOKMARKLET_TITLE',						'ブックマークレット<!-- と 右クリックメニュー -->');
-try_define('_BOOKMARKLET_DESC1',						'ブックマークレット（Bookmarklet）とは、Webブラウザのブックマークに登録して使うJavaScriptプログラムです。<br />');
-try_define('_BOOKMARKLET_DESC2',						'Nucleusには『お気に入り』または『ブックマークツールバー』に登録でき、クリックひとつで blog への投稿画面を開く機能をブラウザに追加することができます。<br />');
-try_define('_BOOKMARKLET_DESC3',						'Webサイトを見ていてそのページにリンクを張った投稿をしたいと思った時にブックマークレットを使用すれば、そのサイト(ページ)へのリンクが書き込まれた状態で、');
-try_define('_BOOKMARKLET_DESC4',						'さらに、そのページ内で文章を選択した状態で使用した場合、選択されている文章が自動的に引用された状態で、Nucleusの新規アイテムの追加ウィンドウがポップアップします。<br />');
-try_define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することもできます。');
-try_define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
-try_define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
-try_define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
-try_define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下のリンクをクリックしてみてください)');
-try_define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
-try_define('_BOOKMARKLET_RIGHTLABEL',					'右クリックメニュー');
-try_define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsでインターネットエクスプローラーを使用している場合は、');
-try_define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることもできます<br />(「開く」を選択すれば直接レジストリに登録します)');
-try_define('_BOOKMARKLET_RIGHTTEXT3',					'このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。');
-try_define('_BOOKMARKLET_UNINSTALLTT',					'アンインストール');
-try_define('_BOOKMARKLET_DELETEBAR',					'「お気に入り」もしくはツールバーから消すには、単に削除するだけです。');
-try_define('_BOOKMARKLET_DELETERIGHTT',					'右クリックメニューから消したい時は、以下の手順を踏んでください:');
-try_define('_BOOKMARKLET_DELETERIGHT1',					'スタートメニューから「ファイルを指定して実行...」を選択');
-try_define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" と入力');
-try_define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ボタンを押す');
-try_define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索');
-try_define('_BOOKMARKLET_DELETERIGHT5',					'"「(blogの名前)」に記事を投稿" エントリを削除');
 
-try_define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'何かが間違っています');
-try_define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることができませんでした');
 
 // BAN
 try_define('_BAN_EXAMPLE_TITLE',						'例');
@@ -1492,8 +1462,7 @@ try_define('_BLOGLIST_ADD',						'アイテムの追加');
 try_define('_BLOGLIST_TT_ADD',					'このBlogに新しいアイテムを追加します');
 try_define('_BLOGLIST_EDIT',					'アイテムの編集/削除');
 try_define('_BLOGLIST_TT_EDIT',					'公開済みのアイテムを編集と削除');
-try_define('_BLOGLIST_BMLET',					'ブックマークレット');
-try_define('_BLOGLIST_TT_BMLET',				'ブックマークレットのインストール');
+
 try_define('_BLOGLIST_SETTINGS',				'ブログ設定');
 try_define('_BLOGLIST_TT_SETTINGS',				'ブログの設定とブログチームの管理');
 try_define('_BLOGLIST_BANS',					'アクセス制限');

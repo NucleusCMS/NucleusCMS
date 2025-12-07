@@ -299,8 +299,7 @@ try_define('_ADD_ADDLATER',								'Add the dates specified');
 try_define('_LOGIN_NAME',				'Name:');
 try_define('_LOGIN_PASSWORD',			'Password:');
 
-// changed from _BOOKMARLET_BMARKLFOLLOW
-try_define('_BOOKMARKLET_BMARKFOLLOW',					' (Works with nearly all browsers)');
+
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -314,10 +313,7 @@ try_define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the bl
 try_define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
 
 
-try_define('_BOOKMARKLET_NEW_CATEGORY',					'Item was added, and a new category was created. ');
-try_define('_BOOKMARKLET_NEW_CATEGORY_EDIT',			'Click here to edit the name and description of the category.');
-try_define('_BOOKMARKLET_NEW_WINDOW',					'Opens in new window');
-try_define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)'); // NOTE: This string is no longer in used
+
 
 // END merge UTF-8 and EUC-JP
 
@@ -370,33 +366,7 @@ try_define('_QMENU_MANAGE_SYSTEM',						'System info');
 // REG file
 try_define('_WINREGFILE_TEXT',							'Post To &Nucleus (%s)');
 
-// Bookmarklet
-try_define('_BOOKMARKLET_TITLE',						'Bookmarklet<!-- and Right Click Menu -->');
-try_define('_BOOKMARKLET_DESC1',						'Bookmarklets allow adding items to your weblog with just one single click. ');
-try_define('_BOOKMARKLET_DESC2',						'After installing these bookmarklets, you\'ll be able to click the \'add to weblog\' button on your browser toolbar, ');
-try_define('_BOOKMARKLET_DESC3',						'and a Nucleus add-item window will popup, ');
-try_define('_BOOKMARKLET_DESC4',						'containing the link and title of the page you were visiting, ');
-try_define('_BOOKMARKLET_DESC5',						'plus any text you might have selected.');
-try_define('_BOOKMARKLET_BOOKARKLET',					'bookmarklet');
-try_define('_BOOKMARKLET_ANCHOR',						'Add to %s');
-try_define('_BOOKMARKLET_BMARKTEXT',					'You can drag the following link to your favorites, or your browsers toolbar: ');
-try_define('_BOOKMARKLET_BMARKTEST',					'(if you want to test the bookmarklet first, click the link)');
-try_define('_BOOKMARKLET_RIGHTCLICK',					'Right Click Menu Access (IE &amp; Windows)');
-try_define('_BOOKMARKLET_RIGHTLABEL',					'right click menu item');
-try_define('_BOOKMARKLET_RIGHTTEXT1',					'Or you can install the ');
-try_define('_BOOKMARKLET_RIGHTTEXT2',					' (choose \'open file\' and add to registry)');
-try_define('_BOOKMARKLET_RIGHTTEXT3',					'You\'ll have to restart Internet Explorer before the option shows up in the context menus.');
-try_define('_BOOKMARKLET_UNINSTALLTT',					'Uninstalling');
-try_define('_BOOKMARKLET_DELETEBAR',					'For the bookmarklet, you can just delete it.');
-try_define('_BOOKMARKLET_DELETERIGHTT',					'For the right click menu item, follow the procedure listed below:');
-try_define('_BOOKMARKLET_DELETERIGHT1',					'Select "Run..." from the Start Menu');
-try_define('_BOOKMARKLET_DELETERIGHT2',					'Type: "regedit"');
-try_define('_BOOKMARKLET_DELETERIGHT3',					'Click the "OK" button');
-try_define('_BOOKMARKLET_DELETERIGHT4',					'Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree');
-try_define('_BOOKMARKLET_DELETERIGHT5',					'Delete the "add to \'Your weblog\'" item');
 
-try_define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'Something went wrong');
-try_define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'Could not create new category');
 
 // BAN
 try_define('_BAN_EXAMPLE_TITLE',						'An example');
@@ -1445,8 +1415,7 @@ try_define('_BLOGLIST_ADD',				'Add Item');
 try_define('_BLOGLIST_TT_ADD',			'Add a new item to this weblog');
 try_define('_BLOGLIST_EDIT',			'Edit/Delete Items');
 try_define('_BLOGLIST_TT_EDIT',			'');
-try_define('_BLOGLIST_BMLET',			'Bookmarklet');
-try_define('_BLOGLIST_TT_BMLET',		'');
+
 try_define('_BLOGLIST_SETTINGS',		'Settings');
 try_define('_BLOGLIST_TT_SETTINGS',		'Edit settings or manage team');
 try_define('_BLOGLIST_BANS',			'Bans');

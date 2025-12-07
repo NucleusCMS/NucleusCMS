@@ -1016,8 +1016,7 @@ define('_BLOGLIST_ADD',				'Artikel hinzuf&uuml;gen');
 define('_BLOGLIST_TT_ADD',			'Neuen Artikel zu diesem Weblog hinzuf&uuml;gen');
 define('_BLOGLIST_EDIT',			'Artikel bearbeiten oder l&ouml;schen');
 define('_BLOGLIST_TT_EDIT',			'');
-define('_BLOGLIST_BMLET',			'Favoritenverwaltung');
-define('_BLOGLIST_TT_BMLET',		'');
+
 define('_BLOGLIST_SETTINGS',		'Einstellungen');
 define('_BLOGLIST_TT_SETTINGS',		'Einstellungen &auml;ndern oder Team verwalten');
 define('_BLOGLIST_BANS',			'Zugriffssperren');

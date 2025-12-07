@@ -381,7 +381,7 @@ try_define('_ERRORS_INSTALLPHP',						'install.php devrait être supprimé');
 try_define('_ERRORS_UPGRADESDIR',						'le répertoire nucleus/upgrades devrait être supprimé');
 try_define('_ERRORS_CONVERTDIR',						'le répertoire nucleus/convert devrait être supprimé');
 try_define('_ERRORS_CONFIGPHP',							'config.php devrait être en lecture seule (chmod 444)');
-try_define('_ERRORS_STARTUPERROR1',						'<p>Certains fichiers d'installation ou de mise à jour de Nucleus sont toujours présents sur le serveur web.</p><p>Supprimez-les pour sécuriser votre site. Exemples de fichiers trouvés :</p> <ul><li>');
+try_define('_ERRORS_STARTUPERROR1',						'<p>Certains fichiers d\'installation ou de mise à jour de Nucleus sont toujours présents sur le serveur web.</p><p>Supprimez-les pour sécuriser votre site. Exemples de fichiers trouvés :</p> <ul><li>');
 try_define('_ERRORS_STARTUPERROR2',                                             '</li></ul><p>Supprimez les fichiers ci-dessus pour faire disparaître cet avertissement.</p>');
 try_define('_ERRORS_STARTUPERROR3',						'Problème de sécurité');
 
@@ -1385,8 +1385,6 @@ try_define('_BLOGLIST_ADD',			'Ajouter un billet');
 try_define('_BLOGLIST_TT_ADD',		'Ajouter un billet à ce blog');
 try_define('_BLOGLIST_EDIT',		'Modifier/Supprimer les billets');
 try_define('_BLOGLIST_TT_EDIT',		'');
-try_define('_BLOGLIST_BMLET',		'Bookmarklet');
-try_define('_BLOGLIST_TT_BMLET',		'');
 try_define('_BLOGLIST_SETTINGS',		'Paramètres');
 try_define('_BLOGLIST_TT_SETTINGS',		'Modifier réglages ou gérer équipe');
 try_define('_BLOGLIST_BANS',		'Exclusions');
