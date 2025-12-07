@@ -1,8 +1,10 @@
-/* Blog Settings Tabs Styles */
-
-.blog-settings-tabs {
-    margin: 20px 0;
-}
+/**
+ * Generic Tab UI Styles for Nucleus CMS Admin Area
+ * 
+ * This stylesheet provides reusable tab styling.
+ * Use with the class pattern: [feature]-tabs
+ * Example: blog-settings-tabs, member-settings-tabs, etc.
+ */
 
 /* Tab Navigation */
 .tab-nav {
@@ -47,7 +49,7 @@
 
 /* Tab Content */
 .tab-content {
-    position: relative;
+    padding: 0;
 }
 
 .tab-pane {
@@ -75,36 +77,19 @@
         flex-direction: column;
     }
 
-    .tab-nav li {
-        margin-bottom: 0;
-    }
-
     .tab-nav a {
         border-radius: 0;
-        border-bottom: 1px solid #ddd;
         margin-right: 0;
+        margin-bottom: 0;
+        border-bottom: 1px solid #ddd;
     }
 
     .tab-nav li.active a {
         border-left: 4px solid #4CAF50;
         border-bottom: 1px solid #ddd;
     }
-}
 
-/* Tab Section Headers */
-.tab-pane h3 {
-    margin-top: 0;
-    padding-top: 0;
-    color: #333;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
-}
-
-/* Form Styling within Tabs */
-.tab-pane form {
-    margin-top: 15px;
-}
-
-.tab-pane table {
-    margin-top: 10px;
+    .tab-nav li:last-child a {
+        border-bottom: 2px solid #ddd;
+    }
 }

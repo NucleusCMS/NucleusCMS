@@ -3179,8 +3179,8 @@ class ADMIN
         $blog = &$manager->getBlog($blogid);
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
-        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/blogsettings-tabs.css" />';
-        $extrahead .= '<script type="text/javascript" src="javascript/blogsettings-tabs.js"></script>';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
         $this->pagehead($extrahead);
 
         echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
