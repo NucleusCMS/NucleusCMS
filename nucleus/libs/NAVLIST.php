@@ -138,8 +138,26 @@ class NAVLIST extends ENCAPSULATE
                             } ?>
                             <input type="hidden" name="action" value="<?php
                             echo $action; ?>"/>
-                            <input name="amount" size="3" value="<?php
-                            echo $amount; ?>"/> <?php
+                            <?php
+                            $perpageOptions = [10, 20, 50, 100];
+                            if (!in_array($amount, $perpageOptions, true)) {
+                                $perpageOptions[] = $amount;
+                            }
+                            sort($perpageOptions, SORT_NUMERIC);
+                            ?>
+                            <select name="amount" onchange="this.form.submit()">
+                                <?php
+                                foreach ($perpageOptions as $perpageOption) {
+                                    $selected = ($perpageOption === $amount) ? ' selected' : '';
+                                    printf(
+                                        '<option value="%d"%s>%d</option>',
+                                        $perpageOption,
+                                        $selected,
+                                        $perpageOption
+                                    );
+                                }
+                                ?>
+                            </select> <?php
                             echo _LISTS_PERPAGE ?>
                             <input type="hidden" name="start" value="<?php
                             echo $start; ?>"/>
@@ -148,8 +166,6 @@ class NAVLIST extends ENCAPSULATE
                             <input type="hidden" name="view_item_options"
                                    value="<?php
                                     echo $view_item_options; ?>"/>
-                            <input type="submit" value="&gt; <?php
-                            echo _LISTS_CHANGE ?>"/>
                         </div>
                     </form>
                 </td>
