@@ -83,16 +83,44 @@ function batchUpdateToggleCheckbox() {
                 var allChecked = batchIsAllChecked();
                 toggleCheckbox.checked = allChecked;
         }
+        batchUpdateOperationsVisibility();
 }
 function batchOnItemCheckboxChange() {
         batchUpdateToggleCheckbox();
 }
 
+// バッチ操作セクションの表示/非表示を更新
+function batchUpdateOperationsVisibility() {
+        var batchOperations = document.querySelector('.batchoperations');
+        if (!batchOperations) return;
+        
+        var hasChecked = false;
+        var i = 0;
+        var el;
+        while (el = document.getElementById('batch' + i)) {
+                if (el.checked) {
+                        hasChecked = true;
+                        break;
+                }
+                i++;
+        }
+        
+        if (hasChecked) {
+                batchOperations.classList.add('is-visible');
+        } else {
+                batchOperations.classList.remove('is-visible');
+        }
+}
+
 // ページ読み込み後に初期状態を設定
 if (document.readyState === 'loading') {
-        document.addEventListener('DOMContentLoaded', batchUpdateToggleCheckbox);
+        document.addEventListener('DOMContentLoaded', function() {
+                batchUpdateToggleCheckbox();
+                batchUpdateOperationsVisibility();
+        });
 } else {
         batchUpdateToggleCheckbox();
+        batchUpdateOperationsVisibility();
 }
 // Smooth compact header on scroll
 (function() {

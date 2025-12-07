@@ -948,6 +948,54 @@ label {
     font-weight: 400;
 }
 
+/* Batch operations sticky footer */
+.batchoperations {
+    position: fixed;
+    bottom: 0;
+    left: var(--sidebar-width);
+    right: 0;
+    background: linear-gradient(to right, var(--sidebar) 40%, #2f3d5a 100%);
+    border-top: 1px solid var(--border);
+    padding: 12px 22px;
+    box-shadow: 0 -4px 12px rgba(15, 23, 42, 0.1);
+    z-index: 9;
+    display: none;
+    align-items: center;
+    gap: 12px;
+    color: #e2e8f0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    transform: translateY(100%);
+    opacity: 0;
+}
+
+.batchoperations.is-visible {
+    display: flex;
+    transform: translateY(0);
+    opacity: 1;
+}
+
+.batchoperations select,
+.batchoperations input[type="submit"] {
+    margin: 0;
+}
+
+.batchoperations select {
+    background: rgba(255, 255, 255, 0.95);
+    border: 1px solid rgba(148, 163, 184, 0.3);
+    color: var(--text);
+}
+
+.batchoperations input[type="submit"] {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    min-width: 90px;
+}
+
+.batchoperations input[type="submit"]:hover {
+    background: var(--accent-strong);
+}
+
 @media (max-width: 1024px) {
     .app-shell {
         padding-left: 0;
@@ -970,5 +1018,9 @@ label {
         height: auto;
         overflow: visible;
         padding: 16px 16px 12px;
+    }
+
+    .batchoperations {
+        left: 0;
     }
 }

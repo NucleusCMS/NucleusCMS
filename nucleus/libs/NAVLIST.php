@@ -76,9 +76,6 @@ class NAVLIST extends ENCAPSULATE
         if ($this->isFootNavigation) {
             $this->showNavigation();
         }
-        if ($this->batch && method_exists($this->batch, 'showOperationList')) {
-            $this->batch->showOperationList();
-        }
     }
 
     /**
