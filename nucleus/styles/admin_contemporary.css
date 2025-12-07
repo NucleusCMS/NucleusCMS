@@ -127,16 +127,7 @@ h3 { font-size: 1.05rem; }
 }
 
 .brand-mark {
-    width: 40px;
-    height: 40px;
-    border-radius: 10px;
-    background: #24364c;
-    color: #f8fafc;
-    display: grid;
-    place-items: center;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    font-size: 0.95rem;
+    display: none;
 }
 
 .brand-name {

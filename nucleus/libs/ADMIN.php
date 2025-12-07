@@ -7041,8 +7041,7 @@ EOL;
                 $adminrooturi = ADMIN::getAdminRootURI();
         if ($member->isLoggedIn()) {
             echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-                . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a>"
-                . "<br /><a href='{$adminrooturi}index.php?action=overview'>" . _USER_HOME . "</a> - ";
+                . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a><br />";
         } else {
             printf(
                 '<a href="%sindex.php?action=showlogin" title="Log in">%s</a> <br />',
