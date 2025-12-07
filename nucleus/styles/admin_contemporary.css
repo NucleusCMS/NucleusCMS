@@ -321,6 +321,13 @@ table.navigation td {
     padding: 4px;
 }
 
+table.navigation .nav-controls {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+}
+
 table.navigation input[type="submit"],
 table.navigation input[type="button"],
 table.navigation .button {

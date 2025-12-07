@@ -125,7 +125,7 @@ class NAVLIST extends ENCAPSULATE
             <tr>
                 <td>
                     <form method="get" action="index.php">
-                        <div>
+                        <div class="nav-controls">
                             <input type="hidden" name="blogid" value="<?php
                             echo $blogid; ?>"/>
                             <input type="hidden" name="itemid" value="<?php
@@ -170,7 +170,7 @@ class NAVLIST extends ENCAPSULATE
                 </td>
                 <td>
                     <form method="get" action="index.php">
-                        <div>
+                        <div class="nav-controls">
                             <?php
                             if ($enable_cat_select) {
                                 $query_extra
@@ -185,6 +185,12 @@ class NAVLIST extends ENCAPSULATE
                                     'catid',
                                     $query_extra
                                 );
+                                echo $this->getFormSelectViewItemOptions(
+                                    $action,
+                                    $blogid,
+                                    $catid,
+                                    $view_item_options
+                                );
                             } ?>
                             <input type="hidden" name="blogid" value="<?php
                             echo $blogid; ?>"/>
@@ -197,9 +203,6 @@ class NAVLIST extends ENCAPSULATE
                             <input type="hidden" name="start" value="0"/>
                             <input type="text" name="search" value="<?php
                             echo $search; ?>" size="16" placeholder="キーワード"/>
-                            <input type="hidden" name="view_item_options"
-                                   value="<?php
-                                    echo $view_item_options; ?>"/>
                             <input type="submit" value="<?php
                             echo _LISTS_SEARCH ?>"/>
                         </div>
@@ -265,52 +268,6 @@ class NAVLIST extends ENCAPSULATE
                     </form>
                 </td>
             </tr>
-            <?php
-            if ($enable_cat_select) { ?>
-                <tr>
-                    <td colspan="4">
-                        <?php
-                        $s = '_LISTS_FORM_SELECT_ITEM_OPTION_'
-                                  . strtoupper($view_item_options);
-                $style1 = 'margin: 2px 2px 2px 0px; padding-top: 5px';
-                printf(
-                    '<div style="%s"><span class="filter">%s</span>',
-                    $style1,
-                    hsc(defined($s) ? constant($s) : $s)
-                );
-                echo '&nbsp;' . hsc(_LISTS_FORM_SELECT_ITEM_FILTER);
-                ?>
-                        <div style="display: inline-block">
-                            <form method="get" action="index.php"
-                                  style="display: inline-block">
-                                <input type="hidden" name="blogid" value="<?php
-                        echo $blogid; ?>"/>
-                                <input type="hidden" name="itemid" value="<?php
-                        echo $itemid; ?>"/>
-                                <?php
-                        echo '<input type="hidden" name="catid" value="'
-                             . $catid . '" />'; ?>
-                                <input type="hidden" name="action" value="<?php
-                        echo $action; ?>"/>
-                                <input type="hidden" name="amount" value="<?php
-                        echo $amount; ?>"/>
-                                <input type="hidden" name="search" value="<?php
-                        echo $search; ?>"/>
-                                <input type="hidden" name="start" value="0"/>
-                                <?php
-                        echo $this->getFormSelectViewItemOptions(
-                            $action,
-                            $blogid,
-                            $catid,
-                            $view_item_options
-                        ); ?>
-                            </form>
-                        </div>
-                        </div>
-                    </td>
-                </tr>
-                <?php
-            } /* end if */ ?>
         </table>
         <?php
     }
