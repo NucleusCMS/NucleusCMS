@@ -317,22 +317,45 @@ th, td {
     vertical-align: top;
 }
 
-table.navigation td {
-    padding: 4px;
+.navigation {
+    display: block;
+    width: 100%;
+    background: var(--panel);
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    padding: 8px 10px;
+    margin: 0 0 14px;
 }
 
-table.navigation .nav-controls {
+.navigation .nav-controls {
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
+    gap: 8px;
+}
+
+.navigation .nav-group {
+    display: inline-flex;
     align-items: center;
     gap: 6px;
 }
 
-table.navigation input[type="submit"],
-table.navigation input[type="button"],
-table.navigation .button {
+.navigation .nav-label {
+    color: var(--muted);
+    font-size: 0.92rem;
+}
+
+.navigation .nav-actions {
+    display: inline-flex;
+    gap: 6px;
+}
+
+.navigation input[type="submit"],
+.navigation input[type="button"],
+.navigation button,
+.navigation .button {
     min-width: unset;
-    padding: 6px 8px;
+    padding: 6px 10px;
 }
 
 th {
