@@ -591,8 +591,8 @@ function listplug_table_itemlist($template, $type)
             echo "<td{$cellClassAttr}>";
 
             $elements   = [];
-            $elements[] = [sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber), _LISTS_EDIT];
-            $elements[] = [sprintf("index.php?action=itemmove&amp;itemid=%d", $current->inumber), _LISTS_MOVE];
+            $elements[] = [sprintf("index.php?action=itemedit&itemid=%d", $current->inumber), _LISTS_EDIT];
+            $elements[] = [sprintf("index.php?action=itemmove&itemid=%d", $current->inumber), _LISTS_MOVE];
 
             // Clone
             $cloneUrl = $manager->addTicketToUrl($CONF['AdminURL']
@@ -601,7 +601,7 @@ function listplug_table_itemlist($template, $type)
             $elements[] = [$cloneUrl, _LISTS_CLONE];
 
             // Delete
-            $elements[] = [sprintf("index.php?action=itemdelete&amp;itemid=%d", $current->inumber), _LISTS_DELETE];
+            $elements[] = [sprintf("index.php?action=itemdelete&itemid=%d", $current->inumber), _LISTS_DELETE];
 
             // View
             $elements[] = [createItemLink($current->inumber), _LISTS_VIEW];
@@ -609,7 +609,7 @@ function listplug_table_itemlist($template, $type)
             // Comments
             $camount = $COMMENTS->amountComments();
             if ($camount > 0) {
-                $elements[] = [sprintf("index.php?action=itemcommentlist&amp;itemid=%d", $current->inumber),
+                $elements[] = [sprintf("index.php?action=itemcommentlist&itemid=%d", $current->inumber),
                             sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments()),
                     ];
             } else {

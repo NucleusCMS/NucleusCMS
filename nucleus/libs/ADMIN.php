@@ -1856,6 +1856,10 @@ class ADMIN
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
 
+        if ( ! $manager->existsItem($itemid, 1, 1)) {
+            $this->error(_ERROR_NOSUCHITEM);
+        }
+
         $item = &$manager->getItemEx($itemid, 1, 1, 0);
 
         $this->pagehead();
