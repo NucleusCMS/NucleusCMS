@@ -805,6 +805,8 @@ try_define('_BATCH_COMMENT_DELETE',		'Delete');
 
 // itemlist: Add new item...
 try_define('_ITEMLIST_ADDNEW',			'Add new item...');
+try_define('_ITEMLIST_ADD_TARGET',		'Post to');
+try_define('_ITEMLIST_ADD_NONE',		'You are not a team member of any blog, so no new items can be added.');
 try_define('_ADD_PLUGIN_EXTRAS',		'Extra Plugin Options');
 
 // errors

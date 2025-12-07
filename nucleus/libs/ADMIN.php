@@ -1256,6 +1256,40 @@ class ADMIN
         // start index
         $start = intRequestVar('start');
 
+        $teamBlogs = [];
+        foreach ($member->getTeamBlogs() as $blogid) {
+            $blog = $manager->getBlog($blogid);
+            if ($blog) {
+                $teamBlogs[$blogid] = $blog;
+            }
+        }
+
+        if (!empty($teamBlogs)) {
+            $selectedBlogId = intRequestVar('blogid');
+            if (!array_key_exists($selectedBlogId, $teamBlogs)) {
+                reset($teamBlogs);
+                $selectedBlogId = (int) key($teamBlogs);
+            }
+
+            echo '<form method="get" action="index.php" class="navigation createitem-selector">';
+            echo '<input type="hidden" name="action" value="createitem" />';
+            echo '<div class="nav-controls">';
+            echo '<label class="nav-group" for="createitem-blogid">';
+            echo '<span class="nav-label">' . _ITEMLIST_ADD_TARGET . '</span>';
+            echo '<select name="blogid" id="createitem-blogid">';
+            foreach ($teamBlogs as $blogid => $blog) {
+                $selected = ($blogid == $selectedBlogId) ? ' selected' : '';
+                echo '<option value="', $blogid, '"', $selected, '>', hsc($blog->getName()), '</option>';
+            }
+            echo '</select>';
+            echo '</label>';
+            echo '<button type="submit">' . _ITEMLIST_ADDNEW . '</button>';
+            echo '</div>';
+            echo '</form>';
+        } else {
+            echo '<p class="note">' . _ITEMLIST_ADD_NONE . '</p>';
+        }
+
         // amount of items to show
         $amount = intRequestVar('amount');
         if ($amount < 1) {

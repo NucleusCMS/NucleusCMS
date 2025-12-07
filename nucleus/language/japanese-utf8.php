@@ -840,6 +840,8 @@ try_define('_BATCH_COMMENT_DELETE',				'削除');
 
 // itemlist: Add new item...
 try_define('_ITEMLIST_ADDNEW',					'新しいアイテムの追加...');
+try_define('_ITEMLIST_ADD_TARGET',				'投稿先');
+try_define('_ITEMLIST_ADD_NONE',					'投稿可能なブログがありません。');
 try_define('_ADD_PLUGIN_EXTRAS',				'追加プラグインオプション');
 
 // errors
