@@ -94,6 +94,87 @@ if (document.readyState === 'loading') {
 } else {
         batchUpdateToggleCheckbox();
 }
+// Smooth compact header on scroll
+(function() {
+    var scrollStart = 0;      // スクロール開始位置
+    var scrollEnd = 100;      // 完全にコンパクトになる位置
+    var header = null;
+    var ticking = false;
+    var isCompact = false;    // コンパクトモードかどうか
+
+    // 初期パディング値
+    var paddingMax = 14;
+    var paddingMin = 6;
+    var fontSizeMax = 0.95;
+    var fontSizeMin = 0.85;
+    var loginPaddingMax = 8;
+    var loginPaddingMin = 4;
+
+    function updateHeader() {
+        if (!header) {
+            header = document.querySelector('.app-header');
+        }
+        if (header) {
+            var scrollY = window.scrollY;
+            // 0〜1の進捗度を計算
+            var progress = Math.min(1, Math.max(0, (scrollY - scrollStart) / (scrollEnd - scrollStart)));
+            
+            // CSS変数で進捗度を設定
+            header.style.setProperty('--header-progress', progress);
+            
+            // パディングを段階的に変更
+            var padding = paddingMax - (paddingMax - paddingMin) * progress;
+            header.style.paddingTop = padding + 'px';
+            header.style.paddingBottom = padding + 'px';
+            
+            // loginname要素のスタイルを段階的に変更
+            var loginname = header.querySelector('.loginname');
+            if (loginname) {
+                var fontSize = fontSizeMax - (fontSizeMax - fontSizeMin) * progress;
+                var loginPadding = loginPaddingMax - (loginPaddingMax - loginPaddingMin) * progress;
+                loginname.style.fontSize = fontSize + 'rem';
+                loginname.style.paddingTop = loginPadding + 'px';
+                loginname.style.paddingBottom = loginPadding + 'px';
+                
+                // コンパクトモードの切り替え（50%を閾値として）
+                var shouldBeCompact = progress > 0.5;
+                if (shouldBeCompact !== isCompact) {
+                    isCompact = shouldBeCompact;
+                    var userRow = loginname.querySelector('.loginname-user');
+                    var linksRow = loginname.querySelector('.loginname-links');
+                    if (userRow && linksRow) {
+                        if (isCompact) {
+                            userRow.style.display = 'inline';
+                            linksRow.style.display = 'inline';
+                        } else {
+                            userRow.style.display = 'block';
+                            linksRow.style.display = 'block';
+                        }
+                    }
+                }
+            }
+        }
+        ticking = false;
+    }
+
+    function onScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(updateHeader);
+            ticking = true;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('scroll', onScroll, { passive: true });
+            updateHeader(); // 初期状態を設定
+        });
+    } else {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        updateHeader(); // 初期状態を設定
+    }
+})();
+
 function selectCanLogin(flag) {
         if (flag) {
                 window.document.memberedit.canlogin[0].checked=true;

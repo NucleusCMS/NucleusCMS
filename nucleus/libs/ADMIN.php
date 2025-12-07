@@ -7008,38 +7008,40 @@ EOL;
         global $member, $nucleus, $CONF;
         ?>
                                 <div class="loginname">
-                <?php
+                <div class="loginname-row loginname-user"><?php
                 $adminrooturi = ADMIN::getAdminRootURI();
         if ($member->isLoggedIn()) {
             echo _LOGGEDINAS . ' ' . "<a href='{$adminrooturi}index.php?action=editmembersettings'>" . $member->getDisplayName() . "</a>"
-                . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a><br />";
+                . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a>";
         } else {
             printf(
-                '<a href="%sindex.php?action=showlogin" title="Log in">%s</a> <br />',
+                '<a href="%sindex.php?action=showlogin" title="Log in">%s</a>',
                 $adminrooturi,
                 _NOTLOGGEDIN
             );
         }
-
+        ?></div>
+                <div class="loginname-row loginname-links"><?php
         echo sprintf('<a href="%s" target="_blank" rel="noreferrer">%s</a> | ', get_help_root_url(false), _HELP_TT);
         echo "<a href='" . $CONF['IndexURL'] . "'>" . _YOURSITE . "</a>";
-
+        ?></div>
+                <div class="loginname-row loginname-version"><?php
         if ( ! empty(NUCLEUS_DEVELOP)) {
-            printf('<br /><i>%s</i>', lnTextByName('_ADMIN_DEVELOP_VERSION'));
+            printf('<i>%s</i> ', lnTextByName('_ADMIN_DEVELOP_VERSION'));
         }
-        echo '<br />(';
+        echo '(';
 
         $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME), NUCLEUS_VERSION_DOT);
         if ($member->isLoggedIn() && $member->isAdmin()) {
             echo self::getAboutHtmlTag();
             $newestVersion = 370; //getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION_ID, '>')) {
-                echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
+                echo ' <a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
             }
 
             if ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) {
                 echo sprintf(
-                    ')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
+                    ') (<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
                     $CONF['IndexURL'] . '_upgrades/',
                     $CONF['DatabaseVersion']
                 );
@@ -7048,7 +7050,9 @@ EOL;
             echo $versionstring;
         }
         echo ')';
-        echo '</div>';
+        ?></div>
+                </div>
+<?php
     }
 
     /**

@@ -155,6 +155,40 @@ h3 { font-size: 1.05rem; }
 .brand-subtitle {
     color: #c5cfdd;
     font-size: 0.9rem;
+    transition: opacity 0.15s ease, max-height 0.15s ease;
+}
+
+/* Smooth compact header on scroll using CSS custom properties */
+.app-header {
+    --header-progress: 0;
+    transition: padding 0.1s ease;
+}
+
+.app-header .brand-subtitle {
+    opacity: calc(1 - var(--header-progress));
+    max-height: calc((1 - var(--header-progress)) * 1.5em);
+    overflow: hidden;
+}
+
+.app-header .loginname {
+    transition: padding 0.1s ease, font-size 0.1s ease, background 0.1s ease;
+}
+
+.app-header .loginname-row {
+    transition: opacity 0.1s ease, max-height 0.1s ease;
+}
+
+.app-header .loginname-version {
+    opacity: calc(1 - var(--header-progress));
+    max-height: calc((1 - var(--header-progress)) * 1.5em);
+    overflow: hidden;
+}
+
+/* Separator between user and links - visible when compact */
+.app-header .loginname-links::before {
+    content: " - ";
+    opacity: var(--header-progress);
+    transition: opacity 0.1s ease;
 }
 
 .header-meta {
@@ -165,8 +199,8 @@ h3 { font-size: 1.05rem; }
 
 
 .loginname {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(148, 163, 184, 0.15);
+    background: rgba(15, 23, 42, 0.55);
+    border: 1px solid rgba(148, 163, 184, 0.2);
     color: #e2e8f0;
     padding: 8px 12px;
     border-radius: 9px;
