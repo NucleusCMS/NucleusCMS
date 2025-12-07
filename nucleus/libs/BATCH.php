@@ -33,12 +33,11 @@ class BATCH extends ENCAPSULATE
     {
         ?>
         <form method="post" action="index.php">
-        <?php
-        $this->showOperationList();
     }
 
     public function showFoot()
     {
+        $this->showOperationList();
         ?>
         </form>
         <?php

@@ -65,13 +65,13 @@ class NAVLIST extends ENCAPSULATE
 
     public function showHead()
     {
+        if ($this->isFootNavigation) {
+            $this->showNavigation();
+        }
     }
 
     public function showFoot()
     {
-        if ($this->isFootNavigation) {
-            $this->showNavigation();
-        }
     }
 
     /**
