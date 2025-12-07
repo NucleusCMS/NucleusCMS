@@ -454,6 +454,10 @@ function listplug_table_itemlist($template, $type)
 
     switch ($type) {
         case 'HEAD':
+            echo '<th class="batch-checkbox">'
+                 . '<input type="checkbox" aria-label="' . _BATCH_SELECTALL
+                 . '" onclick="return batchToggleSelect(this);" />'
+                 . '</th>';
             echo "<th>" . _LIST_ITEM_INFO . "</th><th>" . _LIST_ITEM_CONTENT
                  . "</th><th style=\"white-space:nowrap\" colspan='1'>"
                  . _LISTS_ACTIONS . "</th>";
@@ -467,18 +471,28 @@ function listplug_table_itemlist($template, $type)
             }
 
             if (1 == $current->idraft) {
-                $cssclass = "class='draft'";
+                $cssclass = 'draft';
             }
 
             // (can't use offset time since offsets might vary between blogs)
             if ($current->itime > $template['now']) {
-                $cssclass = "class='future'";
+                $cssclass = 'future';
             }
 
-            $action = requestVar('action');
-            $style  = ('pluginlist' !== $action) ? 'style="white-space:nowrap"'
+            $action        = requestVar('action');
+            $style         = ('pluginlist' !== $action) ? 'style="white-space:nowrap"'
                 : '';
-            echo "<td {$cssclass} {$style}>";
+            $title         = hsc(strip_tags($current->ititle));
+            $id            = listplug_nextBatchId();
+            $checkboxClass = 'class="batch-checkbox' . ($cssclass ? " {$cssclass}" : '') . '"';
+            $cssclass      = $cssclass ? " class=\"{$cssclass}\"" : '';
+
+            echo "<td {$checkboxClass}>";
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
+                 '" aria-label="', $title, '" />';
+            echo "</td>";
+
+            echo "<td{$cssclass} {$style}>";
             if ('itemlist' !== $action) {
                 echo _LIST_ITEM_BLOG . ' ' . hsc($current->bshortname)
                      . '<br />';
@@ -556,15 +570,10 @@ function listplug_table_itemlist($template, $type)
             echo "</td>";
 
             // Title and Body
-            echo "<td {$cssclass}>";
+            echo "<td{$cssclass}>";
 
-            $id = listplug_nextBatchId();
-
-            $title   = hsc(strip_tags($current->ititle));
             $editUrl = sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber);
 
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
-                 '" aria-label="', $title, '" />';
             printf('<a href="%s"><b>%s</b></a>', $editUrl, $title);
             echo "<br />";
 
@@ -579,7 +588,7 @@ function listplug_table_itemlist($template, $type)
             $style2 = "word-break: break-all; {$style0}";
 
             // [Action]
-            echo "<td {$cssclass}>";
+            echo "<td{$cssclass}>";
             // echo "<td  style=\"white-space:nowrap\" {$cssclass}>";
 
             $elements   = [];
@@ -648,7 +657,8 @@ function listplug_table_commentlist($template, $type)
     switch ($type) {
         case 'HEAD':
             printf(
-                '<th>%s</th><th style="min-width: 30%%">%s</th><th>%s</th>',
+                '<th class="batch-checkbox"><input type="checkbox" aria-label="%s" onclick="return batchToggleSelect(this);" /></th><th>%s</th><th style="min-width: 30%%">%s</th><th>%s</th>',
+                _BATCH_SELECTALL,
                 _LISTS_INFO,
                 _LIST_COMMENT,
                 _LISTS_ACTIONS
@@ -676,6 +686,14 @@ function listplug_table_commentlist($template, $type)
                                                         == $member->id);
             }
 
+            $id = listplug_nextBatchId();
+
+            echo '<td class="batch-checkbox">';
+            if ($show_action_link) {
+                echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" />';
+            }
+            echo '</td>';
+
             echo '<td>';
             echo date("Y-m-d@H:i", $current->ctime);
             echo '<br />';
@@ -698,13 +716,13 @@ function listplug_table_commentlist($template, $type)
             $current->cbody = hsc(shorten($current->cbody, 300, '...'));
 
             echo '<td><div style="display: inline-block;white-space: nowrap;">';
-            $id = listplug_nextBatchId();
             if ($show_action_link) {
-                echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" />';
+                echo '<label for="batch', $id, '">';
+                printf(' ID[%d]<br />', $current->cnumber);
+                echo '</label>';
+            } else {
+                printf('ID[%d]<br />', $current->cnumber);
             }
-            echo '<label for="batch', $id, '">';
-            printf(' ID[%d]<br />', $current->cnumber);
-            echo '</label>';
             echo '</div><div>';
             echo $current->cbody;
             echo '</div></td>';

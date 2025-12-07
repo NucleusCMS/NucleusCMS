@@ -35,19 +35,46 @@ function blurRow(row) {
 	}
 }
 function batchSelectAll(what) {
-	var i = 0;
-	var el;
-	while (el = document.getElementById('batch' + i)) {
-		el.checked = what?'checked':'';
-		i++;
-	}
-	return false;					
+        var i = 0;
+        var el;
+        while (el = document.getElementById('batch' + i)) {
+                el.checked = what?'checked':'';
+                i++;
+        }
+        return false;
+}
+function batchInvertSelection() {
+        var i = 0;
+        var el;
+        while (el = document.getElementById('batch' + i)) {
+                el.checked = !el.checked;
+                i++;
+        }
+        return false;
+}
+function batchToggleSelect(toggle) {
+        if (!toggle) return false;
+
+        var mode = toggle.getAttribute('data-mode') || 'all';
+        if (mode === 'all') {
+                batchSelectAll(1);
+                toggle.checked = true;
+                toggle.indeterminate = false;
+                toggle.setAttribute('data-mode', 'invert');
+        } else {
+                batchInvertSelection();
+                toggle.checked = false;
+                toggle.indeterminate = true;
+                toggle.setAttribute('data-mode', 'all');
+        }
+
+        return false;
 }
 function selectCanLogin(flag) {
-	if (flag) {
-		window.document.memberedit.canlogin[0].checked=true;
+        if (flag) {
+                window.document.memberedit.canlogin[0].checked=true;
 
-		// don't disable canlogin[0], otherwise the value won't be passed.
+                // don't disable canlogin[0], otherwise the value won't be passed.
 //		window.document.memberedit.canlogin[0].disabled=true;
 		window.document.memberedit.canlogin[1].disabled=true;
 	} else {
