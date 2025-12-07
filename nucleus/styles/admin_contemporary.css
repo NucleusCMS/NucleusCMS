@@ -317,6 +317,17 @@ th, td {
     vertical-align: top;
 }
 
+table.navigation td {
+    padding: 6px;
+}
+
+table.navigation input[type="submit"],
+table.navigation input[type="button"],
+table.navigation .button {
+    min-width: unset;
+    padding: 8px 10px;
+}
+
 th {
     background: var(--panel-muted);
     color: var(--muted);
