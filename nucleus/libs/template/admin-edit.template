@@ -158,12 +158,8 @@
 
 {%ifitemproperty(draft,0)%}
 	{%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
-	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="{%tabindex(0,0)%}"
-     onclick="checked_act_draft(false, this);" /><label for="act_edit">{%text(_EDIT_KEEP_PUBLISHED)%}</label>
+	<input name="actiontype" value="changedate" type="hidden" id="act_actiontype" />
 	{%ifblogsetting(ballowpast)%}
-		<br />
-		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="{%tabindex()%}"
-         onclick="checked_act_draft(false, this);" /><label for="act_changedate">{%text(_ADD_CHANGEDATE)%}</label> {%helplink(changedate)%}
 			<div class="indent">
 				{%text(_ADD_PLACE_ON)%}
 				{%date_time_picker(itemtime)%}
@@ -187,24 +183,32 @@
 	</td>
 </tr>
 {%endif%}
+
 {%ifblogsetting(bcomments)%}
 <tr>
-		<td>
-			{%text(_ADD_DISABLE_COMMENTS)%}
-		</td>
-		<td> 
-			<input type="radio" name="closed" value="1" {%checkedonval(1,closed)%} tabindex="30" id="closed_yes" /><label for="closed_yes">{%text(_YES)%}</label>
-			<input type="radio" name="closed" value="0" {%checkedonval(0,closed)%} tabindex="30" id="closed_no" /><label for="closed_no">{%text(_NO)%}</label> <small>{%text(_EDIT_COMMENTSNOTE)%}</small>
-		</td>
-	</tr>
+    <th colspan="2">{%text(_EDIT_SECTION_COMMENTS)%}</th>
+</tr>
+<tr>
+	<td>
+		{%text(_ADD_DISABLE_COMMENTS)%}
+	</td>
+	<td> 
+		<input type="radio" name="closed" value="0" {%checkedonval(0,closed)%} tabindex="30" id="closed_no" /><label for="closed_no">{%text(_SETTINGS_ENABLED)%}</label>
+		<input type="radio" name="closed" value="1" {%checkedonval(1,closed)%} tabindex="30" id="closed_yes" /><label for="closed_yes">{%text(_SETTINGS_DISABLED)%}</label> <small>{%text(_EDIT_COMMENTSNOTE)%}</small>
+	</td>
+</tr>
 {%endif%}
+
+<tr>
+    <th colspan="2">{%text(_EDIT_SECTION_OPTIONS)%}</th>
+</tr>
 <tr>
 	<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
 	<td>
 		{%pluginextras%}
 	</td>	
 </tr>
-			{%itemoptions%}
+{%itemoptions%}
 <tr>
     <th colspan="2">{%text(_ADMIN_EDIT_SECTION_DELETE)%}</th>
 </tr>

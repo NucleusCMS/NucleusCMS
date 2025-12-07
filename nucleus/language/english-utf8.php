@@ -1001,6 +1001,8 @@ try_define('_LOGOUT',					'Log Out');
 try_define('_LOGIN',					'Log In');
 try_define('_YES',						'Yes');
 try_define('_NO',						'No');
+try_define('_SETTINGS_ENABLED',			'Enabled');
+try_define('_SETTINGS_DISABLED',		'Disabled');
 try_define('_SUBMIT',					'Submit');
 try_define('_ERROR',					'Error');
 try_define('_ERRORMSG',					'An error has occurred!');
@@ -1047,7 +1049,7 @@ try_define('_ADD_TITLE',				'Title');
 try_define('_ADD_MORE',					'Extended (optional)');
 try_define('_ADD_CATEGORY',				'Category');
 try_define('_ADD_PREVIEW',				'Preview');
-try_define('_ADD_DISABLE_COMMENTS',		'Disable comments?');
+try_define('_ADD_DISABLE_COMMENTS',		'Comments');
 try_define('_ADD_DRAFTNFUTURE',			'Draft &amp; Future Items');
 try_define('_ADD_ADDITEM',				'Add Item');
 try_define('_ADD_ADDNOW',				'Add Now');
@@ -1074,6 +1076,8 @@ try_define('_EDIT_COMMENTSNOTE',		'(note: disabling comments will _not_ hide pre
 // edit item form - section headers
 try_define('_EDIT_SECTION_PUBLIC_STATE',		'Publication Status');
 try_define('_EDIT_SECTION_TIMESTAMP',			'Date/Time Settings');
+try_define('_EDIT_SECTION_COMMENTS',			'Comment Settings');
+try_define('_EDIT_SECTION_OPTIONS',				'Additional Options');
 try_define('_EDIT_KEEP_DRAFT',					'Keep as draft');
 try_define('_EDIT_PUBLISH_NOW',					'Publish now');
 try_define('_EDIT_PUBLISH_SCHEDULED',			'Schedule publication');

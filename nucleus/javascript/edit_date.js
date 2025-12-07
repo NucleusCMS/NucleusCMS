@@ -13,6 +13,24 @@ function edit_form_change_date_ByValue( list )
             e.value = (v != null) ? v : "";
          }
     }
+    // Update datetime-local inputs if present
+    edit_form_update_datetime_local_inputs(list);
+}
+
+function edit_form_update_datetime_local_inputs(list)
+{
+    var datetime_inputs = ["input_datetime_currenttime", "input_datetime_itemtime"];
+    for (var i = 0; i < datetime_inputs.length; i++) {
+        var e = document.getElementById(datetime_inputs[i]);
+        if (e != null && e != undefined && list.length >= 5) {
+            var year = list[0];
+            var month = String(list[1]).padStart(2, '0');
+            var day = String(list[2]).padStart(2, '0');
+            var hour = String(list[3]).padStart(2, '0');
+            var minute = String(list[4]).padStart(2, '0');
+            e.value = year + '-' + month + '-' + day + 'T' + hour + ':' + minute;
+        }
+    }
 }
 
 function edit_form_change_date_now()

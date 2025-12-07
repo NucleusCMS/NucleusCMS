@@ -187,80 +187,66 @@ class PAGEFACTORY extends BaseActions
     private function replace_date_time_picker(&$data)
     {
         $items = [];
-        $spa   = explode(',', _EDIT_DATE_FORMAT_SEPARATOR);
         foreach (['itemtime', 'currenttime'] as $stime) {
             $s = [];
-            foreach (explode(',', _EDIT_DATE_FORMAT) as $key => $value) {
-                $s[] = '<span style="white-space: nowrap;">';
-                switch ($value) {
-                    case 'year':
-                        $s[]
-                            = '<input id="inputyear" name="year" tabindex="{%tabindex()%}" size="4" value="{%'
-                              . $stime
-                              . '(year)%}" onchange="document.forms[0].act_future.checked=true;" />';
-                        break;
-                    case 'month':
-                        $s[]
-                            = '<input id="inputmonth" name="month" tabindex="{%tabindex()%}" size="2" value="{%'
-                              . $stime
-                              . '(mon)%}" onchange="document.forms[0].act_future.checked=true;" />';
-                        break;
-                    case 'day':
-                        $s[]
-                            = '<input id="inputday" name="day" tabindex="{%tabindex()%}" size="2" value="{%'
-                              . $stime
-                              . '(mday)%}" onchange="document.forms[0].act_future.checked=true;" />';
-                        break;
-                }
-                if (isset($spa[$key])) {
-                    $s[] = $spa[$key];
-                }
-                $s[] = '</span>';
+            
+            // datetime-local input for modern browsers
+            // For currenttime (add mode): check the radio button for scheduled post
+            if ($stime === 'currenttime') {
+                $onchangeJs = "var rb = document.forms[0].act_future; if(rb) rb.checked=true;";
+            } else {
+                // For itemtime (edit mode): no checkbox needed, just sync hidden fields
+                $onchangeJs = "";
             }
-            $s[] = '<div style="display: inline-block;"><span style="white-space: nowrap;">';
-            $s[] = '<input id="inputhour" name="hour" tabindex="{%tabindex()%}" size="2" value="{%'
-                   . $stime
-                   . '(hours)%}" onchange="document.forms[0].act_future.checked=true;" />';
-            $key = 3;
-            if (isset($spa[$key])) {
-                $s[] = $spa[$key];
+            
+            $s[] = '<input type="datetime-local" id="input_datetime_' . $stime . '" name="datetime" tabindex="{%tabindex()%}"';
+            $s[] = ' value="{%' . $stime . '(datetime-local)%}"';
+            if ($onchangeJs) {
+                $s[] = ' onchange="' . $onchangeJs . '"';
             }
-            $s[] = '</span>';
+            $s[] = ' style="font-size: 1em; padding: 0.25em;" />';
+            
+            // Hidden fields for backward compatibility with form processing
+            $s[] = '<input type="hidden" id="inputyear" name="year" value="{%' . $stime . '(year)%}" />';
+            $s[] = '<input type="hidden" id="inputmonth" name="month" value="{%' . $stime . '(mon)%}" />';
+            $s[] = '<input type="hidden" id="inputday" name="day" value="{%' . $stime . '(mday)%}" />';
+            $s[] = '<input type="hidden" id="inputhour" name="hour" value="{%' . $stime . '(hours)%}" />';
+            $s[] = '<input type="hidden" id="inputminutes" name="minutes" value="{%' . $stime . '(minutes)%}" />';
 
-            $s[] = '<span style="white-space: nowrap;">';
-            $s[] = '<input id="inputminutes" name="minutes" tabindex="{%tabindex()%}" size="2" value="{%'
-                   . $stime
-                   . '(minutes)%}" onchange="document.forms[0].act_future.checked=true;" />';
-            $key = 4;
-            if (isset($spa[$key])) {
-                $s[] = $spa[$key];
+            $s[] = '<div style="display: inline-block; margin-left: 0.5em;">';
+            
+            // For currenttime (add mode): check the radio button for scheduled post
+            if ($stime === 'currenttime') {
+                $nowClickJs = "var rb = document.forms[0].act_future; if(rb) rb.checked=true;";
+            } else {
+                // For itemtime (edit mode): no checkbox needed
+                $nowClickJs = "";
             }
-            $s[] = '</span></div>';
-
-            $s[] = '<br />' . hsc(_ITEM_ADDEDITTEMPLATE_FORMAT)
-                   . hsc(_EDIT_DATE_FORMAT_DESC);
-
-            $s[] = '<div style="display: inline-block;">';
+            
             $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
                    . _ADD_DATEINPUTNOW
-                   . '" onclick = "document.forms[0].act_future.checked=true;  return edit_form_change_date_now();" />';
+                   . '" onclick="' . ($nowClickJs ? $nowClickJs . ' ' : '') . 'return edit_form_change_date_now();" />';
             $s[] = '<input tabindex="{%tabindex()%}" type="button" value="'
-                   . _ADD_DATEINPUTRESET . '" onclick = " return date_' . $stime
+                   . _ADD_DATEINPUTRESET . '" onclick="return date_' . $stime
                    . '_reset();" />';
             $s[] = '</div>';
+            
+            // Script to sync datetime-local with hidden fields
+            $s[] = '<script>';
+            $s[] = 'document.getElementById("input_datetime_' . $stime . '").addEventListener("change", function() {';
+            $s[] = '  var dt = new Date(this.value);';
+            $s[] = '  if (!isNaN(dt.getTime())) {';
+            $s[] = '    document.getElementById("inputyear").value = dt.getFullYear();';
+            $s[] = '    document.getElementById("inputmonth").value = dt.getMonth() + 1;';
+            $s[] = '    document.getElementById("inputday").value = dt.getDate();';
+            $s[] = '    document.getElementById("inputhour").value = dt.getHours();';
+            $s[] = '    document.getElementById("inputminutes").value = dt.getMinutes();';
+            $s[] = '  }';
+            $s[] = '});';
+            $s[] = '</script>';
 
-            $items[$stime] = &$s;
-            unset($s);
+            $items[$stime] = implode("\n\t\t\t\t", $s);
         }
-
-        foreach ($items as $key => $value) {
-            $items[$key] = implode("\n\t\t\t\t", $value);
-        }
-        $items['itemtime'] = str_replace(
-            'act_future.',
-            'act_changedate.',
-            $items['itemtime']
-        );
 
         $data = strtr($data, [
             '{%date_time_picker%}'              => $items['currenttime'],
@@ -448,14 +434,24 @@ class PAGEFACTORY extends BaseActions
     public function parse_currenttime($what)
     {
         $nu = getdate($this->blog->getCorrectTime());
-        echo $nu[$what];
+        if ($what === 'datetime-local') {
+            // Format for HTML5 datetime-local input: YYYY-MM-DDTHH:MM
+            echo date('Y-m-d\TH:i', $this->blog->getCorrectTime());
+        } else {
+            echo $nu[$what];
+        }
     }
 
     // date change on edit item
     public function parse_itemtime($what)
     {
         $itemtime = getdate($this->variables['timestamp']);
-        echo $itemtime[$what];
+        if ($what === 'datetime-local') {
+            // Format for HTML5 datetime-local input: YYYY-MM-DDTHH:MM
+            echo date('Y-m-d\TH:i', $this->variables['timestamp']);
+        } else {
+            echo $itemtime[$what];
+        }
     }
 
     public function parse_publictime($section, $stime, $what)

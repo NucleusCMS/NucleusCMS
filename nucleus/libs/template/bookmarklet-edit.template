@@ -97,15 +97,15 @@
 							<td class="col-narrow">{%text(_ADD_DISABLE_COMMENTS)%}</td>
 							<td>
 							    <input type="radio"
-									name="closed" value="1"
-									id="closed_yes" {%checkedonval(1,closed)%}
-									tabindex="50"
-								/>
-								<label for="closed_yes">{%text(_YES)%}</label>
-							    <input type="radio" name="closed" value="0"
+									name="closed" value="0"
 									id="closed_no" {%checkedonval(0,closed)%}
 									tabindex="50"
-								/><label for="closed_no">{%text(_NO)%}</label>
+								/>
+								<label for="closed_no">{%text(_SETTINGS_ENABLED)%}</label>
+							    <input type="radio" name="closed" value="1"
+									id="closed_yes" {%checkedonval(1,closed)%}
+									tabindex="50"
+								/><label for="closed_yes">{%text(_SETTINGS_DISABLED)%}</label>
 							</td>
 						</tr>
 {%endif%}
@@ -133,31 +133,25 @@
                             </td>
                         </tr>
 
-						<!-- The only actiontypes are 'edit', 'changedate' (no draft items can be edited) and 'delete' -->
+						<!-- The only actiontypes are 'changedate' (default), 'backtodrafts' and 'delete' -->
 						<tr>
 							<td class="col-narrow">{%text(_EDIT_SUBMIT)%}</td>
 							<td>
+								<input name="actiontype" value="changedate" type="hidden" id="act_actiontype" />
+{%ifblogsetting(ballowpast)%}
+								<div class="indent">
+									{%text(_ADD_PLACE_ON)%}
+									{%date_time_picker(itemtime)%}
+								</div>
+{%endif%}
 								<ul class="nobullets">
 									<li>
-										<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="60"
-										 onclick="checked_act_draft(false, this);" /><label for="act_edit">{%text(_BMLET_EDIT)%}</label>
-									</li>
-{%ifblogsetting(ballowpast)%}
-									<li>
-										<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="60"
-										 onclick="checked_act_draft(false, this);" /><label for="act_changedate">{%text(_BMLET_CHANGEDATE)%}</label> {%helplink(changedate)%}
-										<div class="indent">
-											{%text(_ADD_PLACE_ON)%}
-											{%date_time_picker(itemtime)%}
-										</div>
-									</li>
-{%endif%}
-									<li>
-										<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="60"
-										 onclick="checked_act_draft(true, this);" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
+										<input type="checkbox" id="act_backtodrafts" tabindex="60"
+										 onchange="if(this.checked) { document.getElementById('act_actiontype').value = 'backtodrafts'; document.getElementById('act_delete').checked = false; } else { document.getElementById('act_actiontype').value = 'changedate'; }" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
 									</li>
 									<li>
-										<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="60" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
+										<input type="checkbox" id="act_delete" tabindex="60"
+										 onchange="if(this.checked) { document.getElementById('act_actiontype').value = 'delete'; document.getElementById('act_backtodrafts').checked = false; } else { document.getElementById('act_actiontype').value = 'changedate'; }" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
 									</li>
 									<!-- li><input id="dosendping" name="dosendping" value="1" type="checkbox" tabindex="120" /><label for="dosendping">{%text(_UPDATEDPING_GOSENDPING)%}</label></li -->
 								</ul>

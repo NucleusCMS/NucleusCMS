@@ -142,21 +142,27 @@
 		</td>
 	</tr>
 {%ifblogsetting(bcomments)%}
+<tr>
+    <th colspan="2">{%text(_EDIT_SECTION_COMMENTS)%}</th>
+</tr>
     <tr>
 		<td>{%text(_ADD_DISABLE_COMMENTS)%}</td>
 		<td>
-			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes">{%text(_YES)%}</label>
-			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no">{%text(_NO)%}</label>
+			<input name="closed" type="radio" tabindex="30" value="0" checked="checked" id="closed_no" /><label for="closed_no">{%text(_SETTINGS_ENABLED)%}</label>
+			<input name="closed" type="radio" tabindex="30" value="1" id="closed_yes" /><label for="closed_yes">{%text(_SETTINGS_DISABLED)%}</label>
 		</td>
     </tr>
 {%endif%}
+<tr>
+    <th colspan="2">{%text(_EDIT_SECTION_OPTIONS)%}</th>
+</tr>
 	<tr>
 		<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
 		<td>
 			{%pluginextras%}
 		</td>
 	</tr>
-			{%itemoptions%}	
+{%itemoptions%}	
     <tr>
 		<td>{%text(_SUBMIT)%}</td>
 		<td>

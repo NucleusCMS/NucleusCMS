@@ -88,8 +88,8 @@
 						<tr>
                                                         <td class="col-narrow">{%text(_ADD_DISABLE_COMMENTS)%}</td>
 							<td>
-								<input type='radio' name='closed' value='1' id="closed_yes" tabindex="50" /><label for="closed_yes">{%text(_YES)%}</label>
-								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" tabindex="50" /><label for="closed_no">{%text(_NO)%}</label>
+								<input type='radio' name='closed' value='0' checked='checked' id="closed_no" tabindex="50" /><label for="closed_no">{%text(_SETTINGS_ENABLED)%}</label>
+								<input type='radio' name='closed' value='1' id="closed_yes" tabindex="50" /><label for="closed_yes">{%text(_SETTINGS_DISABLED)%}</label>
 							</td>
 						</tr>
 {%endif%}
