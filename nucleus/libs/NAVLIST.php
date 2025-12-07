@@ -65,7 +65,6 @@ class NAVLIST extends ENCAPSULATE
 
     public function showHead()
     {
-        $this->showNavigation();
     }
 
     public function showFoot()

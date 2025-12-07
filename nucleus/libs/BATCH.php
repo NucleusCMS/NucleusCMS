@@ -34,14 +34,11 @@ class BATCH extends ENCAPSULATE
         ?>
         <form method="post" action="index.php">
         <?php
-        // TODO: get a list op operations above the list too
-        // (be careful not to use the same names for the select...)
-        //        $this->showOperationList();
+        $this->showOperationList();
     }
 
     public function showFoot()
     {
-        $this->showOperationList();
         ?>
         </form>
         <?php
