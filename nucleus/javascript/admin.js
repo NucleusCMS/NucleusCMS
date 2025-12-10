@@ -35,19 +35,179 @@ function blurRow(row) {
 	}
 }
 function batchSelectAll(what) {
-	var i = 0;
-	var el;
-	while (el = document.getElementById('batch' + i)) {
-		el.checked = what?'checked':'';
-		i++;
-	}
-	return false;					
+        var i = 0;
+        var el;
+        while (el = document.getElementById('batch' + i)) {
+                el.checked = what ? true : false;
+                i++;
+        }
+        batchUpdateToggleCheckbox();
+        return false;
 }
-function selectCanLogin(flag) {
-	if (flag) {
-		window.document.memberedit.canlogin[0].checked=true;
+function batchInvertSelection() {
+        var i = 0;
+        var el;
+        while (el = document.getElementById('batch' + i)) {
+                el.checked = !el.checked;
+                i++;
+        }
+        batchUpdateToggleCheckbox();
+        return false;
+}
+function batchToggleSelect(toggle) {
+        if (!toggle) return false;
 
-		// don't disable canlogin[0], otherwise the value won't be passed.
+        // 現在の状態を確認して反転
+        var allChecked = batchIsAllChecked();
+        batchSelectAll(allChecked ? 0 : 1);
+        toggle.checked = !allChecked;
+
+        return false;
+}
+function batchIsAllChecked() {
+        var i = 0;
+        var el;
+        var hasItems = false;
+        while (el = document.getElementById('batch' + i)) {
+                hasItems = true;
+                if (!el.checked) {
+                        return false;
+                }
+                i++;
+        }
+        return hasItems;
+}
+function batchUpdateToggleCheckbox() {
+        var toggleCheckbox = document.getElementById('batch-toggle-all');
+        if (toggleCheckbox) {
+                var allChecked = batchIsAllChecked();
+                toggleCheckbox.checked = allChecked;
+        }
+        batchUpdateOperationsVisibility();
+}
+function batchOnItemCheckboxChange() {
+        batchUpdateToggleCheckbox();
+}
+
+// バッチ操作セクションの表示/非表示を更新
+function batchUpdateOperationsVisibility() {
+        var batchOperations = document.querySelector('.batchoperations');
+        if (!batchOperations) return;
+        
+        var hasChecked = false;
+        var i = 0;
+        var el;
+        while (el = document.getElementById('batch' + i)) {
+                if (el.checked) {
+                        hasChecked = true;
+                        break;
+                }
+                i++;
+        }
+        
+        if (hasChecked) {
+                batchOperations.classList.add('is-visible');
+        } else {
+                batchOperations.classList.remove('is-visible');
+        }
+}
+
+// ページ読み込み後に初期状態を設定
+if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+                batchUpdateToggleCheckbox();
+                batchUpdateOperationsVisibility();
+        });
+} else {
+        batchUpdateToggleCheckbox();
+        batchUpdateOperationsVisibility();
+}
+// Smooth compact header on scroll
+(function() {
+    var scrollStart = 0;      // スクロール開始位置
+    var scrollEnd = 100;      // 完全にコンパクトになる位置
+    var header = null;
+    var ticking = false;
+    var isCompact = false;    // コンパクトモードかどうか
+
+    // 初期パディング値
+    var paddingMax = 14;
+    var paddingMin = 6;
+    var fontSizeMax = 0.95;
+    var fontSizeMin = 0.85;
+    var loginPaddingMax = 8;
+    var loginPaddingMin = 4;
+
+    function updateHeader() {
+        if (!header) {
+            header = document.querySelector('.app-header');
+        }
+        if (header) {
+            var scrollY = window.scrollY;
+            // 0〜1の進捗度を計算
+            var progress = Math.min(1, Math.max(0, (scrollY - scrollStart) / (scrollEnd - scrollStart)));
+            
+            // CSS変数で進捗度を設定
+            header.style.setProperty('--header-progress', progress);
+            
+            // パディングを段階的に変更
+            var padding = paddingMax - (paddingMax - paddingMin) * progress;
+            header.style.paddingTop = padding + 'px';
+            header.style.paddingBottom = padding + 'px';
+            
+            // loginname要素のスタイルを段階的に変更
+            var loginname = header.querySelector('.loginname');
+            if (loginname) {
+                var fontSize = fontSizeMax - (fontSizeMax - fontSizeMin) * progress;
+                var loginPadding = loginPaddingMax - (loginPaddingMax - loginPaddingMin) * progress;
+                loginname.style.fontSize = fontSize + 'rem';
+                loginname.style.paddingTop = loginPadding + 'px';
+                loginname.style.paddingBottom = loginPadding + 'px';
+                
+                // コンパクトモードの切り替え（50%を閾値として）
+                var shouldBeCompact = progress > 0.5;
+                if (shouldBeCompact !== isCompact) {
+                    isCompact = shouldBeCompact;
+                    var userRow = loginname.querySelector('.loginname-user');
+                    var linksRow = loginname.querySelector('.loginname-links');
+                    if (userRow && linksRow) {
+                        if (isCompact) {
+                            userRow.style.display = 'inline';
+                            linksRow.style.display = 'inline';
+                        } else {
+                            userRow.style.display = 'block';
+                            linksRow.style.display = 'block';
+                        }
+                    }
+                }
+            }
+        }
+        ticking = false;
+    }
+
+    function onScroll() {
+        if (!ticking) {
+            window.requestAnimationFrame(updateHeader);
+            ticking = true;
+        }
+    }
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', function() {
+            window.addEventListener('scroll', onScroll, { passive: true });
+            updateHeader(); // 初期状態を設定
+        });
+    } else {
+        window.addEventListener('scroll', onScroll, { passive: true });
+        updateHeader(); // 初期状態を設定
+    }
+})();
+
+function selectCanLogin(flag) {
+        if (flag) {
+                window.document.memberedit.canlogin[0].checked=true;
+
+                // don't disable canlogin[0], otherwise the value won't be passed.
 //		window.document.memberedit.canlogin[0].disabled=true;
 		window.document.memberedit.canlogin[1].disabled=true;
 	} else {

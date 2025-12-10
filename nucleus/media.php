@@ -12,7 +12,7 @@
  * Media popup window for Nucleus
  *
  * Purpose:
- *   - can be openen from an add-item form or bookmarklet popup
+ *   - can be openen from an add-item form
  *   - shows a list of recent files, allowing browsing, search and
  *     upload of new files
  *   - close the popup by selecting a file in the list. The file gets

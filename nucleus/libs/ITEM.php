@@ -114,7 +114,7 @@ class ITEM
 
     /**
      * Tries to create an item from the data in the current request (comes from
-     * bookmarklet or admin area
+     * admin area
      *
      * Returns an array with status info:
      * status = 'added', 'error', 'newcategory'
@@ -648,7 +648,7 @@ class ITEM
 
     /**
      * Tries to create an draft from the data in the current request (comes from
-     * bookmarklet or admin area
+     * admin area
      *
      * Returns an array with status info:
      * status = 'added', 'error', 'newcategory'

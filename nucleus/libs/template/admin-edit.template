@@ -1,6 +1,8 @@
 <h2>{%text(_EDIT_ITEM)%} : (ID:{%contents(itemid)%}) : <a href="{%itemlink%}" target="_blank">({%text(_TEXT_VIEW)%})</a></h2>
 
 {%init%}
+<link rel="stylesheet" type="text/css" href="styles/tabs.css" />
+<script type="text/javascript" src="javascript/tabs.js"></script>
 <script type="text/javascript" src="javascript/numbercheck.js"></script>
 <script type="text/javascript" src="javascript/edit_date.js"></script>
 <script type="text/javascript" src="javascript/edit_state.js"></script>
@@ -21,45 +23,42 @@
 	<input type="hidden" name="draftid" value="0" />
 	{%ticket%}
         <div class="form-header">
-                <div class="form-header-title"><h3>{%text(_EDIT_ITEM)%} ({%contents(itemid)%})</h3></div>
                 <div class="form-header-actions">
-                        <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}"
+{%ifitemproperty(draft)%}
+                        <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_BTN_SAVE_DRAFT)%}"
+                                class="btn-secondary" onclick="return checkSubmit();" />
+                        <input tabindex="{%tabindex(1,1)%}" type="submit" name="actiontype" value="{%text(_EDIT_BTN_PUBLISH)%}"
+                                onclick="document.getElementById('state_public').checked=true; return checkSubmit();" formaction="index.php?quickpublish=1" />
+{%endif%}
+{%ifitemproperty(draft,0)%}
+                        <input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_BTN_UPDATE)%}"
                                 onclick="return checkSubmit();" />
-                        {%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
-                                onclick="autoSaveDraft();" />{%endif%}
+                        <input tabindex="{%tabindex(1,1)%}" type="submit" name="actiontype" value="{%text(_EDIT_BTN_UNPUBLISH)%}"
+                                class="btn-secondary" onclick="document.getElementById('state_draft').checked=true; return checkSubmit();" />
+{%endif%}
                 </div>
         </div>
 
-<div id="tabs">
-	<ul>
-		<li><a href="#tab_body" tabindex="300">{%text(_BMLET_BODY)%}</a></li>
-		<li><a href="#tab_more" tabindex="310">{%text(_BMLET_MORE)%}</a></li>
+        <div class="title-input-wrapper">
+                <input 
+                        {%jsinput(title)%}
+                        tabindex="10"
+                        maxlength="160"
+                        value="{%contents(title)%}"
+                        placeholder="{%text(_ADD_TITLE)%}"
+                        class="input-title"
+                />
+        </div>
+
+<div class="item-edit-tabs">
+	<ul class="tab-nav">
+		<li class="active"><a href="#tab_body" tabindex="300">{%text(_EDIT_TAB_BODY)%}</a></li>
+		<li><a href="#tab_more" tabindex="310">{%text(_EDIT_TAB_MORE)%}</a></li>
 		<li><a href="#tab_options" tabindex="320">{%text(_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS)%}</a></li>
-		<li><a href="#tab_operations" tabindex="330">{%text(_ADMIN_EDIT_OPERATIONS)%}</a></li>
 	</ul>
 
-	<div id="tab_body" class="contentblock">
-<table><tr>
-	<th colspan="2">{%text(_EDIT_ITEM)%}</th>
-</tr>
-<tr>
-	<td>{%text(_EDIT_ORIG_AUTHOR)%}</td>
-	<td>{%contents(author)%}</td>
-</tr><tr>
-	<td>{%text(_ADD_TITLE)%}</td>
-	<td><input 
-			{%jsinput(title)%}
-			tabindex="10"
-			maxlength="160"
-			value="{%contents(title)%}"
-			/>
-	</td>
-</tr>
-<tr>
-	<td>{%text(_ADD_CATEGORY)%}</td>
-	<td>{%categories(40)%}</td>
-</tr>
-</table>
+	<div class="tab-content">
+	<div id="tab_body" class="tab-pane active">
 
 <table>
 <tr class="body">
@@ -77,7 +76,7 @@
 </tr>
 </table>
 </div>
-	<div id="tab_more" class="contentblock">
+	<div id="tab_more" class="tab-pane">
 		<table>
 <tr class="more">
 	<td>{%text(_ADD_MORE)%} {%helplink(extended)%}
@@ -97,10 +96,25 @@
 </tr>
 		</table>
 	</div>
-	<div id="tab_options" class="contentblock">
+	<div id="tab_options" class="tab-pane">
 		<table>
 <tr>
-    <td>{%text(_ADD_PUBLIC)%}</td>
+	<th colspan="2">{%text(_EDIT_ITEM)%}</th>
+</tr>
+<tr>
+	<td>{%text(_EDIT_ORIG_AUTHOR)%}</td>
+	<td>{%contents(author)%}</td>
+</tr>
+<tr>
+	<td>{%text(_ADD_CATEGORY)%}</td>
+	<td>{%categories(40)%}</td>
+</tr>
+
+<tr>
+    <th colspan="2">{%text(_EDIT_SECTION_PUBLIC_STATE)%}</th>
+</tr>
+<tr>
+    <td>{%text(_ADD_STATUS)%}</td>
     <td>{%settabindex(41)%}
         <input name="act_state" type="radio" id="state_public"   value="public"   {%checkedonval(1,public)%} tabindex="{%tabindex(0)%}" onclick="checked_act_draft(false, this);" /><label for="state_public">{%text(_ADD_PUBLIC)%}</label>
         <span class="is-hidden">
@@ -121,94 +135,89 @@
 {%endif%}
     </td>
 </tr>
-
 <tr>
-	<td>{%text(_EDIT_SUBMIT)%}</td>
+	<td>{%text(_ADD_DATETIME)%}</td>
 	<td>
 {%copytabindex(,1)%}
 {%ifitemproperty(draft)%}{%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
-		<input name="actiontype" value="addnow" type="radio" id="act_now" onclick="checked_act_draft(false, this);" /><label for="act_now" tabindex="{%tabindex(0,0)%}">{%text(_ADD_ADDNOW)%}</label>
+		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="{%tabindex(0,0)%}"
+        onclick="checked_act_draft(true, this);" /><label for="act_draft">{%text(_EDIT_KEEP_DRAFT)%}</label>
 		<br />
-		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="{%tabindex(0,0)%}" onclick="checked_act_draft(false, this);" /><label for="act_future">{%text(_ADD_ADDLATER)%}</label> {%helplink(future)%}
+		<input name="actiontype" value="addnow" type="radio" id="act_now" onclick="checked_act_draft(false, this);" /><label for="act_now" tabindex="{%tabindex(0,0)%}">{%text(_EDIT_PUBLISH_NOW)%}</label>
+		<br />
+		<input name="actiontype" value="addfuture" type="radio" id="act_future" tabindex="{%tabindex(0,0)%}" onclick="checked_act_draft(false, this);" /><label for="act_future">{%text(_EDIT_PUBLISH_SCHEDULED)%}</label> {%helplink(future)%}
 		<div class="indent">
-			{%text(_ADD_PLACE_ON)%}
 			{%date_time_picker(currenttime)%}
 			{%ifblogsetting(ballowpast,0)%}
 				<br />
 				{%text(_ADD_NOPASTDATES)%}
 			{%endif%}
 		</div>
-		<input name="actiontype" value="adddraft" type="radio" checked='checked' id="act_draft" tabindex="{%tabindex(0,0)%}"
-        onclick="checked_act_draft(true, this);" /><label for="act_draft">{%text(_EDIT_BACKTODRAFTS)%}</label> {%helplink(draft)%}
-		<br />
-		<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="{%tabindex(0,0)%}" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
 {%endif%}
 
 {%ifitemproperty(draft,0)%}
 	{%settabindex(70)%}{%copytabindex()%}{%inctabindex()%}
-	<input name="actiontype" value="edit" type="radio" checked="checked" id="act_edit" tabindex="{%tabindex(0,0)%}"
-     onclick="checked_act_draft(false, this);" /><label for="act_edit">{%text(_BMLET_EDIT)%}</label>
+	<input name="actiontype" value="changedate" type="hidden" id="act_actiontype" />
 	{%ifblogsetting(ballowpast)%}
-		<br />
-		<input name="actiontype" value="changedate" type="radio" id="act_changedate" tabindex="{%tabindex()%}"
-         onclick="checked_act_draft(false, this);" /><label for="act_changedate">{%text(_ADD_CHANGEDATE)%}</label> {%helplink(changedate)%}
 			<div class="indent">
-				{%text(_ADD_PLACE_ON)%}
 				{%date_time_picker(itemtime)%}
 			</div>
-	{%endif%}	
-	<input name="actiontype" value="backtodrafts" type="radio" id="act_backtodrafts" tabindex="71"
-     onclick="checked_act_draft(true, this);" /><label for="act_backtodrafts">{%text(_BMLET_BACKTODRAFTS)%}</label> {%helplink(draft)%}
-	<br />
-	<input name="actiontype" value="delete" type="radio" id="act_delete" tabindex="61" /><label for="act_delete">{%text(_BMLET_DELETE)%}</label>
+	{%endif%}
 {%endif%}
 
 	</td>
 </tr>
 {%ifautosave()%}
 <tr>
+    <th colspan="2">{%text(_AUTOSAVE_SECTION_TITLE)%}</th>
+</tr>
+<tr>
 	<td>{%text(_AUTOSAVEDRAFT)%}</td>
-	<td><span id="info">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span></td>
-</tr>{%endif%}
+	<td>
+		<input type="checkbox" id="autosave_enabled" checked="checked" onchange="toggleAutosave(this.checked);" />
+		<label for="autosave_enabled">{%text(_AUTOSAVE_ENABLE)%}</label>
+		<span id="info" class="autosave-status">{%text(_AUTOSAVEDRAFT_NOTYETSAVED)%}</span>
+		<input type="button" name="autosavenow" value="{%text(_AUTOSAVE_SAVE_NOW)%}" onclick="autoSaveDraft();" class="btn-small" />
+	</td>
+</tr>
+{%endif%}
+
 {%ifblogsetting(bcomments)%}
 <tr>
-		<td>
-			{%text(_ADD_DISABLE_COMMENTS)%}
-		</td>
-		<td> 
-			<input type="radio" name="closed" value="1" {%checkedonval(1,closed)%} tabindex="30" id="closed_yes" /><label for="closed_yes">{%text(_YES)%}</label>
-			<input type="radio" name="closed" value="0" {%checkedonval(0,closed)%} tabindex="30" id="closed_no" /><label for="closed_no">{%text(_NO)%}</label> <small>{%text(_EDIT_COMMENTSNOTE)%}</small>
-		</td>
-	</tr>
+    <th colspan="2">{%text(_EDIT_SECTION_COMMENTS)%}</th>
+</tr>
+<tr>
+	<td>
+		{%text(_ADD_DISABLE_COMMENTS)%}
+	</td>
+	<td> 
+		<input type="radio" name="closed" value="0" {%checkedonval(0,closed)%} tabindex="30" id="closed_no" /><label for="closed_no">{%text(_SETTINGS_ENABLED)%}</label>
+		<input type="radio" name="closed" value="1" {%checkedonval(1,closed)%} tabindex="30" id="closed_yes" /><label for="closed_yes">{%text(_SETTINGS_DISABLED)%}</label> <small>{%text(_EDIT_COMMENTSNOTE)%}</small>
+	</td>
+</tr>
 {%endif%}
+
+<tr>
+    <th colspan="2">{%text(_EDIT_SECTION_OPTIONS)%}</th>
+</tr>
 <tr>
 	<td>{%settabindex(100)%}{%text(_ADD_PLUGIN_EXTRAS)%}</td>
 	<td>
 		{%pluginextras%}
 	</td>	
 </tr>
-			{%itemoptions%}	
+{%itemoptions%}
+<tr>
+    <th colspan="2">{%text(_ADMIN_EDIT_SECTION_DELETE)%}</th>
+</tr>
+<tr>
+    <td class="col-narrow">{%text(_ADMIN_TEXT_DELETE)%}</td>
+    <td>
+        <input id="deleteButton" class="btn-danger" type="button" value="{%text(_ADMIN_TEXT_DELETE)%}" tabindex="200" onclick=" if (window.confirm('{%text(_ADMIN_COMFIRM_GO_DELETE_BTN)%}')) { document.deleteform.submit(); } " />
+    </td>
+</tr>
 		</table>
 	</div>
-
-<div id="tab_operations" class="contentblock">
-		<table summary="item body" class="bookmarklet">
-	<tr>
-		<td>{%text(_SUBMIT)%}</td>
-		<td>
-			<input tabindex="{%tabindex(1,1)%}" type="submit" value="{%text(_EDIT_SUBMIT)%}" 
-				onclick="return checkSubmit();" />
-			{%ifautosave()%}<input tabindex="{%tabindex(1,1)%}" type="button" name="autosavenow" value="{%text(_AUTOSAVEDRAFT_NOW)%}"
-				onclick="autoSaveDraft();" />{%endif%}
-		</td>
-	</tr>
-			<tr>
-                                <td class="col-narrow">{%text(_ADMIN_TEXT_DELETE)%}</td>
-				<td>
-					<input id="deleteButton" type="button" value="{%text(_ADMIN_TEXT_DELETE)%}" tabindex="200" onclick=" if (window.confirm('{%text(_ADMIN_COMFIRM_GO_DELETE_BTN)%}')) { document.deleteform.submit(); } " />
-				</td>
-			</tr>
-</table>
 
         <div id="tab_preview" class="contentblock is-hidden">
                 <table>
@@ -221,23 +230,11 @@
 			</tr>
 		</table>
 	</div>
-</div>
+	</div><!-- .tab-content -->
+</div><!-- .item-edit-tabs -->
 </form>
 
-<script>
-// workaround for ui-tabs bug : if a <base> tag is present in the <head> section, local tabs load the content of the base URL, instead of the content of the referred div.
-// https://bugs.jqueryui.com/ticket/8637  https://bugs.jqueryui.com/ticket/4941
-if ($('base')[0] && $('base')[0].href) {
-	$('#tabs ul li a').each(function () {
-		var url = document.location.href.split('#');
-		if ($(this).attr('href').match(/^#/)) {
-			$(this).attr('href', url[0] + $(this).attr('href'));
-		}
-	});
-}
-// end workaround ui-tabs bug
-	$( "#tabs" ).tabs();
-</script>
+
 
 
 {%ifautosave()%}<script type="text/javascript">

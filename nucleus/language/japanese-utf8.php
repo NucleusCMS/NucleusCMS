@@ -125,6 +125,7 @@ try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  '下書き+非公
 try_define('_ADD_PUBLIC',             '公開');
 try_define('_ADD_UNPUBLIC',           '非公開');
 try_define('_ADD_DRAFT',              '下書き');
+try_define('_ADD_STATUS',             'ステータス');
 try_define('_ADD_PUBLIC_TERM',        '公開期限の設定');
 try_define('_ADD_PUBLIC_TERM_DESC',   '期限を有効にするにはチェックをつけてください。どちらもチェックがない場合は、期限なしとなります');
 try_define('_ADD_PUBLIC_TERM_START',  '公開開始日時');
@@ -309,8 +310,7 @@ try_define('_CREATE_ACCOUNT_EMAIL2',			'(アクティベーション用のリン
 try_define('_CREATE_ACCOUNT_URL',				'(もしあれば)自分のサイトのURL：');
 try_define('_CREATE_ACCOUNT_SUBMIT',			'アカウントの作成');
 
-try_define('_BMLET_BACKTODRAFTS',				'ドラフトに戻す');
-try_define('_BMLET_CANCEL',						'キャンセル');
+
 
 try_define('_LIST_ITEM_NOCONTENT',						'コメントはありません');
 try_define('_LIST_ITEM_COMMENTS',						'コメント(%d)件');
@@ -330,8 +330,7 @@ try_define('_ADD_ADDLATER',						'日時を指定して追加');	// <mod by shiz
 try_define('_LOGIN_NAME',						'ログインID:');
 try_define('_LOGIN_PASSWORD',					'パスワード:');
 
-// changed from _BOOKMARLET_BMARKLFOLLOW
-try_define('_BOOKMARKLET_BMARKFOLLOW',					' (ほとんどのブラウザで動作します)');
+
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -345,10 +344,7 @@ try_define('_ADMIN_ADVANCED_WAY',				'<strong>高度な方法:</strong> 現在�
 try_define('_ADMIN_HOW_TO_CREATE',				'Blogの作成');
 
 
-try_define('_BOOKMARKLET_NEW_CATEGORY',			'アイテムは追加され、新しいカテゴリが作成されました。');
-try_define('_BOOKMARKLET_NEW_CATEGORY_EDIT',	'ここをクリックしてカテゴリーの名前と説明を編集してください。');
-try_define('_BOOKMARKLET_NEW_WINDOW',			'新しいウィンドウが開きます');
-try_define('_BOOKMARKLET_SEND_PING',			'アイテムの追加に成功しました。現在blog検索サービスに更新pingを送信します。'); // NOTE: This string is no longer in used
+
 
 // END merge UTF-8 and EUC-JP
 
@@ -401,33 +397,7 @@ try_define('_QMENU_MANAGE_SYSTEM',						'システム環境');
 // REG file
 try_define('_WINREGFILE_TEXT',							'「%s」に記事を投稿');
 
-// Bookmarklet
-try_define('_BOOKMARKLET_TITLE',						'ブックマークレット<!-- と 右クリックメニュー -->');
-try_define('_BOOKMARKLET_DESC1',						'ブックマークレット（Bookmarklet）とは、Webブラウザのブックマークに登録して使うJavaScriptプログラムです。<br />');
-try_define('_BOOKMARKLET_DESC2',						'Nucleusには『お気に入り』または『ブックマークツールバー』に登録でき、クリックひとつで blog への投稿画面を開く機能をブラウザに追加することができます。<br />');
-try_define('_BOOKMARKLET_DESC3',						'Webサイトを見ていてそのページにリンクを張った投稿をしたいと思った時にブックマークレットを使用すれば、そのサイト(ページ)へのリンクが書き込まれた状態で、');
-try_define('_BOOKMARKLET_DESC4',						'さらに、そのページ内で文章を選択した状態で使用した場合、選択されている文章が自動的に引用された状態で、Nucleusの新規アイテムの追加ウィンドウがポップアップします。<br />');
-try_define('_BOOKMARKLET_DESC5',						'またWindows Internet Explorerのみですが、この機能を右クリックメニューに登録することもできます。');
-try_define('_BOOKMARKLET_BOOKARKLET',					'ブックマークレット');
-try_define('_BOOKMARKLET_ANCHOR',						'「%s」に記事を投稿');
-try_define('_BOOKMARKLET_BMARKTEXT',					' 下のリンクを「お気に入り」もしくは「ブックマーク」に追加してください。追加の仕方はそれぞれのブラウザのヘルプを参照してください。<br />');
-try_define('_BOOKMARKLET_BMARKTEST',					' (テストしてみたい場合は下のリンクをクリックしてみてください)');
-try_define('_BOOKMARKLET_RIGHTCLICK',					'右クリックメニューにインストール(Windows Internet Explorerのみ)');
-try_define('_BOOKMARKLET_RIGHTLABEL',					'右クリックメニュー');
-try_define('_BOOKMARKLET_RIGHTTEXT1',					'Windowsでインターネットエクスプローラーを使用している場合は、');
-try_define('_BOOKMARKLET_RIGHTTEXT2',					'にインストールすることもできます<br />(「開く」を選択すれば直接レジストリに登録します)');
-try_define('_BOOKMARKLET_RIGHTTEXT3',					'このインストールした右クリックメニューを表示するためにはIEの再起動が必要です。');
-try_define('_BOOKMARKLET_UNINSTALLTT',					'アンインストール');
-try_define('_BOOKMARKLET_DELETEBAR',					'「お気に入り」もしくはツールバーから消すには、単に削除するだけです。');
-try_define('_BOOKMARKLET_DELETERIGHTT',					'右クリックメニューから消したい時は、以下の手順を踏んでください:');
-try_define('_BOOKMARKLET_DELETERIGHT1',					'スタートメニューから「ファイルを指定して実行...」を選択');
-try_define('_BOOKMARKLET_DELETERIGHT2',					'"regedit" と入力');
-try_define('_BOOKMARKLET_DELETERIGHT3',					'"OK" ボタンを押す');
-try_define('_BOOKMARKLET_DELETERIGHT4',					'"\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" をツリーの中から検索');
-try_define('_BOOKMARKLET_DELETERIGHT5',					'"「(blogの名前)」に記事を投稿" エントリを削除');
 
-try_define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'何かが間違っています');
-try_define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'新しいカテゴリを作ることができませんでした');
 
 // BAN
 try_define('_BAN_EXAMPLE_TITLE',						'例');
@@ -456,6 +426,7 @@ try_define('_ERRORS_INSTALLPHP',						'｢install.php｣ファイルを削除し
 try_define('_ERRORS_UPGRADESDIR',						'｢_upgrades｣ディレクトリを削除してください');
 try_define('_ERRORS_CONVERTDIR',						'｢nucleus/convert｣ディレクトリを削除してください');
 try_define('_ERRORS_CONFIGPHP',							'｢config.php｣ファイルを読み取り専用(｢chmod 444｣等)にしてください');
+try_define('_ERRORS_INSTALLCONFIG',                                            'インストール用認証ファイル（install/install-config.php）を削除してください');
 try_define('_ERRORS_STARTUPERROR1',						'<p>インストール(アップグレード)用ファイルがサーバ上に残っています。</p><ul><li>');
 try_define('_ERRORS_STARTUPERROR2',						'</li></ul><p>これらのファイルを削除すると、警告は表示されなくなります。</p>');
 try_define('_ERRORS_STARTUPERROR3',						'セキュリティ リスクの警告');
@@ -600,10 +571,15 @@ try_define('_LANGUAGEFILES_SPANISH',					'スペイン語 - Espa&ntilde;ol (iso-
  ********************************************/
 
 // START changed/added after 3.3 START
-try_define('_AUTOSAVEDRAFT',					'ドラフト保存状況');
-try_define('_AUTOSAVEDRAFT_LASTSAVED',			'最終ドラフト保存日時: ');
-try_define('_AUTOSAVEDRAFT_NOTYETSAVED',		'保存されていません');
+try_define('_AUTOSAVEDRAFT',					'自動保存');
+try_define('_AUTOSAVEDRAFT_LASTSAVED',			'最終保存: ');
+try_define('_AUTOSAVEDRAFT_NOTYETSAVED',		'まだ保存されていません');
 try_define('_AUTOSAVEDRAFT_NOW',				'ドラフト保存');
+
+// Auto save UI
+try_define('_AUTOSAVE_SECTION_TITLE',			'自動保存');
+try_define('_AUTOSAVE_ENABLE',					'有効にする');
+try_define('_AUTOSAVE_SAVE_NOW',				'今すぐ保存');
 try_define('_SKIN_PARTS_SPECIAL',				'スペシャルスキンパーツ');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',	'英数字以外の文字は使えません');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',	'このスキンパーツを削除できません');
@@ -776,7 +752,7 @@ try_define('_ERROR_UPLOADFAILED',				'アップロードに失敗しました');
 // posting to the past/edit timestamps
 try_define('_EBLOG_ALLOWPASTPOSTING',			'過去の日時での投稿を許可する');
 try_define('_ADD_CHANGEDATE',					'タイムスタンプを更新');
-try_define('_BMLET_CHANGEDATE',					'タイムスタンプを更新');
+
 
 // skin import/export
 try_define('_OVERVIEW_SKINIMPORT',				'読込/書出');
@@ -839,6 +815,8 @@ try_define('_BATCH_COMMENT_DELETE',				'削除');
 
 // itemlist: Add new item...
 try_define('_ITEMLIST_ADDNEW',					'新しいアイテムの追加...');
+try_define('_ITEMLIST_ADD_TARGET',				'投稿先');
+try_define('_ITEMLIST_ADD_NONE',					'投稿可能なブログがありません。');
 try_define('_ADD_PLUGIN_EXTRAS',				'追加プラグインオプション');
 
 // errors
@@ -930,18 +908,13 @@ try_define('_MMAIL_MAIL',						'メッセージ:');
 
 // START introduced after v1.1 START
 
-// bookmarklet buttons
-try_define('_BMLET_ADD',						'アイテムの追加');
-try_define('_BMLET_EDIT',						'保存');
-try_define('_BMLET_DELETE',						'アイテムの削除');
-try_define('_BMLET_BODY',						'本文');
-try_define('_BMLET_MORE',						'続き');
-try_define('_BMLET_OPTIONS',					'オプション');
-try_define('_BMLET_PREVIEW',					'プレビュー');
 
-// used in bookmarklet
-try_define('_ITEM_UPDATED',						'アイテムが更新されました');
-try_define('_ITEM_DELETED',						'アイテムが削除されました');
+// edit tab labels
+try_define('_EDIT_TAB_BODY',			'本文');
+try_define('_EDIT_TAB_MORE',			'続き');
+
+
+
 
 // plugins
 try_define('_CONFIRMTXT_PLUGIN',				'このプラグインを削除しますか？');
@@ -1040,6 +1013,8 @@ try_define('_LOGOUT',							'ログアウト');
 try_define('_LOGIN',							'ログイン');
 try_define('_YES',								'はい');
 try_define('_NO',								'いいえ');
+try_define('_SETTINGS_ENABLED',					'有効');
+try_define('_SETTINGS_DISABLED',				'無効');
 try_define('_SUBMIT',							'保存');
 try_define('_ERROR',							'エラー');
 try_define('_ERRORMSG',							'エラーが発生しました！');
@@ -1086,11 +1061,12 @@ try_define('_ADD_TITLE',						'タイトル');
 try_define('_ADD_MORE',							'続き (空欄でも可)');
 try_define('_ADD_CATEGORY',						'カテゴリー');
 try_define('_ADD_PREVIEW',						'プレビュー');
-try_define('_ADD_DISABLE_COMMENTS',				'コメントを受け付けない');
+try_define('_ADD_DISABLE_COMMENTS',				'コメント');
 try_define('_ADD_DRAFTNFUTURE',					'ドラフトと未来の記事');
 try_define('_ADD_ADDITEM',						'アイテムを追加');
 try_define('_ADD_ADDNOW',						'今すぐ追加');
 try_define('_ADD_PLACE_ON',						'日時:');
+try_define('_ADD_DATETIME',						'日時');
 try_define('_ADD_ADDDRAFT',						'ドラフトに追加');
 try_define('_ADD_NOPASTDATES',					'(過去の日時は指定できません。指定された場合は現在の日時が使用されます)');
 try_define('_ADD_BOLD_TT',						'太字');
@@ -1108,7 +1084,23 @@ try_define('_EDIT_ITEM',						'アイテムの編集');
 try_define('_EDIT_SUBMIT',						'保存');
 try_define('_EDIT_ORIG_AUTHOR',					'原作者');
 try_define('_EDIT_BACKTODRAFTS',				'再度ドラフトとして保存');
-try_define('_EDIT_COMMENTSNOTE',				'(注意: コメントの非表示は以前に追加されたコメントを隠しはしません)');
+try_define('_EDIT_COMMENTSNOTE',				'(注意: 既存のコメントは非表示になりません)');
+
+// edit item form - section headers
+try_define('_EDIT_SECTION_PUBLIC_STATE',		'公開状態');
+try_define('_EDIT_SECTION_TIMESTAMP',			'日時設定');
+try_define('_EDIT_SECTION_COMMENTS',			'コメント設定');
+try_define('_EDIT_SECTION_OPTIONS',				'追加オプション');
+try_define('_EDIT_KEEP_DRAFT',					'下書きのまま保存');
+try_define('_EDIT_PUBLISH_NOW',					'今すぐ公開');
+try_define('_EDIT_PUBLISH_SCHEDULED',			'日時を指定して公開');
+try_define('_EDIT_KEEP_PUBLISHED',				'公開状態を維持');
+
+// edit item form - header buttons
+try_define('_EDIT_BTN_SAVE_DRAFT',				'下書きを保存');
+try_define('_EDIT_BTN_PUBLISH',					'公開する');
+try_define('_EDIT_BTN_UPDATE',					'更新');
+try_define('_EDIT_BTN_UNPUBLISH',				'下書きに戻す');
 
 // used on delete screens
 try_define('_DELETE_CONFIRM',					'削除の確認をしてください');
@@ -1283,12 +1275,21 @@ try_define('_EBLOG_CREATE_TITLE',				'新しいBlogの作成');
 try_define('_EBLOG_CREATE_TEXT',				'新しいBlogを作成するために以下のフォームを埋めてください。<br /><br /> <b>注意:</b> 必要なオプションのみが表示されています。追加のオプションを設定したい場合はBlogを作成した後、Blog設定ページで設定してください。');
 try_define('_EBLOG_CREATE',						'作成！');
 try_define('_EBLOG_CREATE_BTN',					'Blogを作成');
-try_define('_EBLOG_CAT_TITLE',					'カテゴリー');
+try_define('_EBLOG_CAT_TITLE',				'カテゴリー');
 try_define('_EBLOG_CAT_NAME',					'カテゴリー名');
 try_define('_EBLOG_CAT_DESC',					'カテゴリーの説明');
 try_define('_EBLOG_CAT_CREATE',					'新しいカテゴリーを作る');
 try_define('_EBLOG_CAT_UPDATE',					'カテゴリーの更新');
 try_define('_EBLOG_CAT_UPDATE_BTN',				'カテゴリーを更新');
+
+// blogsettings tabs
+try_define('_BLOGSETTINGS_TAB_BLOG',			'Blog設定');
+try_define('_BLOGSETTINGS_TAB_TEAM',			'チーム設定');
+try_define('_BLOGSETTINGS_TAB_CATEGORY',		'カテゴリー');
+try_define('_BLOGSETTINGS_TAB_PLUGIN',			'プラグイン設定');
+try_define('_BLOGSETTINGS_TAB_BAN',				'IPアドレス制限');
+try_define('_BLOGSETTINGS_TAB_OTHER',			'その他');
+
 
 // templates
 try_define('_TEMPLATE_TITLE',					'テンプレートの編集');
@@ -1464,14 +1465,16 @@ try_define('_BLOGLIST_ADD',						'アイテムの追加');
 try_define('_BLOGLIST_TT_ADD',					'このBlogに新しいアイテムを追加します');
 try_define('_BLOGLIST_EDIT',					'アイテムの編集/削除');
 try_define('_BLOGLIST_TT_EDIT',					'公開済みのアイテムを編集と削除');
-try_define('_BLOGLIST_BMLET',					'ブックマークレット');
-try_define('_BLOGLIST_TT_BMLET',				'ブックマークレットのインストール');
+
 try_define('_BLOGLIST_SETTINGS',				'ブログ設定');
 try_define('_BLOGLIST_TT_SETTINGS',				'ブログの設定とブログチームの管理');
 try_define('_BLOGLIST_BANS',					'アクセス制限');
 try_define('_BLOGLIST_TT_BANS',					'アクセス制限の確認/追加/削除');
 try_define('_BLOGLIST_DELETE',					'全て削除');
 try_define('_BLOGLIST_TT_DELETE',				'このBlogを削除');
+try_define('_BLOGLIST_DELETE_THIS_BLOG',		'このブログを削除');
+try_define('_BLOGLIST_DELETE_THIS_BLOG_WARNING','警告: ブログを削除すると、すべてのアイテム、コメント、カテゴリーが完全に削除されます。この操作は取り消せません。');
+try_define('_BLOGLIST_DELETE_THIS_BLOG_LINK',	'このブログを削除する');
 
 // OVERVIEW screen
 try_define('_OVERVIEW_YRBLOGS',					'あなたのBlog');
@@ -1570,12 +1573,14 @@ try_define('_ADMIN_ISTATE_PERIOD_END',     '終了');
 try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', '期限切れ');
 try_define('_ADMIN_ISTATE_PERIOD_INVALID', '無効な期限');
 try_define('_ADMIN_ISTATE_PERIOD_START',   '開始');
+try_define('_ADMIN_ISTATE_PUBLISHED',      '公開中');
 try_define('_ADMIN_ISTATE_RESERVATION',    '予約投稿');
 try_define('_ADMIN_ISTATE_STATE',          '状態');
 
 try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'保存とオプション');
 try_define('_ADMIN_EDIT_OPERATIONS',  "操作");
 try_define('_ADMIN_TEXT_DELETE',  "削除");
+try_define('_ADMIN_EDIT_SECTION_DELETE',  "削除");
 try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "アイテム削除画面へ移動します。現在編集している変更内容は失われます。削除画面へ移動してもよろしいですか？");
 
 try_define('_TEXT_VIEW',					'表示');

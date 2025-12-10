@@ -3676,7 +3676,7 @@ all
 <h1>Skinvar: addlink</h1>
 
 <p>
-Inserts a URL to the new item bookmarklet form. Only shown for members who have rights on the current blog.
+
 </p>
 
 <h2>Arguments</h2>
@@ -3701,7 +3701,7 @@ all
 <h1>Skinvar: addpopupcode</h1>
 
 <p>
-Inserts javascript code to open a bookmarklet in an popup window. Use with <code>&lt;%addlink%&gt;</code>
+
 </p>
 
 <h2>Arguments</h2>
@@ -3909,7 +3909,7 @@ These template variables be used in the following template-parts: <tt>item heade
 	<td>inserts an 'edit this item' link</td>
 </tr><tr>
 	<td><a href="#templatevar-editlink">editlink</a></td>
-	<td>raw 'edit item' link (links to bookmarklet)</td>
+	<td>raw 'edit item' link</td>
 </tr><tr>
 	<td><a href="#templatevar-editpopupcode">editpopupcode</a></td>
 	<td>javascript code to open a popup window for editlink</td>
@@ -4467,7 +4467,7 @@ This variable was originally intended for use in the XML-RSS skin that comes wit
 <h1>Templatevar: edit</h1>
 
 <p>
-From within your template, you can add an 'edit item' link by using this template variable. By default, it will link to a popup-bookmarklet-window, but that behaviour can be changed through the <a href="#templateeditlink">editlink template</a>.
+From within your template, you can add an 'edit item' link by using this template variable. By default, it will link to the admin area edit page, but that behaviour can be changed through the <a href="#templateeditlink">editlink template</a>.
 </p>
 
 <p><strong>Note:</strong> only logged in members that are allowed to edit the item will see this link. In other cases, the edit-templatevar does nothing at all.</p>
@@ -4496,7 +4496,7 @@ From within your template, you can add an 'edit item' link by using this templat
 <h1>Templatevar: editlink</h1>
 
 <p>
-Insert a link to the 'edit item' bookmarklet. This can be used in the <a href="#templateeditlink">editlink template</a> for simplicity.
+
 </p>
 
 <h2>Example</h2>

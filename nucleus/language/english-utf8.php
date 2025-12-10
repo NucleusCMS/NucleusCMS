@@ -93,6 +93,7 @@ try_define('_LISTS_FORM_SELECT_ITEM_OPTION_DRAFT_NON_PUBLIC',  'Draft+Unpublic')
 try_define('_ADD_PUBLIC',             'Public');
 try_define('_ADD_UNPUBLIC',           'Unpublic');
 try_define('_ADD_DRAFT',              'Draft');
+try_define('_ADD_STATUS',             'Status');
 try_define('_ADD_PUBLIC_TERM',        'Activate item expiration period');
 try_define('_ADD_PUBLIC_TERM_DESC',   'Check if enable the expiration period');
 try_define('_ADD_PUBLIC_TERM_START',  'The date time of beginning');
@@ -277,8 +278,7 @@ try_define('_CREATE_ACCOUNT_EMAIL2',					'(must be valid, because an activation 
 try_define('_CREATE_ACCOUNT_URL',						'URL:');
 try_define('_CREATE_ACCOUNT_SUBMIT',					'Create Account');
 
-try_define('_BMLET_BACKTODRAFTS',		'Move back to drafts');
-try_define('_BMLET_CANCEL',				'Cancel');
+
 
 try_define('_LIST_ITEM_NOCONTENT',						'No Comment');
 try_define('_LIST_ITEM_COMMENTS',						'%d Comments');
@@ -298,8 +298,7 @@ try_define('_ADD_ADDLATER',								'Add the dates specified');
 try_define('_LOGIN_NAME',				'Name:');
 try_define('_LOGIN_PASSWORD',			'Password:');
 
-// changed from _BOOKMARLET_BMARKLFOLLOW
-try_define('_BOOKMARKLET_BMARKFOLLOW',					' (Works with nearly all browsers)');
+
 // END changed/added after 3.33 END
 
 // START merge UTF-8 and EUC-JP
@@ -313,10 +312,7 @@ try_define('_ADMIN_ADVANCED_WAY',						"<strong>Advanced:</strong> Insert the bl
 try_define('_ADMIN_HOW_TO_CREATE',						'Create Weblog');
 
 
-try_define('_BOOKMARKLET_NEW_CATEGORY',					'Item was added, and a new category was created. ');
-try_define('_BOOKMARKLET_NEW_CATEGORY_EDIT',			'Click here to edit the name and description of the category.');
-try_define('_BOOKMARKLET_NEW_WINDOW',					'Opens in new window');
-try_define('_BOOKMARKLET_SEND_PING',					'Item was added successfully. Now pinging weblogs.com. Please hold on... (can take a while)'); // NOTE: This string is no longer in used
+
 
 // END merge UTF-8 and EUC-JP
 
@@ -369,33 +365,7 @@ try_define('_QMENU_MANAGE_SYSTEM',						'System info');
 // REG file
 try_define('_WINREGFILE_TEXT',							'Post To &Nucleus (%s)');
 
-// Bookmarklet
-try_define('_BOOKMARKLET_TITLE',						'Bookmarklet<!-- and Right Click Menu -->');
-try_define('_BOOKMARKLET_DESC1',						'Bookmarklets allow adding items to your weblog with just one single click. ');
-try_define('_BOOKMARKLET_DESC2',						'After installing these bookmarklets, you\'ll be able to click the \'add to weblog\' button on your browser toolbar, ');
-try_define('_BOOKMARKLET_DESC3',						'and a Nucleus add-item window will popup, ');
-try_define('_BOOKMARKLET_DESC4',						'containing the link and title of the page you were visiting, ');
-try_define('_BOOKMARKLET_DESC5',						'plus any text you might have selected.');
-try_define('_BOOKMARKLET_BOOKARKLET',					'bookmarklet');
-try_define('_BOOKMARKLET_ANCHOR',						'Add to %s');
-try_define('_BOOKMARKLET_BMARKTEXT',					'You can drag the following link to your favorites, or your browsers toolbar: ');
-try_define('_BOOKMARKLET_BMARKTEST',					'(if you want to test the bookmarklet first, click the link)');
-try_define('_BOOKMARKLET_RIGHTCLICK',					'Right Click Menu Access (IE &amp; Windows)');
-try_define('_BOOKMARKLET_RIGHTLABEL',					'right click menu item');
-try_define('_BOOKMARKLET_RIGHTTEXT1',					'Or you can install the ');
-try_define('_BOOKMARKLET_RIGHTTEXT2',					' (choose \'open file\' and add to registry)');
-try_define('_BOOKMARKLET_RIGHTTEXT3',					'You\'ll have to restart Internet Explorer before the option shows up in the context menus.');
-try_define('_BOOKMARKLET_UNINSTALLTT',					'Uninstalling');
-try_define('_BOOKMARKLET_DELETEBAR',					'For the bookmarklet, you can just delete it.');
-try_define('_BOOKMARKLET_DELETERIGHTT',					'For the right click menu item, follow the procedure listed below:');
-try_define('_BOOKMARKLET_DELETERIGHT1',					'Select "Run..." from the Start Menu');
-try_define('_BOOKMARKLET_DELETERIGHT2',					'Type: "regedit"');
-try_define('_BOOKMARKLET_DELETERIGHT3',					'Click the "OK" button');
-try_define('_BOOKMARKLET_DELETERIGHT4',					'Search for "\HKEY_CURRENT_USER\Software\Microsoft\Internet Explorer\MenuExt" in the tree');
-try_define('_BOOKMARKLET_DELETERIGHT5',					'Delete the "add to \'Your weblog\'" item');
 
-try_define('_BOOKMARKLET_ERROR_SOMETHINGWRONG',			'Something went wrong');
-try_define('_BOOKMARKLET_ERROR_COULDNTNEWCAT',			'Could not create new category');
 
 // BAN
 try_define('_BAN_EXAMPLE_TITLE',						'An example');
@@ -424,6 +394,7 @@ try_define('_ERRORS_INSTALLPHP',						'install.php should be deleted');
 try_define('_ERRORS_UPGRADESDIR',						'_upgrades directory should be deleted');
 try_define('_ERRORS_CONVERTDIR',						'nucleus/convert directory should be deleted');
 try_define('_ERRORS_CONFIGPHP',							'config.php should be non-writable (chmod to 444)');
+try_define('_ERRORS_INSTALLCONFIG',                                            'installer authentication file (install/install-config.php) should be removed');
 try_define('_ERRORS_STARTUPERROR1',						'<p>One or more Nucleus installation or upgrade files are still present on the webserver.</p><p>Delete them to secure your site. Examples of files found:</p> <ul><li>');
 try_define('_ERRORS_STARTUPERROR2',                                             '</li></ul><p>Delete the files above to stop this warning.</p>');
 try_define('_ERRORS_STARTUPERROR3',						'Security Risk');
@@ -568,10 +539,15 @@ try_define('_LANGUAGEFILES_SPANISH',					'Spanish - Espa&ntilde;ol (iso-8859-1)'
  ********************************************/
 
 // START changed/added after 3.3 START
-try_define('_AUTOSAVEDRAFT',		'Auto save draft');
+try_define('_AUTOSAVEDRAFT',		'Auto Save');
 try_define('_AUTOSAVEDRAFT_LASTSAVED',	'Last saved: ');
-try_define('_AUTOSAVEDRAFT_NOTYETSAVED',	'No saves have been made yet');
+try_define('_AUTOSAVEDRAFT_NOTYETSAVED',	'Not saved yet');
 try_define('_AUTOSAVEDRAFT_NOW',		'Auto save now');
+
+// Auto save UI
+try_define('_AUTOSAVE_SECTION_TITLE',		'Auto Save');
+try_define('_AUTOSAVE_ENABLE',				'Enable');
+try_define('_AUTOSAVE_SAVE_NOW',			'Save Now');
 try_define('_SKIN_PARTS_SPECIAL',		'Special skin parts');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_FORMAT',		'You must enter a name that exists only out of lowercase letters and digits');
 try_define('_ERROR_SKIN_PARTS_SPECIAL_DELETE',		'Can\'t delete this skin part');
@@ -741,7 +717,7 @@ try_define('_ERROR_UPLOADFAILED',		'Upload failed');
 // posting to the past/edit timestamps
 try_define('_EBLOG_ALLOWPASTPOSTING',	'Allow posting to the past');
 try_define('_ADD_CHANGEDATE',			'Update timestamp');
-try_define('_BMLET_CHANGEDATE',			'Update timestamp');
+
 
 // skin import/export
 try_define('_OVERVIEW_SKINIMPORT',		'Skin import/export...');
@@ -804,6 +780,8 @@ try_define('_BATCH_COMMENT_DELETE',		'Delete');
 
 // itemlist: Add new item...
 try_define('_ITEMLIST_ADDNEW',			'Add new item...');
+try_define('_ITEMLIST_ADD_TARGET',		'Post to');
+try_define('_ITEMLIST_ADD_NONE',		'You are not a team member of any blog, so no new items can be added.');
 try_define('_ADD_PLUGIN_EXTRAS',		'Extra Plugin Options');
 
 // errors
@@ -894,18 +872,11 @@ try_define('_MMAIL_MAIL',				'Message:');
 
 // START introduced after v1.1 START
 
-// bookmarklet buttons
-try_define('_BMLET_ADD',				'Add Item');
-try_define('_BMLET_EDIT',				'Edit Item');
-try_define('_BMLET_DELETE',				'Delete Item');
-try_define('_BMLET_BODY',				'Body');
-try_define('_BMLET_MORE',				'Extended');
-try_define('_BMLET_OPTIONS',			'Options');
-try_define('_BMLET_PREVIEW',			'Preview');
+// edit tab labels
+try_define('_EDIT_TAB_BODY',			'Body');
+try_define('_EDIT_TAB_MORE',			'Extended');
 
-// used in bookmarklet
-try_define('_ITEM_UPDATED',				'Item was updated');
-try_define('_ITEM_DELETED',				'Item was deleted');
+
 
 // plugins
 try_define('_CONFIRMTXT_PLUGIN',		'Are you sure you want to delete the plugin named');
@@ -993,6 +964,8 @@ try_define('_LOGOUT',					'Log Out');
 try_define('_LOGIN',					'Log In');
 try_define('_YES',						'Yes');
 try_define('_NO',						'No');
+try_define('_SETTINGS_ENABLED',			'Enabled');
+try_define('_SETTINGS_DISABLED',		'Disabled');
 try_define('_SUBMIT',					'Submit');
 try_define('_ERROR',					'Error');
 try_define('_ERRORMSG',					'An error has occurred!');
@@ -1039,11 +1012,12 @@ try_define('_ADD_TITLE',				'Title');
 try_define('_ADD_MORE',					'Extended (optional)');
 try_define('_ADD_CATEGORY',				'Category');
 try_define('_ADD_PREVIEW',				'Preview');
-try_define('_ADD_DISABLE_COMMENTS',		'Disable comments?');
+try_define('_ADD_DISABLE_COMMENTS',		'Comments');
 try_define('_ADD_DRAFTNFUTURE',			'Draft &amp; Future Items');
 try_define('_ADD_ADDITEM',				'Add Item');
 try_define('_ADD_ADDNOW',				'Add Now');
 try_define('_ADD_PLACE_ON',				'Place on');
+try_define('_ADD_DATETIME',				'Date/Time');
 try_define('_ADD_ADDDRAFT',				'Add to drafts');
 try_define('_ADD_NOPASTDATES',			'(dates and times in the past are NOT valid, the current time will be used in that case)');
 try_define('_ADD_BOLD_TT',				'Bold');
@@ -1062,6 +1036,22 @@ try_define('_EDIT_SUBMIT',				'Edit Item');
 try_define('_EDIT_ORIG_AUTHOR',			'Original author');
 try_define('_EDIT_BACKTODRAFTS',		'Add back to drafts');
 try_define('_EDIT_COMMENTSNOTE',		'(note: disabling comments will _not_ hide previously added comments)');
+
+// edit item form - section headers
+try_define('_EDIT_SECTION_PUBLIC_STATE',		'Publication Status');
+try_define('_EDIT_SECTION_TIMESTAMP',			'Date/Time Settings');
+try_define('_EDIT_SECTION_COMMENTS',			'Comment Settings');
+try_define('_EDIT_SECTION_OPTIONS',				'Additional Options');
+try_define('_EDIT_KEEP_DRAFT',					'Keep as draft');
+try_define('_EDIT_PUBLISH_NOW',					'Publish now');
+try_define('_EDIT_PUBLISH_SCHEDULED',			'Schedule publication');
+try_define('_EDIT_KEEP_PUBLISHED',				'Keep published');
+
+// edit item form - header buttons
+try_define('_EDIT_BTN_SAVE_DRAFT',				'Save Draft');
+try_define('_EDIT_BTN_PUBLISH',					'Publish');
+try_define('_EDIT_BTN_UPDATE',					'Update');
+try_define('_EDIT_BTN_UNPUBLISH',				'Unpublish');
 
 // used on delete screens
 try_define('_DELETE_CONFIRM',			'Please confirm deletion');
@@ -1243,6 +1233,15 @@ try_define('_EBLOG_CAT_CREATE',			'Create New Category');
 try_define('_EBLOG_CAT_UPDATE',			'Update Category');
 try_define('_EBLOG_CAT_UPDATE_BTN',		'Update Category');
 
+// blogsettings tabs
+try_define('_BLOGSETTINGS_TAB_BLOG',	'Blog Settings');
+try_define('_BLOGSETTINGS_TAB_TEAM',	'Team Settings');
+try_define('_BLOGSETTINGS_TAB_CATEGORY','Categories');
+try_define('_BLOGSETTINGS_TAB_PLUGIN',	'Plugin Settings');
+try_define('_BLOGSETTINGS_TAB_BAN',		'IP Restrictions');
+try_define('_BLOGSETTINGS_TAB_OTHER',	'Other');
+
+
 // templates
 try_define('_TEMPLATE_TITLE',			'Edit Templates');
 try_define('_TEMPLATE_AVAILABLE_TITLE',	'Available Templates');
@@ -1417,8 +1416,7 @@ try_define('_BLOGLIST_ADD',				'Add Item');
 try_define('_BLOGLIST_TT_ADD',			'Add a new item to this weblog');
 try_define('_BLOGLIST_EDIT',			'Edit/Delete Items');
 try_define('_BLOGLIST_TT_EDIT',			'');
-try_define('_BLOGLIST_BMLET',			'Bookmarklet');
-try_define('_BLOGLIST_TT_BMLET',		'');
+
 try_define('_BLOGLIST_SETTINGS',		'Settings');
 try_define('_BLOGLIST_TT_SETTINGS',		'Edit settings or manage team');
 try_define('_BLOGLIST_BANS',			'Bans');
@@ -1560,12 +1558,14 @@ try_define('_ADMIN_ISTATE_PERIOD_END',     'End');
 try_define('_ADMIN_ISTATE_PERIOD_EXPIRED', 'Expired');
 try_define('_ADMIN_ISTATE_PERIOD_INVALID', 'Invalid');
 try_define('_ADMIN_ISTATE_PERIOD_START',   'Start');
+try_define('_ADMIN_ISTATE_PUBLISHED',      'Published');
 try_define('_ADMIN_ISTATE_RESERVATION',    'Reservation');
 try_define('_ADMIN_ISTATE_STATE',          'State');
 
 try_define('_ADMIN_EDIT_TAB_SAVE_AND_OPTTIONS',			'Save and options');
 try_define('_ADMIN_EDIT_OPERATIONS',  "OPERATIONS");
 try_define('_ADMIN_TEXT_DELETE',  "DELETE");
+try_define('_ADMIN_EDIT_SECTION_DELETE',  "DELETE");
 try_define('_ADMIN_COMFIRM_GO_DELETE_BTN',  "COMFIRM DELETE");
 
 try_define('_TEXT_VIEW',						'View');

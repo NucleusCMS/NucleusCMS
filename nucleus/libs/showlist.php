@@ -147,8 +147,14 @@ function listplug_table($template, $type)
             echo "</tr></thead><tbody>";
             break;
         case 'BODY':
-            echo '<tr onmouseover="focusRow(this);" onmouseout="blurRow(this);">';
+            // First call the function to populate content and possibly set row class
+            ob_start();
             echo call_user_func($func_name, $template, $type) ?? '';
+            $bodyContent = ob_get_clean();
+            
+            $rowClass = !empty($GLOBALS['listplug_rowClass']) ? ' class="' . hsc($GLOBALS['listplug_rowClass']) . '"' : '';
+            echo '<tr' . $rowClass . ' onmouseover="focusRow(this);" onmouseout="blurRow(this);">';
+            echo $bodyContent;
             echo "</tr>";
             break;
         case 'FOOT':
@@ -187,7 +193,7 @@ function listplug_table_teamlist($template, $type)
 
             echo '<td>';
             $id = listplug_nextBatchId();
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->tmember, '" />';
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->tmember, '" onchange="batchOnItemCheckboxChange()" />';
             echo '<label for="batch', $id, '">';
             echo "<a href='mailto:", hsc($current->memail), "' tabindex='"
                                                             . $template['tabindex']
@@ -454,8 +460,13 @@ function listplug_table_itemlist($template, $type)
 
     switch ($type) {
         case 'HEAD':
-            echo "<th>" . _LIST_ITEM_INFO . "</th><th>" . _LIST_ITEM_CONTENT
-                 . "</th><th style=\"white-space:nowrap\" colspan='1'>"
+            echo '<th class="batch-checkbox">'
+                 . '<input type="checkbox" id="batch-toggle-all" aria-label="' . _BATCH_SELECTALL
+                 . '" onclick="return batchToggleSelect(this);" />'
+                 . '</th>';
+            echo "<th>" . _LIST_ITEM_CONTENT . "</th><th>" . _LIST_ITEM_INFO
+                 . "</th><th>" . _ADMIN_ISTATE_STATE
+                 . "</th><th class=\"list-actions-header\" colspan='1'>"
                  . _LISTS_ACTIONS . "</th>";
             break;
         case 'BODY':
@@ -467,25 +478,52 @@ function listplug_table_itemlist($template, $type)
             }
 
             if (1 == $current->idraft) {
-                $cssclass = "class='draft'";
+                $cssclass = 'draft';
             }
 
             // (can't use offset time since offsets might vary between blogs)
             if ($current->itime > $template['now']) {
-                $cssclass = "class='future'";
+                $cssclass = 'future';
             }
 
-            $action = requestVar('action');
-            $style  = ('pluginlist' !== $action) ? 'style="white-space:nowrap"'
-                : '';
-            echo "<td {$cssclass} {$style}>";
+            $action        = requestVar('action');
+            $title         = hsc(strip_tags($current->ititle));
+            $id            = listplug_nextBatchId();
+            $checkboxClass = 'class="batch-checkbox' . ($cssclass ? " {$cssclass}" : '') . '"';
+            $cssclass      = $cssclass ? " class=\"{$cssclass}\"" : '';
+
+            $infoClasses = $cssclass ? [trim($cssclass, ' class=""')] : [];
+            if ('pluginlist' !== $action) {
+                $infoClasses[] = 'item-info';
+            }
+            $infoClassAttr = $infoClasses ? ' class="' . implode(' ', $infoClasses) . '"' : '';
+            $cellClassAttr = $cssclass;
+
+            // Checkbox column
+            echo "<td {$checkboxClass}>";
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
+                 '" aria-label="', $title, '" onchange="batchOnItemCheckboxChange()" />';
+            echo "</td>";
+
+            // Title and Body column (moved to 2nd position)
+            echo "<td{$cellClassAttr}>";
+            $editUrl = sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber);
+            printf('<a href="%s"><b>%s</b></a>', $editUrl, $title);
+            echo "<br />";
+            $bodyText = strip_tags($current->ibody);
+            $bodyText = hsc(shorten($bodyText, 300, '...'));
+            echo $bodyText;
+            echo "</td>";
+
+            // Info column
+            echo "<td{$infoClassAttr}>";
             if ('itemlist' !== $action) {
-                echo _LIST_ITEM_BLOG . ' ' . hsc($current->bshortname)
+                echo '<span class="item-info-label">' . _LIST_ITEM_BLOG . '</span> ' . hsc($current->bshortname)
                      . '<br />';
             }
-            echo _LIST_ITEM_CAT . ' ' . hsc($current->cname) . '<br />';
+            echo '<span class="item-info-label">' . _LIST_ITEM_CAT . '</span> ' . hsc($current->cname) . '<br />';
             if ('browseownitems' !== $action) {
-                echo _LIST_ITEM_AUTHOR . ' ' . hsc($current->mname) . '<br />';
+                echo '<span class="item-info-label">' . _LIST_ITEM_AUTHOR . '</span> ' . hsc($current->mname) . '<br />';
             }
             if ($current->itime) {
                 echo date('Y-m-d', $current->itime) . ' ' . date(
@@ -495,8 +533,11 @@ function listplug_table_itemlist($template, $type)
             } else {
                 echo '0000-00-00 00:00';
             }
+            echo "</td>";
 
-            $parts_flag = '';
+            // State column
+            $stateFlags = [];
+            $GLOBALS['listplug_rowClass'] = '';
             $sql        = "SELECT iblog, ipublic, idraft, ipublic_enable_term_start, ipublic_enable_term_end, ipublic_term_start, ipublic_term_end"
                   . sprintf(" FROM %s WHERE inumber=%d", sql_table('item'), $current->inumber);
             $res = sql_query($sql);
@@ -505,24 +546,24 @@ function listplug_table_itemlist($template, $type)
                 while ($row = sql_fetch_assoc($res)) {
                     $tmp_blog         = $manager->getBlog($row['iblog']);
                     $tmp_current_time = $tmp_blog->getCorrectTime();
-                    $flags            = [];
                     if ($row['idraft']) {
-                        $flags[] = _LISTS_FORM_SELECT_ITEM_OPTION_DRAFT;
+                        $stateFlags[] = ['label' => _LISTS_FORM_SELECT_ITEM_OPTION_DRAFT, 'class' => 'item-state--draft'];
+                        $GLOBALS['listplug_rowClass'] = 'item-row--draft';
                     }
                     if ( ! $row['ipublic']) {
-                        $flags[] = _LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC;
+                        $stateFlags[] = ['label' => _LISTS_FORM_SELECT_ITEM_OPTION_NON_PUBLIC, 'class' => 'item-state--private'];
                     }
                     $isPublic  = ( ! $row['idraft'] && $row['ipublic']);
                     $isFuture  = ($current->itime > $tmp_current_time);
                     $isExpired = false;
                     if ($row['ipublic_enable_term_start']) {
-                        $flags[] = sprintf("(%s: %s)", _ADMIN_ISTATE_PERIOD_START, $row['ipublic_term_start']);
+                        $stateFlags[] = ['label' => sprintf("%s: %s", _ADMIN_ISTATE_PERIOD_START, $row['ipublic_term_start']), 'class' => 'item-state--period'];
                         if (strcasecmp($row['ipublic_term_start'], date('Y-m-d H:i:s', $tmp_current_time)) > 0) {
                             $isFuture = true;
                         }
                     }
                     if ($row['ipublic_enable_term_end']) {
-                        $flags[] = sprintf("(%s: %s)", _ADMIN_ISTATE_PERIOD_END, $row['ipublic_term_end']);
+                        $stateFlags[] = ['label' => sprintf("%s: %s", _ADMIN_ISTATE_PERIOD_END, $row['ipublic_term_end']), 'class' => 'item-state--period'];
                         if (strcasecmp($row['ipublic_term_end'], date('Y-m-d H:i:s', $tmp_current_time)) <= 0) {
                             $isExpired = true;
                         }
@@ -532,100 +573,90 @@ function listplug_table_itemlist($template, $type)
                         $row['ipublic_enable_term_start'] && $row['ipublic_enable_term_end']
                         && (strcasecmp($row['ipublic_term_start'], $row['ipublic_term_end']) >= 0)
                     ) {
-                        array_unshift($flags, sprintf("<b>%s</b>", _ADMIN_ISTATE_PERIOD_INVALID));
+                        array_unshift($stateFlags, ['label' => _ADMIN_ISTATE_PERIOD_INVALID, 'class' => 'item-state--error']);
                     } elseif ($isExpired) {
-                        array_unshift($flags, sprintf("<b>%s</b>", _ADMIN_ISTATE_PERIOD_EXPIRED));
+                        array_unshift($stateFlags, ['label' => _ADMIN_ISTATE_PERIOD_EXPIRED, 'class' => 'item-state--expired']);
                     } elseif ($isFuture && ! $isExpired && ! $row['idraft'] && $row['ipublic']) {
-                        array_unshift($flags, sprintf("<b>%s</b>", _ADMIN_ISTATE_RESERVATION));
-                    }
-
-                    if ( ! empty($flags)) {
-                        $parts_flag .= '<div style="border-color: #b7ffcf; border-style: double; padding: 4px; white-space: normal;">';
-                        $parts_flag .= _ADMIN_ISTATE_STATE . ": ";
-                        $span = '<span style="white-space: nowrap; display: inline-block">';
-                        $parts_flag .= $span . implode("</span> ".$span, $flags) . "</span>";
-                        $parts_flag .= "</div>";
+                        array_unshift($stateFlags, ['label' => _ADMIN_ISTATE_RESERVATION, 'class' => 'item-state--scheduled']);
+                        $GLOBALS['listplug_rowClass'] = 'item-row--scheduled';
                     }
                 }
             }
 
-            if ( ! empty($parts_flag)) {
-                echo $parts_flag;
+            echo "<td{$cellClassAttr}>";
+            if ( ! empty($stateFlags)) {
+                echo '<div class="item-states">';
+                foreach ($stateFlags as $flag) {
+                    printf('<span class="item-state %s">%s</span>', $flag['class'], hsc($flag['label']));
+                }
+                echo '</div>';
+            } else {
+                echo '<span class="item-state item-state--published">' . _ADMIN_ISTATE_PUBLISHED . '</span>';
             }
-
             echo "</td>";
 
-            // Title and Body
-            echo "<td {$cssclass}>";
-
-            $id = listplug_nextBatchId();
-
-            $title   = hsc(strip_tags($current->ititle));
-            $editUrl = sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber);
-
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->inumber,
-                 '" aria-label="', $title, '" />';
-            printf('<a href="%s"><b>%s</b></a>', $editUrl, $title);
-            echo "<br />";
-
-            $current->ibody = strip_tags($current->ibody);
-            $current->ibody = hsc(shorten($current->ibody, 300, '...'));
-
             $COMMENTS = new COMMENTS($current->inumber);
-            echo "{$current->ibody}</td>";
-
-            $style0 = 'float:left; display: inline-block; padding: 0.5em;';
-            $style1 = "white-space:nowrap; {$style0}";
-            $style2 = "word-break: break-all; {$style0}";
 
             // [Action]
-            echo "<td {$cssclass}>";
-            // echo "<td  style=\"white-space:nowrap\" {$cssclass}>";
+            echo "<td{$cellClassAttr}>";
 
+            // SVG icons (16x16, inline style for consistent sizing)
+            $iconMove = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l-3 3 3 3"/><path d="M9 5l3-3 3 3"/><path d="M15 19l-3 3-3-3"/><path d="M19 9l3 3-3 3"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="12" y1="2" x2="12" y2="22"/></svg>';
+            $iconCopy = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>';
+            $iconDelete = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>';
+            $iconView = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>';
+            $iconComment = '<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+
+            // [url, icon/label, title (optional), extra class (optional)]
             $elements   = [];
-            $elements[] = [sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber), _LISTS_EDIT];
-            $elements[] = [sprintf("index.php?action=itemmove&amp;itemid=%d", $current->inumber), _LISTS_MOVE];
+            // Move (arrows pointing outward)
+            $elements[] = [sprintf("index.php?action=itemmove&itemid=%d", $current->inumber), $iconMove, _LISTS_MOVE];
 
-            // Clone
+            // Clone (duplicate rectangles)
             $cloneUrl = $manager->addTicketToUrl($CONF['AdminURL']
                                                  . 'index.php?action=itemclone&itemid='
                                                  . $current->inumber);
-            $elements[] = [$cloneUrl, _LISTS_CLONE];
+            $elements[] = [$cloneUrl, $iconCopy, _LISTS_CLONE];
 
-            // Delete
-            $elements[] = [sprintf("index.php?action=itemdelete&amp;itemid=%d", $current->inumber), _LISTS_DELETE];
+            // Delete (trash can)
+            $elements[] = [sprintf("index.php?action=itemdelete&itemid=%d", $current->inumber), $iconDelete, _LISTS_DELETE, 'list-action--delete'];
 
-            // View
-            $elements[] = [createItemLink($current->inumber), _LISTS_VIEW];
+            // View (external link)
+            $elements[] = [createItemLink($current->inumber), $iconView, _LISTS_VIEW];
 
-            // Comments
+            // Comments (speech bubble)
             $camount = $COMMENTS->amountComments();
             if ($camount > 0) {
-                $elements[] = [sprintf("index.php?action=itemcommentlist&amp;itemid=%d", $current->inumber),
+                $elements[] = [sprintf("index.php?action=itemcommentlist&itemid=%d", $current->inumber),
+                            $iconComment . '<span class="list-action-count">' . $COMMENTS->amountComments() . '</span>',
                             sprintf(_LIST_ITEM_COMMENTS, $COMMENTS->amountComments()),
                     ];
             } else {
-                $elements[] = ['', _LIST_ITEM_NOCONTENT];
+                $elements[] = ['', $iconComment, _LIST_ITEM_NOCONTENT];
             }
 
             // Output
+            echo '<div class="list-actions list-actions--icons">';
             foreach ($elements as $element) {
-                $style = $style1;
+                $actionClass = 'list-action';
+                if (isset($element[3])) {
+                    $actionClass .= ' ' . $element[3];
+                }
+                if (empty($element[0]) || str_contains($element[0], 'itemcommentlist')) {
+                    $actionClass .= ' list-action-break';
+                }
+
+                $titleAttr = isset($element[2]) ? ' title="' . hsc($element[2]) . '"' : '';
+
                 if (empty($element[0])) {
-                    $style = $style2;
-                    printf('<div style="%s">%s</div>', $style, escapeHTML($element[1]));
+                    printf('<span class="%s list-action--disabled"%s>%s</span>', $actionClass, $titleAttr, $element[1]);
                     continue;
                 }
-                if (str_contains($element[0], 'itemcommentlist')) {
-                    $style = $style2;
-                }
-                if (_LISTS_VIEW === $element[1]) {
-                    echo "<br style='clear: both;' />";
-                    printf('<div style="%s"><a href="%s" target="_blank">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
-                } else {
-                    printf('<div style="%s"><a href="%s">%s</a></div>', $style, $element[0], escapeHTML($element[1]));
-                }
+
+                $target = (isset($element[2]) && _LISTS_VIEW === $element[2]) ? ' target="_blank"' : '';
+                printf('<a class="%s" href="%s"%s%s>%s</a>', $actionClass, hsc($element[0]), $target, $titleAttr, $element[1]);
             }
+            echo '</div>';
 
             echo "</td>";
             break;
@@ -648,7 +679,8 @@ function listplug_table_commentlist($template, $type)
     switch ($type) {
         case 'HEAD':
             printf(
-                '<th>%s</th><th style="min-width: 30%%">%s</th><th>%s</th>',
+                '<th class="batch-checkbox"><input type="checkbox" id="batch-toggle-all" aria-label="%s" onclick="return batchToggleSelect(this);" /></th><th>%s</th><th class="comment-body-column">%s</th><th class="list-actions-header">%s</th>',
+                _BATCH_SELECTALL,
                 _LISTS_INFO,
                 _LIST_COMMENT,
                 _LISTS_ACTIONS
@@ -676,6 +708,14 @@ function listplug_table_commentlist($template, $type)
                                                         == $member->id);
             }
 
+            $id = listplug_nextBatchId();
+
+            echo '<td class="batch-checkbox">';
+            if ($show_action_link) {
+                echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" onchange="batchOnItemCheckboxChange()" />';
+            }
+            echo '</td>';
+
             echo '<td>';
             echo date("Y-m-d@H:i", $current->ctime);
             echo '<br />';
@@ -697,65 +737,92 @@ function listplug_table_commentlist($template, $type)
             $current->cbody = strip_tags($current->cbody);
             $current->cbody = hsc(shorten($current->cbody, 300, '...'));
 
-            echo '<td><div style="display: inline-block;white-space: nowrap;">';
-            $id = listplug_nextBatchId();
+            echo '<td class="comment-body-column">';
+            echo '<div class="comment-body-meta">';
             if ($show_action_link) {
-                echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->cnumber, '" />';
+                echo '<label for="batch', $id, '">';
+                printf(' ID[%d]<br />', $current->cnumber);
+                echo '</label>';
+            } else {
+                printf('ID[%d]<br />', $current->cnumber);
             }
-            echo '<label for="batch', $id, '">';
-            printf(' ID[%d]<br />', $current->cnumber);
-            echo '</label>';
-            echo '</div><div>';
+            echo '</div>';
+            echo '<div class="comment-body-text">';
             echo $current->cbody;
             echo '</div></td>';
 
-            echo '<td><div>';
-            $style0 = 'float:left; display: inline-block; padding: 0.5em;';
-            $style1 = "white-space:nowrap; {$style0}";
-            $style2 = "word-break: break-all; {$style0}";
+            echo '<td><div class="list-actions">';
+            $actions = [];
+
             if ($show_action_link) {
-                echo "<div style=\"{$style1}\"><a href='index.php?action=commentedit&amp;commentid={$current->cnumber}'>"
-                     . _LISTS_EDIT . "</a></div>";
-                echo "<div style=\"{$style1}\"><a href='index.php?action=commentdelete&amp;commentid={$current->cnumber}'>"
-                     . _LISTS_DELETE . "</a></div>";
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=commentedit&amp;commentid=%d', $current->cnumber),
+                    'label' => _LISTS_EDIT,
+                ];
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=commentdelete&amp;commentid=%d', $current->cnumber),
+                    'label' => _LISTS_DELETE,
+                ];
             }
             if ($template['canAddBan']) {
-                echo "<div style=\"{$style1}\"><a href='index.php?action=banlistnewfromitem&amp;itemid={$current->citem}&amp;ip=", hsc($current->cip), "' title='", hsc($current->chost), "'>"
-                    . _LIST_COMMENT_BANIP
-                    . "</a></div>";
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=banlistnewfromitem&amp;itemid=%d&amp;ip=%s', $current->citem, hsc($current->cip)),
+                    'label' => _LIST_COMMENT_BANIP,
+                    'title' => hsc($current->chost),
+                ];
             }
 
             // add link
-            if ('blogcommentlist' == $action) {
-                if ($show_action_link_itemcommentlist) {
-                    global $manager;
-                    if ( ! isset($amountComments[$current->citem])) {
-                        $COMMENTS = new COMMENTS($current->citem);
-                        $amountComments[$current->citem]
-                                  = $COMMENTS->amountComments();
-                    }
-                    echo "<br style='clear: both;' /><hr style='border-style: dashed;'>";
-                    echo "<div style=\"{$style2}\">";
-                    printf(
-                        '<a href="index.php?action=itemcommentlist&itemid=%d">%s</a> (%d) ',
-                        $current->citem,
-                        escapeHTML(sprintf(_LIST_BACK_TO, _LIST_COMMENT_LIST_FOR_ITEM)),
-                        $amountComments[$current->citem]
-                    );
-                    echo '</div>';
-                    echo "<br style='clear: both;' />";
-                    echo "<div style=\"{$style2}\">";
-                    $item = & $manager->getItem($current->citem, 1, 1);
-                    printf(
-                        ' %s: %s<br />',
-                        escapeHTML(_LISTS_TITLE),
-                        escapeHTML($item['title'])
-                    );
-                    echo '</div>';
-                    unset($item);
+            if ('blogcommentlist' == $action && $show_action_link_itemcommentlist) {
+                global $manager;
+                if ( ! isset($amountComments[$current->citem])) {
+                    $COMMENTS = new COMMENTS($current->citem);
+                    $amountComments[$current->citem]
+                              = $COMMENTS->amountComments();
                 }
+                $actions[] = ['divider' => true];
+                $actions[] = [
+                    'url'   => sprintf('index.php?action=itemcommentlist&itemid=%d', $current->citem),
+                    'label' => sprintf(_LIST_BACK_TO, _LIST_COMMENT_LIST_FOR_ITEM) . sprintf(' (%d)', $amountComments[$current->citem]),
+                    'break' => true,
+                ];
+
+                $item = & $manager->getItem($current->citem, 1, 1);
+                $actions[] = [
+                    'url'   => '',
+                    'label' => sprintf(' %s: %s', _LISTS_TITLE, $item['title']),
+                    'break' => true,
+                ];
+                unset($item);
             }
-            // end link
+
+            foreach ($actions as $actionElement) {
+                if ( ! empty($actionElement['divider'])) {
+                    echo '<div class="list-actions__divider" aria-hidden="true"></div>';
+                    continue;
+                }
+
+                $actionClass = 'list-action';
+                if ( ! empty($actionElement['break'])) {
+                    $actionClass .= ' list-action-break';
+                }
+
+                $label = escapeHTML($actionElement['label']);
+
+                if (empty($actionElement['url'])) {
+                    printf('<div class="%s">%s</div>', $actionClass, $label);
+                    continue;
+                }
+
+                $titleAttr = empty($actionElement['title']) ? '' : ' title="' . $actionElement['title'] . '"';
+                printf(
+                    '<div class="%s"><a href="%s"%s>%s</a></div>',
+                    $actionClass,
+                    hsc($actionElement['url']),
+                    $titleAttr,
+                    $label
+                );
+            }
             echo '</div></td>';
 
             break;
@@ -802,12 +869,8 @@ function listplug_table_bloglist($template, $type)
 
             if (1 == $current->tadmin) {
                 $elements[] = [sprintf("index.php?action=blogsettings&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_SETTINGS, _BLOGLIST_SETTINGS]];
-                $elements[] = [sprintf("index.php?action=banlist&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_BANS, _BLOGLIST_BANS]];
             }
 
-            if ($template['superadmin']) {
-                $elements[] = [sprintf("index.php?action=deleteblog&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_DELETE, _BLOGLIST_DELETE]];
-            }
             $Groups[] = $elements;
 
             foreach ($Groups as $elements) {
@@ -882,7 +945,7 @@ function listplug_table_categorylist($template, $type)
 
             echo '<td>';
             $id = listplug_nextBatchId();
-            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->catid, '" />';
+            echo '<input type="checkbox" id="batch', $id, '" name="batch[', $id, ']" value="', $current->catid, '" onchange="batchOnItemCheckboxChange()" />';
             echo '<label for="batch', $id, '">';
             echo hsc($current->cname);
             echo '</label>';

@@ -68,8 +68,6 @@ class SKIN
         'elseifnot',
         'charset',
         'bloglist',
-        'addlink',
-        'addpopupcode',
         'sticky',
     ];
     private static $extraActions = [

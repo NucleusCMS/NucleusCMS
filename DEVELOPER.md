@@ -134,3 +134,16 @@ The installer uses Basic Authentication. For local work:
 2. Set a username and password
 3. **Never commit** this file with real credentials
 4. Change credentials after installation if needed
+
+## UI Implementation Guidelines
+
+For implementing consistent user interfaces in the admin area, see:
+- [UI Implementation Guide](docs/UI_IMPLEMENTATION_GUIDE.md) (English)
+- [UI実装ガイドライン](docs/UI_IMPLEMENTATION_GUIDE-ja.md) (日本語)
+
+These guidelines cover:
+- Tab UI implementation
+- Form structure and security
+- Button styles
+- Table display
+- Language definitions

@@ -33,7 +33,7 @@ class ADMIN
     public array $extrahead            = [];
     public array $system_info_messages = []; // [0] warn notice error , [1] msg
     public string $upgrade_message     = '';
-    public const default_admin_css     = 'contemporary';
+
     private ?string $layoutHeadHtml    = null;
     private bool $layoutBuffering      = false;
     private bool $layoutBufferFlushed  = false;
@@ -124,7 +124,6 @@ class ADMIN
             'banlistnewfromitem',
             'blogcommentlist',
             'blogsettings',
-            'bookmarklet',
             'browseowncomments',
             'browseownitems',
             'categorydelete',
@@ -265,6 +264,11 @@ class ADMIN
         $amount = showlist_by_query($query, 'table', $template);
         echo '</div>';
 
+        // Super-Admins can create new blogs
+        if ($member->isAdmin()) {
+            echo sprintf('<p><a class="btn-add-item" href="index.php?action=createnewlog">%s</a></p>', _OVERVIEW_NEWLOG);
+        }
+
         if ( ! $isShowAll && $member->isAdmin()) {
             $total = quickQuery(parseQuery('SELECT COUNT(*) as result FROM [@prefix@]blog'));
             if ($total > $amount) {
@@ -293,7 +297,7 @@ class ADMIN
 
             $items = [];
             foreach ($query->executeQuery($param)->fetchAllAssociative() as $row) {
-                $items[] = array_merge($row);
+                $items[] = array_values($row);
             }
 
             //            $query = parseQuery(
@@ -446,14 +450,17 @@ class ADMIN
         $blog = &$manager->getBlog($blogid);
 
         echo '<p><a href="index.php?action=overview">(', _BACK_YR_HOME, ')</a></p>';
-        printf('<h2>%s %s</h2>', _ITEMLIST_BLOG, $this->bloglink($blog));
+        echo '<div class="list-heading">';
+        printf('<h2>%sのアイテム一覧</h2>', $this->bloglink($blog));
+        $addUrl = sprintf(
+            'index.php?action=createitem&amp;blogid=%s',
+            $blogid
+        );
+        echo '<a class="btn-add-item" href="', $addUrl, '">', _ITEMLIST_ADDNEW, '</a>';
+        echo '</div>';
 
         // start index
         $start = intRequestVar('start');
-
-        if (0 == $start) {
-            printf('<p><a href="index.php?action=createitem&amp;blogid=%s">%s</a></p>', $blogid, _ITEMLIST_ADDNEW);
-        }
 
         // amount of items to show
         $amount = intRequestVar('amount');
@@ -1251,10 +1258,32 @@ class ADMIN
         $this->pagehead();
 
         echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
+        echo '<div class="list-heading">';
         echo '<h2>' . _ITEMLIST_YOUR . '</h2>';
+        if ($member->getTeamBlogs()) {
+            $firstBlogId = (int) reset($member->getTeamBlogs());
+            $addUrl      = sprintf(
+                'index.php?action=createitem&amp;blogid=%d',
+                $firstBlogId
+            );
+            echo '<a class="btn-add-item" href="', $addUrl, '">', _ITEMLIST_ADDNEW, '</a>';
+        }
+        echo '</div>';
 
         // start index
         $start = intRequestVar('start');
+
+        $teamBlogs = [];
+        foreach ($member->getTeamBlogs() as $blogid) {
+            $blog = $manager->getBlog($blogid);
+            if ($blog) {
+                $teamBlogs[$blogid] = $blog;
+            }
+        }
+
+        if (empty($teamBlogs)) {
+            echo '<p class="note">' . _ITEMLIST_ADD_NONE . '</p>';
+        }
 
         // amount of items to show
         $amount = intRequestVar('amount');
@@ -1833,6 +1862,10 @@ class ADMIN
 
         // only allow if user is allowed to alter item
         $member->canAlterItem($itemid) or $this->disallow();
+
+        if ( ! $manager->existsItem($itemid, 1, 1)) {
+            $this->error(_ERROR_NOSUCHITEM);
+        }
 
         $item = &$manager->getItemEx($itemid, 1, 1, 0);
 
@@ -2961,75 +2994,16 @@ class ADMIN
      */
     public function action_manageteam()
     {
-        global $member, $manager;
+        global $member;
 
         $blogid = intRequestVar('blogid');
 
         // check if allowed
         $member->blogAdminRights($blogid) or $this->disallow();
 
-        $this->pagehead();
-
-        echo "<p><a href='index.php?action=blogsettings&amp;blogid={$blogid}'>(", _BACK_TO_BLOGSETTINGS, ")</a></p>";
-
-        echo '<h2>' . _TEAM_TITLE . hsc(getBlogNameFromID($blogid)) . '</h2>';
-
-        echo '<h3>' . _TEAM_CURRENT . '</h3>';
-
-        $query = sprintf("SELECT tblog, tmember, mname, mrealname, memail, tadmin FROM %s, %s WHERE tmember=mnumber and tblog=%s", sql_table('member'), sql_table('team'), $blogid);
-
-        $template['content']  = 'teamlist';
-        $template['tabindex'] = 10;
-
-        $manager->loadClass("ENCAPSULATE");
-        $batch = new BATCH('team');
-        $batch->showList($query, 'table', $template);
-
-        ?>
-        <h3><?php echo _TEAM_ADDNEW ?></h3>
-        <?php
-        // TODO: try to make it so only non-team-members are listed
-        // From https://github.com/Lord-Matt-NucleusCMS-Stuff/lmnucleuscms/commit/3b4e236449a2212ff2440f8654197a9c01667166#diff-34cb57d57a38d46e6406db82a324c224R2337
-        $ph['tblog']            = $blogid;
-        $from_where             = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=[@tblog@])', $ph);
-        $query                  = "SELECT mname as text, mnumber as value" . $from_where;
-        $count_non_team_members = (int) quickQuery("SELECT count(*) AS result " . $from_where);
-
-        if (0 == $count_non_team_members) {
-            echo _TEAM_NO_SELECTABLE_MEMBERS;
-        } else {
-            ?>
-            <form method='post' action='index.php'>
-                <div>
-
-                    <input type='hidden' name='action' value='teamaddmember' />
-                    <input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
-                    <?php $manager->addTicketHidden() ?>
-
-                    <table>
-                        <tr>
-                            <td><?php echo _TEAM_CHOOSEMEMBER; ?></td>
-                            <td><?php
-                                $template['name'] = 'memberid';
-            $template['tabindex']                 = 10000;
-            showlist_by_query($query, 'select', $template);
-            ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php echo _TEAM_ADMIN ?><?php help('teamadmin'); ?></td>
-                            <td><?php $this->input_yesno('admin', 0, 10020); ?></td>
-                        </tr>
-                        <tr>
-                            <td><?php echo _TEAM_ADD ?></td>
-                            <td><input type='submit' value='<?php echo _TEAM_ADD_BTN ?>' tabindex="10030" /></td>
-                        </tr>
-                    </table>
-
-                </div>
-            </form>
-            <?php
-        } // end $count_non_team_members > 0
-        $this->pagefoot();
+        // Redirect to blogsettings with team tab
+        header('Location: index.php?action=blogsettings&blogid=' . $blogid . '#tab-team');
+        exit;
     }
 
     /**
@@ -3053,7 +3027,9 @@ class ADMIN
             }
         }
 
-        $this->action_manageteam();
+        // Redirect to blogsettings with team tab
+        header('Location: index.php?action=blogsettings&blogid=' . $blogid . '#tab-team');
+        exit;
     }
 
     /**
@@ -3202,6 +3178,8 @@ class ADMIN
         $blog = &$manager->getBlog($blogid);
 
         $extrahead = '<script type="text/javascript" src="javascript/numbercheck.js"></script>';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
         $this->pagehead($extrahead);
 
         echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
@@ -3211,32 +3189,23 @@ class ADMIN
             echo sprintf('<div class="ok">%s</div>', $message);
         } ?>
 
-        <h3><?php echo _EBLOG_TEAM_TITLE ?></h3>
+        <!-- Tab Navigation -->
+        <div class="blog-settings-tabs">
+            <ul class="tab-nav">
+                <li class="active"><a href="#tab-blog"><?php echo _BLOGSETTINGS_TAB_BLOG ?></a></li>
+                <li><a href="#tab-team"><?php echo _BLOGSETTINGS_TAB_TEAM ?></a></li>
+                <li><a href="#tab-category"><?php echo _BLOGSETTINGS_TAB_CATEGORY ?></a></li>
+                <li><a href="#tab-plugin"><?php echo _BLOGSETTINGS_TAB_PLUGIN ?></a></li>
+                <li><a href="#tab-ban"><?php echo _BLOGSETTINGS_TAB_BAN ?></a></li>
+                <?php if ($member->isAdmin()) { ?>
+                <li><a href="#tab-other"><?php echo _BLOGSETTINGS_TAB_OTHER ?></a></li>
+                <?php } ?>
+            </ul>
 
-        <p><?php echo _EBLOG_CURRENT_TEAM_MEMBER; ?>
-            <?php
-            $res      = sql_query(sprintf("SELECT mname, mrealname FROM %s,%s WHERE mnumber=tmember AND tblog=%s", sql_table('member'), sql_table('team'), (int) $blogid));
-        $aMemberNames = [];
-        if ($res) {
-            while ($o = sql_fetch_object($res)) {
-                $aMemberNames[] = hsc($o->mname) . ' (' . hsc($o->mrealname) . ')';
-            }
-        }
-        echo implode(',', $aMemberNames);
-        ?>
-        </p>
-
-
-
-        <div>
-            <form action="index.php" method="GET">
-                <input type="hidden" name="action" value="manageteam" />
-                <input type="hidden" name="blogid" value="<?php echo $blogid; ?>" />
-                <input type="submit" value="<?php echo _EBLOG_TEAM_TEXT; ?>" />
-            </form>
-        </div>
-
-        <h3><?php echo _EBLOG_SETTINGS_TITLE ?></h3>
+            <div class="tab-content">
+                <!-- Blog Settings Tab -->
+                <div id="tab-blog" class="tab-pane active">
+                    <h3><?php echo _EBLOG_SETTINGS_TITLE ?></h3>
 
         <form method="post" action="index.php">
             <div>
@@ -3373,7 +3342,68 @@ class ADMIN
                 <div><input type="submit" tabindex="130" value="<?php echo _EBLOG_CHANGE_BTN ?>" onclick="return checkSubmit();" /></div>
             </div>
         </form>
+                </div><!-- #tab-blog -->
 
+                <!-- Team Settings Tab -->
+                <div id="tab-team" class="tab-pane">
+                    <h3><?php echo _TEAM_TITLE . hsc(getBlogNameFromID($blogid)) ?></h3>
+                    <?php
+                    // Display team management content (from action_manageteam)
+                    echo '<h4>' . _TEAM_CURRENT . '</h4>';
+
+                    $query = sprintf("SELECT tblog, tmember, mname, mrealname, memail, tadmin FROM %s, %s WHERE tmember=mnumber and tblog=%s", sql_table('member'), sql_table('team'), $blogid);
+
+                    $template['content']  = 'teamlist';
+                    $template['tabindex'] = 10;
+
+                    $manager->loadClass("ENCAPSULATE");
+                    $batch = new BATCH('team');
+                    $batch->showList($query, 'table', $template);
+                    ?>
+                    <h4><?php echo _TEAM_ADDNEW ?></h4>
+                    <?php
+                    $ph['tblog']            = $blogid;
+                    $from_where             = parseQuery(' FROM [@prefix@]member WHERE mnumber NOT IN (SELECT tmember FROM [@prefix@]team WHERE tblog=[@tblog@])', $ph);
+                    $query                  = "SELECT mname as text, mnumber as value" . $from_where;
+                    $count_non_team_members = (int) quickQuery("SELECT count(*) AS result " . $from_where);
+
+                    if (0 == $count_non_team_members) {
+                        echo _TEAM_NO_SELECTABLE_MEMBERS;
+                    } else {
+                    ?>
+                    <form method='post' action='index.php'>
+                        <div>
+                            <input type='hidden' name='action' value='teamaddmember' />
+                            <input type='hidden' name='blogid' value='<?php echo  $blogid; ?>' />
+                            <?php $manager->addTicketHidden() ?>
+
+                            <table>
+                                <tr>
+                                    <td><?php echo _TEAM_CHOOSEMEMBER; ?></td>
+                                    <td><?php
+                                        $template['name'] = 'memberid';
+                                        $template['tabindex']                 = 10000;
+                                        showlist_by_query($query, 'select', $template);
+                                    ?></td>
+                                </tr>
+                                <tr>
+                                    <td><?php echo _TEAM_ADMIN ?><?php help('teamadmin'); ?></td>
+                                    <td><?php $this->input_yesno('admin', 0, 10020); ?></td>
+                                </tr>
+                                <tr>
+                                    <td><?php echo _TEAM_ADD ?></td>
+                                    <td><input type='submit' value='<?php echo _TEAM_ADD_BTN ?>' tabindex="10030" /></td>
+                                </tr>
+                            </table>
+                        </div>
+                    </form>
+                    <?php
+                    } // end $count_non_team_members > 0
+                    ?>
+                </div><!-- #tab-team -->
+
+                <!-- Category Tab -->
+                <div id="tab-category" class="tab-pane">
         <h3><?php echo _EBLOG_CAT_TITLE ?></h3>
 
 
@@ -3420,20 +3450,53 @@ class ADMIN
 
             </div>
         </form>
+                </div><!-- #tab-category -->
 
+                <!-- Plugin Settings Tab -->
+                <div id="tab-plugin" class="tab-pane">
         <?php
 
         echo '<h3>', _PLUGINS_EXTRA, '</h3>';
 
         $param = ['blog' => &$blog];
         $manager->notify('BlogSettingsFormExtras', $param);
-        echo '<h3>' . _BLOGLIST_BMLET . '</h3>';
-        echo '<form action="index.php" method="GET">';
-        echo '<input type="hidden" name="action" value="bookmarklet" />';
-        echo sprintf('<input type="hidden" name="blogid" value="%s" />', $blogid);
-        echo sprintf('<input type="submit" value="%s" />', _BLOGLIST_TT_BMLET);
-        echo '</form>';
+        ?>
+                </div><!-- #tab-plugin -->
 
+                <!-- IP Address Restriction Tab -->
+                <div id="tab-ban" class="tab-pane">
+        <?php
+        // アクセス制限セクション
+        echo '<h3>' . _BAN_TITLE . " '" . $this->bloglink($blog) . "'</h3>";
+
+        $query               = sprintf("SELECT * FROM %s WHERE blogid=%s ORDER BY iprange", sql_table('ban'), $blogid);
+        $template['content'] = 'banlist';
+        $amount              = showlist_by_query($query, 'table', $template);
+
+        if (0 == $amount) {
+            echo '<p>' . _BAN_NONE . '</p>';
+        }
+
+        echo '<p><a href="index.php?action=banlistnew&amp;blogid=' . $blogid . '">' . _BAN_NEW_TEXT . '</a></p>';
+        ?>
+                </div><!-- #tab-ban -->
+
+                <?php if ($member->isAdmin()) { ?>
+                <!-- Other Tab -->
+                <div id="tab-other" class="tab-pane">
+        <?php
+        // ブログ削除セクション（スーパー管理者のみ）
+        echo '<h3>' . _BLOGLIST_DELETE_THIS_BLOG . '</h3>';
+        echo '<p style="color: #c00;">' . _BLOGLIST_DELETE_THIS_BLOG_WARNING . '</p>';
+        echo '<p><a href="index.php?action=deleteblog&amp;blogid=' . $blogid . '" style="color: #c00; font-weight: bold;">' . _BLOGLIST_DELETE_THIS_BLOG_LINK . '</a></p>';
+        ?>
+                </div><!-- #tab-other -->
+                <?php } ?>
+
+            </div><!-- .tab-content -->
+        </div><!-- .blog-settings-tabs -->
+
+        <?php
         $this->pagefoot();
     }
 
@@ -6395,29 +6458,6 @@ selector();
                                            />
                                 </td>
                             </tr>
-                            <tr>
-                                <td><?php echo _SETTINGS_ADMINCSS ?>
-                                </td>
-                                <td>
-                                    <select name="AdminCSS" tabindex="10080">
-                                <?php        // show a dropdown list of all available admin css files
-                                global $DIR_NUCLEUS;
-        $dirhandle = opendir($DIR_NUCLEUS . "styles/");
-        while ($filename = readdir($dirhandle)) {
-            if (preg_match('#^admin_(.*)\.css$#', $filename, $matches)) {
-                $name = $matches[1];
-                echo "<option value=\"{$name}\"";
-                if ($name == $CONF['AdminCSS']) {
-                    echo " selected=\"selected\"";
-                }
-                echo ">{$name}</option>";
-            }
-        }
-        closedir($dirhandle);
-        ?>
-                                    </select>
-                                </td>
-                            </tr>
 
         <?php
         // Tidy
@@ -6718,7 +6758,6 @@ EOL;
         $this->updateConfig('CookiePrefix', trim(postVar('CookiePrefix')));
         $this->updateConfig('DebugVars', postVar('DebugVars'));
         $this->updateConfig('DefaultListSize', postVar('DefaultListSize'));
-        $this->updateConfig('AdminCSS', postVar('AdminCSS'));
         $this->updateOrInsertConfig('DisableRSS', (postVar('EnableRSS') ? '0' : '1'));
         $this->updateOrInsertConfig('ENABLE_PLUGIN_ADMIN_V1', PostVar::asBool('ENABLE_PLUGIN_ADMIN_V1') ? '1' : '0');
         if ( ! empty(ENABLE_FEATURE_TIDY) && extension_loaded('tidy')) {
@@ -6940,20 +6979,7 @@ EOL;
 
         $baseUrl = hsc($CONF['AdminURL']);
 
-        if ( ! array_key_exists('AdminCSS', $CONF)) {
-            $sql = sprintf("INSERT INTO %s VALUES ('AdminCSS', '%s')", sql_tableQuote('config'), self::default_admin_css);
-            sql_query($sql);
-            $CONF['AdminCSS'] = self::default_admin_css;
-        }
-        foreach ([$CONF['AdminCSS'], 'contemporary', 'original'] as $name) {
-            $fname = $DIR_NUCLEUS . sprintf('styles/admin_%s.css', remove_all_directory_separator($name));
-            if (@is_file($fname)) {
-                if ($CONF['AdminCSS'] != $name) {
-                    $CONF['AdminCSS'] = $name;
-                }
-                break;
-            }
-        }
+
 
         // Tidy
         if (_CHARSET === 'UTF-8'
@@ -6977,7 +7003,6 @@ EOL;
            'oAdmin'    => $this,
            'baseUrl'   => $baseUrl,
            'extrahead' => $extrahead,
-           'AdminCSS'  => CONF::asStr('AdminCSS'),
            'SiteName'  => CONF::asStr('SiteName'),
         ];
 
@@ -7015,39 +7040,40 @@ EOL;
         global $member, $nucleus, $CONF;
         ?>
                                 <div class="loginname">
-                <?php
+                <div class="loginname-row loginname-user"><?php
                 $adminrooturi = ADMIN::getAdminRootURI();
         if ($member->isLoggedIn()) {
-            echo _LOGGEDINAS . ' ' . $member->getDisplayName()
-                . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a>"
-                . "<br /><a href='{$adminrooturi}index.php?action=overview'>" . _USER_HOME . "</a> - ";
+            echo _LOGGEDINAS . ' ' . "<a href='{$adminrooturi}index.php?action=editmembersettings'>" . $member->getDisplayName() . "</a>"
+                . " - <a href='{$adminrooturi}index.php?action=logout'>" . _LOGOUT . "</a>";
         } else {
             printf(
-                '<a href="%sindex.php?action=showlogin" title="Log in">%s</a> <br />',
+                '<a href="%sindex.php?action=showlogin" title="Log in">%s</a>',
                 $adminrooturi,
                 _NOTLOGGEDIN
             );
         }
-
+        ?></div>
+                <div class="loginname-row loginname-links"><?php
         echo sprintf('<a href="%s" target="_blank" rel="noreferrer">%s</a> | ', get_help_root_url(false), _HELP_TT);
         echo "<a href='" . $CONF['IndexURL'] . "'>" . _YOURSITE . "</a>";
-
+        ?></div>
+                <div class="loginname-row loginname-version"><?php
         if ( ! empty(NUCLEUS_DEVELOP)) {
-            printf('<br /><i>%s</i>', lnTextByName('_ADMIN_DEVELOP_VERSION'));
+            printf('<i>%s</i> ', lnTextByName('_ADMIN_DEVELOP_VERSION'));
         }
-        echo '<br />(';
+        echo '(';
 
         $versionstring = sprintf('%s %s', hsc(CORE_APPLICATION_NAME), NUCLEUS_VERSION_DOT);
         if ($member->isLoggedIn() && $member->isAdmin()) {
             echo self::getAboutHtmlTag();
             $newestVersion = 370; //getLatestVersion();
             if ($newestVersion && nucleus_version_compare($newestVersion, NUCLEUS_VERSION_ID, '>')) {
-                echo '<br /><a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
+                echo ' <a style="color:red" href="http://nucleuscms.org/upgrade.php" title="' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TITLE . '">' . _ADMIN_SYSTEMOVERVIEW_LATESTVERSION_TEXT . $newestVersion . '</a>';
             }
 
             if ((int) $CONF['DatabaseVersion'] < NUCLEUS_DATABASE_VERSION_ID) {
                 echo sprintf(
-                    ')<br />(<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
+                    ') (<a style="color:red" href="%s">Current database is old(%d). Upgrade the core database</a>',
                     $CONF['IndexURL'] . '_upgrades/',
                     $CONF['DatabaseVersion']
                 );
@@ -7056,7 +7082,9 @@ EOL;
             echo $versionstring;
         }
         echo ')';
-        echo '</div>';
+        ?></div>
+                </div>
+<?php
     }
 
     /**
@@ -7138,130 +7166,6 @@ EOL;
         echo \parseBlade('admin.quickmenu', $params), "\n";
     }
 
-    /**
-     * @todo document this
-     */
-    public function action_regfile()
-    {
-        global $member, $CONF, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $this->disallow();
-
-        if ( ! function_exists('mb_convert_encoding')) {
-            $this->disallow();
-        }
-
-        if ( ! BLOG::existsID($blogid)) {
-            $this->disallow();
-        }
-
-        $utf8BlogName = getBlogNameFromID($blogid);
-        $utf8BlogName = str_replace('\\', '', $utf8BlogName); // remove registry path separator
-        $utf8BlogName = str_replace(["\r", "\n"], '', $utf8BlogName); // remove cr lf
-        $format       = _WINREGFILE_TEXT;
-        $reg_key_name = sprintf($format, $utf8BlogName);
-
-        $blog            = $manager->getBlog($blogid);
-        $output_filename = sprintf("nucleus-%s.reg", str_replace('\\', '', $blog->getShortName()));
-
-        $lines   = [];
-        $lines[] = "Windows Registry Editor Version 5.00";
-        $lines[] = "";
-        $lines[] = "[HKEY_CURRENT_USER\\Software\\Microsoft\\Internet Explorer\\MenuExt\\" . $reg_key_name . "]";
-        $url     = $CONF['AdminURL'] . "bookmarklet.php?action=contextmenucode&blogid=" . (int) $blogid;
-        $lines[] = sprintf('@="%s"', $url);
-        $lines[] = '"contexts"=hex:31';      // https://msdn.microsoft.com/ja-jp/library/aa753589(v=vs.85).aspx
-
-        // UTF16-little endian
-        $data = "\xFF\xFE" . mb_convert_encoding(implode("\r\n", $lines), 'UTF-16LE', 'UTF-8');
-
-        header('Content-Type: application/octetstream');
-        header(sprintf('Content-Disposition: filename="%s"', $output_filename));
-        header(sprintf('Content-Length: %d', strlen($data)));
-        header('Cache-Control: no-cache, must-revalidate'); // HTTP/1.1
-        header('Pragma: no-cache'); // HTTP/1.0
-        header('Expires: Sun, 01 Jan 2017 00:00:00 GMT');   // Date in the past
-
-        echo $data; // output data
-        exit;
-    }
-
-    /**
-     * @todo document this
-     */
-    public function action_bookmarklet()
-    {
-        global $member, $manager;
-
-        $blogid = intRequestVar('blogid');
-
-        $member->teamRights($blogid) or $this->disallow();
-
-        $blog = &$manager->getBlog($blogid);
-        $bm   = getBookmarklet($blogid);
-
-        $this->pagehead();
-
-        echo '<p><a href="index.php?action=overview">(',_BACK_YR_HOME,')</a></p>';
-
-        ?>
-
-                <h2><?php echo _BOOKMARKLET_TITLE ?></h2>
-
-                <p>
-        <?php echo _BOOKMARKLET_DESC1 . _BOOKMARKLET_DESC2 . _BOOKMARKLET_DESC3 . _BOOKMARKLET_DESC4 . _BOOKMARKLET_DESC5 ?>
-                </p>
-
-                <h3><?php echo _BOOKMARKLET_BOOKARKLET ?></h3>
-                <p>
-        <?php echo _BOOKMARKLET_BMARKTEXT ?><small><?php echo _BOOKMARKLET_BMARKTEST ?></small>
-                    <br />
-                    <br />
-        <?php echo '<a href="' . hsc($bm) . '">' . sprintf(_BOOKMARKLET_ANCHOR, hsc($blog->getName())) . '</a>' . _BOOKMARKLET_BMARKFOLLOW; ?>
-                </p>
-
-                <h3><?php echo _BOOKMARKLET_RIGHTCLICK ?></h3>
-                <p>
-        <?php
-                                    $url = 'index.php?action=regfile&blogid=' . (int) $blogid;
-        $url                             = $manager->addTicketToUrl($url);
-        ?><?php
-if ('Japanese_Japan.932' == setlocale(LC_CTYPE, 0)) {
-    $tmpurl = hsc($url, ENT_QUOTES, "SJIS");
-} else {
-    $tmpurl = hsc($url);
-}
-        echo _BOOKMARKLET_RIGHTTEXT1 . '<a href="' . $tmpurl . '">' . _BOOKMARKLET_RIGHTLABEL . '</a>' . _BOOKMARKLET_RIGHTTEXT2;
-        ?>
-                </p>
-
-                <p>
-                    <?php echo _BOOKMARKLET_RIGHTTEXT3 ?>
-                </p>
-
-                <h3><?php echo _BOOKMARKLET_UNINSTALLTT ?></h3>
-                <p>
-        <?php echo _BOOKMARKLET_DELETEBAR ?>
-                </p>
-
-                <p>
-        <?php echo _BOOKMARKLET_DELETERIGHTT ?>
-                </p>
-
-                <ol>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT1 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT2 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT3 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT4 ?></li>
-                    <li><?php echo _BOOKMARKLET_DELETERIGHT5 ?></li>
-                </ol>
-
-            <?php
-
-        $this->pagefoot();
-    }
 
     /**
      * @todo document this
@@ -8586,29 +8490,11 @@ EOL;
             return;
         }
 
-        // check if files exist and generate an error if so
-        $RiskFiles = [
-            '../install.sql' => _ERRORS_INSTALLSQL,  // don't localized, old version
-            '../install.php' => _ERRORS_INSTALLPHP,  // don't localized, old version
-        ];
-        $RiskDirs = [
-            '../install'   => _ERRORS_INSTALLDIR,
-            'convert'      => _ERRORS_CONVERTDIR,  // don't localized, old version
-            '../_upgrades' => _ERRORS_UPGRADESDIR,  // current version
-        ];
         $aFound = [];
-        foreach ($RiskFiles as $fileName => $fileDesc) {
-            if (@is_file($fileName)) {
-                $aFound[] = $fileDesc;
-            }
-        }
-        foreach ($RiskDirs as $fileName => $fileDesc) {
-            if (@is_dir($fileName)) {
-                $aFound[] = $fileDesc;
-            }
-        }
-        if ( ! str_contains(str_replace('\\', '/', getcwd()), '/plugins/') && @is_writable('../config.php')) {
-            $aFound[] = _ERRORS_CONFIGPHP;
+        $installConfigPath = dirname(__DIR__, 2) . '/install/install-config.php';
+
+        if (@is_file($installConfigPath)) {
+            $aFound[] = defined('_ERRORS_INSTALLCONFIG') ? _ERRORS_INSTALLCONFIG : 'install/install-config.php';
         }
 
         if (count($aFound) <= 0) {

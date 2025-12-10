@@ -102,8 +102,6 @@ class ITEMACTIONS extends BaseActions
             'set',
             'plugin',
             'edit',
-            'editlink',
-            'editpopupcode',
             'comments',
             'relevance',
             'if',
@@ -582,22 +580,7 @@ class ITEMACTIONS extends BaseActions
         }
     }
 
-    /**
-     * Parse templatevar editlink
-     */
-    public function parse_editlink()
-    {
-        global $CONF;
-        echo $CONF['AdminURL'], 'bookmarklet.php?action=edit&amp;itemid=', $this->currentItem->itemid;
-    }
 
-    /**
-     * Parse templatevar editpopupcode
-     */
-    public function parse_editpopupcode()
-    {
-        echo "if (event &amp;&amp; event.preventDefault) event.preventDefault();winbm=window.open(this.href,'nucleusbm','scrollbars=yes,width='+window.parent.screen.width*0.9+',height='+window.parent.screen.height*0.9+',left=10,top=10,status=yes,resizable=yes');winbm.focus();return false;";
-    }
 
     // helper functions
 

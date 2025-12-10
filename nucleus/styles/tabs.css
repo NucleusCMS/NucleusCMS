@@ -1,0 +1,95 @@
+/**
+ * Generic Tab UI Styles for Nucleus CMS Admin Area
+ * 
+ * This stylesheet provides reusable tab styling.
+ * Use with the class pattern: [feature]-tabs
+ * Example: blog-settings-tabs, member-settings-tabs, etc.
+ */
+
+/* Tab Navigation */
+.tab-nav {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 20px 0;
+    border-bottom: 2px solid #ddd;
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.tab-nav li {
+    margin: 0;
+    margin-bottom: -2px;
+}
+
+.tab-nav a {
+    display: block;
+    padding: 10px 20px;
+    text-decoration: none;
+    color: #333;
+    background-color: #f5f5f5;
+    border: 2px solid #ddd;
+    border-bottom: none;
+    margin-right: 5px;
+    border-radius: 5px 5px 0 0;
+    transition: background-color 0.2s, color 0.2s;
+}
+
+.tab-nav a:hover {
+    background-color: #e9e9e9;
+    color: #000;
+}
+
+.tab-nav li.active a {
+    background-color: #fff;
+    color: #000;
+    font-weight: bold;
+    border-color: #ddd;
+    border-bottom: 2px solid #fff;
+}
+
+/* Tab Content */
+.tab-content {
+    padding: 0;
+}
+
+.tab-pane {
+    display: none;
+    animation: fadeIn 0.3s;
+}
+
+.tab-pane.active {
+    display: block;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .tab-nav {
+        flex-direction: column;
+    }
+
+    .tab-nav a {
+        border-radius: 0;
+        margin-right: 0;
+        margin-bottom: 0;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .tab-nav li.active a {
+        border-left: 4px solid #4CAF50;
+        border-bottom: 1px solid #ddd;
+    }
+
+    .tab-nav li:last-child a {
+        border-bottom: 2px solid #ddd;
+    }
+}

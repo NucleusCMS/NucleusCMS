@@ -67,6 +67,21 @@ function createHTTPHandler() {
 }
 
 /**
+ * Auto save enabled flag
+ */
+var autosaveEnabled = true;
+
+/**
+ * Toggle auto save on/off
+ */
+function toggleAutosave(enabled) {
+	autosaveEnabled = enabled;
+	if (!enabled) {
+		checks = 0; // Reset check counter when disabled
+	}
+}
+
+/**
  * Auto saves as draft
  */
 function autoSaveDraft() {
@@ -122,6 +137,9 @@ function autoSaveDraft() {
  * Monitors the edits
  */
 function doMonitor() {
+	if (!autosaveEnabled) {
+		return; // Skip if auto save is disabled
+	}
 	if (checks * (now() - seconds) > 120 * 1000 * 50) {
 		autoSaveDraft();
 	}
