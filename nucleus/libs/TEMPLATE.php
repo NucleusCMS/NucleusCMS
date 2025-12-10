@@ -244,7 +244,8 @@ class TEMPLATE
             sql_table('template_desc'),
             (int) $id
         );
-        $sth = sql_get_db()?->prepare($sql);
+        $db = sql_get_db();
+        $sth = $db ? $db->prepare($sql) : false;
         if ($sth && $sth->execute() && ($res = $sth->fetch(PDO::FETCH_NUM))) {
             return (string) $res[0];
         }
@@ -259,7 +260,8 @@ class TEMPLATE
             sql_table('template_desc'),
             (int) $id
         );
-        $sth = sql_get_db()?->prepare($sql);
+        $db = sql_get_db();
+        $sth = $db ? $db->prepare($sql) : false;
         if ($sth && $sth->execute() && ($res = $sth->fetch(PDO::FETCH_NUM))) {
             return $res[0];
         }

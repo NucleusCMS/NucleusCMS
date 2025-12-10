@@ -342,7 +342,8 @@ function getOrmConnection(): ?\Doctrine\DBAL\Connection
  */
 function getOrmSchemaManager(): ?\Doctrine\DBAL\Schema\AbstractSchemaManager
 {
-    return getOrmConnection()?->createSchemaManager();
+    $conn = getOrmConnection();
+    return $conn ? $conn->createSchemaManager() : null;
 }
 
 /**
@@ -350,7 +351,8 @@ function getOrmSchemaManager(): ?\Doctrine\DBAL\Schema\AbstractSchemaManager
  */
 function getOrmQueryBuilder(): ?\Doctrine\DBAL\Query\QueryBuilder
 {
-    return getOrmConnection()?->createQueryBuilder();
+    $conn = getOrmConnection();
+    return $conn ? $conn->createQueryBuilder() : null;
 }
 
 /**
@@ -483,7 +485,7 @@ function orm_connect_args(
             $old_display_errors = ini_get('display_errors');
             ini_set('display_errors', 0);
             $conn = Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-            $DBH  = $conn?->getNativeConnection();
+            $DBH  = $conn ? $conn->getNativeConnection() : null;
         } catch (Exception $exc) {
             //echo $exc->getTraceAsString();
             $conn = null;

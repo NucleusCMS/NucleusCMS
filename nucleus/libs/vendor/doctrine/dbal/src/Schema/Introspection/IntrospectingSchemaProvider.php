@@ -255,7 +255,7 @@ final readonly class IntrospectingSchemaProvider implements SchemaProvider
             $processor->applyRow($editor, $row);
         }
 
-        return $editor?->create();
+        return $editor ? $editor->create() : null;
     }
 
     /**

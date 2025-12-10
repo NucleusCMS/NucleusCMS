@@ -197,13 +197,15 @@ class Table extends AbstractNamedObject
 
     public function addPrimaryKeyConstraint(PrimaryKeyConstraint $primaryKeyConstraint): self
     {
-        $this->setPrimaryKey(
-            array_map(
-                static fn (UnqualifiedName $columnName): string => $columnName->toString(),
-                $primaryKeyConstraint->getColumnNames(),
-            ),
-            $primaryKeyConstraint->getObjectName()?->toString(),
-        );
+            $this->setPrimaryKey(
+                array_map(
+                    static fn (UnqualifiedName $columnName): string => $columnName->toString(),
+                    $primaryKeyConstraint->getColumnNames(),
+                ),
+            ($primaryKeyConstraint->getObjectName()
+                ? $primaryKeyConstraint->getObjectName()->toString()
+                : null),
+            );
 
         // there is no way to set a primary index with flags. we have to set it and then add the flag
         if (! $primaryKeyConstraint->isClustered()) {

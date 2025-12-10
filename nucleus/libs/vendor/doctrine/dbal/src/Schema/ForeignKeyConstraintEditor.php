@@ -264,7 +264,7 @@ final class ForeignKeyConstraintEditor
                 static fn (UnqualifiedName $columnName) => $columnName->toString(),
                 $this->referencedColumnNames,
             ),
-            $this->name?->toString() ?? '',
+            $this->name ? $this->name->toString() : '',
             array_merge($options, match ($this->deferrability) {
                 Deferrability::NOT_DEFERRABLE => [],
                 Deferrability::DEFERRABLE => ['deferrable' => true],

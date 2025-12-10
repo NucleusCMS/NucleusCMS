@@ -215,7 +215,7 @@ abstract class AbstractAsset
         $this->validateFuture = true;
 
         $futureName      = $name->getValue();
-        $futureNamespace = $namespace?->getValue();
+        $futureNamespace = $namespace ? $namespace->getValue() : null;
 
         if ($this->_name !== $futureName) {
             Deprecation::trigger(
