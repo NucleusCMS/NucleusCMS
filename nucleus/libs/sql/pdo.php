@@ -223,7 +223,9 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_quote_string(?string $val, $dbh = null): string
     {
         global $SQL_DBH;
-        return ($dbh ?? $SQL_DBH)?->quote((string) $val) ?? "''";
+        $dbh = $dbh ?? $SQL_DBH;
+
+        return $dbh ? ($dbh->quote((string) $val) ?? "''") : "''";
     }
 
     /**
@@ -232,7 +234,9 @@ if ( ! function_exists('sql_fetch_assoc')) {
     function sql_insert_id($dbh = null): string|false
     {
         global $SQL_DBH;
-        return ($dbh ?? $SQL_DBH)?->lastInsertId() ?? false;
+        $dbh = $dbh ?? $SQL_DBH;
+
+        return $dbh ? ($dbh->lastInsertId() ?? false) : false;
     }
 
     /**
@@ -286,7 +290,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_affected_rows($res)
     {
-        return (int) ($res?->rowCount() ?? 0);
+        return (int) ((is_object($res) && method_exists($res, 'rowCount')) ? $res->rowCount() : 0);
     }
 
     /**
@@ -294,7 +298,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_num_fields($res)
     {
-        return (int) ($res?->columnCount() ?? 0);
+        return (int) ((is_object($res) && method_exists($res, 'columnCount')) ? $res->columnCount() : 0);
     }
 
     /**
@@ -304,7 +308,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_assoc($res)
     {
-        return $res?->fetch(PDO::FETCH_ASSOC) ?? false;
+        if (is_object($res) && method_exists($res, 'fetch')) {
+            return $res->fetch(PDO::FETCH_ASSOC) ?? false;
+        }
+
+        return false;
     }
 
     /**
@@ -312,7 +320,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_array($res)
     {
-        return $res?->fetch(PDO::FETCH_BOTH) ?? false;
+        if (is_object($res) && method_exists($res, 'fetch')) {
+            return $res->fetch(PDO::FETCH_BOTH) ?? false;
+        }
+
+        return false;
     }
 
     /**
@@ -322,7 +334,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_object($res)
     {
-        return $res?->fetchObject() ?? false;
+        if (is_object($res) && method_exists($res, 'fetchObject')) {
+            return $res->fetchObject() ?? false;
+        }
+
+        return false;
     }
 
     /**
@@ -332,7 +348,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_row($res)
     {
-        return ($res?->fetch(PDO::FETCH_NUM)) ?? false;
+        if (is_object($res) && method_exists($res, 'fetch')) {
+            return $res->fetch(PDO::FETCH_NUM) ?? false;
+        }
+
+        return false;
     }
 
     /**
@@ -340,7 +360,11 @@ if ( ! function_exists('sql_fetch_assoc')) {
      */
     function sql_fetch_column($res, $column_number = 0)
     {
-        return ($res?->fetchColumn($column_number)) ?? false;
+        if (is_object($res) && method_exists($res, 'fetchColumn')) {
+            return $res->fetchColumn($column_number) ?? false;
+        }
+
+        return false;
     }
 
     /**
@@ -434,9 +458,12 @@ if ( ! function_exists('sql_fetch_assoc')) {
         }
 
         $sm = getOrmSchemaManager();
-        if ( ! $sm?->tableExists($tablename)) {
+        if ( ! $sm || ! $sm->tableExists($tablename)) {
             return false;
-        } elseif ($sm->introspectTable($tablename)?->hasColumn($ColumnName)) {
+        }
+
+        $table = $sm->introspectTable($tablename);
+        if ($table && $table->hasColumn($ColumnName)) {
             return true;
         }
         if ($casesensitive) {
@@ -482,7 +509,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
                 $params = null;
             }
         }
-        $res = $stmt?->execute($params) ? $stmt?->fetch(PDO::FETCH_NUM) : false;
+        $res = ($stmt && $stmt->execute($params)) ? $stmt->fetch(PDO::FETCH_NUM) : false;
         return ! empty($res) && (count($res) > 0);
     }
 
@@ -675,7 +702,8 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     function sql_quote_identifier($text)
     {
-        $res = getOrmConnection()?->quoteIdentifier($text);
+        $conn = getOrmConnection();
+        $res  = $conn ? $conn->quoteIdentifier($text) : null;
         return (null === $res ? false : $res);
         //        global $DB_DRIVER_NAME;
         //        if ('sqlite' === $DB_DRIVER_NAME) {
@@ -732,7 +760,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
             return false;
         }
         //if ($SQL_DBH instanceof PDO_PGSQL) { // ORM軽油は PDOで来るので不可
-        if ('pgsql' === $SQL_DBH?->getAttribute(PDO::ATTR_DRIVER_NAME)) {
+        if ($SQL_DBH && 'pgsql' === $SQL_DBH->getAttribute(PDO::ATTR_DRIVER_NAME)) {
             //            $sql = str_replace('`', '"', $sql);
         }
         $stmt = $SQL_DBH->prepare((string) $sql);

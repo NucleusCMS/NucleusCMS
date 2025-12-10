@@ -530,7 +530,8 @@ class Backup
         }
 
         // execute SQL
-        $success = (sql_get_db()?->exec($sql_query) ?? 0);
+        $dbh     = sql_get_db();
+        $success = $dbh ? ($dbh->exec($sql_query) ?? 0) : 0;
         if (false === $success && ($msg = sql_error())) {
             debug(_BACKUP_RESTOR_SQL_ERROR . $msg);
         }

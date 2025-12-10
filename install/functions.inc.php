@@ -503,7 +503,7 @@ function doInstall()
         $mysql_use_prefix  = 0;
         try {
             $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
-            $SQL_DBH  = $ORM_CONN?->getNativeConnection();
+            $SQL_DBH  = $ORM_CONN ? $ORM_CONN->getNativeConnection() : null;
         } catch (Exception $exc) {
         }
     }
@@ -516,7 +516,7 @@ function doInstall()
                 // データベースを作成するので、未入力
                 $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password);
             }
-            $SQL_DBH = $ORM_CONN?->getNativeConnection();
+            $SQL_DBH = $ORM_CONN ? $ORM_CONN->getNativeConnection() : null;
         } catch (Exception $exc) {
         }
     }

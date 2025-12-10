@@ -2171,7 +2171,7 @@ class ADMIN
              . ' WHERE cnumber=?';
         $res    = sql_prepare_execute($sql, [ $commentid ]);
         $o      = sql_fetch_object($res);
-        $itemid = $o?->citem ?? false;
+        $itemid = ($o && isset($o->citem)) ? $o->citem : false;
 
         if ($itemid && $member->canAlterItem($itemid)) {
             $this->action_itemcommentlist($itemid);

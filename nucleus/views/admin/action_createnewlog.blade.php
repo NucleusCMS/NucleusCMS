@@ -68,17 +68,17 @@
             <tr>
                 <td>{!! _EBLOG_DISABLECOMMENTS !!}
                 </td>
-                <td>@php $oAdmin?->input_yesno('comments', 1, 150); @endphp</td>
+                <td>@php if ($oAdmin) { $oAdmin->input_yesno('comments', 1, 150); } @endphp</td>
             </tr>
             <tr>
                 <td>{{ _EBLOG_ANONYMOUS }}
                 </td>
-                <td>@php $oAdmin?->input_yesno('public', 0, 151); @endphp</td>
+                <td>@php if ($oAdmin) { $oAdmin->input_yesno('public', 0, 151); } @endphp</td>
             </tr>
             <tr>
                 <td>{{ _EBLOG_REQUIREDEMAIL }}
                 </td>
-                <td>@php $oAdmin?->input_yesno('reqemail', 0, 152); @endphp</td>
+                <td>@php if ($oAdmin) { $oAdmin->input_yesno('reqemail', 0, 152); } @endphp</td>
             </tr>
             <tr>
                 <td>{{ _EBLOG_CREATE }}</td>

@@ -19,8 +19,8 @@
             <div class="memberlist-inline memberlist-break">Website: <a href='{{ trim($current->murl) }}' tabindex='{{ ADMIN::getTabIndex() }}' target='_blank' rel='noreferrer' title='{{ trim($current->murl) }}'>URL</a></div>
         @endif
     </td>
-    <td>{{ $current?->madmin ? _YES : _NO }}</td>
-    <td>{{ $current?->mcanlogin ? _YES : _NO }}</td>
+    <td>{{ (isset($current->madmin) && $current->madmin) ? _YES : _NO }}</td>
+    <td>{{ (isset($current->mcanlogin) && $current->mcanlogin) ? _YES : _NO }}</td>
 
     <!-- actions -->
     <td>

@@ -102,7 +102,7 @@ final class UniqueConstraintEditor
         }
 
         return new UniqueConstraint(
-            $this->name?->toString() ?? '',
+            $this->name ? $this->name->toString() : '',
             array_map(static fn (UnqualifiedName $columnName) => $columnName->toString(), $this->columnNames),
             $this->isClustered ? ['clustered'] : [],
         );

@@ -30,7 +30,7 @@ class PluginAdmin
 
         $this->strFullName = 'NP_' . $pluginName;
 
-        if (empty($member) || ! $member?->isLoggedIn() || ! $member?->isAdmin()) {
+        if (empty($member) || ! $member->isLoggedIn() || ! $member->isAdmin()) {
             // Unauthorized access
             $this->BAN();
         }
@@ -63,8 +63,12 @@ class PluginAdmin
         if ( ! defined('PLUGIN_ADMIN_BASE_URL')) {
             doError($msg);
         }
-        $this->admin ??= new ADMIN();
-        $this?->admin?->error($msg);
+        if ( ! $this->admin) {
+            $this->admin = new ADMIN();
+        }
+        if ($this->admin) {
+            $this->admin->error($msg);
+        }
         exit;
     }
 

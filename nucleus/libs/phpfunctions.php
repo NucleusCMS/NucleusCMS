@@ -30,3 +30,31 @@ if ( ! function_exists('each')) { // removed function PHP[ - 7.4]
         return [1 => $value, 'value' => $value, 0 => $key, 'key' => $key];
     }
 }
+
+// PHP 8.0 string helper polyfills
+if ( ! function_exists('str_contains')) {
+    function str_contains(string $haystack, string $needle): bool
+    {
+        return '' === $needle || false !== strpos($haystack, $needle);
+    }
+}
+
+if ( ! function_exists('str_starts_with')) {
+    function str_starts_with(string $haystack, string $needle): bool
+    {
+        return '' === $needle || 0 === strncmp($haystack, $needle, strlen($needle));
+    }
+}
+
+if ( ! function_exists('str_ends_with')) {
+    function str_ends_with(string $haystack, string $needle): bool
+    {
+        if ('' === $needle) {
+            return true;
+        }
+
+        $needleLength = strlen($needle);
+        return $needleLength <= strlen($haystack)
+            && 0 === substr_compare($haystack, $needle, -$needleLength);
+    }
+}

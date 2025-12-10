@@ -420,10 +420,16 @@ function quickQuery(string $sqlText, bool $cacheClear = false)
 
 function getPluginNameFromPid($pid)
 {
-    $res = getOrmQueryBuilder()
-            ?->select('pfile')->from(sql_table('plugin'))->where('pid = :pid')
+    $qb = getOrmQueryBuilder();
+    if ( ! $qb) {
+        return false;
+    }
+
+    $stmt = $qb->select('pfile')->from(sql_table('plugin'))->where('pid = :pid')
             ->setParameter('pid', (int) $pid)
-            ->executeQuery()?->fetchOne();
+            ->executeQuery();
+
+    $res = $stmt ? $stmt->fetchOne() : false;
     return (is_string($res) ? $res : false);
 }
 
@@ -870,10 +876,15 @@ function getConfig()
 {
     global $CONF;
 
-    $qb = getOrmQueryBuilder()
-            ?->select('*')
-            ->from(sql_table('config'));
-    if ( ! $qb || ! ($rows = $qb?->executeQuery()?->fetchAllAssociative())) {
+    $qb = getOrmQueryBuilder();
+    if ( ! $qb) {
+        return;
+    }
+
+    $qb   = $qb->select('*')->from(sql_table('config'));
+    $stmt = $qb->executeQuery();
+    $rows = $stmt ? $stmt->fetchAllAssociative() : [];
+    if (empty($rows)) {
         return;
     }
     foreach ($rows as $row) {
@@ -1230,7 +1241,7 @@ function LoadCoreLanguage()
     }
     $lang_default = 'english-utf8';
     $lang_current = '';
-    if ($member?->isLoggedIn()) {
+    if ($member && $member->isLoggedIn()) {
         $lang_current = $member->getLanguage();
     } else {
         $lang_current = CONF::asStr('Language', $lang_default);
@@ -1835,11 +1846,14 @@ function ticketForPlugin()
 
     /* Solve the plugin name. */
     $plugins = [];
-    $rows    = getOrmQueryBuilder()
-            ?->select('pfile')
-            ->from(sql_table('plugin'))
-            ->executeQuery()
-            ?->fetchAllAssociative();
+    $qb      = getOrmQueryBuilder();
+    $rows    = [];
+    if ($qb) {
+        $stmt = $qb->select('pfile')
+                ->from(sql_table('plugin'))
+                ->executeQuery();
+        $rows = $stmt ? $stmt->fetchAllAssociative() : [];
+    }
 
     if ( ! empty($rows)) {
         foreach ($rows as $row) {
@@ -2972,7 +2986,7 @@ function isDebugMode()
     global $CONF;
     if ( ! defined('NUCLEUS_DEVELOP') || NUCLEUS_DEVELOP) {
         global $member;
-        if ($member?->isLoggedIn() && $member?->isAdmin()) {
+        if ($member && $member->isLoggedIn() && $member->isAdmin()) {
             return true;
         }
     }
