@@ -2857,14 +2857,13 @@ function _setDefaultUa()
 function _setErrorReporting()
 {
     global $CONF;
-    if ( ! isset($CONF['debug'])) {
-        $CONF['debug'] = 0;
-    }
+
     if (isDebugMode()) {
         error_reporting(E_ALL); // report all errors!
         ini_set('display_errors', 1);
         return;
     }
+
     if ( ! isset($CONF['UsingAdminArea'])
          || empty($CONF['UsingAdminArea'])) {
         ini_set('display_errors', '0');
@@ -2974,19 +2973,35 @@ function un_clickjacking()
     header('X-Frame-Options: SAMEORIGIN');
 }
 
-function isDebugMode()
+function isDebugMode(): bool
 {
-    global $CONF;
+    static $debug = null;
+
+    if (null !== $debug) {
+        return $debug;
+    }
+
+    // 1. Check .env APP_DEBUG
+    $envFile = dirname(__DIR__, 2) . '/.env';
+    if (is_file($envFile)) {
+        $content = @file_get_contents($envFile);
+        if (false !== $content && preg_match('/^APP_DEBUG\s*=\s*(true|1|yes)\s*$/mi', $content)) {
+            $debug = true;
+            return $debug;
+        }
+    }
+
+    // 2. Check NUCLEUS_DEVELOP constant for admin users
     if ( ! defined('NUCLEUS_DEVELOP') || NUCLEUS_DEVELOP) {
         global $member;
         if ($member && is_object($member) && $member->isLoggedIn() && $member->isAdmin()) {
-            return true;
+            $debug = true;
+            return $debug;
         }
     }
-    if ( ! isset($CONF['debug'])) {
-        return false;
-    }
-    return ! empty($CONF['debug']);
+
+    $debug = false;
+    return $debug;
 }
 
 function file_get_extension($filename, $period = false)

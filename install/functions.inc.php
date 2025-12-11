@@ -851,9 +851,6 @@ function doInstall()
         $config_data = '<' . '?php' . "\n\n";
         $config_data .= "//\$CONF['PHP_BIN'] = '/usr/local/bin/php';\n";
         $config_data .= "\n";
-        $config_data .= "//\$CONF['debug']               = 1;\n";
-        $config_data .= "\n";
-        //$config_data .= "\n"; (extraneous, just added extra \n to previous line
         $config_data .= "// database connection information\n";
         $config_data .= "\$DB_HOST     = '" . $DB_HOST . "';\n";
         $config_data .= "\$DB_USER     = '" . $DB_USER . "';\n";

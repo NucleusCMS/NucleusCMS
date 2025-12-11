@@ -1,4 +1,5 @@
 /.htaccess
+/.env
 /config.php
 /install/install-config.php
 /install/ENABLE_SQLITE_INSTALL

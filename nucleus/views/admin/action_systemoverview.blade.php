@@ -168,7 +168,7 @@
             $items[] = ["\$CONF['ItemURL']", $CONF['ItemURL']];
             $items[] = ["\$CONF['alertOnHeadersSent']", ($CONF['alertOnHeadersSent'] ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE)];
             $items[] = [
-                "\$CONF['debug'], isDebugMode()", (isDebugMode() ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
+                "APP_DEBUG (isDebugMode)", (isDebugMode() ? _ADMIN_SYSTEMOVERVIEW_ENABLE : _ADMIN_SYSTEMOVERVIEW_DISABLE),
                 (isDebugMode() ? 'systemoverview-highlight' : ''),
             ];
         @endphp
