@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace Doctrine\Deprecations\PHPUnit;
 
 use Doctrine\Deprecations\Deprecation;
-use PHPUnit\Framework\Attributes\After;
-use PHPUnit\Framework\Attributes\Before;
-
 use function sprintf;
 
 trait VerifyDeprecations
@@ -29,14 +26,12 @@ trait VerifyDeprecations
     }
 
     /** @before */
-    #[Before]
     public function enableDeprecationTracking(): void
     {
         Deprecation::enableTrackingDeprecations();
     }
 
     /** @after */
-    #[After]
     public function verifyDeprecationsAreTriggered(): void
     {
         foreach ($this->doctrineDeprecationsExpectations as $identifier => $expectation) {
