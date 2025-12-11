@@ -12,10 +12,14 @@ use Psr\Log\LoggerInterface;
 
 final class Connection extends AbstractConnectionMiddleware
 {
+    private LoggerInterface $logger;
+
     /** @internal This connection can be only instantiated by its driver. */
-    public function __construct(ConnectionInterface $connection, private readonly LoggerInterface $logger)
+    public function __construct(ConnectionInterface $connection, LoggerInterface $logger)
     {
         parent::__construct($connection);
+
+        $this->logger = $logger;
     }
 
     public function __destruct()
@@ -39,31 +43,40 @@ final class Connection extends AbstractConnectionMiddleware
         return parent::query($sql);
     }
 
-    public function exec(string $sql): int|string
+    public function exec(string $sql): int
     {
         $this->logger->debug('Executing statement: {sql}', ['sql' => $sql]);
 
         return parent::exec($sql);
     }
 
-    public function beginTransaction(): void
+    /**
+     * {@inheritDoc}
+     */
+    public function beginTransaction()
     {
         $this->logger->debug('Beginning transaction');
 
-        parent::beginTransaction();
+        return parent::beginTransaction();
     }
 
-    public function commit(): void
+    /**
+     * {@inheritDoc}
+     */
+    public function commit()
     {
         $this->logger->debug('Committing transaction');
 
-        parent::commit();
+        return parent::commit();
     }
 
-    public function rollBack(): void
+    /**
+     * {@inheritDoc}
+     */
+    public function rollBack()
     {
         $this->logger->debug('Rolling back transaction');
 
-        parent::rollBack();
+        return parent::rollBack();
     }
 }

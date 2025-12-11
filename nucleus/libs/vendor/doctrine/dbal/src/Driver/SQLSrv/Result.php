@@ -6,11 +6,9 @@ namespace Doctrine\DBAL\Driver\SQLSrv;
 
 use Doctrine\DBAL\Driver\FetchUtils;
 use Doctrine\DBAL\Driver\Result as ResultInterface;
-use Doctrine\DBAL\Exception\InvalidColumnIndex;
 
 use function sqlsrv_fetch;
 use function sqlsrv_fetch_array;
-use function sqlsrv_field_metadata;
 use function sqlsrv_num_fields;
 use function sqlsrv_rows_affected;
 
@@ -19,26 +17,39 @@ use const SQLSRV_FETCH_NUMERIC;
 
 final class Result implements ResultInterface
 {
+    /** @var resource */
+    private $statement;
+
     /**
      * @internal The result can be only instantiated by its driver connection or statement.
      *
-     * @param resource $statement
+     * @param resource $stmt
      */
-    public function __construct(private readonly mixed $statement)
+    public function __construct($stmt)
     {
+        $this->statement = $stmt;
     }
 
-    public function fetchNumeric(): array|false
+    /**
+     * {@inheritDoc}
+     */
+    public function fetchNumeric()
     {
         return $this->fetch(SQLSRV_FETCH_NUMERIC);
     }
 
-    public function fetchAssociative(): array|false
+    /**
+     * {@inheritDoc}
+     */
+    public function fetchAssociative()
     {
         return $this->fetch(SQLSRV_FETCH_ASSOC);
     }
 
-    public function fetchOne(): mixed
+    /**
+     * {@inheritDoc}
+     */
+    public function fetchOne()
     {
         return FetchUtils::fetchOne($this);
     }
@@ -89,17 +100,6 @@ final class Result implements ResultInterface
         return 0;
     }
 
-    public function getColumnName(int $index): string
-    {
-        $meta = sqlsrv_field_metadata($this->statement);
-
-        if ($meta === false || ! isset($meta[$index])) {
-            throw InvalidColumnIndex::new($index);
-        }
-
-        return $meta[$index]['Name'];
-    }
-
     public function free(): void
     {
         // emulate it by fetching and discarding rows, similarly to what PDO does in this case
@@ -110,7 +110,8 @@ final class Result implements ResultInterface
         }
     }
 
-    private function fetch(int $fetchType): mixed
+    /** @return mixed|false */
+    private function fetch(int $fetchType)
     {
         return sqlsrv_fetch_array($this->statement, $fetchType) ?? false;
     }

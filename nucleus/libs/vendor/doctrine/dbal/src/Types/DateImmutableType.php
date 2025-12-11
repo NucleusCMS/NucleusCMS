@@ -1,35 +1,34 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Types;
 
 use DateTimeImmutable;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidFormat;
-use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\Deprecations\Deprecation;
 
 /**
  * Immutable type of {@see DateType}.
  */
-class DateImmutableType extends Type implements PhpDateMappingType
+class DateImmutableType extends DateType
 {
     /**
      * {@inheritDoc}
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    public function getName()
     {
-        return $platform->getDateTypeDeclarationSQL($column);
+        return Types::DATE_IMMUTABLE;
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param T $value
      *
      * @return (T is null ? null : string)
      *
      * @template T
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return $value;
@@ -39,21 +38,23 @@ class DateImmutableType extends Type implements PhpDateMappingType
             return $value->format($platform->getDateFormatString());
         }
 
-        throw InvalidType::new(
+        throw ConversionException::conversionFailedInvalidType(
             $value,
-            static::class,
+            $this->getName(),
             ['null', DateTimeImmutable::class],
         );
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param T $value
      *
      * @return (T is null ? null : DateTimeImmutable)
      *
      * @template T
      */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateTimeImmutable
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof DateTimeImmutable) {
             return $value;
@@ -62,13 +63,30 @@ class DateImmutableType extends Type implements PhpDateMappingType
         $dateTime = DateTimeImmutable::createFromFormat('!' . $platform->getDateFormatString(), $value);
 
         if ($dateTime === false) {
-            throw InvalidFormat::new(
+            throw ConversionException::conversionFailedFormat(
                 $value,
-                static::class,
+                $this->getName(),
                 $platform->getDateFormatString(),
             );
         }
 
         return $dateTime;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        Deprecation::triggerIfCalledFromOutside(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5509',
+            '%s is deprecated.',
+            __METHOD__,
+        );
+
+        return true;
     }
 }

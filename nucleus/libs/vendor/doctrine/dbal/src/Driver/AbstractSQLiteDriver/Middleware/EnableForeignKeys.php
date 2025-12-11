@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Driver\AbstractSQLiteDriver\Middleware;
 
 use Doctrine\DBAL\Driver;
@@ -10,7 +8,7 @@ use Doctrine\DBAL\Driver\Middleware;
 use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use SensitiveParameter;
 
-final class EnableForeignKeys implements Middleware
+class EnableForeignKeys implements Middleware
 {
     public function wrap(Driver $driver): Driver
     {
@@ -20,7 +18,7 @@ final class EnableForeignKeys implements Middleware
              */
             public function connect(
                 #[SensitiveParameter]
-                array $params,
+                array $params
             ): Connection {
                 $connection = parent::connect($params);
 

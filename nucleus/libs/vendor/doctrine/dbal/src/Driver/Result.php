@@ -6,8 +6,6 @@ namespace Doctrine\DBAL\Driver;
 
 /**
  * Driver-level statement execution result.
- *
- * @method string getColumnName(int $index)
  */
 interface Result
 {
@@ -18,7 +16,7 @@ interface Result
      *
      * @throws Exception
      */
-    public function fetchNumeric(): array|false;
+    public function fetchNumeric();
 
     /**
      * Returns the next row of the result as an associative array or FALSE if there are no more rows.
@@ -27,14 +25,16 @@ interface Result
      *
      * @throws Exception
      */
-    public function fetchAssociative(): array|false;
+    public function fetchAssociative();
 
     /**
      * Returns the first value of the next row of the result or FALSE if there are no more rows.
      *
+     * @return mixed|false
+     *
      * @throws Exception
      */
-    public function fetchOne(): mixed;
+    public function fetchOne();
 
     /**
      * Returns an array containing all of the result rows represented as numeric arrays.
@@ -70,13 +70,11 @@ interface Result
      * some database drivers may return the number of rows returned by that query. However, this behaviour
      * is not guaranteed for all drivers and should not be relied on in portable applications.
      *
-     * If the number of rows exceeds {@see PHP_INT_MAX}, it might be returned as string if the driver supports it.
-     *
-     * @return int|numeric-string
+     * @return int The number of rows.
      *
      * @throws Exception
      */
-    public function rowCount(): int|string;
+    public function rowCount(): int;
 
     /**
      * Returns the number of columns in the result

@@ -1,12 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\SQL\Builder;
 
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Platforms\Exception\NotSupported;
 use Doctrine\DBAL\Query\ForUpdate\ConflictResolutionMode;
 use Doctrine\DBAL\Query\SelectQuery;
 
@@ -15,12 +12,16 @@ use function implode;
 
 final class DefaultSelectSQLBuilder implements SelectSQLBuilder
 {
+    private AbstractPlatform $platform;
+    private ?string $forUpdateSQL;
+    private ?string $skipLockedSQL;
+
     /** @internal The SQL builder should be instantiated only by database platforms. */
-    public function __construct(
-        private readonly AbstractPlatform $platform,
-        private readonly ?string $forUpdateSQL,
-        private readonly ?string $skipLockedSQL,
-    ) {
+    public function __construct(AbstractPlatform $platform, ?string $forUpdateSQL, ?string $skipLockedSQL)
+    {
+        $this->platform      = $platform;
+        $this->forUpdateSQL  = $forUpdateSQL;
+        $this->skipLockedSQL = $skipLockedSQL;
     }
 
     /** @throws Exception */
@@ -75,14 +76,14 @@ final class DefaultSelectSQLBuilder implements SelectSQLBuilder
 
         if ($forUpdate !== null) {
             if ($this->forUpdateSQL === null) {
-                throw NotSupported::new('FOR UPDATE');
+                throw Exception::notSupported('FOR UPDATE');
             }
 
             $sql .= ' ' . $this->forUpdateSQL;
 
             if ($forUpdate->getConflictResolutionMode() === ConflictResolutionMode::SKIP_LOCKED) {
                 if ($this->skipLockedSQL === null) {
-                    throw NotSupported::new('SKIP LOCKED');
+                    throw Exception::notSupported('SKIP LOCKED');
                 }
 
                 $sql .= ' ' . $this->skipLockedSQL;

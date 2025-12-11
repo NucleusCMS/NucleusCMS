@@ -1,12 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 
 use function assert;
 use function fopen;
@@ -23,12 +20,15 @@ class BlobType extends Type
     /**
      * {@inheritDoc}
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {
         return $platform->getBlobTypeDeclarationSQL($column);
     }
 
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
+    /**
+     * {@inheritDoc}
+     */
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
@@ -43,13 +43,24 @@ class BlobType extends Type
         }
 
         if (! is_resource($value)) {
-            throw ValueNotConvertible::new($value, Types::BLOB);
+            throw ConversionException::conversionFailed($value, Types::BLOB);
         }
 
         return $value;
     }
 
-    public function getBindingType(): ParameterType
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return Types::BLOB;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getBindingType()
     {
         return ParameterType::LARGE_OBJECT;
     }

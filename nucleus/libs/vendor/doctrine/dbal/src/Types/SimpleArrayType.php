@@ -1,10 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Types;
 
 use Doctrine\DBAL\Platforms\AbstractPlatform;
+use Doctrine\Deprecations\Deprecation;
 
 use function count;
 use function explode;
@@ -23,12 +22,19 @@ class SimpleArrayType extends Type
     /**
      * {@inheritDoc}
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {
         return $platform->getClobTypeDeclarationSQL($column);
     }
 
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    /**
+     * {@inheritDoc}
+     *
+     * @param mixed $value
+     *
+     * @return string|null
+     */
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if (! is_array($value) || count($value) === 0) {
             return null;
@@ -37,8 +43,14 @@ class SimpleArrayType extends Type
         return implode(',', $value);
     }
 
-    /** @return list<string> */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): array
+    /**
+     * {@inheritDoc}
+     *
+     * @param mixed $value
+     *
+     * @return list<string>
+     */
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return [];
@@ -47,5 +59,30 @@ class SimpleArrayType extends Type
         $value = is_resource($value) ? stream_get_contents($value) : $value;
 
         return explode(',', $value);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getName()
+    {
+        return Types::SIMPLE_ARRAY;
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        Deprecation::triggerIfCalledFromOutside(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5509',
+            '%s is deprecated.',
+            __METHOD__,
+        );
+
+        return true;
     }
 }

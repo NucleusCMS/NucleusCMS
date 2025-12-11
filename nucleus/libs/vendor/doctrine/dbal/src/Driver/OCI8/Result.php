@@ -8,13 +8,11 @@ use Doctrine\DBAL\Driver\Exception;
 use Doctrine\DBAL\Driver\FetchUtils;
 use Doctrine\DBAL\Driver\OCI8\Exception\Error;
 use Doctrine\DBAL\Driver\Result as ResultInterface;
-use Doctrine\DBAL\Exception\InvalidColumnIndex;
 
 use function oci_cancel;
 use function oci_error;
 use function oci_fetch_all;
 use function oci_fetch_array;
-use function oci_field_name;
 use function oci_num_fields;
 use function oci_num_rows;
 
@@ -27,26 +25,39 @@ use const OCI_RETURN_NULLS;
 
 final class Result implements ResultInterface
 {
+    /** @var resource */
+    private $statement;
+
     /**
      * @internal The result can be only instantiated by its driver connection or statement.
      *
      * @param resource $statement
      */
-    public function __construct(private readonly mixed $statement)
+    public function __construct($statement)
     {
+        $this->statement = $statement;
     }
 
-    public function fetchNumeric(): array|false
+    /**
+     * {@inheritDoc}
+     */
+    public function fetchNumeric()
     {
         return $this->fetch(OCI_NUM);
     }
 
-    public function fetchAssociative(): array|false
+    /**
+     * {@inheritDoc}
+     */
+    public function fetchAssociative()
     {
         return $this->fetch(OCI_ASSOC);
     }
 
-    public function fetchOne(): mixed
+    /**
+     * {@inheritDoc}
+     */
+    public function fetchOne()
     {
         return FetchUtils::fetchOne($this);
     }
@@ -88,19 +99,13 @@ final class Result implements ResultInterface
 
     public function columnCount(): int
     {
-        return oci_num_fields($this->statement);
-    }
+        $count = oci_num_fields($this->statement);
 
-    public function getColumnName(int $index): string
-    {
-        // OCI expects a 1-based index while DBAL works with a O-based index.
-        $name = @oci_field_name($this->statement, $index + 1);
-
-        if ($name === false) {
-            throw InvalidColumnIndex::new($index);
+        if ($count !== false) {
+            return $count;
         }
 
-        return $name;
+        return 0;
     }
 
     public function free(): void
@@ -108,8 +113,12 @@ final class Result implements ResultInterface
         oci_cancel($this->statement);
     }
 
-    /** @throws Exception */
-    private function fetch(int $mode): mixed
+    /**
+     * @return mixed|false
+     *
+     * @throws Exception
+     */
+    private function fetch(int $mode)
     {
         $result = oci_fetch_array($this->statement, $mode | OCI_RETURN_NULLS | OCI_RETURN_LOBS);
 

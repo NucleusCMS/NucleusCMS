@@ -1,24 +1,38 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Platforms\Keywords;
+
+use Doctrine\Deprecations\Deprecation;
 
 use function array_merge;
 
 /**
  * MySQL 8.0 reserved keywords list.
- *
- * @deprecated
  */
-class MySQL80Keywords extends MySQLKeywords
+class MySQL80Keywords extends MySQL57Keywords
 {
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated
+     */
+    public function getName()
+    {
+        Deprecation::triggerIfCalledFromOutside(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5433',
+            'MySQL80Keywords::getName() is deprecated.',
+        );
+
+        return 'MySQL80';
+    }
+
     /**
      * {@inheritDoc}
      *
      * @link https://dev.mysql.com/doc/refman/8.0/en/keywords.html
      */
-    protected function getKeywords(): array
+    protected function getKeywords()
     {
         $keywords = parent::getKeywords();
 

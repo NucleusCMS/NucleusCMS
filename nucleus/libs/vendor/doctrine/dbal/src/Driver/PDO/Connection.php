@@ -1,24 +1,30 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Driver\PDO;
 
-use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
-use Doctrine\DBAL\Driver\Exception\IdentityColumnsNotSupported;
-use Doctrine\DBAL\Driver\Exception\NoIdentityValue;
+use Doctrine\DBAL\Driver\Exception\UnknownParameterType;
+use Doctrine\DBAL\Driver\PDO\PDOException as DriverPDOException;
+use Doctrine\DBAL\Driver\Result as ResultInterface;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
+use Doctrine\DBAL\Driver\Statement as StatementInterface;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\Deprecations\Deprecation;
 use PDO;
 use PDOException;
 use PDOStatement;
 
 use function assert;
 
-final class Connection implements ConnectionInterface
+final class Connection implements ServerInfoAwareConnection
 {
+    private PDO $connection;
+
     /** @internal The connection can be only instantiated by its driver. */
-    public function __construct(private readonly PDO $connection)
+    public function __construct(PDO $connection)
     {
         $connection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+        $this->connection = $connection;
     }
 
     public function exec(string $sql): int
@@ -34,12 +40,20 @@ final class Connection implements ConnectionInterface
         }
     }
 
-    public function getServerVersion(): string
+    /**
+     * {@inheritDoc}
+     */
+    public function getServerVersion()
     {
         return $this->connection->getAttribute(PDO::ATTR_SERVER_VERSION);
     }
 
-    public function prepare(string $sql): Statement
+    /**
+     * {@inheritDoc}
+     *
+     * @return Statement
+     */
+    public function prepare(string $sql): StatementInterface
     {
         try {
             $stmt = $this->connection->prepare($sql);
@@ -51,7 +65,7 @@ final class Connection implements ConnectionInterface
         }
     }
 
-    public function query(string $sql): Result
+    public function query(string $sql): ResultInterface
     {
         try {
             $stmt = $this->connection->query($sql);
@@ -63,71 +77,82 @@ final class Connection implements ConnectionInterface
         }
     }
 
-    public function quote(string $value): string
+    /**
+     * {@inheritDoc}
+     *
+     * @throws UnknownParameterType
+     *
+     * @phpstan-assert ParameterType::* $type
+     */
+    public function quote($value, $type = ParameterType::STRING)
     {
-        return $this->connection->quote($value);
+        return $this->connection->quote($value, ParameterTypeMap::convertParamType($type));
     }
 
-    public function lastInsertId(): int|string
+    /**
+     * {@inheritDoc}
+     */
+    public function lastInsertId($name = null)
     {
         try {
-            $value = $this->connection->lastInsertId();
-        } catch (PDOException $exception) {
-            assert($exception->errorInfo !== null);
-            [$sqlState] = $exception->errorInfo;
-
-            // if the PDO driver does not support this capability, PDO::lastInsertId() triggers an IM001 SQLSTATE
-            // see https://www.php.net/manual/en/pdo.lastinsertid.php
-            if ($sqlState === 'IM001') {
-                throw IdentityColumnsNotSupported::new();
+            if ($name === null) {
+                return $this->connection->lastInsertId();
             }
 
-            // PDO PGSQL throws a 'lastval is not yet defined in this session' error when no identity value is
-            // available, with SQLSTATE 55000 'Object Not In Prerequisite State'
-            if ($sqlState === '55000' && $this->connection->getAttribute(PDO::ATTR_DRIVER_NAME) === 'pgsql') {
-                throw NoIdentityValue::new($exception);
-            }
+            Deprecation::triggerIfCalledFromOutside(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/issues/4687',
+                'The usage of Connection::lastInsertId() with a sequence name is deprecated.',
+            );
 
-            throw Exception::new($exception);
-        }
-
-        // pdo_mysql & pdo_sqlite return '0', pdo_sqlsrv returns '' or false depending on the PHP version
-        if ($value === '0' || $value === '' || $value === false) {
-            throw NoIdentityValue::new();
-        }
-
-        return $value;
-    }
-
-    public function beginTransaction(): void
-    {
-        try {
-            $this->connection->beginTransaction();
+            return $this->connection->lastInsertId($name);
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
     }
 
-    public function commit(): void
+    public function beginTransaction(): bool
     {
         try {
-            $this->connection->commit();
+            return $this->connection->beginTransaction();
         } catch (PDOException $exception) {
-            throw Exception::new($exception);
+            throw DriverPDOException::new($exception);
         }
     }
 
-    public function rollBack(): void
+    public function commit(): bool
     {
         try {
-            $this->connection->rollBack();
+            return $this->connection->commit();
         } catch (PDOException $exception) {
-            throw Exception::new($exception);
+            throw DriverPDOException::new($exception);
+        }
+    }
+
+    public function rollBack(): bool
+    {
+        try {
+            return $this->connection->rollBack();
+        } catch (PDOException $exception) {
+            throw DriverPDOException::new($exception);
         }
     }
 
     public function getNativeConnection(): PDO
     {
         return $this->connection;
+    }
+
+    /** @deprecated Call {@see getNativeConnection()} instead. */
+    public function getWrappedConnection(): PDO
+    {
+        Deprecation::triggerIfCalledFromOutside(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5037',
+            '%s is deprecated, call getNativeConnection() instead.',
+            __METHOD__,
+        );
+
+        return $this->getNativeConnection();
     }
 }

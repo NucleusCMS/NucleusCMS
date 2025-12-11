@@ -1,9 +1,8 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\SQL\Builder;
 
+use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
 use Doctrine\DBAL\Schema\Schema;
 use Doctrine\DBAL\Schema\Sequence;
@@ -13,11 +12,18 @@ use function array_merge;
 
 final class CreateSchemaObjectsSQLBuilder
 {
-    public function __construct(private readonly AbstractPlatform $platform)
+    private AbstractPlatform $platform;
+
+    public function __construct(AbstractPlatform $platform)
     {
+        $this->platform = $platform;
     }
 
-    /** @return list<string> */
+    /**
+     * @return list<string>
+     *
+     * @throws Exception
+     */
     public function buildSQL(Schema $schema): array
     {
         return array_merge(
@@ -31,6 +37,8 @@ final class CreateSchemaObjectsSQLBuilder
      * @param string[] $namespaces
      *
      * @return list<string>
+     *
+     * @throws Exception
      */
     private function buildNamespaceStatements(array $namespaces): array
     {
@@ -49,6 +57,8 @@ final class CreateSchemaObjectsSQLBuilder
      * @param Table[] $tables
      *
      * @return list<string>
+     *
+     * @throws Exception
      */
     private function buildTableStatements(array $tables): array
     {
@@ -59,6 +69,8 @@ final class CreateSchemaObjectsSQLBuilder
      * @param Sequence[] $sequences
      *
      * @return list<string>
+     *
+     * @throws Exception
      */
     private function buildSequenceStatements(array $sequences): array
     {

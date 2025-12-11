@@ -1,18 +1,14 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Types;
 
-use ArgumentCountError;
 use Doctrine\DBAL\Exception;
 use Doctrine\DBAL\ParameterType;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\TypeArgumentCountError;
-use Doctrine\DBAL\Types\Exception\TypesException;
+use Doctrine\Deprecations\Deprecation;
 
 use function array_map;
-use function is_string;
+use function get_class;
 
 /**
  * The base class for so-called Doctrine mapping types.
@@ -25,6 +21,7 @@ abstract class Type
      * The map of supported doctrine mapping types.
      */
     private const BUILTIN_TYPES_MAP = [
+        Types::ARRAY                => ArrayType::class,
         Types::ASCII_STRING         => AsciiStringType::class,
         Types::BIGINT               => BigIntType::class,
         Types::BINARY               => BinaryType::class,
@@ -38,17 +35,12 @@ abstract class Type
         Types::DATETIMETZ_MUTABLE   => DateTimeTzType::class,
         Types::DATETIMETZ_IMMUTABLE => DateTimeTzImmutableType::class,
         Types::DECIMAL              => DecimalType::class,
-        Types::NUMBER               => NumberType::class,
-        Types::ENUM                 => EnumType::class,
         Types::FLOAT                => FloatType::class,
         Types::GUID                 => GuidType::class,
         Types::INTEGER              => IntegerType::class,
         Types::JSON                 => JsonType::class,
-        Types::JSON_OBJECT          => JsonType::class,
-        Types::JSONB                => JsonbType::class,
-        Types::JSONB_OBJECT         => JsonbType::class,
+        Types::OBJECT               => ObjectType::class,
         Types::SIMPLE_ARRAY         => SimpleArrayType::class,
-        Types::SMALLFLOAT           => SmallFloatType::class,
         Types::SMALLINT             => SmallIntType::class,
         Types::STRING               => StringType::class,
         Types::TEXT                 => TextType::class,
@@ -57,6 +49,11 @@ abstract class Type
     ];
 
     private static ?TypeRegistry $typeRegistry = null;
+
+    /** @internal Do not instantiate directly - use {@see Type::addType()} method instead. */
+    final public function __construct()
+    {
+    }
 
     /**
      * Converts a value from its PHP representation to its database representation
@@ -69,7 +66,7 @@ abstract class Type
      *
      * @throws ConversionException
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         return $value;
     }
@@ -85,7 +82,7 @@ abstract class Type
      *
      * @throws ConversionException
      */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): mixed
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         return $value;
     }
@@ -93,36 +90,50 @@ abstract class Type
     /**
      * Gets the SQL declaration snippet for a column of this type.
      *
-     * @param array<string, mixed> $column   The column definition
-     * @param AbstractPlatform     $platform The currently used database platform.
+     * @param mixed[]          $column   The column definition
+     * @param AbstractPlatform $platform The currently used database platform.
+     *
+     * @return string
      */
-    abstract public function getSQLDeclaration(array $column, AbstractPlatform $platform): string;
+    abstract public function getSQLDeclaration(array $column, AbstractPlatform $platform);
 
-    /** @throws TypesException */
+    /**
+     * Gets the name of this type.
+     *
+     * @deprecated this method will be removed in Doctrine DBAL 4.0,
+     *             use {@see TypeRegistry::lookupName()} instead.
+     *
+     * @return string
+     */
+    abstract public function getName();
+
     final public static function getTypeRegistry(): TypeRegistry
     {
         return self::$typeRegistry ??= self::createTypeRegistry();
     }
 
-    /** @throws TypesException */
     private static function createTypeRegistry(): TypeRegistry
     {
-        return new TypeRegistry(
-            array_map(
-                static fn ($class) => new $class(),
-                self::BUILTIN_TYPES_MAP,
-            ),
-        );
+        $instances = [];
+
+        foreach (self::BUILTIN_TYPES_MAP as $name => $class) {
+            $instances[$name] = new $class();
+        }
+
+        return new TypeRegistry($instances);
     }
 
     /**
      * Factory method to create type instances.
+     * Type instances are implemented as flyweights.
      *
-     * @param string $name The name of the type.
+     * @param string $name The name of the type (as returned by getName()).
      *
-     * @throws TypesException
+     * @return Type
+     *
+     * @throws Exception
      */
-    public static function getType(string $name): self
+    public static function getType($name)
     {
         return self::getTypeRegistry()->get($name);
     }
@@ -130,7 +141,7 @@ abstract class Type
     /**
      * Finds a name for the given type.
      *
-     * @throws TypesException
+     * @throws Exception
      */
     public static function lookupName(self $type): string
     {
@@ -140,22 +151,16 @@ abstract class Type
     /**
      * Adds a custom type to the type map.
      *
-     * @param string                  $name The name of the type.
-     * @param class-string<Type>|Type $type The custom type or the class name of the custom type.
+     * @param string             $name      The name of the type. This should correspond to what getName() returns.
+     * @param class-string<Type> $className The class name of the custom type.
+     *
+     * @return void
      *
      * @throws Exception
      */
-    public static function addType(string $name, string|Type $type): void
+    public static function addType($name, $className)
     {
-        if (is_string($type)) {
-            try {
-                $type = new $type();
-            } catch (ArgumentCountError $e) { // @phpstan-ignore catch.neverThrown (it can be thrown)
-                throw TypeArgumentCountError::new($name, $e);
-            }
-        }
-
-        self::getTypeRegistry()->register($name, $type);
+        self::getTypeRegistry()->register($name, new $className());
     }
 
     /**
@@ -164,10 +169,8 @@ abstract class Type
      * @param string $name The name of the type.
      *
      * @return bool TRUE if type is supported; FALSE otherwise.
-     *
-     * @throws TypesException
      */
-    public static function hasType(string $name): bool
+    public static function hasType($name)
     {
         return self::getTypeRegistry()->has($name);
     }
@@ -175,28 +178,27 @@ abstract class Type
     /**
      * Overrides an already defined type to use a different implementation.
      *
-     * @param class-string<Type>|Type $type The custom type or the class name of the custom type.
+     * @param string             $name
+     * @param class-string<Type> $className
+     *
+     * @return void
      *
      * @throws Exception
      */
-    public static function overrideType(string $name, string|Type $type): void
+    public static function overrideType($name, $className)
     {
-        if (is_string($type)) {
-            try {
-                $type = new $type();
-            } catch (ArgumentCountError $e) { // @phpstan-ignore catch.neverThrown (it can be thrown)
-                throw TypeArgumentCountError::new($name, $e);
-            }
-        }
-
-        self::getTypeRegistry()->override($name, $type);
+        self::getTypeRegistry()->override($name, new $className());
     }
 
     /**
      * Gets the (preferred) binding type for values of this type that
      * can be used when binding parameters to prepared statements.
+     *
+     * This method should return one of the {@see ParameterType} constants.
+     *
+     * @return int
      */
-    public function getBindingType(): ParameterType
+    public function getBindingType()
     {
         return ParameterType::STRING;
     }
@@ -206,29 +208,56 @@ abstract class Type
      * type class
      *
      * @return array<string, string>
-     *
-     * @throws TypesException
      */
-    public static function getTypesMap(): array
+    public static function getTypesMap()
     {
         return array_map(
-            static fn (Type $type): string => $type::class,
+            static function (Type $type): string {
+                return get_class($type);
+            },
             self::getTypeRegistry()->getMap(),
         );
     }
 
     /**
-     * Modifies the SQL expression (identifier, parameter) to convert to a database value.
+     * Does working with this column require SQL conversion functions?
+     *
+     * This is a metadata function that is required for example in the ORM.
+     * Usage of {@see convertToDatabaseValueSQL} and
+     * {@see convertToPHPValueSQL} works for any type and mostly
+     * does nothing. This method can additionally be used for optimization purposes.
+     *
+     * @deprecated Consumers should call {@see convertToDatabaseValueSQL} and {@see convertToPHPValueSQL}
+     * regardless of the type.
+     *
+     * @return bool
      */
-    public function convertToDatabaseValueSQL(string $sqlExpr, AbstractPlatform $platform): string
+    public function canRequireSQLConversion()
+    {
+        return false;
+    }
+
+    /**
+     * Modifies the SQL expression (identifier, parameter) to convert to a database value.
+     *
+     * @param string $sqlExpr
+     *
+     * @return string
+     */
+    public function convertToDatabaseValueSQL($sqlExpr, AbstractPlatform $platform)
     {
         return $sqlExpr;
     }
 
     /**
      * Modifies the SQL expression (identifier, parameter) to convert to a PHP value.
+     *
+     * @param string           $sqlExpr
+     * @param AbstractPlatform $platform
+     *
+     * @return string
      */
-    public function convertToPHPValueSQL(string $sqlExpr, AbstractPlatform $platform): string
+    public function convertToPHPValueSQL($sqlExpr, $platform)
     {
         return $sqlExpr;
     }
@@ -236,10 +265,32 @@ abstract class Type
     /**
      * Gets an array of database types that map to this Doctrine type.
      *
-     * @return array<int, string>
+     * @return string[]
      */
-    public function getMappedDatabaseTypes(AbstractPlatform $platform): array
+    public function getMappedDatabaseTypes(AbstractPlatform $platform)
     {
         return [];
+    }
+
+    /**
+     * If this Doctrine Type maps to an already mapped database type,
+     * reverse schema engineering can't tell them apart. You need to mark
+     * one of those types as commented, which will have Doctrine use an SQL
+     * comment to typehint the actual Doctrine Type.
+     *
+     * @deprecated
+     *
+     * @return bool
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        Deprecation::triggerIfCalledFromOutside(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5509',
+            '%s is deprecated.',
+            __METHOD__,
+        );
+
+        return false;
     }
 }

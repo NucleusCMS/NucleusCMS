@@ -5,14 +5,16 @@ declare(strict_types=1);
 namespace Doctrine\DBAL\Schema\Exception;
 
 use Doctrine\DBAL\Schema\SchemaException;
-use LogicException;
 
 use function sprintf;
 
-final class TableAlreadyExists extends LogicException implements SchemaException
+final class TableAlreadyExists extends SchemaException
 {
     public static function new(string $tableName): self
     {
-        return new self(sprintf('The table with name "%s" already exists.', $tableName));
+        return new self(
+            sprintf('The table with name "%s" already exists.', $tableName),
+            self::TABLE_ALREADY_EXISTS,
+        );
     }
 }

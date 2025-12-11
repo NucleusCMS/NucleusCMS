@@ -1,80 +1,137 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Driver\PDO;
 
-use Doctrine\DBAL\Driver\Exception as ExceptionInterface;
+use Doctrine\DBAL\Driver\Exception\UnknownParameterType;
+use Doctrine\DBAL\Driver\Result as ResultInterface;
 use Doctrine\DBAL\Driver\Statement as StatementInterface;
 use Doctrine\DBAL\ParameterType;
-use PDO;
+use Doctrine\Deprecations\Deprecation;
 use PDOException;
 use PDOStatement;
 
+use function array_slice;
+use function func_get_args;
+use function func_num_args;
+
 final class Statement implements StatementInterface
 {
+    private PDOStatement $stmt;
+
     /** @internal The statement can be only instantiated by its driver connection. */
-    public function __construct(private readonly PDOStatement $stmt)
+    public function __construct(PDOStatement $stmt)
     {
+        $this->stmt = $stmt;
     }
 
-    public function bindValue(int|string $param, mixed $value, ParameterType $type): void
+    /**
+     * {@inheritDoc}
+     *
+     * @throws UnknownParameterType
+     *
+     * @phpstan-assert ParameterType::* $type
+     */
+    public function bindValue($param, $value, $type = ParameterType::STRING)
     {
-        $pdoType = $this->convertParamType($type);
+        if (func_num_args() < 3) {
+            Deprecation::trigger(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/pull/5558',
+                'Not passing $type to Statement::bindValue() is deprecated.'
+                    . ' Pass the type corresponding to the parameter being bound.',
+            );
+        }
+
+        $pdoType = ParameterTypeMap::convertParamType($type);
 
         try {
-            $this->stmt->bindValue($param, $value, $pdoType);
+            return $this->stmt->bindValue($param, $value, $pdoType);
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
     }
 
     /**
-     * @internal Driver options can be only specified by a PDO-based driver.
+     * {@inheritDoc}
      *
-     * @throws ExceptionInterface
+     * @deprecated Use {@see bindValue()} instead.
+     *
+     * @param mixed    $param
+     * @param mixed    $variable
+     * @param int      $type
+     * @param int|null $length
+     * @param mixed    $driverOptions The usage of the argument is deprecated.
+     *
+     * @throws UnknownParameterType
+     *
+     * @phpstan-assert ParameterType::* $type
      */
-    public function bindParamWithDriverOptions(
-        string|int $param,
-        mixed &$variable,
-        ParameterType $type,
-        mixed $driverOptions,
-    ): void {
-        $pdoType = $this->convertParamType($type);
+    public function bindParam(
+        $param,
+        &$variable,
+        $type = ParameterType::STRING,
+        $length = null,
+        $driverOptions = null
+    ): bool {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5563',
+            '%s is deprecated. Use bindValue() instead.',
+            __METHOD__,
+        );
+
+        if (func_num_args() < 3) {
+            Deprecation::trigger(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/pull/5558',
+                'Not passing $type to Statement::bindParam() is deprecated.'
+                    . ' Pass the type corresponding to the parameter being bound.',
+            );
+        }
+
+        if (func_num_args() > 4) {
+            Deprecation::triggerIfCalledFromOutside(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/issues/4533',
+                'The $driverOptions argument of Statement::bindParam() is deprecated.',
+            );
+        }
+
+        $pdoType = ParameterTypeMap::convertParamType($type);
 
         try {
-            $this->stmt->bindParam($param, $variable, $pdoType, 0, $driverOptions);
+            return $this->stmt->bindParam(
+                $param,
+                $variable,
+                $pdoType,
+                $length ?? 0,
+                ...array_slice(func_get_args(), 4),
+            );
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
     }
 
-    public function execute(): Result
+    /**
+     * {@inheritDoc}
+     */
+    public function execute($params = null): ResultInterface
     {
+        if ($params !== null) {
+            Deprecation::trigger(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/pull/5556',
+                'Passing $params to Statement::execute() is deprecated. Bind parameters using'
+                    . ' Statement::bindParam() or Statement::bindValue() instead.',
+            );
+        }
+
         try {
-            $this->stmt->execute();
+            $this->stmt->execute($params);
         } catch (PDOException $exception) {
             throw Exception::new($exception);
         }
 
         return new Result($this->stmt);
-    }
-
-    /**
-     * Converts DBAL parameter type to PDO parameter type
-     *
-     * @phpstan-return PDO::PARAM_*
-     */
-    private function convertParamType(ParameterType $type): int
-    {
-        return match ($type) {
-            ParameterType::NULL => PDO::PARAM_NULL,
-            ParameterType::INTEGER => PDO::PARAM_INT,
-            ParameterType::STRING,
-            ParameterType::ASCII => PDO::PARAM_STR,
-            ParameterType::BINARY,
-            ParameterType::LARGE_OBJECT => PDO::PARAM_LOB,
-            ParameterType::BOOLEAN => PDO::PARAM_BOOL,
-        };
     }
 }

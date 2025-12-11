@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Tools;
 
 use Doctrine\DBAL\Driver;
@@ -24,10 +22,13 @@ use function substr;
 /** @phpstan-import-type Params from DriverManager */
 final class DsnParser
 {
+    /** @var array<string, string|class-string<Driver>> */
+    private array $schemeMapping;
+
     /** @param array<string, string|class-string<Driver>> $schemeMapping An array used to map DSN schemes to DBAL drivers */
-    public function __construct(
-        private readonly array $schemeMapping = [],
-    ) {
+    public function __construct(array $schemeMapping = [])
+    {
+        $this->schemeMapping = $schemeMapping;
     }
 
     /**
@@ -37,7 +38,7 @@ final class DsnParser
      */
     public function parse(
         #[SensitiveParameter]
-        string $dsn,
+        string $dsn
     ): array {
         // (pdo-)?sqlite3?:///... => (pdo-)?sqlite3?://localhost/... or else the URL will be invalid
         $url = preg_replace('#^((?:pdo-)?sqlite3?):///#', '$1://localhost/', $dsn);
@@ -109,11 +110,7 @@ final class DsnParser
             return $params;
         }
 
-        if (isset($params['host'])) {
-            // Only normalize the path if a host is also available. Otherwise we might trim leading slashes
-            // from a pure dbname.
-            $url['path'] = $this->normalizeDatabaseUrlPath($url['path']);
-        }
+        $url['path'] = $this->normalizeDatabaseUrlPath($url['path']);
 
         // If we do not have a known DBAL driver, we do not know any connection URL path semantics to evaluate
         // and therefore treat the path as a regular DBAL connection URL path.
@@ -135,8 +132,6 @@ final class DsnParser
      */
     private function normalizeDatabaseUrlPath(string $urlPath): string
     {
-        assert($urlPath[0] === '/');
-
         // Trim leading slash from URL path.
         return substr($urlPath, 1);
     }

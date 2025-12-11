@@ -1,12 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Types;
 
 use DateTime;
+use DateTimeInterface;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\ValueNotConvertible;
 use Exception;
 
 /**
@@ -19,13 +17,15 @@ use Exception;
 class VarDateTimeType extends DateTimeType
 {
     /**
+     * {@inheritDoc}
+     *
      * @param T $value
      *
-     * @return (T is null ? null : DateTime)
+     * @return (T is null ? null : DateTimeInterface)
      *
      * @template T
      */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateTime
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof DateTime) {
             return $value;
@@ -34,7 +34,7 @@ class VarDateTimeType extends DateTimeType
         try {
             $dateTime = new DateTime($value);
         } catch (Exception $e) {
-            throw ValueNotConvertible::new($value, DateTime::class, $e->getMessage(), $e);
+            throw ConversionException::conversionFailed($value, $this->getName(), $e);
         }
 
         return $dateTime;

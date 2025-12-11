@@ -1,14 +1,15 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Driver\IBMDB2;
 
-use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
-use Doctrine\DBAL\Driver\Exception\NoIdentityValue;
 use Doctrine\DBAL\Driver\IBMDB2\Exception\ConnectionError;
 use Doctrine\DBAL\Driver\IBMDB2\Exception\PrepareFailed;
 use Doctrine\DBAL\Driver\IBMDB2\Exception\StatementError;
+use Doctrine\DBAL\Driver\Result as ResultInterface;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
+use Doctrine\DBAL\Driver\Statement as DriverStatement;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\Deprecations\Deprecation;
 use stdClass;
 
 use function assert;
@@ -26,18 +27,25 @@ use function error_get_last;
 use const DB2_AUTOCOMMIT_OFF;
 use const DB2_AUTOCOMMIT_ON;
 
-final class Connection implements ConnectionInterface
+final class Connection implements ServerInfoAwareConnection
 {
+    /** @var resource */
+    private $connection;
+
     /**
      * @internal The connection can be only instantiated by its driver.
      *
      * @param resource $connection
      */
-    public function __construct(private readonly mixed $connection)
+    public function __construct($connection)
     {
+        $this->connection = $connection;
     }
 
-    public function getServerVersion(): string
+    /**
+     * {@inheritDoc}
+     */
+    public function getServerVersion()
     {
         $serverInfo = db2_server_info($this->connection);
         assert($serverInfo instanceof stdClass);
@@ -45,7 +53,7 @@ final class Connection implements ConnectionInterface
         return $serverInfo->DBMS_VER;
     }
 
-    public function prepare(string $sql): Statement
+    public function prepare(string $sql): DriverStatement
     {
         $stmt = @db2_prepare($this->connection, $sql);
 
@@ -56,17 +64,26 @@ final class Connection implements ConnectionInterface
         return new Statement($stmt);
     }
 
-    public function query(string $sql): Result
+    public function query(string $sql): ResultInterface
     {
         return $this->prepare($sql)->execute();
     }
 
-    public function quote(string $value): string
+    /**
+     * {@inheritDoc}
+     */
+    public function quote($value, $type = ParameterType::STRING)
     {
-        return "'" . db2_escape_string($value) . "'";
+        $value = db2_escape_string($value);
+
+        if ($type === ParameterType::INTEGER) {
+            return $value;
+        }
+
+        return "'" . $value . "'";
     }
 
-    public function exec(string $sql): int|string
+    public function exec(string $sql): int
     {
         $stmt = @db2_exec($this->connection, $sql);
 
@@ -74,53 +91,46 @@ final class Connection implements ConnectionInterface
             throw StatementError::new();
         }
 
-        $numRows = db2_num_rows($stmt);
-
-        if ($numRows === false) {
-            throw StatementError::new();
-        }
-
-        return $numRows;
+        return db2_num_rows($stmt);
     }
 
-    public function lastInsertId(): string
+    /**
+     * {@inheritDoc}
+     */
+    public function lastInsertId($name = null)
     {
-        $lastInsertId = db2_last_insert_id($this->connection);
-
-        if ($lastInsertId === null) {
-            throw NoIdentityValue::new();
+        if ($name !== null) {
+            Deprecation::triggerIfCalledFromOutside(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/issues/4687',
+                'The usage of Connection::lastInsertId() with a sequence name is deprecated.',
+            );
         }
 
-        return $lastInsertId;
+        return db2_last_insert_id($this->connection) ?? false;
     }
 
-    public function beginTransaction(): void
+    public function beginTransaction(): bool
     {
-        if (db2_autocommit($this->connection, DB2_AUTOCOMMIT_OFF) !== true) {
-            throw ConnectionError::new($this->connection);
-        }
+        return db2_autocommit($this->connection, DB2_AUTOCOMMIT_OFF);
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
         if (! db2_commit($this->connection)) {
             throw ConnectionError::new($this->connection);
         }
 
-        if (db2_autocommit($this->connection, DB2_AUTOCOMMIT_ON) !== true) {
-            throw ConnectionError::new($this->connection);
-        }
+        return db2_autocommit($this->connection, DB2_AUTOCOMMIT_ON);
     }
 
-    public function rollBack(): void
+    public function rollBack(): bool
     {
         if (! db2_rollback($this->connection)) {
             throw ConnectionError::new($this->connection);
         }
 
-        if (db2_autocommit($this->connection, DB2_AUTOCOMMIT_ON) !== true) {
-            throw ConnectionError::new($this->connection);
-        }
+        return db2_autocommit($this->connection, DB2_AUTOCOMMIT_ON);
     }
 
     /** @return resource */
