@@ -10,7 +10,6 @@ use Doctrine\DBAL\Driver\PDO\PDOConnect;
 use Doctrine\Deprecations\Deprecation;
 use Pdo\Sqlite;
 use PDOException;
-use SensitiveParameter;
 
 use function array_intersect_key;
 
@@ -24,7 +23,6 @@ final class Driver extends AbstractSQLiteDriver
      * @return Connection
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         $driverOptions        = $params['driverOptions'] ?? [];

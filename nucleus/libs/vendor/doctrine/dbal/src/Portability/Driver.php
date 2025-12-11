@@ -7,7 +7,6 @@ use Doctrine\DBAL\Driver as DriverInterface;
 use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use LogicException;
 use PDO;
-use SensitiveParameter;
 
 use function method_exists;
 
@@ -36,7 +35,6 @@ final class Driver extends AbstractDriverMiddleware
      * {@inheritDoc}
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         $connection = parent::connect($params);

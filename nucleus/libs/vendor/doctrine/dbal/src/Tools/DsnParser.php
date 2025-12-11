@@ -5,7 +5,6 @@ namespace Doctrine\DBAL\Tools;
 use Doctrine\DBAL\Driver;
 use Doctrine\DBAL\DriverManager;
 use Doctrine\DBAL\Exception\MalformedDsnException;
-use SensitiveParameter;
 
 use function array_merge;
 use function assert;
@@ -37,7 +36,6 @@ final class DsnParser
      * @throws MalformedDsnException
      */
     public function parse(
-        #[SensitiveParameter]
         string $dsn
     ): array {
         // (pdo-)?sqlite3?:///... => (pdo-)?sqlite3?://localhost/... or else the URL will be invalid

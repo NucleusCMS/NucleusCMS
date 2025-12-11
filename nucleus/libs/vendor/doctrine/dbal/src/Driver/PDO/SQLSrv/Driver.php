@@ -9,7 +9,6 @@ use Doctrine\DBAL\Driver\PDO\Connection as PDOConnection;
 use Doctrine\DBAL\Driver\PDO\Exception as PDOException;
 use Doctrine\DBAL\Driver\PDO\PDOConnect;
 use PDO;
-use SensitiveParameter;
 
 use function is_int;
 use function sprintf;
@@ -24,7 +23,6 @@ final class Driver extends AbstractSQLServerDriver
      * @return Connection
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         $driverOptions = $dsnOptions = [];

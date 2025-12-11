@@ -11,7 +11,6 @@ use Doctrine\DBAL\Driver\Mysqli\Initializer\Secure;
 use Generator;
 use mysqli;
 use mysqli_sql_exception;
-use SensitiveParameter;
 
 final class Driver extends AbstractMySQLDriver
 {
@@ -21,7 +20,6 @@ final class Driver extends AbstractMySQLDriver
      * @return Connection
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         if (! empty($params['persistent'])) {
@@ -71,7 +69,6 @@ final class Driver extends AbstractMySQLDriver
      * @return Generator<int, Initializer>
      */
     private function compilePreInitializers(
-        #[SensitiveParameter]
         array $params
     ): Generator {
         unset($params['driverOptions'][Connection::OPTION_FLAGS]);
@@ -105,7 +102,6 @@ final class Driver extends AbstractMySQLDriver
      * @return Generator<int, Initializer>
      */
     private function compilePostInitializers(
-        #[SensitiveParameter]
         array $params
     ): Generator {
         if (! isset($params['charset'])) {

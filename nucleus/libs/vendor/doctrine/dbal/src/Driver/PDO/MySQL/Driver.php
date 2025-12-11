@@ -8,7 +8,6 @@ use Doctrine\DBAL\Driver\PDO\Exception;
 use Doctrine\DBAL\Driver\PDO\PDOConnect;
 use PDO;
 use PDOException;
-use SensitiveParameter;
 
 final class Driver extends AbstractMySQLDriver
 {
@@ -20,7 +19,6 @@ final class Driver extends AbstractMySQLDriver
      * @return Connection
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         $driverOptions = $params['driverOptions'] ?? [];

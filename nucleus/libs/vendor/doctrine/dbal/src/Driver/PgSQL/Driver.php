@@ -4,7 +4,6 @@ namespace Doctrine\DBAL\Driver\PgSQL;
 
 use Doctrine\DBAL\Driver\AbstractPostgreSQLDriver;
 use ErrorException;
-use SensitiveParameter;
 
 use function addslashes;
 use function array_filter;
@@ -26,7 +25,6 @@ final class Driver extends AbstractPostgreSQLDriver
 {
     /** {@inheritDoc} */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ): Connection {
         set_error_handler(
@@ -62,7 +60,6 @@ final class Driver extends AbstractPostgreSQLDriver
      * @param array<string, mixed> $params
      */
     private function constructConnectionString(
-        #[SensitiveParameter]
         array $params
     ): string {
         // pg_connect used by Doctrine DBAL does not support [...] notation,

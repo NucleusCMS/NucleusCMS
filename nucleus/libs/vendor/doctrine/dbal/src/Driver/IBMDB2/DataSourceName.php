@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Doctrine\DBAL\Driver\IBMDB2;
 
-use SensitiveParameter;
 
 use function implode;
 use function sprintf;
@@ -18,7 +17,6 @@ final class DataSourceName
     private string $string;
 
     private function __construct(
-        #[SensitiveParameter]
         string $string
     ) {
         $this->string = $string;
@@ -35,7 +33,6 @@ final class DataSourceName
      * @param array<string,mixed> $params
      */
     public static function fromArray(
-        #[SensitiveParameter]
         array $params
     ): self {
         $chunks = [];
@@ -53,7 +50,6 @@ final class DataSourceName
      * @param array<string,mixed> $params
      */
     public static function fromConnectionParameters(
-        #[SensitiveParameter]
         array $params
     ): self {
         if (isset($params['dbname']) && strpos($params['dbname'], '=') !== false) {

@@ -13,7 +13,6 @@ use Doctrine\DBAL\Driver\SQLSrv;
 use Doctrine\DBAL\Exception\MalformedDsnException;
 use Doctrine\DBAL\Tools\DsnParser;
 use Doctrine\Deprecations\Deprecation;
-use SensitiveParameter;
 
 use function array_keys;
 use function array_merge;
@@ -162,7 +161,6 @@ final class DriverManager
      * @template T of Connection
      */
     public static function getConnection(
-        #[SensitiveParameter]
         array $params,
         ?Configuration $config = null,
         ?EventManager $eventManager = null
@@ -247,7 +245,6 @@ final class DriverManager
      * @throws Exception
      */
     private static function parseDatabaseUrl(
-        #[SensitiveParameter]
         array $params
     ): array {
         if (! isset($params['url'])) {

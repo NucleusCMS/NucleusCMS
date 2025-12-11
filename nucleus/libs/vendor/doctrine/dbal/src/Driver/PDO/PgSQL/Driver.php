@@ -10,7 +10,6 @@ use Doctrine\Deprecations\Deprecation;
 use PDO;
 use Pdo\Pgsql;
 use PDOException;
-use SensitiveParameter;
 
 use const PHP_VERSION_ID;
 
@@ -24,7 +23,6 @@ final class Driver extends AbstractPostgreSQLDriver
      * @return Connection
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         $driverOptions = $params['driverOptions'] ?? [];

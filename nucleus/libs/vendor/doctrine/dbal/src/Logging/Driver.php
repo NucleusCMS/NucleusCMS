@@ -7,7 +7,6 @@ namespace Doctrine\DBAL\Logging;
 use Doctrine\DBAL\Driver as DriverInterface;
 use Doctrine\DBAL\Driver\Middleware\AbstractDriverMiddleware;
 use Psr\Log\LoggerInterface;
-use SensitiveParameter;
 
 final class Driver extends AbstractDriverMiddleware
 {
@@ -25,7 +24,6 @@ final class Driver extends AbstractDriverMiddleware
      * {@inheritDoc}
      */
     public function connect(
-        #[SensitiveParameter]
         array $params
     ) {
         $this->logger->info('Connecting with parameters {params}', ['params' => $this->maskPassword($params)]);
@@ -42,7 +40,6 @@ final class Driver extends AbstractDriverMiddleware
      * @return array<string,mixed>
      */
     private function maskPassword(
-        #[SensitiveParameter]
         array $params
     ): array {
         if (isset($params['password'])) {
