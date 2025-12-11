@@ -292,7 +292,8 @@ class ADMIN
                     ->from(sql_table('blog'))
                     ->where('iblog=bnumber AND idraft=:idraft')
                     ->groupBy('bnumber')
-                    ->orderBy(self::getSqlOrderBlog())
+                    ->orderBy('blast_modyfied', 'DESC')
+                    ->addOrderBy('bname', 'ASC')
                     ->setParameters($param);
 
             $items = [];

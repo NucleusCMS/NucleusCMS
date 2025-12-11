@@ -209,7 +209,7 @@ class PARSER
                         $msg = sprintf(
                             'php critical error in plugin(%s):[%s] Line:%d (%s) : ',
                             'NP_' . $action,
-                            $e::class,
+                            get_class($e),
                             $e->getLine(),
                             $e->getFile()
                         );
@@ -221,7 +221,7 @@ class PARSER
                             'Error',
                             $msg . $e->getMessage()
                         );
-                        if ('ArgumentCountError' !== $e::class) {
+                        if ('ArgumentCountError' !== get_class($e)) {
                             throw $e;
                         }
                     } else {

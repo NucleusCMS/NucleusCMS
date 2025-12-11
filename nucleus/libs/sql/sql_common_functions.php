@@ -243,7 +243,10 @@ function selectQuery($table_name, $where = '', $fields = '*', $extra = [])
     return "SELECT {$fields} FROM {$table_name} {$where} {$extra}";
 }
 
-function updateQuery(string $table_name, array $values, string|array $where = '', array $extra = [])
+/**
+ * @param string|array $where
+ */
+function updateQuery(string $table_name, array $values, $where = '', array $extra = [])
 {
     if (is_array($where)) {
         $where = implode(' ', $where);

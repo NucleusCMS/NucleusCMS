@@ -236,8 +236,10 @@ class TEMPLATE
         return ((int) $res > 0);
     }
 
-    // (static)
-    public static function getNameFromId(int $id): string|false
+    /**
+     * @return string|false
+     */
+    public static function getNameFromId(int $id)
     {
         $sql = sprintf(
             'SELECT tdname AS result FROM %s WHERE tdnumber=%d LIMIT 1',
@@ -252,8 +254,10 @@ class TEMPLATE
         return false;
     }
 
-    // (static)
-    public static function getDesc(int $id): string|false
+    /**
+     * @return string|false
+     */
+    public static function getDesc(int $id)
     {
         $sql = sprintf(
             'SELECT tddesc FROM %s WHERE tdnumber=%d LIMIT 1',

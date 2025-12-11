@@ -1089,9 +1089,10 @@ class MEMBER
      * vkey, vmember, ...)
      * (static)
      *
+     * @return object|false
      * @author karma
      */
-    public static function getActivationInfo($key): object|false
+    public static function getActivationInfo($key)
     {
         $query = sprintf(
             "SELECT * FROM %s WHERE vkey='%s'",

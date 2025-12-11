@@ -92,8 +92,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     /**
      * executes an SQL query
+     *
+     * @return PDOStatement|false
      */
-    function sql_query(?string $query, $dbh = null): PDOStatement|false
+    function sql_query(?string $query, $dbh = null)
     {
         global $SQLCount, $SQL_DBH;
         $SQLCount++;
@@ -229,8 +231,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     /**
      * executes an SQL insert id
+     *
+     * @return string|false
      */
-    function sql_insert_id($dbh = null): string|false
+    function sql_insert_id($dbh = null)
     {
         global $SQL_DBH;
         $dbh = $dbh ?? $SQL_DBH;
@@ -239,8 +243,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
 
     /**
      * executes an SQL result request
+     *
+     * @param int|string $col
      */
-    function sql_result($res, int $row = 0, int|string $col = 0)
+    function sql_result($res, int $row = 0, $col = 0)
     {
         if ((int) $row < 1) {
             $results = $res->fetch(PDO::FETCH_BOTH);
@@ -436,7 +442,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         }
 
         $sm = getOrmSchemaManager();
-        if ( ! $sm || ! $sm->tableExists($tablename)) {
+        if ( ! $sm || ! $sm->tablesExist([$tablename])) {
             return false;
         } elseif (($table = $sm->introspectTable($tablename)) && $table->hasColumn($ColumnName)) {
             return true;
@@ -466,7 +472,7 @@ if ( ! function_exists('sql_fetch_assoc')) {
         if ( ! $SQL_DBH || ! is_string($tablename) || '' === $tablename) {
             return false;
         }
-        return getOrmSchemaManager()->tableExists($tablename);
+        return getOrmSchemaManager()->tablesExist([$tablename]);
 
         if (str_contains($tablename, '[@prefix@]')) {
             $tablename = parseQuery($tablename);
@@ -726,7 +732,10 @@ if ( ! function_exists('sql_fetch_assoc')) {
         return $stmt->execute($input_parameters);
     }
 
-    function sql_prepare_execute($sql, $input_parameters = []): PDOStatement|false
+    /**
+     * @return PDOStatement|false
+     */
+    function sql_prepare_execute($sql, $input_parameters = [])
     {
         global $SQL_DBH;
         sql_query_log($sql);

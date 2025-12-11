@@ -337,7 +337,7 @@ class MANAGER
                 $msg = sprintf(
                     "php critical error in plugin(%s):[%s] Line:%d (%s) : ",
                     $NP_Name,
-                    $e::class,
+                    get_class($e),
                     $e->getLine(),
                     $e->getFile()
                 );
@@ -677,7 +677,7 @@ class MANAGER
                         'php error in plugin %s::%s:[%s] Line:%d (%s) : %s',
                         $this->plugins[$listener]->getClassName(),
                         $event_funcname,
-                        $e::class,
+                        get_class($e),
                         $e->getLine(),
                         $e->getFile(),
                         $e->getMessage()

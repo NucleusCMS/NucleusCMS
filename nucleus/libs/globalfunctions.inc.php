@@ -298,7 +298,10 @@ function isValidMailAddress(string $address): bool
 }
 
 // some helper functions
-function getBlogIDFromName(string $bshortname): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromName(string $bshortname)
 {
     $ph['bshortname'] = sql_quote_string($bshortname);
     $res              = parseQuickQuery(
@@ -322,7 +325,10 @@ function getBlogNameFromID(int $bnumber): string
     );
 }
 
-function getBlogIDFromItemID(int $inumber): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromItemID(int $inumber)
 {
     $ph['inumber'] = (int) $inumber;
     $res           = parseQuickQuery(
@@ -336,7 +342,10 @@ function getBlogIDFromItemID(int $inumber): int|false
     return (int) $res;
 }
 
-function getBlogIDFromCommentID(int $cnumber): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromCommentID(int $cnumber)
 {
     $ph['cnumber'] = (int) $cnumber;
     $res           = parseQuickQuery(
@@ -350,7 +359,10 @@ function getBlogIDFromCommentID(int $cnumber): int|false
     return (int) $res;
 }
 
-function getBlogIDFromCatID(int $catid): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromCatID(int $catid)
 {
     $ph['catid'] = (int) $catid;
     $res         = parseQuickQuery(
@@ -364,7 +376,10 @@ function getBlogIDFromCatID(int $catid): int|false
     return (int) $res;
 }
 
-function getCatIDFromName(string $cname): int|false
+/**
+ * @return int|false
+ */
+function getCatIDFromName(string $cname)
 {
     $ph['cname'] = sql_quote_string($cname);
     $res         = parseQuickQuery(
