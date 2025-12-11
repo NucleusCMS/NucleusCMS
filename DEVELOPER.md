@@ -103,12 +103,33 @@ Developers cloning or downloading source code must run `composer install` themse
 
 The vendor directory has been heavily optimized:
 
-- **Size**: 2.2MB (reduced from 8.5MB, 74% smaller)
+- **Size**: ~3.2MB after cleanup
 - **Optimizations applied**:
   - Removed unused dependencies (symfony/cache, doctrine/orm, phpxmlrpc)
   - Removed test directories and documentation files from vendor packages
   - Optimized autoloader with classmap
   - Replaced cebe/markdown with lighter erusev/parsedown
+
+### Cleanup Script for Distribution
+
+Before creating a release package, run the cleanup script to remove unnecessary files from the vendor directory:
+
+```sh
+cd nucleus/libs
+composer install --no-dev --prefer-dist --optimize-autoloader
+bash cleanup-vendor.sh
+cd ../..
+```
+
+The `cleanup-vendor.sh` script removes:
+
+* Test directories (`tests/`, `test/`, `Tests/`, `Test/`)
+* Documentation files (`docs/`, `CHANGELOG*`, `CONTRIBUTING*`, `*.md`)
+* CI/CD configuration (`.github/`, `.travis.yml`, etc.)
+* Development tools (`phpunit.xml*`, `phpstan.neon*`, etc.)
+* Git files (`.gitignore`, `.gitattributes`)
+
+**Note**: Always verify the application works correctly after running the cleanup script.
 
 ## Development Workflow
 

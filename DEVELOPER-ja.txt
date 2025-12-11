@@ -11,6 +11,26 @@
 3. 作成された `vendor/` ディレクトリを配布用アーカイブやインストーラに同梱します。Composer を使えないユーザーにも必要なライブラリを提供できます。
 4. `composer.json` または `composer.lock` を更新した場合は、再度 `vendor/` を作り直して同梱内容を最新化してください。
 
+### 配布前の vendor クリーンアップ
+
+配布パッケージを作成する前に、クリーンアップスクリプトを実行して不要なファイルを削除できます：
+
+```sh
+cd nucleus/libs
+composer install --no-dev --prefer-dist --optimize-autoloader
+bash cleanup-vendor.sh
+cd ../..
+```
+
+`cleanup-vendor.sh` は以下のファイルを削除します：
+- テストディレクトリ（`tests/`, `test/`, `Tests/`, `Test/`）
+- ドキュメント（`docs/`, `CHANGELOG*`, `CONTRIBUTING*`, `*.md`）
+- CI/CD設定（`.github/`, `.travis.yml` など）
+- 開発ツール設定（`phpunit.xml*`, `phpstan.neon*` など）
+- Gitファイル（`.gitignore`, `.gitattributes`）
+
+**注意**: クリーンアップ後は必ず動作確認を行ってください。
+
 ## インストーラ利用時の認証設定（ローカル開発）
 
 インストーラは Basic 認証で保護されています。ローカル環境で利用する際は、実行前に `install/install-config.php` でユーザー名とパスワードを設定してください。実運用の資格情報をコミットしないよう注意し、利用後は適宜変更・削除してください。
