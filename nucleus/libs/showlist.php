@@ -164,6 +164,99 @@ function listplug_table($template, $type)
     }
 }
 
+function listplug_cards($template, $type)
+{
+    $content   = $template['content'];
+    $func_name = "listplug_cards_" . $template['content'];
+    switch ($type) {
+        case 'HEAD':
+            echo '<div class="cards-container cards-' . escapeHTML(strtolower($content)) . '">';
+            echo call_user_func($func_name, $template, $type) ?? '';
+            break;
+        case 'BODY':
+            echo call_user_func($func_name, $template, $type) ?? '';
+            break;
+        case 'FOOT':
+            echo call_user_func($func_name, $template, $type) ?? '';
+            echo '</div>';
+            break;
+    }
+}
+
+function listplug_cards_bloglist($template, $type)
+{
+    switch ($type) {
+        case 'HEAD':
+            break;
+        case 'BODY':
+            $current = $template['current'];
+
+            $query = 'SELECT COUNT(*) AS result '
+               . ' FROM ' . sql_table('item') . ' AS i'
+               . sprintf(' WHERE i.iblog = %d ', (int) ($current->bnumber));
+            $blog_amountItems = quickQuery($query);
+
+            $query = 'SELECT COUNT(*) AS result '
+               . ' FROM ' . sql_table('comment') . ' AS c'
+               . sprintf(' WHERE c.cblog = %d ', (int) ($current->bnumber));
+            $blog_amountComments = quickQuery($query);
+
+            $isAdmin = (1 == $current->tadmin);
+
+            echo '<div class="blog-card">';
+            
+            // Card Header with Blog Name
+            echo '<div class="blog-card-header">';
+            echo '<a href="' . hsc($current->burl) . '" class="blog-card-title" title="' . _BLOGLIST_TT_VISIT . '">';
+            echo '<svg class="blog-card-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>';
+            echo hsc($current->bname);
+            echo '</a>';
+            echo '</div>';
+            
+            // Card Body with Actions
+            echo '<div class="blog-card-body">';
+            echo '<div class="blog-card-actions">';
+            
+            // Add Item
+            echo '<a href="index.php?action=createitem&amp;blogid=' . $current->bnumber . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_ADD) . '">';
+            echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
+            echo '<span>' . hsc(_BLOGLIST_ADD) . '</span>';
+            echo '</a>';
+            
+            // Edit Items
+            echo '<a href="index.php?action=itemlist&amp;blogid=' . $current->bnumber . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_EDIT) . '">';
+            echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
+            echo '<span>' . hsc(_BLOGLIST_EDIT) . '</span>';
+            echo '<span class="blog-card-badge">' . $blog_amountItems . '</span>';
+            echo '</a>';
+            
+            // Comments
+            echo '<a href="index.php?action=blogcommentlist&amp;blogid=' . $current->bnumber . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_COMMENTS) . '">';
+            echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
+            echo '<span>' . hsc(_BLOGLIST_COMMENTS) . '</span>';
+            echo '<span class="blog-card-badge">' . $blog_amountComments . '</span>';
+            echo '</a>';
+            
+            echo '</div>';
+            echo '</div>';
+            
+            // Card Footer with Settings (if admin)
+            if ($isAdmin) {
+                echo '<div class="blog-card-footer">';
+                echo '<a href="index.php?action=blogsettings&amp;blogid=' . $current->bnumber . '" class="blog-card-settings" title="' . hsc(_BLOGLIST_TT_SETTINGS) . '">';
+                echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
+                echo '<span>' . hsc(_BLOGLIST_SETTINGS) . '</span>';
+                echo '</a>';
+                echo '</div>';
+            }
+            
+            echo '</div>';
+            break;
+        case 'FOOT':
+            break;
+    }
+}
+
 function listplug_table_memberlist($template, $type)
 {
     global $member;
@@ -756,17 +849,17 @@ function listplug_table_commentlist($template, $type)
 
             if ($show_action_link) {
                 $actions[] = [
-                    'url'   => sprintf('index.php?action=commentedit&amp;commentid=%d', $current->cnumber),
+                    'url'   => sprintf('index.php?action=commentedit&commentid=%d', $current->cnumber),
                     'label' => _LISTS_EDIT,
                 ];
                 $actions[] = [
-                    'url'   => sprintf('index.php?action=commentdelete&amp;commentid=%d', $current->cnumber),
+                    'url'   => sprintf('index.php?action=commentdelete&commentid=%d', $current->cnumber),
                     'label' => _LISTS_DELETE,
                 ];
             }
             if ($template['canAddBan']) {
                 $actions[] = [
-                    'url'   => sprintf('index.php?action=banlistnewfromitem&amp;itemid=%d&amp;ip=%s', $current->citem, hsc($current->cip)),
+                    'url'   => sprintf('index.php?action=banlistnewfromitem&itemid=%d&ip=%s', $current->citem, urlencode($current->cip)),
                     'label' => _LIST_COMMENT_BANIP,
                     'title' => hsc($current->chost),
                 ];

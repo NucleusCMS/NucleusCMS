@@ -260,8 +260,8 @@ class ADMIN
         $query                  = parseQuery($query, $ph);
         $template['content']    = 'bloglist';
         $template['superadmin'] = $member->isAdmin();
-        echo '<div>';
-        $amount = showlist_by_query($query, 'table', $template);
+        echo '<div class="blog-cards-wrapper">';
+        $amount = showlist_by_query($query, 'cards', $template);
         echo '</div>';
 
         // Super-Admins can create new blogs

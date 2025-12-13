@@ -1463,7 +1463,7 @@ try_define('_MEMBERS_USESITELANG',				'- グローバル設定を使う -');
 try_define('_BLOGLIST_TT_VISIT',				'サイトを見る');
 try_define('_BLOGLIST_ADD',						'アイテムの追加');
 try_define('_BLOGLIST_TT_ADD',					'このBlogに新しいアイテムを追加します');
-try_define('_BLOGLIST_EDIT',					'アイテムの編集/削除');
+try_define('_BLOGLIST_EDIT',					'アイテム一覧');
 try_define('_BLOGLIST_TT_EDIT',					'公開済みのアイテムを編集と削除');
 
 try_define('_BLOGLIST_SETTINGS',				'ブログ設定');
