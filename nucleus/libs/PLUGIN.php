@@ -101,7 +101,7 @@ class NucleusPlugin
     {
     }
 
-    public function doSkinVar($skinType)
+    public function doSkinVar($skinType, ...$args)
     {
     }
 
@@ -1061,17 +1061,22 @@ class NucleusPlugin
         $query = $qb->executeQuery();
         $ev    = []; // $ev[] = $a['event'];
         // fetch all first column
-        if ( ! $query || ! ($ev = $query->fetchAllAssociative())) {
+        if ( ! $query) {
             return false;
         }
-        $ev = array_map(function ($a) { return $a['event']; }, $ev);
+        $result = $query->fetchAllAssociative();
+        if ($result) {
+            $ev = array_map(function ($a) { return $a['event']; }, $result);
+        }
 
         $pl_event_list = $this->_getEventList();
         if (count($ev) != count($pl_event_list)) {
             return false;
         }
-        $d = array_diff($ev, $pl_event_list);
-        if (count($d) > 0) {
+        // Check both directions: DB vs Plugin and Plugin vs DB
+        $d1 = array_diff($ev, $pl_event_list);
+        $d2 = array_diff($pl_event_list, $ev);
+        if (count($d1) > 0 || count($d2) > 0) {
             // there are differences so the db is not up-to-date
             return false;
         }

@@ -604,12 +604,18 @@ button.btn-secondary:hover,
 
 .btn-add-item {
     margin-left: auto;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
     padding: 8px 12px;
     background: #24305e;
     color: #fff;
     border-radius: 6px;
     text-decoration: none;
+}
+
+.btn-add-item svg {
+    flex-shrink: 0;
 }
 
 .btn-add-item:hover {

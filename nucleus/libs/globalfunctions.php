@@ -92,7 +92,7 @@ $maxresults  = requestVar('maxresults');
 $startpos    = intRequestVar('startpos');
 $special     = requestVar('special');
 $virtualpath = (null != getVar('virtualpath')) ? getVar('virtualpath')
-    : serverVar('PATH_INFO');
+    : (serverVar('PATH_INFO') ?? '');
 
 if ( ! headers_sent() && confVar('expose_generator')) {
     header(sprintf('Generator: %s', CORE_APPLICATION_NAME));

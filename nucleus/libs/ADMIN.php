@@ -266,7 +266,7 @@ class ADMIN
 
         // Super-Admins can create new blogs
         if ($member->isAdmin()) {
-            echo sprintf('<p><a class="btn-add-item" href="index.php?action=createnewlog">%s</a></p>', _OVERVIEW_NEWLOG);
+            echo '<p><a class="btn-add-item" href="index.php?action=createnewlog"><svg class="menu-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>' . _OVERVIEW_NEWLOG . '</a></p>';
         }
 
         if ( ! $isShowAll && $member->isAdmin()) {
@@ -1262,7 +1262,8 @@ class ADMIN
         echo '<div class="list-heading">';
         echo '<h2>' . _ITEMLIST_YOUR . '</h2>';
         if ($member->getTeamBlogs()) {
-            $firstBlogId = (int) reset($member->getTeamBlogs());
+            $teamBlogsForReset = $member->getTeamBlogs();
+            $firstBlogId = (int) reset($teamBlogsForReset);
             $addUrl      = sprintf(
                 'index.php?action=createitem&amp;blogid=%d',
                 $firstBlogId

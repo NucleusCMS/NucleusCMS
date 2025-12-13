@@ -7,7 +7,13 @@ class SYSTEMLOG
     public static function checkWritable()
     {
         static $table_exists = null;
-        global $CONF;
+        global $CONF, $SQL_DBH;
+
+        // Check if database connection is established
+        if (empty($SQL_DBH) || !is_object($SQL_DBH)) {
+            return false;
+        }
+
         // no table
         if (null === $table_exists) {
             if (empty($CONF['DatabaseVersion'])

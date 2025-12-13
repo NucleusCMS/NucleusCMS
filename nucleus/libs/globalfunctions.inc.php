@@ -122,7 +122,12 @@ function sql_table(string $name = ''): string
 
 function sql_tableQuote(string $name = ''): string
 {
-    return getOrmConnection()->quoteIdentifier(sql_table($name));
+    $conn = getOrmConnection();
+    if ($conn) {
+        return $conn->quoteIdentifier(sql_table($name));
+    }
+    // Fallback when connection is not yet established
+    return '`' . sql_table($name) . '`';
 }
 
 function sendContentTypeEx(string $contenttype, ?array $options = [])

@@ -451,12 +451,12 @@ if ( ! function_exists('sql_fetch_assoc')) {
             return false;
         }
 
-        $names = $sm->listTableColumns($tablename);
-        if (empty($names)) {
+        $columns = $sm->listTableColumns($tablename);
+        if (empty($columns)) {
             return false;
         }
-        foreach ($names as $v) {
-            if (0 == strcasecmp($ColumnName, $v)) {
+        foreach ($columns as $column) {
+            if (0 == strcasecmp($ColumnName, $column->getName())) {
                 return true;
             }
         }
