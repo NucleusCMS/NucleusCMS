@@ -89,8 +89,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
     private function installTable()
     {
         $table = $this->getTablenameMain();
-        $schema = getOrmSchemaManager();
-        if ($schema && $schema->tableExists($table)) {
+        $Schema = getOrmSchemaManager();
+        if ($Schema && $Schema->tableExists($table)) {
             return ;
         }
 
@@ -241,19 +241,16 @@ class NP_SecurityEnforcer extends NucleusPlugin
                     ->where('lastfail < :lastfail')
                     ->setParameter('lastfail', time() - ($this->login_lockout * 60))
                     ->executeStatement();
-
-                $qb = getOrmQueryBuilder()
-                        ->select('fails')
-                        ->from($this->getTablenameMain())
-                        ->where('login = :login');
-                $loginResult = $qb->setParameters(['login' => $login])->executeQuery();
-                $flogin = (int) ($loginResult ? $loginResult->fetchOne() : 0);
-                $ipResult = $qb->setParameters(['login' => $ip])->executeQuery();
-                $fip    = (int) ($ipResult ? $ipResult->fetchOne() : 0);
-            } else {
-                $flogin = 0;
-                $fip    = 0;
             }
+
+            $qb = getOrmQueryBuilder();
+            if ($qb) {
+                $qb->select('fails')
+                    ->from($this->getTablenameMain())
+                    ->where('login = :login');
+            }
+            $flogin = $qb ? (int) $qb->setParameters(['login' => $login])->executeQuery()->fetchOne() : 0;
+            $fip    = $qb ? (int) $qb->setParameters(['login' => $ip])->executeQuery()->fetchOne() : 0;
 
             if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
                 $data['success']    = 0;
