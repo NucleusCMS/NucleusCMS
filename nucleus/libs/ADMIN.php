@@ -123,6 +123,7 @@ class ADMIN
             'banlistnew',
             'banlistnewfromitem',
             'blogcommentlist',
+            'bloglist',
             'blogsettings',
             'browseowncomments',
             'browseownitems',
@@ -237,9 +238,146 @@ class ADMIN
 
         $this->pagehead();
 
+        $isAdmin = $member->isAdmin();
+        $memberId = $member->getID();
+
+        // Get blogs the user has access to
+        $ph = ['tmember' => $memberId];
+        $query = 'SELECT bnumber, bname, tadmin, burl, bshortname';
+        $query .= ' FROM ' . sql_table('blog') . ', ' . sql_table('team');
+        $query .= ' WHERE tblog=bnumber and tmember=' . intval($memberId);
+        $query .= ' ORDER BY ' . self::getSqlOrderBlog();
+        $rs = sql_query($query);
+        $blogs = [];
+        while ($row = sql_fetch_assoc($rs)) {
+            $blogs[] = $row;
+        }
+        sql_free_result($rs);
+
+        // Statistics
+        $stats = [];
+
+        // Total items (published and draft)
+        $stats['total_items'] = (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('item'));
+        $stats['published_items'] = (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('item') . ' WHERE idraft=0');
+        $stats['draft_items'] = (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('item') . ' WHERE idraft=1');
+
+        // Total comments
+        $stats['total_comments'] = (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('comment'));
+
+        // Pending comments (guest comments - no cmember)
+        $stats['pending_comments'] = 0; // If you have a moderation system, count pending here
+
+        // Total categories
+        $stats['total_categories'] = (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('category'));
+
+        // Total blogs
+        $stats['total_blogs'] = (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
+
+        // Total members (admin only)
+        $stats['total_members'] = $isAdmin ? (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('member')) : 0;
+
+        // Recent items (last 7 days, max 5)
+        $recentItems = [];
+        $query = 'SELECT i.inumber, i.ititle, i.itime, i.idraft, b.bname, b.bnumber,';
+        $query .= ' (SELECT COUNT(*) FROM ' . sql_table('comment') . ' c WHERE c.citem = i.inumber) as comment_count';
+        $query .= ' FROM ' . sql_table('item') . ' i';
+        $query .= ' INNER JOIN ' . sql_table('blog') . ' b ON i.iblog = b.bnumber';
+        if (!$isAdmin) {
+            $query .= ' INNER JOIN ' . sql_table('team') . ' t ON b.bnumber = t.tblog AND t.tmember = ' . intval($memberId);
+        }
+        $query .= ' ORDER BY i.itime DESC LIMIT 5';
+        $rs = sql_query($query);
+        while ($row = sql_fetch_assoc($rs)) {
+            $recentItems[] = $row;
+        }
+        sql_free_result($rs);
+
+        // Recent comments (last 5)
+        $recentComments = [];
+        $query = 'SELECT c.cnumber, c.cbody, c.cuser, c.ctime, c.citem, c.cmember as cmemberid, i.ititle';
+        $query .= ' FROM ' . sql_table('comment') . ' c';
+        $query .= ' INNER JOIN ' . sql_table('item') . ' i ON c.citem = i.inumber';
+        $query .= ' INNER JOIN ' . sql_table('blog') . ' b ON i.iblog = b.bnumber';
+        if (!$isAdmin) {
+            $query .= ' INNER JOIN ' . sql_table('team') . ' t ON b.bnumber = t.tblog AND t.tmember = ' . intval($memberId);
+        }
+        $query .= ' ORDER BY c.ctime DESC LIMIT 5';
+        $rs = sql_query($query);
+        while ($row = sql_fetch_assoc($rs)) {
+            $recentComments[] = $row;
+        }
+        sql_free_result($rs);
+
+        // Blog summary
+        $blogSummary = [];
+        foreach ($blogs as $blog) {
+            $bnumber = (int) $blog['bnumber'];
+            $summary = [
+                'bnumber' => $bnumber,
+                'bname' => $blog['bname'],
+                'burl' => $blog['burl'] ?: createBlogidLink($bnumber),
+                'tadmin' => $blog['tadmin'],
+                'item_count' => (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('item') . ' WHERE iblog=' . $bnumber),
+                'published_count' => (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('item') . ' WHERE iblog=' . $bnumber . ' AND idraft=0'),
+                'draft_count' => (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('item') . ' WHERE iblog=' . $bnumber . ' AND idraft=1'),
+                'comment_count' => (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('comment') . ' WHERE cblog=' . $bnumber),
+                'category_count' => (int) quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('category') . ' WHERE cblog=' . $bnumber),
+                'last_update' => quickQuery('SELECT MAX(itime) as result FROM ' . sql_table('item') . ' WHERE iblog=' . $bnumber),
+            ];
+            $blogSummary[] = $summary;
+        }
+
+        // Sort blog summary by last_update descending
+        usort($blogSummary, function($a, $b) {
+            $aTime = $a['last_update'] ?: '0000-00-00 00:00:00';
+            $bTime = $b['last_update'] ?: '0000-00-00 00:00:00';
+            return strcmp($bTime, $aTime); // descending
+        });
+
+        // Recent action logs (admin only)
+        $recentLogs = [];
+        if ($isAdmin) {
+            $query = 'SELECT timestamp, message FROM ' . sql_table('actionlog') . ' ORDER BY timestamp DESC LIMIT 10';
+            $rs = sql_query($query);
+            if ($rs) {
+                while ($row = sql_fetch_assoc($rs)) {
+                    $recentLogs[] = $row;
+                }
+                sql_free_result($rs);
+            }
+        }
+
+        $params = [
+            'msg' => $msg ? _MESSAGE . ': ' . $msg : '',
+            'isAdmin' => $isAdmin,
+            'blogs' => $blogs,
+            'stats' => $stats,
+            'recentItems' => $recentItems,
+            'recentComments' => $recentComments,
+            'blogSummary' => $blogSummary,
+            'recentLogs' => $recentLogs,
+        ];
+
+        echo \parseBlade('admin.action_dashboard', $params);
+
+        $this->pagefoot();
+    }
+
+    /**
+     * Blog list action - shows all blogs the user has access to
+     */
+    public function action_bloglist($msg = '')
+    {
+        global $member;
+
+        $this->pagehead();
+
         if ($msg) {
             echo _MESSAGE , ': ', $msg;
         }
+
+        echo '<p><a href="index.php?action=overview">(' . _BACK_YR_HOME . ')</a></p>';
 
         /* ---- add items ---- */
         echo '<h2>' . _OVERVIEW_YRBLOGS . '</h2>';
@@ -250,14 +388,12 @@ class ADMIN
         if ($isShowAll && $member->isAdmin()) {
             // Super-Admins have access to all blogs! (no add item support though)
             $query = 'SELECT bnumber, bname, 1 as tadmin, burl, bshortname';
-            $query .= ' FROM [@prefix@]blog ORDER BY ' . self::getSqlOrderBlog();
+            $query .= ' FROM ' . sql_table('blog') . ' ORDER BY ' . self::getSqlOrderBlog();
         } else {
             $query = 'SELECT bnumber, bname, tadmin, burl, bshortname';
-            $query .= ' FROM [@prefix@]blog, [@prefix@]team';
-            $query .= ' WHERE tblog=bnumber and tmember=[@tmember@] ORDER BY '. self::getSqlOrderBlog();
-            $ph['tmember'] = $member->getID();
+            $query .= ' FROM ' . sql_table('blog') . ', ' . sql_table('team');
+            $query .= ' WHERE tblog=bnumber and tmember=' . intval($member->getID()) . ' ORDER BY '. self::getSqlOrderBlog();
         }
-        $query                  = parseQuery($query, $ph);
         $template['content']    = 'bloglist';
         $template['superadmin'] = $member->isAdmin();
         echo '<div class="blog-cards-wrapper">';
@@ -270,9 +406,9 @@ class ADMIN
         }
 
         if ( ! $isShowAll && $member->isAdmin()) {
-            $total = quickQuery(parseQuery('SELECT COUNT(*) as result FROM [@prefix@]blog'));
+            $total = quickQuery('SELECT COUNT(*) as result FROM ' . sql_table('blog'));
             if ($total > $amount) {
-                echo sprintf('<p><a href="index.php?action=overview&amp;showall=yes">%s</a></p>', _OVERVIEW_SHOWALL);
+                echo sprintf('<p><a href="index.php?action=bloglist&amp;showall=yes">%s</a></p>', _OVERVIEW_SHOWALL);
             }
         }
 
@@ -286,7 +422,6 @@ class ADMIN
             // Todo display author
             $param = ['iauthor' => $member->getID(), 'idraft' => 1];
             $query = getOrmQueryBuilder()
-                    //->select('bnumber', 'count(*)', 'sum(iauthor=:iauthor)') // sum(iauthor=:iauthor) / Undefined function: 7 ERROR: 関数sum(boolean)は存在しません
                     ->select('bnumber', 'count(*)', 'sum(CASE WHEN iauthor=:iauthor THEN 1 ELSE 0 END)')
                     ->from(sql_table('item'))
                     ->from(sql_table('blog'))
@@ -300,19 +435,6 @@ class ADMIN
             foreach ($query->executeQuery($param)->fetchAllAssociative() as $row) {
                 $items[] = array_values($row);
             }
-
-            //            $query = parseQuery(
-            //                'SELECT bnumber, count(*), sum(iauthor=[@iauthor@]) FROM [@prefix@]item, [@prefix@]blog '
-            //               . ' WHERE iblog=bnumber AND idraft=1 GROUP BY bnumber ORDER BY ' . ,
-            //                ['iauthor' => $member->getID()]
-            //            );
-            //            $rs    = sql_query($query);
-            //            if ($rs) {
-            //                while ($row = sql_fetch_row($rs)) {
-            //                    $items[] = array_merge($row);
-            //                }
-            //                sql_free_result($rs);
-            //            }
 
             $has_hidden_items = 0;
             $amountdrafts     = 0;
@@ -340,15 +462,14 @@ class ADMIN
                     echo '<div style="width: 100%; height: 150px; overflow: auto;">';
                 }
 
+                $ph = [];
                 $ph['iblog'] = $current_bid;
-                $query       = 'SELECT ititle, inumber, bshortname FROM [@prefix@]item, [@prefix@]blog';
+                $query       = 'SELECT ititle, inumber, bshortname FROM ' . sql_table('item') . ', ' . sql_table('blog');
                 $query .= ' WHERE';
-                if ($showall) {
-                    $ph['iauthor'] = $member->getID();
-                    $query .= ' iauthor=[@iauthor@] AND';
+                if (!$showall) {
+                    $query .= ' iauthor=' . intval($member->getID()) . ' AND';
                 }
-                $query .= ' iblog=bnumber AND iblog=[@iblog@] AND idraft=1 ORDER BY inumber DESC';
-                $query               = parseQuery($query, $ph);
+                $query .= ' iblog=bnumber AND iblog=' . intval($current_bid) . ' AND idraft=1 ORDER BY inumber DESC';
                 $template['content'] = 'draftlist';
                 $amountdrafts += showlist_by_query($query, 'table', $template);
 
@@ -361,7 +482,7 @@ class ADMIN
             }
 
             if ($has_hidden_items && ! $isShowAll && $member->isAdmin()) {
-                echo '<p><a href="index.php?action=overview&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
+                echo '<p><a href="index.php?action=bloglist&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
             }
         }
 
