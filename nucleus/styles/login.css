@@ -127,25 +127,27 @@ body.login-page {
     margin-top: 8px;
     width: 100%;
     padding: 12px 14px;
-    border: none;
-    border-radius: 10px;
-    background: linear-gradient(120deg, var(--accent), #2b6ad6);
+    border: 1px solid rgba(255, 255, 255, 0.28);
+    border-radius: 12px;
+    background: linear-gradient(160deg, #3070d1 0%, #1f5fbf 50%, #1c4f9b 100%);
     color: white;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.2s ease;
-    box-shadow: 0 10px 30px rgba(31, 95, 191, 0.35);
+    box-shadow: 0 12px 30px rgba(20, 56, 110, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .login-form__submit:hover {
-    background: linear-gradient(120deg, #2b6ad6, #1f5fbf);
+    background: linear-gradient(160deg, #3c7cde 0%, #2b6ad6 50%, #1f5fbf 100%);
     transform: translateY(-1px);
+    box-shadow: 0 14px 34px rgba(20, 56, 110, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.36);
 }
 
 .login-form__submit:active {
     transform: translateY(0);
-    box-shadow: 0 6px 18px rgba(31, 95, 191, 0.4);
+    box-shadow: 0 8px 20px rgba(20, 56, 110, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.32);
 }
 
 .login-alert {
