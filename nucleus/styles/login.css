@@ -1,13 +1,13 @@
 :root {
     --login-bg:
-        radial-gradient(140% 120% at 12% 8%, rgba(165, 205, 255, 0.28) 0%, rgba(65, 111, 178, 0.12) 38%, rgba(9, 18, 36, 0) 60%),
-        radial-gradient(120% 100% at 78% 20%, rgba(90, 170, 240, 0.12) 0%, rgba(40, 94, 168, 0.08) 36%, rgba(10, 22, 45, 0) 60%),
-        radial-gradient(120% 90% at 58% 86%, rgba(34, 72, 128, 0.12) 0%, rgba(12, 30, 66, 0.08) 30%, rgba(6, 16, 36, 0) 58%),
-        linear-gradient(135deg, #0f1627 0%, #0c1529 40%, #0a1631 100%),
-        linear-gradient(160deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 40%);
-    --card-bg: rgba(255, 255, 255, 0.9);
+        radial-gradient(140% 120% at 14% 10%, rgba(171, 211, 255, 0.32) 0%, rgba(84, 132, 194, 0.16) 38%, rgba(18, 36, 66, 0) 60%),
+        radial-gradient(120% 100% at 80% 22%, rgba(118, 188, 255, 0.14) 0%, rgba(56, 112, 186, 0.1) 36%, rgba(16, 34, 64, 0) 60%),
+        radial-gradient(120% 90% at 56% 88%, rgba(52, 92, 152, 0.14) 0%, rgba(24, 48, 88, 0.1) 30%, rgba(12, 26, 54, 0) 58%),
+        linear-gradient(135deg, #152238 0%, #122540 42%, #0f2647 100%),
+        linear-gradient(160deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 46%);
+    --card-bg: rgba(255, 255, 255, 0.92);
     --accent: #4a7cc4;
-    --accent-strong: #315a92;
+    --accent-strong: #305891;
     --text-main: #0f172a;
     --text-muted: #475569;
     --border-color: #dde6f3;
@@ -81,6 +81,52 @@ body.login-page {
     font-size: 15px;
     background: white;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.login-form__password {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-form__input--password {
+    padding-right: 44px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(74, 124, 196, 0.1);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    color: var(--accent-strong);
+}
+
+.password-toggle svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+    outline: none;
+    background: rgba(74, 124, 196, 0.18);
+    box-shadow: 0 0 0 3px rgba(74, 124, 196, 0.16);
+}
+
+.password-toggle.is-active {
+    background: rgba(74, 124, 196, 0.24);
+    color: var(--accent);
 }
 
 .login-form__input:-webkit-autofill,

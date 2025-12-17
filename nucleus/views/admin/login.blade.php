@@ -21,7 +21,14 @@
                 <input id="login-name" name="login" tabindex="10" maxlength="32" class="login-form__input" required />
 
                 <label for="login-password" class="login-form__label">{{ _LOGIN_PASSWORD }}</label>
-                <input id="login-password" name="password" tabindex="20" maxlength="40" type="password" class="login-form__input" required />
+                <div class="login-form__password">
+                    <input id="login-password" name="password" tabindex="20" maxlength="40" type="password" class="login-form__input login-form__input--password" required />
+                    <button type="button" class="password-toggle" id="password-toggle" aria-label="パスワードを表示" aria-pressed="false">
+                        <svg viewBox="0 0 24 24" role="img" aria-hidden="true" focusable="false">
+                            <path d="M12 5.5c4.5 0 8.4 2.9 10 6.5-1.6 3.6-5.5 6.5-10 6.5S3.6 15.6 2 12c1.6-3.6 5.5-6.5 10-6.5Zm0 2c-3.4 0-6.5 2.1-7.8 4.5 1.3 2.4 4.4 4.5 7.8 4.5s6.5-2.1 7.8-4.5C18.5 9.6 15.4 7.5 12 7.5Zm0 1.8a2.7 2.7 0 1 1 0 5.4 2.7 2.7 0 0 1 0-5.4Zm0 1.6a1.1 1.1 0 1 0 0 2.2 1.1 1.1 0 0 0 0-2.2Z"></path>
+                        </svg>
+                    </button>
+                </div>
 
                 <div class="login-form__options">
                     <label class="login-checkbox">
@@ -95,6 +102,21 @@
                     closeModal();
                 }
             });
+
+            const passwordInput = document.getElementById('login-password');
+            const passwordToggle = document.getElementById('password-toggle');
+            const labelShow = 'パスワードを表示';
+            const labelHide = 'パスワードを非表示';
+
+            if (passwordInput && passwordToggle) {
+                passwordToggle.addEventListener('click', () => {
+                    const isHidden = passwordInput.getAttribute('type') === 'password';
+                    passwordInput.setAttribute('type', isHidden ? 'text' : 'password');
+                    passwordToggle.setAttribute('aria-pressed', String(isHidden));
+                    passwordToggle.setAttribute('aria-label', isHidden ? labelHide : labelShow);
+                    passwordToggle.classList.toggle('is-active', isHidden);
+                });
+            }
         })();
     </script>
 </body>
