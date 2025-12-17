@@ -26,49 +26,16 @@ body.login-page {
 }
 
 .login-shell {
-    width: min(960px, 100%);
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 24px;
-    align-items: center;
-    text-align: center;
-}
-
-.login-brand {
-    color: white;
+    width: min(520px, 100%);
     display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 16px;
-    filter: drop-shadow(0 10px 30px rgba(0, 0, 0, 0.35));
-}
-
-.login-brand__logo {
-    width: 58px;
-    height: 58px;
-    border-radius: 18px;
-    background: rgba(255, 255, 255, 0.12);
-    border: 1px solid rgba(255, 255, 255, 0.25);
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-    font-size: 26px;
-    letter-spacing: 1px;
-}
-
-.login-brand__name {
-    font-size: 24px;
-    font-weight: 700;
-}
-
-.login-brand__subtitle {
-    color: rgba(255, 255, 255, 0.85);
-    font-size: 14px;
+    flex-direction: column;
+    gap: 18px;
+    align-items: stretch;
 }
 
 .login-card {
     margin: 0 auto;
-    width: min(480px, 100%);
+    width: 100%;
     background: var(--card-bg);
     border-radius: 18px;
     padding: 28px;
@@ -78,8 +45,18 @@ body.login-page {
     backdrop-filter: blur(6px);
 }
 
+.login-card__header {
+    margin-bottom: 12px;
+}
+
+.login-card__subtitle {
+    margin: 0;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
 .login-card__title {
-    margin: 0 0 12px;
+    margin: 4px 0 0;
     font-size: 24px;
     font-weight: 700;
     color: var(--text-main);
@@ -184,15 +161,5 @@ body.login-page {
 .login-footer {
     color: rgba(255, 255, 255, 0.82);
     font-size: 13px;
-}
-
-@media (min-width: 900px) {
-    .login-shell {
-        grid-template-columns: 1.1fr 0.9fr;
-        text-align: left;
-    }
-
-    .login-brand {
-        justify-content: flex-start;
-    }
+    text-align: center;
 }

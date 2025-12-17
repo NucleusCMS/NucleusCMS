@@ -9,15 +9,11 @@
 </head>
 <body class="login-page">
     <div class="login-shell">
-        <div class="login-brand">
-            <div class="login-brand__logo">N</div>
-            <div class="login-brand__text">
-                <div class="login-brand__name">{{ $SiteName }}</div>
-                <div class="login-brand__subtitle">{{ _LOGIN_PLEASE }}</div>
-            </div>
-        </div>
         <div class="login-card">
-            <h1 class="login-card__title">{{ _LOGIN }}</h1>
+            <div class="login-card__header">
+                <div class="login-card__subtitle">{{ $SiteName }}</div>
+                <h1 class="login-card__title">{{ _LOGIN }}</h1>
+            </div>
             @if ($msg)
                 <div class="login-alert">{!! $msg !!}</div>
             @endif
