@@ -1,12 +1,13 @@
 :root {
     --login-bg:
-        radial-gradient(120% 90% at 50% 112%, rgba(126, 172, 241, 0.36) 0%, rgba(53, 92, 165, 0.28) 34%, rgba(10, 16, 31, 0) 65%),
-        radial-gradient(90% 80% at 30% 120%, rgba(90, 140, 218, 0.28) 0%, rgba(12, 19, 36, 0) 60%),
-        radial-gradient(70% 70% at 80% 115%, rgba(76, 124, 205, 0.26) 0%, rgba(10, 16, 31, 0) 58%),
-        linear-gradient(0deg, #0c1527 0%, #0f1b30 32%, #101e37 62%, #0c1423 100%);
-    --card-bg: rgba(255, 255, 255, 0.94);
-    --accent: #2b68b0;
-    --accent-strong: #205185;
+        radial-gradient(32% 36% at 18% 16%, rgba(140, 190, 255, 0.6) 0%, rgba(76, 129, 196, 0.25) 40%, rgba(12, 22, 46, 0) 75%),
+        radial-gradient(28% 30% at 50% 34%, rgba(109, 165, 245, 0.5) 0%, rgba(57, 103, 177, 0.26) 42%, rgba(18, 30, 61, 0) 70%),
+        radial-gradient(42% 24% at 70% 90%, rgba(64, 108, 182, 0.26) 0%, rgba(12, 20, 41, 0) 80%),
+        linear-gradient(135deg, rgba(17, 28, 52, 0.9) 0%, rgba(13, 22, 44, 0.94) 52%, rgba(6, 14, 29, 0.96) 100%),
+        radial-gradient(120% 110% at 0% 0%, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0) 40%);
+    --card-bg: rgba(255, 255, 255, 0.93);
+    --accent: #2c6fb3;
+    --accent-strong: #215687;
     --text-main: #0f172a;
     --text-muted: #475569;
     --border-color: #e2e8f0;
@@ -133,25 +134,25 @@ body.login-page {
     padding: 12px 14px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
-    background: linear-gradient(180deg, #3f6c9e 0%, #345a83 48%, #2c4e73 100%);
+    background: linear-gradient(175deg, #3f7abd 0%, #3166a2 45%, #2a5588 100%);
     color: white;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.08s ease, box-shadow 0.14s ease, background 0.18s ease;
-    box-shadow: 0 10px 22px rgba(7, 16, 34, 0.38), inset 0 1px 0 rgba(255, 255, 255, 0.24);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.16);
+    box-shadow: 0 12px 26px rgba(9, 18, 42, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
 }
 
 .login-form__submit:hover {
-    background: linear-gradient(180deg, #4678ad 0%, #3a648f 48%, #30557d 100%);
+    background: linear-gradient(175deg, #4686cd 0%, #3a70b0 45%, #315f96 100%);
     transform: translateY(-1px);
-    box-shadow: 0 12px 26px rgba(7, 16, 34, 0.44), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    box-shadow: 0 14px 30px rgba(9, 18, 42, 0.46), inset 0 1px 0 rgba(255, 255, 255, 0.22);
 }
 
 .login-form__submit:active {
     transform: translateY(0);
-    box-shadow: 0 9px 18px rgba(7, 16, 34, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    box-shadow: 0 10px 20px rgba(9, 18, 42, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.18);
 }
 
 .login-alert {
