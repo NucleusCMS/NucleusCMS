@@ -51,18 +51,13 @@ body.login-page {
 }
 
 .login-card__header {
-    margin-bottom: 12px;
-}
-
-.login-card__subtitle {
-    margin: 0;
-    font-size: 14px;
-    color: var(--text-muted);
+    margin-bottom: 16px;
+    text-align: center;
 }
 
 .login-card__title {
-    margin: 4px 0 0;
-    font-size: 24px;
+    margin: 0;
+    font-size: 26px;
     font-weight: 700;
     color: var(--text-main);
 }
@@ -132,28 +127,32 @@ body.login-page {
     margin-top: 8px;
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.32);
+    border: 1px solid rgba(255, 255, 255, 0.26);
     border-radius: 12px;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 40%, rgba(255, 255, 255, 0) 100%),
-        linear-gradient(160deg, #3f7ebf 0%, #34699f 48%, #2c5a8a 100%);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%),
+        #3b6da8;
     color: white;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: box-shadow 0.16s ease, background 0.2s ease;
-    box-shadow: 0 10px 20px rgba(9, 18, 42, 0.26);
+    transition: box-shadow 0.16s ease, background 0.2s ease, transform 0.12s ease;
+    box-shadow: 0 8px 18px rgba(9, 18, 42, 0.18);
 }
 
 .login-form__submit:hover {
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.2) 0%, rgba(255, 255, 255, 0.1) 40%, rgba(255, 255, 255, 0) 100%),
-        linear-gradient(160deg, #4787c8 0%, #3b73ac 48%, #316496 100%);
-    box-shadow: 0 12px 24px rgba(9, 18, 42, 0.3);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%),
+        #3f75b3;
+    box-shadow: 0 10px 20px rgba(9, 18, 42, 0.2);
 }
 
 .login-form__submit:active {
-    box-shadow: 0 9px 18px rgba(9, 18, 42, 0.28);
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%),
+        #365f8c;
+    box-shadow: 0 7px 14px rgba(9, 18, 42, 0.18);
+    transform: translateY(1px);
 }
 
 .login-alert {

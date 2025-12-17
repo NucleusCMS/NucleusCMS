@@ -11,8 +11,7 @@
     <div class="login-shell">
         <div class="login-card">
             <div class="login-card__header">
-                <div class="login-card__subtitle">{{ $SiteName }}</div>
-                <h1 class="login-card__title">{{ _LOGIN }}</h1>
+                <h1 class="login-card__title">{{ $SiteName }}</h1>
             </div>
             @if ($msg)
                 <div class="login-alert">{!! $msg !!}</div>
