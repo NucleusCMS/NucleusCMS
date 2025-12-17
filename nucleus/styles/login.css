@@ -1,12 +1,15 @@
 :root {
-    --login-bg: radial-gradient(120% 120% at 10% 20%, #375a9e 0%, #1f2f57 40%, #111827 100%);
+    --login-bg:
+        radial-gradient(140% 120% at 50% 120%, #2f4a78 0%, #1b2945 52%, #0a0f1c 100%),
+        radial-gradient(80% 90% at 70% 10%, rgba(67, 93, 146, 0.25) 0%, rgba(5, 9, 18, 0) 60%),
+        linear-gradient(170deg, rgba(255, 255, 255, 0.06), rgba(10, 16, 27, 0.1));
     --card-bg: rgba(255, 255, 255, 0.94);
     --accent: #1f5fbf;
     --accent-strong: #174a92;
     --text-main: #0f172a;
     --text-muted: #475569;
     --border-color: #e2e8f0;
-    --shadow: 0 20px 60px rgba(8, 15, 40, 0.25);
+    --shadow: 0 20px 60px rgba(5, 10, 25, 0.32);
 }
 
 * {
@@ -127,27 +130,27 @@ body.login-page {
     margin-top: 8px;
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.28);
+    border: 1px solid rgba(255, 255, 255, 0.24);
     border-radius: 12px;
-    background: linear-gradient(160deg, #3070d1 0%, #1f5fbf 50%, #1c4f9b 100%);
+    background: linear-gradient(175deg, #2e4a77 0%, #243a5c 52%, #1d304e 100%);
     color: white;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: transform 0.08s ease, box-shadow 0.12s ease, background 0.2s ease;
-    box-shadow: 0 12px 30px rgba(20, 56, 110, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.3);
-    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 26px rgba(10, 18, 38, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.26);
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.18);
 }
 
 .login-form__submit:hover {
-    background: linear-gradient(160deg, #3c7cde 0%, #2b6ad6 50%, #1f5fbf 100%);
+    background: linear-gradient(175deg, #38608f 0%, #2c4a73 52%, #223a5a 100%);
     transform: translateY(-1px);
-    box-shadow: 0 14px 34px rgba(20, 56, 110, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.36);
+    box-shadow: 0 12px 30px rgba(10, 18, 38, 0.48), inset 0 1px 0 rgba(255, 255, 255, 0.28);
 }
 
 .login-form__submit:active {
     transform: translateY(0);
-    box-shadow: 0 8px 20px rgba(20, 56, 110, 0.36), inset 0 1px 0 rgba(255, 255, 255, 0.32);
+    box-shadow: 0 8px 18px rgba(10, 18, 38, 0.42), inset 0 1px 0 rgba(255, 255, 255, 0.24);
 }
 
 .login-alert {
