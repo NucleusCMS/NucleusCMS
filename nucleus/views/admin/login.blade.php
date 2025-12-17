@@ -13,7 +13,7 @@
             <div class="login-brand__logo">N</div>
             <div class="login-brand__text">
                 <div class="login-brand__name">{{ $SiteName }}</div>
-                <div class="login-brand__subtitle">{{ _ADMINPAGE }}</div>
+                <div class="login-brand__subtitle">{{ _LOGIN_PLEASE }}</div>
             </div>
         </div>
         <div class="login-card">
