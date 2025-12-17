@@ -6,8 +6,8 @@
         linear-gradient(135deg, #0f1627 0%, #0c1529 40%, #0a1631 100%),
         linear-gradient(160deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0) 40%);
     --card-bg: rgba(255, 255, 255, 0.9);
-    --accent: #3e76b7;
-    --accent-strong: #2a5c92;
+    --accent: #4a7cc4;
+    --accent-strong: #315a92;
     --text-main: #0f172a;
     --text-muted: #475569;
     --border-color: #dde6f3;
@@ -117,9 +117,14 @@ body.login-page {
     font-size: 14px;
     text-decoration: none;
     color: var(--accent);
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
 }
 
-.login-form__link:hover {
+.login-form__link:hover,
+.login-form__link:focus-visible {
     text-decoration: underline;
 }
 
@@ -127,31 +132,32 @@ body.login-page {
     margin-top: 8px;
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.26);
+    border: 1px solid rgba(255, 255, 255, 0.22);
     border-radius: 12px;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%),
-        #3b6da8;
+        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%),
+        linear-gradient(135deg, rgba(74, 124, 196, 0.9), rgba(47, 94, 158, 0.9));
     color: white;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
-    transition: box-shadow 0.16s ease, background 0.2s ease, transform 0.12s ease;
-    box-shadow: 0 8px 18px rgba(9, 18, 42, 0.18);
+    transition: box-shadow 0.16s ease, background 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 10px 24px rgba(9, 18, 42, 0.16);
+    backdrop-filter: blur(4px);
 }
 
 .login-form__submit:hover {
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.06) 100%),
-        #3f75b3;
-    box-shadow: 0 10px 20px rgba(9, 18, 42, 0.2);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%),
+        linear-gradient(135deg, rgba(80, 132, 210, 0.9), rgba(50, 98, 164, 0.9));
+    box-shadow: 0 12px 26px rgba(9, 18, 42, 0.18);
 }
 
 .login-form__submit:active {
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%),
-        #365f8c;
-    box-shadow: 0 7px 14px rgba(9, 18, 42, 0.18);
+        linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%),
+        linear-gradient(135deg, rgba(62, 108, 170, 0.9), rgba(36, 74, 128, 0.9));
+    box-shadow: 0 8px 16px rgba(9, 18, 42, 0.16);
     transform: translateY(1px);
 }
 
@@ -169,4 +175,119 @@ body.login-page {
     color: rgba(255, 255, 255, 0.82);
     font-size: 13px;
     text-align: center;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 50;
+}
+
+.modal.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 12, 24, 0.55);
+    backdrop-filter: blur(3px);
+}
+
+.modal__dialog {
+    position: relative;
+    width: min(480px, 90vw);
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 16px;
+    box-shadow: 0 18px 50px rgba(5, 12, 30, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    padding: 18px 20px 20px;
+    backdrop-filter: blur(12px);
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.modal__title {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-main);
+}
+
+.modal__close {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.modal__body {
+    color: var(--text-main);
+    display: grid;
+    gap: 10px;
+}
+
+.modal__lead {
+    margin: 0 0 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.modal__form {
+    display: grid;
+    gap: 10px;
+}
+
+.modal__label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.modal__input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    background: white;
+}
+
+.modal__submit {
+    margin-top: 4px;
+    align-self: start;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(74, 124, 196, 0.35);
+    background: linear-gradient(135deg, rgba(74, 124, 196, 0.9), rgba(57, 106, 168, 0.9));
+    color: white;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(9, 18, 42, 0.14);
+    transition: box-shadow 0.16s ease, transform 0.1s ease;
+}
+
+.modal__submit:hover {
+    box-shadow: 0 10px 20px rgba(9, 18, 42, 0.16);
+}
+
+.modal__submit:active {
+    transform: translateY(1px);
+}
+
+.modal__note {
+    margin: 2px 0 0;
+    font-size: 13px;
+    color: var(--text-muted);
 }
