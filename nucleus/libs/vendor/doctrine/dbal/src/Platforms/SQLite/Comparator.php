@@ -1,12 +1,9 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Platforms\SQLite;
 
-use Doctrine\DBAL\Platforms\SQLitePlatform;
+use Doctrine\DBAL\Platforms\SqlitePlatform;
 use Doctrine\DBAL\Schema\Comparator as BaseComparator;
-use Doctrine\DBAL\Schema\ComparatorConfig;
 use Doctrine\DBAL\Schema\Table;
 use Doctrine\DBAL\Schema\TableDiff;
 
@@ -20,16 +17,27 @@ use function strcasecmp;
 class Comparator extends BaseComparator
 {
     /** @internal The comparator can be only instantiated by a schema manager. */
-    public function __construct(SQLitePlatform $platform, ComparatorConfig $config = new ComparatorConfig())
+    public function __construct(SqlitePlatform $platform)
     {
-        parent::__construct($platform, $config);
+        parent::__construct($platform);
     }
 
-    public function compareTables(Table $oldTable, Table $newTable): TableDiff
+    public function compareTables(Table $fromTable, Table $toTable): TableDiff
     {
         return parent::compareTables(
-            $this->normalizeColumns($oldTable),
-            $this->normalizeColumns($newTable),
+            $this->normalizeColumns($fromTable),
+            $this->normalizeColumns($toTable),
+        );
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function diffTable(Table $fromTable, Table $toTable)
+    {
+        return parent::diffTable(
+            $this->normalizeColumns($fromTable),
+            $this->normalizeColumns($toTable),
         );
     }
 

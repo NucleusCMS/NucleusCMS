@@ -1,39 +1,42 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL;
 
-enum ArrayParameterType
+final class ArrayParameterType
 {
     /**
      * Represents an array of ints to be expanded by Doctrine SQL parsing.
      */
-    case INTEGER;
+    public const INTEGER = ParameterType::INTEGER + Connection::ARRAY_PARAM_OFFSET;
 
     /**
      * Represents an array of strings to be expanded by Doctrine SQL parsing.
      */
-    case STRING;
+    public const STRING = ParameterType::STRING + Connection::ARRAY_PARAM_OFFSET;
 
     /**
      * Represents an array of ascii strings to be expanded by Doctrine SQL parsing.
      */
-    case ASCII;
+    public const ASCII = ParameterType::ASCII + Connection::ARRAY_PARAM_OFFSET;
 
     /**
      * Represents an array of ascii strings to be expanded by Doctrine SQL parsing.
      */
-    case BINARY;
+    public const BINARY = ParameterType::BINARY + Connection::ARRAY_PARAM_OFFSET;
 
-    /** @internal */
-    public static function toElementParameterType(self $type): ParameterType
+    /**
+     * @internal
+     *
+     * @phpstan-param self::* $type
+     *
+     * @phpstan-return ParameterType::INTEGER|ParameterType::STRING|ParameterType::ASCII|ParameterType::BINARY
+     */
+    public static function toElementParameterType(int $type): int
     {
-        return match ($type) {
-            self::INTEGER => ParameterType::INTEGER,
-            self::STRING => ParameterType::STRING,
-            self::ASCII => ParameterType::ASCII,
-            self::BINARY => ParameterType::BINARY,
-        };
+        return $type - Connection::ARRAY_PARAM_OFFSET;
+    }
+
+    private function __construct()
+    {
     }
 }

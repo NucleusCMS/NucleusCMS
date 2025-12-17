@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\ArrayParameters\Exception;
 
 use Doctrine\DBAL\ArrayParameters\Exception;

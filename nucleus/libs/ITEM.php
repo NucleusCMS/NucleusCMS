@@ -37,9 +37,10 @@ class ITEM
      * @param boolean $allowdraft
      * @param boolean $allowfuture
      *
+     * @return array|false
      * @static
      */
-    public static function getitem($itemid, $allowdraft, $allowfuture): array|false
+    public static function getitem($itemid, $allowdraft, $allowfuture)
     {
         return self::getitemEx($itemid, $allowdraft, $allowfuture, 1);
     }
@@ -53,9 +54,10 @@ class ITEM
      * @param boolean $allowfuture
      * @param boolean $enableitemterm
      *
+     * @return array|false
      * @static
      */
-    public static function getItemEx($itemid, $allowdraft, $allowfuture, $enableitemterm = 0): array|false
+    public static function getItemEx($itemid, $allowdraft, $allowfuture, $enableitemterm = 0)
     {
         global $manager;
 

@@ -1,13 +1,17 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Driver\SQLSrv;
 
-use Doctrine\DBAL\Driver\Connection as ConnectionInterface;
-use Doctrine\DBAL\Driver\Exception\NoIdentityValue;
+use Doctrine\DBAL\Driver\Result as ResultInterface;
+use Doctrine\DBAL\Driver\ServerInfoAwareConnection;
 use Doctrine\DBAL\Driver\SQLSrv\Exception\Error;
+use Doctrine\DBAL\Driver\Statement as DriverStatement;
+use Doctrine\DBAL\ParameterType;
+use Doctrine\Deprecations\Deprecation;
 
+use function is_float;
+use function is_int;
+use function sprintf;
 use function sqlsrv_begin_transaction;
 use function sqlsrv_commit;
 use function sqlsrv_query;
@@ -16,36 +20,54 @@ use function sqlsrv_rows_affected;
 use function sqlsrv_server_info;
 use function str_replace;
 
-final class Connection implements ConnectionInterface
+final class Connection implements ServerInfoAwareConnection
 {
+    /** @var resource */
+    private $connection;
+
     /**
      * @internal The connection can be only instantiated by its driver.
      *
      * @param resource $connection
      */
-    public function __construct(private readonly mixed $connection)
+    public function __construct($connection)
     {
+        $this->connection = $connection;
     }
 
-    public function getServerVersion(): string
+    /**
+     * {@inheritDoc}
+     */
+    public function getServerVersion()
     {
         $serverInfo = sqlsrv_server_info($this->connection);
 
         return $serverInfo['SQLServerVersion'];
     }
 
-    public function prepare(string $sql): Statement
+    public function prepare(string $sql): DriverStatement
     {
         return new Statement($this->connection, $sql);
     }
 
-    public function query(string $sql): Result
+    public function query(string $sql): ResultInterface
     {
         return $this->prepare($sql)->execute();
     }
 
-    public function quote(string $value): string
+    /**
+     * {@inheritDoc}
+     */
+    public function quote($value, $type = ParameterType::STRING)
     {
+        if (is_int($value)) {
+            return $value;
+        }
+
+        if (is_float($value)) {
+            return sprintf('%F', $value);
+        }
+
         return "'" . str_replace("'", "''", $value) . "'";
     }
 
@@ -66,38 +88,52 @@ final class Connection implements ConnectionInterface
         return $rowsAffected;
     }
 
-    public function lastInsertId(): int|string
+    /**
+     * {@inheritDoc}
+     */
+    public function lastInsertId($name = null)
     {
-        $result = $this->query('SELECT @@IDENTITY');
+        if ($name !== null) {
+            Deprecation::triggerIfCalledFromOutside(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/issues/4687',
+                'The usage of Connection::lastInsertId() with a sequence name is deprecated.',
+            );
 
-        $lastInsertId = $result->fetchOne();
-
-        if ($lastInsertId === null) {
-            throw NoIdentityValue::new();
+            $result = $this->prepare('SELECT CONVERT(VARCHAR(MAX), current_value) FROM sys.sequences WHERE name = ?')
+                ->execute([$name]);
+        } else {
+            $result = $this->query('SELECT @@IDENTITY');
         }
 
-        return $lastInsertId;
+        return $result->fetchOne();
     }
 
-    public function beginTransaction(): void
+    public function beginTransaction(): bool
     {
         if (! sqlsrv_begin_transaction($this->connection)) {
             throw Error::new();
         }
+
+        return true;
     }
 
-    public function commit(): void
+    public function commit(): bool
     {
         if (! sqlsrv_commit($this->connection)) {
             throw Error::new();
         }
+
+        return true;
     }
 
-    public function rollBack(): void
+    public function rollBack(): bool
     {
         if (! sqlsrv_rollback($this->connection)) {
             throw Error::new();
         }
+
+        return true;
     }
 
     /** @return resource */

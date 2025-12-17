@@ -1,32 +1,68 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Cache;
 
-use Doctrine\DBAL\Cache\Exception\NoCacheKey;
-use Doctrine\DBAL\Connection;
+use Doctrine\Common\Cache\Cache;
+use Doctrine\Common\Cache\Psr6\CacheAdapter;
+use Doctrine\Common\Cache\Psr6\DoctrineProvider;
+use Doctrine\DBAL\Types\Type;
+use Doctrine\Deprecations\Deprecation;
 use Psr\Cache\CacheItemPoolInterface;
+use RuntimeException;
+use TypeError;
 
+use function class_exists;
+use function get_class;
 use function hash;
 use function serialize;
 use function sha1;
+use function sprintf;
 
 /**
  * Query Cache Profile handles the data relevant for query caching.
  *
  * It is a value object, setter methods return NEW instances.
- *
- * @phpstan-import-type WrapperParameterType from Connection
- * @final
  */
 class QueryCacheProfile
 {
-    public function __construct(
-        private readonly int $lifetime = 0,
-        private readonly ?string $cacheKey = null,
-        private readonly ?CacheItemPoolInterface $resultCache = null,
-    ) {
+    private ?CacheItemPoolInterface $resultCache = null;
+
+    /** @var int */
+    private $lifetime;
+
+    /** @var string|null */
+    private $cacheKey;
+
+    /**
+     * @param int                               $lifetime
+     * @param string|null                       $cacheKey
+     * @param CacheItemPoolInterface|Cache|null $resultCache
+     */
+    public function __construct($lifetime = 0, $cacheKey = null, ?object $resultCache = null)
+    {
+        $this->lifetime = $lifetime;
+        $this->cacheKey = $cacheKey;
+        if ($resultCache instanceof CacheItemPoolInterface) {
+            $this->resultCache = $resultCache;
+        } elseif ($resultCache instanceof Cache) {
+            Deprecation::trigger(
+                'doctrine/dbal',
+                'https://github.com/doctrine/dbal/pull/4620',
+                'Passing an instance of %s to %s as $resultCache is deprecated. Pass an instance of %s instead.',
+                Cache::class,
+                __METHOD__,
+                CacheItemPoolInterface::class,
+            );
+
+            $this->resultCache = CacheAdapter::wrap($resultCache);
+        } elseif ($resultCache !== null) {
+            throw new TypeError(sprintf(
+                '$resultCache: Expected either null or an instance of %s or %s, got %s.',
+                CacheItemPoolInterface::class,
+                Cache::class,
+                get_class($resultCache),
+            ));
+        }
     }
 
     public function getResultCache(): ?CacheItemPoolInterface
@@ -34,16 +70,50 @@ class QueryCacheProfile
         return $this->resultCache;
     }
 
-    public function getLifetime(): int
+    /**
+     * @deprecated Use {@see getResultCache()} instead.
+     *
+     * @return Cache|null
+     */
+    public function getResultCacheDriver()
+    {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4620',
+            '%s is deprecated, call getResultCache() instead.',
+            __METHOD__,
+        );
+
+        if ($this->resultCache === null) {
+            return null;
+        }
+
+        if (! class_exists(DoctrineProvider::class)) {
+            throw new RuntimeException(sprintf(
+                'Calling %s() is not supported if the doctrine/cache package is not installed. '
+                    . 'Try running "composer require doctrine/cache" or migrate cache access to PSR-6.',
+                __METHOD__,
+            ));
+        }
+
+        return DoctrineProvider::wrap($this->resultCache);
+    }
+
+    /** @return int */
+    public function getLifetime()
     {
         return $this->lifetime;
     }
 
-    /** @throws CacheException */
-    public function getCacheKey(): string
+    /**
+     * @return string
+     *
+     * @throws CacheException
+     */
+    public function getCacheKey()
     {
         if ($this->cacheKey === null) {
-            throw NoCacheKey::new();
+            throw CacheException::noCacheKey();
         }
 
         return $this->cacheKey;
@@ -52,13 +122,14 @@ class QueryCacheProfile
     /**
      * Generates the real cache key from query, params, types and connection parameters.
      *
-     * @param list<mixed>|array<string, mixed> $params
-     * @param array<string, mixed>             $connectionParams
-     * @phpstan-param array<int, WrapperParameterType>|array<string, WrapperParameterType> $types
+     * @param string                                                               $sql
+     * @param list<mixed>|array<string, mixed>                                     $params
+     * @param array<int, Type|int|string|null>|array<string, Type|int|string|null> $types
+     * @param array<string, mixed>                                                 $connectionParams
      *
      * @return array{string, string}
      */
-    public function generateCacheKeys(string $sql, array $params, array $types, array $connectionParams = []): array
+    public function generateCacheKeys($sql, $params, $types, array $connectionParams = [])
     {
         if (isset($connectionParams['password'])) {
             unset($connectionParams['password']);
@@ -80,12 +151,39 @@ class QueryCacheProfile
         return new QueryCacheProfile($this->lifetime, $this->cacheKey, $cache);
     }
 
-    public function setCacheKey(?string $cacheKey): self
+    /**
+     * @deprecated Use {@see setResultCache()} instead.
+     *
+     * @return QueryCacheProfile
+     */
+    public function setResultCacheDriver(Cache $cache)
+    {
+        Deprecation::trigger(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/4620',
+            '%s is deprecated, call setResultCache() instead.',
+            __METHOD__,
+        );
+
+        return new QueryCacheProfile($this->lifetime, $this->cacheKey, CacheAdapter::wrap($cache));
+    }
+
+    /**
+     * @param string|null $cacheKey
+     *
+     * @return QueryCacheProfile
+     */
+    public function setCacheKey($cacheKey)
     {
         return new QueryCacheProfile($this->lifetime, $cacheKey, $this->resultCache);
     }
 
-    public function setLifetime(int $lifetime): self
+    /**
+     * @param int $lifetime
+     *
+     * @return QueryCacheProfile
+     */
+    public function setLifetime($lifetime)
     {
         return new QueryCacheProfile($lifetime, $this->cacheKey, $this->resultCache);
     }

@@ -4,15 +4,11 @@ declare(strict_types=1);
 
 namespace Doctrine\DBAL\Portability;
 
-use Closure;
-
 use function array_change_key_case;
 use function array_map;
 use function array_reduce;
 use function is_string;
 use function rtrim;
-use function strtolower;
-use function strtoupper;
 
 use const CASE_LOWER;
 use const CASE_UPPER;
@@ -22,13 +18,23 @@ final class Converter
     public const CASE_LOWER = CASE_LOWER;
     public const CASE_UPPER = CASE_UPPER;
 
-    private readonly Closure $convertNumeric;
-    private readonly Closure $convertAssociative;
-    private readonly Closure $convertOne;
-    private readonly Closure $convertAllNumeric;
-    private readonly Closure $convertAllAssociative;
-    private readonly Closure $convertFirstColumn;
-    private readonly Closure $convertColumnName;
+    /** @var callable */
+    private $convertNumeric;
+
+    /** @var callable */
+    private $convertAssociative;
+
+    /** @var callable */
+    private $convertOne;
+
+    /** @var callable */
+    private $convertAllNumeric;
+
+    /** @var callable */
+    private $convertAllAssociative;
+
+    /** @var callable */
+    private $convertFirstColumn;
 
     /**
      * @param bool                                   $convertEmptyStringToNull Whether each empty string should
@@ -44,19 +50,13 @@ final class Converter
         $convertNumeric     = $this->createConvertRow($convertValue, null);
         $convertAssociative = $this->createConvertRow($convertValue, $case);
 
-        $this->convertNumeric     = $this->createConvert($convertNumeric);
-        $this->convertAssociative = $this->createConvert($convertAssociative);
-        $this->convertOne         = $this->createConvert($convertValue);
+        $this->convertNumeric     = $this->createConvert($convertNumeric, [self::class, 'id']);
+        $this->convertAssociative = $this->createConvert($convertAssociative, [self::class, 'id']);
+        $this->convertOne         = $this->createConvert($convertValue, [self::class, 'id']);
 
-        $this->convertAllNumeric     = $this->createConvertAll($convertNumeric);
-        $this->convertAllAssociative = $this->createConvertAll($convertAssociative);
-        $this->convertFirstColumn    = $this->createConvertAll($convertValue);
-
-        $this->convertColumnName = match ($case) {
-            null => static fn (string $name) => $name,
-            self::CASE_LOWER => strtolower(...),
-            self::CASE_UPPER => strtoupper(...),
-        };
+        $this->convertAllNumeric     = $this->createConvertAll($convertNumeric, [self::class, 'id']);
+        $this->convertAllAssociative = $this->createConvertAll($convertAssociative, [self::class, 'id']);
+        $this->convertFirstColumn    = $this->createConvertAll($convertValue, [self::class, 'id']);
     }
 
     /**
@@ -64,7 +64,7 @@ final class Converter
      *
      * @return list<mixed>|false
      */
-    public function convertNumeric(array|false $row): array|false
+    public function convertNumeric($row)
     {
         return ($this->convertNumeric)($row);
     }
@@ -74,12 +74,17 @@ final class Converter
      *
      * @return array<string,mixed>|false
      */
-    public function convertAssociative(array|false $row): array|false
+    public function convertAssociative($row)
     {
         return ($this->convertAssociative)($row);
     }
 
-    public function convertOne(mixed $value): mixed
+    /**
+     * @param mixed|false $value
+     *
+     * @return mixed|false
+     */
+    public function convertOne($value)
     {
         return ($this->convertOne)($value);
     }
@@ -114,11 +119,6 @@ final class Converter
         return ($this->convertFirstColumn)($data);
     }
 
-    public function convertColumnName(string $name): string
-    {
-        return ($this->convertColumnName)($name);
-    }
-
     /**
      * @param T $value
      *
@@ -126,7 +126,7 @@ final class Converter
      *
      * @template T
      */
-    private static function id(mixed $value): mixed
+    private static function id($value)
     {
         return $value;
     }
@@ -138,7 +138,7 @@ final class Converter
      *
      * @template T
      */
-    private static function convertEmptyStringToNull(mixed $value): mixed
+    private static function convertEmptyStringToNull($value)
     {
         if ($value === '') {
             return null;
@@ -155,7 +155,7 @@ final class Converter
      *
      * @template T
      */
-    private static function rightTrimString(mixed $value): mixed
+    private static function rightTrimString($value)
     {
         if (! is_string($value)) {
             return $value;
@@ -170,18 +170,18 @@ final class Converter
      * @param bool $convertEmptyStringToNull Whether each empty string should be converted to NULL
      * @param bool $rightTrimString          Whether each string should right-trimmed
      *
-     * @return Closure|null The resulting function or NULL if no conversion is needed
+     * @return callable|null The resulting function or NULL if no conversion is needed
      */
-    private function createConvertValue(bool $convertEmptyStringToNull, bool $rightTrimString): ?Closure
+    private function createConvertValue(bool $convertEmptyStringToNull, bool $rightTrimString): ?callable
     {
         $functions = [];
 
         if ($convertEmptyStringToNull) {
-            $functions[] = self::convertEmptyStringToNull(...);
+            $functions[] = [self::class, 'convertEmptyStringToNull'];
         }
 
         if ($rightTrimString) {
-            $functions[] = self::rightTrimString(...);
+            $functions[] = [self::class, 'rightTrimString'];
         }
 
         return $this->compose(...$functions);
@@ -190,12 +190,12 @@ final class Converter
     /**
      * Creates a function that will convert each array-row retrieved from the database
      *
-     * @param Closure|null                           $function The function that will convert each value
+     * @param callable|null                          $function The function that will convert each value
      * @param self::CASE_LOWER|self::CASE_UPPER|null $case     Column name case
      *
-     * @return Closure|null The resulting function or NULL if no conversion is needed
+     * @return callable|null The resulting function or NULL if no conversion is needed
      */
-    private function createConvertRow(?Closure $function, ?int $case): ?Closure
+    private function createConvertRow(?callable $function, ?int $case): ?callable
     {
         $functions = [];
 
@@ -204,7 +204,9 @@ final class Converter
         }
 
         if ($case !== null) {
-            $functions[] = static fn (array $row): array => array_change_key_case($row, $case);
+            $functions[] = static function (array $row) use ($case): array {
+                return array_change_key_case($row, $case);
+            };
         }
 
         return $this->compose(...$functions);
@@ -214,12 +216,13 @@ final class Converter
      * Creates a function that will be applied to the return value of Statement::fetch*()
      * or an identity function if no conversion is needed
      *
-     * @param Closure|null $function The function that will convert each tow
+     * @param callable|null $function The function that will convert each tow
+     * @param callable      $id       Identity function
      */
-    private function createConvert(?Closure $function): Closure
+    private function createConvert(?callable $function, callable $id): callable
     {
         if ($function === null) {
-            return self::id(...);
+            return $id;
         }
 
         return /**
@@ -229,7 +232,7 @@ final class Converter
                 *
                 * @template T
                 */
-            static function (mixed $value) use ($function): mixed {
+            static function ($value) use ($function) {
                 if ($value === false) {
                     return false;
                 }
@@ -242,12 +245,13 @@ final class Converter
      * Creates a function that will be applied to the return value of Statement::fetchAll*()
      * or an identity function if no transformation is required
      *
-     * @param Closure|null $function The function that will transform each value
+     * @param callable|null $function The function that will transform each value
+     * @param callable      $id       Identity function
      */
-    private function createConvertAll(?Closure $function): Closure
+    private function createConvertAll(?callable $function, callable $id): callable
     {
         if ($function === null) {
-            return self::id(...);
+            return $id;
         }
 
         return $this->createMapper($function);
@@ -256,27 +260,27 @@ final class Converter
     /**
      * Creates a function that maps each value of the array using the given function
      *
-     * @param Closure $function The function that maps each value of the array
-     *
-     * @return Closure(array<mixed>):array<mixed>
+     * @param callable $function The function that maps each value of the array
      */
-    private function createMapper(Closure $function): Closure
+    private function createMapper(callable $function): callable
     {
-        return static fn (array $array): array => array_map($function, $array);
+        return static function (array $array) use ($function): array {
+            return array_map($function, $array);
+        };
     }
 
     /**
      * Creates a composition of the given set of functions
      *
-     * @param Closure(T):T ...$functions The functions to compose
+     * @param callable(T):T ...$functions The functions to compose
      *
-     * @return Closure(T):T|null
+     * @return callable(T):T|null
      *
      * @template T
      */
-    private function compose(Closure ...$functions): ?Closure
+    private function compose(callable ...$functions): ?callable
     {
-        return array_reduce($functions, static function (?Closure $carry, Closure $item): Closure {
+        return array_reduce($functions, static function (?callable $carry, callable $item): callable {
             if ($carry === null) {
                 return $item;
             }
@@ -288,7 +292,9 @@ final class Converter
                     *
                     * @template T
                     */
-                static fn (mixed $value): mixed => $item($carry($value));
+                static function ($value) use ($carry, $item) {
+                    return $item($carry($value));
+                };
         });
     }
 }

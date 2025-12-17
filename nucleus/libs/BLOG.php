@@ -943,7 +943,8 @@ class BLOG
         }
 
         //echo hsc($qb->getSQL());
-        $rows = $qb->executeQuery()?->fetchAllAssociative();
+        $result = $qb->executeQuery();
+        $rows = $result ? $result->fetchAllAssociative() : false;
         if ( ! empty($rows)) {
             foreach ($rows as $row) {
                 $archivedate       = $row['result'];

@@ -20,7 +20,8 @@ final class UnexpectedValue extends UnexpectedValueException implements Exceptio
         ));
     }
 
-    public function getSQLState(): null
+    /** @return null */
+    public function getSQLState()
     {
         return null;
     }

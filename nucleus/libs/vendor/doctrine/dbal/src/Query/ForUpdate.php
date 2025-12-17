@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace Doctrine\DBAL\Query;
 
-use Doctrine\DBAL\Query\ForUpdate\ConflictResolutionMode;
-
 /** @internal */
-final readonly class ForUpdate
+final class ForUpdate
 {
-    public function __construct(
-        private ConflictResolutionMode $conflictResolutionMode,
-    ) {
+    private int $conflictResolutionMode;
+
+    public function __construct(int $conflictResolutionMode)
+    {
+        $this->conflictResolutionMode = $conflictResolutionMode;
     }
 
-    public function getConflictResolutionMode(): ConflictResolutionMode
+    public function getConflictResolutionMode(): int
     {
         return $this->conflictResolutionMode;
     }

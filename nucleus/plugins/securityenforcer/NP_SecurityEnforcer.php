@@ -89,7 +89,8 @@ class NP_SecurityEnforcer extends NucleusPlugin
     private function installTable()
     {
         $table = $this->getTablenameMain();
-        if (getOrmSchemaManager()?->tableExists($table)) {
+        $Schema = getOrmSchemaManager();
+        if ($Schema && $Schema->tableExists($table)) {
             return ;
         }
 
@@ -120,7 +121,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     {
         if ('yes' == $this->getOption('del_uninstall_data')) {
             $Schema = getOrmSchemaManager();
-            if ($Schema?->tableExists($this->getTablenameMain())) {
+            if ($Schema && $Schema->tableExists($this->getTablenameMain())) {
                 $Schema->dropTable($this->getTablenameMain());
             }
         }
@@ -234,18 +235,22 @@ class NP_SecurityEnforcer extends NucleusPlugin
             $ip    = strtolower((string) $_SERVER['REMOTE_ADDR']);
 
             // Clear
-            getOrmQueryBuilder()
-                    ?->delete($this->getTablenameMain())
+            $qb = getOrmQueryBuilder();
+            if ($qb) {
+                $qb->delete($this->getTablenameMain())
                     ->where('lastfail < :lastfail')
                     ->setParameter('lastfail', time() - ($this->login_lockout * 60))
                     ->executeStatement();
+            }
 
-            $qb = getOrmQueryBuilder()
-                    ?->select('fails')
+            $qb = getOrmQueryBuilder();
+            if ($qb) {
+                $qb->select('fails')
                     ->from($this->getTablenameMain())
                     ->where('login = :login');
-            $flogin = (int) $qb?->setParameters(['login' => $login])->executeQuery()->fetchOne();
-            $fip    = (int) $qb?->setParameters(['login' => $ip])->executeQuery()->fetchOne();
+            }
+            $flogin = $qb ? (int) $qb->setParameters(['login' => $login])->executeQuery()->fetchOne() : 0;
+            $fip    = $qb ? (int) $qb->setParameters(['login' => $ip])->executeQuery()->fetchOne() : 0;
 
             if ($flogin >= $this->max_failed_login || $fip >= $this->max_failed_login) {
                 $data['success']    = 0;

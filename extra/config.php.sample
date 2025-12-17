@@ -4,7 +4,6 @@
 // and basic functions that every page can use
 
 //$CONF['PHP_BIN'] = '/usr/local/bin/php';
-//$CONF['debug'] = 1;
 
 // Database connection information
 $DB_HOST = 'hostname';

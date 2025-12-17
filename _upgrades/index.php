@@ -16,16 +16,7 @@
 
 define('NC_MTN_MODE', 'upgrade');
 
-if (version_compare(phpversion(), '8.1.0', '<') || (80400 <= PHP_VERSION_ID)) {
-    $ver = explode('.', phpversion());
-    $ver = sprintf('PHP%d.%d', $ver[0], $ver[1]);
-    if (isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])
-        && in_array('ja', preg_split('/[, ]|-[^,]+|;[^,]+/', strtolower((string) $_SERVER['HTTP_ACCEPT_LANGUAGE']), -1, PREG_SPLIT_NO_EMPTY))
-    ) {
-        exit("<h1>エラー</h1><div>このバージョンは、{$ver}に対応していません。</div>");
-    }
-    exit("<h1>Error</h1><div>This version does not support {$ver}.</div>");
-}
+include_once(__DIR__ . '/../nucleus/libs/php_version_check.php');
 
 global $CONF;
 

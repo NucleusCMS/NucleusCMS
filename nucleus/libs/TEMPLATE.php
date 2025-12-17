@@ -236,30 +236,36 @@ class TEMPLATE
         return ((int) $res > 0);
     }
 
-    // (static)
-    public static function getNameFromId(int $id): string|false
+    /**
+     * @return string|false
+     */
+    public static function getNameFromId(int $id)
     {
         $sql = sprintf(
             'SELECT tdname AS result FROM %s WHERE tdnumber=%d LIMIT 1',
             sql_table('template_desc'),
             (int) $id
         );
-        $sth = sql_get_db()?->prepare($sql);
+        $db = sql_get_db();
+        $sth = $db ? $db->prepare($sql) : false;
         if ($sth && $sth->execute() && ($res = $sth->fetch(PDO::FETCH_NUM))) {
             return (string) $res[0];
         }
         return false;
     }
 
-    // (static)
-    public static function getDesc(int $id): string|false
+    /**
+     * @return string|false
+     */
+    public static function getDesc(int $id)
     {
         $sql = sprintf(
             'SELECT tddesc FROM %s WHERE tdnumber=%d LIMIT 1',
             sql_table('template_desc'),
             (int) $id
         );
-        $sth = sql_get_db()?->prepare($sql);
+        $db = sql_get_db();
+        $sth = $db ? $db->prepare($sql) : false;
         if ($sth && $sth->execute() && ($res = $sth->fetch(PDO::FETCH_NUM))) {
             return $res[0];
         }

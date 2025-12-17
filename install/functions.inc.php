@@ -503,7 +503,7 @@ function doInstall()
         $mysql_use_prefix  = 0;
         try {
             $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password, $db_name);
-            $SQL_DBH  = $ORM_CONN?->getNativeConnection();
+            $SQL_DBH  = $ORM_CONN ? $ORM_CONN->getNativeConnection() : null;
         } catch (Exception $exc) {
         }
     }
@@ -516,7 +516,7 @@ function doInstall()
                 // データベースを作成するので、未入力
                 $ORM_CONN = @orm_connect_args($db_host, $mysql_user, $mysql_password);
             }
-            $SQL_DBH = $ORM_CONN?->getNativeConnection();
+            $SQL_DBH = $ORM_CONN ? $ORM_CONN->getNativeConnection() : null;
         } catch (Exception $exc) {
         }
     }
@@ -851,9 +851,6 @@ function doInstall()
         $config_data = '<' . '?php' . "\n\n";
         $config_data .= "//\$CONF['PHP_BIN'] = '/usr/local/bin/php';\n";
         $config_data .= "\n";
-        $config_data .= "//\$CONF['debug']               = 1;\n";
-        $config_data .= "\n";
-        //$config_data .= "\n"; (extraneous, just added extra \n to previous line
         $config_data .= "// database connection information\n";
         $config_data .= "\$DB_HOST     = '" . $DB_HOST . "';\n";
         $config_data .= "\$DB_USER     = '" . $DB_USER . "';\n";

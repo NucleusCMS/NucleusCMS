@@ -11,7 +11,6 @@
     <h2>{{ _MANAGE_GENERAL }}</h2>
     <ul>
         <li><a href="index.php?action=usermanagement">{{ _OVERVIEW_MEMBERS }}</a></li>
-        <li><a href="index.php?action=createnewlog">{{ _OVERVIEW_NEWLOG }}</a></li>
         <li><a href="index.php?action=settingsedit">{{ _OVERVIEW_SETTINGS }}</a></li>
         <li><a href="index.php?action=systemoverview">{{ _QMENU_MANAGE_SYSTEM }}</a></li>
         <li><a href="index.php?action=actionlog">{{ _OVERVIEW_VIEWLOG }}</a></li>

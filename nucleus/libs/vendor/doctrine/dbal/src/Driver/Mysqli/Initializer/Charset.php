@@ -11,8 +11,11 @@ use mysqli_sql_exception;
 
 final class Charset implements Initializer
 {
-    public function __construct(private readonly string $charset)
+    private string $charset;
+
+    public function __construct(string $charset)
     {
+        $this->charset = $charset;
     }
 
     public function initialize(mysqli $connection): void

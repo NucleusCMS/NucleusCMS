@@ -35,19 +35,50 @@ try_define('_MANAGE_LINKS_ITEMS', '
 
 try_define('_ADMIN_DEVELOP_VERSION' , '開発版');
 
+// DASHBOARD
+try_define('_DASHBOARD_TITLE',              'ダッシュボード');
+try_define('_DASHBOARD_QUICK_ACTIONS',      'クイックアクション');
+try_define('_DASHBOARD_NEW_ITEM',           '新規記事作成');
+try_define('_DASHBOARD_BLOG_LIST',          'ブログ一覧');
+try_define('_DASHBOARD_STATISTICS',         '統計サマリー');
+try_define('_DASHBOARD_TOTAL_ITEMS',        '総記事数');
+try_define('_DASHBOARD_TOTAL_COMMENTS',     '総コメント数');
+try_define('_DASHBOARD_TOTAL_CATEGORIES',   '総カテゴリ数');
+try_define('_DASHBOARD_TOTAL_BLOGS',        'ブログ数');
+try_define('_DASHBOARD_TOTAL_MEMBERS',      'メンバー数');
+try_define('_DASHBOARD_PUBLISHED',          '公開');
+try_define('_DASHBOARD_DRAFTS',             '下書き');
+try_define('_DASHBOARD_PENDING',            '未承認');
+try_define('_DASHBOARD_RECENT_ITEMS',       '最近の記事');
+try_define('_DASHBOARD_RECENT_COMMENTS',    '最近のコメント');
+try_define('_DASHBOARD_RECENT_LOGS',        '最近のシステムログ');
+try_define('_DASHBOARD_BLOG_SUMMARY',       'ブログ別サマリー');
+try_define('_DASHBOARD_ITEMS',              '記事');
+try_define('_DASHBOARD_COMMENTS',           'コメント');
+try_define('_DASHBOARD_CATEGORIES',         'カテゴリ');
+try_define('_DASHBOARD_LAST_UPDATE',        '最終更新');
+try_define('_DASHBOARD_NO_RECENT_ITEMS',    '最近の記事はありません');
+try_define('_DASHBOARD_NO_RECENT_COMMENTS', '最近のコメントはありません');
+try_define('_DASHBOARD_GUEST',              'ゲスト');
+try_define('_DASHBOARD_RECENT_BLOGS',       '最近更新したブログ');
+try_define('_DASHBOARD_ALL_BLOGS',          'すべてのブログ');
+try_define('_DASHBOARD_SHOW_MORE',          'もっと見る');
+try_define('_DASHBOARD_SHOW_LESS',          '閉じる');
+try_define('_DASHBOARD_MORE_BLOGS',         '件');
+try_define('_DASHBOARD_NO_ITEMS_YET',       '記事がまだありません');
 
 // USER HOME
 try_define('_USER_HOME',                       'ブログ一覧');
 try_define('_BACK_USER_HOME',                  'ブログ一覧に戻る');
 try_define('_OVERVIEW_YR_MEMBER_SETTINGS',     '設定');
-try_define('_BACK_YR_HOME',                    'ブログ一覧に戻る');
+try_define('_BACK_YR_HOME',                    'ダッシュボードに戻る');
 
 // _QMENU
 try_define('_QMENU_ABOUT',                 'このアプリ について');
-try_define('_QMENU_BACK_USER_HOME',        'ブログ一覧に戻る');
+try_define('_QMENU_BACK_USER_HOME',        'ダッシュボードに戻る');
 try_define('_QMENU_HELP',                  'ヘルプ');
 try_define('_QMENU_MANUAL',                'ユーザーガイド');
-try_define('_QMENU_USER_HOME',             'ブログ一覧');
+try_define('_QMENU_USER_HOME',             'ダッシュボード');
 try_define('_QMENU_USER_MEMBER_SETTINGS',  'メンバー設定');
 
 
@@ -1463,7 +1494,7 @@ try_define('_MEMBERS_USESITELANG',				'- グローバル設定を使う -');
 try_define('_BLOGLIST_TT_VISIT',				'サイトを見る');
 try_define('_BLOGLIST_ADD',						'アイテムの追加');
 try_define('_BLOGLIST_TT_ADD',					'このBlogに新しいアイテムを追加します');
-try_define('_BLOGLIST_EDIT',					'アイテムの編集/削除');
+try_define('_BLOGLIST_EDIT',					'アイテム一覧');
 try_define('_BLOGLIST_TT_EDIT',					'公開済みのアイテムを編集と削除');
 
 try_define('_BLOGLIST_SETTINGS',				'ブログ設定');

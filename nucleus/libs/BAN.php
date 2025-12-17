@@ -21,8 +21,10 @@ class BAN
       *
       * Returns false when not banned, or a BANINFO object containing the
       * message and other information of the ban
+      *
+      * @return object|false
       */
-    public static function isBanned($blogid, $ip): object|false
+    public static function isBanned($blogid, $ip)
     {
         $blogid = (int) $blogid;
 

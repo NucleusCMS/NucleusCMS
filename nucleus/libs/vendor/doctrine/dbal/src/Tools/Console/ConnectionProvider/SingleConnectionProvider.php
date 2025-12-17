@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Tools\Console\ConnectionProvider;
 
 use Doctrine\DBAL\Connection;
@@ -12,10 +10,14 @@ use function sprintf;
 
 class SingleConnectionProvider implements ConnectionProvider
 {
-    public function __construct(
-        private readonly Connection $connection,
-        private readonly string $defaultConnectionName = 'default',
-    ) {
+    private Connection $connection;
+
+    private string $defaultConnectionName;
+
+    public function __construct(Connection $connection, string $defaultConnectionName = 'default')
+    {
+        $this->connection            = $connection;
+        $this->defaultConnectionName = $defaultConnectionName;
     }
 
     public function getDefaultConnection(): Connection

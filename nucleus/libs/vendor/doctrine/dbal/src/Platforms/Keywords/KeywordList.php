@@ -1,10 +1,6 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Platforms\Keywords;
-
-use Doctrine\Deprecations\Deprecation;
 
 use function array_flip;
 use function array_map;
@@ -13,27 +9,21 @@ use function strtoupper;
 /**
  * Abstract interface for a SQL reserved keyword dictionary.
  *
- * @deprecated
+ * @phpstan-consistent-constructor
  */
 abstract class KeywordList
 {
     /** @var string[]|null */
     private ?array $keywords = null;
 
-    public function __construct()
-    {
-        Deprecation::triggerIfCalledFromOutside(
-            'doctrine/dbal',
-            'https://github.com/doctrine/dbal/pull/6607',
-            '%s is deprecated.',
-            static::class,
-        );
-    }
-
     /**
      * Checks if the given word is a keyword of this dialect/vendor platform.
+     *
+     * @param string $word
+     *
+     * @return bool
      */
-    public function isKeyword(string $word): bool
+    public function isKeyword($word)
     {
         if ($this->keywords === null) {
             $this->initializeKeywords();
@@ -42,7 +32,8 @@ abstract class KeywordList
         return isset($this->keywords[strtoupper($word)]);
     }
 
-    protected function initializeKeywords(): void
+    /** @return void */
+    protected function initializeKeywords()
     {
         $this->keywords = array_flip(array_map('strtoupper', $this->getKeywords()));
     }
@@ -52,5 +43,14 @@ abstract class KeywordList
      *
      * @return string[]
      */
-    abstract protected function getKeywords(): array;
+    abstract protected function getKeywords();
+
+    /**
+     * Returns the name of this keyword list.
+     *
+     * @deprecated
+     *
+     * @return string
+     */
+    abstract public function getName();
 }

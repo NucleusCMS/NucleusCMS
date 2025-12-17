@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace Doctrine\DBAL\Query\ForUpdate;
 
-enum ConflictResolutionMode
+final class ConflictResolutionMode
 {
     /**
      * Wait for the row to be unlocked
      */
-    case ORDINARY;
+    public const ORDINARY = 0;
 
     /**
      * Skip the row if it is locked
      */
-    case SKIP_LOCKED;
+    public const SKIP_LOCKED = 1;
+
+    /**
+     * This class cannot be instantiated.
+     *
+     * @codeCoverageIgnore
+     */
+    private function __construct()
+    {
+    }
 }

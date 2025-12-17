@@ -122,7 +122,12 @@ function sql_table(string $name = ''): string
 
 function sql_tableQuote(string $name = ''): string
 {
-    return getOrmConnection()->quoteIdentifier(sql_table($name));
+    $conn = getOrmConnection();
+    if ($conn) {
+        return $conn->quoteIdentifier(sql_table($name));
+    }
+    // Fallback when connection is not yet established
+    return '`' . sql_table($name) . '`';
 }
 
 function sendContentTypeEx(string $contenttype, ?array $options = [])
@@ -298,7 +303,10 @@ function isValidMailAddress(string $address): bool
 }
 
 // some helper functions
-function getBlogIDFromName(string $bshortname): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromName(string $bshortname)
 {
     $ph['bshortname'] = sql_quote_string($bshortname);
     $res              = parseQuickQuery(
@@ -322,7 +330,10 @@ function getBlogNameFromID(int $bnumber): string
     );
 }
 
-function getBlogIDFromItemID(int $inumber): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromItemID(int $inumber)
 {
     $ph['inumber'] = (int) $inumber;
     $res           = parseQuickQuery(
@@ -336,7 +347,10 @@ function getBlogIDFromItemID(int $inumber): int|false
     return (int) $res;
 }
 
-function getBlogIDFromCommentID(int $cnumber): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromCommentID(int $cnumber)
 {
     $ph['cnumber'] = (int) $cnumber;
     $res           = parseQuickQuery(
@@ -350,7 +364,10 @@ function getBlogIDFromCommentID(int $cnumber): int|false
     return (int) $res;
 }
 
-function getBlogIDFromCatID(int $catid): int|false
+/**
+ * @return int|false
+ */
+function getBlogIDFromCatID(int $catid)
 {
     $ph['catid'] = (int) $catid;
     $res         = parseQuickQuery(
@@ -364,7 +381,10 @@ function getBlogIDFromCatID(int $catid): int|false
     return (int) $res;
 }
 
-function getCatIDFromName(string $cname): int|false
+/**
+ * @return int|false
+ */
+function getCatIDFromName(string $cname)
 {
     $ph['cname'] = sql_quote_string($cname);
     $res         = parseQuickQuery(
@@ -420,10 +440,14 @@ function quickQuery(string $sqlText, bool $cacheClear = false)
 
 function getPluginNameFromPid($pid)
 {
-    $res = getOrmQueryBuilder()
-            ?->select('pfile')->from(sql_table('plugin'))->where('pid = :pid')
+    $qb = getOrmQueryBuilder();
+    if ( ! $qb) {
+        return false;
+    }
+    $res = $qb->select('pfile')->from(sql_table('plugin'))->where('pid = :pid')
             ->setParameter('pid', (int) $pid)
-            ->executeQuery()?->fetchOne();
+            ->executeQuery();
+    $res = $res ? $res->fetchOne() : false;
     return (is_string($res) ? $res : false);
 }
 
@@ -870,10 +894,15 @@ function getConfig()
 {
     global $CONF;
 
-    $qb = getOrmQueryBuilder()
-            ?->select('*')
+    $qb = getOrmQueryBuilder();
+    if ( ! $qb) {
+        return;
+    }
+    $qb = $qb->select('*')
             ->from(sql_table('config'));
-    if ( ! $qb || ! ($rows = $qb?->executeQuery()?->fetchAllAssociative())) {
+    $rows = $qb->executeQuery();
+    $rows = $rows ? $rows->fetchAllAssociative() : false;
+    if ( ! $rows) {
         return;
     }
     foreach ($rows as $row) {
@@ -1230,7 +1259,7 @@ function LoadCoreLanguage()
     }
     $lang_default = 'english-utf8';
     $lang_current = '';
-    if ($member?->isLoggedIn()) {
+    if ($member && is_object($member) && $member->isLoggedIn()) {
         $lang_current = $member->getLanguage();
     } else {
         $lang_current = CONF::asStr('Language', $lang_default);
@@ -1835,11 +1864,14 @@ function ticketForPlugin()
 
     /* Solve the plugin name. */
     $plugins = [];
-    $rows    = getOrmQueryBuilder()
-            ?->select('pfile')
+    $qb = getOrmQueryBuilder();
+    $rows = false;
+    if ($qb) {
+        $result = $qb->select('pfile')
             ->from(sql_table('plugin'))
-            ->executeQuery()
-            ?->fetchAllAssociative();
+            ->executeQuery();
+        $rows = $result ? $result->fetchAllAssociative() : false;
+    }
 
     if ( ! empty($rows)) {
         foreach ($rows as $row) {
@@ -2830,14 +2862,13 @@ function _setDefaultUa()
 function _setErrorReporting()
 {
     global $CONF;
-    if ( ! isset($CONF['debug'])) {
-        $CONF['debug'] = 0;
-    }
+
     if (isDebugMode()) {
         error_reporting(E_ALL); // report all errors!
         ini_set('display_errors', 1);
         return;
     }
+
     if ( ! isset($CONF['UsingAdminArea'])
          || empty($CONF['UsingAdminArea'])) {
         ini_set('display_errors', '0');
@@ -2947,19 +2978,35 @@ function un_clickjacking()
     header('X-Frame-Options: SAMEORIGIN');
 }
 
-function isDebugMode()
+function isDebugMode(): bool
 {
-    global $CONF;
-    if ( ! defined('NUCLEUS_DEVELOP') || NUCLEUS_DEVELOP) {
-        global $member;
-        if ($member?->isLoggedIn() && $member?->isAdmin()) {
-            return true;
+    static $debug = null;
+
+    if (null !== $debug) {
+        return $debug;
+    }
+
+    // 1. Check .env APP_DEBUG
+    $envFile = dirname(__DIR__, 2) . '/.env';
+    if (is_file($envFile)) {
+        $content = @file_get_contents($envFile);
+        if (false !== $content && preg_match('/^APP_DEBUG\s*=\s*(true|1|yes)\s*$/mi', $content)) {
+            $debug = true;
+            return $debug;
         }
     }
-    if ( ! isset($CONF['debug'])) {
-        return false;
+
+    // 2. Check NUCLEUS_DEVELOP constant for admin users
+    if ( ! defined('NUCLEUS_DEVELOP') || NUCLEUS_DEVELOP) {
+        global $member;
+        if ($member && is_object($member) && $member->isLoggedIn() && $member->isAdmin()) {
+            $debug = true;
+            return $debug;
+        }
     }
-    return ! empty($CONF['debug']);
+
+    $debug = false;
+    return $debug;
 }
 
 function file_get_extension($filename, $period = false)

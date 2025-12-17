@@ -1,16 +1,16 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Driver;
 
-use Doctrine\DBAL\ServerVersionProvider;
+use Doctrine\DBAL\ParameterType;
 
 /**
  * Connection interface.
  * Driver connections must implement this interface.
+ *
+ * @method resource|object getNativeConnection()
  */
-interface Connection extends ServerVersionProvider
+interface Connection
 {
     /**
      * Prepares a statement for execution and returns a Statement object.
@@ -31,63 +31,56 @@ interface Connection extends ServerVersionProvider
      *
      * The usage of this method is discouraged. Use prepared statements
      * or {@see AbstractPlatform::quoteStringLiteral()} instead.
+     *
+     * @param mixed $value
+     * @param int   $type
+     *
+     * @return mixed
      */
-    public function quote(string $value): string;
+    public function quote($value, $type = ParameterType::STRING);
 
     /**
      * Executes an SQL statement and return the number of affected rows.
-     * If the number of affected rows is greater than the maximum int value (PHP_INT_MAX),
-     * the number of affected rows may be returned as a string.
-     *
-     * @return int|numeric-string
      *
      * @throws Exception
      */
-    public function exec(string $sql): int|string;
+    public function exec(string $sql): int;
 
     /**
-     * Returns the ID of the last inserted row.
+     * Returns the ID of the last inserted row or sequence value.
      *
-     * This method returns an integer or a string representing the value of the auto-increment column
-     * from the last row inserted into the database, if any, or throws an exception if a value cannot be returned,
-     * in particular when:
+     * @param string|null $name
      *
-     * - the driver does not support identity columns;
-     * - the last statement dit not return an identity (caution: see note below).
-     *
-     * Note: if the last statement was not an INSERT to an autoincrement column, this method MAY return an ID from a
-     * previous statement. DO NOT RELY ON THIS BEHAVIOR which is driver-dependent: always call this method right after
-     * executing an INSERT statement.
+     * @return string|int|false
      *
      * @throws Exception
      */
-    public function lastInsertId(): int|string;
+    public function lastInsertId($name = null);
 
     /**
      * Initiates a transaction.
      *
+     * @return bool TRUE on success or FALSE on failure.
+     *
      * @throws Exception
      */
-    public function beginTransaction(): void;
+    public function beginTransaction();
 
     /**
      * Commits a transaction.
      *
+     * @return bool TRUE on success or FALSE on failure.
+     *
      * @throws Exception
      */
-    public function commit(): void;
+    public function commit();
 
     /**
      * Rolls back the current transaction, as initiated by beginTransaction().
      *
+     * @return bool TRUE on success or FALSE on failure.
+     *
      * @throws Exception
      */
-    public function rollBack(): void;
-
-    /**
-     * Provides access to the native database connection.
-     *
-     * @return resource|object
-     */
-    public function getNativeConnection();
+    public function rollBack();
 }

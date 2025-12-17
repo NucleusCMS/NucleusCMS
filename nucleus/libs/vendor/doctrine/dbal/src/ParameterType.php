@@ -1,46 +1,57 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL;
 
 /**
- * Statement parameter type.
+ * Contains statement parameter types.
  */
-enum ParameterType
+final class ParameterType
 {
     /**
      * Represents the SQL NULL data type.
      */
-    case NULL;
+    public const NULL = 0;
 
     /**
      * Represents the SQL INTEGER data type.
      */
-    case INTEGER;
+    public const INTEGER = 1;
 
     /**
      * Represents the SQL CHAR, VARCHAR, or other string data type.
+     *
+     * @see \PDO::PARAM_STR
      */
-    case STRING;
+    public const STRING = 2;
 
     /**
      * Represents the SQL large object data type.
      */
-    case LARGE_OBJECT;
+    public const LARGE_OBJECT = 3;
 
     /**
      * Represents a boolean data type.
+     *
+     * @see \PDO::PARAM_BOOL
      */
-    case BOOLEAN;
+    public const BOOLEAN = 5;
 
     /**
      * Represents a binary string data type.
      */
-    case BINARY;
+    public const BINARY = 16;
 
     /**
      * Represents an ASCII string data type
      */
-    case ASCII;
+    public const ASCII = 17;
+
+    /**
+     * This class cannot be instantiated.
+     *
+     * @codeCoverageIgnore
+     */
+    private function __construct()
+    {
+    }
 }

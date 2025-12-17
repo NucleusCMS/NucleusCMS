@@ -43,6 +43,38 @@ try_define('_MANAGE_LINKS_ITEMS', '<li><a href="https://github.com/NucleusCMS?q=
  *        Common constants                  *
  ********************************************/
 
+// DASHBOARD
+try_define('_DASHBOARD_TITLE',              'Dashboard');
+try_define('_DASHBOARD_QUICK_ACTIONS',      'Quick Actions');
+try_define('_DASHBOARD_NEW_ITEM',           'New Item');
+try_define('_DASHBOARD_BLOG_LIST',          'Blog List');
+try_define('_DASHBOARD_STATISTICS',         'Statistics Summary');
+try_define('_DASHBOARD_TOTAL_ITEMS',        'Total Items');
+try_define('_DASHBOARD_TOTAL_COMMENTS',     'Total Comments');
+try_define('_DASHBOARD_TOTAL_CATEGORIES',   'Total Categories');
+try_define('_DASHBOARD_TOTAL_BLOGS',        'Total Blogs');
+try_define('_DASHBOARD_TOTAL_MEMBERS',      'Total Members');
+try_define('_DASHBOARD_PUBLISHED',          'Published');
+try_define('_DASHBOARD_DRAFTS',             'Drafts');
+try_define('_DASHBOARD_PENDING',            'Pending');
+try_define('_DASHBOARD_RECENT_ITEMS',       'Recent Items');
+try_define('_DASHBOARD_RECENT_COMMENTS',    'Recent Comments');
+try_define('_DASHBOARD_RECENT_LOGS',        'Recent System Logs');
+try_define('_DASHBOARD_BLOG_SUMMARY',       'Blog Summary');
+try_define('_DASHBOARD_ITEMS',              'Items');
+try_define('_DASHBOARD_COMMENTS',           'Comments');
+try_define('_DASHBOARD_CATEGORIES',         'Categories');
+try_define('_DASHBOARD_LAST_UPDATE',        'Last Update');
+try_define('_DASHBOARD_NO_RECENT_ITEMS',    'No recent items');
+try_define('_DASHBOARD_NO_RECENT_COMMENTS', 'No recent comments');
+try_define('_DASHBOARD_GUEST',              'Guest');
+try_define('_DASHBOARD_RECENT_BLOGS',       'Recent Blogs');
+try_define('_DASHBOARD_ALL_BLOGS',          'All Blogs');
+try_define('_DASHBOARD_SHOW_MORE',          'Show More');
+try_define('_DASHBOARD_SHOW_LESS',          'Show Less');
+try_define('_DASHBOARD_MORE_BLOGS',         '%d more blogs');
+try_define('_DASHBOARD_NO_ITEMS_YET',       'No items yet');
+
 /********************************************
  *        Start New for 3.80                *
  ********************************************/

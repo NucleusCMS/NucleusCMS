@@ -243,7 +243,10 @@ function selectQuery($table_name, $where = '', $fields = '*', $extra = [])
     return "SELECT {$fields} FROM {$table_name} {$where} {$extra}";
 }
 
-function updateQuery(string $table_name, array $values, string|array $where = '', array $extra = [])
+/**
+ * @param string|array $where
+ */
+function updateQuery(string $table_name, array $values, $where = '', array $extra = [])
 {
     if (is_array($where)) {
         $where = implode(' ', $where);
@@ -342,7 +345,8 @@ function getOrmConnection(): ?\Doctrine\DBAL\Connection
  */
 function getOrmSchemaManager(): ?\Doctrine\DBAL\Schema\AbstractSchemaManager
 {
-    return getOrmConnection()?->createSchemaManager();
+    $conn = getOrmConnection();
+    return $conn ? $conn->createSchemaManager() : null;
 }
 
 /**
@@ -350,7 +354,8 @@ function getOrmSchemaManager(): ?\Doctrine\DBAL\Schema\AbstractSchemaManager
  */
 function getOrmQueryBuilder(): ?\Doctrine\DBAL\Query\QueryBuilder
 {
-    return getOrmConnection()?->createQueryBuilder();
+    $conn = getOrmConnection();
+    return $conn ? $conn->createQueryBuilder() : null;
 }
 
 /**
@@ -483,7 +488,7 @@ function orm_connect_args(
             $old_display_errors = ini_get('display_errors');
             ini_set('display_errors', 0);
             $conn = Doctrine\DBAL\DriverManager::getConnection($connectionParams, $config);
-            $DBH  = $conn?->getNativeConnection();
+            $DBH  = $conn ? $conn->getNativeConnection() : null;
         } catch (Exception $exc) {
             //echo $exc->getTraceAsString();
             $conn = null;

@@ -8,17 +8,20 @@ use SensitiveParameter;
 
 use function implode;
 use function sprintf;
-use function str_contains;
+use function strpos;
 
 /**
  * Db2 DSN
  */
 final class DataSourceName
 {
+    private string $string;
+
     private function __construct(
         #[SensitiveParameter]
-        private readonly string $string,
+        string $string
     ) {
+        $this->string = $string;
     }
 
     public function toString(): string
@@ -33,7 +36,7 @@ final class DataSourceName
      */
     public static function fromArray(
         #[SensitiveParameter]
-        array $params,
+        array $params
     ): self {
         $chunks = [];
 
@@ -49,10 +52,11 @@ final class DataSourceName
      *
      * @param array<string,mixed> $params
      */
-    public static function fromConnectionParameters(#[SensitiveParameter]
-    array $params,): self
-    {
-        if (isset($params['dbname']) && str_contains($params['dbname'], '=')) {
+    public static function fromConnectionParameters(
+        #[SensitiveParameter]
+        array $params
+    ): self {
+        if (isset($params['dbname']) && strpos($params['dbname'], '=') !== false) {
             return new self($params['dbname']);
         }
 

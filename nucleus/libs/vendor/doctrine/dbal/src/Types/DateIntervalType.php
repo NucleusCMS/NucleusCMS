@@ -1,13 +1,10 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Doctrine\DBAL\Types;
 
 use DateInterval;
 use Doctrine\DBAL\Platforms\AbstractPlatform;
-use Doctrine\DBAL\Types\Exception\InvalidFormat;
-use Doctrine\DBAL\Types\Exception\InvalidType;
+use Doctrine\Deprecations\Deprecation;
 use Throwable;
 
 use function substr;
@@ -17,12 +14,20 @@ use function substr;
  */
 class DateIntervalType extends Type
 {
-    final public const FORMAT = '%RP%YY%MM%DDT%HH%IM%SS';
+    public const FORMAT = '%RP%YY%MM%DDT%HH%IM%SS';
 
     /**
      * {@inheritDoc}
      */
-    public function getSQLDeclaration(array $column, AbstractPlatform $platform): string
+    public function getName()
+    {
+        return Types::DATEINTERVAL;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getSQLDeclaration(array $column, AbstractPlatform $platform)
     {
         $column['length'] = 255;
 
@@ -30,13 +35,15 @@ class DateIntervalType extends Type
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param T $value
      *
      * @return (T is null ? null : string)
      *
      * @template T
      */
-    public function convertToDatabaseValue(mixed $value, AbstractPlatform $platform): ?string
+    public function convertToDatabaseValue($value, AbstractPlatform $platform)
     {
         if ($value === null) {
             return null;
@@ -46,17 +53,19 @@ class DateIntervalType extends Type
             return $value->format(self::FORMAT);
         }
 
-        throw InvalidType::new($value, static::class, ['null', DateInterval::class]);
+        throw ConversionException::conversionFailedInvalidType($value, $this->getName(), ['null', DateInterval::class]);
     }
 
     /**
+     * {@inheritDoc}
+     *
      * @param T $value
      *
      * @return (T is null ? null : DateInterval)
      *
      * @template T
      */
-    public function convertToPHPValue(mixed $value, AbstractPlatform $platform): ?DateInterval
+    public function convertToPHPValue($value, AbstractPlatform $platform)
     {
         if ($value === null || $value instanceof DateInterval) {
             return $value;
@@ -78,7 +87,24 @@ class DateIntervalType extends Type
 
             return $interval;
         } catch (Throwable $exception) {
-            throw InvalidFormat::new($value, static::class, self::FORMAT, $exception);
+            throw ConversionException::conversionFailedFormat($value, $this->getName(), self::FORMAT, $exception);
         }
+    }
+
+    /**
+     * {@inheritDoc}
+     *
+     * @deprecated
+     */
+    public function requiresSQLCommentHint(AbstractPlatform $platform)
+    {
+        Deprecation::triggerIfCalledFromOutside(
+            'doctrine/dbal',
+            'https://github.com/doctrine/dbal/pull/5509',
+            '%s is deprecated.',
+            __METHOD__,
+        );
+
+        return true;
     }
 }
