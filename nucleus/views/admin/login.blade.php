@@ -59,9 +59,6 @@
             <div class="modal__body">
                 <p class="modal__lead">{{ _ADMIN_LOST_PSWD_TEXT_1 }}</p>
                 <form method="post" action="../action.php" class="modal__form" id="forgot-password-form">
-                    <label class="modal__label" for="nucleus_pf_username">{{ _ADMIN_LOST_PSWD_TEXT_USENAME }}</label>
-                    <input class="modal__input" type="text" name="name" id="nucleus_pf_username" required />
-
                     <label class="modal__label" for="nucleus_pf_email">{{ _ADMIN_LOST_PSWD_TEXT_EMAIL }}</label>
                     <input class="modal__input" type="email" name="email" id="nucleus_pf_email" required />
 
