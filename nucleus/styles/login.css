@@ -106,6 +106,14 @@ body.login-page {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.login-form__input:-webkit-autofill,
+.login-form__input:-webkit-autofill:hover,
+.login-form__input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px white inset;
+    -webkit-text-fill-color: var(--text-main);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
 .login-form__input:focus {
     outline: none;
     border-color: var(--accent);
