@@ -519,8 +519,8 @@ try_define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			'この画面を閲覧する権�
 try_define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'エントリーがありません');
 
 // globalfunctions.php
-try_define('_GFUNCTIONS_LOGINPCSHARED_YES',				'共有PCからのログイン');
-try_define('_GFUNCTIONS_LOGINPCSHARED_NO',				'共有ではないPCからのログイン');
+try_define('_GFUNCTIONS_LOGINPCSHARED_YES',				'ログイン状態の保存: 有効');
+try_define('_GFUNCTIONS_LOGINPCSHARED_NO',				'ログイン状態の保存: 無効');
 try_define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'%s がログインしました (%s)');
 try_define('_GFUNCTIONS_LOGINFAILED_TXT',				'%s がログインに失敗しました');
 try_define('_GFUNCTIONS_LOGOUT_TXT',					'%s がログアウトしました');
@@ -1075,7 +1075,7 @@ try_define('_COMMENTFORM_REMEMBER',				'情報を記憶しておく');
 try_define('_LOGINFORM_NAME',					'ログインID:');
 try_define('_LOGINFORM_PWD',					'パスワード:');
 try_define('_LOGINFORM_YOUARE',					'ログイン中:');
-try_define('_LOGINFORM_SHARED',					'このPCを他の人と共用する');
+try_define('_LOGINFORM_REMEMBER',				'ログイン状態を保存する');
 
 // member mailform
 try_define('_MEMBERMAIL_SUBMIT',				'メッセージ送信');
@@ -1464,7 +1464,7 @@ try_define('_BAN_ADD_BTN',						'制限するIPアドレスの追加');
 
 // LOGIN screen
 try_define('_LOGIN_MESSAGE',					'メッセージ');
-try_define('_LOGIN_SHARED',						_LOGINFORM_SHARED);
+try_define('_LOGIN_REMEMBER',              _LOGINFORM_REMEMBER);
 try_define('_LOGIN_FORGOT',						'パスワードを忘れた');
 
 // membermanagement

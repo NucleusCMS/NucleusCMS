@@ -32,8 +32,8 @@
 
                 <div class="login-form__options">
                     <label class="login-checkbox">
-                        <input type="checkbox" value="1" name="shared" tabindex="40" />
-                        <span>{{ _LOGIN_SHARED }}</span>
+                        <input type="checkbox" value="1" name="remember" tabindex="40" />
+                        <span>{{ _LOGIN_REMEMBER }}</span>
                     </label>
                     <button type="button" class="login-form__link" id="forgot-password-trigger">{{ _LOGIN_FORGOT }}</button>
                 </div>

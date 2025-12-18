@@ -606,7 +606,7 @@ define('_COMMENTFORM_MAIL',			'eMail/HTTP');
 define('_LOGINFORM_NAME',			'Benutzer');
 define('_LOGINFORM_PWD',			'Passwort');
 define('_LOGINFORM_YOUARE',			'Angemeldet als');
-define('_LOGINFORM_SHARED',			'Shared Computer');
+define('_LOGINFORM_REMEMBER',                    'Angemeldet bleiben');
 
 // member mailform
 define('_MEMBERMAIL_SUBMIT',		'Nachricht absenden');
@@ -969,7 +969,7 @@ define('_BAN_ADD_BTN',				'Zugriffssperre hinzuf&uuml;gen');
 
 // LOGIN screen
 define('_LOGIN_MESSAGE',			'Nachricht');
-define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
+define('_LOGIN_REMEMBER',   _LOGINFORM_REMEMBER);
 define('_LOGIN_FORGOT',				'Passwort vergessen?');
 define('_LOGIN_NAME',				'Name');
 define('_LOGIN_PASSWORD',			'Passwort');

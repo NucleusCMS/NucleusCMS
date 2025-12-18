@@ -488,8 +488,8 @@ try_define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"You haven't enough rights to se
 try_define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'No entries');
 
 // globalfunctions.php
-try_define('_GFUNCTIONS_LOGINPCSHARED_YES',				'on shared PC');
-try_define('_GFUNCTIONS_LOGINPCSHARED_NO',				'on not shared PC');
+try_define('_GFUNCTIONS_LOGINPCSHARED_YES',				'login persistence: on');
+try_define('_GFUNCTIONS_LOGINPCSHARED_NO',				'login persistence: off');
 try_define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'Login successful for %s (%s)');
 try_define('_GFUNCTIONS_LOGINFAILED_TXT',				'Login failed for %s');
 try_define('_GFUNCTIONS_LOGOUT_TXT',					'%s is logouted');
@@ -1027,7 +1027,7 @@ try_define('_COMMENTFORM_REMEMBER',		'Remember Me');
 try_define('_LOGINFORM_NAME',			'Username:');
 try_define('_LOGINFORM_PWD',			'Password:');
 try_define('_LOGINFORM_YOUARE',			'Logged in as');
-try_define('_LOGINFORM_SHARED',			'Shared Computer');
+try_define('_LOGINFORM_REMEMBER',			'Remember this login');
 
 // member mailform
 try_define('_MEMBERMAIL_SUBMIT',		'Send Message');
@@ -1416,7 +1416,7 @@ try_define('_BAN_ADD_BTN',				'Add Ban');
 
 // LOGIN screen
 try_define('_LOGIN_MESSAGE',			'Message');
-try_define('_LOGIN_SHARED',				_LOGINFORM_SHARED);
+try_define('_LOGIN_REMEMBER',		_LOGINFORM_REMEMBER);
 try_define('_LOGIN_FORGOT',				'Forgot your password?');
 
 // membermanagement
