@@ -65,7 +65,6 @@
                     <input type="hidden" name="action" value="forgotpassword" />
                     <button type="submit" class="modal__submit">{{ _ADMIN_LOST_PSWD_TEXT_3 }}</button>
                 </form>
-                <p class="modal__note">{{ _ADMIN_LOST_PSWD_TEXT_2 }}</p>
             </div>
         </div>
     </div>

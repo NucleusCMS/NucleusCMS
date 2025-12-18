@@ -10,5 +10,3 @@
         <input type="submit" value="{{ _ADMIN_LOST_PSWD_TEXT_3 }}" class="transparent" />
     </p>
 </form>
-
-<p>{{ _ADMIN_LOST_PSWD_TEXT_2 }}</p>

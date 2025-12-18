@@ -178,11 +178,9 @@ body.login-page {
     margin-top: 8px;
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid rgba(255, 255, 255, 0.22);
+    border: 1px solid rgba(58, 103, 166, 0.3);
     border-radius: 12px;
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0.06) 100%),
-        linear-gradient(135deg, rgba(74, 124, 196, 0.9), rgba(47, 94, 158, 0.9));
+    background: #4a7cc4;
     color: white;
     font-size: 16px;
     font-weight: 700;
@@ -193,16 +191,12 @@ body.login-page {
 }
 
 .login-form__submit:hover {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.08) 100%),
-        linear-gradient(135deg, rgba(80, 132, 210, 0.9), rgba(50, 98, 164, 0.9));
+    background: #5488d2;
     box-shadow: 0 12px 26px rgba(9, 18, 42, 0.18);
 }
 
 .login-form__submit:active {
-    background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0.04) 100%),
-        linear-gradient(135deg, rgba(62, 108, 170, 0.9), rgba(36, 74, 128, 0.9));
+    background: #3e6aa8;
     box-shadow: 0 8px 16px rgba(9, 18, 42, 0.16);
     transform: translateY(1px);
 }
@@ -332,8 +326,3 @@ body.login-page {
     transform: translateY(1px);
 }
 
-.modal__note {
-    margin: 2px 0 0;
-    font-size: 13px;
-    color: var(--text-muted);
-}

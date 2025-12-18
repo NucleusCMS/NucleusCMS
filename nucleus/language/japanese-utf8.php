@@ -237,7 +237,6 @@ try_define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表�
 
 try_define('_ADMIN_LOST_PSWD_TEXT_TITLE', "パスワードを忘れましたか？");
 try_define('_ADMIN_LOST_PSWD_TEXT_1', "以下にメールアドレスを入力してください。新しいパスワードを設定するページへのリンクの入ったメールが送信されます。");
-try_define('_ADMIN_LOST_PSWD_TEXT_2', "そのメールアドレスにアクセスできない場合は、Nucleusサイト管理者に連絡してください。");
 try_define('_ADMIN_LOST_PSWD_TEXT_3', "認証用リンクの送信");
 try_define('_ADMIN_LOST_PSWD_TEXT_USENAME', "ユーザー名(ログインID)：");
 try_define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "メールアドレス：");
