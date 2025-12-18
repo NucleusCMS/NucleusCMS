@@ -1,17 +1,23 @@
 :root {
     --login-bg:
-        radial-gradient(140% 120% at 14% 10%, rgba(171, 211, 255, 0.32) 0%, rgba(84, 132, 194, 0.16) 38%, rgba(18, 36, 66, 0) 60%),
-        radial-gradient(120% 100% at 80% 22%, rgba(118, 188, 255, 0.14) 0%, rgba(56, 112, 186, 0.1) 36%, rgba(16, 34, 64, 0) 60%),
-        radial-gradient(120% 90% at 56% 88%, rgba(52, 92, 152, 0.14) 0%, rgba(24, 48, 88, 0.1) 30%, rgba(12, 26, 54, 0) 58%),
-        linear-gradient(135deg, #152238 0%, #122540 42%, #0f2647 100%),
-        linear-gradient(160deg, rgba(255, 255, 255, 0.12) 0%, rgba(255, 255, 255, 0) 46%);
-    --card-bg: rgba(255, 255, 255, 0.92);
-    --accent: #4a7cc4;
-    --accent-strong: #305891;
-    --text-main: #0f172a;
-    --text-muted: #475569;
-    --border-color: #dde6f3;
-    --shadow: 0 14px 40px rgba(4, 10, 24, 0.28);
+        radial-gradient(130% 110% at 16% 12%, rgba(185, 214, 255, 0.38) 0%, rgba(112, 156, 215, 0.2) 36%, rgba(24, 54, 97, 0) 60%),
+        radial-gradient(120% 100% at 78% 22%, rgba(158, 204, 255, 0.14) 0%, rgba(92, 140, 210, 0.12) 36%, rgba(22, 50, 92, 0) 60%),
+        radial-gradient(120% 90% at 54% 88%, rgba(76, 118, 182, 0.14) 0%, rgba(36, 70, 122, 0.12) 30%, rgba(16, 36, 70, 0) 58%),
+        linear-gradient(135deg, #142741 0%, #122a4a 42%, #0f2c4f 100%),
+        linear-gradient(170deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 46%);
+    --card-bg: rgba(255, 255, 255, 0.3);
+    --card-border: rgba(255, 255, 255, 0.36);
+    --accent: #cfe2ff;
+    --accent-strong: #9ec1ff;
+    --text-main: #e9f1ff;
+    --text-muted: #cddaf0;
+    --border-color: rgba(255, 255, 255, 0.34);
+    --input-bg: rgba(255, 255, 255, 0.16);
+    --input-bg-strong: rgba(255, 255, 255, 0.22);
+    --button-bg: rgba(116, 159, 229, 0.82);
+    --button-bg-hover: rgba(135, 177, 242, 0.88);
+    --button-bg-active: rgba(98, 142, 207, 0.82);
+    --shadow: 0 18px 46px rgba(4, 10, 24, 0.32);
 }
 
 * {
@@ -46,8 +52,8 @@ body.login-page {
     padding: 28px;
     text-align: left;
     box-shadow: var(--shadow);
-    border: 1px solid rgba(255, 255, 255, 0.42);
-    backdrop-filter: blur(9px);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(14px) saturate(125%);
 }
 
 .login-card__header {
@@ -79,8 +85,15 @@ body.login-page {
     border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 15px;
-    background: white;
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
+    background: var(--input-bg);
+    color: var(--text-main);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    backdrop-filter: blur(6px);
+}
+
+.login-form__input::placeholder,
+.modal__input::placeholder {
+    color: rgba(233, 239, 255, 0.78);
 }
 
 .login-form__password {
@@ -101,7 +114,7 @@ body.login-page {
     width: 28px;
     height: 28px;
     border: none;
-    background: rgba(74, 124, 196, 0.1);
+    background: rgba(255, 255, 255, 0.18);
     border-radius: 50%;
     display: grid;
     place-items: center;
@@ -120,27 +133,36 @@ body.login-page {
 .password-toggle:hover,
 .password-toggle:focus-visible {
     outline: none;
-    background: rgba(74, 124, 196, 0.18);
-    box-shadow: 0 0 0 3px rgba(74, 124, 196, 0.16);
+    background: rgba(255, 255, 255, 0.24);
+    box-shadow: 0 0 0 3px rgba(207, 226, 255, 0.24);
 }
 
 .password-toggle.is-active {
-    background: rgba(74, 124, 196, 0.24);
+    background: rgba(255, 255, 255, 0.28);
     color: var(--accent);
 }
 
 .login-form__input:-webkit-autofill,
 .login-form__input:-webkit-autofill:hover,
 .login-form__input:-webkit-autofill:focus {
-    box-shadow: 0 0 0 1000px white inset;
+    box-shadow: 0 0 0 1000px var(--input-bg-strong) inset;
     -webkit-text-fill-color: var(--text-main);
     transition: background-color 5000s ease-in-out 0s;
 }
 
 .login-form__input:focus {
     outline: none;
-    border-color: var(--accent);
-    box-shadow: 0 0 0 3px rgba(31, 95, 191, 0.18);
+    border-color: var(--accent-strong);
+    background: var(--input-bg-strong);
+    box-shadow: 0 0 0 3px rgba(158, 193, 255, 0.26);
+}
+
+.modal__input:-webkit-autofill,
+.modal__input:-webkit-autofill:hover,
+.modal__input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px var(--input-bg-strong) inset;
+    -webkit-text-fill-color: var(--text-main);
+    transition: background-color 5000s ease-in-out 0s;
 }
 
 .login-form__options {
@@ -162,7 +184,7 @@ body.login-page {
 .login-form__link {
     font-size: 14px;
     text-decoration: none;
-    color: var(--accent);
+    color: #d6e7ff;
     background: transparent;
     border: none;
     padding: 0;
@@ -178,26 +200,26 @@ body.login-page {
     margin-top: 8px;
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid rgba(58, 103, 166, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.36);
     border-radius: 12px;
-    background: #4a7cc4;
-    color: white;
+    background: var(--button-bg);
+    color: #f8fbff;
     font-size: 16px;
     font-weight: 700;
     cursor: pointer;
     transition: box-shadow 0.16s ease, background 0.2s ease, transform 0.1s ease;
-    box-shadow: 0 10px 24px rgba(9, 18, 42, 0.16);
-    backdrop-filter: blur(4px);
+    box-shadow: 0 10px 24px rgba(6, 12, 24, 0.22);
+    backdrop-filter: blur(8px);
 }
 
 .login-form__submit:hover {
-    background: #5488d2;
-    box-shadow: 0 12px 26px rgba(9, 18, 42, 0.18);
+    background: var(--button-bg-hover);
+    box-shadow: 0 12px 26px rgba(6, 12, 24, 0.24);
 }
 
 .login-form__submit:active {
-    background: #3e6aa8;
-    box-shadow: 0 8px 16px rgba(9, 18, 42, 0.16);
+    background: var(--button-bg-active);
+    box-shadow: 0 8px 16px rgba(6, 12, 24, 0.2);
     transform: translateY(1px);
 }
 
@@ -205,14 +227,14 @@ body.login-page {
     margin: 6px 0 14px;
     padding: 10px 12px;
     border-radius: 10px;
-    background: rgba(239, 68, 68, 0.08);
-    border: 1px solid rgba(239, 68, 68, 0.35);
-    color: #b91c1c;
+    background: rgba(255, 120, 120, 0.12);
+    border: 1px solid rgba(255, 164, 164, 0.4);
+    color: #ffe1e1;
     font-size: 14px;
 }
 
 .login-footer {
-    color: rgba(255, 255, 255, 0.82);
+    color: rgba(255, 255, 255, 0.9);
     font-size: 13px;
     text-align: center;
 }
@@ -236,19 +258,19 @@ body.login-page {
 .modal__backdrop {
     position: absolute;
     inset: 0;
-    background: rgba(6, 12, 24, 0.55);
-    backdrop-filter: blur(3px);
+    background: rgba(6, 12, 24, 0.62);
+    backdrop-filter: blur(6px);
 }
 
 .modal__dialog {
     position: relative;
     width: min(480px, 90vw);
-    background: rgba(255, 255, 255, 0.95);
+    background: linear-gradient(155deg, rgba(18, 34, 64, 0.78), rgba(14, 26, 50, 0.76));
     border-radius: 16px;
     box-shadow: 0 18px 50px rgba(5, 12, 30, 0.25);
-    border: 1px solid rgba(255, 255, 255, 0.6);
+    border: 1px solid rgba(255, 255, 255, 0.32);
     padding: 18px 20px 20px;
-    backdrop-filter: blur(12px);
+    backdrop-filter: blur(14px) saturate(120%);
 }
 
 .modal__header {
@@ -301,7 +323,9 @@ body.login-page {
     border: 1px solid var(--border-color);
     border-radius: 10px;
     font-size: 15px;
-    background: white;
+    background: var(--input-bg);
+    color: var(--text-main);
+    backdrop-filter: blur(6px);
 }
 
 .modal__submit {
@@ -309,20 +333,22 @@ body.login-page {
     align-self: start;
     padding: 10px 12px;
     border-radius: 10px;
-    border: 1px solid rgba(74, 124, 196, 0.35);
-    background: linear-gradient(135deg, rgba(74, 124, 196, 0.9), rgba(57, 106, 168, 0.9));
-    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background: var(--button-bg);
+    color: #f8fbff;
     font-weight: 700;
     cursor: pointer;
-    box-shadow: 0 8px 18px rgba(9, 18, 42, 0.14);
-    transition: box-shadow 0.16s ease, transform 0.1s ease;
+    box-shadow: 0 8px 18px rgba(6, 12, 24, 0.2);
+    transition: box-shadow 0.16s ease, transform 0.1s ease, background 0.2s ease;
 }
 
 .modal__submit:hover {
-    box-shadow: 0 10px 20px rgba(9, 18, 42, 0.16);
+    background: var(--button-bg-hover);
+    box-shadow: 0 10px 20px rgba(6, 12, 24, 0.22);
 }
 
 .modal__submit:active {
+    background: var(--button-bg-active);
     transform: translateY(1px);
 }
 
