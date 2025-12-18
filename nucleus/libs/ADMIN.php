@@ -200,7 +200,7 @@ class ADMIN
      */
     public function action_login($msg = '', $passvars = 1)
     {
-        global $member;
+        global $CONF, $member;
 
         if ( ! isset($_SERVER['HTTP_ACCEPT_LANGUAGE'])) {
             header('HTTP/1.0 404 Not Found');
@@ -213,18 +213,16 @@ class ADMIN
             exit;
         }
 
-        $this->pagehead();
-
         $oldaction = postVar('oldaction');
 
         $params = [
             'msg'             => $msg ? sprintf('%s: %s', _MESSAGE, escapeHTML($msg)) : '',
             'passRequestVars' => ('logout' != $oldaction && 'login' != $oldaction && $passvars), // pass through vars
+            'baseUrl'         => hsc($CONF['AdminURL']),
+            'SiteName'        => CONF::asStr('SiteName'),
         ];
 
-        echo \parseBlade('admin.action_showlogin', $params), "\n";
-
-        $this->pagefoot();
+        echo \parseBlade('admin.login', $params), "\n";
     }
 
     /**

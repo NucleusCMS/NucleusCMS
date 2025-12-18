@@ -205,8 +205,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');
 try_define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
 
 try_define('_ADMIN_LOST_PSWD_TEXT_TITLE', "Forgot your password?");
-try_define('_ADMIN_LOST_PSWD_TEXT_1', "Enter your username and email address below, and you'll be sent an e-mail with a link where you can choose a new password.");
-try_define('_ADMIN_LOST_PSWD_TEXT_2', "If you don't remember your exact username, contact the site administrator.");
+try_define('_ADMIN_LOST_PSWD_TEXT_1', "Enter your email address below, and you'll be sent an e-mail with a link where you can choose a new password.");
 try_define('_ADMIN_LOST_PSWD_TEXT_3', "Send Activation Link");
 try_define('_ADMIN_LOST_PSWD_TEXT_USENAME', "Username:");
 try_define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "Email address:");

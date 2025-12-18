@@ -93,6 +93,16 @@ class MEMBER
         return $mem;
     }
 
+    /**
+     * Create a member object for a given email address
+     */
+    public static function &createFromEmail($email): object
+    {
+        $mem = new MEMBER();
+        $mem->readFromEmail($email);
+        return $mem;
+    }
+
     public function readFromName($displayname)
     {
         return $this->read(sprintf(
@@ -104,6 +114,14 @@ class MEMBER
     public function readFromID($id)
     {
         return $this->read('mnumber=' . (int) $id);
+    }
+
+    public function readFromEmail($email)
+    {
+        return $this->read(sprintf(
+            "memail='%s' ORDER BY mnumber ASC LIMIT 1",
+            sql_real_escape_string($email)
+        ));
     }
 
     /**
@@ -972,6 +990,20 @@ class MEMBER
             "SELECT count(*) AS result FROM %s WHERE mname='%s' LIMIT 1",
             sql_table('member'),
             sql_real_escape_string($name)
+        );
+
+        return ((int) quickQuery($sql) > 0);
+    }
+
+    /**
+     * Returns true if there is a member with the given email address
+     */
+    public static function existsEmail($email): bool
+    {
+        $sql = sprintf(
+            "SELECT count(*) AS result FROM %s WHERE memail='%s' LIMIT 1",
+            sql_table('member'),
+            sql_real_escape_string($email)
         );
 
         return ((int) quickQuery($sql) > 0);

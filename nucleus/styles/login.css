@@ -1,0 +1,354 @@
+:root {
+    --login-bg:
+        radial-gradient(130% 110% at 16% 12%, rgba(185, 214, 255, 0.38) 0%, rgba(112, 156, 215, 0.2) 36%, rgba(24, 54, 97, 0) 60%),
+        radial-gradient(120% 100% at 78% 22%, rgba(158, 204, 255, 0.14) 0%, rgba(92, 140, 210, 0.12) 36%, rgba(22, 50, 92, 0) 60%),
+        radial-gradient(120% 90% at 54% 88%, rgba(76, 118, 182, 0.14) 0%, rgba(36, 70, 122, 0.12) 30%, rgba(16, 36, 70, 0) 58%),
+        linear-gradient(135deg, #142741 0%, #122a4a 42%, #0f2c4f 100%),
+        linear-gradient(170deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 46%);
+    --card-bg: rgba(8, 12, 24, 0.52);
+    --card-border: rgba(255, 255, 255, 0.2);
+    --accent: #cfe2ff;
+    --accent-strong: #9ec1ff;
+    --text-main: #e9f1ff;
+    --text-muted: #cddaf0;
+    --border-color: rgba(255, 255, 255, 0.34);
+    --input-bg: rgba(255, 255, 255, 0.16);
+    --input-bg-strong: rgba(255, 255, 255, 0.22);
+    --button-bg: rgba(129, 165, 222, 0.44);
+    --button-bg-hover: rgba(147, 182, 232, 0.52);
+    --button-bg-active: rgba(108, 142, 198, 0.44);
+    --shadow: 0 18px 46px rgba(4, 10, 24, 0.32);
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body.login-page {
+    margin: 0;
+    font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: var(--login-bg);
+    color: var(--text-main);
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 32px 16px;
+}
+
+.login-shell {
+    width: min(520px, 100%);
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    align-items: stretch;
+}
+
+.login-card {
+    margin: 0 auto;
+    width: 100%;
+    background: var(--card-bg);
+    border-radius: 18px;
+    padding: 28px;
+    text-align: left;
+    box-shadow: var(--shadow);
+    border: 1px solid var(--card-border);
+    backdrop-filter: blur(14px) saturate(125%);
+}
+
+.login-card__header {
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.login-card__title {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.login-form {
+    display: grid;
+    gap: 10px;
+}
+
+.login-form__label {
+    font-size: 14px;
+    color: var(--text-muted);
+    margin-top: 6px;
+}
+
+.login-form__input {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    background: var(--input-bg);
+    color: var(--text-main);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+    backdrop-filter: blur(6px);
+}
+
+.login-form__input::placeholder,
+.modal__input::placeholder {
+    color: rgba(233, 239, 255, 0.78);
+}
+
+.login-form__password {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-form__input--password {
+    padding-right: 44px;
+}
+
+.password-toggle {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 28px;
+    height: 28px;
+    border: none;
+    background: rgba(255, 255, 255, 0.18);
+    border-radius: 50%;
+    display: grid;
+    place-items: center;
+    cursor: pointer;
+    padding: 0;
+    transition: background 0.15s ease, box-shadow 0.15s ease;
+    color: var(--accent-strong);
+}
+
+.password-toggle svg {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+}
+
+.password-toggle:hover,
+.password-toggle:focus-visible {
+    outline: none;
+    background: rgba(255, 255, 255, 0.24);
+    box-shadow: 0 0 0 3px rgba(207, 226, 255, 0.24);
+}
+
+.password-toggle.is-active {
+    background: rgba(255, 255, 255, 0.28);
+    color: var(--accent);
+}
+
+.login-form__input:-webkit-autofill,
+.login-form__input:-webkit-autofill:hover,
+.login-form__input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px var(--input-bg-strong) inset;
+    -webkit-text-fill-color: var(--text-main);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.login-form__input:focus {
+    outline: none;
+    border-color: var(--accent-strong);
+    background: var(--input-bg-strong);
+    box-shadow: 0 0 0 3px rgba(158, 193, 255, 0.26);
+}
+
+.modal__input:-webkit-autofill,
+.modal__input:-webkit-autofill:hover,
+.modal__input:-webkit-autofill:focus {
+    box-shadow: 0 0 0 1000px var(--input-bg-strong) inset;
+    -webkit-text-fill-color: var(--text-main);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+.login-form__options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 6px;
+    gap: 12px;
+}
+
+.login-checkbox {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.login-form__link {
+    font-size: 14px;
+    text-decoration: none;
+    color: #d6e7ff;
+    background: transparent;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+}
+
+.login-form__link:hover,
+.login-form__link:focus-visible {
+    text-decoration: underline;
+}
+
+.login-form__submit {
+    margin-top: 8px;
+    width: 100%;
+    padding: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.36);
+    border-radius: 10px;
+    background: var(--button-bg);
+    color: #f8fbff;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: box-shadow 0.16s ease, background 0.2s ease, transform 0.1s ease;
+    box-shadow: 0 10px 24px rgba(6, 12, 24, 0.22);
+    backdrop-filter: blur(8px);
+}
+
+.login-form__submit:hover {
+    background: var(--button-bg-hover);
+    box-shadow: 0 12px 26px rgba(6, 12, 24, 0.24);
+}
+
+.login-form__submit:active {
+    background: var(--button-bg-active);
+    box-shadow: 0 8px 16px rgba(6, 12, 24, 0.2);
+    transform: translateY(1px);
+}
+
+.login-alert {
+    margin: 6px 0 14px;
+    padding: 10px 12px;
+    border-radius: 10px;
+    background: rgba(255, 120, 120, 0.12);
+    border: 1px solid rgba(255, 164, 164, 0.4);
+    color: #ffe1e1;
+    font-size: 14px;
+}
+
+.login-footer {
+    color: rgba(255, 255, 255, 0.9);
+    font-size: 13px;
+    text-align: center;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    display: grid;
+    place-items: center;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.18s ease;
+    z-index: 50;
+}
+
+.modal.is-visible {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(6, 12, 24, 0.62);
+    backdrop-filter: blur(6px);
+}
+
+.modal__dialog {
+    position: relative;
+    width: min(480px, 90vw);
+    background: linear-gradient(155deg, rgba(18, 34, 64, 0.78), rgba(14, 26, 50, 0.76));
+    border-radius: 16px;
+    box-shadow: 0 18px 50px rgba(5, 12, 30, 0.25);
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    padding: 18px 20px 20px;
+    backdrop-filter: blur(14px) saturate(120%);
+}
+
+.modal__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-bottom: 6px;
+}
+
+.modal__title {
+    margin: 0;
+    font-size: 18px;
+    color: var(--text-main);
+}
+
+.modal__close {
+    border: none;
+    background: transparent;
+    font-size: 22px;
+    cursor: pointer;
+    color: var(--text-muted);
+}
+
+.modal__body {
+    color: var(--text-main);
+    display: grid;
+    gap: 10px;
+}
+
+.modal__lead {
+    margin: 0 0 4px;
+    color: var(--text-muted);
+    font-size: 14px;
+}
+
+.modal__form {
+    display: grid;
+    gap: 10px;
+}
+
+.modal__label {
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.modal__input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    font-size: 15px;
+    background: var(--input-bg);
+    color: var(--text-main);
+    backdrop-filter: blur(6px);
+}
+
+.modal__submit {
+    margin-top: 4px;
+    align-self: start;
+    padding: 10px 12px;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.32);
+    background: var(--button-bg);
+    color: #f8fbff;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 8px 18px rgba(6, 12, 24, 0.2);
+    transition: box-shadow 0.16s ease, transform 0.1s ease, background 0.2s ease;
+}
+
+.modal__submit:hover {
+    background: var(--button-bg-hover);
+    box-shadow: 0 10px 20px rgba(6, 12, 24, 0.22);
+}
+
+.modal__submit:active {
+    background: var(--button-bg-active);
+    transform: translateY(1px);
+}
+

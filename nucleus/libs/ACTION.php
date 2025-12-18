@@ -305,13 +305,21 @@ class ACTION
      */
     public function forgotPassword()
     {
-        $membername = trim(postVar('name'));
+        $email = trim(postVar('email'));
 
-        if ( ! MEMBER::exists($membername)) {
-            doError(_ERROR_NOSUCHMEMBER);
+        if ('' === $email) {
+            doError(_ERROR_EMAIL_REQUIRED);
         }
 
-        $mem = MEMBER::createFromName($membername);
+        if ( ! isValidMailAddress($email)) {
+            doError(_ERROR_BADMAILADDRESS);
+        }
+
+        if ( ! MEMBER::existsEmail($email)) {
+            doError(_ERROR_INCORRECTEMAIL);
+        }
+
+        $mem = MEMBER::createFromEmail($email);
 
         /* below keeps regular users from resetting passwords using forgot password feature
              Removing for now until clear why it is required.*/
@@ -321,11 +329,6 @@ class ACTION
         // check if user halt or invalid
         if ($mem->isHalt()) {
             doError(_ERROR_LOGIN_MEMBER_HALT_OR_INVALID);
-        }
-
-        // check if e-mail address is correct
-        if ( ! ($mem->getEmail() == postVar('email'))) {
-            doError(_ERROR_INCORRECTEMAIL);
         }
 
         // send activation link
