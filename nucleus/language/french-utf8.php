@@ -408,8 +408,8 @@ try_define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"Vous n'avez pas les droit néce
 try_define('_ENCAPSULATE_ENCAPSULATE_NOENTRY',			'Aucune entrée');
 
 // globalfunctions.php
-try_define('_GFUNCTIONS_LOGINPCSHARED_YES',				'sur un ordinateur partagé');
-try_define('_GFUNCTIONS_LOGINPCSHARED_NO',				'sur un ordinateur non-partagé');
+try_define('_GFUNCTIONS_LOGINPCSHARED_YES',				'persistant activé');
+try_define('_GFUNCTIONS_LOGINPCSHARED_NO',				'persistant désactivé');
 try_define('_GFUNCTIONS_LOGINSUCCESSFUL_TXT',			'Connexion réussie pour %s (%s)');
 try_define('_GFUNCTIONS_LOGINFAILED_TXT',				'Echec de la connexion pour %s');
 try_define('_GFUNCTIONS_LOGOUT_TXT',					'%s est déconnecté');
@@ -945,7 +945,7 @@ try_define('_COMMENTFORM_REMEMBER',		'Retenir votre nom');
 try_define('_LOGINFORM_NAME',		'Nom d\'utilisateur');
 try_define('_LOGINFORM_PWD',		'Mot de passe');
 try_define('_LOGINFORM_YOUARE',		'Connecté en tant que');
-try_define('_LOGINFORM_SHARED',		'Ordinateur partagé');
+try_define('_LOGINFORM_REMEMBER',         'Rester connecté');
 
 // member mailform
 try_define('_MEMBERMAIL_SUBMIT',		'Envoyer un message');
@@ -1311,7 +1311,7 @@ try_define('_BAN_ADD_BTN',			'Exclure');
 try_define('_LOGIN_MESSAGE',		'Message');
 try_define('_LOGIN_NAME',			'Nom');
 try_define('_LOGIN_PASSWORD',		'Mot de passe');
-try_define('_LOGIN_SHARED',			_LOGINFORM_SHARED);
+try_define('_LOGIN_REMEMBER',      _LOGINFORM_REMEMBER);
 try_define('_LOGIN_FORGOT',			'Mot de passe oublié?');
 
 // membermanagement

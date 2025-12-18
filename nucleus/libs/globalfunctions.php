@@ -261,7 +261,7 @@ if ('login' === requestVar('action')) {
     // avoid md5 collision by using a long key
     if ($member->login(postVar('login'), substr(postVar('password'), 0, 40))) {
         $member->newCookieKey();
-        $member->setCookies(intPostVar('shared'));
+        $member->setCookies(intPostVar('remember'));
         if ('none' !== confVar('secureCookieKey')) {
             // secure cookie key
             $member->setCookieKey(
@@ -281,9 +281,9 @@ if ('login' === requestVar('action')) {
         ];
         $manager->notify('LoginSuccess', $param);
         $log_message = sprintf(
-            "Login successful for %s (sharedpc=%s)",
+            "Login successful for %s (rememberlogin=%s)",
             postVar('login'),
-            intPostVar('shared')
+            intPostVar('remember')
         );
 
         $remote_ip   = serverVar('REMOTE_ADDR', '');
@@ -349,6 +349,14 @@ if ('login' === requestVar('action')) {
         confVar('CookieDomain'),
         (bool) confVar('CookieSecure')
     );
+    setcookie(
+        confVar('CookiePrefix') . 'rememberlogin',
+        '',
+        time() - 2592000,
+        confVar('CookiePath'),
+        confVar('CookieDomain'),
+        (bool) confVar('CookieSecure')
+    );
     $param = ['username' => cookieVar(confVar('CookiePrefix') . 'user')];
     $manager->notify('Logout', $param);
 } elseif (cookieVar(confVar('CookiePrefix') . 'user')) {
@@ -365,11 +373,11 @@ if ('login' === requestVar('action')) {
     );
     unset($ck);
 
-    // renew cookies when not on a shared computer
-    if ($res && (1 != cookieVar(confVar('CookiePrefix') . 'sharedpc'))
+    // renew cookies when login persistence is enabled
+    if ($res && (1 == cookieVar(confVar('CookiePrefix') . 'rememberlogin'))
         && ( ! headers_sent())) {
         $member->setCookieKey(cookieVar(confVar('CookiePrefix') . 'loginkey'));
-        $member->setCookies();
+        $member->setCookies(1);
     }
 }
 

@@ -553,17 +553,16 @@ class MEMBER
     /**
      * Sets the cookies for the member
      *
-     * @param shared
-     *        set this to 1 when using a shared computer. Cookies will expire
-     *        at the end of the session in this case.
+     * @param remember
+     *        set this to 1 when you want to keep the login status. Cookies will
+     *        expire at the end of the session otherwise.
      */
-    public function setCookies($shared = 0)
+    public function setCookies($remember = 0)
     {
         global $CONF;
 
-        if ($CONF['SessionCookie'] || $shared) {
-            $lifetime = 0;
-        } else {
+        $lifetime = 0;
+        if ( ! $CONF['SessionCookie'] && $remember) {
             $lifetime = (time() + 2592000);
         }
 
@@ -584,17 +583,14 @@ class MEMBER
             (bool) $CONF['CookieSecure']
         );
 
-        // make sure cookies on shared pcs don't get renewed
-        if ($shared) {
-            setcookie(
-                (string) $CONF['CookiePrefix'] . 'sharedpc',
-                '1',
-                $lifetime,
-                (string) $CONF['CookiePath'],
-                (string) $CONF['CookieDomain'],
-                (bool) $CONF['CookieSecure']
-            );
-        }
+        setcookie(
+            (string) $CONF['CookiePrefix'] . 'rememberlogin',
+            $remember ? '1' : '',
+            $remember ? $lifetime : (time() - 2592000),
+            (string) $CONF['CookiePath'],
+            (string) $CONF['CookieDomain'],
+            (bool) $CONF['CookieSecure']
+        );
     }
 
     public function sendActivationLink($type, $extra = '')
