@@ -5,8 +5,8 @@
         radial-gradient(120% 90% at 54% 88%, rgba(76, 118, 182, 0.14) 0%, rgba(36, 70, 122, 0.12) 30%, rgba(16, 36, 70, 0) 58%),
         linear-gradient(135deg, #142741 0%, #122a4a 42%, #0f2c4f 100%),
         linear-gradient(170deg, rgba(255, 255, 255, 0.14) 0%, rgba(255, 255, 255, 0) 46%);
-    --card-bg: rgba(255, 255, 255, 0.3);
-    --card-border: rgba(255, 255, 255, 0.36);
+    --card-bg: rgba(8, 12, 24, 0.52);
+    --card-border: rgba(255, 255, 255, 0.2);
     --accent: #cfe2ff;
     --accent-strong: #9ec1ff;
     --text-main: #e9f1ff;
@@ -14,9 +14,9 @@
     --border-color: rgba(255, 255, 255, 0.34);
     --input-bg: rgba(255, 255, 255, 0.16);
     --input-bg-strong: rgba(255, 255, 255, 0.22);
-    --button-bg: rgba(116, 159, 229, 0.82);
-    --button-bg-hover: rgba(135, 177, 242, 0.88);
-    --button-bg-active: rgba(98, 142, 207, 0.82);
+    --button-bg: rgba(129, 165, 222, 0.44);
+    --button-bg-hover: rgba(147, 182, 232, 0.52);
+    --button-bg-active: rgba(108, 142, 198, 0.44);
     --shadow: 0 18px 46px rgba(4, 10, 24, 0.32);
 }
 
