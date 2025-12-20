@@ -176,6 +176,11 @@ try_define('_ADMIN_EXEC_TITLE_OPTIMIZE',       'tables optimized.');
 try_define('_ADMIN_BTN_TITLE_AUTO_REPAIR',     'Repair');
 try_define('_ADMIN_BTN_TITLE_OPTIMIZE',        'Optimize');
 try_define('_ADMIN_PLEASE_OPTIMIZE',           'Optimize please');
+try_define('_ADMIN_DATABASE_TABLE_LIST',       'Table list');
+try_define('_ADMIN_TABLE_COLLATION',           'Collation');
+try_define('_ADMIN_TABLE_ROWS',                'Rows');
+try_define('_ADMIN_TABLE_DATA_LENGTH',         'Data size');
+try_define('_ADMIN_TABLE_COMMENT',             'Comment');
 
 try_define('_PROBLEMS_FOUND_ON_TABLE',   'problems found on table');
 try_define('_NO_PROBLEMS_FOUND',         'No problems found');
@@ -200,6 +205,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'Core database version');
 try_define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    'Core important settings');
 
 try_define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');
+try_define('_OVERVIEW_SYSTEMTITLE',             'System overview');
 
 // Blog option
 try_define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");
@@ -688,9 +694,11 @@ try_define('_QMENU_MANAGE_NEWBLOG',		'New Weblog');
 try_define('_QMENU_MANAGE_BACKUPS',		'Backups');
 try_define('_QMENU_MANAGE_PLUGINS',		'Plugins');
 try_define('_QMENU_LAYOUT',				'Layout');
+try_define('_QMENU_LAYOUT_SETTINGS',	'Layout settings');
 try_define('_QMENU_LAYOUT_SKINS',		'Skins');
 try_define('_QMENU_LAYOUT_TEMPL',		'Templates');
 try_define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+try_define('_QMENU_DATABASE',			'Database');
 try_define('_QMENU_PLUGINS',			'Plugins');
 
 // quickmenu on logon screen
@@ -982,6 +990,27 @@ try_define('_MANAGE_SKINS',				'Skin and Templates');
 try_define('_MANAGE_EXTRA',				'Extra features');
 
 try_define('_BACKTOMANAGE',				'Back to Nucleus management');
+
+try_define('_MANAGE_PAGE_LEAD',            'Access the primary management tools from one place.');
+try_define('_MANAGE_SETTINGS_DESC',        'Configure global settings.');
+try_define('_MANAGE_SYSTEM_DESC',          'Check environment information.');
+try_define('_MANAGE_ACTIONLOG_DESC',       'Review admin action history.');
+try_define('_MANAGE_SYSTEMLOG_DESC',       'Inspect system logs.');
+try_define('_LAYOUT_SETTINGS_TITLE',        'Layout settings');
+try_define('_LAYOUT_SETTINGS_DESCRIPTION',  'Manage skins, templates, and import/export tools from one place.');
+try_define('_LAYOUT_SETTINGS_SKINS',        'Skins');
+try_define('_LAYOUT_SETTINGS_SKINS_DESC',   'Edit and manage available skins for your site.');
+try_define('_LAYOUT_SETTINGS_TEMPLATES',    'Templates');
+try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC','Update template sets used across your blogs.');
+try_define('_LAYOUT_SETTINGS_IMPORT',       'Import/Export');
+try_define('_LAYOUT_SETTINGS_IMPORT_DESC',  'Import new skins or export existing ones for reuse.');
+
+try_define('_DATABASE_SETTINGS_TITLE',        'Database');
+try_define('_DATABASE_SETTINGS_DESCRIPTION',  'Manage backups and optimization tasks from one place.');
+try_define('_DATABASE_SETTINGS_BACKUP',       'Backup/Restore');
+try_define('_DATABASE_SETTINGS_BACKUP_DESC',  'Create or restore database backups.');
+try_define('_DATABASE_SETTINGS_OPTIMIZE',     'Optimize/Repair');
+try_define('_DATABASE_SETTINGS_OPTIMIZE_DESC','Optimize or repair database tables.');
 
 
 // END introduced after v1.1 END

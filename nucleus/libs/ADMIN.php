@@ -131,7 +131,6 @@ class ADMIN
             'categoryedit',
             'commentdelete',
             'commentedit',
-            'composeroverview',
             'createitem',
             'createnewlog',
             'deleteblog',
@@ -144,6 +143,8 @@ class ADMIN
             'login',
             'lost_pwd',
             'manage',
+            'layoutsettings',
+            'databasesettings',
             'manageteam',
             'memberdelete',
             'memberedit',
@@ -545,6 +546,40 @@ class ADMIN
            '_MANAGE_LINKS_ITEMS' => $_MANAGE_LINKS_ITEMS,
         ];
         echo \parseBlade('admin.action_manage', $params), "\n";
+
+        $this->pagefoot();
+    }
+
+    /**
+     * Shows layout-related shortcuts in a single view
+     */
+    public function action_layoutsettings()
+    {
+        global $member;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+
+        $params = [];
+        echo \parseBlade('admin.action_layoutsettings', $params), "\n";
+
+        $this->pagefoot();
+    }
+
+    /**
+     * Shows database-related shortcuts in a single view
+     */
+    public function action_databasesettings()
+    {
+        global $member;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+
+        $params = [];
+        echo \parseBlade('admin.action_databasesettings', $params), "\n";
 
         $this->pagefoot();
     }
@@ -8630,21 +8665,6 @@ EOL;
         $this->addSystemInfoMessage('warning', sprintf('<strong>%s</strong><br />%s', _ERRORS_STARTUPERROR3, $msg));
     }
 
-    public function action_composeroverview()
-    {
-        global $member;
-
-        if ( ! $member->isAdmin()) {
-            $this->disallow();
-        }
-
-        $this->pagehead();
-
-        echo \parseBlade('admin.action_composeroverview', []), "\n";
-
-        $this->pagefoot();
-    }
-
     /**
      * @todo document this
      */
@@ -8656,7 +8676,7 @@ EOL;
 
         $this->pagehead();
         echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
-        echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
+        echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_TABLE_LIST);
 
         if (isset($_POST['mode']) && isset($_POST['step'])) {
             if ('sqlite' == $DB_DRIVER_NAME && 'optimize' == PostVar('mode') && 'start' == PostVar('step')) {
@@ -8733,18 +8753,20 @@ EOD;
                     }
                     echo "<table>";
                     echo sprintf(
-                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th></tr>",
+                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th><th>%s</th></tr>",
                         hsc(_ADMIN_TABLENAME),
-                        hsc(_SIZE),
-                        hsc(_OVERHEAD)
+                        hsc(_ADMIN_TABLE_COLLATION),
+                        hsc(_ADMIN_TABLE_ROWS),
+                        hsc(_ADMIN_TABLE_COMMENT)
                     );
                     foreach ($tables as $key => $item) {
                         echo sprintf(
-                            "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                            "<tr><td>%s</td><td>%s</td><td class=\"table-num\">%s</td><td>%s</td><td>%s</td></tr>",
                             hsc($key),
-                            hsc($item['Data_length']),
-                            hsc($item['Data_free']),
-                            hsc($item['Engine'])
+                            hsc($item['Collation']),
+                            hsc($item['Rows']),
+                            hsc($item['Engine']),
+                            hsc($item['Comment'])
                         );
                     }
                     echo "</table>";
