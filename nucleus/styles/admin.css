@@ -1365,6 +1365,10 @@ label {
     font-size: 0.9rem;
 }
 
+.table-num {
+    text-align: right;
+}
+
 .manage-section {
     padding: 1.25rem 1.5rem;
 }
