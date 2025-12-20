@@ -343,6 +343,19 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(49, 72, 100, 0.12);
 }
 
+.skinedit-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 12px;
+}
+
+.skinedit-meta {
+    color: var(--muted);
+    font-size: 0.95rem;
+}
+
 .quickmenu-form {
     margin: 8px 0 0;
 }

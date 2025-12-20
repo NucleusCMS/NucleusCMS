@@ -5853,16 +5853,16 @@ selector();
                     $subtitle .= helpHtml('skinpartspecial');
                 }
         }
-        $form[] = " {$subtitle}";
-
         $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent(
             $type,
             ['spartstype' => $spartstype]
         )));
 
+        $form[] = '<div class="skinedit-actions">';
         $form[] = sprintf('<input type="submit" tabindex="20" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
         $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
-        $form[] = " {$subtitle}";
+        $form[] = sprintf('<span class="skinedit-meta">%s</span>', $subtitle);
+        $form[] = '</div>';
         $form[] = '</div>';
 
         $form[] = '</form>';
