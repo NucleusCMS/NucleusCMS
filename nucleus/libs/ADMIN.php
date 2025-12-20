@@ -5894,20 +5894,6 @@ selector();
                 echo ", ";
             }
         }
-        // edit link
-        echo "<br /><br />\n";
-        $tmp = sprintf("<%%parsedinclude(%s)%%>", $type)
-            . '<%if(onteam)%><div  style="text-align:right">' . "\n"
-            . sprintf(
-                '<a href="<%%adminurl%%>index.php?action=skinedittype&skinid=%d&type=%s">%s</a>',
-                $skinid,
-                htmlentities($type, ENT_COMPAT, _CHARSET),
-                hsc(_SKIN_EDITONE_TITLE  . '(' . $type . ')')
-            )
-            . "</div>\n<%endif%>";
-        echo '<textarea rows="3" readonly onfocus="this.select()">'
-            . hsc($tmp) . '</textarea>';
-        // end edit link
         if ('specialpage' === $spartstype) {
             global $CONF;
             if ( ! isset($CONF['SpecialskinKey']) || '' === (string) $CONF['SpecialskinKey']) {
