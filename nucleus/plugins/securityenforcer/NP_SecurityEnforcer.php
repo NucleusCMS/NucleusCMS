@@ -90,7 +90,7 @@ class NP_SecurityEnforcer extends NucleusPlugin
     {
         $table = $this->getTablenameMain();
         $Schema = getOrmSchemaManager();
-        if ($Schema && $Schema->tableExists($table)) {
+        if ($Schema && $Schema->tablesExist([$table])) {
             return ;
         }
 
