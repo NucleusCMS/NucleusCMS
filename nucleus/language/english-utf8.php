@@ -1004,7 +1004,6 @@ try_define('_LAYOUT_SETTINGS_TEMPLATES',    'Templates');
 try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC','Update template sets used across your blogs.');
 try_define('_LAYOUT_SETTINGS_IMPORT',       'Import/Export');
 try_define('_LAYOUT_SETTINGS_IMPORT_DESC',  'Import new skins or export existing ones for reuse.');
-try_define('_LAYOUT_SETTINGS_OPEN',         'Open');
 
 try_define('_DATABASE_SETTINGS_TITLE',        'Database');
 try_define('_DATABASE_SETTINGS_DESCRIPTION',  'Manage backups and optimization tasks from one place.');

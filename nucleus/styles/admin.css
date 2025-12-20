@@ -1354,6 +1354,7 @@ label {
 .layout-card-text {
     color: var(--text-muted);
     font-size: 0.9rem;
+    font-weight: 400;
 }
 
 .layout-card-link {

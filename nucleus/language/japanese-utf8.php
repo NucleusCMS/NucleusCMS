@@ -1052,7 +1052,6 @@ try_define('_LAYOUT_SETTINGS_TEMPLATES',        'テンプレート編集');
 try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC',   'ブログ全体で利用するテンプレートを更新します。');
 try_define('_LAYOUT_SETTINGS_IMPORT',           '読込/書出');
 try_define('_LAYOUT_SETTINGS_IMPORT_DESC',      'スキンのインポートやエクスポートをまとめて行います。');
-try_define('_LAYOUT_SETTINGS_OPEN',             '開く');
 
 try_define('_DATABASE_SETTINGS_TITLE',          'データベース');
 try_define('_DATABASE_SETTINGS_DESCRIPTION',    'バックアップと最適化/修復をひとまとめに管理できます。');
