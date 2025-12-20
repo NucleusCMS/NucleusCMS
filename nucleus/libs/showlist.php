@@ -1089,39 +1089,21 @@ function listplug_table_templatelist($template, $type)
 
 function listplug_table_skinlist($template, $type)
 {
-    global $CONF, $DIR_SKINS, $manager, $DB_DRIVER_NAME;
+    global $CONF, $DIR_SKINS, $manager;
     switch ($type) {
         case 'HEAD':
-            echo "<th>" . _LISTS_NAME . "</th><th>" . _LISTS_DESC
+            echo "<th></th><th>" . _LISTS_NAME . "</th><th>" . _LISTS_DESC
                  . "</th><th colspan='3'>" . _LISTS_ACTIONS . "</th>";
             break;
         case 'BODY':
             $current = $template['current'];
 
+            $editUrl = hsc('index.php?action=skinedit&skinid=' . $current->sdnumber);
+
             echo '<td>';
-
-            // use a special style for the default skin
-            if ($current->sdnumber == $CONF['BaseSkin']) {
-                echo '<strong>', hsc($current->sdname), '</strong>';
-            } else {
-                echo hsc($current->sdname);
-            }
-
-            echo '<br /><br />';
-            echo _LISTS_TYPE, ': ', hsc($current->sdtype);
-            echo '<br />', _LIST_SKINS_INCMODE, ' ', (('skindir'
-                                                       == $current->sdincmode)
-                ? _PARSER_INCMODE_SKINDIR : _PARSER_INCMODE_NORMAL);
-            if ($current->sdincpref) {
-                echo '<br />', _LIST_SKINS_INCPREFIX, ' ', hsc($current->sdincpref);
-            }
-
-            // add preview image when present
             if ($current->sdincpref
                 && @is_file($DIR_SKINS . $current->sdincpref
                              . 'preview.png')) {
-                echo '<br /><br />';
-
                 $hasEnlargement = @is_file($DIR_SKINS . $current->sdincpref
                                             . 'preview-large.png');
                 if ($hasEnlargement) {
@@ -1151,149 +1133,30 @@ function listplug_table_skinlist($template, $type)
                          . '">' . _LIST_SKIN_README_TXT . '</a>';
                 }
             }
+            echo '</td>';
+
+            echo '<td>';
+
+            // use a special style for the default skin
+            if ($current->sdnumber == $CONF['BaseSkin']) {
+                echo '<strong><a href="', $editUrl, '">', hsc($current->sdname), '</a></strong>';
+            } else {
+                echo '<a href="', $editUrl, '">', hsc($current->sdname), '</a>';
+            }
 
             echo "</td>";
 
-            echo "<td>", hsc($current->sddesc);
-            echo '<div style="height: auto; width: 100%; overflow: auto; max-height: 250px;">';
-            // show list of defined parts
-            if ('mysql' == $DB_DRIVER_NAME) {
-                $order
-                    = " ORDER BY FIELD(stype, 'member', 'imagepopup', 'error', 'search', 'archive', 'archivelist', 'item', 'index') DESC, stype ASC";
-            } else {
-                $tmp_items = [
-                    'member',
-                    'imagepopup',
-                    'error',
-                    'search',
-                    'archive',
-                    'archivelist',
-                    'item',
-                    'index',
-                ];
-                $tmp_ct = count($tmp_items);
-                $order  = "";
-                for ($i = 0; $i < $tmp_ct; $i++) {
-                    $order .= sprintf(
-                        " WHEN '%s' THEN %d",
-                        $tmp_items[$i],
-                        $tmp_ct - $i
-                    );
-                } // DESC
-                $order = " ORDER BY CASE stype {$order} END , stype ASC";
+            echo '<td>', hsc($current->sddesc);
+            echo '<div>';
+            echo _LISTS_TYPE, ': ', hsc($current->sdtype);
+            echo '<br />', _LIST_SKINS_INCMODE, ' ', (('skindir'
+                                                       == $current->sdincmode)
+                ? _PARSER_INCMODE_SKINDIR : _PARSER_INCMODE_NORMAL);
+            if ($current->sdincpref) {
+                echo '<br />', _LIST_SKINS_INCPREFIX, ' ', hsc($current->sdincpref);
             }
-            $has_spartstype = sql_existTableColumnName(
-                sql_table('skin'),
-                'spartstype'
-            );
-            $sql = sprintf(
-                "SELECT stype FROM %s WHERE sdesc=%d ",
-                sql_table('skin'),
-                $current->sdnumber
-            );
-            if ($has_spartstype) {
-                $sql .= " AND spartstype='parts' ";
-            }
-            $sql .= $order;
-            $r     = sql_query($sql);
-            $types = [];
-            $parts = [[], []];
-            while ($o = sql_fetch_object($r)) {
-                $types[] = $o->stype;
-            }
-            if (count($types) > 0) {
-                $friendlyNames = SKIN::getFriendlyNames();
-                for ($i = 0; $i < count($types); $i++) {
-                    $type = $types[$i];
-                    if (in_array(
-                        $type,
-                        [
-                            'index',
-                            'item',
-                            'archivelist',
-                            'archive',
-                            'search',
-                            'error',
-                            'member',
-                            'imagepopup',
-                        ]
-                    )) {
-                        $parts[0][] = '<li>' . helpHtml('skinpart' . $type)
-                                      . ' <a href="' . hsc('index.php?action=skinedittype&skinid='
-                                      . $current->sdnumber . '&type='
-                                      . $type) . '" tabindex="'
-                                      . $template['tabindex'] . '">'
-                                      . htmlspecialchars($friendlyNames[$type])
-                                      . "</a></li>";
-                    } else {
-                        $parts[1][] = '<li>' . helpHtml('skinpartspecial')
-                                      . ' <a href="' . hsc('index.php?action=skinedittype&skinid='
-                                      . $current->sdnumber . '&type='
-                                      . $type) . '" tabindex="'
-                                      . $template['tabindex'] . '">'
-                                      . htmlspecialchars($friendlyNames[$type])
-                                      . "</a></li>";
-                    }
-                }
-                if (count($parts[0]) > 0) {
-                    echo _SKIN_PARTS_TITLE . ' <ul>' . implode('', $parts[0])
-                         . '</ul>';
-                }
-                if (count($parts[1])
-                    > 0) { //                    echo _SKIN_PARTS_SPECIAL . ' <ul>'.implode($parts[1]).'</ul>';
-                    printf(
-                        "<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s</div>",
-                        _SKIN_PARTS_SPECIAL . ' <ul>' . implode('', $parts[1])
-                        . '</ul>'
-                    );
-                }
-            }
-            // skin page
-            $sql
-                = sprintf(
-                    "SELECT stype FROM %s WHERE sdesc=%d AND spartstype='specialpage' ",
-                    sql_table('skin'),
-                    $current->sdnumber
-                ) . $order;
-            if ($has_spartstype) {
-                $res = sql_query($sql);
-            } else {
-                $res = false;
-            }
-            $names = [];
-            if ($has_spartstype && $res) {
-                while ($o = sql_fetch_object($res)) {
-                    $names[] = $o->stype;
-                }
-            }
-            if (count($names) > 0) {
-                printf(
-                    "<div style='display: inline-block; vertical-align: top; padding-left: 20px;'>%s",
-                    _SKIN_PARTS_SPECIAL_PAGE
-                );
-                echo "<ul>";
-                for ($i = 0; $i < count($names); $i++) {
-                    // todo: edit link ?
-                    $editurl
-                        = hsc(sprintf(
-                            'index.php?action=skinedittype&skinid=%d&partstype=specialpage&type=%s',
-                            $current->sdnumber,
-                            $names[$i]
-                        ));
-                    printf(
-                        "<li>%s <a href='%s' tabindex='%d'>%s</a></li>",
-                        helpHtml('skinpartspecialpage'),
-                        $editurl,
-                        $template['tabindex'],
-                        escapeHTML($names[$i])
-                    );
-                }
-                echo "</ul>";
-                echo "</div>";
-            }
-
             echo '</div>';
-            echo "</td>";
+            echo '</td>';
             echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=skinedit&skinid=' . $current->sdnumber) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
