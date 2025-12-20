@@ -144,6 +144,7 @@ class ADMIN
             'login',
             'lost_pwd',
             'manage',
+            'layoutsettings',
             'manageteam',
             'memberdelete',
             'memberedit',
@@ -545,6 +546,22 @@ class ADMIN
            '_MANAGE_LINKS_ITEMS' => $_MANAGE_LINKS_ITEMS,
         ];
         echo \parseBlade('admin.action_manage', $params), "\n";
+
+        $this->pagefoot();
+    }
+
+    /**
+     * Shows layout-related shortcuts in a single view
+     */
+    public function action_layoutsettings()
+    {
+        global $member;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+
+        echo \parseBlade('admin.action_layoutsettings'), "\n";
 
         $this->pagefoot();
     }

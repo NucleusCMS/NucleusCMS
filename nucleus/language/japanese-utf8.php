@@ -722,6 +722,7 @@ try_define('_QMENU_MANAGE_NEWBLOG',				'新規Blog作成');
 try_define('_QMENU_MANAGE_BACKUPS',				'DB保存/復元');
 try_define('_QMENU_MANAGE_PLUGINS',				'プラグイン管理');
 try_define('_QMENU_LAYOUT',						'レイアウト設定');
+try_define('_QMENU_LAYOUT_SETTINGS',			'レイアウト設定');
 try_define('_QMENU_LAYOUT_SKINS',				'スキン編集');
 try_define('_QMENU_LAYOUT_TEMPL',				'テンプレート編集');
 try_define('_QMENU_LAYOUT_IEXPORT',				'読込/書出');
@@ -1030,6 +1031,16 @@ try_define('_MANAGE_SKINS',						'スキン/テンプレート');
 try_define('_MANAGE_EXTRA',						'追加機能');
 
 try_define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
+
+try_define('_LAYOUT_SETTINGS_TITLE',            'レイアウト設定');
+try_define('_LAYOUT_SETTINGS_DESCRIPTION',      'スキン・テンプレート・読込/書出をまとめて管理できます。');
+try_define('_LAYOUT_SETTINGS_SKINS',            'スキン編集');
+try_define('_LAYOUT_SETTINGS_SKINS_DESC',       'サイトで利用可能なスキンを編集・管理します。');
+try_define('_LAYOUT_SETTINGS_TEMPLATES',        'テンプレート編集');
+try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC',   'ブログ全体で利用するテンプレートを更新します。');
+try_define('_LAYOUT_SETTINGS_IMPORT',           '読込/書出');
+try_define('_LAYOUT_SETTINGS_IMPORT_DESC',      'スキンのインポートやエクスポートをまとめて行います。');
+try_define('_LAYOUT_SETTINGS_OPEN',             '開く');
 
 
 // END introduced after v1.1 END

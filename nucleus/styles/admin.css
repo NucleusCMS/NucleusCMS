@@ -1299,6 +1299,72 @@ label {
     color: var(--accent-strong);
 }
 
+.layout-settings-lead {
+    margin: 0 0 1rem;
+    color: var(--text-muted);
+}
+
+.layout-settings-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+}
+
+.layout-card {
+    display: flex;
+    gap: 0.75rem;
+    padding: 1rem;
+    background: var(--panel-muted);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+    transition: transform 0.15s ease, box-shadow 0.15s ease, border-color 0.15s ease;
+}
+
+.layout-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: var(--accent);
+    text-decoration: none;
+}
+
+.layout-card-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 42px;
+    height: 42px;
+    border-radius: 10px;
+    background: var(--panel);
+    color: var(--accent);
+}
+
+.layout-card-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.layout-card-title {
+    font-weight: 700;
+    color: var(--text);
+}
+
+.layout-card-text {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.layout-card-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    color: var(--accent-strong);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
 /* Statistics Grid */
 .stats-grid {
     display: grid;

@@ -688,6 +688,7 @@ try_define('_QMENU_MANAGE_NEWBLOG',		'New Weblog');
 try_define('_QMENU_MANAGE_BACKUPS',		'Backups');
 try_define('_QMENU_MANAGE_PLUGINS',		'Plugins');
 try_define('_QMENU_LAYOUT',				'Layout');
+try_define('_QMENU_LAYOUT_SETTINGS',	'Layout settings');
 try_define('_QMENU_LAYOUT_SKINS',		'Skins');
 try_define('_QMENU_LAYOUT_TEMPL',		'Templates');
 try_define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
@@ -982,6 +983,16 @@ try_define('_MANAGE_SKINS',				'Skin and Templates');
 try_define('_MANAGE_EXTRA',				'Extra features');
 
 try_define('_BACKTOMANAGE',				'Back to Nucleus management');
+
+try_define('_LAYOUT_SETTINGS_TITLE',        'Layout settings');
+try_define('_LAYOUT_SETTINGS_DESCRIPTION',  'Manage skins, templates, and import/export tools from one place.');
+try_define('_LAYOUT_SETTINGS_SKINS',        'Skins');
+try_define('_LAYOUT_SETTINGS_SKINS_DESC',   'Edit and manage available skins for your site.');
+try_define('_LAYOUT_SETTINGS_TEMPLATES',    'Templates');
+try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC','Update template sets used across your blogs.');
+try_define('_LAYOUT_SETTINGS_IMPORT',       'Import/Export');
+try_define('_LAYOUT_SETTINGS_IMPORT_DESC',  'Import new skins or export existing ones for reuse.');
+try_define('_LAYOUT_SETTINGS_OPEN',         'Open');
 
 
 // END introduced after v1.1 END
