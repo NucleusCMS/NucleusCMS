@@ -205,6 +205,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'Core database version');
 try_define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    'Core important settings');
 
 try_define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',  'Database version');
+try_define('_OVERVIEW_SYSTEMTITLE',             'System overview');
 
 // Blog option
 try_define('_EBLOG_VISIBLE_ITEM_AUTHOR',           "allow the display of the item's author");

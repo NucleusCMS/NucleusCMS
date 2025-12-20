@@ -236,6 +236,7 @@ try_define('_ADMIN_SYSTEMOVERVIEW_CORE_DB_VERSION', 'コア のデータベー�
 try_define('_ADMIN_SYSTEMOVERVIEW_CORE_SETTINGS',    '重要な設定');
 
 try_define('_ADMIN_SYSTEMOVERVIEW_DB_VERSION',       'データベースのバージョン');
+try_define('_OVERVIEW_SYSTEMTITLE',                  'システム環境');
 
 // Blog option
 try_define('_EBLOG_VISIBLE_ITEM_AUTHOR',           'アイテム投稿者の表示を許可する');
