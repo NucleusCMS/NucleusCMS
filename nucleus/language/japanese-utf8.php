@@ -1033,6 +1033,7 @@ try_define('_MANAGE_EXTRA',						'追加機能');
 
 try_define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
+try_define('_MANAGE_PAGE_LEAD',                '主要な管理機能をまとめています。');
 try_define('_LAYOUT_SETTINGS_TITLE',            'レイアウト設定');
 try_define('_LAYOUT_SETTINGS_DESCRIPTION',      'スキン・テンプレート・読込/書出をまとめて管理できます。');
 try_define('_LAYOUT_SETTINGS_SKINS',            'スキン編集');

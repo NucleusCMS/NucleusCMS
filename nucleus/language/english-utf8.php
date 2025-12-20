@@ -985,6 +985,7 @@ try_define('_MANAGE_EXTRA',				'Extra features');
 
 try_define('_BACKTOMANAGE',				'Back to Nucleus management');
 
+try_define('_MANAGE_PAGE_LEAD',            'Access the primary management tools from one place.');
 try_define('_LAYOUT_SETTINGS_TITLE',        'Layout settings');
 try_define('_LAYOUT_SETTINGS_DESCRIPTION',  'Manage skins, templates, and import/export tools from one place.');
 try_define('_LAYOUT_SETTINGS_SKINS',        'Skins');

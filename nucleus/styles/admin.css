@@ -1365,6 +1365,22 @@ label {
     font-size: 0.9rem;
 }
 
+.manage-section {
+    padding: 1.25rem 1.5rem;
+}
+
+.manage-header {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 0.5rem;
+    color: var(--text-muted);
+    font-size: 0.9rem;
+}
+
+.manage-links-grid .layout-card {
+    align-items: center;
+}
+
 /* Statistics Grid */
 .stats-grid {
     display: grid;
