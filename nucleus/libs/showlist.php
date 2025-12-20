@@ -1092,24 +1092,13 @@ function listplug_table_skinlist($template, $type)
     global $CONF, $DIR_SKINS, $manager;
     switch ($type) {
         case 'HEAD':
-            echo "<th>" . _LISTS_NAME . "</th><th>Screenshot</th><th>" . _LISTS_DESC
+            echo "<th></th><th>" . _LISTS_NAME . "</th><th>" . _LISTS_DESC
                  . "</th><th colspan='3'>" . _LISTS_ACTIONS . "</th>";
             break;
         case 'BODY':
             $current = $template['current'];
 
             $editUrl = hsc('index.php?action=skinedit&skinid=' . $current->sdnumber);
-
-            echo '<td>';
-
-            // use a special style for the default skin
-            if ($current->sdnumber == $CONF['BaseSkin']) {
-                echo '<strong><a href="', $editUrl, '">', hsc($current->sdname), '</a></strong>';
-            } else {
-                echo '<a href="', $editUrl, '">', hsc($current->sdname), '</a>';
-            }
-
-            echo "</td>";
 
             echo '<td>';
             if ($current->sdincpref
@@ -1145,6 +1134,17 @@ function listplug_table_skinlist($template, $type)
                 }
             }
             echo '</td>';
+
+            echo '<td>';
+
+            // use a special style for the default skin
+            if ($current->sdnumber == $CONF['BaseSkin']) {
+                echo '<strong><a href="', $editUrl, '">', hsc($current->sdname), '</a></strong>';
+            } else {
+                echo '<a href="', $editUrl, '">', hsc($current->sdname), '</a>';
+            }
+
+            echo "</td>";
 
             echo '<td>', hsc($current->sddesc);
             echo '<div>';
