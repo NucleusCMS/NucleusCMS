@@ -692,6 +692,7 @@ try_define('_QMENU_LAYOUT_SETTINGS',	'Layout settings');
 try_define('_QMENU_LAYOUT_SKINS',		'Skins');
 try_define('_QMENU_LAYOUT_TEMPL',		'Templates');
 try_define('_QMENU_LAYOUT_IEXPORT',		'Import/Export');
+try_define('_QMENU_DATABASE',			'Database');
 try_define('_QMENU_PLUGINS',			'Plugins');
 
 // quickmenu on logon screen
@@ -993,6 +994,13 @@ try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC','Update template sets used across y
 try_define('_LAYOUT_SETTINGS_IMPORT',       'Import/Export');
 try_define('_LAYOUT_SETTINGS_IMPORT_DESC',  'Import new skins or export existing ones for reuse.');
 try_define('_LAYOUT_SETTINGS_OPEN',         'Open');
+
+try_define('_DATABASE_SETTINGS_TITLE',        'Database');
+try_define('_DATABASE_SETTINGS_DESCRIPTION',  'Manage backups and optimization tasks from one place.');
+try_define('_DATABASE_SETTINGS_BACKUP',       'Backup/Restore');
+try_define('_DATABASE_SETTINGS_BACKUP_DESC',  'Create or restore database backups.');
+try_define('_DATABASE_SETTINGS_OPTIMIZE',     'Optimize/Repair');
+try_define('_DATABASE_SETTINGS_OPTIMIZE_DESC','Optimize or repair database tables.');
 
 
 // END introduced after v1.1 END

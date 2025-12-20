@@ -726,6 +726,7 @@ try_define('_QMENU_LAYOUT_SETTINGS',			'レイアウト設定');
 try_define('_QMENU_LAYOUT_SKINS',				'スキン編集');
 try_define('_QMENU_LAYOUT_TEMPL',				'テンプレート編集');
 try_define('_QMENU_LAYOUT_IEXPORT',				'読込/書出');
+try_define('_QMENU_DATABASE',					'データベース');
 try_define('_QMENU_PLUGINS',					'プラグイン');
 
 // quickmenu on logon screen
@@ -1041,6 +1042,13 @@ try_define('_LAYOUT_SETTINGS_TEMPLATES_DESC',   'ブログ全体で利用する�
 try_define('_LAYOUT_SETTINGS_IMPORT',           '読込/書出');
 try_define('_LAYOUT_SETTINGS_IMPORT_DESC',      'スキンのインポートやエクスポートをまとめて行います。');
 try_define('_LAYOUT_SETTINGS_OPEN',             '開く');
+
+try_define('_DATABASE_SETTINGS_TITLE',          'データベース');
+try_define('_DATABASE_SETTINGS_DESCRIPTION',    'バックアップと最適化/修復をひとまとめに管理できます。');
+try_define('_DATABASE_SETTINGS_BACKUP',         'バックアップ/復元');
+try_define('_DATABASE_SETTINGS_BACKUP_DESC',    'データベースのバックアップ作成や復元を実行します。');
+try_define('_DATABASE_SETTINGS_OPTIMIZE',       '最適化/修復');
+try_define('_DATABASE_SETTINGS_OPTIMIZE_DESC',  'データベーステーブルの最適化や修復を行います。');
 
 
 // END introduced after v1.1 END

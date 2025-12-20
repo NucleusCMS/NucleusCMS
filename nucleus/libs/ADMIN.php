@@ -145,6 +145,7 @@ class ADMIN
             'lost_pwd',
             'manage',
             'layoutsettings',
+            'databasesettings',
             'manageteam',
             'memberdelete',
             'memberedit',
@@ -563,6 +564,23 @@ class ADMIN
 
         $params = [];
         echo \parseBlade('admin.action_layoutsettings', $params), "\n";
+
+        $this->pagefoot();
+    }
+
+    /**
+     * Shows database-related shortcuts in a single view
+     */
+    public function action_databasesettings()
+    {
+        global $member;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+
+        $params = [];
+        echo \parseBlade('admin.action_databasesettings', $params), "\n";
 
         $this->pagefoot();
     }
