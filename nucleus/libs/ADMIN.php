@@ -5834,8 +5834,6 @@ selector();
         $form[] = $manager->getHtmlInputTicketHidden();
         $form[] = sprintf('<input type="hidden" name="skinid" value="%s" />', $skinid);
         $form[] = sprintf('<input type="hidden" name="type" value="%s" />', $type);
-        $form[] = sprintf('<input type="submit" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
-        $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
 
         switch ($spartstype) {
             case 'specialpage':
@@ -5862,13 +5860,9 @@ selector();
             ['spartstype' => $spartstype]
         )));
 
-        $form[] = '<br />';
-        $form[] = '<br />';
         $form[] = sprintf('<input type="submit" tabindex="20" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
         $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
         $form[] = " {$subtitle}";
-        $form[] = '';
-        $form[] = '';
         $form[] = '</div>';
 
         $form[] = '</form>';
