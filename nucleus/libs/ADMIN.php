@@ -7874,22 +7874,20 @@ EOL;
         $oldStructurePlugins = $this->_getOldStructurePlugins();
         if (!empty($oldStructurePlugins)) {
             echo '<div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;">';
-            echo '<h3 style="margin-top: 0; color: #856404;">⚠️ Plugin Structure Notice</h3>';
-            echo '<p style="margin-bottom: 10px;">The following plugins have resource folders but use the old file structure. ';
-            echo 'Please consider moving the plugin file into its resource folder:</p>';
+            echo '<h3 style="margin-top: 0; color: #856404;">⚠️ ', _PLUGS_WARN_OLDSTRUCTURE_TITLE, '</h3>';
+            echo '<p style="margin-bottom: 10px;">', _PLUGS_WARN_OLDSTRUCTURE_TEXT, '</p>';
             echo '<ul style="margin: 10px 0;">';
             foreach ($oldStructurePlugins as $plugin) {
                 echo '<li style="margin: 8px 0;"><strong>' . hsc($plugin['name']) . '</strong><br>';
                 echo '<span style="font-size: smaller; color: #666;">';
-                echo 'Plugin file: <code style="background: #f5f5f5; padding: 2px 4px;">' . hsc($plugin['current']) . '</code><br>';
-                echo 'Resource folder: <code style="background: #f5f5f5; padding: 2px 4px;">' . hsc($plugin['folder']) . '</code><br>';
-                echo 'Move to: <code style="background: #f5f5f5; padding: 2px 4px; color: #28a745;">' . hsc($plugin['recommended']) . '</code>';
+                echo _PLUGS_WARN_CURRENT_LOCATION, ': <code style="background: #f5f5f5; padding: 2px 4px;">' . hsc($plugin['current']) . '</code><br>';
+                echo _PLUGS_WARN_RESOURCE_FOLDER, ': <code style="background: #f5f5f5; padding: 2px 4px;">' . hsc($plugin['folder']) . '</code><br>';
+                echo _PLUGS_WARN_RECOMMENDED_LOCATION, ': <code style="background: #f5f5f5; padding: 2px 4px; color: #28a745;">' . hsc($plugin['recommended']) . '</code>';
                 echo '</span></li>';
             }
             echo '</ul>';
             echo '<p style="margin-bottom: 0; font-size: smaller; color: #666;">';
-            echo '<strong>How to migrate:</strong> Move the plugin PHP file into its resource folder. ';
-            echo 'Plugins without resource folders do not need to be migrated.</p>';
+            echo '<strong>', _PLUGS_WARN_MIGRATION_HOWTO, ':</strong> ', _PLUGS_WARN_MIGRATION_TEXT, '</p>';
             echo '</div>';
         }
 

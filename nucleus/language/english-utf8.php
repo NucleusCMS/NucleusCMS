@@ -931,6 +931,13 @@ try_define('_PLUGS_TEXT_UPDATE',		'Nucleus keeps a cache of the event subscripti
 try_define('_PLUGS_TITLE_NEW',			'Install New Plugin');
 try_define('_PLUGS_ADD_TEXT',			'Below is a list of all the files in your plugins directory, that might be non-installed plugins. Make sure you are <strong>really sure</strong> that it\'s a plugin before adding it.');
 try_define('_PLUGS_BTN_INSTALL',		'Install Plugin');
+try_define('_PLUGS_WARN_OLDSTRUCTURE_TITLE',	'Plugin Structure Notice');
+try_define('_PLUGS_WARN_OLDSTRUCTURE_TEXT',		'The following plugins have resource folders but use the old file structure. Please consider moving the plugin file into its resource folder:');
+try_define('_PLUGS_WARN_CURRENT_LOCATION',		'Current location');
+try_define('_PLUGS_WARN_RESOURCE_FOLDER',		'Resource folder');
+try_define('_PLUGS_WARN_RECOMMENDED_LOCATION',	'Recommended location');
+try_define('_PLUGS_WARN_MIGRATION_HOWTO',		'How to migrate');
+try_define('_PLUGS_WARN_MIGRATION_TEXT',		'Move the plugin PHP file into its resource folder. Plugins without resource folders do not need to be migrated.');
 try_define('_BACKTOOVERVIEW',			'Back to overview');
 
 // editlink

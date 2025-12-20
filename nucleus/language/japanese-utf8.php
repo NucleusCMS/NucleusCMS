@@ -968,6 +968,13 @@ try_define('_PLUGS_TEXT_UPDATE',				'Nucleusが管理している各プラグイ
 try_define('_PLUGS_TITLE_NEW',					'新しいプラグインをインストール');
 try_define('_PLUGS_ADD_TEXT',					'以下はpluginsディレクトリ内にある全ての「インストールされていないプラグイン」の可能性があるファイルのリストです。追加する前にプラグインかどうかを<strong>しっかり確認</strong>してください。');
 try_define('_PLUGS_BTN_INSTALL',				'プラグインのインストール');
+try_define('_PLUGS_WARN_OLDSTRUCTURE_TITLE',	'プラグイン構造のお知らせ');
+try_define('_PLUGS_WARN_OLDSTRUCTURE_TEXT',		'以下のプラグインはリソースフォルダを持っていますが、古いファイル構造を使用しています。プラグインファイルをリソースフォルダ内に移動することを推奨します：');
+try_define('_PLUGS_WARN_CURRENT_LOCATION',		'現在の場所');
+try_define('_PLUGS_WARN_RESOURCE_FOLDER',		'リソースフォルダ');
+try_define('_PLUGS_WARN_RECOMMENDED_LOCATION',	'移動先（推奨）');
+try_define('_PLUGS_WARN_MIGRATION_HOWTO',		'移行方法');
+try_define('_PLUGS_WARN_MIGRATION_TEXT',		'プラグインのPHPファイルをそのリソースフォルダ内に移動してください。リソースフォルダを持たないプラグインは移行する必要はありません。');
 try_define('_BACKTOOVERVIEW',					'一覧に戻る');
 
 // editlink

@@ -842,6 +842,13 @@ try_define('_PLUGS_TEXT_UPDATE',		'Nucleus garde un cache des inscriptions des m
 try_define('_PLUGS_TITLE_NEW',		'Installer un nouveau module');
 try_define('_PLUGS_ADD_TEXT',		'Vous trouverez ci-dessous la liste de tous les fichiers contenus dans votre répertoire de plugins. Il peut s\'agir de modules non-installés. Soyez <strong>vraiment</strong> sûr qu\'il s\'agit d\'un module avant de l\'ajouter.');
 try_define('_PLUGS_BTN_INSTALL',		'Installer le module');
+try_define('_PLUGS_WARN_OLDSTRUCTURE_TITLE',	'Avis sur la structure du plugin');
+try_define('_PLUGS_WARN_OLDSTRUCTURE_TEXT',		'Les plugins suivants disposent de dossiers de ressources mais utilisent l\'ancienne structure de fichiers. Veuillez envisager de déplacer le fichier du plugin dans son dossier de ressources :');
+try_define('_PLUGS_WARN_CURRENT_LOCATION',		'Emplacement actuel');
+try_define('_PLUGS_WARN_RESOURCE_FOLDER',		'Dossier de ressources');
+try_define('_PLUGS_WARN_RECOMMENDED_LOCATION',	'Emplacement recommandé');
+try_define('_PLUGS_WARN_MIGRATION_HOWTO',		'Comment migrer');
+try_define('_PLUGS_WARN_MIGRATION_TEXT',		'Déplacez le fichier PHP du plugin dans son dossier de ressources. Les plugins sans dossiers de ressources n\'ont pas besoin d\'\u00eatre migrés.');
 try_define('_BACKTOOVERVIEW',		'Retour au sommaire');
 
 // editlink

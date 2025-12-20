@@ -510,6 +510,13 @@ define('_PLUGS_TEXT_UPDATE',		'Nucleus CMS verwendet einen Cache um die Events, 
 define('_PLUGS_TITLE_NEW',			'Neues Plugin installieren');
 define('_PLUGS_ADD_TEXT',			'Unten steht eine Liste von m&ouml;glichen, nicht installierten Plugins. Bitte <strong>vor dem Installieren sicherstellen</strong>, dass es tatschlich ein Plugin ist.');
 define('_PLUGS_BTN_INSTALL',		'Plugin installieren');
+define('_PLUGS_WARN_OLDSTRUCTURE_TITLE',	'Hinweis zur Plugin-Struktur');
+define('_PLUGS_WARN_OLDSTRUCTURE_TEXT',		'Die folgenden Plugins haben Ressourcenordner, verwenden aber die alte Dateistruktur. Bitte erwägen Sie, die Plugin-Datei in den Ressourcenordner zu verschieben:');
+define('_PLUGS_WARN_CURRENT_LOCATION',		'Aktueller Standort');
+define('_PLUGS_WARN_RESOURCE_FOLDER',		'Ressourcenordner');
+define('_PLUGS_WARN_RECOMMENDED_LOCATION',	'Empfohlener Standort');
+define('_PLUGS_WARN_MIGRATION_HOWTO',		'So migrieren Sie');
+define('_PLUGS_WARN_MIGRATION_TEXT',		'Verschieben Sie die PHP-Datei des Plugins in den Ressourcenordner. Plugins ohne Ressourcenordner müssen nicht migriert werden.');
 define('_BACKTOOVERVIEW',			'Zur&uuml;ck zur &Uumlbersicht');
 
 // editlink
