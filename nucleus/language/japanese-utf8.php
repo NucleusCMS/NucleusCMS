@@ -211,7 +211,6 @@ try_define('_ADMIN_DATABASE_TABLE_LIST',       'テーブル一覧');
 try_define('_ADMIN_TABLE_COLLATION',           'コレーション');
 try_define('_ADMIN_TABLE_ROWS',                '行数');
 try_define('_ADMIN_TABLE_DATA_LENGTH',         'データサイズ');
-try_define('_ADMIN_TABLE_INDEX_LENGTH',        'インデックスサイズ');
 try_define('_ADMIN_TABLE_COMMENT',             'コメント');
 
 try_define('_PROBLEMS_FOUND_ON_TABLE',   'テーブルに問題がみつかりました');

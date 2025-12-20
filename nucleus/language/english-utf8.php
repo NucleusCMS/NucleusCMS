@@ -180,7 +180,6 @@ try_define('_ADMIN_DATABASE_TABLE_LIST',       'Table list');
 try_define('_ADMIN_TABLE_COLLATION',           'Collation');
 try_define('_ADMIN_TABLE_ROWS',                'Rows');
 try_define('_ADMIN_TABLE_DATA_LENGTH',         'Data size');
-try_define('_ADMIN_TABLE_INDEX_LENGTH',        'Index size');
 try_define('_ADMIN_TABLE_COMMENT',             'Comment');
 
 try_define('_PROBLEMS_FOUND_ON_TABLE',   'problems found on table');

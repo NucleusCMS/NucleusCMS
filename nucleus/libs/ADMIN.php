@@ -8753,23 +8753,21 @@ EOD;
                     }
                     echo "<table>";
                     echo sprintf(
-                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th><th>%s</th><th>%s</th><th>%s</th></tr>",
+                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th><th>%s</th><th>%s</th></tr>",
                         hsc(_ADMIN_TABLENAME),
                         hsc(_ADMIN_TABLE_COLLATION),
                         hsc(_ADMIN_TABLE_ROWS),
                         hsc(_ADMIN_TABLE_DATA_LENGTH),
-                        hsc(_ADMIN_TABLE_INDEX_LENGTH),
                         hsc(_ADMIN_TABLE_COMMENT)
                     );
                     foreach ($tables as $key => $item) {
                         echo sprintf(
-                            "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                            "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                             hsc($key),
                             hsc($item['Collation']),
                             hsc($item['Rows']),
                             hsc(number_format((int) $item['Data_length'])),
                             hsc($item['Engine']),
-                            hsc(number_format((int) $item['Index_length'])),
                             hsc($item['Comment'])
                         );
                     }
