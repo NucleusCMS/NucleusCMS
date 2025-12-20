@@ -727,6 +727,54 @@ try_define('_QMENU_LAYOUT_SKINS',				'スキン編集');
 try_define('_QMENU_LAYOUT_TEMPL',				'テンプレート編集');
 try_define('_QMENU_LAYOUT_IEXPORT',				'読込/書出');
 try_define('_QMENU_PLUGINS',					'プラグイン');
+try_define('_QMENU_CONTENT',					'記事管理');
+try_define('_QMENU_DESIGN',						'デザイン');
+
+// System Information (integrated page)
+try_define('_SYSTEMINFO_TITLE',					'システム情報');
+try_define('_SYSTEMINFO_ENVIRONMENT_TAB',		'システム環境');
+try_define('_SYSTEMINFO_ACTIONLOG_TAB',			'管理操作履歴');
+try_define('_SYSTEMINFO_SYSTEMLOG_TAB',			'システムログ');
+
+// Database Management (integrated page)
+try_define('_DATABASE_MANAGEMENT_TITLE',		'データベース');
+try_define('_DATABASE_INFO_TAB',				'データベース情報');
+try_define('_DATABASE_TABLES_TAB',				'テーブル一覧');
+try_define('_DATABASE_OPTIMIZE_TAB',			'最適化/修復');
+try_define('_DATABASE_BACKUP_TAB',				'バックアップ');
+try_define('_DATABASE_INFO_HEADING',			'データベース情報');
+try_define('_DATABASE_TABLES_HEADING',			'テーブル一覧');
+try_define('_DATABASE_OPTIMIZE_HEADING',		'データベース最適化/修復');
+try_define('_DATABASE_GENERAL_INFO',			'基本情報');
+try_define('_DATABASE_SIZE_INFO',				'サイズ情報');
+try_define('_DATABASE_DRIVER',					'ドライバ');
+try_define('_DATABASE_NAME',					'データベース名');
+try_define('_DATABASE_HOST',					'ホスト');
+try_define('_DATABASE_TABLE_PREFIX',			'テーブル接頭辞');
+try_define('_DATABASE_VERSION',					'バージョン');
+try_define('_DATABASE_CLIENT_VERSION',			'クライアントバージョン');
+try_define('_DATABASE_TABLE_COUNT',				'テーブル数');
+try_define('_DATABASE_TOTAL_SIZE',				'合計サイズ');
+try_define('_DATABASE_DATA_SIZE',				'データサイズ');
+try_define('_DATABASE_INDEX_SIZE',				'インデックスサイズ');
+try_define('_DATABASE_FREE_SIZE',				'空き容量');
+try_define('_DATABASE_FILE_PATH',				'ファイルパス');
+try_define('_DATABASE_FILE_SIZE',				'ファイルサイズ');
+try_define('_DATABASE_TABLES',					'テーブル');
+try_define('_DATABASE_TABLE_NAME',				'テーブル名');
+try_define('_DATABASE_TABLE_ENGINE',			'エンジン');
+try_define('_DATABASE_TABLE_ROWS',				'行数');
+try_define('_DATABASE_TABLE_DATA_SIZE',			'データサイズ');
+try_define('_DATABASE_TABLE_INDEX_SIZE',		'インデックスサイズ');
+try_define('_DATABASE_TABLE_OVERHEAD',			'オーバーヘッド');
+try_define('_DATABASE_TABLE_COLLATION',			'照合順序');
+try_define('_DATABASE_NO_TABLES',				'テーブルがありません');
+try_define('_DATABASE_NO_OPTIMIZATION_NEEDED',	'最適化の必要はありません');
+try_define('_ADMIN_INNODB_NOTE',				'InnoDB テーブルは OPTIMIZE TABLE では最適化されません');
+
+// Manage page
+try_define('_MANAGE_TITLE',						'管理');
+try_define('_MANAGE_DESCRIPTION',				'サイト管理機能へのショートカット');
 
 // quickmenu on logon screen
 try_define('_QMENU_INTRO',						'導入ガイド');

@@ -6920,6 +6920,34 @@ EOL;
     /**
      *  Give an overview over the used system
      */
+    /**
+     * Integrated system information page (replaces systemoverview, actionlog, systemlog)
+     */
+    public function action_systeminfo()
+    {
+        global $member, $manager, $CONF, $DB_DRIVER_NAME;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+
+        $blade_params = [
+            'manager' => $manager,
+            'oAdmin' => $this,
+            'DB_DRIVER_NAME' => $DB_DRIVER_NAME,
+            'CONF' => $CONF,
+            'SiteName' => CONF::asStr('SiteName'),
+            'db_charset' => 'mysql' === $DB_DRIVER_NAME ? getCollationFromDB(\sql_table('config'), 'name') : 'utf-8',
+            'default_charset' => ini_get('default_charset') ?? 'none',
+            'MysqlEmulateInfo' => $this->getMysqlEmulateInfo(),
+            'systemlogAvailable' => SYSTEMLOG::checkWritable(),
+        ];
+
+        echo \parseBlade('admin.action_systeminfo', $blade_params), "\n";
+
+        $this->pagefoot();
+    }
+
     public function action_systemoverview()
     {
         global $member, $manager, $CONF;
@@ -8923,6 +8951,141 @@ EOD;
         $n        = min(4, ($size > 0 ? floor(log($size, 10) / 3) : 0));
         $sizetext = sprintf('%d %s', $size / \pow(10, $n * 3), $t[$n]);
         return sprintf("%s(%d) byte", $sizetext, $size);
+    }
+
+    /**
+     * Database management overview - combines table list, optimization, and backup
+     */
+    public function action_databaseoverview()
+    {
+        global $member, $manager, $DB_DRIVER_NAME;
+
+        $member->isAdmin() or $this->disallow();
+
+        $this->pagehead();
+
+        // Get database and table information
+        $dbInfo = $this->getDatabaseInfo();
+        $tables = $this->getTableListInfo();
+
+        $params = [
+            'manager' => $manager,
+            'oAdmin' => $this,
+            'DB_DRIVER_NAME' => $DB_DRIVER_NAME,
+            'dbInfo' => $dbInfo,
+            'tables' => $tables,
+            'IsMysql' => 'mysql' === $DB_DRIVER_NAME,
+        ];
+
+        echo \parseBlade('admin.action_databaseoverview', $params), "\n";
+
+        $this->pagefoot();
+    }
+
+    /**
+     * Get database information
+     */
+    private function getDatabaseInfo()
+    {
+        global $DB_DRIVER_NAME, $DB_DATABASE, $DB_HOST, $MYSQL_HANDLER;
+
+        $info = [
+            'driver' => $DB_DRIVER_NAME,
+            'database' => $DB_DATABASE,
+            'host' => $DB_HOST ?? '',
+            'prefix' => sql_table(''),
+            'version' => sql_get_server_info(),
+            'client_version' => sql_get_client_info(),
+        ];
+
+        if ('mysql' === $DB_DRIVER_NAME) {
+            // Get total database size
+            $query = "SELECT
+                SUM(data_length + index_length) as total_size,
+                SUM(data_length) as data_size,
+                SUM(index_length) as index_size,
+                SUM(data_free) as free_size,
+                COUNT(*) as table_count
+                FROM information_schema.TABLES
+                WHERE table_schema = DATABASE()
+                AND table_name LIKE '" . sql_table('') . "%'";
+
+            $res = sql_query($query);
+            if ($res && ($row = sql_fetch_assoc($res))) {
+                $info['total_size'] = (int)$row['total_size'];
+                $info['data_size'] = (int)$row['data_size'];
+                $info['index_size'] = (int)$row['index_size'];
+                $info['free_size'] = (int)$row['free_size'];
+                $info['table_count'] = (int)$row['table_count'];
+            }
+        } elseif ('sqlite' === $DB_DRIVER_NAME) {
+            clearstatcache();
+            $info['file_size'] = filesize($DB_DATABASE);
+            $info['file_path'] = $DB_DATABASE;
+
+            // Count tables
+            $query = "SELECT COUNT(*) as cnt FROM sqlite_master WHERE type='table' AND name LIKE '" . sql_table('') . "%'";
+            $res = sql_query($query);
+            if ($res && ($row = sql_fetch_assoc($res))) {
+                $info['table_count'] = (int)$row['cnt'];
+            }
+        }
+
+        return $info;
+    }
+
+    /**
+     * Get detailed table list information
+     */
+    private function getTableListInfo()
+    {
+        global $DB_DRIVER_NAME;
+
+        $tables = [];
+
+        if ('mysql' === $DB_DRIVER_NAME) {
+            $query = "SHOW TABLE STATUS LIKE '" . sql_table('') . "%'";
+            $res = sql_query($query);
+            while ($res && ($row = sql_fetch_assoc($res))) {
+                $tables[] = [
+                    'name' => $row['Name'],
+                    'engine' => $row['Engine'],
+                    'rows' => (int)$row['Rows'],
+                    'data_length' => (int)$row['Data_length'],
+                    'index_length' => (int)$row['Index_length'],
+                    'data_free' => (int)$row['Data_free'],
+                    'collation' => $row['Collation'] ?? '',
+                    'auto_increment' => $row['Auto_increment'] ?? '',
+                    'create_time' => $row['Create_time'] ?? '',
+                    'update_time' => $row['Update_time'] ?? '',
+                ];
+            }
+        } elseif ('sqlite' === $DB_DRIVER_NAME) {
+            $query = "SELECT name FROM sqlite_master WHERE type='table' AND name LIKE '" . sql_table('') . "%' ORDER BY name";
+            $res = sql_query($query);
+            while ($res && ($row = sql_fetch_assoc($res))) {
+                $tableName = $row['name'];
+
+                // Get row count
+                $countQuery = "SELECT COUNT(*) as cnt FROM `{$tableName}`";
+                $countRes = sql_query($countQuery);
+                $rowCount = 0;
+                if ($countRes && ($countRow = sql_fetch_assoc($countRes))) {
+                    $rowCount = (int)$countRow['cnt'];
+                }
+
+                $tables[] = [
+                    'name' => $tableName,
+                    'engine' => 'SQLite',
+                    'rows' => $rowCount,
+                    'data_length' => 0,
+                    'index_length' => 0,
+                    'data_free' => 0,
+                ];
+            }
+        }
+
+        return $tables;
     }
 
     public static function getQueryFilterForItemlist01($bid, $mode = 'all')

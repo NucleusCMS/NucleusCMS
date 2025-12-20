@@ -1,54 +1,83 @@
-<p><a href="index.php?action=manage">({{ _BACKTOMANAGE }})</a></p>
+<div class="composer-notice">
+    <h2>
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10"/>
+            <line x1="12" y1="16" x2="12" y2="12"/>
+            <line x1="12" y1="8" x2="12.01" y2="8"/>
+        </svg>
+        Composer 管理
+    </h2>
 
-<h2>{{ _OVERVIEW_COMPOSER }}</h2>
+    <div class="notice-box">
+        <h3>Composerはコマンドラインから実行してください</h3>
 
-<a href="?action=composeroverview">リロード</a> <div>Composerコマンド実行:
+        <p>セキュリティとパフォーマンスの観点から、ComposerはWebインターフェースからではなく、コマンドラインから直接実行することを推奨します。</p>
 
-@php
-    $cmdlist = [
-        ['パッケージ更新', 'update', 'update'],
-        ['selfupdate', 'selfupdate', 'self-update --2'],
-        ['show', 'show', 'show'],
-        ['バージョン', 'version', '--version'],
-        ['ヘルプ', 'help', '--help'],
-    ];
-    $tidx = 20;
-@endphp
+        <h4>コマンド例：</h4>
+        <pre>
+# パッケージの更新
+composer update
 
-@foreach ($cmdlist as $items)
-    <form method='post' action='index.php' class="composer-command-form"><p>
-    <input type='hidden' name='action' value='composeroverview' />
-    <input type='hidden' name='mode'   value='{{ $items[1] }}' />
-    <input type='submit' value='{{ $items[0] }}' tabindex='{{ $tidx++ }}' />
-    </p></form>
-@endforeach
-        
-<?php
+# Composerのバージョン確認
+composer --version
 
-$cmd = '';
-if (isset($_POST['mode'])) {
-    foreach ($cmdlist as $item) {
-        if ($item[1] === (string) $_POST['mode']) {
-            $cmd = $item[2];
-            break;
-        }
-    }
-}
+# ヘルプの表示
+composer --help
+</pre>
 
-if ( ! empty($cmd)) {
-    echo '<pre class="composer-output">';
-    $o = ComposerCmd::RunComposer($cmd);
-    if (is_array($o)) {
-        echo implode("\n", $o);
-    } else {
-        echo $o;
-    }
-    echo '</pre>';
-}
-?>
-
+        <h4>参考リンク：</h4>
+        <ul>
+            <li><a href="https://getcomposer.org/" target="_blank" rel="nofollow">Composer 公式サイト</a></li>
+            <li><a href="https://getcomposer.org/doc/" target="_blank" rel="nofollow">Composer ドキュメント</a></li>
+            <li><a href="https://getcomposer.org/download/" target="_blank" rel="nofollow">Composer ダウンロード</a></li>
+        </ul>
+    </div>
 </div>
 
-<br />
-Composer https://getcomposer.org/ <a href="https://getcomposer.org/download/" target="_blank" rel="nofollow">ダウンロード</a>
-| <a href="https://getcomposer.org/doc/" target="_blank" rel="nofollow">ヘルプ</a>
+<style>
+.composer-notice {
+    max-width: 800px;
+    margin: 2em auto;
+}
+
+.composer-notice h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.5em;
+}
+
+.notice-box {
+    background: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    padding: 2em;
+    margin-top: 1em;
+}
+
+.notice-box h3 {
+    color: #495057;
+    margin-top: 0;
+}
+
+.notice-box pre {
+    background: #fff;
+    border: 1px solid #dee2e6;
+    padding: 1em;
+    border-radius: 4px;
+    overflow-x: auto;
+}
+
+.notice-box ul {
+    list-style-type: none;
+    padding-left: 0;
+}
+
+.notice-box ul li {
+    margin: 0.5em 0;
+}
+
+.notice-box ul li::before {
+    content: "→ ";
+    color: #007bff;
+}
+</style>
