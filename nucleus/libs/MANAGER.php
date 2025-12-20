@@ -359,12 +359,9 @@ class MANAGER
 
         global $DIR_PLUGINS;
 
-        $shortname = strtolower(preg_replace('#^NP_#', '', $NP_Name));
-
         // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
         // See also getPluginListsFromDirName
-        // check and force move to type2
-        $res = self::getPluginTypePathWithForceRename($NP_Name); // false or ['type'=>, 'path'=>]
+        $res = self::getPluginTypePath($NP_Name); // false or ['type'=>, 'path'=>, 'shortname'=>]
         if (false === $res) {
             if ( ! defined('_MANAGER_PLUGINFILE_NOTFOUND')) {
                 define('_MANAGER_PLUGINFILE_NOTFOUND', 'Plugin %s was not loaded (File not found)');
@@ -378,6 +375,7 @@ class MANAGER
         }
         $plugin_dir_type = $res['type'];
         $plugin_path     = $res['path'];
+        $shortname       = $res['shortname'];
 
         // load plugin
         include_once($plugin_path);
@@ -419,64 +417,45 @@ class MANAGER
         $this->plugins[$NP_Name]->init();
     }
 
-    public static function getPluginTypePathWithForceRename($NP_Name)
+    /**
+     * Get plugin type and path
+     * Supports both Type 1 (plugins/NP_Name.php) and Type 2 (plugins/shortname/NP_Name.php) structures
+     * 
+     * @param string $NP_Name Plugin name
+     * @return array|false Returns array ['type' => int, 'path' => string, 'shortname' => string] or false if not found
+     */
+    public static function getPluginTypePath($NP_Name)
     {
         global $DIR_PLUGINS;
 
-        // check and force move to type2
         $NP_Name   = preg_replace('#[^0-9a-z_]+#i', '', $NP_Name);
         $NP_Name   = 'NP_' . preg_replace('#^NP_#i', '', $NP_Name);
         $shortname = strtolower(preg_replace('#^NP_#', '', $NP_Name));
 
-        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
-        // See also getPluginListsFromDirName
-        // check and force move to type2
         $plugin_dir_type = 0;
+        $plugin_path     = '';
+
+        // NOTE: MARKER_PLUGINS_FOLDER_FUEATURE
+        // Type 2: plugins/shortname/NP_Name.php (recommended structure)
         if (@is_file("{$DIR_PLUGINS}{$shortname}/{$NP_Name}.php")) {
             $plugin_dir_type = 2;
             $plugin_path     = "{$DIR_PLUGINS}{$shortname}/{$NP_Name}.php";
-            $type1file       = "{$DIR_PLUGINS}{$NP_Name}.php";
-            if (@is_file($type1file)) {
-                if (@md5_file($plugin_path) === @md5_file($type1file)) {
-                    //same file: remove
-                    unlink($type1file);
-                } else {
-                    $ct = 0;
-                    while ($ct < 1000) {
-                        $ct++;
-                        $f = "{$DIR_PLUGINS}{$shortname}/{$NP_Name}-({$ct}).php";
-                        if (@is_file($f)) {
-                            continue;
-                        }
-                        // Compare by timestamp
-                        if (@filemtime($plugin_path) < @filemtime($type1file)) {
-                            @rename($plugin_path, $f);
-                            @rename($type1file, $plugin_path);
-                        } else {
-                            @rename($type1file, $f);
-                        }
-                        break;
-                    }
-                }
-            }
-        } elseif (@is_file("{$DIR_PLUGINS}{$NP_Name}.php")) {
+        }
+        // Type 1: plugins/NP_Name.php (legacy structure, still supported)
+        elseif (@is_file("{$DIR_PLUGINS}{$NP_Name}.php")) {
             $plugin_dir_type = 1;
             $plugin_path     = "{$DIR_PLUGINS}{$NP_Name}.php";
-            if ( ! @is_dir("{$DIR_PLUGINS}{$shortname}")) {
-                @mkdir("{$DIR_PLUGINS}{$shortname}");
-            }
-            if (@is_dir("{$DIR_PLUGINS}{$shortname}")) {
-                rename("{$DIR_PLUGINS}{$NP_Name}.php", "{$DIR_PLUGINS}{$shortname}/{$NP_Name}.php");
-            }
-            if (@is_file("{$DIR_PLUGINS}{$shortname}/{$NP_Name}.php")) {
-                $plugin_dir_type = 2;
-                $plugin_path     = "{$DIR_PLUGINS}{$shortname}/{$NP_Name}.php";
-            }
         }
+
         if (0 === $plugin_dir_type) {
             return false;
         }
-        return ['type' => $plugin_dir_type, 'path' => $plugin_path];
+        
+        return [
+            'type'      => $plugin_dir_type,
+            'path'      => $plugin_path,
+            'shortname' => $shortname
+        ];
     }
 
     /**

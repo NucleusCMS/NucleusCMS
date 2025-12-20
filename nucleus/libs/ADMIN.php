@@ -7758,39 +7758,75 @@ EOL;
             <?php $this->pagefoot();
     }
 
+    /**
+     * Check plugin directory structure
+     * Note: Auto-rename functionality has been removed for safety.
+     * Both Type 1 (plugins/NP_Name.php) and Type 2 (plugins/shortname/NP_Name.php) are supported.
+     */
     private function force_rename_plugin_dir()
     {
-        global $DIR_PLUGINS;
-        $path = @realpath($DIR_PLUGINS); // Since $DIR_PLUGINS is a user input value, it converts it to an absolute path
-        if (empty($DIR_PLUGINS) || empty($path) || ! is_dir($path)) {
-            return;
-        }
-        $path = str_replace('\\', '/', $path) . '/';
+        // This method intentionally does nothing.
+        // Auto-renaming has been removed to prevent unexpected file modifications.
+        // Site administrators should manually migrate plugins to the new structure if desired.
+        return;
+    }
 
-        // try force rename NP_Folder to shortname
-        $a = glob("{$path}NP_*", GLOB_ONLYDIR);
-        if ( ! empty($a)) {
-            foreach ($a as $dirname) {
-                $basename = basename($dirname);
-                if (preg_match('#NP_([0-9a-zA-Z_]+)#', $basename, $m)
-                   && ( ! @file_exists(dirname($dirname) . '/' . strtolower($m[1])))
-                ) {
-                    @rename($dirname, dirname($dirname) . '/' . strtolower($m[1]));
+    /**
+     * Get list of plugins using old structure that should be migrated
+     * Only includes Type 1 plugins that have resource folders
+     * Note: Only checks installed plugins (those in the database)
+     * 
+     * @return array List of plugins with old structure information
+     */
+    private function _getOldStructurePlugins()
+    {
+        global $DIR_PLUGINS;
+        
+        $oldPlugins = [];
+        $res = sql_query('SELECT pfile FROM ' . sql_table('plugin') . ' ORDER BY pfile ASC');
+        
+        if ($res) {
+            while ($o = sql_fetch_object($res)) {
+                $pluginName = $o->pfile;
+                $info = MANAGER::getPluginTypePath($pluginName);
+                
+                if (!$info) {
+                    continue; // Plugin file not found
+                }
+                
+                // Only warn for Type 1 plugins that have associated resource folders
+                if ($info['type'] === 1) {
+                    $shortname = $info['shortname'];
+                    $folderPath = $DIR_PLUGINS . $shortname . '/';
+                    
+                    // Check if folder exists and contains files
+                    if (@is_dir($folderPath)) {
+                        $hasFiles = false;
+                        $files = @scandir($folderPath);
+                        if ($files) {
+                            foreach ($files as $file) {
+                                if ($file !== '.' && $file !== '..') {
+                                    $hasFiles = true;
+                                    break;
+                                }
+                            }
+                        }
+                        
+                        // Only recommend migration if the folder has content
+                        if ($hasFiles) {
+                            $oldPlugins[] = [
+                                'name' => $pluginName,
+                                'current' => "plugins/{$pluginName}.php",
+                                'folder' => "plugins/{$shortname}/",
+                                'recommended' => "plugins/{$shortname}/{$pluginName}.php"
+                            ];
+                        }
+                    }
                 }
             }
         }
-
-        // try force move  NP_file into shortname
-        $a = glob("{$path}NP_*.php");
-        if (empty($a)) {
-            return;
-        }
-        // check and force move to type2
-        foreach ($a as $fullfilename) {
-            if (@is_file($fullfilename) && preg_match('#^NP_(.+?)\.php$#', basename($fullfilename), $m)) {
-                MANAGER::getPluginTypePathWithForceRename($m[1]);
-            }
-        }
+        
+        return $oldPlugins;
     }
 
     public function action_settings_remote_update()
@@ -7833,6 +7869,29 @@ EOL;
         echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
 
         echo '<h2>', _PLUGS_TITLE_MANAGE, ' ', help('plugins'), '</h2>';
+
+        // Display warning for old structure plugins
+        $oldStructurePlugins = $this->_getOldStructurePlugins();
+        if (!empty($oldStructurePlugins)) {
+            echo '<div style="background-color: #fff3cd; border: 1px solid #ffc107; padding: 15px; margin: 15px 0; border-radius: 4px;">';
+            echo '<h3 style="margin-top: 0; color: #856404;">⚠️ Plugin Structure Notice</h3>';
+            echo '<p style="margin-bottom: 10px;">The following plugins have resource folders but use the old file structure. ';
+            echo 'Please consider moving the plugin file into its resource folder:</p>';
+            echo '<ul style="margin: 10px 0;">';
+            foreach ($oldStructurePlugins as $plugin) {
+                echo '<li style="margin: 8px 0;"><strong>' . hsc($plugin['name']) . '</strong><br>';
+                echo '<span style="font-size: smaller; color: #666;">';
+                echo 'Plugin file: <code style="background: #f5f5f5; padding: 2px 4px;">' . hsc($plugin['current']) . '</code><br>';
+                echo 'Resource folder: <code style="background: #f5f5f5; padding: 2px 4px;">' . hsc($plugin['folder']) . '</code><br>';
+                echo 'Move to: <code style="background: #f5f5f5; padding: 2px 4px; color: #28a745;">' . hsc($plugin['recommended']) . '</code>';
+                echo '</span></li>';
+            }
+            echo '</ul>';
+            echo '<p style="margin-bottom: 0; font-size: smaller; color: #666;">';
+            echo '<strong>How to migrate:</strong> Move the plugin PHP file into its resource folder. ';
+            echo 'Plugins without resource folders do not need to be migrated.</p>';
+            echo '</div>';
+        }
 
         echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
