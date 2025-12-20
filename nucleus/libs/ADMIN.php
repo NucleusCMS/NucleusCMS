@@ -5904,9 +5904,6 @@ selector();
             }
         }
 
-        echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
-        $query = sprintf("SELECT bshortname, bname FROM %s", sql_table('blog'));
-        showlist_by_query($query, 'table', ['content' => 'shortblognames']);
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = sprintf("SELECT tdname as name, tddesc as description FROM %s", sql_table('template_desc'));
         showlist_by_query($query, 'table', ['content' => 'shortnames']);
