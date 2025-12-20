@@ -1098,22 +1098,15 @@ function listplug_table_skinlist($template, $type)
         case 'BODY':
             $current = $template['current'];
 
+            $editUrl = hsc('index.php?action=skinedit&skinid=' . $current->sdnumber);
+
             echo '<td>';
 
             // use a special style for the default skin
             if ($current->sdnumber == $CONF['BaseSkin']) {
-                echo '<strong>', hsc($current->sdname), '</strong>';
+                echo '<strong><a href="', $editUrl, '">', hsc($current->sdname), '</a></strong>';
             } else {
-                echo hsc($current->sdname);
-            }
-
-            echo '<br /><br />';
-            echo _LISTS_TYPE, ': ', hsc($current->sdtype);
-            echo '<br />', _LIST_SKINS_INCMODE, ' ', (('skindir'
-                                                       == $current->sdincmode)
-                ? _PARSER_INCMODE_SKINDIR : _PARSER_INCMODE_NORMAL);
-            if ($current->sdincpref) {
-                echo '<br />', _LIST_SKINS_INCPREFIX, ' ', hsc($current->sdincpref);
+                echo '<a href="', $editUrl, '">', hsc($current->sdname), '</a>';
             }
 
             echo "</td>";
@@ -1153,7 +1146,17 @@ function listplug_table_skinlist($template, $type)
             }
             echo '</td>';
 
-            echo '<td>', hsc($current->sddesc), '</td>';
+            echo '<td>', hsc($current->sddesc);
+            echo '<div>';
+            echo _LISTS_TYPE, ': ', hsc($current->sdtype);
+            echo '<br />', _LIST_SKINS_INCMODE, ' ', (('skindir'
+                                                       == $current->sdincmode)
+                ? _PARSER_INCMODE_SKINDIR : _PARSER_INCMODE_NORMAL);
+            if ($current->sdincpref) {
+                echo '<br />', _LIST_SKINS_INCPREFIX, ' ', hsc($current->sdincpref);
+            }
+            echo '</div>';
+            echo '</td>';
             echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=skinedit&skinid=' . $current->sdnumber) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
