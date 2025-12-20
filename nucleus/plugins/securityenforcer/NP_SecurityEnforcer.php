@@ -37,6 +37,9 @@ class NP_SecurityEnforcer extends NucleusPlugin
     }
     public function getDescription()
     {
+        if (!defined('_SECURITYENFORCER_DESCRIPTION')) {
+            $this->loadLanguage();
+        }
         return _SECURITYENFORCER_DESCRIPTION;
     }
     public function getTableList()
