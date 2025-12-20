@@ -5796,6 +5796,34 @@ selector();
         $skin = new SKIN($skinid);
 
         $friendlyNames = SKIN::getFriendlyNames();
+        $helpLink      = '';
+        $partstypeInput = '';
+        switch ($spartstype) {
+            case 'specialpage':
+                $helpLink       = helpHtml('skinpartspecialpage');
+                $partstypeInput = '<input type="hidden" name="partstype" value="specialpage" />';
+                $headingText    = sprintf(
+                    "%s %s : %s",
+                    escapeHTML(_SKIN_EDITPART_TITLE),
+                    escapeHTML(_SKIN_PARTS_SPECIAL_PAGE),
+                    escapeHTML($skin->getName())
+                );
+                break;
+            default:
+                $helpTarget     = 'skinpartspecial';
+                $partstypeInput = '<input type="hidden" name="partstype" value="parts" />';
+                $types          = ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'];
+                if (in_array($type, $types)) {
+                    $helpTarget = 'skinpart' . $type;
+                }
+                $helpLink    = helpHtml($helpTarget);
+                $headingText = sprintf(
+                    "%s '%s': %s",
+                    escapeHTML(_SKIN_EDITPART_TITLE),
+                    escapeHTML($skin->getName()),
+                    escapeHTML($friendlyNames[$type] ?? $type)
+                );
+        }
 
         $this->pagehead();
 
@@ -5804,71 +5832,29 @@ selector();
             $skinid,
             escapeHTML(_SKIN_GOBACK)
         );
-
-        switch ($spartstype) {
-            case 'specialpage':
-                echo sprintf(
-                    "<h2>%s %s : %s</h2>",
-                    escapeHTML(_SKIN_EDITPART_TITLE),
-                    escapeHTML(_SKIN_PARTS_SPECIAL_PAGE),
-                    escapeHTML($skin->getName())
-                );
-                break;
-            default:
-                echo sprintf(
-                    "<h2>%s '%s': %s</h2>",
-                    escapeHTML(_SKIN_EDITPART_TITLE),
-                    escapeHTML($skin->getName()),
-                    escapeHTML($friendlyNames[$type] ?? $type)
-                );
-        }
+        echo sprintf('<h2>%s %s</h2>', $headingText, $helpLink);
 
         if ($msg) {
             echo "<p>" . _MESSAGE . ": {$msg}</p>";
         }
 
         $form   = [];
-        $form[] = '<form method="post" action="index.php">';
+        $form[] = '<form id="skinedit-form" method="post" action="index.php">';
         $form[] = '<div style="text-align: left;">';
         $form[] = '<input type="hidden" name="action" value="skinupdate" />';
         $form[] = $manager->getHtmlInputTicketHidden();
         $form[] = sprintf('<input type="hidden" name="skinid" value="%s" />', $skinid);
         $form[] = sprintf('<input type="hidden" name="type" value="%s" />', $type);
-        $form[] = sprintf('<input type="submit" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
-        $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
-
-        switch ($spartstype) {
-            case 'specialpage':
-                $form[]   = '<input type="hidden" name="partstype" value="specialpage" />';
-                $subtitle = sprintf('(skin type: specialpage : %s) %s', escapeHTML($type), helpHtml('skinpartspecialpage'));
-                break;
-            default:
-                $form[]   = '<input type="hidden" name="partstype" value="parts" />';
-                $subtitle = sprintf(
-                    '(skin type: %s)',
-                    hsc($friendlyNames[$type] ?? $type)
-                );
-                $types = ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'];
-                if (in_array($type, $types)) {
-                    $subtitle .= helpHtml('skinpart' . $type);
-                } else {
-                    $subtitle .= helpHtml('skinpartspecial');
-                }
-        }
-        $form[] = " {$subtitle}";
-
+        $form[] = $partstypeInput;
         $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent(
             $type,
             ['spartstype' => $spartstype]
         )));
 
-        $form[] = '<br />';
-        $form[] = '<br />';
+        $form[] = '<div class="skinedit-actions">';
         $form[] = sprintf('<input type="submit" tabindex="20" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
-        $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
-        $form[] = " {$subtitle}";
-        $form[] = '';
-        $form[] = '';
+        $form[] = sprintf('<input type="reset" id="skinedit-reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
+        $form[] = '</div>';
         $form[] = '</div>';
 
         $form[] = '</form>';
@@ -5900,20 +5886,6 @@ selector();
                 echo ", ";
             }
         }
-        // edit link
-        echo "<br /><br />\n";
-        $tmp = sprintf("<%%parsedinclude(%s)%%>", $type)
-            . '<%if(onteam)%><div  style="text-align:right">' . "\n"
-            . sprintf(
-                '<a href="<%%adminurl%%>index.php?action=skinedittype&skinid=%d&type=%s">%s</a>',
-                $skinid,
-                htmlentities($type, ENT_COMPAT, _CHARSET),
-                hsc(_SKIN_EDITONE_TITLE  . '(' . $type . ')')
-            )
-            . "</div>\n<%endif%>";
-        echo '<textarea rows="3" readonly onfocus="this.select()">'
-            . hsc($tmp) . '</textarea>';
-        // end edit link
         if ('specialpage' === $spartstype) {
             global $CONF;
             if ( ! isset($CONF['SpecialskinKey']) || '' === (string) $CONF['SpecialskinKey']) {
@@ -5932,13 +5904,32 @@ selector();
             }
         }
 
-        echo '<br /><br />' . _SKINEDIT_ALLOWEDBLOGS;
-        $query = sprintf("SELECT bshortname, bname FROM %s", sql_table('blog'));
-        showlist_by_query($query, 'table', ['content' => 'shortblognames']);
         echo '<br />' . _SKINEDIT_ALLOWEDTEMPLATESS;
         $query = sprintf("SELECT tdname as name, tddesc as description FROM %s", sql_table('template_desc'));
         showlist_by_query($query, 'table', ['content' => 'shortnames']);
         echo '</div>';
+        ?>
+        <script>
+        (function () {
+            var form = document.getElementById('skinedit-form');
+            if (!form) { return; }
+            var textarea = form.querySelector('textarea[name="content"]');
+            var resetButton = document.getElementById('skinedit-reset');
+            if (!textarea || !resetButton) { return; }
+
+            var initialValue = textarea.value;
+            var updateResetState = function () {
+                resetButton.disabled = (textarea.value === initialValue);
+            };
+
+            updateResetState();
+            textarea.addEventListener('input', updateResetState);
+            form.addEventListener('reset', function () {
+                setTimeout(updateResetState, 0);
+            });
+        })();
+        </script>
+        <?php
         $this->pagefoot();
     }
 

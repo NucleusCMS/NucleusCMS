@@ -343,6 +343,32 @@ textarea:focus {
     box-shadow: 0 0 0 2px rgba(49, 72, 100, 0.12);
 }
 
+input[type="reset"] {
+    cursor: pointer;
+    transition: border-color 0.12s ease, box-shadow 0.12s ease, color 0.12s ease, background-color 0.12s ease;
+}
+
+input[type="reset"]:disabled {
+    cursor: not-allowed;
+    background: #f3f4f6;
+    color: #9aa3b5;
+    border-color: #e2e6ef;
+    box-shadow: none;
+}
+
+.skinedit-actions {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+}
+
+.skinedit-actions input[type="submit"],
+.skinedit-actions input[type="reset"] {
+    margin-right: 2px;
+}
+
 .quickmenu-form {
     margin: 8px 0 0;
 }
