@@ -1040,6 +1040,10 @@ try_define('_MANAGE_EXTRA',						'追加機能');
 try_define('_BACKTOMANAGE',						'Nucleusの管理に戻る');
 
 try_define('_MANAGE_PAGE_LEAD',                '主要な管理機能をまとめています。');
+try_define('_MANAGE_SETTINGS_DESC',            '全体の設定を管理します。');
+try_define('_MANAGE_SYSTEM_DESC',              '環境情報を確認します。');
+try_define('_MANAGE_ACTIONLOG_DESC',           '管理操作履歴を確認します。');
+try_define('_MANAGE_SYSTEMLOG_DESC',           'システムログを確認します。');
 try_define('_LAYOUT_SETTINGS_TITLE',            'レイアウト設定');
 try_define('_LAYOUT_SETTINGS_DESCRIPTION',      'スキン・テンプレート・読込/書出をまとめて管理できます。');
 try_define('_LAYOUT_SETTINGS_SKINS',            'スキン編集');
