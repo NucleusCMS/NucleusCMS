@@ -207,6 +207,12 @@ try_define('_ADMIN_EXEC_TITLE_OPTIMIZE',       'テーブルの最適化をし�
 try_define('_ADMIN_BTN_TITLE_AUTO_REPAIR',     '修復をする');
 try_define('_ADMIN_BTN_TITLE_OPTIMIZE',        '最適化をする');
 try_define('_ADMIN_PLEASE_OPTIMIZE',           '最適化をしてください');
+try_define('_ADMIN_DATABASE_TABLE_LIST',       'テーブル一覧');
+try_define('_ADMIN_TABLE_COLLATION',           'コレーション');
+try_define('_ADMIN_TABLE_ROWS',                '行数');
+try_define('_ADMIN_TABLE_DATA_LENGTH',         'データサイズ');
+try_define('_ADMIN_TABLE_INDEX_LENGTH',        'インデックスサイズ');
+try_define('_ADMIN_TABLE_COMMENT',             'コメント');
 
 try_define('_PROBLEMS_FOUND_ON_TABLE',   'テーブルに問題がみつかりました');
 try_define('_NO_PROBLEMS_FOUND',         '問題は見つかりませんでした');

@@ -8676,7 +8676,7 @@ EOL;
 
         $this->pagehead();
         echo '<p><a href="index.php?action=manage">(', _BACKTOMANAGE, ')</a></p>';
-        echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_OPTIMIZATION_REPAIR);
+        echo sprintf("<h2>%s</h2>\n", _ADMIN_DATABASE_TABLE_LIST);
 
         if (isset($_POST['mode']) && isset($_POST['step'])) {
             if ('sqlite' == $DB_DRIVER_NAME && 'optimize' == PostVar('mode') && 'start' == PostVar('step')) {
@@ -8753,18 +8753,24 @@ EOD;
                     }
                     echo "<table>";
                     echo sprintf(
-                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th></tr>",
+                        "<tr><th>%s</th><th>%s</th><th>%s</th><th>Engine</th><th>%s</th><th>%s</th><th>%s</th></tr>",
                         hsc(_ADMIN_TABLENAME),
-                        hsc(_SIZE),
-                        hsc(_OVERHEAD)
+                        hsc(_ADMIN_TABLE_COLLATION),
+                        hsc(_ADMIN_TABLE_ROWS),
+                        hsc(_ADMIN_TABLE_DATA_LENGTH),
+                        hsc(_ADMIN_TABLE_INDEX_LENGTH),
+                        hsc(_ADMIN_TABLE_COMMENT)
                     );
                     foreach ($tables as $key => $item) {
                         echo sprintf(
-                            "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
+                            "<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>",
                             hsc($key),
-                            hsc($item['Data_length']),
-                            hsc($item['Data_free']),
-                            hsc($item['Engine'])
+                            hsc($item['Collation']),
+                            hsc($item['Rows']),
+                            hsc(number_format((int) $item['Data_length'])),
+                            hsc($item['Engine']),
+                            hsc(number_format((int) $item['Index_length'])),
+                            hsc($item['Comment'])
                         );
                     }
                     echo "</table>";

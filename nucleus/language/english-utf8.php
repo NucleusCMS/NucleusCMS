@@ -176,6 +176,12 @@ try_define('_ADMIN_EXEC_TITLE_OPTIMIZE',       'tables optimized.');
 try_define('_ADMIN_BTN_TITLE_AUTO_REPAIR',     'Repair');
 try_define('_ADMIN_BTN_TITLE_OPTIMIZE',        'Optimize');
 try_define('_ADMIN_PLEASE_OPTIMIZE',           'Optimize please');
+try_define('_ADMIN_DATABASE_TABLE_LIST',       'Table list');
+try_define('_ADMIN_TABLE_COLLATION',           'Collation');
+try_define('_ADMIN_TABLE_ROWS',                'Rows');
+try_define('_ADMIN_TABLE_DATA_LENGTH',         'Data size');
+try_define('_ADMIN_TABLE_INDEX_LENGTH',        'Index size');
+try_define('_ADMIN_TABLE_COMMENT',             'Comment');
 
 try_define('_PROBLEMS_FOUND_ON_TABLE',   'problems found on table');
 try_define('_NO_PROBLEMS_FOUND',         'No problems found');
