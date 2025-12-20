@@ -5796,6 +5796,34 @@ selector();
         $skin = new SKIN($skinid);
 
         $friendlyNames = SKIN::getFriendlyNames();
+        $helpLink      = '';
+        $partstypeInput = '';
+        switch ($spartstype) {
+            case 'specialpage':
+                $helpLink       = helpHtml('skinpartspecialpage');
+                $partstypeInput = '<input type="hidden" name="partstype" value="specialpage" />';
+                $headingText    = sprintf(
+                    "%s %s : %s",
+                    escapeHTML(_SKIN_EDITPART_TITLE),
+                    escapeHTML(_SKIN_PARTS_SPECIAL_PAGE),
+                    escapeHTML($skin->getName())
+                );
+                break;
+            default:
+                $helpTarget     = 'skinpartspecial';
+                $partstypeInput = '<input type="hidden" name="partstype" value="parts" />';
+                $types          = ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'];
+                if (in_array($type, $types)) {
+                    $helpTarget = 'skinpart' . $type;
+                }
+                $helpLink    = helpHtml($helpTarget);
+                $headingText = sprintf(
+                    "%s '%s': %s",
+                    escapeHTML(_SKIN_EDITPART_TITLE),
+                    escapeHTML($skin->getName()),
+                    escapeHTML($friendlyNames[$type] ?? $type)
+                );
+        }
 
         $this->pagehead();
 
@@ -5804,24 +5832,7 @@ selector();
             $skinid,
             escapeHTML(_SKIN_GOBACK)
         );
-
-        switch ($spartstype) {
-            case 'specialpage':
-                echo sprintf(
-                    "<h2>%s %s : %s</h2>",
-                    escapeHTML(_SKIN_EDITPART_TITLE),
-                    escapeHTML(_SKIN_PARTS_SPECIAL_PAGE),
-                    escapeHTML($skin->getName())
-                );
-                break;
-            default:
-                echo sprintf(
-                    "<h2>%s '%s': %s</h2>",
-                    escapeHTML(_SKIN_EDITPART_TITLE),
-                    escapeHTML($skin->getName()),
-                    escapeHTML($friendlyNames[$type] ?? $type)
-                );
-        }
+        echo sprintf('<h2>%s %s</h2>', $headingText, $helpLink);
 
         if ($msg) {
             echo "<p>" . _MESSAGE . ": {$msg}</p>";
@@ -5834,25 +5845,7 @@ selector();
         $form[] = $manager->getHtmlInputTicketHidden();
         $form[] = sprintf('<input type="hidden" name="skinid" value="%s" />', $skinid);
         $form[] = sprintf('<input type="hidden" name="type" value="%s" />', $type);
-
-        switch ($spartstype) {
-            case 'specialpage':
-                $form[]   = '<input type="hidden" name="partstype" value="specialpage" />';
-                $subtitle = sprintf('(skin type: specialpage : %s) %s', escapeHTML($type), helpHtml('skinpartspecialpage'));
-                break;
-            default:
-                $form[]   = '<input type="hidden" name="partstype" value="parts" />';
-                $subtitle = sprintf(
-                    '(skin type: %s)',
-                    hsc($friendlyNames[$type] ?? $type)
-                );
-                $types = ['index', 'item', 'archivelist', 'archive', 'search', 'error', 'member', 'imagepopup'];
-                if (in_array($type, $types)) {
-                    $subtitle .= helpHtml('skinpart' . $type);
-                } else {
-                    $subtitle .= helpHtml('skinpartspecial');
-                }
-        }
+        $form[] = $partstypeInput;
         $form[] = sprintf('<textarea class="skinedit" tabindex="10" rows="20" cols="80" name="content">%s</textarea>', hsc($skin->getContent(
             $type,
             ['spartstype' => $spartstype]
@@ -5861,7 +5854,6 @@ selector();
         $form[] = '<div class="skinedit-actions">';
         $form[] = sprintf('<input type="submit" tabindex="20" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
         $form[] = sprintf('<input type="reset" id="skinedit-reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
-        $form[] = sprintf('<span class="skinedit-meta">%s</span>', $subtitle);
         $form[] = '</div>';
         $form[] = '</div>';
 

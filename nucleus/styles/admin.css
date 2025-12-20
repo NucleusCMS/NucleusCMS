@@ -356,12 +356,6 @@ textarea:focus {
     margin-right: 2px;
 }
 
-.skinedit-meta {
-    color: var(--muted);
-    font-size: 0.95rem;
-    margin-left: 4px;
-}
-
 .quickmenu-form {
     margin: 8px 0 0;
 }
