@@ -131,7 +131,6 @@ class ADMIN
             'categoryedit',
             'commentdelete',
             'commentedit',
-            'composeroverview',
             'createitem',
             'createnewlog',
             'deleteblog',
@@ -8664,21 +8663,6 @@ EOL;
         }
 
         $this->addSystemInfoMessage('warning', sprintf('<strong>%s</strong><br />%s', _ERRORS_STARTUPERROR3, $msg));
-    }
-
-    public function action_composeroverview()
-    {
-        global $member;
-
-        if ( ! $member->isAdmin()) {
-            $this->disallow();
-        }
-
-        $this->pagehead();
-
-        echo \parseBlade('admin.action_composeroverview', []), "\n";
-
-        $this->pagefoot();
     }
 
     /**
