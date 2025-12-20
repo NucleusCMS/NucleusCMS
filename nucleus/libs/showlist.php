@@ -1092,7 +1092,7 @@ function listplug_table_skinlist($template, $type)
     global $CONF, $DIR_SKINS, $manager;
     switch ($type) {
         case 'HEAD':
-            echo "<th>" . _LISTS_NAME . "</th><th>" . _LISTS_DESC
+            echo "<th>" . _LISTS_NAME . "</th><th>Screenshot</th><th>" . _LISTS_DESC
                  . "</th><th colspan='3'>" . _LISTS_ACTIONS . "</th>";
             break;
         case 'BODY':
@@ -1116,12 +1116,12 @@ function listplug_table_skinlist($template, $type)
                 echo '<br />', _LIST_SKINS_INCPREFIX, ' ', hsc($current->sdincpref);
             }
 
-            // add preview image when present
+            echo "</td>";
+
+            echo '<td>';
             if ($current->sdincpref
                 && @is_file($DIR_SKINS . $current->sdincpref
                              . 'preview.png')) {
-                echo '<br /><br />';
-
                 $hasEnlargement = @is_file($DIR_SKINS . $current->sdincpref
                                             . 'preview-large.png');
                 if ($hasEnlargement) {
@@ -1151,8 +1151,7 @@ function listplug_table_skinlist($template, $type)
                          . '">' . _LIST_SKIN_README_TXT . '</a>';
                 }
             }
-
-            echo "</td>";
+            echo '</td>';
 
             echo '<td>', hsc($current->sddesc), '</td>';
             echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=skinedit&skinid=' . $current->sdnumber) . "' tabindex='"
