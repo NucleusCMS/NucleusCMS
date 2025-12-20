@@ -561,7 +561,8 @@ class ADMIN
 
         $this->pagehead();
 
-        echo \parseBlade('admin.action_layoutsettings'), "\n";
+        $params = [];
+        echo \parseBlade('admin.action_layoutsettings', $params), "\n";
 
         $this->pagefoot();
     }
