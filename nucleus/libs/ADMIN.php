@@ -5828,7 +5828,7 @@ selector();
         }
 
         $form   = [];
-        $form[] = '<form method="post" action="index.php">';
+        $form[] = '<form id="skinedit-form" method="post" action="index.php">';
         $form[] = '<div style="text-align: left;">';
         $form[] = '<input type="hidden" name="action" value="skinupdate" />';
         $form[] = $manager->getHtmlInputTicketHidden();
@@ -5860,7 +5860,7 @@ selector();
 
         $form[] = '<div class="skinedit-actions">';
         $form[] = sprintf('<input type="submit" tabindex="20" value="%s" onclick="return checkSubmit();" />', escapeHTML(_SKIN_UPDATE_BTN));
-        $form[] = sprintf('<input type="reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
+        $form[] = sprintf('<input type="reset" id="skinedit-reset" value="%s" />', escapeHTML(_SKIN_RESET_BTN));
         $form[] = sprintf('<span class="skinedit-meta">%s</span>', $subtitle);
         $form[] = '</div>';
         $form[] = '</div>';
@@ -5919,6 +5919,28 @@ selector();
         $query = sprintf("SELECT tdname as name, tddesc as description FROM %s", sql_table('template_desc'));
         showlist_by_query($query, 'table', ['content' => 'shortnames']);
         echo '</div>';
+        ?>
+        <script>
+        (function () {
+            var form = document.getElementById('skinedit-form');
+            if (!form) { return; }
+            var textarea = form.querySelector('textarea[name="content"]');
+            var resetButton = document.getElementById('skinedit-reset');
+            if (!textarea || !resetButton) { return; }
+
+            var initialValue = textarea.value;
+            var updateResetState = function () {
+                resetButton.disabled = (textarea.value === initialValue);
+            };
+
+            updateResetState();
+            textarea.addEventListener('input', updateResetState);
+            form.addEventListener('reset', function () {
+                setTimeout(updateResetState, 0);
+            });
+        })();
+        </script>
+        <?php
         $this->pagefoot();
     }
 

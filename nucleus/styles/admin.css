@@ -346,14 +346,20 @@ textarea:focus {
 .skinedit-actions {
     display: flex;
     align-items: center;
-    gap: 10px;
+    gap: 14px;
     flex-wrap: wrap;
-    margin-top: 12px;
+    margin-top: 16px;
+}
+
+.skinedit-actions input[type="submit"],
+.skinedit-actions input[type="reset"] {
+    margin-right: 2px;
 }
 
 .skinedit-meta {
     color: var(--muted);
     font-size: 0.95rem;
+    margin-left: 4px;
 }
 
 .quickmenu-form {
