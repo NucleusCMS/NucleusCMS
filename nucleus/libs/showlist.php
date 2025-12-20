@@ -218,20 +218,20 @@ function listplug_cards_bloglist($template, $type)
             echo '<div class="blog-card-actions">';
             
             // Add Item
-            echo '<a href="index.php?action=createitem&amp;blogid=' . $current->bnumber . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_ADD) . '">';
+            echo '<a href="' . hsc('index.php?action=createitem&blogid=' . $current->bnumber) . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_ADD) . '">';
             echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>';
             echo '<span>' . hsc(_BLOGLIST_ADD) . '</span>';
             echo '</a>';
             
             // Edit Items
-            echo '<a href="index.php?action=itemlist&amp;blogid=' . $current->bnumber . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_EDIT) . '">';
+            echo '<a href="' . hsc('index.php?action=itemlist&blogid=' . $current->bnumber) . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_EDIT) . '">';
             echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>';
             echo '<span>' . hsc(_BLOGLIST_EDIT) . '</span>';
             echo '<span class="blog-card-badge">' . $blog_amountItems . '</span>';
             echo '</a>';
             
             // Comments
-            echo '<a href="index.php?action=blogcommentlist&amp;blogid=' . $current->bnumber . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_COMMENTS) . '">';
+            echo '<a href="' . hsc('index.php?action=blogcommentlist&blogid=' . $current->bnumber) . '" class="blog-card-action" title="' . hsc(_BLOGLIST_TT_COMMENTS) . '">';
             echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>';
             echo '<span>' . hsc(_BLOGLIST_COMMENTS) . '</span>';
             echo '<span class="blog-card-badge">' . $blog_amountComments . '</span>';
@@ -243,7 +243,7 @@ function listplug_cards_bloglist($template, $type)
             // Card Footer with Settings (if admin)
             if ($isAdmin) {
                 echo '<div class="blog-card-footer">';
-                echo '<a href="index.php?action=blogsettings&amp;blogid=' . $current->bnumber . '" class="blog-card-settings" title="' . hsc(_BLOGLIST_TT_SETTINGS) . '">';
+                echo '<a href="' . hsc('index.php?action=blogsettings&blogid=' . $current->bnumber) . '" class="blog-card-settings" title="' . hsc(_BLOGLIST_TT_SETTINGS) . '">';
                 echo '<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>';
                 echo '<span>' . hsc(_BLOGLIST_SETTINGS) . '</span>';
                 echo '</a>';
@@ -295,7 +295,7 @@ function listplug_table_teamlist($template, $type)
             echo '</td>';
             echo '<td>', hsc($current->mrealname), '</td>';
             echo '<td>', ($current->tadmin ? _YES : _NO), '</td>';
-            echo "<td><a href='index.php?action=teamdelete&amp;memberid={$current->tmember}&amp;blogid={$current->tblog}' tabindex='"
+            echo "<td><a href='" . hsc('index.php?action=teamdelete&memberid=' . $current->tmember . '&blogid=' . $current->tblog) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             $url = 'index.php?action=teamchangeadmin&memberid='
@@ -419,7 +419,7 @@ function listplug_table_pluginlist($template, $type)
             echo " | <a href='", hsc($url), "' tabindex='"
                                             . $template['tabindex']
                                             . "'>", _LIST_PLUGS_DOWN, "</a>";
-            echo "<br /><a href='index.php?action=plugindelete&amp;plugid={$current->pid}' tabindex='"
+            echo "<br /><a href='" . hsc('index.php?action=plugindelete&plugid=' . $current->pid) . "' tabindex='"
                  . $template['tabindex'] . "'>", _LIST_PLUGS_UNINSTALL, "</a>";
             if ($plug && ($plug->hasAdminArea() > 0)) {
                 // NOTE: MARKER_PLUGINS_PLUGINADMIN_FUEATURE
@@ -438,14 +438,14 @@ function listplug_table_pluginlist($template, $type)
                 }
             }
             if ($plug && ($plug->supportsFeature('HelpPage') > 0)) {
-                echo "<br /><a href='index.php?action=pluginhelp&amp;plugid={$current->pid}'  tabindex='"
+                echo "<br /><a href='" . hsc('index.php?action=pluginhelp&plugid=' . $current->pid) . "'  tabindex='"
                      . $template['tabindex'] . "'>", _LIST_PLUGS_HELP, "</a>";
             }
             if (quickQuery('SELECT COUNT(*) AS result FROM '
                            . sql_table('plugin_option_desc')
                            . ' WHERE ocontext=\'global\' and opid='
                            . $current->pid) > 0) {
-                echo "<br /><a href='index.php?action=pluginoptions&amp;plugid={$current->pid}'  tabindex='"
+                echo "<br /><a href='" . hsc('index.php?action=pluginoptions&plugid=' . $current->pid) . "'  tabindex='"
                      . $template['tabindex']
                      . "'>", _LIST_PLUGS_OPTIONS, "</a>";
             }
@@ -600,7 +600,7 @@ function listplug_table_itemlist($template, $type)
 
             // Title and Body column (moved to 2nd position)
             echo "<td{$cellClassAttr}>";
-            $editUrl = sprintf("index.php?action=itemedit&amp;itemid=%d", $current->inumber);
+            $editUrl = hsc(sprintf("index.php?action=itemedit&itemid=%d", $current->inumber));
             printf('<a href="%s"><b>%s</b></a>', $editUrl, $title);
             echo "<br />";
             $bodyText = strip_tags($current->ibody);
@@ -953,15 +953,15 @@ function listplug_table_bloglist($template, $type)
 
             // Action
             $elements   = [];
-            $elements[] = [sprintf("index.php?action=createitem&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_ADD, _BLOGLIST_ADD]];
-            $elements[] = [sprintf("index.php?action=itemlist&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_EDIT, _BLOGLIST_EDIT], " ({$blog_amountItems})"];
-            $elements[] = [sprintf("index.php?action=blogcommentlist&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_COMMENTS, _BLOGLIST_COMMENTS], " ({$blog_amountComments})"];
+            $elements[] = [sprintf("index.php?action=createitem&blogid=%d", $current->bnumber), [_BLOGLIST_TT_ADD, _BLOGLIST_ADD]];
+            $elements[] = [sprintf("index.php?action=itemlist&blogid=%d", $current->bnumber), [_BLOGLIST_TT_EDIT, _BLOGLIST_EDIT], " ({$blog_amountItems})"];
+            $elements[] = [sprintf("index.php?action=blogcommentlist&blogid=%d", $current->bnumber), [_BLOGLIST_TT_COMMENTS, _BLOGLIST_COMMENTS], " ({$blog_amountComments})"];
 
             $Groups   = [$elements];
             $elements = [];
 
             if (1 == $current->tadmin) {
-                $elements[] = [sprintf("index.php?action=blogsettings&amp;blogid=%d", $current->bnumber), [_BLOGLIST_TT_SETTINGS, _BLOGLIST_SETTINGS]];
+                $elements[] = [sprintf("index.php?action=blogsettings&blogid=%d", $current->bnumber), [_BLOGLIST_TT_SETTINGS, _BLOGLIST_SETTINGS]];
             }
 
             $Groups[] = $elements;
@@ -1047,9 +1047,9 @@ function listplug_table_categorylist($template, $type)
             echo '<td>', hsc($current->corder), '</td>';
             echo '<td>', hsc($current->icount), '</td>';
             echo '<td>', hsc($current->cdesc), '</td>';
-            echo "<td><a href='index.php?action=categorydelete&amp;blogid={$current->cblog}&amp;catid={$current->catid}' tabindex='"
+            echo "<td><a href='" . hsc('index.php?action=categorydelete&blogid=' . $current->cblog . '&catid=' . $current->catid) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
-            echo "<td><a href='index.php?action=categoryedit&amp;blogid={$current->cblog}&amp;catid={$current->catid}' tabindex='"
+            echo "<td><a href='" . hsc('index.php?action=categoryedit&blogid=' . $current->cblog . '&catid=' . $current->catid) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             break;
@@ -1069,7 +1069,7 @@ function listplug_table_templatelist($template, $type)
 
             echo "<td>", hsc($current->tdname), "</td>";
             echo "<td>", hsc($current->tddesc), "</td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templateedit&amp;templateid={$current->tdnumber}' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=templateedit&templateid=' . $current->tdnumber) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             $url
@@ -1080,7 +1080,7 @@ function listplug_table_templatelist($template, $type)
                                                                           . "'>"
                                                                           . _LISTS_CLONE
                                                                           . "</a></td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=templatedelete&amp;templateid={$current->tdnumber}' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=templatedelete&templateid=' . $current->tdnumber) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             break;
@@ -1219,17 +1219,17 @@ function listplug_table_skinlist($template, $type)
                         ]
                     )) {
                         $parts[0][] = '<li>' . helpHtml('skinpart' . $type)
-                                      . ' <a href="index.php?action=skinedittype&amp;skinid='
-                                      . $current->sdnumber . '&amp;type='
-                                      . $type . '" tabindex="'
+                                      . ' <a href="' . hsc('index.php?action=skinedittype&skinid='
+                                      . $current->sdnumber . '&type='
+                                      . $type) . '" tabindex="'
                                       . $template['tabindex'] . '">'
                                       . htmlspecialchars($friendlyNames[$type])
                                       . "</a></li>";
                     } else {
                         $parts[1][] = '<li>' . helpHtml('skinpartspecial')
-                                      . ' <a href="index.php?action=skinedittype&amp;skinid='
-                                      . $current->sdnumber . '&amp;type='
-                                      . $type . '" tabindex="'
+                                      . ' <a href="' . hsc('index.php?action=skinedittype&skinid='
+                                      . $current->sdnumber . '&type='
+                                      . $type) . '" tabindex="'
                                       . $template['tabindex'] . '">'
                                       . htmlspecialchars($friendlyNames[$type])
                                       . "</a></li>";
@@ -1275,11 +1275,11 @@ function listplug_table_skinlist($template, $type)
                 for ($i = 0; $i < count($names); $i++) {
                     // todo: edit link ?
                     $editurl
-                        = sprintf(
-                            'index.php?action=skinedittype&amp;skinid=%d&amp;partstype=specialpage&amp;type=%s',
+                        = hsc(sprintf(
+                            'index.php?action=skinedittype&skinid=%d&partstype=specialpage&type=%s',
                             $current->sdnumber,
                             $names[$i]
-                        );
+                        ));
                     printf(
                         "<li>%s <a href='%s' tabindex='%d'>%s</a></li>",
                         helpHtml('skinpartspecialpage'),
@@ -1294,7 +1294,7 @@ function listplug_table_skinlist($template, $type)
 
             echo '</div>';
             echo "</td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skinedit&amp;skinid={$current->sdnumber}' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=skinedit&skinid=' . $current->sdnumber) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_EDIT . "</a></td>";
 
             $url = $manager->addTicketToUrl('index.php?action=skinclone&skinid='
@@ -1304,7 +1304,7 @@ function listplug_table_skinlist($template, $type)
                                                                           . "'>"
                                                                           . _LISTS_CLONE
                                                                           . "</a></td>";
-            echo "<td style=\"white-space:nowrap\"><a href='index.php?action=skindelete&amp;skinid={$current->sdnumber}' tabindex='"
+            echo "<td style=\"white-space:nowrap\"><a href='" . hsc('index.php?action=skindelete&skinid=' . $current->sdnumber) . "' tabindex='"
                  . $template['tabindex'] . "'>" . _LISTS_DELETE . "</a></td>";
 
             break;
@@ -1358,7 +1358,7 @@ function listplug_table_banlist($template, $type)
 
             echo '<td>', hsc($current->iprange), '</td>';
             echo '<td>', hsc($current->reason), '</td>';
-            echo "<td><a href='index.php?action=banlistdelete&amp;blogid=", (int) ($current->blogid), "&amp;iprange=", hsc($current->iprange), "'>", _LISTS_DELETE, "</a></td>";
+            echo "<td><a href='" . hsc('index.php?action=banlistdelete&blogid=' . (int)($current->blogid) . '&iprange=' . $current->iprange) . "'>", _LISTS_DELETE, "</a></td>";
             break;
     }
 }
