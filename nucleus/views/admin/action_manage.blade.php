@@ -19,26 +19,6 @@
     </ul>
 </div>
 
-<div style='float:left; padding: 0 1em;'>
-    <h2>{{ _MANAGE_SKINS }}</h2>
-    <ul>
-        <li><a href="index.php?action=skinoverview">{{ _OVERVIEW_SKINS }}</a></li>
-        <li><a href="index.php?action=templateoverview">{{ _OVERVIEW_TEMPLATES }}</a></li>
-        <li><a href="index.php?action=skinieoverview">{{ _OVERVIEW_SKINIMPORT }}</a></li>
-    </ul>
-</div>
-
-<div style='float:left; padding: 0 1em;'>
-    <h2>{{ _MANAGE_EXTRA }}</h2>
-    <ul>
-    @if ($IsMysql)
-        <li><a href="index.php?action=backupoverview">{{ _OVERVIEW_BACKUP }}</a></li>
-    @endif
-        <li><a href="index.php?action=optimizeoverview">{{ _ADMIN_DATABASE_OPTIMIZATION_REPAIR }}</a></li>
-        <li><a href="index.php?action=pluginlist">{{ _OVERVIEW_PLUGINS }}</a></li>
-    </ul>
-</div>
-
 <div style='float:none; clear: both; padding: 0 1em;'>
     <h2>{{ _LINKS }}</h2>
     <ul>{!! preg_replace("#<a #","<a target='_blank' rel='noreferrer' ", $_MANAGE_LINKS_ITEMS) !!}</ul>
