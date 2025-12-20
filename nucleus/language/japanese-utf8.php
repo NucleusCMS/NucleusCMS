@@ -1061,6 +1061,7 @@ try_define('_YOURSITE',							'サイトを表示');
 
 
 try_define('_POPUP_CLOSE',						'ウィンドウを閉じる');
+try_define('_CLOSE',								'閉じる');
 
 try_define('_LOGIN_PLEASE',						'まずログインしてください');
 

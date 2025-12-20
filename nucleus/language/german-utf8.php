@@ -174,6 +174,13 @@ define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_URL',	'');
 define('_ADMIN_SYSTEMOVERVIEW_VERSIONCHECK_TITLE',	'Pr&uuml;fen ob eine neue Version/Uprgrade erh&auml;ltlich ist');
 define('_ADMIN_SYSTEMOVERVIEW_NOT_ADMIN',			"Sie haben nicht gen&uuml;gend Rechte, um die System informationen einzusehen.");
 
+// Password recovery
+define('_ADMIN_LOST_PSWD_TEXT_TITLE', "Passwort vergessen?");
+define('_ADMIN_LOST_PSWD_TEXT_1', "Geben Sie unten Ihre E-Mail-Adresse ein und Sie erhalten eine E-Mail mit einem Link, &uuml;ber den Sie ein neues Passwort festlegen k&ouml;nnen.");
+define('_ADMIN_LOST_PSWD_TEXT_3', "Aktivierungslink senden");
+define('_ADMIN_LOST_PSWD_TEXT_USENAME', "Benutzername:");
+define('_ADMIN_LOST_PSWD_TEXT_EMAIL', "E-Mail Adresse:");
+
 // START changed/added after 315 START
 
 define('_LIST_PLUG_SUBS_NEEDUPDATE','Bitte benutzen Sie den \'Update Subscribtion list\'-Taste zum Update der Plugin-Abonnementliste.');
@@ -591,6 +598,7 @@ define('_YOURSITE',					'Ihre Website');
 
 
 define('_POPUP_CLOSE',				'Fenster schlie&szlig;en');
+define('_CLOSE',					'Schlie&szlig;en');
 
 define('_LOGIN_PLEASE',				'Bitte zuerst anmelden');
 

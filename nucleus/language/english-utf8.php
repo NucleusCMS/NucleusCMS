@@ -1013,6 +1013,7 @@ try_define('_YOURSITE',					'Your site');
 
 
 try_define('_POPUP_CLOSE',				'Close Window');
+try_define('_CLOSE',					'Close');
 
 try_define('_LOGIN_PLEASE',				'Please Log in First');
 

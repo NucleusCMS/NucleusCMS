@@ -930,6 +930,7 @@ try_define('_YOURSITE',			'Votre site');
 
 
 try_define('_POPUP_CLOSE',			'Fermer la fenêtre');
+try_define('_CLOSE',				'Fermer');
 
 try_define('_LOGIN_PLEASE',			'Connectez-vous d\'abord, SVP');
 
