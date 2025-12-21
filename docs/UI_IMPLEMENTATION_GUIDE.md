@@ -120,6 +120,8 @@
 ```javascript
 (function() {
     'use strict';
+
+    const tabNavGroups = [];
     
     // Initialize tabs when DOM is ready
     if (document.readyState === 'loading') {
@@ -129,37 +131,47 @@
     }
     
     function initTabs() {
-        const tabNav = document.querySelector('.tab-nav');
-        if (!tabNav) return;
-        
-        // Get active tab from URL hash or default to first tab
-        const hash = window.location.hash || '#tab-1';
+        const tabNavs = document.querySelectorAll('.tab-nav');
+        if (!tabNavs.length) return;
+
+        tabNavs.forEach(function(tabNav) {
+            tabNavGroups.push(tabNav);
+            initTabGroup(tabNav);
+        });
+
+        // Keep all tab groups in sync with the URL hash
+        window.addEventListener('hashchange', syncTabsToHash);
+        window.addEventListener('popstate', syncTabsToHash);
+    }
+    
+    function initTabGroup(tabNav) {
+        const hash = window.location.hash;
         
         // Add click event listeners to all tab links
-        const tabLinks = document.querySelectorAll('.tab-nav a');
+        const tabLinks = tabNav.querySelectorAll('a');
         tabLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetTab = this.getAttribute('href');
-                switchTab(targetTab);
-                window.location.hash = targetTab;
+                switchTab(tabNav, targetTab);
+                updateHash(targetTab);
             });
         });
         
         // Activate initial tab
-        switchTab(hash);
-        
-        // Handle hash changes (browser back/forward)
-        window.addEventListener('hashchange', function() {
-            const newHash = window.location.hash || '#tab-1';
-            switchTab(newHash);
-        });
+        if (hash && tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+            switchTab(tabNav, hash);
+        } else if (tabLinks[0]) {
+            switchTab(tabNav, tabLinks[0].getAttribute('href'));
+        }
     }
     
-    function switchTab(tabId) {
-        // Remove active class from all tabs and panes
-        const navItems = document.querySelectorAll('.tab-nav li');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+    function switchTab(tabNav, tabId) {
+        const container = tabNav.closest('[class*=\"-tabs\"]');
+        if (!container) return;
+        
+        const navItems = container.querySelectorAll('.tab-nav li');
+        const tabPanes = container.querySelectorAll('.tab-pane');
         
         navItems.forEach(function(item) {
             item.classList.remove('active');
@@ -169,17 +181,44 @@
             pane.classList.remove('active');
         });
         
-        // Add active class to selected tab and pane
-        const targetLink = document.querySelector('.tab-nav a[href="' + tabId + '"]');
-        const targetPane = document.querySelector(tabId);
+        const targetLink = container.querySelector('.tab-nav a[href=\"' + tabId + '\"]');
+        const targetPane = container.querySelector(tabId);
         
         if (targetLink && targetPane) {
             targetLink.parentElement.classList.add('active');
             targetPane.classList.add('active');
         }
     }
+
+    function syncTabsToHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        tabNavGroups.forEach(function(tabNav) {
+            if (tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+                switchTab(tabNav, hash);
+            }
+        });
+    }
+
+    function updateHash(targetTab) {
+        if (!targetTab) return;
+
+        if (window.history && window.history.pushState) {
+            // Update URL without causing the browser to scroll
+            window.history.pushState({ tabId: targetTab }, '', targetTab);
+        } else {
+            // Fallback: restore scroll position after updating the hash
+            const scrollX = window.pageXOffset;
+            const scrollY = window.pageYOffset;
+            window.location.hash = targetTab;
+            window.scrollTo(scrollX, scrollY);
+        }
+    }
 })();
 ```
+
+> **Note**: Use `history.pushState` when available to change the hash without triggering automatic scroll jumps on tab click.
 
 ### PHPでの実装
 
@@ -323,6 +362,175 @@ $manager->loadClass("ENCAPSULATE");
 $batch = new BATCH('example');
 $batch->showList($query, 'table', $template);
 ```
+
+### フローティング一括操作バー（固定フッター）
+
+一部の一覧画面では、行のチェックボックスを選択すると画面下部に固定表示の操作バーを出すパターンを採用しています。今後も同様の実装を行う場合はこのスタイルを再利用してください。
+
+**挙動のポイント**
+- 初期状態は非表示。行チェックボックス（またはヘッダーの一括選択）が1件以上オンになったら表示。
+- ビューポート下部に固定（`position: fixed`）し、横幅いっぱいに表示。
+- 可能なら選択件数を表示し、必ずアクション選択（セレクトボックス）と実行ボタンを配置する。
+- ヘッダーの「すべて選択」が有効な場合、選択状態に応じてバーの表示・非表示を連動させる。
+
+**最小構造の例**
+
+```html
+<div class="list-table">
+  <table>
+    <thead>
+      <tr>
+        <th><input type="checkbox" class="js-select-all" /></th>
+        <!-- 他のヘッダー -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox" class="js-select-row" /></td>
+        <!-- 行内容 -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="floating-batch-bar" aria-live="polite" hidden>
+  <span class="selected-count">0</span>
+  <label for="bulk-action">選択されたものを：</label>
+  <select id="bulk-action" name="action">
+    <option value="delete">削除</option>
+    <!-- 他のアクション -->
+  </select>
+  <button type="submit">実行</button>
+</div>
+```
+
+**JavaScript実装の目安**
+- `.js-select-row` と `.js-select-all` に change ハンドラを付与し、選択件数をカウントする。
+- 選択件数が 0 より大きいときに `.floating-batch-bar` の `hidden` を外す（もしくは `.is-visible` を付ける）。0件なら再度隠す。
+- 選択件数は `.selected-count` に都度反映してアクセシビリティを担保する。
+- サーバー側で選択状態をレンダリングする場合は、初期表示時にも件数計算を行い、バーの表示状態を合わせる。
+
+### 一覧ページの「追加」ボタン
+
+一覧画面では右上に「追加」ボタンを配置し、主要操作への導線を一貫させます。
+
+**配置とスタイル**
+- 原則としてリストタイトルと同じコンテナ内の右上に配置し、視線移動が最小になるようにする。
+- プライマリ操作として扱い、主要ボタンと同じ配色（例: `.btn-primary`）を使用する。
+- ボタンテキストは「新しい〇〇の追加…」のように対象を明示し、幅が長くなりすぎないよう短く保つ。
+
+**HTML例**
+
+```html
+<div class="list-header">
+  <h2>アイテム一覧</h2>
+  <div class="list-header-actions">
+    <a class="btn btn-primary" href="index.php?action=itemadd">
+      新しいアイテムの追加…
+    </a>
+  </div>
+</div>
+```
+
+**アクセシビリティとレスポンシブ**
+- ボタンは `<a>` 要素で実装し、キーボードフォーカス時のスタイルを保つ。
+- モバイルでは折り返し時にヘッダー下へ回り込むよう、`.list-header-actions` を `display: flex; flex-wrap: wrap; justify-content: flex-end;` などで調整する。
+- 長文を避ける必要がある場合は、ツールチップ（`title` 属性）で補足することを検討。
+
+### ページネーションと検索ブロック
+
+一覧ページでは、検索・フィルター・件数指定・ページ移動をまとめたブロックをリストの上部と下部に設置します（例: アイテム一覧画面）。
+
+**レイアウト原則**
+- 左端にキーワード検索入力と検索ボタンを配置。
+- その右側にカテゴリや状態などのフィルター、さらに件数セレクトを並べる。
+- 右端にページネーションボタン（例: 「< 前へ」「次へ >」）を配置。
+- 上下で同じ順序・スタイルを保ち、長いリストでもスクロールなしで操作できるようにする。
+
+**HTML例**
+
+```html
+<div class="list-filters">
+  <div class="filters-left">
+    <input type="text" name="query" placeholder="キーワード" />
+    <button type="submit" class="btn btn-primary">検索</button>
+    <select name="category">
+      <option value="">すべてのカテゴリ</option>
+    </select>
+    <select name="status">
+      <option value="">すべて</option>
+    </select>
+    <select name="perpage">
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    <span class="perpage-label">アイテム/ページ</span>
+  </div>
+  <div class="filters-right">
+    <a class="btn btn-secondary" href="?page=prev">< 前へ</a>
+    <a class="btn btn-secondary" href="?page=next">次へ ></a>
+  </div>
+</div>
+```
+
+**スタイリングの目安**
+- `.list-filters` を `display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;` とし、モバイルで折り返しても順序が保たれるようにする。
+- 検索フォームが長くなる場合は、入力幅を縮める前に余白やマージンで調整し、並びを維持する。
+- ボタンの高さと入力高さを揃え、視覚的な一貫性を確保する。
+
+**参考ページ**
+- アイテム一覧: `index.php?action=itemlist`
+- コメント一覧: `index.php?action=commentlist`
+
+### 一覧のアクションアイコン
+
+一覧行の右端に配置するアクションは、以下の並びと意味で統一します（アイテム一覧を例にした順序）。
+
+| 順序 | アイコン | 役割 |
+| --- | --- | --- |
+| 1 | 移動（ドラッグ/並び替え） | 並び替え用ハンドル |
+| 2 | 編集 | 詳細編集画面への遷移 |
+| 3 | コピー | 複製（下書き生成など） |
+| 4 | 削除 | 削除ダイアログを表示 |
+| 5 | 外部リンク/表示 | 公開ページを新規タブで開く |
+| 6 | コメント数/コメント一覧 | 関連コメントへの遷移 |
+
+**配置とスタイル**
+- 右端に横並びで配置し、アイコン同士の間隔を一定（例: 8px）に保つ。
+- 全アイコンは同じサイズ（例: 16px〜20px）で揃え、ホバー時に軽い色反転や下線を付けて操作可能性を示す。
+- 削除アイコンのみ警告色（例: 赤系）を用い、それ以外は中立色で統一する。
+
+**アクセシビリティ**
+- すべてのアイコンに `aria-label` または `title` を付与し、意味を明確にする（例: `title="編集"`, `title="削除"`）。
+- コメント数アイコンは数値バッジを併記し、スクリーンリーダー向けに `aria-label="コメント 1 件"` のような文言を与える。
+- キーボード操作に対応させるため、`<a>` もしくは `<button>` を使い、フォーカスリングを保持する。
+
+**参考ページ**
+- アイテム一覧: `index.php?action=itemlist`
+- コメント一覧（削除/表示アイコンの配置例）: `index.php?action=commentlist`
+
+### カード型UI
+
+ダッシュボードや設定ページで複数の機能を並列に提示する際は、カード型UIを用いて視認性とクリック領域を確保します。
+
+**レイアウトとグリッド**
+- カードは同一高さを基本とし、2〜4列グリッドで配置（レスポンシブで折り返し）。
+- カード間には均等なギャップ（例: 16px〜24px）を設定。
+- カード全体をクリック可能にする場合は `<a>` または `<button>` をブロック要素化し、パディングを十分に取る。
+
+**スタイルの目安**
+- 角丸と控えめなボーダー/シャドウを使い、ホバー時はわずかに浮く（box-shadow強調）か背景色を薄く変える。
+- アイコン、タイトル、説明文を縦に配置し、左寄せで整列する。
+- アイコンサイズは統一（例: 24px〜32px）、タイトルは太字、説明は2行程度に抑える。
+
+**アクセシビリティ**
+- カード全体がリンクの場合、`aria-label` で遷移先や機能を明示する。
+- タブ移動時にフォーカスリングが見えるよう outline を残す。
+- カード内の装飾アイコンには `aria-hidden="true"` を付与し、テキストで機能を伝える。
+
+**参考ページ**
+- レイアウト設定: `index.php?action=skinoverview`
+- プラグイン管理: `index.php?action=pluginadmin`（リストとカードのハイブリッド例がある場合）
 
 ---
 

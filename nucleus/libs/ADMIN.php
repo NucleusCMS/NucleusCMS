@@ -235,7 +235,11 @@ class ADMIN
     {
         global $member;
 
-        $this->pagehead();
+        $extrahead = '';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $extrahead .= '<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){if (window.jQuery && jQuery.fn.tabs){jQuery("#plugin-tabs").tabs();}});</script>';
+        $this->pagehead($extrahead);
 
         $isAdmin = $member->isAdmin();
         $memberId = $member->getID();
@@ -370,7 +374,10 @@ class ADMIN
     {
         global $member;
 
-        $this->pagehead();
+        $extrahead = '';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $this->pagehead($extrahead);
 
         if ($msg) {
             echo _MESSAGE , ': ', $msg;
@@ -415,93 +422,6 @@ class ADMIN
             echo _OVERVIEW_NOBLOGS;
         }
 
-        if (0 != $amount) {
-            echo sprintf('<h2>%s</h2>', _OVERVIEW_YRDRAFTS);
-
-            // Todo display author
-            $param = ['iauthor' => $member->getID(), 'idraft' => 1];
-            $query = getOrmQueryBuilder()
-                    ->select('bnumber', 'count(*)', 'sum(CASE WHEN iauthor=:iauthor THEN 1 ELSE 0 END)')
-                    ->from(sql_table('item'))
-                    ->from(sql_table('blog'))
-                    ->where('iblog=bnumber AND idraft=:idraft')
-                    ->groupBy('bnumber')
-                    ->orderBy('blast_modyfied', 'DESC')
-                    ->addOrderBy('bname', 'ASC')
-                    ->setParameters($param);
-
-            $items = [];
-            foreach ($query->executeQuery($param)->fetchAllAssociative() as $row) {
-                $items[] = array_values($row);
-            }
-
-            $has_hidden_items = 0;
-            $amountdrafts     = 0;
-            $showall          = ('yes' == requestVar('showall') && $member->isAdmin());
-
-            foreach ($items as $item) {
-                // blogid  sum(item)  sum(item which belong to current user)
-                $current_bid          = (int) $item[0];
-                $count_blog_items     = (int) $item[1];
-                $count_current_author = (int) $item[2];
-
-                if ($member->isAdmin() && ($count_blog_items != $count_current_author)) {
-                    $has_hidden_items++;
-                }
-
-                // Check user have a item
-                if ( ! $showall && 0 == $count_current_author) {
-                    continue;
-                }
-
-                // Todo: showall : Display whether the item belongs to
-                $ct      = ($showall ? $count_blog_items : $count_current_author);
-                $div_out = ($ct > 5);
-                if ($div_out) {
-                    echo '<div style="width: 100%; height: 150px; overflow: auto;">';
-                }
-
-                $ph = [];
-                $ph['iblog'] = $current_bid;
-                $query       = 'SELECT ititle, inumber, bshortname FROM ' . sql_table('item') . ', ' . sql_table('blog');
-                $query .= ' WHERE';
-                if (!$showall) {
-                    $query .= ' iauthor=' . intval($member->getID()) . ' AND';
-                }
-                $query .= ' iblog=bnumber AND iblog=' . intval($current_bid) . ' AND idraft=1 ORDER BY inumber DESC';
-                $template['content'] = 'draftlist';
-                $amountdrafts += showlist_by_query($query, 'table', $template);
-
-                if ($div_out) {
-                    echo '</div>';
-                }
-            }
-            if (0 == $amountdrafts) {
-                echo _OVERVIEW_NODRAFTS;
-            }
-
-            if ($has_hidden_items && ! $isShowAll && $member->isAdmin()) {
-                echo '<p><a href="index.php?action=bloglist&amp;showall=yes">' . _OVERVIEW_SHOWALL . '</a></p>';
-            }
-        }
-
-        /* ---- user settings ---- */
-        echo '<h2>' . _OVERVIEW_YRSETTINGS . '</h2>';
-        echo '<ul>';
-        echo sprintf('<li><a href="index.php?action=browseownitems">%s</a></li>', _OVERVIEW_BROWSEITEMS);
-        echo sprintf('<li><a href="index.php?action=browseowncomments">%s</a></li>', _OVERVIEW_BROWSECOMM);
-        echo sprintf('<li><a href="index.php?action=editmembersettings">%s</a></li>', _OVERVIEW_EDITSETTINGS);
-        echo sprintf('<li><a href="index.php?action=memberpasswordchange">%s</a></li>', _OVERVIEW_USER_PASSWORD);
-        echo '</ul>';
-
-        /* ---- general settings ---- */
-        if ($member->isAdmin()) {
-            echo sprintf('<h2>%s</h2>', _OVERVIEW_MANAGEMENT);
-            echo '<ul>';
-            echo sprintf('<li><a href="index.php?action=manage">%s</a></li>', _OVERVIEW_MANAGE);
-            echo '</ul>';
-        }
-
         $this->pagefoot();
     }
 
@@ -532,7 +452,10 @@ class ADMIN
 
         $member->isAdmin() or $this->disallow();
 
-        $this->pagehead();
+        $extrahead = '';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $this->pagehead($extrahead);
 
         $_MANAGE_LINKS_ITEMS = str_replace('<a ', '<a target="_blank"  ', _MANAGE_LINKS_ITEMS);
         // $image_tag = "<img src='images/globe.gif' width='13' height='13' style='vertical-align:middle; padding-right:4px;' />";
@@ -7891,6 +7814,14 @@ EOL;
             echo '</div>';
         }
 
+        echo '<div id="plugin-tabs" class="plugin-tabs">';
+        echo '  <ul class="tab-nav">';
+        echo '    <li><a href="#plugin-tab-installed">' . _PLUGS_TITLE_INSTALLED . '</a></li>';
+        echo '    <li><a href="#plugin-tab-new">' . _PLUGS_TITLE_NEW . '</a></li>';
+        echo '  </ul>';
+        echo '  <div class="tab-content">';
+
+        echo '    <div id="plugin-tab-installed" class="tab-pane">';
         echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
         $query = sprintf("SELECT * FROM %s ORDER BY porder ASC", sql_table('plugin'));
@@ -7911,10 +7842,11 @@ EOL;
                         <input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
                     </div>
                 </form>
-
-                <h3><?php echo _PLUGS_TITLE_NEW ?></h3>
-
         <?php
+        echo '    </div>'; // tab-pane installed
+
+        echo '    <div id="plugin-tab-new" class="tab-pane">';
+        echo '    <h3>' . _PLUGS_TITLE_NEW . '</h3>';
         $list_installed_PluginName = [];
         $sql                       = sprintf("SELECT pfile FROM %s ORDER BY pfile ASC", sql_table('plugin'));
         if ($res = sql_query($sql)) {
@@ -7941,31 +7873,31 @@ EOL;
         }
 
         if (count($candidates) > 0) {
-            $options = [];
-            foreach ($candidates as $name) {
-                $np_name  = "NP_{$name}";
-                $shorname = strtolower($name);
-                $file     = "{$DIR_PLUGINS}{$shorname}/{$np_name}.php";
-                $file1    = "{$DIR_PLUGINS}{$np_name}.php";
-                if ( ! @is_file($file)) {
-                    $file = $file1;
-                }
-                $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
-            }
-            $options_tag = implode("\n  ", $options);
-
             echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
-
-            echo "<form method='post' action='index.php'><div>\n";
-            echo "  <input type='hidden' name='action' value='pluginadd' />\n";
-            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
-            echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
-            echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
-            echo "</div></form>\n";
+            echo '<table class="listplugin candidates" border="0" cellspacing="0" cellpadding="3">';
+            echo '<thead><tr><th>' . _PLUGS_TITLE_NEW . '</th><th>' . _LISTS_ACTIONS . '</th></tr></thead>';
+            echo '<tbody>';
+            foreach ($candidates as $name) {
+                echo '<tr>';
+                echo '<td><strong>' . hsc($name) . '</strong></td>';
+                echo '<td>';
+                echo "<form method='post' action='index.php' style='display:inline'>\n";
+                echo "  <input type='hidden' name='action' value='pluginadd' />\n";
+                echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
+                echo "  <input type='hidden' name='filename' value='NP_" . hsc($name) . "' />\n";
+                echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+                echo "</form>\n";
+                echo '</td>';
+                echo '</tr>';
+            }
+            echo '</tbody></table>';
         } else {
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
 
+        echo '    </div>'; // tab-pane new
+        echo '  </div>'; // tab-content
+        echo '</div>'; // plugin-tabs
         echo "\n";
         $this->pagefoot();
     }

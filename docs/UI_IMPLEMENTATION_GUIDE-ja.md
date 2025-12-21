@@ -138,6 +138,8 @@
 ```javascript
 (function() {
     'use strict';
+
+    const tabNavGroups = [];
     
     // DOMの準備ができたらタブを初期化
     if (document.readyState === 'loading') {
@@ -147,37 +149,47 @@
     }
     
     function initTabs() {
-        const tabNav = document.querySelector('.tab-nav');
-        if (!tabNav) return;
-        
-        // URLハッシュからアクティブタブを取得（デフォルトは最初のタブ）
-        const hash = window.location.hash || '#tab-1';
+        const tabNavs = document.querySelectorAll('.tab-nav');
+        if (!tabNavs.length) return;
+
+        tabNavs.forEach(function(tabNav) {
+            tabNavGroups.push(tabNav);
+            initTabGroup(tabNav);
+        });
+
+        // URLハッシュ変更を監視（戻る/進むボタンや外部遷移時）
+        window.addEventListener('hashchange', syncTabsToHash);
+        window.addEventListener('popstate', syncTabsToHash);
+    }
+    
+    function initTabGroup(tabNav) {
+        const hash = window.location.hash;
         
         // すべてのタブリンクにクリックイベントを追加
-        const tabLinks = document.querySelectorAll('.tab-nav a');
+        const tabLinks = tabNav.querySelectorAll('a');
         tabLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetTab = this.getAttribute('href');
-                switchTab(targetTab);
-                window.location.hash = targetTab;
+                switchTab(tabNav, targetTab);
+                updateHash(targetTab);
             });
         });
         
         // 初期タブをアクティブ化
-        switchTab(hash);
-        
-        // ハッシュ変更を監視（ブラウザの戻る/進むボタン対応）
-        window.addEventListener('hashchange', function() {
-            const newHash = window.location.hash || '#tab-1';
-            switchTab(newHash);
-        });
+        if (hash && tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+            switchTab(tabNav, hash);
+        } else if (tabLinks[0]) {
+            switchTab(tabNav, tabLinks[0].getAttribute('href'));
+        }
     }
     
-    function switchTab(tabId) {
-        // すべてのタブとペインからactiveクラスを削除
-        const navItems = document.querySelectorAll('.tab-nav li');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+    function switchTab(tabNav, tabId) {
+        const container = tabNav.closest('[class*=\"-tabs\"]');
+        if (!container) return;
+        
+        const navItems = container.querySelectorAll('.tab-nav li');
+        const tabPanes = container.querySelectorAll('.tab-pane');
         
         navItems.forEach(function(item) {
             item.classList.remove('active');
@@ -187,17 +199,44 @@
             pane.classList.remove('active');
         });
         
-        // 選択されたタブとペインにactiveクラスを追加
-        const targetLink = document.querySelector('.tab-nav a[href="' + tabId + '"]');
-        const targetPane = document.querySelector(tabId);
+        const targetLink = container.querySelector('.tab-nav a[href=\"' + tabId + '\"]');
+        const targetPane = container.querySelector(tabId);
         
         if (targetLink && targetPane) {
             targetLink.parentElement.classList.add('active');
             targetPane.classList.add('active');
         }
     }
+
+    function syncTabsToHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        tabNavGroups.forEach(function(tabNav) {
+            if (tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+                switchTab(tabNav, hash);
+            }
+        });
+    }
+
+    function updateHash(targetTab) {
+        if (!targetTab) return;
+
+        if (window.history && window.history.pushState) {
+            // pushStateでURLを書き換えれば、クリック時の自動スクロールを防げる
+            window.history.pushState({ tabId: targetTab }, '', targetTab);
+        } else {
+            // フォールバック: ハッシュ更新後にスクロール位置を戻す
+            const scrollX = window.pageXOffset;
+            const scrollY = window.pageYOffset;
+            window.location.hash = targetTab;
+            window.scrollTo(scrollX, scrollY);
+        }
+    }
 })();
 ```
+
+> **補足**: クリック時にスクロールが発生しないよう、ハッシュ更新は `history.pushState` を優先し、未対応環境ではスクロール位置を復元します。
 
 ### PHPでの実装
 
@@ -343,6 +382,175 @@ $manager->loadClass("ENCAPSULATE");
 $batch = new BATCH('example');
 $batch->showList($query, 'table', $template);
 ```
+
+### フローティング一括操作バー（固定フッター）
+
+一部の一覧画面では、行のチェックボックスを選択すると画面下部に固定表示の操作バーが現れます。別の画面でも流用できるよう、このパターンを共通指針としてまとめます。
+
+**挙動のポイント**
+- 初期状態は非表示。行チェックボックス（またはヘッダーの全選択）が1件以上オンになったら表示。
+- ビューポート下部に `position: fixed` で張り付け、横幅いっぱいに配置。
+- 可能なら選択件数を表示し、アクション選択（セレクトボックス）と実行ボタンを必ず置く。
+- ヘッダーの「すべて選択」がある場合は、それと連動してバーの表示・非表示を切り替える。
+
+**最小構造の例**
+
+```html
+<div class="list-table">
+  <table>
+    <thead>
+      <tr>
+        <th><input type="checkbox" class="js-select-all" /></th>
+        <!-- 他のヘッダー -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox" class="js-select-row" /></td>
+        <!-- 行内容 -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="floating-batch-bar" aria-live="polite" hidden>
+  <span class="selected-count">0</span>
+  <label for="bulk-action">選択されたものを：</label>
+  <select id="bulk-action" name="action">
+    <option value="delete">削除</option>
+    <!-- 他のアクション -->
+  </select>
+  <button type="submit">実行</button>
+</div>
+```
+
+**JavaScript実装の目安**
+- `.js-select-row` と `.js-select-all` に change ハンドラを付与し、選択件数をカウント。
+- 選択件数が 0 より大きい場合に `.floating-batch-bar` の `hidden` を外す（または `.is-visible` を付与）。0 件なら隠す。
+- 件数は `.selected-count` に反映し、視覚・スクリーンリーダー双方で状況が分かるようにする。
+- サーバー側で選択状態を描画する場合は、初期レンダリング後に件数計算を行い、バーの表示状態を同期する。
+
+### 一覧ページの「追加」ボタン
+
+一覧画面では右上に「追加」ボタンを置き、主要操作への導線を統一します。
+
+**配置とスタイル**
+- リストタイトルと同じコンテナ内の右上に配置し、ユーザーの視線移動を最小化する。
+- プライマリ操作として扱い、共通の主要ボタンスタイル（例: `.btn-primary`）を使う。
+- ボタン文言は「新しい〇〇の追加…」など対象を明示しつつ、横幅が長くなりすぎないよう短めにする。
+
+**HTML例**
+
+```html
+<div class="list-header">
+  <h2>アイテム一覧</h2>
+  <div class="list-header-actions">
+    <a class="btn btn-primary" href="index.php?action=itemadd">
+      新しいアイテムの追加…
+    </a>
+  </div>
+</div>
+```
+
+**アクセシビリティとレスポンシブ**
+- ボタンは `<a>` 要素で実装し、キーボードフォーカス時のスタイルを保持する。
+- モバイルでは `.list-header-actions` に `display: flex; flex-wrap: wrap; justify-content: flex-end;` を設定し、折り返し時にヘッダー下へ自然に回り込むようにする。
+- 文言を短く保ちたい場合は、`title` 属性で補足説明を付与することを検討する。
+
+### ページネーションと検索ブロック
+
+一覧ページでは、検索・フィルター・件数指定・ページ移動をまとめたブロックをリストの上下に配置します（例: アイテム一覧画面）。
+
+**レイアウト原則**
+- 左端にキーワード入力と検索ボタンを置く。
+- 右方向にカテゴリや状態などのフィルター、件数セレクトを並べる。
+- 右端にページネーション（例: 「< 前へ」「次へ >」）を配置する。
+- 上下で同じ並び・スタイルを維持し、スクロールせずに操作できるようにする。
+
+**HTML例**
+
+```html
+<div class="list-filters">
+  <div class="filters-left">
+    <input type="text" name="query" placeholder="キーワード" />
+    <button type="submit" class="btn btn-primary">検索</button>
+    <select name="category">
+      <option value="">すべてのカテゴリ</option>
+    </select>
+    <select name="status">
+      <option value="">すべて</option>
+    </select>
+    <select name="perpage">
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    <span class="perpage-label">アイテム/ページ</span>
+  </div>
+  <div class="filters-right">
+    <a class="btn btn-secondary" href="?page=prev">< 前へ</a>
+    <a class="btn btn-secondary" href="?page=next">次へ ></a>
+  </div>
+</div>
+```
+
+**スタイルの目安**
+- `.list-filters` を `display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;` とし、モバイルで折り返しても順序が崩れないようにする。
+- 検索入力が長くなる場合は、余白や幅を調整して一行を維持し、要素同士の高さを揃える。
+- ページネーションは主要操作と同じ高さ・余白を使い、視覚的一貫性を持たせる。
+
+**参考ページ**
+- アイテム一覧: `index.php?action=itemlist`
+- コメント一覧: `index.php?action=commentlist`
+
+### 一覧のアクションアイコン
+
+一覧行の右端に配置するアイコン操作は、以下の並びと意味で統一します（アイテム一覧を例にした順序）。
+
+| 順序 | アイコン | 役割 |
+| --- | --- | --- |
+| 1 | 移動（ドラッグ/並び替え） | 並び替え用ハンドル |
+| 2 | 編集 | 詳細編集画面へ遷移 |
+| 3 | コピー | 複製（下書き生成など） |
+| 4 | 削除 | 削除ダイアログを表示 |
+| 5 | 外部リンク/表示 | 公開ページを新規タブで開く |
+| 6 | コメント数/コメント一覧 | 関連コメントの一覧へ遷移 |
+
+**配置とスタイル**
+- 右端に横並びで配置し、アイコン間の間隔を一定（例: 8px）に保つ。
+- アイコンサイズは揃え（例: 16px〜20px）、ホバー時に色の反転や下線などで操作感を示す。
+- 削除アイコンだけ警告色（赤系）を使い、他は中立色を基本にする。
+
+**アクセシビリティ**
+- すべてのアイコンに `aria-label` または `title` を付与し、機能を明示する（例: `title="編集"`, `title="削除"`）。
+- コメント数アイコンは数値バッジを併記し、スクリーンリーダー向けに `aria-label="コメント 1 件"` のように件数を伝える。
+- `<a>` もしくは `<button>` を用いてフォーカスリングを維持し、キーボード操作を可能にする。
+
+**参考ページ**
+- アイテム一覧: `index.php?action=itemlist`
+- コメント一覧（削除/表示アイコンの配置例）: `index.php?action=commentlist`
+
+### カード型UI
+
+ダッシュボードや設定ページで複数機能を並列に提示する場合は、カード型UIを使って視認性とクリック範囲を確保します。
+
+**レイアウトとグリッド**
+- 2〜4列のグリッドを基本にし、カードは同じ高さで揃える（レスポンシブで折り返す）。
+- カード間に均等なギャップ（目安 16px〜24px）を取る。
+- カード全体をクリック可能にする場合は `<a>` や `<button>` をブロック化し、十分なパディングを与える。
+
+**スタイルの目安**
+- 角丸と軽いボーダー/シャドウを付け、ホバー時にわずかに浮くか背景色を薄く変える。
+- アイコン、タイトル、説明文を縦方向に並べ、左揃えで読みやすくする。
+- アイコンサイズは統一（目安 24px〜32px）、タイトルは強調、説明は2行程度に収める。
+
+**アクセシビリティ**
+- カード全体がリンクの場合、`aria-label` で遷移先や機能を明示する。
+- キーボードフォーカス時のアウトラインを消さず、フォーカスが判別できるようにする。
+- 装飾アイコンには `aria-hidden="true"` を付け、テキストで意味を伝える。
+
+**参考ページ**
+- レイアウト設定: `index.php?action=skinoverview`
+- プラグイン管理: `index.php?action=pluginadmin`（リストとカードが混在する場合の例）
 
 ---
 

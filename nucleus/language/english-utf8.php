@@ -686,7 +686,7 @@ try_define('_QMENU_ADD_SELECT',			'-- select --');
 try_define('_QMENU_USER_SETTINGS',		'Profile');
 try_define('_QMENU_USER_ITEMS',			'Items');
 try_define('_QMENU_USER_COMMENTS',		'Comments');
-try_define('_QMENU_MANAGE',				'Management');
+try_define('_QMENU_MANAGE',				'Manage');
 try_define('_QMENU_MANAGE_LOG',			'Action Log');
 try_define('_QMENU_MANAGE_SETTINGS',	'Configuration');
 try_define('_QMENU_MANAGE_MEMBERS',		'Members');
