@@ -7854,7 +7854,8 @@ EOL;
         }
 
         if (count($candidates) > 0) {
-            $options = [];
+            echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
+            echo "<div class=\"plugin-candidates\">\n";
             foreach ($candidates as $name) {
                 $np_name  = "NP_{$name}";
                 $shorname = strtolower($name);
@@ -7863,18 +7864,20 @@ EOL;
                 if ( ! @is_file($file)) {
                     $file = $file1;
                 }
-                $options[] = sprintf('  <option value="NP_%s">%s</option>', $name, hsc($name));
+                echo "  <div class=\"plugin-card\">\n";
+                echo "    <div class=\"plugin-card__body\">\n";
+                echo "      <h4 class=\"plugin-card__title\">" . hsc($name) . "</h4>\n";
+                echo "      <p class=\"plugin-card__desc\">" . _PLUGS_BTN_INSTALL . "</p>\n";
+                echo "    </div>\n";
+                echo "    <form method='post' action='index.php' class=\"plugin-card__actions\">\n";
+                echo "      <input type='hidden' name='action' value='pluginadd' />\n";
+                echo "      " . $manager->getHtmlInputTicketHidden() . "\n";
+                echo "      <input type='hidden' name='filename' value='NP_" . hsc($name) . "' />\n";
+                echo sprintf("      <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+                echo "    </form>\n";
+                echo "  </div>\n";
             }
-            $options_tag = implode("\n  ", $options);
-
-            echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
-
-            echo "<form method='post' action='index.php'><div>\n";
-            echo "  <input type='hidden' name='action' value='pluginadd' />\n";
-            echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
-            echo '  <select name="filename" tabindex="30">' . $options_tag . "</select>\n";
-            echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
-            echo "</div></form>\n";
+            echo "</div>\n";
         } else {
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
