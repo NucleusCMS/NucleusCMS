@@ -1,9 +1,16 @@
 /**
  * Generic Tab UI Handler for Nucleus CMS Admin Area
  * 
- * This script provides a reusable tab switching functionality.
- * It can be used on any page with the following HTML structure:
+ * Modern tab switching implementation without URL hash updates or scrolling.
  * 
+ * Features:
+ * - Pure CSS class-based tab switching
+ * - No URL hash changes (prevents unwanted scrolling)
+ * - No browser history pollution
+ * - Automatic initialization on page load
+ * - Manual initialization support via window.initTabs()
+ * 
+ * HTML structure required:
  * <div class="[any-class]-tabs">
  *   <ul class="tab-nav">
  *     <li class="active"><a href="#tab-1">Tab 1</a></li>
@@ -14,12 +21,20 @@
  *     <div id="tab-2" class="tab-pane">Content 2</div>
  *   </div>
  * </div>
+ * 
+ * Usage:
+ * 1. Include this script: <script src="javascript/tabs.js"></script>
+ * 2. Tabs are automatically initialized when DOM is ready
+ * 3. First tab is automatically activated
+ * 4. Manual init: window.initTabs('container-id') if needed
+ * 
+ * CSS classes:
+ * - .tab-nav li.active: Active tab navigation item
+ * - .tab-pane.active: Active tab content pane
  */
 
 (function() {
     'use strict';
-    
-    const tabNavGroups = [];
     
     // Initialize tabs when DOM is ready
     if (document.readyState === 'loading') {
@@ -28,50 +43,64 @@
         initAllTabs();
     }
     
+    /**
+     * Find and initialize all tab groups on the page
+     */
     function initAllTabs() {
         // Find all tab navigation elements on the page
         const tabNavs = document.querySelectorAll('.tab-nav');
         
         tabNavs.forEach(function(tabNav) {
-            tabNavGroups.push(tabNav);
             initTabGroup(tabNav);
         });
-
-        window.addEventListener('hashchange', syncTabsToHash);
-        window.addEventListener('popstate', syncTabsToHash);
     }
     
+    /**
+     * Initialize a single tab group
+     * @param {HTMLElement} tabNav - The .tab-nav element
+     */
     function initTabGroup(tabNav) {
-        // Get active tab from URL hash or default to first tab
-        const hash = window.location.hash;
-        
         // Add click event listeners to all tab links in this group
         const tabLinks = tabNav.querySelectorAll('a');
+        
         tabLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
+                // Prevent default behavior (no scrolling to anchor, no hash change)
                 e.preventDefault();
-                const targetTab = this.getAttribute('href');
-                switchTab(tabNav, targetTab);
-                updateHash(targetTab);
+                e.stopPropagation();
+                
+                // Get the target tab ID from href
+                const href = this.getAttribute('href');
+                if (!href || !href.startsWith('#')) return;
+                
+                const targetId = href.substring(1);
+                switchTab(tabNav, targetId);
             });
         });
         
-        // Activate initial tab
-        if (hash && tabNav.querySelector('a[href="' + hash + '"]')) {
-            switchTab(tabNav, hash);
-        } else {
-            // Activate the first tab if no hash or hash doesn't match
-            const firstTab = tabLinks[0] ? tabLinks[0].getAttribute('href') : null;
-            if (firstTab) {
-                switchTab(tabNav, firstTab);
+        // Activate the first tab by default
+        if (tabLinks.length > 0) {
+            const firstHref = tabLinks[0].getAttribute('href');
+            if (firstHref && firstHref.startsWith('#')) {
+                const firstTargetId = firstHref.substring(1);
+                switchTab(tabNav, firstTargetId);
             }
         }
     }
     
-    function switchTab(tabNav, tabId) {
+    /**
+     * Switch to a specific tab
+     * @param {HTMLElement} tabNav - The .tab-nav element
+     * @param {string} targetId - ID of the target tab pane (without #)
+     */
+    function switchTab(tabNav, targetId) {
         // Find the parent container
         const container = tabNav.closest('[class*="-tabs"]');
         if (!container) return;
+        
+        // Find the target pane
+        const targetPane = document.getElementById(targetId);
+        if (!targetPane) return;
         
         // Remove active class from all tabs and panes in this container
         const navItems = container.querySelectorAll('.tab-nav li');
@@ -86,39 +115,26 @@
         });
         
         // Add active class to selected tab and pane
-        const targetLink = container.querySelector('.tab-nav a[href="' + tabId + '"]');
-        const targetPane = container.querySelector(tabId);
+        const targetLink = container.querySelector('.tab-nav a[href="#' + targetId + '"]');
         
-        if (targetLink && targetPane) {
+        if (targetLink) {
             targetLink.parentElement.classList.add('active');
-            targetPane.classList.add('active');
         }
+        
+        targetPane.classList.add('active');
     }
-
-    function syncTabsToHash() {
-        const hash = window.location.hash;
-        if (!hash) return;
-
-        tabNavGroups.forEach(function(tabNav) {
-            if (tabNav.querySelector('a[href="' + hash + '"]')) {
-                switchTab(tabNav, hash);
-            }
-        });
-    }
-
-    function updateHash(targetTab) {
-        if (!targetTab) return;
-
-        if (window.history && window.history.pushState) {
-            // pushState updates the URL without causing the browser to scroll
-            window.history.pushState({ tabId: targetTab }, '', targetTab);
-            return;
+    
+    /**
+     * Manually initialize tabs for a specific container
+     * @param {string} containerId - ID of the container element
+     */
+    window.initTabs = function(containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        
+        const tabNav = container.querySelector('.tab-nav');
+        if (tabNav) {
+            initTabGroup(tabNav);
         }
-
-        // Fallback: restore scroll position after updating the hash
-        const scrollX = window.pageXOffset;
-        const scrollY = window.pageYOffset;
-        window.location.hash = targetTab;
-        window.scrollTo(scrollX, scrollY);
-    }
+    };
 })();

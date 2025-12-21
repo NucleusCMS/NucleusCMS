@@ -7785,7 +7785,10 @@ EOL;
         // check if allowed
         $member->isAdmin() or $this->disallow();
 
-        $this->pagehead();
+        $extrahead = '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />' . "\n";
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        
+        $this->pagehead($extrahead);
 
         $this->force_rename_plugin_dir();
 
