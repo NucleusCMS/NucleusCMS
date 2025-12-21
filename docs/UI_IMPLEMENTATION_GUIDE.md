@@ -437,6 +437,51 @@ $batch->showList($query, 'table', $template);
 - モバイルでは折り返し時にヘッダー下へ回り込むよう、`.list-header-actions` を `display: flex; flex-wrap: wrap; justify-content: flex-end;` などで調整する。
 - 長文を避ける必要がある場合は、ツールチップ（`title` 属性）で補足することを検討。
 
+### ページネーションと検索ブロック
+
+一覧ページでは、検索・フィルター・件数指定・ページ移動をまとめたブロックをリストの上部と下部に設置します（例: アイテム一覧画面）。
+
+**レイアウト原則**
+- 左端にキーワード検索入力と検索ボタンを配置。
+- その右側にカテゴリや状態などのフィルター、さらに件数セレクトを並べる。
+- 右端にページネーションボタン（例: 「< 前へ」「次へ >」）を配置。
+- 上下で同じ順序・スタイルを保ち、長いリストでもスクロールなしで操作できるようにする。
+
+**HTML例**
+
+```html
+<div class="list-filters">
+  <div class="filters-left">
+    <input type="text" name="query" placeholder="キーワード" />
+    <button type="submit" class="btn btn-primary">検索</button>
+    <select name="category">
+      <option value="">すべてのカテゴリ</option>
+    </select>
+    <select name="status">
+      <option value="">すべて</option>
+    </select>
+    <select name="perpage">
+      <option value="10">10</option>
+      <option value="20">20</option>
+    </select>
+    <span class="perpage-label">アイテム/ページ</span>
+  </div>
+  <div class="filters-right">
+    <a class="btn btn-secondary" href="?page=prev">< 前へ</a>
+    <a class="btn btn-secondary" href="?page=next">次へ ></a>
+  </div>
+</div>
+```
+
+**スタイリングの目安**
+- `.list-filters` を `display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;` とし、モバイルで折り返しても順序が保たれるようにする。
+- 検索フォームが長くなる場合は、入力幅を縮める前に余白やマージンで調整し、並びを維持する。
+- ボタンの高さと入力高さを揃え、視覚的な一貫性を確保する。
+
+**参考ページ**
+- アイテム一覧: `index.php?action=itemlist`
+- コメント一覧: `index.php?action=commentlist`
+
 ---
 
 ## 言語定義
