@@ -373,7 +373,10 @@ class ADMIN
     {
         global $member;
 
-        $this->pagehead();
+        $extrahead = '';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $this->pagehead($extrahead);
 
         if ($msg) {
             echo _MESSAGE , ': ', $msg;
