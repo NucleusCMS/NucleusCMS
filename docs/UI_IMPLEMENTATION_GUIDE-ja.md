@@ -383,6 +383,53 @@ $batch = new BATCH('example');
 $batch->showList($query, 'table', $template);
 ```
 
+### フローティング一括操作バー（固定フッター）
+
+一部の一覧画面では、行のチェックボックスを選択すると画面下部に固定表示の操作バーが現れます。別の画面でも流用できるよう、このパターンを共通指針としてまとめます。
+
+**挙動のポイント**
+- 初期状態は非表示。行チェックボックス（またはヘッダーの全選択）が1件以上オンになったら表示。
+- ビューポート下部に `position: fixed` で張り付け、横幅いっぱいに配置。
+- 可能なら選択件数を表示し、アクション選択（セレクトボックス）と実行ボタンを必ず置く。
+- ヘッダーの「すべて選択」がある場合は、それと連動してバーの表示・非表示を切り替える。
+
+**最小構造の例**
+
+```html
+<div class="list-table">
+  <table>
+    <thead>
+      <tr>
+        <th><input type="checkbox" class="js-select-all" /></th>
+        <!-- 他のヘッダー -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><input type="checkbox" class="js-select-row" /></td>
+        <!-- 行内容 -->
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div class="floating-batch-bar" aria-live="polite" hidden>
+  <span class="selected-count">0</span>
+  <label for="bulk-action">選択されたものを：</label>
+  <select id="bulk-action" name="action">
+    <option value="delete">削除</option>
+    <!-- 他のアクション -->
+  </select>
+  <button type="submit">実行</button>
+</div>
+```
+
+**JavaScript実装の目安**
+- `.js-select-row` と `.js-select-all` に change ハンドラを付与し、選択件数をカウント。
+- 選択件数が 0 より大きい場合に `.floating-batch-bar` の `hidden` を外す（または `.is-visible` を付与）。0 件なら隠す。
+- 件数は `.selected-count` に反映し、視覚・スクリーンリーダー双方で状況が分かるようにする。
+- サーバー側で選択状態を描画する場合は、初期レンダリング後に件数計算を行い、バーの表示状態を同期する。
+
 ---
 
 ## 言語定義
