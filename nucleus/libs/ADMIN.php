@@ -235,7 +235,10 @@ class ADMIN
     {
         global $member;
 
-        $this->pagehead();
+        $extrahead = '';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $this->pagehead($extrahead);
 
         $isAdmin = $member->isAdmin();
         $memberId = $member->getID();
@@ -7804,6 +7807,14 @@ EOL;
             echo '</div>';
         }
 
+        echo '<div class="plugin-tabs">';
+        echo '  <ul class="tab-nav">';
+        echo '    <li class="active"><a href="#plugin-tab-installed">' . _PLUGS_TITLE_INSTALLED . '</a></li>';
+        echo '    <li><a href="#plugin-tab-new">' . _PLUGS_TITLE_NEW . '</a></li>';
+        echo '  </ul>';
+        echo '  <div class="tab-content">';
+
+        echo '    <div id="plugin-tab-installed" class="tab-pane active">';
         echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
         $query = sprintf("SELECT * FROM %s ORDER BY porder ASC", sql_table('plugin'));
@@ -7824,10 +7835,11 @@ EOL;
                         <input type="submit" value="<?php echo _PLUGS_BTN_UPDATE ?>" tabindex="20" />
                     </div>
                 </form>
-
-                <h3><?php echo _PLUGS_TITLE_NEW ?></h3>
-
         <?php
+        echo '    </div>'; // tab-pane installed
+
+        echo '    <div id="plugin-tab-new" class="tab-pane">';
+        echo '    <h3>' . _PLUGS_TITLE_NEW . '</h3>';
         $list_installed_PluginName = [];
         $sql                       = sprintf("SELECT pfile FROM %s ORDER BY pfile ASC", sql_table('plugin'));
         if ($res = sql_query($sql)) {
@@ -7876,6 +7888,9 @@ EOL;
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
 
+        echo '    </div>'; // tab-pane new
+        echo '  </div>'; // tab-content
+        echo '</div>'; // plugin-tabs
         echo "\n";
         $this->pagefoot();
     }
