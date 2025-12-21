@@ -1061,11 +1061,11 @@ try_define('_LAYOUT_SETTINGS_IMPORT',           '読込/書出');
 try_define('_LAYOUT_SETTINGS_IMPORT_DESC',      'スキンのインポートやエクスポートをまとめて行います。');
 
 try_define('_DATABASE_SETTINGS_TITLE',          'データベース');
-try_define('_DATABASE_SETTINGS_DESCRIPTION',    'バックアップと最適化/修復をひとまとめに管理できます。');
+try_define('_DATABASE_SETTINGS_DESCRIPTION',    'バックアップとテーブル一覧をひとまとめに管理できます。');
 try_define('_DATABASE_SETTINGS_BACKUP',         'バックアップ/復元');
 try_define('_DATABASE_SETTINGS_BACKUP_DESC',    'データベースのバックアップ作成や復元を実行します。');
-try_define('_DATABASE_SETTINGS_OPTIMIZE',       '最適化/修復');
-try_define('_DATABASE_SETTINGS_OPTIMIZE_DESC',  'データベーステーブルの最適化や修復を行います。');
+try_define('_DATABASE_SETTINGS_OPTIMIZE',       'テーブル一覧');
+try_define('_DATABASE_SETTINGS_OPTIMIZE_DESC',  'データベーステーブルの一覧を確認します。');
 
 
 // END introduced after v1.1 END
