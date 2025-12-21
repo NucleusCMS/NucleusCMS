@@ -7855,29 +7855,23 @@ EOL;
 
         if (count($candidates) > 0) {
             echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
-            echo "<div class=\"plugin-candidates\">\n";
+            echo '<table class="listplugin candidates" border="0" cellspacing="0" cellpadding="3">';
+            echo '<thead><tr><th>' . _PLUGS_TITLE . '</th><th>' . _LISTS_ACTIONS . '</th></tr></thead>';
+            echo '<tbody>';
             foreach ($candidates as $name) {
-                $np_name  = "NP_{$name}";
-                $shorname = strtolower($name);
-                $file     = "{$DIR_PLUGINS}{$shorname}/{$np_name}.php";
-                $file1    = "{$DIR_PLUGINS}{$np_name}.php";
-                if ( ! @is_file($file)) {
-                    $file = $file1;
-                }
-                echo "  <div class=\"plugin-card\">\n";
-                echo "    <div class=\"plugin-card__body\">\n";
-                echo "      <h4 class=\"plugin-card__title\">" . hsc($name) . "</h4>\n";
-                echo "      <p class=\"plugin-card__desc\">" . _PLUGS_BTN_INSTALL . "</p>\n";
-                echo "    </div>\n";
-                echo "    <form method='post' action='index.php' class=\"plugin-card__actions\">\n";
-                echo "      <input type='hidden' name='action' value='pluginadd' />\n";
-                echo "      " . $manager->getHtmlInputTicketHidden() . "\n";
-                echo "      <input type='hidden' name='filename' value='NP_" . hsc($name) . "' />\n";
-                echo sprintf("      <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
-                echo "    </form>\n";
-                echo "  </div>\n";
+                echo '<tr>';
+                echo '<td><strong>' . hsc($name) . '</strong></td>';
+                echo '<td>';
+                echo "<form method='post' action='index.php' style='display:inline'>\n";
+                echo "  <input type='hidden' name='action' value='pluginadd' />\n";
+                echo "  " . $manager->getHtmlInputTicketHidden() . "\n";
+                echo "  <input type='hidden' name='filename' value='NP_" . hsc($name) . "' />\n";
+                echo sprintf("  <input type='submit' tabindex='40' value='%s' />\n", _PLUGS_BTN_INSTALL);
+                echo "</form>\n";
+                echo '</td>';
+                echo '</tr>';
             }
-            echo "</div>\n";
+            echo '</tbody></table>';
         } else {
             echo '<p>', _PLUGS_NOCANDIDATES, '</p>';
         }
