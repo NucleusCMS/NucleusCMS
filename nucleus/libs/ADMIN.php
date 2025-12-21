@@ -451,7 +451,10 @@ class ADMIN
 
         $member->isAdmin() or $this->disallow();
 
-        $this->pagehead();
+        $extrahead = '';
+        $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
+        $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $this->pagehead($extrahead);
 
         $_MANAGE_LINKS_ITEMS = str_replace('<a ', '<a target="_blank"  ', _MANAGE_LINKS_ITEMS);
         // $image_tag = "<img src='images/globe.gif' width='13' height='13' style='vertical-align:middle; padding-right:4px;' />";
