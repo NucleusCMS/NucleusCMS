@@ -720,7 +720,7 @@ try_define('_QMENU_ADD_SELECT',					'- blog選択 -');
 try_define('_QMENU_USER_SETTINGS',                              '設定');
 try_define('_QMENU_USER_ITEMS',                                 'アイテム一覧');
 try_define('_QMENU_USER_COMMENTS',                              'コメント一覧');
-try_define('_QMENU_MANAGE',						'サイト管理');
+try_define('_QMENU_MANAGE',						'管理・設定');
 try_define('_QMENU_MANAGE_LOG',					'管理操作履歴');
 try_define('_QMENU_MANAGE_SETTINGS',			'グローバル設定');
 try_define('_QMENU_MANAGE_MEMBERS',				'メンバー管理');

@@ -270,7 +270,7 @@ define('_QMENU_ADD_SELECT',			'-- ausw&auml;hlen --');
 define('_QMENU_USER_SETTINGS',		'Einstellungen');
 define('_QMENU_USER_ITEMS',			'Artikel');
 define('_QMENU_USER_COMMENTS',		'Kommentare');
-define('_QMENU_MANAGE',				'Verwaltung');
+define('_QMENU_MANAGE',				'Verwaltung & Einstellungen');
 define('_QMENU_MANAGE_LOG',			'Logdatei');
 define('_QMENU_MANAGE_SETTINGS',	'Konfiguration');
 define('_QMENU_MANAGE_MEMBERS',		'Benutzer');
@@ -1115,4 +1115,3 @@ define('_EDITC_NONMEMBER',			'kein Mitglied');
 // move item
 define('_MOVE_TITLE',				'In welchen Hauptpunkt verschieben?');
 define('_MOVE_BTN',					'Artikel verschieben');
-
