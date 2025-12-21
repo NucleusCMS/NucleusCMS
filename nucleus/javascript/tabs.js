@@ -19,6 +19,8 @@
 (function() {
     'use strict';
     
+    const tabNavGroups = [];
+    
     // Initialize tabs when DOM is ready
     if (document.readyState === 'loading') {
         document.addEventListener('DOMContentLoaded', initAllTabs);
@@ -31,8 +33,12 @@
         const tabNavs = document.querySelectorAll('.tab-nav');
         
         tabNavs.forEach(function(tabNav) {
+            tabNavGroups.push(tabNav);
             initTabGroup(tabNav);
         });
+
+        window.addEventListener('hashchange', syncTabsToHash);
+        window.addEventListener('popstate', syncTabsToHash);
     }
     
     function initTabGroup(tabNav) {
@@ -46,7 +52,7 @@
                 e.preventDefault();
                 const targetTab = this.getAttribute('href');
                 switchTab(tabNav, targetTab);
-                window.location.hash = targetTab;
+                updateHash(targetTab);
             });
         });
         
@@ -60,14 +66,6 @@
                 switchTab(tabNav, firstTab);
             }
         }
-        
-        // Handle hash changes (browser back/forward)
-        window.addEventListener('hashchange', function() {
-            const newHash = window.location.hash;
-            if (newHash && tabNav.querySelector('a[href="' + newHash + '"]')) {
-                switchTab(tabNav, newHash);
-            }
-        });
     }
     
     function switchTab(tabNav, tabId) {
@@ -95,5 +93,32 @@
             targetLink.parentElement.classList.add('active');
             targetPane.classList.add('active');
         }
+    }
+
+    function syncTabsToHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        tabNavGroups.forEach(function(tabNav) {
+            if (tabNav.querySelector('a[href="' + hash + '"]')) {
+                switchTab(tabNav, hash);
+            }
+        });
+    }
+
+    function updateHash(targetTab) {
+        if (!targetTab) return;
+
+        if (window.history && window.history.pushState) {
+            // pushState updates the URL without causing the browser to scroll
+            window.history.pushState({ tabId: targetTab }, '', targetTab);
+            return;
+        }
+
+        // Fallback: restore scroll position after updating the hash
+        const scrollX = window.pageXOffset;
+        const scrollY = window.pageYOffset;
+        window.location.hash = targetTab;
+        window.scrollTo(scrollX, scrollY);
     }
 })();
