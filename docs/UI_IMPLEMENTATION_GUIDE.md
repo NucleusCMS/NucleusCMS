@@ -120,6 +120,8 @@
 ```javascript
 (function() {
     'use strict';
+
+    const tabNavGroups = [];
     
     // Initialize tabs when DOM is ready
     if (document.readyState === 'loading') {
@@ -129,37 +131,47 @@
     }
     
     function initTabs() {
-        const tabNav = document.querySelector('.tab-nav');
-        if (!tabNav) return;
-        
-        // Get active tab from URL hash or default to first tab
-        const hash = window.location.hash || '#tab-1';
+        const tabNavs = document.querySelectorAll('.tab-nav');
+        if (!tabNavs.length) return;
+
+        tabNavs.forEach(function(tabNav) {
+            tabNavGroups.push(tabNav);
+            initTabGroup(tabNav);
+        });
+
+        // Keep all tab groups in sync with the URL hash
+        window.addEventListener('hashchange', syncTabsToHash);
+        window.addEventListener('popstate', syncTabsToHash);
+    }
+    
+    function initTabGroup(tabNav) {
+        const hash = window.location.hash;
         
         // Add click event listeners to all tab links
-        const tabLinks = document.querySelectorAll('.tab-nav a');
+        const tabLinks = tabNav.querySelectorAll('a');
         tabLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetTab = this.getAttribute('href');
-                switchTab(targetTab);
-                window.location.hash = targetTab;
+                switchTab(tabNav, targetTab);
+                updateHash(targetTab);
             });
         });
         
         // Activate initial tab
-        switchTab(hash);
-        
-        // Handle hash changes (browser back/forward)
-        window.addEventListener('hashchange', function() {
-            const newHash = window.location.hash || '#tab-1';
-            switchTab(newHash);
-        });
+        if (hash && tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+            switchTab(tabNav, hash);
+        } else if (tabLinks[0]) {
+            switchTab(tabNav, tabLinks[0].getAttribute('href'));
+        }
     }
     
-    function switchTab(tabId) {
-        // Remove active class from all tabs and panes
-        const navItems = document.querySelectorAll('.tab-nav li');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+    function switchTab(tabNav, tabId) {
+        const container = tabNav.closest('[class*=\"-tabs\"]');
+        if (!container) return;
+        
+        const navItems = container.querySelectorAll('.tab-nav li');
+        const tabPanes = container.querySelectorAll('.tab-pane');
         
         navItems.forEach(function(item) {
             item.classList.remove('active');
@@ -169,17 +181,44 @@
             pane.classList.remove('active');
         });
         
-        // Add active class to selected tab and pane
-        const targetLink = document.querySelector('.tab-nav a[href="' + tabId + '"]');
-        const targetPane = document.querySelector(tabId);
+        const targetLink = container.querySelector('.tab-nav a[href=\"' + tabId + '\"]');
+        const targetPane = container.querySelector(tabId);
         
         if (targetLink && targetPane) {
             targetLink.parentElement.classList.add('active');
             targetPane.classList.add('active');
         }
     }
+
+    function syncTabsToHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        tabNavGroups.forEach(function(tabNav) {
+            if (tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+                switchTab(tabNav, hash);
+            }
+        });
+    }
+
+    function updateHash(targetTab) {
+        if (!targetTab) return;
+
+        if (window.history && window.history.pushState) {
+            // Update URL without causing the browser to scroll
+            window.history.pushState({ tabId: targetTab }, '', targetTab);
+        } else {
+            // Fallback: restore scroll position after updating the hash
+            const scrollX = window.pageXOffset;
+            const scrollY = window.pageYOffset;
+            window.location.hash = targetTab;
+            window.scrollTo(scrollX, scrollY);
+        }
+    }
 })();
 ```
+
+> **Note**: Use `history.pushState` when available to change the hash without triggering automatic scroll jumps on tab click.
 
 ### PHPでの実装
 

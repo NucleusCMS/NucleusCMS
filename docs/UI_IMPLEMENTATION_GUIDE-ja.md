@@ -138,6 +138,8 @@
 ```javascript
 (function() {
     'use strict';
+
+    const tabNavGroups = [];
     
     // DOMの準備ができたらタブを初期化
     if (document.readyState === 'loading') {
@@ -147,37 +149,47 @@
     }
     
     function initTabs() {
-        const tabNav = document.querySelector('.tab-nav');
-        if (!tabNav) return;
-        
-        // URLハッシュからアクティブタブを取得（デフォルトは最初のタブ）
-        const hash = window.location.hash || '#tab-1';
+        const tabNavs = document.querySelectorAll('.tab-nav');
+        if (!tabNavs.length) return;
+
+        tabNavs.forEach(function(tabNav) {
+            tabNavGroups.push(tabNav);
+            initTabGroup(tabNav);
+        });
+
+        // URLハッシュ変更を監視（戻る/進むボタンや外部遷移時）
+        window.addEventListener('hashchange', syncTabsToHash);
+        window.addEventListener('popstate', syncTabsToHash);
+    }
+    
+    function initTabGroup(tabNav) {
+        const hash = window.location.hash;
         
         // すべてのタブリンクにクリックイベントを追加
-        const tabLinks = document.querySelectorAll('.tab-nav a');
+        const tabLinks = tabNav.querySelectorAll('a');
         tabLinks.forEach(function(link) {
             link.addEventListener('click', function(e) {
                 e.preventDefault();
                 const targetTab = this.getAttribute('href');
-                switchTab(targetTab);
-                window.location.hash = targetTab;
+                switchTab(tabNav, targetTab);
+                updateHash(targetTab);
             });
         });
         
         // 初期タブをアクティブ化
-        switchTab(hash);
-        
-        // ハッシュ変更を監視（ブラウザの戻る/進むボタン対応）
-        window.addEventListener('hashchange', function() {
-            const newHash = window.location.hash || '#tab-1';
-            switchTab(newHash);
-        });
+        if (hash && tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+            switchTab(tabNav, hash);
+        } else if (tabLinks[0]) {
+            switchTab(tabNav, tabLinks[0].getAttribute('href'));
+        }
     }
     
-    function switchTab(tabId) {
-        // すべてのタブとペインからactiveクラスを削除
-        const navItems = document.querySelectorAll('.tab-nav li');
-        const tabPanes = document.querySelectorAll('.tab-pane');
+    function switchTab(tabNav, tabId) {
+        const container = tabNav.closest('[class*=\"-tabs\"]');
+        if (!container) return;
+        
+        const navItems = container.querySelectorAll('.tab-nav li');
+        const tabPanes = container.querySelectorAll('.tab-pane');
         
         navItems.forEach(function(item) {
             item.classList.remove('active');
@@ -187,17 +199,44 @@
             pane.classList.remove('active');
         });
         
-        // 選択されたタブとペインにactiveクラスを追加
-        const targetLink = document.querySelector('.tab-nav a[href="' + tabId + '"]');
-        const targetPane = document.querySelector(tabId);
+        const targetLink = container.querySelector('.tab-nav a[href=\"' + tabId + '\"]');
+        const targetPane = container.querySelector(tabId);
         
         if (targetLink && targetPane) {
             targetLink.parentElement.classList.add('active');
             targetPane.classList.add('active');
         }
     }
+
+    function syncTabsToHash() {
+        const hash = window.location.hash;
+        if (!hash) return;
+
+        tabNavGroups.forEach(function(tabNav) {
+            if (tabNav.querySelector('a[href=\"' + hash + '\"]')) {
+                switchTab(tabNav, hash);
+            }
+        });
+    }
+
+    function updateHash(targetTab) {
+        if (!targetTab) return;
+
+        if (window.history && window.history.pushState) {
+            // pushStateでURLを書き換えれば、クリック時の自動スクロールを防げる
+            window.history.pushState({ tabId: targetTab }, '', targetTab);
+        } else {
+            // フォールバック: ハッシュ更新後にスクロール位置を戻す
+            const scrollX = window.pageXOffset;
+            const scrollY = window.pageYOffset;
+            window.location.hash = targetTab;
+            window.scrollTo(scrollX, scrollY);
+        }
+    }
 })();
 ```
+
+> **補足**: クリック時にスクロールが発生しないよう、ハッシュ更新は `history.pushState` を優先し、未対応環境ではスクロール位置を復元します。
 
 ### PHPでの実装
 
