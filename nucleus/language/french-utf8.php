@@ -601,7 +601,7 @@ try_define('_QMENU_ADD_SELECT',		'-- sélectionnez --');
 try_define('_QMENU_USER_SETTINGS',		'Préférences');
 try_define('_QMENU_USER_ITEMS',		'Billets');
 try_define('_QMENU_USER_COMMENTS',		'Commentaires');
-try_define('_QMENU_MANAGE',			'Gestion & paramètres');
+try_define('_QMENU_MANAGE',			'Gestion');
 try_define('_QMENU_MANAGE_LOG',		'Log');
 try_define('_QMENU_MANAGE_SETTINGS',	'Configuration');
 try_define('_QMENU_MANAGE_MEMBERS',		'Participants');
