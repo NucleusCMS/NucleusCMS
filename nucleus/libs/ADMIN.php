@@ -7856,7 +7856,7 @@ EOL;
         if (count($candidates) > 0) {
             echo "<p>" . _PLUGS_ADD_TEXT . "</p>\n";
             echo '<table class="listplugin candidates" border="0" cellspacing="0" cellpadding="3">';
-            echo '<thead><tr><th>' . _PLUGS_TITLE . '</th><th>' . _LISTS_ACTIONS . '</th></tr></thead>';
+            echo '<thead><tr><th>' . _PLUGS_TITLE_NEW . '</th><th>' . _LISTS_ACTIONS . '</th></tr></thead>';
             echo '<tbody>';
             foreach ($candidates as $name) {
                 echo '<tr>';
