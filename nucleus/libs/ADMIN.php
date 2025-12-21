@@ -237,7 +237,6 @@ class ADMIN
 
         $extrahead = '';
         $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
-        $extrahead .= '<style>.plugin-tabs .tab-pane{display:none;} .plugin-tabs .tab-pane.active{display:block;}</style>';
         $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
         $this->pagehead($extrahead);
 
@@ -7896,9 +7895,6 @@ EOL;
         echo '  </div>'; // tab-content
         echo '</div>'; // plugin-tabs
         echo "\n";
-        echo "<script>
-document.addEventListener('DOMContentLoaded',function(){var container=document.querySelector('.plugin-tabs');if(!container)return;var navLinks=container.querySelectorAll('.tab-nav a');function activate(id){container.querySelectorAll('.tab-pane').forEach(function(p){p.classList.remove('active');});navLinks.forEach(function(a){a.parentElement.classList.remove('active');});var target=container.querySelector(id);var nav=container.querySelector('.tab-nav a[href=\"'+id+'\"]');if(target){target.classList.add('active');}if(nav){nav.parentElement.classList.add('active');}}navLinks.forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();activate(this.getAttribute('href'));});});var hash=window.location.hash;if(hash && container.querySelector(hash)){activate(hash);} });
-</script>";
         $this->pagefoot();
     }
 
