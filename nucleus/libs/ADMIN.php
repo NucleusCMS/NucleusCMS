@@ -238,6 +238,7 @@ class ADMIN
         $extrahead = '';
         $extrahead .= '<link rel="stylesheet" type="text/css" href="styles/tabs.css" />';
         $extrahead .= '<script type="text/javascript" src="javascript/tabs.js"></script>';
+        $extrahead .= '<script type="text/javascript">document.addEventListener("DOMContentLoaded",function(){if (window.jQuery && jQuery.fn.tabs){jQuery("#plugin-tabs").tabs();}});</script>';
         $this->pagehead($extrahead);
 
         $isAdmin = $member->isAdmin();
@@ -7813,14 +7814,14 @@ EOL;
             echo '</div>';
         }
 
-        echo '<div class="plugin-tabs">';
+        echo '<div id="plugin-tabs" class="plugin-tabs">';
         echo '  <ul class="tab-nav">';
-        echo '    <li class="active"><a href="#plugin-tab-installed">' . _PLUGS_TITLE_INSTALLED . '</a></li>';
+        echo '    <li><a href="#plugin-tab-installed">' . _PLUGS_TITLE_INSTALLED . '</a></li>';
         echo '    <li><a href="#plugin-tab-new">' . _PLUGS_TITLE_NEW . '</a></li>';
         echo '  </ul>';
         echo '  <div class="tab-content">';
 
-        echo '    <div id="plugin-tab-installed" class="tab-pane active">';
+        echo '    <div id="plugin-tab-installed" class="tab-pane">';
         echo '<h3>', _PLUGS_TITLE_INSTALLED, ' &nbsp;&nbsp;<span style="font-size:smaller">', helplink('getplugins'), _PLUGS_TITLE_GETPLUGINS, '</a></span></h3>';
 
         $query = sprintf("SELECT * FROM %s ORDER BY porder ASC", sql_table('plugin'));
